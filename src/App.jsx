@@ -1778,7 +1778,7 @@ export default function App() {
             {[
               [
                 '⏰',
-                'Fixed 7:30–10:30 AM block',
+                'Fixed 8:30–11:30 AM block',
                 'Every day before FPO work. No exceptions. 3h non-negotiable. Consistent daily beats catch-up weekends every time.',
               ],
               [
