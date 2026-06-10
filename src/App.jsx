@@ -1085,11 +1085,11 @@ function PhaseBlock({ p, isOpen, onToggle }) {
           </div>
           <div
             style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit,minmax(120px,1fr))',
-                gap: 8,
-                marginBottom: 14,
-              }}
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(120px,1fr))',
+              gap: 8,
+              marginBottom: 14,
+            }}
           >
             {[
               ['📅', p.days + 'd', 'days'],
@@ -1221,10 +1221,10 @@ export default function App() {
         />
         <div
           style={{
-              position: 'relative',
-              zIndex: 1,
-              maxWidth: 'min(960px,96%)',
-              margin: '0 auto',
+            position: 'relative',
+            zIndex: 1,
+            maxWidth: 'min(960px,96%)',
+            margin: '0 auto',
           }}
         >
           <div
@@ -1434,7 +1434,11 @@ export default function App() {
 
       {/* BODY */}
       <div
-        style={{ maxWidth: 'min(960px,96%)', margin: '0 auto', padding: '16px 12px 48px' }}
+        style={{
+          maxWidth: 'min(960px,96%)',
+          margin: '0 auto',
+          padding: '16px 12px 48px',
+        }}
       >
         {/* Master table */}
         <div
