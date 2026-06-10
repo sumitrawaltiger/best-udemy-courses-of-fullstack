@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-// ── 34 COURSES · 1095 HOURS · JUN 10 2026 → JUN 9 2027 ─────────────────────
+// ── 35 COURSES · 1095 HOURS · JUN 10 2026 → JUN 9 2027 ─────────────────────
 const PHASES = [
   {
     id: 'react',
@@ -510,67 +510,79 @@ const PHASES = [
   },
   {
     id: 'python',
-    name: 'Python',
-    icon: '🐍',
-    color: '#0D9488',
-    dark: '#0F766E',
-    bg: '#F0FDFA',
-    border: '#99F6E4',
+    name: 'Agentic AI with Python',
+    icon: '🤖',
+    color: '#7C3AED',
+    dark: '#6D28D9',
+    bg: '#F5F3FF',
+    border: '#DDD6FE',
     days: 28,
     hours: 84,
-    courseCount: 3,
+    courseCount: 4,
     startDate: 'Apr 8, 2027',
     endDate: 'May 5, 2027',
     offset: 302,
-    note: "3 courses, 84h. Angela Yu is the greatest Python teacher alive — 4.8★, 500K reviews. Al Sweigart is pure automation. Ardit Sulce's Python Mega Course covers real-world apps. Focus on DevOps-relevant sections: scripting, APIs, boto3 automation.",
+    note: '4 cutting-edge Agentic AI courses, 84h exactly. This replaces plain Python scripting with the most in-demand skill of 2026-27: building autonomous AI agents using LangChain, LangGraph, CrewAI, AutoGen and MCP. You already know Python syntax from JavaScript/Java — jump straight into AI agent frameworks. By May 5 you will be able to build, deploy and orchestrate production-grade AI agents.',
     courses: [
       {
         n: 1,
-        h: 60,
-        rating: 4.8,
-        rev: '500K+',
-        stu: '3M+',
-        title: '100 Days of Code — Complete Python Pro Bootcamp',
-        by: 'Dr. Angela Yu',
-        url: 'https://www.udemy.com/course/100-days-of-code/',
-        tag: '🥇 PRIMARY',
+        h: 30,
+        rating: 4.7,
+        rev: '15K+',
+        stu: '50K+',
+        title: 'The Complete Agentic AI Engineering Course 2026',
+        by: 'Ed Donner',
+        url: 'https://www.udemy.com/course/the-complete-agentic-ai-engineering-course/',
+        tag: '🥇 START HERE',
         tagC: '#15803D',
         covers:
-          'Days 1–55: Core Python, OOP, file I/O, requests, APIs, subprocess, argparse, logging. SKIP Days 56–100 (data science)',
-        why: '4.8★ with 500K reviews and 3M+ students — most reviewed Python course ever. Angela Yu is exceptional. Focus Days 1–55 only. Skip data science/ML days (not DevOps relevant).',
-        period: 'Days 1–20',
+          '8 real-world agent projects: Career Digital Twin, SDR Agent, Deep Research, Stock Picker, Engineering Team (CrewAI), Browser Agent (LangGraph), OpenAI Agents SDK, MCP integration',
+        why: 'THE flagship Agentic AI course of 2026. OpenAI Agents SDK + CrewAI + LangGraph + AutoGen + MCP in one 30h course. Build 8 production projects. Ed Donner is an ex-FAANG engineer. Most up-to-date course on the market — covers 2026 tools.',
       },
       {
         n: 2,
-        h: 9,
-        rating: 4.6,
-        rev: '25K+',
-        stu: '190K+',
-        title: 'Automate the Boring Stuff with Python',
-        by: 'Al Sweigart',
-        url: 'https://www.udemy.com/course/automate/',
-        tag: '⚙️ AUTOMATION',
+        h: 22,
+        rating: 4.7,
+        rev: '14K+',
+        stu: '114K+',
+        title: 'LangChain: Develop LLM Powered Applications',
+        by: 'Eden Marco',
+        url: 'https://www.udemy.com/course/langchain/',
+        tag: '🥈 LANGCHAIN CORE',
         tagC: '#0369A1',
         covers:
-          'File system automation, regex for log parsing, web scraping, subprocess shell automation, scheduling',
-        why: 'Pure automation focus — exactly DevOps needs. Files, regex, subprocess, scheduling. Short (9h) and incredibly dense with practical scripting patterns.',
-        period: 'Days 21–23',
+          'LangChain fundamentals, chains, agents, RAG pipelines, vector databases (Pinecone, FAISS), memory patterns, tool calling, production LLM apps',
+        why: '4.7★, 114K students — most enrolled LangChain course on Udemy. Eden Marco is the LangChain go-to instructor. Essential because LangChain underpins everything in LangGraph. RAG + vector databases covered deeply.',
       },
       {
         n: 3,
-        h: 15,
-        rating: 4.6,
-        rev: '30K+',
-        stu: '100K+',
-        title: 'Python Mega Course — Build 10 Real-World Apps',
-        by: 'Ardit Sulce',
-        url: 'https://www.udemy.com/course/the-python-mega-course/',
-        tag: '🏗️ 10 APPS',
+        h: 18,
+        rating: 4.8,
+        rev: '1K+',
+        stu: '6K+',
+        title: 'Complete Agentic AI Bootcamp — LangGraph + LangChain',
+        by: 'Multiple Instructors',
+        url: 'https://www.udemy.com/course/complete-agentic-ai-bootcamp-with-langgraph-and-langchain/',
+        tag: '🔗 LANGGRAPH DEEP',
         tagC: '#7C3AED',
         covers:
-          '10 real Python apps: web app, API, database app, automation scripts, REST API with Flask basics',
-        why: "10 complete Python projects = portfolio. Reinforces Angela's fundamentals with practical apps. Good bridge between core Python and DevOps scripting patterns.",
-        period: 'Days 24–28',
+          'LangGraph state machines, graph-based workflows, conditional edges, multi-agent orchestration, ReAct + Reflection architectures, agentic RAG',
+        why: '4.8★ — highest rated in this list. LangGraph is the backbone of serious agentic architectures. This bootcamp goes deep on graph-based workflows, state management, and multi-agent coordination — the patterns used in production AI systems.',
+      },
+      {
+        n: 4,
+        h: 14,
+        rating: 4.6,
+        rev: '5K+',
+        stu: '35K+',
+        title: 'AI Agents: Automation & Business with LangChain & LLMs',
+        by: 'Eden Marco',
+        url: 'https://www.udemy.com/course/ai-agents-automation-business-with-langchain-llm/',
+        tag: '🏗️ BUSINESS AGENTS',
+        tagC: '#D97706',
+        covers:
+          'Business automation agents, LinkedIn/Twitter scrapers, Ice Breaker agent, AutoGen multi-agent teams, LangFlow no-code agents, BabyAGI patterns, Flowise',
+        why: "Eden Marco's practical business-focused agent course. Bridges the gap between theory and real business automation. AutoGen, LangFlow, Flowise, BabyAGI — covers every major framework not already covered in courses 1–3.",
       },
     ],
   },
@@ -1317,7 +1329,7 @@ export default function App() {
               ['#374151', 35],
               ['#16A34A', 98],
               ['#E11D48', 49],
-              ['#0D9488', 28],
+              ['#7C3AED', 28],
               ['#EA580C', 35],
             ].map(([col, fl], i) => (
               <div key={i} style={{ flex: fl, background: col }} />
@@ -1333,12 +1345,10 @@ export default function App() {
                   setOpen(p.id);
                   setTimeout(
                     () =>
-                      document
-                        .getElementById('ph-' + p.id)
-                        ?.scrollIntoView({
-                          behavior: 'smooth',
-                          block: 'start',
-                        }),
+                      document.getElementById('ph-' + p.id)?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                      }),
                     80,
                   );
                 }}
@@ -1397,7 +1407,7 @@ export default function App() {
               marginBottom: 14,
             }}
           >
-            📊 MASTER SCHEDULE — 365 DAYS · 1,095H COURSES · 3H/DAY · 34 COURSES
+            📊 MASTER SCHEDULE — 365 DAYS · 1,095H COURSES · 3H/DAY · 35 COURSES
           </div>
           <table
             style={{
@@ -1448,12 +1458,10 @@ export default function App() {
                     setOpen(p.id);
                     setTimeout(
                       () =>
-                        document
-                          .getElementById('ph-' + p.id)
-                          ?.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start',
-                          }),
+                        document.getElementById('ph-' + p.id)?.scrollIntoView({
+                          behavior: 'smooth',
+                          block: 'start',
+                        }),
                       80,
                     );
                   }}
@@ -1675,7 +1683,7 @@ export default function App() {
               marginBottom: 14,
             }}
           >
-            ⚡ RULES TO FINISH ALL 34 COURSES IN 365 DAYS
+            ⚡ RULES TO FINISH ALL 35 COURSES IN 365 DAYS
           </div>
           <div
             style={{
@@ -1762,7 +1770,7 @@ export default function App() {
               ['▲', 'Next.js', '105h', '#374151'],
               ['🌱', 'Spring', '294h', '#16A34A'],
               ['🏛', 'Microservices', '147h', '#E11D48'],
-              ['🐍', 'Python', '84h', '#0D9488'],
+              ['🤖', 'Agentic AI', '84h', '#7C3AED'],
               ['⚙', 'DevOps', '105h', '#EA580C'],
             ].map(([ic, sk, h, col], i, a) => (
               <span
@@ -1782,7 +1790,7 @@ export default function App() {
           <div
             style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.18em' }}
           >
-            34 COURSES · 1,095H · 6:00 AM–9:00 AM DAILY · JUN 10 2026 → JUN 9
+            35 COURSES · 1,095H · 6:00 AM–9:00 AM DAILY · JUN 10 2026 → JUN 9
             2027
           </div>
         </div>
