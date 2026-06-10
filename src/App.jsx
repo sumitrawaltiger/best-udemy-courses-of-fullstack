@@ -967,8 +967,8 @@ function PhaseBlock({ p, isOpen, onToggle }) {
       >
         <div
           style={{
-            width: 56,
-            height: 56,
+            width: 'clamp(40px,9vw,56px)',
+            height: 'clamp(40px,9vw,56px)',
             borderRadius: 14,
             flexShrink: 0,
             background: isOpen
@@ -1085,11 +1085,11 @@ function PhaseBlock({ p, isOpen, onToggle }) {
           </div>
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(5,1fr)',
-              gap: 8,
-              marginBottom: 14,
-            }}
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit,minmax(120px,1fr))',
+                gap: 8,
+                marginBottom: 14,
+              }}
           >
             {[
               ['📅', p.days + 'd', 'days'],
@@ -1221,10 +1221,10 @@ export default function App() {
         />
         <div
           style={{
-            position: 'relative',
-            zIndex: 1,
-            maxWidth: 960,
-            margin: '0 auto',
+              position: 'relative',
+              zIndex: 1,
+              maxWidth: 'min(960px,96%)',
+              margin: '0 auto',
           }}
         >
           <div
@@ -1237,8 +1237,8 @@ export default function App() {
           >
             <div
               style={{
-                width: 58,
-                height: 58,
+                width: 'clamp(42px,10vw,58px)',
+                height: 'clamp(42px,10vw,58px)',
                 borderRadius: 16,
                 flexShrink: 0,
                 background: 'linear-gradient(135deg,#6366F1,#8B5CF6)',
@@ -1434,7 +1434,7 @@ export default function App() {
 
       {/* BODY */}
       <div
-        style={{ maxWidth: 960, margin: '0 auto', padding: '16px 12px 48px' }}
+        style={{ maxWidth: 'min(960px,96%)', margin: '0 auto', padding: '16px 12px 48px' }}
       >
         {/* Master table */}
         <div
