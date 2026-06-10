@@ -58,7 +58,7 @@ const PHASES = [
         url: 'https://www.udemy.com/course/react-tutorial-and-projects-course/',
         tag: '🏗 PROJECTS',
         tc: '#7C3AED',
-        why: '15 portfolio projects. Pause, close laptop, rebuild from scratch. Best project-based reinforcement available.',
+        why: '15 portfolio projects. Pause, close laptop, rebuild from scratch. Best project-based reinforcement.',
       },
       {
         h: 11,
@@ -69,7 +69,7 @@ const PHASES = [
         url: 'https://www.udemy.com/course/react-interview-masterclass-top-200-questions-in-hindi/',
         tag: '🎯 INTERVIEW',
         tc: '#6D28D9',
-        why: '200 Q&A consolidates everything learned. Do in last week as your exit exam before React Native.',
+        why: '200 Q&A consolidates everything. Do in last week as your exit exam before React Native.',
       },
     ],
   },
@@ -119,7 +119,7 @@ const PHASES = [
         url: 'https://www.udemy.com/course/react-native-the-practical-guide/',
         tag: '🥈 SECOND',
         tc: '#0369A1',
-        why: 'Max covers animations, device APIs (camera, location, haptics) Grider skips. Different angle = deeper understanding.',
+        why: 'Max covers animations, device APIs (camera, location, haptics) that Grider skips. Different angle = deeper understanding.',
       },
     ],
   },
@@ -180,7 +180,7 @@ const PHASES = [
         url: 'https://www.udemy.com/course/nextjs-fullstack-development-2023-by-anil-dollor',
         tag: '🇮🇳 HINDI',
         tc: '#D97706',
-        why: 'Hindi full-stack walkthrough. Deployment + full-stack patterns explained very clearly in Hindi.',
+        why: 'Hindi full-stack walkthrough. Deployment and full-stack patterns explained very clearly.',
       },
     ],
   },
@@ -205,7 +205,7 @@ const PHASES = [
       'Write JUnit tests for every class you build',
       'Build Flight CRUD REST API from scratch each week',
       'Try to reproduce the exercise BEFORE watching the solution',
-      'Map every concept to FPO: Spring Bean = Lambda function',
+      'Map every concept to FPO: Spring Bean = Lambda, JPA = DynamoDB',
       'Run your API with Docker Compose + Postman collection',
     ],
     courses: [
@@ -346,13 +346,13 @@ const PHASES = [
     dark: '#047857',
     bg: '#ECFDF5',
     border: '#A7F3D0',
-    days: 12,
-    total: 36,
-    courseH: 22,
-    practiceH: 14,
+    days: 25,
+    total: 75,
+    courseH: 47,
+    practiceH: 28,
     offset: 302,
     startDate: 'Apr 8, 2027',
-    endDate: 'Apr 19, 2027',
+    endDate: 'May 2, 2027',
     tag: '',
     daily:
       '6:00–7:30 AM Udemy (1.5h) · 7:30–9:00 AM write Python scripts (1.5h)',
@@ -361,19 +361,19 @@ const PHASES = [
       'Build a server health checker using subprocess + requests',
       'Parse CloudWatch logs with regex in Python',
       'Write a Kubernetes pod monitor using the K8s Python client',
-      'Automate a daily FPO infra report to Slack',
+      'Automate a daily FPO infra report to Slack with Python',
     ],
     courses: [
       {
-        h: 13,
+        h: 22,
         rating: 4.8,
         stu: '3M+',
-        title: '100 Days of Code — Python Pro Bootcamp (Days 1–30 only)',
+        title: '100 Days of Code — Python Pro Bootcamp (Days 1–55)',
         by: 'Dr. Angela Yu',
         url: 'https://www.udemy.com/course/100-days-of-code/',
         tag: '🥇 PRIMARY',
         tc: '#15803D',
-        why: 'Best Python course ever made. 4.8★, 500K reviews. Focus Days 1–30 only (core syntax, OOP, file I/O). Skip data science sections entirely.',
+        why: 'Best Python course ever. 4.8★, 500K reviews. Focus Days 1–55 (core + scripting). Skip data science days entirely.',
       },
       {
         h: 9,
@@ -384,79 +384,29 @@ const PHASES = [
         url: 'https://www.udemy.com/course/automate/',
         tag: '⚙ AUTOMATE',
         tc: '#0369A1',
-        why: 'Pure DevOps automation focus — file I/O, subprocess, regex for log parsing, scheduling. 9h, extremely dense and practical.',
-      },
-    ],
-  },
-  {
-    id: 'agentic',
-    name: 'Agentic AI',
-    icon: '🤖',
-    color: '#7C3AED',
-    dark: '#6D28D9',
-    bg: '#F5F3FF',
-    border: '#DDD6FE',
-    days: 48,
-    total: 144,
-    courseH: 88,
-    practiceH: 56,
-    offset: 314,
-    startDate: 'Apr 20, 2027',
-    endDate: 'Jun 6, 2027',
-    tag: '🆕 NEW',
-    daily:
-      '6:00–7:30 AM Udemy (1.5h) · 7:30–9:00 AM build agents in Python (1.5h)',
-    practice: [
-      'Build a RAG pipeline querying your own FPO documentation',
-      'Create a multi-agent research tool with LangGraph',
-      'Deploy a LangChain agent as an AWS Lambda function using boto3',
-      'Build FPO AI assistant: natural language queries over flight data',
-      'Ship one complete agent project to GitHub each week',
-    ],
-    courses: [
-      {
-        h: 22,
-        rating: 4.7,
-        stu: '60K+',
-        title: 'ChatGPT + Generative AI Masterclass 2026',
-        by: 'Dr. Frank Kane (ex-Amazon)',
-        url: 'https://www.udemy.com/course/chatgpt-and-generative-ai/',
-        tag: '✨ GEN AI FIRST',
-        tc: '#D97706',
-        why: 'Start here before LangChain. Ex-Amazon. Covers LLMs, embeddings, RAG, prompt engineering (CoT, ReAct), AWS Bedrock. Essential GenAI foundation.',
+        why: 'Pure DevOps automation — file I/O, subprocess, regex for log parsing, scheduling. 9h, extremely dense.',
       },
       {
-        h: 22,
-        rating: 4.7,
-        stu: '114K+',
-        title: 'LangChain: Develop LLM Powered Applications',
-        by: 'Eden Marco',
-        url: 'https://www.udemy.com/course/langchain/',
-        tag: '🔗 LANGCHAIN',
-        tc: '#0369A1',
-        why: '114K students. LangChain fundamentals, RAG pipelines, vector databases (Pinecone, FAISS), memory, tool calling. Foundation for LangGraph.',
-      },
-      {
-        h: 30,
-        rating: 4.7,
-        stu: '50K+',
-        title: 'Complete Agentic AI Engineering Course 2026',
-        by: 'Ed Donner',
-        url: 'https://www.udemy.com/course/the-complete-agentic-ai-engineering-course/',
-        tag: '🤖 FLAGSHIP',
-        tc: '#7C3AED',
-        why: 'THE 2026 flagship: 8 real projects — Career Digital Twin, Deep Research, SDR Agent, Engineering Team, Browser Agent. OpenAI Agents SDK + CrewAI + LangGraph + AutoGen + MCP.',
-      },
-      {
-        h: 14,
+        h: 9,
         rating: 4.6,
-        stu: '35K+',
-        title: 'AI Agents: Automation & Business with LangChain & LLMs',
-        by: 'Eden Marco',
-        url: 'https://www.udemy.com/course/ai-agents-automation-business-with-langchain-llm/',
-        tag: '🏢 BUSINESS',
-        tc: '#15803D',
-        why: 'Business automation agents, AutoGen multi-agent teams, LangFlow, BabyAGI patterns. Bridges theory to real-world automation.',
+        stu: '100K+',
+        title: 'Python Mega Course — Build 10 Real Apps',
+        by: 'Ardit Sulce',
+        url: 'https://www.udemy.com/course/the-python-mega-course/',
+        tag: '🏗 PROJECTS',
+        tc: '#7C3AED',
+        why: "10 real projects bridge fundamentals to practical DevOps scripting. Reinforces Angela's concepts with hands-on apps.",
+      },
+      {
+        h: 7,
+        rating: 4.7,
+        stu: '500K+',
+        title: 'Complete Python Bootcamp (DevOps scripts focus)',
+        by: 'Jose Portilla',
+        url: 'https://www.udemy.com/course/complete-python-bootcamp/',
+        tag: '🔧 DEVOPS',
+        tc: '#D97706',
+        why: "Portilla's DevOps-relevant sections: subprocess, os/sys, argparse, logging. Perfect complement to Sweigart for FPO automation work.",
       },
     ],
   },
@@ -472,17 +422,17 @@ const PHASES = [
     total: 114,
     courseH: 72,
     practiceH: 42,
-    offset: 362,
-    startDate: 'Jun 7, 2027',
-    endDate: 'Jul 14, 2027',
-    tag: '',
+    offset: 327,
+    startDate: 'May 3, 2027',
+    endDate: 'Jun 9, 2027',
+    tag: '🏁 DAY 365',
     daily:
       '6:00–7:40 AM Udemy (1.67h) · 7:40–9:00 AM terminal labs + hands-on (1.33h)',
     practice: [
       'Run every K8s command in KodeKloud terminal labs',
       'Write Terraform for one AWS resource you use daily in FPO',
       'Set up GitHub Actions CI for your Spring Boot API project',
-      'Deploy your full 400-day capstone with Docker Compose + K8s',
+      'Deploy your full 365-day capstone with Docker Compose + K8s',
       'Propose one concrete DevOps improvement to Karsten from this phase',
     ],
     courses: [
@@ -517,7 +467,7 @@ const PHASES = [
         url: 'https://www.udemy.com/course/mastering-devops-with-anil-dollor-2023/',
         tag: '🇮🇳 HINDI',
         tc: '#D97706',
-        why: 'Hindi DevOps recap — ties everything together in your native language. Perfect closure for the 400-day journey.',
+        why: 'Hindi DevOps recap — ties everything together in your native language. Great closure for the 365-day block.',
       },
       {
         h: 9,
@@ -529,6 +479,67 @@ const PHASES = [
         tag: '🏗 TERRAFORM',
         tc: '#059669',
         why: 'Essential IaC for FPO AWS automation. KodeKloud interactive labs = hands-on from day 1.',
+      },
+    ],
+  },
+  {
+    id: 'agentic',
+    name: 'Agentic AI',
+    icon: '🤖',
+    color: '#7C3AED',
+    dark: '#6D28D9',
+    bg: '#F5F3FF',
+    border: '#DDD6FE',
+    days: 35,
+    total: 105,
+    courseH: 65,
+    practiceH: 40,
+    offset: 365,
+    startDate: 'Jun 10, 2027',
+    endDate: 'Jul 14, 2027',
+    tag: '🆕 BONUS 35 DAYS',
+    daily:
+      '6:00–7:30 AM Udemy (1.5h) · 7:30–9:00 AM build AI agents in Python (1.5h)',
+    practice: [
+      'Build a RAG pipeline querying your own FPO documentation',
+      'Create a LangGraph multi-agent research workflow',
+      'Deploy a LangChain agent as an AWS Lambda function',
+      'Build FPO AI assistant: natural language queries over flight data',
+      'Ship one complete agent project to GitHub each week',
+    ],
+    courses: [
+      {
+        h: 22,
+        rating: 4.7,
+        stu: '60K+',
+        title: 'ChatGPT + Generative AI Masterclass 2026',
+        by: 'Dr. Frank Kane (ex-Amazon)',
+        url: 'https://www.udemy.com/course/chatgpt-and-generative-ai/',
+        tag: '✨ GEN AI FIRST',
+        tc: '#D97706',
+        why: 'Start here before LangChain. Ex-Amazon. LLMs, embeddings, RAG, prompt engineering (CoT, ReAct), AWS Bedrock. Essential GenAI foundation.',
+      },
+      {
+        h: 30,
+        rating: 4.7,
+        stu: '50K+',
+        title: 'Complete Agentic AI Engineering Course 2026',
+        by: 'Ed Donner',
+        url: 'https://www.udemy.com/course/the-complete-agentic-ai-engineering-course/',
+        tag: '🤖 FLAGSHIP',
+        tc: '#7C3AED',
+        why: 'THE 2026 flagship: 8 real projects — Career Digital Twin, Deep Research, SDR Agent, Engineering Team. OpenAI Agents SDK + CrewAI + LangGraph + AutoGen + MCP.',
+      },
+      {
+        h: 13,
+        rating: 4.7,
+        stu: '114K+',
+        title: 'LangChain: Develop LLM Powered Applications',
+        by: 'Eden Marco',
+        url: 'https://www.udemy.com/course/langchain/',
+        tag: '🔗 LANGCHAIN',
+        tc: '#0369A1',
+        why: '114K students. LangChain chains, RAG pipelines, vector databases (Pinecone, FAISS), memory, tool calling. Foundation for building production agents.',
       },
     ],
   },
@@ -1150,7 +1161,7 @@ export default function App() {
                   lineHeight: 1.15,
                 }}
               >
-                400 Days of Code · 1,200 Hours
+                400-Day Study Plan · 1,200 Hours
               </div>
               <div
                 style={{
@@ -1208,7 +1219,7 @@ export default function App() {
             }}
           >
             {[
-              ['400d', '13 Months'],
+              ['365+35d', '13 Months'],
               ['1,200h', 'Total Study'],
               ['3h/day', '6–9 AM'],
               [TOT_COURSES + ' courses', '8 Skills'],
@@ -1247,29 +1258,81 @@ export default function App() {
             ))}
           </div>
 
-          {/* 400-day visual bar */}
-          <div
-            style={{
-              height: 10,
-              borderRadius: 5,
-              overflow: 'hidden',
-              display: 'flex',
-              marginBottom: 8,
-              boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.3)',
-            }}
-          >
-            {[
-              ['#0EA5E9', 92],
-              ['#7C3AED', 28],
-              ['#374151', 35],
-              ['#16A34A', 98],
-              ['#E11D48', 49],
-              ['#059669', 12],
-              ['#7C3AED', 48],
-              ['#EA580C', 38],
-            ].map(([col, fl], i) => (
-              <div key={i} style={{ flex: fl, background: col }} />
-            ))}
+          {/* 400-day visual bar with Day-365 boundary */}
+          <div style={{ marginBottom: 8 }}>
+            <div
+              style={{
+                position: 'relative',
+                height: 10,
+                borderRadius: 5,
+                overflow: 'visible',
+                display: 'flex',
+                boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.3)',
+              }}
+            >
+              {[
+                ['#0EA5E9', 92],
+                ['#7C3AED', 28],
+                ['#374151', 35],
+                ['#16A34A', 98],
+                ['#E11D48', 49],
+                ['#059669', 25],
+                ['#EA580C', 38],
+                ['#7C3AED', 35],
+              ].map(([col, fl], i) => (
+                <div
+                  key={i}
+                  style={{
+                    flex: fl,
+                    background: col,
+                    position: 'relative',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {i === 6 && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        right: -1,
+                        top: 0,
+                        bottom: 0,
+                        width: 3,
+                        background: '#fff',
+                        opacity: 0.95,
+                        zIndex: 3,
+                      }}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginTop: 4,
+              }}
+            >
+              <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.42)' }}>
+                Day 1 · Jun 10, 2026
+              </span>
+              <span
+                style={{
+                  fontSize: 9,
+                  fontWeight: 800,
+                  color: 'rgba(255,255,255,0.85)',
+                  background: 'rgba(255,255,255,0.12)',
+                  padding: '1px 7px',
+                  borderRadius: 10,
+                  border: '1px solid rgba(255,255,255,0.2)',
+                }}
+              >
+                ✦ Day 365 · Jun 9, 2027 ✦
+              </span>
+              <span style={{ fontSize: 9, color: 'rgba(255,255,255,0.42)' }}>
+                Day 400 · Jul 14, 2027
+              </span>
+            </div>
           </div>
 
           {/* Phase pills — horizontal scroll on mobile */}
@@ -1487,95 +1550,149 @@ export default function App() {
             </thead>
             <tbody>
               {PHASES.map((p, i) => (
-                <tr
-                  key={i}
-                  style={{
-                    borderBottom: '1px solid #F1F5F9',
-                    cursor: 'pointer',
-                    transition: 'background 0.1s',
-                  }}
-                  onClick={() => go(p.id)}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = '#F8FAFC')
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = 'transparent')
-                  }
-                >
-                  <td style={{ padding: '7px 8px' }}>
-                    <div
-                      style={{
-                        width: 26,
-                        height: 26,
-                        borderRadius: 7,
-                        background: p.color + '18',
-                        color: p.color,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 15,
-                      }}
-                    >
-                      {p.icon}
-                    </div>
-                  </td>
-                  <td style={{ padding: '7px 8px' }}>
-                    <div
-                      style={{
-                        fontWeight: 800,
-                        color: '#0F172A',
-                        fontSize: 11,
-                      }}
-                    >
-                      {p.name}
-                    </div>
-                    {p.tag && (
-                      <div
+                <>
+                  {p.id === 'agentic' && (
+                    <tr key={'div'}>
+                      <td
+                        colSpan={7}
                         style={{
-                          fontSize: 8,
-                          color: p.tag.includes('NEW') ? '#15803D' : p.color,
-                          fontWeight: 700,
+                          padding: '4px 8px',
+                          background:
+                            'linear-gradient(90deg,#6366F110,#7C3AED18)',
+                          borderTop: '2px dashed #7C3AED60',
+                          borderBottom: '2px dashed #7C3AED60',
                         }}
                       >
-                        {p.tag}
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 6,
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <div
+                            style={{
+                              height: 1,
+                              flex: 1,
+                              background: '#7C3AED30',
+                            }}
+                          />
+                          <span
+                            style={{
+                              fontSize: 9,
+                              fontWeight: 800,
+                              color: '#7C3AED',
+                              whiteSpace: 'nowrap',
+                              padding: '2px 8px',
+                              background: '#F5F3FF',
+                              borderRadius: 20,
+                              border: '1px solid #DDD6FE',
+                            }}
+                          >
+                            🎁 BONUS 35 DAYS — Day 366 → 400 · Agentic AI
+                          </span>
+                          <div
+                            style={{
+                              height: 1,
+                              flex: 1,
+                              background: '#7C3AED30',
+                            }}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                  <tr
+                    key={i}
+                    style={{
+                      borderBottom: '1px solid #F1F5F9',
+                      cursor: 'pointer',
+                      transition: 'background 0.1s',
+                    }}
+                    onClick={() => go(p.id)}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background = '#F8FAFC')
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = 'transparent')
+                    }
+                  >
+                    <td style={{ padding: '7px 8px' }}>
+                      <div
+                        style={{
+                          width: 26,
+                          height: 26,
+                          borderRadius: 7,
+                          background: p.color + '18',
+                          color: p.color,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: 15,
+                        }}
+                      >
+                        {p.icon}
                       </div>
-                    )}
-                  </td>
-                  <td
-                    style={{
-                      padding: '7px 8px',
-                      fontWeight: 700,
-                      color: '#374151',
-                    }}
-                  >
-                    {p.days}
-                  </td>
-                  <td
-                    style={{
-                      padding: '7px 8px',
-                      fontWeight: 900,
-                      color: p.color,
-                    }}
-                  >
-                    {p.total}h
-                  </td>
-                  <td style={{ padding: '7px 8px', color: '#4F46E5' }}>
-                    {p.courseH}h
-                  </td>
-                  <td style={{ padding: '7px 8px', color: '#94A3B8' }}>
-                    {p.practiceH}h
-                  </td>
-                  <td
-                    style={{
-                      padding: '7px 8px',
-                      color: '#64748B',
-                      fontSize: 10,
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {p.startDate}
-                  </td>
-                </tr>
+                    </td>
+                    <td style={{ padding: '7px 8px' }}>
+                      <div
+                        style={{
+                          fontWeight: 800,
+                          color: '#0F172A',
+                          fontSize: 11,
+                        }}
+                      >
+                        {p.name}
+                      </div>
+                      {p.tag && (
+                        <div
+                          style={{
+                            fontSize: 8,
+                            color: p.tag.includes('NEW') ? '#15803D' : p.color,
+                            fontWeight: 700,
+                          }}
+                        >
+                          {p.tag}
+                        </div>
+                      )}
+                    </td>
+                    <td
+                      style={{
+                        padding: '7px 8px',
+                        fontWeight: 700,
+                        color: '#374151',
+                      }}
+                    >
+                      {p.days}
+                    </td>
+                    <td
+                      style={{
+                        padding: '7px 8px',
+                        fontWeight: 900,
+                        color: p.color,
+                      }}
+                    >
+                      {p.total}h
+                    </td>
+                    <td style={{ padding: '7px 8px', color: '#4F46E5' }}>
+                      {p.courseH}h
+                    </td>
+                    <td style={{ padding: '7px 8px', color: '#94A3B8' }}>
+                      {p.practiceH}h
+                    </td>
+                    <td
+                      style={{
+                        padding: '7px 8px',
+                        color: '#64748B',
+                        fontSize: 10,
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {p.startDate}
+                    </td>
+                  </tr>
+                </>
               ))}
               <tr
                 style={{
