@@ -567,7 +567,7 @@ const PHASES = [
   },
   {
     id: 'agentic',
-    name: 'Agentic AI + Python',
+    name: 'Agentic AI',
     icon: '🤖',
     color: '#7C3AED',
     dark: '#6D28D9',
