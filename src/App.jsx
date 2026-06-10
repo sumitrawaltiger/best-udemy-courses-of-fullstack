@@ -1273,7 +1273,7 @@ export default function App() {
                   lineHeight: 1.1,
                 }}
               >
-                400 Days of Udemy — 1,200 Hours
+                400 Days of Code — 1,200 Hours
               </h1>
               <div
                 style={{
