@@ -1161,7 +1161,7 @@ export default function App() {
                   lineHeight: 1.15,
                 }}
               >
-                400-Day Study Plan · 1,200 Hours
+                400 days of code · 1,200 Hours
               </div>
               <div
                 style={{
