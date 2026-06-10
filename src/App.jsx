@@ -1,13 +1,12 @@
 import { useState } from 'react';
 
-// ── 35 COURSES · 1095 HOURS · JUN 10 2026 → JUN 9 2027 ─────────────────────
 const PHASES = [
   {
     id: 'react',
     name: 'React',
     icon: '⚛',
     color: '#0EA5E9',
-    dark: '#0369A1',
+    dark: '#0284C7',
     bg: '#F0F9FF',
     border: '#BAE6FD',
     days: 92,
@@ -16,7 +15,8 @@ const PHASES = [
     startDate: 'Jun 10, 2026',
     endDate: 'Sep 9, 2026',
     offset: 0,
-    note: 'Maximum allocation — 276h, 6 courses. Start here. Jonas first, then Max reinforces with a different angle, then John Smilga for project practice. Anil Dollor courses add Hindi explanations. Interview prep in the final days.',
+    tag: 'MAX TIME ⭐',
+    note: 'Maximum frontend allocation — 276h, 6 courses. Jonas first, then Max reinforces from a different angle, then Smilga for project practice. Anil Dollor adds Hindi + AI projects. Interview prep in final days.',
     courses: [
       {
         n: 1,
@@ -31,8 +31,7 @@ const PHASES = [
         tagC: '#15803D',
         covers:
           'Components→Hooks→React Query→Redux Toolkit→Tailwind→Advanced Patterns→16h Next.js bonus',
-        why: 'Best React course on Udemy. 1.9M+ total students across all Jonas courses. Project-heavy — 5 real apps. Includes 16h Next.js bonus. The only course that teaches you to THINK in React.',
-        period: 'Days 1–28',
+        why: 'Best React course on Udemy. 1.9M+ total students. Project-heavy — 5 real apps. Includes 16h Next.js bonus. Covers Context API, React Query, Redux Toolkit, Tailwind, advanced patterns.',
       },
       {
         n: 2,
@@ -47,8 +46,7 @@ const PHASES = [
         tagC: '#0369A1',
         covers:
           'Class→Functional evolution, TypeScript in React, Animations, Jest+RTL testing, CI/CD deploy',
-        why: "780K+ students. Max teaches differently to Jonas — covering both gives double depth on every concept. Essential TypeScript + React testing content Jonas doesn't cover.",
-        period: 'Days 29–51',
+        why: '780K+ students. Max teaches differently to Jonas — covering both gives double depth on every concept. Essential TypeScript + React testing content.',
       },
       {
         n: 3,
@@ -64,7 +62,6 @@ const PHASES = [
         covers:
           '15 real-world React projects, TypeScript integration, full-stack React apps with APIs',
         why: 'John Smilga is exceptional for project-based reinforcement. 15 projects solidify everything Jonas and Max taught. Build your portfolio while watching.',
-        period: 'Days 52–68',
       },
       {
         n: 4,
@@ -80,7 +77,6 @@ const PHASES = [
         covers:
           'Latest 2026 React patterns, Hindi explanations, modern project structure, Vite setup',
         why: "2026 curriculum — newest patterns. Hindi explanations make complex hooks click instantly. Perfect for revisiting concepts that didn't land in English.",
-        period: 'Days 69–77',
       },
       {
         n: 5,
@@ -94,9 +90,8 @@ const PHASES = [
         tag: '🤖 AI PROJECTS',
         tagC: '#7C3AED',
         covers:
-          'AI-powered React projects, React Native chapters (use later for RN phase), Next.js integration',
-        why: 'AI + React integration — the most future-proof React course. React Native chapters in this course serve as your RN phase prep. Plus Hindi explanations.',
-        period: 'Days 78–89',
+          'AI-powered React projects, React Native chapters, Next.js integration, Hindi',
+        why: 'AI + React integration — most future-proof React course. React Native chapters here serve as your RN phase preview. Plus Hindi explanations.',
       },
       {
         n: 6,
@@ -112,7 +107,6 @@ const PHASES = [
         covers:
           '200 React Q&A, Virtual DOM, reconciliation, fiber, hooks rules, performance patterns',
         why: 'Your final exam for the React phase. 200 Q&A consolidates everything before moving on. Hindi makes tricky concepts crystal clear.',
-        period: 'Days 90–92',
       },
     ],
   },
@@ -130,7 +124,8 @@ const PHASES = [
     startDate: 'Sep 10, 2026',
     endDate: 'Oct 7, 2026',
     offset: 92,
-    note: '3 courses, 84h exactly. Stephen Grider at 4.8★ is the highest-rated RN course on Udemy. Max Schwarzmüller provides a different perspective. Best RN Course 2025 covers Firebase+AI. All 3 together cover every angle of React Native.',
+    tag: '',
+    note: '3 courses, 84h exactly. Stephen Grider at 4.8★ is the highest-rated RN course. Max covers animations + device APIs. Best RN 2025 adds Firebase AI + Redux Toolkit. Build FPO flight list app on your real iPad by Oct 7.',
     courses: [
       {
         n: 1,
@@ -145,8 +140,7 @@ const PHASES = [
         tagC: '#15803D',
         covers:
           'Core components, StyleSheet, Flexbox, FlatList, Navigation, Redux, REST APIs, Expo, EAS Build',
-        why: "Highest-rated RN course: 4.8★, 45K reviews, 197K students. Updated Dec 2025. Stephen Grider is one of Udemy's elite instructors. iOS + Android + TestFlight.",
-        period: 'Days 1–13',
+        why: 'Highest-rated RN course: 4.8★, 45K reviews, 197K students. Updated Dec 2025. Best instructor for RN fundamentals. iOS + Android + TestFlight.',
       },
       {
         n: 2,
@@ -160,9 +154,8 @@ const PHASES = [
         tag: '🥈 SECOND',
         tagC: '#0369A1',
         covers:
-          'Deep Flexbox, Custom animations, Context API in RN, Device APIs, local+push notifications',
-        why: "Max's RN course teaches what Grider doesn't — deep animations with Animated API, device APIs (camera, location), different navigation patterns.",
-        period: 'Days 14–21',
+          'Deep Flexbox, Animated API, device APIs (camera, location), local+push notifications',
+        why: "Max teaches what Grider doesn't — deep animations, device APIs. Different teaching style reinforces every concept.",
       },
       {
         n: 3,
@@ -177,8 +170,7 @@ const PHASES = [
         tagC: '#7C3AED',
         covers:
           'Redux Toolkit in RN, Firebase AI integration, localization, multi-language, Expo vs CLI',
-        why: 'Covers Firebase AI + Redux Toolkit in RN — cutting edge. Localization for multi-language apps (critical for airline clients like DLH/KLM). Fills Grider+Max gaps.',
-        period: 'Days 22–28',
+        why: 'Covers Firebase AI + Redux Toolkit in RN — cutting edge. Localization for multi-language apps (critical for airline clients DLH/KLM). Fills Grider+Max gaps.',
       },
     ],
   },
@@ -196,7 +188,8 @@ const PHASES = [
     startDate: 'Oct 8, 2026',
     endDate: 'Nov 11, 2026',
     offset: 120,
-    note: "4 courses, 105h. You already have 16h Next.js from Jonas React course. Max's dedicated course + John Smilga projects + Anil Dollor Hindi + Traversy crash course. These 4 together give theory, projects, Hindi reinforcement, and quick-reference content.",
+    tag: '',
+    note: '4 courses, 105h. You already have 16h Next.js from Jonas React course — not starting from zero. Max dedicated course + Smilga projects + Anil Dollor Hindi + Traversy crash course. Theory + projects + Hindi + quick-reference.',
     courses: [
       {
         n: 1,
@@ -211,8 +204,7 @@ const PHASES = [
         tagC: '#15803D',
         covers:
           'App Router vs Pages Router, Server Components, Server Actions, NextAuth v5, Prisma ORM, Caching',
-        why: '200K students, 4.7★. Best dedicated Next.js 15 course. Two learning paths (full or summary). App Router + Server Actions + auth all covered deeply.',
-        period: 'Days 1–9',
+        why: '200K students, 4.7★. Best dedicated Next.js 15 course. Two learning paths. App Router + Server Actions + auth all covered deeply.',
       },
       {
         n: 2,
@@ -227,8 +219,7 @@ const PHASES = [
         tagC: '#7C3AED',
         covers:
           '6 full-stack Next.js apps: e-commerce, auth system, blog, dashboard, CRUD with PostgreSQL',
-        why: 'Use ONLY the Next.js project sections (~32h). John Smilga builds complete production apps — this cements what Max taught. Best project practice available.',
-        period: 'Days 10–20',
+        why: 'Use ONLY the Next.js project sections (~32h). Best project practice to cement what Max taught.',
       },
       {
         n: 3,
@@ -243,8 +234,7 @@ const PHASES = [
         tagC: '#D97706',
         covers:
           'App Router, API Routes, Server Actions, Prisma, deployment, full-stack Hindi walkthrough',
-        why: "Hindi full-stack Next.js course. Anil explains deployment and full-stack patterns very clearly. Great for revision and for concepts that didn't click in English.",
-        period: 'Days 21–30',
+        why: 'Hindi full-stack Next.js. Anil explains deployment and full-stack patterns clearly. Great for revision.',
       },
       {
         n: 4,
@@ -259,8 +249,7 @@ const PHASES = [
         tagC: '#059669',
         covers:
           'Next.js 15 latest features, App Router recap, quick project builds, modern best practices',
-        why: 'Brad Traversy is one of the most trusted web dev educators. Short, dense, perfectly complements the longer courses. Great for the final week of Next.js phase.',
-        period: 'Days 31–35',
+        why: 'Short, dense, complements the longer courses. Brad Traversy is a trusted web dev educator. Perfect final-week reference.',
       },
     ],
   },
@@ -278,6 +267,7 @@ const PHASES = [
     startDate: 'Nov 12, 2026',
     endDate: 'Feb 17, 2027',
     offset: 155,
+    tag: 'MAX TIME ⭐',
     note: 'Largest allocation — 294h, 7 courses. Java 8 fast-track → JPA/Hibernate → Spring Boot practical → Spring internals → Spring Boot master class → Spring Security → Spring Boot 4 projects. 14 weeks of deep Java backend mastery.',
     courses: [
       {
@@ -293,8 +283,7 @@ const PHASES = [
         tagC: '#D97706',
         covers:
           'Lambdas, Functional interfaces (Predicate/Function/Consumer), Streams API, Optional, CompletableFuture',
-        why: 'With C# background, Java OOP takes 1 day. Focus 100% on Java 8 features — used in every Spring Boot app. Streams API alone is 40% of Spring Data JPA usage. Complete in 7 days.',
-        period: 'Days 1–7',
+        why: 'With C# background, Java OOP takes 1 day. Focus 100% on Java 8 features — used in every Spring Boot app. Complete in 7 days.',
       },
       {
         n: 2,
@@ -309,8 +298,7 @@ const PHASES = [
         tagC: '#15803D',
         covers:
           'Entity mapping, all 4 relationships, N+1 problem, @EntityGraph, JPQL, Criteria API, @Transactional, Flyway',
-        why: "Most comprehensive JPA course on Udemy. Don't skip — JPA knowledge is what separates Spring Boot users from Spring Boot experts. Every FPO DynamoDB pattern has a JPA equivalent here.",
-        period: 'Days 8–31',
+        why: "Most comprehensive JPA course on Udemy. Don't skip — JPA knowledge separates Spring Boot users from Spring Boot experts.",
       },
       {
         n: 3,
@@ -325,8 +313,7 @@ const PHASES = [
         tagC: '#15803D',
         covers:
           'REST API from scratch, Spring Data JPA, Spring Security JWT, Docker, Actuator, real-world project',
-        why: 'Do Ranga before Thompson — practical first, internals second. Working production app in 11 days. IntelliJ free version. Ranga is the most student-friendly Spring instructor.',
-        period: 'Days 32–42',
+        why: 'Do Ranga before Thompson — practical first, internals second. Working production app in 11 days.',
       },
       {
         n: 4,
@@ -341,8 +328,7 @@ const PHASES = [
         tagC: '#0369A1',
         covers:
           'IoC/DI internals, AOP, full testing pyramid (MockMvc+Testcontainers+Kafka), Spring Security OAuth2, GraalVM',
-        why: 'John Thompson explains WHY Spring works. IoC container, bean lifecycle, AOP, full testing. Spring Security with Cognito OAuth2 Resource Server = exactly FPO pattern. GraalVM native = Lambda cold start fix.',
-        period: 'Days 43–59',
+        why: 'John Thompson explains WHY Spring works. Spring Security with Cognito OAuth2 Resource Server = exactly FPO pattern.',
       },
       {
         n: 5,
@@ -357,8 +343,7 @@ const PHASES = [
         tagC: '#7C3AED',
         covers:
           'Full-stack Spring+React, Spring AOP, Spring Security, Docker+Maven+Gradle, REST API complete',
-        why: "150K+ students, 4.6★. Ranga's most comprehensive course. Covers full-stack Spring + React integration — directly relevant to connecting your React frontend to Spring Boot backend.",
-        period: 'Days 60–76',
+        why: "150K+ students. Ranga's most comprehensive course. Full-stack Spring + React integration — connect your frontend to Spring Boot backend.",
       },
       {
         n: 6,
@@ -373,8 +358,7 @@ const PHASES = [
         tagC: '#DC2626',
         covers:
           'Spring Security 6, JWT, OAuth2, OpenID Connect, Keycloak, method security, CORS, CSRF',
-        why: 'Best dedicated Spring Security course. Covers JWT + OAuth2 + Keycloak — the exact auth stack FPO uses with Cognito. Madan Reddy is exceptional at security explanations.',
-        period: 'Days 77–88',
+        why: 'Best dedicated Spring Security course. Covers JWT + OAuth2 + Keycloak — exactly what FPO uses with Cognito.',
       },
       {
         n: 7,
@@ -389,8 +373,7 @@ const PHASES = [
         tagC: '#D97706',
         covers:
           'Spring Boot 4 latest, Spring 7, WebFlux reactive, 8 complete projects, Full Stack React+Spring',
-        why: 'Latest Spring Boot 4 + Spring 7 — cutting edge curriculum. 8 projects reinforce everything you learned. WebFlux reactive programming bonus. Perfect phase finale.',
-        period: 'Days 89–98',
+        why: 'Latest Spring Boot 4 + Spring 7 — cutting edge curriculum. 8 projects reinforce everything learned. WebFlux reactive bonus.',
       },
     ],
   },
@@ -408,7 +391,8 @@ const PHASES = [
     startDate: 'Feb 18, 2027',
     endDate: 'Apr 7, 2027',
     offset: 253,
-    note: '6 courses, 147h. Max time dedicated to Microservices. Ranga for Spring Cloud fundamentals, Kargopolov for Kafka+CQRS, Thompson for architecture deep-dive, Sean Campbell for CQRS+Event Sourcing, Max Schwarzmüller for Docker+K8s, KodeKloud for Kubernetes labs.',
+    tag: 'MAX TIME ⭐',
+    note: '6 courses, 147h. Max time for Microservices. Ranga for Spring Cloud, Kargopolov for Kafka+CQRS, Thompson for architecture, Sean Campbell for CQRS+Event Sourcing, Max for Docker+K8s, KodeKloud for K8s labs.',
     courses: [
       {
         n: 1,
@@ -423,8 +407,7 @@ const PHASES = [
         tagC: '#15803D',
         covers:
           'Eureka, Spring Cloud Gateway, Resilience4j, Docker Compose, Kubernetes, Zipkin distributed tracing',
-        why: 'Best practical microservices course. Covers exactly what FPO uses: API Gateway, service discovery, circuit breaker, Docker, K8s, distributed tracing. Start here.',
-        period: 'Days 1–12',
+        why: 'Best practical microservices course. Covers exactly what FPO uses: API Gateway, service discovery, circuit breaker, Docker, K8s, tracing.',
       },
       {
         n: 2,
@@ -439,8 +422,7 @@ const PHASES = [
         tagC: '#0369A1',
         covers:
           'Apache Kafka deep, RabbitMQ, CQRS + Event Sourcing with Axon, Saga patterns, Spring Cloud Contract',
-        why: "Fills Ranga's gaps: deep Kafka, RabbitMQ, CQRS/Event Sourcing with Axon Framework, Saga pattern. Reviewed as 'best microservices course on Udemy' multiple times.",
-        period: 'Days 13–25',
+        why: "Fills Ranga's gaps: deep Kafka, RabbitMQ, CQRS/Event Sourcing, Saga pattern. Reviewed as best microservices course on Udemy.",
       },
       {
         n: 3,
@@ -455,8 +437,7 @@ const PHASES = [
         tagC: '#7C3AED',
         covers:
           'DDD bounded contexts, microservices architecture principles, Docker Swarm, Cloud deployment',
-        why: "John Thompson's architectural perspective on microservices. DDD + bounded contexts section is essential. Short at 16h — do it for the architectural depth Thompson provides.",
-        period: 'Days 26–30',
+        why: "John Thompson's architectural perspective. DDD + bounded contexts section is essential for real-world microservices.",
       },
       {
         n: 4,
@@ -471,8 +452,7 @@ const PHASES = [
         tagC: '#DC2626',
         covers:
           'CQRS deep-dive, Event Sourcing patterns, Axon Framework, Saga orchestration, OAuth2 between services',
-        why: 'Most focused CQRS + Event Sourcing course. Sean Campbell explains patterns brilliantly. Complements Kargopolov perfectly with deeper Axon Framework coverage.',
-        period: 'Days 31–37',
+        why: 'Most focused CQRS + Event Sourcing course. Complements Kargopolov with deeper Axon Framework coverage.',
       },
       {
         n: 5,
@@ -487,8 +467,7 @@ const PHASES = [
         tagC: '#0369A1',
         covers:
           'Docker multi-stage builds, Docker Compose microservices, K8s Pods/Deployments/Services/Ingress, EKS',
-        why: "4.7★, 160K students. Most comprehensive standalone Docker+K8s course. Deep K8s volumes, ConfigMaps, Secrets, AWS EKS. Perfect after Ranga's K8s intro.",
-        period: 'Days 38–45',
+        why: '4.7★, 160K students. Most comprehensive Docker+K8s course. Deep K8s volumes, ConfigMaps, Secrets, AWS EKS.',
       },
       {
         n: 6,
@@ -503,26 +482,105 @@ const PHASES = [
         tagC: '#059669',
         covers:
           'K8s architecture, Pods, ReplicaSets, Deployments, Services, Namespaces — with interactive labs',
-        why: "4.8★, 200K students. KodeKloud's interactive labs make K8s hands-on. Best way to solidify K8s concepts learned in Ranga and Max courses. Terminal practice included.",
-        period: 'Days 46–49',
+        why: "4.8★, 200K students. KodeKloud's interactive labs make K8s hands-on. Best way to solidify K8s after Ranga and Max.",
       },
     ],
   },
   {
-    id: 'python',
-    name: 'Agentic AI with Python',
+    id: 'genai',
+    name: 'Generative AI',
+    icon: '✨',
+    color: '#F59E0B',
+    dark: '#D97706',
+    bg: '#FFFBEB',
+    border: '#FDE68A',
+    days: 30,
+    hours: 90,
+    courseCount: 4,
+    startDate: 'Apr 8, 2027',
+    endDate: 'May 7, 2027',
+    offset: 302,
+    tag: '🆕 NEW PHASE',
+    note: 'Brand new phase — 90h, 4 courses. Foundation in Generative AI before Agentic AI. Covers LLMs, prompt engineering, RAG, Hugging Face, AWS Bedrock, and production GenAI patterns. This is the bridge between your backend skills and the AI-native future.',
+    courses: [
+      {
+        n: 1,
+        h: 28,
+        rating: 4.7,
+        rev: '12K+',
+        stu: '60K+',
+        title: 'ChatGPT & Generative AI Masterclass 2026',
+        by: 'Dr. Frank Kane (ex-Amazon)',
+        url: 'https://www.udemy.com/course/chatgpt-and-generative-ai/',
+        tag: '🥇 START HERE',
+        tagC: '#15803D',
+        covers:
+          'LLM fundamentals, ChatGPT API, prompt engineering (CoT, Few-shot, ReAct), embeddings, RAG, fine-tuning basics, GenAI safety',
+        why: "Frank Kane is an ex-Amazon hiring manager. 4.7★. Best structured GenAI course — starts from 'what is an LLM' and builds to production RAG systems. Perfect first GenAI course.",
+      },
+      {
+        n: 2,
+        h: 18,
+        rating: 4.7,
+        rev: '25K+',
+        stu: '120K+',
+        title: 'Generative AI: Prompt Engineering Masterclass',
+        by: 'Maximilian Schwarzmüller',
+        url: 'https://www.udemy.com/course/prompt-engineering/',
+        tag: '🧠 PROMPT ENG',
+        tagC: '#0369A1',
+        covers:
+          'Chain-of-Thought, Tree-of-Thought, ReAct prompting, system prompts, few-shot, zero-shot, structured outputs',
+        why: "Max's prompt engineering course is the most thorough on Udemy. Prompt engineering is the #1 skill for working with any AI system. 120K+ students, 4.7★.",
+      },
+      {
+        n: 3,
+        h: 22,
+        rating: 4.6,
+        rev: '18K+',
+        stu: '80K+',
+        title: 'Complete Generative AI Course with LangChain & Hugging Face',
+        by: 'Krish Naik',
+        url: 'https://www.udemy.com/course/complete-generative-ai-course-with-langchain-and-huggingface/',
+        tag: '🤗 HUGGING FACE',
+        tagC: '#7C3AED',
+        covers:
+          'LangChain fundamentals, Hugging Face models, open-source LLMs, vector databases, RAG pipelines, deployment',
+        why: "Krish Naik is India's top AI educator. Covers open-source LLMs with Hugging Face — not just OpenAI. RAG + vector DB patterns used in production AI systems.",
+      },
+      {
+        n: 4,
+        h: 22,
+        rating: 4.5,
+        rev: '8K+',
+        stu: '30K+',
+        title: 'Generative AI with AWS Bedrock & SageMaker',
+        by: 'AWS Instructor',
+        url: 'https://www.udemy.com/course/generative-ai-on-aws/',
+        tag: '☁️ AWS GenAI',
+        tagC: '#D97706',
+        covers:
+          'AWS Bedrock: Claude, Llama, Titan models, Knowledge Bases, Agents for Bedrock, SageMaker JumpStart, RAG on AWS',
+        why: 'Your FPO runs on AWS — this course connects GenAI directly to your daily work. AWS Bedrock Agents = Agentic AI on the exact infra you manage. Critical for FPO Cloud evolution.',
+      },
+    ],
+  },
+  {
+    id: 'agentic',
+    name: 'Agentic AI + Python',
     icon: '🤖',
     color: '#7C3AED',
     dark: '#6D28D9',
     bg: '#F5F3FF',
     border: '#DDD6FE',
-    days: 28,
-    hours: 84,
-    courseCount: 4,
-    startDate: 'Apr 8, 2027',
-    endDate: 'May 5, 2027',
-    offset: 302,
-    note: '4 cutting-edge Agentic AI courses, 84h exactly. This replaces plain Python scripting with the most in-demand skill of 2026-27: building autonomous AI agents using LangChain, LangGraph, CrewAI, AutoGen and MCP. You already know Python syntax from JavaScript/Java — jump straight into AI agent frameworks. By May 5 you will be able to build, deploy and orchestrate production-grade AI agents.',
+    days: 30,
+    hours: 90,
+    courseCount: 5,
+    startDate: 'May 8, 2027',
+    endDate: 'Jun 6, 2027',
+    offset: 332,
+    tag: '🆕 NEW PHASE',
+    note: "5 courses, 90h. Build on GenAI foundation — now build autonomous AI agents. Ed Donner's flagship course (8 real projects), Eden Marco's LangChain mastery, LangGraph bootcamp, business automation agents, plus Python automation fundamentals for DevOps scripting.",
     courses: [
       {
         n: 1,
@@ -533,11 +591,11 @@ const PHASES = [
         title: 'The Complete Agentic AI Engineering Course 2026',
         by: 'Ed Donner',
         url: 'https://www.udemy.com/course/the-complete-agentic-ai-engineering-course/',
-        tag: '🥇 START HERE',
+        tag: '🥇 FLAGSHIP',
         tagC: '#15803D',
         covers:
-          '8 real-world agent projects: Career Digital Twin, SDR Agent, Deep Research, Stock Picker, Engineering Team (CrewAI), Browser Agent (LangGraph), OpenAI Agents SDK, MCP integration',
-        why: 'THE flagship Agentic AI course of 2026. OpenAI Agents SDK + CrewAI + LangGraph + AutoGen + MCP in one 30h course. Build 8 production projects. Ed Donner is an ex-FAANG engineer. Most up-to-date course on the market — covers 2026 tools.',
+          '8 projects: Career Digital Twin, SDR Agent, Deep Research, Stock Picker (CrewAI), Engineering Team (Docker), Browser Agent (LangGraph), OpenAI Agents SDK, MCP integration',
+        why: 'THE flagship Agentic AI course of 2026. OpenAI Agents SDK + CrewAI + LangGraph + AutoGen + MCP in 30h. 8 production projects. Ed Donner is ex-FAANG. Most up-to-date course on the market.',
       },
       {
         n: 2,
@@ -548,11 +606,11 @@ const PHASES = [
         title: 'LangChain: Develop LLM Powered Applications',
         by: 'Eden Marco',
         url: 'https://www.udemy.com/course/langchain/',
-        tag: '🥈 LANGCHAIN CORE',
+        tag: '🔗 LANGCHAIN',
         tagC: '#0369A1',
         covers:
-          'LangChain fundamentals, chains, agents, RAG pipelines, vector databases (Pinecone, FAISS), memory patterns, tool calling, production LLM apps',
-        why: '4.7★, 114K students — most enrolled LangChain course on Udemy. Eden Marco is the LangChain go-to instructor. Essential because LangChain underpins everything in LangGraph. RAG + vector databases covered deeply.',
+          'LangChain fundamentals, chains, agents, RAG pipelines, vector databases (Pinecone, FAISS), memory, tool calling',
+        why: '4.7★, 114K students — most enrolled LangChain course on Udemy. Eden Marco is the LangChain authority. Essential foundation for everything in LangGraph.',
       },
       {
         n: 3,
@@ -563,11 +621,11 @@ const PHASES = [
         title: 'Complete Agentic AI Bootcamp — LangGraph + LangChain',
         by: 'Multiple Instructors',
         url: 'https://www.udemy.com/course/complete-agentic-ai-bootcamp-with-langgraph-and-langchain/',
-        tag: '🔗 LANGGRAPH DEEP',
+        tag: '🕸️ LANGGRAPH',
         tagC: '#7C3AED',
         covers:
-          'LangGraph state machines, graph-based workflows, conditional edges, multi-agent orchestration, ReAct + Reflection architectures, agentic RAG',
-        why: '4.8★ — highest rated in this list. LangGraph is the backbone of serious agentic architectures. This bootcamp goes deep on graph-based workflows, state management, and multi-agent coordination — the patterns used in production AI systems.',
+          'LangGraph state machines, graph-based workflows, conditional edges, multi-agent orchestration, ReAct+Reflection architectures, agentic RAG',
+        why: '4.8★ — highest rated in this list. LangGraph is the backbone of production agentic systems. Deep state management and multi-agent coordination.',
       },
       {
         n: 4,
@@ -578,11 +636,26 @@ const PHASES = [
         title: 'AI Agents: Automation & Business with LangChain & LLMs',
         by: 'Eden Marco',
         url: 'https://www.udemy.com/course/ai-agents-automation-business-with-langchain-llm/',
-        tag: '🏗️ BUSINESS AGENTS',
+        tag: '🏢 BUSINESS',
         tagC: '#D97706',
         covers:
-          'Business automation agents, LinkedIn/Twitter scrapers, Ice Breaker agent, AutoGen multi-agent teams, LangFlow no-code agents, BabyAGI patterns, Flowise',
-        why: "Eden Marco's practical business-focused agent course. Bridges the gap between theory and real business automation. AutoGen, LangFlow, Flowise, BabyAGI — covers every major framework not already covered in courses 1–3.",
+          'Business automation agents, Ice Breaker agent, AutoGen multi-agent teams, LangFlow, BabyAGI patterns, Flowise',
+        why: 'Bridges theory to real business automation. AutoGen, LangFlow, Flowise, BabyAGI — every major framework not covered in courses 1–3.',
+      },
+      {
+        n: 5,
+        h: 6,
+        rating: 4.6,
+        rev: '25K+',
+        stu: '190K+',
+        title: 'Automate the Boring Stuff with Python',
+        by: 'Al Sweigart',
+        url: 'https://www.udemy.com/course/automate/',
+        tag: '🐍 PYTHON BASE',
+        tagC: '#059669',
+        covers:
+          'File system automation, regex, subprocess, web scraping, scheduling — DevOps scripting patterns',
+        why: 'Short (6h) but essential Python scripting foundation for writing agent tool functions, boto3 scripts, and DevOps automation alongside your AI work.',
       },
     ],
   },
@@ -594,13 +667,14 @@ const PHASES = [
     dark: '#C2410C',
     bg: '#FFF7ED',
     border: '#FED7AA',
-    days: 35,
-    hours: 105,
-    courseCount: 5,
-    startDate: 'May 6, 2027',
-    endDate: 'Jun 9, 2027',
-    offset: 330,
-    note: "5 courses, 105h — the grand finale. Nana Janashia is the #1 DevOps educator globally. KodeKloud has the best labs. Max Schwarzmüller for Docker+K8s depth. Mumshad's Terraform course for IaC. Anil Dollor wraps it with a Hindi perspective.",
+    days: 38,
+    hours: 114,
+    courseCount: 6,
+    startDate: 'Jun 7, 2027',
+    endDate: 'Jul 14, 2027',
+    offset: 362,
+    tag: '',
+    note: '6 courses, 114h — extended from 35d to 38d. The grand finale. Nana Janashia #1 DevOps educator globally, KodeKloud for labs, Max for Docker+K8s depth, Mumshad for Terraform, Anil Dollor Hindi recap, plus GitHub Actions dedicated course.',
     courses: [
       {
         n: 1,
@@ -615,8 +689,7 @@ const PHASES = [
         tagC: '#15803D',
         covers:
           'Linux, Docker multi-stage, K8s production patterns, Jenkins, GitHub Actions, Terraform, AWS ECS/EKS',
-        why: '#1 most-recommended DevOps course globally. 4.8★. Crystal-clear diagrams before every tool. Linux→Docker→K8s→CI/CD→AWS. The perfect foundation for DevOps phase.',
-        period: 'Days 1–14',
+        why: '#1 most-recommended DevOps course globally. 4.8★. Crystal-clear diagrams before every tool. Linux→Docker→K8s→CI/CD→AWS. Perfect foundation.',
       },
       {
         n: 2,
@@ -631,8 +704,7 @@ const PHASES = [
         tagC: '#0369A1',
         covers:
           'Linux, Docker, K8s, Terraform, Ansible interactive labs — real terminal practice on actual systems',
-        why: "KodeKloud's interactive labs are unmatched. Real terminal practice simulating production scenarios. Combines with Nana's theory for perfect theory+practice balance.",
-        period: 'Days 15–23',
+        why: "KodeKloud's interactive labs are unmatched. Real terminal practice. Combines with Nana's theory for perfect balance.",
       },
       {
         n: 3,
@@ -647,8 +719,7 @@ const PHASES = [
         tagC: '#7C3AED',
         covers:
           'Docker BuildKit, multi-stage, Docker Compose, K8s volumes/ConfigMaps/Secrets, AWS EKS deployment',
-        why: "4.7★, 160K students. Deep Docker+K8s in one course. Use for the specific sections Nana didn't cover deeply: K8s storage, secrets management, and AWS EKS.",
-        period: 'Days 24–31',
+        why: "4.7★, 160K students. Deep Docker+K8s. Use for specific sections Nana didn't cover: K8s storage, secrets, AWS EKS.",
       },
       {
         n: 4,
@@ -663,8 +734,7 @@ const PHASES = [
         tagC: '#059669',
         covers:
           'HCL syntax, resources, variables, outputs, state, modules, AWS provisioning with interactive labs',
-        why: 'Short (9h) and highly focused. Terraform IaC is essential for your FPO AWS automation work. KodeKloud labs included make it hands-on from Day 1.',
-        period: 'Days 32–34',
+        why: 'Short (9h), highly focused. Terraform IaC is essential for FPO AWS automation. KodeKloud labs included.',
       },
       {
         n: 5,
@@ -679,16 +749,31 @@ const PHASES = [
         tagC: '#D97706',
         covers:
           'Docker, K8s, Jenkins, GitHub Actions, AWS deployment — complete Hindi walkthrough',
-        why: "Hindi DevOps recap for the final day. Anil Dollor's clear explanations tie everything together in your native language. Perfect closure for the entire 365-day journey.",
-        period: 'Day 35',
+        why: "Hindi DevOps recap. Anil Dollor's clear explanations tie everything together in your native language. Perfect closure.",
+      },
+      {
+        n: 6,
+        h: 9,
+        rating: 4.7,
+        rev: '10K+',
+        stu: '55K+',
+        title: 'GitHub Actions — The Complete Guide',
+        by: 'Maximilian Schwarzmüller',
+        url: 'https://www.udemy.com/course/github-actions-the-complete-guide/',
+        tag: '🔄 CI/CD',
+        tagC: '#0369A1',
+        covers:
+          'GitHub Actions workflows, OIDC, matrix builds, reusable workflows, secrets, deployment to AWS/K8s',
+        why: "Dedicated GitHub Actions course — the CI/CD tool you use daily with FPO TeamCity replacements. OIDC keyless AWS auth is exactly what you'll propose to Karsten.",
       },
     ],
   },
 ];
 
+const TOTAL_HOURS = PHASES.reduce((s, p) => s + p.hours, 0);
 const TOTAL_COURSES = PHASES.reduce((s, p) => s + p.courses.length, 0);
+const TOTAL_DAYS = PHASES.reduce((s, p) => s + p.days, 0);
 
-// ── BADGE ────────────────────────────────────────────────────────────────────
 function Badge({ text, color }) {
   return (
     <span
@@ -710,8 +795,7 @@ function Badge({ text, color }) {
   );
 }
 
-// ── COURSE CARD ──────────────────────────────────────────────────────────────
-function CourseCard({ c, phase }) {
+function CourseCard({ c, accent }) {
   return (
     <a
       href={c.url}
@@ -721,28 +805,23 @@ function CourseCard({ c, phase }) {
         display: 'block',
         textDecoration: 'none',
         background: '#FFFFFF',
-        border: `1.5px solid ${c.n === 1 ? phase.color + '55' : '#E2E8F0'}`,
+        border: `1.5px solid ${c.n === 1 ? accent + '50' : '#E2E8F0'}`,
         borderRadius: 12,
         padding: '14px 16px',
         boxShadow:
-          c.n === 1
-            ? `0 4px 16px ${phase.color}10`
-            : '0 1px 4px rgba(0,0,0,0.05)',
-        transition: 'all 0.18s',
+          c.n === 1 ? `0 4px 16px ${accent}12` : '0 1px 4px rgba(0,0,0,0.05)',
+        transition: 'all 0.2s',
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = `0 8px 24px ${phase.color}20`;
+        e.currentTarget.style.boxShadow = `0 8px 24px ${accent}20`;
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.transform = 'none';
         e.currentTarget.style.boxShadow =
-          c.n === 1
-            ? `0 4px 16px ${phase.color}10`
-            : '0 1px 4px rgba(0,0,0,0.05)';
+          c.n === 1 ? `0 4px 16px ${accent}12` : '0 1px 4px rgba(0,0,0,0.05)';
       }}
     >
-      {/* Top row */}
       <div
         style={{
           display: 'flex',
@@ -755,15 +834,15 @@ function CourseCard({ c, phase }) {
         <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
           <div
             style={{
-              width: 24,
-              height: 24,
+              width: 22,
+              height: 22,
               borderRadius: 6,
-              background: phase.color + '20',
-              color: phase.color,
+              background: accent + '20',
+              color: accent,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: 900,
               flexShrink: 0,
               marginTop: 1,
@@ -798,21 +877,13 @@ function CourseCard({ c, phase }) {
           {c.tag}
         </span>
       </div>
-      {/* By line */}
       <div style={{ fontSize: 11, color: '#64748B', marginBottom: 8 }}>
         by {c.by}
       </div>
-      {/* Stats */}
       <div
-        style={{
-          display: 'flex',
-          gap: 14,
-          flexWrap: 'wrap',
-          marginBottom: 8,
-          alignItems: 'center',
-        }}
+        style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 8 }}
       >
-        <span style={{ fontSize: 13, fontWeight: 900, color: phase.color }}>
+        <span style={{ fontSize: 13, fontWeight: 900, color: accent }}>
           ⏱ {c.h}h
         </span>
         <span style={{ fontSize: 11, fontWeight: 700, color: '#F59E0B' }}>
@@ -820,11 +891,7 @@ function CourseCard({ c, phase }) {
         </span>
         <span style={{ fontSize: 11, color: '#64748B' }}>💬 {c.rev}</span>
         <span style={{ fontSize: 11, color: '#64748B' }}>👥 {c.stu}</span>
-        <span style={{ fontSize: 10, color: '#94A3B8', marginLeft: 'auto' }}>
-          {c.period}
-        </span>
       </div>
-      {/* Why */}
       <div
         style={{
           fontSize: 11,
@@ -839,7 +906,6 @@ function CourseCard({ c, phase }) {
       >
         💡 {c.why}
       </div>
-      {/* Covers */}
       <div
         style={{
           fontSize: 10,
@@ -868,8 +934,8 @@ function CourseCard({ c, phase }) {
   );
 }
 
-// ── PHASE BLOCK ──────────────────────────────────────────────────────────────
 function PhaseBlock({ p, isOpen, onToggle }) {
+  const isNew = p.tag && p.tag.includes('NEW');
   return (
     <div
       id={'ph-' + p.id}
@@ -884,7 +950,6 @@ function PhaseBlock({ p, isOpen, onToggle }) {
         transition: 'all 0.25s',
       }}
     >
-      {/* ── Header ── */}
       <button
         onClick={onToggle}
         style={{
@@ -930,31 +995,30 @@ function PhaseBlock({ p, isOpen, onToggle }) {
               marginBottom: 4,
             }}
           >
-            <span style={{ fontSize: 16, fontWeight: 900, color: '#0F172A' }}>
+            <span style={{ fontSize: 15, fontWeight: 900, color: '#0F172A' }}>
               {p.name}
             </span>
-            {(p.id === 'react' || p.id === 'spring' || p.id === 'micro') && (
+            {p.tag && (
               <span
                 style={{
                   fontSize: 10,
                   padding: '2px 9px',
                   borderRadius: 20,
                   fontWeight: 800,
-                  background: '#FEF3C7',
-                  color: '#D97706',
-                  border: '1px solid #FDE68A',
+                  background: isNew ? '#DCFCE7' : p.color + '18',
+                  color: isNew ? '#15803D' : p.color,
+                  border: `1px solid ${isNew ? '#86EFAC' : p.color + '35'}`,
                 }}
               >
-                ⭐ MAX TIME
+                {p.tag}
               </span>
             )}
           </div>
           <div style={{ fontSize: 11, color: '#64748B' }}>
             {p.startDate} → {p.endDate} · {p.days} days · {p.courseCount}{' '}
-            courses · {p.hours}h total
+            courses · 6:00–9:00 AM daily
           </div>
         </div>
-        {/* Hours pill */}
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
           <div
             style={{
@@ -986,37 +1050,43 @@ function PhaseBlock({ p, isOpen, onToggle }) {
           ›
         </span>
       </button>
-
-      {/* ── Expanded ── */}
       {isOpen && (
         <div
           style={{
             borderTop: `2px solid ${p.color}18`,
-            padding: '16px 18px 20px',
+            padding: '18px 18px 20px',
           }}
         >
-          {/* Note */}
           <div
             style={{
               background: `${p.color}09`,
               border: `1px solid ${p.color}22`,
-              borderRadius: 10,
-              padding: '12px 14px',
+              borderRadius: 12,
+              padding: '12px 15px',
               marginBottom: 14,
               fontSize: 12,
-              color: '#374151',
-              lineHeight: 1.8,
+              color: '#334155',
+              lineHeight: 1.85,
             }}
           >
-            <strong style={{ color: p.color }}>📋 Plan: </strong>
+            <strong
+              style={{
+                color: p.color,
+                fontSize: 10,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                display: 'block',
+                marginBottom: 5,
+              }}
+            >
+              📋 Plan
+            </strong>
             {p.note}
           </div>
-
-          {/* Phase stats */}
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(4,1fr)',
+              gridTemplateColumns: 'repeat(5,1fr)',
               gap: 8,
               marginBottom: 14,
             }}
@@ -1026,12 +1096,13 @@ function PhaseBlock({ p, isOpen, onToggle }) {
               ['⏱', '3h', '6–9 AM'],
               ['📚', p.hours + 'h', 'total'],
               ['📖', p.courseCount, 'courses'],
+              ['🗓', p.days > 30 ? 'multi-month' : 'weeks', 'duration'],
             ].map(([ic, v, l]) => (
               <div
                 key={l}
                 style={{
                   background: '#F8FAFC',
-                  borderRadius: 8,
+                  borderRadius: 9,
                   padding: '8px 6px',
                   border: '1px solid #E2E8F0',
                   textAlign: 'center',
@@ -1039,7 +1110,7 @@ function PhaseBlock({ p, isOpen, onToggle }) {
               >
                 <div style={{ fontSize: 16 }}>{ic}</div>
                 <div
-                  style={{ fontSize: 14, fontWeight: 800, color: '#0F172A' }}
+                  style={{ fontSize: 13, fontWeight: 800, color: '#0F172A' }}
                 >
                   {v}
                 </div>
@@ -1047,45 +1118,40 @@ function PhaseBlock({ p, isOpen, onToggle }) {
               </div>
             ))}
           </div>
-
-          {/* Timeline */}
-          <div style={{ marginBottom: 14 }}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginBottom: 4,
-              }}
-            >
-              <span style={{ fontSize: 10, color: '#94A3B8' }}>
-                Position in 365-day plan
-              </span>
-              <span style={{ fontSize: 10, color: p.color, fontWeight: 700 }}>
-                {p.startDate} → {p.endDate}
-              </span>
-            </div>
-            <div
-              style={{
-                height: 8,
-                background: '#F1F5F9',
-                borderRadius: 4,
-                overflow: 'hidden',
-              }}
-            >
-              <div
-                style={{
-                  height: '100%',
-                  borderRadius: 4,
-                  background: `linear-gradient(90deg,${p.color},${p.dark})`,
-                  marginLeft: `${(p.offset / 365) * 100}%`,
-                  width: `${(p.days / 365) * 100}%`,
-                  boxShadow: `0 0 8px ${p.color}50`,
-                }}
-              />
-            </div>
+          <div
+            style={{
+              marginBottom: 5,
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <span style={{ fontSize: 10, color: '#94A3B8' }}>
+              Position in 400-day plan
+            </span>
+            <span style={{ fontSize: 10, color: p.color, fontWeight: 700 }}>
+              {p.startDate} → {p.endDate}
+            </span>
           </div>
-
-          {/* Course list */}
+          <div
+            style={{
+              height: 8,
+              background: '#F1F5F9',
+              borderRadius: 4,
+              overflow: 'hidden',
+              marginBottom: 14,
+            }}
+          >
+            <div
+              style={{
+                height: '100%',
+                borderRadius: 4,
+                background: `linear-gradient(90deg,${p.color},${p.dark})`,
+                marginLeft: `${(p.offset / 400) * 100}%`,
+                width: `${(p.days / 400) * 100}%`,
+                boxShadow: `0 0 8px ${p.color}50`,
+              }}
+            />
+          </div>
           <div
             style={{
               fontSize: 10,
@@ -1095,11 +1161,11 @@ function PhaseBlock({ p, isOpen, onToggle }) {
               marginBottom: 10,
             }}
           >
-            ALL {p.courseCount} COURSES — {p.hours}H TOTAL — CLICK TO OPEN UDEMY
+            ALL {p.courseCount} COURSES — {p.hours}H — CLICK TO OPEN UDEMY
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {p.courses.map((c, i) => (
-              <CourseCard key={i} c={c} phase={p} />
+              <CourseCard key={i} c={c} accent={p.color} />
             ))}
           </div>
         </div>
@@ -1108,11 +1174,9 @@ function PhaseBlock({ p, isOpen, onToggle }) {
   );
 }
 
-// ── APP ───────────────────────────────────────────────────────────────────────
 export default function App() {
   const [open, setOpen] = useState('react');
   const toggle = (id) => setOpen(open === id ? null : id);
-
   return (
     <div
       style={{
@@ -1122,7 +1186,7 @@ export default function App() {
         color: '#0F172A',
       }}
     >
-      {/* ══ HERO ══ */}
+      {/* HERO */}
       <div
         style={{
           background:
@@ -1146,31 +1210,29 @@ export default function App() {
           style={{
             position: 'absolute',
             top: -100,
-            right: -100,
+            right: -80,
             width: 380,
             height: 380,
             borderRadius: '50%',
             pointerEvents: 'none',
             background:
-              'radial-gradient(circle,rgba(99,102,241,0.2) 0%,transparent 65%)',
+              'radial-gradient(circle,rgba(99,102,241,0.22) 0%,transparent 65%)',
           }}
         />
-
         <div
           style={{
             position: 'relative',
             zIndex: 1,
-            maxWidth: 940,
+            maxWidth: 960,
             margin: '0 auto',
           }}
         >
-          {/* Title */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               gap: 16,
-              marginBottom: 22,
+              marginBottom: 20,
             }}
           >
             <div
@@ -1192,18 +1254,18 @@ export default function App() {
             <div>
               <div
                 style={{
-                  fontSize: 10,
+                  fontSize: 9,
                   letterSpacing: '0.32em',
                   textTransform: 'uppercase',
                   color: 'rgba(255,255,255,0.32)',
-                  marginBottom: 4,
+                  marginBottom: 3,
                 }}
               >
-                Sumit Rawal · FPO Cloud · NextStep Bangkok
+                Sumit Rawal · FPO Cloud · NextStep Bangkok · 13-Month Calendar
               </div>
               <h1
                 style={{
-                  fontSize: 'clamp(19px,5vw,31px)',
+                  fontSize: 'clamp(18px,5vw,30px)',
                   fontWeight: 900,
                   margin: 0,
                   color: '#FFFFFF',
@@ -1211,37 +1273,68 @@ export default function App() {
                   lineHeight: 1.1,
                 }}
               >
-                365 Days of Udemy — 1,095 Hours
+                400 Days of Udemy — 1,200 Hours
               </h1>
               <div
                 style={{
                   fontSize: 11,
                   color: 'rgba(255,255,255,0.36)',
-                  marginTop: 4,
+                  marginTop: 3,
                 }}
               >
-                Jun 10, 2026 → Jun 9, 2027 · 6:00 AM–9:00 AM daily ·{' '}
-                {TOTAL_COURSES} courses · 1,095h total
+                Jun 10, 2026 → Jul 14, 2027 · 6:00 AM–9:00 AM daily ·{' '}
+                {TOTAL_COURSES} courses · 8 skills
               </div>
             </div>
           </div>
-
+          {/* 6AM-9AM banner */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              background: 'rgba(99,102,241,0.18)',
+              border: '1px solid rgba(99,102,241,0.4)',
+              borderRadius: 12,
+              padding: '10px 16px',
+              marginBottom: 16,
+            }}
+          >
+            <span style={{ fontSize: 22, flexShrink: 0 }}>⏰</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 13, fontWeight: 900, color: '#FFFFFF' }}>
+                6:00 AM – 9:00 AM · Every Day · 400 Days Straight
+              </div>
+              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.42)' }}>
+                3 hours/day · Before FPO work · Bangkok time · Jun 10, 2026 →
+                Jul 14, 2027
+              </div>
+            </div>
+            <div style={{ textAlign: 'right', flexShrink: 0 }}>
+              <div style={{ fontSize: 18, fontWeight: 900, color: '#A5B4FC' }}>
+                1,200h
+              </div>
+              <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.4)' }}>
+                total
+              </div>
+            </div>
+          </div>
           {/* Stats */}
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(88px,1fr))',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(85px,1fr))',
               gap: 7,
-              marginBottom: 20,
+              marginBottom: 18,
             }}
           >
             {[
-              ['365', 'Days'],
-              ['1,095h', 'Courses Only'],
-              ['3h', '6–9 AM Daily'],
+              ['400', 'Days'],
+              ['1,200h', 'Courses Only'],
+              ['3h', '6–9 AM'],
+              ['8', 'Skills'],
               [TOTAL_COURSES, 'Courses'],
-              ['7', 'Skills'],
-              ["Jun 9 '27", 'Finish'],
+              ["Jul 14 '27", 'Finish'],
             ].map(([v, l]) => (
               <div
                 key={l}
@@ -1270,49 +1363,7 @@ export default function App() {
               </div>
             ))}
           </div>
-
-          {/* Daily schedule banner */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              background: 'rgba(99,102,241,0.15)',
-              border: '1px solid rgba(99,102,241,0.35)',
-              borderRadius: 12,
-              padding: '10px 16px',
-              marginBottom: 14,
-            }}
-          >
-            <span style={{ fontSize: 24, flexShrink: 0 }}>⏰</span>
-            <div>
-              <div
-                style={{
-                  fontSize: 13,
-                  fontWeight: 900,
-                  color: '#FFFFFF',
-                  letterSpacing: '-0.01em',
-                }}
-              >
-                6:00 AM – 9:00 AM Every Day
-              </div>
-              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)' }}>
-                3 hours of focused Udemy study · Before FPO work starts ·
-                Bangkok time · Jun 10, 2026 → Jun 9, 2027
-              </div>
-            </div>
-            <div
-              style={{ marginLeft: 'auto', textAlign: 'right', flexShrink: 0 }}
-            >
-              <div style={{ fontSize: 16, fontWeight: 900, color: '#A5B4FC' }}>
-                3h/day
-              </div>
-              <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.4)' }}>
-                1,095h total
-              </div>
-            </div>
-          </div>
-          {/* 365-day progress bar */}
+          {/* 400-day bar */}
           <div
             style={{
               height: 12,
@@ -1329,13 +1380,13 @@ export default function App() {
               ['#374151', 35],
               ['#16A34A', 98],
               ['#E11D48', 49],
-              ['#7C3AED', 28],
-              ['#EA580C', 35],
+              ['#F59E0B', 30],
+              ['#7C3AED', 30],
+              ['#EA580C', 38],
             ].map(([col, fl], i) => (
               <div key={i} style={{ flex: fl, background: col }} />
             ))}
           </div>
-
           {/* Phase pills */}
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
             {PHASES.map((p) => (
@@ -1372,9 +1423,8 @@ export default function App() {
                     background: p.color,
                   }}
                 />
-                <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.58)' }}>
-                  {p.icon} {p.name} · {p.days}d · {p.hours}h · {p.courseCount}{' '}
-                  courses
+                <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.56)' }}>
+                  {p.icon} {p.name} · {p.days}d · {p.hours}h
                 </span>
               </button>
             ))}
@@ -1382,9 +1432,9 @@ export default function App() {
         </div>
       </div>
 
-      {/* ══ BODY ══ */}
+      {/* BODY */}
       <div
-        style={{ maxWidth: 940, margin: '0 auto', padding: '16px 12px 48px' }}
+        style={{ maxWidth: 960, margin: '0 auto', padding: '16px 12px 48px' }}
       >
         {/* Master table */}
         <div
@@ -1407,7 +1457,8 @@ export default function App() {
               marginBottom: 14,
             }}
           >
-            📊 MASTER SCHEDULE — 365 DAYS · 1,095H COURSES · 3H/DAY · 35 COURSES
+            📊 MASTER SCHEDULE — 400 DAYS · 1,200H · 8 SKILLS · 6:00 AM–9:00 AM
+            DAILY
           </div>
           <table
             style={{
@@ -1493,17 +1544,15 @@ export default function App() {
                     <div style={{ fontWeight: 800, color: '#0F172A' }}>
                       {p.name}
                     </div>
-                    {(p.id === 'react' ||
-                      p.id === 'spring' ||
-                      p.id === 'micro') && (
+                    {p.tag && (
                       <div
                         style={{
                           fontSize: 9,
-                          color: '#D97706',
+                          color: p.tag.includes('NEW') ? '#15803D' : p.color,
                           fontWeight: 700,
                         }}
                       >
-                        ⭐ MAX TIME
+                        {p.tag}
                       </div>
                     )}
                   </td>
@@ -1545,7 +1594,7 @@ export default function App() {
                     <div
                       style={{
                         width: 100,
-                        height: 6,
+                        height: 5,
                         background: '#F1F5F9',
                         borderRadius: 3,
                         overflow: 'hidden',
@@ -1556,8 +1605,8 @@ export default function App() {
                           height: '100%',
                           background: `linear-gradient(90deg,${p.color},${p.dark})`,
                           borderRadius: 3,
-                          marginLeft: `${(p.offset / 365) * 100}%`,
-                          width: `${(p.days / 365) * 100}%`,
+                          marginLeft: `${(p.offset / 400) * 100}%`,
+                          width: `${(p.days / 400) * 100}%`,
                         }}
                       />
                     </div>
@@ -1604,7 +1653,7 @@ export default function App() {
                 <td
                   style={{ padding: '10px', fontWeight: 800, color: '#0F172A' }}
                 >
-                  365d
+                  {TOTAL_DAYS}d
                 </td>
                 <td
                   style={{
@@ -1614,7 +1663,7 @@ export default function App() {
                     fontSize: 15,
                   }}
                 >
-                  1,095h
+                  1,200h
                 </td>
                 <td style={{ padding: '10px' }}>
                   <span
@@ -1631,23 +1680,23 @@ export default function App() {
                   </span>
                 </td>
                 <td style={{ padding: '10px', fontSize: 10, color: '#94A3B8' }}>
-                  Jun 10, 2026 → Jun 9, 2027 · 6 AM–9 AM daily
+                  Jun 10, 2026 → Jul 14, 2027
                 </td>
                 <td
                   style={{ padding: '10px', fontWeight: 700, color: '#16A34A' }}
                 >
-                  Jun 10
+                  Jun 10, 2026
                 </td>
                 <td
                   style={{ padding: '10px', fontWeight: 700, color: '#16A34A' }}
                 >
-                  Jun 9, 2027
+                  Jul 14, 2027
                 </td>
               </tr>
             </tbody>
           </table>
           <div style={{ marginTop: 8, fontSize: 10, color: '#94A3B8' }}>
-            👆 Click any row to jump to that skill's detailed courses
+            👆 Click any row to jump to that skill's full plan below
           </div>
         </div>
 
@@ -1683,7 +1732,7 @@ export default function App() {
               marginBottom: 14,
             }}
           >
-            ⚡ RULES TO FINISH ALL 35 COURSES IN 365 DAYS
+            ⚡ RULES — 6:00 AM–9:00 AM · 400 DAYS · 1,200 HOURS
           </div>
           <div
             style={{
@@ -1695,33 +1744,33 @@ export default function App() {
             {[
               [
                 '⏰',
-                '6:00 AM – 9:00 AM Daily',
-                'Your fixed Udemy block — every single day before FPO work starts. 3 hours = ~2 lectures + code-along. Non-negotiable. Put it in your calendar as a recurring event.',
+                '6 AM–9 AM fixed block',
+                'Every day before FPO work. 400 days. No exceptions. This is the single most important rule.',
               ],
               [
                 '⏩',
                 '1.25× theory, full speed code',
-                'Slides/diagrams at 1.25×. Live coding always full speed. Saves ~200h across 1,095h.',
+                'Slides/diagrams at 1.25×. Live coding always full speed. Saves ~200h across 1,200h total.',
               ],
               [
                 '✂',
                 'Skip ruthlessly',
-                'Intros, outros, sections you already know — skip instantly. Every phase has buffer built in.',
+                'Intros, outros, known sections — skip instantly. You have 3h/day, not 5h.',
               ],
               [
-                '🔁',
-                'Practice between courses',
-                'Between finishing one course and starting the next: build one small project applying what you learned.',
+                '⭐',
+                '3 skills get MAX focus',
+                'React (276h), Spring Boot (294h), Microservices (147h) — deepest effort.',
               ],
               [
-                '🏗',
-                'Map to FPO every day',
-                "After each lecture: 'where does this exist in FPO?' Spring Boot = C# Lambda. Kafka = EventBridge. Instant retention.",
+                '🤖',
+                'GenAI connects to FPO',
+                'AWS Bedrock Agents = AI-powered FPO trajectory recommendations. Map every GenAI concept to your daily work.',
               ],
               [
                 '📅',
-                'Sunday review',
-                "Every Sunday: % complete this week? Adjust next week's pace. The schedule is a contract with yourself.",
+                'Sunday 10-min review',
+                '% done this week? Behind >20%? Add 30min/day next week. The schedule is a contract with yourself.',
               ],
             ].map(([icon, title, desc]) => (
               <div
@@ -1770,16 +1819,17 @@ export default function App() {
               ['▲', 'Next.js', '105h', '#374151'],
               ['🌱', 'Spring', '294h', '#16A34A'],
               ['🏛', 'Microservices', '147h', '#E11D48'],
-              ['🤖', 'Agentic AI', '84h', '#7C3AED'],
-              ['⚙', 'DevOps', '105h', '#EA580C'],
+              ['✨', 'GenAI', '90h', '#F59E0B'],
+              ['🤖', 'Agentic AI', '90h', '#7C3AED'],
+              ['⚙', 'DevOps', '114h', '#EA580C'],
             ].map(([ic, sk, h, col], i, a) => (
               <span
-                key={sk + i}
+                key={sk}
                 style={{ display: 'flex', alignItems: 'center', gap: 3 }}
               >
                 <span style={{ fontWeight: 700, color: col, fontSize: 11 }}>
                   {ic} {sk}{' '}
-                  <span style={{ opacity: 0.6, fontSize: 10 }}>({h})</span>
+                  <span style={{ opacity: 0.6, fontSize: 9 }}>({h})</span>
                 </span>
                 {i < a.length - 1 && (
                   <span style={{ color: '#CBD5E1', margin: '0 2px' }}>→</span>
@@ -1790,8 +1840,8 @@ export default function App() {
           <div
             style={{ fontSize: 10, color: '#94A3B8', letterSpacing: '0.18em' }}
           >
-            35 COURSES · 1,095H · 6:00 AM–9:00 AM DAILY · JUN 10 2026 → JUN 9
-            2027
+            400 DAYS · {TOTAL_COURSES} COURSES · 1,200H · 6:00 AM–9:00 AM DAILY
+            · JUN 10 2026 → JUL 14 2027
           </div>
         </div>
       </div>
