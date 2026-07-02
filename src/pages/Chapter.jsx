@@ -60,6 +60,16 @@ export default function Chapter() {
           <span>📚 {chapter.sections.length} sections</span>
         </div>
         <div className="chapter-links">
+          {chapter.paidLectureUrl && (
+            <a
+              href={chapter.paidLectureUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="chapter-link-btn paid"
+            >
+              🎓 Full In-Depth Lecture
+            </a>
+          )}
           {chapter.youtubeUrl && (
             <a
               href={chapter.youtubeUrl}
@@ -68,7 +78,7 @@ export default function Chapter() {
               className="chapter-link-btn youtube"
               title={chapter.youtubeTitle}
             >
-              ▶ Watch on YouTube
+              ▶ Free on YouTube
             </a>
           )}
           {chapter.notionUrl && (
@@ -87,10 +97,29 @@ export default function Chapter() {
             </a>
           )}
         </div>
+        {chapter.paidLectureUrl && (
+          <div className="paid-lecture-banner">
+            <div className="paid-lecture-text">
+              <strong>Want the full depth?</strong>
+              <span>
+                Watch the complete Thunder lecture with Rohit Negi on the course portal
+                (login required).
+              </span>
+            </div>
+            <a
+              href={chapter.paidLectureUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-paid"
+            >
+              Open Full Lecture →
+            </a>
+          </div>
+        )}
         {chapter.youtubeUrl && (
           <div className="youtube-block">
             <div className="youtube-block-header">
-              <span>📺 Video Lecture — Day {chapter.day}</span>
+              <span>📺 Free Video — Day {chapter.day}</span>
               <span className="youtube-block-title">{chapter.youtubeTitle}</span>
             </div>
             <div className="youtube-embed-wrap">

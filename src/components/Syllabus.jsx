@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { phases, courseHighlights, thunderRepo } from '../data/syllabus';
+import { phases, courseHighlights, thunderRepo, PAID_COURSE_URL } from '../data/syllabus';
 
 export default function Syllabus() {
   const [openPhases, setOpenPhases] = useState({ 'js-mastery': true });
@@ -57,12 +57,12 @@ export default function Syllabus() {
             Curriculum follows{' '}
             <a href={thunderRepo} target="_blank" rel="noopener noreferrer">
               Thunder on GitHub
-            </a>{' '}
-            — the same path taught in{' '}
-            <a href="https://strikes.in/course/thunder" target="_blank" rel="noopener noreferrer">
-              Strike's 100 Days of Code
             </a>
-            .
+            . Full in-depth video lectures are on the{' '}
+            <a href={PAID_COURSE_URL} target="_blank" rel="noopener noreferrer">
+              Thunder course portal
+            </a>{' '}
+            (login required). Free topic videos are linked on each day page.
           </p>
 
           <div className="phases-list">

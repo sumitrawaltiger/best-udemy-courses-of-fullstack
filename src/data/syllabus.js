@@ -63,3 +63,4 @@ export const phases = [
 
 export const thunderRepo = 'https://github.com/Rohitnegi9/Thunder/tree/main/Javascript';
 export const strikeCourse = 'https://strikes.in/course/thunder';
+export { PAID_COURSE_URL } from './videoLinks';

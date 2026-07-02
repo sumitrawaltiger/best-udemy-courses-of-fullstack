@@ -1,6 +1,6 @@
 import { useSearchParams, Link } from 'react-router-dom';
 import { chapters, searchChapters } from '../data/chapters';
-import { thunderRepo } from '../data/syllabus';
+import { thunderRepo, PAID_COURSE_URL } from '../data/syllabus';
 import LectureCard from '../components/LectureCard';
 import Syllabus from '../components/Syllabus';
 
@@ -26,6 +26,14 @@ export default function Home() {
           <Link to="/learn/introduction-to-javascript" className="btn btn-primary btn-lg">
             Start Day 1 — Free
           </Link>
+          <a
+            href={PAID_COURSE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-paid btn-lg"
+          >
+            🎓 Full In-Depth Lectures
+          </a>
           <a href="#syllabus" className="btn btn-outline btn-lg">
             View Syllabus
           </a>

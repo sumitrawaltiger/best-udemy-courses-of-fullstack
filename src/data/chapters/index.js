@@ -70,8 +70,10 @@ export const chapters = [
         "explanation": "Use const for fixed values."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c",
-    "youtubeTitle": "Introduction to JavaScript | Javascript Full Course #01"
+    "youtubeUrl": "https://www.youtube.com/watch?v=hdI2bqOjy3c",
+    "youtubeTitle": "JavaScript Crash Course For Beginners — Traversy Media",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 2,
@@ -147,8 +149,10 @@ export const chapters = [
         "explanation": "String concatenation."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=UXYJGHhuGA8",
-    "youtubeTitle": "Variables & Data Types (var, let, const) | Javascript Full Course #02"
+    "youtubeUrl": "https://www.youtube.com/watch?v=nCwQY8inRvU",
+    "youtubeTitle": "Data Types in JavaScript — Code with Ania",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 3,
@@ -220,8 +224,10 @@ export const chapters = [
         "explanation": "Objects share references."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=7dMQr2-T--4",
-    "youtubeTitle": "Operators, Comparison & Type Coercion | Javascript Full Course #04"
+    "youtubeUrl": "https://www.youtube.com/watch?v=ovWYhDVQiR8",
+    "youtubeTitle": "JavaScript Logical Operators — Code with Ania",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 4,
@@ -296,10 +302,12 @@ export const chapters = [
         "explanation": "init; condition; update."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=7dMQr2-T--4&t=2903",
-    "youtubeTitle": "Loops, Numbers & Math Precision | Javascript Full Course #04",
-    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=8dgsUGEgPXo",
-    "youtubeSupplementTitle": "Strings & String Methods | Javascript Full Course #06"
+    "youtubeUrl": "https://www.youtube.com/watch?v=s9wW2PpJsmQ",
+    "youtubeTitle": "JavaScript Loops — Programming with Mosh",
+    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=wssvLtVSFeI",
+    "youtubeSupplementTitle": "Useful JavaScript String Methods — Code with Ania",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 5,
@@ -367,8 +375,10 @@ export const chapters = [
         "explanation": "Rows and columns."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=HTcT-TuraHM",
-    "youtubeTitle": "Numbers, Math Object & Patterns | Javascript Full Course #05"
+    "youtubeUrl": "https://www.youtube.com/watch?v=VjGYVG9oyPY",
+    "youtubeTitle": "Star Pattern Programs with Loops — Code Step By Step",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 6,
@@ -436,8 +446,10 @@ export const chapters = [
         "explanation": "Arrays are objects."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=fuA8BQkQO_E",
-    "youtubeTitle": "Arrays Explained In-Depth | Javascript Full Course #07"
+    "youtubeUrl": "https://www.youtube.com/watch?v=yQ1fz8LY354",
+    "youtubeTitle": "JavaScript Arrays — Code with Ania",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 7,
@@ -505,10 +517,10 @@ export const chapters = [
         "explanation": "Real-world data structures."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=iuZkPCBBV5U",
-    "youtubeTitle": "Objects Explained In-Depth | Javascript Full Course #08",
-    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=8dgsUGEgPXo",
-    "youtubeSupplementTitle": "Strings & Date Objects | Javascript Full Course #06"
+    "youtubeUrl": "https://www.youtube.com/watch?v=lo7o91qLzxc",
+    "youtubeTitle": "JavaScript Objects — Code with Ania",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 8,
@@ -576,10 +588,10 @@ export const chapters = [
         "explanation": "Milliseconds since epoch."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=1VpZGlGw5xE",
-    "youtubeTitle": "Functions, Arrow Functions & Rest/Spread | Javascript Full Course #09",
-    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=8dgsUGEgPXo",
-    "youtubeSupplementTitle": "Date Objects Explained | Javascript Full Course #06"
+    "youtubeUrl": "https://www.youtube.com/watch?v=FOD408a0EzU",
+    "youtubeTitle": "How To Create & Use Functions — Chris Courses",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 9,
@@ -648,8 +660,10 @@ export const chapters = [
         "explanation": "Accumulator pattern."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=UByPRYaMEkI",
-    "youtubeTitle": "map, filter, reduce, forEach & Set | Javascript Full Course #12"
+    "youtubeUrl": "https://www.youtube.com/watch?v=PojpwEbOQJg",
+    "youtubeTitle": "map(), filter() & reduce() — Code with Ania",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 10,
@@ -717,8 +731,10 @@ export const chapters = [
         "explanation": "One element or null."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=wLp99HGG8GQ",
-    "youtubeTitle": "DOM Manipulation | Javascript Full Course #13"
+    "youtubeUrl": "https://www.youtube.com/watch?v=0ik6X4DJKCc",
+    "youtubeTitle": "JavaScript DOM Crash Course — Traversy Media",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 11,
@@ -786,8 +802,10 @@ export const chapters = [
         "explanation": "Create Read Update Delete."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=2jVOkYiAl2s",
-    "youtubeTitle": "CRUD Operations in DOM | Javascript Full Course #14"
+    "youtubeUrl": "https://www.youtube.com/watch?v=XF1_MlZ5l6M",
+    "youtubeTitle": "JavaScript Event Listeners — Web Dev Simplified",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 12,
@@ -837,8 +855,10 @@ export const chapters = [
         "explanation": "Events bubble up the DOM tree."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=CGjHpnm8TeE",
-    "youtubeTitle": "Events & Event Handlers | Javascript Full Course #15"
+    "youtubeUrl": "https://www.youtube.com/watch?v=XF1_MlZ5l6M",
+    "youtubeTitle": "JavaScript Event Listeners — Web Dev Simplified",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 13,
@@ -888,8 +908,10 @@ export const chapters = [
         "explanation": "Data layer vs view layer."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=dQDteO0RXrc",
-    "youtubeTitle": "10 JavaScript Projects for Beginners | Javascript Full Course #16"
+    "youtubeUrl": "https://www.youtube.com/watch?v=2ml4x0rO1PQ",
+    "youtubeTitle": "5 Mini JavaScript Projects for Beginners — Ania Kubów",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 14,
@@ -939,8 +961,10 @@ export const chapters = [
         "explanation": "Always plan first."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=dQDteO0RXrc",
-    "youtubeTitle": "JavaScript Projects — Build Real Apps | Javascript Full Course #16"
+    "youtubeUrl": "https://www.youtube.com/watch?v=2ml4x0rO1PQ",
+    "youtubeTitle": "5 Mini JavaScript Projects for Beginners — Ania Kubów",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 15,
@@ -1001,8 +1025,10 @@ export const chapters = [
         "explanation": "Async HTTP via Promise."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=LYe1my0KkPo",
-    "youtubeTitle": "JSON vs JS Object & fetch API | Javascript Full Course #19"
+    "youtubeUrl": "https://www.youtube.com/watch?v=Oive66jrwBs",
+    "youtubeTitle": "Fetch API Introduction — Traversy Media",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 16,
@@ -1070,10 +1096,12 @@ export const chapters = [
         "explanation": "Temporal Dead Zone."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=WRBFDQR0oM4",
-    "youtubeTitle": "Memory Management: Stack vs Heap | Javascript Full Course #03",
-    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=ijPq-u3y9cs",
-    "youtubeSupplementTitle": "How JS Code Runs & Hoisting | Javascript Full Course #10"
+    "youtubeUrl": "https://www.youtube.com/watch?v=EvfRXyKa_GI",
+    "youtubeTitle": "Learn JavaScript Hoisting — Web Dev Simplified",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
+    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=8aGhZQkoFbQ",
+    "youtubeSupplementTitle": "What the heck is the event loop anyway? — Philip Roberts · JSConf"
   },
   {
     "id": 17,
@@ -1134,10 +1162,12 @@ export const chapters = [
         "explanation": "Macrotask queue + event loop."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=9KwCG9aVwvQ",
-    "youtubeTitle": "Prototypes & Classes | Javascript Full Course #21",
-    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=rsepF1ugeC8",
-    "youtubeSupplementTitle": "Event Loop | Javascript Full Course #17"
+    "youtubeUrl": "https://www.youtube.com/watch?v=1UTqFAjYx1k",
+    "youtubeTitle": "JavaScript Prototypal Inheritance — Traversy Media",
+    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=8aGhZQkoFbQ",
+    "youtubeSupplementTitle": "What the heck is the event loop anyway? — Philip Roberts · JSConf",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 18,
@@ -1205,8 +1235,10 @@ export const chapters = [
         "explanation": "Always wraps in Promise."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=CTJLBCYod9E",
-    "youtubeTitle": "Callback Hell & Promises | Javascript Full Course #18"
+    "youtubeUrl": "https://www.youtube.com/watch?v=PoRJizFvM7s",
+    "youtubeTitle": "Async JS — Callbacks, Promises, Async Await — Traversy Media",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
   {
     "id": 19,
@@ -1274,10 +1306,12 @@ export const chapters = [
         "explanation": "The object before the dot."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=UBCPtXXMAWs",
-    "youtubeTitle": "Closures, Scope & this Keyword | Javascript Full Course #11",
-    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=7tRyccjYgF0",
-    "youtubeSupplementTitle": "this Keyword, call, apply & bind | Javascript Full Course #22"
+    "youtubeUrl": "https://www.youtube.com/watch?v=3a0I8ICR1Vg",
+    "youtubeTitle": "Learn Closures In 7 Minutes — Web Dev Simplified",
+    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=gvicrj31JOM",
+    "youtubeSupplementTitle": "JavaScript this Keyword — Programming with Mosh",
+    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   }
 ];
 

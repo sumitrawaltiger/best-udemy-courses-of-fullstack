@@ -43,6 +43,16 @@ export default function LectureCard({ chapter }) {
           <Link to={`/learn/${chapter.slug}`} className="btn btn-watch">
             Start Learning →
           </Link>
+          {chapter.paidLectureUrl && (
+            <a
+              href={chapter.paidLectureUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-paid-sm"
+            >
+              🎓 Full Lecture
+            </a>
+          )}
           {chapter.youtubeUrl && (
             <a
               href={chapter.youtubeUrl}
