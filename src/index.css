@@ -28,6 +28,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -38,6 +39,7 @@ body {
   color: var(--text);
   background: var(--bg-page);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 #root {
@@ -171,6 +173,24 @@ a:hover {
 .header-nav a.header-discord:hover {
   background: #4752c4;
   text-decoration: none;
+}
+
+.menu-toggle {
+  display: none;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.menu-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .footer-community {
@@ -967,11 +987,14 @@ a:hover {
 
 .syllabus-section {
   width: 100vw;
-  margin-left: calc(-50vw + 50%);
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
   background: #0d0d0d;
   color: #e5e5e5;
   padding: 48px 24px;
   margin-bottom: 48px;
+  box-sizing: border-box;
 }
 
 .syllabus-inner {
@@ -1694,7 +1717,76 @@ a:hover {
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .main-layout {
+  :root {
+    --header-height: auto;
+  }
+
+  .header-inner {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 56px;
+    padding: 10px 16px;
+    gap: 10px;
+    position: relative;
+  }
+
+  .logo {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .logo-tagline {
+    display: none;
+  }
+
+  .search-form {
+    order: 3;
+    flex: 1 1 100%;
+    max-width: none;
+    width: 100%;
+  }
+
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    background: var(--green-dark);
+    padding: 12px 16px 16px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    z-index: 200;
+  }
+
+  .header-nav.open {
+    display: flex;
+  }
+
+  .header-nav a {
+    padding: 10px 12px;
+    border-radius: 6px;
+  }
+
+  .header-nav a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+  }
+
+  .header-nav a.header-discord {
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .main-layout.with-sidebar {
     flex-direction: column;
   }
 
@@ -1702,26 +1794,58 @@ a:hover {
     width: 100%;
     height: auto;
     position: static;
-    padding: 16px 0;
+    z-index: 50;
+    padding: 12px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .sidebar-heading {
+    padding: 0 16px;
+    margin-bottom: 10px;
   }
 
   .sidebar-nav {
+    display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
     overflow-x: auto;
-    padding: 0 12px;
-    gap: 4px;
+    overflow-y: hidden;
+    padding: 0 12px 4px;
+    gap: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
   }
 
   .sidebar-link {
+    flex: 0 0 auto;
+    flex-shrink: 0;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
     border-left: none;
-    border-bottom: 3px solid transparent;
+    border-bottom: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    min-width: unset;
     white-space: nowrap;
-    min-width: 140px;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .sidebar-link:hover {
+    background: rgba(255, 255, 255, 0.12);
   }
 
   .sidebar-link.active {
-    border-bottom-color: var(--green);
+    background: rgba(4, 170, 109, 0.35);
     border-left-color: transparent;
+  }
+
+  .sidebar-day {
+    font-size: 13px;
+  }
+
+  .sidebar-title {
+    display: none;
   }
 
   .sidebar-topics,
@@ -1733,12 +1857,68 @@ a:hover {
     padding: 20px 16px;
   }
 
-  .header-nav {
-    display: none;
+  .main-layout.no-sidebar .content {
+    padding: 20px 16px;
   }
 
-  .search-form {
-    max-width: none;
+  .hero {
+    padding: 28px 0 36px;
+    margin-bottom: 32px;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 8vw, 40px);
+  }
+
+  .hero-desc {
+    font-size: 16px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .btn-lg {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .hero-stats {
+    flex-wrap: wrap;
+    gap: 20px 28px;
+  }
+
+  .syllabus-hero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .syllabus-hero-title {
+    font-size: 22px;
+  }
+
+  .btn-strike,
+  .btn-strike-outline {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .syllabus-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .phase-header {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .phase-title {
+    font-size: 14px;
+    line-height: 1.35;
   }
 
   .lecture-card {
@@ -1764,10 +1944,21 @@ a:hover {
 
   .syllabus-section {
     padding: 32px 16px;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .module-row {
-    padding-left: 20px;
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .module-day {
+    width: 100%;
+    margin-left: 42px;
   }
 
   .chapter-nav {
@@ -1777,14 +1968,60 @@ a:hover {
   .nav-next {
     text-align: left;
   }
+
+  .chapter-header h1 {
+    font-size: clamp(22px, 6vw, 32px);
+  }
+
+  .code-playground,
+  .playground-editor {
+    overflow-x: auto;
+  }
 }
 
 @media (max-width: 480px) {
+  .header-inner {
+    padding: 8px 12px;
+  }
+
+  .logo-name {
+    font-size: 15px;
+  }
+
+  .hero-badge {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
   .hero-stats {
-    gap: 20px;
+    gap: 16px;
+  }
+
+  .stat strong {
+    font-size: 24px;
   }
 
   .roadmap-grid {
     grid-template-columns: repeat(5, 1fr);
+  }
+
+  .roadmap-100 {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .highlights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .phase-num {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 }

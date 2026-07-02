@@ -1,16 +1,18 @@
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useParams, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import { discordCommunity } from '../data/syllabus';
 
 export default function Layout() {
   const { slug } = useParams();
+  const location = useLocation();
+  const showSidebar = location.pathname.startsWith('/learn');
 
   return (
     <div className="app">
       <Header />
-      <div className="main-layout">
-        <Sidebar currentSlug={slug} />
+      <div className={`main-layout ${showSidebar ? 'with-sidebar' : 'no-sidebar'}`}>
+        {showSidebar && <Sidebar currentSlug={slug} />}
         <main className="content">
           <Outlet />
         </main>
