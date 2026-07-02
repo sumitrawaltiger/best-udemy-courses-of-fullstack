@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { phases, courseHighlights, thunderRepo, PAID_COURSE_URL } from '../data/syllabus';
+import {
+  phases,
+  courseHighlights,
+  thunderRepo,
+  PAID_COURSE_URL,
+  strikeCourse,
+  syllabusMeta,
+} from '../data/syllabus';
 
 export default function Syllabus() {
   const [openPhases, setOpenPhases] = useState({ 'js-mastery': true });
@@ -24,6 +31,25 @@ export default function Syllabus() {
   return (
     <section className="syllabus-section">
       <div className="syllabus-inner">
+        <div className="syllabus-hero">
+          <div>
+            <h2 className="syllabus-hero-title">{syllabusMeta.title}</h2>
+            <p className="syllabus-hero-sub">{syllabusMeta.subtitle}</p>
+            <p className="syllabus-hero-stats">
+              {syllabusMeta.totalDays} Days · {syllabusMeta.totalHours} Hours ·{' '}
+              {syllabusMeta.totalModules} Modules
+            </p>
+          </div>
+          <a
+            href={strikeCourse}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-strike"
+          >
+            View Full Syllabus on Strike →
+          </a>
+        </div>
+
         <div className="highlights-block">
           <h2>
             <span className="section-icon">🏅</span> Course Highlights
@@ -54,31 +80,36 @@ export default function Syllabus() {
           </div>
 
           <p className="syllabus-source">
-            Curriculum follows{' '}
-            <a href={thunderRepo} target="_blank" rel="noopener noreferrer">
-              Thunder on GitHub
+            Official syllabus from{' '}
+            <a href={strikeCourse} target="_blank" rel="noopener noreferrer">
+              Thunder on Strike
             </a>
-            . Full in-depth video lectures are on the{' '}
+            . Phase 1 lectures are live on this site. Code on{' '}
+            <a href={thunderRepo} target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+            . In-depth videos on the{' '}
             <a href={PAID_COURSE_URL} target="_blank" rel="noopener noreferrer">
-              Thunder course portal
-            </a>{' '}
-            (login required). Free topic videos are linked on each day page.
+              course portal
+            </a>
+            .
           </p>
 
           <div className="phases-list">
             {phases.map((phase) => {
               const isOpen = openPhases[phase.id];
-              const isComingSoon = phase.status === 'coming-soon';
+              const isInProgress = phase.status === 'in-progress';
 
               return (
                 <div
                   key={phase.id}
-                  className={`phase-card ${isComingSoon ? 'coming-soon' : ''} ${isOpen ? 'open' : ''}`}
+                  className={`phase-card ${!isInProgress ? 'coming-soon' : ''} ${isOpen ? 'open' : ''}`}
                 >
                   <button
                     type="button"
                     className="phase-header"
                     onClick={() => togglePhase(phase.id)}
+                    aria-expanded={isOpen}
                   >
                     <div className="phase-num">{phase.number}</div>
                     <div className="phase-info">
@@ -86,39 +117,59 @@ export default function Syllabus() {
                         PHASE {phase.number}: {phase.title}
                       </span>
                       <span className="phase-sub">
-                        {isComingSoon
-                          ? phase.subtitle
-                          : `${phase.modules.length} Modules · ${phase.subtitle}`}
+                        {phase.moduleCount} Modules
+                        {phase.siteNote ? ` · ${phase.siteNote}` : ''}
                       </span>
                     </div>
-                    <span className={`phase-chevron ${isOpen ? 'open' : ''}`}>›</span>
+                    <span className={`phase-chevron ${isOpen ? 'open' : ''}`}>⌄</span>
                   </button>
 
-                  {isOpen && phase.modules.length > 0 && (
+                  {isOpen && (
                     <div className="modules-list">
-                      {phase.modules.map((mod) => (
-                        <Link
-                          key={mod.id}
-                          to={`/learn/${mod.slug}`}
-                          className="module-row"
-                        >
-                          <span className="module-num">{mod.number}</span>
-                          <span className="module-title">{mod.title}</span>
-                          <span className="module-day">Day {mod.day}</span>
-                          <span className="module-arrow">→</span>
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+                      {phase.modules.map((mod) => {
+                        const content = (
+                          <>
+                            <span className="module-num">{mod.number}</span>
+                            <span className="module-title">{mod.title}</span>
+                            {mod.day && (
+                              <span className="module-day">Day {mod.day}</span>
+                            )}
+                            {mod.slug && <span className="module-arrow">→</span>}
+                          </>
+                        );
 
-                  {isOpen && isComingSoon && (
-                    <div className="phase-coming">
-                      <p>Coming soon as I continue my learning journey.</p>
+                        return mod.slug ? (
+                          <Link
+                            key={mod.number}
+                            to={mod.href || `/learn/${mod.slug}`}
+                            className="module-row published"
+                          >
+                            {content}
+                          </Link>
+                        ) : (
+                          <div key={mod.number} className="module-row locked">
+                            {content}
+                            <span className="module-lock">On Strike</span>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
               );
             })}
+          </div>
+
+          <div className="syllabus-footer-cta">
+            <p>Want the complete 72-module roadmap with live classes?</p>
+            <a
+              href={strikeCourse}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-strike-outline"
+            >
+              Explore Thunder on Strike
+            </a>
           </div>
         </div>
       </div>

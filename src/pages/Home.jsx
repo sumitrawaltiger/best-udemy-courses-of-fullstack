@@ -1,6 +1,6 @@
 import { useSearchParams, Link } from 'react-router-dom';
 import { chapters, searchChapters } from '../data/chapters';
-import { thunderRepo, PAID_COURSE_URL } from '../data/syllabus';
+import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import LectureCard from '../components/LectureCard';
 import Syllabus from '../components/Syllabus';
 
@@ -36,6 +36,14 @@ export default function Home() {
           </a>
           <a href="#syllabus" className="btn btn-outline btn-lg">
             View Syllabus
+          </a>
+          <a
+            href={strikeCourse}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-strike btn-lg"
+          >
+            Thunder on Strike →
           </a>
         </div>
         <div className="hero-stats">

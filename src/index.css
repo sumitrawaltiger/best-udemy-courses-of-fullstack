@@ -979,6 +979,97 @@ a:hover {
   margin: 0 auto;
 }
 
+.syllabus-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.syllabus-hero-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+
+.syllabus-hero-sub {
+  font-size: 15px;
+  color: #aaa;
+  margin: 0 0 8px;
+}
+
+.syllabus-hero-stats {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+.btn-strike {
+  background: #fff;
+  color: #0d0d0d;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-strike:hover {
+  background: #e5e5e5;
+  color: #0d0d0d;
+  text-decoration: none;
+}
+
+.btn-strike-outline {
+  display: inline-block;
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.btn-strike-outline:hover {
+  background: #fff;
+  color: #0d0d0d;
+  text-decoration: none;
+}
+
+.syllabus-footer-cta {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid #2a2a2a;
+  text-align: center;
+}
+
+.syllabus-footer-cta p {
+  color: #888;
+  font-size: 14px;
+  margin: 0 0 14px;
+}
+
+.hero-actions .btn-strike.btn-lg {
+  background: #1a1a1a;
+  color: #fff;
+  border: 2px solid #444;
+}
+
+.hero-actions .btn-strike.btn-lg:hover {
+  border-color: #fff;
+  background: #222;
+  color: #fff;
+}
+
 .syllabus-section h2 {
   font-size: 22px;
   font-weight: 800;
@@ -1082,8 +1173,12 @@ a:hover {
   overflow: hidden;
 }
 
-.phase-card.coming-soon {
-  opacity: 0.6;
+.phase-card.coming-soon .phase-header {
+  opacity: 0.85;
+}
+
+.phase-card.coming-soon.open {
+  opacity: 1;
 }
 
 .phase-header {
@@ -1133,14 +1228,15 @@ a:hover {
 }
 
 .phase-chevron {
-  font-size: 24px;
+  font-size: 18px;
   color: #666;
   transform: rotate(0deg);
   transition: transform 0.2s;
+  line-height: 1;
 }
 
 .phase-chevron.open {
-  transform: rotate(90deg);
+  transform: rotate(180deg);
   color: var(--green);
 }
 
@@ -1200,8 +1296,28 @@ a:hover {
   transition: opacity 0.15s;
 }
 
-.module-row:hover .module-arrow {
-  opacity: 1;
+.module-row.locked {
+  opacity: 0.75;
+  cursor: default;
+}
+
+.module-row.locked:hover {
+  background: transparent;
+  color: #ccc;
+}
+
+.module-row.published .module-num {
+  background: rgba(4, 170, 109, 0.2);
+  color: var(--green);
+}
+
+.module-lock {
+  font-size: 11px;
+  color: #666;
+  background: #2a2a2a;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
 }
 
 .phase-coming {
@@ -1212,6 +1328,10 @@ a:hover {
 
 .phase-coming p {
   margin: 0;
+}
+
+.module-row:hover .module-arrow {
+  opacity: 1;
 }
 
 .roadmap-100 {
