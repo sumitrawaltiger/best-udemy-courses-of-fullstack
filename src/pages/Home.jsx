@@ -61,7 +61,7 @@ export default function Home() {
       <section className="roadmap">
         <h2>100-Day JavaScript Roadmap</h2>
         <p className="section-desc">
-          Following the Thunder 100 Days of Code program. Lectures 1–19 are published — more added as I learn.
+          Following the Thunder 100 Days of Code program. All {chapters.length} days are published on this site.
         </p>
         <div className="roadmap-grid roadmap-100">
           {Array.from({ length: 100 }, (_, i) => {

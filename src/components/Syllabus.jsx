@@ -78,12 +78,12 @@ export default function Syllabus() {
           <div className="phases-list">
             {phases.map((phase) => {
               const isOpen = openPhases[phase.id];
-              const isInProgress = phase.status === 'in-progress';
+              const isPublished = phase.status === 'published';
 
               return (
                 <div
                   key={phase.id}
-                  className={`phase-card ${!isInProgress ? 'coming-soon' : ''} ${isOpen ? 'open' : ''}`}
+                  className={`phase-card ${!isPublished ? 'coming-soon' : ''} ${isOpen ? 'open' : ''}`}
                 >
                   <button
                     type="button"

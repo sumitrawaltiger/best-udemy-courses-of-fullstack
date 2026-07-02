@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "generate:days": "node scripts/generate-days-20-100.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },

@@ -185,12 +185,7 @@ export default function Chapter() {
             <span className="nav-label">Next →</span>
             <span className="nav-title">Day {nextChapter.day}: {nextChapter.title}</span>
           </Link>
-        ) : (
-          <div className="nav-next coming-soon">
-            <span className="nav-label">Next →</span>
-            <span className="nav-title">Lecture 20 — Coming soon!</span>
-          </div>
-        )}
+        ) : null}
       </nav>
     </article>
   );
