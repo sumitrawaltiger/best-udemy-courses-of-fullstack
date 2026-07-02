@@ -19,7 +19,7 @@ export const chapters = [
       "First program"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture01-Introduction-to-Javascript-37243ac5cab9802293fff4573c26a6f4",
-    "githubPath": "Javascript/Lecture01",
+    "githubPath": "Lecture01",
     "sections": [
       {
         "id": "what-is-js",
@@ -90,7 +90,7 @@ export const chapters = [
       "BigInt & Symbol"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture-02-Data-types-in-JS-37343ac5cab980f8b24ee3cf1ea0c8fa",
-    "githubPath": "Javascript/Lecture02",
+    "githubPath": "Lecture02",
     "sections": [
       {
         "id": "primitives",
@@ -165,7 +165,7 @@ export const chapters = [
       "Logical operators"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture03-Operator-and-Data-type-in-JS-37543ac5cab9805bb338dc7e6c3ab515",
-    "githubPath": "Javascript/Lecture03",
+    "githubPath": "Lecture03",
     "sections": [
       {
         "id": "arithmetic",
@@ -235,7 +235,7 @@ export const chapters = [
       "Patterns with loops"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture04-Loop-Number-math-and-String-37643ac5cab9802ba80ffca6c7e961d6",
-    "githubPath": "Javascript/Lecture04",
+    "githubPath": "Lecture04",
     "sections": [
       {
         "id": "for-loop",
@@ -309,7 +309,7 @@ export const chapters = [
       "Loop optimization"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture05-37743ac5cab980fc90afeec0d60a0fda",
-    "githubPath": "Javascript/Lecture05",
+    "githubPath": "Lecture05",
     "sections": [
       {
         "id": "number-series",
@@ -376,7 +376,7 @@ export const chapters = [
       "Array of objects"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture06-Array-and-Objects-in-Javascript-37943ac5cab9807f801cc8c83755decc",
-    "githubPath": "Javascript/Lecture06",
+    "githubPath": "Lecture06",
     "sections": [
       {
         "id": "arrays",
@@ -443,7 +443,7 @@ export const chapters = [
       "Object use cases"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture-07-Objects-and-Date-37b43ac5cab980cfa8d3db0bf87411b2",
-    "githubPath": "Javascript/Lecture07",
+    "githubPath": "Lecture07",
     "sections": [
       {
         "id": "objects-deep",
@@ -510,7 +510,7 @@ export const chapters = [
       "Rest & spread"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture08-Date-and-Functions-in-JS-37c43ac5cab98043bcfafdc2a70c7a3a",
-    "githubPath": "Javascript/Lecture08",
+    "githubPath": "Lecture08",
     "sections": [
       {
         "id": "date",
@@ -578,7 +578,7 @@ export const chapters = [
       "Real-world examples"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture09-Callback-forEach-map-filter-reduce-37d43ac5cab980e0a44ef39a89b81143",
-    "githubPath": "Javascript/Lecture09",
+    "githubPath": "Lecture09",
     "sections": [
       {
         "id": "callbacks",
@@ -645,7 +645,7 @@ export const chapters = [
       "DOM tree"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture10-Introduction-To-DOM-38043ac5cab980adbbdeffd5e8dc6ae8",
-    "githubPath": "Javascript/Lecture10",
+    "githubPath": "Lecture10",
     "sections": [
       {
         "id": "what-is-dom",
@@ -712,7 +712,7 @@ export const chapters = [
       "CRUD operations"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture11-CRUD-and-Event-in-DOM-38143ac5cab980d48176fda6b086cfef",
-    "githubPath": "Javascript/Lecture11",
+    "githubPath": "Lecture11",
     "sections": [
       {
         "id": "crud",
@@ -779,7 +779,7 @@ export const chapters = [
       "Mini projects"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture12-Even-and-Project-in-Javascript-38343ac5cab980aab918f7f4dc5c2fff",
-    "githubPath": "Javascript/Lecture12",
+    "githubPath": "Lecture12",
     "sections": [
       {
         "id": "events-deep",
@@ -828,7 +828,7 @@ export const chapters = [
       "GitHub integration"
     ],
     "notionUrl": null,
-    "githubPath": "Javascript/Lecture13",
+    "githubPath": "Lecture13",
     "sections": [
       {
         "id": "more-projects",
@@ -877,7 +877,7 @@ export const chapters = [
       "Best practices"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture14-Project-in-Javascript-38443ac5cab9809ba1e9fbcf3c776723",
-    "githubPath": "Javascript/Lecture14",
+    "githubPath": "Lecture14",
     "sections": [
       {
         "id": "capstone",
@@ -926,7 +926,7 @@ export const chapters = [
       "GitHub API example"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture15-JSON-vs-JS-Object-38843ac5cab9801e9c30f80559f919a0",
-    "githubPath": "Javascript/Lecture15",
+    "githubPath": "Lecture15",
     "sections": [
       {
         "id": "json",
@@ -986,7 +986,7 @@ export const chapters = [
       "How JS runs your code"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture16-Memory-management-and-How-JS-code-works-38b43ac5cab980af918bf13d86ec5d6c",
-    "githubPath": "Javascript/Lecture16",
+    "githubPath": "Lecture16",
     "sections": [
       {
         "id": "execution-context",
@@ -1053,7 +1053,7 @@ export const chapters = [
       "Microtasks vs macrotasks"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture-17-Prototype-classes-and-Eventloop-in-JS-38c43ac5cab9805f9b60eaf160aa057e",
-    "githubPath": "Javascript/Lecture17",
+    "githubPath": "Lecture17",
     "sections": [
       {
         "id": "prototypes",
@@ -1113,7 +1113,7 @@ export const chapters = [
       "async/await"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture18-Callback-Hell-and-Promises-38e43ac5cab980358e38c75eae99dc6b",
-    "githubPath": "Javascript/Lecture18",
+    "githubPath": "Lecture18",
     "sections": [
       {
         "id": "promises",
@@ -1180,7 +1180,7 @@ export const chapters = [
       "Higher-order functions"
     ],
     "notionUrl": "https://app.notion.com/p/Lecture-19-Closure-and-This-Keyword-38f43ac5cab9806e98f2f95649ffb759",
-    "githubPath": "Javascript/Lecture19",
+    "githubPath": "Lecture19",
     "sections": [
       {
         "id": "scope",
