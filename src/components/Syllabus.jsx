@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import ThunderHero from './ThunderHero';
 import {
   phases,
   courseHighlights,
@@ -31,22 +30,6 @@ export default function Syllabus() {
   return (
     <section className="syllabus-section">
       <div className="syllabus-inner">
-        <div className="syllabus-hero">
-          <ThunderHero
-            className="syllabus-thunder-hero"
-            actions={
-              <a
-                href={strikeCourse}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-strike syllabus-strike-btn"
-              >
-                View Full Syllabus on Strike →
-              </a>
-            }
-          />
-        </div>
-
         <div className="highlights-block">
           <h2>
             <span className="section-icon">🏅</span> Course Highlights
