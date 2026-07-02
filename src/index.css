@@ -432,6 +432,162 @@ a:hover {
   max-width: 900px;
 }
 
+/* ── Thunder Hero ── */
+.thunder-hero {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: #000;
+  color: #fff;
+  padding: 56px 24px 64px;
+  margin-bottom: 0;
+  box-sizing: border-box;
+}
+
+.thunder-hero-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.thunder-hero-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.thunder-level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 28px;
+  letter-spacing: 0.02em;
+}
+
+.thunder-level-icon {
+  font-size: 10px;
+  opacity: 0.85;
+}
+
+.thunder-title {
+  font-family: 'Orbitron', var(--font);
+  font-size: clamp(36px, 8vw, 64px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  margin: 0 0 20px;
+  color: #fff;
+  text-transform: none;
+}
+
+.thunder-title-line {
+  display: block;
+}
+
+.thunder-subtitle {
+  font-size: clamp(15px, 2.5vw, 20px);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 24px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+.thunder-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.thunder-meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  background: #0a0a0a;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+}
+
+.thunder-meta-tag svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.thunder-hero-desc {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 620px;
+  margin: 0 0 28px;
+}
+
+.thunder-hero-desc a {
+  color: var(--green);
+  font-weight: 600;
+}
+
+.thunder-hero-desc a:hover {
+  color: #2ee09a;
+}
+
+.thunder-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn-outline-light {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.btn-outline-light:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+  color: #fff;
+}
+
+.thunder-hero .btn-strike.btn-lg {
+  background: #fff;
+  color: #000;
+  border: 2px solid #fff;
+}
+
+.thunder-hero .btn-strike.btn-lg:hover {
+  background: #e5e5e5;
+  color: #000;
+}
+
+.syllabus-thunder-hero .thunder-title {
+  font-size: clamp(28px, 6vw, 48px);
+}
+
+.syllabus-thunder-hero .thunder-level-badge {
+  margin-bottom: 20px;
+}
+
+.syllabus-thunder-hero .thunder-meta-row {
+  margin-bottom: 20px;
+}
+
+.syllabus-strike-btn {
+  margin-top: 4px;
+}
+
 .hero {
   padding: 40px 0 48px;
   border-bottom: 1px solid var(--border);
@@ -1003,34 +1159,9 @@ a:hover {
 }
 
 .syllabus-hero {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
   margin-bottom: 36px;
   padding-bottom: 28px;
   border-bottom: 1px solid #2a2a2a;
-}
-
-.syllabus-hero-title {
-  font-size: 28px;
-  font-weight: 800;
-  color: #fff;
-  margin: 0 0 8px;
-  letter-spacing: -0.02em;
-}
-
-.syllabus-hero-sub {
-  font-size: 15px;
-  color: #aaa;
-  margin: 0 0 8px;
-}
-
-.syllabus-hero-stats {
-  font-size: 13px;
-  color: #666;
-  margin: 0;
 }
 
 .btn-strike {
@@ -1861,6 +1992,33 @@ a:hover {
     padding: 20px 16px;
   }
 
+  .thunder-hero {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 40px 16px 48px;
+  }
+
+  .thunder-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .thunder-hero-actions .btn-lg {
+    width: 100%;
+    text-align: center;
+  }
+
+  .thunder-meta-row {
+    gap: 8px;
+  }
+
+  .thunder-meta-tag {
+    font-size: 12px;
+    padding: 7px 12px;
+  }
+
   .hero {
     padding: 28px 0 36px;
     margin-bottom: 32px;
@@ -1892,23 +2050,13 @@ a:hover {
 
   .syllabus-hero {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
   }
 
-  .syllabus-hero-title {
-    font-size: 22px;
-  }
-
-  .btn-strike,
-  .btn-strike-outline {
+  .syllabus-strike-btn {
     width: 100%;
     text-align: center;
     box-sizing: border-box;
-  }
-
-  .syllabus-header {
-    flex-direction: column;
-    align-items: flex-start;
   }
 
   .phase-header {

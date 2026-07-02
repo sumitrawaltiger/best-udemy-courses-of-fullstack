@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import ThunderHero from './ThunderHero';
 import {
   phases,
   courseHighlights,
   thunderRepo,
   PAID_COURSE_URL,
   strikeCourse,
-  syllabusMeta,
 } from '../data/syllabus';
 
 export default function Syllabus() {
@@ -32,22 +32,19 @@ export default function Syllabus() {
     <section className="syllabus-section">
       <div className="syllabus-inner">
         <div className="syllabus-hero">
-          <div>
-            <h2 className="syllabus-hero-title">{syllabusMeta.title}</h2>
-            <p className="syllabus-hero-sub">{syllabusMeta.subtitle}</p>
-            <p className="syllabus-hero-stats">
-              {syllabusMeta.totalDays} Days · {syllabusMeta.totalHours} Hours ·{' '}
-              {syllabusMeta.totalModules} Modules
-            </p>
-          </div>
-          <a
-            href={strikeCourse}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-strike"
-          >
-            View Full Syllabus on Strike →
-          </a>
+          <ThunderHero
+            className="syllabus-thunder-hero"
+            actions={
+              <a
+                href={strikeCourse}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-strike syllabus-strike-btn"
+              >
+                View Full Syllabus on Strike →
+              </a>
+            }
+          />
         </div>
 
         <div className="highlights-block">

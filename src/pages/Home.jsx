@@ -3,6 +3,7 @@ import { chapters, searchChapters } from '../data/chapters';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import LectureCard from '../components/LectureCard';
 import Syllabus from '../components/Syllabus';
+import ThunderHero from '../components/ThunderHero';
 
 export default function Home() {
   const [searchParams] = useSearchParams();
@@ -10,58 +11,49 @@ export default function Home() {
   const results = query ? searchChapters(query) : chapters;
 
   return (
-    <div className="home">
-      <section className="hero">
-        <div className="hero-badge">⚡ 19 lectures live — Thunder JavaScript curriculum</div>
-        <h1>Learn JavaScript<br />One Day at a Time</h1>
-        <p className="hero-desc">
-          My notes from the{' '}
-          <a href={thunderRepo} target="_blank" rel="noopener noreferrer">
-            Thunder course
-          </a>{' '}
-          by Rohit Negi — structured day-by-day with code examples, interactive playground,
-          and quizzes. From variables to closures, everything a beginner needs.
-        </p>
-        <div className="hero-actions">
-          <Link to="/learn/introduction-to-javascript" className="btn btn-primary btn-lg">
-            Start Day 1 — Free
-          </Link>
-          <a
-            href={PAID_COURSE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-paid btn-lg"
+    <>
+      <section className="thunder-hero">
+        <div className="thunder-hero-inner">
+          <ThunderHero
+            actions={
+              <div className="thunder-hero-actions">
+                <Link to="/learn/introduction-to-javascript" className="btn btn-primary btn-lg">
+                  Start Day 1 — Free
+                </Link>
+                <a
+                  href={PAID_COURSE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-paid btn-lg"
+                >
+                  Full In-Depth Lectures
+                </a>
+                <a href="#syllabus" className="btn btn-outline-light btn-lg">
+                  View Syllabus
+                </a>
+                <a
+                  href={strikeCourse}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-strike btn-lg"
+                >
+                  Thunder on Strike →
+                </a>
+              </div>
+            }
           >
-            🎓 Full In-Depth Lectures
-          </a>
-          <a href="#syllabus" className="btn btn-outline btn-lg">
-            View Syllabus
-          </a>
-          <a
-            href={strikeCourse}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-strike btn-lg"
-          >
-            Thunder on Strike →
-          </a>
-        </div>
-        <div className="hero-stats">
-          <div className="stat">
-            <strong>{chapters.length}</strong>
-            <span>Lectures Live</span>
-          </div>
-          <div className="stat">
-            <strong>100</strong>
-            <span>Day Program</span>
-          </div>
-          <div className="stat">
-            <strong>100%</strong>
-            <span>Free Forever</span>
-          </div>
+            <p className="thunder-hero-desc">
+              My notes from the{' '}
+              <a href={thunderRepo} target="_blank" rel="noopener noreferrer">
+                Thunder course
+              </a>{' '}
+              by Rohit Negi — {chapters.length} lectures live with code examples, playground, and quizzes.
+            </p>
+          </ThunderHero>
         </div>
       </section>
 
+      <div className="home">
       <div id="syllabus">
         <Syllabus />
       </div>
@@ -120,5 +112,6 @@ export default function Home() {
         )}
       </section>
     </div>
+    </>
   );
 }
