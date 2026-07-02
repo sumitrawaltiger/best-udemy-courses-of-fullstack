@@ -65,9 +65,10 @@ a:hover {
 }
 
 .header-inner {
-  max-width: 1400px;
+  width: 100%;
+  max-width: none;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 clamp(16px, 3vw, 32px);
   height: var(--header-height);
   display: flex;
   align-items: center;
@@ -227,7 +228,12 @@ a:hover {
 .content {
   flex: 1;
   min-width: 0;
+  width: 100%;
   padding: 24px 32px;
+  background: var(--bg);
+}
+
+.main-layout.with-sidebar .content {
   background: var(--bg);
 }
 
@@ -259,9 +265,22 @@ a:hover {
 
   .main-layout.with-sidebar .content {
     margin-left: var(--sidebar-width);
-    padding: 32px 40px 48px;
+    padding: 32px clamp(28px, 4vw, 72px) 48px;
     width: calc(100% - var(--sidebar-width));
+    min-height: calc(100vh - var(--header-height));
     box-sizing: border-box;
+  }
+
+  .learn-list {
+    columns: 2;
+    column-gap: 32px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .learn-list {
+    columns: 3;
+    column-gap: 40px;
   }
 }
 
@@ -942,7 +961,8 @@ a:hover {
 
 /* ── Chapter Page ── */
 .chapter {
-  max-width: 780px;
+  width: 100%;
+  max-width: none;
 }
 
 .chapter-header {
@@ -1101,6 +1121,7 @@ a:hover {
   overflow: hidden;
   border: 1px solid var(--border);
   background: #fafafa;
+  width: 100%;
 }
 
 .youtube-block-header {
@@ -1612,6 +1633,7 @@ a:hover {
   border-radius: var(--radius);
   overflow: hidden;
   border: 1px solid var(--code-border);
+  width: 100%;
 }
 
 .code-block-header {
@@ -1643,6 +1665,7 @@ a:hover {
   border: 2px solid var(--green);
   border-radius: var(--radius);
   overflow: hidden;
+  width: 100%;
 }
 
 .playground-header {
@@ -1946,79 +1969,6 @@ a:hover {
     margin-top: 4px;
   }
 
-  .main-layout.with-sidebar {
-    flex-direction: column;
-  }
-
-  .main-layout.with-sidebar .content {
-    margin-left: 0;
-    width: 100%;
-    padding: 20px 16px;
-  }
-
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: static;
-    z-index: 50;
-    padding: 12px 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  }
-
-  .sidebar-heading {
-    padding: 0 16px;
-    margin-bottom: 10px;
-  }
-
-  .sidebar-nav {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 0 12px 4px;
-    gap: 8px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-  }
-
-  .sidebar-link {
-    flex: 0 0 auto;
-    flex-shrink: 0;
-    flex-direction: row;
-    align-items: center;
-    gap: 0;
-    border-left: none;
-    border-bottom: none;
-    border-radius: 8px;
-    padding: 8px 14px;
-    min-width: unset;
-    white-space: nowrap;
-    background: rgba(255, 255, 255, 0.06);
-  }
-
-  .sidebar-link:hover {
-    background: rgba(255, 255, 255, 0.12);
-  }
-
-  .sidebar-link.active {
-    background: rgba(4, 170, 109, 0.35);
-    border-left-color: transparent;
-  }
-
-  .sidebar-day {
-    font-size: 13px;
-  }
-
-  .sidebar-title {
-    display: none;
-  }
-
-  .sidebar-topics,
-  .sidebar-progress {
-    display: none;
-  }
-
   .content {
     padding: 20px 16px;
   }
@@ -2144,6 +2094,154 @@ a:hover {
     margin-left: 42px;
   }
 
+  .code-playground,
+  .playground-editor {
+    overflow-x: auto;
+  }
+}
+
+/* Tablet: iPad portrait & small laptops */
+@media (min-width: 768px) and (max-width: 900px) {
+  .main-layout.with-sidebar {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .main-layout.with-sidebar .sidebar {
+    --sidebar-width: 220px;
+    width: var(--sidebar-width);
+    position: sticky;
+    top: 56px;
+    align-self: flex-start;
+    flex-shrink: 0;
+    height: calc(100vh - 56px);
+    max-height: calc(100vh - 56px);
+    min-height: auto;
+    padding: 20px 0 28px;
+    box-shadow: none;
+    overflow-y: auto;
+  }
+
+  .main-layout.with-sidebar .content {
+    margin-left: 0;
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    padding: 24px 28px 40px;
+    min-height: calc(100vh - 56px);
+  }
+
+  .sidebar-nav {
+    flex-direction: column;
+    overflow-x: hidden;
+    padding: 0;
+    gap: 0;
+  }
+
+  .sidebar-link {
+    flex-direction: column;
+    align-items: flex-start;
+    border-left: 3px solid transparent;
+    border-radius: 0;
+    padding: 9px 14px;
+    white-space: normal;
+    background: transparent;
+  }
+
+  .sidebar-link.active {
+    border-left-color: var(--green);
+    background: rgba(4, 170, 109, 0.2);
+  }
+
+  .sidebar-title {
+    display: block;
+    font-size: 12px;
+  }
+
+  .sidebar-topics,
+  .sidebar-progress {
+    display: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .main-layout.with-sidebar {
+    flex-direction: column;
+  }
+
+  .main-layout.with-sidebar .content {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px 16px;
+    min-height: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    z-index: 50;
+    padding: 12px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    min-height: auto;
+    max-height: none;
+  }
+
+  .sidebar-heading {
+    padding: 0 16px;
+    margin-bottom: 10px;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 12px 4px;
+    gap: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .sidebar-link {
+    flex: 0 0 auto;
+    flex-shrink: 0;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    border-left: none;
+    border-bottom: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    min-width: unset;
+    white-space: nowrap;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .sidebar-link:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .sidebar-link.active {
+    background: rgba(4, 170, 109, 0.35);
+    border-left-color: transparent;
+  }
+
+  .sidebar-day {
+    font-size: 13px;
+  }
+
+  .sidebar-title {
+    display: none;
+  }
+
+  .sidebar-topics,
+  .sidebar-progress {
+    display: none;
+  }
+
   .chapter-nav {
     grid-template-columns: 1fr;
   }
@@ -2154,11 +2252,6 @@ a:hover {
 
   .chapter-header h1 {
     font-size: clamp(22px, 6vw, 32px);
-  }
-
-  .code-playground,
-  .playground-editor {
-    overflow-x: auto;
   }
 }
 
