@@ -28,7 +28,7 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -39,7 +39,7 @@ body {
   color: var(--text);
   background: var(--bg-page);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 #root {
@@ -210,10 +210,18 @@ a:hover {
 
 /* ── Layout ── */
 .main-layout {
-  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   min-height: calc(100vh - var(--header-height) - 80px);
+}
+
+.main-layout.no-sidebar {
+  max-width: 1400px;
+}
+
+.main-layout.with-sidebar {
+  width: 100%;
+  max-width: none;
 }
 
 .content {
@@ -229,11 +237,32 @@ a:hover {
   flex-shrink: 0;
   background: var(--navy);
   color: #fff;
-  padding: 20px 0;
+  padding: 24px 0 32px;
   position: sticky;
   top: var(--header-height);
+  align-self: flex-start;
   height: calc(100vh - var(--header-height));
+  max-height: calc(100vh - var(--header-height));
   overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+@media (min-width: 901px) {
+  .main-layout.with-sidebar .sidebar {
+    position: fixed;
+    left: 0;
+    top: var(--header-height);
+    z-index: 40;
+  }
+
+  .main-layout.with-sidebar .content {
+    margin-left: var(--sidebar-width);
+    padding: 32px 40px 48px;
+    width: calc(100% - var(--sidebar-width));
+    box-sizing: border-box;
+  }
 }
 
 .sidebar-heading {
@@ -1919,6 +1948,12 @@ a:hover {
 
   .main-layout.with-sidebar {
     flex-direction: column;
+  }
+
+  .main-layout.with-sidebar .content {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px 16px;
   }
 
   .sidebar {

@@ -1,8 +1,14 @@
 import { NavLink } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 import { chapters } from '../data/chapters';
 
 export default function Sidebar({ currentSlug }) {
   const current = chapters.find((c) => c.slug === currentSlug);
+  const activeRef = useRef(null);
+
+  useEffect(() => {
+    activeRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }, [currentSlug]);
 
   return (
     <aside className="sidebar">
@@ -12,6 +18,7 @@ export default function Sidebar({ currentSlug }) {
           {chapters.map((ch) => (
             <NavLink
               key={ch.slug}
+              ref={ch.slug === currentSlug ? activeRef : null}
               to={`/learn/${ch.slug}`}
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? 'active' : ''}`
