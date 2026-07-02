@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { discordCommunity } from '../data/syllabus';
 
 export default function Header({ onSearch }) {
   const [query, setQuery] = useState('');
@@ -41,6 +42,14 @@ export default function Header({ onSearch }) {
           <Link to="/">Home</Link>
           <a href="/#syllabus">Syllabus</a>
           <Link to="/learn/introduction-to-javascript">Start Learning</Link>
+          <a
+            href={discordCommunity}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="header-discord"
+          >
+            Discord
+          </a>
         </nav>
       </div>
     </header>

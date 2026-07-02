@@ -159,10 +159,34 @@ a:hover {
   opacity: 0.9;
 }
 
-.header-nav a:hover {
+.header-nav a.header-discord {
+  background: #5865f2;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
   opacity: 1;
-  text-decoration: underline;
 }
+
+.header-nav a.header-discord:hover {
+  background: #4752c4;
+  text-decoration: none;
+}
+
+.footer-community {
+  margin: 10px 0 0;
+}
+
+.footer-community a {
+  color: #5865f2;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.footer-community a:hover {
+  color: #7289da;
+}
+
 
 /* ── Layout ── */
 .main-layout {

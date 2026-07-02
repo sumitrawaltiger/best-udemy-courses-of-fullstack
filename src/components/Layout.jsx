@@ -1,6 +1,7 @@
 import { Outlet, useParams } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import { discordCommunity } from '../data/syllabus';
 
 export default function Layout() {
   const { slug } = useParams();
@@ -24,6 +25,11 @@ export default function Layout() {
         </p>
         <p className="footer-sub">
           Day-by-day tutorials for absolute beginners. More chapters coming soon!
+        </p>
+        <p className="footer-community">
+          <a href={discordCommunity} target="_blank" rel="noopener noreferrer">
+            Join Coder Army on Discord
+          </a>
         </p>
       </footer>
     </div>
