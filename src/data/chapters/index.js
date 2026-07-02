@@ -69,7 +69,9 @@ export const chapters = [
         "answer": 2,
         "explanation": "Use const for fixed values."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c",
+    "youtubeTitle": "Introduction to JavaScript | Javascript Full Course #01"
   },
   {
     "id": 2,
@@ -144,7 +146,9 @@ export const chapters = [
         "answer": 1,
         "explanation": "String concatenation."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=UXYJGHhuGA8",
+    "youtubeTitle": "Variables & Data Types (var, let, const) | Javascript Full Course #02"
   },
   {
     "id": 3,
@@ -215,7 +219,9 @@ export const chapters = [
         "answer": 1,
         "explanation": "Objects share references."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=7dMQr2-T--4",
+    "youtubeTitle": "Operators, Comparison & Type Coercion | Javascript Full Course #04"
   },
   {
     "id": 4,
@@ -289,7 +295,11 @@ export const chapters = [
         "answer": 2,
         "explanation": "init; condition; update."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=7dMQr2-T--4&t=2903",
+    "youtubeTitle": "Loops, Numbers & Math Precision | Javascript Full Course #04",
+    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=8dgsUGEgPXo",
+    "youtubeSupplementTitle": "Strings & String Methods | Javascript Full Course #06"
   },
   {
     "id": 5,
@@ -356,7 +366,9 @@ export const chapters = [
         "answer": 0,
         "explanation": "Rows and columns."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=HTcT-TuraHM",
+    "youtubeTitle": "Numbers, Math Object & Patterns | Javascript Full Course #05"
   },
   {
     "id": 6,
@@ -423,7 +435,9 @@ export const chapters = [
         "answer": 1,
         "explanation": "Arrays are objects."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=fuA8BQkQO_E",
+    "youtubeTitle": "Arrays Explained In-Depth | Javascript Full Course #07"
   },
   {
     "id": 7,
@@ -490,7 +504,11 @@ export const chapters = [
         "answer": 0,
         "explanation": "Real-world data structures."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=iuZkPCBBV5U",
+    "youtubeTitle": "Objects Explained In-Depth | Javascript Full Course #08",
+    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=8dgsUGEgPXo",
+    "youtubeSupplementTitle": "Strings & Date Objects | Javascript Full Course #06"
   },
   {
     "id": 8,
@@ -557,7 +575,11 @@ export const chapters = [
         "answer": 1,
         "explanation": "Milliseconds since epoch."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=1VpZGlGw5xE",
+    "youtubeTitle": "Functions, Arrow Functions & Rest/Spread | Javascript Full Course #09",
+    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=8dgsUGEgPXo",
+    "youtubeSupplementTitle": "Date Objects Explained | Javascript Full Course #06"
   },
   {
     "id": 9,
@@ -625,7 +647,9 @@ export const chapters = [
         "answer": 0,
         "explanation": "Accumulator pattern."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=UByPRYaMEkI",
+    "youtubeTitle": "map, filter, reduce, forEach & Set | Javascript Full Course #12"
   },
   {
     "id": 10,
@@ -692,7 +716,9 @@ export const chapters = [
         "answer": 1,
         "explanation": "One element or null."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=wLp99HGG8GQ",
+    "youtubeTitle": "DOM Manipulation | Javascript Full Course #13"
   },
   {
     "id": 11,
@@ -759,7 +785,9 @@ export const chapters = [
         "answer": 0,
         "explanation": "Create Read Update Delete."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=2jVOkYiAl2s",
+    "youtubeTitle": "CRUD Operations in DOM | Javascript Full Course #14"
   },
   {
     "id": 12,
@@ -808,7 +836,9 @@ export const chapters = [
         "answer": 0,
         "explanation": "Events bubble up the DOM tree."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=CGjHpnm8TeE",
+    "youtubeTitle": "Events & Event Handlers | Javascript Full Course #15"
   },
   {
     "id": 13,
@@ -857,7 +887,9 @@ export const chapters = [
         "answer": 0,
         "explanation": "Data layer vs view layer."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=dQDteO0RXrc",
+    "youtubeTitle": "10 JavaScript Projects for Beginners | Javascript Full Course #16"
   },
   {
     "id": 14,
@@ -906,7 +938,9 @@ export const chapters = [
         "answer": 1,
         "explanation": "Always plan first."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=dQDteO0RXrc",
+    "youtubeTitle": "JavaScript Projects — Build Real Apps | Javascript Full Course #16"
   },
   {
     "id": 15,
@@ -966,7 +1000,9 @@ export const chapters = [
         "answer": 0,
         "explanation": "Async HTTP via Promise."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=LYe1my0KkPo",
+    "youtubeTitle": "JSON vs JS Object & fetch API | Javascript Full Course #19"
   },
   {
     "id": 16,
@@ -1033,7 +1069,11 @@ export const chapters = [
         "answer": 0,
         "explanation": "Temporal Dead Zone."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=WRBFDQR0oM4",
+    "youtubeTitle": "Memory Management: Stack vs Heap | Javascript Full Course #03",
+    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=ijPq-u3y9cs",
+    "youtubeSupplementTitle": "How JS Code Runs & Hoisting | Javascript Full Course #10"
   },
   {
     "id": 17,
@@ -1093,7 +1133,11 @@ export const chapters = [
         "answer": 0,
         "explanation": "Macrotask queue + event loop."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=9KwCG9aVwvQ",
+    "youtubeTitle": "Prototypes & Classes | Javascript Full Course #21",
+    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=rsepF1ugeC8",
+    "youtubeSupplementTitle": "Event Loop | Javascript Full Course #17"
   },
   {
     "id": 18,
@@ -1160,7 +1204,9 @@ export const chapters = [
         "answer": 0,
         "explanation": "Always wraps in Promise."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=CTJLBCYod9E",
+    "youtubeTitle": "Callback Hell & Promises | Javascript Full Course #18"
   },
   {
     "id": 19,
@@ -1227,7 +1273,11 @@ export const chapters = [
         "answer": 0,
         "explanation": "The object before the dot."
       }
-    ]
+    ],
+    "youtubeUrl": "https://www.youtube.com/watch?v=UBCPtXXMAWs",
+    "youtubeTitle": "Closures, Scope & this Keyword | Javascript Full Course #11",
+    "youtubeSupplementUrl": "https://www.youtube.com/watch?v=7tRyccjYgF0",
+    "youtubeSupplementTitle": "this Keyword, call, apply & bind | Javascript Full Course #22"
   }
 ];
 

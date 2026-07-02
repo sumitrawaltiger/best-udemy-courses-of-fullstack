@@ -39,9 +39,21 @@ export default function LectureCard({ chapter }) {
             <span className="topic-tag more">+{chapter.topics.length - 4} more</span>
           )}
         </div>
-        <Link to={`/learn/${chapter.slug}`} className="btn btn-watch">
-          Start Learning →
-        </Link>
+        <div className="lecture-actions">
+          <Link to={`/learn/${chapter.slug}`} className="btn btn-watch">
+            Start Learning →
+          </Link>
+          {chapter.youtubeUrl && (
+            <a
+              href={chapter.youtubeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-youtube"
+            >
+              ▶ YouTube
+            </a>
+          )}
+        </div>
       </div>
     </article>
   );

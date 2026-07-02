@@ -24,6 +24,14 @@ function renderMarkdown(text) {
   });
 }
 
+function getYoutubeEmbedUrl(url) {
+  if (!url) return '';
+  const id = url.match(/[?&]v=([^&]+)/)?.[1];
+  const start = url.match(/[?&]t=(\d+)/)?.[1];
+  if (!id) return '';
+  return `https://www.youtube.com/embed/${id}${start ? `?start=${start}` : ''}`;
+}
+
 export default function Chapter() {
   const { slug } = useParams();
   const chapter = getChapterBySlug(slug);
@@ -52,6 +60,17 @@ export default function Chapter() {
           <span>📚 {chapter.sections.length} sections</span>
         </div>
         <div className="chapter-links">
+          {chapter.youtubeUrl && (
+            <a
+              href={chapter.youtubeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="chapter-link-btn youtube"
+              title={chapter.youtubeTitle}
+            >
+              ▶ Watch on YouTube
+            </a>
+          )}
           {chapter.notionUrl && (
             <a href={chapter.notionUrl} target="_blank" rel="noopener noreferrer" className="chapter-link-btn">
               📝 My Notion Notes
@@ -68,6 +87,30 @@ export default function Chapter() {
             </a>
           )}
         </div>
+        {chapter.youtubeUrl && (
+          <div className="youtube-block">
+            <div className="youtube-block-header">
+              <span>📺 Video Lecture — Day {chapter.day}</span>
+              <span className="youtube-block-title">{chapter.youtubeTitle}</span>
+            </div>
+            <div className="youtube-embed-wrap">
+              <iframe
+                src={getYoutubeEmbedUrl(chapter.youtubeUrl)}
+                title={chapter.youtubeTitle}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            {chapter.youtubeSupplementUrl && (
+              <div className="youtube-supplement">
+                <span>Also watch: </span>
+                <a href={chapter.youtubeSupplementUrl} target="_blank" rel="noopener noreferrer">
+                  {chapter.youtubeSupplementTitle}
+                </a>
+              </div>
+            )}
+          </div>
+        )}
       </header>
 
       <div className="chapter-intro">
