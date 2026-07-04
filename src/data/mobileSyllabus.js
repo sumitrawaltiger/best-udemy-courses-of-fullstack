@@ -16,7 +16,7 @@ export const MOBILE_META = {
   cohortUrl: 'https://hitesh.ai/mobile-dev',
   coursePortal: 'https://courses.chaicode.com',
   totalLessons: 25,
-  startsAfter: 'Python & Agentic AI',
+  startsAfter: '100 Days of AWS Cloud',
 };
 
 function lessonToModule(ch) {

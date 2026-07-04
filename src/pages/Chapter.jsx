@@ -2,10 +2,12 @@ import { Link, useParams, Navigate } from 'react-router-dom';
 import { getChapterBySlug, chapters } from '../data/chapters';
 import { getNextjsChapterBySlug, nextjsChapters } from '../data/nextjsChapters';
 import { getPythonChapterBySlug, pythonChapters } from '../data/pythonChapters';
+import { getAwsChapterBySlug, awsChapters } from '../data/awsChapters';
 import { getMobileChapterBySlug, mobileChapters } from '../data/mobileChapters';
 import { thunderRepo } from '../data/syllabus';
 import { NEXTJS_META } from '../data/nextjsSyllabus';
 import { PYTHON_META } from '../data/pythonSyllabus';
+import { AWS_META } from '../data/awsSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import CodeBlock from '../components/CodeBlock';
 import CodePlayground from '../components/CodePlayground';
@@ -56,6 +58,23 @@ const TRACKS = {
       btnClass: 'btn-python-portal',
     },
   },
+  aws: {
+    getChapter: getAwsChapterBySlug,
+    list: () => awsChapters,
+    homePath: '/aws',
+    learnPath: '/aws/learn',
+    cssClass: 'chapter-aws',
+    codeRepo: null,
+    codeLabel: 'Lab Code',
+    lessonLabel: 'Day',
+    extraLink: { href: AWS_META.cloudfolksCourseUrl, label: '🏆 CloudFolks Hub' },
+    banner: {
+      title: 'Ready for today\'s cloud task?',
+      text: 'Complete hands-on tasks on KodeKloud with automated validation in real AWS consoles.',
+      cta: 'Open KodeKloud →',
+      btnClass: 'btn-aws-kodekloud',
+    },
+  },
   mobile: {
     getChapter: getMobileChapterBySlug,
     list: () => mobileChapters,
@@ -104,6 +123,7 @@ function getYoutubeEmbedUrl(url) {
 
 function dayLabel(chapter, track) {
   if (track === 'mobile') return `RN Day ${chapter.rnDay}`;
+  if (track === 'aws') return `AWS Day ${chapter.awsDay}`;
   if (track === 'nextjs') return `NX Module ${chapter.nextDay}`;
   if (track === 'python') return `PY Module ${chapter.pyDay}`;
   return `Day ${chapter.day}`;
@@ -111,6 +131,7 @@ function dayLabel(chapter, track) {
 
 function introClass(track) {
   if (track === 'mobile') return 'chapter-intro-mobile';
+  if (track === 'aws') return 'chapter-intro-aws';
   if (track === 'nextjs') return 'chapter-intro-nextjs';
   if (track === 'python') return 'chapter-intro-python';
   return '';
@@ -118,6 +139,7 @@ function introClass(track) {
 
 function badgeClass(track) {
   if (track === 'mobile') return 'chapter-badge-mobile';
+  if (track === 'aws') return 'chapter-badge-aws';
   if (track === 'nextjs') return 'chapter-badge-nextjs';
   if (track === 'python') return 'chapter-badge-python';
   return '';
@@ -125,6 +147,7 @@ function badgeClass(track) {
 
 function paidClass(track) {
   if (track === 'mobile') return 'paid-mobile';
+  if (track === 'aws') return 'paid-aws';
   if (track === 'nextjs') return 'paid-nextjs';
   if (track === 'python') return 'paid-python';
   return '';
@@ -132,6 +155,7 @@ function paidClass(track) {
 
 function bannerClass(track) {
   if (track === 'mobile') return 'paid-lecture-banner-mobile';
+  if (track === 'aws') return 'paid-lecture-banner-aws';
   if (track === 'nextjs') return 'paid-lecture-banner-nextjs';
   if (track === 'python') return 'paid-lecture-banner-python';
   return '';
@@ -139,6 +163,7 @@ function bannerClass(track) {
 
 function sectionNumClass(track) {
   if (track === 'mobile') return 'section-num-mobile';
+  if (track === 'aws') return 'section-num-aws';
   if (track === 'nextjs') return 'section-num-nextjs';
   if (track === 'python') return 'section-num-python';
   return '';
@@ -207,7 +232,9 @@ export default function Chapter({ track = 'thunder' }) {
                 ? 'Udemy Course'
                 : track === 'python'
                   ? 'Ashok IT Portal'
-                  : 'My Notion Notes'}
+                  : track === 'aws'
+                    ? 'CloudFolks Course'
+                    : 'My Notion Notes'}
             </a>
           )}
           {cfg.extraLink && (

@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import NextjsHome from './pages/NextjsHome';
 import PythonHome from './pages/PythonHome';
+import AwsHome from './pages/AwsHome';
 import MobileHome from './pages/MobileHome';
 import Chapter from './pages/Chapter';
 
@@ -17,6 +18,8 @@ export default function App() {
           <Route path="nextjs/learn/:slug" element={<Chapter track="nextjs" />} />
           <Route path="python" element={<PythonHome />} />
           <Route path="python/learn/:slug" element={<Chapter track="python" />} />
+          <Route path="aws" element={<AwsHome />} />
+          <Route path="aws/learn/:slug" element={<Chapter track="aws" />} />
           <Route path="mobile" element={<MobileHome />} />
           <Route path="mobile/learn/:slug" element={<Chapter track="mobile" />} />
         </Route>

@@ -34,8 +34,8 @@ export default function PythonHome() {
                 <Link to="/nextjs" className="btn btn-outline-python btn-lg">
                   ← React & Next.js
                 </Link>
-                <Link to="/mobile" className="btn btn-outline-python btn-lg">
-                  React Native →
+                <Link to="/aws" className="btn btn-outline-python btn-lg">
+                  AWS Cloud →
                 </Link>
               </div>
             }

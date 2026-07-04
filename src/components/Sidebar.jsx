@@ -3,8 +3,9 @@ import { useEffect, useRef } from 'react';
 import { chapters } from '../data/chapters';
 import { nextjsChapters } from '../data/nextjsChapters';
 import { pythonChapters } from '../data/pythonChapters';
+import { awsChapters } from '../data/awsChapters';
 import { mobileChapters } from '../data/mobileChapters';
-import { NEXTJS_MODULES, PYTHON_MODULES, MOBILE_LESSONS } from '../data/trackConfig';
+import { NEXTJS_MODULES, PYTHON_MODULES, AWS_DAYS, MOBILE_LESSONS } from '../data/trackConfig';
 
 const TRACK_CONFIG = {
   thunder: {
@@ -39,6 +40,17 @@ const TRACK_CONFIG = {
     cssClass: 'sidebar-python',
     activeClass: 'sidebar-link-python',
     progressClass: 'progress-fill-python',
+  },
+  aws: {
+    list: awsChapters,
+    basePath: '/aws/learn',
+    heading: '100 Days of AWS',
+    dayLabel: (ch) => `Day ${ch.awsDay}`,
+    total: AWS_DAYS,
+    unit: 'days',
+    cssClass: 'sidebar-aws',
+    activeClass: 'sidebar-link-aws',
+    progressClass: 'progress-fill-aws',
   },
   mobile: {
     list: mobileChapters,

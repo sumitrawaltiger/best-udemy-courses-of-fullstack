@@ -6,7 +6,7 @@ export default function MobileHero({ children, actions }) {
     <div className="mobile-hero-block">
       <span className="mobile-level-badge">
         <span className="mobile-level-icon" aria-hidden="true">⚡</span>
-        After Python & Agentic AI
+        After 100 Days of AWS Cloud
       </span>
 
       <h1 className="mobile-title">

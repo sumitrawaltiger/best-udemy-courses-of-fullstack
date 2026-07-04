@@ -4,6 +4,7 @@ import {
   NEXTJS_UDEMY_URL,
   MOBILE_COHORT_URL,
   ASHOK_IT_URL,
+  KODEKLOUD_CLOUD_URL,
 } from './trackConfig.js';
 
 export function slugify(text) {
@@ -54,6 +55,16 @@ const TRACK_META = {
     quizPrefix: () => 'PY ',
     tryIt: (n, title) => `print("PY ${n}: ${title}")`,
   },
+  aws: {
+    dayKey: 'awsDay',
+    label: 'AWS',
+    offset: TRACK_OFFSETS.aws,
+    paidUrl: KODEKLOUD_CLOUD_URL,
+    paidLabel: 'KodeKloud 100 Days of Cloud',
+    sectionPrefix: (n) => `Day ${n} of 100 Days of AWS Cloud`,
+    quizPrefix: () => 'AWS ',
+    tryIt: (n, title) => `# AWS Day ${n}: ${title}\nprint("Cloud task complete")`,
+  },
   mobile: {
     dayKey: 'rnDay',
     label: 'RN',
@@ -96,7 +107,7 @@ export function buildChapter(entry, id, options = {}) {
 
   const quiz = entry.quiz || [
     {
-      question: `What is the main topic of ${meta.quizPrefix()}Module ${dayNum}?`,
+      question: `What is the main topic of ${meta.quizPrefix()}${track === 'aws' ? 'Day' : 'Module'} ${dayNum}?`,
       options: [entry.title, 'HTML tables only', 'Linux kernel modules', 'Photoshop layers'],
       answer: 0,
       explanation: `${meta.quizPrefix()}Module ${dayNum} focuses on ${entry.title}.`,
@@ -116,6 +127,7 @@ export function buildChapter(entry, id, options = {}) {
     day: dayNum,
     nextDay: entry.nextDay,
     pyDay: entry.pyDay,
+    awsDay: entry.awsDay,
     rnDay: entry.rnDay,
     title: entry.title,
     subtitle: entry.subtitle,
@@ -127,7 +139,7 @@ export function buildChapter(entry, id, options = {}) {
     quiz,
     youtubeUrl: entry.youtube.url,
     youtubeTitle: `${entry.youtube.title} — ${entry.youtube.channel}`,
-    paidLectureUrl: meta.paidUrl,
+    paidLectureUrl: entry.paidLectureUrl || meta.paidUrl,
     paidLectureLabel: meta.paidLabel,
   };
 
@@ -151,6 +163,12 @@ export function buildNextjsChapters(curriculum) {
 export function buildPythonChapters(curriculum) {
   return curriculum.map((entry, index) =>
     buildChapter(entry, index + 1, { track: 'python' }),
+  );
+}
+
+export function buildAwsChapters(curriculum) {
+  return curriculum.map((entry, index) =>
+    buildChapter(entry, index + 1, { track: 'aws' }),
   );
 }
 

@@ -2,9 +2,11 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { chapters, searchChapters } from '../data/chapters';
 import { nextjsChapters } from '../data/nextjsChapters';
 import { pythonChapters } from '../data/pythonChapters';
+import { awsChapters } from '../data/awsChapters';
 import { mobileChapters } from '../data/mobileChapters';
 import { NEXTJS_META } from '../data/nextjsSyllabus';
 import { PYTHON_META } from '../data/pythonSyllabus';
+import { AWS_META } from '../data/awsSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import LectureCard from '../components/LectureCard';
@@ -168,9 +170,50 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="thunder-plus-section thunder-aws-section" id="thunder-aws">
+        <div className="thunder-plus-inner">
+          <span className="thunder-plus-badge thunder-plus-badge-aws">After Python & Agentic AI</span>
+          <h2>Thunder++ — 100 Days of AWS Cloud</h2>
+          <p className="section-desc">
+            Master AWS with{' '}
+            <a href={AWS_META.kodekloudUrl} target="_blank" rel="noopener noreferrer">
+              KodeKloud 100 Days of Cloud
+            </a>{' '}
+            and{' '}
+            <a href={AWS_META.cloudfolksUrl} target="_blank" rel="noopener noreferrer">
+              CloudFolks Hub
+            </a>
+            . {awsChapters.length} hands-on days covering IAM, EC2, S3, VPC, RDS, Lambda, IaC, and SAA-C03 certification
+            prep with Bhavesh Atara.
+          </p>
+          <div className="thunder-plus-highlights">
+            <span>☁️ AWS + Azure</span>
+            <span>🎯 100 Hands-on Tasks</span>
+            <span>🏆 SAA-C03 Prep</span>
+            <span>📁 Cloud Portfolio</span>
+          </div>
+          <div className="thunder-plus-actions">
+            <Link to="/aws" className="btn btn-aws btn-lg">
+              Explore AWS Track
+            </Link>
+            <Link to="/aws/learn/introduction-to-100-days-of-cloud" className="btn btn-aws-kodekloud btn-lg">
+              Start AWS Day 1
+            </Link>
+            <a
+              href={AWS_META.udemyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline-aws btn-lg"
+            >
+              Udemy SAA-C03
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section className="thunder-plus-section" id="thunder-plus">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge">After Python & Agentic AI</span>
+          <span className="thunder-plus-badge">After 100 Days of AWS</span>
           <h2>Thunder++ — React Native</h2>
           <p className="section-desc">
             Then continue with the{' '}
