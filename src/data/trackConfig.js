@@ -5,6 +5,7 @@ export const PYTHON_MODULES = 45;
 export const JAVA_MODULES = 50;
 export const AWS_DAYS = 100;
 export const DEVOPS_DAYS = 100;
+export const K8S_DAYS = 100;
 export const MOBILE_LESSONS = 25;
 
 export const TRACK_OFFSETS = {
@@ -21,6 +22,14 @@ export const TRACK_OFFSETS = {
     PYTHON_MODULES +
     JAVA_MODULES +
     AWS_DAYS,
+  k8s:
+    THUNDER_DAYS +
+    NEXTJS_MODULES +
+    MOBILE_LESSONS +
+    PYTHON_MODULES +
+    JAVA_MODULES +
+    AWS_DAYS +
+    DEVOPS_DAYS,
 };
 
 export const NEXTJS_UDEMY_URL =
@@ -35,6 +44,23 @@ export const KODEKLOUD_CLOUD_URL = 'https://kodekloud.com/100-days-of-cloud';
 export const KODEKLOUD_DEVOPS_URL = 'https://kodekloud.com/100-days-of-devops';
 
 export const KODEKLOUD_DEVOPS_PATH_URL = 'https://kodekloud.com/learning-path/devops';
+
+export const KODEKLOUD_K8S_PATH_URL = 'https://kodekloud.com/learning-path/kubernetes';
+
+export const KODEKLOUD_K8S_BEGINNERS_URL =
+  'https://learn.kodekloud.com/user/courses/kubernetes-for-the-absolute-beginners-hands-on-tutorial';
+
+export const KODEKLOUD_CKA_URL =
+  'https://learn.kodekloud.com/user/courses/cka-certification-course-certified-kubernetes-administrator';
+
+export const KODEKLOUD_K8S_CHALLENGES_URL =
+  'https://learn.kodekloud.com/user/courses/kubernetes-challenges';
+
+export const KODEKLOUD_K8S_PLAYGROUNDS_URL = 'https://kodekloud.com/public-playgrounds';
+
+export const KODEKLOUD_K8S_COURSES_URL = 'https://kodekloud.com/learn/kubernetes-courses';
+
+export const KODEKLOUD_K8S_LABS_URL = 'https://kodekloud.com/studio/labs/kubernetes';
 
 export const CLOUDFOLKS_HUB_URL = 'https://www.cloudfolkshub.com';
 

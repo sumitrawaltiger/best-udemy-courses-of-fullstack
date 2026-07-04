@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 
 export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 'Day' }) {
-  const dayNum = chapter.devopsDay ?? chapter.awsDay ?? chapter.javaDay ?? chapter.pyDay ?? chapter.nextDay ?? chapter.rnDay ?? chapter.day;
+  const dayNum = chapter.k8sDay ?? chapter.devopsDay ?? chapter.awsDay ?? chapter.javaDay ?? chapter.pyDay ?? chapter.nextDay ?? chapter.rnDay ?? chapter.day;
   const learnUrl = `${basePath}/${chapter.slug}`;
   const isMobile = basePath.includes('mobile');
+  const isK8s = basePath.includes('/k8s');
   const isDevops = basePath.includes('devops');
   const isAws = basePath.includes('aws');
   const isJava = basePath.includes('java');
@@ -11,7 +12,9 @@ export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 
   const isPython = basePath.includes('python');
   const watchBtn = isMobile
     ? 'btn-mobile'
-    : isDevops
+    : isK8s
+      ? 'btn-k8s'
+      : isDevops
       ? 'btn-devops'
       : isAws
         ? 'btn-aws'
@@ -24,7 +27,9 @@ export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 
               : 'btn-watch';
   const paidBtn = isMobile
     ? 'btn-mobile-cohort-sm'
-    : isDevops
+    : isK8s
+      ? 'btn-k8s-kodekloud-sm'
+      : isDevops
       ? 'btn-devops-kodekloud-sm'
       : isAws
         ? 'btn-aws-kodekloud-sm'
@@ -37,7 +42,9 @@ export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 
               : 'btn-paid-sm';
   const cardClass = isMobile
     ? 'lecture-card-mobile'
-    : isDevops
+    : isK8s
+      ? 'lecture-card-k8s'
+      : isDevops
       ? 'lecture-card-devops'
       : isAws
         ? 'lecture-card-aws'
@@ -50,7 +57,9 @@ export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 
               : '';
   const thumbClass = isMobile
     ? 'thumb-day-mobile'
-    : isDevops
+    : isK8s
+      ? 'thumb-day-k8s'
+      : isDevops
       ? 'thumb-day-devops'
       : isAws
         ? 'thumb-day-aws'
@@ -79,7 +88,7 @@ export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 
       <div className="lecture-body">
         <h2 className="lecture-title">
           <Link to={learnUrl}>
-            {dayPrefix === 'Day' || dayPrefix === 'AWS' || dayPrefix === 'DO'
+            {dayPrefix === 'Day' || dayPrefix === 'AWS' || dayPrefix === 'DO' || dayPrefix === 'K8S'
               ? 'Day'
               : dayPrefix === 'NX' || dayPrefix === 'PY' || dayPrefix === 'JV'
                 ? 'Module'

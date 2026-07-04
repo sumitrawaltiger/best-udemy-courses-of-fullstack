@@ -6,8 +6,9 @@ import { pythonChapters } from '../data/pythonChapters';
 import { javaChapters } from '../data/javaChapters';
 import { awsChapters } from '../data/awsChapters';
 import { devopsChapters } from '../data/devopsChapters';
+import { k8sChapters } from '../data/k8sChapters';
 import { mobileChapters } from '../data/mobileChapters';
-import { NEXTJS_MODULES, PYTHON_MODULES, JAVA_MODULES, AWS_DAYS, DEVOPS_DAYS, MOBILE_LESSONS } from '../data/trackConfig';
+import { NEXTJS_MODULES, PYTHON_MODULES, JAVA_MODULES, AWS_DAYS, DEVOPS_DAYS, K8S_DAYS, MOBILE_LESSONS } from '../data/trackConfig';
 
 const TRACK_CONFIG = {
   thunder: {
@@ -75,6 +76,17 @@ const TRACK_CONFIG = {
     cssClass: 'sidebar-devops',
     activeClass: 'sidebar-link-devops',
     progressClass: 'progress-fill-devops',
+  },
+  k8s: {
+    list: k8sChapters,
+    basePath: '/k8s/learn',
+    heading: 'Kubernetes',
+    dayLabel: (ch) => `Day ${ch.k8sDay}`,
+    total: K8S_DAYS,
+    unit: 'days',
+    cssClass: 'sidebar-k8s',
+    activeClass: 'sidebar-link-k8s',
+    progressClass: 'progress-fill-k8s',
   },
   mobile: {
     list: mobileChapters,

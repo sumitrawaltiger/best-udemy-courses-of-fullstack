@@ -12,6 +12,7 @@ export default function Layout() {
   const isJavaTrack = location.pathname.startsWith('/java');
   const isAwsTrack = location.pathname.startsWith('/aws');
   const isDevopsTrack = location.pathname.startsWith('/devops');
+  const isK8sTrack = location.pathname.startsWith('/k8s');
   const showSidebar =
     location.pathname.startsWith('/learn/') ||
     location.pathname.startsWith('/nextjs/learn/') ||
@@ -19,12 +20,15 @@ export default function Layout() {
     location.pathname.startsWith('/java/learn/') ||
     location.pathname.startsWith('/aws/learn/') ||
     location.pathname.startsWith('/devops/learn/') ||
+    location.pathname.startsWith('/k8s/learn/') ||
     location.pathname.startsWith('/mobile/learn/');
 
   const track = isMobileTrack
     ? 'mobile'
-    : isDevopsTrack
-      ? 'devops'
+    : isK8sTrack
+      ? 'k8s'
+      : isDevopsTrack
+        ? 'devops'
       : isAwsTrack
         ? 'aws'
         : isJavaTrack
@@ -37,7 +41,7 @@ export default function Layout() {
 
   return (
     <div
-      className={`app ${isMobileTrack ? 'app-mobile' : ''} ${isNextjsTrack ? 'app-nextjs' : ''} ${isPythonTrack ? 'app-python' : ''} ${isJavaTrack ? 'app-java' : ''} ${isAwsTrack ? 'app-aws' : ''} ${isDevopsTrack ? 'app-devops' : ''}`}
+      className={`app ${isMobileTrack ? 'app-mobile' : ''} ${isNextjsTrack ? 'app-nextjs' : ''} ${isPythonTrack ? 'app-python' : ''} ${isJavaTrack ? 'app-java' : ''} ${isAwsTrack ? 'app-aws' : ''} ${isDevopsTrack ? 'app-devops' : ''} ${isK8sTrack ? 'app-k8s' : ''}`}
     >
       <Header />
       <div className={`main-layout ${showSidebar ? 'with-sidebar' : 'no-sidebar'}`}>
@@ -55,7 +59,7 @@ export default function Layout() {
           — sharing my JavaScript learning journey with the world.
         </p>
         <p className="footer-sub">
-          Thunder → Next.js → React Native → Python → Java → AWS → DevOps.
+          Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes.
         </p>
         <p className="footer-community">
           <a href={discordCommunity} target="_blank" rel="noopener noreferrer">

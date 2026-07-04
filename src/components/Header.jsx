@@ -4,6 +4,7 @@ import { discordCommunity } from '../data/syllabus';
 
 function trackFromPath(path) {
   if (path.startsWith('/mobile')) return 'mobile';
+  if (path.startsWith('/k8s')) return 'k8s';
   if (path.startsWith('/devops')) return 'devops';
   if (path.startsWith('/aws')) return 'aws';
   if (path.startsWith('/java')) return 'java';
@@ -19,6 +20,7 @@ const TRACK_HOME = {
   java: '/java',
   aws: '/aws',
   devops: '/devops',
+  k8s: '/k8s',
   mobile: '/mobile',
 };
 
@@ -29,6 +31,7 @@ const TRACK_START = {
   java: '/java/learn/introduction-to-java-and-setup',
   aws: '/aws/learn/introduction-to-100-days-of-cloud',
   devops: '/devops/learn/introduction-to-100-days-of-devops',
+  k8s: '/k8s/learn/introduction-to-kubernetes-learning-path',
   mobile: '/mobile/learn/react-js-refresher',
 };
 
@@ -39,6 +42,7 @@ const TRACK_SYLLABUS = {
   java: '/java#java-syllabus',
   aws: '/aws#aws-syllabus',
   devops: '/devops#devops-syllabus',
+  k8s: '/k8s#k8s-syllabus',
   mobile: '/mobile#mobile-syllabus',
 };
 
@@ -65,7 +69,9 @@ export default function Header({ onSearch }) {
   const logoIcon =
     track === 'mobile'
       ? 'RN'
-      : track === 'devops'
+      : track === 'k8s'
+        ? 'K8S'
+        : track === 'devops'
         ? 'DO'
         : track === 'aws'
           ? 'AWS'
@@ -79,7 +85,9 @@ export default function Header({ onSearch }) {
   const logoName =
     track === 'mobile'
       ? 'Thunder++ Mobile'
-      : track === 'devops'
+      : track === 'k8s'
+        ? 'Thunder++ Kubernetes'
+        : track === 'devops'
         ? 'Thunder++ DevOps'
         : track === 'aws'
           ? 'Thunder++ AWS Cloud'
@@ -93,7 +101,9 @@ export default function Header({ onSearch }) {
   const logoTagline =
     track === 'mobile'
       ? 'React Native by ChaiCode'
-      : track === 'devops'
+      : track === 'k8s'
+        ? 'Kubernetes — KodeKloud'
+        : track === 'devops'
         ? '100 Days of DevOps — KodeKloud'
         : track === 'aws'
           ? '100 Days of Cloud — KodeKloud'
@@ -108,7 +118,9 @@ export default function Header({ onSearch }) {
   const searchPlaceholder =
     track === 'mobile'
       ? 'Search mobile lessons...'
-      : track === 'devops'
+      : track === 'k8s'
+        ? 'Search Kubernetes days...'
+        : track === 'devops'
         ? 'Search DevOps days...'
         : track === 'aws'
           ? 'Search AWS days...'
@@ -122,12 +134,12 @@ export default function Header({ onSearch }) {
 
   return (
     <header
-      className={`header ${track === 'mobile' ? 'header-mobile' : ''} ${track === 'nextjs' ? 'header-nextjs' : ''} ${track === 'python' ? 'header-python' : ''} ${track === 'java' ? 'header-java' : ''} ${track === 'aws' ? 'header-aws' : ''} ${track === 'devops' ? 'header-devops' : ''}`}
+      className={`header ${track === 'mobile' ? 'header-mobile' : ''} ${track === 'nextjs' ? 'header-nextjs' : ''} ${track === 'python' ? 'header-python' : ''} ${track === 'java' ? 'header-java' : ''} ${track === 'aws' ? 'header-aws' : ''} ${track === 'devops' ? 'header-devops' : ''} ${track === 'k8s' ? 'header-k8s' : ''}`}
     >
       <div className="header-inner">
         <Link to={TRACK_HOME[track]} className="logo" onClick={closeMenu}>
           <span
-            className={`logo-icon ${track === 'mobile' ? 'logo-icon-mobile' : ''} ${track === 'nextjs' ? 'logo-icon-nextjs' : ''} ${track === 'python' ? 'logo-icon-python' : ''} ${track === 'java' ? 'logo-icon-java' : ''} ${track === 'aws' ? 'logo-icon-aws' : ''} ${track === 'devops' ? 'logo-icon-devops' : ''}`}
+            className={`logo-icon ${track === 'mobile' ? 'logo-icon-mobile' : ''} ${track === 'nextjs' ? 'logo-icon-nextjs' : ''} ${track === 'python' ? 'logo-icon-python' : ''} ${track === 'java' ? 'logo-icon-java' : ''} ${track === 'aws' ? 'logo-icon-aws' : ''} ${track === 'devops' ? 'logo-icon-devops' : ''} ${track === 'k8s' ? 'logo-icon-k8s' : ''}`}
           >
             {logoIcon}
           </span>
@@ -179,6 +191,9 @@ export default function Header({ onSearch }) {
           </Link>
           <Link to="/devops" onClick={closeMenu} className="header-devops-link">
             DevOps
+          </Link>
+          <Link to="/k8s" onClick={closeMenu} className="header-k8s-link">
+            Kubernetes
           </Link>
           <a href={TRACK_SYLLABUS[track]} onClick={closeMenu}>
             Syllabus

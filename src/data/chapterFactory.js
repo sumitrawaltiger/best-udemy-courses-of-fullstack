@@ -6,6 +6,7 @@ import {
   ASHOK_IT_URL,
   KODEKLOUD_CLOUD_URL,
   KODEKLOUD_DEVOPS_URL,
+  KODEKLOUD_K8S_PATH_URL,
   JAVA_UDEMY_COMPLETE_URL,
 } from './trackConfig.js';
 
@@ -87,6 +88,16 @@ const TRACK_META = {
     quizPrefix: () => 'DO ',
     tryIt: (n, title) => `# DevOps Day ${n}: ${title}\necho "Task complete"`,
   },
+  k8s: {
+    dayKey: 'k8sDay',
+    label: 'K8S',
+    offset: TRACK_OFFSETS.k8s,
+    paidUrl: KODEKLOUD_K8S_PATH_URL,
+    paidLabel: 'KodeKloud Kubernetes Path',
+    sectionPrefix: (n) => `Day ${n} of Kubernetes Learning Path`,
+    quizPrefix: () => 'K8S ',
+    tryIt: (n, title) => `# K8s Day ${n}: ${title}\nkubectl get pods`,
+  },
   mobile: {
     dayKey: 'rnDay',
     label: 'RN',
@@ -129,7 +140,7 @@ export function buildChapter(entry, id, options = {}) {
 
   const quiz = entry.quiz || [
     {
-      question: `What is the main topic of ${meta.quizPrefix()}${['aws', 'devops', 'thunder'].includes(track) ? 'Day' : 'Module'} ${dayNum}?`,
+      question: `What is the main topic of ${meta.quizPrefix()}${['aws', 'devops', 'k8s', 'thunder'].includes(track) ? 'Day' : 'Module'} ${dayNum}?`,
       options: [entry.title, 'HTML tables only', 'Linux kernel modules', 'Photoshop layers'],
       answer: 0,
       explanation: `${meta.quizPrefix()}Module ${dayNum} focuses on ${entry.title}.`,
@@ -152,6 +163,7 @@ export function buildChapter(entry, id, options = {}) {
     javaDay: entry.javaDay,
     awsDay: entry.awsDay,
     devopsDay: entry.devopsDay,
+    k8sDay: entry.k8sDay,
     rnDay: entry.rnDay,
     title: entry.title,
     subtitle: entry.subtitle,
@@ -205,6 +217,12 @@ export function buildAwsChapters(curriculum) {
 export function buildDevopsChapters(curriculum) {
   return curriculum.map((entry, index) =>
     buildChapter(entry, index + 1, { track: 'devops' }),
+  );
+}
+
+export function buildK8sChapters(curriculum) {
+  return curriculum.map((entry, index) =>
+    buildChapter(entry, index + 1, { track: 'k8s' }),
   );
 }
 

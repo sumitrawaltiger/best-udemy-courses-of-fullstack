@@ -5,12 +5,14 @@ import { pythonChapters } from '../data/pythonChapters';
 import { javaChapters } from '../data/javaChapters';
 import { awsChapters } from '../data/awsChapters';
 import { devopsChapters } from '../data/devopsChapters';
+import { k8sChapters } from '../data/k8sChapters';
 import { mobileChapters } from '../data/mobileChapters';
 import { NEXTJS_META } from '../data/nextjsSyllabus';
 import { PYTHON_META } from '../data/pythonSyllabus';
 import { JAVA_META } from '../data/javaSyllabus';
 import { AWS_META } from '../data/awsSyllabus';
 import { DEVOPS_META } from '../data/devopsSyllabus';
+import { K8S_META } from '../data/k8sSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import LectureCard from '../components/LectureCard';
@@ -322,6 +324,54 @@ export default function Home() {
               className="btn btn-outline-devops btn-lg"
             >
               DevOps Learning Path
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="thunder-plus-section thunder-k8s-section" id="thunder-k8s">
+        <div className="thunder-plus-inner">
+          <span className="thunder-plus-badge thunder-plus-badge-k8s">After 100 Days of DevOps</span>
+          <h2>Thunder++ — Kubernetes</h2>
+          <p className="section-desc">
+            Master Kubernetes with the{' '}
+            <a href={K8S_META.pathUrl} target="_blank" rel="noopener noreferrer">
+              KodeKloud Kubernetes Learning Path
+            </a>
+            . {k8sChapters.length} hands-on days covering Docker, Helm, Istio, EFK, Prometheus,{' '}
+            <a href={K8S_META.challengesUrl} target="_blank" rel="noopener noreferrer">
+              challenges
+            </a>
+            ,{' '}
+            <a href={K8S_META.playgroundsUrl} target="_blank" rel="noopener noreferrer">
+              playgrounds
+            </a>
+            , and{' '}
+            <a href={K8S_META.ckaUrl} target="_blank" rel="noopener noreferrer">
+              CKA certification
+            </a>
+            .
+          </p>
+          <div className="thunder-plus-highlights">
+            <span>☸️ K8s Core & EKS</span>
+            <span>🧪 Labs & Playgrounds</span>
+            <span>📊 Prometheus & Loki</span>
+            <span>🏆 CKA Prep</span>
+          </div>
+          <div className="thunder-plus-actions">
+            <Link to="/k8s" className="btn btn-k8s btn-lg">
+              Explore Kubernetes Track
+            </Link>
+            <Link to="/k8s/learn/introduction-to-kubernetes-learning-path" className="btn btn-k8s-kodekloud btn-lg">
+              Start K8s Day 1
+            </Link>
+            <a
+              href={K8S_META.labsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline-k8s btn-lg"
+            >
+              Studio Labs
             </a>
           </div>
         </div>

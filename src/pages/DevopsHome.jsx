@@ -45,6 +45,9 @@ export default function DevopsHome() {
                 <Link to="/aws" className="btn btn-outline-devops btn-lg">
                   ← 100 Days of AWS
                 </Link>
+                <Link to="/k8s" className="btn btn-outline-devops btn-lg">
+                  Kubernetes →
+                </Link>
               </div>
             }
           >
@@ -61,7 +64,7 @@ export default function DevopsHome() {
         <section className="roadmap">
           <h2>100-Day DevOps Roadmap</h2>
           <p className="section-desc">
-            All {devopsChapters.length} days from Linux to Kubernetes — the final track in your learning path.
+            All {devopsChapters.length} days from Linux to Kubernetes. Then continue to the Kubernetes learning path.
           </p>
           <div className="roadmap-grid roadmap-100 roadmap-devops">
             {devopsChapters.map((ch) => (

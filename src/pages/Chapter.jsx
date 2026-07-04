@@ -5,6 +5,7 @@ import { getPythonChapterBySlug, pythonChapters } from '../data/pythonChapters';
 import { getJavaChapterBySlug, javaChapters } from '../data/javaChapters';
 import { getAwsChapterBySlug, awsChapters } from '../data/awsChapters';
 import { getDevopsChapterBySlug, devopsChapters } from '../data/devopsChapters';
+import { getK8sChapterBySlug, k8sChapters } from '../data/k8sChapters';
 import { getMobileChapterBySlug, mobileChapters } from '../data/mobileChapters';
 import { thunderRepo } from '../data/syllabus';
 import { NEXTJS_META } from '../data/nextjsSyllabus';
@@ -12,6 +13,7 @@ import { PYTHON_META } from '../data/pythonSyllabus';
 import { JAVA_META } from '../data/javaSyllabus';
 import { AWS_META } from '../data/awsSyllabus';
 import { DEVOPS_META } from '../data/devopsSyllabus';
+import { K8S_META } from '../data/k8sSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import CodeBlock from '../components/CodeBlock';
 import CodePlayground from '../components/CodePlayground';
@@ -113,6 +115,23 @@ const TRACKS = {
       btnClass: 'btn-devops-kodekloud',
     },
   },
+  k8s: {
+    getChapter: getK8sChapterBySlug,
+    list: () => k8sChapters,
+    homePath: '/k8s',
+    learnPath: '/k8s/learn',
+    cssClass: 'chapter-k8s',
+    codeRepo: null,
+    codeLabel: 'Lab Code',
+    lessonLabel: 'Day',
+    extraLink: { href: K8S_META.playgroundsUrl, label: '🧪 K8s Playgrounds' },
+    banner: {
+      title: 'Ready for today\'s Kubernetes lab?',
+      text: 'Practice in KodeKloud playgrounds, studio labs, and challenges with real cluster environments.',
+      cta: 'Open Playgrounds →',
+      btnClass: 'btn-k8s-kodekloud',
+    },
+  },
   mobile: {
     getChapter: getMobileChapterBySlug,
     list: () => mobileChapters,
@@ -162,6 +181,7 @@ function getYoutubeEmbedUrl(url) {
 function dayLabel(chapter, track) {
   if (track === 'mobile') return `RN Day ${chapter.rnDay}`;
   if (track === 'devops') return `DevOps Day ${chapter.devopsDay}`;
+  if (track === 'k8s') return `K8s Day ${chapter.k8sDay}`;
   if (track === 'aws') return `AWS Day ${chapter.awsDay}`;
   if (track === 'java') return `JV Module ${chapter.javaDay}`;
   if (track === 'nextjs') return `NX Module ${chapter.nextDay}`;
@@ -172,6 +192,7 @@ function dayLabel(chapter, track) {
 function introClass(track) {
   if (track === 'mobile') return 'chapter-intro-mobile';
   if (track === 'devops') return 'chapter-intro-devops';
+  if (track === 'k8s') return 'chapter-intro-k8s';
   if (track === 'aws') return 'chapter-intro-aws';
   if (track === 'java') return 'chapter-intro-java';
   if (track === 'nextjs') return 'chapter-intro-nextjs';
@@ -182,6 +203,7 @@ function introClass(track) {
 function badgeClass(track) {
   if (track === 'mobile') return 'chapter-badge-mobile';
   if (track === 'devops') return 'chapter-badge-devops';
+  if (track === 'k8s') return 'chapter-badge-k8s';
   if (track === 'aws') return 'chapter-badge-aws';
   if (track === 'java') return 'chapter-badge-java';
   if (track === 'nextjs') return 'chapter-badge-nextjs';
@@ -192,6 +214,7 @@ function badgeClass(track) {
 function paidClass(track) {
   if (track === 'mobile') return 'paid-mobile';
   if (track === 'devops') return 'paid-devops';
+  if (track === 'k8s') return 'paid-k8s';
   if (track === 'aws') return 'paid-aws';
   if (track === 'java') return 'paid-java';
   if (track === 'nextjs') return 'paid-nextjs';
@@ -202,6 +225,7 @@ function paidClass(track) {
 function bannerClass(track) {
   if (track === 'mobile') return 'paid-lecture-banner-mobile';
   if (track === 'devops') return 'paid-lecture-banner-devops';
+  if (track === 'k8s') return 'paid-lecture-banner-k8s';
   if (track === 'aws') return 'paid-lecture-banner-aws';
   if (track === 'java') return 'paid-lecture-banner-java';
   if (track === 'nextjs') return 'paid-lecture-banner-nextjs';
@@ -212,6 +236,7 @@ function bannerClass(track) {
 function sectionNumClass(track) {
   if (track === 'mobile') return 'section-num-mobile';
   if (track === 'devops') return 'section-num-devops';
+  if (track === 'k8s') return 'section-num-k8s';
   if (track === 'aws') return 'section-num-aws';
   if (track === 'java') return 'section-num-java';
   if (track === 'nextjs') return 'section-num-nextjs';
@@ -288,7 +313,9 @@ export default function Chapter({ track = 'thunder' }) {
                     ? 'CloudFolks Course'
                     : track === 'devops'
                       ? 'CloudFolks DevOps'
-                      : 'My Notion Notes'}
+                      : track === 'k8s'
+                        ? 'KodeKloud K8s'
+                        : 'My Notion Notes'}
             </a>
           )}
           {cfg.extraLink && (
