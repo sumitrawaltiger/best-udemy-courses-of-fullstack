@@ -1,6 +1,9 @@
 // Days 20–100 — Thunder syllabus (Phases 1 wrap-up through 7 + career finish)
 // YouTube links: verified free tutorials from quality channels
 
+const NODE_LECTURE_NOTES =
+  'https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031';
+
 export const days20to100 = [
   // ── Phase 2: Backend Mastery begins (Day 20) ──
   {
@@ -10,8 +13,7 @@ export const days20to100 = [
     title: 'Introduction to Node.js',
     subtitle: 'Backend begins — runtime, npm, and your first Node programs',
     topics: ['What is Node.js', 'V8 & the runtime', 'Running .js with node', 'npm & package.json', 'Thunder 03Backend/Day01'],
-    notionUrl:
-      'https://app.notion.com/p/Lecture01-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031',
+    notionUrl: NODE_LECTURE_NOTES,
     githubPath: '03Backend/Day01',
     codeRepo: 'https://github.com/Rohitnegi9/Thunder/tree/main',
     youtube: {
@@ -49,7 +51,7 @@ export const days20to100 = [
         id: 'thunder-day01',
         title: 'Thunder 03Backend / Day01',
         content:
-          'Open **03Backend/Day01** on GitHub: `first.js`, `second.js`, and Project01–03. Match your work with the **Notion notes** for Lecture 01 — Introduction to Node.js.',
+          'Open **03Backend/Day01** on GitHub: `first.js`, `second.js`, and Project01–03. Match your work with the **Notion notes** for Lecture 01 & 02 — Introduction to Node.js.',
       },
     ],
     quiz: [
@@ -69,12 +71,66 @@ export const days20to100 = [
   },
   {
     day: 21,
-    phase: 'Phase 1: JavaScript Mastery',
-    title: 'Error Handling & Debugging',
-    subtitle: 'try/catch, throw, and debugging in DevTools',
-    topics: ['try / catch / finally', 'throw custom errors', 'Debugging with DevTools', 'console methods', 'Common runtime errors'],
-    youtube: { url: 'https://www.youtube.com/watch?v=bl98tJpgb6s', title: 'JavaScript Error Handling', channel: 'Web Dev Simplified' },
-    sampleCode: 'try {\n  JSON.parse("{bad json}");\n} catch (err) {\n  console.log("Caught:", err.message);\n}',
+    slug: 'node-js-http-server',
+    phase: 'Phase 2: Backend Mastery',
+    title: 'Node.js HTTP Server',
+    subtitle: 'http module, routing, and your first backend API',
+    topics: ['http.createServer', 'request.url routing', 'response.end', 'JSON responses', 'Thunder 03Backend/Day02'],
+    notionUrl: NODE_LECTURE_NOTES,
+    githubPath: '03Backend/Day02',
+    codeRepo: 'https://github.com/Rohitnegi9/Thunder/tree/main',
+    youtube: { url: 'https://www.youtube.com/watch?v=Oe421EPjeBE', title: 'Node.js HTTP Module', channel: 'Web Dev Simplified' },
+    sampleCode:
+      "const http = require('http');\n\nconst server = http.createServer((req, res) => {\n  res.end(JSON.stringify({ message: 'Hello from Day 21' }));\n});\n\nserver.listen(3000, () => console.log('Server on port 3000'));",
+    sections: [
+      {
+        id: 'http-module',
+        title: 'The http Module',
+        content:
+          'Node\'s built-in **http** module lets you create a server without Express. You handle each request in a callback and send a response with `response.end()`.',
+        code:
+          "const http = require('http');\n\nconst server = http.createServer((request, response) => {\n  response.end('Hello from Node!');\n});\n\nserver.listen(3000, () => {\n  console.log('Server is listening on port 3000');\n});",
+        tryIt: "console.log('Day 21 — http.createServer basics');",
+      },
+      {
+        id: 'url-routing',
+        title: 'URL Routing with request.url',
+        content:
+          'Parse `request.url` to build simple routes. Split the path to read operation and numbers — the same pattern used in **03Backend/Day02/second.js**.',
+        code:
+          "const path = request.url.split('/');\nconst operation = path[1];\nconst a = Number(path[2]);\nconst b = Number(path[3]);",
+        tryIt: "console.log('/add/10/20'.split('/'));",
+      },
+      {
+        id: 'json-responses',
+        title: 'Sending JSON Responses',
+        content:
+          'Use `response.end(JSON.stringify(result))` to return JSON from your API. Test with browser or curl: `http://localhost:3000/add/10/20`.',
+        code:
+          "if (operation === 'add') {\n  response.end(JSON.stringify(a + b));\n}",
+        tryIt: 'console.log(JSON.stringify({ sum: 10 + 20 }));',
+      },
+      {
+        id: 'thunder-day02',
+        title: 'Thunder 03Backend / Day02',
+        content:
+          'Open **03Backend/Day02** on GitHub: `first.js`, `second.js`, `third.js`, and LearnModule folders. Follow **Lecture 02** in the same Notion notes page as Day 20.',
+      },
+    ],
+    quiz: [
+      {
+        question: 'Which Node module creates a basic HTTP server?',
+        options: ['http', 'fs', 'path', 'crypto'],
+        answer: 0,
+        explanation: 'The built-in http module provides createServer().',
+      },
+      {
+        question: 'What port does the Day02 example server listen on?',
+        options: ['3000', '8080', '5000', '443'],
+        answer: 0,
+        explanation: 'Thunder Day02 uses port 3000 in second.js.',
+      },
+    ],
   },
   {
     day: 22,

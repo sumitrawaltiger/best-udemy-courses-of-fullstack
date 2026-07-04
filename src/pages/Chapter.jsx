@@ -325,10 +325,12 @@ export default function Chapter({ track = 'thunder' }) {
               ▶ Free on YouTube
             </a>
           )}
-          {chapter.notionUrl && track !== 'thunder' && (
+          {chapter.notionUrl && (
             <a href={chapter.notionUrl} target="_blank" rel="noopener noreferrer" className="chapter-link-btn">
               📝{' '}
-              {track === 'nextjs'
+              {track === 'thunder'
+                ? 'Notion Notes'
+                : track === 'nextjs'
                 ? 'Udemy Course'
                 : track === 'python'
                   ? 'Ashok IT Portal'

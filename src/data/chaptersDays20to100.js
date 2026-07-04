@@ -3,11 +3,12 @@ export const chaptersDays20to100 = [
   {
     "id": 20,
     "slug": "introduction-to-node-js",
+    "track": "thunder",
     "day": 20,
     "title": "Introduction to Node.js",
     "subtitle": "Backend begins — runtime, npm, and your first Node programs",
     "duration": "2 hrs",
-    "createdOn": "20 Jul 2026",
+    "createdOn": "23 Jul 2026",
     "status": "published",
     "topics": [
       "What is Node.js",
@@ -39,7 +40,7 @@ export const chaptersDays20to100 = [
       {
         "id": "thunder-day01",
         "title": "Thunder 03Backend / Day01",
-        "content": "Open **03Backend/Day01** on GitHub: `first.js`, `second.js`, and Project01–03. Match your work with the **Notion notes** for Lecture 01 — Introduction to Node.js."
+        "content": "Open **03Backend/Day01** on GitHub: `first.js`, `second.js`, and Project01–03. Match your work with the **Notion notes** for Lecture 01 & 02 — Introduction to Node.js."
       }
     ],
     "quiz": [
@@ -71,92 +72,95 @@ export const chaptersDays20to100 = [
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "githubPath": "03Backend/Day01",
-    "notionUrl": "https://app.notion.com/p/Lecture01-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031",
+    "notionUrl": "https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031",
     "codeRepo": "https://github.com/Rohitnegi9/Thunder/tree/main"
   },
   {
     "id": 21,
-    "slug": "error-handling-and-debugging",
+    "slug": "node-js-http-server",
+    "track": "thunder",
     "day": 21,
-    "title": "Error Handling & Debugging",
-    "subtitle": "try/catch, throw, and debugging in DevTools",
+    "title": "Node.js HTTP Server",
+    "subtitle": "http module, routing, and your first backend API",
     "duration": "2 hrs",
-    "createdOn": "21 Jul 2026",
+    "createdOn": "24 Jul 2026",
     "status": "published",
     "topics": [
-      "try / catch / finally",
-      "throw custom errors",
-      "Debugging with DevTools",
-      "console methods",
-      "Common runtime errors"
+      "http.createServer",
+      "request.url routing",
+      "response.end",
+      "JSON responses",
+      "Thunder 03Backend/Day02"
     ],
     "sections": [
       {
-        "id": "try-catch-finally",
-        "title": "try / catch / finally",
-        "content": "Learn **try / catch / finally** in Day 21 of Thunder: 100 Days of Code. try/catch, throw, and debugging in DevTools",
-        "code": "try {\n  JSON.parse(\"{bad json}\");\n} catch (err) {\n  console.log(\"Caught:\", err.message);\n}",
-        "tryIt": "console.log(\"Day 21: Error Handling & Debugging\");"
+        "id": "http-module",
+        "title": "The http Module",
+        "content": "Node's built-in **http** module lets you create a server without Express. You handle each request in a callback and send a response with `response.end()`.",
+        "code": "const http = require('http');\n\nconst server = http.createServer((request, response) => {\n  response.end('Hello from Node!');\n});\n\nserver.listen(3000, () => {\n  console.log('Server is listening on port 3000');\n});",
+        "tryIt": "console.log('Day 21 — http.createServer basics');"
       },
       {
-        "id": "throw-custom-errors",
-        "title": "throw custom errors",
-        "content": "Learn **throw custom errors** in Day 21 of Thunder: 100 Days of Code. try/catch, throw, and debugging in DevTools",
-        "code": "try {\n  JSON.parse(\"{bad json}\");\n} catch (err) {\n  console.log(\"Caught:\", err.message);\n}",
-        "tryIt": "console.log(\"Day 21: Error Handling & Debugging\");"
+        "id": "url-routing",
+        "title": "URL Routing with request.url",
+        "content": "Parse `request.url` to build simple routes. Split the path to read operation and numbers — the same pattern used in **03Backend/Day02/second.js**.",
+        "code": "const path = request.url.split('/');\nconst operation = path[1];\nconst a = Number(path[2]);\nconst b = Number(path[3]);",
+        "tryIt": "console.log('/add/10/20'.split('/'));"
       },
       {
-        "id": "debugging-with-devtools",
-        "title": "Debugging with DevTools",
-        "content": "Learn **Debugging with DevTools** in Day 21 of Thunder: 100 Days of Code. try/catch, throw, and debugging in DevTools",
-        "code": "try {\n  JSON.parse(\"{bad json}\");\n} catch (err) {\n  console.log(\"Caught:\", err.message);\n}",
-        "tryIt": "console.log(\"Day 21: Error Handling & Debugging\");"
+        "id": "json-responses",
+        "title": "Sending JSON Responses",
+        "content": "Use `response.end(JSON.stringify(result))` to return JSON from your API. Test with browser or curl: `http://localhost:3000/add/10/20`.",
+        "code": "if (operation === 'add') {\n  response.end(JSON.stringify(a + b));\n}",
+        "tryIt": "console.log(JSON.stringify({ sum: 10 + 20 }));"
       },
       {
-        "id": "console-methods",
-        "title": "console methods",
-        "content": "Learn **console methods** in Day 21 of Thunder: 100 Days of Code. try/catch, throw, and debugging in DevTools",
-        "code": "try {\n  JSON.parse(\"{bad json}\");\n} catch (err) {\n  console.log(\"Caught:\", err.message);\n}",
-        "tryIt": "console.log(\"Day 21: Error Handling & Debugging\");"
+        "id": "thunder-day02",
+        "title": "Thunder 03Backend / Day02",
+        "content": "Open **03Backend/Day02** on GitHub: `first.js`, `second.js`, `third.js`, and LearnModule folders. Follow **Lecture 02** in the same Notion notes page as Day 20."
       }
     ],
     "quiz": [
       {
-        "question": "What is the main topic of Day 21?",
+        "question": "Which Node module creates a basic HTTP server?",
         "options": [
-          "Error Handling & Debugging",
-          "HTML tables only",
-          "Linux kernel modules",
-          "Photoshop layers"
+          "http",
+          "fs",
+          "path",
+          "crypto"
         ],
         "answer": 0,
-        "explanation": "Day 21 focuses on Error Handling & Debugging."
+        "explanation": "The built-in http module provides createServer()."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "What port does the Day02 example server listen on?",
         "options": [
-          "Phase 1: JavaScript Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "3000",
+          "8080",
+          "5000",
+          "443"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 1: JavaScript Mastery."
+        "explanation": "Thunder Day02 uses port 3000 in second.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=bl98tJpgb6s",
-    "youtubeTitle": "JavaScript Error Handling — Web Dev Simplified",
+    "youtubeUrl": "https://www.youtube.com/watch?v=Oe421EPjeBE",
+    "youtubeTitle": "Node.js HTTP Module — Web Dev Simplified",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
-    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
+    "githubPath": "03Backend/Day02",
+    "notionUrl": "https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031",
+    "codeRepo": "https://github.com/Rohitnegi9/Thunder/tree/main"
   },
   {
     "id": 22,
     "slug": "timers-debounce-and-throttle",
+    "track": "thunder",
     "day": 22,
     "title": "Timers, Debounce & Throttle",
     "subtitle": "setTimeout, setInterval, and performance patterns",
     "duration": "2 hrs",
-    "createdOn": "22 Jul 2026",
+    "createdOn": "25 Jul 2026",
     "status": "published",
     "topics": [
       "setTimeout & setInterval",
@@ -205,18 +209,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 22 focuses on Timers, Debounce & Throttle."
+        "explanation": "Module 22 focuses on Timers, Debounce & Throttle."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 1: JavaScript Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 1: JavaScript Mastery."
+        "explanation": "This module belongs to Phase 1: JavaScript Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=Pkqtfaep7ZI",
@@ -227,11 +231,12 @@ export const chaptersDays20to100 = [
   {
     "id": 23,
     "slug": "javascript-classes-and-oop",
+    "track": "thunder",
     "day": 23,
     "title": "JavaScript Classes & OOP",
     "subtitle": "Classes, constructors, inheritance, and static methods",
     "duration": "2 hrs",
-    "createdOn": "23 Jul 2026",
+    "createdOn": "26 Jul 2026",
     "status": "published",
     "topics": [
       "class syntax",
@@ -280,18 +285,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 23 focuses on JavaScript Classes & OOP."
+        "explanation": "Module 23 focuses on JavaScript Classes & OOP."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 1: JavaScript Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 1: JavaScript Mastery."
+        "explanation": "This module belongs to Phase 1: JavaScript Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=KLvG0sLr8VY",
@@ -302,11 +307,12 @@ export const chaptersDays20to100 = [
   {
     "id": 24,
     "slug": "web-security-basics",
+    "track": "thunder",
     "day": 24,
     "title": "Web Security Basics",
     "subtitle": "XSS, CSRF, CORS, and safe API usage",
     "duration": "2 hrs",
-    "createdOn": "24 Jul 2026",
+    "createdOn": "27 Jul 2026",
     "status": "published",
     "topics": [
       "XSS attacks",
@@ -351,18 +357,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 24 focuses on Web Security Basics."
+        "explanation": "Module 24 focuses on Web Security Basics."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 1: JavaScript Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 1: JavaScript Mastery."
+        "explanation": "This module belongs to Phase 1: JavaScript Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=4YjpPmdDeog",
@@ -373,11 +379,12 @@ export const chaptersDays20to100 = [
   {
     "id": 25,
     "slug": "javascript-mastery-review",
+    "track": "thunder",
     "day": 25,
     "title": "JavaScript Mastery Review",
     "subtitle": "Revision, patterns, and interview-ready JS concepts",
     "duration": "2 hrs",
-    "createdOn": "25 Jul 2026",
+    "createdOn": "28 Jul 2026",
     "status": "published",
     "topics": [
       "Core concepts review",
@@ -422,18 +429,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 25 focuses on JavaScript Mastery Review."
+        "explanation": "Module 25 focuses on JavaScript Mastery Review."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 1: JavaScript Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 1: JavaScript Mastery."
+        "explanation": "This module belongs to Phase 1: JavaScript Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=PkZNo7MFNFg",
@@ -444,11 +451,12 @@ export const chaptersDays20to100 = [
   {
     "id": 26,
     "slug": "node-js-and-runtime-fundamentals",
+    "track": "thunder",
     "day": 26,
     "title": "Node.js & Runtime Fundamentals",
     "subtitle": "V8, npm, modules, and the Node event loop",
     "duration": "2 hrs",
-    "createdOn": "26 Jul 2026",
+    "createdOn": "29 Jul 2026",
     "status": "published",
     "topics": [
       "What is Node.js",
@@ -493,18 +501,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 26 focuses on Node.js & Runtime Fundamentals."
+        "explanation": "Module 26 focuses on Node.js & Runtime Fundamentals."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=TlB_eWDSMt4",
@@ -516,11 +524,12 @@ export const chaptersDays20to100 = [
   {
     "id": 27,
     "slug": "http-rest-and-express-js",
+    "track": "thunder",
     "day": 27,
     "title": "HTTP, REST & Express.js",
     "subtitle": "Build your first REST API with Express",
     "duration": "2 hrs",
-    "createdOn": "27 Jul 2026",
+    "createdOn": "30 Jul 2026",
     "status": "published",
     "topics": [
       "HTTP methods & status codes",
@@ -565,18 +574,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 27 focuses on HTTP, REST & Express.js."
+        "explanation": "Module 27 focuses on HTTP, REST & Express.js."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=L72fhGm1tfE",
@@ -587,11 +596,12 @@ export const chaptersDays20to100 = [
   {
     "id": 28,
     "slug": "middleware-and-request-lifecycle",
+    "track": "thunder",
     "day": 28,
     "title": "Middleware & Request Lifecycle",
     "subtitle": "How requests flow through Express middleware",
     "duration": "2 hrs",
-    "createdOn": "28 Jul 2026",
+    "createdOn": "31 Jul 2026",
     "status": "published",
     "topics": [
       "What is middleware",
@@ -636,18 +646,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 28 focuses on Middleware & Request Lifecycle."
+        "explanation": "Module 28 focuses on Middleware & Request Lifecycle."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=lY5icMHlVl0",
@@ -658,11 +668,12 @@ export const chaptersDays20to100 = [
   {
     "id": 29,
     "slug": "mongodb-and-database-design",
+    "track": "thunder",
     "day": 29,
     "title": "MongoDB & Database Design",
     "subtitle": "NoSQL documents, collections, and CRUD operations",
     "duration": "2 hrs",
-    "createdOn": "29 Jul 2026",
+    "createdOn": "1 Aug 2026",
     "status": "published",
     "topics": [
       "MongoDB basics",
@@ -707,18 +718,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 29 focuses on MongoDB & Database Design."
+        "explanation": "Module 29 focuses on MongoDB & Database Design."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=ofme2o29ngU",
@@ -729,11 +740,12 @@ export const chaptersDays20to100 = [
   {
     "id": 30,
     "slug": "mongoose-odm",
+    "track": "thunder",
     "day": 30,
     "title": "Mongoose ODM",
     "subtitle": "Schemas, models, validation, and relationships",
     "duration": "2 hrs",
-    "createdOn": "30 Jul 2026",
+    "createdOn": "2 Aug 2026",
     "status": "published",
     "topics": [
       "Mongoose schemas",
@@ -778,18 +790,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 30 focuses on Mongoose ODM."
+        "explanation": "Module 30 focuses on Mongoose ODM."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=ExcKwvgN5oY",
@@ -800,11 +812,12 @@ export const chaptersDays20to100 = [
   {
     "id": 31,
     "slug": "authentication-with-jwt",
+    "track": "thunder",
     "day": 31,
     "title": "Authentication with JWT",
     "subtitle": "Register, login, tokens, and protected routes",
     "duration": "2 hrs",
-    "createdOn": "31 Jul 2026",
+    "createdOn": "3 Aug 2026",
     "status": "published",
     "topics": [
       "Auth vs authorization",
@@ -849,18 +862,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 31 focuses on Authentication with JWT."
+        "explanation": "Module 31 focuses on Authentication with JWT."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=mbsmsi7l3r4",
@@ -871,11 +884,12 @@ export const chaptersDays20to100 = [
   {
     "id": 32,
     "slug": "authorization-and-role-based-access",
+    "track": "thunder",
     "day": 32,
     "title": "Authorization & Role-Based Access",
     "subtitle": "Roles, permissions, and access control patterns",
     "duration": "2 hrs",
-    "createdOn": "1 Aug 2026",
+    "createdOn": "4 Aug 2026",
     "status": "published",
     "topics": [
       "RBAC concepts",
@@ -920,18 +934,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 32 focuses on Authorization & Role-Based Access."
+        "explanation": "Module 32 focuses on Authorization & Role-Based Access."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=DZF2bA0RESc",
@@ -942,11 +956,12 @@ export const chaptersDays20to100 = [
   {
     "id": 33,
     "slug": "file-uploads-and-cloud-storage",
+    "track": "thunder",
     "day": 33,
     "title": "File Uploads & Cloud Storage",
     "subtitle": "Multer, file validation, and cloud buckets",
     "duration": "2 hrs",
-    "createdOn": "2 Aug 2026",
+    "createdOn": "5 Aug 2026",
     "status": "published",
     "topics": [
       "Multipart form data",
@@ -991,18 +1006,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 33 focuses on File Uploads & Cloud Storage."
+        "explanation": "Module 33 focuses on File Uploads & Cloud Storage."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=b7PUm7l5mEw",
@@ -1013,11 +1028,12 @@ export const chaptersDays20to100 = [
   {
     "id": 34,
     "slug": "websockets-and-real-time-apis",
+    "track": "thunder",
     "day": 34,
     "title": "WebSockets & Real-Time APIs",
     "subtitle": "Socket.io, rooms, and live updates",
     "duration": "2 hrs",
-    "createdOn": "3 Aug 2026",
+    "createdOn": "6 Aug 2026",
     "status": "published",
     "topics": [
       "HTTP vs WebSockets",
@@ -1062,18 +1078,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 34 focuses on WebSockets & Real-Time APIs."
+        "explanation": "Module 34 focuses on WebSockets & Real-Time APIs."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=ZKEqqIO7n-k",
@@ -1084,11 +1100,12 @@ export const chaptersDays20to100 = [
   {
     "id": 35,
     "slug": "error-handling-and-validation",
+    "track": "thunder",
     "day": 35,
     "title": "Error Handling & Validation",
     "subtitle": "Express-validator, custom errors, and API responses",
     "duration": "2 hrs",
-    "createdOn": "4 Aug 2026",
+    "createdOn": "7 Aug 2026",
     "status": "published",
     "topics": [
       "Validation middleware",
@@ -1133,18 +1150,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 35 focuses on Error Handling & Validation."
+        "explanation": "Module 35 focuses on Error Handling & Validation."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=2Crh44XwS-Q",
@@ -1155,11 +1172,12 @@ export const chaptersDays20to100 = [
   {
     "id": 36,
     "slug": "api-security-best-practices",
+    "track": "thunder",
     "day": 36,
     "title": "API Security Best Practices",
     "subtitle": "Helmet, rate limiting, sanitization, and secrets",
     "duration": "2 hrs",
-    "createdOn": "5 Aug 2026",
+    "createdOn": "8 Aug 2026",
     "status": "published",
     "topics": [
       "Helmet.js",
@@ -1204,18 +1222,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 36 focuses on API Security Best Practices."
+        "explanation": "Module 36 focuses on API Security Best Practices."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=4YjpPmdDeog",
@@ -1226,11 +1244,12 @@ export const chaptersDays20to100 = [
   {
     "id": 37,
     "slug": "rest-api-project-part-1",
+    "track": "thunder",
     "day": 37,
     "title": "REST API Project — Part 1",
     "subtitle": "Project setup, models, and core endpoints",
     "duration": "2 hrs",
-    "createdOn": "6 Aug 2026",
+    "createdOn": "9 Aug 2026",
     "status": "published",
     "topics": [
       "Project architecture",
@@ -1275,18 +1294,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 37 focuses on REST API Project — Part 1."
+        "explanation": "Module 37 focuses on REST API Project — Part 1."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=_7UQPve99r4",
@@ -1297,11 +1316,12 @@ export const chaptersDays20to100 = [
   {
     "id": 38,
     "slug": "rest-api-project-part-2",
+    "track": "thunder",
     "day": 38,
     "title": "REST API Project — Part 2",
     "subtitle": "Auth integration, middleware, and deployment prep",
     "duration": "2 hrs",
-    "createdOn": "7 Aug 2026",
+    "createdOn": "10 Aug 2026",
     "status": "published",
     "topics": [
       "Adding authentication",
@@ -1346,18 +1366,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 38 focuses on REST API Project — Part 2."
+        "explanation": "Module 38 focuses on REST API Project — Part 2."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=fgTGADljAeg",
@@ -1368,11 +1388,12 @@ export const chaptersDays20to100 = [
   {
     "id": 39,
     "slug": "api-testing-with-postman",
+    "track": "thunder",
     "day": 39,
     "title": "API Testing with Postman",
     "subtitle": "Collections, environments, and automated tests",
     "duration": "2 hrs",
-    "createdOn": "8 Aug 2026",
+    "createdOn": "11 Aug 2026",
     "status": "published",
     "topics": [
       "Postman collections",
@@ -1417,18 +1438,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 39 focuses on API Testing with Postman."
+        "explanation": "Module 39 focuses on API Testing with Postman."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=VywxIQ2jq7c",
@@ -1439,11 +1460,12 @@ export const chaptersDays20to100 = [
   {
     "id": 40,
     "slug": "backend-capstone-project",
+    "track": "thunder",
     "day": 40,
     "title": "Backend Capstone Project",
     "subtitle": "Build and ship a production-ready API",
     "duration": "2 hrs",
-    "createdOn": "9 Aug 2026",
+    "createdOn": "12 Aug 2026",
     "status": "published",
     "topics": [
       "Capstone requirements",
@@ -1488,18 +1510,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 40 focuses on Backend Capstone Project."
+        "explanation": "Module 40 focuses on Backend Capstone Project."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 2: Backend Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 2: Backend Mastery."
+        "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=fgTGADljAeg",
@@ -1510,11 +1532,12 @@ export const chaptersDays20to100 = [
   {
     "id": 41,
     "slug": "monolith-vs-microservices",
+    "track": "thunder",
     "day": 41,
     "title": "Monolith vs Microservices",
     "subtitle": "Architecture trade-offs and when to split services",
     "duration": "2 hrs",
-    "createdOn": "10 Aug 2026",
+    "createdOn": "13 Aug 2026",
     "status": "published",
     "topics": [
       "Monolith benefits",
@@ -1559,18 +1582,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 41 focuses on Monolith vs Microservices."
+        "explanation": "Module 41 focuses on Monolith vs Microservices."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 3: System Thinking & Scaling",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 3: System Thinking & Scaling."
+        "explanation": "This module belongs to Phase 3: System Thinking & Scaling."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=IRQi0Zt2N00",
@@ -1581,11 +1604,12 @@ export const chaptersDays20to100 = [
   {
     "id": 42,
     "slug": "caching-with-redis",
+    "track": "thunder",
     "day": 42,
     "title": "Caching with Redis",
     "subtitle": "In-memory caching, TTL, and cache strategies",
     "duration": "2 hrs",
-    "createdOn": "11 Aug 2026",
+    "createdOn": "14 Aug 2026",
     "status": "published",
     "topics": [
       "Why caching",
@@ -1630,18 +1654,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 42 focuses on Caching with Redis."
+        "explanation": "Module 42 focuses on Caching with Redis."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 3: System Thinking & Scaling",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 3: System Thinking & Scaling."
+        "explanation": "This module belongs to Phase 3: System Thinking & Scaling."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=Hbt56gFj998",
@@ -1652,11 +1676,12 @@ export const chaptersDays20to100 = [
   {
     "id": 43,
     "slug": "message-queues-and-pub-sub",
+    "track": "thunder",
     "day": 43,
     "title": "Message Queues & Pub/Sub",
     "subtitle": "Async communication with queues and events",
     "duration": "2 hrs",
-    "createdOn": "12 Aug 2026",
+    "createdOn": "15 Aug 2026",
     "status": "published",
     "topics": [
       "Message queues",
@@ -1701,18 +1726,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 43 focuses on Message Queues & Pub/Sub."
+        "explanation": "Module 43 focuses on Message Queues & Pub/Sub."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 3: System Thinking & Scaling",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 3: System Thinking & Scaling."
+        "explanation": "This module belongs to Phase 3: System Thinking & Scaling."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=ymrTs66e-gc",
@@ -1723,11 +1748,12 @@ export const chaptersDays20to100 = [
   {
     "id": 44,
     "slug": "load-balancing-and-reverse-proxies",
+    "track": "thunder",
     "day": 44,
     "title": "Load Balancing & Reverse Proxies",
     "subtitle": "Nginx, horizontal scaling, and traffic distribution",
     "duration": "2 hrs",
-    "createdOn": "13 Aug 2026",
+    "createdOn": "16 Aug 2026",
     "status": "published",
     "topics": [
       "Load balancer types",
@@ -1772,18 +1798,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 44 focuses on Load Balancing & Reverse Proxies."
+        "explanation": "Module 44 focuses on Load Balancing & Reverse Proxies."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 3: System Thinking & Scaling",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 3: System Thinking & Scaling."
+        "explanation": "This module belongs to Phase 3: System Thinking & Scaling."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=9a5TeSrrMcU",
@@ -1794,11 +1820,12 @@ export const chaptersDays20to100 = [
   {
     "id": 45,
     "slug": "database-scaling-and-sharding",
+    "track": "thunder",
     "day": 45,
     "title": "Database Scaling & Sharding",
     "subtitle": "Replication, sharding, and read replicas",
     "duration": "2 hrs",
-    "createdOn": "14 Aug 2026",
+    "createdOn": "17 Aug 2026",
     "status": "published",
     "topics": [
       "Vertical vs horizontal scaling",
@@ -1843,18 +1870,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 45 focuses on Database Scaling & Sharding."
+        "explanation": "Module 45 focuses on Database Scaling & Sharding."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 3: System Thinking & Scaling",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 3: System Thinking & Scaling."
+        "explanation": "This module belongs to Phase 3: System Thinking & Scaling."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=5faMjKuB9BA",
@@ -1865,11 +1892,12 @@ export const chaptersDays20to100 = [
   {
     "id": 46,
     "slug": "rate-limiting-and-throttling",
+    "track": "thunder",
     "day": 46,
     "title": "Rate Limiting & Throttling",
     "subtitle": "Protect APIs from abuse and overload",
     "duration": "2 hrs",
-    "createdOn": "15 Aug 2026",
+    "createdOn": "18 Aug 2026",
     "status": "published",
     "topics": [
       "Why rate limit",
@@ -1914,18 +1942,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 46 focuses on Rate Limiting & Throttling."
+        "explanation": "Module 46 focuses on Rate Limiting & Throttling."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 3: System Thinking & Scaling",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 3: System Thinking & Scaling."
+        "explanation": "This module belongs to Phase 3: System Thinking & Scaling."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=9DCEO6L5W2s",
@@ -1936,11 +1964,12 @@ export const chaptersDays20to100 = [
   {
     "id": 47,
     "slug": "backend-scaling-patterns",
+    "track": "thunder",
     "day": 47,
     "title": "Backend Scaling Patterns",
     "subtitle": "Putting it together — scalable backend architecture",
     "duration": "2 hrs",
-    "createdOn": "16 Aug 2026",
+    "createdOn": "19 Aug 2026",
     "status": "published",
     "topics": [
       "Scaling checklist",
@@ -1985,18 +2014,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 47 focuses on Backend Scaling Patterns."
+        "explanation": "Module 47 focuses on Backend Scaling Patterns."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 3: System Thinking & Scaling",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 3: System Thinking & Scaling."
+        "explanation": "This module belongs to Phase 3: System Thinking & Scaling."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=xpDnVWn5TOs",
@@ -2007,11 +2036,12 @@ export const chaptersDays20to100 = [
   {
     "id": 48,
     "slug": "system-design-fundamentals",
+    "track": "thunder",
     "day": 48,
     "title": "System Design Fundamentals",
     "subtitle": "Requirements, estimation, and high-level diagrams",
     "duration": "2 hrs",
-    "createdOn": "17 Aug 2026",
+    "createdOn": "20 Aug 2026",
     "status": "published",
     "topics": [
       "Functional requirements",
@@ -2056,18 +2086,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 48 focuses on System Design Fundamentals."
+        "explanation": "Module 48 focuses on System Design Fundamentals."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 4: Advanced System Design",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 4: Advanced System Design."
+        "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=m8Icp_Cid5o",
@@ -2078,11 +2108,12 @@ export const chaptersDays20to100 = [
   {
     "id": 49,
     "slug": "url-shortener-hld",
+    "track": "thunder",
     "day": 49,
     "title": "URL Shortener — HLD",
     "subtitle": "Design TinyURL / bit.ly at scale",
     "duration": "2 hrs",
-    "createdOn": "18 Aug 2026",
+    "createdOn": "21 Aug 2026",
     "status": "published",
     "topics": [
       "Use cases",
@@ -2127,18 +2158,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 49 focuses on URL Shortener — HLD."
+        "explanation": "Module 49 focuses on URL Shortener — HLD."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 4: Advanced System Design",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 4: Advanced System Design."
+        "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=fMZMm_5WiNs",
@@ -2149,11 +2180,12 @@ export const chaptersDays20to100 = [
   {
     "id": 50,
     "slug": "rate-limiter-design",
+    "track": "thunder",
     "day": 50,
     "title": "Rate Limiter Design",
     "subtitle": "Design a distributed rate limiting service",
     "duration": "2 hrs",
-    "createdOn": "19 Aug 2026",
+    "createdOn": "22 Aug 2026",
     "status": "published",
     "topics": [
       "Requirements",
@@ -2198,18 +2230,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 50 focuses on Rate Limiter Design."
+        "explanation": "Module 50 focuses on Rate Limiter Design."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 4: Advanced System Design",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 4: Advanced System Design."
+        "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=9DCEO6L5W2s",
@@ -2220,11 +2252,12 @@ export const chaptersDays20to100 = [
   {
     "id": 51,
     "slug": "notification-system-design",
+    "track": "thunder",
     "day": 51,
     "title": "Notification System Design",
     "subtitle": "Push, email, SMS at scale",
     "duration": "2 hrs",
-    "createdOn": "20 Aug 2026",
+    "createdOn": "23 Aug 2026",
     "status": "published",
     "topics": [
       "Notification types",
@@ -2269,18 +2302,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 51 focuses on Notification System Design."
+        "explanation": "Module 51 focuses on Notification System Design."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 4: Advanced System Design",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 4: Advanced System Design."
+        "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=oiJDue2QJhQ",
@@ -2291,11 +2324,12 @@ export const chaptersDays20to100 = [
   {
     "id": 52,
     "slug": "news-feed-design",
+    "track": "thunder",
     "day": 52,
     "title": "News Feed Design",
     "subtitle": "Fan-out on write vs fan-out on read",
     "duration": "2 hrs",
-    "createdOn": "21 Aug 2026",
+    "createdOn": "24 Aug 2026",
     "status": "published",
     "topics": [
       "Feed generation",
@@ -2340,18 +2374,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 52 focuses on News Feed Design."
+        "explanation": "Module 52 focuses on News Feed Design."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 4: Advanced System Design",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 4: Advanced System Design."
+        "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=QVzoQQ0Y3X4",
@@ -2362,11 +2396,12 @@ export const chaptersDays20to100 = [
   {
     "id": 53,
     "slug": "chat-application-design",
+    "track": "thunder",
     "day": 53,
     "title": "Chat Application Design",
     "subtitle": "Real-time messaging at scale",
     "duration": "2 hrs",
-    "createdOn": "22 Aug 2026",
+    "createdOn": "25 Aug 2026",
     "status": "published",
     "topics": [
       "WebSockets at scale",
@@ -2411,18 +2446,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 53 focuses on Chat Application Design."
+        "explanation": "Module 53 focuses on Chat Application Design."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 4: Advanced System Design",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 4: Advanced System Design."
+        "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=4BTmKfFv500",
@@ -2433,11 +2468,12 @@ export const chaptersDays20to100 = [
   {
     "id": 54,
     "slug": "e-commerce-platform-design",
+    "track": "thunder",
     "day": 54,
     "title": "E-commerce Platform Design",
     "subtitle": "Catalog, cart, orders, and payments",
     "duration": "2 hrs",
-    "createdOn": "23 Aug 2026",
+    "createdOn": "26 Aug 2026",
     "status": "published",
     "topics": [
       "Product catalog",
@@ -2482,18 +2518,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 54 focuses on E-commerce Platform Design."
+        "explanation": "Module 54 focuses on E-commerce Platform Design."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 4: Advanced System Design",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 4: Advanced System Design."
+        "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=EpAS1axxqyI",
@@ -2504,11 +2540,12 @@ export const chaptersDays20to100 = [
   {
     "id": 55,
     "slug": "distributed-systems-basics",
+    "track": "thunder",
     "day": 55,
     "title": "Distributed Systems Basics",
     "subtitle": "Nodes, partitions, clocks, and consensus intro",
     "duration": "2 hrs",
-    "createdOn": "24 Aug 2026",
+    "createdOn": "27 Aug 2026",
     "status": "published",
     "topics": [
       "Distributed nodes",
@@ -2553,18 +2590,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 55 focuses on Distributed Systems Basics."
+        "explanation": "Module 55 focuses on Distributed Systems Basics."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 4: Advanced System Design",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 4: Advanced System Design."
+        "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=M6_vlW71Xbg",
@@ -2575,11 +2612,12 @@ export const chaptersDays20to100 = [
   {
     "id": 56,
     "slug": "cap-theorem-and-consistency",
+    "track": "thunder",
     "day": 56,
     "title": "CAP Theorem & Consistency",
     "subtitle": "Consistency, availability, and partition tolerance",
     "duration": "2 hrs",
-    "createdOn": "25 Aug 2026",
+    "createdOn": "28 Aug 2026",
     "status": "published",
     "topics": [
       "CAP theorem",
@@ -2624,18 +2662,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 56 focuses on CAP Theorem & Consistency."
+        "explanation": "Module 56 focuses on CAP Theorem & Consistency."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 4: Advanced System Design",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 4: Advanced System Design."
+        "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=BHqjEjzAicA",
@@ -2646,11 +2684,12 @@ export const chaptersDays20to100 = [
   {
     "id": 57,
     "slug": "consistency-and-availability-patterns",
+    "track": "thunder",
     "day": 57,
     "title": "Consistency & Availability Patterns",
     "subtitle": "Replication, quorum, and conflict resolution",
     "duration": "2 hrs",
-    "createdOn": "26 Aug 2026",
+    "createdOn": "29 Aug 2026",
     "status": "published",
     "topics": [
       "Replication strategies",
@@ -2695,18 +2734,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 57 focuses on Consistency & Availability Patterns."
+        "explanation": "Module 57 focuses on Consistency & Availability Patterns."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 4: Advanced System Design",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 4: Advanced System Design."
+        "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=4EymT0ZMzOI",
@@ -2717,11 +2756,12 @@ export const chaptersDays20to100 = [
   {
     "id": 58,
     "slug": "hld-interview-preparation",
+    "track": "thunder",
     "day": 58,
     "title": "HLD Interview Preparation",
     "subtitle": "Framework, communication, and mock interviews",
     "duration": "2 hrs",
-    "createdOn": "27 Aug 2026",
+    "createdOn": "30 Aug 2026",
     "status": "published",
     "topics": [
       "Interview framework",
@@ -2766,18 +2806,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 58 focuses on HLD Interview Preparation."
+        "explanation": "Module 58 focuses on HLD Interview Preparation."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 4: Advanced System Design",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 4: Advanced System Design."
+        "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=UMW67RrjRyY",
@@ -2788,11 +2828,12 @@ export const chaptersDays20to100 = [
   {
     "id": 59,
     "slug": "system-design-playground",
+    "track": "thunder",
     "day": 59,
     "title": "System Design Playground",
     "subtitle": "Practice problems and phase 4 recap",
     "duration": "2 hrs",
-    "createdOn": "28 Aug 2026",
+    "createdOn": "31 Aug 2026",
     "status": "published",
     "topics": [
       "Practice problems",
@@ -2837,18 +2878,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 59 focuses on System Design Playground."
+        "explanation": "Module 59 focuses on System Design Playground."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 4: Advanced System Design",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 4: Advanced System Design."
+        "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=bUHFg8CZFws",
@@ -2859,11 +2900,12 @@ export const chaptersDays20to100 = [
   {
     "id": 60,
     "slug": "react-fundamentals-and-jsx",
+    "track": "thunder",
     "day": 60,
     "title": "React Fundamentals & JSX",
     "subtitle": "Components, JSX, and your first React app",
     "duration": "2 hrs",
-    "createdOn": "29 Aug 2026",
+    "createdOn": "1 Sept 2026",
     "status": "published",
     "topics": [
       "What is React",
@@ -2908,18 +2950,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 60 focuses on React Fundamentals & JSX."
+        "explanation": "Module 60 focuses on React Fundamentals & JSX."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 5: Frontend Development",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 5: Frontend Development."
+        "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=w7ejDZ8SWv8",
@@ -2930,11 +2972,12 @@ export const chaptersDays20to100 = [
   {
     "id": 61,
     "slug": "components-props-and-state",
+    "track": "thunder",
     "day": 61,
     "title": "Components, Props & State",
     "subtitle": "useState, lifting state, and component composition",
     "duration": "2 hrs",
-    "createdOn": "30 Aug 2026",
+    "createdOn": "2 Sept 2026",
     "status": "published",
     "topics": [
       "Functional components",
@@ -2979,18 +3022,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 61 focuses on Components, Props & State."
+        "explanation": "Module 61 focuses on Components, Props & State."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 5: Frontend Development",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 5: Frontend Development."
+        "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=Rh3RA6v1ddE",
@@ -3001,11 +3044,12 @@ export const chaptersDays20to100 = [
   {
     "id": 62,
     "slug": "useeffect-and-lifecycle",
+    "track": "thunder",
     "day": 62,
     "title": "useEffect & Lifecycle",
     "subtitle": "Side effects, dependencies, and cleanup",
     "duration": "2 hrs",
-    "createdOn": "31 Aug 2026",
+    "createdOn": "3 Sept 2026",
     "status": "published",
     "topics": [
       "useEffect basics",
@@ -3050,18 +3094,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 62 focuses on useEffect & Lifecycle."
+        "explanation": "Module 62 focuses on useEffect & Lifecycle."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 5: Frontend Development",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 5: Frontend Development."
+        "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=0ZJgIjIuY7Y",
@@ -3072,11 +3116,12 @@ export const chaptersDays20to100 = [
   {
     "id": 63,
     "slug": "react-router-and-navigation",
+    "track": "thunder",
     "day": 63,
     "title": "React Router & Navigation",
     "subtitle": "SPA routing, nested routes, and URL params",
     "duration": "2 hrs",
-    "createdOn": "1 Sept 2026",
+    "createdOn": "4 Sept 2026",
     "status": "published",
     "topics": [
       "React Router setup",
@@ -3121,18 +3166,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 63 focuses on React Router & Navigation."
+        "explanation": "Module 63 focuses on React Router & Navigation."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 5: Frontend Development",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 5: Frontend Development."
+        "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=Law7wfdg_ls",
@@ -3143,11 +3188,12 @@ export const chaptersDays20to100 = [
   {
     "id": 64,
     "slug": "forms-and-controlled-components",
+    "track": "thunder",
     "day": 64,
     "title": "Forms & Controlled Components",
     "subtitle": "Form state, validation, and user input in React",
     "duration": "2 hrs",
-    "createdOn": "2 Sept 2026",
+    "createdOn": "5 Sept 2026",
     "status": "published",
     "topics": [
       "Controlled inputs",
@@ -3192,18 +3238,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 64 focuses on Forms & Controlled Components."
+        "explanation": "Module 64 focuses on Forms & Controlled Components."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 5: Frontend Development",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 5: Frontend Development."
+        "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=8b0d_b8FZBw",
@@ -3214,11 +3260,12 @@ export const chaptersDays20to100 = [
   {
     "id": 65,
     "slug": "typescript-essentials",
+    "track": "thunder",
     "day": 65,
     "title": "TypeScript Essentials",
     "subtitle": "Types, interfaces, generics, and TS with JS",
     "duration": "2 hrs",
-    "createdOn": "3 Sept 2026",
+    "createdOn": "6 Sept 2026",
     "status": "published",
     "topics": [
       "Why TypeScript",
@@ -3263,18 +3310,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 65 focuses on TypeScript Essentials."
+        "explanation": "Module 65 focuses on TypeScript Essentials."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 5: Frontend Development",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 5: Frontend Development."
+        "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=BCg4U1FzODY",
@@ -3285,11 +3332,12 @@ export const chaptersDays20to100 = [
   {
     "id": 66,
     "slug": "typescript-with-react",
+    "track": "thunder",
     "day": 66,
     "title": "TypeScript with React",
     "subtitle": "Typing components, props, hooks, and events",
     "duration": "2 hrs",
-    "createdOn": "4 Sept 2026",
+    "createdOn": "7 Sept 2026",
     "status": "published",
     "topics": [
       "Typing props",
@@ -3334,18 +3382,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 66 focuses on TypeScript with React."
+        "explanation": "Module 66 focuses on TypeScript with React."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 5: Frontend Development",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 5: Frontend Development."
+        "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=jrKc_JxF0lQ",
@@ -3356,11 +3404,12 @@ export const chaptersDays20to100 = [
   {
     "id": 67,
     "slug": "tailwind-css-fundamentals",
+    "track": "thunder",
     "day": 67,
     "title": "Tailwind CSS Fundamentals",
     "subtitle": "Utility-first CSS and responsive design",
     "duration": "2 hrs",
-    "createdOn": "5 Sept 2026",
+    "createdOn": "8 Sept 2026",
     "status": "published",
     "topics": [
       "Utility classes",
@@ -3405,18 +3454,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 67 focuses on Tailwind CSS Fundamentals."
+        "explanation": "Module 67 focuses on Tailwind CSS Fundamentals."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 5: Frontend Development",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 5: Frontend Development."
+        "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=pfaSUYaSgUA",
@@ -3427,11 +3476,12 @@ export const chaptersDays20to100 = [
   {
     "id": 68,
     "slug": "context-api-and-state-management",
+    "track": "thunder",
     "day": 68,
     "title": "Context API & State Management",
     "subtitle": "Global state without prop drilling",
     "duration": "2 hrs",
-    "createdOn": "6 Sept 2026",
+    "createdOn": "9 Sept 2026",
     "status": "published",
     "topics": [
       "createContext",
@@ -3476,18 +3526,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 68 focuses on Context API & State Management."
+        "explanation": "Module 68 focuses on Context API & State Management."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 5: Frontend Development",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 5: Frontend Development."
+        "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=6RhOzQciVwI",
@@ -3498,11 +3548,12 @@ export const chaptersDays20to100 = [
   {
     "id": 69,
     "slug": "redux-toolkit",
+    "track": "thunder",
     "day": 69,
     "title": "Redux Toolkit",
     "subtitle": "Store, slices, and async thunks",
     "duration": "2 hrs",
-    "createdOn": "7 Sept 2026",
+    "createdOn": "10 Sept 2026",
     "status": "published",
     "topics": [
       "Redux concepts",
@@ -3547,18 +3598,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 69 focuses on Redux Toolkit."
+        "explanation": "Module 69 focuses on Redux Toolkit."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 5: Frontend Development",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 5: Frontend Development."
+        "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=_shA5Xwe8_4",
@@ -3569,11 +3620,12 @@ export const chaptersDays20to100 = [
   {
     "id": 70,
     "slug": "react-performance-optimization",
+    "track": "thunder",
     "day": 70,
     "title": "React Performance Optimization",
     "subtitle": "memo, useMemo, useCallback, and lazy loading",
     "duration": "2 hrs",
-    "createdOn": "8 Sept 2026",
+    "createdOn": "11 Sept 2026",
     "status": "published",
     "topics": [
       "React.memo",
@@ -3618,18 +3670,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 70 focuses on React Performance Optimization."
+        "explanation": "Module 70 focuses on React Performance Optimization."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 5: Frontend Development",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 5: Frontend Development."
+        "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=5fLW5W9j3X0",
@@ -3640,11 +3692,12 @@ export const chaptersDays20to100 = [
   {
     "id": 71,
     "slug": "frontend-projects",
+    "track": "thunder",
     "day": 71,
     "title": "Frontend Projects",
     "subtitle": "Build real UIs with React + Tailwind",
     "duration": "2 hrs",
-    "createdOn": "9 Sept 2026",
+    "createdOn": "12 Sept 2026",
     "status": "published",
     "topics": [
       "Project planning",
@@ -3689,18 +3742,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 71 focuses on Frontend Projects."
+        "explanation": "Module 71 focuses on Frontend Projects."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 5: Frontend Development",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 5: Frontend Development."
+        "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=jcOKU9fkgq4",
@@ -3711,11 +3764,12 @@ export const chaptersDays20to100 = [
   {
     "id": 72,
     "slug": "deploying-react-applications",
+    "track": "thunder",
     "day": 72,
     "title": "Deploying React Applications",
     "subtitle": "Vercel, Netlify, and production builds",
     "duration": "2 hrs",
-    "createdOn": "10 Sept 2026",
+    "createdOn": "13 Sept 2026",
     "status": "published",
     "topics": [
       "Production build",
@@ -3760,18 +3814,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 72 focuses on Deploying React Applications."
+        "explanation": "Module 72 focuses on Deploying React Applications."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 5: Frontend Development",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 5: Frontend Development."
+        "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=dlvxZqK9Alc",
@@ -3782,11 +3836,12 @@ export const chaptersDays20to100 = [
   {
     "id": 73,
     "slug": "full-stack-capstone-planning",
+    "track": "thunder",
     "day": 73,
     "title": "Full-Stack Capstone Planning",
     "subtitle": "Architecture, milestones, and tech stack decisions",
     "duration": "2 hrs",
-    "createdOn": "11 Sept 2026",
+    "createdOn": "14 Sept 2026",
     "status": "published",
     "topics": [
       "Capstone overview",
@@ -3831,18 +3886,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 73 focuses on Full-Stack Capstone Planning."
+        "explanation": "Module 73 focuses on Full-Stack Capstone Planning."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 6: Capstone Projects",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 6: Capstone Projects."
+        "explanation": "This module belongs to Phase 6: Capstone Projects."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=nu_pCVPKzTk",
@@ -3853,11 +3908,12 @@ export const chaptersDays20to100 = [
   {
     "id": 74,
     "slug": "full-stack-capstone-build-i",
+    "track": "thunder",
     "day": 74,
     "title": "Full-Stack Capstone — Build I",
     "subtitle": "Backend API, database, and auth",
     "duration": "2 hrs",
-    "createdOn": "12 Sept 2026",
+    "createdOn": "15 Sept 2026",
     "status": "published",
     "topics": [
       "Project setup",
@@ -3902,18 +3958,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 74 focuses on Full-Stack Capstone — Build I."
+        "explanation": "Module 74 focuses on Full-Stack Capstone — Build I."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 6: Capstone Projects",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 6: Capstone Projects."
+        "explanation": "This module belongs to Phase 6: Capstone Projects."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=mRQGF5yAHsQ",
@@ -3924,11 +3980,12 @@ export const chaptersDays20to100 = [
   {
     "id": 75,
     "slug": "full-stack-capstone-build-ii",
+    "track": "thunder",
     "day": 75,
     "title": "Full-Stack Capstone — Build II",
     "subtitle": "React frontend, state, and API integration",
     "duration": "2 hrs",
-    "createdOn": "13 Sept 2026",
+    "createdOn": "16 Sept 2026",
     "status": "published",
     "topics": [
       "React UI build",
@@ -3973,18 +4030,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 75 focuses on Full-Stack Capstone — Build II."
+        "explanation": "Module 75 focuses on Full-Stack Capstone — Build II."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 6: Capstone Projects",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 6: Capstone Projects."
+        "explanation": "This module belongs to Phase 6: Capstone Projects."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=mRQGF5yAHsQ",
@@ -3995,11 +4052,12 @@ export const chaptersDays20to100 = [
   {
     "id": 76,
     "slug": "full-stack-capstone-deploy",
+    "track": "thunder",
     "day": 76,
     "title": "Full-Stack Capstone — Deploy",
     "subtitle": "Docker, cloud deploy, and go live",
     "duration": "2 hrs",
-    "createdOn": "14 Sept 2026",
+    "createdOn": "17 Sept 2026",
     "status": "published",
     "topics": [
       "Dockerize app",
@@ -4044,18 +4102,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 76 focuses on Full-Stack Capstone — Deploy."
+        "explanation": "Module 76 focuses on Full-Stack Capstone — Deploy."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 6: Capstone Projects",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 6: Capstone Projects."
+        "explanation": "This module belongs to Phase 6: Capstone Projects."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=SWYqp7i5TkI",
@@ -4066,11 +4124,12 @@ export const chaptersDays20to100 = [
   {
     "id": 77,
     "slug": "portfolio-and-code-review",
+    "track": "thunder",
     "day": 77,
     "title": "Portfolio & Code Review",
     "subtitle": "Polish, document, and present your capstone",
     "duration": "2 hrs",
-    "createdOn": "15 Sept 2026",
+    "createdOn": "18 Sept 2026",
     "status": "published",
     "topics": [
       "README & docs",
@@ -4115,18 +4174,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 77 focuses on Portfolio & Code Review."
+        "explanation": "Module 77 focuses on Portfolio & Code Review."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 6: Capstone Projects",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 6: Capstone Projects."
+        "explanation": "This module belongs to Phase 6: Capstone Projects."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=eWEgUcOXleM",
@@ -4137,11 +4196,12 @@ export const chaptersDays20to100 = [
   {
     "id": 78,
     "slug": "git-and-github-advanced-workflows",
+    "track": "thunder",
     "day": 78,
     "title": "Git & GitHub Advanced Workflows",
     "subtitle": "Branches, PRs, rebasing, and collaboration",
     "duration": "2 hrs",
-    "createdOn": "16 Sept 2026",
+    "createdOn": "19 Sept 2026",
     "status": "published",
     "topics": [
       "Branching strategies",
@@ -4186,18 +4246,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 78 focuses on Git & GitHub Advanced Workflows."
+        "explanation": "Module 78 focuses on Git & GitHub Advanced Workflows."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 7: DevOps",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 7: DevOps."
+        "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=Uszj_k0DGsg",
@@ -4208,11 +4268,12 @@ export const chaptersDays20to100 = [
   {
     "id": 79,
     "slug": "linux-and-shell-essentials",
+    "track": "thunder",
     "day": 79,
     "title": "Linux & Shell Essentials",
     "subtitle": "Commands, permissions, and scripting basics",
     "duration": "2 hrs",
-    "createdOn": "17 Sept 2026",
+    "createdOn": "20 Sept 2026",
     "status": "published",
     "topics": [
       "Linux file system",
@@ -4257,18 +4318,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 79 focuses on Linux & Shell Essentials."
+        "explanation": "Module 79 focuses on Linux & Shell Essentials."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 7: DevOps",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 7: DevOps."
+        "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=ZtqBQ68cfJc",
@@ -4279,11 +4340,12 @@ export const chaptersDays20to100 = [
   {
     "id": 80,
     "slug": "docker-fundamentals",
+    "track": "thunder",
     "day": 80,
     "title": "Docker Fundamentals",
     "subtitle": "Images, containers, volumes, and Dockerfile",
     "duration": "2 hrs",
-    "createdOn": "18 Sept 2026",
+    "createdOn": "21 Sept 2026",
     "status": "published",
     "topics": [
       "What is Docker",
@@ -4328,18 +4390,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 80 focuses on Docker Fundamentals."
+        "explanation": "Module 80 focuses on Docker Fundamentals."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 7: DevOps",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 7: DevOps."
+        "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=fqMOX6JJhGo",
@@ -4350,11 +4412,12 @@ export const chaptersDays20to100 = [
   {
     "id": 81,
     "slug": "docker-compose-and-multi-container-apps",
+    "track": "thunder",
     "day": 81,
     "title": "Docker Compose & Multi-Container Apps",
     "subtitle": "Orchestrate app, DB, and cache with Compose",
     "duration": "2 hrs",
-    "createdOn": "19 Sept 2026",
+    "createdOn": "22 Sept 2026",
     "status": "published",
     "topics": [
       "docker-compose.yml",
@@ -4399,18 +4462,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 81 focuses on Docker Compose & Multi-Container Apps."
+        "explanation": "Module 81 focuses on Docker Compose & Multi-Container Apps."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 7: DevOps",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 7: DevOps."
+        "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=HG6yIjZhxqU",
@@ -4421,11 +4484,12 @@ export const chaptersDays20to100 = [
   {
     "id": 82,
     "slug": "ci-cd-pipelines",
+    "track": "thunder",
     "day": 82,
     "title": "CI/CD Pipelines",
     "subtitle": "Automate build, test, and deploy",
     "duration": "2 hrs",
-    "createdOn": "20 Sept 2026",
+    "createdOn": "23 Sept 2026",
     "status": "published",
     "topics": [
       "CI vs CD",
@@ -4470,18 +4534,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 82 focuses on CI/CD Pipelines."
+        "explanation": "Module 82 focuses on CI/CD Pipelines."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 7: DevOps",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 7: DevOps."
+        "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=R8_veQiYBjI",
@@ -4492,11 +4556,12 @@ export const chaptersDays20to100 = [
   {
     "id": 83,
     "slug": "github-actions-deep-dive",
+    "track": "thunder",
     "day": 83,
     "title": "GitHub Actions Deep Dive",
     "subtitle": "Workflows, secrets, and matrix builds",
     "duration": "2 hrs",
-    "createdOn": "21 Sept 2026",
+    "createdOn": "24 Sept 2026",
     "status": "published",
     "topics": [
       "Workflow syntax",
@@ -4541,18 +4606,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 83 focuses on GitHub Actions Deep Dive."
+        "explanation": "Module 83 focuses on GitHub Actions Deep Dive."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 7: DevOps",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 7: DevOps."
+        "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=R8_veQiYBjI",
@@ -4563,11 +4628,12 @@ export const chaptersDays20to100 = [
   {
     "id": 84,
     "slug": "aws-cloud-basics",
+    "track": "thunder",
     "day": 84,
     "title": "AWS Cloud Basics",
     "subtitle": "EC2, S3, RDS, and cloud fundamentals",
     "duration": "2 hrs",
-    "createdOn": "22 Sept 2026",
+    "createdOn": "25 Sept 2026",
     "status": "published",
     "topics": [
       "Cloud computing intro",
@@ -4612,18 +4678,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 84 focuses on AWS Cloud Basics."
+        "explanation": "Module 84 focuses on AWS Cloud Basics."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 7: DevOps",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 7: DevOps."
+        "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=ulprqHHWROI",
@@ -4634,11 +4700,12 @@ export const chaptersDays20to100 = [
   {
     "id": 85,
     "slug": "deployment-strategies",
+    "track": "thunder",
     "day": 85,
     "title": "Deployment Strategies",
     "subtitle": "Blue-green, rolling, and canary deployments",
     "duration": "2 hrs",
-    "createdOn": "23 Sept 2026",
+    "createdOn": "26 Sept 2026",
     "status": "published",
     "topics": [
       "Deployment types",
@@ -4683,18 +4750,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 85 focuses on Deployment Strategies."
+        "explanation": "Module 85 focuses on Deployment Strategies."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 7: DevOps",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 7: DevOps."
+        "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=lsMQRioFRuU",
@@ -4705,11 +4772,12 @@ export const chaptersDays20to100 = [
   {
     "id": 86,
     "slug": "kubernetes-introduction",
+    "track": "thunder",
     "day": 86,
     "title": "Kubernetes Introduction",
     "subtitle": "Pods, services, deployments, and kubectl",
     "duration": "2 hrs",
-    "createdOn": "24 Sept 2026",
+    "createdOn": "27 Sept 2026",
     "status": "published",
     "topics": [
       "Why Kubernetes",
@@ -4754,18 +4822,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 86 focuses on Kubernetes Introduction."
+        "explanation": "Module 86 focuses on Kubernetes Introduction."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 7: DevOps",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 7: DevOps."
+        "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=X48Gyu0nlig",
@@ -4776,11 +4844,12 @@ export const chaptersDays20to100 = [
   {
     "id": 87,
     "slug": "monitoring-and-logging",
+    "track": "thunder",
     "day": 87,
     "title": "Monitoring & Logging",
     "subtitle": "Logs, metrics, alerts, and observability",
     "duration": "2 hrs",
-    "createdOn": "25 Sept 2026",
+    "createdOn": "28 Sept 2026",
     "status": "published",
     "topics": [
       "Logging best practices",
@@ -4825,18 +4894,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 87 focuses on Monitoring & Logging."
+        "explanation": "Module 87 focuses on Monitoring & Logging."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 7: DevOps",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 7: DevOps."
+        "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=17gF_euW9Pw",
@@ -4847,11 +4916,12 @@ export const chaptersDays20to100 = [
   {
     "id": 88,
     "slug": "infrastructure-as-code-terraform",
+    "track": "thunder",
     "day": 88,
     "title": "Infrastructure as Code — Terraform",
     "subtitle": "Provision cloud resources with code",
     "duration": "2 hrs",
-    "createdOn": "26 Sept 2026",
+    "createdOn": "29 Sept 2026",
     "status": "published",
     "topics": [
       "IaC concepts",
@@ -4896,18 +4966,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 88 focuses on Infrastructure as Code — Terraform."
+        "explanation": "Module 88 focuses on Infrastructure as Code — Terraform."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 7: DevOps",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 7: DevOps."
+        "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=7xngnjfIlK4",
@@ -4918,11 +4988,12 @@ export const chaptersDays20to100 = [
   {
     "id": 89,
     "slug": "devops-capstone",
+    "track": "thunder",
     "day": 89,
     "title": "DevOps Capstone",
     "subtitle": "End-to-end pipeline from code to production",
     "duration": "2 hrs",
-    "createdOn": "27 Sept 2026",
+    "createdOn": "30 Sept 2026",
     "status": "published",
     "topics": [
       "Capstone pipeline",
@@ -4967,18 +5038,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 89 focuses on DevOps Capstone."
+        "explanation": "Module 89 focuses on DevOps Capstone."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Phase 7: DevOps",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 7: DevOps."
+        "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=R8_veQiYBjI",
@@ -4989,11 +5060,12 @@ export const chaptersDays20to100 = [
   {
     "id": 90,
     "slug": "full-stack-architecture-review",
+    "track": "thunder",
     "day": 90,
     "title": "Full-Stack Architecture Review",
     "subtitle": "Connect frontend, backend, DB, cache, and deploy",
     "duration": "2 hrs",
-    "createdOn": "28 Sept 2026",
+    "createdOn": "1 Oct 2026",
     "status": "published",
     "topics": [
       "Architecture layers",
@@ -5038,18 +5110,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 90 focuses on Full-Stack Architecture Review."
+        "explanation": "Module 90 focuses on Full-Stack Architecture Review."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Graduation & Career Prep",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Graduation & Career Prep."
+        "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=nu_pCVPKzTk",
@@ -5060,11 +5132,12 @@ export const chaptersDays20to100 = [
   {
     "id": 91,
     "slug": "database-indexing-and-query-optimization",
+    "track": "thunder",
     "day": 91,
     "title": "Database Indexing & Query Optimization",
     "subtitle": "Indexes, explain plans, and performance tuning",
     "duration": "2 hrs",
-    "createdOn": "29 Sept 2026",
+    "createdOn": "2 Oct 2026",
     "status": "published",
     "topics": [
       "Why indexes",
@@ -5109,18 +5182,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 91 focuses on Database Indexing & Query Optimization."
+        "explanation": "Module 91 focuses on Database Indexing & Query Optimization."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Graduation & Career Prep",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Graduation & Career Prep."
+        "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=HubezKbFL7E",
@@ -5131,11 +5204,12 @@ export const chaptersDays20to100 = [
   {
     "id": 92,
     "slug": "authentication-in-production",
+    "track": "thunder",
     "day": 92,
     "title": "Authentication in Production",
     "subtitle": "OAuth, sessions, refresh tokens, and SSO",
     "duration": "2 hrs",
-    "createdOn": "30 Sept 2026",
+    "createdOn": "3 Oct 2026",
     "status": "published",
     "topics": [
       "OAuth 2.0",
@@ -5180,18 +5254,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 92 focuses on Authentication in Production."
+        "explanation": "Module 92 focuses on Authentication in Production."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Graduation & Career Prep",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Graduation & Career Prep."
+        "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=3oqMKAeYIyo",
@@ -5202,11 +5276,12 @@ export const chaptersDays20to100 = [
   {
     "id": 93,
     "slug": "microservices-communication",
+    "track": "thunder",
     "day": 93,
     "title": "Microservices Communication",
     "subtitle": "REST, gRPC, and event-driven integration",
     "duration": "2 hrs",
-    "createdOn": "1 Oct 2026",
+    "createdOn": "4 Oct 2026",
     "status": "published",
     "topics": [
       "Sync vs async",
@@ -5251,18 +5326,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 93 focuses on Microservices Communication."
+        "explanation": "Module 93 focuses on Microservices Communication."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Graduation & Career Prep",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Graduation & Career Prep."
+        "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=zr1MbRzsBMI",
@@ -5273,11 +5348,12 @@ export const chaptersDays20to100 = [
   {
     "id": 94,
     "slug": "frontend-system-design",
+    "track": "thunder",
     "day": 94,
     "title": "Frontend System Design",
     "subtitle": "Performance, bundling, CDN, and UI architecture",
     "duration": "2 hrs",
-    "createdOn": "2 Oct 2026",
+    "createdOn": "5 Oct 2026",
     "status": "published",
     "topics": [
       "Frontend architecture",
@@ -5322,18 +5398,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 94 focuses on Frontend System Design."
+        "explanation": "Module 94 focuses on Frontend System Design."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Graduation & Career Prep",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Graduation & Career Prep."
+        "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=K2RYJSBNzcA",
@@ -5344,11 +5420,12 @@ export const chaptersDays20to100 = [
   {
     "id": 95,
     "slug": "behavioral-interview-prep",
+    "track": "thunder",
     "day": 95,
     "title": "Behavioral Interview Prep",
     "subtitle": "STAR method, stories, and communication",
     "duration": "2 hrs",
-    "createdOn": "3 Oct 2026",
+    "createdOn": "6 Oct 2026",
     "status": "published",
     "topics": [
       "STAR method",
@@ -5393,18 +5470,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 95 focuses on Behavioral Interview Prep."
+        "explanation": "Module 95 focuses on Behavioral Interview Prep."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Graduation & Career Prep",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Graduation & Career Prep."
+        "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=1qw5ITr3kEo",
@@ -5415,11 +5492,12 @@ export const chaptersDays20to100 = [
   {
     "id": 96,
     "slug": "dsa-for-web-developers",
+    "track": "thunder",
     "day": 96,
     "title": "DSA for Web Developers",
     "subtitle": "Essential data structures for coding interviews",
     "duration": "2 hrs",
-    "createdOn": "4 Oct 2026",
+    "createdOn": "7 Oct 2026",
     "status": "published",
     "topics": [
       "Arrays & strings",
@@ -5464,18 +5542,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 96 focuses on DSA for Web Developers."
+        "explanation": "Module 96 focuses on DSA for Web Developers."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Graduation & Career Prep",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Graduation & Career Prep."
+        "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=8hly31xKli0",
@@ -5486,11 +5564,12 @@ export const chaptersDays20to100 = [
   {
     "id": 97,
     "slug": "building-your-tech-resume",
+    "track": "thunder",
     "day": 97,
     "title": "Building Your Tech Resume",
     "subtitle": "Resume, LinkedIn, and GitHub profile optimization",
     "duration": "2 hrs",
-    "createdOn": "5 Oct 2026",
+    "createdOn": "8 Oct 2026",
     "status": "published",
     "topics": [
       "Resume structure",
@@ -5535,18 +5614,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 97 focuses on Building Your Tech Resume."
+        "explanation": "Module 97 focuses on Building Your Tech Resume."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Graduation & Career Prep",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Graduation & Career Prep."
+        "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=Tt08Km_XIYQ",
@@ -5557,11 +5636,12 @@ export const chaptersDays20to100 = [
   {
     "id": 98,
     "slug": "open-source-contribution",
+    "track": "thunder",
     "day": 98,
     "title": "Open Source Contribution",
     "subtitle": "Find projects, contribute PRs, and grow your network",
     "duration": "2 hrs",
-    "createdOn": "6 Oct 2026",
+    "createdOn": "9 Oct 2026",
     "status": "published",
     "topics": [
       "Why open source",
@@ -5606,18 +5686,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 98 focuses on Open Source Contribution."
+        "explanation": "Module 98 focuses on Open Source Contribution."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Graduation & Career Prep",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Graduation & Career Prep."
+        "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=yzyi-2YrhbE",
@@ -5628,11 +5708,12 @@ export const chaptersDays20to100 = [
   {
     "id": 99,
     "slug": "100-days-retrospective",
+    "track": "thunder",
     "day": 99,
     "title": "100 Days Retrospective",
     "subtitle": "Review your journey and plan what is next",
     "duration": "2 hrs",
-    "createdOn": "7 Oct 2026",
+    "createdOn": "10 Oct 2026",
     "status": "published",
     "topics": [
       "Skills acquired",
@@ -5677,18 +5758,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 99 focuses on 100 Days Retrospective."
+        "explanation": "Module 99 focuses on 100 Days Retrospective."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Graduation & Career Prep",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Graduation & Career Prep."
+        "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=hdI2bqOjy3c",
@@ -5699,11 +5780,12 @@ export const chaptersDays20to100 = [
   {
     "id": 100,
     "slug": "graduation-project-showcase",
+    "track": "thunder",
     "day": 100,
     "title": "Graduation Project Showcase",
     "subtitle": "Present your work and celebrate 100 days!",
     "duration": "2 hrs",
-    "createdOn": "8 Oct 2026",
+    "createdOn": "11 Oct 2026",
     "status": "published",
     "topics": [
       "Final presentation",
@@ -5748,18 +5830,18 @@ export const chaptersDays20to100 = [
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Day 100 focuses on Graduation Project Showcase."
+        "explanation": "Module 100 focuses on Graduation Project Showcase."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "Which phase includes this module?",
         "options": [
           "Graduation & Career Prep",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "Only DevOps",
+          "Only CSS",
+          "Not part of the course"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Graduation & Career Prep."
+        "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=mRQGF5yAHsQ",
