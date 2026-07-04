@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { discordCommunity } from '../data/syllabus';
 
 function trackFromPath(path) {
@@ -50,12 +50,42 @@ const TRACK_SYLLABUS = {
   mobile: '/mobile#mobile-syllabus',
 };
 
+const LEARNING_PATH = [
+  { id: 'thunder', label: 'Thunder', desc: '100 Days of JavaScript', path: '/' },
+  { id: 'nextjs', label: 'React & Next.js', desc: '30 modules — ChaiCode', path: '/nextjs' },
+  { id: 'mobile', label: 'React Native', desc: '25 lessons — ChaiCode', path: '/mobile' },
+  { id: 'python', label: 'Python & AI', desc: '45 modules — Ashok IT', path: '/python' },
+  { id: 'java', label: 'Java & Spring', desc: '50 modules — Udemy', path: '/java' },
+  { id: 'aws', label: '100 Days of AWS', desc: 'Cloud — KodeKloud', path: '/aws' },
+  { id: 'devops', label: '100 Days of DevOps', desc: 'CI/CD — KodeKloud', path: '/devops' },
+  { id: 'k8s', label: 'Kubernetes', desc: '100 days — CKA path', path: '/k8s' },
+  { id: 'interview', label: 'Interview Prep', desc: 'DSA & System Design', path: '/interview' },
+];
+
 export default function Header({ onSearch }) {
   const [query, setQuery] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
+  const [tracksOpen, setTracksOpen] = useState(false);
+  const tracksRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
   const track = trackFromPath(location.pathname);
+  const currentTrack = LEARNING_PATH.find((t) => t.id === track) ?? LEARNING_PATH[0];
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (tracksRef.current && !tracksRef.current.contains(e.target)) {
+        setTracksOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    setTracksOpen(false);
+    setMenuOpen(false);
+  }, [location.pathname]);
 
   function handleSearch(e) {
     e.preventDefault();
@@ -68,6 +98,7 @@ export default function Header({ onSearch }) {
 
   function closeMenu() {
     setMenuOpen(false);
+    setTracksOpen(false);
   }
 
   const logoIcon =
@@ -76,54 +107,54 @@ export default function Header({ onSearch }) {
       : track === 'interview'
         ? 'IP'
         : track === 'k8s'
-        ? 'K8S'
-        : track === 'devops'
-        ? 'DO'
-        : track === 'aws'
-          ? 'AWS'
-          : track === 'java'
-            ? 'JV'
-            : track === 'python'
-            ? 'PY'
-            : track === 'nextjs'
-              ? 'NX'
-              : 'JS';
+          ? 'K8S'
+          : track === 'devops'
+            ? 'DO'
+            : track === 'aws'
+              ? 'AWS'
+              : track === 'java'
+                ? 'JV'
+                : track === 'python'
+                  ? 'PY'
+                  : track === 'nextjs'
+                    ? 'NX'
+                    : 'JS';
   const logoName =
     track === 'mobile'
       ? 'Thunder++ Mobile'
       : track === 'interview'
         ? 'Thunder++ Interview Prep'
         : track === 'k8s'
-        ? 'Thunder++ Kubernetes'
-        : track === 'devops'
-        ? 'Thunder++ DevOps'
-        : track === 'aws'
-          ? 'Thunder++ AWS Cloud'
-          : track === 'java'
-            ? 'Thunder++ Java & Spring'
-            : track === 'python'
-            ? 'Thunder++ Python'
-            : track === 'nextjs'
-              ? 'Thunder+ Next.js'
-              : 'JS Learn Hub';
+          ? 'Thunder++ Kubernetes'
+          : track === 'devops'
+            ? 'Thunder++ DevOps'
+            : track === 'aws'
+              ? 'Thunder++ AWS Cloud'
+              : track === 'java'
+                ? 'Thunder++ Java & Spring'
+                : track === 'python'
+                  ? 'Thunder++ Python'
+                  : track === 'nextjs'
+                    ? 'Thunder+ Next.js'
+                    : 'JS Learn Hub';
   const logoTagline =
     track === 'mobile'
       ? 'React Native by ChaiCode'
       : track === 'interview'
         ? 'DSA & System Design — ChaiCode + GfG'
         : track === 'k8s'
-        ? 'Kubernetes — KodeKloud'
-        : track === 'devops'
-        ? '100 Days of DevOps — KodeKloud'
-        : track === 'aws'
-          ? '100 Days of Cloud — KodeKloud'
-          : track === 'java'
-            ? 'Java & Spring — Udemy'
-            : track === 'python'
-            ? 'Python & Agentic AI — Ashok IT'
-            : track === 'nextjs'
-              ? 'React & Next.js by ChaiCode'
-              : 'Learn JavaScript Day by Day';
+          ? 'Kubernetes — KodeKloud'
+          : track === 'devops'
+            ? '100 Days of DevOps — KodeKloud'
+            : track === 'aws'
+              ? '100 Days of Cloud — KodeKloud'
+              : track === 'java'
+                ? 'Java & Spring — Udemy'
+                : track === 'python'
+                  ? 'Python & Agentic AI — Ashok IT'
+                  : track === 'nextjs'
+                    ? 'React & Next.js by ChaiCode'
+                    : 'Learn JavaScript Day by Day';
 
   const searchPlaceholder =
     track === 'mobile'
@@ -131,18 +162,18 @@ export default function Header({ onSearch }) {
       : track === 'interview'
         ? 'Search interview modules...'
         : track === 'k8s'
-        ? 'Search Kubernetes days...'
-        : track === 'devops'
-        ? 'Search DevOps days...'
-        : track === 'aws'
-          ? 'Search AWS days...'
-          : track === 'java'
-            ? 'Search Java modules...'
-            : track === 'python'
-            ? 'Search Python modules...'
-            : track === 'nextjs'
-              ? 'Search modules...'
-              : 'Search tutorials...';
+          ? 'Search Kubernetes days...'
+          : track === 'devops'
+            ? 'Search DevOps days...'
+            : track === 'aws'
+              ? 'Search AWS days...'
+              : track === 'java'
+                ? 'Search Java modules...'
+                : track === 'python'
+                  ? 'Search Python modules...'
+                  : track === 'nextjs'
+                    ? 'Search modules...'
+                    : 'Search tutorials...';
 
   return (
     <header
@@ -169,8 +200,9 @@ export default function Header({ onSearch }) {
             onChange={(e) => setQuery(e.target.value)}
             aria-label="Search tutorials"
           />
-          <button type="submit" className="btn btn-search">
-            Search
+          <button type="submit" className="btn btn-search" aria-label="Search">
+            <span className="search-btn-text">Search</span>
+            <span className="search-btn-icon" aria-hidden="true">⌕</span>
           </button>
         </form>
 
@@ -185,46 +217,57 @@ export default function Header({ onSearch }) {
         </button>
 
         <nav className={`header-nav ${menuOpen ? 'open' : ''}`}>
-          <Link to="/" onClick={closeMenu}>Thunder</Link>
-          <Link to="/nextjs" onClick={closeMenu} className="header-nextjs-link">
-            Next.js
-          </Link>
-          <Link to="/mobile" onClick={closeMenu} className="header-rn-link">
-            React Native
-          </Link>
-          <Link to="/python" onClick={closeMenu} className="header-python-link">
-            Python
-          </Link>
-          <Link to="/java" onClick={closeMenu} className="header-java-link">
-            Java
-          </Link>
-          <Link to="/aws" onClick={closeMenu} className="header-aws-link">
-            AWS
-          </Link>
-          <Link to="/devops" onClick={closeMenu} className="header-devops-link">
-            DevOps
-          </Link>
-          <Link to="/k8s" onClick={closeMenu} className="header-k8s-link">
-            Kubernetes
-          </Link>
-          <Link to="/interview" onClick={closeMenu} className="header-interview-link">
-            Interview
-          </Link>
-          <a href={TRACK_SYLLABUS[track]} onClick={closeMenu}>
-            Syllabus
-          </a>
-          <Link to={TRACK_START[track]} onClick={closeMenu}>
-            Start Learning
-          </Link>
-          <a
-            href={discordCommunity}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="header-discord"
-            onClick={closeMenu}
-          >
-            Discord
-          </a>
+          <div className="header-nav-tracks" ref={tracksRef}>
+            <button
+              type="button"
+              className={`header-tracks-trigger ${tracksOpen ? 'open' : ''}`}
+              onClick={() => setTracksOpen((open) => !open)}
+              aria-expanded={tracksOpen}
+              aria-haspopup="true"
+            >
+              <span className="header-tracks-trigger-label">Learning Path</span>
+              <span className="header-tracks-current">{currentTrack.label}</span>
+              <span className="header-tracks-chevron" aria-hidden="true">▾</span>
+            </button>
+
+            {tracksOpen && (
+              <div className="header-tracks-menu" role="menu">
+                {LEARNING_PATH.map((item) => (
+                  <Link
+                    key={item.id}
+                    to={item.path}
+                    role="menuitem"
+                    className={`header-track-item track-${item.id} ${track === item.id ? 'active' : ''}`}
+                    onClick={closeMenu}
+                  >
+                    <span className="header-track-dot" aria-hidden="true" />
+                    <span className="header-track-text">
+                      <span className="header-track-name">{item.label}</span>
+                      <span className="header-track-desc">{item.desc}</span>
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="header-nav-actions">
+            <a href={TRACK_SYLLABUS[track]} className="header-nav-link" onClick={closeMenu}>
+              Syllabus
+            </a>
+            <Link to={TRACK_START[track]} className="header-nav-cta" onClick={closeMenu}>
+              Start Learning
+            </Link>
+            <a
+              href={discordCommunity}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="header-discord"
+              onClick={closeMenu}
+            >
+              Discord
+            </a>
+          </div>
         </nav>
       </div>
     </header>
