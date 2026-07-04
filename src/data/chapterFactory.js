@@ -5,6 +5,7 @@ import {
   MOBILE_COHORT_URL,
   ASHOK_IT_URL,
   KODEKLOUD_CLOUD_URL,
+  KODEKLOUD_DEVOPS_URL,
 } from './trackConfig.js';
 
 export function slugify(text) {
@@ -65,6 +66,16 @@ const TRACK_META = {
     quizPrefix: () => 'AWS ',
     tryIt: (n, title) => `# AWS Day ${n}: ${title}\nprint("Cloud task complete")`,
   },
+  devops: {
+    dayKey: 'devopsDay',
+    label: 'DO',
+    offset: TRACK_OFFSETS.devops,
+    paidUrl: KODEKLOUD_DEVOPS_URL,
+    paidLabel: 'KodeKloud 100 Days of DevOps',
+    sectionPrefix: (n) => `Day ${n} of 100 Days of DevOps`,
+    quizPrefix: () => 'DO ',
+    tryIt: (n, title) => `# DevOps Day ${n}: ${title}\necho "Task complete"`,
+  },
   mobile: {
     dayKey: 'rnDay',
     label: 'RN',
@@ -107,7 +118,7 @@ export function buildChapter(entry, id, options = {}) {
 
   const quiz = entry.quiz || [
     {
-      question: `What is the main topic of ${meta.quizPrefix()}${track === 'aws' ? 'Day' : 'Module'} ${dayNum}?`,
+      question: `What is the main topic of ${meta.quizPrefix()}${['aws', 'devops', 'thunder'].includes(track) ? 'Day' : 'Module'} ${dayNum}?`,
       options: [entry.title, 'HTML tables only', 'Linux kernel modules', 'Photoshop layers'],
       answer: 0,
       explanation: `${meta.quizPrefix()}Module ${dayNum} focuses on ${entry.title}.`,
@@ -128,6 +139,7 @@ export function buildChapter(entry, id, options = {}) {
     nextDay: entry.nextDay,
     pyDay: entry.pyDay,
     awsDay: entry.awsDay,
+    devopsDay: entry.devopsDay,
     rnDay: entry.rnDay,
     title: entry.title,
     subtitle: entry.subtitle,
@@ -169,6 +181,12 @@ export function buildPythonChapters(curriculum) {
 export function buildAwsChapters(curriculum) {
   return curriculum.map((entry, index) =>
     buildChapter(entry, index + 1, { track: 'aws' }),
+  );
+}
+
+export function buildDevopsChapters(curriculum) {
+  return curriculum.map((entry, index) =>
+    buildChapter(entry, index + 1, { track: 'devops' }),
   );
 }
 

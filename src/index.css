@@ -3450,3 +3450,283 @@ a:hover {
     text-align: center;
   }
 }
+
+/* ─── Thunder++ 100 Days of DevOps (KodeKloud + CloudFolks) ─── */
+:root {
+  --devops-blue: #00b4d8;
+  --devops-blue-dark: #0096c7;
+  --devops-navy: #0a1628;
+  --devops-purple: #7b2cbf;
+}
+
+.devops-hero {
+  width: 100%;
+  background: linear-gradient(160deg, #0a1628 0%, #1a1a2e 45%, #16213e 100%);
+  color: #fff;
+  padding: 56px clamp(16px, 4vw, 48px) 64px;
+  margin: 0;
+  box-sizing: border-box;
+  border-bottom: 3px solid var(--devops-blue);
+}
+
+.devops-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.devops-hero-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.devops-level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid rgba(0, 180, 216, 0.5);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--devops-blue);
+  margin-bottom: 28px;
+}
+
+.devops-title {
+  font-family: 'Orbitron', var(--font);
+  font-size: clamp(28px, 6vw, 52px);
+  font-weight: 900;
+  line-height: 1.08;
+  margin: 0 0 20px;
+  color: #fff;
+}
+
+.devops-title-line {
+  display: block;
+}
+
+.devops-title-line:last-child {
+  color: var(--devops-blue);
+}
+
+.devops-subtitle {
+  font-size: clamp(15px, 2.5vw, 20px);
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+.devops-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.devops-meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid #3d4f63;
+  border-radius: 8px;
+  background: rgba(0, 180, 216, 0.1);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.devops-hero-desc {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 680px;
+  margin: 0 0 28px;
+}
+
+.devops-hero-desc a {
+  color: var(--devops-blue);
+  font-weight: 600;
+}
+
+.devops-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn-devops {
+  background: var(--devops-blue);
+  color: #0a1628;
+  border: 2px solid var(--devops-blue);
+  font-weight: 700;
+}
+
+.btn-devops:hover {
+  background: var(--devops-blue-dark);
+  border-color: var(--devops-blue-dark);
+  color: #fff;
+}
+
+.btn-devops-kodekloud {
+  background: var(--devops-purple);
+  color: #fff;
+  border: 2px solid var(--devops-purple);
+  font-weight: 700;
+}
+
+.btn-devops-kodekloud:hover {
+  background: #6a1fa8;
+  border-color: #6a1fa8;
+}
+
+.btn-devops-cloudfolks {
+  background: #fff;
+  color: var(--devops-navy);
+  border: 2px solid #fff;
+  font-weight: 700;
+}
+
+.btn-devops-cloudfolks:hover {
+  background: #f0f0f0;
+}
+
+.btn-devops-kodekloud-sm {
+  background: rgba(0, 180, 216, 0.15);
+  color: #0077b6;
+  border: 1px solid var(--devops-blue);
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
+.btn-devops-kodekloud-sm:hover {
+  background: var(--devops-blue);
+  color: #fff;
+}
+
+.btn-outline-devops {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(0, 180, 216, 0.6);
+}
+
+.btn-outline-devops:hover {
+  background: rgba(0, 180, 216, 0.12);
+  border-color: var(--devops-blue);
+}
+
+.btn-devops-kodekloud-outline {
+  display: inline-block;
+  padding: 12px 24px;
+  background: transparent;
+  color: #0077b6;
+  border: 2px solid var(--devops-blue);
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn-devops-kodekloud-outline:hover {
+  background: var(--devops-blue);
+  color: #fff;
+}
+
+.devops-home {
+  padding: 32px clamp(16px, 4vw, 48px) 48px;
+}
+
+.devops-syllabus-section {
+  background: #f0f9fc;
+}
+
+.phase-card-devops .phase-num-devops {
+  background: var(--devops-blue);
+}
+
+.highlight-check-devops {
+  color: var(--devops-blue);
+}
+
+.legend-dot-devops {
+  background: var(--devops-blue);
+}
+
+.thumb-day-devops {
+  background: linear-gradient(135deg, var(--devops-navy), var(--devops-blue)) !important;
+}
+
+.thunder-devops-section {
+  background: linear-gradient(135deg, #f0f9fc 0%, #e0f4fa 100%);
+  border-color: rgba(0, 180, 216, 0.3);
+}
+
+.thunder-plus-badge-devops {
+  background: var(--devops-blue);
+  color: #0a1628;
+}
+
+.header-devops-link {
+  color: var(--devops-blue) !important;
+  font-weight: 600;
+}
+
+.logo-icon-devops {
+  background: var(--devops-blue) !important;
+  color: #0a1628 !important;
+}
+
+.sidebar-devops .sidebar-link.active,
+.sidebar-devops .sidebar-link-devops.active {
+  border-left-color: var(--devops-blue);
+  background: rgba(0, 180, 216, 0.12);
+}
+
+.progress-fill-devops {
+  background: var(--devops-blue);
+}
+
+.chapter-badge-devops {
+  background: rgba(0, 180, 216, 0.12);
+  color: var(--devops-blue-dark);
+  border: 1px solid rgba(0, 180, 216, 0.35);
+}
+
+.chapter-intro-devops {
+  border-left-color: var(--devops-blue);
+}
+
+.section-num-devops {
+  background: var(--devops-blue);
+}
+
+.paid-lecture-banner-devops {
+  border-color: rgba(0, 180, 216, 0.35);
+  background: #f0f9fc;
+}
+
+.chapter-link-btn.paid-devops {
+  background: var(--devops-blue);
+  border-color: var(--devops-blue);
+  color: #0a1628;
+}
+
+.lecture-card-devops {
+  border-left: 3px solid var(--devops-blue);
+}
+
+@media (max-width: 900px) {
+  .devops-hero {
+    padding: 40px 16px 48px;
+  }
+
+  .devops-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .devops-hero-actions .btn-lg {
+    width: 100%;
+    text-align: center;
+  }
+}

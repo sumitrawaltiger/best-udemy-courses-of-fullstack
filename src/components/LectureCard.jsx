@@ -1,48 +1,57 @@
 import { Link } from 'react-router-dom';
 
 export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 'Day' }) {
-  const dayNum = chapter.awsDay ?? chapter.pyDay ?? chapter.nextDay ?? chapter.rnDay ?? chapter.day;
+  const dayNum = chapter.devopsDay ?? chapter.awsDay ?? chapter.pyDay ?? chapter.nextDay ?? chapter.rnDay ?? chapter.day;
   const learnUrl = `${basePath}/${chapter.slug}`;
   const isMobile = basePath.includes('mobile');
+  const isDevops = basePath.includes('devops');
   const isAws = basePath.includes('aws');
   const isNextjs = basePath.includes('nextjs');
   const isPython = basePath.includes('python');
   const watchBtn = isMobile
     ? 'btn-mobile'
-    : isAws
-      ? 'btn-aws'
-      : isPython
-        ? 'btn-python'
-        : isNextjs
-          ? 'btn-nextjs'
-          : 'btn-watch';
+    : isDevops
+      ? 'btn-devops'
+      : isAws
+        ? 'btn-aws'
+        : isPython
+          ? 'btn-python'
+          : isNextjs
+            ? 'btn-nextjs'
+            : 'btn-watch';
   const paidBtn = isMobile
     ? 'btn-mobile-cohort-sm'
-    : isAws
-      ? 'btn-aws-kodekloud-sm'
-      : isPython
-        ? 'btn-python-portal-sm'
-        : isNextjs
-          ? 'btn-nextjs-udemy-sm'
-          : 'btn-paid-sm';
+    : isDevops
+      ? 'btn-devops-kodekloud-sm'
+      : isAws
+        ? 'btn-aws-kodekloud-sm'
+        : isPython
+          ? 'btn-python-portal-sm'
+          : isNextjs
+            ? 'btn-nextjs-udemy-sm'
+            : 'btn-paid-sm';
   const cardClass = isMobile
     ? 'lecture-card-mobile'
-    : isAws
-      ? 'lecture-card-aws'
-      : isPython
-        ? 'lecture-card-python'
-        : isNextjs
-          ? 'lecture-card-nextjs'
-          : '';
+    : isDevops
+      ? 'lecture-card-devops'
+      : isAws
+        ? 'lecture-card-aws'
+        : isPython
+          ? 'lecture-card-python'
+          : isNextjs
+            ? 'lecture-card-nextjs'
+            : '';
   const thumbClass = isMobile
     ? 'thumb-day-mobile'
-    : isAws
-      ? 'thumb-day-aws'
-      : isPython
-        ? 'thumb-day-python'
-        : isNextjs
-          ? 'thumb-day-nextjs'
-          : '';
+    : isDevops
+      ? 'thumb-day-devops'
+      : isAws
+        ? 'thumb-day-aws'
+        : isPython
+          ? 'thumb-day-python'
+          : isNextjs
+            ? 'thumb-day-nextjs'
+            : '';
 
   return (
     <article className={`lecture-card ${cardClass}`}>
@@ -61,7 +70,7 @@ export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 
       <div className="lecture-body">
         <h2 className="lecture-title">
           <Link to={learnUrl}>
-            {dayPrefix === 'Day' || dayPrefix === 'AWS'
+            {dayPrefix === 'Day' || dayPrefix === 'AWS' || dayPrefix === 'DO'
               ? 'Day'
               : dayPrefix === 'NX' || dayPrefix === 'PY'
                 ? 'Module'

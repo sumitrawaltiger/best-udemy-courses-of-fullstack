@@ -3,11 +3,13 @@ import { getChapterBySlug, chapters } from '../data/chapters';
 import { getNextjsChapterBySlug, nextjsChapters } from '../data/nextjsChapters';
 import { getPythonChapterBySlug, pythonChapters } from '../data/pythonChapters';
 import { getAwsChapterBySlug, awsChapters } from '../data/awsChapters';
+import { getDevopsChapterBySlug, devopsChapters } from '../data/devopsChapters';
 import { getMobileChapterBySlug, mobileChapters } from '../data/mobileChapters';
 import { thunderRepo } from '../data/syllabus';
 import { NEXTJS_META } from '../data/nextjsSyllabus';
 import { PYTHON_META } from '../data/pythonSyllabus';
 import { AWS_META } from '../data/awsSyllabus';
+import { DEVOPS_META } from '../data/devopsSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import CodeBlock from '../components/CodeBlock';
 import CodePlayground from '../components/CodePlayground';
@@ -75,6 +77,23 @@ const TRACKS = {
       btnClass: 'btn-aws-kodekloud',
     },
   },
+  devops: {
+    getChapter: getDevopsChapterBySlug,
+    list: () => devopsChapters,
+    homePath: '/devops',
+    learnPath: '/devops/learn',
+    cssClass: 'chapter-devops',
+    codeRepo: null,
+    codeLabel: 'Lab Code',
+    lessonLabel: 'Day',
+    extraLink: { href: DEVOPS_META.cloudfolksUrl, label: '🏆 CloudFolks DevOps' },
+    banner: {
+      title: 'Ready for today\'s DevOps task?',
+      text: 'Complete hands-on tasks on KodeKloud — Git, Docker, K8s, and real pipelines with automated validation.',
+      cta: 'Open KodeKloud →',
+      btnClass: 'btn-devops-kodekloud',
+    },
+  },
   mobile: {
     getChapter: getMobileChapterBySlug,
     list: () => mobileChapters,
@@ -123,6 +142,7 @@ function getYoutubeEmbedUrl(url) {
 
 function dayLabel(chapter, track) {
   if (track === 'mobile') return `RN Day ${chapter.rnDay}`;
+  if (track === 'devops') return `DevOps Day ${chapter.devopsDay}`;
   if (track === 'aws') return `AWS Day ${chapter.awsDay}`;
   if (track === 'nextjs') return `NX Module ${chapter.nextDay}`;
   if (track === 'python') return `PY Module ${chapter.pyDay}`;
@@ -131,6 +151,7 @@ function dayLabel(chapter, track) {
 
 function introClass(track) {
   if (track === 'mobile') return 'chapter-intro-mobile';
+  if (track === 'devops') return 'chapter-intro-devops';
   if (track === 'aws') return 'chapter-intro-aws';
   if (track === 'nextjs') return 'chapter-intro-nextjs';
   if (track === 'python') return 'chapter-intro-python';
@@ -139,6 +160,7 @@ function introClass(track) {
 
 function badgeClass(track) {
   if (track === 'mobile') return 'chapter-badge-mobile';
+  if (track === 'devops') return 'chapter-badge-devops';
   if (track === 'aws') return 'chapter-badge-aws';
   if (track === 'nextjs') return 'chapter-badge-nextjs';
   if (track === 'python') return 'chapter-badge-python';
@@ -147,6 +169,7 @@ function badgeClass(track) {
 
 function paidClass(track) {
   if (track === 'mobile') return 'paid-mobile';
+  if (track === 'devops') return 'paid-devops';
   if (track === 'aws') return 'paid-aws';
   if (track === 'nextjs') return 'paid-nextjs';
   if (track === 'python') return 'paid-python';
@@ -155,6 +178,7 @@ function paidClass(track) {
 
 function bannerClass(track) {
   if (track === 'mobile') return 'paid-lecture-banner-mobile';
+  if (track === 'devops') return 'paid-lecture-banner-devops';
   if (track === 'aws') return 'paid-lecture-banner-aws';
   if (track === 'nextjs') return 'paid-lecture-banner-nextjs';
   if (track === 'python') return 'paid-lecture-banner-python';
@@ -163,6 +187,7 @@ function bannerClass(track) {
 
 function sectionNumClass(track) {
   if (track === 'mobile') return 'section-num-mobile';
+  if (track === 'devops') return 'section-num-devops';
   if (track === 'aws') return 'section-num-aws';
   if (track === 'nextjs') return 'section-num-nextjs';
   if (track === 'python') return 'section-num-python';
@@ -234,7 +259,9 @@ export default function Chapter({ track = 'thunder' }) {
                   ? 'Ashok IT Portal'
                   : track === 'aws'
                     ? 'CloudFolks Course'
-                    : 'My Notion Notes'}
+                    : track === 'devops'
+                      ? 'CloudFolks DevOps'
+                      : 'My Notion Notes'}
             </a>
           )}
           {cfg.extraLink && (

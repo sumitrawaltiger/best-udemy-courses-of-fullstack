@@ -10,7 +10,7 @@ export const PYTHON_META = {
   institute: 'Ashok IT',
   tagline: 'Learn Here.. Lead Anywhere..!!',
   totalModules: 45,
-  startsAfter: 'React & Next.js',
+  startsAfter: 'React Native',
 };
 
 function lessonToModule(ch) {

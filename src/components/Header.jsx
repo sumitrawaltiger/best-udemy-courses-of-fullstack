@@ -4,6 +4,7 @@ import { discordCommunity } from '../data/syllabus';
 
 function trackFromPath(path) {
   if (path.startsWith('/mobile')) return 'mobile';
+  if (path.startsWith('/devops')) return 'devops';
   if (path.startsWith('/aws')) return 'aws';
   if (path.startsWith('/python')) return 'python';
   if (path.startsWith('/nextjs')) return 'nextjs';
@@ -15,6 +16,7 @@ const TRACK_HOME = {
   nextjs: '/nextjs',
   python: '/python',
   aws: '/aws',
+  devops: '/devops',
   mobile: '/mobile',
 };
 
@@ -23,6 +25,7 @@ const TRACK_START = {
   nextjs: '/nextjs/learn/introduction-to-the-course',
   python: '/python/learn/course-introduction',
   aws: '/aws/learn/introduction-to-100-days-of-cloud',
+  devops: '/devops/learn/introduction-to-100-days-of-devops',
   mobile: '/mobile/learn/react-js-refresher',
 };
 
@@ -31,6 +34,7 @@ const TRACK_SYLLABUS = {
   nextjs: '/nextjs#nextjs-syllabus',
   python: '/python#python-syllabus',
   aws: '/aws#aws-syllabus',
+  devops: '/devops#devops-syllabus',
   mobile: '/mobile#mobile-syllabus',
 };
 
@@ -55,47 +59,63 @@ export default function Header({ onSearch }) {
   }
 
   const logoIcon =
-    track === 'mobile' ? 'RN' : track === 'aws' ? 'AWS' : track === 'python' ? 'PY' : track === 'nextjs' ? 'NX' : 'JS';
+    track === 'mobile'
+      ? 'RN'
+      : track === 'devops'
+        ? 'DO'
+        : track === 'aws'
+          ? 'AWS'
+          : track === 'python'
+            ? 'PY'
+            : track === 'nextjs'
+              ? 'NX'
+              : 'JS';
   const logoName =
     track === 'mobile'
       ? 'Thunder++ Mobile'
-      : track === 'aws'
-        ? 'Thunder++ AWS Cloud'
-        : track === 'python'
-          ? 'Thunder++ Python'
-          : track === 'nextjs'
-            ? 'Thunder+ Next.js'
-            : 'JS Learn Hub';
+      : track === 'devops'
+        ? 'Thunder++ DevOps'
+        : track === 'aws'
+          ? 'Thunder++ AWS Cloud'
+          : track === 'python'
+            ? 'Thunder++ Python'
+            : track === 'nextjs'
+              ? 'Thunder+ Next.js'
+              : 'JS Learn Hub';
   const logoTagline =
     track === 'mobile'
       ? 'React Native by ChaiCode'
-      : track === 'aws'
-        ? '100 Days of Cloud — KodeKloud'
-        : track === 'python'
-          ? 'Python & Agentic AI — Ashok IT'
-          : track === 'nextjs'
-            ? 'React & Next.js by ChaiCode'
-            : 'Learn JavaScript Day by Day';
+      : track === 'devops'
+        ? '100 Days of DevOps — KodeKloud'
+        : track === 'aws'
+          ? '100 Days of Cloud — KodeKloud'
+          : track === 'python'
+            ? 'Python & Agentic AI — Ashok IT'
+            : track === 'nextjs'
+              ? 'React & Next.js by ChaiCode'
+              : 'Learn JavaScript Day by Day';
 
   const searchPlaceholder =
     track === 'mobile'
       ? 'Search mobile lessons...'
-      : track === 'aws'
-        ? 'Search AWS days...'
-        : track === 'python'
-          ? 'Search Python modules...'
-          : track === 'nextjs'
-            ? 'Search modules...'
-            : 'Search tutorials...';
+      : track === 'devops'
+        ? 'Search DevOps days...'
+        : track === 'aws'
+          ? 'Search AWS days...'
+          : track === 'python'
+            ? 'Search Python modules...'
+            : track === 'nextjs'
+              ? 'Search modules...'
+              : 'Search tutorials...';
 
   return (
     <header
-      className={`header ${track === 'mobile' ? 'header-mobile' : ''} ${track === 'nextjs' ? 'header-nextjs' : ''} ${track === 'python' ? 'header-python' : ''} ${track === 'aws' ? 'header-aws' : ''}`}
+      className={`header ${track === 'mobile' ? 'header-mobile' : ''} ${track === 'nextjs' ? 'header-nextjs' : ''} ${track === 'python' ? 'header-python' : ''} ${track === 'aws' ? 'header-aws' : ''} ${track === 'devops' ? 'header-devops' : ''}`}
     >
       <div className="header-inner">
         <Link to={TRACK_HOME[track]} className="logo" onClick={closeMenu}>
           <span
-            className={`logo-icon ${track === 'mobile' ? 'logo-icon-mobile' : ''} ${track === 'nextjs' ? 'logo-icon-nextjs' : ''} ${track === 'python' ? 'logo-icon-python' : ''} ${track === 'aws' ? 'logo-icon-aws' : ''}`}
+            className={`logo-icon ${track === 'mobile' ? 'logo-icon-mobile' : ''} ${track === 'nextjs' ? 'logo-icon-nextjs' : ''} ${track === 'python' ? 'logo-icon-python' : ''} ${track === 'aws' ? 'logo-icon-aws' : ''} ${track === 'devops' ? 'logo-icon-devops' : ''}`}
           >
             {logoIcon}
           </span>
@@ -133,14 +153,17 @@ export default function Header({ onSearch }) {
           <Link to="/nextjs" onClick={closeMenu} className="header-nextjs-link">
             Next.js
           </Link>
+          <Link to="/mobile" onClick={closeMenu} className="header-rn-link">
+            React Native
+          </Link>
           <Link to="/python" onClick={closeMenu} className="header-python-link">
             Python
           </Link>
           <Link to="/aws" onClick={closeMenu} className="header-aws-link">
             AWS
           </Link>
-          <Link to="/mobile" onClick={closeMenu} className="header-rn-link">
-            React Native
+          <Link to="/devops" onClick={closeMenu} className="header-devops-link">
+            DevOps
           </Link>
           <a href={TRACK_SYLLABUS[track]} onClick={closeMenu}>
             Syllabus

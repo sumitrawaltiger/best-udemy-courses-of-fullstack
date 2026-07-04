@@ -4,8 +4,9 @@ import { chapters } from '../data/chapters';
 import { nextjsChapters } from '../data/nextjsChapters';
 import { pythonChapters } from '../data/pythonChapters';
 import { awsChapters } from '../data/awsChapters';
+import { devopsChapters } from '../data/devopsChapters';
 import { mobileChapters } from '../data/mobileChapters';
-import { NEXTJS_MODULES, PYTHON_MODULES, AWS_DAYS, MOBILE_LESSONS } from '../data/trackConfig';
+import { NEXTJS_MODULES, PYTHON_MODULES, AWS_DAYS, DEVOPS_DAYS, MOBILE_LESSONS } from '../data/trackConfig';
 
 const TRACK_CONFIG = {
   thunder: {
@@ -51,6 +52,17 @@ const TRACK_CONFIG = {
     cssClass: 'sidebar-aws',
     activeClass: 'sidebar-link-aws',
     progressClass: 'progress-fill-aws',
+  },
+  devops: {
+    list: devopsChapters,
+    basePath: '/devops/learn',
+    heading: '100 Days of DevOps',
+    dayLabel: (ch) => `Day ${ch.devopsDay}`,
+    total: DEVOPS_DAYS,
+    unit: 'days',
+    cssClass: 'sidebar-devops',
+    activeClass: 'sidebar-link-devops',
+    progressClass: 'progress-fill-devops',
   },
   mobile: {
     list: mobileChapters,

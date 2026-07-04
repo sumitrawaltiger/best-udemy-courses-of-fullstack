@@ -7,7 +7,7 @@ export const MOBILE_META = {
   title: 'Thunder++: React Native',
   subtitle: 'Mobile Development Cohort by ChaiCode — Expo, APIs & production apps',
   description:
-    'After Thunder 100 Days, continue with cross-platform mobile development. Build real apps with React Native + Expo.',
+    'After React & Next.js, continue with cross-platform mobile development. Build real apps with React Native + Expo.',
   syllabusUrl:
     'https://chaiaurcode.notion.site/Mobile-Development-Cohort-343ab1b6b9c680caa31ed899178211ad',
   notesUrl:
@@ -16,7 +16,7 @@ export const MOBILE_META = {
   cohortUrl: 'https://hitesh.ai/mobile-dev',
   coursePortal: 'https://courses.chaicode.com',
   totalLessons: 25,
-  startsAfter: '100 Days of AWS Cloud',
+  startsAfter: 'React & Next.js',
 };
 
 function lessonToModule(ch) {

@@ -10,26 +10,30 @@ export default function Layout() {
   const isNextjsTrack = location.pathname.startsWith('/nextjs');
   const isPythonTrack = location.pathname.startsWith('/python');
   const isAwsTrack = location.pathname.startsWith('/aws');
+  const isDevopsTrack = location.pathname.startsWith('/devops');
   const showSidebar =
     location.pathname.startsWith('/learn/') ||
     location.pathname.startsWith('/nextjs/learn/') ||
     location.pathname.startsWith('/python/learn/') ||
     location.pathname.startsWith('/aws/learn/') ||
+    location.pathname.startsWith('/devops/learn/') ||
     location.pathname.startsWith('/mobile/learn/');
 
   const track = isMobileTrack
     ? 'mobile'
-    : isAwsTrack
-      ? 'aws'
-      : isPythonTrack
-        ? 'python'
-        : isNextjsTrack
-          ? 'nextjs'
-          : 'thunder';
+    : isDevopsTrack
+      ? 'devops'
+      : isAwsTrack
+        ? 'aws'
+        : isPythonTrack
+          ? 'python'
+          : isNextjsTrack
+            ? 'nextjs'
+            : 'thunder';
 
   return (
     <div
-      className={`app ${isMobileTrack ? 'app-mobile' : ''} ${isNextjsTrack ? 'app-nextjs' : ''} ${isPythonTrack ? 'app-python' : ''} ${isAwsTrack ? 'app-aws' : ''}`}
+      className={`app ${isMobileTrack ? 'app-mobile' : ''} ${isNextjsTrack ? 'app-nextjs' : ''} ${isPythonTrack ? 'app-python' : ''} ${isAwsTrack ? 'app-aws' : ''} ${isDevopsTrack ? 'app-devops' : ''}`}
     >
       <Header />
       <div className={`main-layout ${showSidebar ? 'with-sidebar' : 'no-sidebar'}`}>
@@ -47,7 +51,7 @@ export default function Layout() {
           — sharing my JavaScript learning journey with the world.
         </p>
         <p className="footer-sub">
-          Thunder → Next.js → Python → AWS Cloud → React Native.
+          Thunder → Next.js → React Native → Python → AWS → DevOps.
         </p>
         <p className="footer-community">
           <a href={discordCommunity} target="_blank" rel="noopener noreferrer">

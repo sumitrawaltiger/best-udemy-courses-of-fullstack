@@ -30,8 +30,11 @@ export default function MobileHome() {
                 <a href="#mobile-syllabus" className="btn btn-outline-mobile btn-lg">
                   View Syllabus
                 </a>
-                <Link to="/aws" className="btn btn-outline-mobile btn-lg">
-                  ← 100 Days of AWS
+                <Link to="/nextjs" className="btn btn-outline-mobile btn-lg">
+                  ← React & Next.js
+                </Link>
+                <Link to="/python" className="btn btn-outline-mobile btn-lg">
+                  Python & AI →
                 </Link>
               </div>
             }
@@ -49,7 +52,7 @@ export default function MobileHome() {
         <section className="roadmap">
           <h2>25-Lesson Mobile Roadmap</h2>
           <p className="section-desc">
-            Thunder++ continues after 100 Days of AWS Cloud. All {mobileChapters.length} React Native lessons are on
+            Thunder++ continues after React & Next.js. All {mobileChapters.length} React Native lessons are on
             this site.
           </p>
           <div className="roadmap-grid roadmap-mobile">
@@ -64,7 +67,7 @@ export default function MobileHome() {
               <span className="legend-dot published legend-dot-mobile" /> {mobileChapters.length} lessons
             </span>
             <span>
-              <span className="legend-dot published" /> After 100 Days of AWS
+              <span className="legend-dot published" /> After React & Next.js
             </span>
           </div>
         </section>

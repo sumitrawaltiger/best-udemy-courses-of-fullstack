@@ -6,7 +6,7 @@ export default function PythonHero({ children, actions }) {
     <div className="python-hero-block">
       <span className="python-level-badge">
         <span className="python-level-icon" aria-hidden="true">🐍</span>
-        After React & Next.js
+        After React Native
       </span>
 
       <h1 className="python-title">

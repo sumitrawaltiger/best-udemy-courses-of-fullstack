@@ -3,10 +3,12 @@ import { chapters, searchChapters } from '../data/chapters';
 import { nextjsChapters } from '../data/nextjsChapters';
 import { pythonChapters } from '../data/pythonChapters';
 import { awsChapters } from '../data/awsChapters';
+import { devopsChapters } from '../data/devopsChapters';
 import { mobileChapters } from '../data/mobileChapters';
 import { NEXTJS_META } from '../data/nextjsSyllabus';
 import { PYTHON_META } from '../data/pythonSyllabus';
 import { AWS_META } from '../data/awsSyllabus';
+import { DEVOPS_META } from '../data/devopsSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import LectureCard from '../components/LectureCard';
@@ -133,9 +135,46 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="thunder-plus-section" id="thunder-plus">
+        <div className="thunder-plus-inner">
+          <span className="thunder-plus-badge">After React & Next.js</span>
+          <h2>Thunder++ — React Native</h2>
+          <p className="section-desc">
+            Continue with the{' '}
+            <a href={MOBILE_META.syllabusUrl} target="_blank" rel="noopener noreferrer">
+              ChaiCode Mobile Development Cohort
+            </a>
+            . {mobileChapters.length} lessons covering Expo, navigation, APIs, notifications, auth, and real-world app
+            projects.
+          </p>
+          <div className="thunder-plus-highlights">
+            <span>📱 React Native + Expo</span>
+            <span>🧭 Expo Router</span>
+            <span>🔔 Push Notifications</span>
+            <span>🚀 EAS & Play Store</span>
+          </div>
+          <div className="thunder-plus-actions">
+            <Link to="/mobile" className="btn btn-mobile btn-lg">
+              Explore Thunder++
+            </Link>
+            <Link to="/mobile/learn/react-js-refresher" className="btn btn-mobile-cohort btn-lg">
+              Start RN Day 1
+            </Link>
+            <a
+              href={MOBILE_META.githubRepo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline-mobile btn-lg"
+            >
+              ChaiCode GitHub
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section className="thunder-plus-section thunder-python-section" id="thunder-python">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-python">After React & Next.js</span>
+          <span className="thunder-plus-badge thunder-plus-badge-python">After React Native</span>
           <h2>Thunder++ — Python & Agentic AI</h2>
           <p className="section-desc">
             Learn Gen AI & Agentic AI with Python at{' '}
@@ -211,38 +250,42 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="thunder-plus-section" id="thunder-plus">
+      <section className="thunder-plus-section thunder-devops-section" id="thunder-devops">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge">After 100 Days of AWS</span>
-          <h2>Thunder++ — React Native</h2>
+          <span className="thunder-plus-badge thunder-plus-badge-devops">After 100 Days of AWS</span>
+          <h2>Thunder++ — 100 Days of DevOps</h2>
           <p className="section-desc">
-            Then continue with the{' '}
-            <a href={MOBILE_META.syllabusUrl} target="_blank" rel="noopener noreferrer">
-              ChaiCode Mobile Development Cohort
+            Master the DevOps stack with{' '}
+            <a href={DEVOPS_META.kodekloudUrl} target="_blank" rel="noopener noreferrer">
+              KodeKloud 100 Days of DevOps
+            </a>{' '}
+            and{' '}
+            <a href={DEVOPS_META.cloudfolksUrl} target="_blank" rel="noopener noreferrer">
+              CloudFolks Hub
             </a>
-            . {mobileChapters.length} lessons covering Expo, navigation, APIs, notifications, auth, and real-world app
-            projects.
+            . {devopsChapters.length} hands-on days covering Linux, Git, Jenkins, Docker, Kubernetes, Ansible,
+            Terraform, and Prometheus.
           </p>
           <div className="thunder-plus-highlights">
-            <span>📱 React Native + Expo</span>
-            <span>🧭 Expo Router</span>
-            <span>🔔 Push Notifications</span>
-            <span>🚀 EAS & Play Store</span>
+            <span>⚙️ Linux & Git</span>
+            <span>🔄 Jenkins CI/CD</span>
+            <span>🐳 Docker & K8s</span>
+            <span>📊 Prometheus & Grafana</span>
           </div>
           <div className="thunder-plus-actions">
-            <Link to="/mobile" className="btn btn-mobile btn-lg">
-              Explore Thunder++
+            <Link to="/devops" className="btn btn-devops btn-lg">
+              Explore DevOps Track
             </Link>
-            <Link to="/mobile/learn/react-js-refresher" className="btn btn-mobile-cohort btn-lg">
-              Start RN Day 1
+            <Link to="/devops/learn/introduction-to-100-days-of-devops" className="btn btn-devops-kodekloud btn-lg">
+              Start DevOps Day 1
             </Link>
             <a
-              href={MOBILE_META.githubRepo}
+              href={DEVOPS_META.kodekloudPathUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-outline-mobile btn-lg"
+              className="btn btn-outline-devops btn-lg"
             >
-              ChaiCode GitHub
+              DevOps Learning Path
             </a>
           </div>
         </div>

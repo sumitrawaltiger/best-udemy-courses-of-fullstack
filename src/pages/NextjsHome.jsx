@@ -34,8 +34,8 @@ export default function NextjsHome() {
                 <Link to="/" className="btn btn-outline-nextjs btn-lg">
                   ← Thunder 100 Days
                 </Link>
-                <Link to="/python" className="btn btn-outline-nextjs btn-lg">
-                  Python & AI →
+                <Link to="/mobile" className="btn btn-outline-nextjs btn-lg">
+                  React Native →
                 </Link>
               </div>
             }

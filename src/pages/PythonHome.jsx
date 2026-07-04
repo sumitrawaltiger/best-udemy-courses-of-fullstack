@@ -31,8 +31,8 @@ export default function PythonHome() {
                 <a href="#python-syllabus" className="btn btn-outline-python btn-lg">
                   View Syllabus
                 </a>
-                <Link to="/nextjs" className="btn btn-outline-python btn-lg">
-                  ← React & Next.js
+                <Link to="/mobile" className="btn btn-outline-python btn-lg">
+                  ← React Native
                 </Link>
                 <Link to="/aws" className="btn btn-outline-python btn-lg">
                   AWS Cloud →
@@ -53,7 +53,7 @@ export default function PythonHome() {
         <section className="roadmap">
           <h2>45-Module Python & AI Roadmap</h2>
           <p className="section-desc">
-            Thunder++ continues after React & Next.js. All {pythonChapters.length} modules from Python basics to
+            Thunder++ continues after React Native. All {pythonChapters.length} modules from Python basics to
             Agentic AI.
           </p>
           <div className="roadmap-grid roadmap-python">

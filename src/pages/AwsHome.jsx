@@ -45,8 +45,8 @@ export default function AwsHome() {
                 <Link to="/python" className="btn btn-outline-aws btn-lg">
                   ← Python & Agentic AI
                 </Link>
-                <Link to="/mobile" className="btn btn-outline-aws btn-lg">
-                  React Native →
+                <Link to="/devops" className="btn btn-outline-aws btn-lg">
+                  DevOps →
                 </Link>
               </div>
             }
@@ -64,7 +64,7 @@ export default function AwsHome() {
         <section className="roadmap">
           <h2>100-Day AWS Cloud Roadmap</h2>
           <p className="section-desc">
-            All {awsChapters.length} days mapped from KodeKloud and CloudFolks. Then continue to React Native.
+            All {awsChapters.length} days mapped from KodeKloud and CloudFolks. Then continue to DevOps.
           </p>
           <div className="roadmap-grid roadmap-100 roadmap-aws">
             {awsChapters.map((ch) => (
