@@ -133,7 +133,7 @@ export default function Home() {
               href={NEXTJS_META.udemyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-outline-nextjs btn-lg"
+              className="btn btn-nextjs-udemy-outline btn-lg"
             >
               Udemy Course
             </a>
@@ -170,7 +170,7 @@ export default function Home() {
               href={MOBILE_META.githubRepo}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-outline-mobile btn-lg"
+              className="btn btn-mobile-cohort-outline btn-lg"
             >
               ChaiCode GitHub
             </a>
@@ -207,7 +207,7 @@ export default function Home() {
               href={PYTHON_META.portalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-outline-python btn-lg"
+              className="btn btn-python-portal-outline btn-lg"
             >
               Ashok IT Portal
             </a>
@@ -241,7 +241,7 @@ export default function Home() {
               href={JAVA_META.primaryUdemyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-outline-java btn-lg"
+              className="btn btn-java-udemy-outline btn-lg"
             >
               Udemy — Java Course
             </a>
@@ -282,7 +282,7 @@ export default function Home() {
               href={AWS_META.udemyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-outline-aws btn-lg"
+              className="btn btn-aws-kodekloud-outline btn-lg"
             >
               Udemy SAA-C03
             </a>
@@ -323,7 +323,7 @@ export default function Home() {
               href={DEVOPS_META.kodekloudPathUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-outline-devops btn-lg"
+              className="btn btn-devops-kodekloud-outline btn-lg"
             >
               DevOps Learning Path
             </a>
@@ -371,7 +371,7 @@ export default function Home() {
               href={K8S_META.labsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-outline-k8s btn-lg"
+              className="btn btn-k8s-kodekloud-outline btn-lg"
             >
               Studio Labs
             </a>
@@ -412,7 +412,7 @@ export default function Home() {
               href={INTERVIEW_META.gfgSystemDesignUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-outline-interview btn-lg"
+              className="btn btn-interview-chaicode-outline btn-lg"
             >
               GfG System Design
             </a>

@@ -2802,6 +2802,57 @@ a:hover {
   gap: 12px;
 }
 
+/* External-link buttons on light home track cards */
+.thunder-plus-actions .btn-nextjs-udemy-outline,
+.thunder-plus-actions .btn-mobile-cohort-outline,
+.thunder-plus-actions .btn-python-portal-outline,
+.thunder-plus-actions .btn-java-udemy-outline,
+.thunder-plus-actions .btn-aws-kodekloud-outline,
+.thunder-plus-actions .btn-devops-kodekloud-outline,
+.thunder-plus-actions .btn-k8s-kodekloud-outline,
+.thunder-plus-actions .btn-interview-chaicode-outline {
+  background: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+}
+
+.thunder-plus-actions .btn-python-portal-outline {
+  color: var(--python-blue-dark);
+  border-color: var(--python-blue);
+}
+
+.thunder-plus-actions .btn-python-portal-outline:hover {
+  background: var(--python-blue);
+  color: #fff;
+  border-color: var(--python-blue);
+  box-shadow: 0 4px 14px rgba(55, 118, 171, 0.35);
+  transform: translateY(-1px);
+}
+
+.thunder-plus-actions .btn-java-udemy-outline {
+  color: #8710d8;
+  border-color: #a435f0;
+}
+
+.thunder-plus-actions .btn-java-udemy-outline:hover {
+  background: #a435f0;
+  color: #fff;
+  border-color: #a435f0;
+  box-shadow: 0 4px 14px rgba(164, 53, 240, 0.35);
+  transform: translateY(-1px);
+}
+
+.thunder-plus-actions .btn-nextjs-udemy-outline:hover,
+.thunder-plus-actions .btn-mobile-cohort-outline:hover,
+.thunder-plus-actions .btn-aws-kodekloud-outline:hover,
+.thunder-plus-actions .btn-devops-kodekloud-outline:hover,
+.thunder-plus-actions .btn-k8s-kodekloud-outline:hover,
+.thunder-plus-actions .btn-interview-chaicode-outline:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
 .header-rn-link {
   color: var(--mobile-orange) !important;
   font-weight: 600;
