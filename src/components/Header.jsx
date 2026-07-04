@@ -6,6 +6,7 @@ function trackFromPath(path) {
   if (path.startsWith('/mobile')) return 'mobile';
   if (path.startsWith('/devops')) return 'devops';
   if (path.startsWith('/aws')) return 'aws';
+  if (path.startsWith('/java')) return 'java';
   if (path.startsWith('/python')) return 'python';
   if (path.startsWith('/nextjs')) return 'nextjs';
   return 'thunder';
@@ -15,6 +16,7 @@ const TRACK_HOME = {
   thunder: '/',
   nextjs: '/nextjs',
   python: '/python',
+  java: '/java',
   aws: '/aws',
   devops: '/devops',
   mobile: '/mobile',
@@ -24,6 +26,7 @@ const TRACK_START = {
   thunder: '/learn/introduction-to-javascript',
   nextjs: '/nextjs/learn/introduction-to-the-course',
   python: '/python/learn/course-introduction',
+  java: '/java/learn/introduction-to-java-and-setup',
   aws: '/aws/learn/introduction-to-100-days-of-cloud',
   devops: '/devops/learn/introduction-to-100-days-of-devops',
   mobile: '/mobile/learn/react-js-refresher',
@@ -33,6 +36,7 @@ const TRACK_SYLLABUS = {
   thunder: '/#syllabus',
   nextjs: '/nextjs#nextjs-syllabus',
   python: '/python#python-syllabus',
+  java: '/java#java-syllabus',
   aws: '/aws#aws-syllabus',
   devops: '/devops#devops-syllabus',
   mobile: '/mobile#mobile-syllabus',
@@ -65,7 +69,9 @@ export default function Header({ onSearch }) {
         ? 'DO'
         : track === 'aws'
           ? 'AWS'
-          : track === 'python'
+          : track === 'java'
+            ? 'JV'
+            : track === 'python'
             ? 'PY'
             : track === 'nextjs'
               ? 'NX'
@@ -77,7 +83,9 @@ export default function Header({ onSearch }) {
         ? 'Thunder++ DevOps'
         : track === 'aws'
           ? 'Thunder++ AWS Cloud'
-          : track === 'python'
+          : track === 'java'
+            ? 'Thunder++ Java & Spring'
+            : track === 'python'
             ? 'Thunder++ Python'
             : track === 'nextjs'
               ? 'Thunder+ Next.js'
@@ -89,7 +97,9 @@ export default function Header({ onSearch }) {
         ? '100 Days of DevOps — KodeKloud'
         : track === 'aws'
           ? '100 Days of Cloud — KodeKloud'
-          : track === 'python'
+          : track === 'java'
+            ? 'Java & Spring — Udemy'
+            : track === 'python'
             ? 'Python & Agentic AI — Ashok IT'
             : track === 'nextjs'
               ? 'React & Next.js by ChaiCode'
@@ -102,7 +112,9 @@ export default function Header({ onSearch }) {
         ? 'Search DevOps days...'
         : track === 'aws'
           ? 'Search AWS days...'
-          : track === 'python'
+          : track === 'java'
+            ? 'Search Java modules...'
+            : track === 'python'
             ? 'Search Python modules...'
             : track === 'nextjs'
               ? 'Search modules...'
@@ -110,12 +122,12 @@ export default function Header({ onSearch }) {
 
   return (
     <header
-      className={`header ${track === 'mobile' ? 'header-mobile' : ''} ${track === 'nextjs' ? 'header-nextjs' : ''} ${track === 'python' ? 'header-python' : ''} ${track === 'aws' ? 'header-aws' : ''} ${track === 'devops' ? 'header-devops' : ''}`}
+      className={`header ${track === 'mobile' ? 'header-mobile' : ''} ${track === 'nextjs' ? 'header-nextjs' : ''} ${track === 'python' ? 'header-python' : ''} ${track === 'java' ? 'header-java' : ''} ${track === 'aws' ? 'header-aws' : ''} ${track === 'devops' ? 'header-devops' : ''}`}
     >
       <div className="header-inner">
         <Link to={TRACK_HOME[track]} className="logo" onClick={closeMenu}>
           <span
-            className={`logo-icon ${track === 'mobile' ? 'logo-icon-mobile' : ''} ${track === 'nextjs' ? 'logo-icon-nextjs' : ''} ${track === 'python' ? 'logo-icon-python' : ''} ${track === 'aws' ? 'logo-icon-aws' : ''} ${track === 'devops' ? 'logo-icon-devops' : ''}`}
+            className={`logo-icon ${track === 'mobile' ? 'logo-icon-mobile' : ''} ${track === 'nextjs' ? 'logo-icon-nextjs' : ''} ${track === 'python' ? 'logo-icon-python' : ''} ${track === 'java' ? 'logo-icon-java' : ''} ${track === 'aws' ? 'logo-icon-aws' : ''} ${track === 'devops' ? 'logo-icon-devops' : ''}`}
           >
             {logoIcon}
           </span>
@@ -158,6 +170,9 @@ export default function Header({ onSearch }) {
           </Link>
           <Link to="/python" onClick={closeMenu} className="header-python-link">
             Python
+          </Link>
+          <Link to="/java" onClick={closeMenu} className="header-java-link">
+            Java
           </Link>
           <Link to="/aws" onClick={closeMenu} className="header-aws-link">
             AWS

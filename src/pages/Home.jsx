@@ -2,11 +2,13 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { chapters, searchChapters } from '../data/chapters';
 import { nextjsChapters } from '../data/nextjsChapters';
 import { pythonChapters } from '../data/pythonChapters';
+import { javaChapters } from '../data/javaChapters';
 import { awsChapters } from '../data/awsChapters';
 import { devopsChapters } from '../data/devopsChapters';
 import { mobileChapters } from '../data/mobileChapters';
 import { NEXTJS_META } from '../data/nextjsSyllabus';
 import { PYTHON_META } from '../data/pythonSyllabus';
+import { JAVA_META } from '../data/javaSyllabus';
 import { AWS_META } from '../data/awsSyllabus';
 import { DEVOPS_META } from '../data/devopsSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
@@ -209,9 +211,43 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="thunder-plus-section thunder-java-section" id="thunder-java">
+        <div className="thunder-plus-inner">
+          <span className="thunder-plus-badge thunder-plus-badge-java">After Python & Agentic AI</span>
+          <h2>Thunder++ — Java & Spring</h2>
+          <p className="section-desc">
+            Master Java and Spring with {JAVA_META.courses.length} Udemy courses — core Java, Java 8/9, JDBC, Spring
+            Framework 6, Spring Boot microservices, Docker, Kubernetes, CQRS, and event-driven architecture.{' '}
+            {javaChapters.length} modules mapped on this site.
+          </p>
+          <div className="thunder-plus-highlights">
+            <span>☕ Java Core & OOP</span>
+            <span>🍃 Spring Boot & Cloud</span>
+            <span>🐳 Docker & Kubernetes</span>
+            <span>📡 Event-Driven Microservices</span>
+          </div>
+          <div className="thunder-plus-actions">
+            <Link to="/java" className="btn btn-java btn-lg">
+              Explore Java Track
+            </Link>
+            <Link to="/java/learn/introduction-to-java-and-setup" className="btn btn-java-udemy btn-lg">
+              Start JV Module 1
+            </Link>
+            <a
+              href={JAVA_META.primaryUdemyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline-java btn-lg"
+            >
+              Udemy — Java Course
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section className="thunder-plus-section thunder-aws-section" id="thunder-aws">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-aws">After Python & Agentic AI</span>
+          <span className="thunder-plus-badge thunder-plus-badge-aws">After Java & Spring</span>
           <h2>Thunder++ — 100 Days of AWS Cloud</h2>
           <p className="section-desc">
             Master AWS with{' '}

@@ -3,10 +3,11 @@ import { useEffect, useRef } from 'react';
 import { chapters } from '../data/chapters';
 import { nextjsChapters } from '../data/nextjsChapters';
 import { pythonChapters } from '../data/pythonChapters';
+import { javaChapters } from '../data/javaChapters';
 import { awsChapters } from '../data/awsChapters';
 import { devopsChapters } from '../data/devopsChapters';
 import { mobileChapters } from '../data/mobileChapters';
-import { NEXTJS_MODULES, PYTHON_MODULES, AWS_DAYS, DEVOPS_DAYS, MOBILE_LESSONS } from '../data/trackConfig';
+import { NEXTJS_MODULES, PYTHON_MODULES, JAVA_MODULES, AWS_DAYS, DEVOPS_DAYS, MOBILE_LESSONS } from '../data/trackConfig';
 
 const TRACK_CONFIG = {
   thunder: {
@@ -41,6 +42,17 @@ const TRACK_CONFIG = {
     cssClass: 'sidebar-python',
     activeClass: 'sidebar-link-python',
     progressClass: 'progress-fill-python',
+  },
+  java: {
+    list: javaChapters,
+    basePath: '/java/learn',
+    heading: 'Java & Spring',
+    dayLabel: (ch) => `JV ${ch.javaDay}`,
+    total: JAVA_MODULES,
+    unit: 'modules',
+    cssClass: 'sidebar-java',
+    activeClass: 'sidebar-link-java',
+    progressClass: 'progress-fill-java',
   },
   aws: {
     list: awsChapters,

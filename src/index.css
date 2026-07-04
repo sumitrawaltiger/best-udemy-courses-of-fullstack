@@ -3174,6 +3174,314 @@ a:hover {
   }
 }
 
+/* ─── Thunder++ Java & Spring (Udemy) ─── */
+:root {
+  --java-orange: #f89820;
+  --java-orange-dark: #e76f00;
+  --java-red: #5382a1;
+  --java-dark: #1a1a2e;
+}
+
+.java-hero {
+  width: 100%;
+  background: linear-gradient(160deg, #0a1628 0%, #1a1a2e 45%, #2d1810 100%);
+  color: #fff;
+  padding: 56px clamp(16px, 4vw, 48px) 64px;
+  margin: 0;
+  box-sizing: border-box;
+  border-bottom: 3px solid var(--java-orange);
+}
+
+.java-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.java-hero-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.java-level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid rgba(248, 152, 32, 0.5);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--java-orange);
+  margin-bottom: 28px;
+}
+
+.java-title {
+  font-family: 'Orbitron', var(--font);
+  font-size: clamp(28px, 6vw, 52px);
+  font-weight: 900;
+  line-height: 1.08;
+  margin: 0 0 20px;
+  color: #fff;
+}
+
+.java-title-line {
+  display: block;
+}
+
+.java-title-line:last-child {
+  color: var(--java-orange);
+}
+
+.java-subtitle {
+  font-size: clamp(15px, 2.5vw, 20px);
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+.java-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.java-meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid #3d4f63;
+  border-radius: 8px;
+  background: rgba(248, 152, 32, 0.1);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.java-hero-desc {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 680px;
+  margin: 0 0 28px;
+}
+
+.java-hero-desc a {
+  color: var(--java-orange);
+  font-weight: 600;
+}
+
+.java-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn-java {
+  background: var(--java-orange);
+  color: #1a1a2e;
+  border: 2px solid var(--java-orange);
+  font-weight: 700;
+}
+
+.btn-java:hover {
+  background: var(--java-orange-dark);
+  border-color: var(--java-orange-dark);
+  color: #fff;
+}
+
+.btn-java-udemy {
+  background: #a435f0;
+  color: #fff;
+  border: 2px solid #a435f0;
+  font-weight: 700;
+}
+
+.btn-java-udemy:hover {
+  background: #8710d8;
+  border-color: #8710d8;
+}
+
+.btn-java-udemy-sm {
+  background: rgba(164, 53, 240, 0.12);
+  color: #8710d8;
+  border: 1px solid #a435f0;
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
+.btn-java-udemy-sm:hover {
+  background: #a435f0;
+  color: #fff;
+}
+
+.btn-outline-java {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(248, 152, 32, 0.6);
+}
+
+.btn-outline-java:hover {
+  background: rgba(248, 152, 32, 0.12);
+  border-color: var(--java-orange);
+}
+
+.btn-java-udemy-outline {
+  display: inline-block;
+  padding: 12px 24px;
+  background: transparent;
+  color: #8710d8;
+  border: 2px solid #a435f0;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn-java-udemy-outline:hover {
+  background: #a435f0;
+  color: #fff;
+}
+
+.java-home {
+  padding: 32px clamp(16px, 4vw, 48px) 48px;
+}
+
+.java-syllabus-section {
+  background: #fff8f0;
+}
+
+.java-udemy-courses {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.java-udemy-course-link {
+  display: block;
+  padding: 10px 14px;
+  background: #fff;
+  border: 1px solid rgba(248, 152, 32, 0.3);
+  border-radius: 8px;
+  color: #1a1a2e;
+  font-size: 14px;
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.java-udemy-course-link:hover {
+  border-color: var(--java-orange);
+  background: #fff3e0;
+}
+
+.module-row-udemy {
+  background: rgba(164, 53, 240, 0.06);
+  border-top: 1px dashed rgba(164, 53, 240, 0.3);
+  text-decoration: none;
+  color: inherit;
+}
+
+.phase-card-java .phase-num-java {
+  background: var(--java-orange);
+}
+
+.highlight-check-java {
+  color: var(--java-orange);
+}
+
+.legend-dot-java {
+  background: var(--java-orange);
+}
+
+.thumb-day-java {
+  background: linear-gradient(135deg, var(--java-dark), var(--java-orange)) !important;
+}
+
+.thunder-java-section {
+  background: linear-gradient(135deg, #fff8f0 0%, #ffedd5 100%);
+  border-color: rgba(248, 152, 32, 0.3);
+}
+
+.thunder-plus-badge-java {
+  background: var(--java-orange);
+  color: #1a1a2e;
+}
+
+.header-java-link {
+  color: var(--java-orange) !important;
+  font-weight: 600;
+}
+
+.logo-icon-java {
+  background: var(--java-orange) !important;
+  color: #1a1a2e !important;
+}
+
+.sidebar-java .sidebar-link.active,
+.sidebar-java .sidebar-link-java.active {
+  border-left-color: var(--java-orange);
+  background: rgba(248, 152, 32, 0.12);
+}
+
+.progress-fill-java {
+  background: var(--java-orange);
+}
+
+.chapter-badge-java {
+  background: rgba(248, 152, 32, 0.12);
+  color: var(--java-orange-dark);
+  border: 1px solid rgba(248, 152, 32, 0.35);
+}
+
+.chapter-intro-java {
+  border-left-color: var(--java-orange);
+}
+
+.section-num-java {
+  background: var(--java-orange);
+}
+
+.paid-lecture-banner-java {
+  border-color: rgba(248, 152, 32, 0.35);
+  background: #fff8f0;
+}
+
+.chapter-link-btn.paid-java {
+  background: var(--java-orange);
+  border-color: var(--java-orange);
+  color: #1a1a2e;
+}
+
+.lecture-card-java {
+  border-left: 3px solid var(--java-orange);
+}
+
+.roadmap-java {
+  grid-template-columns: repeat(10, 1fr);
+}
+
+@media (max-width: 900px) {
+  .java-hero {
+    padding: 40px 16px 48px;
+  }
+
+  .java-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .java-hero-actions .btn-lg {
+    width: 100%;
+    text-align: center;
+  }
+
+  .roadmap-java {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
 /* ─── Thunder++ 100 Days of AWS Cloud (KodeKloud + CloudFolks) ─── */
 :root {
   --aws-orange: #ff9900;

@@ -2,12 +2,14 @@ import { Link, useParams, Navigate } from 'react-router-dom';
 import { getChapterBySlug, chapters } from '../data/chapters';
 import { getNextjsChapterBySlug, nextjsChapters } from '../data/nextjsChapters';
 import { getPythonChapterBySlug, pythonChapters } from '../data/pythonChapters';
+import { getJavaChapterBySlug, javaChapters } from '../data/javaChapters';
 import { getAwsChapterBySlug, awsChapters } from '../data/awsChapters';
 import { getDevopsChapterBySlug, devopsChapters } from '../data/devopsChapters';
 import { getMobileChapterBySlug, mobileChapters } from '../data/mobileChapters';
 import { thunderRepo } from '../data/syllabus';
 import { NEXTJS_META } from '../data/nextjsSyllabus';
 import { PYTHON_META } from '../data/pythonSyllabus';
+import { JAVA_META } from '../data/javaSyllabus';
 import { AWS_META } from '../data/awsSyllabus';
 import { DEVOPS_META } from '../data/devopsSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
@@ -58,6 +60,23 @@ const TRACKS = {
       text: 'Download notes and watch recordings on the Ashok IT student portal.',
       cta: 'Open Ashok IT Portal →',
       btnClass: 'btn-python-portal',
+    },
+  },
+  java: {
+    getChapter: getJavaChapterBySlug,
+    list: () => javaChapters,
+    homePath: '/java',
+    learnPath: '/java/learn',
+    cssClass: 'chapter-java',
+    codeRepo: null,
+    codeLabel: 'Course Code',
+    lessonLabel: 'Module',
+    extraLink: { href: JAVA_META.primaryUdemyUrl, label: '🎬 Udemy — Java Course' },
+    banner: {
+      title: 'Watch the full Udemy lecture?',
+      text: 'Get all video lessons, exercises, and projects on Udemy for this Java & Spring module.',
+      cta: 'Open on Udemy →',
+      btnClass: 'btn-java-udemy',
     },
   },
   aws: {
@@ -144,6 +163,7 @@ function dayLabel(chapter, track) {
   if (track === 'mobile') return `RN Day ${chapter.rnDay}`;
   if (track === 'devops') return `DevOps Day ${chapter.devopsDay}`;
   if (track === 'aws') return `AWS Day ${chapter.awsDay}`;
+  if (track === 'java') return `JV Module ${chapter.javaDay}`;
   if (track === 'nextjs') return `NX Module ${chapter.nextDay}`;
   if (track === 'python') return `PY Module ${chapter.pyDay}`;
   return `Day ${chapter.day}`;
@@ -153,6 +173,7 @@ function introClass(track) {
   if (track === 'mobile') return 'chapter-intro-mobile';
   if (track === 'devops') return 'chapter-intro-devops';
   if (track === 'aws') return 'chapter-intro-aws';
+  if (track === 'java') return 'chapter-intro-java';
   if (track === 'nextjs') return 'chapter-intro-nextjs';
   if (track === 'python') return 'chapter-intro-python';
   return '';
@@ -162,6 +183,7 @@ function badgeClass(track) {
   if (track === 'mobile') return 'chapter-badge-mobile';
   if (track === 'devops') return 'chapter-badge-devops';
   if (track === 'aws') return 'chapter-badge-aws';
+  if (track === 'java') return 'chapter-badge-java';
   if (track === 'nextjs') return 'chapter-badge-nextjs';
   if (track === 'python') return 'chapter-badge-python';
   return '';
@@ -171,6 +193,7 @@ function paidClass(track) {
   if (track === 'mobile') return 'paid-mobile';
   if (track === 'devops') return 'paid-devops';
   if (track === 'aws') return 'paid-aws';
+  if (track === 'java') return 'paid-java';
   if (track === 'nextjs') return 'paid-nextjs';
   if (track === 'python') return 'paid-python';
   return '';
@@ -180,6 +203,7 @@ function bannerClass(track) {
   if (track === 'mobile') return 'paid-lecture-banner-mobile';
   if (track === 'devops') return 'paid-lecture-banner-devops';
   if (track === 'aws') return 'paid-lecture-banner-aws';
+  if (track === 'java') return 'paid-lecture-banner-java';
   if (track === 'nextjs') return 'paid-lecture-banner-nextjs';
   if (track === 'python') return 'paid-lecture-banner-python';
   return '';
@@ -189,6 +213,7 @@ function sectionNumClass(track) {
   if (track === 'mobile') return 'section-num-mobile';
   if (track === 'devops') return 'section-num-devops';
   if (track === 'aws') return 'section-num-aws';
+  if (track === 'java') return 'section-num-java';
   if (track === 'nextjs') return 'section-num-nextjs';
   if (track === 'python') return 'section-num-python';
   return '';
@@ -257,7 +282,9 @@ export default function Chapter({ track = 'thunder' }) {
                 ? 'Udemy Course'
                 : track === 'python'
                   ? 'Ashok IT Portal'
-                  : track === 'aws'
+                  : track === 'java'
+                    ? 'Udemy Course'
+                    : track === 'aws'
                     ? 'CloudFolks Course'
                     : track === 'devops'
                       ? 'CloudFolks DevOps'

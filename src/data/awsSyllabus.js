@@ -17,7 +17,7 @@ export const AWS_META = {
   udemyUrl: AWS_UDEMY_SAA_URL,
   instructors: 'Bhavesh Atara — CloudFolks Hub',
   totalDays: 100,
-  startsAfter: 'Python & Agentic AI',
+  startsAfter: 'Java & Spring',
 };
 
 function lessonToModule(ch) {

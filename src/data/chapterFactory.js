@@ -6,6 +6,7 @@ import {
   ASHOK_IT_URL,
   KODEKLOUD_CLOUD_URL,
   KODEKLOUD_DEVOPS_URL,
+  JAVA_UDEMY_COMPLETE_URL,
 } from './trackConfig.js';
 
 export function slugify(text) {
@@ -55,6 +56,16 @@ const TRACK_META = {
     sectionPrefix: (n) => `Module ${n} of Thunder++ Python & Agentic AI`,
     quizPrefix: () => 'PY ',
     tryIt: (n, title) => `print("PY ${n}: ${title}")`,
+  },
+  java: {
+    dayKey: 'javaDay',
+    label: 'JV',
+    offset: TRACK_OFFSETS.java,
+    paidUrl: JAVA_UDEMY_COMPLETE_URL,
+    paidLabel: 'Udemy — Java Course',
+    sectionPrefix: (n) => `Module ${n} of Thunder++ Java & Spring`,
+    quizPrefix: () => 'JV ',
+    tryIt: (n, title) => `System.out.println("JV ${n}: ${title}");`,
   },
   aws: {
     dayKey: 'awsDay',
@@ -138,6 +149,7 @@ export function buildChapter(entry, id, options = {}) {
     day: dayNum,
     nextDay: entry.nextDay,
     pyDay: entry.pyDay,
+    javaDay: entry.javaDay,
     awsDay: entry.awsDay,
     devopsDay: entry.devopsDay,
     rnDay: entry.rnDay,
@@ -175,6 +187,12 @@ export function buildNextjsChapters(curriculum) {
 export function buildPythonChapters(curriculum) {
   return curriculum.map((entry, index) =>
     buildChapter(entry, index + 1, { track: 'python' }),
+  );
+}
+
+export function buildJavaChapters(curriculum) {
+  return curriculum.map((entry, index) =>
+    buildChapter(entry, index + 1, { track: 'java' }),
   );
 }
 

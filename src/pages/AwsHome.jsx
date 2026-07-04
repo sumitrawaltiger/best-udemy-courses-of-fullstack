@@ -42,8 +42,8 @@ export default function AwsHome() {
                 <a href="#aws-syllabus" className="btn btn-outline-aws btn-lg">
                   View Syllabus
                 </a>
-                <Link to="/python" className="btn btn-outline-aws btn-lg">
-                  ← Python & Agentic AI
+                <Link to="/java" className="btn btn-outline-aws btn-lg">
+                  ← Java & Spring
                 </Link>
                 <Link to="/devops" className="btn btn-outline-aws btn-lg">
                   DevOps →

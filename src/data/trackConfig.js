@@ -2,6 +2,7 @@
 export const THUNDER_DAYS = 100;
 export const NEXTJS_MODULES = 30;
 export const PYTHON_MODULES = 45;
+export const JAVA_MODULES = 50;
 export const AWS_DAYS = 100;
 export const DEVOPS_DAYS = 100;
 export const MOBILE_LESSONS = 25;
@@ -11,9 +12,15 @@ export const TRACK_OFFSETS = {
   nextjs: THUNDER_DAYS,
   mobile: THUNDER_DAYS + NEXTJS_MODULES,
   python: THUNDER_DAYS + NEXTJS_MODULES + MOBILE_LESSONS,
-  aws: THUNDER_DAYS + NEXTJS_MODULES + MOBILE_LESSONS + PYTHON_MODULES,
+  java: THUNDER_DAYS + NEXTJS_MODULES + MOBILE_LESSONS + PYTHON_MODULES,
+  aws: THUNDER_DAYS + NEXTJS_MODULES + MOBILE_LESSONS + PYTHON_MODULES + JAVA_MODULES,
   devops:
-    THUNDER_DAYS + NEXTJS_MODULES + MOBILE_LESSONS + PYTHON_MODULES + AWS_DAYS,
+    THUNDER_DAYS +
+    NEXTJS_MODULES +
+    MOBILE_LESSONS +
+    PYTHON_MODULES +
+    JAVA_MODULES +
+    AWS_DAYS,
 };
 
 export const NEXTJS_UDEMY_URL =
@@ -38,3 +45,30 @@ export const CLOUDFOLKS_DEVOPS_PACKAGE_URL = 'https://www.cloudfolkshub.com';
 
 export const AWS_UDEMY_SAA_URL =
   'https://www.udemy.com/course/evolving-aws-solutions-architect-associate-training-saa-c03/';
+
+export const JAVA_UDEMY_COMPLETE_URL =
+  'https://www.udemy.com/course/java-the-complete-java-developer-course/';
+
+export const JAVA_UDEMY_JAVA8_URL =
+  'https://www.udemy.com/course/java-8-new-features-in-simple-way/';
+
+export const JAVA_UDEMY_JDBC1_URL =
+  'https://www.udemy.com/course/complete-jdbc-programming-part-1/';
+
+export const JAVA_UDEMY_JAVA9_URL =
+  'https://www.udemy.com/course/java-9-new-features-in-simple-way-jshell-jpms-and-more/';
+
+export const JAVA_UDEMY_JDBC2_URL =
+  'https://www.udemy.com/course/complete-jdbc-programming-part-2/';
+
+export const JAVA_UDEMY_SPRING6_URL =
+  'https://www.udemy.com/course/spring-framework-6-beginner-to-guru/';
+
+export const JAVA_UDEMY_SPRING_BOOT_MS_URL =
+  'https://www.udemy.com/course/java-spring-boot-microservices-with-spring-cloud-k8s-docker/';
+
+export const JAVA_UDEMY_EVENT_DRIVEN_URL =
+  'https://www.udemy.com/course/event-driven-microservices-with-cqrs-saga-event-sourcing/';
+
+export const JAVA_UDEMY_SPRING_CLOUD_MS_URL =
+  'https://www.udemy.com/course/microservices-with-spring-boot-and-spring-cloud/';

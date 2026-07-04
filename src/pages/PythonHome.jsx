@@ -34,8 +34,8 @@ export default function PythonHome() {
                 <Link to="/mobile" className="btn btn-outline-python btn-lg">
                   ← React Native
                 </Link>
-                <Link to="/aws" className="btn btn-outline-python btn-lg">
-                  AWS Cloud →
+                <Link to="/java" className="btn btn-outline-python btn-lg">
+                  Java & Spring →
                 </Link>
               </div>
             }

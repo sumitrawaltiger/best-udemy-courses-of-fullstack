@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 
 export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 'Day' }) {
-  const dayNum = chapter.devopsDay ?? chapter.awsDay ?? chapter.pyDay ?? chapter.nextDay ?? chapter.rnDay ?? chapter.day;
+  const dayNum = chapter.devopsDay ?? chapter.awsDay ?? chapter.javaDay ?? chapter.pyDay ?? chapter.nextDay ?? chapter.rnDay ?? chapter.day;
   const learnUrl = `${basePath}/${chapter.slug}`;
   const isMobile = basePath.includes('mobile');
   const isDevops = basePath.includes('devops');
   const isAws = basePath.includes('aws');
+  const isJava = basePath.includes('java');
   const isNextjs = basePath.includes('nextjs');
   const isPython = basePath.includes('python');
   const watchBtn = isMobile
@@ -14,44 +15,52 @@ export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 
       ? 'btn-devops'
       : isAws
         ? 'btn-aws'
-        : isPython
-          ? 'btn-python'
-          : isNextjs
-            ? 'btn-nextjs'
-            : 'btn-watch';
+        : isJava
+          ? 'btn-java'
+          : isPython
+            ? 'btn-python'
+            : isNextjs
+              ? 'btn-nextjs'
+              : 'btn-watch';
   const paidBtn = isMobile
     ? 'btn-mobile-cohort-sm'
     : isDevops
       ? 'btn-devops-kodekloud-sm'
       : isAws
         ? 'btn-aws-kodekloud-sm'
-        : isPython
-          ? 'btn-python-portal-sm'
-          : isNextjs
-            ? 'btn-nextjs-udemy-sm'
-            : 'btn-paid-sm';
+        : isJava
+          ? 'btn-java-udemy-sm'
+          : isPython
+            ? 'btn-python-portal-sm'
+            : isNextjs
+              ? 'btn-nextjs-udemy-sm'
+              : 'btn-paid-sm';
   const cardClass = isMobile
     ? 'lecture-card-mobile'
     : isDevops
       ? 'lecture-card-devops'
       : isAws
         ? 'lecture-card-aws'
-        : isPython
-          ? 'lecture-card-python'
-          : isNextjs
-            ? 'lecture-card-nextjs'
-            : '';
+        : isJava
+          ? 'lecture-card-java'
+          : isPython
+            ? 'lecture-card-python'
+            : isNextjs
+              ? 'lecture-card-nextjs'
+              : '';
   const thumbClass = isMobile
     ? 'thumb-day-mobile'
     : isDevops
       ? 'thumb-day-devops'
       : isAws
         ? 'thumb-day-aws'
-        : isPython
-          ? 'thumb-day-python'
-          : isNextjs
-            ? 'thumb-day-nextjs'
-            : '';
+        : isJava
+          ? 'thumb-day-java'
+          : isPython
+            ? 'thumb-day-python'
+            : isNextjs
+              ? 'thumb-day-nextjs'
+              : '';
 
   return (
     <article className={`lecture-card ${cardClass}`}>
@@ -72,7 +81,7 @@ export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 
           <Link to={learnUrl}>
             {dayPrefix === 'Day' || dayPrefix === 'AWS' || dayPrefix === 'DO'
               ? 'Day'
-              : dayPrefix === 'NX' || dayPrefix === 'PY'
+              : dayPrefix === 'NX' || dayPrefix === 'PY' || dayPrefix === 'JV'
                 ? 'Module'
                 : 'Lesson'}{' '}
             {String(chapter.id).padStart(2, '0')}: {chapter.title}
