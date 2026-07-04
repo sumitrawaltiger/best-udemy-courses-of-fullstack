@@ -1,8 +1,10 @@
 import { useSearchParams, Link } from 'react-router-dom';
 import { chapters, searchChapters } from '../data/chapters';
 import { nextjsChapters } from '../data/nextjsChapters';
+import { pythonChapters } from '../data/pythonChapters';
 import { mobileChapters } from '../data/mobileChapters';
 import { NEXTJS_META } from '../data/nextjsSyllabus';
+import { PYTHON_META } from '../data/pythonSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import LectureCard from '../components/LectureCard';
@@ -129,9 +131,46 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="thunder-plus-section thunder-python-section" id="thunder-python">
+        <div className="thunder-plus-inner">
+          <span className="thunder-plus-badge thunder-plus-badge-python">After React & Next.js</span>
+          <h2>Thunder++ — Python & Agentic AI</h2>
+          <p className="section-desc">
+            Learn Gen AI & Agentic AI with Python at{' '}
+            <a href={PYTHON_META.portalUrl} target="_blank" rel="noopener noreferrer">
+              {PYTHON_META.institute}
+            </a>
+            . {pythonChapters.length} modules from Python basics through ML/NLP, Transformers, LangChain, RAG,
+            Django, FastAPI, LangGraph, MCP, and n8n.
+          </p>
+          <div className="thunder-plus-highlights">
+            <span>🐍 Python & OOP</span>
+            <span>🧠 ML & Transformers</span>
+            <span>🔗 LangChain & RAG</span>
+            <span>🤖 Agentic AI & n8n</span>
+          </div>
+          <div className="thunder-plus-actions">
+            <Link to="/python" className="btn btn-python btn-lg">
+              Explore Python Track
+            </Link>
+            <Link to="/python/learn/course-introduction" className="btn btn-python-portal btn-lg">
+              Start PY Module 1
+            </Link>
+            <a
+              href={PYTHON_META.portalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline-python btn-lg"
+            >
+              Ashok IT Portal
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section className="thunder-plus-section" id="thunder-plus">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge">After React & Next.js</span>
+          <span className="thunder-plus-badge">After Python & Agentic AI</span>
           <h2>Thunder++ — React Native</h2>
           <p className="section-desc">
             Then continue with the{' '}

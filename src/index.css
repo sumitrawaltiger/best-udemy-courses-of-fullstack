@@ -2903,3 +2903,273 @@ a:hover {
     grid-template-columns: repeat(5, 1fr);
   }
 }
+
+/* ─── Thunder++ Python & Agentic AI (Ashok IT) ─── */
+:root {
+  --python-blue: #3776ab;
+  --python-blue-dark: #2a5f8f;
+  --python-yellow: #ffd343;
+  --python-red: #c41e3a;
+}
+
+.python-hero {
+  width: 100%;
+  background: linear-gradient(160deg, #0a1628 0%, #000 45%, #0d1f0d 100%);
+  color: #fff;
+  padding: 56px clamp(16px, 4vw, 48px) 64px;
+  margin: 0;
+  box-sizing: border-box;
+  border-bottom: 3px solid var(--python-yellow);
+}
+
+.python-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.python-hero-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.python-level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 211, 67, 0.5);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--python-yellow);
+  margin-bottom: 28px;
+}
+
+.python-title {
+  font-family: 'Orbitron', var(--font);
+  font-size: clamp(30px, 6.5vw, 54px);
+  font-weight: 900;
+  line-height: 1.08;
+  margin: 0 0 20px;
+  color: #fff;
+}
+
+.python-title-line {
+  display: block;
+}
+
+.python-title-line:last-child {
+  color: var(--python-yellow);
+}
+
+.python-subtitle {
+  font-size: clamp(15px, 2.5vw, 20px);
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+.python-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.python-meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid #1a3a5c;
+  border-radius: 8px;
+  background: rgba(55, 118, 171, 0.15);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.python-hero-desc {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 680px;
+  margin: 0 0 28px;
+}
+
+.python-hero-desc a {
+  color: var(--python-yellow);
+  font-weight: 600;
+}
+
+.python-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn-python {
+  background: var(--python-blue);
+  color: #fff;
+  border: 2px solid var(--python-blue);
+}
+
+.btn-python:hover {
+  background: var(--python-blue-dark);
+  border-color: var(--python-blue-dark);
+}
+
+.btn-python-portal {
+  background: var(--python-yellow);
+  color: #1a1628;
+  border: 2px solid var(--python-yellow);
+  font-weight: 700;
+}
+
+.btn-python-portal:hover {
+  background: #ffe566;
+  border-color: #ffe566;
+}
+
+.btn-python-portal-sm {
+  background: rgba(55, 118, 171, 0.15);
+  color: var(--python-blue-dark);
+  border: 1px solid var(--python-blue);
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
+.btn-python-portal-sm:hover {
+  background: var(--python-blue);
+  color: #fff;
+}
+
+.btn-outline-python {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255, 211, 67, 0.6);
+}
+
+.btn-outline-python:hover {
+  background: rgba(255, 211, 67, 0.12);
+  border-color: var(--python-yellow);
+}
+
+.btn-python-portal-outline {
+  display: inline-block;
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--python-blue-dark);
+  border: 2px solid var(--python-blue);
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn-python-portal-outline:hover {
+  background: var(--python-blue);
+  color: #fff;
+}
+
+.python-home {
+  padding: 32px clamp(16px, 4vw, 48px) 48px;
+}
+
+.python-syllabus-section {
+  background: #f0f7ff;
+}
+
+.phase-card-python .phase-num-python {
+  background: var(--python-blue);
+}
+
+.highlight-check-python {
+  color: var(--python-blue);
+}
+
+.legend-dot-python {
+  background: var(--python-blue);
+}
+
+.thumb-day-python {
+  background: linear-gradient(135deg, var(--python-blue-dark), var(--python-blue)) !important;
+}
+
+.roadmap-python {
+  grid-template-columns: repeat(9, 1fr);
+  max-width: 680px;
+}
+
+.thunder-python-section {
+  background: linear-gradient(135deg, #f0f7ff 0%, #e8f4e8 100%);
+  border-color: rgba(55, 118, 171, 0.25);
+}
+
+.thunder-plus-badge-python {
+  background: var(--python-blue);
+}
+
+.header-python-link {
+  color: var(--python-blue) !important;
+  font-weight: 600;
+}
+
+.logo-icon-python {
+  background: linear-gradient(135deg, var(--python-blue), var(--python-yellow)) !important;
+  color: #1a1628 !important;
+}
+
+.sidebar-python .sidebar-link.active,
+.sidebar-python .sidebar-link-python.active {
+  border-left-color: var(--python-blue);
+  background: rgba(55, 118, 171, 0.15);
+}
+
+.progress-fill-python {
+  background: var(--python-blue);
+}
+
+.chapter-badge-python {
+  background: rgba(55, 118, 171, 0.12);
+  color: var(--python-blue-dark);
+  border: 1px solid rgba(55, 118, 171, 0.35);
+}
+
+.chapter-intro-python {
+  border-left-color: var(--python-blue);
+}
+
+.section-num-python {
+  background: var(--python-blue);
+}
+
+.paid-lecture-banner-python {
+  border-color: rgba(55, 118, 171, 0.35);
+  background: #f0f7ff;
+}
+
+.chapter-link-btn.paid-python {
+  background: var(--python-blue);
+  border-color: var(--python-blue);
+}
+
+@media (max-width: 900px) {
+  .python-hero {
+    padding: 40px 16px 48px;
+  }
+
+  .python-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .python-hero-actions .btn-lg {
+    width: 100%;
+    text-align: center;
+  }
+
+  .roadmap-python {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

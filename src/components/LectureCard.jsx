@@ -1,18 +1,33 @@
 import { Link } from 'react-router-dom';
 
 export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 'Day' }) {
-  const dayNum = chapter.nextDay ?? chapter.rnDay ?? chapter.day;
+  const dayNum = chapter.pyDay ?? chapter.nextDay ?? chapter.rnDay ?? chapter.day;
   const learnUrl = `${basePath}/${chapter.slug}`;
   const isMobile = basePath.includes('mobile');
   const isNextjs = basePath.includes('nextjs');
-  const watchBtn = isMobile ? 'btn-mobile' : isNextjs ? 'btn-nextjs' : 'btn-watch';
+  const isPython = basePath.includes('python');
+  const watchBtn = isMobile ? 'btn-mobile' : isPython ? 'btn-python' : isNextjs ? 'btn-nextjs' : 'btn-watch';
   const paidBtn = isMobile
     ? 'btn-mobile-cohort-sm'
-    : isNextjs
-      ? 'btn-nextjs-udemy-sm'
-      : 'btn-paid-sm';
-  const cardClass = isMobile ? 'lecture-card-mobile' : isNextjs ? 'lecture-card-nextjs' : '';
-  const thumbClass = isMobile ? 'thumb-day-mobile' : isNextjs ? 'thumb-day-nextjs' : '';
+    : isPython
+      ? 'btn-python-portal-sm'
+      : isNextjs
+        ? 'btn-nextjs-udemy-sm'
+        : 'btn-paid-sm';
+  const cardClass = isMobile
+    ? 'lecture-card-mobile'
+    : isPython
+      ? 'lecture-card-python'
+      : isNextjs
+        ? 'lecture-card-nextjs'
+        : '';
+  const thumbClass = isMobile
+    ? 'thumb-day-mobile'
+    : isPython
+      ? 'thumb-day-python'
+      : isNextjs
+        ? 'thumb-day-nextjs'
+        : '';
 
   return (
     <article className={`lecture-card ${cardClass}`}>
@@ -31,7 +46,7 @@ export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 
       <div className="lecture-body">
         <h2 className="lecture-title">
           <Link to={learnUrl}>
-            {dayPrefix === 'Day' ? 'Lecture' : dayPrefix === 'NX' ? 'Module' : 'Lesson'}{' '}
+            {dayPrefix === 'Day' ? 'Lecture' : dayPrefix === 'NX' || dayPrefix === 'PY' ? 'Module' : 'Lesson'}{' '}
             {String(chapter.id).padStart(2, '0')}: {chapter.title}
           </Link>
         </h2>

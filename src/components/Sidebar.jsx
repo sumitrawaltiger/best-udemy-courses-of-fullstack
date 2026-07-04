@@ -2,8 +2,9 @@ import { NavLink } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import { chapters } from '../data/chapters';
 import { nextjsChapters } from '../data/nextjsChapters';
+import { pythonChapters } from '../data/pythonChapters';
 import { mobileChapters } from '../data/mobileChapters';
-import { NEXTJS_MODULES, MOBILE_LESSONS } from '../data/trackConfig';
+import { NEXTJS_MODULES, PYTHON_MODULES, MOBILE_LESSONS } from '../data/trackConfig';
 
 const TRACK_CONFIG = {
   thunder: {
@@ -27,6 +28,17 @@ const TRACK_CONFIG = {
     cssClass: 'sidebar-nextjs',
     activeClass: 'sidebar-link-nextjs',
     progressClass: 'progress-fill-nextjs',
+  },
+  python: {
+    list: pythonChapters,
+    basePath: '/python/learn',
+    heading: 'Python & Agentic AI',
+    dayLabel: (ch) => `PY ${ch.pyDay}`,
+    total: PYTHON_MODULES,
+    unit: 'modules',
+    cssClass: 'sidebar-python',
+    activeClass: 'sidebar-link-python',
+    progressClass: 'progress-fill-python',
   },
   mobile: {
     list: mobileChapters,

@@ -9,11 +9,12 @@ export default function Header({ onSearch }) {
   const location = useLocation();
   const onMobile = location.pathname.startsWith('/mobile');
   const onNextjs = location.pathname.startsWith('/nextjs');
+  const onPython = location.pathname.startsWith('/python');
 
   function handleSearch(e) {
     e.preventDefault();
     if (query.trim()) {
-      const base = onMobile ? '/mobile' : onNextjs ? '/nextjs' : '/';
+      const base = onMobile ? '/mobile' : onPython ? '/python' : onNextjs ? '/nextjs' : '/';
       navigate(`${base}?q=${encodeURIComponent(query.trim())}`);
       onSearch?.(query.trim());
       setMenuOpen(false);
@@ -24,33 +25,47 @@ export default function Header({ onSearch }) {
     setMenuOpen(false);
   }
 
-  const homePath = onMobile ? '/mobile' : onNextjs ? '/nextjs' : '/';
-  const logoIcon = onMobile ? 'RN' : onNextjs ? 'NX' : 'JS';
-  const logoName = onMobile ? 'Thunder++ Mobile' : onNextjs ? 'Thunder+ Next.js' : 'JS Learn Hub';
+  const homePath = onMobile ? '/mobile' : onPython ? '/python' : onNextjs ? '/nextjs' : '/';
+  const logoIcon = onMobile ? 'RN' : onPython ? 'PY' : onNextjs ? 'NX' : 'JS';
+  const logoName = onMobile
+    ? 'Thunder++ Mobile'
+    : onPython
+      ? 'Thunder++ Python'
+      : onNextjs
+        ? 'Thunder+ Next.js'
+        : 'JS Learn Hub';
   const logoTagline = onMobile
     ? 'React Native by ChaiCode'
-    : onNextjs
-      ? 'React & Next.js by ChaiCode'
-      : 'Learn JavaScript Day by Day';
+    : onPython
+      ? 'Python & Agentic AI — Ashok IT'
+      : onNextjs
+        ? 'React & Next.js by ChaiCode'
+        : 'Learn JavaScript Day by Day';
 
   const startPath = onMobile
     ? '/mobile/learn/react-js-refresher'
-    : onNextjs
-      ? '/nextjs/learn/introduction-to-the-course'
-      : '/learn/introduction-to-javascript';
+    : onPython
+      ? '/python/learn/course-introduction'
+      : onNextjs
+        ? '/nextjs/learn/introduction-to-the-course'
+        : '/learn/introduction-to-javascript';
 
   const syllabusHref = onMobile
     ? '/mobile#mobile-syllabus'
-    : onNextjs
-      ? '/nextjs#nextjs-syllabus'
-      : '/#syllabus';
+    : onPython
+      ? '/python#python-syllabus'
+      : onNextjs
+        ? '/nextjs#nextjs-syllabus'
+        : '/#syllabus';
 
   return (
-    <header className={`header ${onMobile ? 'header-mobile' : ''} ${onNextjs ? 'header-nextjs' : ''}`}>
+    <header
+      className={`header ${onMobile ? 'header-mobile' : ''} ${onNextjs ? 'header-nextjs' : ''} ${onPython ? 'header-python' : ''}`}
+    >
       <div className="header-inner">
         <Link to={homePath} className="logo" onClick={closeMenu}>
           <span
-            className={`logo-icon ${onMobile ? 'logo-icon-mobile' : ''} ${onNextjs ? 'logo-icon-nextjs' : ''}`}
+            className={`logo-icon ${onMobile ? 'logo-icon-mobile' : ''} ${onNextjs ? 'logo-icon-nextjs' : ''} ${onPython ? 'logo-icon-python' : ''}`}
           >
             {logoIcon}
           </span>
@@ -64,7 +79,13 @@ export default function Header({ onSearch }) {
           <input
             type="search"
             placeholder={
-              onMobile ? 'Search mobile lessons...' : onNextjs ? 'Search modules...' : 'Search tutorials...'
+              onMobile
+                ? 'Search mobile lessons...'
+                : onPython
+                  ? 'Search Python modules...'
+                  : onNextjs
+                    ? 'Search modules...'
+                    : 'Search tutorials...'
             }
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -89,6 +110,9 @@ export default function Header({ onSearch }) {
           <Link to="/" onClick={closeMenu}>Thunder</Link>
           <Link to="/nextjs" onClick={closeMenu} className="header-nextjs-link">
             Next.js
+          </Link>
+          <Link to="/python" onClick={closeMenu} className="header-python-link">
+            Python
           </Link>
           <Link to="/mobile" onClick={closeMenu} className="header-rn-link">
             React Native

@@ -8,15 +8,25 @@ export default function Layout() {
   const location = useLocation();
   const isMobileTrack = location.pathname.startsWith('/mobile');
   const isNextjsTrack = location.pathname.startsWith('/nextjs');
+  const isPythonTrack = location.pathname.startsWith('/python');
   const showSidebar =
     location.pathname.startsWith('/learn/') ||
     location.pathname.startsWith('/nextjs/learn/') ||
+    location.pathname.startsWith('/python/learn/') ||
     location.pathname.startsWith('/mobile/learn/');
 
-  const track = isMobileTrack ? 'mobile' : isNextjsTrack ? 'nextjs' : 'thunder';
+  const track = isMobileTrack
+    ? 'mobile'
+    : isPythonTrack
+      ? 'python'
+      : isNextjsTrack
+        ? 'nextjs'
+        : 'thunder';
 
   return (
-    <div className={`app ${isMobileTrack ? 'app-mobile' : ''} ${isNextjsTrack ? 'app-nextjs' : ''}`}>
+    <div
+      className={`app ${isMobileTrack ? 'app-mobile' : ''} ${isNextjsTrack ? 'app-nextjs' : ''} ${isPythonTrack ? 'app-python' : ''}`}
+    >
       <Header />
       <div className={`main-layout ${showSidebar ? 'with-sidebar' : 'no-sidebar'}`}>
         {showSidebar && <Sidebar currentSlug={slug} track={track} />}
@@ -33,7 +43,7 @@ export default function Layout() {
           — sharing my JavaScript learning journey with the world.
         </p>
         <p className="footer-sub">
-          Thunder 100 Days → React & Next.js → React Native. Day-by-day tutorials for your full-stack journey.
+          Thunder 100 Days → React & Next.js → Python & Agentic AI → React Native.
         </p>
         <p className="footer-community">
           <a href={discordCommunity} target="_blank" rel="noopener noreferrer">

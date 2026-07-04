@@ -3,6 +3,7 @@ import {
   TRACK_OFFSETS,
   NEXTJS_UDEMY_URL,
   MOBILE_COHORT_URL,
+  ASHOK_IT_URL,
 } from './trackConfig.js';
 
 export function slugify(text) {
@@ -41,6 +42,17 @@ const TRACK_META = {
     paidLabel: 'Udemy — ChaiCode Course',
     sectionPrefix: (n) => `Module ${n} of Thunder+ React & Next.js`,
     quizPrefix: () => 'NX ',
+    tryIt: (n, title) => `console.log("NX ${n}: ${title}");`,
+  },
+  python: {
+    dayKey: 'pyDay',
+    label: 'PY',
+    offset: TRACK_OFFSETS.python,
+    paidUrl: ASHOK_IT_URL,
+    paidLabel: 'Ashok IT Student Portal',
+    sectionPrefix: (n) => `Module ${n} of Thunder++ Python & Agentic AI`,
+    quizPrefix: () => 'PY ',
+    tryIt: (n, title) => `print("PY ${n}: ${title}")`,
   },
   mobile: {
     dayKey: 'rnDay',
@@ -50,8 +62,12 @@ const TRACK_META = {
     paidLabel: 'ChaiCode Mobile Cohort',
     sectionPrefix: (n) => `RN Day ${n} of Thunder++`,
     quizPrefix: () => 'RN ',
+    tryIt: (n, title) => `console.log("RN ${n}: ${title}");`,
   },
 };
+
+// thunder default
+TRACK_META.thunder.tryIt = (n, title) => `console.log("Day ${n}: ${title}");`;
 
 function getDayNum(entry, track) {
   const key = TRACK_META[track].dayKey;
@@ -75,7 +91,7 @@ export function buildChapter(entry, id, options = {}) {
       code: entry.sampleCode,
       tryIt:
         entry.sampleTryIt ||
-        `console.log("${meta.label} ${dayNum}: ${entry.title}");`,
+        meta.tryIt(dayNum, entry.title),
     }));
 
   const quiz = entry.quiz || [
@@ -99,6 +115,7 @@ export function buildChapter(entry, id, options = {}) {
     track,
     day: dayNum,
     nextDay: entry.nextDay,
+    pyDay: entry.pyDay,
     rnDay: entry.rnDay,
     title: entry.title,
     subtitle: entry.subtitle,
@@ -128,6 +145,12 @@ export function buildChaptersFromCurriculum(curriculum, startId = 20, options = 
 export function buildNextjsChapters(curriculum) {
   return curriculum.map((entry, index) =>
     buildChapter(entry, index + 1, { track: 'nextjs' }),
+  );
+}
+
+export function buildPythonChapters(curriculum) {
+  return curriculum.map((entry, index) =>
+    buildChapter(entry, index + 1, { track: 'python' }),
   );
 }
 
