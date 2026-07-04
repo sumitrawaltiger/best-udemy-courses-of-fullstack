@@ -1,30 +1,39 @@
 import { NavLink } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import { chapters } from '../data/chapters';
+import { mobileChapters } from '../data/mobileChapters';
 
-export default function Sidebar({ currentSlug }) {
-  const current = chapters.find((c) => c.slug === currentSlug);
+export default function Sidebar({ currentSlug, track = 'thunder' }) {
+  const isMobile = track === 'mobile';
+  const list = isMobile ? mobileChapters : chapters;
+  const basePath = isMobile ? '/mobile/learn' : '/learn';
+  const current = list.find((c) => c.slug === currentSlug);
   const activeRef = useRef(null);
+  const total = isMobile ? 25 : 100;
 
   useEffect(() => {
     activeRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }, [currentSlug]);
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isMobile ? 'sidebar-mobile' : ''}`}>
       <div className="sidebar-section">
-        <h3 className="sidebar-heading">JavaScript Tutorial</h3>
+        <h3 className="sidebar-heading">
+          {isMobile ? 'React Native Tutorial' : 'JavaScript Tutorial'}
+        </h3>
         <nav className="sidebar-nav">
-          {chapters.map((ch) => (
+          {list.map((ch) => (
             <NavLink
               key={ch.slug}
               ref={ch.slug === currentSlug ? activeRef : null}
-              to={`/learn/${ch.slug}`}
+              to={`${basePath}/${ch.slug}`}
               className={({ isActive }) =>
-                `sidebar-link ${isActive ? 'active' : ''}`
+                `sidebar-link ${isActive ? 'active' : ''} ${isMobile ? 'sidebar-link-mobile' : ''}`
               }
             >
-              <span className="sidebar-day">Day {ch.day}</span>
+              <span className="sidebar-day">
+                {isMobile ? `RN ${ch.rnDay}` : `Day ${ch.day}`}
+              </span>
               <span className="sidebar-title">{ch.title}</span>
             </NavLink>
           ))}
@@ -51,12 +60,12 @@ export default function Sidebar({ currentSlug }) {
         <h3 className="sidebar-heading">Your Progress</h3>
         <div className="progress-bar">
           <div
-            className="progress-fill"
-            style={{ width: `${(chapters.length / 100) * 100}%` }}
+            className={`progress-fill ${isMobile ? 'progress-fill-mobile' : ''}`}
+            style={{ width: `${(list.length / total) * 100}%` }}
           />
         </div>
         <p className="progress-text">
-          {chapters.length} of 100 days published
+          {list.length} of {total} {isMobile ? 'lessons' : 'days'} published
         </p>
       </div>
     </aside>

@@ -1,6 +1,8 @@
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { getChapterBySlug, chapters } from '../data/chapters';
+import { getMobileChapterBySlug, mobileChapters } from '../data/mobileChapters';
 import { thunderRepo, thunderRootRepo } from '../data/syllabus';
+import { MOBILE_META } from '../data/mobileSyllabus';
 import CodeBlock from '../components/CodeBlock';
 import CodePlayground from '../components/CodePlayground';
 import Quiz from '../components/Quiz';
@@ -32,26 +34,38 @@ function getYoutubeEmbedUrl(url) {
   return `https://www.youtube.com/embed/${id}${start ? `?start=${start}` : ''}`;
 }
 
-export default function Chapter() {
+function dayLabel(chapter, isMobile) {
+  return isMobile ? `RN Day ${chapter.rnDay}` : `Day ${chapter.day}`;
+}
+
+export default function Chapter({ track = 'thunder' }) {
   const { slug } = useParams();
-  const chapter = getChapterBySlug(slug);
+  const isMobile = track === 'mobile';
+  const chapter = isMobile ? getMobileChapterBySlug(slug) : getChapterBySlug(slug);
+  const list = isMobile ? mobileChapters : chapters;
+  const homePath = isMobile ? '/mobile' : '/';
+  const learnPath = isMobile ? '/mobile/learn' : '/learn';
+  const codeRepoDefault = isMobile ? MOBILE_META.githubRepo : thunderRepo;
 
   if (!chapter) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={homePath} replace />;
   }
 
-  const prevChapter = chapters.find((c) => c.id === chapter.id - 1);
-  const nextChapter = chapters.find((c) => c.id === chapter.id + 1);
+  const prevChapter = list.find((c) => c.id === chapter.id - 1);
+  const nextChapter = list.find((c) => c.id === chapter.id + 1);
+  const label = dayLabel(chapter, isMobile);
 
   return (
-    <article className="chapter">
+    <article className={`chapter ${isMobile ? 'chapter-mobile' : ''}`}>
       <header className="chapter-header">
         <div className="chapter-breadcrumb">
-          <Link to="/">Home</Link>
+          <Link to={homePath}>Home</Link>
           <span>/</span>
-          <span>Day {chapter.day}</span>
+          <span>{label}</span>
         </div>
-        <div className="chapter-badge">Day {chapter.day} · Lecture {String(chapter.id).padStart(2, '0')}</div>
+        <div className={`chapter-badge ${isMobile ? 'chapter-badge-mobile' : ''}`}>
+          {label} · Lesson {String(chapter.id).padStart(2, '0')}
+        </div>
         <h1>{chapter.title}</h1>
         <p className="chapter-subtitle">{chapter.subtitle}</p>
         <div className="chapter-meta">
@@ -65,9 +79,9 @@ export default function Chapter() {
               href={chapter.paidLectureUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="chapter-link-btn paid"
+              className={`chapter-link-btn paid ${isMobile ? 'paid-mobile' : ''}`}
             >
-              🎓 Full In-Depth Lecture
+              🎓 {chapter.paidLectureLabel || 'Full In-Depth Lecture'}
             </a>
           )}
           {chapter.youtubeUrl && (
@@ -86,40 +100,51 @@ export default function Chapter() {
               📝 My Notion Notes
             </a>
           )}
-          {chapter.githubPath && (
+          {isMobile && (
             <a
-              href={`${chapter.codeRepo || thunderRepo}/${chapter.githubPath}`}
+              href={MOBILE_META.syllabusUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="chapter-link-btn outline"
             >
-              💻 Thunder Code
+              📋 ChaiCode Syllabus
+            </a>
+          )}
+          {chapter.githubPath && (
+            <a
+              href={`${chapter.codeRepo || codeRepoDefault}/${chapter.githubPath}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="chapter-link-btn outline"
+            >
+              💻 {isMobile ? 'ChaiCode Code' : 'Thunder Code'}
             </a>
           )}
         </div>
         {chapter.paidLectureUrl && (
-          <div className="paid-lecture-banner">
+          <div className={`paid-lecture-banner ${isMobile ? 'paid-lecture-banner-mobile' : ''}`}>
             <div className="paid-lecture-text">
-              <strong>Want the full depth?</strong>
+              <strong>{isMobile ? 'Join the full cohort?' : 'Want the full depth?'}</strong>
               <span>
-                Watch the complete Thunder lecture with Rohit Negi on the course portal
-                (login required).
+                {isMobile
+                  ? 'Get live classes, recordings, and community access on ChaiCode.'
+                  : 'Watch the complete Thunder lecture with Rohit Negi on the course portal (login required).'}
               </span>
             </div>
             <a
               href={chapter.paidLectureUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-paid"
+              className={`btn ${isMobile ? 'btn-mobile-cohort' : 'btn-paid'}`}
             >
-              Open Full Lecture →
+              {isMobile ? 'Enroll on ChaiCode →' : 'Open Full Lecture →'}
             </a>
           </div>
         )}
         {chapter.youtubeUrl && (
           <div className="youtube-block">
             <div className="youtube-block-header">
-              <span>📺 Free Video — Day {chapter.day}</span>
+              <span>📺 Free Video — {label}</span>
               <span className="youtube-block-title">{chapter.youtubeTitle}</span>
             </div>
             <div className="youtube-embed-wrap">
@@ -130,19 +155,11 @@ export default function Chapter() {
                 allowFullScreen
               />
             </div>
-            {chapter.youtubeSupplementUrl && (
-              <div className="youtube-supplement">
-                <span>Also watch: </span>
-                <a href={chapter.youtubeSupplementUrl} target="_blank" rel="noopener noreferrer">
-                  {chapter.youtubeSupplementTitle}
-                </a>
-              </div>
-            )}
           </div>
         )}
       </header>
 
-      <div className="chapter-intro">
+      <div className={`chapter-intro ${isMobile ? 'chapter-intro-mobile' : ''}`}>
         <h2>What you'll learn</h2>
         <ul className="learn-list">
           {chapter.topics.map((t) => (
@@ -154,16 +171,12 @@ export default function Chapter() {
       {chapter.sections.map((section, index) => (
         <section key={section.id} id={section.id} className="chapter-section">
           <h2>
-            <span className="section-num">{index + 1}</span>
+            <span className={`section-num ${isMobile ? 'section-num-mobile' : ''}`}>{index + 1}</span>
             {section.title}
           </h2>
-          <div className="section-content">
-            {renderMarkdown(section.content)}
-          </div>
+          <div className="section-content">{renderMarkdown(section.content)}</div>
           {section.code && <CodeBlock code={section.code} />}
-          {section.tryIt && (
-            <CodePlayground initialCode={section.tryIt} />
-          )}
+          {section.tryIt && <CodePlayground initialCode={section.tryIt} />}
         </section>
       ))}
 
@@ -173,17 +186,21 @@ export default function Chapter() {
 
       <nav className="chapter-nav">
         {prevChapter ? (
-          <Link to={`/learn/${prevChapter.slug}`} className="nav-prev">
+          <Link to={`${learnPath}/${prevChapter.slug}`} className="nav-prev">
             <span className="nav-label">← Previous</span>
-            <span className="nav-title">Day {prevChapter.day}: {prevChapter.title}</span>
+            <span className="nav-title">
+              {dayLabel(prevChapter, isMobile)}: {prevChapter.title}
+            </span>
           </Link>
         ) : (
           <div />
         )}
         {nextChapter ? (
-          <Link to={`/learn/${nextChapter.slug}`} className="nav-next">
+          <Link to={`${learnPath}/${nextChapter.slug}`} className="nav-next">
             <span className="nav-label">Next →</span>
-            <span className="nav-title">Day {nextChapter.day}: {nextChapter.title}</span>
+            <span className="nav-title">
+              {dayLabel(nextChapter, isMobile)}: {nextChapter.title}
+            </span>
           </Link>
         ) : null}
       </nav>

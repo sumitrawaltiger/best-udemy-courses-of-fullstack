@@ -2310,3 +2310,327 @@ a:hover {
     gap: 8px;
   }
 }
+
+/* ─── Thunder++ React Native (ChaiCode) ─── */
+:root {
+  --mobile-orange: #f97316;
+  --mobile-orange-dark: #ea580c;
+  --mobile-orange-light: #fb923c;
+}
+
+.mobile-hero {
+  width: 100%;
+  background: linear-gradient(160deg, #1a0f00 0%, #000 45%, #0d0700 100%);
+  color: #fff;
+  padding: 56px clamp(16px, 4vw, 48px) 64px;
+  margin: 0;
+  box-sizing: border-box;
+  border-bottom: 3px solid var(--mobile-orange);
+}
+
+.mobile-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mobile-hero-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mobile-level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid rgba(249, 115, 22, 0.5);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mobile-orange-light);
+  margin-bottom: 28px;
+}
+
+.mobile-title {
+  font-family: 'Orbitron', var(--font);
+  font-size: clamp(32px, 7vw, 58px);
+  font-weight: 900;
+  line-height: 1.08;
+  margin: 0 0 20px;
+  color: #fff;
+}
+
+.mobile-title-line {
+  display: block;
+}
+
+.mobile-title-line:last-child {
+  color: var(--mobile-orange);
+}
+
+.mobile-subtitle {
+  font-size: clamp(15px, 2.5vw, 20px);
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+.mobile-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.mobile-meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid #3a2510;
+  border-radius: 8px;
+  background: rgba(249, 115, 22, 0.08);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.mobile-hero-desc {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 640px;
+  margin: 0 0 28px;
+}
+
+.mobile-hero-desc a {
+  color: var(--mobile-orange-light);
+  font-weight: 600;
+}
+
+.mobile-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn-mobile {
+  background: var(--mobile-orange);
+  color: #fff;
+  border: 2px solid var(--mobile-orange);
+}
+
+.btn-mobile:hover {
+  background: var(--mobile-orange-dark);
+  border-color: var(--mobile-orange-dark);
+}
+
+.btn-mobile-cohort {
+  background: #fff;
+  color: #1a0f00;
+  border: 2px solid #fff;
+  font-weight: 700;
+}
+
+.btn-mobile-cohort:hover {
+  background: var(--mobile-orange-light);
+  border-color: var(--mobile-orange-light);
+  color: #1a0f00;
+}
+
+.btn-mobile-cohort-sm {
+  background: rgba(249, 115, 22, 0.15);
+  color: var(--mobile-orange-dark);
+  border: 1px solid var(--mobile-orange);
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
+.btn-mobile-cohort-sm:hover {
+  background: var(--mobile-orange);
+  color: #fff;
+}
+
+.btn-outline-mobile {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(249, 115, 22, 0.6);
+}
+
+.btn-outline-mobile:hover {
+  background: rgba(249, 115, 22, 0.15);
+  border-color: var(--mobile-orange);
+}
+
+.btn-mobile-cohort-outline {
+  display: inline-block;
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--mobile-orange-dark);
+  border: 2px solid var(--mobile-orange);
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn-mobile-cohort-outline:hover {
+  background: var(--mobile-orange);
+  color: #fff;
+}
+
+.mobile-home {
+  padding: 32px clamp(16px, 4vw, 48px) 48px;
+}
+
+.mobile-syllabus-section {
+  background: #faf8f5;
+}
+
+.phase-card-mobile .phase-num-mobile {
+  background: var(--mobile-orange);
+}
+
+.highlight-check-mobile {
+  color: var(--mobile-orange);
+}
+
+.legend-dot-mobile {
+  background: var(--mobile-orange);
+}
+
+.thumb-day-mobile {
+  background: linear-gradient(135deg, var(--mobile-orange-dark), var(--mobile-orange-light)) !important;
+}
+
+.roadmap-mobile {
+  grid-template-columns: repeat(10, 1fr);
+  max-width: 520px;
+}
+
+.thunder-plus-section {
+  margin: 48px 0;
+  padding: 40px 32px;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  border: 2px solid rgba(249, 115, 22, 0.25);
+  border-radius: 16px;
+}
+
+.thunder-plus-inner {
+  max-width: 800px;
+}
+
+.thunder-plus-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--mobile-orange);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+.thunder-plus-section h2 {
+  margin: 0 0 12px;
+  font-size: clamp(24px, 4vw, 32px);
+}
+
+.thunder-plus-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0 24px;
+}
+
+.thunder-plus-highlights span {
+  padding: 8px 14px;
+  background: #fff;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.thunder-plus-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.header-rn-link {
+  color: var(--mobile-orange) !important;
+  font-weight: 600;
+}
+
+.logo-icon-mobile {
+  background: var(--mobile-orange) !important;
+}
+
+.sidebar-mobile .sidebar-link.active,
+.sidebar-mobile .sidebar-link-mobile.active {
+  border-left-color: var(--mobile-orange);
+  background: rgba(249, 115, 22, 0.15);
+}
+
+.progress-fill-mobile {
+  background: var(--mobile-orange);
+}
+
+.chapter-badge-mobile {
+  background: rgba(249, 115, 22, 0.12);
+  color: var(--mobile-orange-dark);
+  border: 1px solid rgba(249, 115, 22, 0.35);
+}
+
+.chapter-intro-mobile {
+  border-left-color: var(--mobile-orange);
+}
+
+.section-num-mobile {
+  background: var(--mobile-orange);
+}
+
+.paid-lecture-banner-mobile {
+  border-color: rgba(249, 115, 22, 0.35);
+  background: #fff7ed;
+}
+
+.chapter-link-btn.paid-mobile {
+  background: var(--mobile-orange);
+  border-color: var(--mobile-orange);
+}
+
+@media (max-width: 900px) {
+  .mobile-hero {
+    padding: 40px 16px 48px;
+  }
+
+  .mobile-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .mobile-hero-actions .btn-lg {
+    width: 100%;
+    text-align: center;
+  }
+
+  .thunder-plus-section {
+    padding: 28px 20px;
+  }
+
+  .thunder-plus-actions {
+    flex-direction: column;
+  }
+
+  .thunder-plus-actions .btn-lg {
+    width: 100%;
+    text-align: center;
+  }
+
+  .roadmap-mobile {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

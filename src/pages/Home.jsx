@@ -1,5 +1,7 @@
 import { useSearchParams, Link } from 'react-router-dom';
 import { chapters, searchChapters } from '../data/chapters';
+import { mobileChapters } from '../data/mobileChapters';
+import { MOBILE_META } from '../data/mobileSyllabus';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import LectureCard from '../components/LectureCard';
 import Syllabus from '../components/Syllabus';
@@ -85,6 +87,43 @@ export default function Home() {
         <div className="roadmap-legend">
           <span><span className="legend-dot published" /> Published ({chapters.length})</span>
           <span><span className="legend-dot upcoming" /> Coming soon</span>
+        </div>
+      </section>
+
+      <section className="thunder-plus-section" id="thunder-plus">
+        <div className="thunder-plus-inner">
+          <span className="thunder-plus-badge">After Day 100</span>
+          <h2>Thunder++ — React Native</h2>
+          <p className="section-desc">
+            Continue your journey with the{' '}
+            <a href={MOBILE_META.syllabusUrl} target="_blank" rel="noopener noreferrer">
+              ChaiCode Mobile Development Cohort
+            </a>
+            . {mobileChapters.length} lessons covering Expo, navigation, APIs, notifications, auth, and
+            real-world app projects.
+          </p>
+          <div className="thunder-plus-highlights">
+            <span>📱 React Native + Expo</span>
+            <span>🧭 Expo Router</span>
+            <span>🔔 Push Notifications</span>
+            <span>🚀 EAS & Play Store</span>
+          </div>
+          <div className="thunder-plus-actions">
+            <Link to="/mobile" className="btn btn-mobile btn-lg">
+              Explore Thunder++
+            </Link>
+            <Link to="/mobile/learn/react-js-refresher" className="btn btn-mobile-cohort btn-lg">
+              Start RN Day 1
+            </Link>
+            <a
+              href={MOBILE_META.githubRepo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline-mobile btn-lg"
+            >
+              ChaiCode GitHub
+            </a>
+          </div>
         </div>
       </section>
 

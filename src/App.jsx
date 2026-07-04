@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
+import MobileHome from './pages/MobileHome';
 import Chapter from './pages/Chapter';
 
 export default function App() {
@@ -10,6 +11,8 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="learn/:slug" element={<Chapter />} />
+          <Route path="mobile" element={<MobileHome />} />
+          <Route path="mobile/learn/:slug" element={<Chapter track="mobile" />} />
         </Route>
       </Routes>
     </BrowserRouter>

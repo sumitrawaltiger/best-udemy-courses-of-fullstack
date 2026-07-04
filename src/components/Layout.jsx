@@ -6,13 +6,18 @@ import { discordCommunity } from '../data/syllabus';
 export default function Layout() {
   const { slug } = useParams();
   const location = useLocation();
-  const showSidebar = location.pathname.startsWith('/learn');
+  const isMobileTrack = location.pathname.startsWith('/mobile');
+  const showSidebar =
+    location.pathname.startsWith('/learn/') ||
+    location.pathname.startsWith('/mobile/learn/');
 
   return (
-    <div className="app">
+    <div className={`app ${isMobileTrack ? 'app-mobile' : ''}`}>
       <Header />
       <div className={`main-layout ${showSidebar ? 'with-sidebar' : 'no-sidebar'}`}>
-        {showSidebar && <Sidebar currentSlug={slug} />}
+        {showSidebar && (
+          <Sidebar currentSlug={slug} track={isMobileTrack ? 'mobile' : 'thunder'} />
+        )}
         <main className="content">
           <Outlet />
         </main>
@@ -26,7 +31,7 @@ export default function Layout() {
           — sharing my JavaScript learning journey with the world.
         </p>
         <p className="footer-sub">
-          Day-by-day tutorials for absolute beginners. More chapters coming soon!
+          Day-by-day tutorials for absolute beginners. Thunder++ React Native after 100 days!
         </p>
         <p className="footer-community">
           <a href={discordCommunity} target="_blank" rel="noopener noreferrer">

@@ -1,24 +1,29 @@
 import { Link } from 'react-router-dom';
 
-export default function LectureCard({ chapter }) {
+export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 'Day' }) {
+  const dayNum = chapter.rnDay ?? chapter.day;
+  const learnUrl = `${basePath}/${chapter.slug}`;
+
   return (
-    <article className="lecture-card">
+    <article className={`lecture-card ${basePath.includes('mobile') ? 'lecture-card-mobile' : ''}`}>
       <div className="lecture-thumb">
-        <div className={`thumb-day thumb-day-${Math.min(chapter.day, 4)}`}>
-          {chapter.day === 1 ? (
+        <div
+          className={`thumb-day thumb-day-${Math.min(dayNum, 4)} ${basePath.includes('mobile') ? 'thumb-day-mobile' : ''}`}
+        >
+          {dayNum === 1 && dayPrefix === 'Day' ? (
             <span className="js-logo">JS</span>
           ) : (
             <>
-              <span className="day-label">DAY</span>
-              <span className="day-num">{chapter.day}</span>
+              <span className="day-label">{dayPrefix === 'RN' ? 'RN' : 'DAY'}</span>
+              <span className="day-num">{dayNum}</span>
             </>
           )}
         </div>
       </div>
       <div className="lecture-body">
         <h2 className="lecture-title">
-          <Link to={`/learn/${chapter.slug}`}>
-            Lecture {String(chapter.id).padStart(2, '0')}: {chapter.title}
+          <Link to={learnUrl}>
+            {dayPrefix === 'RN' ? 'Lesson' : 'Lecture'} {String(chapter.id).padStart(2, '0')}: {chapter.title}
           </Link>
         </h2>
         <p className="lecture-subtitle">{chapter.subtitle}</p>
@@ -40,7 +45,7 @@ export default function LectureCard({ chapter }) {
           )}
         </div>
         <div className="lecture-actions">
-          <Link to={`/learn/${chapter.slug}`} className="btn btn-watch">
+          <Link to={learnUrl} className={`btn ${basePath.includes('mobile') ? 'btn-mobile' : 'btn-watch'}`}>
             Start Learning →
           </Link>
           {chapter.paidLectureUrl && (
@@ -48,9 +53,9 @@ export default function LectureCard({ chapter }) {
               href={chapter.paidLectureUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn btn-paid-sm"
+              className={`btn ${basePath.includes('mobile') ? 'btn-mobile-cohort-sm' : 'btn-paid-sm'}`}
             >
-              🎓 Full Lecture
+              🎓 {chapter.paidLectureLabel || 'Full Lecture'}
             </a>
           )}
           {chapter.youtubeUrl && (
