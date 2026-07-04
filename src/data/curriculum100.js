@@ -2,15 +2,70 @@
 // YouTube links: verified free tutorials from quality channels
 
 export const days20to100 = [
-  // ── Phase 1 wrap-up (Days 20–25) ──
+  // ── Phase 2: Backend Mastery begins (Day 20) ──
   {
     day: 20,
-    phase: 'Phase 1: JavaScript Mastery',
-    title: 'ES6 Modules & import/export',
-    subtitle: 'Modular JavaScript, named exports, and default exports',
-    topics: ['ES6 modules', 'import / export', 'Default exports', 'Module scope', 'Bundlers intro'],
-    youtube: { url: 'https://www.youtube.com/watch?v=cRHQNLul2WE', title: 'JavaScript ES6 Modules', channel: 'Traversy Media' },
-    sampleCode: 'export const PI = 3.14;\nexport default function add(a, b) { return a + b; }',
+    slug: 'introduction-to-node-js',
+    phase: 'Phase 2: Backend Mastery',
+    title: 'Introduction to Node.js',
+    subtitle: 'Backend begins — runtime, npm, and your first Node programs',
+    topics: ['What is Node.js', 'V8 & the runtime', 'Running .js with node', 'npm & package.json', 'Thunder 03Backend/Day01'],
+    notionUrl:
+      'https://app.notion.com/p/Lecture01-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031',
+    githubPath: '03Backend/Day01',
+    codeRepo: 'https://github.com/Rohitnegi9/Thunder/tree/main',
+    youtube: {
+      url: 'https://www.youtube.com/watch?v=TlB_eWDSMt4',
+      title: 'Node.js Crash Course',
+      channel: 'Programming with Mosh',
+    },
+    sampleCode:
+      'console.log("Hello from Node.js!");\nconsole.log("Day 20 — Backend starts (03Backend/Day01)");',
+    sections: [
+      {
+        id: 'backend-begins',
+        title: 'Backend Starts on Day 20',
+        content:
+          '**Day 20** is where Thunder moves from JavaScript in the browser to **backend development with Node.js**. You will run JavaScript on your machine using the terminal — no browser required.',
+      },
+      {
+        id: 'what-is-node',
+        title: 'What is Node.js?',
+        content:
+          'Node.js is a **JavaScript runtime** built on Chrome\'s V8 engine. It lets you build servers, APIs, CLI tools, and scripts. Same language as the frontend — new environment.',
+        code:
+          'console.log("Hello from Node.js!");\nconsole.log(process.version);',
+        tryIt: 'console.log("Thunder Backend — Lecture 01");',
+      },
+      {
+        id: 'npm',
+        title: 'npm & package.json',
+        content:
+          '**npm** ships with Node and manages packages. `npm init` creates `package.json`. `npm install <pkg>` adds dependencies for backend projects.',
+        code: '// package.json tracks your project\n// npm install express  — example for later days',
+        tryIt: 'console.log("npm manages backend dependencies");',
+      },
+      {
+        id: 'thunder-day01',
+        title: 'Thunder 03Backend / Day01',
+        content:
+          'Open **03Backend/Day01** on GitHub: `first.js`, `second.js`, and Project01–03. Match your work with the **Notion notes** for Lecture 01 — Introduction to Node.js.',
+      },
+    ],
+    quiz: [
+      {
+        question: 'What begins on Day 20 of Thunder?',
+        options: ['Backend with Node.js', 'CSS animations only', 'Photoshop', 'Kubernetes'],
+        answer: 0,
+        explanation: 'Day 20 starts Phase 2 — Backend Mastery.',
+      },
+      {
+        question: 'How do you run a Node.js file?',
+        options: ['node filename.js in the terminal', 'Only in the browser', 'python filename.js', 'java filename.js'],
+        answer: 0,
+        explanation: 'Use the node command from your terminal.',
+      },
+    ],
   },
   {
     day: 21,

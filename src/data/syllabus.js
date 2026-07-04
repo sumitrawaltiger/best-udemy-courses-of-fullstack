@@ -31,8 +31,8 @@ function modulesForDayRange(start, end) {
     .map(chapterToModule);
 }
 
-const phase1 = modulesForDayRange(1, 25);
-const phase2 = modulesForDayRange(26, 40);
+const phase1 = modulesForDayRange(1, 19);
+const phase2 = modulesForDayRange(20, 40);
 const phase3 = modulesForDayRange(41, 47);
 const phase4 = modulesForDayRange(48, 59);
 const phase5 = modulesForDayRange(60, 72);
@@ -123,7 +123,8 @@ export const syllabusMeta = {
   totalHours: '100+',
 };
 
-export const thunderRepo = 'https://github.com/Rohitnegi9/Thunder/tree/main/Javascript';
+export const thunderRepo = 'https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript';
+export const thunderRootRepo = 'https://github.com/Rohitnegi9/Thunder/tree/main';
 export const strikeCourse = 'https://strikes.in/course/thunder';
 export const discordCommunity = 'https://discord.com/invite/mHxZUFjf6R';
 export { PAID_COURSE_URL } from './videoLinks';

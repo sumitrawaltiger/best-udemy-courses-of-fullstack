@@ -104,9 +104,9 @@ export const youtubeByDay = {
     channel: 'Web Dev Simplified',
   },
   20: {
-    url: 'https://www.youtube.com/watch?v=cRHQNLul2WE',
-    title: 'JavaScript ES6 Modules',
-    channel: 'Traversy Media',
+    url: 'https://www.youtube.com/watch?v=TlB_eWDSMt4',
+    title: 'Node.js Crash Course',
+    channel: 'Programming with Mosh',
   },
   21: {
     url: 'https://www.youtube.com/watch?v=bl98tJpgb6s',

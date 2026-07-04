@@ -67,6 +67,7 @@ export function buildChapter(entry, id) {
 
   if (entry.githubPath) chapter.githubPath = entry.githubPath;
   if (entry.notionUrl) chapter.notionUrl = entry.notionUrl;
+  if (entry.codeRepo) chapter.codeRepo = entry.codeRepo;
 
   return chapter;
 }

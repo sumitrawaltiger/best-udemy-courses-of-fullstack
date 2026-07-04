@@ -1,6 +1,6 @@
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { getChapterBySlug, chapters } from '../data/chapters';
-import { thunderRepo } from '../data/syllabus';
+import { thunderRepo, thunderRootRepo } from '../data/syllabus';
 import CodeBlock from '../components/CodeBlock';
 import CodePlayground from '../components/CodePlayground';
 import Quiz from '../components/Quiz';
@@ -88,7 +88,7 @@ export default function Chapter() {
           )}
           {chapter.githubPath && (
             <a
-              href={`${thunderRepo}/${chapter.githubPath}`}
+              href={`${chapter.codeRepo || thunderRepo}/${chapter.githubPath}`}
               target="_blank"
               rel="noopener noreferrer"
               className="chapter-link-btn outline"

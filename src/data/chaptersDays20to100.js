@@ -2,78 +2,77 @@
 export const chaptersDays20to100 = [
   {
     "id": 20,
-    "slug": "es6-modules-and-import-export",
+    "slug": "introduction-to-node-js",
     "day": 20,
-    "title": "ES6 Modules & import/export",
-    "subtitle": "Modular JavaScript, named exports, and default exports",
+    "title": "Introduction to Node.js",
+    "subtitle": "Backend begins — runtime, npm, and your first Node programs",
     "duration": "2 hrs",
     "createdOn": "20 Jul 2026",
     "status": "published",
     "topics": [
-      "ES6 modules",
-      "import / export",
-      "Default exports",
-      "Module scope",
-      "Bundlers intro"
+      "What is Node.js",
+      "V8 & the runtime",
+      "Running .js with node",
+      "npm & package.json",
+      "Thunder 03Backend/Day01"
     ],
     "sections": [
       {
-        "id": "es6-modules",
-        "title": "ES6 modules",
-        "content": "Learn **ES6 modules** in Day 20 of Thunder: 100 Days of Code. Modular JavaScript, named exports, and default exports",
-        "code": "export const PI = 3.14;\nexport default function add(a, b) { return a + b; }",
-        "tryIt": "console.log(\"Day 20: ES6 Modules & import/export\");"
+        "id": "backend-begins",
+        "title": "Backend Starts on Day 20",
+        "content": "**Day 20** is where Thunder moves from JavaScript in the browser to **backend development with Node.js**. You will run JavaScript on your machine using the terminal — no browser required."
       },
       {
-        "id": "import-export",
-        "title": "import / export",
-        "content": "Learn **import / export** in Day 20 of Thunder: 100 Days of Code. Modular JavaScript, named exports, and default exports",
-        "code": "export const PI = 3.14;\nexport default function add(a, b) { return a + b; }",
-        "tryIt": "console.log(\"Day 20: ES6 Modules & import/export\");"
+        "id": "what-is-node",
+        "title": "What is Node.js?",
+        "content": "Node.js is a **JavaScript runtime** built on Chrome's V8 engine. It lets you build servers, APIs, CLI tools, and scripts. Same language as the frontend — new environment.",
+        "code": "console.log(\"Hello from Node.js!\");\nconsole.log(process.version);",
+        "tryIt": "console.log(\"Thunder Backend — Lecture 01\");"
       },
       {
-        "id": "default-exports",
-        "title": "Default exports",
-        "content": "Learn **Default exports** in Day 20 of Thunder: 100 Days of Code. Modular JavaScript, named exports, and default exports",
-        "code": "export const PI = 3.14;\nexport default function add(a, b) { return a + b; }",
-        "tryIt": "console.log(\"Day 20: ES6 Modules & import/export\");"
+        "id": "npm",
+        "title": "npm & package.json",
+        "content": "**npm** ships with Node and manages packages. `npm init` creates `package.json`. `npm install <pkg>` adds dependencies for backend projects.",
+        "code": "// package.json tracks your project\n// npm install express  — example for later days",
+        "tryIt": "console.log(\"npm manages backend dependencies\");"
       },
       {
-        "id": "module-scope",
-        "title": "Module scope",
-        "content": "Learn **Module scope** in Day 20 of Thunder: 100 Days of Code. Modular JavaScript, named exports, and default exports",
-        "code": "export const PI = 3.14;\nexport default function add(a, b) { return a + b; }",
-        "tryIt": "console.log(\"Day 20: ES6 Modules & import/export\");"
+        "id": "thunder-day01",
+        "title": "Thunder 03Backend / Day01",
+        "content": "Open **03Backend/Day01** on GitHub: `first.js`, `second.js`, and Project01–03. Match your work with the **Notion notes** for Lecture 01 — Introduction to Node.js."
       }
     ],
     "quiz": [
       {
-        "question": "What is the main topic of Day 20?",
+        "question": "What begins on Day 20 of Thunder?",
         "options": [
-          "ES6 Modules & import/export",
-          "HTML tables only",
-          "Linux kernel modules",
-          "Photoshop layers"
+          "Backend with Node.js",
+          "CSS animations only",
+          "Photoshop",
+          "Kubernetes"
         ],
         "answer": 0,
-        "explanation": "Day 20 focuses on ES6 Modules & import/export."
+        "explanation": "Day 20 starts Phase 2 — Backend Mastery."
       },
       {
-        "question": "Which Thunder phase includes this day?",
+        "question": "How do you run a Node.js file?",
         "options": [
-          "Phase 1: JavaScript Mastery",
-          "Only Phase 7",
-          "Only Phase 1",
-          "Not part of Thunder"
+          "node filename.js in the terminal",
+          "Only in the browser",
+          "python filename.js",
+          "java filename.js"
         ],
         "answer": 0,
-        "explanation": "This day belongs to Phase 1: JavaScript Mastery."
+        "explanation": "Use the node command from your terminal."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=cRHQNLul2WE",
-    "youtubeTitle": "JavaScript ES6 Modules — Traversy Media",
+    "youtubeUrl": "https://www.youtube.com/watch?v=TlB_eWDSMt4",
+    "youtubeTitle": "Node.js Crash Course — Programming with Mosh",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
-    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
+    "githubPath": "03Backend/Day01",
+    "notionUrl": "https://app.notion.com/p/Lecture01-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031",
+    "codeRepo": "https://github.com/Rohitnegi9/Thunder/tree/main"
   },
   {
     "id": 21,
