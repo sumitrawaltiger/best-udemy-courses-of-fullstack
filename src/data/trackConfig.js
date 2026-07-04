@@ -1,4 +1,4 @@
-// Learning path calendar offsets (Day 1 = 1 Jul 2026)
+// Learning path calendar offsets (Day 1 = 4 Jul 2026)
 export const THUNDER_DAYS = 100;
 export const NEXTJS_MODULES = 30;
 export const PYTHON_MODULES = 45;

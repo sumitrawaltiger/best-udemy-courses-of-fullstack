@@ -1,7 +1,11 @@
 import { chaptersDays01to19 } from '../chaptersDays01to19.js';
 import { chaptersDays20to100 } from '../chaptersDays20to100.js';
+import { formatDate } from '../chapterFactory.js';
 
-export const chapters = [...chaptersDays01to19, ...chaptersDays20to100];
+export const chapters = [...chaptersDays01to19, ...chaptersDays20to100].map((ch) => ({
+  ...ch,
+  createdOn: formatDate(ch.day),
+}));
 
 export function getChapterBySlug(slug) {
   return chapters.find((c) => c.slug === slug);
