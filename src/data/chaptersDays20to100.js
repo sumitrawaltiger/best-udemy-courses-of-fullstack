@@ -15,7 +15,7 @@ export const chaptersDays20to100 = [
       "V8 & the runtime",
       "Running .js with node",
       "npm & package.json",
-      "Thunder 03Backend/Day01"
+      "Thunder 03Backend"
     ],
     "sections": [
       {
@@ -38,9 +38,9 @@ export const chaptersDays20to100 = [
         "tryIt": "console.log(\"npm manages backend dependencies\");"
       },
       {
-        "id": "thunder-day01",
-        "title": "Thunder 03Backend / Day01",
-        "content": "Open **03Backend/Day01** on GitHub: `first.js`, `second.js`, and Project01–03. Match your work with the **Notion notes** for Lecture 01 & 02 — Introduction to Node.js."
+        "id": "thunder-backend",
+        "title": "Thunder 03Backend Repository",
+        "content": "Open **[03Backend](https://github.com/Rohitnegi9/Thunder/tree/main/03Backend)** on GitHub. For Lecture 01, work inside the **Day01** folder (`first.js`, `second.js`, Project01–03). Match your work with the **Notion notes** for Lecture 01 & 02 — Introduction to Node.js."
       }
     ],
     "quiz": [
@@ -71,84 +71,91 @@ export const chaptersDays20to100 = [
     "youtubeTitle": "Node.js Crash Course — Programming with Mosh",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
-    "githubPath": "03Backend/Day01",
+    "githubPath": "03Backend",
     "notionUrl": "https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031",
     "codeRepo": "https://github.com/Rohitnegi9/Thunder/tree/main"
   },
   {
     "id": 21,
-    "slug": "node-js-http-server",
+    "slug": "tcp-ip-and-package-json",
     "track": "thunder",
     "day": 21,
-    "title": "Node.js HTTP Server",
-    "subtitle": "http module, routing, and your first backend API",
-    "duration": "2 hrs",
+    "title": "TCP/IP and package.json",
+    "subtitle": "How the web talks — networking basics and npm project setup",
+    "duration": "2 hrs 22 mins",
     "createdOn": "24 Jul 2026",
     "status": "published",
     "topics": [
-      "http.createServer",
-      "request.url routing",
-      "response.end",
-      "JSON responses",
-      "Thunder 03Backend/Day02"
+      "TCP/IP model",
+      "IP address & ports",
+      "Client–server requests",
+      "package.json fields",
+      "npm scripts & dependencies"
     ],
     "sections": [
       {
-        "id": "http-module",
-        "title": "The http Module",
-        "content": "Node's built-in **http** module lets you create a server without Express. You handle each request in a callback and send a response with `response.end()`.",
-        "code": "const http = require('http');\n\nconst server = http.createServer((request, response) => {\n  response.end('Hello from Node!');\n});\n\nserver.listen(3000, () => {\n  console.log('Server is listening on port 3000');\n});",
-        "tryIt": "console.log('Day 21 — http.createServer basics');"
+        "id": "tcp-ip-model",
+        "title": "TCP/IP Model",
+        "content": "**TCP/IP** is the protocol suite behind the internet. When your Node server listens on a port, clients connect over **TCP** — a reliable, ordered channel. **IP** handles addressing so packets reach the right machine.",
+        "code": "// Client browser  →  TCP connection  →  Node server (IP + port)\n// HTTP rides on top of TCP",
+        "tryIt": "console.log('Day 21 — TCP/IP powers every backend request');"
       },
       {
-        "id": "url-routing",
-        "title": "URL Routing with request.url",
-        "content": "Parse `request.url` to build simple routes. Split the path to read operation and numbers — the same pattern used in **03Backend/Day02/second.js**.",
-        "code": "const path = request.url.split('/');\nconst operation = path[1];\nconst a = Number(path[2]);\nconst b = Number(path[3]);",
-        "tryIt": "console.log('/add/10/20'.split('/'));"
+        "id": "ip-and-ports",
+        "title": "IP Address & Ports",
+        "content": "An **IP address** identifies a host. A **port** (e.g. `3000`) identifies which program on that host should receive the connection. `server.listen(3000)` binds your Node process to port 3000.",
+        "code": "server.listen(3000, () => {\n  console.log('Server is listening at 3000 port');\n});",
+        "tryIt": "console.log('localhost:3000 → IP 127.0.0.1, port 3000');"
       },
       {
-        "id": "json-responses",
-        "title": "Sending JSON Responses",
-        "content": "Use `response.end(JSON.stringify(result))` to return JSON from your API. Test with browser or curl: `http://localhost:3000/add/10/20`.",
-        "code": "if (operation === 'add') {\n  response.end(JSON.stringify(a + b));\n}",
-        "tryIt": "console.log(JSON.stringify({ sum: 10 + 20 }));"
+        "id": "package-json",
+        "title": "package.json",
+        "content": "Every Node backend project has a **package.json**. It stores the project **name**, **version**, **scripts**, and **dependencies**. Run `npm init` to create one, or edit it in the **Day02** folder under **03Backend**.",
+        "code": "{\n  \"name\": \"my-backend\",\n  \"version\": \"1.0.0\",\n  \"main\": \"second.js\",\n  \"scripts\": {\n    \"start\": \"node second.js\"\n  }\n}",
+        "tryIt": "console.log(JSON.stringify({ name: \"thunder-day02\", version: \"1.0.0\" }, null, 2));"
       },
       {
-        "id": "thunder-day02",
-        "title": "Thunder 03Backend / Day02",
-        "content": "Open **03Backend/Day02** on GitHub: `first.js`, `second.js`, `third.js`, and LearnModule folders. Follow **Lecture 02** in the same Notion notes page as Day 20."
+        "id": "npm-scripts",
+        "title": "npm Scripts & Dependencies",
+        "content": "Use **npm scripts** to run your server with `npm start` instead of typing `node second.js` every time. **dependencies** list packages your app needs; **devDependencies** are for tooling only.",
+        "code": "// package.json\n\"scripts\": { \"start\": \"node second.js\" }\n// Terminal: npm start",
+        "tryIt": "console.log('npm start runs the script from package.json');"
+      },
+      {
+        "id": "thunder-backend",
+        "title": "Thunder 03Backend Repository",
+        "content": "Open **[03Backend](https://github.com/Rohitnegi9/Thunder/tree/main/03Backend)** on GitHub. For Lecture 02 — TCP/IP and package.json, work inside the **Day02** folder (`first.js`, `second.js`, `third.js`, LearnModule folders). See **Notes.md** at the repo root for extra context."
       }
     ],
     "quiz": [
       {
-        "question": "Which Node module creates a basic HTTP server?",
+        "question": "What does TCP provide for backend communication?",
         "options": [
-          "http",
-          "fs",
-          "path",
-          "crypto"
+          "Reliable, ordered delivery between client and server",
+          "Only CSS styling",
+          "Database migrations",
+          "Image compression"
         ],
         "answer": 0,
-        "explanation": "The built-in http module provides createServer()."
+        "explanation": "TCP ensures data arrives reliably — HTTP builds on top of it."
       },
       {
-        "question": "What port does the Day02 example server listen on?",
+        "question": "Which file defines npm scripts and project dependencies?",
         "options": [
-          "3000",
-          "8080",
-          "5000",
-          "443"
+          "package.json",
+          "index.html",
+          "README.md",
+          ".gitignore"
         ],
         "answer": 0,
-        "explanation": "Thunder Day02 uses port 3000 in second.js."
+        "explanation": "package.json is the manifest for every Node.js project."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=Oe421EPjeBE",
-    "youtubeTitle": "Node.js HTTP Module — Web Dev Simplified",
+    "youtubeUrl": "https://www.youtube.com/watch?v=3dP4meOW_Ig",
+    "youtubeTitle": "TCP/IP Explained — PowerCert Animated Videos",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
-    "githubPath": "03Backend/Day02",
+    "githubPath": "03Backend",
     "notionUrl": "https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031",
     "codeRepo": "https://github.com/Rohitnegi9/Thunder/tree/main"
   },
