@@ -1,39 +1,70 @@
 import { NavLink } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import { chapters } from '../data/chapters';
+import { nextjsChapters } from '../data/nextjsChapters';
 import { mobileChapters } from '../data/mobileChapters';
+import { NEXTJS_MODULES, MOBILE_LESSONS } from '../data/trackConfig';
+
+const TRACK_CONFIG = {
+  thunder: {
+    list: chapters,
+    basePath: '/learn',
+    heading: 'JavaScript Tutorial',
+    dayLabel: (ch) => `Day ${ch.day}`,
+    total: 100,
+    unit: 'days',
+    cssClass: '',
+    activeClass: '',
+    progressClass: '',
+  },
+  nextjs: {
+    list: nextjsChapters,
+    basePath: '/nextjs/learn',
+    heading: 'React & Next.js',
+    dayLabel: (ch) => `NX ${ch.nextDay}`,
+    total: NEXTJS_MODULES,
+    unit: 'modules',
+    cssClass: 'sidebar-nextjs',
+    activeClass: 'sidebar-link-nextjs',
+    progressClass: 'progress-fill-nextjs',
+  },
+  mobile: {
+    list: mobileChapters,
+    basePath: '/mobile/learn',
+    heading: 'React Native Tutorial',
+    dayLabel: (ch) => `RN ${ch.rnDay}`,
+    total: MOBILE_LESSONS,
+    unit: 'lessons',
+    cssClass: 'sidebar-mobile',
+    activeClass: 'sidebar-link-mobile',
+    progressClass: 'progress-fill-mobile',
+  },
+};
 
 export default function Sidebar({ currentSlug, track = 'thunder' }) {
-  const isMobile = track === 'mobile';
-  const list = isMobile ? mobileChapters : chapters;
-  const basePath = isMobile ? '/mobile/learn' : '/learn';
-  const current = list.find((c) => c.slug === currentSlug);
+  const cfg = TRACK_CONFIG[track] || TRACK_CONFIG.thunder;
+  const current = cfg.list.find((c) => c.slug === currentSlug);
   const activeRef = useRef(null);
-  const total = isMobile ? 25 : 100;
 
   useEffect(() => {
     activeRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }, [currentSlug]);
 
   return (
-    <aside className={`sidebar ${isMobile ? 'sidebar-mobile' : ''}`}>
+    <aside className={`sidebar ${cfg.cssClass}`}>
       <div className="sidebar-section">
-        <h3 className="sidebar-heading">
-          {isMobile ? 'React Native Tutorial' : 'JavaScript Tutorial'}
-        </h3>
+        <h3 className="sidebar-heading">{cfg.heading}</h3>
         <nav className="sidebar-nav">
-          {list.map((ch) => (
+          {cfg.list.map((ch) => (
             <NavLink
               key={ch.slug}
               ref={ch.slug === currentSlug ? activeRef : null}
-              to={`${basePath}/${ch.slug}`}
+              to={`${cfg.basePath}/${ch.slug}`}
               className={({ isActive }) =>
-                `sidebar-link ${isActive ? 'active' : ''} ${isMobile ? 'sidebar-link-mobile' : ''}`
+                `sidebar-link ${isActive ? 'active' : ''} ${cfg.activeClass}`
               }
             >
-              <span className="sidebar-day">
-                {isMobile ? `RN ${ch.rnDay}` : `Day ${ch.day}`}
-              </span>
+              <span className="sidebar-day">{cfg.dayLabel(ch)}</span>
               <span className="sidebar-title">{ch.title}</span>
             </NavLink>
           ))}
@@ -60,12 +91,12 @@ export default function Sidebar({ currentSlug, track = 'thunder' }) {
         <h3 className="sidebar-heading">Your Progress</h3>
         <div className="progress-bar">
           <div
-            className={`progress-fill ${isMobile ? 'progress-fill-mobile' : ''}`}
-            style={{ width: `${(list.length / total) * 100}%` }}
+            className={`progress-fill ${cfg.progressClass}`}
+            style={{ width: `${(cfg.list.length / cfg.total) * 100}%` }}
           />
         </div>
         <p className="progress-text">
-          {list.length} of {total} {isMobile ? 'lessons' : 'days'} published
+          {cfg.list.length} of {cfg.total} {cfg.unit} published
         </p>
       </div>
     </aside>

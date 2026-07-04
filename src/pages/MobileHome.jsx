@@ -30,8 +30,8 @@ export default function MobileHome() {
                 <a href="#mobile-syllabus" className="btn btn-outline-mobile btn-lg">
                   View Syllabus
                 </a>
-                <Link to="/" className="btn btn-outline-mobile btn-lg">
-                  ← Thunder 100 Days
+                <Link to="/nextjs" className="btn btn-outline-mobile btn-lg">
+                  ← React & Next.js
                 </Link>
               </div>
             }
@@ -49,7 +49,8 @@ export default function MobileHome() {
         <section className="roadmap">
           <h2>25-Lesson Mobile Roadmap</h2>
           <p className="section-desc">
-            Thunder++ continues after Day 100. All {mobileChapters.length} React Native lessons are on this site.
+            Thunder++ continues after React & Next.js. All {mobileChapters.length} React Native lessons are on this
+            site.
           </p>
           <div className="roadmap-grid roadmap-mobile">
             {mobileChapters.map((ch) => (
@@ -63,7 +64,7 @@ export default function MobileHome() {
               <span className="legend-dot published legend-dot-mobile" /> {mobileChapters.length} lessons
             </span>
             <span>
-              <span className="legend-dot published" /> Starts after Thunder
+              <span className="legend-dot published" /> After React & Next.js
             </span>
           </div>
         </section>

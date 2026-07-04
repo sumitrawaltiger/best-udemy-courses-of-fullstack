@@ -16,7 +16,7 @@ export const MOBILE_META = {
   cohortUrl: 'https://hitesh.ai/mobile-dev',
   coursePortal: 'https://courses.chaicode.com',
   totalLessons: 25,
-  startsAfter: 'Thunder 100 Days',
+  startsAfter: 'React & Next.js',
 };
 
 function lessonToModule(ch) {

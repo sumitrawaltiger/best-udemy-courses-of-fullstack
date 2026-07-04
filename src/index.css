@@ -2634,3 +2634,272 @@ a:hover {
     grid-template-columns: repeat(5, 1fr);
   }
 }
+
+/* ─── Thunder+ React & Next.js (ChaiCode Udemy) ─── */
+:root {
+  --nextjs-purple: #a435f0;
+  --nextjs-purple-dark: #8710d8;
+  --nextjs-purple-light: #c471ed;
+}
+
+.nextjs-hero {
+  width: 100%;
+  background: linear-gradient(160deg, #1a0a2e 0%, #000 45%, #12061f 100%);
+  color: #fff;
+  padding: 56px clamp(16px, 4vw, 48px) 64px;
+  margin: 0;
+  box-sizing: border-box;
+  border-bottom: 3px solid var(--nextjs-purple);
+}
+
+.nextjs-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nextjs-hero-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.nextjs-level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid rgba(164, 53, 240, 0.5);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--nextjs-purple-light);
+  margin-bottom: 28px;
+}
+
+.nextjs-title {
+  font-family: 'Orbitron', var(--font);
+  font-size: clamp(32px, 7vw, 58px);
+  font-weight: 900;
+  line-height: 1.08;
+  margin: 0 0 20px;
+  color: #fff;
+}
+
+.nextjs-title-line {
+  display: block;
+}
+
+.nextjs-title-line:last-child {
+  color: var(--nextjs-purple-light);
+}
+
+.nextjs-subtitle {
+  font-size: clamp(15px, 2.5vw, 20px);
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 24px;
+  line-height: 1.5;
+}
+
+.nextjs-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.nextjs-meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid #3a1a5c;
+  border-radius: 8px;
+  background: rgba(164, 53, 240, 0.1);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.nextjs-hero-desc {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 640px;
+  margin: 0 0 28px;
+}
+
+.nextjs-hero-desc a {
+  color: var(--nextjs-purple-light);
+  font-weight: 600;
+}
+
+.nextjs-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn-nextjs {
+  background: var(--nextjs-purple);
+  color: #fff;
+  border: 2px solid var(--nextjs-purple);
+}
+
+.btn-nextjs:hover {
+  background: var(--nextjs-purple-dark);
+  border-color: var(--nextjs-purple-dark);
+}
+
+.btn-nextjs-udemy {
+  background: #fff;
+  color: #1a0a2e;
+  border: 2px solid #fff;
+  font-weight: 700;
+}
+
+.btn-nextjs-udemy:hover {
+  background: var(--nextjs-purple-light);
+  border-color: var(--nextjs-purple-light);
+  color: #1a0a2e;
+}
+
+.btn-nextjs-udemy-sm {
+  background: rgba(164, 53, 240, 0.15);
+  color: var(--nextjs-purple-dark);
+  border: 1px solid var(--nextjs-purple);
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
+.btn-nextjs-udemy-sm:hover {
+  background: var(--nextjs-purple);
+  color: #fff;
+}
+
+.btn-outline-nextjs {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(164, 53, 240, 0.6);
+}
+
+.btn-outline-nextjs:hover {
+  background: rgba(164, 53, 240, 0.15);
+  border-color: var(--nextjs-purple);
+}
+
+.btn-nextjs-udemy-outline {
+  display: inline-block;
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--nextjs-purple-dark);
+  border: 2px solid var(--nextjs-purple);
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn-nextjs-udemy-outline:hover {
+  background: var(--nextjs-purple);
+  color: #fff;
+}
+
+.nextjs-home {
+  padding: 32px clamp(16px, 4vw, 48px) 48px;
+}
+
+.nextjs-syllabus-section {
+  background: #faf5ff;
+}
+
+.phase-card-nextjs .phase-num-nextjs {
+  background: var(--nextjs-purple);
+}
+
+.highlight-check-nextjs {
+  color: var(--nextjs-purple);
+}
+
+.legend-dot-nextjs {
+  background: var(--nextjs-purple);
+}
+
+.thumb-day-nextjs {
+  background: linear-gradient(135deg, var(--nextjs-purple-dark), var(--nextjs-purple-light)) !important;
+}
+
+.roadmap-nextjs {
+  grid-template-columns: repeat(10, 1fr);
+  max-width: 620px;
+}
+
+.thunder-nextjs-section {
+  background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+  border-color: rgba(164, 53, 240, 0.25);
+}
+
+.thunder-plus-badge-nextjs {
+  background: var(--nextjs-purple);
+}
+
+.header-nextjs-link {
+  color: var(--nextjs-purple) !important;
+  font-weight: 600;
+}
+
+.logo-icon-nextjs {
+  background: var(--nextjs-purple) !important;
+}
+
+.sidebar-nextjs .sidebar-link.active,
+.sidebar-nextjs .sidebar-link-nextjs.active {
+  border-left-color: var(--nextjs-purple);
+  background: rgba(164, 53, 240, 0.15);
+}
+
+.progress-fill-nextjs {
+  background: var(--nextjs-purple);
+}
+
+.chapter-badge-nextjs {
+  background: rgba(164, 53, 240, 0.12);
+  color: var(--nextjs-purple-dark);
+  border: 1px solid rgba(164, 53, 240, 0.35);
+}
+
+.chapter-intro-nextjs {
+  border-left-color: var(--nextjs-purple);
+}
+
+.section-num-nextjs {
+  background: var(--nextjs-purple);
+}
+
+.paid-lecture-banner-nextjs {
+  border-color: rgba(164, 53, 240, 0.35);
+  background: #faf5ff;
+}
+
+.chapter-link-btn.paid-nextjs {
+  background: var(--nextjs-purple);
+  border-color: var(--nextjs-purple);
+}
+
+@media (max-width: 900px) {
+  .nextjs-hero {
+    padding: 40px 16px 48px;
+  }
+
+  .nextjs-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nextjs-hero-actions .btn-lg {
+    width: 100%;
+    text-align: center;
+  }
+
+  .roadmap-nextjs {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

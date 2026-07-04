@@ -6,7 +6,7 @@ export default function MobileHero({ children, actions }) {
     <div className="mobile-hero-block">
       <span className="mobile-level-badge">
         <span className="mobile-level-icon" aria-hidden="true">⚡</span>
-        After Thunder 100 Days
+        After React & Next.js
       </span>
 
       <h1 className="mobile-title">

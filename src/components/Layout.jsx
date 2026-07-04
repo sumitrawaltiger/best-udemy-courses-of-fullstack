@@ -7,17 +7,19 @@ export default function Layout() {
   const { slug } = useParams();
   const location = useLocation();
   const isMobileTrack = location.pathname.startsWith('/mobile');
+  const isNextjsTrack = location.pathname.startsWith('/nextjs');
   const showSidebar =
     location.pathname.startsWith('/learn/') ||
+    location.pathname.startsWith('/nextjs/learn/') ||
     location.pathname.startsWith('/mobile/learn/');
 
+  const track = isMobileTrack ? 'mobile' : isNextjsTrack ? 'nextjs' : 'thunder';
+
   return (
-    <div className={`app ${isMobileTrack ? 'app-mobile' : ''}`}>
+    <div className={`app ${isMobileTrack ? 'app-mobile' : ''} ${isNextjsTrack ? 'app-nextjs' : ''}`}>
       <Header />
       <div className={`main-layout ${showSidebar ? 'with-sidebar' : 'no-sidebar'}`}>
-        {showSidebar && (
-          <Sidebar currentSlug={slug} track={isMobileTrack ? 'mobile' : 'thunder'} />
-        )}
+        {showSidebar && <Sidebar currentSlug={slug} track={track} />}
         <main className="content">
           <Outlet />
         </main>
@@ -31,7 +33,7 @@ export default function Layout() {
           — sharing my JavaScript learning journey with the world.
         </p>
         <p className="footer-sub">
-          Day-by-day tutorials for absolute beginners. Thunder++ React Native after 100 days!
+          Thunder 100 Days → React & Next.js → React Native. Day-by-day tutorials for your full-stack journey.
         </p>
         <p className="footer-community">
           <a href={discordCommunity} target="_blank" rel="noopener noreferrer">

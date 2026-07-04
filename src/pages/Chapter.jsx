@@ -1,11 +1,60 @@
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { getChapterBySlug, chapters } from '../data/chapters';
+import { getNextjsChapterBySlug, nextjsChapters } from '../data/nextjsChapters';
 import { getMobileChapterBySlug, mobileChapters } from '../data/mobileChapters';
-import { thunderRepo, thunderRootRepo } from '../data/syllabus';
+import { thunderRepo } from '../data/syllabus';
+import { NEXTJS_META } from '../data/nextjsSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import CodeBlock from '../components/CodeBlock';
 import CodePlayground from '../components/CodePlayground';
 import Quiz from '../components/Quiz';
+
+const TRACKS = {
+  thunder: {
+    getChapter: getChapterBySlug,
+    list: () => chapters,
+    homePath: '/',
+    learnPath: '/learn',
+    cssClass: '',
+    codeRepo: thunderRepo,
+    codeLabel: 'Thunder Code',
+    lessonLabel: 'Lecture',
+  },
+  nextjs: {
+    getChapter: getNextjsChapterBySlug,
+    list: () => nextjsChapters,
+    homePath: '/nextjs',
+    learnPath: '/nextjs/learn',
+    cssClass: 'chapter-nextjs',
+    codeRepo: null,
+    codeLabel: 'Course Code',
+    lessonLabel: 'Module',
+    extraLink: { href: NEXTJS_META.udemyUrl, label: '🎬 Udemy Course' },
+    banner: {
+      title: 'Want the full 95-hour course?',
+      text: 'Get all 44 sections, projects, and AI builds on Udemy with Hitesh Choudhary & Suraj Kumar Jha.',
+      cta: 'Open on Udemy →',
+      btnClass: 'btn-nextjs-udemy',
+    },
+  },
+  mobile: {
+    getChapter: getMobileChapterBySlug,
+    list: () => mobileChapters,
+    homePath: '/mobile',
+    learnPath: '/mobile/learn',
+    cssClass: 'chapter-mobile',
+    codeRepo: MOBILE_META.githubRepo,
+    codeLabel: 'ChaiCode Code',
+    lessonLabel: 'Lesson',
+    extraLink: { href: MOBILE_META.syllabusUrl, label: '📋 ChaiCode Syllabus' },
+    banner: {
+      title: 'Join the full cohort?',
+      text: 'Get live classes, recordings, and community access on ChaiCode.',
+      cta: 'Enroll on ChaiCode →',
+      btnClass: 'btn-mobile-cohort',
+    },
+  },
+};
 
 function renderMarkdown(text) {
   if (!text) return null;
@@ -34,37 +83,68 @@ function getYoutubeEmbedUrl(url) {
   return `https://www.youtube.com/embed/${id}${start ? `?start=${start}` : ''}`;
 }
 
-function dayLabel(chapter, isMobile) {
-  return isMobile ? `RN Day ${chapter.rnDay}` : `Day ${chapter.day}`;
+function dayLabel(chapter, track) {
+  if (track === 'mobile') return `RN Day ${chapter.rnDay}`;
+  if (track === 'nextjs') return `NX Module ${chapter.nextDay}`;
+  return `Day ${chapter.day}`;
+}
+
+function introClass(track) {
+  if (track === 'mobile') return 'chapter-intro-mobile';
+  if (track === 'nextjs') return 'chapter-intro-nextjs';
+  return '';
+}
+
+function badgeClass(track) {
+  if (track === 'mobile') return 'chapter-badge-mobile';
+  if (track === 'nextjs') return 'chapter-badge-nextjs';
+  return '';
+}
+
+function paidClass(track) {
+  if (track === 'mobile') return 'paid-mobile';
+  if (track === 'nextjs') return 'paid-nextjs';
+  return '';
+}
+
+function bannerClass(track) {
+  if (track === 'mobile') return 'paid-lecture-banner-mobile';
+  if (track === 'nextjs') return 'paid-lecture-banner-nextjs';
+  return '';
+}
+
+function sectionNumClass(track) {
+  if (track === 'mobile') return 'section-num-mobile';
+  if (track === 'nextjs') return 'section-num-nextjs';
+  return '';
 }
 
 export default function Chapter({ track = 'thunder' }) {
   const { slug } = useParams();
-  const isMobile = track === 'mobile';
-  const chapter = isMobile ? getMobileChapterBySlug(slug) : getChapterBySlug(slug);
-  const list = isMobile ? mobileChapters : chapters;
-  const homePath = isMobile ? '/mobile' : '/';
-  const learnPath = isMobile ? '/mobile/learn' : '/learn';
-  const codeRepoDefault = isMobile ? MOBILE_META.githubRepo : thunderRepo;
+  const cfg = TRACKS[track] || TRACKS.thunder;
+  const chapter = cfg.getChapter(slug);
+  const list = cfg.list();
+  const isAlt = track !== 'thunder';
 
   if (!chapter) {
-    return <Navigate to={homePath} replace />;
+    return <Navigate to={cfg.homePath} replace />;
   }
 
   const prevChapter = list.find((c) => c.id === chapter.id - 1);
   const nextChapter = list.find((c) => c.id === chapter.id + 1);
-  const label = dayLabel(chapter, isMobile);
+  const label = dayLabel(chapter, track);
+  const banner = cfg.banner;
 
   return (
-    <article className={`chapter ${isMobile ? 'chapter-mobile' : ''}`}>
+    <article className={`chapter ${cfg.cssClass}`}>
       <header className="chapter-header">
         <div className="chapter-breadcrumb">
-          <Link to={homePath}>Home</Link>
+          <Link to={cfg.homePath}>Home</Link>
           <span>/</span>
           <span>{label}</span>
         </div>
-        <div className={`chapter-badge ${isMobile ? 'chapter-badge-mobile' : ''}`}>
-          {label} · Lesson {String(chapter.id).padStart(2, '0')}
+        <div className={`chapter-badge ${badgeClass(track)}`}>
+          {label} · {cfg.lessonLabel} {String(chapter.id).padStart(2, '0')}
         </div>
         <h1>{chapter.title}</h1>
         <p className="chapter-subtitle">{chapter.subtitle}</p>
@@ -79,7 +159,7 @@ export default function Chapter({ track = 'thunder' }) {
               href={chapter.paidLectureUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className={`chapter-link-btn paid ${isMobile ? 'paid-mobile' : ''}`}
+              className={`chapter-link-btn paid ${paidClass(track)}`}
             >
               🎓 {chapter.paidLectureLabel || 'Full In-Depth Lecture'}
             </a>
@@ -95,49 +175,48 @@ export default function Chapter({ track = 'thunder' }) {
               ▶ Free on YouTube
             </a>
           )}
-          {chapter.notionUrl && (
+          {chapter.notionUrl && track !== 'thunder' && (
             <a href={chapter.notionUrl} target="_blank" rel="noopener noreferrer" className="chapter-link-btn">
-              📝 My Notion Notes
+              📝 {track === 'nextjs' ? 'Udemy Course' : 'My Notion Notes'}
             </a>
           )}
-          {isMobile && (
+          {cfg.extraLink && (
             <a
-              href={MOBILE_META.syllabusUrl}
+              href={cfg.extraLink.href}
               target="_blank"
               rel="noopener noreferrer"
               className="chapter-link-btn outline"
             >
-              📋 ChaiCode Syllabus
+              {cfg.extraLink.label}
             </a>
           )}
           {chapter.githubPath && (
             <a
-              href={`${chapter.codeRepo || codeRepoDefault}/${chapter.githubPath}`}
+              href={`${chapter.codeRepo || cfg.codeRepo}/${chapter.githubPath}`}
               target="_blank"
               rel="noopener noreferrer"
               className="chapter-link-btn outline"
             >
-              💻 {isMobile ? 'ChaiCode Code' : 'Thunder Code'}
+              💻 {cfg.codeLabel}
             </a>
           )}
         </div>
         {chapter.paidLectureUrl && (
-          <div className={`paid-lecture-banner ${isMobile ? 'paid-lecture-banner-mobile' : ''}`}>
+          <div className={`paid-lecture-banner ${bannerClass(track)}`}>
             <div className="paid-lecture-text">
-              <strong>{isMobile ? 'Join the full cohort?' : 'Want the full depth?'}</strong>
+              <strong>{banner?.title || 'Want the full depth?'}</strong>
               <span>
-                {isMobile
-                  ? 'Get live classes, recordings, and community access on ChaiCode.'
-                  : 'Watch the complete Thunder lecture with Rohit Negi on the course portal (login required).'}
+                {banner?.text ||
+                  'Watch the complete Thunder lecture with Rohit Negi on the course portal (login required).'}
               </span>
             </div>
             <a
               href={chapter.paidLectureUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className={`btn ${isMobile ? 'btn-mobile-cohort' : 'btn-paid'}`}
+              className={`btn ${banner?.btnClass || 'btn-paid'}`}
             >
-              {isMobile ? 'Enroll on ChaiCode →' : 'Open Full Lecture →'}
+              {banner?.cta || 'Open Full Lecture →'}
             </a>
           </div>
         )}
@@ -159,7 +238,7 @@ export default function Chapter({ track = 'thunder' }) {
         )}
       </header>
 
-      <div className={`chapter-intro ${isMobile ? 'chapter-intro-mobile' : ''}`}>
+      <div className={`chapter-intro ${introClass(track)}`}>
         <h2>What you'll learn</h2>
         <ul className="learn-list">
           {chapter.topics.map((t) => (
@@ -171,7 +250,7 @@ export default function Chapter({ track = 'thunder' }) {
       {chapter.sections.map((section, index) => (
         <section key={section.id} id={section.id} className="chapter-section">
           <h2>
-            <span className={`section-num ${isMobile ? 'section-num-mobile' : ''}`}>{index + 1}</span>
+            <span className={`section-num ${sectionNumClass(track)}`}>{index + 1}</span>
             {section.title}
           </h2>
           <div className="section-content">{renderMarkdown(section.content)}</div>
@@ -186,20 +265,20 @@ export default function Chapter({ track = 'thunder' }) {
 
       <nav className="chapter-nav">
         {prevChapter ? (
-          <Link to={`${learnPath}/${prevChapter.slug}`} className="nav-prev">
+          <Link to={`${cfg.learnPath}/${prevChapter.slug}`} className="nav-prev">
             <span className="nav-label">← Previous</span>
             <span className="nav-title">
-              {dayLabel(prevChapter, isMobile)}: {prevChapter.title}
+              {dayLabel(prevChapter, track)}: {prevChapter.title}
             </span>
           </Link>
         ) : (
           <div />
         )}
         {nextChapter ? (
-          <Link to={`${learnPath}/${nextChapter.slug}`} className="nav-next">
+          <Link to={`${cfg.learnPath}/${nextChapter.slug}`} className="nav-next">
             <span className="nav-label">Next →</span>
             <span className="nav-title">
-              {dayLabel(nextChapter, isMobile)}: {nextChapter.title}
+              {dayLabel(nextChapter, track)}: {nextChapter.title}
             </span>
           </Link>
         ) : null}

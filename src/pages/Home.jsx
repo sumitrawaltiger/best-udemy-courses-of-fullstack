@@ -1,6 +1,8 @@
 import { useSearchParams, Link } from 'react-router-dom';
 import { chapters, searchChapters } from '../data/chapters';
+import { nextjsChapters } from '../data/nextjsChapters';
 import { mobileChapters } from '../data/mobileChapters';
+import { NEXTJS_META } from '../data/nextjsSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import LectureCard from '../components/LectureCard';
@@ -90,17 +92,54 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="thunder-plus-section thunder-nextjs-section" id="thunder-nextjs">
+        <div className="thunder-plus-inner">
+          <span className="thunder-plus-badge thunder-plus-badge-nextjs">After Day 100</span>
+          <h2>Thunder+ — React & Next.js</h2>
+          <p className="section-desc">
+            Continue with the{' '}
+            <a href={NEXTJS_META.udemyUrl} target="_blank" rel="noopener noreferrer">
+              ChaiCode Udemy course
+            </a>{' '}
+            by Hitesh Choudhary & Suraj Kumar Jha. {nextjsChapters.length} modules covering React, Next.js App
+            Router, Convex, Supabase, Drizzle, AI projects, auth, and payments.
+          </p>
+          <div className="thunder-plus-highlights">
+            <span>⚛️ React & Next.js</span>
+            <span>🗄️ Convex & Supabase</span>
+            <span>🤖 OpenAI & Gemini</span>
+            <span>💳 Stripe & Razorpay</span>
+          </div>
+          <div className="thunder-plus-actions">
+            <Link to="/nextjs" className="btn btn-nextjs btn-lg">
+              Explore Thunder+
+            </Link>
+            <Link to="/nextjs/learn/introduction-to-the-course" className="btn btn-nextjs-udemy btn-lg">
+              Start NX Module 1
+            </Link>
+            <a
+              href={NEXTJS_META.udemyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline-nextjs btn-lg"
+            >
+              Udemy Course
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section className="thunder-plus-section" id="thunder-plus">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge">After Day 100</span>
+          <span className="thunder-plus-badge">After React & Next.js</span>
           <h2>Thunder++ — React Native</h2>
           <p className="section-desc">
-            Continue your journey with the{' '}
+            Then continue with the{' '}
             <a href={MOBILE_META.syllabusUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode Mobile Development Cohort
             </a>
-            . {mobileChapters.length} lessons covering Expo, navigation, APIs, notifications, auth, and
-            real-world app projects.
+            . {mobileChapters.length} lessons covering Expo, navigation, APIs, notifications, auth, and real-world app
+            projects.
           </p>
           <div className="thunder-plus-highlights">
             <span>📱 React Native + Expo</span>

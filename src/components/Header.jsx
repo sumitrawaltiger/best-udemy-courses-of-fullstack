@@ -8,11 +8,12 @@ export default function Header({ onSearch }) {
   const navigate = useNavigate();
   const location = useLocation();
   const onMobile = location.pathname.startsWith('/mobile');
+  const onNextjs = location.pathname.startsWith('/nextjs');
 
   function handleSearch(e) {
     e.preventDefault();
     if (query.trim()) {
-      const base = onMobile ? '/mobile' : '/';
+      const base = onMobile ? '/mobile' : onNextjs ? '/nextjs' : '/';
       navigate(`${base}?q=${encodeURIComponent(query.trim())}`);
       onSearch?.(query.trim());
       setMenuOpen(false);
@@ -23,25 +24,48 @@ export default function Header({ onSearch }) {
     setMenuOpen(false);
   }
 
+  const homePath = onMobile ? '/mobile' : onNextjs ? '/nextjs' : '/';
+  const logoIcon = onMobile ? 'RN' : onNextjs ? 'NX' : 'JS';
+  const logoName = onMobile ? 'Thunder++ Mobile' : onNextjs ? 'Thunder+ Next.js' : 'JS Learn Hub';
+  const logoTagline = onMobile
+    ? 'React Native by ChaiCode'
+    : onNextjs
+      ? 'React & Next.js by ChaiCode'
+      : 'Learn JavaScript Day by Day';
+
+  const startPath = onMobile
+    ? '/mobile/learn/react-js-refresher'
+    : onNextjs
+      ? '/nextjs/learn/introduction-to-the-course'
+      : '/learn/introduction-to-javascript';
+
+  const syllabusHref = onMobile
+    ? '/mobile#mobile-syllabus'
+    : onNextjs
+      ? '/nextjs#nextjs-syllabus'
+      : '/#syllabus';
+
   return (
-    <header className={`header ${onMobile ? 'header-mobile' : ''}`}>
+    <header className={`header ${onMobile ? 'header-mobile' : ''} ${onNextjs ? 'header-nextjs' : ''}`}>
       <div className="header-inner">
-        <Link to={onMobile ? '/mobile' : '/'} className="logo" onClick={closeMenu}>
-          <span className={`logo-icon ${onMobile ? 'logo-icon-mobile' : ''}`}>
-            {onMobile ? 'RN' : 'JS'}
+        <Link to={homePath} className="logo" onClick={closeMenu}>
+          <span
+            className={`logo-icon ${onMobile ? 'logo-icon-mobile' : ''} ${onNextjs ? 'logo-icon-nextjs' : ''}`}
+          >
+            {logoIcon}
           </span>
           <div className="logo-text">
-            <span className="logo-name">{onMobile ? 'Thunder++ Mobile' : 'JS Learn Hub'}</span>
-            <span className="logo-tagline">
-              {onMobile ? 'React Native by ChaiCode' : 'Learn JavaScript Day by Day'}
-            </span>
+            <span className="logo-name">{logoName}</span>
+            <span className="logo-tagline">{logoTagline}</span>
           </div>
         </Link>
 
         <form className="search-form" onSubmit={handleSearch}>
           <input
             type="search"
-            placeholder={onMobile ? 'Search mobile lessons...' : 'Search tutorials...'}
+            placeholder={
+              onMobile ? 'Search mobile lessons...' : onNextjs ? 'Search modules...' : 'Search tutorials...'
+            }
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             aria-label="Search tutorials"
@@ -63,16 +87,16 @@ export default function Header({ onSearch }) {
 
         <nav className={`header-nav ${menuOpen ? 'open' : ''}`}>
           <Link to="/" onClick={closeMenu}>Thunder</Link>
+          <Link to="/nextjs" onClick={closeMenu} className="header-nextjs-link">
+            Next.js
+          </Link>
           <Link to="/mobile" onClick={closeMenu} className="header-rn-link">
             React Native
           </Link>
-          <a href={onMobile ? '/mobile#mobile-syllabus' : '/#syllabus'} onClick={closeMenu}>
+          <a href={syllabusHref} onClick={closeMenu}>
             Syllabus
           </a>
-          <Link
-            to={onMobile ? '/mobile/learn/react-js-refresher' : '/learn/introduction-to-javascript'}
-            onClick={closeMenu}
-          >
+          <Link to={startPath} onClick={closeMenu}>
             Start Learning
           </Link>
           <a
