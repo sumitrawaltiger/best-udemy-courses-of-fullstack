@@ -382,7 +382,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">After Kubernetes</span>
-          <h2>Thunder++ — Interview Preparation</h2>
+          <h2>Thunder++ — DSA & Interview Prep</h2>
           <p className="section-desc">
             Crack tech interviews with{' '}
             <a href={INTERVIEW_META.chaicodeUrl} target="_blank" rel="noopener noreferrer">

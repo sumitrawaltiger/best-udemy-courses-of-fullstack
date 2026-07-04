@@ -113,24 +113,60 @@ const TRACK_CONFIG = {
   },
 };
 
+const INTERVIEW_PHASE_JUMPS = [
+  { label: 'DSA', startDay: 1 },
+  { label: 'System Design', startDay: 21 },
+  { label: 'ChaiCode', startDay: 41 },
+  { label: 'Mocks', startDay: 51 },
+];
+
 export default function Sidebar({ currentSlug, track = 'thunder' }) {
   const cfg = TRACK_CONFIG[track] || TRACK_CONFIG.thunder;
   const current = cfg.list.find((c) => c.slug === currentSlug);
   const activeRef = useRef(null);
+  const navRef = useRef(null);
+  const linkRefs = useRef({});
 
   useEffect(() => {
-    activeRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    activeRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'center' });
   }, [currentSlug]);
+
+  function jumpToPhase(startDay) {
+    const chapter = cfg.list.find((ch) => {
+      if (track === 'interview') return ch.interviewDay === startDay;
+      return false;
+    });
+    if (!chapter) return;
+    const el = linkRefs.current[chapter.slug];
+    el?.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+  }
 
   return (
     <aside className={`sidebar ${cfg.cssClass}`}>
       <div className="sidebar-section">
         <h3 className="sidebar-heading">{cfg.heading}</h3>
-        <nav className="sidebar-nav">
+        {track === 'interview' && (
+          <div className="sidebar-phase-jumps" aria-label="Interview phases">
+            {INTERVIEW_PHASE_JUMPS.map((phase) => (
+              <button
+                key={phase.label}
+                type="button"
+                className="sidebar-phase-jump"
+                onClick={() => jumpToPhase(phase.startDay)}
+              >
+                {phase.label}
+              </button>
+            ))}
+          </div>
+        )}
+        <nav className="sidebar-nav" ref={navRef}>
           {cfg.list.map((ch) => (
             <NavLink
               key={ch.slug}
-              ref={ch.slug === currentSlug ? activeRef : null}
+              ref={(node) => {
+                if (ch.slug === currentSlug) activeRef.current = node;
+                linkRefs.current[ch.slug] = node;
+              }}
               to={`${cfg.basePath}/${ch.slug}`}
               className={({ isActive }) =>
                 `sidebar-link ${isActive ? 'active' : ''} ${cfg.activeClass}`

@@ -1,6 +1,8 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { discordCommunity } from '../data/syllabus';
+import { LEARNING_PATH } from '../data/learningPath';
+import LearningPathNav from './LearningPathNav';
 
 function trackFromPath(path) {
   if (path.startsWith('/mobile')) return 'mobile';
@@ -50,27 +52,31 @@ const TRACK_SYLLABUS = {
   mobile: '/mobile#mobile-syllabus',
 };
 
-const LEARNING_PATH = [
-  { id: 'thunder', label: 'Thunder', desc: '100 Days of JavaScript', path: '/' },
-  { id: 'nextjs', label: 'React & Next.js', desc: '30 modules — ChaiCode', path: '/nextjs' },
-  { id: 'mobile', label: 'React Native', desc: '25 lessons — ChaiCode', path: '/mobile' },
-  { id: 'python', label: 'Python & AI', desc: '45 modules — Ashok IT', path: '/python' },
-  { id: 'java', label: 'Java & Spring', desc: '50 modules — Udemy', path: '/java' },
-  { id: 'aws', label: '100 Days of AWS', desc: 'Cloud — KodeKloud', path: '/aws' },
-  { id: 'devops', label: '100 Days of DevOps', desc: 'CI/CD — KodeKloud', path: '/devops' },
-  { id: 'k8s', label: 'Kubernetes', desc: '100 days — CKA path', path: '/k8s' },
-  { id: 'interview', label: 'Interview Prep', desc: 'DSA & System Design', path: '/interview' },
-];
-
 export default function Header({ onSearch }) {
   const [query, setQuery] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const [tracksOpen, setTracksOpen] = useState(false);
+  const [isMobileNav, setIsMobileNav] = useState(false);
   const tracksRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
   const track = trackFromPath(location.pathname);
   const currentTrack = LEARNING_PATH.find((t) => t.id === track) ?? LEARNING_PATH[0];
+  const showTracksMenu = isMobileNav ? menuOpen : tracksOpen;
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 900px)');
+    const sync = () => setIsMobileNav(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
+  useEffect(() => {
+    if (menuOpen && isMobileNav) {
+      setTracksOpen(true);
+    }
+  }, [menuOpen, isMobileNav]);
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -218,26 +224,32 @@ export default function Header({ onSearch }) {
 
         <nav className={`header-nav ${menuOpen ? 'open' : ''}`}>
           <div className="header-nav-tracks" ref={tracksRef}>
-            <button
-              type="button"
-              className={`header-tracks-trigger ${tracksOpen ? 'open' : ''}`}
-              onClick={() => setTracksOpen((open) => !open)}
-              aria-expanded={tracksOpen}
-              aria-haspopup="true"
-            >
-              <span className="header-tracks-trigger-label">Learning Path</span>
-              <span className="header-tracks-current">{currentTrack.label}</span>
-              <span className="header-tracks-chevron" aria-hidden="true">▾</span>
-            </button>
+            {isMobileNav && menuOpen && (
+              <p className="header-nav-section-label">All learning tracks</p>
+            )}
 
-            {tracksOpen && (
+            {!isMobileNav && (
+              <button
+                type="button"
+                className={`header-tracks-trigger ${tracksOpen ? 'open' : ''}`}
+                onClick={() => setTracksOpen((open) => !open)}
+                aria-expanded={tracksOpen}
+                aria-haspopup="true"
+              >
+                <span className="header-tracks-trigger-label">Learning Path</span>
+                <span className="header-tracks-current">{currentTrack.label}</span>
+                <span className="header-tracks-chevron" aria-hidden="true">▾</span>
+              </button>
+            )}
+
+            {showTracksMenu && (
               <div className="header-tracks-menu" role="menu">
                 {LEARNING_PATH.map((item) => (
                   <Link
                     key={item.id}
                     to={item.path}
                     role="menuitem"
-                    className={`header-track-item track-${item.id} ${track === item.id ? 'active' : ''}`}
+                    className={`header-track-item track-${item.id} ${track === item.id ? 'active' : ''} ${item.id === 'interview' ? 'header-track-featured' : ''}`}
                     onClick={closeMenu}
                   >
                     <span className="header-track-dot" aria-hidden="true" />
@@ -270,6 +282,7 @@ export default function Header({ onSearch }) {
           </div>
         </nav>
       </div>
+      {isMobileNav && !menuOpen && <LearningPathNav />}
     </header>
   );
 }
