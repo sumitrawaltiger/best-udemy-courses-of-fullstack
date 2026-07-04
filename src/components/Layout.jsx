@@ -13,6 +13,7 @@ export default function Layout() {
   const isAwsTrack = location.pathname.startsWith('/aws');
   const isDevopsTrack = location.pathname.startsWith('/devops');
   const isK8sTrack = location.pathname.startsWith('/k8s');
+  const isInterviewTrack = location.pathname.startsWith('/interview');
   const showSidebar =
     location.pathname.startsWith('/learn/') ||
     location.pathname.startsWith('/nextjs/learn/') ||
@@ -21,12 +22,15 @@ export default function Layout() {
     location.pathname.startsWith('/aws/learn/') ||
     location.pathname.startsWith('/devops/learn/') ||
     location.pathname.startsWith('/k8s/learn/') ||
+    location.pathname.startsWith('/interview/learn/') ||
     location.pathname.startsWith('/mobile/learn/');
 
   const track = isMobileTrack
     ? 'mobile'
-    : isK8sTrack
-      ? 'k8s'
+    : isInterviewTrack
+      ? 'interview'
+      : isK8sTrack
+        ? 'k8s'
       : isDevopsTrack
         ? 'devops'
       : isAwsTrack
@@ -41,7 +45,7 @@ export default function Layout() {
 
   return (
     <div
-      className={`app ${isMobileTrack ? 'app-mobile' : ''} ${isNextjsTrack ? 'app-nextjs' : ''} ${isPythonTrack ? 'app-python' : ''} ${isJavaTrack ? 'app-java' : ''} ${isAwsTrack ? 'app-aws' : ''} ${isDevopsTrack ? 'app-devops' : ''} ${isK8sTrack ? 'app-k8s' : ''}`}
+      className={`app ${isMobileTrack ? 'app-mobile' : ''} ${isNextjsTrack ? 'app-nextjs' : ''} ${isPythonTrack ? 'app-python' : ''} ${isJavaTrack ? 'app-java' : ''} ${isAwsTrack ? 'app-aws' : ''} ${isDevopsTrack ? 'app-devops' : ''} ${isK8sTrack ? 'app-k8s' : ''} ${isInterviewTrack ? 'app-interview' : ''}`}
     >
       <Header />
       <div className={`main-layout ${showSidebar ? 'with-sidebar' : 'no-sidebar'}`}>
@@ -59,7 +63,7 @@ export default function Layout() {
           — sharing my JavaScript learning journey with the world.
         </p>
         <p className="footer-sub">
-          Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes.
+          Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → Interview Prep.
         </p>
         <p className="footer-community">
           <a href={discordCommunity} target="_blank" rel="noopener noreferrer">

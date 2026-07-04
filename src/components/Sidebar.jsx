@@ -7,8 +7,9 @@ import { javaChapters } from '../data/javaChapters';
 import { awsChapters } from '../data/awsChapters';
 import { devopsChapters } from '../data/devopsChapters';
 import { k8sChapters } from '../data/k8sChapters';
+import { interviewChapters } from '../data/interviewChapters';
 import { mobileChapters } from '../data/mobileChapters';
-import { NEXTJS_MODULES, PYTHON_MODULES, JAVA_MODULES, AWS_DAYS, DEVOPS_DAYS, K8S_DAYS, MOBILE_LESSONS } from '../data/trackConfig';
+import { NEXTJS_MODULES, PYTHON_MODULES, JAVA_MODULES, AWS_DAYS, DEVOPS_DAYS, K8S_DAYS, INTERVIEW_MODULES, MOBILE_LESSONS } from '../data/trackConfig';
 
 const TRACK_CONFIG = {
   thunder: {
@@ -87,6 +88,17 @@ const TRACK_CONFIG = {
     cssClass: 'sidebar-k8s',
     activeClass: 'sidebar-link-k8s',
     progressClass: 'progress-fill-k8s',
+  },
+  interview: {
+    list: interviewChapters,
+    basePath: '/interview/learn',
+    heading: 'Interview Preparation',
+    dayLabel: (ch) => `IP ${ch.interviewDay}`,
+    total: INTERVIEW_MODULES,
+    unit: 'modules',
+    cssClass: 'sidebar-interview',
+    activeClass: 'sidebar-link-interview',
+    progressClass: 'progress-fill-interview',
   },
   mobile: {
     list: mobileChapters,

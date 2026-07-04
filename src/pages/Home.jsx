@@ -6,6 +6,7 @@ import { javaChapters } from '../data/javaChapters';
 import { awsChapters } from '../data/awsChapters';
 import { devopsChapters } from '../data/devopsChapters';
 import { k8sChapters } from '../data/k8sChapters';
+import { interviewChapters } from '../data/interviewChapters';
 import { mobileChapters } from '../data/mobileChapters';
 import { NEXTJS_META } from '../data/nextjsSyllabus';
 import { PYTHON_META } from '../data/pythonSyllabus';
@@ -13,6 +14,7 @@ import { JAVA_META } from '../data/javaSyllabus';
 import { AWS_META } from '../data/awsSyllabus';
 import { DEVOPS_META } from '../data/devopsSyllabus';
 import { K8S_META } from '../data/k8sSyllabus';
+import { INTERVIEW_META } from '../data/interviewSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import LectureCard from '../components/LectureCard';
@@ -372,6 +374,47 @@ export default function Home() {
               className="btn btn-outline-k8s btn-lg"
             >
               Studio Labs
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="thunder-plus-section thunder-interview-section" id="thunder-interview">
+        <div className="thunder-plus-inner">
+          <span className="thunder-plus-badge thunder-plus-badge-interview">After Kubernetes</span>
+          <h2>Thunder++ — Interview Preparation</h2>
+          <p className="section-desc">
+            Crack tech interviews with{' '}
+            <a href={INTERVIEW_META.chaicodeUrl} target="_blank" rel="noopener noreferrer">
+              ChaiCode All-in-One Interview Preparation
+            </a>{' '}
+            and{' '}
+            <a href={INTERVIEW_META.gfgCoursesUrl} target="_blank" rel="noopener noreferrer">
+              GeeksForGeeks paid courses
+            </a>
+            . {interviewChapters.length} modules covering DSA, system design case studies, mock interviews, and
+            full-stack interview readiness.
+          </p>
+          <div className="thunder-plus-highlights">
+            <span>📊 DSA & Patterns</span>
+            <span>🏗️ System Design</span>
+            <span>🎯 ChaiCode Mocks</span>
+            <span>💚 GeeksForGeeks</span>
+          </div>
+          <div className="thunder-plus-actions">
+            <Link to="/interview" className="btn btn-interview btn-lg">
+              Explore Interview Track
+            </Link>
+            <Link to="/interview/learn/introduction-to-interview-prep" className="btn btn-interview-chaicode btn-lg">
+              Start IP Module 1
+            </Link>
+            <a
+              href={INTERVIEW_META.gfgSystemDesignUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline-interview btn-lg"
+            >
+              GfG System Design
             </a>
           </div>
         </div>

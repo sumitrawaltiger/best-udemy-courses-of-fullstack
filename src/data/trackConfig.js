@@ -6,6 +6,7 @@ export const JAVA_MODULES = 50;
 export const AWS_DAYS = 100;
 export const DEVOPS_DAYS = 100;
 export const K8S_DAYS = 100;
+export const INTERVIEW_MODULES = 60;
 export const MOBILE_LESSONS = 25;
 
 export const TRACK_OFFSETS = {
@@ -30,6 +31,15 @@ export const TRACK_OFFSETS = {
     JAVA_MODULES +
     AWS_DAYS +
     DEVOPS_DAYS,
+  interview:
+    THUNDER_DAYS +
+    NEXTJS_MODULES +
+    MOBILE_LESSONS +
+    PYTHON_MODULES +
+    JAVA_MODULES +
+    AWS_DAYS +
+    DEVOPS_DAYS +
+    K8S_DAYS,
 };
 
 export const NEXTJS_UDEMY_URL =
@@ -98,3 +108,15 @@ export const JAVA_UDEMY_EVENT_DRIVEN_URL =
 
 export const JAVA_UDEMY_SPRING_CLOUD_MS_URL =
   'https://www.udemy.com/course/microservices-with-spring-boot-and-spring-cloud/';
+
+export const CHAICODE_INTERVIEW_URL =
+  'https://courses.chaicode.com/learn/home/all-in-one-interview-preparation';
+
+export const GFG_DSA_URL = 'https://www.geeksforgeeks.org/courses/dsa-self-paced';
+
+export const GFG_SYSTEM_DESIGN_URL = 'https://www.geeksforgeeks.org/courses/system-design-live';
+
+export const GFG_INTERVIEW_PREP_URL =
+  'https://www.geeksforgeeks.org/courses/interview-preparation-for-product-companies';
+
+export const GFG_COURSES_URL = 'https://www.geeksforgeeks.org/courses/';

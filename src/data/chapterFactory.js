@@ -7,6 +7,7 @@ import {
   KODEKLOUD_CLOUD_URL,
   KODEKLOUD_DEVOPS_URL,
   KODEKLOUD_K8S_PATH_URL,
+  CHAICODE_INTERVIEW_URL,
   JAVA_UDEMY_COMPLETE_URL,
 } from './trackConfig.js';
 
@@ -98,6 +99,16 @@ const TRACK_META = {
     quizPrefix: () => 'K8S ',
     tryIt: (n, title) => `# K8s Day ${n}: ${title}\nkubectl get pods`,
   },
+  interview: {
+    dayKey: 'interviewDay',
+    label: 'IP',
+    offset: TRACK_OFFSETS.interview,
+    paidUrl: CHAICODE_INTERVIEW_URL,
+    paidLabel: 'ChaiCode Interview Prep',
+    sectionPrefix: (n) => `Module ${n} of Interview Preparation`,
+    quizPrefix: () => 'IP ',
+    tryIt: (n, title) => `// IP ${n}: ${title}\nconsole.log("Practice problem");`,
+  },
   mobile: {
     dayKey: 'rnDay',
     label: 'RN',
@@ -164,6 +175,7 @@ export function buildChapter(entry, id, options = {}) {
     awsDay: entry.awsDay,
     devopsDay: entry.devopsDay,
     k8sDay: entry.k8sDay,
+    interviewDay: entry.interviewDay,
     rnDay: entry.rnDay,
     title: entry.title,
     subtitle: entry.subtitle,
@@ -223,6 +235,12 @@ export function buildDevopsChapters(curriculum) {
 export function buildK8sChapters(curriculum) {
   return curriculum.map((entry, index) =>
     buildChapter(entry, index + 1, { track: 'k8s' }),
+  );
+}
+
+export function buildInterviewChapters(curriculum) {
+  return curriculum.map((entry, index) =>
+    buildChapter(entry, index + 1, { track: 'interview' }),
   );
 }
 

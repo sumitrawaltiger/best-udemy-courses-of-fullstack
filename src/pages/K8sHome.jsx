@@ -53,6 +53,9 @@ export default function K8sHome() {
                 <Link to="/devops" className="btn btn-outline-k8s btn-lg">
                   ← 100 Days of DevOps
                 </Link>
+                <Link to="/interview" className="btn btn-outline-k8s btn-lg">
+                  Interview Prep →
+                </Link>
               </div>
             }
           >
@@ -69,7 +72,7 @@ export default function K8sHome() {
         <section className="roadmap">
           <h2>100-Day Kubernetes Roadmap</h2>
           <p className="section-desc">
-            All {k8sChapters.length} days from cloud-native foundations to CKA — the final track in your learning path.
+            All {k8sChapters.length} days from cloud-native foundations to CKA. Then continue to Interview Preparation.
           </p>
           <div className="roadmap-grid roadmap-100 roadmap-k8s">
             {k8sChapters.map((ch) => (

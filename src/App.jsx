@@ -7,6 +7,7 @@ import AwsHome from './pages/AwsHome';
 import JavaHome from './pages/JavaHome';
 import DevopsHome from './pages/DevopsHome';
 import K8sHome from './pages/K8sHome';
+import InterviewHome from './pages/InterviewHome';
 import MobileHome from './pages/MobileHome';
 import Chapter from './pages/Chapter';
 
@@ -29,6 +30,8 @@ export default function App() {
           <Route path="devops/learn/:slug" element={<Chapter track="devops" />} />
           <Route path="k8s" element={<K8sHome />} />
           <Route path="k8s/learn/:slug" element={<Chapter track="k8s" />} />
+          <Route path="interview" element={<InterviewHome />} />
+          <Route path="interview/learn/:slug" element={<Chapter track="interview" />} />
           <Route path="mobile" element={<MobileHome />} />
           <Route path="mobile/learn/:slug" element={<Chapter track="mobile" />} />
         </Route>

@@ -4,6 +4,7 @@ import { discordCommunity } from '../data/syllabus';
 
 function trackFromPath(path) {
   if (path.startsWith('/mobile')) return 'mobile';
+  if (path.startsWith('/interview')) return 'interview';
   if (path.startsWith('/k8s')) return 'k8s';
   if (path.startsWith('/devops')) return 'devops';
   if (path.startsWith('/aws')) return 'aws';
@@ -21,6 +22,7 @@ const TRACK_HOME = {
   aws: '/aws',
   devops: '/devops',
   k8s: '/k8s',
+  interview: '/interview',
   mobile: '/mobile',
 };
 
@@ -32,6 +34,7 @@ const TRACK_START = {
   aws: '/aws/learn/introduction-to-100-days-of-cloud',
   devops: '/devops/learn/introduction-to-100-days-of-devops',
   k8s: '/k8s/learn/introduction-to-kubernetes-learning-path',
+  interview: '/interview/learn/introduction-to-interview-prep',
   mobile: '/mobile/learn/react-js-refresher',
 };
 
@@ -43,6 +46,7 @@ const TRACK_SYLLABUS = {
   aws: '/aws#aws-syllabus',
   devops: '/devops#devops-syllabus',
   k8s: '/k8s#k8s-syllabus',
+  interview: '/interview#interview-syllabus',
   mobile: '/mobile#mobile-syllabus',
 };
 
@@ -69,7 +73,9 @@ export default function Header({ onSearch }) {
   const logoIcon =
     track === 'mobile'
       ? 'RN'
-      : track === 'k8s'
+      : track === 'interview'
+        ? 'IP'
+        : track === 'k8s'
         ? 'K8S'
         : track === 'devops'
         ? 'DO'
@@ -85,7 +91,9 @@ export default function Header({ onSearch }) {
   const logoName =
     track === 'mobile'
       ? 'Thunder++ Mobile'
-      : track === 'k8s'
+      : track === 'interview'
+        ? 'Thunder++ Interview Prep'
+        : track === 'k8s'
         ? 'Thunder++ Kubernetes'
         : track === 'devops'
         ? 'Thunder++ DevOps'
@@ -101,7 +109,9 @@ export default function Header({ onSearch }) {
   const logoTagline =
     track === 'mobile'
       ? 'React Native by ChaiCode'
-      : track === 'k8s'
+      : track === 'interview'
+        ? 'DSA & System Design — ChaiCode + GfG'
+        : track === 'k8s'
         ? 'Kubernetes — KodeKloud'
         : track === 'devops'
         ? '100 Days of DevOps — KodeKloud'
@@ -118,7 +128,9 @@ export default function Header({ onSearch }) {
   const searchPlaceholder =
     track === 'mobile'
       ? 'Search mobile lessons...'
-      : track === 'k8s'
+      : track === 'interview'
+        ? 'Search interview modules...'
+        : track === 'k8s'
         ? 'Search Kubernetes days...'
         : track === 'devops'
         ? 'Search DevOps days...'
@@ -134,12 +146,12 @@ export default function Header({ onSearch }) {
 
   return (
     <header
-      className={`header ${track === 'mobile' ? 'header-mobile' : ''} ${track === 'nextjs' ? 'header-nextjs' : ''} ${track === 'python' ? 'header-python' : ''} ${track === 'java' ? 'header-java' : ''} ${track === 'aws' ? 'header-aws' : ''} ${track === 'devops' ? 'header-devops' : ''} ${track === 'k8s' ? 'header-k8s' : ''}`}
+      className={`header ${track === 'mobile' ? 'header-mobile' : ''} ${track === 'nextjs' ? 'header-nextjs' : ''} ${track === 'python' ? 'header-python' : ''} ${track === 'java' ? 'header-java' : ''} ${track === 'aws' ? 'header-aws' : ''} ${track === 'devops' ? 'header-devops' : ''} ${track === 'k8s' ? 'header-k8s' : ''} ${track === 'interview' ? 'header-interview' : ''}`}
     >
       <div className="header-inner">
         <Link to={TRACK_HOME[track]} className="logo" onClick={closeMenu}>
           <span
-            className={`logo-icon ${track === 'mobile' ? 'logo-icon-mobile' : ''} ${track === 'nextjs' ? 'logo-icon-nextjs' : ''} ${track === 'python' ? 'logo-icon-python' : ''} ${track === 'java' ? 'logo-icon-java' : ''} ${track === 'aws' ? 'logo-icon-aws' : ''} ${track === 'devops' ? 'logo-icon-devops' : ''} ${track === 'k8s' ? 'logo-icon-k8s' : ''}`}
+            className={`logo-icon ${track === 'mobile' ? 'logo-icon-mobile' : ''} ${track === 'nextjs' ? 'logo-icon-nextjs' : ''} ${track === 'python' ? 'logo-icon-python' : ''} ${track === 'java' ? 'logo-icon-java' : ''} ${track === 'aws' ? 'logo-icon-aws' : ''} ${track === 'devops' ? 'logo-icon-devops' : ''} ${track === 'k8s' ? 'logo-icon-k8s' : ''} ${track === 'interview' ? 'logo-icon-interview' : ''}`}
           >
             {logoIcon}
           </span>
@@ -194,6 +206,9 @@ export default function Header({ onSearch }) {
           </Link>
           <Link to="/k8s" onClick={closeMenu} className="header-k8s-link">
             Kubernetes
+          </Link>
+          <Link to="/interview" onClick={closeMenu} className="header-interview-link">
+            Interview
           </Link>
           <a href={TRACK_SYLLABUS[track]} onClick={closeMenu}>
             Syllabus
