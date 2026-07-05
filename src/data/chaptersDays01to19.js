@@ -942,65 +942,173 @@ export const chaptersDays01to19 = [
     "slug": "objects-and-date",
     "day": 7,
     "title": "Objects & Date",
-    "subtitle": "Object properties, nested objects, real-world data",
+    "subtitle": "Deep objects, sort, keys/entries, cloning & real data",
     "duration": "2 hrs",
-    "createdOn": "7 Jul 2026",
+    "createdOn": "11 Jul 2026",
     "status": "published",
     "topics": [
-      "Object literals",
-      "Accessing properties",
-      "Nested objects",
+      "Why objects?",
+      "Object literals & access",
       "Array of objects",
-      "for...of loop",
-      "Object use cases"
+      "sort & reverse",
+      "Object.keys, values, entries",
+      "Nested objects & methods",
+      "Add, update, delete keys",
+      "Object reference copy",
+      "Object destructuring",
+      "Shallow vs deep clone",
+      "for...in (avoid)"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture-07-Objects-and-Date-37b43ac5cab980cfa8d3db0bf87411b2",
+    "notionUrl": "https://app.notion.com/p/Lecture-07-Objects-and-Date-37b43ac5cab980cfa8d3db0bf87411b2?source=copy_link",
     "githubPath": "Lecture07",
     "sections": [
       {
-        "id": "objects-deep",
-        "title": "Working with Objects",
-        "content": "Access with dot notation or brackets. Objects can hold any data type.",
-        "code": "const user = {\n  name: \"Rohit\",\n  age: 20,\n  email: \"negi@gmail.com\",\n  amount: 420\n};\nconsole.log(user[\"name\"]);\nuser.age = 21;",
-        "tryIt": "const product = { name: \"Burger\", price: 199, rating: 4.5 };\nconsole.log(product.name, product.rating);"
+        "id": "why-objects",
+        "title": "Why Objects?",
+        "content": "Arrays use **numeric indexes** (0, 1, 2…) — hard to remember what each slot means.\n\nObjects store **named keys**: `{ name: \"Rohit\", age: 20, city: \"kotdwar\" }`.\n\nThunder `objects.js` — instead of `arr[0]` = name, `arr[1]` = age, use readable property names.\n\nOpen [Lecture07](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture07) on GitHub.",
+        "code": "const user = {\n  name: \"Rohit\",\n  age: 20,\n  city: \"kotdwar\",\n  emailId: \"negi@gmail.com\",\n  amount: 420\n};\nconsole.log(user.name, user.age);",
+        "tryIt": "const course = { name: \"Thunder\", day: 7, topic: \"Objects\" };\nconsole.log(course.name, \"Day\", course.day);"
       },
       {
         "id": "array-of-objects",
-        "title": "Array of Objects",
-        "content": "Real apps use arrays of objects — like a food menu or user list.",
-        "code": "const menu = [\n  { name: \"Bucket\", price: 798, rating: 4.1 },\n  { name: \"Strips\", price: 449, rating: 5.1 }\n];\nfor (const item of menu) {\n  console.log(item.name, \"₹\" + item.price);\n}",
-        "tryIt": "const students = [\n  { name: \"Alex\", marks: 85 },\n  { name: \"Sam\", marks: 92 }\n];\nstudents.forEach(s => console.log(s.name, s.marks));"
+        "title": "Array of Objects — Real Apps",
+        "content": "One object = one record. An **array of objects** = a list of records — users, menu items, products.\n\nThunder models a food menu: each item has `name`, `price`, `rating`, `description`, `imgageLink`.",
+        "code": "const users = [\n  { name: \"Rohit\", age: 20, city: \"kotdwar\", amount: 420 },\n  { name: \"Mohit\", age: 10, city: \"kotdwar\", amount: 120 },\n  { name: \"Sohit\", age: 10, city: \"Dw\", amount: 20 }\n];\nconsole.log(users[1].name);",
+        "tryIt": "const menu = [\n  { name: \"Bucket\", price: 798, rating: 4.1 },\n  { name: \"Strips\", price: 449, rating: 5.1 }\n];\nconsole.log(menu[0].name, \"₹\" + menu[0].price);"
       },
       {
-        "id": "nested",
-        "title": "Nested Objects",
-        "content": "Objects inside objects — like address inside a user.",
-        "code": "const user = {\n  name: \"Rohit\",\n  address: { city: \"Dwarka\", pincode: 110075 }\n};\nconsole.log(user.address.city);",
-        "tryIt": "const obj = {\n  name: \"Rohit\",\n  age: 20,\n  address: { city: \"dwarka\", pincode: 110075 }\n};\nconsole.log(obj.address.pincode);"
+        "id": "display-function",
+        "title": "Display Function — Reusable Logic",
+        "content": "Pass any food object to one function — `Display(food)` prints name, price, rating.\n\nLoop an array of objects with **for...of** and call `Display(food)` for each item.",
+        "code": "function Display(food) {\n  console.log(food.name);\n  console.log(food.price);\n  console.log(food.rating);\n  console.log(food.description);\n}\n\nconst arr = [\n  { name: \"Chicken Bucket\", price: 798, rating: 4.1 },\n  { name: \"Strips Bucket\", price: 449, rating: 5.1 }\n];\nfor (let food of arr) {\n  Display(food);\n}",
+        "tryIt": "function showUser(u) { console.log(u.name, u.age); }\nconst list = [{ name: \"A\", age: 20 }, { name: \"B\", age: 22 }];\nfor (const u of list) showUser(u);"
+      },
+      {
+        "id": "array-sort",
+        "title": "sort & reverse — array.js",
+        "content": "**sort()** converts elements to strings by default — `[10, 20, 7, 101]` sorts as strings, not numbers!\n\n**ASCII**: uppercase A=65, lowercase a=97 — `\"R\"` sorts before `\"r\"`.\n\nFor **numbers**: `num.sort((a, b) => a - b)` ascending, `(a, b) => b - a` descending.\n\n**reverse()** flips the array in place.",
+        "code": "const names = [\"Rohit\", \"Mohan\", \"Sohan\", \"Yash\", \"Rajat\", \"rohit\"];\nnames.sort();\nconsole.log(names);\n\nconst num = [10, 20, 7, 101, 23, 78, 4];\nnum.sort((a, b) => a - b); // ascending\nconsole.log(num);\n\n// num.sort((a, b) => b - a); // descending",
+        "tryIt": "const scores = [85, 42, 99, 12];\nscores.sort((a, b) => b - a);\nconsole.log(scores);"
+      },
+      {
+        "id": "object-access",
+        "title": "Accessing Object Properties",
+        "content": "Thunder `object1.js` — two ways to read a value:\n\n- **Dot notation**: `user.name`\n- **Bracket notation**: `user[\"name\"]` — required when key is dynamic or has spaces\n\nValues are stored as strings, numbers, booleans, arrays, or even functions.",
+        "code": "const user = {\n  name: \"rohit\",\n  age: 20,\n  email: \"negi@gmail.com\",\n  amount: 90\n};\nconsole.log(user.amount);\nconsole.log(user[\"name\"]);\nconsole.log(user.name);",
+        "tryIt": "const product = { name: \"Burger\", price: 199 };\nconsole.log(product[\"name\"], product.price);"
+      },
+      {
+        "id": "object-crud",
+        "title": "Add, Update & Delete Keys",
+        "content": "Objects are **mutable**:\n\n- **Add**: `user.adhar = 21030`\n- **Update**: `user.age = 29`\n- **Delete**: `delete user.email`\n\nYou cannot reassign the whole `const user = ...` variable, but you can change its properties.",
+        "code": "const user = { name: \"rohit\", age: 20, email: \"negi@gmail.com\", amount: 90 };\n\nuser.adhar = 21030;\nuser.age = 29;\ndelete user.email;\nconsole.log(user);",
+        "tryIt": "const item = { title: \"Thunder\", level: 1 };\nitem.level = 2;\nitem.instructor = \"Rohit\";\ndelete item.title;\nconsole.log(item);"
+      },
+      {
+        "id": "nested-objects-methods",
+        "title": "Nested Objects & Methods",
+        "content": "Objects can hold **arrays**, **other objects**, and **functions** (methods).\n\n`user.greet()` calls the function stored in `greet`. `user.address.city` drills into nested data.",
+        "code": "const user = {\n  name: \"rohit\",\n  age: 20,\n  arr: [10, 20, 30, 40],\n  greet: function () {\n    console.log(\"Hello Ji\");\n  },\n  address: {\n    city: \"dwarka\",\n    pincode: 246149\n  }\n};\nuser.greet();\nconsole.log(user.address.city);",
+        "tryIt": "const car = {\n  brand: \"Tesla\",\n  specs: { range: 500, unit: \"km\" },\n  honk() { console.log(\"Beep!\"); }\n};\ncar.honk();\nconsole.log(car.specs.range);"
+      },
+      {
+        "id": "object-keys-entries",
+        "title": "Object.keys, values & entries",
+        "content": "Three static methods to inspect any object:\n\n- **Object.keys(obj)** → array of property names\n- **Object.values(obj)** → array of values\n- **Object.entries(obj)** → `[[key, value], ...]` pairs\n\nLoop with **for...of** on keys or use **destructuring** on entries: `for (const [key, value] of Object.entries(customer))`",
+        "code": "const customer = {\n  name: \"Rohit\",\n  age: 20,\n  accountNumber: 124554,\n  balance: 40,\n  city: \"kotdwar\"\n};\nconsole.log(Object.keys(customer));\nconsole.log(Object.values(customer));\n\nfor (const [key, value] of Object.entries(customer)) {\n  console.log(key, value);\n}",
+        "tryIt": "const obj = { a: 1, b: 2, c: 3 };\nfor (const k of Object.keys(obj)) console.log(k, obj[k]);"
+      },
+      {
+        "id": "object-reference",
+        "title": "Objects Copy by Reference",
+        "content": "Same rule as arrays: `const obj2 = obj1` copies the **reference**, not a new object.\n\nChanging `obj2.name` changes `obj1.name` too.",
+        "code": "const obj1 = { name: \"Rohit\" };\nconst obj2 = obj1;\nobj2.name = \"mohit\";\nconsole.log(obj1); // { name: \"mohit\" }",
+        "tryIt": "let a = { x: 1 };\nlet b = a;\nb.x = 99;\nconsole.log(a.x);"
+      },
+      {
+        "id": "object-destructuring",
+        "title": "Object Destructuring",
+        "content": "Thunder `object2.js` — pull properties into variables:\n\n`const { age, value } = customer`\n\n**Rename** while destructuring: `const { age: ageName, value: valueName } = customer`",
+        "code": "const customer = { name: \"Rohit\", age: 10, value: 70, city: \"kotdwar\" };\nconst { age: ageName, value: valueName } = customer;\nconsole.log(ageName, valueName);",
+        "tryIt": "const user = { name: \"Thunder\", day: 7 };\nconst { name, day } = user;\nconsole.log(name, day);"
+      },
+      {
+        "id": "clone-shallow-deep",
+        "title": "Shallow vs Deep Clone",
+        "content": "**Spread** `{...customer}` — **shallow copy**. Top-level keys are new, but nested objects/arrays still share memory.\n\n`customer2.address.pincode = 2` or `customer2.arr.push(54)` **mutates the original** too.\n\n**structuredClone(customer)** — **deep copy** — nested data is fully independent.",
+        "code": "const customer = {\n  name: \"Rohit\",\n  arr: [10, 20, 30],\n  address: { pincode: 246149 }\n};\n\nconst shallow = { ...customer };\nshallow.arr.push(54);\nconsole.log(customer.arr); // [10, 20, 30, 54] — changed!\n\nconst deep = structuredClone(customer);\ndeep.arr.push(3);\nconsole.log(customer.arr); // unchanged by deep clone push on copy",
+        "tryIt": "const orig = { nested: { x: 1 } };\nconst copy = structuredClone(orig);\ncopy.nested.x = 99;\nconsole.log(orig.nested.x);"
+      },
+      {
+        "id": "for-in-warning",
+        "title": "for...in — Not Recommended",
+        "content": "Thunder warns: `for (let key in customer)` loops over **enumerable** keys including inherited ones from the prototype chain.\n\nPrefer **Object.keys()** + **for...of** or **Object.entries()** for safe iteration.",
+        "code": "// Don't use this pattern:\n// for (let key in customer) {\n//   console.log(key);\n// }\n\nfor (const key of Object.keys(customer)) {\n  console.log(key, customer[key]);\n}",
+        "tryIt": "const o = { a: 1, b: 2 };\nfor (const [k, v] of Object.entries(o)) console.log(k, v);"
+      },
+      {
+        "id": "lecture07-practice",
+        "title": "Your Lecture 07 Practice",
+        "content": "Work through Thunder Lecture 07 on GitHub:\n1. **`objects.js`** — build users array, Display function, loop menu items\n2. **`array.js`** — sort names, sort numbers with compare function\n3. **`object1.js`** — CRUD keys, nested objects, Object.keys/entries\n4. **`object2.js`** — destructuring, spread vs structuredClone\n\nHomework from `array.js`: understand why default sort treats numbers as strings.\n\nKeep the [Notion notes](https://app.notion.com/p/Lecture-07-Objects-and-Date-37b43ac5cab980cfa8d3db0bf87411b2?source=copy_link) open while you code. **Date object** is covered in depth in Lecture 08.",
+        "tryIt": "const items = [{ price: 99 }, { price: 49 }, { price: 199 }];\nitems.sort((a, b) => a.price - b.price);\nconsole.log(items.map(i => i.price));",
+        "code": "const menu = [{ name: \"A\", price: 50 }, { name: \"B\", price: 30 }];\nfor (const item of menu) console.log(item.name, item.price);"
       }
     ],
     "quiz": [
       {
-        "question": "Access obj.name is?",
+        "question": "user.name vs user[\"name\"] — both work when?",
         "options": [
-          "bracket only",
-          "dot notation",
-          "JSON only",
-          "invalid"
-        ],
-        "answer": 1,
-        "explanation": "Dot or bracket notation."
-      },
-      {
-        "question": "Array of objects is common for?",
-        "options": [
-          "menus/lists",
-          "only numbers",
-          "only strings",
-          "comments"
+          "Key is a valid identifier",
+          "Only for numbers",
+          "Never",
+          "Only in JSON"
         ],
         "answer": 0,
-        "explanation": "Real-world data structures."
+        "explanation": "Dot notation works for simple keys; brackets always work — object1.js."
+      },
+      {
+        "question": "[10, 20, 7, 101].sort() without compare — order is wrong because?",
+        "options": [
+          "Arrays can't sort",
+          "Elements sorted as strings",
+          "sort is broken",
+          "Numbers too big"
+        ],
+        "answer": 1,
+        "explanation": "Default sort converts to strings — array.js."
+      },
+      {
+        "question": "Ascending number sort uses?",
+        "options": [
+          "(a, b) => a - b",
+          "(a, b) => b - a",
+          "sort() alone",
+          "reverse()"
+        ],
+        "answer": 0,
+        "explanation": "Compare function for numeric ascending — array.js."
+      },
+      {
+        "question": "obj2 = obj1; obj2.name = \"mohit\" — obj1.name becomes?",
+        "options": [
+          "Unchanged",
+          "\"mohit\"",
+          "undefined",
+          "Error"
+        ],
+        "answer": 1,
+        "explanation": "Objects copy by reference — object1.js."
+      },
+      {
+        "question": "Spread {...obj} vs structuredClone — nested array push affects original with?",
+        "options": [
+          "Spread only",
+          "structuredClone only",
+          "Both",
+          "Neither"
+        ],
+        "answer": 0,
+        "explanation": "Spread is shallow — nested data still shared — object2.js."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=lo7o91qLzxc",

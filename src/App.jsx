@@ -16,6 +16,7 @@ import Day003 from './pages/Day003';
 import Day004 from './pages/Day004';
 import Day005 from './pages/Day005';
 import Day006 from './pages/Day006';
+import Day007 from './pages/Day007';
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
         <Route path="/day-004" element={<Day004 />} />
         <Route path="/day-005" element={<Day005 />} />
         <Route path="/day-006" element={<Day006 />} />
+        <Route path="/day-007" element={<Day007 />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="learn/:slug" element={<Chapter />} />
