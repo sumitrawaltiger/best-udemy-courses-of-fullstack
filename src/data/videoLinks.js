@@ -9,9 +9,9 @@ export const PAID_COURSE_LABEL = 'Full In-Depth Lecture — Thunder Course';
 
 export const youtubeByDay = {
   1: {
-    url: 'https://www.youtube.com/watch?v=hdI2bqOjy3c',
-    title: 'JavaScript Crash Course For Beginners',
-    channel: 'Traversy Media',
+    url: 'https://www.youtube.com/watch?v=611_04Ml25c',
+    title: 'Introduction to JavaScript | Javascript Full Course #01',
+    channel: 'Coder Army',
   },
   2: {
     url: 'https://www.youtube.com/watch?v=nCwQY8inRvU',

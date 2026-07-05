@@ -1,14 +1,50 @@
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
+const NOTION_URL =
+  'https://app.notion.com/p/Lecture01-Introduction-to-Javascript-37243ac5cab9802293fff4573c26a6f4?source=copy_link';
+
 const LEARNT_TODAY = [
-  'What JavaScript is — the programming language that adds behavior to the web',
-  'How HTML, CSS, and JS work together — structure, style, and interactivity',
-  'Adding JavaScript to an HTML page with script tags',
-  'Using console.log() in DevTools to debug and learn',
-  'Declaring variables with let and const',
-  'Writing comments with // and /* */',
-  'Building my first program — Hello, Thunder!',
+  {
+    title: 'What JavaScript is',
+    text: 'the programming language that adds behavior to the web — clicks, forms, data fetching, and live updates',
+  },
+  {
+    title: 'Where JavaScript runs',
+    text: 'inside the browser on the V8 engine (Chrome & Node.js) — your code is compiled and executed, not just read',
+  },
+  {
+    title: 'HTML, CSS & JS together',
+    text: 'HTML is the skeleton, CSS is the clothes, JavaScript is the brain — all three layers build a real website',
+  },
+  {
+    title: 'v1 → v2 → v3 progression',
+    text: 'v1-html is dead structure, v2-css looks gorgeous but still cannot compute, v3-js finally makes every button work',
+  },
+  {
+    title: 'Adding JS to HTML',
+    text: 'use <script> tags or external .js files — load scripts at the end of <body> so the DOM exists first',
+  },
+  {
+    title: 'console.log()',
+    text: 'your first debugging tool in DevTools (F12) — print values and trace what your code is doing',
+  },
+  {
+    title: 'let & const',
+    text: 'declare variables that change (let) or stay fixed (const) — avoid var in modern JavaScript',
+  },
+  {
+    title: 'Comments',
+    text: 'single-line // and multi-line /* */ to explain your code to yourself and others',
+  },
+  {
+    title: 'Event listeners',
+    text: 'addEventListener("click", ...) — the pattern that makes buttons, calculators, and toggles respond',
+  },
+  {
+    title: 'fetch & live data',
+    text: 'JavaScript can reach the internet — Thunder v3-js loads 10 real GitHub profiles with fetch()',
+  },
 ];
 
 const JS_BASICS = [
@@ -18,38 +54,81 @@ const JS_BASICS = [
     titleClass: 'card-title-cyan',
     subtitle: 'Language of the Web',
     description:
-      'JavaScript is the programming language of the web. HTML gives structure, CSS gives style, and JavaScript gives behavior — clicks, forms, animations, and data fetching.',
-    footer: '+ Pretty does not mean functional until JS enters',
+      'JavaScript (JS) is the programming language of the web. HTML gives structure, CSS gives style, and JavaScript gives behavior. Without JS, buttons do not count clicks, calculators cannot add, and pages cannot fetch live data.',
+    footer: '+ Pretty does not mean functional until JavaScript enters',
+  },
+  {
+    icon: '⚙️',
+    title: 'V8 Engine',
+    titleClass: 'card-title-purple',
+    subtitle: 'How JS Actually Runs',
+    description:
+      'Your browser does not "read" JavaScript like HTML. The V8 engine (used in Chrome and Node.js) compiles and runs your code. Thunder includes a tiny C++ demo (v8.cpp) that parses console.log — a peek under the hood.',
+    code: 'console.log("hello Ji");\n// V8 turns this into real output',
   },
   {
     icon: '🦴',
     title: 'HTML, CSS & JS',
-    titleClass: 'card-title-purple',
-    subtitle: 'Skeleton · Style · Brain',
+    titleClass: 'card-title-amber',
+    subtitle: 'Skeleton · Clothes · Brain',
     description:
-      'Think of a website like a person: HTML is the skeleton, CSS is the clothes, and JavaScript is the brain and actions. Thunder Lecture01 walks v1-html → v2-css → v3-js.',
-    link: { href: '/learn/introduction-to-javascript', label: 'Open Day 1 lesson →' },
+      'Think of a website like a person: HTML is the skeleton, CSS is the clothes, JavaScript is the brain and actions. Lecture 01 walks the same Thunder page through three versions.',
+    link: { href: '/learn/introduction-to-javascript', label: 'Open full Day 1 lesson →' },
+  },
+];
+
+const THREE_VERSIONS = [
+  {
+    icon: '📄',
+    title: 'v1-html',
+    titleClass: 'card-title-green',
+    subtitle: 'Pure HTML — Dead but Structured',
+    description:
+      'Every button, input, and box already exists. HTML built the skeleton. But nothing reacts — click a button and nothing happens. Pretty? No. Functional? No.',
+    footer: '+ "Status: nothing has happened (and nothing will)."',
   },
   {
-    icon: '📜',
-    title: 'Adding JS to HTML',
-    titleClass: 'card-title-amber',
-    subtitle: 'Script Tags',
+    icon: '🎨',
+    title: 'v2-css',
+    titleClass: 'card-title-blue',
+    subtitle: 'HTML + CSS — The Trap Stage',
     description:
-      'Place JavaScript inside <script> tags before </body>, or link an external .js file. The browser runs your code when the page loads.',
-    code: '<script src="app.js"></script>',
+      'CSS makes the page gorgeous — hover effects, cards, spacing. Students often think the site is "done." But clicking still does nothing. Hover is CSS, not JavaScript.',
+    footer: '+ "Hover works. Clicking still does nothing."',
+  },
+  {
+    icon: '⚡',
+    title: 'v3-js',
+    titleClass: 'card-title-lime',
+    subtitle: 'HTML + CSS + JavaScript — Alive',
+    description:
+      'Now everything works: click counter, mini calculator, live GitHub profiles from the internet, and a dark/light theme toggle. The buttons existed since v1 — JS gave them a brain.',
+    link: {
+      href: 'https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture01/v3-js',
+      label: 'Explore v3-js on GitHub →',
+      external: true,
+    },
   },
 ];
 
 const FIRST_CODE = [
+  {
+    icon: '📜',
+    title: 'Adding JS to HTML',
+    titleClass: 'card-title-cyan',
+    subtitle: 'Script Tags',
+    description:
+      'Place inline JS inside <script> tags or link an external file. Thunder loads script.js at the end of <body> so every element exists before JS runs.',
+    code: '<script src="script.js"></script>',
+  },
   {
     icon: '🖥️',
     title: 'console.log',
     titleClass: 'card-title-green',
     subtitle: 'Your First Debugging Tool',
     description:
-      'Open DevTools (F12) and print values to the console. This is how you see output and debug while learning.',
-    code: 'console.log("Hello, Thunder!");\nconsole.log(42);',
+      'Open DevTools (F12) → Console. Print values, trace variables, and debug while learning. This is how every developer inspects their code.',
+    code: 'console.log("Hello, Thunder!");\nconsole.log(42);\nlet name = "Sumit";\nconsole.log("Day 1:", name);',
   },
   {
     icon: '📦',
@@ -57,8 +136,8 @@ const FIRST_CODE = [
     titleClass: 'card-title-blue',
     subtitle: 'Variables',
     description:
-      'Use let for values that change and const for values that stay fixed. Avoid var in modern JavaScript.',
-    code: 'let score = 0;\nconst course = "Thunder";',
+      'Use let for values that change and const for values that stay fixed. Thunder v3 uses let clickCount = 0 to remember how many times you clicked.',
+    code: 'let score = 0;\nscore = 10;\nconst course = "Thunder";\nconsole.log(course, score);',
   },
   {
     icon: '💬',
@@ -66,17 +145,47 @@ const FIRST_CODE = [
     titleClass: 'card-title-pink',
     subtitle: '// and /* */',
     description:
-      'Single-line comments use //. Multi-line comments use /* ... */. Comments help you and others understand your code.',
+      'Comments are ignored by the engine but invaluable for learners. Thunder script.js is heavily commented — read top to bottom with the lecture.',
     code: '// Day 1 — Introduction to JS\n/* Thunder 100 Days */',
   },
+];
+
+const V3_FEATURES = [
   {
-    icon: '🚀',
-    title: 'First Program',
-    titleClass: 'card-title-lime',
-    subtitle: 'Hello, World!',
+    icon: '👆',
+    title: 'Click Counter',
+    titleClass: 'card-title-purple',
+    subtitle: 'addEventListener',
     description:
-      'Combine console.log, variables, and comments into your first working script. Run it in the browser console or a .js file.',
-    code: 'let name = "Sumit";\nconsole.log("Learning JS, Day 1:", name);',
+      'Find the button with getElementById, then listen for "click". A let variable counts clicks and updates the status text on the page.',
+    code: 'clickBtn.addEventListener("click", function () {\n  clickCount++;\n  clickStatus.textContent = `Clicked ${clickCount} time(s)!`;\n});',
+  },
+  {
+    icon: '🧮',
+    title: 'Mini Calculator',
+    titleClass: 'card-title-amber',
+    subtitle: 'Reading Input Values',
+    description:
+      'Read two number inputs, convert text to numbers with Number(), guard against empty boxes, then display the sum.',
+    code: 'const a = Number(num1.value);\nconst b = Number(num2.value);\ncalcResult.textContent = `Result: ${a} + ${b} = ${a + b}`;',
+  },
+  {
+    icon: '🐙',
+    title: 'GitHub Profiles',
+    titleClass: 'card-title-cyan',
+    subtitle: 'fetch() & async/await',
+    description:
+      'HTML and CSS can never talk to the internet on their own. JavaScript uses fetch() to get real user data from GitHub API and builds profile cards on the fly.',
+    code: 'const response = await fetch(\n  "https://api.github.com/users?per_page=10"\n);\nconst users = await response.json();',
+  },
+  {
+    icon: '🌙',
+    title: 'Theme Toggle',
+    titleClass: 'card-title-lime',
+    subtitle: 'classList.toggle',
+    description:
+      'Flip a "dark" class on document.body — CSS handles the rest. Swap the button icon between moon and sun. Small feature, big lesson in DOM manipulation.',
+    code: 'document.body.classList.toggle("dark");\nthemeToggle.textContent = isDark ? "☀️" : "🌙";',
   },
 ];
 
@@ -86,19 +195,17 @@ const THUNDER_RESOURCES = [
     title: 'Lecture 01 — Notion',
     titleClass: 'card-title-cyan',
     subtitle: 'Official Thunder Notes',
-    description: 'Introduction to JavaScript — HTML, CSS, JS, console.log, let, const, and your first program.',
-    link: {
-      href: 'https://app.notion.com/p/Lecture01-Introduction-to-Javascript-37243ac5cab9802293fff4573c26a6f4',
-      label: 'Open Notion notes →',
-      external: true,
-    },
+    description:
+      'Introduction to JavaScript — V8 engine, HTML/CSS/JS layers, v1/v2/v3 progression, console.log, variables, comments, event listeners, and fetch.',
+    link: { href: NOTION_URL, label: 'Open Notion notes →', external: true },
   },
   {
     icon: '💻',
     title: 'Thunder GitHub',
     titleClass: 'card-title-purple',
     subtitle: 'Lecture01 Code',
-    description: 'v1-html, v2-css, and v3-js folders showing how the same page evolves with HTML, CSS, and JavaScript.',
+    description:
+      'v1-html, v2-css, v3-js, and v8.cpp — walk the folders in order and see how the same Thunder page evolves from dead HTML to a living app.',
     link: {
       href: 'https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture01',
       label: 'View on GitHub →',
@@ -107,12 +214,13 @@ const THUNDER_RESOURCES = [
   },
   {
     icon: '▶️',
-    title: 'Free YouTube',
+    title: 'Coder Army — Lecture 01',
     titleClass: 'card-title-amber',
-    subtitle: 'Traversy Media',
-    description: 'JavaScript Crash Course For Beginners — a solid supplement while following the Thunder curriculum.',
+    subtitle: 'Rohit Negi · YouTube',
+    description:
+      'Introduction to JavaScript | Javascript Full Course #01 — the free video that pairs with Thunder Lecture 01 and these Notion notes.',
     link: {
-      href: 'https://www.youtube.com/watch?v=hdI2bqOjy3c',
+      href: 'https://www.youtube.com/watch?v=611_04Ml25c',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -211,10 +319,14 @@ export default function Day001() {
       </div>
 
       <p className="day001-summary">
-        Day one of my 100-day JavaScript journey — I learned what JavaScript is, how HTML/CSS/JS work
-        together, how to use <code>console.log</code>, declare variables with <code>let</code> and{' '}
-        <code>const</code>, write comments, and run my first Thunder program. The web finally has a
-        brain.
+        Day one of my 100-day journey to become a software developer — following{' '}
+        <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
+          Thunder Lecture 01
+        </a>
+        . I learned what JavaScript is, how the V8 engine runs it, why HTML/CSS alone are not enough,
+        and walked through v1-html → v2-css → v3-js. I wrote my first <code>console.log</code>, used{' '}
+        <code>let</code> and <code>const</code>, added event listeners, and fetched live GitHub
+        profiles. The web finally has a brain.
       </p>
 
       <section className="day001-learnt">
@@ -224,19 +336,23 @@ export default function Day001() {
         </h2>
         <ul className="day001-learnt-list">
           {LEARNT_TODAY.map((item) => (
-            <li key={item}>
+            <li key={item.title}>
               <span className="day001-check" aria-hidden="true">
                 ✓
               </span>
-              <span>{item}</span>
+              <span>
+                <strong>{item.title}</strong> — {item.text}
+              </span>
             </li>
           ))}
         </ul>
       </section>
 
       <CardSection icon="📘" title="JAVASCRIPT BASICS" cards={JS_BASICS} />
+      <CardSection icon="🔄" title="v1 → v2 → v3 PROGRESSION" cards={THREE_VERSIONS} />
       <CardSection icon="🛠️" title="FIRST STEPS IN CODE" cards={FIRST_CODE} />
-      <CardSection icon="⚡" title="THUNDER LECTURE 01" cards={THUNDER_RESOURCES} />
+      <CardSection icon="⚡" title="v3-js — MAKING IT ALIVE" cards={V3_FEATURES} />
+      <CardSection icon="📚" title="THUNDER LECTURE 01" cards={THUNDER_RESOURCES} />
 
       <footer className="day001-hashtags">
         <span>#100DaysOfCode</span>

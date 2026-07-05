@@ -7,43 +7,85 @@ export const chaptersDays01to19 = [
     "title": "Introduction to JavaScript",
     "subtitle": "HTML, CSS, JS — how the web works",
     "duration": "2 hrs 25 mins",
-    "createdOn": "1 Jul 2026",
+    "createdOn": "4 Jul 2026",
     "status": "published",
     "topics": [
       "What is JavaScript?",
+      "V8 engine & where JS runs",
       "HTML vs CSS vs JS",
+      "v1-html → v2-css → v3-js",
       "Adding JS to HTML",
       "console.log",
       "let and const",
       "Comments",
+      "Event listeners",
+      "fetch & live data",
       "First program"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture01-Introduction-to-Javascript-37243ac5cab9802293fff4573c26a6f4",
+    "notionUrl": "https://app.notion.com/p/Lecture01-Introduction-to-Javascript-37243ac5cab9802293fff4573c26a6f4?source=copy_link",
     "githubPath": "Lecture01",
     "sections": [
       {
         "id": "what-is-js",
         "title": "What is JavaScript?",
-        "content": "JavaScript is the **programming language of the web**. HTML gives structure, CSS gives style, and JavaScript gives **behavior** — clicks, forms, animations, and data fetching.\n\nIn the Thunder course, you learn JS through three versions of the same page: HTML only (v1), HTML+CSS (v2), and HTML+CSS+JS (v3). Pretty does not mean functional until JavaScript enters."
+        "content": "JavaScript (JS) is the **programming language of the web**. HTML gives structure, CSS gives style, and JavaScript gives **behavior** — clicks, forms, animations, calculators, and live data from the internet.\n\nIn Thunder Lecture 01, you learn JS through three versions of the same page: **v1-html** (structure only), **v2-css** (styled but dead), and **v3-js** (fully alive). Pretty does not mean functional until JavaScript enters."
+      },
+      {
+        "id": "v8-engine",
+        "title": "V8 Engine — Where JavaScript Runs",
+        "content": "Your browser does not simply \"read\" JavaScript like HTML. The **V8 engine** (used in Chrome and Node.js) compiles and executes your code.\n\nThunder includes a tiny **v8.cpp** demo that parses `console.log(\"hello Ji\")` — a peek at how your JS statement becomes real output under the hood.",
+        "code": "console.log(\"hello Ji\");\nconsole.log(\"Hello, Thunder!\");",
+        "tryIt": "console.log(\"=== V8 runs this ===\");\nconsole.log(2 + 2);\nconsole.log(typeof console.log);"
       },
       {
         "id": "html-css-js",
         "title": "HTML, CSS & JavaScript Together",
-        "content": "Think of a website like a person:\n- **HTML** = skeleton (headings, paragraphs, images)\n- **CSS** = clothes and appearance\n- **JavaScript** = brain and actions\n\nThunder Lecture01 walks through v1-html, v2-css, and v3-js folders showing this progression."
+        "content": "Think of a website like a person:\n- **HTML** = skeleton (headings, paragraphs, images, buttons that do nothing)\n- **CSS** = clothes and appearance (hover effects, colors, layout)\n- **JavaScript** = brain and actions (clicks, math, fetching data)\n\n**v1-html:** Every button and input exists, but clicking does nothing.\n**v2-css:** The page looks gorgeous — hover works — but clicking still does nothing. This is the trap stage.\n**v3-js:** Click counter, calculator, GitHub profiles, and theme toggle all work.\n\nWalk the folders in [Lecture01](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture01) on GitHub."
+      },
+      {
+        "id": "adding-js",
+        "title": "Adding JavaScript to HTML",
+        "content": "Place JavaScript inside `<script>` tags or link an external `.js` file. Thunder loads `script.js` **at the end of `<body>`** so every HTML element exists before JS runs.",
+        "code": "<!-- Inline -->\n<script>\n  console.log(\"Hello from inline JS\");\n</script>\n\n<!-- External (Thunder v3-js) -->\n<script src=\"script.js\"></script>"
       },
       {
         "id": "console-log",
         "title": "console.log — Your First Tool",
-        "content": "Open DevTools (F12) and use `console.log()` to print values. This is how you debug and learn.",
+        "content": "Open DevTools (**F12**) → **Console**. Use `console.log()` to print values and debug while learning. This is how every developer inspects their code.",
         "code": "console.log(\"Hello, Thunder!\");\nconsole.log(42);\nlet name = \"Sumit\";\nconsole.log(\"Learning JS, Day 1:\", name);",
-        "tryIt": "console.log(\"=== Day 1 ===\");\nconsole.log(\"Welcome to JS Learn Hub\");\nconsole.log(\"Following Thunder curriculum\");"
+        "tryIt": "console.log(\"=== Day 1 ===\");\nconsole.log(\"Welcome to JS Learn Hub\");\nconsole.log(\"Following Thunder Lecture 01\");"
       },
       {
         "id": "variables",
         "title": "Variables: let and const",
-        "content": "Use `let` for values that change, `const` for values that stay fixed. Avoid `var` in modern code.",
+        "content": "Use `let` for values that change, `const` for values that stay fixed. Avoid `var` in modern code.\n\nIn Thunder v3-js, `let clickCount = 0` remembers how many times you clicked the button.",
         "code": "let score = 0;\nscore = 10;\n\nconst course = \"Thunder\";\nconsole.log(course, score);",
         "tryIt": "let day = 1;\nconst author = \"Sumit Rawal\";\nday = 2;\nconsole.log(author, \"Day\", day);"
+      },
+      {
+        "id": "comments",
+        "title": "Comments",
+        "content": "Comments are ignored by the engine but invaluable for learners.\n- **Single-line:** `// comment`\n- **Multi-line:** `/* comment */`\n\nThunder `script.js` is heavily commented — read it top to bottom with the lecture.",
+        "code": "// Day 1 — Introduction to JavaScript\n/* Thunder 100 Days of Code */\nconsole.log(\"Comments do not run\");",
+        "tryIt": "// This line is ignored\nconsole.log(\"Only this prints\");"
+      },
+      {
+        "id": "event-listeners",
+        "title": "Event Listeners — Making Buttons Work",
+        "content": "In v1 and v2, buttons are just shapes. In v3, JavaScript **listens** for clicks and reacts.\n\n1. Find the element with `document.getElementById()`\n2. Call `addEventListener(\"click\", function () { ... })`\n3. Update the page with your logic",
+        "code": "const clickBtn = document.getElementById(\"clickBtn\");\nlet clickCount = 0;\n\nclickBtn.addEventListener(\"click\", function () {\n  clickCount++;\n  console.log(`Clicked ${clickCount} time(s)!`);\n});"
+      },
+      {
+        "id": "fetch-github",
+        "title": "fetch() — Live Data from the Internet",
+        "content": "HTML and CSS **cannot** talk to the internet on their own. JavaScript uses **`fetch()`** to get real data.\n\nThunder v3-js loads **10 GitHub profiles** from `https://api.github.com/users?per_page=10`, builds cards on the fly, and links to each user's real profile. This is the big lesson: JS reaches beyond the page.",
+        "code": "const response = await fetch(\n  \"https://api.github.com/users?per_page=10\"\n);\nconst users = await response.json();\nconsole.log(users[0].login);"
+      },
+      {
+        "id": "first-program",
+        "title": "Your First Thunder Program",
+        "content": "Combine everything from Lecture 01:\n1. Open **v3-js** from Thunder GitHub\n2. Run `console.log` in DevTools\n3. Click the button — watch the counter\n4. Use the calculator\n5. Load GitHub profiles\n6. Toggle dark/light theme\n\nKeep the [Notion notes](https://app.notion.com/p/Lecture01-Introduction-to-Javascript-37243ac5cab9802293fff4573c26a6f4?source=copy_link) open while you code.",
+        "tryIt": "let name = \"Sumit\";\nconst course = \"Thunder\";\nconsole.log(`Day 1 of ${course}: ${name}`);\nconsole.log(\"Next: open v3-js and click everything!\");"
       }
     ],
     "quiz": [
@@ -56,7 +98,18 @@ export const chaptersDays01to19 = [
           "JSON"
         ],
         "answer": 2,
-        "explanation": "JS adds interactivity."
+        "explanation": "JavaScript adds interactivity — clicks, calculations, and data fetching."
+      },
+      {
+        "question": "In Thunder Lecture 01, v2-css can make buttons hover but not click. Why?",
+        "options": [
+          "CSS handles appearance, not logic",
+          "HTML blocks clicks",
+          "V8 is not installed",
+          "fetch() is required first"
+        ],
+        "answer": 0,
+        "explanation": "CSS can style hover states but cannot run click logic — that needs JavaScript."
       },
       {
         "question": "Which keyword is for constants?",
@@ -67,11 +120,22 @@ export const chaptersDays01to19 = [
           "static"
         ],
         "answer": 2,
-        "explanation": "Use const for fixed values."
+        "explanation": "Use const for values that should not be reassigned."
+      },
+      {
+        "question": "What does fetch() let JavaScript do?",
+        "options": [
+          "Style the page",
+          "Get live data from servers",
+          "Create HTML tags",
+          "Compile C++ code"
+        ],
+        "answer": 1,
+        "explanation": "fetch() requests data from APIs — Thunder v3-js uses it for GitHub profiles."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=hdI2bqOjy3c",
-    "youtubeTitle": "JavaScript Crash Course For Beginners — Traversy Media",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c",
+    "youtubeTitle": "Introduction to JavaScript | Javascript Full Course #01 — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
