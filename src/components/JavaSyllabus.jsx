@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { javaPhases, javaHighlights, JAVA_META } from '../data/javaSyllabus';
+import { javaPhases, javaHighlights, JAVA_META, JAVA_SENIOR_SKILLS } from '../data/javaSyllabus';
 
 export default function JavaSyllabus() {
   const [openPhases, setOpenPhases] = useState({ 'java-core': true });
@@ -36,6 +36,21 @@ export default function JavaSyllabus() {
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="java-senior-skills">
+          <h2>
+            <span className="section-icon">🚀</span> Beyond Core Java
+          </h2>
+          <p className="java-senior-skills-lead">{JAVA_SENIOR_SKILLS.lead}</p>
+          <p className="java-senior-skills-callout">{JAVA_SENIOR_SKILLS.callout}</p>
+          <ol className="java-senior-skills-list">
+            {JAVA_SENIOR_SKILLS.items.map((item) => (
+              <li key={item.title}>
+                <strong>{item.title}</strong>, {item.description}
+              </li>
+            ))}
+          </ol>
         </div>
 
         <div className="syllabus-block">

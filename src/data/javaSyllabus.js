@@ -74,3 +74,62 @@ export const javaHighlights = [
   'CQRS, Saga & Event Sourcing',
   'Spring Cloud microservices',
 ];
+
+export const JAVA_SENIOR_SKILLS = {
+  lead: 'As a senior Java developer,',
+  callout: "Don't just stay on core java, please stay updated and learn:",
+  items: [
+    {
+      title: 'Cloud-native development',
+      description:
+        'including microservices, serverless computing (AWS Lambda, Azure Functions), and tools like Kubernetes, Istio, and Helm.',
+    },
+    {
+      title: 'Reactive programming',
+      description:
+        'using Project Reactor, Spring WebFlux, and RxJava for non-blocking, event-driven applications.',
+    },
+    {
+      title: 'Event-driven architectures',
+      description: 'with Kafka, RabbitMQ, and CQRS/Event Sourcing for scalability.',
+    },
+    {
+      title: 'API Economy',
+      description: 'API gateways like Kong, and ensuring API security with OAuth2 and OpenID Connect.',
+    },
+    {
+      title: 'Edge computing',
+      description: 'with AWS Greengrass or Azure IoT Edge for low-latency processing.',
+    },
+    {
+      title: 'Domain-Driven Design (DDD)',
+      description: 'with bounded contexts, aggregates, and event storming for modeling complex domains.',
+    },
+    {
+      title: 'Security trends',
+      description: 'like Zero Trust Architecture, data privacy (GDPR/CCPA compliance), and DevSecOps.',
+    },
+    {
+      title: 'Observability',
+      description:
+        'with distributed tracing (Jaeger, Zipkin), log aggregation (ELK stack), and real-time monitoring (Prometheus, Grafana).',
+    },
+    {
+      title: 'Modern data architectures',
+      description:
+        'including data streaming (Kafka Streams, Flink), data lakes (Snowflake), and graph databases (Neo4j).',
+    },
+    {
+      title: 'Sustainable software development',
+      description: 'with energy-efficient algorithms and carbon-aware cloud strategies.',
+    },
+    {
+      title: 'Low-code/no-code integrations',
+      description: 'using Mendix or OutSystems with Java backends.',
+    },
+    {
+      title: 'Emerging Java features',
+      description: 'like Project Loom (virtual threads), Panama (native interop), and Valhalla (value types).',
+    },
+  ],
+};

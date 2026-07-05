@@ -3880,6 +3880,60 @@ a:hover {
   background: #fff8f0;
 }
 
+.java-senior-skills {
+  margin-bottom: 40px;
+  padding: 28px 32px;
+  background: #fff;
+  border: 1px solid rgba(248, 152, 32, 0.35);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(248, 152, 32, 0.08);
+}
+
+.java-senior-skills h2 {
+  margin: 0 0 16px;
+  font-size: clamp(20px, 3vw, 26px);
+  color: #1a1a2e;
+}
+
+.java-senior-skills-lead {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.java-senior-skills-callout {
+  margin: 0 0 20px;
+  font-size: 15px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.java-senior-skills-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.java-senior-skills-list li {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #1a1a2e;
+}
+
+.java-senior-skills-list li strong {
+  color: #c2410c;
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .java-senior-skills {
+    padding: 20px 16px;
+  }
+}
+
 .java-udemy-courses {
   display: flex;
   flex-direction: column;
