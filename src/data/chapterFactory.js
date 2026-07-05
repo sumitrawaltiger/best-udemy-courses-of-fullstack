@@ -194,6 +194,7 @@ export function buildChapter(entry, id, options = {}) {
   if (entry.githubPath) chapter.githubPath = entry.githubPath;
   if (entry.notionUrl) chapter.notionUrl = entry.notionUrl;
   if (entry.codeRepo) chapter.codeRepo = entry.codeRepo;
+  if (entry.tldrawUrl) chapter.tldrawUrl = entry.tldrawUrl;
 
   return chapter;
 }

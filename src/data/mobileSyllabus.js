@@ -51,7 +51,7 @@ export const mobilePhases = [
   {
     id: 'react-refresher',
     number: 1,
-    title: 'React JS Refresher',
+    title: 'Welcome to Mobile Development',
     moduleCount: p1.length,
     status: 'published',
     modules: p1,

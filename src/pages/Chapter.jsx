@@ -345,7 +345,19 @@ export default function Chapter({ track = 'thunder' }) {
                         ? 'KodeKloud K8s'
                         : track === 'interview'
                           ? 'ChaiCode Interview'
-                          : 'My Notion Notes'}
+                          : track === 'mobile'
+                            ? 'Notion Notes'
+                            : 'My Notion Notes'}
+            </a>
+          )}
+          {chapter.tldrawUrl && (
+            <a
+              href={chapter.tldrawUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="chapter-link-btn outline"
+            >
+              📐 Lecture Whiteboard
             </a>
           )}
           {cfg.extraLink && (

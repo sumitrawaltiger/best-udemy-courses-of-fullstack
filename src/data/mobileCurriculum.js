@@ -1,21 +1,178 @@
 // ChaiCode Mobile Development Cohort — 25 lessons (Thunder++)
 
-const NOTES = 'https://gregarious-gray-075.notion.site/Mobile-Development-Cohort-2f9c3158e38d80b9bc27e75bed2bd01a';
+const NOTES =
+  'https://gregarious-gray-075.notion.site/Mobile-Development-Cohort-2f9c3158e38d80b9bc27e75bed2bd01a';
 const SYLLABUS =
   'https://chaiaurcode.notion.site/Mobile-Development-Cohort-343ab1b6b9c680caa31ed899178211ad';
 const REPO = 'https://github.com/Aestheticsuraj234/chaicode-mobiledev-2026/tree/main';
+const TLDRAW_DAY1 =
+  'https://www.tldraw.com/f/mQeviE3IZLi8quAUEoGja?d=v458.-121.1162.906.page';
 
 export const mobileLessons = [
   {
     rnDay: 1,
+    slug: 'react-js-refresher',
     phase: 'React JS Refresher',
-    title: 'React JS Refresher',
-    subtitle: 'Components, hooks, and forms before mobile',
-    topics: ['Components & JSX', 'useState & useEffect', 'Props & composition', 'Forms & events', 'SPA fundamentals'],
+    title: 'Welcome to Mobile Development',
+    subtitle: 'React fundamentals — BAAS, JSX, components, and props before React Native',
+    topics: [
+      'Backend As A Service (BAAS)',
+      'React vs React DOM vs React Native',
+      'JSX & React.createElement',
+      'Vite, main.jsx & HMR',
+      'Components & Fragments',
+      'Props & destructuring',
+    ],
     githubPath: 'react-refresher',
     codeRepo: REPO,
     notionUrl: NOTES,
-    youtube: { url: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8', title: 'React Crash Course', channel: 'Traversy Media' },
+    tldrawUrl: TLDRAW_DAY1,
+    youtube: {
+      url: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8',
+      title: 'React Crash Course',
+      channel: 'Traversy Media',
+    },
+    sections: [
+      {
+        id: 'welcome-mobile-dev',
+        title: 'Welcome to Mobile Development',
+        content:
+          '**RN Day 1** kicks off the ChaiCode Mobile Development Cohort. You refresh **React** before building mobile apps with **React Native + Expo**.\n\nResources for this lesson:\n- [Notion notes](https://gregarious-gray-075.notion.site/Mobile-Development-Cohort-2f9c3158e38d80b9bc27e75bed2bd01a)\n- [Lecture whiteboard (tldraw)](https://www.tldraw.com/f/mQeviE3IZLi8quAUEoGja?d=v458.-121.1162.906.page)\n- [ChaiCode code — react-refresher](https://github.com/Aestheticsuraj234/chaicode-mobiledev-2026/tree/main/react-refresher)',
+      },
+      {
+        id: 'baas-react-architecture',
+        title: 'BAAS & React Architecture',
+        content:
+          '**Backend As A Service (BAAS)** lets your frontend talk to cloud backends without managing servers yourself.\n\nReact sits at the center of the UI layer:\n- **React** — the core library for building UIs with components\n- **react-dom** — renders React to the **web** (browser DOM)\n- **React Native** — renders React to **mobile** (iOS & Android native views)\n\nSame component thinking — different renderers.',
+        code:
+          '// React (core) → react-dom (web) OR React Native (mobile)\nconsole.log("One React mental model, two platforms");',
+        tryIt: 'console.log("React → react-dom (web) | React Native (mobile)");',
+      },
+      {
+        id: 'react-and-spa',
+        title: 'What is React? What is a SPA?',
+        content:
+          '**React** is a JavaScript library that helps you build UIs by breaking the interface into small, reusable pieces called **components**. It is commonly used to build a **SPA (Single Page Application)** — one HTML page where JavaScript swaps views without full page reloads.',
+        code:
+          '// Components = reusable UI pieces\n// SPA = single page, dynamic content updates',
+        tryIt: 'console.log("React = component-based UI library");',
+      },
+      {
+        id: 'vite-and-main-jsx',
+        title: 'Create a React App with Vite',
+        content:
+          'To scaffold a React app, run:\n\n`npm create vite@latest`\n\nInside **main.jsx**, React mounts your app to the DOM using `createRoot`:',
+        code:
+          'import { createRoot } from "react-dom/client";\n\ncreateRoot(document.getElementById("root")).render(\n  <h1>Hello Jaani</h1>\n);',
+        tryIt: 'console.log("npm create vite@latest → then edit main.jsx");',
+      },
+      {
+        id: 'hmr',
+        title: 'Hot Module Replacement (HMR)',
+        content:
+          '**HMR (Hot Module Replacement)** lets Vite update your app in the browser **without a full page reload** when you save code changes. You see updates instantly while developing.',
+        tryIt: 'console.log("HMR = live updates without refresh");',
+      },
+      {
+        id: 'jsx-basics',
+        title: 'JSX — JavaScript XML',
+        content:
+          '**JSX** lets you write HTML-like syntax inside JavaScript. Browsers do not understand JSX directly — tools like **Babel** compile it into plain `React.createElement` calls.',
+        code:
+          '// JSX (what you write):\n// <h1>Hello Jaani</h1>\n\n// Compiled JS (what the browser runs):\nimport React from "react";\nReact.createElement("h1", null, "Hello Jaani");',
+        tryIt: 'console.log("JSX → Babel → React.createElement");',
+      },
+      {
+        id: 'create-element-attrs',
+        title: 'createElement & className',
+        content:
+          'Without JSX, `React.createElement(type, props, children)` takes three arguments:\n1. **type** — element name (`"h1"`)\n2. **props** — attributes as key-value pairs (`className`, `id`)\n3. **children** — text or nested elements\n\nIn JSX use **`className`** instead of `class`.',
+        code:
+          'const h1 = React.createElement(\n  "h1",\n  { className: "title", id: "heading" },\n  "Welcome Jaani!"\n);',
+        tryIt: 'console.log({ className: "title", id: "heading" });',
+      },
+      {
+        id: 'components',
+        title: 'Components',
+        content:
+          'A **component** is a function that returns JSX. Create **App.jsx**:',
+        code:
+          'function App() {\n  return (\n    <div>\n      <h1>App</h1>\n    </div>\n  );\n}\n\nexport default App;',
+        tryIt: 'console.log("Component = function that returns JSX");',
+      },
+      {
+        id: 'rendering-and-fragments',
+        title: 'Rendering in main.jsx & Fragments',
+        content:
+          'Import and render your component in **main.jsx**:',
+        code:
+          'import App from "./App";\n\ncreateRoot(document.getElementById("root")).render(\n  <div>\n    <h1 className="title" id="heading">\n      Welcome to Mobile Dev!\n    </h1>\n    <App />\n  </div>\n);',
+        tryIt: 'console.log("main.jsx renders <App /> into #root");',
+      },
+      {
+        id: 'react-fragments',
+        title: 'React Fragments',
+        content:
+          'When you do not want an extra wrapper `<div>`, use a **React Fragment** — empty tags `<>...</>`:',
+        code:
+          '<>\n  <h1>Hello</h1>\n</>',
+        tryIt: 'console.log("Fragment = group without extra DOM node");',
+      },
+      {
+        id: 'props',
+        title: 'Props (Properties)',
+        content:
+          '**Props** pass data from a **parent** component to a **child**. Create **H1.jsx**:',
+        code:
+          'const H1 = (props) => {\n  return <h1>{props.title}</h1>;\n};\n\nexport default H1;',
+        tryIt: 'console.log("Props flow: parent → child");',
+      },
+      {
+        id: 'destructuring-props',
+        title: 'Object Destructuring in Props',
+        content:
+          'Destructure props in the function parameter for cleaner code:',
+        code:
+          'const H1 = ({ title }) => {\n  return <h1>{title}</h1>;\n};',
+        tryIt: 'const { title } = { title: "heading 1" };\nconsole.log(title);',
+      },
+      {
+        id: 'using-props-in-app',
+        title: 'Using Components in App.jsx',
+        content:
+          'Import **H1** and pass different props from **App**:',
+        code:
+          'import H1 from "./H1";\n\nfunction App() {\n  return (\n    <div>\n      <H1 title="heading 1" desc="hello i am desc" />\n      <H1 title="heading 2" />\n    </div>\n  );\n}\n\nexport default App;',
+        tryIt: 'console.log("Reuse <H1 /> with different title props");',
+      },
+      {
+        id: 'prop-drilling',
+        title: 'Data Flow: Parent → Child',
+        content:
+          'Content flows **parent → child** through props.\n\n**Note:** If a deep child needs data, you may end up passing props through every layer (**prop drilling**). Later you will learn Context and other patterns to avoid this.',
+        tryIt: 'console.log("Data flows parent → child via props");',
+      },
+    ],
+    quiz: [
+      {
+        question: 'What does react-dom render React to?',
+        options: ['The web browser DOM', 'iOS native views only', 'A SQL database', 'A package.json file'],
+        answer: 0,
+        explanation: 'react-dom targets the browser; React Native targets mobile.',
+      },
+      {
+        question: 'What is JSX compiled into before the browser runs it?',
+        options: ['React.createElement calls', 'Pure HTML files', 'CSS modules', 'SQL queries'],
+        answer: 0,
+        explanation: 'Babel transforms JSX into React.createElement.',
+      },
+      {
+        question: 'How do props flow between components?',
+        options: ['Parent to child', 'Child to parent only', 'Randomly', 'Through package.json'],
+        answer: 0,
+        explanation: 'Props are always passed from parent to child in React.',
+      },
+    ],
   },
   {
     rnDay: 2,
