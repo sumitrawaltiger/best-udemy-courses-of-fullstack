@@ -1961,47 +1961,138 @@ export const chaptersDays01to19 = [
     "slug": "javascript-projects-part-2",
     "day": 13,
     "title": "JavaScript Projects Part 2",
-    "subtitle": "More hands-on projects to cement your skills",
+    "subtitle": "Seven mini apps — inputs, timers, async fetch, and forms",
     "duration": "2 hrs",
-    "createdOn": "13 Jul 2026",
+    "createdOn": "17 Jul 2026",
     "status": "published",
     "topics": [
-      "Project planning",
-      "DOM manipulation",
-      "Data-driven UI",
-      "Chat UI project",
-      "Image gallery",
-      "GitHub integration"
+      "Reading input.value",
+      "Password strength checker",
+      "setInterval & setTimeout",
+      "Digital clock",
+      "Countdown with timestamps",
+      "async / await + fetch",
+      "AI chatbot",
+      "new Image() & onload",
+      "AI image generator",
+      "encodeURIComponent",
+      "Multi-field forms"
     ],
-    "notionUrl": null,
+    "notionUrl": "https://app.notion.com/p/Lecture12-Even-and-Project-in-Javascript-38343ac5cab980aab918f7f4dc5c2fff?source=copy_link",
     "githubPath": "Lecture13",
     "sections": [
       {
-        "id": "more-projects",
-        "title": "JavaScript Projects Part 2",
-        "content": "Lecture13 extends projects: chat UI, image gallery, and GitHub profile loaders.",
-        "code": "console.log(\"Build: chat app, image slider, API-driven cards\");",
-        "tryIt": "console.log(\"Practice: fetch data, render to DOM\");"
+        "id": "love-calculator",
+        "title": "Project 1 — Love Calculator",
+        "content": "Thunder `project01` — two text inputs. On button click, read each `input.value.length`, run a formula, and take `% 101` to land a 0–100 percentage.\n\nKey idea: `input.value` is a **string**, and `.length` gives its character count.\n\nOpen [Lecture13](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture13) on GitHub.",
+        "code": "button.addEventListener(\"click\", () => {\n  const value1 = Boys.value.length;\n  const value2 = Girls.value.length;\n  const result = (value1 * value2 * value1 * value2) % 101;\n  h2.textContent = `Result is: ${result}%`;\n});",
+        "tryIt": "const a = \"Rohit\".length;\nconst b = \"Priya\".length;\nconsole.log((a * b * a * b) % 101);"
       },
       {
-        "id": "data-driven",
-        "title": "Data-Driven UI",
-        "content": "Store data in arrays/objects, render with loops. Separate data from display logic.",
-        "code": "const users = [{ name: \"Rohit\" }, { name: \"Mohan\" }];\nusers.forEach(u => console.log(u.name));",
-        "tryIt": "const items = [\"HTML\", \"CSS\", \"JS\"];\nitems.forEach((item, i) => console.log(i + 1, item));"
+        "id": "password-strength",
+        "title": "Project 2 — Password Strength Checker",
+        "content": "Thunder `Project02` — on every keystroke (`input` event), walk each character and flag whether it is a **capital**, **small**, **number**, or **special** char (comparing char codes with `>=`/`<=`).\n\nStrong = length ≥ 8 **and** all four flags true.",
+        "code": "input.addEventListener(\"input\", () => {\n  const password = input.value;\n  let hasCapital = false, hasSmall = false, hasSpecial = false, hasNumber = false;\n\n  for (let i = 0; i < password.length; i++) {\n    const ch = password[i];\n    if (ch >= \"A\" && ch <= \"Z\") hasCapital = true;\n    else if (ch >= \"a\" && ch <= \"z\") hasSmall = true;\n    else if (ch >= \"0\" && ch <= \"9\") hasNumber = true;\n    else hasSpecial = true;\n  }\n\n  const strong = password.length >= 8 && hasCapital && hasSmall && hasNumber && hasSpecial;\n  h2.textContent = strong ? \"Strong\" : \"week\";\n  h2.style.color = strong ? \"green\" : \"red\";\n});",
+        "tryIt": "const p = \"Rohit@456\";\nconsole.log(\"length ok:\", p.length >= 8);"
+      },
+      {
+        "id": "digital-clock",
+        "title": "Project 3 — Digital Clock (setInterval)",
+        "content": "Thunder `Project03` — **setInterval(callback, ms)** runs the callback repeatedly. Every 1000 ms, read a fresh `new Date()` and print `toLocaleString()`.\n\nContrast: **setTimeout** runs the callback **once** after the delay.",
+        "code": "const h1 = document.querySelector(\"h1\");\n\nsetInterval(() => {\n  const time = new Date();\n  h1.textContent = time.toLocaleString();\n}, 1000);",
+        "tryIt": "setTimeout(() => console.log(\"fires once after 1s\"), 1000);\nconsole.log(new Date().toLocaleString());"
+      },
+      {
+        "id": "countdown",
+        "title": "Project 4 — Olympic 2028 Countdown",
+        "content": "Thunder `Project04` — get the target date's **timestamp** with `new Date(2028, 6, 14).getTime()`, then every second subtract `Date.now()` and break the remaining milliseconds into **days, hours, minutes, seconds** with division and modulo.",
+        "code": "const olympicTimestamp = new Date(2028, 6, 14).getTime();\n\nsetInterval(() => {\n  let remaining = olympicTimestamp - Date.now();\n\n  const days = Math.floor(remaining / (1000 * 60 * 60 * 24));\n  remaining %= 1000 * 60 * 60 * 24;\n  const hours = Math.floor(remaining / (1000 * 60 * 60));\n  remaining %= 1000 * 60 * 60;\n  const minutes = Math.floor(remaining / (1000 * 60));\n  remaining %= 1000 * 60;\n  const seconds = Math.floor(remaining / 1000);\n\n  h2.textContent = `${days}:Days ${hours}:Hours ${minutes}:Minutes ${seconds}:Seconds`;\n}, 1000);",
+        "tryIt": "const target = new Date(2028, 6, 14).getTime();\nconst days = Math.floor((target - Date.now()) / (1000 * 60 * 60 * 24));\nconsole.log(days, \"days to go\");"
+      },
+      {
+        "id": "ai-chatbot",
+        "title": "Project 5 — AI Chatbot (async/await + fetch)",
+        "content": "Thunder `Projectchat` — the first **real network** project. An `async` function `await`s `fetch(url)`, then `await response.text()` for the reply.\n\nGood UX built in: show an **\"AI is thinking…\"** loading bubble, **disable** the send button while waiting, remove the bubble when the reply arrives, and auto-scroll with `scrollTop = scrollHeight`.",
+        "code": "async function sendMessage() {\n  const message = userInput.value.trim();\n  if (message === \"\") return;\n\n  addMessage(message, \"user\");\n  sendButton.disabled = true;\n  const loading = addMessage(\"AI is thinking...\", \"ai loading\");\n\n  const url = \"https://text.pollinations.ai/\" + encodeURIComponent(message);\n  const response = await fetch(url);\n  const aiReply = await response.text();\n\n  loading.remove();\n  addMessage(aiReply, \"ai\");\n  sendButton.disabled = false;\n}",
+        "tryIt": "async function ask(q) {\n  const res = await fetch(\"https://text.pollinations.ai/\" + encodeURIComponent(q));\n  console.log(await res.text());\n}\n// ask(\"hi how are you\");"
+      },
+      {
+        "id": "ai-image",
+        "title": "Project 6 — AI Image Generator",
+        "content": "Thunder `Projectimg` — first-principles insight: an `<img>` `src` can point to an **AI endpoint** that generates the image on the fly.\n\nBuild the image **in memory** with `new Image()`, wait for **`onload`** before attaching it (so the user never sees a half-loaded image), and handle **`onerror`**. `encodeURIComponent` makes the prompt URL-safe.",
+        "code": "const img = new Image();\n\nimg.onload = () => {\n  imageArea.innerHTML = \"\";\n  imageArea.appendChild(img);\n  generateBtn.disabled = false;\n};\nimg.onerror = () => {\n  imageArea.innerHTML = \"Something went wrong. Try again.\";\n};\n\nimg.src = \"https://image.pollinations.ai/prompt/\" + encodeURIComponent(prompt);",
+        "tryIt": "const img = new Image();\nimg.onload = () => console.log(\"loaded!\", img.width);\nimg.src = \"https://image.pollinations.ai/prompt/\" + encodeURIComponent(\"a cat\");"
+      },
+      {
+        "id": "astrology-form",
+        "title": "Project 7 — Astrology Insights (Forms)",
+        "content": "Thunder `projectastro` — a **multi-field form**. On submit (`e.preventDefault()`), read name, surname, day, month, year, then **index arrays** to build a personalized reading:\n\n- Zodiac by `month - 1`\n- Compliment by `day - 1`\n- Prediction by `(name.length * surname.length) % 20`\n\nSame form pattern as before, scaled to five inputs and several data arrays.",
+        "code": "form.addEventListener(\"submit\", (e) => {\n  e.preventDefault();\n  const name = document.getElementById(\"name\").value;\n  const surname = document.getElementById(\"surname\").value;\n  const day = parseInt(document.getElementById(\"day\").value);\n  const month = parseInt(document.getElementById(\"month\").value);\n  const year = parseInt(document.getElementById(\"year\").value);\n\n  const text = `Hi ${name} ${surname}, Your Zodiac sign is ${zodiacSigns[month - 1]}.\n  ${compliments[day - 1]}. ${predictions[(name.length * surname.length) % 20]}`;\n  document.getElementById(\"result\").textContent = text;\n});",
+        "tryIt": "const zodiac = [\"Capricorn\", \"Aquarius\", \"Pisces\", \"Aries\"];\nconst month = 3;\nconsole.log(zodiac[month - 1]);"
+      },
+      {
+        "id": "lecture13-practice",
+        "title": "Your Lecture 13 Practice",
+        "content": "Build all seven from Thunder's [Lecture13](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture13):\n1. **project01** — love calculator from input lengths\n2. **Project02** — password strength on the input event\n3. **Project03** — digital clock with setInterval\n4. **Project04** — Olympic countdown from timestamps\n5. **Projectchat** — AI chatbot with async/await + fetch\n6. **Projectimg** — AI image generator with new Image() + onload\n7. **projectastro** — form-driven astrology reading\n\nThe async projects use the free **Pollinations** API (no key). Next: **capstone JavaScript projects** in Lecture 14.",
+        "code": "// The universal project shape:\nelement.addEventListener(\"click\", async () => {\n  const res = await fetch(url);\n  const data = await res.text();\n  output.textContent = data;\n});",
+        "tryIt": "let n = 5;\nconst id = setInterval(() => {\n  console.log(n);\n  if (--n < 0) clearInterval(id);\n}, 1000);"
       }
     ],
     "quiz": [
       {
-        "question": "Data-driven UI separates?",
+        "question": "setInterval(fn, 1000) does what?",
         "options": [
-          "data and display",
-          "HTML and CSS only",
-          "JS and JSON",
-          "nothing"
+          "Runs fn once after 1 second",
+          "Runs fn every 1000 milliseconds",
+          "Runs fn 1000 times instantly",
+          "Delays the page by 1 second"
         ],
-        "answer": 0,
-        "explanation": "Data layer vs view layer."
+        "answer": 1,
+        "explanation": "setInterval repeats every N ms; setTimeout runs once — Project03/04."
+      },
+      {
+        "question": "In the AI chatbot, `await fetch(url)` is used because?",
+        "options": [
+          "fetch is synchronous",
+          "the network response takes time, so we await the Promise",
+          "await makes it faster",
+          "fetch returns text directly"
+        ],
+        "answer": 1,
+        "explanation": "fetch returns a Promise; await pauses until the response arrives — Projectchat."
+      },
+      {
+        "question": "Why build the image with new Image() and wait for onload?",
+        "options": [
+          "It's required by the API",
+          "To show it only once fully loaded, avoiding a broken half-image",
+          "onload makes it download faster",
+          "So it never errors"
+        ],
+        "answer": 1,
+        "explanation": "Preload in memory, attach on onload for clean UX — Projectimg."
+      },
+      {
+        "question": "encodeURIComponent is used to?",
+        "options": [
+          "Encrypt the message",
+          "Make spaces and special characters safe in a URL",
+          "Shorten the URL",
+          "Convert to JSON"
+        ],
+        "answer": 1,
+        "explanation": "It escapes unsafe characters when building the API URL — Projectchat/Projectimg."
+      },
+      {
+        "question": "In the astrology form, e.preventDefault() is called to?",
+        "options": [
+          "Validate the inputs",
+          "Stop the form from reloading the page on submit",
+          "Clear the form",
+          "Submit faster"
+        ],
+        "answer": 1,
+        "explanation": "It cancels the default submit/reload so JS can handle it — projectastro."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=2ml4x0rO1PQ",
@@ -2014,47 +2105,137 @@ export const chaptersDays01to19 = [
     "slug": "javascript-projects",
     "day": 14,
     "title": "JavaScript Projects",
-    "subtitle": "Capstone projects combining everything learned",
+    "subtitle": "Capstone apps — a quiz, Tic Tac Toe, and a weather app",
     "duration": "2 hrs",
-    "createdOn": "14 Jul 2026",
+    "createdOn": "18 Jul 2026",
     "status": "published",
     "topics": [
-      "Full project workflow",
-      "Multi-page apps",
-      "State management",
-      "API fetching",
-      "Project 1-4 walkthrough",
-      "Best practices"
+      "Answer-key grading",
+      "Reading radio inputs",
+      "Score & visual feedback",
+      "Game state in an array",
+      "Win detection (8 lines)",
+      "Turn toggling",
+      "Guard clauses",
+      "Draw detection & reset",
+      "Weather via fetch",
+      "Capstone workflow"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture14-Project-in-Javascript-38443ac5cab9809ba1e9fbcf3c776723",
+    "notionUrl": "https://app.notion.com/p/Lecture14-Project-in-Javascript-38443ac5cab9809ba1e9fbcf3c776723?source=copy_link",
     "githubPath": "Lecture14",
     "sections": [
       {
-        "id": "capstone",
-        "title": "Capstone Projects",
-        "content": "Lecture14 brings together DOM, events, data, and APIs in full projects.",
-        "code": "console.log(\"Projects 1-4 in Thunder/Lecture14\");",
-        "tryIt": "console.log(\"You now know enough to build real apps!\");"
+        "id": "quiz-answer-key",
+        "title": "Project 1 — Cricket Quiz (Answer Key)",
+        "content": "Thunder `Project01` — a 10-question quiz built from **radio inputs** grouped by `name=\"q1\"`, `name=\"q2\"`, etc.\n\nThe grading logic starts with an **answers object** — the source of truth for what's correct.\n\nOpen [Lecture14](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture14) on GitHub.",
+        "code": "const answers = {\n  q1:  \"Sachin Tendulkar\",\n  q2:  \"11\",\n  q3:  \"West Indies\",\n  q4:  \"50\",\n  q5:  \"Brian Lara\",\n  q6:  \"6\",\n  q7:  \"MS Dhoni\",\n  q8:  \"Leg Before Wicket\",\n  q9:  \"Muttiah Muralitharan\",\n  q10: \"6\"\n};",
+        "tryIt": "const answers = { q1: \"11\", q2: \"6\" };\nconsole.log(Object.keys(answers).length, \"questions\");"
       },
       {
-        "id": "workflow",
-        "title": "Project Workflow",
-        "content": "Plan → HTML structure → CSS layout → JS behavior → test → deploy.",
-        "code": "console.log(\"1. Plan  2. Build  3. Test  4. Deploy\");",
-        "tryIt": "console.log(\"Deploy free on Netlify or Vercel\");"
+        "id": "quiz-grading",
+        "title": "Project 1 — Grade & Give Feedback",
+        "content": "On submit, `preventDefault()`, then loop the answer key. For each question read the **checked radio** (`input[name=q]:checked`) and compare it to the key.\n\nCount the score, and use CSS classes (`correct`, `wrong`, `missed`) to colour each option so the user sees exactly where they went wrong.",
+        "code": "quizForm.addEventListener(\"submit\", (e) => {\n  e.preventDefault();\n  let score = 0;\n\n  for (const q in answers) {\n    const chosen = document.querySelector(`input[name=${q}]:checked`);\n    if (chosen && chosen.value === answers[q]) {\n      score++;\n      chosen.parentElement.classList.add(\"correct\");\n    } else if (chosen) {\n      chosen.parentElement.classList.add(\"wrong\");\n    }\n  }\n\n  result.style.display = \"block\";\n  result.textContent = `You scored ${score} / 10`;\n});",
+        "tryIt": "const answers = { q1: \"11\", q2: \"6\" };\nconst picked = { q1: \"11\", q2: \"4\" };\nlet score = 0;\nfor (const q in answers) if (picked[q] === answers[q]) score++;\nconsole.log(score);"
+      },
+      {
+        "id": "ttt-state",
+        "title": "Project 2 — Tic Tac Toe: State",
+        "content": "Thunder `Project02` — the golden rule: **state lives in JavaScript, the DOM just reflects it**.\n\nA 9-slot `gridBox` array is the single source of truth. `totalInsert` counts moves, `winnerDecided` guards the game, and `turn` tracks whose move it is.",
+        "code": "const gridBox = [\"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\", \"\"];\nlet totalInsert = 0;\nlet winnerDecided = false;\nlet turn = \"X\";\n\n// row: 012, 345, 678\n// col: 036, 147, 258\n// diag: 048, 246",
+        "tryIt": "const board = new Array(9).fill(\"\");\nboard[4] = \"X\";\nconsole.log(board);"
+      },
+      {
+        "id": "ttt-winner",
+        "title": "Project 2 — Detecting a Winner",
+        "content": "`checkWinner(player)` tests all **8 winning lines** — 3 rows, 3 columns, 2 diagonals — returning true if the player fills any one of them.",
+        "code": "function checkWinner(player) {\n  if (gridBox[0] == player && gridBox[1] == player && gridBox[2] == player) return true;\n  else if (gridBox[3] == player && gridBox[4] == player && gridBox[5] == player) return true;\n  else if (gridBox[6] == player && gridBox[7] == player && gridBox[8] == player) return true;\n  else if (gridBox[0] == player && gridBox[3] == player && gridBox[6] == player) return true;\n  else if (gridBox[1] == player && gridBox[4] == player && gridBox[7] == player) return true;\n  else if (gridBox[2] == player && gridBox[5] == player && gridBox[8] == player) return true;\n  else if (gridBox[0] == player && gridBox[4] == player && gridBox[8] == player) return true;\n  else if (gridBox[2] == player && gridBox[4] == player && gridBox[6] == player) return true;\n  return false;\n}",
+        "tryIt": "const g = [\"X\",\"X\",\"X\",\"\",\"\",\"\",\"\",\"\",\"\"];\nconst topRow = g[0] === \"X\" && g[1] === \"X\" && g[2] === \"X\";\nconsole.log(topRow);"
+      },
+      {
+        "id": "ttt-click",
+        "title": "Project 2 — Move, Guard, Toggle",
+        "content": "One **delegated** click listener on the board handles all 9 cells via `e.target.id`.\n\n**Guard clauses** ignore the click if the game is already won, drawn, or that cell is filled. Otherwise: place the mark, update state, check win, check draw (`totalInsert == 9`), then **toggle the turn**.",
+        "code": "board.addEventListener(\"click\", (e) => {\n  if (winnerDecided || totalInsert == 9 || gridBox[e.target.id] != \"\") return;\n\n  const box = e.target;\n  box.textContent = turn;\n  gridBox[box.id] = turn;\n  totalInsert++;\n\n  if (checkWinner(turn)) {\n    stat.textContent = `Player ${turn} won the game`;\n    winnerDecided = true;\n    return;\n  }\n  if (totalInsert == 9) {\n    stat.textContent = `Game is Draw`;\n    return;\n  }\n\n  turn = turn == \"X\" ? \"O\" : \"X\";\n  stat.textContent = `Player ${turn}'s Turn`;\n});",
+        "tryIt": "let turn = \"X\";\nturn = turn == \"X\" ? \"O\" : \"X\";\nconsole.log(turn);"
+      },
+      {
+        "id": "ttt-reset",
+        "title": "Project 2 — Reset the Game",
+        "content": "Reset must clear **both** the state and the UI: blank every cell, empty the `gridBox`, and reset the counters, flag, and status text.",
+        "code": "resetBtn.addEventListener(\"click\", () => {\n  for (let i = 0; i < 9; i++) {\n    document.getElementById(i).textContent = \"\";\n    gridBox[i] = \"\";\n  }\n  totalInsert = 0;\n  winnerDecided = false;\n  stat.textContent = \"Player X's turn\";\n});",
+        "tryIt": "let gridBox = [\"X\",\"O\",\"X\"];\ngridBox = gridBox.map(() => \"\");\nconsole.log(gridBox);"
+      },
+      {
+        "id": "weather-app",
+        "title": "Project 3 — Weather App (fetch)",
+        "content": "Thunder `Project03` — a city input and a button. On click, read the city, show a **loading** state, `fetch` a weather API, and render the temperature and condition — or an **error** state if the city isn't found.\n\nThis ties DOM + events + async data into one clean flow.",
+        "code": "weatherButton.addEventListener(\"click\", async () => {\n  const city = cityInput.value.trim();\n  if (!city) return;\n\n  weatherBox.innerHTML = '<p class=\"loading\">Loading...</p>';\n  try {\n    const res = await fetch(API_URL + encodeURIComponent(city));\n    const data = await res.json();\n    weatherBox.innerHTML = `\n      <p class=\"city-name\">${data.name}</p>\n      <p class=\"temperature\">${data.temp}\\u00b0</p>\n      <p class=\"condition\">${data.condition}</p>`;\n  } catch {\n    weatherBox.innerHTML = '<p class=\"error\">City not found</p>';\n  }\n});",
+        "tryIt": "async function getWeather(city) {\n  console.log(\"Fetching weather for\", city);\n  // const res = await fetch(url); const data = await res.json();\n}\ngetWeather(\"Delhi\");"
+      },
+      {
+        "id": "lecture14-practice",
+        "title": "Your Lecture 14 Practice",
+        "content": "Build the capstones from Thunder's [Lecture14](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture14):\n1. **Project01** — Cricket Quiz: grade radio answers against the key, show the score\n2. **Project02** — Tic Tac Toe: array state, checkWinner, guards, draw, reset\n3. **Project03** — Weather App: fetch a city's weather and render it (add loading/error states)\n\nTic Tac Toe is the standout — it's the classic interview project because it forces clean **state management**. Next: **JSON vs JS objects** in Lecture 15.",
+        "code": "// Tic Tac Toe in one idea: DOM mirrors the array\nfunction render(gridBox) {\n  gridBox.forEach((mark, i) => {\n    document.getElementById(i).textContent = mark;\n  });\n}",
+        "tryIt": "const gridBox = [\"X\",\"\",\"O\",\"\",\"X\",\"\",\"\",\"\",\"O\"];\nconsole.log(\"moves so far:\", gridBox.filter(Boolean).length);"
       }
     ],
     "quiz": [
       {
-        "question": "First step in project workflow?",
+        "question": "In the quiz, where is the correct answer for each question stored?",
         "options": [
-          "Deploy",
-          "Plan",
-          "Delete",
-          "minify"
+          "In the HTML radio values",
+          "In an answers object keyed by question name",
+          "In localStorage",
+          "In the CSS classes"
         ],
         "answer": 1,
-        "explanation": "Always plan first."
+        "explanation": "An answers object (q1..q10) is the grading source of truth — Project01."
+      },
+      {
+        "question": "In Tic Tac Toe, the real source of truth for the board is?",
+        "options": [
+          "The DOM cells",
+          "The gridBox array in JavaScript",
+          "The status text",
+          "localStorage"
+        ],
+        "answer": 1,
+        "explanation": "State lives in the array; the DOM just mirrors it — Project02."
+      },
+      {
+        "question": "How many winning lines does checkWinner test?",
+        "options": [
+          "3",
+          "6",
+          "8",
+          "9"
+        ],
+        "answer": 2,
+        "explanation": "3 rows + 3 columns + 2 diagonals = 8 — Project02."
+      },
+      {
+        "question": "What ends the game in a draw?",
+        "options": [
+          "winnerDecided is true",
+          "totalInsert == 9 with no winner",
+          "The reset button",
+          "A filled diagonal"
+        ],
+        "answer": 1,
+        "explanation": "All 9 cells filled and nobody won = draw — Project02."
+      },
+      {
+        "question": "The Weather App uses fetch inside an async function so that it can?",
+        "options": [
+          "Run faster than normal",
+          "await the network response before rendering",
+          "Avoid using the DOM",
+          "Skip error handling"
+        ],
+        "answer": 1,
+        "explanation": "await pauses for the API response, then renders the result — Project03."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=2ml4x0rO1PQ",
@@ -2067,58 +2248,138 @@ export const chaptersDays01to19 = [
     "slug": "json-vs-js-object",
     "day": 15,
     "title": "JSON vs JS Object",
-    "subtitle": "Serialization, fetch API, and async basics",
+    "subtitle": "Serialization, the fetch API, and rendering real API data",
     "duration": "2 hrs",
-    "createdOn": "15 Jul 2026",
+    "createdOn": "19 Jul 2026",
     "status": "published",
     "topics": [
-      "JSON format",
+      "JSON is a string",
+      "Quoted keys only",
+      "Allowed JSON types",
       "JSON.stringify",
       "JSON.parse",
-      "fetch API",
-      "async/await intro",
-      "GitHub API example"
+      "fetch returns a Promise",
+      "async / await flow",
+      "response.json()",
+      "GitHub users API",
+      "Reading nested JSON",
+      "Weather API project"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture15-JSON-vs-JS-Object-38843ac5cab9801e9c30f80559f919a0",
+    "notionUrl": "https://app.notion.com/p/Lecture15-JSON-vs-JS-Object-38843ac5cab9801e9c30f80559f919a0?source=copy_link",
     "githubPath": "Lecture15",
     "sections": [
       {
-        "id": "json",
+        "id": "json-vs-object",
         "title": "JSON vs JS Object",
-        "content": "JSON is a **string format** for data exchange. JS objects are in-memory. Keys in JSON must be double-quoted.",
-        "code": "const obj = { name: \"Rohit\", age: 20 };\nconst json = JSON.stringify(obj);\nconsole.log(json);\nconsole.log(JSON.parse(json));",
+        "content": "Thunder `first.js` — they **look alike**, but:\n\n- A **JS object** is live in memory: `{ name: \"Rohit\", age: 20 }` — keys unquoted, values can be anything.\n- **JSON** is a **string** (note the backticks): `` `{ \"name\": \"Rohit\", \"age\": 20 }` `` — a text format for **exchanging** data between systems.\n\nJSON **keys must be double-quoted strings**.\n\nOpen [Lecture15](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture15) on GitHub.",
+        "code": "const jsObject = {\n  name: \"Rohit\",\n  age: 20,\n  login: true\n};\n\nconst jSon = `{\n  \"name\": \"Rohit\",\n  \"age\": 20,\n  \"login\": true,\n  \"arr\": [20, 11, 70]\n}`; // this is a STRING",
+        "tryIt": "const obj = { day: 15 };\nconsole.log(typeof obj);              // object\nconsole.log(typeof JSON.stringify(obj)); // string"
+      },
+      {
+        "id": "json-types",
+        "title": "What JSON Can Hold",
+        "content": "JSON supports only **six value types**: string, number, boolean, null, object, array.\n\nThings that are **not** valid JSON quietly disappear when you stringify: `undefined` values and **functions** are dropped.",
+        "code": "const jsObject = {\n  name: \"Rohit\",\n  age: 20,\n  logIn: true,\n  a: undefined,      // dropped\n  b: function () {}  // dropped\n};\n\nconsole.log(JSON.stringify(jsObject));\n// {\"name\":\"Rohit\",\"age\":20,\"logIn\":true}",
+        "tryIt": "console.log(JSON.stringify({ x: undefined, y: 5 }));\n// {\"y\":5}"
+      },
+      {
+        "id": "stringify-parse",
+        "title": "JSON.stringify & JSON.parse",
+        "content": "Two functions convert between the worlds:\n\n- **JSON.stringify(obj)** — JS object → JSON string (to send or store)\n- **JSON.parse(str)** — JSON string → JS object (to read with dot notation)",
+        "code": "const jsObject = { name: \"Rohit\", age: 20 };\n\n// jsObject --> JSON\nconst a = JSON.stringify(jsObject);\nconsole.log(a); // '{\"name\":\"Rohit\",\"age\":20}'\n\n// JSON --> jsObject\nconst b = JSON.parse(a);\nconsole.log(b.name); // \"Rohit\"",
         "tryIt": "const user = { name: \"Sumit\", day: 15 };\nconst str = JSON.stringify(user);\nconsole.log(str);\nconsole.log(JSON.parse(str).name);"
       },
       {
-        "id": "fetch",
-        "title": "fetch API & async/await",
-        "content": "Fetch data from APIs. `async/await` makes async code read like sync code.",
-        "code": "async function getData() {\n  const res = await fetch(\"https://api.github.com/users/octocat\");\n  const data = await res.json();\n  console.log(data.login);\n}\ngetData();",
-        "tryIt": "console.log(\"fetch returns a Promise\");\nconsole.log(\"await waits for it to resolve\");"
+        "id": "async-flow",
+        "title": "fetch, Promises & async Flow",
+        "content": "**fetch** is asynchronous — it returns a **Promise** that is `Promise<pending>` until the server responds.\n\nBecause it doesn't block, the code **after** the call runs first. Here `\"Start\"` and `\"End\"` log immediately; the fetched data arrives later.",
+        "code": "console.log(\"Start\");\n\nasync function github() {\n  const response = await fetch(\"https://api.github.com/users?per_page=20\");\n  const data = await response.json();\n  console.log(data);\n}\ngithub();\n\nconsole.log(\"End\");\n// Order: Start, End, [data]",
+        "tryIt": "console.log(1);\nsetTimeout(() => console.log(2), 0);\nconsole.log(3);\n// Order: 1, 3, 2"
+      },
+      {
+        "id": "response-json",
+        "title": "response.json() — Parsing the Body",
+        "content": "An API sends its body as a **JSON string**. `await response.json()` reads and **parses** it into a usable JS object in one step (it's async, so it needs `await` too).",
+        "code": "async function getUser() {\n  const res = await fetch(\"https://api.github.com/users/octocat\");\n  const data = await res.json(); // JSON string -> object\n  console.log(data.login);       // \"octocat\"\n}\ngetUser();",
+        "tryIt": "// .json() returns a Promise, so it must be awaited\nconsole.log(\"res.json() -> Promise -> object\");"
+      },
+      {
+        "id": "project-github",
+        "title": "Project 1 — GitHub Users Browser",
+        "content": "Thunder `Project01` — fetch the **GitHub users API** and render a card grid.\n\nLoop the parsed array, and for each `user` build an `<img>` from `user.avatar_url` and a `<p>` from `user.login`, then append. A number input controls **how many** users via `per_page`, re-fetching live on input.",
+        "code": "async function github(number = 20) {\n  const response = await fetch(`https://api.github.com/users?per_page=${number}`);\n  const data = await response.json();\n\n  const root = document.getElementById(\"root\");\n  root.textContent = \"\";\n\n  for (const user of data) {\n    const container = document.createElement(\"div\");\n    const img = document.createElement(\"img\");\n    img.src = user.avatar_url;\n    const name = document.createElement(\"p\");\n    name.textContent = user.login;\n    container.append(img, name);\n    root.append(container);\n  }\n}\n\ninput.addEventListener(\"input\", () => github(Number(input.value)));",
+        "tryIt": "async function count() {\n  const res = await fetch(\"https://api.github.com/users?per_page=5\");\n  const data = await res.json();\n  console.log(data.length, \"users\");\n}\ncount();"
+      },
+      {
+        "id": "project-weather",
+        "title": "Project 2 — Weather App (Nested JSON)",
+        "content": "Thunder `Project02` — fetch **WeatherAPI** for a city, then read **nested JSON**: `data.current.temp_c` and `data.current.condition.text`.\n\nThis shows why JSON matters — the response is a deep object you drill into with dot notation. (Use your own API key, and prefer `https`.)",
+        "code": "search.addEventListener(\"click\", async () => {\n  const city = input.value;\n  if (city === \"\") return;\n\n  const url = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`;\n  const response = await fetch(url);\n  const data = await response.json();\n\n  p.textContent =\n    `Temperature of ${city} is ${data.current.temp_c} ` +\n    `and forecast is ${data.current.condition.text}`;\n});",
+        "tryIt": "const data = { current: { temp_c: 28, condition: { text: \"Sunny\" } } };\nconsole.log(data.current.temp_c, data.current.condition.text);"
+      },
+      {
+        "id": "lecture15-practice",
+        "title": "Your Lecture 15 Practice",
+        "content": "Work through Thunder's [Lecture15](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture15):\n1. **first.js** — stringify/parse a JS object; watch undefined & functions vanish\n2. **Project01** — GitHub users grid, with a live per_page count input\n3. **Project02** — weather app reading nested JSON from WeatherAPI\n\nRemember the mental model: **object in memory ↔ JSON string on the wire**, bridged by `JSON.stringify` / `JSON.parse` (and `response.json()` for you). Next: **memory management & how JS runs** in Lecture 16.",
+        "code": "const apiData = '{\"name\":\"Rohit\",\"repos\":[\"a\",\"b\"]}'; // string from an API\nconst obj = JSON.parse(apiData);\nconsole.log(obj.name, obj.repos.length);",
+        "tryIt": "const users = [{ login: \"a\" }, { login: \"b\" }];\nusers.forEach(u => console.log(u.login));"
       }
     ],
     "quiz": [
       {
-        "question": "JSON.stringify converts?",
+        "question": "The core difference between JSON and a JS object?",
         "options": [
-          "object to JSON string",
-          "string to number",
-          "array to object",
-          "HTML to CSS"
+          "They are identical",
+          "JSON is a string format; a JS object is live in memory",
+          "JSON can hold functions",
+          "JS objects need quoted keys"
         ],
-        "answer": 0,
-        "explanation": "JS object → JSON string."
+        "answer": 1,
+        "explanation": "JSON is text for data exchange; objects live in memory — first.js."
       },
       {
-        "question": "fetch returns a?",
+        "question": "Which is NOT valid in JSON?",
         "options": [
-          "Promise",
-          "string",
-          "array",
-          "DOM node"
+          "A string",
+          "A number",
+          "A function",
+          "An array"
         ],
-        "answer": 0,
-        "explanation": "Async HTTP via Promise."
+        "answer": 2,
+        "explanation": "JSON allows string, number, boolean, null, object, array — no functions/undefined."
+      },
+      {
+        "question": "JSON.parse does what?",
+        "options": [
+          "Object → JSON string",
+          "JSON string → JS object",
+          "Fetches an API",
+          "Removes undefined keys"
+        ],
+        "answer": 1,
+        "explanation": "parse: string → object; stringify: object → string — first.js."
+      },
+      {
+        "question": "Why does 'End' log before the fetched data?",
+        "options": [
+          "fetch is synchronous",
+          "fetch is async and non-blocking, so later code runs first",
+          "console.log is slow",
+          "The data failed to load"
+        ],
+        "answer": 1,
+        "explanation": "fetch returns a pending Promise; the rest runs, data arrives later — first.js."
+      },
+      {
+        "question": "In the weather app, data.current.condition.text works because?",
+        "options": [
+          "It's still a JSON string",
+          "response.json() parsed it into a nested JS object",
+          "WeatherAPI returns plain text",
+          "condition is a function"
+        ],
+        "answer": 1,
+        "explanation": "Once parsed, you drill into the nested object with dot notation — Project02."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=Oive66jrwBs",
@@ -2131,65 +2392,131 @@ export const chaptersDays01to19 = [
     "slug": "memory-management",
     "day": 16,
     "title": "Memory Management & How JS Works",
-    "subtitle": "Execution context, hoisting, and the call stack",
+    "subtitle": "Execution context, the two phases, hoisting, TDZ, scope & the call stack",
     "duration": "2 hrs",
-    "createdOn": "16 Jul 2026",
+    "createdOn": "20 Jul 2026",
     "status": "published",
     "topics": [
       "Execution context",
       "Memory allocation phase",
-      "Hoisting",
-      "Temporal dead zone",
+      "Execution phase",
+      "var hoisting (undefined)",
+      "Function hoisting",
+      "Temporal Dead Zone",
+      "let/const in the TDZ",
+      "Function expressions & TDZ",
+      "Function scope",
       "Call stack",
-      "How JS runs your code"
+      "Stack overflow"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture16-Memory-management-and-How-JS-code-works-38b43ac5cab980af918bf13d86ec5d6c",
+    "notionUrl": "https://app.notion.com/p/Lecture16-Memory-management-and-How-JS-code-works-38b43ac5cab980af918bf13d86ec5d6c?source=copy_link",
     "githubPath": "Lecture16",
     "sections": [
       {
         "id": "execution-context",
-        "title": "Execution Context",
-        "content": "JS runs in two phases: **Memory allocation** (hoisting) then **execution** (line by line).",
-        "code": "console.log(\"Phase 1: Memory allocation\");\nconsole.log(\"Phase 2: Execution\");",
+        "title": "The Execution Context",
+        "content": "Every JS program runs inside an **execution context** — think of it as a box with two compartments:\n\n- **Memory** — where variables and functions are stored\n- **Code** — where statements run, one line at a time\n\nJS processes this context in **two phases**: first memory allocation, then execution.\n\nOpen [Lecture16](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture16) on GitHub.",
+        "code": "// Global Execution Context\n// ┌─ Memory:  variables + functions\n// └─ Code:    runs line by line\n\nlet a = 10;\nconst b = 20;\nconsole.log(a + b);",
         "tryIt": "let a = 10;\nconst b = 20;\nconsole.log(a + b);"
       },
       {
-        "id": "hoisting",
-        "title": "Hoisting & TDZ",
-        "content": "`let` and `const` are hoisted but in Temporal Dead Zone until declared. `var` is hoisted and initialized as `undefined`.",
-        "code": "// let x = 10; // TDZ ends here\n// const y = 20;",
-        "tryIt": "console.log(\"var: function scoped\");\nconsole.log(\"let/const: block scoped\");"
+        "id": "two-phases",
+        "title": "Phase 1 — Memory Allocation",
+        "content": "Thunder `first.js` — before any line runs, JS **scans** and sets up memory (this is **hoisting**):\n\n- `var` → **undefined**\n- **function declarations** → the whole function\n- `let` / `const` → **`<uninitialized>`** (the Temporal Dead Zone)\n\nSo `a`, `b`, and the `addNumber` expression start as `<uninitialized>` in the TDZ.",
+        "code": "// Phase 1 (memory):\n// a         = <uninitialized>  (TDZ)\n// b         = <uninitialized>  (TDZ)\n// addNumber = <uninitialized>  (TDZ)\n// sum1      = <uninitialized>  (TDZ)",
+        "tryIt": "// let/const are set up but unusable until their line\n// var would be `undefined` here instead\nconsole.log(\"phase 1 = hoisting\");"
       },
       {
-        "id": "call-stack",
-        "title": "Call Stack",
-        "content": "Functions are pushed onto the call stack when called, popped when they return. Stack overflow = too much recursion.",
-        "code": "function a() { b(); }\nfunction b() { console.log(\"in b\"); }\na();",
-        "tryIt": "function greet() { return \"Hello\"; }\nconsole.log(greet());"
+        "id": "execution-phase",
+        "title": "Phase 2 — Execution",
+        "content": "Now JS runs top to bottom, filling in the real values and running functions. The TDZ placeholders are replaced as each declaration line executes.",
+        "code": "let a = 10;\nconst b = 20;\n\nconst addNumber = function (num1, num2) {\n  return num1 + num2;\n};\n\nconst sum1 = addNumber(a, b);\nconsole.log(sum1); // 30\n\n// Phase 2 (memory now): a=10, b=20, sum1=30",
+        "tryIt": "const add = (x, y) => x + y;\nconsole.log(add(10, 20));"
+      },
+      {
+        "id": "var-hoisting",
+        "title": "var & Function Hoisting",
+        "content": "Thunder `index.js` — because `var` is hoisted as **undefined**, reading it **before** its line is *not* an error — it prints `undefined`.\n\nAnd because **function declarations are fully hoisted**, you can **call `addNumber` before** it is written.",
+        "code": "console.log(a, b); // undefined undefined (not an error!)\n\nvar a = 10;\nvar b = 20;\n\nconst sum1 = addNumber(a, b); // works — fn hoisted\n\nfunction addNumber(num1, num2) {\n  return num1 + num2;\n}\n\nconsole.log(sum1); // 30",
+        "tryIt": "console.log(x); // undefined\nvar x = 5;\nconsole.log(hi()); // \"hi\" — declaration hoisted\nfunction hi() { return \"hi\"; }"
+      },
+      {
+        "id": "tdz",
+        "title": "The Temporal Dead Zone",
+        "content": "`let` and `const` are **hoisted too**, but stay `<uninitialized>` until their declaration line — the window between is the **Temporal Dead Zone**.\n\nTouching them in the TDZ throws a **ReferenceError** (unlike `var`). A **function expression** stored in a `const` is in the TDZ as well, so it can't be called early.",
+        "code": "// console.log(x); // ReferenceError — TDZ\nlet x = 10;      // TDZ ends here\n\n// console.log(addNumber(1, 2)); // ReferenceError\nconst addNumber = function (a, b) {\n  return a + b;\n};",
+        "tryIt": "try {\n  console.log(y);\n  let y = 1;\n} catch (e) {\n  console.log(e.name); // ReferenceError\n}"
+      },
+      {
+        "id": "scope-stack",
+        "title": "Function Scope & the Call Stack",
+        "content": "Thunder `third.js` — a `var` declared **inside** a function is **function-scoped**: it doesn't exist outside, so accessing it throws.\n\nEach function call gets its **own execution context**, pushed onto the **call stack** when called and popped when it returns. Endless recursion with no base case overflows the stack.",
+        "code": "function greet() {\n  var a = 20;\n}\ngreet();\n// console.log(a); // ReferenceError — a is not in global scope\n\nfunction a() { b(); }\nfunction b() { console.log(\"in b\"); }\na(); // stack: a pushed → b pushed → b pops → a pops",
+        "tryIt": "function outer() {\n  var secret = 42;\n  return secret;\n}\nconsole.log(outer());\n// console.log(secret); // ReferenceError"
+      },
+      {
+        "id": "lecture16-practice",
+        "title": "Your Lecture 16 Practice",
+        "content": "Trace Thunder's [Lecture16](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture16) files on paper first, then run them:\n1. **first.js** — write out phase 1 (TDZ) vs phase 2 for let/const + a function expression\n2. **index.js** — predict the two console.logs: why is the first `undefined undefined`, and why does calling `addNumber` early work?\n3. **third.js** — confirm a `var` inside a function is invisible outside it\n\nMental model: **memory phase (hoisting) → execution phase**. `var` = undefined, functions = full, `let`/`const` = TDZ. Next: **prototypes, classes & the event loop** in Lecture 17.",
+        "code": "// Predict the output order:\nconsole.log(typeof foo); // \"function\"\nconsole.log(typeof bar); // \"undefined\"\nfunction foo() {}\nvar bar = function () {};",
+        "tryIt": "console.log(a); // undefined\nvar a = 10;\nconsole.log(a); // 10"
       }
     ],
     "quiz": [
       {
-        "question": "Hoisting applies to?",
+        "question": "JS runs your code in which two phases?",
         "options": [
-          "let/const/var declarations",
-          "only CSS",
-          "only HTML",
-          "fetch"
+          "Compile then run",
+          "Memory allocation (hoisting) then execution",
+          "Parse then minify",
+          "Fetch then render"
         ],
-        "answer": 0,
-        "explanation": "Declarations are hoisted."
+        "answer": 1,
+        "explanation": "Phase 1 sets up memory (hoisting); phase 2 executes line by line — first.js."
       },
       {
-        "question": "TDZ is for?",
+        "question": "console.log(a) before `var a = 10` prints?",
         "options": [
-          "let and const",
-          "only var",
-          "only functions",
-          "JSON"
+          "ReferenceError",
+          "undefined",
+          "10",
+          "null"
         ],
-        "answer": 0,
-        "explanation": "Temporal Dead Zone."
+        "answer": 1,
+        "explanation": "var is hoisted and initialized to undefined — index.js."
+      },
+      {
+        "question": "Why can you call a function declaration before it appears?",
+        "options": [
+          "Functions are slow",
+          "Function declarations are fully hoisted into memory",
+          "It actually throws an error",
+          "Only arrow functions can do this"
+        ],
+        "answer": 1,
+        "explanation": "The whole function is stored in phase 1 — index.js."
+      },
+      {
+        "question": "Accessing a let/const before its line throws because?",
+        "options": [
+          "It is undefined",
+          "It sits in the Temporal Dead Zone until initialized",
+          "let is not hoisted at all",
+          "const cannot be logged"
+        ],
+        "answer": 1,
+        "explanation": "let/const are hoisted but uninitialized — the TDZ — first.js."
+      },
+      {
+        "question": "A `var` declared inside a function is?",
+        "options": [
+          "Global",
+          "Function-scoped — invisible outside the function",
+          "Block-scoped only",
+          "Stored in the DOM"
+        ],
+        "answer": 1,
+        "explanation": "var is function-scoped; it doesn't exist outside — third.js."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=EvfRXyKa_GI",
@@ -2204,58 +2531,138 @@ export const chaptersDays01to19 = [
     "slug": "prototypes-classes-event-loop",
     "day": 17,
     "title": "Prototypes, Classes & Event Loop",
-    "subtitle": "OOP in JS and how async code executes",
+    "subtitle": "The prototype chain, ES6 classes, inheritance & how async runs",
     "duration": "2 hrs",
-    "createdOn": "17 Jul 2026",
+    "createdOn": "21 Jul 2026",
     "status": "published",
     "topics": [
       "Prototype chain",
-      "Classes & constructor",
-      "Methods with this",
-      "new keyword",
-      "Event loop",
-      "Microtasks vs macrotasks"
+      "__proto__",
+      "Inherited built-ins",
+      "Why classes",
+      "class & constructor",
+      "the new keyword",
+      "Shared methods",
+      "extends & super",
+      "Single-threaded JS",
+      "Event loop & queue",
+      "setInterval"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture-17-Prototype-classes-and-Eventloop-in-JS-38c43ac5cab9805f9b60eaf160aa057e",
+    "notionUrl": "https://app.notion.com/p/Lecture-17-Prototype-classes-and-Eventloop-in-JS-38c43ac5cab9805f9b60eaf160aa057e?source=copy_link",
     "githubPath": "Lecture17",
     "sections": [
       {
-        "id": "prototypes",
-        "title": "Prototypes & Classes",
-        "content": "Every object has a prototype chain. ES6 `class` is syntactic sugar over prototypes.",
-        "code": "class Person {\n  constructor(name, age) {\n    this.name = name;\n    this.age = age;\n  }\n  greet() { return `Hi, ${this.name}`; }\n}\nconst u = new Person(\"Rohit\", 20);\nconsole.log(u.greet());",
-        "tryIt": "class Student {\n  constructor(name) { this.name = name; }\n}\nconst s = new Student(\"Sumit\");\nconsole.log(s.name);"
+        "id": "prototype-chain",
+        "title": "The Prototype Chain",
+        "content": "Thunder `index.js` — every object has a hidden link, **`__proto__`**, to another object. When a key isn't found on an object, JS walks **up the prototype chain** to find it.\n\nSet `obj2.__proto__ = obj1` and suddenly `obj2` can call `obj1.greet()` — even though it never defined it.\n\nOpen [Lecture17](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture17) on GitHub.",
+        "code": "const obj1 = {\n  name: \"Rohit\",\n  greet: function () {\n    console.log(`Hello ${this.name}`);\n  }\n};\n\nconst obj2 = { balance: 70 };\nobj2.__proto__ = obj1; // borrow from obj1\n\nobj2.greet(); // \"Hello Rohit\"",
+        "tryIt": "const animal = { eats: true };\nconst dog = { barks: true };\ndog.__proto__ = animal;\nconsole.log(dog.eats); // true (inherited)"
+      },
+      {
+        "id": "inherited-builtins",
+        "title": "Built-ins Come From Prototypes",
+        "content": "You've been using the prototype chain all along. Methods like **`hasOwnProperty`** and **`toString`** aren't on your object — they live on `Object.prototype`. Array's **`push`** lives on `Array.prototype`.\n\nThat's why every object and array \"just has\" these methods.",
+        "code": "const obj1 = { name: \"Rohit\" };\nconsole.log(obj1.hasOwnProperty(\"name\")); // true\nconsole.log(obj1.toString());\n\nconst arr = [10, 20, 30];\narr.push(50); // Array.prototype.push",
+        "tryIt": "const o = {};\nconsole.log(typeof o.toString); // \"function\" — inherited\nconsole.log([].push);          // from Array.prototype"
+      },
+      {
+        "id": "why-classes",
+        "title": "Why Classes?",
+        "content": "Thunder `classes.js` — making many similar objects by hand means **repeating** the same shape and the same method in every one (`user1`, `user2`, `user3` each with their own `increase()`).\n\nA **class** is a single blueprint: write the structure and methods once, stamp out as many instances as you want.",
+        "code": "// The problem — repetition:\nconst user1 = { name: \"Rohit\", age: 20, increase() { this.age++; } };\nconst user2 = { name: \"Mohan\", age: 11, increase() { this.age++; } };\nconst user3 = { name: \"Sohan\", age: 70, increase() { this.age++; } };\n// same increase() copied 3 times!",
+        "tryIt": "// Imagine 100 users — 100 copies of the same method.\nconsole.log(\"classes solve this\");"
+      },
+      {
+        "id": "class-constructor",
+        "title": "class, constructor & new",
+        "content": "Thunder `second.js` — a **class** has a **constructor** that runs when you call **`new`**. It sets up `this.name`, `this.age`, etc. for each new instance. Methods like `greet()` are defined once and **shared** by all instances via the prototype.",
+        "code": "class Person {\n  constructor(name, age) {\n    this.name = name;\n    this.age = age;\n    this.x = 10;\n  }\n  greet() {\n    console.log(`Hi ${this.name}`);\n  }\n}\n\nconst user1 = new Person(\"Rohit\", 20);\nconst user2 = new Person(\"Sohan\", 10);\nuser1.greet(); // Hi Rohit",
+        "tryIt": "class Student {\n  constructor(name) { this.name = name; }\n  hi() { return `Hi ${this.name}`; }\n}\nconst s = new Student(\"Sumit\");\nconsole.log(s.hi());"
+      },
+      {
+        "id": "shared-methods",
+        "title": "Shared Methods on the Prototype",
+        "content": "Thunder `classes.js` — a class method like `increase()` is stored **once** on `Person.prototype`, not copied into each instance. Every `user` shares the same function but acts on its own `this`.\n\nThat's the payoff: no repetition, one place to update the behavior.",
+        "code": "class Person {\n  constructor(name, age, city) {\n    this.name = name;\n    this.age = age;\n    this.city = city;\n  }\n  increase() {\n    this.age++;\n  }\n}\n\nconst user1 = new Person(\"Rohit\", 20, \"Dwarka\");\nuser1.increase();\nconsole.log(user1.age); // 21",
+        "tryIt": "class Counter {\n  constructor() { this.n = 0; }\n  inc() { this.n++; }\n}\nconst c = new Counter();\nc.inc(); c.inc();\nconsole.log(c.n); // 2"
+      },
+      {
+        "id": "extends-super",
+        "title": "Inheritance — extends & super",
+        "content": "Thunder `third.js` — **`class Customer extends Person`** makes `Customer` inherit everything from `Person`.\n\nInside the child constructor, **`super(name, age)`** calls the **parent constructor** first, then the child adds its own fields (`balance`, `city`).",
+        "code": "class Customer extends Person {\n  constructor(name, age, balance, city) {\n    super(name, age); // run Person's constructor\n    this.balance = balance;\n    this.city = city;\n  }\n}\n\nconst c1 = new Customer(\"Rohit\", 20, 720, \"Dwarka\");\nconsole.log(c1); // has name, age, balance, city + greet()",
+        "tryIt": "class Animal {\n  constructor(name) { this.name = name; }\n}\nclass Dog extends Animal {\n  constructor(name, breed) { super(name); this.breed = breed; }\n}\nconsole.log(new Dog(\"Rex\", \"Lab\"));"
       },
       {
         "id": "event-loop",
-        "title": "Event Loop",
-        "content": "JS is single-threaded. The event loop handles async callbacks after the call stack clears.",
-        "code": "console.log(\"1\");\nsetTimeout(() => console.log(\"2\"), 0);\nconsole.log(\"3\");\n// Output: 1, 3, 2",
-        "tryIt": "console.log(\"Start\");\nsetTimeout(() => console.log(\"Async\"), 100);\nconsole.log(\"End\");"
+        "title": "The Event Loop",
+        "content": "Thunder `project01` — JS is **single-threaded**: one call stack, one thing at a time. Async callbacks (from timers, events, promises) **don't run immediately** — they wait in a **queue**.\n\nThe **event loop** watches the call stack; when it's empty, it takes the next queued callback and runs it. That's why `setInterval`'s callback fires later, and why `setTimeout(fn, 0)` still runs after your sync code.",
+        "code": "console.log(\"1\");\nsetTimeout(() => console.log(\"2\"), 0);\nconsole.log(\"3\");\n// Output: 1, 3, 2\n\nsetInterval(() => {\n  console.log(\"Hello\");\n}, 2000); // queued every 2s",
+        "tryIt": "console.log(\"Start\");\nsetTimeout(() => console.log(\"Async\"), 100);\nconsole.log(\"End\");\n// Start, End, Async"
+      },
+      {
+        "id": "lecture17-practice",
+        "title": "Your Lecture 17 Practice",
+        "content": "Work through Thunder's [Lecture17](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture17):\n1. **index.js** — link objects with `__proto__` and inspect inherited methods (hasOwnProperty, toString)\n2. **second.js / classes.js** — build a `Person` class; make several instances; call a shared method\n3. **third.js** — extend `Person` into `Customer` with `super()`\n4. **project01** — run `setInterval` and reason about the event loop / queue\n\nRemember: **class is syntactic sugar over prototypes**. Next: **callback hell & Promises** in Lecture 18.",
+        "code": "class Vehicle {\n  constructor(wheels) { this.wheels = wheels; }\n  describe() { return `${this.wheels} wheels`; }\n}\nclass Car extends Vehicle {\n  constructor() { super(4); }\n}\nconsole.log(new Car().describe());",
+        "tryIt": "const parent = { hello() { return \"hi\"; } };\nconst child = {};\nchild.__proto__ = parent;\nconsole.log(child.hello());"
       }
     ],
     "quiz": [
       {
-        "question": "class is sugar for?",
+        "question": "obj2.__proto__ = obj1 lets obj2?",
         "options": [
-          "prototypes",
-          "JSON",
-          "DOM",
-          "fetch"
+          "Copy obj1's properties",
+          "Inherit and call obj1's methods via the prototype chain",
+          "Delete obj1",
+          "Freeze obj1"
         ],
-        "answer": 0,
-        "explanation": "Classes use prototypes underneath."
+        "answer": 1,
+        "explanation": "Missing keys are looked up along the prototype chain — index.js."
       },
       {
-        "question": "setTimeout runs via?",
+        "question": "Array's push and an object's toString come from?",
         "options": [
-          "event loop",
-          "call stack only",
+          "The global scope",
+          "Their prototypes (Array.prototype / Object.prototype)",
           "JSON",
-          "DOM"
+          "The DOM"
         ],
-        "answer": 0,
-        "explanation": "Macrotask queue + event loop."
+        "answer": 1,
+        "explanation": "Built-in methods live on prototypes — index.js."
+      },
+      {
+        "question": "A class method like increase() is stored?",
+        "options": [
+          "Copied into every instance",
+          "Once on the class prototype, shared by all instances",
+          "In the constructor only",
+          "In localStorage"
+        ],
+        "answer": 1,
+        "explanation": "Methods live on Person.prototype, shared — classes.js."
+      },
+      {
+        "question": "In `class Customer extends Person`, super(name, age) does what?",
+        "options": [
+          "Creates a new Person object separately",
+          "Calls the parent Person constructor",
+          "Deletes the parent",
+          "Nothing"
+        ],
+        "answer": 1,
+        "explanation": "super() runs the parent constructor before the child adds fields — third.js."
+      },
+      {
+        "question": "Why does setTimeout(fn, 0) run after your synchronous code?",
+        "options": [
+          "It doesn't — it runs first",
+          "The callback waits in a queue; the event loop runs it once the stack is clear",
+          "0 means never",
+          "setTimeout is synchronous"
+        ],
+        "answer": 1,
+        "explanation": "Async callbacks queue and run after the stack empties — project01."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=1UTqFAjYx1k",
