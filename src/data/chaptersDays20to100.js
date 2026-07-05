@@ -81,74 +81,98 @@ export const chaptersDays20to100 = [
     "track": "thunder",
     "day": 21,
     "title": "TCP/IP and package.json",
-    "subtitle": "How the web talks — networking basics and npm project setup",
+    "subtitle": "Lecture 02 — networking, HTTP servers, and npm project setup",
     "duration": "2 hrs 22 mins",
     "createdOn": "24 Jul 2026",
     "status": "published",
     "topics": [
-      "TCP/IP model",
-      "IP address & ports",
-      "Client–server requests",
+      "TCP/IP & client–server",
+      "http.createServer",
+      "URL path vs query params",
       "package.json fields",
-      "npm scripts & dependencies"
+      "CommonJS require / module.exports",
+      "ES modules & type: module"
     ],
     "sections": [
       {
-        "id": "tcp-ip-model",
-        "title": "TCP/IP Model",
-        "content": "**TCP/IP** is the protocol suite behind the internet. When your Node server listens on a port, clients connect over **TCP** — a reliable, ordered channel. **IP** handles addressing so packets reach the right machine.",
-        "code": "// Client browser  →  TCP connection  →  Node server (IP + port)\n// HTTP rides on top of TCP",
-        "tryIt": "console.log('Day 21 — TCP/IP powers every backend request');"
+        "id": "lecture-02",
+        "title": "Lecture 02 — TCP/IP and package.json",
+        "content": "**Day 21** follows **Lecture 02** from the [Thunder Notion notes](https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031). You move from running Node scripts to understanding **how computers talk over the network** and how **package.json** organizes a backend project.\n\nWork in **[03Backend/Day02](https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day02)** on GitHub alongside the Notion page."
       },
       {
-        "id": "ip-and-ports",
-        "title": "IP Address & Ports",
-        "content": "An **IP address** identifies a host. A **port** (e.g. `3000`) identifies which program on that host should receive the connection. `server.listen(3000)` binds your Node process to port 3000.",
-        "code": "server.listen(3000, () => {\n  console.log('Server is listening at 3000 port');\n});",
-        "tryIt": "console.log('localhost:3000 → IP 127.0.0.1, port 3000');"
+        "id": "tcp-ip",
+        "title": "TCP/IP — How the Web Talks",
+        "content": "When a browser hits `http://localhost:3000/add/10/20`, several layers work together:\n\n- **IP** — finds the machine (e.g. `127.0.0.1` on your laptop)\n- **TCP** — opens a reliable connection between client and server\n- **HTTP** — sends the request (`GET /add/10/20`) and receives the response\n\nNode's `http` module lets you build the **server side** of this conversation. `server.listen(3000)` tells your program to accept connections on **port 3000**.",
+        "code": "// Client  →  TCP connection  →  Node server on port 3000\n// HTTP request rides on top of TCP\nserver.listen(3000, () => {\n  console.log(\"Server is listening at 3000 port\");\n});",
+        "tryIt": "console.log('TCP/IP → HTTP → Node server on port 3000');"
+      },
+      {
+        "id": "http-path-routing",
+        "title": "HTTP Server — Path Routing (second.js)",
+        "content": "In **Day02/second.js**, Rohit builds a calculator API using **path segments**. The URL `/add/10/20` is split so `operation = \"add\"`, `number1 = 10`, `number2 = 20`. The server responds with JSON.",
+        "code": "const http = require('http');\n\nconst server = http.createServer((request, response) => {\n  const path = request.url.split('/');\n  const operation = path[1];\n  const number1 = Number(path[2]);\n  const number2 = Number(path[3]);\n\n  if (operation === 'add') {\n    response.end(JSON.stringify(number1 + number2));\n  }\n});\n\nserver.listen(3000);",
+        "tryIt": "const parts = '/add/10/20'.split('/');\nconsole.log('op:', parts[1], 'nums:', parts[2], parts[3]);"
+      },
+      {
+        "id": "http-query-routing",
+        "title": "URL Query Parameters (third.js)",
+        "content": "**Day02/third.js** does the same job with **query strings**: `/add?num1=10&num2=20`. Use Node's `url` module to parse `request.url` cleanly instead of manual string splitting.",
+        "code": "const http = require('http');\nconst url = require('url');\n\nconst server = http.createServer((request, response) => {\n  const parsed = url.parse(request.url, true);\n  const operation = parsed.pathname.slice(1);\n  const number1 = Number(parsed.query.num1);\n  const number2 = Number(parsed.query.num2);\n  if (operation === 'add') {\n    response.end(JSON.stringify(number1 + number2));\n  }\n});",
+        "tryIt": "console.log('Try: http://localhost:3000/add?num1=10&num2=20');"
       },
       {
         "id": "package-json",
-        "title": "package.json",
-        "content": "Every Node backend project has a **package.json**. It stores the project **name**, **version**, **scripts**, and **dependencies**. Run `npm init` to create one, or edit it in the **Day02** folder under **03Backend**.",
-        "code": "{\n  \"name\": \"my-backend\",\n  \"version\": \"1.0.0\",\n  \"main\": \"second.js\",\n  \"scripts\": {\n    \"start\": \"node second.js\"\n  }\n}",
-        "tryIt": "console.log(JSON.stringify({ name: \"thunder-day02\", version: \"1.0.0\" }, null, 2));"
+        "title": "package.json — Project Manifest",
+        "content": "Every Node project needs a **package.json**. It is the single file npm reads to understand your app.\n\nKey fields:\n- **name** — project identifier\n- **version** — semver (`1.0.0`)\n- **main** — entry file\n- **scripts** — shortcuts like `\"start\": \"node second.js\"`\n- **dependencies** — packages your app needs at runtime\n- **devDependencies** — tooling (tests, linters)\n- **type** — set `\"module\"` to use `import`/`export` (see LearnModule02)\n\nRun `npm init` to scaffold one, or study **LearnModule02/package.json** in the Thunder repo.",
+        "code": "{\n  \"name\": \"thunder-backend\",\n  \"version\": \"1.0.0\",\n  \"main\": \"second.js\",\n  \"scripts\": {\n    \"start\": \"node second.js\"\n  },\n  \"dependencies\": {},\n  \"type\": \"module\"\n}",
+        "tryIt": "console.log(JSON.stringify({ name: \"thunder-day02\", scripts: { start: \"node second.js\" } }, null, 2));"
       },
       {
-        "id": "npm-scripts",
-        "title": "npm Scripts & Dependencies",
-        "content": "Use **npm scripts** to run your server with `npm start` instead of typing `node second.js` every time. **dependencies** list packages your app needs; **devDependencies** are for tooling only.",
-        "code": "// package.json\n\"scripts\": { \"start\": \"node second.js\" }\n// Terminal: npm start",
-        "tryIt": "console.log('npm start runs the script from package.json');"
+        "id": "commonjs-vs-esm",
+        "title": "CommonJS vs ES Modules",
+        "content": "Thunder **LearnModule01** uses **CommonJS** — the classic Node style:\n- `require(\"./second.js\")` to import\n- `module.exports = { payment, sub }` to export\n\n**LearnModule02** uses **ES Modules**:\n- `import hatim, { add, sub } from \"./second.js\"`\n- `export function add() { ... }`\n- Requires `\"type\": \"module\"` in package.json\n\nThe **amazon.js** comments explain *why* modules matter: split a huge codebase into files (auth, payment, orders) so teams do not conflict.",
+        "code": "// CommonJS\nconst { payment } = require(\"./second.js\");\n\n// ES Modules (with \"type\": \"module\")\nimport { add, sub } from \"./second.js\";",
+        "tryIt": "console.log('CommonJS: require() | ESM: import/export');"
       },
       {
-        "id": "thunder-backend",
-        "title": "Thunder 03Backend Repository",
-        "content": "Open **[03Backend](https://github.com/Rohitnegi9/Thunder/tree/main/03Backend)** on GitHub. For Lecture 02 — TCP/IP and package.json, work inside the **Day02** folder (`first.js`, `second.js`, `third.js`, LearnModule folders). See **Notes.md** at the repo root for extra context."
+        "id": "thunder-day02-practice",
+        "title": "Practice — Thunder 03Backend / Day02",
+        "content": "Open **[03Backend/Day02](https://github.com/Rohitnegi9/Thunder/tree/main/03Backend)** and work through:\n\n- **first.js** — HTTP server returning GitHub user JSON (try `http://localhost:9000/5`)\n- **second.js** — path-based calculator on port 3000\n- **third.js** — query-string calculator on port 3000\n- **LearnModule01** — CommonJS `require` & `module.exports`\n- **LearnModule02** — ES `import`/`export` with `package.json`\n\nKeep the [Notion notes](https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031) open while you code."
       }
     ],
     "quiz": [
       {
-        "question": "What does TCP provide for backend communication?",
+        "question": "In Thunder Day02/second.js, how is the operation (add/sub/mul) read?",
         "options": [
-          "Reliable, ordered delivery between client and server",
-          "Only CSS styling",
-          "Database migrations",
-          "Image compression"
+          "From path segments after splitting request.url",
+          "From package.json scripts",
+          "From console.log output",
+          "From CSS selectors"
         ],
         "answer": 0,
-        "explanation": "TCP ensures data arrives reliably — HTTP builds on top of it."
+        "explanation": "second.js splits request.url by \"/\" to get operation and numbers."
       },
       {
-        "question": "Which file defines npm scripts and project dependencies?",
+        "question": "What does adding \"type\": \"module\" to package.json enable?",
         "options": [
-          "package.json",
-          "index.html",
-          "README.md",
-          ".gitignore"
+          "ES import/export syntax in .js files",
+          "Running code in the browser only",
+          "Automatic database connection",
+          "Removing all dependencies"
         ],
         "answer": 0,
-        "explanation": "package.json is the manifest for every Node.js project."
+        "explanation": "LearnModule02 uses import/export because package.json sets type to module."
+      },
+      {
+        "question": "Which protocol provides reliable delivery before HTTP in the stack?",
+        "options": [
+          "TCP",
+          "HTML",
+          "JSON",
+          "npm"
+        ],
+        "answer": 0,
+        "explanation": "TCP ensures ordered, reliable transport; HTTP runs on top of it."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=-SaZiADGLHs&t=2s",
