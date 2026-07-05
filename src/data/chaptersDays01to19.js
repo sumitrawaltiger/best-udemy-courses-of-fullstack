@@ -1121,65 +1121,181 @@ export const chaptersDays01to19 = [
     "slug": "date-and-functions",
     "day": 8,
     "title": "Date & Functions",
-    "subtitle": "Date object, function declarations, arrow functions",
+    "subtitle": "Date object, timestamps, three ways to write functions, IIFE & callbacks",
     "duration": "2 hrs",
-    "createdOn": "8 Jul 2026",
+    "createdOn": "12 Jul 2026",
     "status": "published",
     "topics": [
-      "Date object",
-      "Timestamps",
+      "Date object & getters",
+      "Zero-based months",
+      "Date.now() timestamps",
+      "Custom dates",
       "Function declarations",
-      "Parameters & return",
+      "Default parameters",
+      "Rest operator",
+      "Spread & destructuring",
+      "Function expressions",
       "Arrow functions",
-      "Rest & spread"
+      "IIFE",
+      "Callback functions"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture08-Date-and-Functions-in-JS-37c43ac5cab98043bcfafdc2a70c7a3a",
+    "notionUrl": "https://app.notion.com/p/Lecture08-Date-and-Functions-in-JS-37c43ac5cab98043bcfafdc2a70c7a3a?source=copy_link",
     "githubPath": "Lecture08",
     "sections": [
       {
-        "id": "date",
+        "id": "date-object",
         "title": "The Date Object",
-        "content": "Create dates, get day/month/year, work with timestamps.",
-        "code": "const now = new Date();\nconsole.log(now.toString());\nconsole.log(now.getFullYear());\nconsole.log(now.getMonth()); // 0 = Jan\nconsole.log(Date.now()); // timestamp in ms",
-        "tryIt": "const d = new Date();\nconsole.log(\"Year:\", d.getFullYear());\nconsole.log(\"Timestamp:\", Date.now());"
+        "content": "Thunder `Date.js` — `new Date()` gives the current date-time. Read its parts with getters:\n\n- `getDate()` / `getDay()` — day of month / day of week\n- `getFullYear()` / `getMonth()` — year / month\n- `getMinutes()` / `getSeconds()` — time parts\n\nOpen [Lecture08](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture08) on GitHub.",
+        "code": "const now = new Date();\nconsole.log(now);\nconsole.log(now.toString());\n\nconsole.log(now.getDay());\nconsole.log(now.getDate());\nconsole.log(now.getFullYear());\nconsole.log(now.getMonth());\nconsole.log(now.getMinutes());\nconsole.log(now.getSeconds());",
+        "tryIt": "const d = new Date();\nconsole.log(\"Year:\", d.getFullYear());\nconsole.log(\"Month:\", d.getMonth());\nconsole.log(\"Date:\", d.getDate());"
       },
       {
-        "id": "functions",
-        "title": "Functions — Why & How",
-        "content": "Functions bundle reusable logic. Declare with `function`, assign to const, or use arrows.",
-        "code": "function add(a, b) {\n  return a + b;\n}\nconsole.log(add(2, 3));\n\nconst greet = function() {\n  console.log(\"Hello!\");\n};\ngreet();",
+        "id": "date-index-quirks",
+        "title": "Zero-Based Months — The Gotcha",
+        "content": "Months are **zero-indexed**: `jan: 0, feb: 1 … dec: 11` — July is `6`, not `7`!\n\nDays of the week: `mon: 1, tue: 2 … sun: 7`.\n\nThunder's note: in real projects, teams use **date libraries** instead of raw `Date` because of quirks like these.",
+        "code": "const now = new Date();\n// In July this prints 6, not 7!\nconsole.log(now.getMonth());\n\n// ISO string: 2026-06-11T15:37:36.950Z\n// Local time = UTC + 5:30 (IST)\nconsole.log(now.toString());",
+        "tryIt": "const months = [\"Jan\",\"Feb\",\"Mar\",\"Apr\",\"May\",\"Jun\",\"Jul\",\"Aug\",\"Sep\",\"Oct\",\"Nov\",\"Dec\"];\nconst d = new Date();\nconsole.log(months[d.getMonth()]);"
+      },
+      {
+        "id": "timestamps",
+        "title": "Date.now() & Timestamps",
+        "content": "**Date.now()** returns the **timestamp** — milliseconds since 1 Jan 1970 — as a plain number.\n\nNumbers are stored in **8 bytes** — one day the counter overflows, Thunder jokes modern systems will crash.\n\nBuild a date back from any timestamp: `new Date(500000090000)`.",
+        "code": "const now = Date.now();\n// Timestamp in milliseconds: 1781193215767\nconsole.log(now);\n\nconst da = new Date(500000090000);\nconsole.log(da);",
+        "tryIt": "console.log(\"Timestamp:\", Date.now());\nconst past = new Date(0);\nconsole.log(\"Epoch start:\", past.toString());"
+      },
+      {
+        "id": "custom-dates",
+        "title": "Building Custom Dates",
+        "content": "Construct any moment with `new Date(year, month, day, hours, minutes, seconds, ms)`.\n\nRemember the month is zero-based — `8` means **September**.",
+        "code": "// new Date(year, month, day, hours, minutes, seconds, ms)\nconst myDate = new Date(2026, 8, 4, 6, 20, 11, 125);\nconsole.log(myDate); // 4 Sept 2026, 06:20:11",
+        "tryIt": "const bday = new Date(2026, 0, 15);\nconsole.log(bday.toString()); // 15 Jan 2026"
+      },
+      {
+        "id": "function-declarations",
+        "title": "Functions — What & Why",
+        "content": "Thunder `functions.js` — a function bundles **reusable logic**: write once, call many times.\n\n- Declare with the `function` keyword\n- `return` sends a value back to the caller\n- Without `return`, the result is `undefined`",
+        "code": "function greeting() {\n  console.log(\"Hello World\");\n}\ngreeting();\n\nfunction addNumber(num1, num2) {\n  return num1 + num2;\n}\nconst answer = addNumber(2, 3);\nconsole.log(answer);",
         "tryIt": "function multiply(a, b) { return a * b; }\nconsole.log(multiply(4, 5));"
       },
       {
-        "id": "arrow-rest-spread",
-        "title": "Arrow Functions, Rest & Spread",
-        "content": "Arrow: `const add = (a, b) => a + b`. Rest collects args: `...arr`. Spread copies: `[...arr]`.",
-        "code": "const square = n => n * n;\nconsole.log(square(8));\n\nfunction sum(...nums) {\n  return nums.reduce((a, b) => a + b, 0);\n}\nconsole.log(sum(1, 2, 3, 4));",
-        "tryIt": "const add = (a, b) => a + b;\nconsole.log(add(10, 20));\nconst arr = [1, 2, 3];\nconsole.log([...arr, 4]);"
+        "id": "default-params",
+        "title": "Default Parameters",
+        "content": "Give parameters a fallback: `num3 = 0, num4 = 0`.\n\nNow the same `addNumber` works with 2, 3, or 4 arguments — missing ones use the default.",
+        "code": "function addNumber(num1, num2, num3 = 0, num4 = 0) {\n  return num1 + num2 + num3 + num4;\n}\n\nconsole.log(addNumber(3, 11));\nconsole.log(addNumber(4, 7, 8));\nconsole.log(addNumber(4, 7, 8, 16));",
+        "tryIt": "function greet(name = \"Thunder\") {\n  return \"Hello \" + name;\n}\nconsole.log(greet());\nconsole.log(greet(\"Rohit\"));"
+      },
+      {
+        "id": "rest-operator",
+        "title": "Rest Operator — Collect Arguments",
+        "content": "What if callers pass **any number** of arguments? The **rest operator** `...arr` collects them all into a real array.\n\nLoop it with `for...of` and sum.",
+        "code": "function addNumber(...arr) {\n  let sum = 0;\n  for (const num of arr) {\n    sum += num;\n  }\n  return sum;\n}\n\nconsole.log(addNumber(2, 1, 4, 21, 4, 15, 12, 1234, 123, 53));",
+        "tryIt": "function count(...items) { return items.length; }\nconsole.log(count(1, 2, 3));\nconsole.log(count(\"a\", \"b\", \"c\", \"d\", \"e\"));"
+      },
+      {
+        "id": "spread-destructuring",
+        "title": "Spread & Array Destructuring",
+        "content": "**Spread** `[...arr]` copies an array into a new one.\n\n**Rest in destructuring** grabs the leftovers: `const [first, second, ...third] = arr` — `third` is an array of the remaining items.",
+        "code": "let arr = [10, 20, 30, 40, 50, 60];\n\n// spread operator — copy\nconst arr2 = [...arr];\nconsole.log(arr2);\n\n// rest operator — destructure\nconst [first, second, ...third] = arr;\nconsole.log(first, second, third); // 10 20 [30,40,50,60]",
+        "tryIt": "const nums = [1, 2, 3];\nconst more = [...nums, 4, 5];\nconsole.log(more);\nconst [head, ...tail] = more;\nconsole.log(head, tail);"
+      },
+      {
+        "id": "function-expressions",
+        "title": "Function Expressions — Second Way",
+        "content": "Store an **anonymous function** in a variable: `const greet = function () { ... }`.\n\nCall it through the variable name. It can return values like any function.",
+        "code": "const greet = function () {\n  console.log(\"Hello Ji\");\n  return 10;\n};\n\nconst answer = greet();\nconsole.log(answer);\n\nconst addNumber = function (num1, num2) {\n  return num1 + num2;\n};\nconsole.log(addNumber(2, 3));",
+        "tryIt": "const shout = function (msg) { return msg.toUpperCase(); };\nconsole.log(shout(\"thunder\"));"
+      },
+      {
+        "id": "arrow-functions",
+        "title": "Arrow Functions — Third Way",
+        "content": "Thunder: \"ye aap sabse zyada use karoge\" — arrows are the most-used form.\n\n- Full body: `const add = (a, b) => { return a + b; }`\n- **Implicit return** one-liner: `const add = (a, b) => a + b`\n- **Single parameter** needs no parentheses: `const square = num => num * num`\n- Returning an **object literal** needs wrapping parens: `() => ({ name: \"Rohit\" })`",
+        "code": "const addNumber = (num1, num2) => num1 + num2;\nconsole.log(addNumber(2, 3));\n\nconst square = num => num * num;\nconsole.log(square(8));\n\nconst user = () => ({ name: \"Rohit\", age: 20 });\nconsole.log(user());",
+        "tryIt": "const double = n => n * 2;\nconsole.log(double(21));\nconst makeUser = name => ({ name });\nconsole.log(makeUser(\"Thunder\"));"
+      },
+      {
+        "id": "iife",
+        "title": "IIFE — Run Immediately",
+        "content": "Thunder `ii.js` — **Immediately Invoked Function Expression**: wrap a function in `()` and call it with a trailing `()`.\n\nPattern: `( function )( call )` — define and execute in one statement.",
+        "code": "(function hello() {\n  console.log(\"Hello Ji\");\n})();\n\n// pattern: ()()",
+        "tryIt": "(() => {\n  console.log(\"IIFE with an arrow!\");\n})();"
+      },
+      {
+        "id": "callbacks",
+        "title": "Callback Functions",
+        "content": "In JavaScript you can **pass a function into another function** — that's a **callback**.\n\n`meet(greet)` and `meet(morning)` — same `meet`, different behavior. Nothing is hardcoded; the caller decides what runs.",
+        "code": "function greet() {\n  console.log(\"Hello Ji\");\n}\n\nfunction morning() {\n  console.log(\"Hello Good Morning\");\n}\n\nfunction meet(Callback) {\n  console.log(\"Hello Meet\");\n  Callback();\n  console.log(\"I am done\");\n}\n\nmeet(greet);\nmeet(morning);",
+        "tryIt": "function run(cb) { console.log(\"before\"); cb(); console.log(\"after\"); }\nrun(() => console.log(\"middle\"));"
+      },
+      {
+        "id": "real-callback",
+        "title": "Real Callback — Zomato × Blinkit",
+        "content": "Thunder `realCallback.js` — the Zomato-Blinkit merger: one `payment()` flow, different follow-ups.\n\n`payment(500, zomatoRestaurant)` prepares an order; `payment(1000, blinkitWarehouse)` packs one. The payment logic stays the same — the **callback** decides what happens after.",
+        "code": "function zomatoRestaurant() {\n  console.log(\"Restaurant is preparing the order\");\n}\n\nfunction blinkitWarehouse() {\n  console.log(\"Packing the order for user\");\n}\n\nfunction payment(amount, Callback) {\n  console.log(amount, \"Payment is happenning\");\n  console.log(\"Payment is done\");\n  Callback();\n}\n\npayment(500, zomatoRestaurant);\npayment(1000, blinkitWarehouse);",
+        "tryIt": "function checkout(amount, after) {\n  console.log(\"Paid ₹\" + amount);\n  after();\n}\ncheckout(299, () => console.log(\"Order confirmed!\"));"
+      },
+      {
+        "id": "lecture08-practice",
+        "title": "Your Lecture 08 Practice",
+        "content": "Work through Thunder Lecture 08 on GitHub:\n1. **`Date.js`** — getters, zero-based months, Date.now(), custom dates\n2. **`functions.js`** — declarations, default params, rest/spread, expressions, arrows\n3. **`ii.js`** — IIFE and the meet/greet callback pattern\n4. **`realCallback.js`** — payment flow with zomatoRestaurant & blinkitWarehouse callbacks\n5. **`fourth.js`** — attach your own `sorter` method to an array\n\nKeep the [Notion notes](https://app.notion.com/p/Lecture08-Date-and-Functions-in-JS-37c43ac5cab98043bcfafdc2a70c7a3a?source=copy_link) open while you code. Callbacks return in Lecture 09 with **array methods** like map, filter, and forEach.",
+        "code": "let arr = [10, 20, 30, 1, 5, 7, -4, 2, -5];\n\narr.sorter = function () {\n  console.log(\"Hello Ji\");\n};\narr.sorter();\n\narr.sort((a, b) => a - b);\nconsole.log(arr);",
+        "tryIt": "const nums = [5, 3, 9, 1];\nconst sorted = [...nums].sort((a, b) => a - b);\nconsole.log(nums, sorted);"
       }
     ],
     "quiz": [
       {
-        "question": "Arrow function syntax?",
+        "question": "new Date().getMonth() in July returns?",
         "options": [
-          "function(){}",
-          "()=>{}",
-          "=>()",
-          "func()"
+          "7",
+          "6",
+          "\"July\"",
+          "07"
         ],
         "answer": 1,
-        "explanation": "() => {}"
+        "explanation": "Months are zero-indexed: jan 0 … dec 11 — Date.js."
       },
       {
         "question": "Date.now() returns?",
         "options": [
-          "string",
-          "timestamp ms",
-          "Date object",
-          "boolean"
+          "A Date object",
+          "Timestamp in milliseconds",
+          "An ISO string",
+          "Seconds since epoch"
         ],
         "answer": 1,
-        "explanation": "Milliseconds since epoch."
+        "explanation": "Milliseconds since 1 Jan 1970, as a number."
+      },
+      {
+        "question": "function addNumber(...arr) — what is ...arr?",
+        "options": [
+          "Spread operator",
+          "Rest operator collecting args into an array",
+          "A syntax error",
+          "Destructuring"
+        ],
+        "answer": 1,
+        "explanation": "In a parameter list, ... collects all arguments — functions.js."
+      },
+      {
+        "question": "Arrow function returning an object literal needs?",
+        "options": [
+          "return keyword only",
+          "Parentheses around the object: () => ({})",
+          "Nothing special",
+          "Square brackets"
+        ],
+        "answer": 1,
+        "explanation": "Without (), the {} is read as a function body — functions.js."
+      },
+      {
+        "question": "meet(greet) — passing greet into meet makes greet a?",
+        "options": [
+          "Callback function",
+          "IIFE",
+          "Arrow function",
+          "Method"
+        ],
+        "answer": 0,
+        "explanation": "A function passed as an argument is a callback — ii.js."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=FOD408a0EzU",
@@ -1192,66 +1308,166 @@ export const chaptersDays01to19 = [
     "slug": "array-methods-callbacks",
     "day": 9,
     "title": "Callbacks, forEach, map, filter, reduce",
-    "subtitle": "Higher-order array methods every developer needs",
+    "subtitle": "Build the methods yourself, then master the real ones — plus Sets",
     "duration": "2 hrs",
-    "createdOn": "9 Jul 2026",
+    "createdOn": "13 Jul 2026",
     "status": "published",
     "topics": [
-      "Callbacks",
-      "forEach",
+      "Callback recap",
+      "Anonymous & arrow callbacks",
+      "Bubble sort by hand",
+      "Custom sort with callback",
+      "Array.prototype methods",
+      "forEach — value, index, array",
       "map",
-      "filter",
-      "reduce",
-      "Sets",
-      "Real-world examples"
+      "filter & this",
+      "reduce accumulator",
+      "filter + map chaining",
+      "Sets & unique values"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture09-Callback-forEach-map-filter-reduce-37d43ac5cab980e0a44ef39a89b81143",
+    "notionUrl": "https://app.notion.com/p/Lecture09-Callback-forEach-map-filter-reduce-37d43ac5cab980e0a44ef39a89b81143?source=copy_link",
     "githubPath": "Lecture09",
     "sections": [
       {
-        "id": "callbacks",
-        "title": "Callbacks",
-        "content": "A callback is a function passed as an argument. Arrays use callbacks heavily.",
-        "code": "function print(num) {\n  console.log(num);\n}\n[10, 20, 30].forEach(print);\n\n// Or inline:\n[10, 20, 30].forEach(n => console.log(n));",
-        "tryIt": "[1, 2, 3].forEach((n, i) => console.log(i, n));"
+        "id": "callback-recap",
+        "title": "Callbacks Recap — Calculator",
+        "content": "Thunder `first.js` — a function can receive **another function as an argument**.\n\nOne `calculator(num1, num2, caller)` handles add, sub, mul — the **caller decides the operation**.\n\nOpen [Lecture09](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture09) on GitHub.",
+        "code": "function add(num1, num2) { return num1 + num2; }\nfunction sub(num1, num2) { return num1 - num2; }\nfunction mul(num1, num2) { return num1 * num2; }\n\nfunction calculator(num1, num2, caller) {\n  console.log(\"I am doing Calculation\");\n  const result = caller(num1, num2);\n  console.log(`Your result ${result}`);\n}\n\ncalculator(10, 20, mul);\ncalculator(10, 20, add);",
+        "tryIt": "function calc(a, b, op) { return op(a, b); }\nconsole.log(calc(6, 7, (x, y) => x * y));"
       },
       {
-        "id": "map-filter",
-        "title": "map & filter",
-        "content": "`map` transforms each element. `filter` keeps elements that pass a test.",
-        "code": "const arr = [10, 20, 40, 73, 18];\nconst doubled = arr.map(n => n * 2);\nconst big = arr.filter(n => n > 20);\nconsole.log(doubled);\nconsole.log(big);",
-        "tryIt": "const nums = [1, 2, 3, 4, 5];\nconsole.log(nums.map(n => n * 5));\nconsole.log(nums.filter(n => n % 2 === 0));"
+        "id": "anonymous-callbacks",
+        "title": "Anonymous & Arrow Callbacks",
+        "content": "No need to name the callback — pass it **inline**:\n\n- Anonymous function: `calculator(30, 5, function (a, b) { return a / b; })`\n- Arrow: `calculator(15, 3, (a, b) => a / b)`\n\nThis inline style is exactly what you'll use with forEach, map, and filter.",
+        "code": "calculator(30, 5, function (a, b) {\n  return a / b;\n});\n\ncalculator(15, 3, (a, b) => {\n  return a / b;\n});",
+        "tryIt": "function run(cb) { console.log(cb(10)); }\nrun(n => n + 1);\nrun(function (n) { return n * n; });"
+      },
+      {
+        "id": "bubble-sort",
+        "title": "Build Your Own Sort — Bubble Sort",
+        "content": "Thunder `customize.js` — before trusting `sort()`, build sorting by hand.\n\n**Bubble sort**: nested loops, compare neighbours `arr[j] > arr[j+1]`, swap with a temp variable. Bigger values \"bubble\" to the end.",
+        "code": "const arr = [10, 20, 30, 11, 8, 15];\n\nfor (let i = 0; i < arr.length; i++) {\n  for (let j = 0; j < arr.length - 1; j++) {\n    if (arr[j] > arr[j + 1]) {\n      let temp = arr[j];\n      arr[j] = arr[j + 1];\n      arr[j + 1] = temp;\n    }\n  }\n}\nconsole.log(arr);",
+        "tryIt": "const a = [5, 2, 9, 1];\nfor (let i = 0; i < a.length; i++)\n  for (let j = 0; j < a.length - 1; j++)\n    if (a[j] > a[j + 1]) [a[j], a[j + 1]] = [a[j + 1], a[j]];\nconsole.log(a);"
+      },
+      {
+        "id": "sort-callback",
+        "title": "Custom Sort with a Callback",
+        "content": "Thunder `callback.js` — attach `sorting` to **Array.prototype** and let a **callback decide the swap**:\n\n`Callback(arr[j], arr[j+1])` returns true → swap. Pass `(a, b) => a > b` for ascending.\n\nThis is exactly how the real `sort((a, b) => a - b)` works: **negative = don't swap, positive = swap**.",
+        "code": "const arr = [10, 20, 1, 3, 98, 8, 11];\n\nArray.prototype.sorting = function (Callback) {\n  for (let i = 0; i < arr.length; i++) {\n    for (let j = 0; j < arr.length - 1; j++) {\n      if (Callback(arr[j], arr[j + 1])) {\n        let temp = arr[j];\n        arr[j] = arr[j + 1];\n        arr[j + 1] = temp;\n      }\n    }\n  }\n};\n\narr.sorting((a, b) => a > b);\nconsole.log(arr);",
+        "tryIt": "const nums = [10, 20, 1, 3];\nnums.sort((a, b) => a - b);\nconsole.log(nums);\nnums.sort((a, b) => b - a);\nconsole.log(nums);"
+      },
+      {
+        "id": "custom-foreach",
+        "title": "forEach — Build It, Then Use It",
+        "content": "Thunder `forEach.js` — rebuild it as `forLoop`: call the callback with **(value, index, array)** for every element.\n\nThe real **forEach** passes the same three arguments. JavaScript ignores extra arguments — `aditya(10, 20, \"Rohit\")` with one parameter just uses `10`.",
+        "code": "Array.prototype.forLoop = function (Callback) {\n  for (let i = 0; i < arr.length; i++) {\n    Callback(arr[i], i, arr);\n  }\n};\n\nconst arr = [10, 20, 8, 19, 14, 23];\n\n// first: value, second: index, third: array\narr.forEach((i, j, k) => {\n  console.log(i, j, k);\n});",
+        "tryIt": "[\"a\", \"b\", \"c\"].forEach((value, index) => {\n  console.log(index, value);\n});"
+      },
+      {
+        "id": "map",
+        "title": "map — Transform Every Element",
+        "content": "Thunder `map.js` — **map** runs the callback on each element and returns a **new array of the same length**.\n\nThe original array is untouched.",
+        "code": "const arr = [10, 20, 40, 73, 18];\n\nconst newArr = arr.map((num) => num * 5);\n\nconsole.log(newArr); // [50, 100, 200, 365, 90]",
+        "tryIt": "const prices = [100, 250, 40];\nconst withTax = prices.map(p => p * 1.18);\nconsole.log(withTax);"
+      },
+      {
+        "id": "custom-filter",
+        "title": "Build Your Own filter — this",
+        "content": "Thunder `filter.js` — `filtered` on **Array.prototype** uses **this**:\n\nInside the method, `this` is **the array it was called on** — so the same method works for any array, unlike the earlier version hardcoding `arr`.",
+        "code": "Array.prototype.filtered = function (Callback) {\n  const answer = [];\n  for (let num of this) {\n    if (Callback(num)) answer.push(num);\n  }\n  return answer;\n};\n\nconst arr = [3, 54, 18, 11, 20, 19, 2];\nconsole.log(arr.filtered((num) => num > 10));\n\nconst a = [-10, 3, 5, 18, -9, 14];\nconsole.log(a.filtered((num) => num > 10));",
+        "tryIt": "const arr = [3, 54, 18, 11, 20, 19, 2];\nconst answer = arr.filter((num) => num > 10);\nconsole.log(answer); // [54, 18, 11, 20, 19]"
       },
       {
         "id": "reduce",
-        "title": "reduce",
-        "content": "`reduce` combines all elements into one value — sum, max, flatten, etc.",
-        "code": "const arr = [10, 20, 30];\nconst sum = arr.reduce((acc, n) => acc + n, 0);\nconsole.log(sum);",
-        "tryIt": "const prices = [100, 200, 50];\nconst total = prices.reduce((a, b) => a + b, 0);\nconsole.log(\"Total:\", total);"
+        "title": "reduce — The Accumulator",
+        "content": "Thunder `reducer.js` — **reduce** boils an array down to **one value**.\n\nThe callback gets `(accumulator, num)`; the second argument to reduce is the **initial value** — `0` for a sum, `1` for a product.",
+        "code": "const arr = [10, 20, 30, 40, 50];\n\nconst sum = arr.reduce((accumulator, num) => {\n  return accumulator + num;\n}, 0);\nconsole.log(sum); // 150\n\nconst ans = arr.reduce((acc, num) => {\n  return acc * num;\n}, 1);\nconsole.log(ans); // 12000000",
+        "tryIt": "const prices = [100, 200, 50];\nconst total = prices.reduce((acc, p) => acc + p, 0);\nconsole.log(\"Total:\", total);"
+      },
+      {
+        "id": "realworld-chain",
+        "title": "Real World — filter + map Chain",
+        "content": "Thunder `realworld.js` — a 20-item product catalog:\n\n1. **filter** keeps only `inStock` goods (20 → 15)\n2. **map** reshapes each to `{ name, category, price }`\n\nChaining reads like a sentence — this is everyday backend/frontend code.",
+        "code": "const products = [\n  { id: 1, name: \"Laptop\", category: \"Electronics\", price: 1200, inStock: true },\n  { id: 3, name: \"Smartphone\", category: \"Electronics\", price: 800, inStock: false },\n  // ...20 products\n];\n\nconst pro = products\n  .filter((goods) => goods.inStock)\n  .map((goods) => ({\n    name: goods.name,\n    category: goods.category,\n    price: goods.price\n  }));\n\nconsole.log(pro);",
+        "tryIt": "const items = [\n  { name: \"A\", price: 50, inStock: true },\n  { name: \"B\", price: 30, inStock: false },\n  { name: \"C\", price: 80, inStock: true }\n];\nconsole.log(items.filter(i => i.inStock).map(i => i.name));"
+      },
+      {
+        "id": "sets",
+        "title": "Sets — Unique Values Only",
+        "content": "Thunder `sets.js` — a **Set** keeps only unique values; duplicates vanish automatically.\n\n- `add()` ignores repeats, `has()` checks membership\n- Two identical-looking **objects** stay separate — uniqueness is by reference",
+        "code": "const arr = [10, 20, 30, 20, 10, 12, 30, \"Rohit\", \"Mohit\", 70, \"Rohit\"];\nconst s1 = new Set(arr);\nconsole.log(s1);\n\nconst s2 = new Set();\ns2.add(10);\ns2.add(43);\ns2.add(43); // ignored\nconsole.log(s2.has(20)); // false",
+        "tryIt": "const s = new Set([1, 1, 2, 3, 3]);\nconsole.log(s.size);\nconsole.log(s.has(2));"
+      },
+      {
+        "id": "dedupe-emails",
+        "title": "Dedupe with Set + Spread",
+        "content": "The classic interview one-liner: duplicate emails → **Set** → **spread** back into a real array.\n\n`[...new Set(email)]` — unique list, array methods available again.",
+        "code": "const email = ['rohit@gmail', 'mohit@gmail.com', 'sohit@gmail', 'rohit@gmail', 'mohit@gmail'];\n\nconst s1 = new Set(email);\nconst arr = [...s1];\nconsole.log(arr);",
+        "tryIt": "const tags = [\"js\", \"css\", \"js\", \"html\", \"css\"];\nconsole.log([...new Set(tags)]);"
+      },
+      {
+        "id": "lecture09-practice",
+        "title": "Your Lecture 09 Practice",
+        "content": "Work through Thunder Lecture 09 on GitHub:\n1. **`first.js`** — calculator with add/sub/mul callbacks, inline arrows\n2. **`customize.js` + `callback.js`** — bubble sort, then callback-driven sorting on Array.prototype\n3. **`forEach.js`** — custom forLoop, real forEach with (value, index, array)\n4. **`map.js` + `filter.js` + `reducer.js`** — transform, keep, accumulate\n5. **`realworld.js`** — chain filter + map on the 20-product catalog\n6. **`sets.js`** — dedupe arrays and emails\n\nKeep the [Notion notes](https://app.notion.com/p/Lecture09-Callback-forEach-map-filter-reduce-37d43ac5cab980e0a44ef39a89b81143?source=copy_link) open while you code. Next up: the **DOM** — JavaScript meets the page.",
+        "code": "const nums = [3, 54, 18, 11, 20, 19, 2];\nconst result = nums\n  .filter(n => n > 10)\n  .map(n => n * 2)\n  .reduce((acc, n) => acc + n, 0);\nconsole.log(result);",
+        "tryIt": "const marks = [45, 82, 67, 91, 38];\nconst passed = marks.filter(m => m >= 40);\nconst avg = passed.reduce((a, m) => a + m, 0) / passed.length;\nconsole.log(passed, avg);"
       }
     ],
     "quiz": [
       {
-        "question": "map() returns?",
+        "question": "calculator(10, 20, mul) — what is mul here?",
         "options": [
-          "new array",
-          "boolean",
-          "number",
+          "A callback function",
+          "An IIFE",
+          "A string",
+          "A method of calculator"
+        ],
+        "answer": 0,
+        "explanation": "A function passed as an argument is a callback — first.js."
+      },
+      {
+        "question": "forEach callback arguments, in order?",
+        "options": [
+          "value, index, array",
+          "index, value, array",
+          "array, value, index",
+          "value only — nothing else"
+        ],
+        "answer": 0,
+        "explanation": "arr.forEach((value, index, array) => ...) — forEach.js."
+      },
+      {
+        "question": "arr.map(num => num * 5) returns?",
+        "options": [
+          "A new array, same length",
+          "The same array mutated",
+          "A single number",
           "undefined"
         ],
         "answer": 0,
-        "explanation": "Transforms to new array."
+        "explanation": "map transforms into a new array — map.js."
       },
       {
-        "question": "reduce needs?",
+        "question": "Inside Array.prototype.filtered, `this` refers to?",
         "options": [
-          "initial value optional",
-          "only strings",
-          "no callback",
-          "two arrays"
+          "The callback",
+          "The array the method was called on",
+          "The global object",
+          "undefined"
         ],
-        "answer": 0,
-        "explanation": "Accumulator pattern."
+        "answer": 1,
+        "explanation": "this = the calling array, so filtered works on any array — filter.js."
+      },
+      {
+        "question": "new Set([10, 20, 20, 10]).size equals?",
+        "options": [
+          "4",
+          "2",
+          "1",
+          "0"
+        ],
+        "answer": 1,
+        "explanation": "Sets keep unique values only — sets.js."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=PojpwEbOQJg",
@@ -1264,41 +1480,94 @@ export const chaptersDays01to19 = [
     "slug": "introduction-to-dom",
     "day": 10,
     "title": "Introduction to the DOM",
-    "subtitle": "Selecting and manipulating HTML with JavaScript",
+    "subtitle": "The document tree, selecting elements, and changing content & style",
     "duration": "2 hrs",
-    "createdOn": "10 Jul 2026",
+    "createdOn": "14 Jul 2026",
     "status": "published",
     "topics": [
       "What is the DOM?",
-      "document object",
+      "document & window",
+      "The DOM tree",
       "getElementById",
-      "textContent & innerHTML",
+      "getElementsByClassName / TagName",
+      "querySelector",
+      "querySelectorAll",
+      "textContent vs innerHTML",
       "Changing styles",
-      "DOM tree"
+      "Show & hide elements"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture10-Introduction-To-DOM-38043ac5cab980adbbdeffd5e8dc6ae8",
+    "notionUrl": "https://app.notion.com/p/Lecture10-Introduction-To-DOM-38043ac5cab980adbbdeffd5e8dc6ae8?source=copy_link",
     "githubPath": "Lecture10",
     "sections": [
       {
         "id": "what-is-dom",
         "title": "What is the DOM?",
-        "content": "The DOM (Document Object Model) is the browser's tree representation of your HTML. JavaScript can read and change it.",
-        "code": "const el = document.getElementById(\"demo\");\nel.textContent = \"Hello from JS!\";",
-        "tryIt": "// DOM code runs in browser only\nconsole.log(\"Open a .html file to try DOM code\");"
+        "content": "When the browser loads HTML, it builds the **DOM (Document Object Model)** — a **tree of objects**, one node per tag. JavaScript can read and change that tree live, so the page reacts without a reload.\n\nThunder's `index.html` demo: an `<h1 id=\"first\">`, an `<h2 class=\"Rohit\" id=\"second\">`, and a `<ul class=\"Rohit\">` with four `<li>` items (Web Development, Security, System Design, Devops).\n\nOpen [Lecture10](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture10) on GitHub and open `index.html` in the browser.",
+        "code": "<h1 id=\"first\">\n  Hello Thunder Students\n  <span style=\"display:none\">Kaise ho</span>\n</h1>\n<h2 class=\"Rohit\" id=\"second\">We are covering lot of tech here</h2>\n<ul class=\"Rohit\">\n  <li>Web Developement</li>\n  <li>Security</li>\n  <li>System Design</li>\n  <li>Devops</li>\n</ul>",
+        "tryIt": "// Runs in the browser console on index.html\nconsole.log(document.title);\nconsole.log(document.body);"
       },
       {
-        "id": "selecting",
-        "title": "Selecting Elements",
-        "content": "`getElementById`, `querySelector`, `querySelectorAll` find elements on the page.",
-        "code": "// In browser:\n// const btn = document.getElementById(\"btn\");\n// const items = document.querySelectorAll(\".item\");",
-        "tryIt": "console.log(\"DOM methods: getElementById, querySelector\");"
+        "id": "document-window",
+        "title": "document & window",
+        "content": "**window** is the whole browser tab; **document** is the page inside it — your entry point to the DOM.\n\nEverything hangs off `document`: `document.body`, `document.head`, and every selector method.\n\nLog an element with `console.dir()` to see it as an **object** with all the properties you can change.",
+        "code": "console.log(window);\nconsole.log(document);\nconsole.log(document.body);\n\nconst h1 = document.getElementById(\"first\");\nconsole.dir(h1); // element as an object",
+        "tryIt": "console.log(document.URL);\nconsole.log(document.getElementsByTagName(\"li\").length);"
       },
       {
-        "id": "manipulating",
-        "title": "Changing Content & Style",
-        "content": "Use `textContent`, `innerHTML`, and `style` to update the page.",
-        "code": "// element.textContent = \"New text\";\n// element.style.backgroundColor = \"pink\";",
-        "tryIt": "console.log(\"textContent vs innerHTML:\");\nconsole.log(\"Use textContent for plain text (safer)\");"
+        "id": "get-by-id",
+        "title": "getElementById",
+        "content": "**Ids are unique** on a page, so `getElementById` returns **one element** (or `null` if not found).\n\nThunder grabs `#first` and `#second` this way.",
+        "code": "const first = document.getElementById(\"first\");\nconst second = document.getElementById(\"second\");\nconsole.log(first);\nconsole.log(second);",
+        "tryIt": "const el = document.getElementById(\"first\");\nconsole.log(el.textContent);"
+      },
+      {
+        "id": "get-by-class-tag",
+        "title": "By Class & Tag Name",
+        "content": "**getElementsByClassName** and **getElementsByTagName** return a **live HTMLCollection** — it updates if the DOM changes, and it is *not* a real array (no `map`/`filter`).\n\nIn the demo both the `<h2>` and the `<ul>` share `class=\"Rohit\"`, so the collection holds both.",
+        "code": "const rohit = document.getElementsByClassName(\"Rohit\");\nconsole.log(rohit.length); // 2 — h2 and ul\n\nconst items = document.getElementsByTagName(\"li\");\nconsole.log(items.length); // 4",
+        "tryIt": "const lis = document.getElementsByTagName(\"li\");\nconsole.log(lis[0].textContent);\n// convert to array to loop:\nconsole.log([...lis].map(li => li.textContent));"
+      },
+      {
+        "id": "query-selector",
+        "title": "querySelector — CSS in JS",
+        "content": "**querySelector** takes any **CSS selector** and returns the **first** match:\n\n- `#first` — by id\n- `.Rohit` — by class\n- `ul li` — nested\n\nWith `.Rohit`, it returns the `<h2>` (the first element with that class).",
+        "code": "const byId = document.querySelector(\"#first\");\nconst byClass = document.querySelector(\".Rohit\"); // the h2\nconst firstLi = document.querySelector(\"ul li\");\nconsole.log(firstLi.textContent); // Web Developement",
+        "tryIt": "console.log(document.querySelector(\"#second\").textContent);"
+      },
+      {
+        "id": "query-selector-all",
+        "title": "querySelectorAll — NodeList",
+        "content": "**querySelectorAll** returns **all** matches as a **static NodeList** — a snapshot that does *not* update, but *does* support `forEach`.",
+        "code": "const items = document.querySelectorAll(\"li\");\nitems.forEach((li) => {\n  console.log(li.textContent);\n});\n\nconst rohit = document.querySelectorAll(\".Rohit\");\nconsole.log(rohit.length); // 2",
+        "tryIt": "document.querySelectorAll(\"li\").forEach((li, i) => {\n  console.log(i, li.textContent);\n});"
+      },
+      {
+        "id": "text-vs-html",
+        "title": "textContent vs innerHTML",
+        "content": "**textContent** reads/writes **plain text** — any tags you set become literal text (safe).\n\n**innerHTML** reads/writes **markup** — the browser parses tags. Powerful, but dangerous with untrusted input (XSS).",
+        "code": "const first = document.getElementById(\"first\");\nfirst.textContent = \"Hello from JS!\";\n\nconst second = document.getElementById(\"second\");\nsecond.innerHTML = \"We cover <b>lots</b> of tech\";",
+        "tryIt": "const h = document.getElementById(\"second\");\nconsole.log(h.textContent);\nh.textContent = \"<b>not bold</b>\"; // shows the tags as text"
+      },
+      {
+        "id": "changing-styles",
+        "title": "Changing Styles",
+        "content": "The `.style` property maps to inline CSS — property names become **camelCase**: `background-color` → `backgroundColor`, `font-size` → `fontSize`.",
+        "code": "const first = document.getElementById(\"first\");\nfirst.style.backgroundColor = \"pink\";\nfirst.style.color = \"black\";\nfirst.style.fontSize = \"50px\";",
+        "tryIt": "const el = document.getElementById(\"second\");\nel.style.backgroundColor = \"orange\";\nel.style.padding = \"10px\";"
+      },
+      {
+        "id": "show-hide",
+        "title": "Show & Hide Elements",
+        "content": "The `<span>Kaise ho</span>` inside the `<h1>` starts with `display:none`, so it is hidden.\n\nFlip `style.display` to reveal it — the foundation of toggles, dropdowns, and modals.",
+        "code": "const first = document.getElementById(\"first\");\nconst span = first.querySelector(\"span\");\n\nspan.style.display = \"inline\"; // now visible\n// span.style.display = \"none\"; // hide again",
+        "tryIt": "const span = document.querySelector(\"#first span\");\nspan.style.display = span.style.display === \"none\" ? \"inline\" : \"none\";"
+      },
+      {
+        "id": "lecture10-practice",
+        "title": "Your Lecture 10 Practice",
+        "content": "Open Thunder's `index.html` from [Lecture10](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture10) and, in the browser console:\n1. Grab `#first` and `#second` with **getElementById**\n2. Collect the `.Rohit` elements and the `<li>` items with **class/tag** and **querySelectorAll**\n3. Change text with **textContent**, markup with **innerHTML**\n4. Restyle `#first` — background, color, font size\n5. Reveal the hidden **span** by setting `display`\n\nKeep the [Notion notes](https://app.notion.com/p/Lecture10-Introduction-To-DOM-38043ac5cab980adbbdeffd5e8dc6ae8?source=copy_link) open. Next up: **DOM CRUD & events** — creating, deleting, and reacting to clicks.",
+        "code": "const items = document.querySelectorAll(\"ul li\");\nitems.forEach((li) => {\n  li.style.color = \"cyan\";\n  console.log(li.textContent);\n});",
+        "tryIt": "const title = document.getElementById(\"first\");\ntitle.textContent = \"DOM mastered!\";\ntitle.style.backgroundColor = \"lightgreen\";"
       }
     ],
     "quiz": [
@@ -1311,18 +1580,51 @@ export const chaptersDays01to19 = [
           "Direct Object Map"
         ],
         "answer": 1,
-        "explanation": "Document Object Model."
+        "explanation": "Document Object Model — the browser's tree of your HTML."
       },
       {
         "question": "getElementById returns?",
         "options": [
-          "array",
-          "single element",
-          "string",
-          "number"
+          "An array",
+          "A single element or null",
+          "A NodeList",
+          "A string"
         ],
         "answer": 1,
-        "explanation": "One element or null."
+        "explanation": "Ids are unique, so it returns one element (or null)."
+      },
+      {
+        "question": "querySelector('.Rohit') on the demo returns?",
+        "options": [
+          "Both .Rohit elements",
+          "Only the first match (the h2)",
+          "A live HTMLCollection",
+          "null"
+        ],
+        "answer": 1,
+        "explanation": "querySelector returns only the first matching element."
+      },
+      {
+        "question": "Which safely inserts plain text without parsing tags?",
+        "options": [
+          "innerHTML",
+          "textContent",
+          "outerHTML",
+          "insertAdjacentHTML"
+        ],
+        "answer": 1,
+        "explanation": "textContent treats everything as literal text — no HTML parsing."
+      },
+      {
+        "question": "In JS, the CSS property background-color is written as?",
+        "options": [
+          "background-color",
+          "backgroundColor",
+          "background_color",
+          "BackgroundColor"
+        ],
+        "answer": 1,
+        "explanation": "style properties use camelCase — el.style.backgroundColor."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=0ik6X4DJKCc",
@@ -1335,65 +1637,160 @@ export const chaptersDays01to19 = [
     "slug": "dom-crud-and-events",
     "day": 11,
     "title": "DOM CRUD & Events",
-    "subtitle": "Create, read, update, delete — and handle user events",
+    "subtitle": "Handle events, create & insert nodes, and render UI from data",
     "duration": "2 hrs",
-    "createdOn": "11 Jul 2026",
+    "createdOn": "15 Jul 2026",
     "status": "published",
     "topics": [
-      "Creating elements",
-      "appendChild",
-      "Event listeners",
-      "click & dblclick",
-      "Event object",
-      "CRUD operations"
+      "Element as an object",
+      "onclick handler",
+      "addEventListener",
+      "click vs dblclick",
+      "createElement",
+      "append & prepend",
+      "before & after",
+      "id, className & classList",
+      "setAttribute / getAttribute",
+      "children indexing",
+      "Batch append with spread",
+      "Render cards from data"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture11-CRUD-and-Event-in-DOM-38143ac5cab980d48176fda6b086cfef",
+    "notionUrl": "https://app.notion.com/p/Lecture11-CRUD-and-Event-in-DOM-38143ac5cab980d48176fda6b086cfef?source=copy_link",
     "githubPath": "Lecture11",
     "sections": [
       {
-        "id": "crud",
-        "title": "DOM CRUD Operations",
-        "content": "**C**reate, **R**ead, **U**pdate, **D**elete elements dynamically with `createElement`, `appendChild`, `remove`.",
-        "code": "// const div = document.createElement(\"div\");\n// div.textContent = \"New element\";\n// parent.appendChild(div);",
-        "tryIt": "console.log(\"CRUD = Create, Read, Update, Delete\");"
+        "id": "element-is-object",
+        "title": "An Element is an Object",
+        "content": "Thunder `first.js` — once you select an element it is just a **JavaScript object** with properties (`textContent`, `style`) and function slots (`onclick`).\n\nSetting one of those slots to a function tells the browser what to run later.\n\nOpen [Lecture11](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture11) and its `index.html` in the browser.",
+        "code": "const element = document.getElementById(\"first\");\nconsole.log(element.textContent);\nconsole.dir(element); // element as an object",
+        "tryIt": "const el = document.getElementById(\"first\");\nconsole.log(typeof el);\nconsole.log(el.tagName);"
       },
       {
-        "id": "events",
-        "title": "Event Listeners",
-        "content": "Respond to clicks, double-clicks, and more with `addEventListener`.",
-        "code": "// element.addEventListener(\"click\", () => {\n//   element.textContent = \"Clicked!\";\n// });",
-        "tryIt": "console.log(\"addEventListener(event, callback)\");"
+        "id": "onclick",
+        "title": "onclick — The Classic Handler",
+        "content": "Assign a function to `element.onclick`. When the user clicks, the browser runs it.\n\nLimitation: `onclick` is a **single slot** — a second assignment overwrites the first.",
+        "code": "const element = document.getElementById(\"first\");\n\nelement.onclick = () => {\n  element.textContent = \"Vijay bhai kaise ho\";\n  element.style.backgroundColor = \"pink\";\n};",
+        "tryIt": "const el = document.getElementById(\"first\");\nel.onclick = function handleClick() {\n  el.textContent = \"Clicked!\";\n};"
       },
       {
-        "id": "event-object",
-        "title": "The Event Object",
-        "content": "The callback receives an event object with info about what happened — target, type, coordinates.",
-        "code": "// element.addEventListener(\"click\", (e) => {\n//   console.log(e.target);\n// });",
-        "tryIt": "console.log(\"Events: click, dblclick, submit, keydown\");"
+        "id": "add-event-listener",
+        "title": "addEventListener",
+        "content": "The modern way: `element.addEventListener(eventType, callback)`. When the event fires, the callback runs.\n\nUnlike `onclick`, you can **stack many listeners** on the same element and event.",
+        "code": "const element = document.getElementById(\"first\");\n\nelement.addEventListener(\"click\", () => {\n  element.textContent = \"I am best\";\n  element.style.backgroundColor = \"pink\";\n});",
+        "tryIt": "const el = document.getElementById(\"first\");\nel.addEventListener(\"click\", () => console.log(\"clicked!\"));\nel.addEventListener(\"click\", () => console.log(\"and again!\"));"
+      },
+      {
+        "id": "click-dblclick",
+        "title": "click vs dblclick",
+        "content": "The **event type** string decides what triggers the callback — `\"click\"` for a single click, `\"dblclick\"` for a double click.\n\nSame element, different behavior for each event.",
+        "code": "element.addEventListener(\"dblclick\", () => {\n  element.textContent = \"Double clicked!\";\n  element.style.backgroundColor = \"pink\";\n});",
+        "tryIt": "const el = document.getElementById(\"first\");\nel.addEventListener(\"dblclick\", () => {\n  el.textContent = \"You double-clicked me\";\n});"
+      },
+      {
+        "id": "create-element",
+        "title": "Create — createElement",
+        "content": "Thunder `second/first.js` — **createElement** builds a node **in memory** (not yet on the page). Set its `textContent`, then insert it later.",
+        "code": "const newElement = document.createElement(\"h2\");\nnewElement.textContent = \"I am Sachin Kumar\";\nconsole.log(newElement); // exists in memory, not on page yet",
+        "tryIt": "const h = document.createElement(\"h3\");\nh.textContent = \"Chamak gaya bhaiya\";\ndocument.body.append(h);"
+      },
+      {
+        "id": "append-prepend",
+        "title": "Insert — append & prepend",
+        "content": "Put a node **inside** a parent:\n\n- **append(...nodes)** — add at the **end** (accepts multiple nodes)\n- **prepend(node)** — add at the **start**",
+        "code": "const ul = document.getElementById(\"ul\");\nconst li = document.createElement(\"li\");\nli.textContent = \"Web Development\";\n\nul.append(li, li2, li3); // end\nul.prepend(li4);         // start",
+        "tryIt": "const ul = document.getElementById(\"ul\");\nconst li = document.createElement(\"li\");\nli.textContent = \"DSA\";\nul.append(li);"
+      },
+      {
+        "id": "before-after",
+        "title": "Insert — before, after & children",
+        "content": "Place a node as a **sibling** relative to another:\n\n- `element.before(newEl)` / `element.after(newEl)`\n- Reach into the live child list: `ul.children[1].after(li5)`",
+        "code": "element.before(newElement);\nelement.after(newElement2);\n\nul.children[1].after(li5);\nli.after(li5);",
+        "tryIt": "const ul = document.getElementById(\"ul\");\nconst li = document.createElement(\"li\");\nli.textContent = \"GenAI\";\nif (ul.children[0]) ul.children[0].after(li);"
+      },
+      {
+        "id": "attributes-classes",
+        "title": "Update — id, class & attributes",
+        "content": "Give a node identity and styling hooks:\n\n- `newEl.id = \"third\"`\n- **classList.add()** adds a class without wiping others (safer than `className =`)\n- **setAttribute / getAttribute** read and write any attribute",
+        "code": "newElement2.id = \"third\";\nnewElement2.classList.add(\"Rohit\");\nnewElement2.classList.add(\"Mohit\");\nnewElement2.setAttribute(\"piyush\", \"mohan\");\nconsole.log(newElement2.getAttribute(\"class\"));",
+        "tryIt": "const h = document.createElement(\"h2\");\nh.classList.add(\"title\");\nh.setAttribute(\"data-role\", \"heading\");\nconsole.log(h.getAttribute(\"data-role\"));"
+      },
+      {
+        "id": "batch-append",
+        "title": "Batch Append with Spread",
+        "content": "Creating nodes one at a time and appending each causes many reflows. Instead, **collect nodes in an array** and append them all at once with the spread operator.",
+        "code": "const foods = [\"Milk\", \"Soya\", \"Chicken\", \"Egg\", \"Samosa\"];\nconst ul = document.getElementById(\"ul\");\nconst arr = [];\n\nfor (const food of foods) {\n  const li = document.createElement(\"li\");\n  li.textContent = food;\n  arr.push(li);\n}\n\nul.append(...arr); // one insert",
+        "tryIt": "const arr = [];\nfor (const t of [\"A\", \"B\", \"C\"]) {\n  const li = document.createElement(\"li\");\n  li.textContent = t;\n  arr.push(li);\n}\nconsole.log(arr.length);"
+      },
+      {
+        "id": "render-from-data",
+        "title": "Project — Render Cards from Data",
+        "content": "Thunder `projects/first.js` — the payoff: turn a **data array into UI**.\n\nLoop `users`, build an `<img>`, `<h2>` name, and `<p>` age, wrap them in a `<div>` card, collect all cards, then `root.append(...arr)` once. This is exactly how frameworks render lists under the hood.",
+        "code": "const root = document.getElementById(\"root\");\nconst arr = [];\n\nusers.forEach((people) => {\n  const name = document.createElement(\"h2\");\n  name.textContent = `Name: ${people.name}`;\n\n  const age = document.createElement(\"p\");\n  age.textContent = `Age: ${people.age}`;\n\n  const image = document.createElement(\"img\");\n  image.src = people.photo;\n\n  const card = document.createElement(\"div\");\n  card.append(image, name, age);\n  arr.push(card);\n});\n\nroot.append(...arr);",
+        "tryIt": "const users = [{ name: \"Aarav\", age: 24 }, { name: \"Priya\", age: 22 }];\nusers.forEach((u) => {\n  const div = document.createElement(\"div\");\n  div.textContent = `${u.name} (${u.age})`;\n  document.body.append(div);\n});"
+      },
+      {
+        "id": "lecture11-practice",
+        "title": "Your Lecture 11 Practice",
+        "content": "Open Thunder's [Lecture11](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture11) folder:\n1. **`first.js`** — wire `onclick` and `addEventListener` (click + dblclick) on `#first`\n2. **`second/first.js`** — createElement, append/prepend/before/after, classList, setAttribute\n3. **`projects/first.js`** — render the 10 users as image + name + age cards into `#root`\n4. Try the `foods` list — build `<li>` nodes in a loop and batch-append\n\nData lives in **`data.js`** (users + a 20-item products array). Keep the [Notion notes](https://app.notion.com/p/Lecture11-CRUD-and-Event-in-DOM-38143ac5cab980d48176fda6b086cfef?source=copy_link) open. Next: **events & projects** — wiring real interactivity.",
+        "code": "const root = document.getElementById(\"root\");\nconst cards = products\n  .filter((p) => p.inStock)\n  .map((p) => {\n    const div = document.createElement(\"div\");\n    div.textContent = `${p.title} — \\u20b9${p.price}`;\n    return div;\n  });\nroot.append(...cards);",
+        "tryIt": "const btn = document.createElement(\"button\");\nbtn.textContent = \"Click me\";\nbtn.addEventListener(\"click\", () => btn.textContent = \"Clicked!\");\ndocument.body.append(btn);"
       }
     ],
     "quiz": [
       {
         "question": "addEventListener takes?",
         "options": [
-          "event type and callback",
-          "only callback",
-          "only string",
-          "CSS"
+          "An event type and a callback",
+          "Only a callback",
+          "Only a string",
+          "A CSS selector"
         ],
         "answer": 0,
-        "explanation": "Event + handler function."
+        "explanation": "element.addEventListener('click', callback) — first.js."
       },
       {
-        "question": "CRUD D means?",
+        "question": "onclick vs addEventListener — the key difference?",
         "options": [
-          "Delete",
-          "Download",
-          "Debug",
-          "Deploy"
+          "onclick can stack many handlers",
+          "addEventListener can stack many handlers; onclick has one slot",
+          "They are identical",
+          "onclick only works on buttons"
         ],
-        "answer": 0,
-        "explanation": "Create Read Update Delete."
+        "answer": 1,
+        "explanation": "A second onclick assignment overwrites the first; addEventListener stacks."
+      },
+      {
+        "question": "document.createElement('h2') gives you an element that is?",
+        "options": [
+          "Already on the page",
+          "In memory, not yet on the page",
+          "A string of HTML",
+          "null until appended"
+        ],
+        "answer": 1,
+        "explanation": "It exists in memory; you insert it with append/before/after — second/first.js."
+      },
+      {
+        "question": "Which adds a class without removing existing ones?",
+        "options": [
+          "element.className = 'Rohit'",
+          "element.classList.add('Rohit')",
+          "element.setAttribute('Rohit')",
+          "element.class = 'Rohit'"
+        ],
+        "answer": 1,
+        "explanation": "classList.add appends; className = overwrites all classes."
+      },
+      {
+        "question": "Best way to insert 10 built nodes into a parent?",
+        "options": [
+          "append each one inside the loop",
+          "Collect them in an array, then parent.append(...arr)",
+          "Use innerHTML += each time",
+          "prepend each one"
+        ],
+        "answer": 1,
+        "explanation": "Batching with spread does one insert instead of ten — projects/first.js."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=XF1_MlZ5l6M",

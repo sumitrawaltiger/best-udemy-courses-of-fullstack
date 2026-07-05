@@ -302,7 +302,7 @@ export default function Day007() {
             ← Day 6
           </Link>
           <p className="day001-datetime">📅 11th July 2026 · Thunder Day 7 · 93 days left</p>
-          <Link to="/learn/date-and-functions" className="day001-nav-btn day001-nav-next">
+          <Link to="/day-008" className="day001-nav-btn day001-nav-next">
             Day 8 →
           </Link>
         </header>
