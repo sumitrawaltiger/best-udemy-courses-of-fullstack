@@ -305,7 +305,7 @@ export default function Day005() {
             ← Day 4
           </Link>
           <p className="day001-datetime">📅 9th July 2026 · Thunder Day 5 · 95 days left</p>
-          <Link to="/learn/arrays-and-objects" className="day001-nav-btn day001-nav-next">
+          <Link to="/day-006" className="day001-nav-btn day001-nav-next">
             Day 6 →
           </Link>
         </header>

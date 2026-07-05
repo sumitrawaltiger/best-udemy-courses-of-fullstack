@@ -769,41 +769,110 @@ export const chaptersDays01to19 = [
     "slug": "arrays-and-objects",
     "day": 6,
     "title": "Arrays & Objects",
-    "subtitle": "Creating, accessing, and iterating arrays",
+    "subtitle": "Indexing, push/pop, slice/splice, 2D arrays & spread",
     "duration": "2 hrs",
-    "createdOn": "6 Jul 2026",
+    "createdOn": "10 Jul 2026",
     "status": "published",
     "topics": [
       "What is an array?",
-      "Array indexing",
-      "Array.length",
-      "Looping arrays",
-      "Object basics",
-      "Array of objects"
+      "Array indexing & length",
+      "Heterogeneous arrays",
+      "push, pop, unshift, shift",
+      "for & for...of loops",
+      "slice vs splice",
+      "Array reference copy",
+      "2D arrays",
+      "Spread & concat",
+      "Destructuring & rest",
+      "join, includes, lastIndexOf",
+      "Object basics"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture06-Array-and-Objects-in-Javascript-37943ac5cab9807f801cc8c83755decc",
+    "notionUrl": "https://app.notion.com/p/Lecture06-Array-and-Objects-in-Javascript-37943ac5cab9807f801cc8c83755decc?source=copy_link",
     "githubPath": "Lecture06",
     "sections": [
       {
-        "id": "arrays",
+        "id": "arrays-intro",
         "title": "What is an Array?",
-        "content": "An array stores multiple values in one variable. Index starts at 0.",
-        "code": "let marks = [30, 20, 11, 80, 70];\nconsole.log(marks);\nconsole.log(marks.length);\nconsole.log(marks[2]);",
+        "content": "Instead of `marks1`, `marks2` … `marks100` variables, store all marks in **one array**.\n\n`let marks = [30, 20, 11, 80, 70]` — index starts at **0**. `marks[2]` is the third element.\n\nOpen [Lecture06](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture06) on GitHub: `first.js` through `fourth.js`.",
+        "code": "let marks = [30, 20, 11, 80, 70];\nconsole.log(marks);\nconsole.log(marks.length);\nconsole.log(marks[2]); // 11",
         "tryIt": "let fruits = [\"apple\", \"banana\", \"mango\"];\nconsole.log(fruits[0]);\nconsole.log(fruits.length);"
+      },
+      {
+        "id": "heterogeneous-arrays",
+        "title": "Heterogeneous Arrays & Updating",
+        "content": "Arrays can hold **any type** — numbers, strings, booleans mixed together.\n\nYou can **update** any index: `user[1] = \"Anjali\"`.\n\n`typeof []` returns `\"object\"` — arrays are special objects in JavaScript.",
+        "code": "let user = [10, 60, \"Rohit\", true];\nconsole.log(user);\n\nuser[1] = \"Anjali\";\nconsole.log(user);\nconsole.log(typeof user); // \"object\"",
+        "tryIt": "let mix = [1, \"Thunder\", false];\nmix[0] = 100;\nconsole.log(mix);"
+      },
+      {
+        "id": "push-pop-shift",
+        "title": "push, pop, unshift, shift",
+        "content": "Thunder `second.js` — four essential array methods:\n\n- **push** — add to the **end**\n- **pop** — remove from the **end**\n- **unshift** — add to the **start**\n- **shift** — remove from the **start**",
+        "code": "let num = [10, 20, 30, 40, 50];\nnum.push(101, 24);\nnum.pop();\n\nnum.unshift(11, 22);\nnum.shift();\nconsole.log(num);",
+        "tryIt": "let stack = [1, 2, 3];\nstack.push(4);\nstack.pop();\nconsole.log(stack);"
       },
       {
         "id": "loop-arrays",
         "title": "Looping Through Arrays",
-        "content": "Use a for loop with index, or for...of for values.",
-        "code": "let marks = [30, 20, 11, 80, 70];\nfor (let i = 0; i < marks.length; i++) {\n  console.log(marks[i]);\n}",
+        "content": "Two ways Thunder uses:\n\n1. **Classic for** — `for (let i = 0; i < marks.length; i++)`\n2. **for...of** — `for (let x of num)` — cleaner when you only need values",
+        "code": "let marks = [30, 20, 11, 80, 70];\nfor (let i = 0; i < marks.length; i++) {\n  console.log(marks[i]);\n}\n\nlet num = [10, 20, 30, 40, 50];\nfor (let x of num) {\n  console.log(x);\n}",
         "tryIt": "let nums = [10, 20, 30];\nfor (const n of nums) console.log(n);"
+      },
+      {
+        "id": "slice-splice",
+        "title": "slice vs splice",
+        "content": "**slice(start, end)** — copies a portion **without changing** the original. End index is not included.\n\n**splice(start, deleteCount, ...items)** — **mutates** the array: delete and/or insert at an index.\n\nExample: `marks.splice(2, 4, 17, 19)` removes 4 elements from index 2 and inserts 17, 19.",
+        "code": "let marks = [10, 20, 30, 40, 50, 60, 70];\n\nconst copied = marks.slice(2, 4);\nconsole.log(copied); // [30, 40]\nconsole.log(marks);  // unchanged\n\nconst removed = marks.splice(2, 4, 17, 19);\nconsole.log(removed);\nconsole.log(marks);",
+        "tryIt": "let arr = [1, 2, 3, 4, 5];\nconsole.log(arr.slice(1, 3));\nconsole.log(arr);"
+      },
+      {
+        "id": "array-reference",
+        "title": "Arrays Copy by Reference",
+        "content": "Like objects, assigning an array copies the **reference**, not the values.\n\n`const arr2 = arr1` — changing `arr2[2]` changes `arr1[2]` too.",
+        "code": "const arr1 = [10, 20, 30, 40, 50];\nconst arr2 = arr1;\n\narr2[2] = 84;\nconsole.log(arr1); // [10, 20, 84, 40, 50]",
+        "tryIt": "let a = [1, 2, 3];\nlet b = a;\nb[0] = 99;\nconsole.log(a);"
+      },
+      {
+        "id": "2d-arrays",
+        "title": "2D Arrays — Array of Arrays",
+        "content": "A **2D array** is an array inside an array — like rows in a table.\n\n`arr[0][2]` accesses row 0, column 2. `arr.length` = number of rows.\n\nLoop with nested for or nested for...of.",
+        "code": "const arr = [[10, 20, 30], [40, 50, 69], [20, 11, 18]];\nconsole.log(arr[0][2]); // 30\n\nfor (let row = 0; row < arr.length; row++) {\n  for (let col = 0; col < arr[row].length; col++) {\n    console.log(arr[row][col]);\n  }\n}",
+        "tryIt": "const grid = [[1, 2], [3, 4]];\nconsole.log(grid[1][0]);"
+      },
+      {
+        "id": "spread-concat",
+        "title": "Spread Operator & concat",
+        "content": "Merge arrays with **concat** or the **spread operator** `...`:\n\n`const num = [...num1, ...num2, ...num3]`\n\nSpread expands each array into individual elements — very important in modern JavaScript.",
+        "code": "const num1 = [10, 20, 30];\nconst num2 = [42, 12, 54];\nconst num3 = [5, 1, 53];\n\nconst merged = [...num1, ...num2, ...num3];\nconsole.log(merged);\n\n// Or: num1.concat(num2, num3)",
+        "tryIt": "const a = [1, 2], b = [3, 4];\nconsole.log([...a, ...b]);"
+      },
+      {
+        "id": "destructuring-rest",
+        "title": "Destructuring & Rest Operator",
+        "content": "Pull values out of an array into variables:\n\n`const [first, second, bhains, ...remaining] = [10, 20, 30, 40, 90]`\n\n**Right side** `...` = **spread**. **Left side** `...remaining` = **rest** — collects leftover items into an array.",
+        "code": "const [first, second, third, ...remaining] = [10, 20, 30, 40, 90, 3812, 2];\nconsole.log(first, second, third);\nconsole.log(remaining); // [40, 90, 3812, 2]",
+        "tryIt": "const [head, ...tail] = [\"Thunder\", \"JS\", \"Day\", 6];\nconsole.log(head, tail);"
+      },
+      {
+        "id": "array-search-join",
+        "title": "join, includes & lastIndexOf",
+        "content": "Thunder `fourth.js`:\n\n- **join('-')** — array → string: `[\"Rohit\",\"Mohit\"]` → `\"Rohit-Mohit\"`\n- **includes(\"Mahit\")** — search for a value\n- **lastIndexOf(\"Mohit\")** — find last position of duplicate",
+        "code": "const names = [\"Rohit\", \"Mohit\", \"Sohan\", \"Rohan\", \"Mohit\"];\nconsole.log(names.join('-'));\nconsole.log(names.lastIndexOf(\"Mohit\"));\nconsole.log(names.includes(\"Mahit\"));",
+        "tryIt": "let tags = [\"js\", \"thunder\", \"day6\"];\nconsole.log(tags.join(\", \"));"
       },
       {
         "id": "objects-intro",
         "title": "Objects — Key-Value Pairs",
-        "content": "Objects store related data as properties. More natural than parallel arrays.",
-        "code": "const user = {\n  name: \"Rohit\",\n  age: 20,\n  city: \"Kotdwar\"\n};\nconsole.log(user.name);\nconsole.log(user.age);",
-        "tryIt": "const food = {\n  name: \"Chicken Bucket\",\n  price: 798,\n  rating: 4.1\n};\nconsole.log(food.name, \"₹\" + food.price);"
+        "content": "While arrays use **numeric indexes**, objects use **named keys**.\n\n`let obj = { age: 20, amount: 70 }` — access with `obj.age` or `obj[\"age\"]`.\n\nObjects model real-world entities: users, food items, products. Arrays of objects come next in your journey.",
+        "code": "const user = {\n  name: \"Rohit\",\n  age: 20,\n  city: \"Kotdwar\"\n};\nconsole.log(user.name);\nconsole.log(user.age);\n\nconst food = {\n  name: \"Chicken Bucket\",\n  price: 798,\n  rating: 4.1\n};\nconsole.log(food.name, \"₹\" + food.price);",
+        "tryIt": "const course = { name: \"Thunder\", day: 6 };\nconsole.log(course.name, \"Day\", course.day);"
+      },
+      {
+        "id": "lecture06-practice",
+        "title": "Your Lecture 06 Practice",
+        "content": "Work through Thunder Lecture 06 on GitHub:\n1. **`first.js`** — create marks array, loop with index\n2. **`second.js`** — push/pop/unshift/shift, slice vs splice\n3. **`third.js`** — 2D array, spread, destructuring\n4. **`fourth.js`** — join, includes, lastIndexOf\n\nHomework: delete index 2 with splice, insert two new values, merge two arrays with spread.\n\nKeep the [Notion notes](https://app.notion.com/p/Lecture06-Array-and-Objects-in-Javascript-37943ac5cab9807f801cc8c83755decc?source=copy_link) open while you code.",
+        "tryIt": "let marks = [10, 20, 30, 40, 50];\nmarks.splice(2, 1);\nconsole.log(marks);\nconsole.log([...marks, 60, 70]);",
+        "code": "marks.splice(2, 0, 41, 91); // insert at index 2\nconst all = [...[1, 2], ...[3, 4]];\nconsole.log(all);"
       }
     ],
     "quiz": [
@@ -816,10 +885,10 @@ export const chaptersDays01to19 = [
           "2"
         ],
         "answer": 0,
-        "explanation": "Zero-based indexing."
+        "explanation": "marks[0] is the first element — first.js."
       },
       {
-        "question": "typeof [] is?",
+        "question": "typeof [] returns?",
         "options": [
           "\"array\"",
           "\"object\"",
@@ -827,7 +896,40 @@ export const chaptersDays01to19 = [
           "\"undefined\""
         ],
         "answer": 1,
-        "explanation": "Arrays are objects."
+        "explanation": "Arrays are objects in JavaScript — second.js."
+      },
+      {
+        "question": "slice vs splice — which mutates the original array?",
+        "options": [
+          "slice",
+          "splice",
+          "both",
+          "neither"
+        ],
+        "answer": 1,
+        "explanation": "splice deletes/inserts in place; slice returns a copy."
+      },
+      {
+        "question": "arr2 = arr1; arr2[2] = 84 — what happens to arr1?",
+        "options": [
+          "Unchanged",
+          "Index 2 changes to 84",
+          "Array empties",
+          "Error"
+        ],
+        "answer": 1,
+        "explanation": "Arrays copy by reference — third.js."
+      },
+      {
+        "question": "const [a, b, ...rest] = [1, 2, 3, 4] — rest is?",
+        "options": [
+          "[3, 4]",
+          "[1, 2]",
+          "4",
+          "undefined"
+        ],
+        "answer": 0,
+        "explanation": "Rest operator collects remaining elements — third.js."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=yQ1fz8LY354",
