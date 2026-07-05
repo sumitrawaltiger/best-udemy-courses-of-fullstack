@@ -170,23 +170,42 @@ const TRACKS = {
   },
 };
 
-function renderMarkdown(text) {
-  if (!text) return null;
-  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+function renderInlineMarkdown(text, keyPrefix) {
+  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\))/g);
   return parts.map((part, i) => {
+    if (!part) return null;
     if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={i}>{part.slice(2, -2)}</strong>;
+      return <strong key={`${keyPrefix}-${i}`}>{part.slice(2, -2)}</strong>;
     }
     if (part.startsWith('`') && part.endsWith('`')) {
-      return <code key={i}>{part.slice(1, -1)}</code>;
+      return <code key={`${keyPrefix}-${i}`}>{part.slice(1, -1)}</code>;
     }
-    return part.split('\n').map((line, j, arr) => (
-      <span key={`${i}-${j}`}>
-        {line}
-        {j < arr.length - 1 && <br />}
-      </span>
-    ));
+    const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (linkMatch) {
+      const [, label, href] = linkMatch;
+      const external = /^https?:\/\//.test(href);
+      return (
+        <a
+          key={`${keyPrefix}-${i}`}
+          href={href}
+          {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        >
+          {label}
+        </a>
+      );
+    }
+    return <span key={`${keyPrefix}-${i}`}>{part}</span>;
   });
+}
+
+function renderMarkdown(text) {
+  if (!text) return null;
+  return text.split('\n').map((line, j, arr) => (
+    <span key={j}>
+      {renderInlineMarkdown(line, j)}
+      {j < arr.length - 1 && <br />}
+    </span>
+  ));
 }
 
 function getYoutubeEmbedUrl(url) {
