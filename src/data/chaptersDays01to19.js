@@ -144,52 +144,106 @@ export const chaptersDays01to19 = [
     "slug": "data-types-in-javascript",
     "day": 2,
     "title": "Data Types in JavaScript",
-    "subtitle": "Primitives, typeof, strings, numbers, booleans",
+    "subtitle": "Primitives, typeof, objects, arrays & functions",
     "duration": "2 hrs 10 mins",
-    "createdOn": "2 Jul 2026",
+    "createdOn": "5 Jul 2026",
     "status": "published",
     "topics": [
-      "Primitive types",
-      "typeof",
-      "String",
-      "Number",
-      "Boolean",
-      "undefined & null",
-      "BigInt & Symbol"
+      "Primitive vs non-primitive",
+      "Number & String",
+      "Boolean, undefined & null",
+      "BigInt & Symbol",
+      "typeof operator",
+      "Objects",
+      "Arrays",
+      "Functions",
+      "let vs const reassignment"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture-02-Data-types-in-JS-37343ac5cab980f8b24ee3cf1ea0c8fa",
+    "notionUrl": "https://app.notion.com/p/Lecture-02-Data-types-in-JS-37343ac5cab980f8b24ee3cf1ea0c8fa?source=copy_link",
     "githubPath": "Lecture02",
     "sections": [
       {
-        "id": "primitives",
-        "title": "Primitive Data Types",
-        "content": "JavaScript has 7 primitives: **string, number, boolean, undefined, null, bigint, symbol**. They are immutable — stored by value.",
-        "code": "let name = \"Rohit\";\nlet age = 20;\nlet isStudent = true;\nlet notSet;\nlet empty = null;\nconsole.log(typeof name, typeof age);",
-        "tryIt": "let lang = \"JavaScript\";\nconsole.log(typeof lang);\nconsole.log(typeof 2026);\nconsole.log(typeof true);"
+        "id": "primitive-vs-non-primitive",
+        "title": "Primitive vs Non-Primitive",
+        "content": "Thunder Lecture 02 splits JavaScript values into two families:\n\n**Primitive data types** — `number`, `string`, `boolean`, `undefined`, `null`, `symbol`, `bigint`. They are **immutable** and copied **by value**.\n\n**Non-primitive types** — `object`, `array`, `function`. They are stored **by reference**.\n\nOpen [Lecture02](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture02) on GitHub and walk through `first.js` — every type is commented and demonstrated line by line.",
+        "code": "// Primitives: immutable, stored by value\nlet a = 30;\nlet b = a;\nb = 70;\nconsole.log(a, b); // 30 70 — a did not change\n\n// Non-primitive: reference type\nlet person = { name: \"Rohit\", age: 20 };\nconsole.log(typeof person); // \"object\""
       },
       {
-        "id": "typeof",
+        "id": "number-type",
+        "title": "Number",
+        "content": "JavaScript has one **number** type for both integers and decimals — no separate `int` or `float`.\n\nThunder uses `let firstNumber = 20` and `let secondNumber = 20.7` in `first.js`.",
+        "code": "let firstNumber = 20;\nlet secondNumber = 20.7;\nconsole.log(firstNumber, secondNumber);\nconsole.log(typeof firstNumber); // \"number\"",
+        "tryIt": "let price = 29.99;\nlet qty = 3;\nconsole.log(\"Total:\", price * qty);\nconsole.log(typeof price);"
+      },
+      {
+        "id": "string-type",
+        "title": "String & Template Literals",
+        "content": "Strings hold text. You can use **double quotes**, **single quotes**, or **backticks** for template literals.\n\nTemplate literals let you embed variables: `` `Rohit ${age} is a Good Boy` ``",
+        "code": "let firstString = \"Rohit Negi\";\nlet secondString = 'Mohan Bhaiya';\nlet age = 20;\nlet thirdString = `Rohit ${age} is a Good Boy`;\nconsole.log(firstString, secondString, thirdString);",
+        "tryIt": "let name = \"Sumit\";\nlet day = 2;\nconsole.log(`Day ${day}: learning ${name}`);"
+      },
+      {
+        "id": "boolean-null-undefined",
+        "title": "Boolean, undefined & null",
+        "content": "**Boolean** — `true` or `false` for logic.\n\n**undefined** — a variable declared but not assigned (`let a;`).\n\n**null** — an intentional empty value (`let b = null`).\n\nFamous quirk: `typeof null` returns `\"object\"` — a bug from 1995 that was never fixed.",
+        "code": "let firstBoolean = true;\nlet secondBoolean = false;\n\nlet a;\nconsole.log(a); // undefined\n\nlet b = null;\nconsole.log(b); // null\nconsole.log(typeof null); // \"object\" (quirk!)",
+        "tryIt": "let loggedIn = false;\nlet username;\nlet avatar = null;\nconsole.log(loggedIn, username, avatar);"
+      },
+      {
+        "id": "bigint-symbol",
+        "title": "BigInt & Symbol",
+        "content": "**BigInt** — for integers larger than `Number.MAX_SAFE_INTEGER`. Append `n` to the literal.\n\n**Symbol** — creates a **unique** identifier. Two symbols with the same description are never equal (`b == a` is `false`).",
+        "code": "let big = 27343285947319574913n;\nconsole.log(big);\n\nlet symA = Symbol(\"Rohit\");\nlet symB = Symbol(\"Rohit\");\nconsole.log(symB == symA); // false",
+        "tryIt": "let huge = 9007199254740991n;\nconsole.log(typeof huge); // \"bigint\""
+      },
+      {
+        "id": "typeof-operator",
         "title": "The typeof Operator",
-        "content": "`typeof` tells you the type of any value. Essential for debugging.",
-        "code": "console.log(typeof \"hello\");\nconsole.log(typeof 42);\nconsole.log(typeof true);\nconsole.log(typeof undefined);\nconsole.log(typeof null); // \"object\" (quirk!)",
-        "tryIt": "let a = \"JS\", b = 100, c = null;\nconsole.log(\"a:\", typeof a);\nconsole.log(\"b:\", typeof b);\nconsole.log(\"c:\", typeof c);"
+        "content": "`typeof` tells you the type of any value. Thunder's homework in `first.js` asks you to run `typeof` on every type you learned.\n\nUse it constantly while debugging in DevTools.",
+        "code": "let a = \"Rohit\";\nconsole.log(typeof a);       // \"string\"\nconsole.log(typeof 42);      // \"number\"\nconsole.log(typeof true);    // \"boolean\"\nconsole.log(typeof undefined); // \"undefined\"\nconsole.log(typeof null);    // \"object\" (quirk!)\n\nlet person = { name: \"Rohit\", age: 20 };\nconsole.log(typeof person);  // \"object\"",
+        "tryIt": "let lang = \"JavaScript\";\nlet score = 100;\nlet active = true;\nconsole.log(typeof lang, typeof score, typeof active);"
       },
       {
-        "id": "strings-numbers",
-        "title": "Strings & Numbers",
-        "content": "Strings hold text (single, double, or backtick quotes). Numbers handle integers and decimals. Template literals use backticks: `` `Hello ${name}` ``",
-        "code": "let first = \"Rohit\";\nlet age = 20;\nlet msg = `Name: ${first}, Age: ${age}`;\nconsole.log(msg);",
-        "tryIt": "let price = 29.99;\nlet qty = 3;\nconsole.log(\"Total:\", price * qty);"
+        "id": "objects",
+        "title": "Objects — Key-Value Pairs",
+        "content": "Objects are the most important non-primitive type. They store **key-value pairs** — like a real-world entity with properties.\n\nThunder: `let person = { name: \"Rohit\", age: 30, city: \"dwarka\" }`",
+        "code": "let person = {\n  name: \"Rohit\",\n  age: 30,\n  city: \"dwarka\"\n};\nconsole.log(person);\nconsole.log(person.name);\nconsole.log(typeof person); // \"object\"",
+        "tryIt": "let user = { name: \"Sumit\", day: 2, course: \"Thunder\" };\nconsole.log(user.name, \"Day\", user.day);"
       },
       {
-        "id": "non-primitive",
-        "title": "Non-Primitive: Objects",
-        "content": "Objects, arrays, and functions are **reference types**. `typeof` on an object returns `\"object\"`.",
-        "code": "let person = { name: \"Rohit\", age: 20 };\nconsole.log(person);\nconsole.log(typeof person);",
-        "tryIt": "let user = { name: \"Sumit\", day: 2 };\nconsole.log(user.name);\nconsole.log(typeof user);"
+        "id": "arrays-functions",
+        "title": "Arrays & Functions",
+        "content": "**Arrays** — ordered lists that can mix types: `[10, 20, 30, \"Rohit\", 9.3, true]`.\n\n**Functions** — reusable blocks of code. A function can `return` a value or just run side effects.",
+        "code": "let arr = [10, 20, 30, \"Rohit\", 9.3, true, 90];\nconsole.log(arr);\n\nlet greet = function () {\n  console.log(\"Hello Akshat\");\n  return 10;\n};\nconsole.log(greet());",
+        "tryIt": "let topics = [\"number\", \"string\", \"boolean\"];\nlet shout = function (msg) { return msg.toUpperCase(); };\nconsole.log(shout(topics[0]));"
+      },
+      {
+        "id": "let-const-recap",
+        "title": "let & const — Reassignment Rules",
+        "content": "From Lecture 02: `let` can be reassigned (`let a = 10; a = 20`). `const` **cannot** be reassigned — trying `const a = 10; a = 7` throws an error.\n\nPrimitives copy by value. Reassigning `b` does not change `a`.",
+        "code": "let a = 10;\na = 20;\nconsole.log(a); // 20\n\n// const a = 10;\n// a = 7; // TypeError!\n\nlet x = 30;\nlet y = x;\ny = 70;\nconsole.log(x, y); // 30 70",
+        "tryIt": "let day = 2;\nconst course = \"Thunder\";\nday = 3;\nconsole.log(course, \"Day\", day);"
+      },
+      {
+        "id": "lecture02-practice",
+        "title": "Your Lecture 02 Practice",
+        "content": "Work through Thunder `first.js` on GitHub:\n1. Uncomment each block one section at a time\n2. Run `typeof` on every primitive and non-primitive\n3. Build your own `person` object and `topics` array\n4. Try the `rohit.cpp` demo — a tiny C++ program that reads code input (peek under the hood, like Lecture 01's v8.cpp)\n\nKeep the [Notion notes](https://app.notion.com/p/Lecture-02-Data-types-in-JS-37343ac5cab980f8b24ee3cf1ea0c8fa?source=copy_link) open while you code.",
+        "tryIt": "let person = { name: \"Sumit\", day: 2 };\nlet topics = [\"number\", \"string\", \"object\"];\nconsole.log(typeof person.name);\nconsole.log(`Day ${person.day}:`, topics.join(\", \"));",
+        "code": "// Homework from first.js\nlet a = \"Rohit\";\nconsole.log(typeof a);\n\nlet obj = { name: \"Rohit\", age: 20 };\nconsole.log(typeof obj);"
       }
     ],
     "quiz": [
+      {
+        "question": "Which types are primitive in JavaScript?",
+        "options": [
+          "object, array, function",
+          "string, number, boolean, undefined, null, symbol, bigint",
+          "only string and number",
+          "HTML, CSS, JavaScript"
+        ],
+        "answer": 1,
+        "explanation": "Thunder Lecture 02 lists 7 primitives: string, number, boolean, undefined, null, symbol, bigint."
+      },
       {
         "question": "typeof null returns?",
         "options": [
@@ -199,18 +253,29 @@ export const chaptersDays01to19 = [
           "\"number\""
         ],
         "answer": 2,
-        "explanation": "Famous JS quirk."
+        "explanation": "A famous JavaScript quirk — typeof null is \"object\"."
       },
       {
-        "question": "\"5\" + 3 equals?",
+        "question": "let a = 30; let b = a; b = 70; What is a?",
         "options": [
-          "8",
-          "\"53\"",
-          "NaN",
-          "Error"
+          "70",
+          "30",
+          "undefined",
+          "null"
         ],
         "answer": 1,
-        "explanation": "String concatenation."
+        "explanation": "Primitives copy by value — changing b does not affect a."
+      },
+      {
+        "question": "Two Symbol(\"Rohit\") values compared with == are?",
+        "options": [
+          "always equal",
+          "always false",
+          "equal only if same variable",
+          "both null"
+        ],
+        "answer": 1,
+        "explanation": "Every Symbol() call creates a unique value — symB == symA is false in Thunder first.js."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=nCwQY8inRvU",
