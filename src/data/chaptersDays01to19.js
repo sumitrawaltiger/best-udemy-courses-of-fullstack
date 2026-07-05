@@ -2684,58 +2684,102 @@ export const chaptersDays01to19 = [
     "topics": [
       "Callback hell",
       "Promise states",
-      "then/catch/finally",
-      "Creating promises",
-      "fetch with promises",
-      "async/await"
+      "then / catch / finally",
+      "Creating a Promise",
+      "Promise chaining",
+      "async / await",
+      "async fetch with try/catch"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture18-Callback-Hell-and-Promises-38e43ac5cab980358e38c75eae99dc6b",
+    "notionUrl": "https://app.notion.com/p/Lecture18-Callback-Hell-and-Promises-38e43ac5cab980358e38c75eae99dc6b?source=copy_link",
     "githubPath": "Lecture18",
     "sections": [
       {
-        "id": "promises",
-        "title": "Promises",
-        "content": "A Promise has 3 states: **pending**, **fulfilled**, **rejected**. Use `.then()`, `.catch()`, `.finally()`.",
-        "code": "const p = new Promise((resolve) => {\n  setTimeout(() => resolve(\"Done!\"), 500);\n});\np.then(res => console.log(res));",
-        "tryIt": "const p = Promise.resolve(42);\np.then(n => console.log(n));"
+        "id": "callback-hell",
+        "title": "Callback Hell",
+        "content": "Thunder Lecture 18 models a **Zomato order** as four steps: `placeOrder` → `prepareOrder` → `pickUpOrder` → `deliverOrder`. With callbacks, each step is nested inside the previous one's callback, creating a deeply indented pyramid known as **callback hell** — hard to read and maintain. First principle: keep code **DRY and readable**.\n\nWalk [callback.js in Lecture18](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture18) on GitHub.",
+        "code": "placeOrder(orderDetail, (orderDetail) => {\n  prepareOrder(orderDetail, (orderDetail) => {\n    pickUpOrder(orderDetail, (orderDetail) => {\n      deliverOrder(orderDetail);\n    });\n  });\n});",
+        "tryIt": "function step(msg, cb) {\n  setTimeout(() => {\n    console.log(msg);\n    if (cb) cb();\n  }, 500);\n}\nstep(\"Order placed\", () => step(\"Order prepared\"));"
       },
       {
-        "id": "fetch-promises",
-        "title": "fetch with Promises",
-        "content": "fetch returns a Promise. Chain `.then()` to parse JSON and handle errors.",
-        "code": "fetch(\"https://api.github.com/users/octocat\")\n  .then(r => r.json())\n  .then(d => console.log(d.name))\n  .catch(e => console.log(e));",
-        "tryIt": "console.log(\"Promise chain: then -> then -> catch\");"
+        "id": "promise-states",
+        "title": "Promise States & then/catch/finally",
+        "content": "A Promise represents a future value and has three states: **pending**, **fulfilled**, or **rejected**. Attach handlers with `.then()` (success), `.catch()` (error), and `.finally()` (always runs).\n\n`fetch()` returns a Promise, so you can chain these directly.",
+        "code": "fetch(\"https://api.github.com/users?per_page=20\")\n  .then((response) => {\n    if (!response.ok) throw new Error(\"Unable to fetch data\");\n    return response.json();\n  })\n  .then((data) => console.log(data))\n  .catch((error) => console.log(error))\n  .finally(() => console.log(\"I am final step\"));",
+        "tryIt": "Promise.resolve(42)\n  .then((n) => console.log(\"Value:\", n))\n  .finally(() => console.log(\"Done\"));"
+      },
+      {
+        "id": "creating-promises",
+        "title": "Creating a Promise",
+        "content": "Create your own Promise with `new Promise((resolve, reject) => { ... })`. Call `resolve(value)` on success or `reject(error)` on failure, then consume it with `.then()` / `.catch()`.",
+        "code": "const p1 = new Promise((resolve, reject) => {\n  setTimeout(() => {\n    resolve({ name: \"Rohit\", age: 20 });\n  }, 1000);\n});\n\np1.then((res) => console.log(res))\n  .catch((error) => console.log(error));",
+        "tryIt": "const wait = new Promise((resolve) =>\n  setTimeout(() => resolve(\"Ready!\"), 500)\n);\nwait.then((msg) => console.log(msg));"
+      },
+      {
+        "id": "promise-chaining",
+        "title": "Promise Chaining",
+        "content": "Rewriting the Zomato flow with Promises flattens the pyramid. Each step **returns a Promise** that resolves with the updated `orderDetail`, and `.then()` links them in a readable chain — no more callback hell.\n\nSee [promiseZomato.js in Lecture18](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture18).",
+        "code": "function placeOrder(orderDetail) {\n  return new Promise((resolve) => {\n    setTimeout(() => {\n      orderDetail.payment_status = true;\n      resolve(orderDetail);\n    }, 1000);\n  });\n}\n\nplaceOrder(orderDetail)\n  .then((orderDetail) => prepareOrder(orderDetail))\n  .then((orderDetail) => pickUpOrder(orderDetail))\n  .then((orderDetail) => deliverOrder(orderDetail))\n  .then((orderDetail) => console.log(orderDetail));",
+        "tryIt": "const p = (v) => new Promise((res) => setTimeout(() => res(v + 1), 300));\np(1).then(p).then(p).then((n) => console.log(n));"
       },
       {
         "id": "async-await",
-        "title": "async/await",
-        "content": "Cleaner syntax for promises. `async` function returns a promise. `await` pauses until resolved.",
-        "code": "async function load() {\n  const res = await fetch(\"https://api.github.com/users/octocat\");\n  const data = await res.json();\n  console.log(data.login);\n}\nload();",
-        "tryIt": "async function demo() {\n  return \"Hello async\";\n}\ndemo().then(console.log);"
+        "title": "async / await",
+        "content": "`async/await` is cleaner syntax over promises. An `async` function always returns a Promise, and `await` pauses until a Promise resolves. The Zomato flow becomes top-to-bottom sequential code.\n\nSee [asyncAwait.js in Lecture18](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture18).",
+        "code": "async function order() {\n  const p1 = await placeOrder(orderDetail);\n  const p2 = await prepareOrder(p1);\n  const p3 = await pickUpOrder(p2);\n  const p4 = await deliverOrder(p3);\n  console.log(p4);\n}\n\norder();",
+        "tryIt": "async function greet() {\n  return \"Hello async\";\n}\ngreet().then(console.log);"
+      },
+      {
+        "id": "async-fetch",
+        "title": "async/await with fetch & try/catch",
+        "content": "Combine `async/await` with `fetch()` and wrap it in **try/catch** for error handling. `await` the response, check `response.ok`, then `await response.json()`.\n\nSee [asyns.js in Lecture18](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture18).",
+        "code": "async function github() {\n  try {\n    const response = await fetch(\"https://api.github.com/users?per_page=20\");\n    if (!response.ok) throw new Error(\"Unable to fetch data\");\n    const data = await response.json();\n    console.log(data);\n  } catch (error) {\n    console.log(error);\n  }\n}\n\ngithub();",
+        "tryIt": "async function load() {\n  const res = await fetch(\"https://api.github.com/users/octocat\");\n  const user = await res.json();\n  console.log(user.login);\n}\nload();"
       }
     ],
     "quiz": [
       {
-        "question": "Promise states?",
+        "question": "What problem does callback hell cause?",
         "options": [
-          "pending/fulfilled/rejected",
-          "open/closed",
-          "true/false",
-          "start/end"
+          "Deeply nested, hard-to-read code",
+          "Faster execution",
+          "Smaller file size",
+          "Better styling"
         ],
         "answer": 0,
-        "explanation": "Three states."
+        "explanation": "Nesting callbacks inside callbacks creates an unreadable, hard-to-maintain pyramid."
       },
       {
-        "question": "async function returns?",
+        "question": "What are the three states of a Promise?",
         "options": [
-          "Promise",
-          "string always",
-          "undefined always",
-          "object"
+          "pending / fulfilled / rejected",
+          "open / closed",
+          "true / false",
+          "start / end"
         ],
         "answer": 0,
-        "explanation": "Always wraps in Promise."
+        "explanation": "A Promise is pending, then settles as either fulfilled or rejected."
+      },
+      {
+        "question": "What does an async function always return?",
+        "options": [
+          "A Promise",
+          "A string",
+          "undefined",
+          "An array"
+        ],
+        "answer": 0,
+        "explanation": "async functions wrap their return value in a Promise."
+      },
+      {
+        "question": "Which keyword pauses until a Promise resolves?",
+        "options": [
+          "await",
+          "then",
+          "catch",
+          "yield"
+        ],
+        "answer": 0,
+        "explanation": "await can only be used inside an async function and pauses until the Promise settles."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=PoRJizFvM7s",
@@ -2748,65 +2792,137 @@ export const chaptersDays01to19 = [
     "slug": "closures-and-this",
     "day": 19,
     "title": "Closures & the this Keyword",
-    "subtitle": "Scope, closures, and understanding this",
+    "subtitle": "How this is bound, call/apply/bind, closures & data privacy",
     "duration": "2 hrs",
-    "createdOn": "19 Jul 2026",
+    "createdOn": "23 Jul 2026",
     "status": "published",
     "topics": [
-      "Scope & lexical scope",
+      "globalThis, window & global",
+      "this in functions (strict vs non-strict)",
+      "this in methods",
+      "call, apply & bind",
+      "Arrow functions & this",
+      "Lexical scope",
       "Closures",
       "Counter pattern",
-      "this keyword",
-      "this in objects",
-      "Higher-order functions"
+      "Higher-order functions",
+      "Closures for data privacy"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture-19-Closure-and-This-Keyword-38f43ac5cab9806e98f2f95649ffb759",
+    "notionUrl": "https://app.notion.com/p/Lecture-19-Closure-and-This-Keyword-38f43ac5cab9806e98f2f95649ffb759?source=copy_link",
     "githubPath": "Lecture19",
     "sections": [
       {
-        "id": "scope",
-        "title": "Scope & Lexical Scope",
-        "content": "Variables are visible in their block/function. Inner functions access outer variables — that is lexical scope.",
-        "code": "let a = 10;\nfunction outer() {\n  let b = 20;\n  function inner() { console.log(a, b); }\n  inner();\n}\nouter();",
-        "tryIt": "let x = 1;\nfunction f() {\n  let x = 2;\n  console.log(x);\n}\nf();"
+        "id": "global-this",
+        "title": "globalThis, window & global",
+        "content": "Thunder `first.js` — the global object has different names per environment:\n\n- **window** — the global object in the **browser**\n- **global** — the global object in **Node.js**\n- **globalThis** — points to whichever one you're in (portable)\n\nOpen [Lecture19](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture19) on GitHub.",
+        "code": "console.log(globalThis);\n// window in Chrome, global in Node — same idea",
+        "tryIt": "console.log(typeof globalThis); // \"object\""
       },
       {
-        "id": "closures",
-        "title": "Closures",
-        "content": "A closure is when an inner function remembers variables from its outer scope — even after the outer function returns.",
-        "code": "function counter() {\n  let count = 0;\n  return function() {\n    count++;\n    console.log(count);\n  };\n}\nconst c = counter();\nc(); c(); c();",
-        "tryIt": "function makeAdder(x) {\n  return function(y) { return x + y; };\n}\nconst add5 = makeAdder(5);\nconsole.log(add5(3));"
+        "id": "this-rules",
+        "title": "How this Is Decided",
+        "content": "`this` depends on **how a function is called**, not where it's written:\n\n- **In a method** (`user.greet()`) → the object that invoked it (before the dot)\n- **In a plain function** → the **global object** in non-strict mode, but **undefined** in **strict mode** (`\"use strict\"`)\n\nThis is true in both the browser and Node.",
+        "code": "const user1 = {\n  name: \"Rohit\",\n  greet: function () {\n    console.log(this); // this === user1\n  }\n};\nuser1.greet();\n\nfunction greet() {\n  console.log(this); // global (non-strict) or undefined (strict)\n}\ngreet();",
+        "tryIt": "const obj = { val: 42, show() { console.log(this.val); } };\nobj.show(); // 42"
       },
       {
-        "id": "this-keyword",
-        "title": "The this Keyword",
-        "content": "`this` refers to the object that owns the function. In methods, `this` is the object before the dot.",
-        "code": "const user = {\n  name: \"Rohit\",\n  greet() { console.log(this.name); }\n};\nuser.greet();",
-        "tryIt": "const obj = {\n  val: 42,\n  show() { console.log(this.val); }\n};\nobj.show();"
+        "id": "call-apply-bind",
+        "title": "call, apply & bind",
+        "content": "These let you **set `this` yourself** — borrow one function for many objects:\n\n- **call(obj, ...args)** — invoke now, args listed one by one\n- **apply(obj, [args])** — invoke now, args as an **array**\n- **bind(obj, ...args)** — returns a **new function** permanently bound to `obj`",
+        "code": "function increment(umar, paisa) {\n  this.age = umar;\n  this.amount += paisa;\n  console.log(this);\n}\n\nincrement.call(user1, 30, 300);\nincrement.apply(user1, [30, 300]);\n\nconst ref = increment.bind(user1, 30, 300);\nref();",
+        "tryIt": "function hi() { console.log(this.name); }\nconst a = { name: \"Rohit\" };\nhi.call(a);            // Rohit\nconst bound = hi.bind(a);\nbound();               // Rohit"
+      },
+      {
+        "id": "arrow-this",
+        "title": "Arrow Functions & this",
+        "content": "Arrow functions have **no `this` of their own** — they **borrow** it from the nearest outer scope.\n\nThat's why an arrow as an object method **doesn't** get the object as `this` (a common bug), but an arrow **inside** a method's `setInterval` is perfect — it keeps the object's `this`.",
+        "code": "const watch = {\n  timer: 0,\n  stopWatch: function () {\n    setInterval(() => {\n      this.timer++;      // this = watch (borrowed)\n      console.log(this.timer);\n    }, 1000);\n  }\n};\nwatch.stopWatch();\n\n// Pitfall: arrow AS the method loses the object\nconst user = { name: \"Rohit\", greet: () => console.log(this) };",
+        "tryIt": "const obj = {\n  n: 5,\n  run() {\n    const inner = () => this.n;\n    return inner();\n  }\n};\nconsole.log(obj.run()); // 5"
+      },
+      {
+        "id": "scope-closure",
+        "title": "Lexical Scope & Closures",
+        "content": "Thunder `closures.js` — inner functions can read **outer** variables, and lookups walk **up** the scope chain to the nearest match.\n\nA **closure** is when a returned inner function **remembers** those outer variables even **after** the outer function has finished.",
+        "code": "function counter() {\n  let count = 0;\n  function increment() {\n    count++;\n    console.log(count);\n  }\n  return increment;\n}\n\nconst c = counter();\nc(); // 1\nc(); // 2  — count is remembered!",
+        "tryIt": "function makeAdder(x) {\n  return function (y) { return x + y; };\n}\nconst add5 = makeAdder(5);\nconsole.log(add5(3)); // 8"
+      },
+      {
+        "id": "hof",
+        "title": "Higher-Order Functions",
+        "content": "Thunder `hof.js` — a **higher-order function** returns another function. Thanks to closure, the inner function still knows the outer argument.\n\nCall it in two steps, or chain both calls at once: `increment(30)(10)`.",
+        "code": "function increment(amount) {\n  function mul(num) {\n    console.log(num * amount);\n  }\n  return mul;\n}\n\nconst multiplier = increment(30);\nmultiplier(10); // 300\n\nincrement(30)(10); // 300 — same thing",
+        "tryIt": "const power = (exp) => (base) => base ** exp;\nconst square = power(2);\nconsole.log(square(5)); // 25"
+      },
+      {
+        "id": "closure-privacy",
+        "title": "Closures for Data Privacy",
+        "content": "Thunder `example.js` — a plain object exposes its data: `user1.balance = \"Rohit\"` silently corrupts it.\n\nWith a **closure**, keep `balance` **private** inside `bank()` and return only `credit`, `debit`, `checkBalance`. Now the balance can **only** be changed through validated methods — real encapsulation.",
+        "code": "function bank() {\n  let balance = 200; // private!\n\n  return {\n    credit(amount) {\n      if (typeof amount === \"number\") balance += amount;\n    },\n    debit(amount) {\n      if (typeof amount === \"number\" && amount <= balance && amount > 0)\n        balance -= amount;\n    },\n    checkBalance() {\n      console.log(balance);\n    }\n  };\n}\n\nconst user = bank();\nuser.credit(200);\nuser.checkBalance(); // 400\n// user.balance is undefined — can't be touched directly",
+        "tryIt": "function secretBox(value) {\n  return { get: () => value };\n}\nconst box = secretBox(42);\nconsole.log(box.get()); // 42, but value is hidden"
+      },
+      {
+        "id": "lecture19-practice",
+        "title": "Your Lecture 19 Practice",
+        "content": "Work through Thunder's [Lecture19](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture19):\n1. **first.js** — test `this` in a method vs a plain function, strict vs non-strict; try call/apply/bind and the arrow setInterval stopwatch\n2. **closures.js** — build the counter closure; watch count persist\n3. **hof.js** — a function returning a function; call it both ways\n4. **example.js** — refactor the leaky object into a private-balance bank with closures\n\nBig idea: **`this` is about the call-site; closures are about the definition-site.** This wraps the JavaScript phase — next up: **Node.js** in Lecture 20.",
+        "code": "function once(fn) {\n  let done = false;\n  return function (...args) {\n    if (!done) { done = true; return fn(...args); }\n  };\n}\nconst init = once(() => console.log(\"runs once\"));\ninit(); init(); // logs once",
+        "tryIt": "const person = { name: \"Sumit\" };\nfunction hi() { return `Hi ${this.name}`; }\nconsole.log(hi.call(person));"
       }
     ],
     "quiz": [
       {
-        "question": "Closure remembers?",
+        "question": "In a plain function in strict mode, this is?",
         "options": [
-          "outer scope variables",
-          "only globals",
-          "only CSS",
-          "nothing"
+          "The global object",
+          "undefined",
+          "The window always",
+          "The function itself"
         ],
-        "answer": 0,
-        "explanation": "Lexical environment."
+        "answer": 1,
+        "explanation": "Strict mode makes this undefined in a plain function call — first.js."
       },
       {
-        "question": "this in obj.method() is?",
+        "question": "The difference between call and apply?",
         "options": [
-          "the object",
-          "window always",
-          "undefined always",
-          "null"
+          "call is async",
+          "apply takes arguments as an array; call lists them individually",
+          "They are identical",
+          "apply returns a bound function"
+        ],
+        "answer": 1,
+        "explanation": "call(obj, a, b) vs apply(obj, [a, b]) — first.js."
+      },
+      {
+        "question": "An arrow function's this comes from?",
+        "options": [
+          "The object it's a method of",
+          "The nearest outer scope (it has no own this)",
+          "Always the global object",
+          "undefined"
+        ],
+        "answer": 1,
+        "explanation": "Arrows borrow this lexically — great inside setInterval — first.js."
+      },
+      {
+        "question": "A closure is?",
+        "options": [
+          "A function that remembers its outer scope variables after the outer returns",
+          "A way to close the browser",
+          "A CSS feature",
+          "The same as a class"
         ],
         "answer": 0,
-        "explanation": "The object before the dot."
+        "explanation": "The counter keeps count alive via closure — closures.js."
+      },
+      {
+        "question": "In the bank example, why is balance safe from outside tampering?",
+        "options": [
+          "It's a const",
+          "It lives in the closure; only the returned methods can access it",
+          "It's frozen",
+          "It's stored in localStorage"
+        ],
+        "answer": 1,
+        "explanation": "Private closure variable — accessed only via validated methods — example.js."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=3a0I8ICR1Vg",

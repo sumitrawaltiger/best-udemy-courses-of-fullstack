@@ -6,73 +6,133 @@ export const chaptersDays20to100 = [
     "track": "thunder",
     "day": 20,
     "title": "Introduction to Node.js",
-    "subtitle": "Backend begins — runtime, npm, and your first Node programs",
+    "subtitle": "Backend begins — the runtime, require, your first HTTP server & why backends exist",
     "duration": "2 hrs",
-    "createdOn": "23 Jul 2026",
+    "createdOn": "24 Jul 2026",
     "status": "published",
     "topics": [
       "What is Node.js",
-      "V8 & the runtime",
+      "V8 outside the browser",
       "Running .js with node",
-      "npm & package.json",
-      "Thunder 03Backend"
+      "require & modules",
+      "The http module",
+      "http.createServer",
+      "request.url",
+      "response.end & JSON",
+      "server.listen (port 3000)",
+      "Why backends exist"
     ],
     "sections": [
       {
         "id": "backend-begins",
         "title": "Backend Starts on Day 20",
-        "content": "**Day 20** is where Thunder moves from JavaScript in the browser to **backend development with Node.js**. You will run JavaScript on your machine using the terminal — no browser required."
+        "content": "**Day 20** moves Thunder from JavaScript in the **browser** to **backend development with Node.js**. Same language, new environment — you run `.js` files straight from the terminal with `node filename.js`, no browser needed.\n\nWork inside **[03Backend/Day01](https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day01)** on GitHub."
       },
       {
         "id": "what-is-node",
         "title": "What is Node.js?",
-        "content": "Node.js is a **JavaScript runtime** built on Chrome's V8 engine. It lets you build servers, APIs, CLI tools, and scripts. Same language as the frontend — new environment.",
-        "code": "console.log(\"Hello from Node.js!\");\nconsole.log(process.version);",
+        "content": "Node.js is a **JavaScript runtime** built on Chrome's **V8** engine, running outside the browser. That means there's **no `window` or DOM** here — instead you get server capabilities like the file system, networking, and HTTP. It's how you build servers, APIs, and CLI tools in JavaScript.",
+        "code": "console.log(\"Hello from Node.js!\");\nconsole.log(process.version); // Node version",
         "tryIt": "console.log(\"Thunder Backend — Lecture 01\");"
       },
       {
-        "id": "npm",
-        "title": "npm & package.json",
-        "content": "**npm** ships with Node and manages packages. `npm init` creates `package.json`. `npm install <pkg>` adds dependencies for backend projects.",
-        "code": "// package.json tracks your project\n// npm install express  — example for later days",
-        "tryIt": "console.log(\"npm manages backend dependencies\");"
+        "id": "require-modules",
+        "title": "require & Built-in Modules",
+        "content": "Node splits functionality into **modules**. Pull one in with **`require`**. Thunder `second.js` starts by importing Node's built-in **`http`** module — an object with everything you need to build a server.",
+        "code": "const http = require(\"http\");\n// http is just an object with server methods\nconsole.log(typeof http.createServer); // \"function\"",
+        "tryIt": "const os = require(\"os\");\nconsole.log(os.platform());"
       },
       {
-        "id": "thunder-backend",
-        "title": "Thunder 03Backend Repository",
-        "content": "Open **[03Backend](https://github.com/Rohitnegi9/Thunder/tree/main/03Backend)** on GitHub. For Lecture 01, work inside the **Day01** folder (`first.js`, `second.js`, Project01–03). Match your work with the **Notion notes** for Lecture 01 & 02 — Introduction to Node.js."
+        "id": "first-server",
+        "title": "Your First HTTP Server",
+        "content": "Thunder `second.js` — **`http.createServer`** takes a callback that runs on **every request**, giving you a `request` and a `response`. Read what the client asked for with **`request.url`**, and send data back with **`response.end()`**.\n\nHere the URL like `/15` is parsed into the number 15, that many GitHub users are sliced from an array, and the result is sent as JSON.",
+        "code": "const http = require(\"http\");\n\nconst server = http.createServer((request, response) => {\n  const str = request.url; // e.g. \"/15\"\n  let str1 = \"\";\n  for (let i = 1; i < str.length; i++) str1 += str[i];\n  const number = Number(str1); // 15\n\n  const arr = [];\n  for (let i = 0; i < number; i++) arr.push(gitHub[i]);\n\n  response.end(JSON.stringify(arr)); // send JSON back\n});",
+        "tryIt": "const url = \"/15\";\nlet s = \"\";\nfor (let i = 1; i < url.length; i++) s += url[i];\nconsole.log(Number(s)); // 15"
+      },
+      {
+        "id": "listen-port",
+        "title": "server.listen — Going Live",
+        "content": "A server does nothing until it **listens** on a **port**. `server.listen(3000, callback)` starts it; now visit **`http://localhost:3000/15`** in the browser and the server responds with 15 users as JSON.\n\n`response.end(JSON.stringify(arr))` matters — you can only send **strings** over HTTP, so the JS array is serialized to a **JSON string** first (Lecture 15 pays off).",
+        "code": "server.listen(3000, () => {\n  console.log(\"I am Listening at port 3000\");\n});\n// Visit http://localhost:3000/30",
+        "tryIt": "console.log(\"Run: node second.js, then open localhost:3000/10\");"
+      },
+      {
+        "id": "why-backend",
+        "title": "Why Backends Exist — TaskVault",
+        "content": "Thunder's **Project01 → 03** tell the story in three steps with the same TaskVault app:\n\n1. **Project01** — frontend only: tasks live in a **variable**, so a refresh **wipes them**.\n2. **Project02** — **localStorage**: tasks persist, but only in **one browser** — not shared across devices or users.\n3. **Project03** — a **shared cloud database**: data lives on a server, reachable from **anywhere**.\n\nThat gap — persistent, shared data — is exactly the problem a **backend** solves. This is the *why* behind Node.js.",
+        "code": "// Project01: let tasks = [];          // lost on refresh\n// Project02: localStorage.setItem(...); // one browser only\n// Project03: await fetch(cloudDbUrl);   // shared everywhere"
+      },
+      {
+        "id": "lecture01-practice",
+        "title": "Your Backend Day 01 Practice",
+        "content": "Work through Thunder's [03Backend/Day01](https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day01):\n1. **first.js** — slice N profiles from an array with a loop\n2. **second.js** — build the `http` server; run `node second.js` and hit `localhost:3000/20`\n3. **Project01–03** — the TaskVault trilogy: variable → localStorage → cloud DB\n\nRun a file with **`node second.js`** in the terminal. Match everything with the **Notion notes** (Lecture 01 & 02). Next: **TCP/IP & package.json** in Day 21.",
+        "code": "// Terminal:\n// node second.js\n// → I am Listening at port 3000\n// Browser: http://localhost:3000/5",
+        "tryIt": "const gitHubProfile = [{}, {}, {}, {}, {}];\nconst n = 3;\nconsole.log(gitHubProfile.slice(0, n).length);"
       }
     ],
     "quiz": [
       {
-        "question": "What begins on Day 20 of Thunder?",
+        "question": "What is Node.js?",
         "options": [
-          "Backend with Node.js",
-          "CSS animations only",
-          "Photoshop",
-          "Kubernetes"
+          "A JavaScript runtime (V8) that runs outside the browser",
+          "A new programming language",
+          "A CSS framework",
+          "A browser"
         ],
         "answer": 0,
-        "explanation": "Day 20 starts Phase 2 — Backend Mastery."
+        "explanation": "Node runs JS on V8 outside the browser — no window/DOM, but server APIs."
       },
       {
-        "question": "How do you run a Node.js file?",
+        "question": "How do you load Node's HTTP module?",
         "options": [
-          "node filename.js in the terminal",
-          "Only in the browser",
-          "python filename.js",
-          "java filename.js"
+          "import http from window",
+          "const http = require('http')",
+          "fetch('http')",
+          "new HTTP()"
         ],
-        "answer": 0,
-        "explanation": "Use the node command from your terminal."
+        "answer": 1,
+        "explanation": "require pulls in built-in modules — second.js."
+      },
+      {
+        "question": "In the server, request.url for http://localhost:3000/15 is?",
+        "options": [
+          "\"15\"",
+          "\"/15\"",
+          "15",
+          "\"localhost\""
+        ],
+        "answer": 1,
+        "explanation": "request.url is the path, \"/15\" — the code strips the slash to get 15."
+      },
+      {
+        "question": "Why call JSON.stringify before response.end?",
+        "options": [
+          "To encrypt the data",
+          "HTTP sends strings, so the array must be serialized to a JSON string",
+          "To sort the array",
+          "It's optional"
+        ],
+        "answer": 1,
+        "explanation": "Responses are text; stringify turns the array into a JSON string — second.js."
+      },
+      {
+        "question": "In the TaskVault trilogy, why isn't localStorage enough?",
+        "options": [
+          "It's too slow",
+          "It's per-browser — data isn't shared across devices or users",
+          "It can't store text",
+          "It needs Node.js"
+        ],
+        "answer": 1,
+        "explanation": "localStorage persists but only on one browser; a backend/DB shares data — Project02 vs Project03."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=TlB_eWDSMt4",
     "youtubeTitle": "Node.js Crash Course — Programming with Mosh",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
-    "githubPath": "03Backend",
-    "notionUrl": "https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031",
+    "githubPath": "03Backend/Day01",
+    "notionUrl": "https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031?source=copy_link",
     "codeRepo": "https://github.com/Rohitnegi9/Thunder/tree/main"
   },
   {
@@ -179,8 +239,8 @@ export const chaptersDays20to100 = [
     "youtubeTitle": "Things Every Developer Should Know About package.json — Steve Griffith - Prof3ssorSt3v3",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
-    "githubPath": "03Backend",
-    "notionUrl": "https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031",
+    "githubPath": "03Backend/Day02",
+    "notionUrl": "https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031?source=copy_link",
     "codeRepo": "https://github.com/Rohitnegi9/Thunder/tree/main"
   },
   {

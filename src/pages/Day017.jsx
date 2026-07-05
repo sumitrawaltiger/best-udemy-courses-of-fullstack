@@ -267,7 +267,7 @@ export default function Day017() {
             ← Day 16
           </Link>
           <p className="day001-datetime">📅 21st July 2026 · Thunder Day 17 · 83 days left</p>
-          <Link to="/learn/promises-and-async" className="day001-nav-btn day001-nav-next">
+          <Link to="/day-018" className="day001-nav-btn day001-nav-next">
             Day 18 →
           </Link>
         </header>
