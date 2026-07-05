@@ -452,64 +452,118 @@ export const chaptersDays01to19 = [
     "slug": "loops-numbers-math-strings",
     "day": 4,
     "title": "Loops, Numbers, Math & Strings",
-    "subtitle": "for loops, Math object, string methods",
+    "subtitle": "if/else, for/while loops, Math object & string methods",
     "duration": "2 hrs 5 mins",
-    "createdOn": "4 Jul 2026",
+    "createdOn": "5 Jul 2026",
     "status": "published",
     "topics": [
+      "if / else if / else",
       "for loop",
-      "while loop",
-      "Math methods",
-      "String methods",
-      "Number precision",
-      "Patterns with loops"
+      "while & do-while",
+      "parseInt & parseFloat",
+      "Number precision & NaN",
+      "Math.floor, ceil, random",
+      "OTP & random ranges",
+      "String indexing & length",
+      "slice, trim, split, replaceAll",
+      "Looping through strings",
+      "Financial precision (paise)"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture04-Loop-Number-math-and-String-37643ac5cab9802ba80ffca6c7e961d6",
+    "notionUrl": "https://app.notion.com/p/Lecture04-Loop-Number-math-and-String-37643ac5cab9802ba80ffca6c7e961d6?source=copy_link",
     "githubPath": "Lecture04",
     "sections": [
       {
+        "id": "if-else",
+        "title": "if / else if / else",
+        "content": "Before loops, Thunder `second.js` teaches **conditionals** — code that runs only when a condition is true.\n\n- `if (age >= 25)` — one branch\n- `else if (age >= 18 && age < 60)` — multiple checks\n- `else` — fallback\n\nOpen [Lecture04](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture04) on GitHub: `second.js`, `strings.js`, `third.js`, and `first.js`.",
+        "code": "let age = 70;\n\nif (age < 18) {\n  console.log(\"You are child\");\n} else if (age >= 18 && age < 60) {\n  console.log(\"You are adult\");\n} else {\n  console.log(\"You are old\");\n}",
+        "tryIt": "let age = 18;\nif (age >= 18) {\n  console.log(\"Adult\");\n} else {\n  console.log(\"Minor\");\n}"
+      },
+      {
         "id": "for-loop",
         "title": "The for Loop",
-        "content": "Repeat code a fixed number of times. Structure: `for(init; condition; update)`.",
-        "code": "for (let i = 1; i <= 5; i++) {\n  console.log(\"Hello World\");\n}\n\nfor (let i = 1; i <= 10; i++) {\n  console.log(i);\n}",
-        "tryIt": "for (let i = 1; i <= 5; i++) {\n  console.log(\"Day\", i);\n}"
+        "content": "Repeat code a fixed number of times. Structure: `for (init; condition; update)`.\n\nThunder prints 1 to 10:\n`for (let i = 1; i <= 10; i++) { console.log(i); }`",
+        "code": "for (let i = 1; i <= 10; i++) {\n  console.log(i);\n}\n\nfor (let i = 1; i <= 5; i++) {\n  console.log(\"Hello World\");\n}",
+        "tryIt": "for (let i = 1; i <= 5; i++) {\n  console.log(\"Thunder Day\", i);\n}"
       },
       {
-        "id": "math",
-        "title": "Math Object",
-        "content": "Built-in math utilities: `Math.round`, `Math.floor`, `Math.ceil`, `Math.random`, `Math.min`, `Math.max`.",
-        "code": "console.log(Math.round(4.7));\nconsole.log(Math.floor(4.7));\nconsole.log(Math.random());\nconsole.log(Math.max(10, 20, 5));",
-        "tryIt": "let rating = 4.37;\nconsole.log(\"Rounded:\", Math.round(rating));\nlet dice = Math.floor(Math.random() * 6) + 1;\nconsole.log(\"Dice:\", dice);"
+        "id": "while-loops",
+        "title": "while & do-while Loops",
+        "content": "**while** — check condition first, then run body.\n\n**do-while** — run body at least once, then check condition.\n\nBoth can print 1 to 10 like the for loop — choose based on readability.",
+        "code": "let i = 1;\nwhile (i <= 10) {\n  console.log(i);\n  i++;\n}\n\nlet j = 1;\ndo {\n  console.log(j);\n  j++;\n} while (j <= 10);",
+        "tryIt": "let n = 1;\nwhile (n <= 3) {\n  console.log(\"Count:\", n);\n  n++;\n}"
       },
       {
-        "id": "strings",
-        "title": "String Methods",
-        "content": "Strings have powerful methods: `length`, `slice`, `replace`, `trim`, `split`, `includes`.",
-        "code": "let str = \"Rohit Negi\";\nconsole.log(str.length);\nconsole.log(str.slice(0, 5));\nconsole.log(str.includes(\"Negi\"));\nconsole.log(\"  hello  \".trim());",
-        "tryIt": "let data = \"Amir Rohit Anuj\";\nconsole.log(data.split(\" \"));\nconsole.log(data.replace(\"Rohit\", \"Sumit\"));"
+        "id": "parse-number",
+        "title": "parseInt, parseFloat & NaN",
+        "content": "`parseInt(\"100px\")` → `100`. `parseFloat(\"100.01px\")` → `100.01`.\n\n**NaN** (Not a Number) appears when conversion fails: `Number(\"10av\")`.\n\n`0/0` is `NaN`. Division by zero gives `Infinity` or `-Infinity`.",
+        "code": "console.log(parseInt(\"100px\"));\nconsole.log(parseFloat(\"100.01px\"));\n\nlet a = Number(\"10av\");\nconsole.log(a); // NaN\nconsole.log(0 / 0); // NaN",
+        "tryIt": "console.log(parseInt(\"42abc\"));\nconsole.log(isNaN(Number(\"hello\")));"
       },
       {
         "id": "number-precision",
-        "title": "Number Precision",
-        "content": "JS uses floating point. `0.1 + 0.2 !== 0.3` — financial apps store values in smallest units (paise, cents).",
-        "code": "console.log(0.1 + 0.2);\nconsole.log((0.1 + 0.2).toFixed(2));\n\nlet paise1 = 12001;\nlet paise2 = 13002;\nconsole.log((paise1 + paise2) / 100);",
-        "tryIt": "let a = 0.1, b = 0.2;\nconsole.log(\"Raw:\", a + b);\nconsole.log(\"Fixed:\", (a + b).toFixed(1));"
+        "title": "Number Precision & toFixed",
+        "content": "JavaScript uses floating point — `0.1 + 0.2` is not exactly `0.3`.\n\n**Financial apps** store money in smallest units: rupees as **paise**, dollars as **cents**, BTC as **sats**.\n\n`toFixed(2)` and `toPrecision(5)` format numbers for display.",
+        "code": "console.log(0.1 + 0.2);\n\nlet paise1 = 12001;\nlet paise2 = 13002;\nconsole.log((paise1 + paise2) / 100);\n\nlet num = 10.39148342;\nconsole.log(num.toFixed(2));\nconsole.log(num.toPrecision(5));",
+        "tryIt": "let a = 0.1, b = 0.2;\nconsole.log(\"Raw:\", a + b);\nconsole.log(\"Fixed:\", (a + b).toFixed(2));"
+      },
+      {
+        "id": "math-object",
+        "title": "Math Object",
+        "content": "Built-in math utilities — no `new` needed (avoid `new Number(10)` — objects compare by reference).\n\n- `Math.abs(-23)` → `23`\n- `Math.floor(2.3)` → `2` (round down)\n- `Math.ceil(-5.3)` → `-5` (round up)\n- `Math.random()` → `[0, 1)`",
+        "code": "console.log(Math.abs(-23));\nconsole.log(Math.floor(2.3));\nconsole.log(Math.ceil(-5.3));\nconsole.log(Math.random());",
+        "tryIt": "let rating = 4.37;\nconsole.log(\"Rounded:\", Math.round(rating));\nconsole.log(\"Floor:\", Math.floor(rating));"
+      },
+      {
+        "id": "random-otp",
+        "title": "Random Ranges & OTP Pattern",
+        "content": "Generate a random integer from `min` to `max` inclusive:\n\n`Math.floor(Math.random() * (max - min + 1) + min)`\n\nThunder examples:\n- Dice: `Math.floor(Math.random() * 6 + 2)`\n- 4-digit OTP: `Math.floor(Math.random() * (9999 - 1000) + 1000)`\n\nReal apps (Uber, Rapido) need unique OTPs per ride — homework: display a 4-digit code.",
+        "code": "// Random between 37 and 48\nconsole.log(Math.floor(Math.random() * (48 - 37 + 1) + 37));\n\n// 4-digit OTP (1000–9999)\nconsole.log(Math.floor(Math.random() * (9999 - 1000) + 1000));",
+        "tryIt": "let dice = Math.floor(Math.random() * 6) + 1;\nconsole.log(\"Dice roll:\", dice);"
+      },
+      {
+        "id": "string-basics",
+        "title": "Strings — Concat, Length & Indexing",
+        "content": "Strings from Lecture 02 return with more power. Use `\"\"`, `''`, or backtick **template literals** (multiline OK).\n\n`str[i]` accesses a character. `str.length` counts characters. Loop with `for (let i = 0; i < str.length; i++)`.",
+        "code": "let str = \"Hello Ji\";\nlet str2 = \"Rohit Negi\";\nconsole.log(str + \" \" + str2);\nconsole.log(str[1]); // \"e\"\nconsole.log(str.length);\n\nfor (let i = 0; i < str.length; i++) {\n  console.log(str[i]);\n}",
+        "tryIt": "let name = \"Thunder\";\nconsole.log(name[0], name.length);"
+      },
+      {
+        "id": "string-methods",
+        "title": "String Methods",
+        "content": "Essential methods from `strings.js`:\n\n- `slice(start, end)` — extract (supports negative index)\n- `trim()` — remove whitespace\n- `split(' ')` — string → array\n- `replaceAll(\"Negi\", \"maggi\")` — replace all matches\n- `includes('oht')` — search\n- `lastIndexOf(\"Negi\")` — last position",
+        "code": "let str = \"Rohit Negi is a bad teacher Negi is\";\nconsole.log(str.replaceAll(\"Negi\", \"maggi\"));\nconsole.log(str.slice(2, 8));\nconsole.log(\" Rohit Negi \".trim());\n\nlet data = \"Amir Rohit Anuj Anjali\";\nconsole.log(data.split(\" \"));\nconsole.log(str.includes(\"oht\"));",
+        "tryIt": "let data = \"Amir Rohit Anuj\";\nconsole.log(data.split(\" \"));\nconsole.log(data.replace(\"Rohit\", \"Sumit\"));"
+      },
+      {
+        "id": "bitwise-preview",
+        "title": "Bitwise & Financial Storage (Preview)",
+        "content": "Thunder `first.js` briefly shows **bitwise** shift: `8 >> 2` → `2`.\n\nFor fintech (Zomato, Swiggy, payment gateways): never store money as floats in the database. Store **paise** as integers, divide by 100 only for display.\n\n`// 1 BTC = 10^8 sats` — same idea for crypto.",
+        "code": "console.log(8 >> 2); // 2\n\nlet first = 12001;  // paise\nlet second = 13002; // paise\nconsole.log((first + second) / 100); // rupees",
+        "tryIt": "let balancePaise = 50050;\nconsole.log(\"₹\" + balancePaise / 100);"
+      },
+      {
+        "id": "lecture04-practice",
+        "title": "Your Lecture 04 Practice",
+        "content": "Work through all four files on GitHub:\n1. **`second.js`** — if/else, for, while, do-while\n2. **`strings.js`** — every string method\n3. **`third.js`** — Math, random, toFixed\n4. **`first.js`** — precision & bitwise preview\n\nHomework: generate a **4-digit OTP** with `Math.random()`.\n\nKeep the [Notion notes](https://app.notion.com/p/Lecture04-Loop-Number-math-and-String-37643ac5cab9802ba80ffca6c7e961d6?source=copy_link) open while you code.",
+        "tryIt": "let otp = Math.floor(Math.random() * (9999 - 1000) + 1000);\nconsole.log(\"Your OTP:\", otp);\n\nfor (let i = 1; i <= 3; i++) {\n  console.log(\"Line\", i);\n}",
+        "code": "// 4-digit OTP homework\nlet otp = Math.floor(Math.random() * (9999 - 1000) + 1000);\nconsole.log(otp);"
       }
     ],
     "quiz": [
       {
-        "question": "Math.floor(4.9)?",
+        "question": "Math.floor(4.9) returns?",
         "options": [
           "4",
           "5",
           "4.9",
-          "0"
+          "NaN"
         ],
         "answer": 0,
-        "explanation": "Floor rounds down."
+        "explanation": "Math.floor rounds down — 4.9 becomes 4."
       },
       {
-        "question": "for loop has how many parts?",
+        "question": "A for loop has how many parts in the header?",
         "options": [
           "1",
           "2",
@@ -517,7 +571,40 @@ export const chaptersDays01to19 = [
           "4"
         ],
         "answer": 2,
-        "explanation": "init; condition; update."
+        "explanation": "init; condition; update — three parts separated by semicolons."
+      },
+      {
+        "question": "parseInt(\"100px\") returns?",
+        "options": [
+          "NaN",
+          "100",
+          "\"100px\"",
+          "100px"
+        ],
+        "answer": 1,
+        "explanation": "parseInt reads the leading number from a string."
+      },
+      {
+        "question": "Why do banks store money as paise (integers)?",
+        "options": [
+          "Strings are faster",
+          "Floating point causes rounding errors like 0.1 + 0.2",
+          "JSON requires integers",
+          "Math.random needs integers"
+        ],
+        "answer": 1,
+        "explanation": "Thunder first.js: store smallest currency units to avoid float precision bugs."
+      },
+      {
+        "question": "do-while vs while — key difference?",
+        "options": [
+          "do-while runs body at least once",
+          "while is faster",
+          "do-while only works with numbers",
+          "while cannot use i++"
+        ],
+        "answer": 0,
+        "explanation": "do-while executes the body before checking the condition."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=s9wW2PpJsmQ",

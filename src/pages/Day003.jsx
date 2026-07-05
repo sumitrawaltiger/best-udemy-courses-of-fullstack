@@ -315,7 +315,7 @@ export default function Day003() {
             ← Day 2
           </Link>
           <p className="day001-datetime">📅 5th July 2026 · Thunder Day 3 · 97 days left</p>
-          <Link to="/learn/loops-numbers-math-strings" className="day001-nav-btn day001-nav-next">
+          <Link to="/day-004" className="day001-nav-btn day001-nav-next">
             Day 4 →
           </Link>
         </header>
