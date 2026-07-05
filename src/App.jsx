@@ -12,6 +12,7 @@ import MobileHome from './pages/MobileHome';
 import Chapter from './pages/Chapter';
 import Day001 from './pages/Day001';
 import Day002 from './pages/Day002';
+import Day003 from './pages/Day003';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
       <Routes>
         <Route path="/day-001" element={<Day001 />} />
         <Route path="/day-002" element={<Day002 />} />
+        <Route path="/day-003" element={<Day003 />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="learn/:slug" element={<Chapter />} />

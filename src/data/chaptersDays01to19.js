@@ -288,49 +288,101 @@ export const chaptersDays01to19 = [
     "slug": "operators-and-data-types",
     "day": 3,
     "title": "Operators & Data Types",
-    "subtitle": "Arithmetic, assignment, primitive vs reference",
+    "subtitle": "Arithmetic, comparison, logical ops & primitive vs reference",
     "duration": "2 hrs 5 mins",
-    "createdOn": "3 Jul 2026",
+    "createdOn": "5 Jul 2026",
     "status": "published",
     "topics": [
       "Arithmetic operators",
-      "Assignment operators",
-      "Increment/decrement",
-      "Comparison",
-      "let vs const vs var",
+      "Assignment & increment",
+      "Comparison operators",
+      "== vs ===",
+      "Type coercion",
+      "null & undefined quirks",
+      "Logical && and ||",
+      "Operator precedence",
       "Primitive vs reference",
-      "Logical operators"
+      "var vs let vs const"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture03-Operator-and-Data-type-in-JS-37543ac5cab9805bb338dc7e6c3ab515",
+    "notionUrl": "https://app.notion.com/p/Lecture03-Operator-and-Data-type-in-JS-37543ac5cab9805bb338dc7e6c3ab515?source=copy_link",
     "githubPath": "Lecture03",
     "sections": [
       {
         "id": "arithmetic",
         "title": "Arithmetic Operators",
-        "content": "+, -, *, /, %, ** perform math. Watch out: `\"5\" + 3` gives `\"53\"` (string concat), but `\"5\" - 3` gives `2`.",
-        "code": "console.log(10 + 3);\nconsole.log(10 % 3);\nconsole.log(2 ** 10);\nconsole.log(\"5\" + 3);\nconsole.log(\"5\" - 3);",
-        "tryIt": "let a = 10, b = 3;\nconsole.log(\"Sum:\", a + b);\nconsole.log(\"Remainder:\", a % b);"
+        "content": "Thunder `second.js` covers the six math operators: `+`, `-`, `*`, `/`, `%` (remainder), and `**` (exponent).\n\nWatch the string trap from Lecture 02: `\"5\" + 3` concatenates to `\"53\"`, but `\"5\" - 3` coerces to numbers and gives `2`.\n\nOpen [Lecture03](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture03) on GitHub and uncomment each block in `second.js`.",
+        "code": "console.log(3 + 4);\nconsole.log(3 - 4);\nconsole.log(3 * 4);\nconsole.log(10 / 4);\nconsole.log(10 % 4);\nconsole.log(10 ** 4);",
+        "tryIt": "let a = 10, b = 20;\nconsole.log(\"Sum:\", a + b);\nconsole.log(\"Remainder:\", a % b);\nconsole.log(\"Power:\", 2 ** 10);"
       },
       {
-        "id": "assignment",
+        "id": "assignment-increment",
         "title": "Assignment & Increment",
-        "content": "Shorthand: `+=`, `-=`, `*=`. Increment: `++a` (pre) vs `a++` (post).",
-        "code": "let a = 10;\na += 5;\nconsole.log(a);\nlet b = 5;\nconsole.log(b++);\nconsole.log(b);",
+        "content": "Compound assignment saves typing: `a += b` means `a = a + b`. Same for `-=`, `*=`, `/=`.\n\n**Post-increment** `a++` — use the original value first, then add 1.\n\n**Pre-increment** `++a` — add 1 first, then return the new value.\n\nThunder: `let k = ++a` gives `k` and `a` both updated; `console.log(a++)` prints old value then increments.",
+        "code": "let a = 10;\nlet b = 20;\na += b;\nconsole.log(a); // 30\n\nlet x = 10;\nconsole.log(x++); // 10\nconsole.log(x);   // 11\n\nlet y = 10;\nlet k = ++y;\nconsole.log(k, y); // 11 11",
         "tryIt": "let score = 0;\nscore += 10;\nscore++;\nconsole.log(\"Score:\", score);"
       },
       {
         "id": "comparison",
         "title": "Comparison Operators",
-        "content": "Always use `===` and `!==` (strict). `==` does type coercion and causes bugs.",
-        "code": "console.log(5 === 5);\nconsole.log(5 === \"5\");\nconsole.log(5 == \"5\");\nconsole.log(10 > 5);",
-        "tryIt": "let age = 18;\nconsole.log(\"Adult?\", age >= 18);\nconsole.log(age === \"18\");"
+        "content": "Compare numbers with `>`, `>=`, `<`, `<=`. They return **boolean** `true` or `false`.\n\nThese power every `if` statement you will write in later lectures.",
+        "code": "console.log(10 > 5);   // true\nconsole.log(10 >= 5);  // true\nconsole.log(10 <= 5);  // false\nconsole.log(10 < 5);   // false",
+        "tryIt": "let age = 18;\nconsole.log(\"Adult?\", age >= 18);\nconsole.log(\"Teen?\", age < 20);"
+      },
+      {
+        "id": "equality-strict",
+        "title": "== vs === (Loose vs Strict)",
+        "content": "**`==`** compares with type coercion — `\"10\" == 10` is `true`. Thunder warns: avoid this in real code.\n\n**`===`** checks **type first**, then value — `\"10\" === 10` is `false`. Always prefer `===` and `!==`.\n\n`0 == false` is `true` (coercion). `0 === false` is `false` (strict).",
+        "code": "console.log(10 == 10);    // true\nconsole.log(\"10\" == 10);  // true (coercion!)\nconsole.log(\"10\" === 10); // false (strict)\nconsole.log(0 == false);  // true\nconsole.log(0 === false); // false",
+        "tryIt": "let input = \"18\";\nconsole.log(input == 18);\nconsole.log(input === 18);"
+      },
+      {
+        "id": "type-coercion",
+        "title": "Type Coercion — Number() & String()",
+        "content": "Form inputs arrive as **strings**. A calculator needs `Number(\"10\") + Number(\"20\")` not `\"10\" + \"20\"`.\n\n`String(30) + '7'` gives `\"307\"` — string concatenation wins when either side is a string.",
+        "code": "let age = Number(\"10\");\nconsole.log(age); // 10\n\nconsole.log(Number(\"10\") + Number(\"20\")); // 30\nconsole.log(String(30) + '7');            // \"307\"",
+        "tryIt": "let first = \"10\", second = \"20\";\nconsole.log(\"Wrong:\", first + second);\nconsole.log(\"Right:\", Number(first) + Number(second));"
+      },
+      {
+        "id": "null-undefined-equality",
+        "title": "null & undefined Equality Quirks",
+        "content": "Thunder Lecture 03: **`null == undefined`** is `true`, but `null` is not loosely equal to `0`, `1`, or `false`.\n\nComparison with numbers gets weird: `null >= 0` and `null <= 0` are both `true`, but `null > 0` and `null < 0` are `false`.\n\nAnother reason to use `===` — predictable behavior.",
+        "code": "console.log(null == undefined); // true\nconsole.log(null == 0);         // false\nconsole.log(null == false);     // false\nconsole.log(null >= 0);         // true (quirk!)\nconsole.log(null > 0);          // false",
+        "tryIt": "let value = null;\nconsole.log(value == undefined);\nconsole.log(value === undefined);"
+      },
+      {
+        "id": "logical-operators",
+        "title": "Logical Operators — && and ||",
+        "content": "**`&&`** (AND) — both sides must be truthy. Returns the last truthy value or the first falsy one.\n\n**`||`** (OR) — returns the first truthy value. `true && \"Rohit\"` gives `\"Rohit\"`. `false && \"Rohit\"` gives `false`.\n\nShort-circuit evaluation — the second operand may never run.",
+        "code": "console.log(true && true);    // true\nconsole.log(true && false);   // false\nconsole.log(true && \"Rohit\"); // \"Rohit\"\nconsole.log(false && \"Rohit\"); // false\n\nconsole.log(true || false);   // true\nconsole.log(false || false);  // false",
+        "tryIt": "let name = \"\";\nlet display = name || \"Guest\";\nconsole.log(display);"
+      },
+      {
+        "id": "operator-precedence",
+        "title": "Operator Precedence",
+        "content": "JavaScript follows math rules: multiplication and division before addition.\n\n`10 * 2 + 5 * 64 + 78 / 2` is evaluated as `((10*2)+5)*64 + (78/2)` when grouped — use **parentheses** when in doubt.",
+        "code": "let ab = 10 * 2 + 5 * 64 + 78 / 2;\nconsole.log(ab);\n\nlet grouped = ((((10 * 2) + 5) * 64) + (78 / 2));\nconsole.log(grouped);",
+        "tryIt": "console.log(2 + 3 * 4);\nconsole.log((2 + 3) * 4);"
       },
       {
         "id": "primitive-vs-reference",
-        "title": "Primitive vs Reference",
-        "content": "Primitives copy by value. Objects copy by **reference** — two variables can point to the same object.",
-        "code": "let a = 10;\nlet b = a;\nb = 20;\nconsole.log(a, b); // 10, 20\n\nlet obj1 = { name: \"Rohit\" };\nlet obj2 = obj1;\nobj2.name = \"Mohan\";\nconsole.log(obj1.name); // Mohan",
+        "title": "Primitive vs Reference — Deep Dive",
+        "content": "Thunder `first.js` proves the difference:\n\n**Primitives** copy by value — change `secondNumber`, `firstNumber` stays the same.\n\n**Objects** copy by reference — `obj2 = obj1` means both point to the same object. Changing `obj2.name` changes `obj1.name`.\n\nTwo **separate** objects with identical content are **not** equal by reference — only string primitives compare by value (`a == b` when both are `\"Rohit\"`).",
+        "code": "let firstNumber = 10;\nlet secondNumber = firstNumber;\nsecondNumber = 20;\nconsole.log(firstNumber, secondNumber); // 10 20\n\nlet obj1 = { name: \"Rohit\", age: 20 };\nlet obj2 = obj1;\nobj2.name = \"Mohan\";\nconsole.log(obj1.name); // Mohan",
         "tryIt": "let x = { score: 10 };\nlet y = x;\ny.score = 99;\nconsole.log(x.score);"
+      },
+      {
+        "id": "var-let-const",
+        "title": "var vs let vs const",
+        "content": "**`var`** — old way, function-scoped, hoisted (can cause bugs).\n\n**`let`** — block-scoped, can be reassigned. `let` inside `if { }` is not visible outside.\n\n**`const`** — block-scoped, cannot reassign the **binding**. But object **properties** can still change: `const a = { age: 20 }; a.age = 10` works. Reassigning `a = { ... }` throws an error.",
+        "code": "// var a = 10; // function-scoped, hoisted\n\nif (true) {\n  let a = 10;\n}\n// console.log(a); // ReferenceError\n\nconst person = { name: \"Rohit\", age: 20 };\nperson.age = 10; // OK — mutating property\n// person = {};  // TypeError — cannot reassign",
+        "tryIt": "const course = \"Thunder\";\nlet day = 3;\nday = 4;\nconsole.log(course, \"Day\", day);"
+      },
+      {
+        "id": "lecture03-practice",
+        "title": "Your Lecture 03 Practice",
+        "content": "Work through Thunder Lecture 03 on GitHub:\n1. Open **`first.js`** — primitive vs reference, const mutation rules\n2. Open **`second.js`** — uncomment arithmetic, comparison, logical blocks one at a time\n3. Build a mini calculator: read two string inputs, use `Number()`, add them\n4. Practice `===` on form-like values\n\nKeep the [Notion notes](https://app.notion.com/p/Lecture03-Operator-and-Data-type-in-JS-37543ac5cab9805bb338dc7e6c3ab515?source=copy_link) open while you code.",
+        "tryIt": "let num1 = \"10\", num2 = \"20\";\nconsole.log(\"Loose:\", num1 == num2);\nconsole.log(\"Strict:\", num1 === num2);\nconsole.log(\"Sum:\", Number(num1) + Number(num2));",
+        "code": "// Calculator pattern from second.js\nlet first = \"10\", second = \"20\";\nconsole.log(Number(first) + Number(second)); // 30"
       }
     ],
     "quiz": [
@@ -338,19 +390,56 @@ export const chaptersDays01to19 = [
         "question": "5 === \"5\" is?",
         "options": [
           "true",
-          "false"
+          "false",
+          "undefined",
+          "null"
         ],
         "answer": 1,
-        "explanation": "Strict equality checks type."
+        "explanation": "=== checks type and value — number 5 is not strictly equal to string \"5\"."
       },
       {
-        "question": "Objects copy by?",
+        "question": "let obj2 = obj1; obj2.name = \"Mohan\"; What is obj1.name?",
         "options": [
-          "value",
-          "reference"
+          "Rohit",
+          "Mohan",
+          "undefined",
+          "Error"
         ],
         "answer": 1,
-        "explanation": "Objects share references."
+        "explanation": "Objects share references — both variables point to the same object in first.js."
+      },
+      {
+        "question": "console.log(a++) when a = 10 prints?",
+        "options": [
+          "11",
+          "10",
+          "9",
+          "undefined"
+        ],
+        "answer": 1,
+        "explanation": "Post-increment returns the original value first, then increments a to 11."
+      },
+      {
+        "question": "null == undefined is?",
+        "options": [
+          "true",
+          "false",
+          "null",
+          "throws error"
+        ],
+        "answer": 0,
+        "explanation": "Thunder Lecture 03: null is loosely equal to undefined with ==."
+      },
+      {
+        "question": "Which should you use for comparisons in real code?",
+        "options": [
+          "== only",
+          "=== and !==",
+          "!= only",
+          "no comparison needed"
+        ],
+        "answer": 1,
+        "explanation": "Strict equality avoids type coercion bugs — Thunder recommends ===."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=ovWYhDVQiR8",
