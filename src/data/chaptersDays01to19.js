@@ -7,7 +7,7 @@ export const chaptersDays01to19 = [
     "title": "Introduction to JavaScript",
     "subtitle": "HTML, CSS, JS — how the web works",
     "duration": "2 hrs 25 mins",
-    "createdOn": "4 Jul 2026",
+    "createdOn": "5 Jul 2026",
     "status": "published",
     "topics": [
       "What is JavaScript?",
@@ -146,7 +146,7 @@ export const chaptersDays01to19 = [
     "title": "Data Types in JavaScript",
     "subtitle": "Primitives, typeof, objects, arrays & functions",
     "duration": "2 hrs 10 mins",
-    "createdOn": "5 Jul 2026",
+    "createdOn": "6 Jul 2026",
     "status": "published",
     "topics": [
       "Primitive vs non-primitive",
@@ -290,7 +290,7 @@ export const chaptersDays01to19 = [
     "title": "Operators & Data Types",
     "subtitle": "Arithmetic, comparison, logical ops & primitive vs reference",
     "duration": "2 hrs 5 mins",
-    "createdOn": "5 Jul 2026",
+    "createdOn": "7 Jul 2026",
     "status": "published",
     "topics": [
       "Arithmetic operators",
@@ -454,7 +454,7 @@ export const chaptersDays01to19 = [
     "title": "Loops, Numbers, Math & Strings",
     "subtitle": "if/else, for/while loops, Math object & string methods",
     "duration": "2 hrs 5 mins",
-    "createdOn": "5 Jul 2026",
+    "createdOn": "8 Jul 2026",
     "status": "published",
     "topics": [
       "if / else if / else",
@@ -619,65 +619,144 @@ export const chaptersDays01to19 = [
     "slug": "control-flow-and-patterns",
     "day": 5,
     "title": "Control Flow & Patterns",
-    "subtitle": "Advanced loops, sum formulas, star patterns",
+    "subtitle": "Number series, multiplication tables, sum formula & star patterns",
     "duration": "2 hrs",
-    "createdOn": "5 Jul 2026",
+    "createdOn": "9 Jul 2026",
     "status": "published",
     "topics": [
-      "Printing number series",
-      "Even and odd numbers",
+      "Loops for repetition",
+      "Print 1 to N & N to 1",
+      "Even & odd series",
+      "Multiplication tables",
       "Sum of N numbers",
-      "Star patterns",
+      "Gauss formula n*(n+1)/2",
       "Nested loops",
-      "Loop optimization"
+      "Star patterns",
+      "Number patterns",
+      "String.fromCharCode A–Z"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture05-37743ac5cab980fc90afeec0d60a0fda",
+    "notionUrl": "https://app.notion.com/p/Lecture05-37743ac5cab980fc90afeec0d60a0fda?source=copy_link",
     "githubPath": "Lecture05",
     "sections": [
       {
+        "id": "loop-repetition",
+        "title": "Why Loops? — Repeat Without Copy-Paste",
+        "content": "Thunder `first.js` shows the problem: printing \"Hello World\" 10 times by copy-paste is painful. A **for loop** does it in 3 lines.\n\n`for (let i = 1; i <= 100; i++)` can repeat anything — even `i` from 200 to 299.\n\nOpen [Lecture05](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture05) on GitHub: `first.js`, `second.js`, `third.js`, `fourth.js`, `pattern.js`, `printabc.js`.",
+        "code": "// Instead of 10 console.log lines...\nfor (let i = 1; i <= 10; i++) {\n  console.log(\"Hello World\");\n}\n\nfor (let i = 200; i < 300; i++) {\n  console.log(\"Hello World\");\n}",
+        "tryIt": "for (let i = 1; i <= 5; i++) {\n  console.log(\"Thunder Day 5 —\", i);\n}"
+      },
+      {
         "id": "number-series",
         "title": "Printing Number Series",
-        "content": "Use loops to print 1 to N, N to 1, even numbers, odd numbers.",
-        "code": "for (let i = 1; i <= 10; i++) console.log(i);\n\nfor (let i = 10; i >= 1; i--) console.log(i);\n\nfor (let i = 2; i <= 20; i += 2) console.log(i);",
-        "tryIt": "for (let i = 1; i <= 5; i++) console.log(i * i);"
+        "content": "Thunder `second.js` replaces manual `console.log(\"1\")` … `console.log(\"10\")` with loops.\n\n- **1 to 10:** `for (let i = 1; i <= 10; i++)`\n- **10 to 1:** `for (let i = 10; i >= 1; i--)`\n- **Even:** `for (let i = 2; i <= 20; i += 2)`\n- **Odd:** `for (let i = 1; i <= 19; i += 2)`",
+        "code": "for (let i = 1; i <= 10; i++) {\n  console.log(i);\n}\n\nfor (let i = 10; i >= 1; i--) {\n  console.log(i);\n}\n\nfor (let i = 2; i <= 20; i += 2) {\n  console.log(i);\n}",
+        "tryIt": "for (let i = 1; i <= 5; i++) {\n  console.log(i * i);\n}"
+      },
+      {
+        "id": "multiplication-tables",
+        "title": "Multiplication Tables",
+        "content": "Print any table with a loop — Thunder prints **17's table** with `i += 17` and **13's table** with `13 * i`.\n\nHomework from second.js: print **27's table** and **13's table** yourself.",
+        "code": "// 17's table: 17 34 51 ... 170\nfor (let i = 17; i <= 170; i += 17) {\n  console.log(i);\n}\n\n// 13's table: 13 26 39 ... 130\nfor (let i = 1; i <= 10; i++) {\n  console.log(13 * i);\n}",
+        "tryIt": "for (let i = 1; i <= 10; i++) {\n  console.log(\"5 x\", i, \"=\", 5 * i);\n}"
       },
       {
         "id": "sum-formula",
-        "title": "Sum of N Numbers",
-        "content": "Loop: add each number. Formula: `n * (n + 1) / 2` — much faster for large N.",
-        "code": "let sum = 0;\nfor (let i = 1; i <= 50; i++) sum += i;\nconsole.log(\"Loop sum:\", sum);\nconsole.log(\"Formula:\", (50 * 51) / 2);",
+        "title": "Sum of N Numbers — Loop vs Formula",
+        "content": "Add 1 + 2 + … + N with a loop:\n`let sum = 0; for (let i = 1; i <= 50; i++) sum += i;`\n\nFor huge N (like 5 billion), loops are slow. Use **Gauss formula**: `n * (n + 1) / 2`.\n\nThunder `third.js` shows both — the formula wins for large numbers.",
+        "code": "let sum = 0;\nfor (let i = 1; i <= 50; i++) {\n  sum += i;\n}\nconsole.log(\"Loop sum:\", sum);\n\nconsole.log(\"Formula:\", (50 * 51) / 2);\nconsole.log((5000000000 * (5000000000 + 1)) / 2);",
         "tryIt": "let n = 100;\nconsole.log((n * (n + 1)) / 2);"
       },
       {
-        "id": "patterns",
-        "title": "Star Patterns with Nested Loops",
-        "content": "Nested loops build patterns. Outer loop = rows, inner loop = columns.",
-        "code": "for (let row = 1; row <= 5; row++) {\n  let str = \"\";\n  for (let col = 1; col <= row; col++) {\n    str += \"*\";\n  }\n  console.log(str);\n}",
-        "tryIt": "for (let j = 1; j <= 4; j++) {\n  let line = \"\";\n  for (let i = 1; i <= j; i++) line += j + \" \";\n  console.log(line);\n}"
+        "id": "nested-loops-intro",
+        "title": "Nested Loops — Rows & Columns",
+        "content": "Thunder `fourth.js` builds a **rectangle of stars** — outer loop = rows, inner loop = columns.\n\nBuild a string with `str += '*'` inside the inner loop, then `console.log(str)` after each row.",
+        "code": "for (let j = 1; j <= 6; j++) {\n  let str = \"\";\n  for (let i = 1; i <= 5; i++) {\n    str = str + '*';\n  }\n  console.log(str);\n}",
+        "tryIt": "for (let row = 1; row <= 3; row++) {\n  let line = \"\";\n  for (let col = 1; col <= 4; col++) line += \"*\";\n  console.log(line);\n}"
+      },
+      {
+        "id": "number-grid-pattern",
+        "title": "Number Grid Pattern",
+        "content": "Same nested loop idea with numbers instead of stars — print `1 2 3 4 5` on four rows.\n\nOuter loop `j` = row, inner loop `i` builds `str = str + i + ' '`.",
+        "code": "for (let j = 1; j <= 4; j++) {\n  let str = \"\";\n  for (let i = 1; i <= 5; i++) {\n    str = str + i + ' ';\n  }\n  console.log(str);\n}",
+        "tryIt": "for (let j = 1; j <= 3; j++) {\n  let line = \"\";\n  for (let i = 1; i <= j; i++) line += j + \" \";\n  console.log(line);\n}"
+      },
+      {
+        "id": "star-patterns",
+        "title": "Star Patterns — Right Triangle & Inverted",
+        "content": "Thunder `pattern.js` — classic interview patterns:\n\n**Right triangle:** inner loop runs `i <= row` times, adding `*` each time.\n\n**Inverted triangle:** outer `j` counts down from 5; inner adds `*` up to `j`.\n\n**Number triangle:** `str + j + ' '` prints `1`, then `2 2`, then `3 3 3`, etc.",
+        "code": "// Right triangle\nfor (let row = 1; row <= 5; row++) {\n  let str = \"\";\n  for (let col = 1; col <= row; col++) {\n    str += '*';\n  }\n  console.log(str);\n}\n\n// Inverted\nfor (let j = 5; j >= 1; j--) {\n  let str = \"\";\n  for (let i = 1; i <= j; i++) str += '*';\n  console.log(str);\n}",
+        "tryIt": "for (let row = 1; row <= 4; row++) {\n  console.log(\"*\".repeat(row));\n}"
+      },
+      {
+        "id": "print-abc",
+        "title": "Print A to Z with fromCharCode",
+        "content": "ASCII codes: **A = 65**, **Z = 90**, **a = 97**, **z = 122**.\n\n`String.fromCharCode(i)` converts a number to a character.\n\nThunder `printabc.js` loops and prints the alphabet.",
+        "code": "for (let i = 65; i <= 90; i++) {\n  console.log(String.fromCharCode(i));\n}\n\nfor (let i = 97; i <= 122; i++) {\n  console.log(String.fromCharCode(i));\n}",
+        "tryIt": "let word = \"\";\nfor (let i = 97; i <= 101; i++) {\n  word += String.fromCharCode(i);\n}\nconsole.log(word);"
+      },
+      {
+        "id": "lecture05-practice",
+        "title": "Your Lecture 05 Practice",
+        "content": "Homework from Thunder GitHub:\n1. Print **27's multiplication table**\n2. Print **13's table** both ways (`i += 13` and `13 * i`)\n3. Build the **inverted star triangle** from `pattern.js`\n4. Sum 1 to 100 with loop AND formula — compare speed\n\nKeep the [Notion notes](https://app.notion.com/p/Lecture05-37743ac5cab980fc90afeec0d60a0fda?source=copy_link) open while you code.",
+        "tryIt": "for (let i = 1; i <= 10; i++) {\n  console.log(27 * i);\n}\nconsole.log(\"Sum 1-100:\", (100 * 101) / 2);",
+        "code": "// 27's table homework\nfor (let i = 1; i <= 10; i++) {\n  console.log(27 * i);\n}"
       }
     ],
     "quiz": [
       {
-        "question": "Sum 1 to N formula?",
+        "question": "Sum of 1 to N using Gauss formula?",
         "options": [
-          "n*n",
-          "n*(n+1)/2",
-          "n+1",
-          "n/2"
+          "n * n",
+          "n * (n + 1) / 2",
+          "n + 1",
+          "n / 2"
         ],
         "answer": 1,
-        "explanation": "Gauss formula."
+        "explanation": "Thunder third.js: n*(n+1)/2 — instant even for billions."
       },
       {
-        "question": "Nested loops are used for?",
+        "question": "Nested loops are mainly used for?",
         "options": [
-          "patterns",
-          "strings only",
-          "comments",
-          "JSON"
+          "Star and number patterns",
+          "String trim only",
+          "parseInt",
+          "typeof"
         ],
         "answer": 0,
-        "explanation": "Rows and columns."
+        "explanation": "Outer loop = rows, inner loop = columns — pattern.js and fourth.js."
+      },
+      {
+        "question": "String.fromCharCode(65) returns?",
+        "options": [
+          "a",
+          "A",
+          "65",
+          "Z"
+        ],
+        "answer": 1,
+        "explanation": "ASCII 65 is uppercase A — printabc.js starts at 65 for A–Z."
+      },
+      {
+        "question": "for (let i = 10; i >= 1; i--) prints?",
+        "options": [
+          "1 to 10",
+          "10 to 1",
+          "Even numbers",
+          "Nothing"
+        ],
+        "answer": 1,
+        "explanation": "Decrementing loop from 10 down to 1 — second.js."
+      },
+      {
+        "question": "Why use formula over loop for sum of 5 billion numbers?",
+        "options": [
+          "Loops cannot add",
+          "Formula is O(1) — loop would be too slow",
+          "Formula only works for 50",
+          "JavaScript has no loops"
+        ],
+        "answer": 1,
+        "explanation": "third.js compares loop to n*(n+1)/2 for huge N."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=VjGYVG9oyPY",
