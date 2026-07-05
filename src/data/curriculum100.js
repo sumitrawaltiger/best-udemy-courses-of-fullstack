@@ -83,7 +83,11 @@ export const days20to100 = [
     notionUrl: NODE_LECTURE_NOTES,
     githubPath: BACKEND_GITHUB_PATH,
     codeRepo: BACKEND_CODE_REPO,
-    youtube: { url: 'https://www.youtube.com/watch?v=3dP4meOW_Ig', title: 'TCP/IP Explained', channel: 'PowerCert Animated Videos' },
+    youtube: {
+      url: 'https://www.youtube.com/watch?v=-SaZiADGLHs&t=2s',
+      title: 'Things Every Developer Should Know About package.json',
+      channel: 'Steve Griffith - Prof3ssorSt3v3',
+    },
     sampleCode:
       '{\n  "name": "thunder-backend-day02",\n  "version": "1.0.0",\n  "scripts": {\n    "start": "node second.js"\n  },\n  "dependencies": {}\n}',
     sections: [

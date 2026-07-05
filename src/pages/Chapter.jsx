@@ -192,7 +192,8 @@ function renderMarkdown(text) {
 function getYoutubeEmbedUrl(url) {
   if (!url) return '';
   const id = url.match(/[?&]v=([^&]+)/)?.[1];
-  const start = url.match(/[?&]t=(\d+)/)?.[1];
+  const startMatch = url.match(/[?&]t=(\d+)(s)?/);
+  const start = startMatch ? startMatch[1] : null;
   if (!id) return '';
   return `https://www.youtube.com/embed/${id}${start ? `?start=${start}` : ''}`;
 }

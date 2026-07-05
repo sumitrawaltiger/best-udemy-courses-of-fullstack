@@ -151,8 +151,8 @@ export const chaptersDays20to100 = [
         "explanation": "package.json is the manifest for every Node.js project."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=3dP4meOW_Ig",
-    "youtubeTitle": "TCP/IP Explained — PowerCert Animated Videos",
+    "youtubeUrl": "https://www.youtube.com/watch?v=-SaZiADGLHs&t=2s",
+    "youtubeTitle": "Things Every Developer Should Know About package.json — Steve Griffith - Prof3ssorSt3v3",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "githubPath": "03Backend",

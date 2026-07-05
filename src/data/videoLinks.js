@@ -109,9 +109,9 @@ export const youtubeByDay = {
     channel: 'Programming with Mosh',
   },
   21: {
-    url: 'https://www.youtube.com/watch?v=bl98tJpgb6s',
-    title: 'JavaScript Error Handling',
-    channel: 'Web Dev Simplified',
+    url: 'https://www.youtube.com/watch?v=-SaZiADGLHs&t=2s',
+    title: 'Things Every Developer Should Know About package.json',
+    channel: 'Steve Griffith - Prof3ssorSt3v3',
   },
   22: {
     url: 'https://www.youtube.com/watch?v=Pkqtfaep7ZI',
