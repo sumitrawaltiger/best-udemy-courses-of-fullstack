@@ -10,11 +10,13 @@ import K8sHome from './pages/K8sHome';
 import InterviewHome from './pages/InterviewHome';
 import MobileHome from './pages/MobileHome';
 import Chapter from './pages/Chapter';
+import Day001 from './pages/Day001';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/day-001" element={<Day001 />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="learn/:slug" element={<Chapter />} />

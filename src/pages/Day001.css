@@ -1,0 +1,377 @@
+/* Day 001 — JavaScript learning journey dashboard */
+
+.day001-page {
+  min-height: 100vh;
+  background: #070b14;
+  color: #e8ecf4;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  padding: 24px clamp(16px, 4vw, 48px) 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ── Top bar ── */
+.day001-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.day001-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.day001-nav-home {
+  background: rgba(255, 255, 255, 0.08);
+  color: #c8d0e0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.day001-nav-home:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.day001-nav-next {
+  background: rgba(0, 255, 136, 0.12);
+  color: #00ff88;
+  border: 1px solid rgba(0, 255, 136, 0.35);
+}
+
+.day001-nav-next:hover {
+  background: rgba(0, 255, 136, 0.22);
+}
+
+.day001-datetime {
+  margin: 0;
+  font-size: 13px;
+  color: #8b95a8;
+  text-align: center;
+  flex: 1;
+}
+
+/* ── Hero ── */
+.day001-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.day001-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.day001-tags span {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #00ff88;
+  background: rgba(0, 255, 136, 0.08);
+  border: 1px solid rgba(0, 255, 136, 0.25);
+}
+
+.day001-day-num {
+  margin: 0;
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.day001-day-theme {
+  margin: 8px 0 0;
+  font-size: clamp(1.25rem, 4vw, 2.25rem);
+  font-weight: 800;
+  color: #00ff88;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+
+.day001-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.day001-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00ff88 0%, #00b4d8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 18px;
+  color: #070b14;
+}
+
+.day001-profile-name {
+  margin: 0;
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+}
+
+.day001-profile-role {
+  margin: 2px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #00ff88;
+  letter-spacing: 0.04em;
+}
+
+/* ── Progress ── */
+.day001-progress-wrap {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.day001-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #00ff88, #00d4aa);
+  border-radius: 999px;
+  min-width: 4px;
+}
+
+.day001-summary {
+  margin: 0 0 40px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #b8c0d0;
+  max-width: 900px;
+}
+
+.day001-summary code {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  color: #00ff88;
+  background: rgba(0, 255, 136, 0.08);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+/* ── What I learnt ── */
+.day001-learnt {
+  margin-bottom: 48px;
+}
+
+.day001-learnt-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 20px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #00ff88;
+}
+
+.day001-learnt-line {
+  display: inline-block;
+  width: 32px;
+  height: 3px;
+  background: #00ff88;
+  border-radius: 2px;
+}
+
+.day001-learnt-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.day001-learnt-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #c8d0e0;
+}
+
+.day001-check {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(0, 255, 136, 0.15);
+  color: #00ff88;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+/* ── Sections & cards ── */
+.day001-section {
+  margin-bottom: 40px;
+}
+
+.day001-section-title {
+  margin: 0 0 16px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #00ff88;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.day001-card-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.day001-card {
+  background: #0d1220;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.day001-card:hover {
+  border-color: rgba(0, 255, 136, 0.25);
+  transform: translateY(-2px);
+}
+
+.day001-card-icon {
+  font-size: 22px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.day001-card-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.card-title-cyan { color: #5eead4; }
+.card-title-purple { color: #c4b5fd; }
+.card-title-amber { color: #fcd34d; }
+.card-title-green { color: #86efac; }
+.card-title-blue { color: #93c5fd; }
+.card-title-pink { color: #f9a8d4; }
+.card-title-lime { color: #bef264; }
+
+.day001-card-subtitle {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.day001-card-desc {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #9ca3af;
+  flex: 1;
+}
+
+.day001-card-code {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 8px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #a5f3fc;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.day001-card-footer {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: #00ff88;
+  font-weight: 500;
+}
+
+.day001-card-link {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #60a5fa;
+  text-decoration: none;
+}
+
+.day001-card-link:hover {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+/* ── Hashtags footer ── */
+.day001-hashtags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-top: 16px;
+}
+
+.day001-hashtags span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #00ff88;
+}
+
+@media (max-width: 640px) {
+  .day001-topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .day001-datetime {
+    order: -1;
+  }
+
+  .day001-nav-home,
+  .day001-nav-next {
+    justify-content: center;
+  }
+
+  .day001-profile {
+    width: 100%;
+    padding-top: 8px;
+  }
+}
