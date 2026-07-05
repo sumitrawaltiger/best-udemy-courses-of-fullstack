@@ -1803,47 +1803,152 @@ export const chaptersDays01to19 = [
     "slug": "events-and-projects",
     "day": 12,
     "title": "Events & JavaScript Projects",
-    "subtitle": "Build interactive mini projects with events",
+    "subtitle": "The event model in depth, then 5 hands-on mini projects",
     "duration": "2 hrs",
-    "createdOn": "12 Jul 2026",
+    "createdOn": "16 Jul 2026",
     "status": "published",
     "topics": [
-      "Event bubbling",
+      "The event object & e.target",
       "Event delegation",
-      "Form events",
-      "Keyboard events",
-      "Project structure",
-      "Mini projects"
+      "Event bubbling",
+      "Capture phase",
+      "removeEventListener",
+      "Random quote generator",
+      "Color switcher",
+      "Counter with guard",
+      "Form submit & preventDefault",
+      "Live text/word counter",
+      "Homework: joke generator"
     ],
-    "notionUrl": "https://app.notion.com/p/Lecture12-Even-and-Project-in-Javascript-38343ac5cab980aab918f7f4dc5c2fff",
+    "notionUrl": "https://app.notion.com/p/Lecture12-Even-and-Project-in-Javascript-38343ac5cab980aab918f7f4dc5c2fff?source=copy_link",
     "githubPath": "Lecture12",
     "sections": [
       {
-        "id": "events-deep",
-        "title": "Events in Depth",
-        "content": "Learn event bubbling, delegation, and building interactive UIs. Thunder Lecture12 includes 5 mini projects.",
-        "code": "console.log(\"Projects: use events + DOM together\");",
-        "tryIt": "console.log(\"Event bubbling: child events bubble to parent\");"
+        "id": "event-object",
+        "title": "The Event Object & e.target",
+        "content": "Thunder `Eventsjs/first.js` — every event callback receives an **event object** `e`. Its most useful property is **`e.target`** — the exact element the user interacted with.\n\nThis is the key to writing one handler that serves many elements.\n\nOpen [Lecture12](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture12) on GitHub.",
+        "code": "parent.addEventListener(\"click\", (e) => {\n  console.log(e);\n  e.target.textContent = \"I am clicked\";\n});",
+        "tryIt": "document.body.addEventListener(\"click\", (e) => {\n  console.log(\"You clicked:\", e.target.tagName);\n});"
       },
       {
-        "id": "projects",
-        "title": "Building Mini Projects",
-        "content": "Combine DOM selection, events, and data to build calculators, toggles, and counters.",
-        "code": "console.log(\"Start small: todo list, color changer, counter\");",
-        "tryIt": "let count = 0;\nconst inc = () => { count++; console.log(count); };\ninc(); inc();"
+        "id": "event-delegation",
+        "title": "Event Delegation",
+        "content": "Instead of adding a listener to **each** child, add **one** listener to the parent and use `e.target` to tell which child fired.\n\nThunder replaces four separate child listeners with a single parent listener — less code, and it even works for children added later.",
+        "code": "// Four listeners? No — one on the parent:\nconst parent = document.getElementById(\"parent\");\nparent.addEventListener(\"click\", (e) => {\n  e.target.textContent = \"I am clicked\";\n});",
+        "tryIt": "const list = document.getElementById(\"ul\");\nlist?.addEventListener(\"click\", (e) => {\n  if (e.target.tagName === \"LI\") e.target.style.color = \"cyan\";\n});"
+      },
+      {
+        "id": "bubbling-capturing",
+        "title": "Bubbling vs Capturing",
+        "content": "When you click a child, the event travels the DOM tree in two phases:\n\n- **Capture** — top → down (grandparent → child)\n- **Bubble** — bottom → up (child → grandparent) — the **default**\n\nThe optional **third argument** to `addEventListener` picks the phase: `true` = capture, `false`/omitted = bubble.",
+        "code": "grandParent.addEventListener(\"click\", () => {\n  console.log(\"Grand parent is clicked\");\n}, true);  // capture phase\n\nparent.addEventListener(\"click\", () => {\n  console.log(\"parent is clicked\");\n}, false); // bubble phase",
+        "tryIt": "const outer = document.getElementById(\"grandParent\");\nouter?.addEventListener(\"click\", () => console.log(\"outer\"), true);"
+      },
+      {
+        "id": "remove-listener",
+        "title": "removeEventListener",
+        "content": "To remove a listener you need a **named function** (not an inline arrow) so both `addEventListener` and `removeEventListener` reference the same handler.\n\nThunder's demo: a button that reacts **once**, then unhooks itself.",
+        "code": "const button = document.querySelector(\"button\");\n\nfunction handle() {\n  button.textContent = \"Clicked\";\n  button.removeEventListener(\"click\", handle);\n}\n\nbutton.addEventListener(\"click\", handle);",
+        "tryIt": "const b = document.querySelector(\"button\");\nfunction once() {\n  console.log(\"fires once\");\n  b.removeEventListener(\"click\", once);\n}\nb?.addEventListener(\"click\", once);"
+      },
+      {
+        "id": "project-quote",
+        "title": "Project 1 — Random Quote Generator",
+        "content": "Thunder `Project1` — an array of **50 quotes**. On button click, pick a random index with `Math.floor(Math.random() * 50)` and drop the quote into the `<h2>`.",
+        "code": "const button = document.querySelector(\"button\");\nconst h2 = document.querySelector(\"h2\");\n\nbutton.addEventListener(\"click\", () => {\n  const index = Math.floor(Math.random() * 50);\n  h2.textContent = quotes[index];\n});",
+        "tryIt": "const quotes = [\"Believe in yourself.\", \"Hard work beats talent.\", \"Make today count.\"];\nconst i = Math.floor(Math.random() * quotes.length);\nconsole.log(quotes[i]);"
+      },
+      {
+        "id": "project-color",
+        "title": "Project 2 — Color Switcher (Delegation)",
+        "content": "Thunder `Project2` — five buttons whose **ids are 0–4**. One `dblclick` listener on the parent reads `e.target.id` and uses it to index a **color array**, then paints the body background.\n\nA clean, real use of delegation + `e.target`.",
+        "code": "const parent = document.getElementById(\"root\");\nconst body = document.querySelector(\"body\");\nconst color = [\"red\", \"blue\", \"orange\", \"green\", \"pink\"];\n\nparent.addEventListener(\"dblclick\", (e) => {\n  const index = e.target.id;\n  body.style.backgroundColor = color[index];\n});",
+        "tryIt": "const colors = [\"red\", \"blue\", \"green\"];\nconst id = \"1\"; // pretend e.target.id\ndocument.body.style.backgroundColor = colors[id];"
+      },
+      {
+        "id": "project-counter",
+        "title": "Project 3 — Counter with a Guard",
+        "content": "Thunder `Project3` — increment and decrement buttons update a `count` variable and the heading.\n\nThe decrement handler **guards** against negatives: `if (count == 0) return;` before decrementing.",
+        "code": "let count = 0;\n\nButton1.addEventListener(\"click\", () => {\n  count++;\n  h1.textContent = `Counter is: ${count}`;\n});\n\nButton2.addEventListener(\"click\", () => {\n  if (count == 0) return;\n  count--;\n  h1.textContent = `Counter is: ${count}`;\n});",
+        "tryIt": "let count = 0;\ncount++;\ncount++;\nif (count > 0) count--;\nconsole.log(count);"
+      },
+      {
+        "id": "project-form",
+        "title": "Project 4 — Form Adder",
+        "content": "Thunder `Project4` — two number inputs and a submit button.\n\n**`e.preventDefault()`** stops the form from reloading the page. Input values are **strings**, so wrap them in `Number()` before adding.",
+        "code": "form.addEventListener(\"submit\", (e) => {\n  e.preventDefault();\n  const number1 = Number(first.value);\n  const number2 = Number(second.value);\n  p.textContent = `Result is: ${number1 + number2}`;\n});",
+        "tryIt": "const a = \"5\", b = \"7\";\nconsole.log(a + b);            // \"57\" — string concat\nconsole.log(Number(a) + Number(b)); // 12"
+      },
+      {
+        "id": "project-textcount",
+        "title": "Project 5 — Live Text & Word Counter",
+        "content": "Thunder `Project5` — the **`input`** event fires on **every keystroke** in a textarea.\n\n`trim()` drops edge whitespace, `split(\" \")` breaks into words. Show character count (`.length`) and word count (`arr.length`), handling the empty case so it doesn't count 1 word for an empty box.",
+        "code": "TextArea.addEventListener(\"input\", () => {\n  const totalText = TextArea.value.trim();\n  const arr = totalText.split(\" \");\n\n  TextCount.textContent = `TextCount: ${totalText.length}`;\n  if (totalText === \"\")\n    WordCount.textContent = `WordCount: 0`;\n  else\n    WordCount.textContent = `WordCount: ${arr.length}`;\n});",
+        "tryIt": "const text = \"Rohit negi is here\".trim();\nconsole.log(\"chars:\", text.length);\nconsole.log(\"words:\", text.split(\" \").length);"
+      },
+      {
+        "id": "lecture12-practice",
+        "title": "Your Lecture 12 Practice",
+        "content": "Build all of Thunder's [Lecture12](https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture12) projects:\n1. **Eventsjs** — event object, delegation, bubbling/capture, removeEventListener\n2. **Project1** — random quote generator\n3. **Project2** — color switcher via id-indexed array + delegation\n4. **Project3** — counter with a no-negative guard\n5. **Project4** — form adder with preventDefault + Number()\n6. **Project5** — live text/word counter on the input event\n\n**Homework** (`data.js`): a **random joke generator** — 10 jokes, same random-pick pattern as Project 1. Keep the [Notion notes](https://app.notion.com/p/Lecture12-Even-and-Project-in-Javascript-38343ac5cab980aab918f7f4dc5c2fff?source=copy_link) open. Next: **more JavaScript projects**.",
+        "code": "const jokes = [\n  \"Why do programmers prefer dark mode? Because light attracts bugs.\",\n  \"Why did the function break up? It had too many arguments.\"\n];\nbutton.addEventListener(\"click\", () => {\n  const i = Math.floor(Math.random() * jokes.length);\n  h2.textContent = jokes[i];\n});",
+        "tryIt": "const jokes = [\"Bug joke A\", \"Bug joke B\", \"Bug joke C\"];\nconsole.log(jokes[Math.floor(Math.random() * jokes.length)]);"
       }
     ],
     "quiz": [
       {
-        "question": "Event bubbling goes?",
+        "question": "Inside an event handler, e.target is?",
         "options": [
-          "child to parent",
-          "parent to child",
-          "nowhere",
-          "to server"
+          "The element the listener is attached to",
+          "The exact element that triggered the event",
+          "Always the document",
+          "The parent element"
+        ],
+        "answer": 1,
+        "explanation": "e.target is the element that actually fired the event — Eventsjs/first.js."
+      },
+      {
+        "question": "Event delegation means?",
+        "options": [
+          "One listener on the parent handles many children via e.target",
+          "A listener on every child",
+          "Removing all listeners",
+          "Listening only in capture phase"
         ],
         "answer": 0,
-        "explanation": "Events bubble up the DOM tree."
+        "explanation": "Put one listener on the parent and read e.target — Project2."
+      },
+      {
+        "question": "addEventListener(fn, true) — what does true do?",
+        "options": [
+          "Runs the handler only once",
+          "Listens in the capture phase instead of bubble",
+          "Removes the listener",
+          "Prevents default"
+        ],
+        "answer": 1,
+        "explanation": "The third argument true selects the capture phase."
+      },
+      {
+        "question": "In a form submit handler, e.preventDefault() does what?",
+        "options": [
+          "Submits the form faster",
+          "Stops the page from reloading",
+          "Clears the inputs",
+          "Validates the fields"
+        ],
+        "answer": 1,
+        "explanation": "It cancels the default submit/reload — Project4."
+      },
+      {
+        "question": "To removeEventListener later, the handler must be?",
+        "options": [
+          "An inline arrow function",
+          "A named function referenced in both calls",
+          "Anonymous",
+          "Attached with onclick"
+        ],
+        "answer": 1,
+        "explanation": "Both add and remove need the same function reference — Eventsjs/first.js."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=XF1_MlZ5l6M",
