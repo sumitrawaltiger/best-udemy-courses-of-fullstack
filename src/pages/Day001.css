@@ -115,16 +115,12 @@
 }
 
 .day001-avatar {
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #00ff88 0%, #00b4d8 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 18px;
-  color: #070b14;
+  object-fit: cover;
+  border: 2px solid rgba(0, 255, 136, 0.45);
+  flex-shrink: 0;
 }
 
 .day001-profile-name {

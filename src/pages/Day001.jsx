@@ -188,13 +188,17 @@ export default function Day001() {
             <h1 className="day001-day-num">
               DAY 1 <span aria-hidden="true">⚡</span>
             </h1>
-            <p className="day001-day-theme">OF LEARNING JAVASCRIPT</p>
+            <p className="day001-day-theme">OF BECOMING A SOFTWARE DEVELOPER</p>
           </div>
         </div>
         <div className="day001-profile">
-          <div className="day001-avatar" aria-hidden="true">
-            SR
-          </div>
+          <img
+            src="/sumit-profile.png"
+            alt="Sumit Rawal"
+            className="day001-avatar"
+            width={64}
+            height={64}
+          />
           <div>
             <p className="day001-profile-name">Sumit Rawal</p>
             <p className="day001-profile-role">JS · THUNDER</p>
