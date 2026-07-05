@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
@@ -257,13 +258,13 @@ function TopicCard({ card }) {
   );
 }
 
-function CardSection({ icon, title, cards }) {
+function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
       <h2 className="day001-section-title">
         <span aria-hidden="true">{icon}</span> {title}
       </h2>
-      <div className="day001-card-row">
+      <div className={`day001-card-row day001-card-row--${columns}`}>
         {cards.map((card) => (
           <TopicCard key={card.title} card={card} />
         ))}
@@ -273,13 +274,57 @@ function CardSection({ icon, title, cards }) {
 }
 
 export default function Day001() {
+  const scaleRef = useRef(null);
+
+  useEffect(() => {
+    const wrap = scaleRef.current;
+    if (!wrap) return;
+
+    const page = wrap.parentElement;
+
+    const fitToScreen = () => {
+      wrap.style.transform = 'none';
+      wrap.style.width = '100%';
+      if (page) page.style.height = '';
+
+      const pad = 12;
+      const scale = Math.min(
+        1,
+        (window.innerHeight - pad) / wrap.scrollHeight,
+        (window.innerWidth - pad) / wrap.scrollWidth,
+      );
+
+      if (scale < 0.99) {
+        wrap.style.transform = `scale(${scale})`;
+        wrap.style.transformOrigin = 'top center';
+        if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
+      }
+    };
+
+    fitToScreen();
+    window.addEventListener('resize', fitToScreen);
+    const observer = new ResizeObserver(fitToScreen);
+    observer.observe(wrap);
+
+    const avatar = wrap.querySelector('.day001-avatar');
+    if (avatar && !avatar.complete) {
+      avatar.addEventListener('load', fitToScreen);
+    }
+
+    return () => {
+      window.removeEventListener('resize', fitToScreen);
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <div className="day001-page">
+      <div className="day001-scale-wrap" ref={scaleRef}>
       <header className="day001-topbar">
         <Link to="/" className="day001-nav-btn day001-nav-home">
           Home
         </Link>
-        <p className="day001-datetime">📅 4 Jul 2026 · Thunder Day 1 · JS Learn Hub</p>
+        <p className="day001-datetime">📅 5th July 2026 · Thunder Day 1 · 99 days left</p>
         <Link to="/learn/data-types-in-javascript" className="day001-nav-btn day001-nav-next">
           Day 2 →
         </Link>
@@ -304,8 +349,8 @@ export default function Day001() {
             src="/sumit-profile.png"
             alt="Sumit Rawal"
             className="day001-avatar"
-            width={64}
-            height={64}
+            width={48}
+            height={48}
           />
           <div>
             <p className="day001-profile-name">Sumit Rawal</p>
@@ -332,7 +377,7 @@ export default function Day001() {
       <section className="day001-learnt">
         <h2 className="day001-learnt-title">
           <span className="day001-learnt-line" aria-hidden="true" />
-          WHAT I LEARNT TODAY
+          WHAT I LEARNED TODAY
         </h2>
         <ul className="day001-learnt-list">
           {LEARNT_TODAY.map((item) => (
@@ -348,11 +393,15 @@ export default function Day001() {
         </ul>
       </section>
 
-      <CardSection icon="📘" title="JAVASCRIPT BASICS" cards={JS_BASICS} />
-      <CardSection icon="🔄" title="v1 → v2 → v3 PROGRESSION" cards={THREE_VERSIONS} />
-      <CardSection icon="🛠️" title="FIRST STEPS IN CODE" cards={FIRST_CODE} />
-      <CardSection icon="⚡" title="v3-js — MAKING IT ALIVE" cards={V3_FEATURES} />
-      <CardSection icon="📚" title="THUNDER LECTURE 01" cards={THUNDER_RESOURCES} />
+      <CardSection icon="📘" title="JAVASCRIPT BASICS" cards={JS_BASICS} columns={3} />
+      <CardSection icon="🔄" title="v1 → v2 → v3 PROGRESSION" cards={THREE_VERSIONS} columns={3} />
+      <CardSection
+        icon="🛠️"
+        title="FIRST STEPS IN CODE"
+        cards={[...FIRST_CODE, ...V3_FEATURES]}
+        columns={4}
+      />
+      <CardSection icon="📚" title="THUNDER LECTURE 01" cards={THUNDER_RESOURCES} columns={3} />
 
       <footer className="day001-hashtags">
         <span>#100DaysOfCode</span>
@@ -361,6 +410,7 @@ export default function Day001() {
         <span>#WebDev</span>
         <span>#JSLearnHub</span>
       </footer>
+      </div>
     </div>
   );
 }

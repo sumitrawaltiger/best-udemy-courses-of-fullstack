@@ -1,13 +1,32 @@
-/* Day 001 — JavaScript learning journey dashboard */
+/* Day 001 — JavaScript learning journey dashboard (screenshot-fit) */
+
+body:has(.day001-page) {
+  background: #070b14;
+  overflow: hidden;
+}
 
 .day001-page {
+  width: 100%;
   min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
   background: #070b14;
   color: #e8ecf4;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  padding: 24px clamp(16px, 4vw, 48px) 48px;
-  max-width: 1400px;
+  padding: 6px 10px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+.day001-scale-wrap {
+  width: 100%;
+  max-width: 1280px;
   margin: 0 auto;
+}
+
+.day001-page * {
+  box-sizing: border-box;
 }
 
 /* ── Top bar ── */
@@ -15,20 +34,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 32px;
+  gap: 8px;
+  margin-bottom: 12px;
   flex-wrap: wrap;
 }
 
 .day001-nav-btn {
   display: inline-flex;
   align-items: center;
-  padding: 8px 18px;
+  padding: 5px 14px;
   border-radius: 999px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   text-decoration: none;
   transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
 }
 
 .day001-nav-home {
@@ -54,7 +74,7 @@
 
 .day001-datetime {
   margin: 0;
-  font-size: 13px;
+  font-size: 11px;
   color: #8b95a8;
   text-align: center;
   flex: 1;
@@ -63,24 +83,24 @@
 /* ── Hero ── */
 .day001-hero {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 28px;
+  gap: 16px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
 }
 
 .day001-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 6px;
+  margin-bottom: 8px;
 }
 
 .day001-tags span {
-  padding: 4px 12px;
+  padding: 2px 10px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -91,7 +111,7 @@
 
 .day001-day-num {
   margin: 0;
-  font-size: clamp(3rem, 10vw, 5.5rem);
+  font-size: clamp(2rem, 5vw, 3.25rem);
   font-weight: 800;
   line-height: 1;
   color: #fff;
@@ -99,8 +119,8 @@
 }
 
 .day001-day-theme {
-  margin: 8px 0 0;
-  font-size: clamp(1.25rem, 4vw, 2.25rem);
+  margin: 4px 0 0;
+  font-size: clamp(0.9rem, 2vw, 1.35rem);
   font-weight: 800;
   color: #00ff88;
   letter-spacing: 0.02em;
@@ -110,13 +130,13 @@
 .day001-profile {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-shrink: 0;
 }
 
 .day001-avatar {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid rgba(0, 255, 136, 0.45);
@@ -126,13 +146,13 @@
 .day001-profile-name {
   margin: 0;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 13px;
   color: #fff;
 }
 
 .day001-profile-role {
-  margin: 2px 0 0;
-  font-size: 12px;
+  margin: 1px 0 0;
+  font-size: 11px;
   font-weight: 600;
   color: #00ff88;
   letter-spacing: 0.04em;
@@ -140,10 +160,10 @@
 
 /* ── Progress ── */
 .day001-progress-wrap {
-  height: 3px;
+  height: 2px;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 999px;
-  margin-bottom: 24px;
+  margin-bottom: 10px;
   overflow: hidden;
 }
 
@@ -155,19 +175,18 @@
 }
 
 .day001-summary {
-  margin: 0 0 40px;
-  font-size: 15px;
-  line-height: 1.7;
+  margin: 0 0 14px;
+  font-size: 12px;
+  line-height: 1.5;
   color: #b8c0d0;
-  max-width: 900px;
 }
 
 .day001-summary code {
   font-family: 'SF Mono', 'Fira Code', monospace;
-  font-size: 13px;
+  font-size: 11px;
   color: #00ff88;
   background: rgba(0, 255, 136, 0.08);
-  padding: 1px 6px;
+  padding: 1px 4px;
   border-radius: 4px;
 }
 
@@ -187,17 +206,17 @@
   font-weight: 700;
 }
 
-/* ── What I learnt ── */
+/* ── What I learned ── */
 .day001-learnt {
-  margin-bottom: 48px;
+  margin-bottom: 16px;
 }
 
 .day001-learnt-title {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 0 0 20px;
-  font-size: 13px;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.12em;
   color: #00ff88;
@@ -205,8 +224,8 @@
 
 .day001-learnt-line {
   display: inline-block;
-  width: 32px;
-  height: 3px;
+  width: 24px;
+  height: 2px;
   background: #00ff88;
   border-radius: 2px;
 }
@@ -215,82 +234,89 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px 16px;
 }
 
 .day001-learnt-list li {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  font-size: 14px;
-  line-height: 1.5;
+  gap: 8px;
+  font-size: 11px;
+  line-height: 1.35;
   color: #c8d0e0;
 }
 
 .day001-check {
   flex-shrink: 0;
-  width: 22px;
-  height: 22px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: rgba(0, 255, 136, 0.15);
   color: #00ff88;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 9px;
   font-weight: 700;
   margin-top: 1px;
 }
 
 /* ── Sections & cards ── */
 .day001-section {
-  margin-bottom: 40px;
+  margin-bottom: 14px;
 }
 
 .day001-section-title {
-  margin: 0 0 16px;
-  font-size: 14px;
+  margin: 0 0 8px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.1em;
   color: #00ff88;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .day001-card-row {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
+  gap: 8px;
+}
+
+.day001-card-row--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.day001-card-row--4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .day001-card {
   background: #0d1220;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 8px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  transition: border-color 0.15s, transform 0.15s;
+  gap: 3px;
+  min-width: 0;
+  transition: border-color 0.15s;
 }
 
 .day001-card:hover {
   border-color: rgba(0, 255, 136, 0.25);
-  transform: translateY(-2px);
 }
 
 .day001-card-icon {
-  font-size: 22px;
+  font-size: 16px;
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .day001-card-title {
   margin: 0;
-  font-size: 17px;
+  font-size: 13px;
   font-weight: 700;
 }
 
@@ -304,46 +330,58 @@
 
 .day001-card-subtitle {
   margin: 0;
-  font-size: 12px;
+  font-size: 10px;
   color: #6b7280;
   font-weight: 500;
 }
 
 .day001-card-desc {
-  margin: 4px 0 0;
-  font-size: 13px;
-  line-height: 1.55;
+  margin: 2px 0 0;
+  font-size: 10px;
+  line-height: 1.4;
   color: #9ca3af;
   flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .day001-card-code {
-  margin: 8px 0 0;
-  padding: 10px 12px;
+  margin: 4px 0 0;
+  padding: 6px 8px;
   background: rgba(0, 0, 0, 0.35);
-  border-radius: 8px;
+  border-radius: 6px;
   font-family: 'SF Mono', 'Fira Code', monospace;
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: 9px;
+  line-height: 1.35;
   color: #a5f3fc;
-  overflow-x: auto;
+  overflow: hidden;
   white-space: pre-wrap;
+  word-break: break-word;
   border: 1px solid rgba(255, 255, 255, 0.06);
+  max-height: 52px;
 }
 
 .day001-card-footer {
-  margin: 8px 0 0;
-  font-size: 12px;
+  margin: 4px 0 0;
+  font-size: 10px;
   color: #00ff88;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .day001-card-link {
-  margin-top: 8px;
-  font-size: 13px;
+  margin-top: 4px;
+  font-size: 10px;
   font-weight: 600;
   color: #60a5fa;
   text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .day001-card-link:hover {
@@ -355,19 +393,58 @@
 .day001-hashtags {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
-  padding-top: 24px;
+  gap: 12px;
+  padding-top: 10px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
-  margin-top: 16px;
+  margin-top: 4px;
 }
 
 .day001-hashtags span {
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
   color: #00ff88;
 }
 
-@media (max-width: 640px) {
+/* ── Responsive (natural layout when scale can't help) ── */
+@media (max-width: 1100px) {
+  .day001-card-row--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .day001-learnt-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  body:has(.day001-page) {
+    overflow: auto;
+  }
+
+  .day001-page {
+    max-height: none;
+    overflow: visible;
+    padding: 12px;
+  }
+
+  .day001-scale-wrap {
+    transform: none !important;
+  }
+
+  .day001-card-row--3,
+  .day001-card-row--4 {
+    grid-template-columns: 1fr;
+  }
+
+  .day001-learnt-list {
+    grid-template-columns: 1fr;
+  }
+
+  .day001-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .day001-topbar {
     flex-direction: column;
     align-items: stretch;
@@ -380,10 +457,5 @@
   .day001-nav-home,
   .day001-nav-next {
     justify-content: center;
-  }
-
-  .day001-profile {
-    width: 100%;
-    padding-top: 8px;
   }
 }
