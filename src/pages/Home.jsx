@@ -24,6 +24,7 @@ import { BEST_COURSES } from '../data/bestUdemyCourses';
 import LectureCard from '../components/LectureCard';
 import Syllabus from '../components/Syllabus';
 import ThunderHero from '../components/ThunderHero';
+import FounderSection from '../components/FounderSection';
 
 export default function Home() {
   const [searchParams] = useSearchParams();
@@ -86,6 +87,8 @@ export default function Home() {
       </section>
 
       <div className="home">
+      <FounderSection />
+
       <div id="syllabus">
         <Syllabus />
       </div>
