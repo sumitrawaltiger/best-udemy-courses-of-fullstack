@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-importAuthorSection from '../components/FounderSection';
+import FounderSection from '../components/FounderSection';
 
 export default function AboutFounder() {
   return (

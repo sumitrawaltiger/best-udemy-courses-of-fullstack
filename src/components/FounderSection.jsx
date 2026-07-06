@@ -39,7 +39,7 @@ const SOCIALS = [
   },
 ];
 
-export default functionAuthorSection() {
+export default function FounderSection() {
   const [imgSrc, setImgSrc] = useState('/sumit-founder.jpg');
 
   return (
