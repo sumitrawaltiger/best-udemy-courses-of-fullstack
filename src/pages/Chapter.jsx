@@ -379,6 +379,29 @@ export default function Chapter({ track = 'thunder' }) {
               📐 Lecture Whiteboard
             </a>
           )}
+          {chapter.pdfUrl && (
+            <a
+              href={chapter.pdfUrl}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="chapter-link-btn outline"
+            >
+              📄 {chapter.pdfLabel || 'Download PDF Notes'}
+            </a>
+          )}
+          {chapter.extraLinks?.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="chapter-link-btn outline"
+            >
+              {link.icon ? `${link.icon} ` : ''}
+              {link.label}
+            </a>
+          ))}
           {cfg.extraLink && (
             <a
               href={cfg.extraLink.href}

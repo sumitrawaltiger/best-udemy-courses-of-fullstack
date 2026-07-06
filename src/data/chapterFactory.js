@@ -195,6 +195,9 @@ export function buildChapter(entry, id, options = {}) {
   if (entry.notionUrl) chapter.notionUrl = entry.notionUrl;
   if (entry.codeRepo) chapter.codeRepo = entry.codeRepo;
   if (entry.tldrawUrl) chapter.tldrawUrl = entry.tldrawUrl;
+  if (entry.pdfUrl) chapter.pdfUrl = entry.pdfUrl;
+  if (entry.pdfLabel) chapter.pdfLabel = entry.pdfLabel;
+  if (entry.extraLinks) chapter.extraLinks = entry.extraLinks;
 
   return chapter;
 }

@@ -7,6 +7,12 @@ const SYLLABUS =
 const REPO = 'https://github.com/Aestheticsuraj234/chaicode-mobiledev-2026/tree/main';
 const TLDRAW_DAY1 =
   'https://www.tldraw.com/f/mQeviE3IZLi8quAUEoGja?d=v458.-121.1162.906.page';
+const TLDRAW_DAY2 =
+  'https://www.tldraw.com/f/mQeviE3IZLi8quAUEoGja?d=v62.6534.1370.704.page';
+const TLDRAW_DAY3 =
+  'https://www.tldraw.com/f/mQeviE3IZLi8quAUEoGja?d=v-423.17105.1642.844.page';
+const TLDRAW_DAY4 =
+  'https://www.tldraw.com/f/mQeviE3IZLi8quAUEoGja?d=v67.21383.1886.969.page';
 
 export const mobileLessons = [
   {
@@ -27,6 +33,8 @@ export const mobileLessons = [
     codeRepo: REPO,
     notionUrl: NOTES,
     tldrawUrl: TLDRAW_DAY1,
+    pdfUrl: '/mobile-day1-intro-to-mobile-dev.pdf',
+    pdfLabel: 'Intro to Mobile Dev (PDF)',
     youtube: {
       url: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8',
       title: 'React Crash Course',
@@ -37,7 +45,7 @@ export const mobileLessons = [
         id: 'welcome-mobile-dev',
         title: 'Welcome to Mobile Development',
         content:
-          '**RN Day 1** kicks off the ChaiCode Mobile Development Cohort. You refresh **React** before building mobile apps with **React Native + Expo**.\n\nResources for this lesson:\n- [Notion notes](https://gregarious-gray-075.notion.site/Mobile-Development-Cohort-2f9c3158e38d80b9bc27e75bed2bd01a)\n- [Lecture whiteboard (tldraw)](https://www.tldraw.com/f/mQeviE3IZLi8quAUEoGja?d=v458.-121.1162.906.page)\n- [ChaiCode code — react-refresher](https://github.com/Aestheticsuraj234/chaicode-mobiledev-2026/tree/main/react-refresher)',
+          '**RN Day 1** kicks off the ChaiCode Mobile Development Cohort. You refresh **React** before building mobile apps with **React Native + Expo**.\n\nResources for this lesson:\n- [Notion notes](https://gregarious-gray-075.notion.site/Mobile-Development-Cohort-2f9c3158e38d80b9bc27e75bed2bd01a)\n- [Lecture whiteboard (tldraw)](https://www.tldraw.com/f/mQeviE3IZLi8quAUEoGja?d=v458.-121.1162.906.page)\n- [ChaiCode GitHub repository](https://github.com/Aestheticsuraj234/chaicode-mobiledev-2026)\n- [Download the intro notes (PDF)](/mobile-day1-intro-to-mobile-dev.pdf)',
       },
       {
         id: 'baas-react-architecture',
@@ -183,6 +191,9 @@ export const mobileLessons = [
     githubPath: 'react-native-init',
     codeRepo: REPO,
     notionUrl: NOTES,
+    tldrawUrl: TLDRAW_DAY2,
+    pdfUrl: '/mobile-day2-react-refresher.pdf',
+    pdfLabel: 'React Refresher Cont. (PDF)',
     youtube: { url: 'https://www.youtube.com/watch?v=0-S5a0eXPoc', title: 'React Native Expo Crash Course', channel: 'Traversy Media' },
   },
   {
@@ -194,6 +205,18 @@ export const mobileLessons = [
     githubPath: 'react-native-init',
     codeRepo: REPO,
     notionUrl: NOTES,
+    tldrawUrl: TLDRAW_DAY3,
+    pdfUrl: '/mobile-day3-init-core-components.pdf',
+    pdfLabel: 'RN Init & Core Components (PDF)',
+    extraLinks: [
+      { label: 'scrcpy — Android mirroring', href: 'https://scrcpy.org/', icon: '📱' },
+      { label: 'Expo Go', href: 'https://expo.dev/go', icon: '🚀' },
+      {
+        label: 'Dribbble — UI inspiration',
+        href: 'https://dribbble.com/shots/24783022-osler-AI-Telehealth-Telemedicine-App-Sign-In-Sign-Up-UI',
+        icon: '🎨',
+      },
+    ],
     youtube: { url: 'https://www.youtube.com/watch?v=0-S5a0eXPoc', title: 'React Native Components', channel: 'Traversy Media' },
   },
   {
@@ -205,6 +228,7 @@ export const mobileLessons = [
     githubPath: 'react-navigation-masterclass',
     codeRepo: REPO,
     notionUrl: NOTES,
+    tldrawUrl: TLDRAW_DAY4,
     youtube: { url: 'https://www.youtube.com/watch?v=OmQPU-6dMYk', title: 'React Navigation v6', channel: 'Traversy Media' },
   },
   {
