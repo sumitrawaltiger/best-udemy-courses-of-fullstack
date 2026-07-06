@@ -39,7 +39,7 @@ const SOCIALS = [
   },
 ];
 
-export default function FounderSection() {
+export default functionAuthorSection() {
   const [imgSrc, setImgSrc] = useState('/sumit-founder.jpg');
 
   return (
@@ -48,7 +48,7 @@ export default function FounderSection() {
         <div className="founder-photo-wrap">
           <img
             src={imgSrc}
-            alt="Sumit Rawal — founder"
+            alt="Sumit Rawal —Author"
             className="founder-photo"
             loading="lazy"
             onError={() => setImgSrc('/sumit-profile.png')}
@@ -56,7 +56,7 @@ export default function FounderSection() {
         </div>
 
         <div className="founder-body">
-          <span className="founder-eyebrow">About the Founder</span>
+          <span className="founder-eyebrow">About theAuthor</span>
           <h2 className="founder-name">Sumit Rawal</h2>
           <p className="founder-bio">
             Full-stack web developer expert in <strong>Java, Python and TypeScript</strong>. When not

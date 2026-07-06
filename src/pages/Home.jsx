@@ -64,7 +64,7 @@ export default function Home() {
                   Best Udemy Courses 🎓
                 </Link>
                 <Link to="/about-founder" className="btn btn-outline-light btn-lg">
-                  About the Founder 👤
+                  About theAuthor 👤
                 </Link>
                 <a
                   href={strikeCourse}
