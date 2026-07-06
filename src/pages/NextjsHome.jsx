@@ -31,6 +31,15 @@ export default function NextjsHome() {
                 <a href="#nextjs-syllabus" className="btn btn-outline-nextjs btn-lg">
                   View Syllabus
                 </a>
+                <a
+                  href="/react-nextjs-course-slides.pdf"
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-nextjs btn-lg"
+                >
+                  📄 React Slides (PDF)
+                </a>
                 <Link to="/" className="btn btn-outline-nextjs btn-lg">
                   ← Thunder 100 Days
                 </Link>

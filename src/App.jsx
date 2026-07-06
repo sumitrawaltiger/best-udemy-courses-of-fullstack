@@ -35,6 +35,7 @@ import InterviewQuestions from './pages/InterviewQuestions';
 import ReactInterviewQuestions from './pages/ReactInterviewQuestions';
 import JavaInterviewQuestions from './pages/JavaInterviewQuestions';
 import BestUdemyCourses from './pages/BestUdemyCourses';
+import AboutFounder from './pages/AboutFounder';
 
 export default function App() {
   return (
@@ -67,6 +68,7 @@ export default function App() {
         <Route path="/best-udemy-courses" element={<BestUdemyCourses />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="about-founder" element={<AboutFounder />} />
           <Route path="learn/:slug" element={<Chapter />} />
           <Route path="nextjs" element={<NextjsHome />} />
           <Route path="nextjs/learn/:slug" element={<Chapter track="nextjs" />} />

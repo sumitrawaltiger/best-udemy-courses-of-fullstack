@@ -5359,3 +5359,22 @@ a:hover {
   font-size: 0.95rem;
   line-height: 1;
 }
+
+/* About the Founder — standalone page */
+.about-founder-top {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px 20px 0;
+}
+.about-founder-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--green);
+  text-decoration: none;
+}
+.about-founder-back:hover {
+  text-decoration: underline;
+}

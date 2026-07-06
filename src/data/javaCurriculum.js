@@ -139,7 +139,7 @@ function buildLessons() {
 
   for (const { phase, courseUrl, items } of PHASE_LESSONS) {
     for (const [title, subtitle, topics] of items) {
-      lessons.push({
+      const lesson = {
         javaDay,
         phase,
         title,
@@ -147,7 +147,23 @@ function buildLessons() {
         topics,
         paidLectureUrl: courseUrl,
         youtube: defaultYt,
-      });
+      };
+      if (title === 'Spring Boot Fundamentals') {
+        lesson.pdfUrl = '/java-spring-boot-slides.pdf';
+        lesson.pdfLabel = 'Spring Boot Slides (PDF)';
+        lesson.extraLinks = [
+          {
+            label: 'eCommerce Masterclass Slides (PDF)',
+            href: '/spring-boot-ecommerce-masterclass-slides.pdf',
+            icon: '📄',
+          },
+        ];
+      }
+      if (title === 'Microservices Architecture') {
+        lesson.pdfUrl = '/java-microservices-slides.pdf';
+        lesson.pdfLabel = 'Microservices Slides (PDF)';
+      }
+      lessons.push(lesson);
       javaDay += 1;
     }
   }

@@ -24,7 +24,6 @@ import { BEST_COURSES } from '../data/bestUdemyCourses';
 import LectureCard from '../components/LectureCard';
 import Syllabus from '../components/Syllabus';
 import ThunderHero from '../components/ThunderHero';
-import FounderSection from '../components/FounderSection';
 
 export default function Home() {
   const [searchParams] = useSearchParams();
@@ -64,6 +63,9 @@ export default function Home() {
                 <Link to="/best-udemy-courses" className="btn btn-paid btn-lg">
                   Best Udemy Courses 🎓
                 </Link>
+                <Link to="/about-founder" className="btn btn-outline-light btn-lg">
+                  About the Founder 👤
+                </Link>
                 <a
                   href={strikeCourse}
                   target="_blank"
@@ -87,8 +89,6 @@ export default function Home() {
       </section>
 
       <div className="home">
-      <FounderSection />
-
       <div id="syllabus">
         <Syllabus />
       </div>
