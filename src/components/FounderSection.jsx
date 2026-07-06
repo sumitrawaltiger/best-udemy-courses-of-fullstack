@@ -18,6 +18,27 @@ const SKILLS = [
   { label: 'System Design', emoji: '📐', color: '#14b8a6' },
 ];
 
+const SOCIALS = [
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/lawyersumitrawal/',
+    color: '#0a66c2',
+    icon: 'in',
+  },
+  {
+    label: 'Twitter',
+    href: 'https://x.com/SumitRawal44456',
+    color: '#111827',
+    icon: '𝕏',
+  },
+  {
+    label: 'Credly',
+    href: 'https://www.credly.com/users/sumit-rawal658/badges/credly',
+    color: '#ff6b00',
+    icon: '🏅',
+  },
+];
+
 export default function FounderSection() {
   const [imgSrc, setImgSrc] = useState('/sumit-founder.jpg');
 
@@ -51,6 +72,24 @@ export default function FounderSection() {
               >
                 {skill.label} <span aria-hidden="true">{skill.emoji}</span>
               </span>
+            ))}
+          </div>
+
+          <div className="founder-socials">
+            {SOCIALS.map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="founder-social"
+                style={{ backgroundColor: social.color }}
+              >
+                <span className="founder-social-icon" aria-hidden="true">
+                  {social.icon}
+                </span>
+                {social.label}
+              </a>
             ))}
           </div>
         </div>
