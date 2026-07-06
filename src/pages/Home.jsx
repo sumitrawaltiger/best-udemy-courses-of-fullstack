@@ -17,6 +17,10 @@ import { K8S_META } from '../data/k8sSyllabus';
 import { INTERVIEW_META } from '../data/interviewSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
+import { JS_INTERVIEW_QUESTIONS } from '../data/interviewQuestions';
+import { REACT_INTERVIEW_QUESTIONS } from '../data/reactInterviewQuestions';
+import { JAVA_INTERVIEW_QUESTIONS } from '../data/javaInterviewQuestions';
+import { BEST_COURSES } from '../data/bestUdemyCourses';
 import LectureCard from '../components/LectureCard';
 import Syllabus from '../components/Syllabus';
 import ThunderHero from '../components/ThunderHero';
@@ -47,6 +51,18 @@ export default function Home() {
                 <a href="#syllabus" className="btn btn-outline-light btn-lg">
                   View Syllabus
                 </a>
+                <Link to="/interview-questions" className="btn btn-interview btn-lg">
+                  Interview Q&amp;A 💬
+                </Link>
+                <Link to="/react-interview-questions" className="btn btn-nextjs btn-lg">
+                  React Q&amp;A ⚛️
+                </Link>
+                <Link to="/java-interview-questions" className="btn btn-java btn-lg">
+                  Java Q&amp;A ☕
+                </Link>
+                <Link to="/best-udemy-courses" className="btn btn-paid btn-lg">
+                  Best Udemy Courses 🎓
+                </Link>
                 <a
                   href={strikeCourse}
                   target="_blank"
@@ -416,6 +432,62 @@ export default function Home() {
             >
               GfG System Design
             </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="thunder-plus-section thunder-interview-section" id="interview-questions">
+        <div className="thunder-plus-inner">
+          <span className="thunder-plus-badge thunder-plus-badge-interview">Interview Prep</span>
+          <h2>Interview Questions — Q&amp;A</h2>
+          <p className="section-desc">
+            Dedicated Q&amp;A sections with{' '}
+            {JS_INTERVIEW_QUESTIONS.length + REACT_INTERVIEW_QUESTIONS.length + JAVA_INTERVIEW_QUESTIONS.length}+
+            questions and answers. <strong>JavaScript</strong> — closures, the <code>this</code> keyword,
+            promises, and the event loop. <strong>React</strong> — {REACT_INTERVIEW_QUESTIONS.length} on
+            components, hooks, lifecycle, routing, and Redux. <strong>Java</strong> —{' '}
+            {JAVA_INTERVIEW_QUESTIONS.length} on OOP, collections, concurrency, Spring &amp; REST. Click any
+            question to reveal the answer.
+          </p>
+          <div className="thunder-plus-highlights">
+            <span>📘 JS Fundamentals</span>
+            <span>⚛️ React &amp; Hooks</span>
+            <span>☕ Java &amp; OOP</span>
+            <span>🍃 Spring &amp; REST</span>
+          </div>
+          <div className="thunder-plus-actions">
+            <Link to="/interview-questions" className="btn btn-interview btn-lg">
+              JavaScript Q&amp;A 💬
+            </Link>
+            <Link to="/react-interview-questions" className="btn btn-nextjs btn-lg">
+              React Q&amp;A ⚛️
+            </Link>
+            <Link to="/java-interview-questions" className="btn btn-java btn-lg">
+              Java Q&amp;A ☕
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="thunder-plus-section thunder-nextjs-section" id="best-udemy-courses">
+        <div className="thunder-plus-inner">
+          <span className="thunder-plus-badge thunder-plus-badge-nextjs">Curated Picks</span>
+          <h2>Best Udemy Courses by Skill</h2>
+          <p className="section-desc">
+            A hand-picked list of {BEST_COURSES.length} courses for the full-stack journey — JavaScript,
+            TypeScript, React, Next.js, React Native, Java, Spring Boot, Microservices, JPA, Python, and
+            DevOps. Coupon codes are pre-applied in the links where available.
+          </p>
+          <div className="thunder-plus-highlights">
+            <span>⚛️ Frontend &amp; JS</span>
+            <span>☕ Java &amp; Spring</span>
+            <span>🐍 Python</span>
+            <span>⚙️ DevOps</span>
+          </div>
+          <div className="thunder-plus-actions">
+            <Link to="/best-udemy-courses" className="btn btn-nextjs btn-lg">
+              Browse Best Courses 🎓
+            </Link>
           </div>
         </div>
       </section>

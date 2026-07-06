@@ -31,6 +31,10 @@ import Day018 from './pages/Day018';
 import Day019 from './pages/Day019';
 import Day020 from './pages/Day020';
 import Day021 from './pages/Day021';
+import InterviewQuestions from './pages/InterviewQuestions';
+import ReactInterviewQuestions from './pages/ReactInterviewQuestions';
+import JavaInterviewQuestions from './pages/JavaInterviewQuestions';
+import BestUdemyCourses from './pages/BestUdemyCourses';
 
 export default function App() {
   return (
@@ -57,6 +61,10 @@ export default function App() {
         <Route path="/day-019" element={<Day019 />} />
         <Route path="/day-020" element={<Day020 />} />
         <Route path="/day-021" element={<Day021 />} />
+        <Route path="/interview-questions" element={<InterviewQuestions />} />
+        <Route path="/react-interview-questions" element={<ReactInterviewQuestions />} />
+        <Route path="/java-interview-questions" element={<JavaInterviewQuestions />} />
+        <Route path="/best-udemy-courses" element={<BestUdemyCourses />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="learn/:slug" element={<Chapter />} />
