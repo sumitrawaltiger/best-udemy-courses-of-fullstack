@@ -142,7 +142,7 @@ export default function Header({ onSearch }) {
                   ? 'Thunder++ Python'
                   : track === 'nextjs'
                     ? 'Thunder+ Next.js'
-                    : 'JS Learn Hub';
+                    : 'Road to Full Lifecycle Engineer';
   const logoTagline =
     track === 'mobile'
       ? 'React Native by ChaiCode'
@@ -160,7 +160,7 @@ export default function Header({ onSearch }) {
                   ? 'Python & Agentic AI — Ashok IT'
                   : track === 'nextjs'
                     ? 'React & Next.js by ChaiCode'
-                    : 'Learn JavaScript Day by Day';
+                    : 'Java · Python · TypeScript · DevOps · Kubernetes';
 
   const searchPlaceholder =
     track === 'mobile'
