@@ -350,3 +350,34 @@
     display: none;
   }
 }
+
+/* Download PDF button (hero) */
+.iq-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--iq-green);
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: background 0.15s, transform 0.15s;
+}
+.iq-download-btn:hover {
+  background: var(--iq-green-dark);
+  transform: translateY(-2px);
+}
+
+.iq-downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 18px;
+}
+.iq-downloads .iq-download-btn {
+  margin-top: 0;
+}

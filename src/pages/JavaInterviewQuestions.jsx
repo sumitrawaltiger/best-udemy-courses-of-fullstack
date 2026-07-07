@@ -16,6 +16,10 @@ export default function JavaInterviewQuestions() {
       questions={JAVA_INTERVIEW_QUESTIONS}
       categories={JAVA_QUESTION_CATEGORIES}
       search={searchJavaQuestions}
+      downloadPdf={[
+        { href: '/java-interview-help.pdf', label: 'Java Interview Help (PDF)' },
+        { href: '/1000-java-interview-questions.pdf', label: '1000 Java Interview Questions (PDF)' },
+      ]}
       sourceNote={
         <p>
           Sourced from “Top 350 Java Interview Questions” by Happy Rawat. Switch to{' '}

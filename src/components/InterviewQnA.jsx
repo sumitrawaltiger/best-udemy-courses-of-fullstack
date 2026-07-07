@@ -54,6 +54,7 @@ export default function InterviewQnA({
   search,
   tags = ['Interview', 'Q & A'],
   sourceNote,
+  downloadPdf,
 }) {
   const location = useLocation();
   const [activeCategory, setActiveCategory] = useState('all');
@@ -104,6 +105,22 @@ export default function InterviewQnA({
           {title} <span aria-hidden="true">💬</span>
         </h1>
         <p className="iq-hero-sub">{subtitle}</p>
+        {downloadPdf && (
+          <div className="iq-downloads">
+            {(Array.isArray(downloadPdf) ? downloadPdf : [downloadPdf]).map((pdf) => (
+              <a
+                key={pdf.href}
+                href={pdf.href}
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="iq-download-btn"
+              >
+                📄 {pdf.label || 'Download PDF'}
+              </a>
+            ))}
+          </div>
+        )}
       </section>
 
       <div className="iq-controls">
