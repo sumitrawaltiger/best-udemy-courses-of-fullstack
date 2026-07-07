@@ -6,11 +6,14 @@ const TOPICS = [
   { id: 'javascript', label: 'JavaScript', path: '/interview-questions' },
   { id: 'react', label: 'React', path: '/react-interview-questions' },
   { id: 'java', label: 'Java', path: '/java-interview-questions' },
+  { id: 'kafka', label: 'Kafka', path: '/kafka-interview-questions' },
+  { id: 'java-streams', label: 'Java 8 Streams', path: '/java-streams-puzzles' },
+  { id: 'sql', label: 'SQL Queries', path: '/sql-query-puzzles' },
 ];
 
 function renderAnswer(text) {
-  // Render inline `code` spans within the answer text.
-  const parts = text.split(/(`[^`]+`)/g);
+  // Render inline `code` spans and **bold** emphasis within the answer text.
+  const parts = text.split(/(`[^`]+`|\*\*[^*]+\*\*)/g);
   return parts.map((part, i) => {
     if (part.startsWith('`') && part.endsWith('`')) {
       return (
@@ -18,6 +21,9 @@ function renderAnswer(text) {
           {part.slice(1, -1)}
         </code>
       );
+    }
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={i}>{part.slice(2, -2)}</strong>;
     }
     return <span key={i}>{part}</span>;
   });

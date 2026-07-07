@@ -34,6 +34,9 @@ import Day021 from './pages/Day021';
 import InterviewQuestions from './pages/InterviewQuestions';
 import ReactInterviewQuestions from './pages/ReactInterviewQuestions';
 import JavaInterviewQuestions from './pages/JavaInterviewQuestions';
+import KafkaInterviewQuestions from './pages/KafkaInterviewQuestions';
+import JavaStreamsPuzzles from './pages/JavaStreamsPuzzles';
+import SqlQueryPuzzles from './pages/SqlQueryPuzzles';
 import BestUdemyCourses from './pages/BestUdemyCourses';
 import AboutFounder from './pages/AboutFounder';
 
@@ -65,6 +68,9 @@ export default function App() {
         <Route path="/interview-questions" element={<InterviewQuestions />} />
         <Route path="/react-interview-questions" element={<ReactInterviewQuestions />} />
         <Route path="/java-interview-questions" element={<JavaInterviewQuestions />} />
+        <Route path="/kafka-interview-questions" element={<KafkaInterviewQuestions />} />
+        <Route path="/java-streams-puzzles" element={<JavaStreamsPuzzles />} />
+        <Route path="/sql-query-puzzles" element={<SqlQueryPuzzles />} />
         <Route path="/best-udemy-courses" element={<BestUdemyCourses />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />

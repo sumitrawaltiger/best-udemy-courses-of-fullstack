@@ -20,6 +20,9 @@ import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import { JS_INTERVIEW_QUESTIONS } from '../data/interviewQuestions';
 import { REACT_INTERVIEW_QUESTIONS } from '../data/reactInterviewQuestions';
 import { JAVA_INTERVIEW_QUESTIONS } from '../data/javaInterviewQuestions';
+import { KAFKA_INTERVIEW_QUESTIONS } from '../data/kafkaInterviewQuestions';
+import { JAVA_STREAMS_PUZZLES } from '../data/javaStreamsPuzzles';
+import { SQL_QUERY_PUZZLES } from '../data/sqlQueryPuzzles';
 import { BEST_COURSES } from '../data/bestUdemyCourses';
 import LectureCard from '../components/LectureCard';
 import Syllabus from '../components/Syllabus';
@@ -59,6 +62,15 @@ export default function Home() {
                 </Link>
                 <Link to="/java-interview-questions" className="btn btn-java btn-lg">
                   Java Q&amp;A ☕
+                </Link>
+                <Link to="/kafka-interview-questions" className="btn btn-devops btn-lg">
+                  Kafka Q&amp;A 🔀
+                </Link>
+                <Link to="/java-streams-puzzles" className="btn btn-java btn-lg">
+                  Java Streams Puzzles 🧩
+                </Link>
+                <Link to="/sql-query-puzzles" className="btn btn-python btn-lg">
+                  Tricky SQL Queries 🗄️
                 </Link>
                 <Link to="/best-udemy-courses" className="btn btn-paid btn-lg">
                   Best Udemy Courses 🎓
@@ -445,18 +457,30 @@ export default function Home() {
           <h2>Interview Questions — Q&amp;A</h2>
           <p className="section-desc">
             Dedicated Q&amp;A sections with{' '}
-            {JS_INTERVIEW_QUESTIONS.length + REACT_INTERVIEW_QUESTIONS.length + JAVA_INTERVIEW_QUESTIONS.length}+
-            questions and answers. <strong>JavaScript</strong> — closures, the <code>this</code> keyword,
+            {JS_INTERVIEW_QUESTIONS.length +
+              REACT_INTERVIEW_QUESTIONS.length +
+              JAVA_INTERVIEW_QUESTIONS.length +
+              KAFKA_INTERVIEW_QUESTIONS.length +
+              JAVA_STREAMS_PUZZLES.length +
+              SQL_QUERY_PUZZLES.length}
+            + questions and answers. <strong>JavaScript</strong> — closures, the <code>this</code> keyword,
             promises, and the event loop. <strong>React</strong> — {REACT_INTERVIEW_QUESTIONS.length} on
             components, hooks, lifecycle, routing, and Redux. <strong>Java</strong> —{' '}
-            {JAVA_INTERVIEW_QUESTIONS.length} on OOP, collections, concurrency, Spring &amp; REST. Click any
-            question to reveal the answer.
+            {JAVA_INTERVIEW_QUESTIONS.length} on OOP, collections, concurrency, Spring &amp; REST.{' '}
+            <strong>Kafka</strong> — {KAFKA_INTERVIEW_QUESTIONS.length} of the trickiest questions on
+            partitions, ordering, delivery semantics &amp; rebalancing. <strong>Java 8 Streams</strong> —{' '}
+            {JAVA_STREAMS_PUZZLES.length} predict-the-output puzzles with worked solutions.{' '}
+            <strong>SQL</strong> — {SQL_QUERY_PUZZLES.length} tricky query puzzles on joins, window
+            functions, NULLs &amp; classic patterns. Click any question to reveal the answer.
           </p>
           <div className="thunder-plus-highlights">
             <span>📘 JS Fundamentals</span>
             <span>⚛️ React &amp; Hooks</span>
             <span>☕ Java &amp; OOP</span>
             <span>🍃 Spring &amp; REST</span>
+            <span>🔀 Kafka &amp; Streaming</span>
+            <span>🧩 Stream Puzzles</span>
+            <span>🗄️ Tricky SQL</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/interview-questions" className="btn btn-interview btn-lg">
@@ -467,6 +491,15 @@ export default function Home() {
             </Link>
             <Link to="/java-interview-questions" className="btn btn-java btn-lg">
               Java Q&amp;A ☕
+            </Link>
+            <Link to="/kafka-interview-questions" className="btn btn-devops btn-lg">
+              Kafka Q&amp;A 🔀
+            </Link>
+            <Link to="/java-streams-puzzles" className="btn btn-java btn-lg">
+              Java Streams Puzzles 🧩
+            </Link>
+            <Link to="/sql-query-puzzles" className="btn btn-python btn-lg">
+              Tricky SQL Queries 🗄️
             </Link>
           </div>
         </div>

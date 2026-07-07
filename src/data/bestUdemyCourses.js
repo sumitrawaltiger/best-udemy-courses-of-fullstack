@@ -177,6 +177,21 @@ export const BEST_COURSES = [
     ],
   },
   {
+    id: 'django',
+    category: 'python-devops',
+    skill: 'Django',
+    icon: '🎸',
+    title: 'Python Django — The Practical Guide',
+    provider: 'Udemy',
+    coupon: 'KEEPLEARNING',
+    links: [
+      {
+        label: 'View on Udemy',
+        url: 'https://www.udemy.com/course/django-course/?couponCode=KEEPLEARNING',
+      },
+    ],
+  },
+  {
     id: 'devops',
     category: 'python-devops',
     skill: 'DevOps',
@@ -188,6 +203,20 @@ export const BEST_COURSES = [
       {
         label: 'View on Udemy',
         url: 'https://www.udemy.com/course/mastering-devops-with-anil-dollor-2023/',
+      },
+    ],
+  },
+  {
+    id: 'kubernetes',
+    category: 'python-devops',
+    skill: 'Kubernetes',
+    icon: '☸️',
+    title: 'Learn Kubernetes',
+    provider: 'Udemy',
+    links: [
+      {
+        label: 'View on Udemy',
+        url: 'https://www.udemy.com/course/learn-kubernetes/',
       },
     ],
   },
