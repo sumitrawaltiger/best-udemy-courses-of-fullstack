@@ -16,6 +16,10 @@ export default function ReactInterviewQuestions() {
       questions={REACT_INTERVIEW_QUESTIONS}
       categories={REACT_QUESTION_CATEGORIES}
       search={searchReactQuestions}
+      downloadPdf={{
+        href: '/top-200-react-interview-questions.pdf',
+        label: 'Top 200 React Interview Questions (PDF)',
+      }}
       sourceNote={
         <p>
           Sourced from “Top 200 React Interview Questions” by Happy Rawat. Switch to{' '}

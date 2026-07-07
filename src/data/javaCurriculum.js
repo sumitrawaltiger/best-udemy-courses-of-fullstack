@@ -217,6 +217,333 @@ const MICROSERVICES_DESIGN_SECTIONS = [
   },
 ];
 
+// ---------------------------------------------------------------------------
+// Content distilled from EmbarkX (Faisal Memon) — "Spring Boot Microservices
+// Professional eCommerce Masterclass" (493-slide deck). Modules 31–40 & 45.
+// ---------------------------------------------------------------------------
+
+// Module 31 — Spring Boot Fundamentals
+const SPRING_BOOT_FUNDAMENTALS_SECTIONS = [
+  {
+    id: 'what-is-web-framework',
+    title: 'What Is a Web Framework?',
+    content:
+      "Every web app repeats the same plumbing — **security, databases, URLs, authentication, sessions**. Building that from scratch each time is like constructing a house without blueprints or prefabricated parts.\n\nA **web framework** is a collection of tools and modules that handle these standard tasks for you, so you assemble features faster, with fewer errors. Popular frameworks: **Spring Boot** (Java), **Django/Flask** (Python), **Express** (JavaScript), **Ruby on Rails** (Ruby).",
+  },
+  {
+    id: 'spring-framework-ioc',
+    title: 'The Spring Framework & Inversion of Control',
+    content:
+      "The **Spring Framework** (created by Rod Johnson, first released March 2004) takes away the hassle of wiring an application together. Its core feature is **Inversion of Control (IoC)**.\n\nWithout IoC, a class creates its own dependencies — `new EmailService()` hard-wired inside `SMSClient` — which is rigid and hard to test. With IoC, the framework's **container** creates and injects those dependencies for you.\n\nOther Spring pillars: **Data Access, MVC, Transaction Management, Security, Testing support, and i18n/l10n**.",
+  },
+  {
+    id: 'what-is-spring-boot',
+    title: 'What Is Spring Boot?',
+    content:
+      "**Spring Boot** is an open-source, Java-based framework for building **stand-alone, production-grade** Spring applications.\n\nThink of it as: **Spring Framework + prebuilt configuration + embedded servers**. Plain Spring needs lots of setup, configuration, boilerplate, and deployment steps; Spring Boot removes them.\n\n**Why developers love it:** quick start with starter code, far less configuration, an **embedded server** (no separate Tomcat install), reduced development time and cost, and it avoids boilerplate.",
+  },
+  {
+    id: 'spring-boot-components',
+    title: 'Core Components of Spring Boot',
+    content:
+      "Spring Boot ships with five headline components:\n\n- **Starters** — curated dependency bundles (e.g. `spring-boot-starter-web`) so you don't hand-pick compatible versions.\n- **Auto-Configuration** — sensible defaults wired automatically based on the classpath.\n- **Embedded Server** — Tomcat/Jetty/Undertow baked into the JAR; run with `java -jar`.\n- **Spring Boot Actuator** — production-ready monitoring and management endpoints.\n- **DevTools** — fast restarts and live reload during development.",
+  },
+  {
+    id: 'spring-boot-architecture',
+    title: 'Spring Boot Layered Architecture',
+    content:
+      "A Spring Boot app is organised into three tiers, each with a clear job:\n\n- **Presentation Layer** — the **@Controller / @RestController** classes that receive requests and return responses.\n- **Service Layer** — where **business logic** lives: validation, decisions, and processing.\n- **Data Access Layer** — the **repository** classes that talk to the database.\n\nA request flows Browser → Controller → Service → Repository → Database, and the response travels back the same way. This separation keeps each layer testable and swappable.",
+  },
+  {
+    id: 'spring-boot-actuator',
+    title: 'Spring Boot Actuator',
+    content:
+      "**Actuator** adds built-in, production-ready endpoints to monitor and manage a running app — real-time metrics, health, and more, all customizable.\n\nKey endpoints:\n- **/health** — app health (DB connectivity, disk space, custom checks).\n- **/info** — arbitrary app info (version, git commit).\n- **/metrics** — performance and behaviour metrics.\n- **/loggers** — view and change log levels at runtime.\n- **/beans** — every Spring bean in the context.\n- **/shutdown** — gracefully shut the app down (important for clean service deregistration).",
+  },
+];
+
+// Module 32 — Building REST APIs
+const REST_API_SECTIONS = [
+  {
+    id: 'basics-of-api',
+    title: 'Basics of an API',
+    content:
+      "An **API (Application Programming Interface)** is a set of rules and protocols that let one software application talk to another — like a **restaurant menu**: you order from a defined list without knowing what happens in the kitchen.\n\n**Why APIs matter:** they let apps **share data**, **speed up development** (reuse instead of rebuild), and **extend reach** by plugging into other systems. Familiar examples: **Google Maps, Twitter, Facebook Graph, Amazon S3**. APIs come in three flavours: **Internal**, **External (public)**, and **Partner**.",
+  },
+  {
+    id: 'api-request-types',
+    title: 'Types of API Requests',
+    content:
+      "REST APIs use HTTP verbs to express intent:\n\n- **GET** — retrieve/read resources from the server (read-only, no side effects).\n- **POST** — create a new resource on the server.\n- **PUT** — update an existing resource on the server.\n- **DELETE** — remove a resource from the server.\n\nMatching the right verb to the operation is the foundation of a clean, predictable REST API.",
+  },
+  {
+    id: 'http-status-codes',
+    title: 'HTTP Status Codes',
+    content:
+      "Every response carries a **status code** telling the client what happened. They fall into five classes:\n\n- **1xx** Informational · **2xx** Success · **3xx** Redirection · **4xx** Client Error · **5xx** Server Error.\n\nCommonly used: **200 OK**, **201 Created**, **204 No Content**, **301 Moved Permanently**, **400 Bad Request**, **401 Unauthorized**, **403 Forbidden**, **404 Not Found**, and **500 Internal Server Error**. Returning the correct code makes your API self-documenting and easy to debug.",
+  },
+  {
+    id: 'dto-pattern',
+    title: 'The DTO Pattern',
+    content:
+      "A **DTO (Data Transfer Object)** is a design pattern for moving data between the subsystems of an application — typically between the API layer and clients.\n\nInstead of exposing your full **entity** (which may include sensitive or irrelevant fields like password hashes or internal IDs), you map it to a DTO carrying **only the fields the caller needs**. This decouples your public API from your database schema, improves security, and lets the two evolve independently.",
+  },
+];
+
+// Module 33 — Spring Data JPA
+const SPRING_DATA_JPA_SECTIONS = [
+  {
+    id: 'what-is-jpa',
+    title: 'What Is JPA?',
+    content:
+      "**JPA (Java Persistence API)** maps Java **objects** to database **rows** so you work with entities instead of raw SQL. A `User` class with `id`, `firstName`, `lastName` maps to a table with matching columns.\n\n**Advantages:** it's simple, makes querying easier, lets you save/update objects directly, and integrates seamlessly with Spring Boot.\n\nCompare: raw JDBC needs a `Connection`, `PreparedStatement`, `ResultSet`, and manual row mapping — JPA reduces all of that to `userRepository.findById(1L)`.",
+  },
+  {
+    id: 'jpa-repository',
+    title: 'Spring Data JpaRepository',
+    content:
+      "Spring Data JPA gives you a repository interface with CRUD methods for free. Declare `interface UserRepository extends JpaRepository<User, Long>` — supplying the **entity type** and its **primary-key type** — and you instantly get:\n\n- `findAll()`, `findById(id)`, `save(entity)`, `deleteById(id)` and more.\n- **Derived query methods** — `findByLastName(String name)` is implemented automatically from the method name.\n\nThe repository sits in the **Data Access Layer**, keeping persistence out of your service and controller code.",
+  },
+  {
+    id: 'postgresql',
+    title: 'PostgreSQL — and Why Use It',
+    content:
+      "**PostgreSQL** is a powerful **object-relational** database (ORDBMS). It's popular for its **SQL compliance, extensibility, performance, strong community, and data integrity**.\n\n**Why PostgreSQL over H2** for real projects: better **scalability, durability, a richer feature set, and a mature ecosystem/tooling**. H2 (in-memory) is great for quick tests, but production microservices want a persistent, robust store — and each microservice owns **its own** database (database-per-service).",
+  },
+];
+
+// Module 34 — Spring Security Basics
+const SPRING_SECURITY_SECTIONS = [
+  {
+    id: 'security-auth-authz',
+    title: 'Security, Authentication & Authorization',
+    content:
+      "**Security** means protecting your app, users, and data from threats. Two ideas sit at its core:\n\n- **Authentication** — verifying **who** you are (identity).\n- **Authorization** — deciding **what** you're allowed to do (permissions).\n\n**Spring Security** provides both, plus protection against common threats (CSRF, session fixation), secure **password storage**, and deep integration with the Spring ecosystem. It's declarative, highly customizable, regularly updated, and easy to use with Spring Boot.",
+  },
+  {
+    id: 'iam-keycloak',
+    title: 'IAM & Keycloak',
+    content:
+      "Imagine running three apps — a website, an admin dashboard, and a mobile app. Handling logins, roles, and security separately in each is a nightmare of duplication and risk.\n\n**Identity and Access Management (IAM)** centralizes this: login/logout, password reset, user roles, and social logins in one place. **Keycloak** is a production-ready, open-source IAM server providing a login screen, an admin dashboard, and APIs. Core concepts: **Realm** (workspace), **Client** (an app), **Users**, **Roles**, **Identity Providers** (Google/GitHub), and protocols **OIDC** & **SAML**.",
+  },
+  {
+    id: 'oauth2',
+    title: 'OAuth 2.0',
+    content:
+      "**OAuth 2.0** lets users grant a third-party app access to their data **without sharing their password**. Before OAuth you handed your credentials to every app — a security and control nightmare.\n\nFlow in plain terms: you click *Login with Google* → Google authenticates you → you grant permission → the app receives a **token** → it uses the token (not your password) to access your data. Key roles: **Resource Owner** (user), **Client** (the app), **Authorization Server** (issues tokens), and **Resource Server** (holds the data).",
+  },
+  {
+    id: 'oauth-flows',
+    title: 'OAuth 2.0 Flows & PKCE',
+    content:
+      "OAuth defines several flows for different scenarios:\n\n- **Authorization Code Flow** — the most common and secure for user logins; the app exchanges a short-lived **authorization code** for a token **server-to-server**, so the token never sits in the browser.\n- **Client Credentials Flow** — for **machine-to-machine** calls (backend jobs, cron, microservice-to-microservice) with no end user.\n- **PKCE (Proof Key for Code Exchange)** — hardens the authorization-code flow for public clients (mobile/SPA) using a **code verifier + challenge** (`SHA256(verifier) == challenge`).",
+  },
+];
+
+// Module 35 — Dockerizing Spring Boot
+const DOCKERIZING_SECTIONS = [
+  {
+    id: 'what-is-docker',
+    title: 'Introduction to Docker',
+    content:
+      "The classic problem: code runs on your machine but breaks on a teammate's because environments differ. **Docker** solves *\"it works on my machine\"* by packaging the **application code, its dependencies, and environment config** into a single portable unit.\n\nDocker is an open-source platform to **automate deployment, scaling, and management** of applications using **containerization** — bundling runtime, libraries, and system tools together so the app runs identically anywhere.",
+  },
+  {
+    id: 'docker-vs-vm',
+    title: 'Docker vs Virtual Machines',
+    content:
+      "**Virtual Machines** each run a full **guest OS** on a hypervisor — strong isolation but heavy: large size, slow boot, high resource use. **Docker containers** share the **host OS kernel** via the Docker Engine, so they are:\n\n- **Lightweight** and resource-efficient.\n- **Almost instant** to start (no OS boot).\n- **Highly portable** and easy to scale (just spin up more containers).\n\nThat efficiency is why containers, not VMs, underpin modern microservice deployment.",
+  },
+  {
+    id: 'docker-concepts',
+    title: 'Docker Architecture & Core Concepts',
+    content:
+      "The **Docker Engine** contains the **Docker Daemon**, a **REST API**, and the **CLI**. Key concepts:\n\n- **Image** — a read-only template defining the container and its dependencies.\n- **Container** — a running instance created from an image.\n- **Dockerfile** — instructions to build an image.\n- **Registry / Docker Hub** — cloud storage to version, share, and distribute images.\n\nBuild an image from a Dockerfile, push it to a registry, then run it as a container anywhere.",
+  },
+  {
+    id: 'containerizing-spring-boot',
+    title: 'Containerizing a Spring Boot App',
+    content:
+      "A minimal **Dockerfile** for a Spring Boot JAR:\n\n`FROM eclipse-temurin:23-jdk`\n`WORKDIR /app`\n`COPY target/*.jar app.jar`\n`EXPOSE 8082`\n`ENTRYPOINT [\"java\",\"-jar\",\"app.jar\"]`\n\n**Workflow:** `./mvnw clean package -DskipTests` to build the JAR → `docker build -t my-service .` → `docker run -d -p 8082:8082 my-service`.\n\n**Essential commands:** `docker pull/push`, `docker ps -a`, `docker stop/start`, `docker rm/rmi`, `docker logs`, `docker exec -it <c> bash`, and `docker system prune -a` to reclaim space.",
+  },
+  {
+    id: 'containerize-methods',
+    title: 'Three Ways to Containerize: Dockerfile, Buildpacks & Jib',
+    content:
+      "There's no one-size-fits-all — pick by control vs simplicity:\n\n- **Dockerfile** — **full control** over layers and base image; the industry standard, works everywhere. You manage everything. Best for advanced/K8s users.\n- **Cloud Native Buildpacks** (`mvnw spring-boot:build-image`, Spring Boot 2.3+) — **no Dockerfile**; auto-detects JDK, applies best practices and layer caching. Best for most Spring Boot apps.\n- **Jib** (Google's Maven/Gradle plugin) — builds and pushes images **without Docker installed**; reproducible, fast, CI/CD-friendly. `jib:build` pushes to a registry; `jib:dockerBuild` loads into your local daemon.",
+  },
+  {
+    id: 'docker-networking-config',
+    title: 'Configuration & Networking in Docker',
+    content:
+      "Inside a Docker network, **don't use `localhost`** to reach other services — `localhost` refers to the container itself. Instead, containers find each other by **service name** (e.g. `postgres`, `kafka`, `config-server`, `rabbitmq`).\n\nBecause the Docker environment differs from your local machine, keep **separate config** (profiles / `--env-file`) for containers. This is why microservices use Spring **profiles** and externalized configuration — the same image runs locally and in Docker with different settings.",
+  },
+];
+
+// Module 36 — Spring Cloud Config
+const SPRING_CLOUD_CONFIG_SECTIONS = [
+  {
+    id: 'config-management',
+    title: 'Configuration Management',
+    content:
+      "**Configuration management** means controlling each microservice's settings — database connections, external service URLs, caching, credentials, and more.\n\nHard-coding values (`private static final String DB_URL = ...`) is bad practice: you must **recompile** to change anything, you can't vary values per environment, and secrets leak into code. As the number of services grows, managing scattered config becomes a serious challenge around **security, consistency, dynamic updates, and versioning**.",
+  },
+  {
+    id: 'externalized-config',
+    title: 'Externalized Configuration',
+    content:
+      "**Externalized configuration** keeps settings **outside** the codebase so you change behaviour without recompiling. Spring Boot supports several sources:\n\n- `application.properties` / `application.yml`\n- **Environment variables**\n- **Command-line arguments**\n- **External config files**\n- **Cloud config** (Spring Cloud Config Server)\n\nThis lets one build run in dev, test, and prod with different values, and keeps sensitive data out of source control.",
+  },
+  {
+    id: 'config-formats-profiles',
+    title: 'Config Formats & Profiles',
+    content:
+      "**Properties vs YAML:** `.properties` is flat key–value — simple but repetitive for nested data. `.yml` is **hierarchical and readable** but indentation-sensitive. Both are fully supported; YAML suits large, nested configs, properties suit small ones.\n\n**Spring Profiles** define separate configurations per environment (`dev`, `test`, `prod`) — different databases, log levels, and feature toggles — so you switch environments without editing files. Activate with `spring.profiles.active`.",
+  },
+  {
+    id: 'config-precedence',
+    title: 'How Spring Boot Resolves Configuration',
+    content:
+      "When the same property is defined in several places, Spring Boot applies a **precedence order** (highest wins):\n\n1. **Command-line arguments** (`--build.id=123`)\n2. **Java system properties** (`-Dbuild.id=123`)\n3. **OS environment variables**\n4. **application.properties / application.yml**\n5. **Spring Cloud Config Server** (if used)\n6. **Default values** in code\n\nKnowing this order is essential for debugging *\"why is my config value not what I expect?\"*.",
+  },
+  {
+    id: 'config-server',
+    title: 'Spring Cloud Config Server',
+    content:
+      "A **centralized Config Server** gives all microservices a **single source of truth** for configuration, backed by **Git, a filesystem, or a database**.\n\nBenefits: centralized + versioned config, **dynamic updates** without redeploying, per-application and per-profile settings, and easier scaling. Each service becomes a **config client** that fetches its settings on startup, so operators manage everything in one place instead of editing dozens of services.",
+  },
+  {
+    id: 'config-encryption',
+    title: 'Securing Config: AES, RSA Keystore & Bus Refresh',
+    content:
+      "Config often holds secrets, so the Config Server can **encrypt** values:\n\n- **AES** — symmetric: one secret key locks and unlocks the data. Fast and simple.\n- **RSA Keystore** — asymmetric: a **key pair** (public encrypts, private decrypts) stored in a keystore generated with the JDK's **keytool**. More secure for production.\n- **Spring Cloud Bus Refresh** — broadcasts a refresh event so services pick up config changes **at runtime** without restarts.\n\n**Production best practices:** externalize config, use profiles, encrypt secrets, use secure connections, and enforce access control.",
+  },
+];
+
+// Module 37 — Service Discovery
+const SERVICE_DISCOVERY_SECTIONS = [
+  {
+    id: 'monolith-to-microservices',
+    title: 'From Monolith to Microservices',
+    content:
+      "A **monolith** unifies every component into one interdependent application — simple at first, but it brings **hard-to-implement changes, poor scalability, long-term lock-in to one tech stack, slow IDEs and startup, large builds, and painful team collaboration**.\n\n**Microservices** structure an app as a collection of **small autonomous services**, each with its own database. Guiding principles: **Single Responsibility, Independence, Decentralization, Failure Isolation, and Continuous Delivery** — as Netflix famously demonstrated at scale.",
+  },
+  {
+    id: 'inter-service-comm',
+    title: 'Inter-Service Communication',
+    content:
+      "Once split into services, they must talk to each other — via **synchronous** (request/response) or **asynchronous** (messaging) communication.\n\nFor synchronous calls, Spring offers a spectrum of REST clients that evolved over time:\n- **RestTemplate** — the classic blocking client (now legacy).\n- **WebClient** — reactive, non-blocking (Spring 5 WebFlux).\n- **RestClient** — modern fluent, synchronous client (Spring 6).\n- **OpenFeign / HTTP Interfaces** — **declarative** clients defined as annotated Java interfaces.\n\nFor new projects prefer **RestClient / HTTP Interfaces** for blocking calls, **WebClient** for high-concurrency reactive needs.",
+  },
+  {
+    id: 'service-registry',
+    title: 'Service Registry & Discovery',
+    content:
+      "In a dynamic environment services **move, start, stop, and scale**, so hard-coding URLs breaks. Older approaches — hardcoded IPs, DNS, load balancers, config servers — each have gaps (manual updates, caching, added latency, not dynamic).\n\nA **Service Registry** solves this: services **register** themselves, and callers **discover** healthy instances by name, with **client-side load balancing** built in. Benefits: dynamic discovery, load balancing, fault tolerance, scalability, and health checks.",
+  },
+  {
+    id: 'eureka',
+    title: 'Eureka: Heartbeats & Self-Preservation',
+    content:
+      "**Eureka** is Netflix's service registry. Services register and send periodic **heartbeats** (renewals); Eureka evicts instances that stop sending them.\n\n- **Self-Preservation Mode** — if too many heartbeats drop at once (likely a **network** problem, not real outages), Eureka **stops evicting** instances to avoid wrongly removing healthy ones. Controlled by `eureka.server.enable-self-preservation`.\n- **Graceful shutdown** — use **Actuator's `/shutdown`** (not IntelliJ's stop button) so the instance deregisters cleanly instead of lingering as a dead entry.\n- Key tuning: `lease-renewal-interval` and `lease-expiration-duration` speed up failover.",
+  },
+];
+
+// Module 38 — API Gateway
+const API_GATEWAY_SECTIONS = [
+  {
+    id: 'why-api-gateway',
+    title: 'Introduction to API Gateways',
+    content:
+      "Without a gateway, clients must know **every service's URL** and each service repeats **security and authentication** — a communication and cross-cutting mess.\n\nAn **API Gateway** is the **single entry point** in front of your microservices. It encapsulates the internal architecture and handles cross-cutting concerns: **routing, load balancing, authentication/authorization, rate limiting, and analytics**. It can authenticate requests before they reach services and **aggregate** responses from several services into one.",
+  },
+  {
+    id: 'gateway-functions',
+    title: 'API Gateway Functions & Route Config',
+    content:
+      "Core capabilities: **request routing, load balancing, authentication & authorization, rate limiting, request/response transformation, and data aggregation**.\n\nRoutes can be defined two ways:\n- **YAML/properties** — easy and readable for simple routes, but limited for complex filters.\n- **Java configuration** — more code, but **fully customizable** with custom logic like JWT auth or bespoke rate limiting.\n\nUse YAML for straightforward routing; drop to Java when you need programmable filters.",
+  },
+  {
+    id: 'gateway-patterns',
+    title: 'Gateway Patterns & Best Practices',
+    content:
+      "Three common patterns:\n- **Single Entry Point** — one gateway fronts all services for every client.\n- **Backend for Frontend (BFF)** — a dedicated gateway per client type (desktop, mobile), each tailored to that UI.\n- **Aggregation Gateway** — combines results from multiple services into one composite response.\n\n**Best practices:** use load balancing, implement authentication & security at the edge, and **handle errors gracefully** so a single failing service doesn't break the client experience.",
+  },
+  {
+    id: 'fault-tolerance',
+    title: 'Fault Tolerance with Resilience4j',
+    content:
+      "**Fault tolerance** is the ability to keep operating when parts fail — stopping small failures from cascading into a full outage. Failures come as **network issues, service unavailability, and high latency**.\n\n**Resilience4j** is a lightweight fault-tolerance library with modules:\n- **Retry** — try again on transient failures (with backoff).\n- **Circuit Breaker** — stop calling a failing service (closed → open → half-open) to prevent cascades.\n- **Bulkhead** — isolate resource pools so one overload doesn't sink everything.\n- **RateLimiter, Timeouts, Fallbacks & Graceful Degradation**.",
+  },
+  {
+    id: 'rate-limiting',
+    title: 'Rate Limiting',
+    content:
+      "**Rate limiting** caps how much traffic a client can send in a window. It matters for **preventing abuse, allocating resources fairly, and controlling cost**.\n\nCommon use cases: protecting **APIs**, throttling **login attempts**, blocking aggressive **web scraping**, and blunting **DDoS** attacks. Resilience4j's **RateLimiter** enforces these limits in Spring Boot — returning a friendly error (e.g. **429 Too Many Requests**) instead of letting a burst overwhelm the service.",
+  },
+];
+
+// Module 40 — Observability Stack
+const OBSERVABILITY_SECTIONS = [
+  {
+    id: 'observability-intro',
+    title: 'Observability vs Monitoring',
+    content:
+      "**Observability** is the ability to understand a system's internal state from the data it produces — **logs, metrics, and traces**.\n\nIt's broader than monitoring: **monitoring** watches predefined health/performance signals (\"is the server up?\") — a smoke detector. **Observability** explores **unknown** issues and answers **why** something happened (\"why did this request fail?\") — an investigation. Distributed microservices need all three pillars to be debuggable.",
+  },
+  {
+    id: 'logging',
+    title: 'Logging in Spring Boot',
+    content:
+      "**Logs** are messages applications write — vital for **debugging, tracking activity, performance monitoring, and security auditing**.\n\nSpring Boot doesn't log directly: your code calls **SLF4J** (a facade), which forwards to a framework — **Logback** by default (or Log4j2/JUL). **Levels**: TRACE, DEBUG, INFO, WARN, ERROR.\n\n**Best practices:** use **structured logging** (`logger.info(\"Order placed: {}\", item)`), pick the **right level**, and **never log sensitive data** (passwords, tokens).",
+  },
+  {
+    id: 'centralized-logging',
+    title: 'Centralized Logging',
+    content:
+      "With many services each writing their own log files, chasing an issue means grepping across many machines. **Centralized logging** collects logs from **all** services into one searchable system — **Elasticsearch + Kibana (ELK)** or **Loki + Grafana**.\n\nStructured logs shine here because they're easy to search and filter. One place to query means you can trace a failing order across Order → Payment → Inventory without hopping between servers.",
+  },
+  {
+    id: 'metrics-tracing',
+    title: 'Metrics & Distributed Tracing',
+    content:
+      "**Metrics** are quantitative measurements of performance and health — response times, memory, request counts, error rates. The standard stack: services expose metrics → **Prometheus** collects them → **Grafana** visualizes and alerts.\n\n**Distributed Tracing** tracks a single request as it flows across services. Each request gets a **Trace ID**, and each hop a **Span ID**, so you can see the full path (Order → Payment → Inventory → DB), pinpoint **latency**, and debug failures across service boundaries.",
+  },
+];
+
+// Module 45 — Kafka & Spring Events (Asynchronous Messaging)
+const MESSAGING_SECTIONS = [
+  {
+    id: 'async-communication',
+    title: 'Asynchronous Communication',
+    content:
+      "**Synchronous** calls make the caller wait and couple services in time — if the callee is down, the caller fails. **Asynchronous** communication decouples them: a sender emits a message and moves on.\n\nBenefits: **better performance, loose coupling, scalability, and fault tolerance** — a slow or temporarily down consumer doesn't block the producer. This is the backbone of resilient, event-driven microservices.",
+  },
+  {
+    id: 'message-queues',
+    title: 'Message Queues',
+    content:
+      "A **message queue** is asynchronous service-to-service communication: a **Producer** puts a message on the queue and a **Consumer** reads it when ready.\n\nWhy queues: **decoupling** (services don't call each other directly), **time decoupling** (consumer can be offline and catch up), **scalability** (add consumers), and **fault tolerance** (messages persist until processed). They're the foundation of event-driven architecture — e.g. *order placed* → queue → *send notification*.",
+  },
+  {
+    id: 'messaging-exchanges',
+    title: 'Messaging Exchanges & Types',
+    content:
+      "In RabbitMQ, producers publish to an **Exchange**, which routes messages to **Queues** via **Bindings**. Four exchange types:\n\n- **Direct** — routes by exact **routing key** to one matching queue (order processing).\n- **Fanout** — broadcasts to **all** bound queues (notifications).\n- **Topic** — routes by **pattern** in the routing key (`app.order.#`) — great for logging/event systems.\n- **Headers** — routes by key–value **headers** rather than a routing key.",
+  },
+  {
+    id: 'messaging-models',
+    title: 'Messaging Models & Spring Cloud Stream',
+    content:
+      "Two fundamental models:\n- **Queue (Point-to-Point)** — one message goes to exactly **one** consumer.\n- **Publish-Subscribe** — a message is **broadcast** to all subscribers.\n\n**Spring Cloud Stream** (with Spring Cloud Functions) lets you write producers/consumers **once** and bind them to either **RabbitMQ** or **Kafka** without changing your business code — the broker becomes a configuration detail.",
+  },
+  {
+    id: 'rabbitmq-vs-kafka',
+    title: 'RabbitMQ vs Kafka',
+    content:
+      "**RabbitMQ** is a traditional **push-based** message broker: messages are pushed to consumers, ACK'd per message, and deleted once delivered. Strengths: **low latency, smart routing (exchanges), reliable task/command delivery**. Choose it for order→email, task queues, RPC-style calls.\n\n**Kafka** is a **pull-based streaming log**: events are stored for a fixed time (e.g. 7 days) even after consumption, with strict **per-partition ordering** and **offset tracking**. Choose it for **high-throughput streaming, event sourcing, replay, and many independent consumers**. Remember: **Kafka is not a database — you can't search it**.",
+  },
+];
+
 function buildLessons() {
   const lessons = [];
   let javaDay = 1;
@@ -237,16 +564,59 @@ function buildLessons() {
         paidLectureUrl: courseUrl,
         youtube: defaultYt,
       };
+      const embarkxLink = {
+        label: 'eCommerce Microservices Course (PDF)',
+        href: '/spring-boot-ecommerce-microservices-course.pdf',
+        icon: '📄',
+      };
       if (title === 'Spring Boot Fundamentals') {
         lesson.pdfUrl = '/java-spring-boot-slides.pdf';
         lesson.pdfLabel = 'Spring Boot Slides (PDF)';
+        lesson.sections = SPRING_BOOT_FUNDAMENTALS_SECTIONS;
         lesson.extraLinks = [
           {
             label: 'eCommerce Masterclass Slides (PDF)',
             href: '/spring-boot-ecommerce-masterclass-slides.pdf',
             icon: '📄',
           },
+          embarkxLink,
         ];
+      }
+      if (title === 'Building REST APIs') {
+        lesson.sections = REST_API_SECTIONS;
+        lesson.extraLinks = [embarkxLink];
+      }
+      if (title === 'Spring Data JPA') {
+        lesson.sections = SPRING_DATA_JPA_SECTIONS;
+        lesson.extraLinks = [embarkxLink];
+      }
+      if (title === 'Spring Security Basics') {
+        lesson.sections = SPRING_SECURITY_SECTIONS;
+        lesson.extraLinks = [embarkxLink];
+      }
+      if (title === 'Dockerizing Spring Boot') {
+        lesson.sections = DOCKERIZING_SECTIONS;
+        lesson.extraLinks = [embarkxLink];
+      }
+      if (title === 'Spring Cloud Config') {
+        lesson.sections = SPRING_CLOUD_CONFIG_SECTIONS;
+        lesson.extraLinks = [embarkxLink];
+      }
+      if (title === 'Service Discovery') {
+        lesson.sections = SERVICE_DISCOVERY_SECTIONS;
+        lesson.extraLinks = [embarkxLink];
+      }
+      if (title === 'API Gateway') {
+        lesson.sections = API_GATEWAY_SECTIONS;
+        lesson.extraLinks = [embarkxLink];
+      }
+      if (title === 'Observability Stack') {
+        lesson.sections = OBSERVABILITY_SECTIONS;
+        lesson.extraLinks = [embarkxLink];
+      }
+      if (title === 'Kafka & Spring Events') {
+        lesson.sections = MESSAGING_SECTIONS;
+        lesson.extraLinks = [embarkxLink];
       }
       if (title === 'Microservices Architecture') {
         lesson.pdfUrl = '/java-microservices-slides.pdf';

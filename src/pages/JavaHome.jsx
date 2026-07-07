@@ -34,6 +34,9 @@ export default function JavaHome() {
                 <a href="#java-syllabus" className="btn btn-outline-java btn-lg">
                   View Syllabus
                 </a>
+                <Link to="/spring-boot-ecommerce-roadmap" className="btn btn-java btn-lg">
+                  Full-Stack E-Commerce Roadmap 🛒
+                </Link>
                 <Link to="/python" className="btn btn-outline-java btn-lg">
                   ← Python & Agentic AI
                 </Link>
