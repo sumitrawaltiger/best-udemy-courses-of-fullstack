@@ -7,6 +7,7 @@ export const PYTHON_META = {
   description:
     'Master Python, Django, FastAPI, Generative AI, LangChain, RAG, and Agentic AI with LangGraph, MCP, and n8n.',
   portalUrl: ASHOK_IT_URL,
+  githubRepo: 'https://github.com/ashok-bollepalli/GEN-AI-Agentic-AI-Training',
   institute: 'Ashok IT',
   tagline: 'Learn Here.. Lead Anywhere..!!',
   totalModules: 45,

@@ -31,6 +31,14 @@ export default function PythonHome() {
                 <a href="#python-syllabus" className="btn btn-outline-python btn-lg">
                   View Syllabus
                 </a>
+                <a
+                  href={PYTHON_META.githubRepo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-python btn-lg"
+                >
+                  💻 Ashok IT GitHub
+                </a>
                 <Link to="/mobile" className="btn btn-outline-python btn-lg">
                   ← React Native
                 </Link>
