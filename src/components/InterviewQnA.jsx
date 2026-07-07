@@ -5,6 +5,7 @@ import '../pages/InterviewQuestions.css';
 const TOPICS = [
   { id: 'javascript', label: 'JavaScript', path: '/interview-questions' },
   { id: 'react', label: 'React', path: '/react-interview-questions' },
+  { id: 'nextjs', label: 'Next.js', path: '/nextjs-interview-questions' },
   { id: 'java', label: 'Java', path: '/java-interview-questions' },
   { id: 'kafka', label: 'Kafka', path: '/kafka-interview-questions' },
   { id: 'java-streams', label: 'Java 8 Streams', path: '/java-streams-puzzles' },

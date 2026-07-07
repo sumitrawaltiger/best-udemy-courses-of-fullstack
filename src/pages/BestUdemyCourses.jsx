@@ -17,6 +17,18 @@ function CourseCard({ course }) {
 
       <p className="bc-card-title">{course.title}</p>
 
+      {course.image && (
+        <a
+          href={course.image}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bc-card-image"
+          aria-label={`Open ${course.skill} course preview`}
+        >
+          <img src={course.image} alt={`${course.skill} course preview`} loading="lazy" />
+        </a>
+      )}
+
       {course.instructor && (
         <p className="bc-card-meta">
           <span aria-hidden="true">👤</span> {course.instructor}

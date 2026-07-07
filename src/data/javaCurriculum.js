@@ -211,9 +211,9 @@ const MICROSERVICES_DESIGN_SECTIONS = [
   },
   {
     id: 'microservices-design-resources',
-    title: 'Full Course Slides & Resources',
+    title: 'Design Patterns for Microservices',
     content:
-      "This module distills **Mehmet Ozkaya's** *Design Microservices Architecture with Patterns & Best Practices* — a step-by-step journey evolving an **E-Shop** from monolith to microservices to serverless, applying each pattern to solve a concrete problem.\n\nDownload the complete **749-slide deck** below to go deeper on every pattern, with architecture diagrams and code-exploration references.",
+      "This module distills **Mehmet Ozkaya's** *Design Microservices Architecture with Patterns & Best Practices* — a step-by-step journey evolving an **E-Shop** from monolith to microservices to serverless, applying each pattern to solve a concrete problem.\n\nThe microservices design patterns group into five families: **Decomposition, Integration, Database, Observability,** and **Cross-Cutting Concern** patterns.\n\nDownload the complete **749-slide deck** below to go deeper on every pattern, with architecture diagrams and code-exploration references.",
   },
 ];
 

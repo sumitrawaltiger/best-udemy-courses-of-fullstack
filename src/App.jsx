@@ -33,6 +33,7 @@ import Day020 from './pages/Day020';
 import Day021 from './pages/Day021';
 import InterviewQuestions from './pages/InterviewQuestions';
 import ReactInterviewQuestions from './pages/ReactInterviewQuestions';
+import NextjsInterviewQuestions from './pages/NextjsInterviewQuestions';
 import JavaInterviewQuestions from './pages/JavaInterviewQuestions';
 import KafkaInterviewQuestions from './pages/KafkaInterviewQuestions';
 import JavaStreamsPuzzles from './pages/JavaStreamsPuzzles';
@@ -69,6 +70,7 @@ export default function App() {
         <Route path="/day-021" element={<Day021 />} />
         <Route path="/interview-questions" element={<InterviewQuestions />} />
         <Route path="/react-interview-questions" element={<ReactInterviewQuestions />} />
+        <Route path="/nextjs-interview-questions" element={<NextjsInterviewQuestions />} />
         <Route path="/java-interview-questions" element={<JavaInterviewQuestions />} />
         <Route path="/kafka-interview-questions" element={<KafkaInterviewQuestions />} />
         <Route path="/java-streams-puzzles" element={<JavaStreamsPuzzles />} />

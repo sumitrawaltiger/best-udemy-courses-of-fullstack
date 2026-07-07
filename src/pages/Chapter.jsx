@@ -485,6 +485,18 @@ export default function Chapter({ track = 'thunder' }) {
           </h2>
           <div className="section-content">{renderMarkdown(section.content)}</div>
           {section.code && <CodeBlock code={section.code} />}
+          {section.image && (
+            <figure className="chapter-image section-image">
+              <a href={section.image} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={section.image}
+                  alt={section.imageAlt || `${section.title} diagram`}
+                  loading="lazy"
+                />
+              </a>
+              <figcaption>Click to open full size</figcaption>
+            </figure>
+          )}
           {section.tryIt && <CodePlayground initialCode={section.tryIt} />}
         </section>
       ))}

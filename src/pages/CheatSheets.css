@@ -156,6 +156,23 @@
   text-align: center;
   padding: 1rem;
 }
+.cs-thumb--pdf {
+  cursor: pointer;
+  text-decoration: none;
+  background: linear-gradient(135deg, #1c2330, #2a2118);
+}
+.cs-thumb-pdf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  height: 100%;
+  color: var(--cs-text);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
 .cs-thumb-zoom {
   position: absolute;
   bottom: 8px;

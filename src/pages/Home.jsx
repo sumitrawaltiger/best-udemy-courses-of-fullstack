@@ -19,6 +19,7 @@ import { MOBILE_META } from '../data/mobileSyllabus';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import { JS_INTERVIEW_QUESTIONS } from '../data/interviewQuestions';
 import { REACT_INTERVIEW_QUESTIONS } from '../data/reactInterviewQuestions';
+import { NEXTJS_INTERVIEW_QUESTIONS } from '../data/nextjsInterviewQuestions';
 import { JAVA_INTERVIEW_QUESTIONS } from '../data/javaInterviewQuestions';
 import { KAFKA_INTERVIEW_QUESTIONS } from '../data/kafkaInterviewQuestions';
 import { JAVA_STREAMS_PUZZLES } from '../data/javaStreamsPuzzles';
@@ -59,6 +60,9 @@ export default function Home() {
                 </Link>
                 <Link to="/react-interview-questions" className="btn btn-nextjs btn-lg">
                   React Q&amp;A ⚛️
+                </Link>
+                <Link to="/nextjs-interview-questions" className="btn btn-nextjs btn-lg">
+                  Next.js Q&amp;A ▲
                 </Link>
                 <Link to="/java-interview-questions" className="btn btn-java btn-lg">
                   Java Q&amp;A ☕
@@ -462,13 +466,16 @@ export default function Home() {
             Dedicated Q&amp;A sections with{' '}
             {JS_INTERVIEW_QUESTIONS.length +
               REACT_INTERVIEW_QUESTIONS.length +
+              NEXTJS_INTERVIEW_QUESTIONS.length +
               JAVA_INTERVIEW_QUESTIONS.length +
               KAFKA_INTERVIEW_QUESTIONS.length +
               JAVA_STREAMS_PUZZLES.length +
               SQL_QUERY_PUZZLES.length}
             + questions and answers. <strong>JavaScript</strong> — closures, the <code>this</code> keyword,
             promises, and the event loop. <strong>React</strong> — {REACT_INTERVIEW_QUESTIONS.length} on
-            components, hooks, lifecycle, routing, and Redux. <strong>Java</strong> —{' '}
+            components, hooks, lifecycle, routing, and Redux. <strong>Next.js</strong> —{' '}
+            {NEXTJS_INTERVIEW_QUESTIONS.length} on routing, SSG/SSR/ISR, data fetching &amp; the App Router.{' '}
+            <strong>Java</strong> —{' '}
             {JAVA_INTERVIEW_QUESTIONS.length} on OOP, collections, concurrency, Spring &amp; REST.{' '}
             <strong>Kafka</strong> — {KAFKA_INTERVIEW_QUESTIONS.length} of the trickiest questions on
             partitions, ordering, delivery semantics &amp; rebalancing. <strong>Java 8 Streams</strong> —{' '}
@@ -479,6 +486,7 @@ export default function Home() {
           <div className="thunder-plus-highlights">
             <span>📘 JS Fundamentals</span>
             <span>⚛️ React &amp; Hooks</span>
+            <span>▲ Next.js SSR/SSG</span>
             <span>☕ Java &amp; OOP</span>
             <span>🍃 Spring &amp; REST</span>
             <span>🔀 Kafka &amp; Streaming</span>
@@ -491,6 +499,9 @@ export default function Home() {
             </Link>
             <Link to="/react-interview-questions" className="btn btn-nextjs btn-lg">
               React Q&amp;A ⚛️
+            </Link>
+            <Link to="/nextjs-interview-questions" className="btn btn-nextjs btn-lg">
+              Next.js Q&amp;A ▲
             </Link>
             <Link to="/java-interview-questions" className="btn btn-java btn-lg">
               Java Q&amp;A ☕

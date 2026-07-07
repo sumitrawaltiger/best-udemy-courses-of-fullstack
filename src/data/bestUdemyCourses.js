@@ -221,6 +221,22 @@ export const BEST_COURSES = [
       },
     ],
   },
+  {
+    id: 'docker-kubernetes',
+    category: 'python-devops',
+    skill: 'Docker & Kubernetes',
+    icon: '🐳',
+    title: 'Docker and Kubernetes for Beginners — DevOps Journey',
+    provider: 'Udemy',
+    note: 'Beginner-friendly, hands-on journey through Docker and Kubernetes — images, containers, Docker Compose, multi-container apps, and Kubernetes fundamentals.',
+    image: '/course-images/docker-kubernetes-devops.jpg',
+    links: [
+      {
+        label: 'View on Udemy',
+        url: 'https://www.udemy.com/course/docker-and-kubernetes-for-beginners-devops-journey/',
+      },
+    ],
+  },
 
   // ---------------- DSA & System Design ----------------
   {

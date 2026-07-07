@@ -16,6 +16,10 @@ export default function InterviewQuestions() {
       questions={JS_INTERVIEW_QUESTIONS}
       categories={JS_QUESTION_CATEGORIES}
       search={searchJsQuestions}
+      downloadPdf={{
+        href: '/essential-javascript-interview-questions.docx',
+        label: 'Essential JavaScript Interview Questions (DOCX)',
+      }}
       sourceNote={
         <p>
           Pair these with the{' '}

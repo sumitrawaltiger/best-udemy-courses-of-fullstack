@@ -1908,6 +1908,14 @@ a:hover {
   color: var(--muted, #64748b);
 }
 
+.section-image {
+  margin: 20px 0 4px;
+  text-align: left;
+}
+.section-image a {
+  max-width: 720px;
+}
+
 .chapter-intro h2 {
   font-size: 16px;
   font-weight: 700;

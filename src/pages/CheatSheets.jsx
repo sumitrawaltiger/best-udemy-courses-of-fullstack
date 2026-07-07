@@ -5,28 +5,53 @@ import './CheatSheets.css';
 
 function CheatSheetCard({ sheet, onZoom }) {
   const [imgOk, setImgOk] = useState(true);
+  const isPdf = !sheet.image && !!sheet.pdf;
+  const file = sheet.image || sheet.pdf;
   return (
     <article className="cs-card">
-      <button
-        type="button"
-        className="cs-thumb"
-        onClick={() => imgOk && onZoom(sheet)}
-        aria-label={`View ${sheet.title} full size`}
-      >
-        {imgOk ? (
-          <>
-            <img src={sheet.image} alt={sheet.title} loading="lazy" onError={() => setImgOk(false)} />
-            <span className="cs-thumb-zoom">🔍 Click to zoom</span>
-          </>
-        ) : (
-          <span className="cs-thumb-fallback">
-            <span aria-hidden="true" style={{ fontSize: '1.6rem' }}>
-              🖼️
+      {isPdf ? (
+        <a
+          href={sheet.pdf}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cs-thumb cs-thumb--pdf"
+          aria-label={`Open ${sheet.title} PDF`}
+        >
+          <span className="cs-thumb-pdf">
+            <span aria-hidden="true" style={{ fontSize: '2.4rem' }}>
+              📄
             </span>
-            Image coming soon
+            PDF Cheat Sheet
           </span>
-        )}
-      </button>
+          <span className="cs-thumb-zoom">↗ Open PDF</span>
+        </a>
+      ) : (
+        <button
+          type="button"
+          className="cs-thumb"
+          onClick={() => imgOk && onZoom(sheet)}
+          aria-label={`View ${sheet.title} full size`}
+        >
+          {imgOk ? (
+            <>
+              <img
+                src={sheet.image}
+                alt={sheet.title}
+                loading="lazy"
+                onError={() => setImgOk(false)}
+              />
+              <span className="cs-thumb-zoom">🔍 Click to zoom</span>
+            </>
+          ) : (
+            <span className="cs-thumb-fallback">
+              <span aria-hidden="true" style={{ fontSize: '1.6rem' }}>
+                🖼️
+              </span>
+              Image coming soon
+            </span>
+          )}
+        </button>
+      )}
       <div className="cs-body">
         <h3 className="cs-card-title">{sheet.title}</h3>
         <p className="cs-card-desc">{sheet.description}</p>
@@ -39,14 +64,14 @@ function CheatSheetCard({ sheet, onZoom }) {
         )}
         <div className="cs-actions">
           <a
-            href={sheet.image}
+            href={file}
             target="_blank"
             rel="noopener noreferrer"
             className="cs-btn cs-btn--primary"
           >
-            Open full ↗
+            {isPdf ? 'Open PDF ↗' : 'Open full ↗'}
           </a>
-          <a href={sheet.image} download className="cs-btn">
+          <a href={file} download className="cs-btn">
             Download ⬇
           </a>
         </div>
