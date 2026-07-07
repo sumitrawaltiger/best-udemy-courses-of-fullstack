@@ -5,6 +5,7 @@ export const COURSE_CATEGORIES = [
   { id: 'frontend', label: 'Frontend & JavaScript', icon: '⚛️' },
   { id: 'java-backend', label: 'Java & Backend', icon: '☕' },
   { id: 'python-devops', label: 'Python & DevOps', icon: '🐍' },
+  { id: 'cs-interview', label: 'DSA & System Design', icon: '🧠' },
 ];
 
 export const BEST_COURSES = [
@@ -217,6 +218,36 @@ export const BEST_COURSES = [
       {
         label: 'View on Udemy',
         url: 'https://www.udemy.com/course/learn-kubernetes/',
+      },
+    ],
+  },
+
+  // ---------------- DSA & System Design ----------------
+  {
+    id: 'dsa',
+    category: 'cs-interview',
+    skill: 'DSA',
+    icon: '🧮',
+    title: 'Data Structures & Algorithms — Complete Course (C++ & Java)',
+    provider: 'Udemy',
+    links: [
+      {
+        label: 'View on Udemy',
+        url: 'https://www.udemy.com/course/data-structures-and-algorithms-complete-course-cpp-java/',
+      },
+    ],
+  },
+  {
+    id: 'system-design',
+    category: 'cs-interview',
+    skill: 'System Design',
+    icon: '🏗️',
+    title: 'Mastering System Design — From Basics to Cracking Interviews',
+    provider: 'Udemy',
+    links: [
+      {
+        label: 'View on Udemy',
+        url: 'https://www.udemy.com/course/mastering-system-design-from-basics-to-cracking-interviews/',
       },
     ],
   },
