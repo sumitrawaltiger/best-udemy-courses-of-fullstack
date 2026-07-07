@@ -9,6 +9,8 @@ import {
   KODEKLOUD_K8S_LABS_URL,
 } from './trackConfig.js';
 
+export const DOCKER_K8S_PDF = '/docker-k8s-slides.pdf';
+
 export const K8S_RESOURCES = [
   { title: 'Kubernetes Learning Path', url: KODEKLOUD_K8S_PATH_URL },
   { title: 'Kubernetes for Absolute Beginners', url: KODEKLOUD_K8S_BEGINNERS_URL },

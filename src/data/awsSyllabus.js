@@ -58,3 +58,30 @@ export const awsHighlights = [
   'CloudFolks SAA-C03 prep',
   'Capstone cloud projects',
 ];
+
+// AWS Certified Cloud Practitioner (CLF-C02) exam-prep syllabus —
+// designed from the AWS Certified Cloud Practitioner course slides.
+export const AWS_CCP_PDF = '/aws-ccp-slides.pdf';
+
+export const AWS_CCP_SYLLABUS = [
+  { icon: '☁️', title: 'What is Cloud Computing?', topics: ['Cloud models (IaaS, PaaS, SaaS)', 'Deployment models', 'The 6 advantages of cloud', 'AWS overview & pricing basics'] },
+  { icon: '🔐', title: 'IAM — Identity & Access Management', topics: ['Users, groups & roles', 'IAM policies (JSON)', 'MFA & password policy', 'Least-privilege & the IAM security tools'] },
+  { icon: '🖥️', title: 'Amazon EC2', topics: ['Instance types & families', 'Security groups', 'EC2 purchasing options (On-Demand, Reserved, Spot, Savings Plans)', 'User data & AMIs'] },
+  { icon: '💽', title: 'EC2 Instance Storage', topics: ['EBS volumes & snapshots', 'Instance Store', 'Amazon EFS', 'Amazon FSx'] },
+  { icon: '⚖️', title: 'ELB & Auto Scaling', topics: ['Elastic Load Balancing (ALB, NLB, GLB)', 'Auto Scaling Groups', 'Scaling policies', 'High availability & scalability'] },
+  { icon: '🪣', title: 'Amazon S3', topics: ['Buckets & objects', 'Storage classes & lifecycle', 'Versioning & replication', 'Security, encryption & static hosting'] },
+  { icon: '🗄️', title: 'Databases & Analytics', topics: ['RDS & Aurora', 'DynamoDB, ElastiCache', 'Redshift, Athena, Glue', 'DMS, EMR, QuickSight, Kinesis'] },
+  { icon: '⚡', title: 'Other Compute Services', topics: ['ECS, Fargate & ECR', 'AWS Lambda', 'API Gateway', 'Batch, Lightsail'] },
+  { icon: '🚀', title: 'Deploying & Managing at Scale', topics: ['CloudFormation (IaC)', 'Elastic Beanstalk', 'CodeDeploy, CodeBuild, CodePipeline', 'Systems Manager, OpsWorks'] },
+  { icon: '🌍', title: 'Global Infrastructure', topics: ['Regions & Availability Zones', 'Edge locations & CloudFront', 'Route 53', 'Global Accelerator, Outposts, Wavelength'] },
+  { icon: '🔗', title: 'Cloud Integration', topics: ['SQS (queues)', 'SNS (pub/sub)', 'Kinesis', 'Amazon MQ'] },
+  { icon: '📊', title: 'Cloud Monitoring', topics: ['CloudWatch (metrics, alarms, logs)', 'EventBridge', 'CloudTrail', 'AWS Health Dashboard'] },
+  { icon: '🌐', title: 'Amazon VPC', topics: ['Subnets, route tables & gateways', 'Security groups vs NACLs', 'VPC peering & endpoints', 'Site-to-Site VPN & Direct Connect'] },
+  { icon: '🛡️', title: 'Security & Compliance', topics: ['Shared Responsibility Model', 'DDoS protection: Shield & WAF', 'KMS, CloudHSM, Secrets Manager', 'Inspector, GuardDuty, Macie, Artifact'] },
+  { icon: '🤖', title: 'Machine Learning', topics: ['Rekognition, Transcribe, Polly', 'Comprehend, Translate, Lex', 'SageMaker', 'Kendra, Personalize'] },
+  { icon: '💳', title: 'Account Management, Billing & Support', topics: ['AWS Organizations & consolidated billing', 'Pricing models & the Pricing Calculator', 'Budgets & Cost Explorer', 'Support plans & Trusted Advisor'] },
+  { icon: '🔑', title: 'Advanced Identity', topics: ['AWS STS', 'Amazon Cognito', 'AWS Directory Services', 'IAM Identity Center (SSO)'] },
+  { icon: '🧩', title: 'Other AWS Services', topics: ['Amazon WorkSpaces & AppStream', 'Amazon Connect', 'IoT Core', 'Amazon SES & more'] },
+  { icon: '🏛️', title: 'AWS Architecting & Ecosystem', topics: ['Well-Architected Framework (6 pillars)', 'AWS Trusted Advisor', 'Support & documentation', 'Partner network & marketplace'] },
+  { icon: '🎯', title: 'Exam Preparation', topics: ['CLF-C02 exam format & domains', 'Question strategies', 'Passing score & timing', 'Practice exams & final review'] },
+];

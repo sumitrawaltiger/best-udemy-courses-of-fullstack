@@ -4,6 +4,703 @@
 const PORTAL = 'https://ashokit.in';
 const yt = (url, title, channel = 'freeCodeCamp') => ({ url, title, channel });
 
+const PYTHON_OOP_SECTIONS = [
+  {
+    id: "what-is-oops",
+    title: "What is OOPS?",
+    content: "**OOPS = Object Oriented Programming System** — a programming approach where we design software using **classes** and **objects**.\n\nIn real life, everything can be treated as an object:\n- **Student** → name, email, phno, course, fee\n- **Employee** → id, name, salary, project\n- **Bank Account** → account number, balance, branch name, deposit, withdraw\n\nWithout OOP we write many separate variables and functions. If we have 100 students, managing that data becomes difficult. OOP helps us **group related data and functions together**.",
+    code: "student_name = \"Ashok\"\nstudent_email = \"ashok@gmail.com\"\nstudent_course = \"Python\"\n\ndef display_student():\n    print(student_name)\n    print(student_email)\n    print(student_course)\n\ndisplay_student()",
+  },
+  {
+    id: "why-oop",
+    title: "Why OOP?",
+    content: "OOP gives us:\n- **Code re-usability**\n- **Code organization**\n- **Security**\n- **Easy maintenance**\n- **Reduced boilerplate code**\n- The ability to build **large-scale applications**",
+  },
+  {
+    id: "oop-concepts",
+    title: "Main Concepts of OOP",
+    content: "The core building blocks of OOP in Python are:\n1. **Class**\n2. **Object**\n3. **Constructor**\n4. **Instance Variable**\n5. **Instance Method**\n6. **Encapsulation**\n7. **Inheritance**\n8. **Polymorphism**\n9. **Abstraction**",
+  },
+  {
+    id: "what-is-class",
+    title: "What is a Class?",
+    content: "A **class** is a blueprint or template — a plan/model to define **properties** and **behaviours**.\n- **Properties** are variables that store data.\n- **Behaviours** are functions that perform actions.\n\nExample — *Student* class: properties `name, email, phno, course`; behaviours `study(), attend_class(), write_exam()`.\n\nSyntax:\n```\nclass ClassName:\n    statements\n```",
+    code: "class Student:\n    id = 100\n    name = \"Ashok\"\n\n    def display(self):\n        print(self.name)\n        print(self.id)",
+  },
+  {
+    id: "what-is-object",
+    title: "What is an Object?",
+    content: "An **object** is a real instance created from a class. Here `s1` is an object of the `Student` class:\n\n`s1 = Student()`",
+    code: "class Student:\n    id = 100\n    name = \"Ashok\"\n\n    def display(self):\n        print(self.name)\n        print(self.id)\n\ns1 = Student()\ns1.display()",
+  },
+  {
+    id: "self",
+    title: "What is self?",
+    content: "**self** is a reference variable that refers to the **current object**. It is used to access variables and methods inside a class.\n\nWhenever we create an object and call a method, Python automatically passes that object as `self`. `self` is not a keyword — it is a standard naming convention.\n\nWhen we call `s1.display()` and `s1.study()`, Python internally passes `s1` as `self`.",
+    code: "class Student:\n    id = 100\n    name = \"Ashok\"\n\n    def display(self):\n        print(self.name)\n        print(self.id)\n\n    def study(self):\n        print(self.name, \"Student studying...\")\n\ns1 = Student()\ns1.display()   # display(s1)\ns1.study()     # study(s1)",
+  },
+  {
+    id: "constructor",
+    title: "Constructor (__init__)",
+    content: "A **constructor** is a special method that is **automatically called when an object is created**. It is used to **initialize object data**. In Python the constructor name is **`__init__()`**.\n\nSyntax:\n```\nclass ClassName:\n    def __init__(self):\n        statements\n```",
+    code: "class Student:\n    def __init__(self, name, course):\n        self.name = name\n        self.course = course\n\n    def display(self):\n        print(self.name, \"--\", self.course)\n\ns1 = Student(\"Ashok\", \"Python\")\ns1.display()\n\ns2 = Student(\"John\", \"JAVA\")\ns2.display()\n\ns3 = Student(\"GITA\", \"AI\")\ns3.display()",
+  },
+  {
+    id: "instance-variables",
+    title: "Instance Variables",
+    content: "Variables declared using the **`self`** keyword are called **instance variables**. They belong to the object, and each object can have separate values.",
+    code: "class Student:\n    def __init__(self, name, course):\n        self.name = name\n        self.course = course\n\ns1 = Student(\"Ashok\", \"Python\")\ns2 = Student(\"John\", \"AI\")\n\nprint(s1.name)\nprint(s2.name)",
+  },
+  {
+    id: "instance-methods",
+    title: "Instance Methods",
+    content: "Methods that use **`self`** are called **instance methods**. They work with object data.",
+    code: "class Student:\n    def __init__(self, name, marks):\n        self.name = name\n        self.marks = marks\n\n    def display_result(self):\n        if self.marks > 35:\n            print(self.name, \"Passed\")\n        else:\n            print(self.name, \"Failed\")\n\ns1 = Student(\"John\", 100)\ns2 = Student(\"Michael\", 25)\n\ns1.display_result()\ns2.display_result()",
+  },
+  {
+    id: "class-variables",
+    title: "Class Variables",
+    content: "**Class variables** are declared inside the class but **outside methods**. They are **shared by all objects** of the class (accessed via `ClassName.variable`).",
+    code: "class Student:\n    inst_name = \"Ashok IT\"\n\n    def __init__(self, name):\n        self.name = name\n\n    def display_result(self):\n        print(self.name, \"--\", Student.inst_name)\n\ns1 = Student(\"John\")\ns2 = Student(\"Michael\")\n\ns1.display_result()\ns2.display_result()",
+  },
+  {
+    id: "instance-vs-class-variables",
+    title: "Instance Variables vs Class Variables",
+    content: "**Instance variables**\n- Created using `self`\n- Belong to the object\n- Each object can have different values\n\n**Class variables**\n- Created inside the class but outside methods\n- Belong to the class\n- Shared by all objects",
+  },
+  {
+    id: "static-methods",
+    title: "Static Methods (Class-Level Methods)",
+    content: "A method that **doesn't depend on any object data** is a **static method**. Static methods can be called using the **class name** and are marked with the **`@staticmethod`** decorator.",
+    code: "class Student:\n    institute_name = \"Ashok IT\"\n\n    def __init__(self, name, marks):\n        self.name = name\n        self.marks = marks\n\n    def display_result(self):   # instance method\n        print(\"Student Name:\", self.name)\n        print(\"Marks:\", self.marks)\n        if Student.is_pass(self.marks):\n            print(\"Result: Pass\")\n        else:\n            print(\"Result: Fail\")\n\n    @staticmethod\n    def is_pass(marks):         # static method\n        return marks >= 35\n\ns1 = Student(\"Ravi\", 80)\ns2 = Student(\"Kiran\", 25)\ns1.display_result()\nprint(\"----------------\")\ns2.display_result()",
+  },
+  {
+    id: "instance-vs-static-methods",
+    title: "Instance Methods vs Static Methods",
+    content: "**Instance methods**\n- Belong to the object\n- Work with object data\n- Use `self`\n- Called using an object reference\n\n**Static methods**\n- Belong to the class logically\n- Don't work with object data\n- Don't use `self`\n- Use `@staticmethod`\n- Called using the class name",
+  },
+  {
+    id: "encapsulation",
+    title: "Encapsulation",
+    content: "**Encapsulation** means wrapping **data and methods into a single unit** — a class itself is an example of encapsulation. It is used to **protect data from direct access**.\n\n**Public variables** can be accessed anywhere:",
+    code: "class Student:\n    def __init__(self, name):\n        self.name = name\n\ns1 = Student(\"Ashok\")\ns1.name = \"John\"\nprint(s1.name)",
+  },
+  {
+    id: "private-variables",
+    title: "Private Variables, Getters & Setters",
+    content: "**Private variables** are declared using a **double underscore `__`** and cannot be accessed directly outside the class. To use them we write **getter** and **setter** methods:\n- **Setter** updates the private variable's data.\n- **Getter** reads the private variable's data.",
+    code: "class BankAccount:\n    def __init__(self, balance):\n        self.__balance = balance\n\n    def get_balance(self):\n        return self.__balance\n\n    def set_balance(self, balance):\n        self.__balance = balance\n\naccount = BankAccount(200)\n# print(account.__balance)  # error\nprint(account.get_balance())\naccount.set_balance(100)\nprint(account.get_balance())",
+  },
+  {
+    id: "inheritance",
+    title: "Inheritance",
+    content: "**Inheritance** means **acquiring properties and methods from one class into another** — it gives us code re-usability, like a child inheriting a parent's properties.\n\n- **Parent class** is also called base class or super class.\n- **Child class** is also called derived class or sub class — it can access the parent's members directly.",
+    code: "class Parent:\n    def house(self):\n        print(\"Parent House\")\n\nclass Child(Parent):\n    def bike(self):\n        print(\"Child Bike\")\n\nc = Child()\nc.bike()\nc.house()",
+  },
+];
+
+const PYTHON_MODULES_SECTIONS = [
+  {
+    id: "what-is-a-module",
+    title: "What is a Module?",
+    content: "A **module** is a Python file that contains reusable code. A module can contain **variables, functions, classes, and statements**.\n\nThe module file extension is **`.py`** — e.g. `calculator.py`, `student.py`, `backend.py`, `frontend.py`.\n\n**Simple meaning:** a module means one Python file. If we write functions in one Python file and use them in another, that file is called a module.",
+  },
+  {
+    id: "why-modules",
+    title: "Why Modules?",
+    content: "Modules are used for:\n- **Code reusability**\n- **Code organization**\n- **Reducing duplicate code**\n- **Easy maintenance**\n- **Splitting large programs into small files**\n- **Using built-in Python features**",
+  },
+  {
+    id: "types-of-modules",
+    title: "Types of Modules",
+    content: "Python has mainly **3 types of modules**:\n1. **Built-in modules** — already available in Python.\n2. **User-defined modules** — modules you create yourself.\n3. **External / Third-party modules** — installed via `pip`.",
+  },
+  {
+    id: "built-in-modules",
+    title: "Built-in Modules",
+    content: "**Built-in modules** are already available in Python — we can use them directly by importing. Examples: **`math`, `random`, `datetime`, `os`, `sys`, `json`**.",
+    code: "import keyword\nimport sys\nimport math\nimport random\nimport datetime\nimport os\n\nprint(keyword.kwlist)\n\na = 20\nprint(type(a), sys.getsizeof(a))\n\nprint(math.sqrt(25))\nprint(math.pow(2, 3))\nprint(math.ceil(10.2))\nprint(math.floor(10.2))\nprint(math.factorial(5))\nprint(math.pi)\n\nprint(random.randint(1, 10))\nprint(random.randint(100000, 999999))\n\ntoday = datetime.date.today()\nnow = datetime.datetime.now()\nprint(\"Today Date : \", today)\nprint(\"Today Date & Time : \", now)\n\nprint(os.getcwd())\nprint(sys.version)",
+  },
+  {
+    id: "external-modules",
+    title: "External Modules & pip",
+    content: "**External modules** are not available by default — we install them using **`pip`** (Python's package manager).\n\nExamples: **`numpy`, `pandas`, `matplotlib`, `requests`, `fastapi`, `django`**.\n\nInstall a module like this:\n```\npip install matplotlib\n```",
+  },
+  {
+    id: "matplotlib-plots",
+    title: "Plotting with matplotlib",
+    content: "After installing an external module, import and use it. Here's a simple **line chart** and a **bar chart** with matplotlib.",
+    code: "import matplotlib.pyplot as plt\n\n# Line chart\nx = [1, 2, 3, 4, 5]\ny = [10, 20, 30, 40, 50]\nplt.plot(x, y)\nplt.title(\"Simple Line Chart\")\nplt.xlabel(\"X Values\")\nplt.ylabel(\"Y Values\")\nplt.show()\n\n# Bar chart\nstudents = [\"Ravi\", \"Anil\", \"Priya\", \"Sneha\"]\nmarks = [75, 85, 90, 80]\nplt.bar(students, marks)\nplt.title(\"Student Marks\")\nplt.xlabel(\"Student Names\")\nplt.ylabel(\"Marks\")\nplt.show()",
+  },
+  {
+    id: "import-keyword",
+    title: "The import Keyword",
+    content: "The **`import`** keyword is used to use one module inside another Python file.\n\nSyntax: `import module_name`\n\nWe can also give a module an **alias** using the **`as`** keyword.",
+    code: "import math\nimport sys\nimport os\n\n# Module with alias name\nimport math as m\nprint(m.sqrt(5))",
+  },
+  {
+    id: "from-import",
+    title: "from ... import",
+    content: "**`from import`** is used to import a **specific** function or variable from a module.\n\nSyntax:\n```\nfrom module_name import function_name\nfrom module_name import function_name1, function_name2, function_name3\n```",
+    code: "from math import sqrt, factorial\n\nprint(sqrt(5))\nprint(factorial(5))",
+  },
+  {
+    id: "user-defined-module",
+    title: "Create a User-Defined Module",
+    content: "Create your own module and import it into another file.\n\n**Step 1:** create a file named `calculator.py` with your functions.\n**Step 2:** import and use it in `main.py` — with `import calculator`, `import calculator as calc`, or `from calculator import add, mul`.",
+    code: "# calculator.py\ndef add(a, b):\n    return a + b\n\ndef sub(a, b):\n    return a - b\n\ndef mul(a, b):\n    return a * b\n\ndef div(a, b):\n    return a / b\n\n\n# main.py\n# import calculator\n# import calculator as calc\nfrom calculator import add, mul\n\nprint(add(10, 20))\nprint(mul(10, 20))",
+  },
+];
+
+const PYTHON_FUNCTIONS_SECTIONS = [
+  {
+    id: "what-is-a-function",
+    title: "What is a Function?",
+    content: "A **function** is a block of **reusable code** used to perform a **specific task**. Instead of writing the same code again and again, we write it once inside a function and use it multiple times.",
+  },
+  {
+    id: "why-functions",
+    title: "Why Functions?",
+    content: "Functions give us:\n1. **Code reusability**\n2. **Code readability**\n3. **Code organization**\n4. **Reduced duplicate code**\n5. **Easy debugging**\n6. **Easy maintenance**",
+  },
+  {
+    id: "function-syntax",
+    title: "Function Syntax",
+    content: "Use the **`def`** keyword to define a function:\n```\ndef function_name():\n    statements\n```\nA function executes **only when we call it**.",
+    code: "# define function\ndef greet():\n    print(\"Welcome to python\")\n\n# calling function\ngreet()",
+  },
+  {
+    id: "function-important-points",
+    title: "Important Points",
+    content: "- **`def`** keyword defines a function.\n- Function names should be **meaningful**.\n- The function body is written with **indentation**.\n- A function executes only when **called**, and can be called **multiple times**.\n- Use **snake_case** for naming (small letters joined with `_`).\n\nExamples: `student_name`, `course_fee`, `find_biggest`, `calculate_total_amount`, `send_email_notification`.",
+  },
+  {
+    id: "function-parameters",
+    title: "Function with Parameters",
+    content: "**Parameters** are variables declared inside the function brackets — they receive input values into the function.",
+    code: "# one parameter\ndef greet(name):\n    print(name, \" Welcome to python\")\n\ngreet(\"Ashok\")\ngreet(\"John\")\ngreet(\"Steve\")\n\n# multiple parameters\ndef print_student_data(name, course):\n    print(\"Student Name is :\", name)\n    print(\"Student Course is :\", course)\n\nprint_student_data(\"Ashok\", \"Python\")\nprint_student_data(\"John\", \"GEN AI\")",
+  },
+  {
+    id: "parameter-vs-argument",
+    title: "Parameter vs Argument",
+    content: "- **Parameter** — the variable declared in the function *definition*.\n- **Argument** — the actual value passed during the function *call*.\n\nIn `add(10, 20)` below, `a` and `b` are **parameters**; `10` and `20` are **arguments**.",
+    code: "def add(a, b):\n    print(a + b)\n\nadd(10, 20)",
+  },
+  {
+    id: "return-value",
+    title: "Function with Return Value",
+    content: "The **`return`** keyword sends a result back from a function.",
+    code: "def add(i, j):\n    return i + j\n\nresult = add(10, 20)\nprint(result)",
+  },
+  {
+    id: "no-return-value",
+    title: "Function Without Return Value",
+    content: "If a function does not return anything, it returns **`None`** by default.",
+    code: "def greet():\n    print(\"Welcome\")\n\nresult = greet()\nprint(result)\n\n# Output:\n# Welcome\n# None",
+  },
+  {
+    id: "return-keyword",
+    title: "The return Keyword",
+    content: "**`return`** returns a value from a function. After a `return` statement, function execution **stops** — any code written after it is skipped.",
+    code: "def test():\n    print(\"Before return\")\n    return\n    print(\"After return\")\n\ntest()\n\n# Output:\n# Before return",
+  },
+  {
+    id: "even-odd-biggest",
+    title: "Examples: Even/Odd & Biggest",
+    content: "Two quick examples using `return` with a condition.",
+    code: "def check_even_odd(num):\n    if num % 2 == 0:\n        return \"Even\"\n    else:\n        return \"Odd\"\n\nresult = check_even_odd(11)\nprint(f\"The given number is {result}\")\n\ndef find_biggest(a, b):\n    if a > b:\n        return a\n    else:\n        return b\n\nresult = find_biggest(20, 35)\nprint(f\"The biggest is {result}\")",
+  },
+  {
+    id: "types-of-arguments",
+    title: "Types of Arguments",
+    content: "Python supports different types of function arguments:\n1. **Positional Arguments**\n2. **Keyword Arguments**\n3. **Default Arguments**\n4. **Variable Length Arguments** (`*args`)\n5. **Keyword Variable Length Arguments** (`**kwargs`)",
+  },
+  {
+    id: "positional-keyword-args",
+    title: "Positional & Keyword Arguments",
+    content: "**Positional arguments** — values are assigned based on **position** (order matters).\n\n**Keyword arguments** — values are passed using **parameter names** (order does not matter).",
+    code: "# Positional — order is important\ndef student(name, course):\n    print(\"Name:\", name)\n    print(\"Course:\", course)\n\nstudent(\"Ashok\", \"Python\")\n\n# Keyword — order is not important\nstudent(course=\"JAVA\", name=\"John\")",
+  },
+  {
+    id: "default-arguments",
+    title: "Default Arguments",
+    content: "**Default arguments** provide default values to parameters. If a value is not passed, the default is used.\n\n**Note:** default arguments must come *after* non-default arguments.",
+    code: "def enroll_student(name, course=\"GEN AI\"):\n    print(\"Student Name:\", name)\n    print(\"Enrolled Course:\", course)\n\nenroll_student(\"Ashok\", \"DEVOPS\")\nenroll_student(\"Steve\")",
+  },
+  {
+    id: "variable-length-args",
+    title: "Variable Length Arguments (*args)",
+    content: "Use **`*args`** when you don't know how many values will be passed. `*args` stores the values in a **tuple**.\n\n**Notes:** `*args` should be the last positional parameter; after it you can still use keyword arguments.",
+    code: "def print_numbers(*args):\n    print(args)\n\nprint_numbers(10)\nprint_numbers(20, 30)\nprint_numbers(30, 40, 50)\n\n# sum using *args\ndef add_numbers(*args):\n    total = 0\n    for num in args:\n        total = total + num\n    return total\n\nprint(add_numbers(10, 20))\nprint(add_numbers(10, 20, 30, 40))\n\n# keyword arg after *args\ndef print_model(*args, model):\n    print(args, model)\n\nprint_model(10, model=\"gpt\")\nprint_model(20, 30, model=\"gpt\")",
+  },
+  {
+    id: "kwargs",
+    title: "Keyword Variable Length Arguments (**kwargs)",
+    content: "Use **`**kwargs`** to pass multiple **key-value pairs**. It stores them in a **dictionary**.",
+    code: "def student_details(**kwargs):\n    print(kwargs)\n\nstudent_details(name=\"Ashok\", course=\"GEN AI\")\nstudent_details(name=\"John\", course=\"Python\", fee=1000)",
+  },
+  {
+    id: "local-global-variables",
+    title: "Local & Global Variables",
+    content: "- A **local variable** is declared inside a function and can be used **only** inside it (using it outside raises `NameError`).\n- A **global variable** is declared outside a function and can be used **inside and outside** functions.",
+    code: "def test():\n    msg = \"Hello Python\"   # local\n    print(msg)\n\ntest()\n# print(msg)  # NameError: name 'msg' is not defined\n\nmsg = \"Welcome to AI Training\"   # global\n\ndef show():\n    print(msg)\n\nshow()\nprint(msg)",
+  },
+  {
+    id: "global-keyword",
+    title: "The global Keyword",
+    content: "The **`global`** keyword is used to **modify a global variable inside a function**. Without it, an assignment inside the function creates a new local variable instead.",
+    code: "msg = \"Welcome to AI Training\"\n\ndef test():\n    msg = \"Welcome to Python\"   # local, doesn't change global\n    print(msg)\n\ndef demo():\n    global msg\n    msg = \"Welcome to JAVA\"     # changes the global\n    print(msg)\n\ntest()\ndemo()\nprint(msg)",
+  },
+  {
+    id: "nested-functions",
+    title: "Function Inside Function",
+    content: "We can define one function **inside** another. The inner function is only visible inside the outer one — useful for organizing helper logic (e.g. a payment receipt with validate/calculate/generate helpers).",
+    code: "def outer():\n    print(\"outer function\")\n\n    def inner():\n        print(\"inner function\")\n\n    inner()\n\nouter()\n\n# Real example: bill receipt for a course payment\ndef process_payment(student_name, course_fee, paid_amount):\n    def validate_payment():\n        if paid_amount <= 0:\n            return False\n        if paid_amount > course_fee:\n            return False\n        return True\n\n    def calculate_balance():\n        return course_fee - paid_amount\n\n    def generate_receipt(balance):\n        print(\"Payment Receipt\")\n        print(\"---------------\")\n        print(\"Student Name : \", student_name)\n        print(\"Course Fee : \", course_fee)\n        print(\"Paid Amount : \", paid_amount)\n        print(\"Balance : \", balance)\n\n    if validate_payment():\n        generate_receipt(calculate_balance())\n    else:\n        print(\"Invalid Payment\")\n\nprocess_payment(student_name=\"Ashok\", course_fee=12000, paid_amount=5000)",
+  },
+  {
+    id: "type-hints",
+    title: "Type Hints",
+    content: "Python lets you add **type hints** for parameters and the return type. They are **hints for developers only** — Python does not enforce them, so a function annotated for `int` still runs with strings.",
+    code: "def f1(a, b):\n    return a + b\n\ndef f2(a: int, b: int) -> int:\n    return a + b\n\nresult = f2(10, 20)\nprint(result, type(result))\n\nresult = f2(\"Hi\", \"Hello\")   # hints are not enforced\nprint(result, type(result))",
+  },
+];
+
+const PYTHON_DATA_STRUCTURES_SECTIONS = [
+  {
+    id: "what-are-data-structures",
+    title: "Python Data Structures",
+    content: "**Data structures** are ways to store, organize, and manage data in a program. In Python, the most commonly used built-in data structures are:\n1. **List**\n2. **Tuple**\n3. **Set**\n4. **Dictionary**\n5. **String**\n\nEach data structure has a different purpose.",
+  },
+  {
+    id: "what-is-a-list",
+    title: "What is a List?",
+    content: "A **list** stores multiple values in a single variable. Lists are **ordered**, **mutable** (changeable), **allow duplicates**, and can store **different data types**.\n\nSyntax: `my_list = [value1, value2, value3]`\n\nWe access list elements using their **index** — in Python, index starts from **0**.",
+    code: "marks = [80, 90, 75]\nstudents = [\"Ravi\", \"Sita\", \"Kiran\"]\nmixed_data = [\"Ravi\", 25, 85.5, True]\n\ncourses = [\"JAVA\", \"Python\", \"DevOps\", \"GEN AI\"]\nprint(courses[0])\nprint(courses[3])",
+  },
+  {
+    id: "list-indexing-slicing",
+    title: "List Indexing & Slicing",
+    content: "**Positive indexing** starts from the left (0, 1, 2…); **negative indexing** starts from the right (-1, -2…).\n\n**Slicing** gets a part of a list — `list_name[start:end]` (start inclusive, end exclusive).",
+    code: "items = [\"Laptop\", \"Mouse\", \"Keyboard\", \"Monitor\"]\nprint(items[0])    # positive index\nprint(items[-1])   # negative index\n\nnumbers = [10, 20, 30, 40, 50, 60]\nprint(numbers[1:4])   # 20 30 40\nprint(numbers[:3])    # first three\nprint(numbers[2:])    # from index 2 to end\nprint(numbers[::2])   # step by 2\nprint(numbers[::-1])  # reverse",
+  },
+  {
+    id: "list-operations",
+    title: "List Operations",
+    content: "- **append()** — adds an element at the end\n- **insert()** — adds an element at a specified index\n- **extend()** — adds multiple elements\n- **remove()** — removes a specified value\n- **pop()** — removes by index (or the last element if no index)\n- **clear()** — removes all elements\n- **del** — deletes an element or the entire list",
+    code: "courses = [\"Python\", \"Java\"]\ncourses.append(\"DevOps\")\ncourses.insert(1, \"GEN AI\")\nprint(courses)\n\nfrontend = [\"HTML\", \"CSS\"]\nbackend = [\"Python\", \"Django\"]\nfrontend.extend(backend)\nprint(frontend)\n\ncourses.remove(\"Java\")\ncourses.pop()\ncourses.clear()\n\ncourses = [\"Python\", \"Java\", \"DevOps\"]\ndel courses[1]\nprint(courses)",
+  },
+  {
+    id: "list-functions",
+    title: "List Functions",
+    content: "Built-in functions work on lists: **len()**, **min()**, **max()**, **sum()**, and the **sort()** method (with `reverse=True` for descending).",
+    code: "numbers = [1, 3, 6, 9, 2]\nprint(len(numbers))\nprint(min(numbers))\nprint(max(numbers))\nprint(sum(numbers))\n\nnumbers.sort()\nprint(numbers)\n\nnumbers.sort(reverse=True)\nprint(numbers)",
+  },
+  {
+    id: "list-comprehension",
+    title: "List Comprehension",
+    content: "**List comprehension** is a short, clean way to create a new list from an existing sequence (range, list, tuple, string). It reduces multiple lines of loop code into a single line, and can include a condition.",
+    code: "# normal way vs comprehension\nnumbers = [i for i in range(1, 6)]\nsquares = [i * i for i in range(1, 6)]\neven_numbers = [i for i in range(1, 11) if i % 2 == 0]\n\nnames = [\"ravi\", \"sita\", \"kiran\"]\nupper_names = [name.upper() for name in names]\n\nmarks = [80, 30, 90, 45, 20]\nresults = [\"Pass\" if mark >= 35 else \"Fail\" for mark in marks]\n\nprices = [1000, 2000, 5000]\nprice_with_gst = [price + (price * 18 / 100) for price in prices]\nprint(numbers, squares, even_numbers, results, price_with_gst)",
+  },
+  {
+    id: "what-is-a-tuple",
+    title: "What is a Tuple?",
+    content: "A **tuple** stores multiple values in a single variable — similar to a list, but **immutable** (cannot be changed). Tuples are **ordered**, **allow duplicates**, can store different data types, are **faster than lists**, and are used to store **fixed data**.\n\nSyntax: `my_tuple = (value1, value2, value3)`",
+    code: "courses = (\"JAVA\", \"Python\", \"GEN AI\", \"DEVOPS\", \".Net\", \"MERN\")\nprint(courses[0])\nprint(courses[-1])\nprint(courses[1:3])\nprint(courses.index(\"GEN AI\"))\n# courses[1] = \"AWS\"  # NOT possible — immutable",
+  },
+  {
+    id: "tuple-packing-functions",
+    title: "Tuple Packing, Unpacking & Functions",
+    content: "**Packing** groups values into a tuple; **unpacking** assigns them back to variables.\n\nFunctions like **len(), max(), min(), sum()** work on tuples. **sorted()** returns a new **list** (not a tuple). To modify, convert the tuple to a list with `list()`.",
+    code: "# packing\nstudent = \"Ashok\", \"Male\", 66868686\n# unpacking\nname, gender, phone = student\nprint(name, gender, phone)\n\nnumbers = (10, 15, 30, 20, 40, 25)\nprint(len(numbers), sum(numbers), min(numbers), max(numbers))\nprint(sorted(numbers, reverse=True))   # returns a list\n\ncourses = (\"Python\", \"Java\", \"DevOps\")\ncourse_list = list(courses)   # tuple -> list\ncourse_list[0] = \"GEN AI\"\nprint(course_list)\n\nif \"Java\" in courses:\n    print(\"available\")\n\nfullstack = (\"HTML\", \"CSS\") + (\"Python\", \"Django\")   # concatenation\nprint(fullstack)",
+  },
+  {
+    id: "list-vs-tuple",
+    title: "List vs Tuple",
+    content: "**List**\n- Mutable · uses square brackets `[]`\n- Slower than tuple\n- Used when data changes frequently\n\n**Tuple**\n- Immutable · uses parentheses `()`\n- Faster than list\n- Used when data is fixed",
+  },
+  {
+    id: "what-is-a-set",
+    title: "What is a Set?",
+    content: "A **set** stores multiple values but only **unique** ones — it **does not allow duplicates**. Sets are **unordered**, **mutable**, can store different data types, and do **not** support indexing or slicing.\n\nSyntax: `my_set = {value1, value2, value3}`\n\nInternally, each value's **hash** is calculated; if a value already exists, it is ignored (that's how duplicates are removed).",
+    code: "courses = {\"Python\", \"JAVA\", \"Python\", \"DEVOPS\"}\nprint(courses)   # duplicate \"Python\" removed\n\nprint(hash(\"Python\"))\nprint(hash(\"JAVA\"))",
+  },
+  {
+    id: "set-operations",
+    title: "Set Operations & Functions",
+    content: "- **add()** — add one element\n- **update()** — add multiple elements\n- **remove()** — remove a specified element (errors if missing)\n- **discard()** — remove an element (no error if missing)\n- **pop()** — remove a random element\n- **clear()** / **del** — remove all / delete the set\n\nFunctions: **len(), min(), max(), sum(), sorted()**. A common use is removing duplicates from a list with **`set()`**.",
+    code: "courses = {\"Python\", \"JAVA\", \"DEVOPS\"}\ncourses.add(\"GEN AI\")\ncourses.update([\"GCP\", \"AWS\", \"Azure\"])\ncourses.discard(\"AWS\")   # no error if missing\ncourses.pop()\nprint(courses)\n\nnumbers = {10, 50, 20, 80, 30, 40}\nprint(len(numbers), min(numbers), max(numbers), sum(numbers))\nprint(sorted(numbers, reverse=True))\n\n# remove duplicates from a list\nskills = [\"JAVA\", \"Python\", \"DevOps\", \"JAVA\"]\nprint(set(skills))",
+  },
+  {
+    id: "list-tuple-set",
+    title: "List vs Tuple vs Set",
+    content: "**List** — mutable, `[]`, ordered, allows duplicates, slower.\n\n**Tuple** — immutable, `()`, ordered, allows duplicates, faster.\n\n**Set** — mutable, `{}`, unordered, **no duplicates**, no indexing/slicing.",
+  },
+  {
+    id: "what-is-a-dictionary",
+    title: "What is a Dictionary?",
+    content: "A **dictionary** stores data in **key-value pairs** — used when we want to store data with a meaningful key. Dictionaries are **ordered** and **mutable**; **keys must be unique** (duplicate keys not allowed, duplicate values allowed), and values can be any data type.\n\nSyntax:\n```\nmy_dict = { \"key-1\": \"value-1\", \"key-2\": \"value-2\" }\n```",
+    code: "student = {\n    \"name\": \"Ravi\",\n    \"age\": 25,\n    \"course\": \"Python\",\n    \"marks\": 85\n}\nprint(student[\"name\"])          # error if key missing\nprint(student.get(\"gender\"))    # None if key missing\nprint(student.get(\"city\", \"Hyd\"))  # default value",
+  },
+  {
+    id: "dictionary-operations",
+    title: "Dictionary Operations",
+    content: "- Add/update a pair with `dict[key] = value`\n- **keys()**, **values()**, **items()** — view contents\n- **update()** — update values or add new pairs\n- **pop(key)** — remove by key; **popitem()** — remove the last inserted pair\n- **clear()** / **del** — remove all / delete",
+    code: "student = {\"name\": \"Ravi\", \"age\": 25, \"course\": \"Python\"}\nstudent[\"grade\"] = \"A\"        # add\nstudent[\"name\"] = \"Raj\"       # update\n\nprint(student.keys())\nprint(student.values())\nprint(student.items())\n\nstudent.update({\"name\": \"Ashok\"})\nstudent.pop(\"grade\")\nstudent.popitem()\ndel student[\"name\"]\nprint(student)",
+  },
+  {
+    id: "nested-dictionary",
+    title: "Nested Dictionary",
+    content: "A dictionary can contain other dictionaries as values — useful for structured records. Access nested values by chaining keys, and loop with nested `for` over `.items()`.",
+    code: "students = {\n    \"s1\": {\"name\": \"Raj\", \"age\": 25, \"course\": \"Python\"},\n    \"s2\": {\"name\": \"Anil\", \"age\": 35, \"course\": \"GEN AI\"},\n}\nprint(students[\"s1\"][\"name\"])\nprint(students[\"s2\"].get(\"course\"))\n\nfor student_id, data in students.items():\n    for key, value in data.items():\n        print(key, \"--\", value)\n    print(\"-----------\")",
+  },
+  {
+    id: "what-is-a-string",
+    title: "What is a String?",
+    content: "A **string** stores **text data** — a **sequence of characters** (letters, numbers, symbols, or spaces). Strings are **ordered**, **immutable**, support **indexing** and **slicing**, allow duplicate characters, and can be created with single, double, or triple quotes.",
+    code: "name = \"Ashok\"\nmsg = \"Hello, how are you?\"\ntext = \"\"\"\n    I am learning python\n    python is easy\n\"\"\"\n\nname = \"Python\"\nprint(len(name))\nprint(name[0], name[-1])\nprint(name[0:3])   # Pyt\nprint(name[3:])    # hon\n# name[0] = \"J\"    # Error — immutable\n\nfull_name = \"Ashok\" + \" \" + \"Bollepalli\"\nprint(full_name * 3)   # repetition",
+  },
+  {
+    id: "string-methods",
+    title: "String Methods",
+    content: "Common string methods:\n- **upper() / lower() / title() / capitalize()** — change case\n- **strip() / lstrip() / rstrip()** — remove whitespace\n- **replace()** — replace text · **split()** — string → list · **join()** — list → string\n- **find() / index()** — position of a value (find returns -1, index errors if missing)\n- **count()**, **startswith()**, **endswith()**\n- **isdigit() / isalpha() / isalnum()** — validation\n- **format()** and **f-strings** — build strings with dynamic values",
+    code: "message = \"I like Java\"\nprint(message.replace(\"Java\", \"Python\"))\n\nprint(\"Python,Java,DevOps\".split(\",\"))\nprint(\"#\".join([\"Python\", \"Java\", \"DevOps\"]))\n\ns = \"welcome to c and python\"\nprint(s.find(\"python\"))   # 11\nprint(s.find(\"z\"))        # -1\n\nmsg = \"Python is easy and Python is powerful\"\nprint(msg.count(\"Python\"), msg.startswith(\"Python\"), msg.endswith(\"Python\"))\n\nprint(\"85858658\".isdigit(), \"AshokIT\".isalpha(), \"India@123\".isalnum())",
+  },
+  {
+    id: "string-formatting",
+    title: "String Formatting & f-strings",
+    content: "**String formatting** inserts variable values into a string — via commas, concatenation, **.format()**, or the cleanest option, **f-strings**.",
+    code: "name = \"Ashok\"\ncourse = \"Python\"\n\nprint(\"Student name is\", name, \"and course is\", course)\nprint(\"Student name is {} and course is {}\".format(name, course))\n\n# f-string (preferred)\nmsg = f\"Student name is {name} and course is {course}\"\nprint(msg)",
+  },
+  {
+    id: "string-usecases",
+    title: "String Use-Cases",
+    content: "Handy string tasks: reversing a string, email validation, and generating a username from a name plus the last 4 digits of a phone number.",
+    code: "text = \"python\"\nprint(\"\".join(reversed(text)))   # reverse\n\nemail = \"ashok@gmail.com\"\nif \"@\" in email and \".\" in email:\n    print(\"Valid Email\")\nelse:\n    print(\"Invalid Email\")\n\nname = \"Ashok\"\nphno = \"868686868\"\nusername = name.lower() + phno[-4:]\nprint(username)",
+  },
+  {
+    id: "string-practice",
+    title: "Practice Programs (Strings)",
+    content: "Practice these classic string programs:\n1. Reverse a string\n2. Check if a string is a palindrome\n3. Count vowels and consonants\n4. Count occurrences of each character\n5. Remove duplicate characters\n6. Convert to uppercase without `upper()`\n7. Convert to lowercase without `lower()`\n8. Find the first non-repeated character\n9. Find the most repeated character\n10. Check anagram strings\n11. Count digits, letters, and special characters\n12. Reverse each word in a sentence\n13. Find the longest word in a sentence\n14. Count the frequency of each word",
+  },
+];
+
+const PYTHON_CONTROL_SECTIONS = [
+  {
+    id: "what-are-control-statements",
+    title: "Python Control Statements",
+    content: "**Control statements** control the flow of execution in a program. Normally Python executes statements from **top to bottom**, but real applications need to execute code **based on conditions** or **repeat** code multiple times.\n\nPython control statements are divided into three types:\n1. **Conditional Statements**\n2. **Looping Statements**\n3. **Jumping Statements** (loop control)",
+  },
+  {
+    id: "why-control-statements",
+    title: "Why Do We Need Control Statements?",
+    content: "Real applications need **decision-making** and **repetition**. Examples:\n1. If user logged in, show dashboard\n2. If marks > 35, show pass\n3. If balance is sufficient, allow withdrawal/transfer\n4. Print numbers 1 to 100\n5. Send certificates to all students\n6. Display all products in cart\n7. Search a student from a list\n8. Repeat login until the correct password is entered\n\nWithout control statements, programs cannot make decisions or repeat tasks.",
+  },
+  {
+    id: "if-statement",
+    title: "if Statement & Indentation",
+    content: "The **`if`** statement executes a block of code **only when the condition is true**.\n\nPython uses **indentation** (spaces at the start of a line) to define blocks — a missing indent causes an error.\n\nSyntax:\n```\nif condition:\n    statement\n```",
+    code: "age = 25\n\nif age >= 18:\n    print(\"Eligible to vote\")\n    print(\"plz participate in voting\")",
+  },
+  {
+    id: "if-else",
+    title: "if-else Statement",
+    content: "**`if-else`** runs one block when the condition is true and another when it is false.\n\nSyntax:\n```\nif condition:\n    statement-1\nelse:\n    statement-2\n```",
+    code: "age = 12\n\nif age >= 18:\n    print(\"Eligible to vote\")\nelse:\n    print(\"Not eligible to vote\")",
+  },
+  {
+    id: "if-elif-else",
+    title: "if-elif-else Statement",
+    content: "When we need to check **multiple conditions** (e.g. grade bands), we use **`if-elif-else`**. Python checks each condition in order and runs the first true block; `else` is the default.",
+    code: "marks = int(input(\"Enter marks: \"))\n\nif marks >= 90:\n    print(\"A Grade\")\nelif marks >= 75:\n    print(\"B Grade\")\nelif marks >= 65:\n    print(\"C Grade\")\nelif marks >= 35:\n    print(\"Just Pass\")\nelse:\n    print(\"Failed\")",
+  },
+  {
+    id: "nested-if",
+    title: "Nested if",
+    content: "Writing one `if` statement **inside another** is called a **nested if** — useful for checks that depend on a previous condition (e.g. validate credentials, then check the role; or check balance, then the withdrawal amount).",
+    code: "# login + role\nif username == \"admin\" and pwd == \"admin123\":\n    if role == \"student\":\n        print(\"student dashboard\")\n    elif role == \"trainer\":\n        print(\"trainer dashboard\")\n    elif role == \"admin\":\n        print(\"admin dashboard\")\nelse:\n    print(\"Invalid Credentials\")\n\n# ATM withdrawal\nbalance = 5000\nwithdraw_amount = int(input(\"Enter amount to withdraw: \"))\nif balance > 0:\n    if withdraw_amount <= balance:\n        balance = balance - withdraw_amount\n        print(\"Withdraw successful\")\n        print(\"Remaining balance: \", balance)\n    else:\n        print(\"Insufficient balance\")\nelse:\n    print(\"Funds not available\")",
+  },
+  {
+    id: "match-case",
+    title: "match-case",
+    content: "**`match-case`** (Python 3.10+) is a clean way to run different code for different values — like a menu selection. The `case _:` acts as the default.",
+    code: "print(\"1. Add Student\")\nprint(\"2. View Student\")\nprint(\"3. Update Student\")\nprint(\"4. Delete Student\")\n\nchoice = int(input(\"Enter your choice: \"))\n\nmatch choice:\n    case 1:\n        print(\"Student add operation selected\")\n    case 2:\n        print(\"Student View Operation selected\")\n    case 3:\n        print(\"Student Update Operation selected\")\n    case 4:\n        print(\"Student Delete Operation selected\")\n    case _:\n        print(\"Invalid Choice\")",
+  },
+  {
+    id: "looping-for",
+    title: "Looping Statements: for loop",
+    content: "**Looping statements** execute a block of code **repeatedly**. Python has two loops: **`for`** and **`while`**.\n\nA **`for`** loop iterates over a **sequence** — a String, List, Tuple, Set, Dictionary, or Range.\n\nSyntax:\n```\nfor variable in sequence:\n    statements\n```",
+    code: "for i in range(1, 6):\n    print(i)\n\n# over a string\nfor ch in \"Ashok\":\n    print(ch)\n\n# over a list\nfor student in [\"Ashok\", \"Ram\", \"John\"]:\n    print(student)\n\n# over a dictionary\nstudent = {\"id\": 101, \"name\": \"Ashok\", \"gender\": \"Male\"}\nfor key in student:\n    print(key, \"--\", student[key])",
+  },
+  {
+    id: "range-function",
+    title: "The range() Function",
+    content: "**`range()`** generates a sequence of numbers. Three forms:\n- `range(stop)`\n- `range(start, stop)` — stop is exclusive\n- `range(start, stop, step)`",
+    code: "for i in range(6):        # 0..5\n    print(i)\n\nfor i in range(1, 6):     # 1..5\n    print(i)\n\nfor i in range(1, 11, 2): # 1,3,5,7,9\n    print(i)\n\n# cart total\ncart_prices = [500, 300, 1200, 750]\ntotal = 0\nfor price in cart_prices:\n    total = total + price\nprint(\"Total Cart Price :: \", total)",
+  },
+  {
+    id: "while-loop",
+    title: "while Loop",
+    content: "The **`while`** loop executes a block of code **as long as the condition is true**. You must update the loop variable yourself, or it becomes an infinite loop.\n\nSyntax:\n```\nwhile condition:\n    statements\n```",
+    code: "count = 1\n\nwhile count <= 5:\n    print(count)\n    count = count + 1",
+  },
+  {
+    id: "for-vs-while",
+    title: "for loop vs while loop",
+    content: "- Both repeat a block of code.\n- **for** — used when you know **how many times** to run; works with sequences (range, list, tuple, string); initialization/increment handled automatically; best for **fixed iterations**; less chance of an infinite loop.\n- **while** — used when you **don't know** exactly how many times; runs based on a **condition**; you handle init/increment manually; best for **condition-based iterations**; higher chance of an infinite loop if the condition isn't updated.",
+  },
+  {
+    id: "break-statement",
+    title: "Jumping Statements: break",
+    content: "**Jumping statements** control loop execution — **`break`** and **`continue`**.\n\n**`break`** stops the loop **immediately** and comes out of it — useful for stopping a search once found.",
+    code: "for i in range(1, 11):\n    if i == 5:\n        break\n    print(i)\n\n# stop searching once found\nstudents = [\"Raju\", \"John\", \"Steve\", \"Ashok\", \"Rani\"]\nsearch_name = \"Ashok\"\nfor student in students:\n    print(\"Checking :\", student)\n    if search_name == student:\n        print(\"Student Found :\", student)\n        break",
+  },
+  {
+    id: "continue-statement",
+    title: "continue",
+    content: "**`continue`** **skips the current iteration** and moves to the next one — it does **not** stop the loop completely. Useful for skipping items that don't meet a condition.",
+    code: "for i in range(1, 11):\n    if i == 5:\n        continue\n    print(i)\n\n# skip failed students\nstudents = [\n    {\"name\": \"Ravi\", \"marks\": 80},\n    {\"name\": \"Kiran\", \"marks\": 30},\n    {\"name\": \"Sita\", \"marks\": 90},\n]\nfor student in students:\n    if student[\"marks\"] < 35:\n        continue\n    print(\"Certificate Sent for :\", student[\"name\"])",
+  },
+  {
+    id: "control-summary",
+    title: "Summary",
+    content: "Control statements covered:\n- **Conditional:** `if`, `if-else`, `if-elif-else`, nested `if`, `match-case`\n- **Looping:** `for` loop (with `range()`), `while` loop\n- **Jumping:** `break`, `continue`",
+  },
+];
+
+const PYTHON_OPERATORS_SECTIONS = [
+  {
+    id: "what-are-operators",
+    title: "Python Operators",
+    content: "An **operator** is a symbol or keyword used to perform operations on values or variables — like addition, comparison, assignment, and logical checks.\n\n**Why we need operators:** calculate marks, compute total price (price + GST), check login credentials, check voting eligibility, apply coupon discounts, credit/debit an account balance, and more.\n\n**Types of operators:**\n1. **Arithmetic** (`+ - * / // % **`)\n2. **Assignment** (`=`, `+=`, `-=`, …)\n3. **Comparison** (`== != > >= < <=`)\n4. **Logical** (`and`, `or`, `not`)\n5. **Membership** (`in`, `not in`)\n6. **Identity** (`is`, `is not`)",
+  },
+  {
+    id: "arithmetic-operators",
+    title: "Arithmetic Operators",
+    content: "**Arithmetic operators** perform mathematical operations: addition `+`, subtraction `-`, multiplication `*`, division `/`, **floor division** `//`, **modulus** `%` (remainder), and **power** `**`.",
+    code: "a = 10\nb = 3\n\nprint(a + b)   # Addition: 13\nprint(a - b)   # Subtraction: 7\nprint(a * b)   # Multiplication: 30\nprint(a / b)   # Division: 3.3333\nprint(a // b)  # Floor Division: 3\nprint(a % b)   # Modulus / Remainder: 1\nprint(a ** b)  # Power: 1000",
+  },
+  {
+    id: "assignment-operators",
+    title: "Assignment Operators",
+    content: "**Assignment operators** assign values to variables. `=` assigns, and compound operators like `+=`, `-=`, `*=`, `/=`, `//=`, `%=` update a variable in place (e.g. `x += 5` means `x = x + 5`).",
+    code: "x = 10\nx += 5     # 15\nx -= 3     # 12\nx *= 2     # 24\nx /= 4     # 6.0\nx //= 2    # 3.0\nx %= 2     # 1.0\nprint(x)\n\n# account balance example\nbalance = 1000\nbalance += 500    # deposit\nbalance -= 200    # withdraw\nprint(\"Final balance : \", balance)",
+  },
+  {
+    id: "comparison-operators",
+    title: "Comparison Operators",
+    content: "**Comparison operators** compare two values and return **`True`** or **`False`**: `==` (equal), `!=` (not equal), `>`, `<`, `>=`, `<=`.",
+    code: "a = 10\nb = 20\n\nprint(a == b)   # False\nprint(a != b)   # True\nprint(a > b)    # False\nprint(a < b)    # True\nprint(a >= b)   # False\nprint(a <= b)   # True",
+  },
+  {
+    id: "logical-operators",
+    title: "Logical Operators",
+    content: "**Logical operators** combine multiple conditions:\n- **`and`** — True only if **both** conditions are True\n- **`or`** — True if **at least one** is True\n- **`not`** — reverses the result",
+    code: "age = 25\nsalary = 50000\n\nprint(age > 18 and salary > 30000)   # True (both true)\nprint(age > 18 or salary > 80000)    # True (one true)\nprint(not age > 18)                  # False (reverses True)",
+  },
+  {
+    id: "membership-operators",
+    title: "Membership Operators",
+    content: "**Membership operators** check whether a value exists inside a sequence (list, tuple, string, etc.): **`in`** and **`not in`**.",
+    code: "students = [\"Ashok\", \"Ramesh\", \"Suresh\"]\n\nprint(\"Ashok\" in students)       # True\nprint(\"Kiran\" in students)       # False\nprint(\"Kiran\" not in students)   # True",
+  },
+  {
+    id: "identity-operators",
+    title: "Identity Operators",
+    content: "**Identity operators** compare the **memory location** of two objects (whether they are the same object): **`is`** and **`is not`**.",
+    code: "a = 10\nb = 10\n\nprint(a is b)      # True\nprint(a is not b)  # False",
+  },
+];
+
+const PYTHON_PROGRAMMING_ELEMENTS_SECTIONS = [
+  {
+    id: "python-keywords",
+    title: "Python Keywords",
+    content: "**Keywords** are reserved words in Python that have a **special meaning** — they define the syntax and structure of programs. We **cannot** use keywords as variable, function, class, or identifier names.\n\nExamples: `False, None, True, and, as, assert, async, await, break, class, continue, def, del, elif, else, except, finally, for, from, global, if, import, in, is, lambda, nonlocal, not, or, pass, raise, return, try, while, with, yield`.",
+    code: "import keyword\n\nprint(keyword.kwlist)         # all keywords\nprint(len(keyword.kwlist))    # count\n\nprint(keyword.iskeyword(\"hi\"))       # False\nprint(keyword.iskeyword(\"import\"))   # True",
+  },
+  {
+    id: "python-literals",
+    title: "Python Literals",
+    content: "A **literal** is a fixed/constant value written directly in the program (e.g. `10`, `10.5`, `\"Python\"`, `True`, `None`).\n\n**Types of literals:**\n1. **Numeric** (int, float, complex)\n2. **String**\n3. **Boolean** (`True` / `False`)\n4. **None**\n5. **Collection** (list, tuple, set, dict)",
+    code: "# numeric\nage = 25\nprice = 99.99\n\n# string (single, double, triple quotes)\nname = 'Ashok'\ncourse = '''It's Python course'''\nmsg = \"\"\"\n    Welcome to Python Training\n\"\"\"\n\n# boolean & None\nis_activated = True\nresult = None\n\n# collection literals\nstudents = [\"Ashok\", \"Ramesh\", \"Raju\"]      # list (mutable)\ncourses = (\"Python\", \"Java\", \"C++\")          # tuple (immutable)\ncities = {\"Hyd\", \"Pune\", \"Chennai\"}          # set (no duplicates)\nstudent = {\"id\": 101, \"name\": \"Ashok\"}       # dict\nprint(students, courses, cities, student)",
+  },
+  {
+    id: "python-variables",
+    title: "Python Variables",
+    content: "A **variable** is a name used to store data — a memory reference that holds a value. In Python you **don't declare the type**; it is decided automatically based on the value.\n\n**Naming rules:** can contain letters, numbers, and underscore `_`; **can't** start with a number, contain spaces, use special symbols, or be a reserved keyword; names are **case-sensitive**.",
+    code: "x = 10\nprint(x, type(x))\n\nname = \"Ashok\"\nprint(name, type(name))\n\n_mobile = 68686868\ncourse_fee = 4000",
+  },
+  {
+    id: "multiple-assignment",
+    title: "Multiple Assignment & Swapping",
+    content: "Python lets you assign the **same value to multiple variables**, assign **different values in one line**, and **swap** variables without a temporary variable.",
+    code: "# same value to many\nvar_1 = var_2 = var_3 = 100\n\n# different values in one line\nvar_8, var_9, var_10 = 80, 90, 100\n\n# swapping\na = 10\nb = 20\na, b = b, a\nprint(a, b)   # 20 10",
+  },
+  {
+    id: "python-data-types",
+    title: "Python Data Types",
+    content: "A **data type** defines the kind of value a variable stores. Common types: **int, float, complex, str, bool, list, tuple, set, dict**. Use `type()` to check a value's type and `sys.getsizeof()` to see its memory size.",
+    code: "import sys\n\nmy_age = 30\nprint(my_age, type(my_age), sys.getsizeof(my_age))\n\nprice = 99.99\nprint(price, type(price))\n\nnum = 5 + 3j            # complex\nprint(type(num))\n\nstudents = [\"Anil\", \"Sunil\", \"Anil\"]   # list\ncourses = (\"Java\", \"Python\")            # tuple\nskills = {\"Java\", \"Python\", \"Java\"}     # set (no duplicates)\nstudent = {\"id\": 101, \"name\": \"Ashok\"}  # dict\nprint(type(students), type(courses), type(skills), type(student))",
+  },
+  {
+    id: "reading-input",
+    title: "Reading Input From User",
+    content: "**`input()`** is a built-in function that takes data from the keyboard during execution. **Important:** `input()` always returns a **string**, so `a + b` with two inputs **concatenates** them (e.g. `\"10\" + \"20\"` → `\"1020\"`). Use `.split()` to read multiple values on one line.",
+    code: "name = input(\"Enter Your Name : \")\nage = input(\"Enter Your age : \")\nprint(\"My Name : \", name)\nprint(\"My Age : \", age)\n\n# two numbers on one line\na, b = input(\"Enter two numbers : \").split(\" \")\nprint(a, b)",
+  },
+  {
+    id: "type-casting",
+    title: "Type Casting",
+    content: "**Type casting** converts a value from one data type to another. Because `input()` returns strings, we cast them to numbers (e.g. `int()`, `float()`) to do calculations.\n\n- **Implicit casting** — Python auto-converts (e.g. `int + float` → `float`).\n- **Explicit casting** — you convert manually with `int()`, `float()`, `str()`, `list()`, `tuple()`, `set()`, `dict()`.",
+    code: "# without vs with casting\na = \"10\"\nb = \"20\"\nprint(a + b)               # \"1020\" (concatenation)\nprint(int(a) + int(b))     # 30 (addition)\n\n# collection casting\nprint(list(\"Python\"))                       # ['P','y','t','h','o','n']\nprint(tuple([10, 20, 30]))                  # (10, 20, 30)\nprint(set([10, 20, 10, 30]))                # {10, 20, 30}\nprint(dict([(\"name\", \"Ashok\"), (\"course\", \"Python\")]))\n\n# implicit\nresult = 10 + 2.5\nprint(result, type(result))   # 12.5 <class 'float'>",
+  },
+];
+
+const PYTHON_INTRO_SECTIONS = [
+  {
+    id: "what-is-python",
+    title: "What is Python?",
+    content: "**Python** is a **high-level, general-purpose** programming language, widely used in the IT industry because it is **simple, powerful, easy to learn, and beginner-friendly**.\n\n**Why is Python so popular?** Its syntax is very close to English — a whole message can be printed in one simple line:\n`print(\"Hello World\")`\n\nIn many languages you'd write much more code to display one message; in Python it's a single line.",
+    code: "print(\"Hello World\")",
+  },
+  {
+    id: "history-of-python",
+    title: "History of Python",
+    content: "Python was created by **Guido van Rossum**. Development started in the late 1980s and it was first released in **1991**, designed to be simple, readable, and powerful.\n\n**Timeline:**\n- **1980s** — development started\n- **1991** — first release\n- **2000** — Python 2 released\n- **2008** — Python 3 released\n- **Today** — used across web, AI, data science, automation, DevOps, and backend\n\nPython 2 is old and no longer recommended; **Python 3** is the current, recommended version.",
+  },
+  {
+    id: "features-of-python",
+    title: "Features of Python",
+    content: "1. **Simple and easy to learn**\n2. **Free and open source**\n3. **High-level language**\n4. **Platform independent**\n5. **Dynamically typed**\n6. **Object oriented** (class, object)\n7. **Powerful third-party libraries**",
+  },
+  {
+    id: "python-usecases",
+    title: "Python Use Cases",
+    content: "Python is used almost everywhere:\n1. Web Development\n2. Data Science\n3. Machine Learning\n4. Artificial Intelligence\n5. Automation\n6. DevOps\n7. Cloud Computing\n8. Cyber Security\n9. Gaming\n10. Web Scraping\n11. API Development",
+  },
+  {
+    id: "python-domains",
+    title: "Python Across Domains & Libraries",
+    content: "- **Web & APIs** — Django, Flask, FastAPI\n- **Data Science / AI / ML** — NumPy, Pandas, Matplotlib, Seaborn, SciPy, scikit-learn, TensorFlow, PyTorch, Keras\n- **Automation** — rename files, send emails, generate reports\n- **DevOps & Cloud** — server automation, log analysis, AWS automation, Docker/K8s scripts, CI/CD (boto3, fabric, requests)\n- **Cyber Security** — network scanning, security automation, malware analysis (scapy, cryptography, requests)\n- **Web Scraping** — BeautifulSoup, Scrapy\n- **Testing** — pytest, unittest, selenium",
+  },
+  {
+    id: "python-setup",
+    title: "Python Setup",
+    content: "**1. Download** Python from the official site: https://www.python.org/downloads/ — pick the latest version for your OS.\n\n**2. Install** — run the installer and (very important) tick **\"Add Python to PATH\"** before clicking **Install Now**.\n\n**3. Verify** — in a terminal run `python --version` (or `py --version`); you should see `Python 3.x.x`.\n\n**4. Install an IDE** — PyCharm or Visual Studio Code. For beginners, PyCharm is easy for practice.",
+    code: "# check the installed version\npython --version\n# or\npy --version",
+  },
+  {
+    id: "execution-flow",
+    title: "Python Program Execution Flow",
+    content: "1. **Write code** in a `.py` file (e.g. `demo.py`).\n2. **Run** it: `python demo.py`.\n3. The **interpreter** reads and executes the program **line by line**.\n4. Source code is converted into **byte code** (an intermediate code).\n5. Byte code goes to the **PVM (Python Virtual Machine)**, which executes it and produces the output.\n\n**Flow:** Programmer → Source Code → Interpreter → Byte Code → PVM → Machine Code → Output.",
+    code: "# demo.py\nprint(\"Hello Python\")\n\n# run it from the terminal:\n# python demo.py",
+  },
+  {
+    id: "program-structure",
+    title: "Python Program Structure",
+    content: "A Python program is usually written step by step:\n1. **Comments**\n2. **import statements**\n3. **global variables**\n4. **Functions**\n5. **Function calls**",
+    code: "# This is my first python program\nimport math\n\napp_name = \"python\"\nname = \"ashokit\"\n\ndef welcome():\n    print(\"Welcome to Python Training\")\n\nwelcome()",
+  },
+];
+
+const PYTHON_DATA_SCIENCE_SECTIONS = [
+  {
+    id: "gen-ai-program-overview",
+    title: "Program Overview: Gen AI + Agentic AI with Python",
+    content: "This track builds your career in **Generative AI, Agentic AI, Python, LLMs, RAG systems, AI agents, LangChain, LangGraph, MCP, and MLOps** — taking learners from **basic level to advanced project development**, even with no prior programming experience.\n\n**Goal:** *Zero to Hero in Gen AI + Agentic AI with Python.*\n\n**No pre-requisites** — you'll learn Python from scratch, AI/ML fundamentals, Generative AI app development, RAG systems with vector DBs, AI agents and agentic workflows, real-time projects, deployment/MLOps basics, and interview preparation.",
+  },
+  {
+    id: "gen-ai-course-content",
+    title: "Course Content — 8 Modules",
+    content: "1. **Python Programming** — core + advanced Python.\n2. **Python Libraries for AI** — NumPy, Pandas, Matplotlib, statistics, scikit-learn, TensorFlow, FastAPI.\n3. **Machine Learning & Deep Learning** — supervised/unsupervised/reinforcement learning, regression, classification, clustering, neural networks, CNN/RNN, transformers.\n4. **LLMs & Prompt Engineering** — tokens, context window, temperature, zero/few-shot & chain-of-thought prompting, OpenAI/Gemini/Claude APIs.\n5. **Generative AI & RAG Systems** — embeddings, vector databases, semantic search, RAG architecture, chatbots, document Q&A.\n6. **Agentic AI, LangChain, LangGraph, MCP & AI Agents** — chains, memory, tools, graph-based workflows, multi-agent systems.\n7. **MLOps + LLMOps** — Git, Docker, Kubernetes, CI/CD, cloud/model deployment, monitoring.\n8. **Interview Prep & Resume Building** — Python/ML/DL/Gen AI/LLM/RAG interview questions, resume, GitHub & LinkedIn.",
+  },
+  {
+    id: "what-is-data-science",
+    title: "What is Data Science?",
+    content: "**Data** is the starting point of Data Science. Using data we create **intelligence**, and using intelligence we build systems that can learn from data, understand language, generate content, make predictions, and take actions.\n\n**Definition:** Data Science is the process of **collecting, cleaning, analyzing, and understanding data to make smart decisions** — in short, *extracting useful information from data*.",
+  },
+  {
+    id: "data-science-lifecycle",
+    title: "Data Science Life Cycle",
+    content: "1. **Collect Data** — from files, databases, websites, sensors, apps, and APIs.\n2. **Clean Data** — remove duplicates, missing/incorrect values, and unwanted information.\n3. **Analyze Data** — find patterns, trends, and relationships.\n4. **Visualize Data** — charts, graphs, dashboards, reports.\n5. **Build Model** — create an ML model for the problem.\n6. **Train Model** — learn patterns from historical data.\n7. **Test Model** — verify predictions.\n8. **Deploy Model** — make it available for real-time use.\n9. **Monitor Results** — observe performance and improve.",
+  },
+  {
+    id: "what-is-ai",
+    title: "What is Artificial Intelligence?",
+    content: "**AI** is a branch of Data Science and Computer Science that aims to create machines/systems that can **think and act like humans** — performing tasks that normally require human intelligence.\n\nUnlike normal programming (where we tell the computer exactly what to do), in AI the machine **observes data, learns from patterns, improves over time, and makes decisions on its own**.",
+  },
+  {
+    id: "ai-real-life-examples",
+    title: "AI Real-Life Examples",
+    content: "1. Self-driving cars\n2. Fraud detection in banks\n3. Spam detection in emails\n4. ChatGPT answering questions and generating images\n5. GitHub Copilot generating code\n6. Voice assistants (Siri, Alexa, Google Assistant)\n7. Product recommendations (Amazon, Flipkart)\n8. Movie recommendations (Netflix, YouTube)",
+  },
+  {
+    id: "why-ai-important",
+    title: "Why is AI Important Today?",
+    content: "AI helps us **automate repetitive tasks, reduce human errors, save time and cost, improve decision-making, work faster and more accurately, and build smart applications**.\n\nIt's used across almost every industry: medicine, farming, finance, education, e-commerce, banking, software development, and transportation.",
+  },
+  {
+    id: "what-is-ml",
+    title: "What is Machine Learning?",
+    content: "**Machine Learning** is a subset of AI that lets computers **learn patterns from data** without explicitly programming every condition.\n\n**Definition:** a technique where the computer learns from data and makes predictions or decisions. We give it a large amount of data, it finds patterns, and uses those patterns to predict/decide.\n\nUnlike normal programming's fixed rules, ML **learns from examples and data**.",
+  },
+  {
+    id: "ml-examples",
+    title: "Machine Learning Examples",
+    content: "**Cat vs Dog classification** — show the model 1000 cat/dog images; after training it can identify a new image.\n\n**Email spam filter** — the model learns from thousands of emails (spam vs safe) and later flags spam automatically.\n\n**Daily life:** Netflix/YouTube recommendations, Google Photos face/object recognition, Amazon/Flipkart product suggestions, credit-card fraud detection, and Google Maps traffic/route prediction.",
+  },
+  {
+    id: "how-ml-works",
+    title: "How Machine Learning Works",
+    content: "ML projects generally follow four steps:\n1. **Collect Data** — images, text, numbers, websites, databases, APIs.\n2. **Train the Model** — the model learns patterns from data.\n3. **Test the Model** — check whether predictions are correct.\n4. **Use the Model** — make predictions on new, unseen data.\n\n**Summary:** Learn from data → improve over time → make predictions.",
+  },
+  {
+    id: "what-is-deep-learning",
+    title: "What is Deep Learning?",
+    content: "**Deep Learning** is a subset of Machine Learning that uses **artificial neural networks** (inspired by the human brain) to learn from large amounts of data. It's part of ML but far more powerful for **complex problems**.",
+  },
+  {
+    id: "ml-vs-dl",
+    title: "Machine Learning vs Deep Learning",
+    content: "**Machine Learning**\n- Subset of AI; learns from data using algorithms\n- Works well with small–medium, mostly **structured** data\n- Faster training; easier to understand and explain\n\n**Deep Learning**\n- Subset of ML; uses neural networks with many layers\n- Needs **huge** data; excels at **unstructured** data (images, audio, video, text)\n- Slower training; better accuracy for complex problems",
+  },
+  {
+    id: "where-dl-used",
+    title: "Where is Deep Learning Used?",
+    content: "1. **Face Recognition** — detect and recognize faces\n2. **Speech to Text** — convert spoken words to text\n3. **Text to Speech** — convert text to voice\n4. **Self-Driving Cars** — detect signals, signs, pedestrians, vehicles\n5. **Medical Diagnosis** — detect diseases from X-rays, MRIs, scans\n6. **Chatbots & AI Assistants** — understand questions and generate human-like responses",
+  },
+  {
+    id: "when-ml-vs-dl",
+    title: "When to Use ML vs Deep Learning",
+    content: "**Use Machine Learning when:** data is limited, the problem is simple, the model must be explainable, extreme accuracy isn't critical, and data is mostly structured. *(e.g. loan approval, churn prediction, sales forecasting, spam detection.)*\n\n**Use Deep Learning when:** large data is available, data is images/audio/video/text, the problem is complex, high accuracy matters, and GPU hardware is available. *(e.g. face recognition, voice assistants, image classification, self-driving cars, generative AI.)*",
+  },
+  {
+    id: "what-is-nlp",
+    title: "What is NLP?",
+    content: "**NLP (Natural Language Processing)** is a branch of AI that helps computers **understand, interpret, and generate human language** — teaching computers to understand English, Telugu, Hindi, or any human language.\n\nHumans communicate with language, emotion, tone, and grammar; computers understand numbers (0s and 1s). **NLP is the bridge** between them. With NLP, computers can read text, listen to speech, understand meaning, analyze emotions, generate answers, translate languages, summarize documents, and extract information.",
+  },
+  {
+    id: "nlp-examples",
+    title: "NLP Real-Life Examples",
+    content: "- **ChatGPT & Gemini** — understand questions and generate human-like answers\n- **Google Translate** — convert one language to another\n- **Siri & Alexa** — understand spoken commands and respond\n- **Email Spam Detection** — identify spam vs safe\n- **Sentiment Analysis** — classify customer feedback as positive, negative, or neutral",
+  },
+  {
+    id: "what-is-generative-ai",
+    title: "What is Generative AI?",
+    content: "**Generative AI** creates **new content** — text, code, images, audio, video, reports, email templates. Unlike traditional AI (which classifies, predicts, or detects), Gen AI learns patterns from huge data and **generates original content** that looks human-made.\n\n**Examples:** ChatGPT (text), MidJourney/DALL·E (images), Suno (music), RunwayML (video), GitHub Copilot (code), Gamma (presentations). Train it on 1000 songs and it can create a new song that isn't a copy of any single one.",
+  },
+  {
+    id: "what-is-agentic-ai",
+    title: "What is Agentic AI?",
+    content: "**Agentic AI** can **think, decide, and take actions on its own** to achieve a goal — used to build intelligent AI assistants/agents. Traditional AI only answers questions; Agentic AI can **plan + act + complete tasks independently**.\n\n- **Gen AI** — only generates content, needs a user prompt, static response.\n- **Agentic AI** — takes actions toward goals, can work autonomously, interactive and decision-making (like a *digital worker*).\n\n**Examples:** an AI that books flights after comparing prices, reads emails and drafts replies, deploys apps (DevOps agent), resolves customer issues end-to-end, or schedules meetings.",
+  },
+  {
+    id: "ds-ai-summary",
+    title: "Summary: Data → DS → AI → ML → DL → NLP / Gen AI",
+    content: "These technologies build on each other:\n- **Data Science** — find useful insights from data for smart business decisions.\n- **AI** — the big umbrella; makes systems intelligent.\n- **ML** — systems learn from existing data and predict on new data.\n- **DL** — ML using neural networks for complex data.\n- **NLP** — AI that understands human language.\n- **Gen AI** — AI that creates new content.\n- **Agentic AI** — AI that takes actions (AI agents).\n\n**In short:** Data → Data Science → AI → ML → DL → NLP / Gen AI applications — the foundation of modern tools like ChatGPT, Gemini, self-driving cars, recommendation and fraud-detection systems.",
+  },
+];
+
 export const pythonLessons = [
   // ── Phase 1: Python Foundations ──
   {
@@ -23,6 +720,11 @@ export const pythonLessons = [
     topics: ['Getting started with Python', 'Syntax & variables', 'Basic data types', 'Operators', 'First programs'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=_uQrJ0TkZlc', 'Python for Beginners', 'Programming with Mosh'),
+    sections: [
+      ...PYTHON_INTRO_SECTIONS,
+      ...PYTHON_PROGRAMMING_ELEMENTS_SECTIONS,
+      ...PYTHON_OPERATORS_SECTIONS,
+    ],
   },
   {
     pyDay: 3,
@@ -32,6 +734,7 @@ export const pythonLessons = [
     topics: ['if, elif, else', 'for loops', 'while loops', 'break & continue', 'Nested conditions'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=HZajxHrdjSU', 'Python Control Flow', 'Bro Code'),
+    sections: PYTHON_CONTROL_SECTIONS,
   },
   {
     pyDay: 4,
@@ -41,6 +744,7 @@ export const pythonLessons = [
     topics: ['Lists & comprehension', 'Tuples', 'Dictionaries', 'Sets', 'Choosing structures'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=HGOBQpZYwaE', 'Python Data Structures', 'CS Dojo'),
+    sections: PYTHON_DATA_STRUCTURES_SECTIONS,
   },
   {
     pyDay: 5,
@@ -50,6 +754,7 @@ export const pythonLessons = [
     topics: ['Defining functions', 'Parameters & return', 'Lambda functions', 'map()', 'filter()'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=9Os0o3wzssI', 'Python Functions', 'Corey Schafer'),
+    sections: PYTHON_FUNCTIONS_SECTIONS,
   },
   {
     pyDay: 6,
@@ -59,6 +764,7 @@ export const pythonLessons = [
     topics: ['import statements', 'Creating modules', 'Packages', 'Standard library', 'pip basics'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=CqvZ3vGoGs0', 'Python Modules', 'Corey Schafer'),
+    sections: PYTHON_MODULES_SECTIONS,
   },
   {
     pyDay: 7,
@@ -86,6 +792,7 @@ export const pythonLessons = [
     topics: ['Classes & objects', 'Inheritance', 'Polymorphism', 'Encapsulation', 'Abstraction'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=Ej_02ICOIgs', 'Python OOP', 'Corey Schafer'),
+    sections: PYTHON_OOP_SECTIONS,
   },
   {
     pyDay: 10,
@@ -95,6 +802,7 @@ export const pythonLessons = [
     topics: ['Data science pipeline', 'NumPy arrays', 'Pandas DataFrames', 'Data cleaning', 'Visualization intro'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=vmEHCJhZ2Jk', 'Python for Data Science', 'freeCodeCamp'),
+    sections: PYTHON_DATA_SCIENCE_SECTIONS,
   },
   // ── Phase 2: ML & NLP ──
   {

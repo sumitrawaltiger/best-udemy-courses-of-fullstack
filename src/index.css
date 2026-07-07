@@ -5378,3 +5378,96 @@ a:hover {
 .about-founder-back:hover {
   text-decoration: underline;
 }
+
+/* DevOps Mastery syllabus section */
+.devops-mastery-section {
+  margin: 40px 0;
+}
+.devops-mastery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+.devops-mastery-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.15s, transform 0.15s;
+}
+.devops-mastery-card:hover {
+  border-color: var(--green);
+  transform: translateY(-2px);
+}
+.devops-mastery-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.devops-mastery-icon {
+  font-size: 1.5rem;
+}
+.devops-mastery-card h3 {
+  margin: 0;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.devops-mastery-num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--green);
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.devops-mastery-card ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.devops-mastery-card li {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 3px;
+}
+
+/* KodeKloud courses grid (K8s home) */
+.k8s-courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+.k8s-course-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.k8s-course-link:hover {
+  border-color: var(--green);
+  transform: translateY(-2px);
+}
+.k8s-course-arrow {
+  margin-left: auto;
+  color: var(--green);
+  font-weight: 700;
+}

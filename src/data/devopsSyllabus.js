@@ -58,3 +58,145 @@ export const devopsHighlights = [
   'Prometheus & Grafana',
   'CloudFolks DevOps package',
 ];
+
+// "DevOps Mastery" syllabus — designed from Anil Dollor's Learn DevOps course slides.
+export const DEVOPS_MASTERY_PDF = '/devops-mastery.pdf';
+
+export const DEVOPS_MASTERY_SYLLABUS = [
+  {
+    icon: '🚀',
+    title: 'DevOps Foundations',
+    topics: [
+      'Hardware vs software basics',
+      'Product-based vs service-based companies',
+      'Full-stack vs DevOps engineer roles',
+      'Essential tools & hard/soft skills',
+      'SDLC & the DevOps lifecycle',
+      'Goal: 99.99% application uptime',
+    ],
+  },
+  {
+    icon: '🐧',
+    title: 'Linux Essentials',
+    topics: [
+      '20 popular Linux distros (Ubuntu, RHEL, Alpine…)',
+      'WSL & getting a real server',
+      'Boot process, kernel & architecture',
+      'Shells: bash, sh, zsh, fish',
+      'Package managers: apt, yum/dnf, apk',
+      'Filesystem, basic commands, pipes & redirection',
+    ],
+  },
+  {
+    icon: '👥',
+    title: 'Users, Groups & Processes',
+    topics: [
+      'Create / modify / delete users',
+      '/etc/passwd & groups management',
+      'Process managers & signals',
+      'systemd & services (daemons)',
+      'Symbolic links & file permissions',
+      'Installing a GUI on Linux',
+    ],
+  },
+  {
+    icon: '📜',
+    title: 'Shell Scripting',
+    topics: [
+      'Shebang (#!/bin/bash)',
+      'Variables & echo',
+      'Conditionals & loops',
+      'Automating tasks with scripts',
+    ],
+  },
+  {
+    icon: '🌿',
+    title: 'Git & Version Control',
+    topics: [
+      'Git SCM & GitHub basics',
+      'clone, add, commit, push',
+      'Branching & merging',
+      'GitHub / GitLab / Bitbucket workflows',
+    ],
+  },
+  {
+    icon: '🐳',
+    title: 'Docker',
+    topics: [
+      'Architecture: client, daemon, registry (Docker Hub)',
+      'Images vs containers',
+      'Dockerfile & its commands',
+      'run / build / exec / cp, volumes & networks',
+      'docker-compose (YAML)',
+      'Restart policies, logs & cleanup (prune)',
+    ],
+  },
+  {
+    icon: '🗄️',
+    title: 'Databases with Docker',
+    topics: [
+      'MySQL, MariaDB, PostgreSQL',
+      'MongoDB & SQLite',
+      'phpMyAdmin, Adminer & Workbench',
+      'Reset root password & remote access',
+      'LAMP stack (Linux, Apache, MySQL, PHP)',
+    ],
+  },
+  {
+    icon: '🌐',
+    title: 'Web Servers & Deployment',
+    topics: [
+      'Apache2 & Nginx',
+      'Reverse proxy & virtual hosts',
+      'SSL with Certbot / Let’s Encrypt',
+      'Serving apps & domains',
+    ],
+  },
+  {
+    icon: '☁️',
+    title: 'Cloud — AWS, GCP & DigitalOcean',
+    topics: [
+      'EC2 provisioning & SSH',
+      'Security groups & ports',
+      'S3 & the AWS CLI',
+      'DigitalOcean droplets & GCP instances',
+      'cloud-init & logs',
+    ],
+  },
+  {
+    icon: '🔧',
+    title: 'Jenkins CI/CD',
+    topics: [
+      'Install Jenkins (Docker / apt)',
+      'Freestyle & pipeline jobs',
+      'Jenkinsfile (Groovy DSL)',
+      'Multibranch pipelines',
+      'GitHub / GitLab integration & API tokens',
+      'Build → test → deploy pipelines',
+    ],
+  },
+  {
+    icon: '☸️',
+    title: 'Kubernetes',
+    topics: [
+      'Architecture: control plane & worker nodes',
+      'Cluster setup: kubeadm, k3s, k3d, minikube',
+      'Pods, Deployments & ReplicaSets',
+      'Services & Ingress (NGINX, HAProxy, Istio)',
+      'ConfigMaps & Secrets',
+      'Rolling / blue-green / canary, HPA, Jobs & CronJobs',
+    ],
+  },
+  {
+    icon: '🏗️',
+    title: 'Terraform & IaC + Monitoring',
+    topics: [
+      'IaC concepts & Terraform workflow',
+      'init / validate / plan / apply / destroy',
+      'State, state locking & backends',
+      'Workspaces & modules',
+      'Monitoring: Prometheus & Grafana stack',
+      'node-exporter, dashboards & alerts',
+    ],
+  },
+];

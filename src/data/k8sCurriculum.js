@@ -176,6 +176,138 @@ const PHASE_LESSONS = [
   },
 ];
 
+const DOCKER_SLIDES_SECTIONS = [
+  {
+    id: "why-containers",
+    title: "Why Containers?",
+    content: "Deploying an app the old way meant installing the runtime (e.g. NodeJS), the app's dependencies, and configuring the server by hand — painful across versions, languages, and multiple apps. Dev writes a deploy script, Ops tweaks it, dependencies break…\n\n**Containers** fix this by **encapsulating all dependencies and configuration** needed to run an app. From the outside they all look and run the same way, giving: simplified setup, portability, consistent environments, isolation, efficiency, better resource control, and easy scaling. Now Dev just writes a **Dockerfile**, builds & pushes an image, and Ops deploys it.",
+  },
+  {
+    id: "containers-vs-vms",
+    title: "Containers vs Virtual Machines",
+    content: "Both isolate workloads, but differently:\n- **Virtualization (VMs)** — a hypervisor runs full **guest operating systems** on top of the host OS. Heavy: each VM ships an entire OS.\n- **Containerization (Docker)** — a **container engine** shares the host OS kernel and packages only the app, its deps, and config. Lightweight, fast to start, higher density.\n\nUse VMs for strong OS-level isolation or different kernels; use containers for portable, fast, resource-efficient app delivery.",
+  },
+  {
+    id: "docker-components",
+    title: "Docker Components",
+    content: "A Docker system has three main parts that interact for common operations:\n- **Docker Client** — the CLI/API you use (`docker ...`), sends API calls.\n- **Docker Host** — runs the **Docker Daemon** (dockerd), which manages **containers**, the **image cache**, and exposes a REST API.\n- **Image Registry** — stores and distributes images (e.g. Docker Hub).\n\nRunning a container: the client tells the daemon, which pulls the image from the registry (if not cached) and starts the container. Building & pushing sends a new image up to the registry.",
+    code: "docker run -d -p 8080:80 nginx      # client → daemon → registry\ndocker build -t myapp:1.0 .\ndocker push myaccount/myapp:1.0",
+  },
+  {
+    id: "running-containers-lifecycle",
+    title: "Running Containers & the Lifecycle",
+    content: "A container moves through states: **created → running → stopped/exited → removed**. It runs as long as its main process runs; when that exits it stops (exit code 0 = clean, non-zero = error). Stopped containers keep their writable layer until removed. Restart policies can auto-restart on failure.",
+    code: "docker run -it ubuntu:latest /bin/bash   # run interactively\ndocker ps            # running containers\ndocker ps -a         # include stopped\ndocker stop <id>\ndocker rm <id>\ndocker logs -f <id>  # follow logs\ndocker exec -it <id> sh   # shell into a running container",
+  },
+  {
+    id: "docker-images",
+    title: "Docker Images",
+    content: "An **image** is the read-only template a container is created from — the DNA of your container. It layers a **base image**, **runtime dependencies**, your **application code**, and **configuration**. Images live in **container registries** (Docker Hub, GHCR, ECR…), which differ by hosting type, security features, integrations, and cost.",
+    code: "docker pull node:latest\ndocker images                 # list local images\ndocker image inspect node:latest\ndocker rmi <imageId>          # remove an image",
+  },
+  {
+    id: "dockerfile-deep-dive",
+    title: "Dockerfile & Images Deep Dive",
+    content: "A **Dockerfile** is a recipe of instructions (`FROM`, `RUN`, `COPY`, `CMD`, `ENTRYPOINT`, …) applied over a base image. Key ideas:\n- **Build context & `.dockerignore`** — control what's sent to the build and keep images small.\n- **CMD vs ENTRYPOINT** — CMD sets default args (overridable); ENTRYPOINT sets the fixed executable.\n- **Multistage builds** — build in one stage, copy only artifacts into a slim final image.\n- **Distroless images** — minimal images with no shell/package manager for a smaller attack surface.",
+    code: "# multistage build\nFROM node:20 AS build\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci\nCOPY . .\nRUN npm run build\n\nFROM node:20-slim\nWORKDIR /app\nCOPY --from=build /app/dist ./dist\nCMD [\"node\", \"dist/server.js\"]",
+  },
+  {
+    id: "docker-volumes",
+    title: "Volumes & Data Persistence",
+    content: "By default a container's data lives in its writable layer and is lost when it's removed. **Volumes** persist and share data beyond the container's lifecycle:\n- **Bind mounts** — link a host directory directly into the container (great for local development/real-time editing).\n- **Named volumes** — created and managed by Docker (the recommended way to persist data).\n- **tmpfs** — temporary in-memory data.",
+    code: "docker volume create appdata\ndocker run -v appdata:/var/lib/data myapp     # named volume\ndocker run -v $(pwd):/app node:20             # bind mount\ndocker volume ls\ndocker volume inspect appdata",
+  },
+  {
+    id: "docker-networking",
+    title: "Docker Networking",
+    content: "Docker connects containers using network drivers:\n- **bridge** (default) — private internal network on a single host; containers reach each other by name.\n- **host** — removes network isolation; the container shares the host's network (maximum performance).\n- **none** — disables networking.\n- **overlay** — multi-host networking (Swarm).\n\nPublish ports with `-p host:container` to reach a container from outside.",
+    code: "docker network create app_net\ndocker run --network app_net --name db postgres\ndocker run --network app_net --name api -p 3000:3000 myapi",
+  },
+  {
+    id: "restart-policies",
+    title: "Restart Policies",
+    content: "Restart policies tell Docker whether to bring a container back automatically: **no** (default), **on-failure** (only on non-zero exit, with backoff), **always** (restart unless explicitly stopped), and **unless-stopped**. Useful for keeping long-running services up.",
+    code: "docker run -d --restart on-failure:3 myapp\ndocker run -d --restart unless-stopped nginx",
+  },
+  {
+    id: "docker-compose",
+    title: "Docker Compose",
+    content: "**Docker Compose** defines and runs multi-container apps from a single `compose.yaml` — services, networks, and volumes together (e.g. frontend, reverse proxy, backends, cache, DB). One command starts the whole stack, with defined dependencies and shared networking. You can also merge multiple Compose files for different environments.",
+    code: "# compose.yaml\nservices:\n  api:\n    build: .\n    ports: [\"3000:3000\"]\n    depends_on: [db]\n  db:\n    image: postgres:16\n    environment:\n      POSTGRES_PASSWORD: secret\n    volumes: [\"dbdata:/var/lib/postgresql/data\"]\nvolumes:\n  dbdata:\n\n# docker compose up -d",
+  },
+];
+
+const K8S_SLIDES_SECTIONS = [
+  {
+    id: "why-kubernetes",
+    title: "Why Kubernetes? (Docker Alone Isn't Enough)",
+    content: "Docker runs containers, but at scale you need more. Compared to plain Docker, **Kubernetes** adds: automatic **container scheduling** across servers, built-in **load balancing**, **horizontal scaling** automation, **self-healing** (health checks restart failed containers), **service discovery** via internal DNS, and **configuration management** (ConfigMaps & Secrets). Its **declarative** model lets you declare the desired end state and K8s makes it so.",
+  },
+  {
+    id: "kubernetes-architecture",
+    title: "Kubernetes Architecture",
+    content: "A **cluster** has a **Control Plane (master)** and **Worker Nodes (data plane)**.\n\n**Control Plane** components: **etcd** (key-value store of cluster state), **API Server** (the front door — all interactions go through it), **Scheduler** (assigns Pods to nodes), and **Controller Manager** (+ optional Cloud Controller Manager).\n\n**Worker Nodes** run the workloads via the **kubelet** (talks to the API server, manages Pods), a **container runtime** (containerd/CRI-O), and **kube-proxy** (networking).",
+  },
+  {
+    id: "kubectl-cli",
+    title: "The kubectl CLI",
+    content: "**kubectl** is how you interact with a cluster via the API server. Commands fall into a few buckets: viewing resources, creating/applying manifests, updating, deleting, and debugging.",
+    code: "kubectl get pods -A                 # list pods (all namespaces)\nkubectl apply -f deployment.yaml    # create/update from a manifest\nkubectl describe pod my-pod         # detailed status & events\nkubectl logs my-pod\nkubectl exec -it my-pod -- sh\nkubectl delete -f deployment.yaml",
+  },
+  {
+    id: "pods",
+    title: "Pods & the Pod Lifecycle",
+    content: "A **Pod** is the smallest deployable unit — one or more containers sharing a network namespace and storage. Kubernetes treats everything as an object you declare in YAML.\n\n**Lifecycle:** Pending → ContainerCreating → Running → Succeeded/Failed (Unknown if the node is unreachable). Container restart behaviour follows the Pod's `restartPolicy` (Always / OnFailure / Never), with **exponential backoff** on repeated failures.",
+    code: "apiVersion: v1\nkind: Pod\nmetadata:\n  name: my-pod\nspec:\n  containers:\n    - name: web\n      image: nginx:alpine\n      ports:\n        - containerPort: 80\n# kubectl apply -f pod.yaml",
+  },
+  {
+    id: "yaml-manifests",
+    title: "Object Management & YAML Manifests",
+    content: "You manage objects **imperatively** (quick commands) or **declaratively** (`kubectl apply -f`, the recommended, auditable way). Every manifest has four top-level fields:\n- **apiVersion** — API group + version\n- **kind** — the object type (Pod, Deployment, Service…)\n- **metadata** — name, labels, namespace\n- **spec** — the desired configuration for that object",
+  },
+  {
+    id: "replicasets-deployments",
+    title: "ReplicaSets & Deployments",
+    content: "A **ReplicaSet** ensures a set number of identical Pod replicas are running. A **Deployment** manages ReplicaSets and adds declarative **rolling updates**, **rollbacks**, and **scaling** — you almost always create a Deployment, which manages the ReplicaSet and Pods for you.",
+    code: "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: web\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      containers:\n        - name: web\n          image: nginx:1.27",
+  },
+  {
+    id: "services",
+    title: "Services",
+    content: "A **Service** gives a stable endpoint and load-balances traffic to a changing set of Pods (selected by labels). Types:\n- **ClusterIP** (default) — internal-only virtual IP.\n- **NodePort** — exposes a port on every node.\n- **LoadBalancer** — provisions an external cloud load balancer.\n- **ExternalName** — maps to an external DNS name.",
+    code: "apiVersion: v1\nkind: Service\nmetadata:\n  name: web-svc\nspec:\n  type: ClusterIP\n  selector:\n    app: web\n  ports:\n    - port: 80\n      targetPort: 80",
+  },
+  {
+    id: "resource-management",
+    title: "Resource Management: Labels, Namespaces & Quotas",
+    content: "- **Labels & selectors** — key-value tags to identify and group resources (Services and Deployments select Pods by labels). **Annotations** hold non-identifying metadata.\n- **Namespaces** — isolate groups of resources (dev / staging / production).\n- **Requests & Limits** — Pods request a guaranteed amount of CPU/memory and are capped by limits.\n- **Resource Quotas** — cap total resource usage per namespace.",
+    code: "apiVersion: v1\nkind: ResourceQuota\nmetadata:\n  name: dev-quota\n  namespace: dev\nspec:\n  hard:\n    requests.cpu: \"4\"\n    requests.memory: 8Gi\n    pods: \"20\"",
+  },
+  {
+    id: "health-probes",
+    title: "Health Probes",
+    content: "Probes let Kubernetes continuously check container health:\n- **Startup probe** — waits for slow-starting apps before other probes run.\n- **Liveness probe** — restarts the container if it becomes unhealthy.\n- **Readiness probe** — removes the Pod from Service endpoints until it's ready to receive traffic.",
+    code: "livenessProbe:\n  httpGet:\n    path: /healthz\n    port: 8080\n  initialDelaySeconds: 10\n  periodSeconds: 5\nreadinessProbe:\n  httpGet:\n    path: /ready\n    port: 8080",
+  },
+  {
+    id: "storage-persistence",
+    title: "Storage & Persistence",
+    content: "Pods are ephemeral, so persistent data needs **Volumes**:\n- **EmptyDir** — scratch space tied to the Pod's lifecycle.\n- **PersistentVolume (PV) + PersistentVolumeClaim (PVC)** — durable storage; static or **dynamic provisioning** binds a claim to storage (e.g. AWS EBS, GCE PD).\n- **StatefulSets** — manage stateful apps with stable network IDs and per-Pod storage.",
+    code: "apiVersion: v1\nkind: PersistentVolumeClaim\nmetadata:\n  name: data-pvc\nspec:\n  accessModes: [\"ReadWriteOnce\"]\n  resources:\n    requests:\n      storage: 5Gi",
+  },
+  {
+    id: "config-secrets",
+    title: "ConfigMaps & Secrets",
+    content: "Decouple configuration from images:\n- **ConfigMaps** — inject non-sensitive config (key-value or files) as environment variables or mounted files.\n- **Secrets** — the same for **sensitive** data (passwords, tokens, keys), stored base64-encoded and handled more carefully.",
+    code: "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: app-config\ndata:\n  ENV: production\n  LOG_LEVEL: info\n  DB_HOST: mysql.db.svc.cluster.local",
+  },
+  {
+    id: "security-kustomize",
+    title: "Security & Kustomize",
+    content: "**Security fundamentals:** **RBAC** (Role-Based Access Control) grants CRUD permissions to users/service accounts; **Service Accounts** give Pods an identity; **Network Policies** regulate Pod ingress/egress; **Pod Security Standards** enforce security profiles.\n\n**Kustomize** customizes plain YAML with **bases and overlays** (per-environment) and **patches** (strategic merge or JSON) — a template-free alternative to Helm for managing dev/staging/prod variants.",
+  },
+];
+
 function buildLessons() {
   const lessons = [];
   let k8sDay = 1;
@@ -187,7 +319,7 @@ function buildLessons() {
 
   for (const { phase, paidUrl, items } of PHASE_LESSONS) {
     for (const [title, subtitle, topics] of items) {
-      lessons.push({
+      const lesson = {
         k8sDay,
         phase,
         title,
@@ -195,7 +327,18 @@ function buildLessons() {
         topics,
         paidLectureUrl: paidUrl,
         youtube: defaultYt,
-      });
+      };
+      if (title === 'Docker for Absolute Beginners') {
+        lesson.sections = DOCKER_SLIDES_SECTIONS;
+        lesson.pdfUrl = '/docker-k8s-slides.pdf';
+        lesson.pdfLabel = 'Docker & Kubernetes Slides (PDF)';
+      }
+      if (title === 'Kubernetes Architecture') {
+        lesson.sections = K8S_SLIDES_SECTIONS;
+        lesson.pdfUrl = '/docker-k8s-slides.pdf';
+        lesson.pdfLabel = 'Docker & Kubernetes Slides (PDF)';
+      }
+      lessons.push(lesson);
       k8sDay += 1;
     }
   }

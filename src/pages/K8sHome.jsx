@@ -1,6 +1,6 @@
 import { useSearchParams, Link } from 'react-router-dom';
 import { k8sChapters, searchK8sChapters } from '../data/k8sChapters';
-import { K8S_META } from '../data/k8sSyllabus';
+import { K8S_META, K8S_RESOURCES, DOCKER_K8S_PDF } from '../data/k8sSyllabus';
 import LectureCard from '../components/LectureCard';
 import K8sSyllabus from '../components/K8sSyllabus';
 import K8sHero, { K8sHeroStats } from '../components/K8sHero';
@@ -50,6 +50,15 @@ export default function K8sHome() {
                 <a href="#k8s-syllabus" className="btn btn-outline-k8s btn-lg">
                   View Syllabus
                 </a>
+                <a
+                  href={DOCKER_K8S_PDF}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-k8s btn-lg"
+                >
+                  📄 Docker &amp; K8s Slides (PDF)
+                </a>
                 <Link to="/devops" className="btn btn-outline-k8s btn-lg">
                   ← 100 Days of DevOps
                 </Link>
@@ -68,6 +77,42 @@ export default function K8sHome() {
         <div id="k8s-syllabus">
           <K8sSyllabus />
         </div>
+
+        <section className="devops-mastery-section" id="k8s-resources">
+          <div className="section-header">
+            <h2>Docker &amp; Kubernetes Slides + KodeKloud Courses</h2>
+            <a href={DOCKER_K8S_PDF} download className="btn btn-k8s">
+              📄 Download Slides
+            </a>
+          </div>
+          <p className="section-desc">
+            The full <strong>Docker &amp; Kubernetes</strong> slide deck — its content is worked into the{' '}
+            <Link to="/k8s/learn/docker-for-absolute-beginners" className="clear-search">
+              Docker
+            </Link>{' '}
+            and{' '}
+            <Link to="/k8s/learn/kubernetes-architecture" className="clear-search">
+              Kubernetes Architecture
+            </Link>{' '}
+            module pages. Go deeper with the official <strong>KodeKloud</strong> courses below.
+          </p>
+          <div className="k8s-courses-grid">
+            {K8S_RESOURCES.map((res) => (
+              <a
+                key={res.url}
+                href={res.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="k8s-course-link"
+              >
+                <span aria-hidden="true">🎓</span> {res.title}
+                <span className="k8s-course-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
 
         <section className="roadmap">
           <h2>100-Day Kubernetes Roadmap</h2>

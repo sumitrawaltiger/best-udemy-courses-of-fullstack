@@ -1,6 +1,6 @@
 import { useSearchParams, Link } from 'react-router-dom';
 import { devopsChapters, searchDevopsChapters } from '../data/devopsChapters';
-import { DEVOPS_META } from '../data/devopsSyllabus';
+import { DEVOPS_META, DEVOPS_MASTERY_SYLLABUS, DEVOPS_MASTERY_PDF } from '../data/devopsSyllabus';
 import LectureCard from '../components/LectureCard';
 import DevopsSyllabus from '../components/DevopsSyllabus';
 import DevopsHero, { DevopsHeroStats } from '../components/DevopsHero';
@@ -42,6 +42,15 @@ export default function DevopsHome() {
                 <a href="#devops-syllabus" className="btn btn-outline-devops btn-lg">
                   View Syllabus
                 </a>
+                <a
+                  href={DEVOPS_MASTERY_PDF}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-devops btn-lg"
+                >
+                  📄 DevOps Mastery (PDF)
+                </a>
                 <Link to="/aws" className="btn btn-outline-devops btn-lg">
                   ← 100 Days of AWS
                 </Link>
@@ -60,6 +69,39 @@ export default function DevopsHome() {
         <div id="devops-syllabus">
           <DevopsSyllabus />
         </div>
+
+        <section className="devops-mastery-section" id="devops-mastery">
+          <div className="section-header">
+            <h2>DevOps Mastery Syllabus</h2>
+            <a href={DEVOPS_MASTERY_PDF} download className="btn btn-devops">
+              📄 Download PDF
+            </a>
+          </div>
+          <p className="section-desc">
+            A complete, tool-by-tool DevOps roadmap designed from the <strong>Learn DevOps</strong> course
+            slides ({DEVOPS_MASTERY_SYLLABUS.length} modules) — from Linux and Docker to Kubernetes,
+            Terraform, and monitoring. Download the full slide deck above.
+          </p>
+          <div className="devops-mastery-grid">
+            {DEVOPS_MASTERY_SYLLABUS.map((mod, i) => (
+              <article key={mod.title} className="devops-mastery-card">
+                <div className="devops-mastery-card-head">
+                  <span className="devops-mastery-icon" aria-hidden="true">
+                    {mod.icon}
+                  </span>
+                  <h3>
+                    <span className="devops-mastery-num">{i + 1}</span> {mod.title}
+                  </h3>
+                </div>
+                <ul>
+                  {mod.topics.map((topic) => (
+                    <li key={topic}>{topic}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
 
         <section className="roadmap">
           <h2>100-Day DevOps Roadmap</h2>
