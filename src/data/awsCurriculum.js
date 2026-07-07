@@ -163,6 +163,209 @@ const PHASE_LESSONS = [
   },
 ];
 
+// ---------------------------------------------------------------------------
+// Content distilled from Stephane Maarek's "AWS Certified Solutions Architect
+// Associate (SAA-C03)" slide deck (876 slides). Applied to the SAA-C03 phase.
+// ---------------------------------------------------------------------------
+
+const AWS_SAA_SLIDES = {
+  label: 'AWS Solutions Architect Slides (PDF)',
+  href: '/aws-solutions-architect-slides.pdf',
+  icon: '📄',
+};
+
+const SAA_OVERVIEW_SECTIONS = [
+  {
+    id: 'saa-exam-format',
+    title: 'The SAA-C03 Exam',
+    content:
+      "The **AWS Certified Solutions Architect – Associate (SAA-C03)** validates your ability to design resilient, high-performing, secure, and cost-optimized architectures.\n\n- **65 questions**, multiple choice / multiple response, in **130 minutes**.\n- Passing score is roughly **720/1000**.\n- Four domains: **Design Secure Architectures (30%)**, **Design Resilient Architectures (26%)**, **Design High-Performing Architectures (24%)**, and **Design Cost-Optimized Architectures (20%)**.\n\nThe exam tests **service selection and trade-offs**, not memorization — know *when* to use each service.",
+  },
+  {
+    id: 'saa-global-infra',
+    title: 'AWS Global Infrastructure',
+    content:
+      "AWS runs in **Regions** (e.g. `us-east-1`) — clusters of data centers. Choose a region by **compliance, latency to users, service availability, and pricing**.\n\n- Each region has multiple **Availability Zones (AZs)** — isolated, one or more discrete data centers with redundant power/networking. Spreading across AZs gives **high availability**.\n- **Edge Locations / Points of Presence** (400+) power CloudFront and Global Accelerator for low-latency global delivery.\n\nDesigning **multi-AZ** (and sometimes multi-region) is the foundation of resilient architecture.",
+  },
+  {
+    id: 'saa-iam',
+    title: 'IAM — Identity & Access Management',
+    content:
+      "**IAM** is global and controls who can do what:\n\n- **Users** (people) can belong to **Groups**; **Policies** (JSON) grant permissions.\n- **Roles** grant temporary permissions to AWS services (e.g. an EC2 instance role) or federated/cross-account access via **STS**.\n- Enforce **least privilege**, enable **MFA**, use **IAM Access Analyzer** and **Credentials Report**.\n\nThe root account should be locked down with MFA and never used day-to-day.",
+  },
+  {
+    id: 'saa-well-architected',
+    title: 'The Well-Architected Framework',
+    content:
+      "AWS's **Well-Architected Framework** defines **six pillars** to evaluate designs: **Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization,** and **Sustainability**.\n\nThe exam's four domains map directly onto Reliability (resilient), Performance, Security, and Cost. Use the **Well-Architected Tool** to review workloads against these pillars.\n\nDownload the full **876-slide deck** below to study every service in depth.",
+  },
+];
+
+const RESILIENT_SECTIONS = [
+  {
+    id: 'res-ha-scaling',
+    title: 'High Availability & Scalability',
+    content:
+      "**Scalability** = handle greater load; **High Availability** = survive failures.\n\n- **Vertical scaling** — bigger instance (limited).\n- **Horizontal scaling** — more instances via an **Auto Scaling Group (ASG)**.\n- An **Elastic Load Balancer (ALB/NLB)** spreads traffic across healthy instances in **multiple AZs**.\n\nThe classic resilient pattern: **ELB + Multi-AZ ASG** with health checks, so a failed instance or AZ is automatically routed around.",
+  },
+  {
+    id: 'res-rds-aurora',
+    title: 'Resilient Databases: RDS Multi-AZ & Aurora',
+    content:
+      "- **RDS Multi-AZ** keeps a synchronous **standby** in another AZ with automatic failover — for high availability (not scaling).\n- **RDS Read Replicas** scale **reads** (async, up to 15) and can be cross-region.\n- **Aurora** stores **6 copies of data across 3 AZs** (needs 4/6 for writes, 3/6 for reads), self-heals, and fails over in <30s. Aurora **Global Database** replicates cross-region for DR.\n\nPick Multi-AZ for availability, read replicas for read scaling.",
+  },
+  {
+    id: 'res-route53',
+    title: 'Route 53 — DNS & Failover',
+    content:
+      "**Route 53** is a managed DNS with **health checks** and **routing policies**:\n\n- **Simple, Weighted, Latency, Failover, Geolocation, Geoproximity, Multi-Value.**\n- **Alias records** map a domain to AWS resources (ALB, CloudFront, S3) for free, even at the zone apex.\n- **Health Check → automated DNS failover** reroutes traffic away from unhealthy endpoints.\n\nUse **Failover routing + health checks** for active-passive DR.",
+  },
+  {
+    id: 'res-decoupling',
+    title: 'Decoupling with SQS & SNS',
+    content:
+      "Loose coupling makes systems resilient:\n\n- **SQS** — infinitely scalable **queue**; consumers **pull** messages. A **visibility timeout** hides a message while it's processed; unprocessed messages return (retry). Scale consumers with an ASG on `ApproximateNumberOfMessages`.\n- **SNS** — **pub/sub**; push once, deliver to many subscribers.\n- **SNS + SQS Fan-Out** — publish to SNS, fan out to multiple SQS queues (fully decoupled, no data loss).\n\nQueues also act as a **buffer** to smooth spikes into databases.",
+  },
+];
+
+const PERFORMANCE_SECTIONS = [
+  {
+    id: 'perf-compute',
+    title: 'Right Compute for Performance',
+    content:
+      "Choose EC2 **instance families** by workload: **General (t/m)**, **Compute (c)**, **Memory (r/x)**, **Storage (i/d)**, **Accelerated (g/p)**.\n\n- **Placement Groups** tune placement: **Cluster** (low-latency, same AZ), **Spread** (max fault isolation), **Partition** (large distributed systems like HDFS/Kafka).\n- Use **Auto Scaling** with target-tracking policies to match capacity to demand.\n- For extreme network throughput, use **Enhanced Networking / EFA**.",
+  },
+  {
+    id: 'perf-cloudfront',
+    title: 'CloudFront & Global Accelerator',
+    content:
+      "- **CloudFront** is a **CDN** caching content at **edge locations** near users (TTL-based). Origins can be **S3** (with OAC), an **ALB/EC2**, or any HTTP server. Features: **geo-restriction**, **cache invalidations**, **CloudFront Functions / Lambda@Edge** for edge logic.\n- **Global Accelerator** uses the AWS backbone and **anycast IPs** to route TCP/UDP traffic to the nearest healthy endpoint — great for non-HTTP and fast failover.\n\nCloudFront caches content; Global Accelerator improves the network path.",
+  },
+  {
+    id: 'perf-caching',
+    title: 'Caching with ElastiCache',
+    content:
+      "**ElastiCache** (managed Redis/Memcached) offloads databases and stores sessions:\n\n- **DB Cache (cache-aside)** — the app checks the cache first, falling back to RDS on a miss.\n- **User Session Store** — write session to ElastiCache so any instance can serve the user (stateless app).\n- **Redis** — Multi-AZ with auto-failover, read replicas, persistence, sorted sets (leaderboards). **Memcached** — simple, multi-threaded, no persistence.",
+  },
+  {
+    id: 'perf-storage-read',
+    title: 'Scaling Reads & Storage Performance',
+    content:
+      "- **S3** scales automatically to very high request rates (3,500 PUT / 5,500 GET per prefix per second); use **multipart upload** and **S3 Transfer Acceleration** for large/global uploads.\n- **RDS Read Replicas** and **Aurora** custom/reader endpoints scale read-heavy workloads.\n- **DynamoDB** with **DAX** gives microsecond reads; **on-demand** mode absorbs spiky traffic.\n- Front read-heavy content with **CloudFront** to cut origin load.",
+  },
+];
+
+const SECURE_SECTIONS = [
+  {
+    id: 'sec-identity',
+    title: 'Identity: IAM, STS & Cognito',
+    content:
+      "- **IAM Roles + STS** issue temporary credentials — the secure way for services and cross-account access (never hard-code keys).\n- **IAM Identity Center** (SSO) centralizes workforce access across accounts.\n- **Cognito** provides identity for **app users** (User Pools for sign-in/JWT, Identity Pools for temporary AWS creds).\n- Use **resource policies**, **permission boundaries**, and **SCPs** (Organizations) to constrain access at scale.",
+  },
+  {
+    id: 'sec-encryption',
+    title: 'Encryption & KMS',
+    content:
+      "**KMS** manages encryption keys with full CloudTrail auditing:\n\n- **Symmetric (AES-256)** keys for most services; **asymmetric** for sign/verify.\n- **Key Policies** control access (like a bucket policy); **Multi-Region Keys** replicate keys across regions.\n- **Envelope encryption** (via the Encryption SDK) for large data.\n- **S3 encryption**: SSE-S3, **SSE-KMS**, SSE-C, and enforce it with bucket policies. **Secrets Manager** stores/rotates secrets; **SSM Parameter Store** for config.",
+  },
+  {
+    id: 'sec-network',
+    title: 'Network & Edge Security',
+    content:
+      "Layered network defense:\n\n- **Security Groups** (stateful, instance-level, allow-only) vs **NACLs** (stateless, subnet-level, allow + deny).\n- **AWS WAF** — Layer-7 firewall on ALB/API Gateway/CloudFront (SQL injection, rate limiting). Note WAF doesn't support NLB (L4) — front it with an ALB or use a fixed IP via Global Accelerator.\n- **Shield** — DDoS protection (Standard free; Advanced paid).\n- **Firewall Manager** — manage WAF/Shield rules org-wide.",
+  },
+  {
+    id: 'sec-detection',
+    title: 'Threat Detection & Data Protection',
+    content:
+      "- **GuardDuty** — intelligent threat detection from VPC Flow Logs, DNS, and CloudTrail.\n- **Inspector** — automated vulnerability scanning for EC2, ECR images, and Lambda.\n- **Macie** — ML-based discovery of sensitive data (PII) in S3.\n- **CloudTrail** (API audit) + **AWS Config** (resource compliance) give the audit trail.\n\nCombine these for a strong security posture surfaced in **Security Hub**.",
+  },
+];
+
+const COST_SECTIONS = [
+  {
+    id: 'cost-ec2-pricing',
+    title: 'EC2 Purchasing Options',
+    content:
+      "Match the pricing model to the workload:\n\n- **On-Demand** — pay per second, no commitment; for spiky/short-term work.\n- **Reserved Instances (1/3-yr)** — up to ~72% off for steady-state workloads.\n- **Savings Plans** — commit to $/hour for flexible compute discounts.\n- **Spot Instances** — up to ~90% off spare capacity, can be interrupted; for fault-tolerant/batch work.\n- **Dedicated Hosts/Instances** — compliance and licensing.",
+  },
+  {
+    id: 'cost-s3-storage',
+    title: 'S3 Storage Classes & Lifecycle',
+    content:
+      "Store data in the cheapest class that meets access needs:\n\n- **Standard** (frequent) → **Standard-IA** / **One Zone-IA** (infrequent) → **Glacier Instant / Flexible / Deep Archive** (archival, cheapest).\n- **Intelligent-Tiering** auto-moves objects between tiers based on access — no retrieval fees.\n- **Lifecycle rules** transition and expire objects automatically.\n\nSame idea applies to **EBS snapshots → Archive** and moving cold data off expensive stores.",
+  },
+  {
+    id: 'cost-optimize',
+    title: 'Right-Sizing & Cost Tooling',
+    content:
+      "- **Auto Scaling** + right-sized instances avoid paying for idle capacity.\n- **Compute Optimizer** recommends better instance types.\n- **S3/EBS lifecycle** and deleting unattached volumes/EIPs cut waste.\n- **Cost Explorer** analyzes spend, **Budgets** alert on thresholds, and **cost allocation tags** attribute spend.\n- Serverless (Lambda, Fargate, Aurora Serverless) charges only for what you use.",
+  },
+];
+
+const DR_SECTIONS = [
+  {
+    id: 'dr-rpo-rto',
+    title: 'RPO & RTO',
+    content:
+      "Disaster recovery is measured by two numbers:\n\n- **RPO (Recovery Point Objective)** — how much **data loss** you can tolerate (how far back the last usable backup is).\n- **RTO (Recovery Time Objective)** — how much **downtime** you can tolerate (how long to recover).\n\nSmaller RPO/RTO means more frequent backups and more standby infrastructure — and higher cost. DR strategy is a **cost vs recovery-speed** trade-off.",
+  },
+  {
+    id: 'dr-strategies',
+    title: 'The Four DR Strategies',
+    content:
+      "From cheapest/slowest to fastest/most-expensive:\n\n- **Backup & Restore** — high RPO/RTO; back up to S3/Glacier and restore on disaster. Cheapest.\n- **Pilot Light** — the critical core (e.g. database) runs continuously; the rest is provisioned on failover.\n- **Warm Standby** — the full system runs at **minimum size**, scaled up on disaster.\n- **Hot Site / Multi-Site** — full production scale running in **both** locations; near-zero RTO, most expensive.",
+  },
+  {
+    id: 'dr-tooling',
+    title: 'DR Tooling & Tips',
+    content:
+      "AWS building blocks for DR:\n\n- **Backups** — EBS snapshots, RDS automated backups/snapshots, DynamoDB backups, regular pushes to **S3/S3-IA/Glacier** with lifecycle rules.\n- **Cross-region replication** — S3 CRR, Aurora Global Database, RDS cross-region read replicas.\n- **Automation** — CloudFormation to rebuild infrastructure; **AWS Elastic Disaster Recovery (DRS)** for continuous replication.\n\nTest failover regularly — a DR plan you haven't tested doesn't work.",
+  },
+];
+
+const HYBRID_SECTIONS = [
+  {
+    id: 'hybrid-vpc-connect',
+    title: 'Connecting VPCs: Peering & Transit Gateway',
+    content:
+      "- **VPC Peering** — privately connect two VPCs (any account/region), but it's **not transitive** and CIDRs **must not overlap**.\n- **Transit Gateway** — a regional **hub-and-spoke** router connecting thousands of VPCs and on-premises networks transitively; supports **ECMP** for higher VPN throughput and sharing Direct Connect across accounts.\n\nUse peering for a couple of VPCs; Transit Gateway when the mesh grows.",
+  },
+  {
+    id: 'hybrid-vpn-dx',
+    title: 'On-Premises: VPN & Direct Connect',
+    content:
+      "- **Site-to-Site VPN** — encrypted **IPsec** tunnel over the public internet; quick to set up.\n- **Direct Connect (DX)** — a **dedicated private** physical connection (1–400 Gbps) to AWS; consistent low latency and higher throughput. Data is private but **not encrypted** — add a VPN over DX for IPsec.\n- **Direct Connect Gateway** reaches VPCs in multiple regions.\n\nFor critical workloads, use **DX with a VPN backup** for resiliency.",
+  },
+  {
+    id: 'hybrid-storage-dns',
+    title: 'Hybrid Storage & DNS',
+    content:
+      "- **Storage Gateway** bridges on-premises to AWS storage: **File Gateway** (S3 via NFS/SMB), **Volume Gateway** (iSCSI block, cached/stored), **Tape Gateway** (virtual tape to Glacier).\n- **Route 53 Resolver Endpoints** enable **hybrid DNS**: **Inbound** endpoints let on-prem resolve AWS names; **Outbound** forward AWS queries to on-prem resolvers.\n\nThese let you extend an existing data center into AWS gradually.",
+  },
+];
+
+const MIGRATION_SECTIONS = [
+  {
+    id: 'mig-6rs',
+    title: 'The 6 Rs of Migration',
+    content:
+      "AWS classifies migration approaches as the **6 Rs**:\n\n- **Rehost** — \"lift and shift\" as-is (fast, minimal change).\n- **Replatform** — lift, tinker & optimize (e.g. move DB to RDS).\n- **Repurchase** — move to a different product (often SaaS).\n- **Refactor / Re-architect** — redesign cloud-native (microservices, serverless).\n- **Retire** — decommission what's no longer needed.\n- **Retain** — keep on-premises for now.",
+  },
+  {
+    id: 'mig-dms',
+    title: 'Database Migration: DMS & SCT',
+    content:
+      "**AWS Database Migration Service (DMS)** migrates databases with **minimal downtime** — the source stays available during migration and **Change Data Capture (CDC)** keeps it in sync.\n\n- **Homogeneous** (Oracle→Oracle) needs no schema conversion.\n- **Heterogeneous** (Oracle→Aurora) uses the **Schema Conversion Tool (SCT)** to convert the schema first.\n\nRun DMS on an EC2 replication instance that reads source and writes target.",
+  },
+  {
+    id: 'mig-transfer',
+    title: 'Data Transfer: Snow Family & DataSync',
+    content:
+      "Moving large data sets:\n\n- **Snow Family** — physical devices for **offline** transfer when the network is too slow: **Snowcone**, **Snowball Edge** (up to ~80TB, also compute), **Snowmobile** (exabyte-scale). Rule of thumb: if an online transfer takes >1 week, use Snowball.\n- **DataSync** — **online**, agent-based sync to/from S3, EFS, FSx (great for ongoing replication).\n- **Storage Gateway** for continued hybrid access after migration.",
+  },
+];
+
 function buildLessons() {
   const lessons = [];
   let day = 1;
@@ -172,9 +375,20 @@ function buildLessons() {
     'freeCodeCamp',
   );
 
+  const SAA_SECTION_MAP = {
+    'SAA-C03 Exam Overview': SAA_OVERVIEW_SECTIONS,
+    'Design Resilient Architectures': RESILIENT_SECTIONS,
+    'Design High-Performance Architectures': PERFORMANCE_SECTIONS,
+    'Design Secure Applications': SECURE_SECTIONS,
+    'Design Cost-Optimized Architectures': COST_SECTIONS,
+    'Disaster Recovery Strategies': DR_SECTIONS,
+    'Hybrid Cloud Architecture': HYBRID_SECTIONS,
+    'Migration Strategies — 6 Rs': MIGRATION_SECTIONS,
+  };
+
   for (const { phase, items } of PHASE_LESSONS) {
     for (const [title, subtitle, topics] of items) {
-      lessons.push({
+      const lesson = {
         awsDay: day,
         phase,
         title,
@@ -183,7 +397,21 @@ function buildLessons() {
         notionUrl: CLOUDFOLKS_AWS_COURSE_URL,
         paidLectureUrl: KODEKLOUD_CLOUD_URL,
         youtube: defaultYt,
-      });
+      };
+      // Attach Stephane Maarek's SAA-C03 slide deck across the SAA-C03 phase,
+      // and enrich each exam-domain module with content sections from it.
+      if (phase === 'Solutions Architect SAA-C03') {
+        lesson.paidLectureUrl = AWS_UDEMY_SAA_URL;
+        lesson.extraLinks = [AWS_SAA_SLIDES];
+        if (SAA_SECTION_MAP[title]) {
+          lesson.sections = SAA_SECTION_MAP[title];
+        }
+        if (title === 'SAA-C03 Exam Overview') {
+          lesson.pdfUrl = AWS_SAA_SLIDES.href;
+          lesson.pdfLabel = AWS_SAA_SLIDES.label;
+        }
+      }
+      lessons.push(lesson);
       day += 1;
     }
   }
