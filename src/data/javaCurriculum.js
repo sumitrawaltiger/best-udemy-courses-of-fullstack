@@ -135,7 +135,9 @@ const MICROSERVICES_DESIGN_SECTIONS = [
     id: 'architecture-evolution',
     title: 'The Architecture Evolution Journey',
     content:
-      "Microservices are the **end** of an evolutionary path, not the starting point. A system typically evolves: **Monolith → 3-Tier → Modular Monolith → Microservices → Serverless**.\n\nEach step is driven by a real problem, using tools from your **design toolbox** (architectures, patterns, principles like **KISS, YAGNI, DRY, Separation of Concerns**).\n\n- **Monolith** — one deployable unit; simple and fast to start, but a **Big Ball of Mud** as it grows.\n- **Modular Monolith** — clear internal module boundaries and separate DB schemas, with high cohesion and low coupling, **before** going distributed.\n- **Microservices** — independently deployable, scalable services when teams and load demand true autonomy.",
+      "Microservices are the **end** of an evolutionary path, not the starting point. A system typically evolves: **Monolith → 3-Tier → Modular Monolith → Microservices → Serverless**.\n\nEach step is driven by a real problem, using tools from your **design toolbox** (architectures, patterns, principles like **KISS, YAGNI, DRY, Separation of Concerns**).\n\n- **Monolith** — one deployable unit; simple and fast to start, but a **Big Ball of Mud** as it grows.\n- **Modular Monolith** — clear internal module boundaries and separate DB schemas, with high cohesion and low coupling, **before** going distributed.\n- **Microservices** — independently deployable, scalable services when teams and load demand true autonomy.\n\n**Monolithic vs Microservice — at a glance:**",
+    image: '/java-notes/monolithic-vs-microservices.jpg',
+    imageAlt: 'Monolithic vs Microservice comparison — architecture, modularity, agility, scaling, implementation, maintainability, and transactions (ACID vs BASE)',
   },
   {
     id: 'when-microservices',
@@ -214,6 +216,8 @@ const MICROSERVICES_DESIGN_SECTIONS = [
     title: 'Design Patterns for Microservices',
     content:
       "This module distills **Mehmet Ozkaya's** *Design Microservices Architecture with Patterns & Best Practices* — a step-by-step journey evolving an **E-Shop** from monolith to microservices to serverless, applying each pattern to solve a concrete problem.\n\nThe microservices design patterns group into five families: **Decomposition, Integration, Database, Observability,** and **Cross-Cutting Concern** patterns.\n\nDownload the complete **749-slide deck** below to go deeper on every pattern, with architecture diagrams and code-exploration references.",
+    image: '/java-notes/microservices-design-patterns.jpg',
+    imageAlt: 'Design Patterns for Microservices map — Decomposition, Integration, Database, Observability, and Cross-Cutting Concern pattern families',
   },
 ];
 
