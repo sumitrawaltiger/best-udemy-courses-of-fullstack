@@ -1,20 +1,14 @@
 // Interview Preparation — ChaiCode + GeeksForGeeks
 // https://courses.chaicode.com/learn/home/all-in-one-interview-preparation
 
-import {
-  CHAICODE_INTERVIEW_URL,
-  GFG_DSA_URL,
-  GFG_SYSTEM_DESIGN_URL,
-  GFG_COURSES_URL,
-  GFG_INTERVIEW_PREP_URL,
-} from './trackConfig.js';
+import { CHAICODE_INTERVIEW_URL } from './trackConfig.js';
 
 const yt = (url, title, channel = 'freeCodeCamp') => ({ url, title, channel });
 
 const PHASE_LESSONS = [
   {
     phase: 'DSA Foundations',
-    paidUrl: GFG_DSA_URL,
+    paidUrl: CHAICODE_INTERVIEW_URL,
     items: [
       ['Introduction to Interview Prep', 'Your roadmap to cracking tech interviews', ['DSA + System Design', 'ChaiCode + GfG', 'Study schedule', 'Portfolio review']],
       ['Arrays & Strings', 'Two pointers, sliding window, and hashing', ['Array traversal', 'Two pointers', 'Sliding window', 'Hash maps']],
@@ -30,7 +24,7 @@ const PHASE_LESSONS = [
   },
   {
     phase: 'DSA Patterns & Practice',
-    paidUrl: GFG_DSA_URL,
+    paidUrl: CHAICODE_INTERVIEW_URL,
     items: [
       ['Dynamic Programming — 1D', 'Memoization and tabulation basics', ['Overlapping subproblems', 'Fibonacci', 'Climbing stairs', 'House robber']],
       ['Dynamic Programming — 2D', 'Grid paths and string DP', ['Unique paths', 'Edit distance', 'LCS', 'Knapsack']],
@@ -46,7 +40,7 @@ const PHASE_LESSONS = [
   },
   {
     phase: 'System Design Fundamentals',
-    paidUrl: GFG_SYSTEM_DESIGN_URL,
+    paidUrl: CHAICODE_INTERVIEW_URL,
     items: [
       ['System Design Introduction', 'Scalability, reliability, and trade-offs', ['Requirements gathering', 'CAP theorem', 'SLA vs SLO', 'Estimation']],
       ['Load Balancing & Caching', 'Distribute traffic and reduce latency', ['LB algorithms', 'CDN', 'Cache strategies', 'Redis intro']],
@@ -62,7 +56,7 @@ const PHASE_LESSONS = [
   },
   {
     phase: 'System Design Case Studies',
-    paidUrl: GFG_SYSTEM_DESIGN_URL,
+    paidUrl: CHAICODE_INTERVIEW_URL,
     items: [
       ['Design a URL Shortener', 'TinyURL / bit.ly architecture', ['Hash generation', 'Redirect flow', 'Analytics', 'Scale to billions']],
       ['Design Twitter / News Feed', 'Fan-out, timelines, and ranking', ['Fan-out on write vs read', 'Celebrities', 'Ranking feed', 'Caching']],
@@ -94,7 +88,7 @@ const PHASE_LESSONS = [
   },
   {
     phase: 'Mock Interviews & Capstone',
-    paidUrl: GFG_INTERVIEW_PREP_URL,
+    paidUrl: CHAICODE_INTERVIEW_URL,
     items: [
       ['GfG Interview Preparation Course', 'Product company interview track', ['Course overview', 'Company-specific prep', 'OA strategies', 'Onsite format']],
       ['Frontend Interview Marathon', 'HTML, CSS, JS, and React rapid fire', ['CSS layouts', 'JS tricky questions', 'React patterns', 'Accessibility']],
