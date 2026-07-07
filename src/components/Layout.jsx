@@ -60,7 +60,7 @@ export default function Layout() {
           <a href="https://github.com/sumitrawal" target="_blank" rel="noopener noreferrer">
             Sumit Rawal
           </a>{' '}
-          — sharing my JavaScript learning journey with the world.
+          — sharing my Full LifeCycle Engineering journey with the world.
         </p>
         <p className="footer-sub">
           Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → Interview Prep.

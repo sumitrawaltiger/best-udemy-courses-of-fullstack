@@ -319,7 +319,6 @@ export default function Chapter({ track = 'thunder' }) {
         <h1>{chapter.title}</h1>
         <p className="chapter-subtitle">{chapter.subtitle}</p>
         <div className="chapter-meta">
-          <span>📅 {chapter.createdOn}</span>
           <span>⏱ {chapter.duration}</span>
           <span>📚 {chapter.sections.length} sections</span>
         </div>
