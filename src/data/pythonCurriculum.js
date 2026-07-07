@@ -1107,6 +1107,8 @@ export const pythonLessons = [
     subtitle: 'AI agents vs agentic AI, memory, planning, and multi-agent systems',
     topics: ['What is Agentic AI', 'Agents vs Agentic AI', 'Memory & planning', 'Agent architecture', 'Multi-agent systems'],
     notionUrl: PORTAL,
+    image: '/python-notes/agentic-ai-big-picture.jpg',
+    imageAlt: 'Agentic AI: The Big Picture — AI & ML, Deep Learning, Gen AI, AI Agents, and Agentic AI concentric map',
     youtube: yt('https://www.youtube.com/watch?v=sal78ACtGTc', 'Agentic AI Explained', 'IBM Technology'),
   },
   {

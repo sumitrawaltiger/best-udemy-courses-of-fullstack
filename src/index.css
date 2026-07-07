@@ -1880,6 +1880,34 @@ a:hover {
   border-left: 4px solid var(--green);
 }
 
+.chapter-image {
+  margin: 0 0 36px;
+  text-align: center;
+}
+.chapter-image a {
+  display: inline-block;
+  max-width: 640px;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border, #e2e8f0);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  transition: transform 0.15s ease;
+}
+.chapter-image a:hover {
+  transform: translateY(-2px);
+}
+.chapter-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.chapter-image figcaption {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted, #64748b);
+}
+
 .chapter-intro h2 {
   font-size: 16px;
   font-weight: 700;

@@ -38,6 +38,7 @@ import KafkaInterviewQuestions from './pages/KafkaInterviewQuestions';
 import JavaStreamsPuzzles from './pages/JavaStreamsPuzzles';
 import SqlQueryPuzzles from './pages/SqlQueryPuzzles';
 import SpringBootEcommerceRoadmap from './pages/SpringBootEcommerceRoadmap';
+import CheatSheets from './pages/CheatSheets';
 import BestUdemyCourses from './pages/BestUdemyCourses';
 import AboutFounder from './pages/AboutFounder';
 
@@ -73,6 +74,7 @@ export default function App() {
         <Route path="/java-streams-puzzles" element={<JavaStreamsPuzzles />} />
         <Route path="/sql-query-puzzles" element={<SqlQueryPuzzles />} />
         <Route path="/spring-boot-ecommerce-roadmap" element={<SpringBootEcommerceRoadmap />} />
+        <Route path="/cheat-sheets" element={<CheatSheets />} />
         <Route path="/best-udemy-courses" element={<BestUdemyCourses />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />

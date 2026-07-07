@@ -75,6 +75,9 @@ export default function Home() {
                 <Link to="/best-udemy-courses" className="btn btn-paid btn-lg">
                   Best Udemy Courses 🎓
                 </Link>
+                <Link to="/cheat-sheets" className="btn btn-interview btn-lg">
+                  Cheat Sheets 📄
+                </Link>
                 <Link to="/about-founder" className="btn btn-outline-light btn-lg">
                   About theAuthor 👤
                 </Link>

@@ -468,6 +468,15 @@ export default function Chapter({ track = 'thunder' }) {
         </ul>
       </div>
 
+      {chapter.image && (
+        <figure className="chapter-image">
+          <a href={chapter.image} target="_blank" rel="noopener noreferrer">
+            <img src={chapter.image} alt={chapter.imageAlt || `${chapter.title} visual note`} loading="lazy" />
+          </a>
+          <figcaption>Visual note — click to open full size</figcaption>
+        </figure>
+      )}
+
       {chapter.sections.map((section, index) => (
         <section key={section.id} id={section.id} className="chapter-section">
           <h2>

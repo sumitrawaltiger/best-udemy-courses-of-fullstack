@@ -198,6 +198,8 @@ export function buildChapter(entry, id, options = {}) {
   if (entry.pdfUrl) chapter.pdfUrl = entry.pdfUrl;
   if (entry.pdfLabel) chapter.pdfLabel = entry.pdfLabel;
   if (entry.extraLinks) chapter.extraLinks = entry.extraLinks;
+  if (entry.image) chapter.image = entry.image;
+  if (entry.imageAlt) chapter.imageAlt = entry.imageAlt;
 
   return chapter;
 }
