@@ -20,6 +20,29 @@ export default function InterviewQuestions() {
         href: '/essential-javascript-interview-questions.docx',
         label: 'Essential JavaScript Interview Questions (DOCX)',
       }}
+      challengeTitle="Tricky JavaScript Coding Challenges"
+      challengeImages={[
+        { title: 'Asynchronous Worker Pool', image: '/js-challenges/js-tricky-async-worker-pool.jpg' },
+        {
+          title: 'Priority Task Queue with Dynamic Concurrency',
+          image: '/js-challenges/js-tricky-priority-queue.jpg',
+        },
+        { title: 'Async Initialization Gate', image: '/js-challenges/js-tricky-async-init-gate.jpg' },
+        { title: 'Hedged Request', image: '/js-challenges/js-tricky-hedged-request.jpg' },
+        {
+          title: 'Task Execution with Dependencies',
+          image: '/js-challenges/js-tricky-task-dependencies.jpg',
+        },
+        {
+          title: 'Debounced Search with Result Guard',
+          image: '/js-challenges/js-tricky-debounced-search.jpg',
+        },
+        {
+          title: 'Sliding Window (Moving Average) Aggregator',
+          image: '/js-challenges/js-tricky-sliding-window.jpg',
+        },
+        { title: 'Fair FIFO Mutex', image: '/js-challenges/js-tricky-fifo-mutex.jpg' },
+      ]}
       sourceNote={
         <p>
           Pair these with the{' '}

@@ -62,11 +62,14 @@ export default function InterviewQnA({
   tags = ['Interview', 'Q & A'],
   sourceNote,
   downloadPdf,
+  challengeImages,
+  challengeTitle = 'Tricky Coding Challenges',
 }) {
   const location = useLocation();
   const [activeCategory, setActiveCategory] = useState('all');
   const [query, setQuery] = useState('');
   const [openId, setOpenId] = useState(null);
+  const [zoomed, setZoomed] = useState(null);
 
   const visibleQuestions = useMemo(() => {
     let list = query ? search(query) : questions;
@@ -129,6 +132,28 @@ export default function InterviewQnA({
           </div>
         )}
       </section>
+
+      {challengeImages && challengeImages.length > 0 && (
+        <section className="iq-challenges">
+          <h2 className="iq-challenges-title">
+            <span aria-hidden="true">🧩</span> {challengeTitle}
+          </h2>
+          <div className="iq-challenge-grid">
+            {challengeImages.map((c) => (
+              <button
+                type="button"
+                key={c.image}
+                className="iq-challenge-card"
+                onClick={() => setZoomed(c)}
+                aria-label={`View ${c.title} full size`}
+              >
+                <img src={c.image} alt={c.title} loading="lazy" />
+                <span className="iq-challenge-caption">{c.title}</span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
 
       <div className="iq-controls">
         <div className="iq-search-wrap">
@@ -204,6 +229,26 @@ export default function InterviewQnA({
       </section>
 
       {sourceNote && <footer className="iq-footer">{sourceNote}</footer>}
+
+      {zoomed && (
+        <div
+          className="iq-lightbox"
+          onClick={() => setZoomed(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${zoomed.title} full size`}
+        >
+          <button
+            type="button"
+            className="iq-lightbox-close"
+            onClick={() => setZoomed(null)}
+            aria-label="Close"
+          >
+            ✕
+          </button>
+          <img src={zoomed.image} alt={zoomed.title} onClick={(e) => e.stopPropagation()} />
+        </div>
+      )}
     </div>
   );
 }
