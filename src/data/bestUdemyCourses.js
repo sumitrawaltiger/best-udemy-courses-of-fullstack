@@ -249,10 +249,15 @@ export const BEST_COURSES = [
     icon: '🧮',
     title: 'Data Structures & Algorithms — Complete Course (C++ & Java)',
     provider: 'Udemy',
+    note: 'Practice hands-on with ChaiCode DSA Labs — an interactive playground for solving DSA problems.',
     links: [
       {
         label: 'View on Udemy',
         url: 'https://www.udemy.com/course/data-structures-and-algorithms-complete-course-cpp-java/',
+      },
+      {
+        label: 'ChaiCode DSA Labs',
+        url: 'https://dsa.chaicode.com/',
       },
     ],
   },
