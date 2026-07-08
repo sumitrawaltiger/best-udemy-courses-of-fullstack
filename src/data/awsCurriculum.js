@@ -366,6 +366,144 @@ const MIGRATION_SECTIONS = [
   },
 ];
 
+// ---------------------------------------------------------------------------
+// Content distilled from Stephane Maarek's "AWS Certified Security Specialty
+// (SCS-C03)" slide deck (689 slides). Applied to the Monitoring & Security
+// phase, organised by the exam's six domains.
+// ---------------------------------------------------------------------------
+
+const AWS_SECURITY_SLIDES = {
+  label: 'AWS Security Specialty Slides (PDF)',
+  href: '/aws-security-specialty-slides.pdf',
+  icon: '📄',
+};
+
+const SEC_DETECTION_SECTIONS = [
+  {
+    id: 'sec-guardduty',
+    title: 'Amazon GuardDuty (Threat Detection)',
+    content:
+      "**GuardDuty** is an intelligent, ML-based threat detection service that continuously analyzes your data sources with **no agents**:\n\n- **VPC Flow Logs, DNS Logs, CloudTrail management & S3 data events, EKS audit logs**, plus optional **EBS malware** and **RDS/Lambda** protection.\n- Detects crypto-mining, reconnaissance, compromised instances, and unusual API activity.\n- Findings can trigger **EventBridge rules** → Lambda/SNS for automated response.\n\nOne click to enable; it's the exam's default answer for *\"detect malicious activity.\"*",
+  },
+  {
+    id: 'sec-inspector',
+    title: 'Amazon Inspector (Vulnerability Assessment)',
+    content:
+      "**Inspector** runs automated security assessments — but only for **three targets**:\n\n- **EC2 instances** — network reachability + OS package vulnerabilities (via the SSM agent).\n- **ECR container images** — scanned on push.\n- **Lambda functions** — code and dependency vulnerabilities.\n\nIt continuously scans against a CVE database, produces a **risk score**, and sends findings to **Security Hub** and **EventBridge**. Remember: Inspector = EC2 + ECR + Lambda only.",
+  },
+  {
+    id: 'sec-detective-securityhub',
+    title: 'Security Hub, Detective & Macie',
+    content:
+      "- **Security Hub** — a **central security posture** dashboard that aggregates findings from GuardDuty, Inspector, Macie, and more across **accounts and regions**, and checks against standards (**AWS Foundational, CIS, PCI DSS**).\n- **Amazon Detective** — analyzes and **investigates the root cause** of findings using ML and graphs built from VPC Flow Logs, CloudTrail, and GuardDuty.\n- **Amazon Macie** — ML-based discovery of **sensitive data (PII)** stored in S3.",
+  },
+];
+
+const SEC_INCIDENT_SECTIONS = [
+  {
+    id: 'sec-ir-lifecycle',
+    title: 'Incident Response on AWS',
+    content:
+      "Cloud incident response follows **detect → contain → eradicate → recover**, and AWS automates it:\n\n- **EventBridge** rules react to GuardDuty findings, Config changes, or API calls → trigger **Lambda / SNS / SSM Automation**.\n- **CloudWatch Alarms** fire on suspicious metrics.\n- Keep an **audit trail** with CloudTrail for post-incident forensics.\n\nDesign for *automated* containment so response happens in seconds, not hours.",
+  },
+  {
+    id: 'sec-ir-compromised',
+    title: 'Handling Compromised Resources',
+    content:
+      "**Compromised EC2 instance:** isolate it with a restrictive **security group**, take an **EBS snapshot** and capture memory for forensics, then deregister it from load balancers/ASG before terminating.\n\n**Compromised IAM credentials:** immediately **rotate/deactivate** the access keys, attach a **deny-all** policy to the principal, and review **CloudTrail** for what the attacker did. Enable **MFA** and least privilege to prevent recurrence.",
+  },
+  {
+    id: 'sec-ssm-response',
+    title: 'Systems Manager for Response',
+    content:
+      "**AWS Systems Manager (SSM)** is central to incident response and operations:\n\n- **Run Command** — execute commands across fleets without SSH.\n- **Automation runbooks** — codified response workflows (isolate, snapshot, patch).\n- **Session Manager** — shell access with **no open SSH ports, no bastion**, fully logged to CloudTrail/S3.\n- **Patch Manager** — patch instances on a schedule to remediate vulnerabilities.",
+  },
+];
+
+const SEC_INFRA_SECTIONS = [
+  {
+    id: 'sec-waf-shield',
+    title: 'AWS WAF & Shield',
+    content:
+      "- **AWS WAF** — a **Layer-7** web application firewall protecting **CloudFront, ALB, API Gateway, and AppSync**. A **Web ACL** holds rules for **SQL injection, XSS, geo-match, IP sets, size constraints**, and **rate-based** rules. WAF is regional (or global on CloudFront).\n- **AWS Shield** — DDoS protection: **Standard** (free, automatic L3/L4) and **Advanced** (paid, L7, 24/7 response team, **cost-protection**, and enhanced visibility).",
+  },
+  {
+    id: 'sec-firewall-manager-network',
+    title: 'Firewall Manager & Network Firewall',
+    content:
+      "- **AWS Firewall Manager** — manages security rules **org-wide** across all AWS Organizations accounts: WAF rules, Shield Advanced, security groups, Network Firewall, and Route 53 DNS Firewall — applied automatically to new resources.\n- **AWS Network Firewall** — managed, **VPC-level** firewall with **fine-grained** stateful/stateless rules (thousands of rules, L3–L7), including domain filtering and intrusion prevention across an entire VPC.",
+  },
+  {
+    id: 'sec-vpc-security',
+    title: 'VPC Network Security',
+    content:
+      "Layered network controls:\n\n- **Security Groups** (stateful, instance-level) vs **NACLs** (stateless, subnet-level, allow + deny).\n- **VPC Endpoints / PrivateLink** — reach AWS services privately without traversing the internet.\n- **VPC Flow Logs** — capture IP traffic metadata for detection and troubleshooting.\n- **Route 53 DNS Firewall** and **DNS Query Logging** — control and monitor outbound DNS.",
+  },
+];
+
+const SEC_IAM_SECTIONS = [
+  {
+    id: 'sec-scs-exam',
+    title: 'The SCS-C03 Exam',
+    content:
+      "The **AWS Certified Security – Specialty (SCS-C03)** validates deep security expertise. It covers **six domains**:\n\n1. **Threat Detection & Incident Response** 2. **Security Logging & Monitoring** 3. **Infrastructure Security** 4. **Identity & Access Management** 5. **Data Protection** 6. **Management & Security Governance**.\n\nExpect **65 questions in 170 minutes**, scenario-heavy, testing *which service and configuration* solves a concrete security problem. Download the full **689-slide deck** below.",
+  },
+  {
+    id: 'sec-iam-policies',
+    title: 'IAM Policies & Evaluation Logic',
+    content:
+      "An IAM policy is JSON with **Version, Statement, Effect, Action, Resource, Condition**. Access is decided by combining all applicable policies:\n\n- An **explicit Deny** always wins.\n- Otherwise access needs an **Allow** that isn't blocked by an **SCP**, **permission boundary**, or **session policy** — the permissions are the **intersection** of these.\n\nKnow the evaluation order cold — it's the most tested IAM concept on the exam.",
+  },
+  {
+    id: 'sec-sts-federation',
+    title: 'STS, Roles & Identity Federation',
+    content:
+      "- **STS (Security Token Service)** issues **temporary credentials** via `AssumeRole` — the secure pattern for cross-account access, EC2/Lambda roles, and **session tags**.\n- **Identity Federation** — SAML 2.0, OIDC, and **IAM Identity Center** (SSO) let external identities assume roles without IAM users.\n- **Cognito** — **User Pools** (app sign-in, JWTs) and **Identity Pools** (temporary AWS credentials for app users, with policy variables scoping access).",
+  },
+];
+
+const SEC_DATA_SECTIONS = [
+  {
+    id: 'sec-kms',
+    title: 'AWS KMS (Key Management)',
+    content:
+      "**KMS** manages encryption keys with full CloudTrail auditing. Key types by ownership: **AWS-owned**, **AWS-managed** (`aws/service`), and **customer-managed** (full control + rotation).\n\n- **Symmetric (AES-256)** for most services; **asymmetric** for sign/verify.\n- **Key Policies** (+ optional IAM) and **Grants** control access; **Multi-Region Keys** replicate for cross-region use.\n- **Envelope encryption** (via the Encryption SDK / `GenerateDataKey`) encrypts large data. Automatic **key rotation** is a common exam answer.",
+  },
+  {
+    id: 'sec-cloudhsm-acm',
+    title: 'CloudHSM & ACM',
+    content:
+      "- **CloudHSM** — AWS provisions **dedicated hardware** security modules (**FIPS 140-2 Level 3**); **you** manage the keys (AWS manages KMS software). Use it for strict compliance or custom key material.\n- **ACM (Certificate Manager)** — provision, manage, and **auto-renew** public/private **SSL/TLS certificates**, integrated with **ALB, CloudFront, and API Gateway**. Public certs require domain validation; ACM cannot export the private key of public certs.",
+  },
+  {
+    id: 'sec-secrets-s3',
+    title: 'Secrets Manager & S3 Encryption',
+    content:
+      "- **Secrets Manager** — securely store secrets with **automatic rotation** (native Lambda rotation for RDS/Aurora/Redshift). **SSM Parameter Store** is the cheaper alternative for config + secrets (no built-in rotation).\n- **S3 encryption**: **SSE-S3** (S3-managed), **SSE-KMS** (KMS keys + audit), **SSE-C** (customer keys), **DSSE-KMS** (double). Enforce it with **bucket policies** that deny unencrypted uploads or non-HTTPS requests.",
+  },
+];
+
+const SEC_GOVERNANCE_SECTIONS = [
+  {
+    id: 'sec-cloudtrail',
+    title: 'AWS CloudTrail (Audit & Governance)',
+    content:
+      "**CloudTrail** records API activity for governance, compliance, and audit:\n\n- **Management events** (control-plane), **Data events** (S3 object-level, Lambda — high volume, off by default), and **Insights events** (anomalous activity).\n- Deliver to **S3** and **CloudWatch Logs**; enable **log file integrity validation** (SHA-256) to prove logs weren't tampered with.\n- A **multi-region, organization trail** captures everything centrally — the exam's answer for *\"who did what, when.\"*",
+  },
+  {
+    id: 'sec-config',
+    title: 'AWS Config (Compliance)',
+    content:
+      "**AWS Config** records the configuration of your resources over time and evaluates them against rules:\n\n- **Config Rules** (managed or custom) flag non-compliant resources; **Conformance Packs** bundle rules.\n- **Auto-remediation** via SSM Automation fixes drift automatically.\n- Config answers *\"is this resource compliant, and how did its configuration change?\"* — pair it with CloudTrail (who changed it) for full auditing.",
+  },
+  {
+    id: 'sec-org-scp',
+    title: 'Organizations, SCPs & Control Tower',
+    content:
+      "- **AWS Organizations** groups accounts under **Organizational Units (OUs)** with consolidated billing.\n- **Service Control Policies (SCPs)** set **guardrails** — the maximum permissions an account can have (they never grant, only restrict). Applied at the root, OU, or account level.\n- **AWS Control Tower** sets up a secure multi-account **landing zone** with built-in guardrails. Together they enforce security governance at scale.",
+  },
+];
+
 function buildLessons() {
   const lessons = [];
   let day = 1;
@@ -384,6 +522,16 @@ function buildLessons() {
     'Disaster Recovery Strategies': DR_SECTIONS,
     'Hybrid Cloud Architecture': HYBRID_SECTIONS,
     'Migration Strategies — 6 Rs': MIGRATION_SECTIONS,
+  };
+
+  // SCS-C03 security-specialty content mapped onto the Monitoring & Security phase.
+  const SEC_SECTION_MAP = {
+    'GuardDuty & Security Hub': SEC_DETECTION_SECTIONS,
+    'SSM & Patch Manager': SEC_INCIDENT_SECTIONS,
+    'AWS WAF & Shield': SEC_INFRA_SECTIONS,
+    'CloudFolks Exam Prep Hackathon': SEC_IAM_SECTIONS,
+    'AWS KMS & Secrets Manager': SEC_DATA_SECTIONS,
+    'CloudTrail & AWS Config': SEC_GOVERNANCE_SECTIONS,
   };
 
   for (const { phase, items } of PHASE_LESSONS) {
@@ -409,6 +557,18 @@ function buildLessons() {
         if (title === 'SAA-C03 Exam Overview') {
           lesson.pdfUrl = AWS_SAA_SLIDES.href;
           lesson.pdfLabel = AWS_SAA_SLIDES.label;
+        }
+      }
+      // Attach Stephane Maarek's Security Specialty (SCS-C03) deck across the
+      // Monitoring & Security phase, enriching modules with domain content.
+      if (phase === 'Monitoring & Security') {
+        lesson.extraLinks = [AWS_SECURITY_SLIDES];
+        if (SEC_SECTION_MAP[title]) {
+          lesson.sections = SEC_SECTION_MAP[title];
+        }
+        if (title === 'CloudFolks Exam Prep Hackathon') {
+          lesson.pdfUrl = AWS_SECURITY_SLIDES.href;
+          lesson.pdfLabel = AWS_SECURITY_SLIDES.label;
         }
       }
       lessons.push(lesson);
