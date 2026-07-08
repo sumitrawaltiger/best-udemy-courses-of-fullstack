@@ -70,11 +70,14 @@ export const BEST_COURSES = [
     category: 'frontend',
     skill: 'React Native',
     icon: '📱',
-    title: 'React Native — Cohort & Complete Course',
-    instructor: 'ChaiCode · Stephen Grider',
-    provider: 'ChaiCode + Udemy',
-    note: 'A structured cohort plus a deep Udemy course covering React Native and Redux.',
+    title: 'Complete Mobile Developer Course with AI Projects',
+    provider: 'Udemy',
+    note: 'The recommended pick — build cross-platform mobile apps end to end with React Native and Expo, including AI-powered projects. Cohort and Redux-focused alternatives are linked too.',
     links: [
+      {
+        label: 'Complete Mobile Developer + AI (Udemy)',
+        url: 'https://www.udemy.com/course/complete-mobile-developer-course-with-ai-projects/',
+      },
       {
         label: 'ChaiCode Mobile Cohort',
         url: 'https://courses.chaicode.com/learn/home/mobile-development-cohort/mobile-app-development-cohort/',
