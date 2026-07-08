@@ -127,8 +127,8 @@ export const chaptersDays20to100 = [
         "explanation": "localStorage persists but only on one browser; a backend/DB shares data — Project02 vs Project03."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=TlB_eWDSMt4",
-    "youtubeTitle": "Node.js Crash Course — Programming with Mosh",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "githubPath": "03Backend/Day01",
@@ -235,8 +235,8 @@ export const chaptersDays20to100 = [
         "explanation": "TCP ensures ordered, reliable transport; HTTP runs on top of it."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=-SaZiADGLHs&t=2s",
-    "youtubeTitle": "Things Every Developer Should Know About package.json — Steve Griffith - Prof3ssorSt3v3",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "githubPath": "03Backend/Day02",
@@ -314,8 +314,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 1: JavaScript Mastery."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=Pkqtfaep7ZI",
-    "youtubeTitle": "Debounce Explained — Web Dev Simplified",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "githubPath": "03Backend/Day03",

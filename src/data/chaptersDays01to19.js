@@ -134,8 +134,8 @@ export const chaptersDays01to19 = [
         "explanation": "fetch() requests data from APIs — Thunder v3-js uses it for GitHub profiles."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c",
-    "youtubeTitle": "Introduction to JavaScript | Javascript Full Course #01 — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -278,8 +278,8 @@ export const chaptersDays01to19 = [
         "explanation": "Every Symbol() call creates a unique value — symB == symA is false in Thunder first.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=nCwQY8inRvU",
-    "youtubeTitle": "Data Types in JavaScript — Code with Ania",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -442,8 +442,8 @@ export const chaptersDays01to19 = [
         "explanation": "Strict equality avoids type coercion bugs — Thunder recommends ===."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=ovWYhDVQiR8",
-    "youtubeTitle": "JavaScript Logical Operators — Code with Ania",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -607,8 +607,8 @@ export const chaptersDays01to19 = [
         "explanation": "do-while executes the body before checking the condition."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=s9wW2PpJsmQ",
-    "youtubeTitle": "JavaScript Loops — Programming with Mosh",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "youtubeSupplementUrl": "https://www.youtube.com/watch?v=wssvLtVSFeI",
     "youtubeSupplementTitle": "Useful JavaScript String Methods — Code with Ania",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
@@ -759,8 +759,8 @@ export const chaptersDays01to19 = [
         "explanation": "third.js compares loop to n*(n+1)/2 for huge N."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=VjGYVG9oyPY",
-    "youtubeTitle": "Star Pattern Programs with Loops — Code Step By Step",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -932,8 +932,8 @@ export const chaptersDays01to19 = [
         "explanation": "Rest operator collects remaining elements — third.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=yQ1fz8LY354",
-    "youtubeTitle": "JavaScript Arrays — Code with Ania",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1111,8 +1111,8 @@ export const chaptersDays01to19 = [
         "explanation": "Spread is shallow — nested data still shared — object2.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=lo7o91qLzxc",
-    "youtubeTitle": "JavaScript Objects — Code with Ania",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1298,8 +1298,8 @@ export const chaptersDays01to19 = [
         "explanation": "A function passed as an argument is a callback — ii.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=FOD408a0EzU",
-    "youtubeTitle": "How To Create & Use Functions — Chris Courses",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1470,8 +1470,8 @@ export const chaptersDays01to19 = [
         "explanation": "Sets keep unique values only — sets.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=PojpwEbOQJg",
-    "youtubeTitle": "map(), filter() & reduce() — Code with Ania",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1627,8 +1627,8 @@ export const chaptersDays01to19 = [
         "explanation": "style properties use camelCase — el.style.backgroundColor."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=0ik6X4DJKCc",
-    "youtubeTitle": "JavaScript DOM Crash Course — Traversy Media",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1793,8 +1793,8 @@ export const chaptersDays01to19 = [
         "explanation": "Batching with spread does one insert instead of ten — projects/first.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=XF1_MlZ5l6M",
-    "youtubeTitle": "JavaScript Event Listeners — Web Dev Simplified",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1951,8 +1951,8 @@ export const chaptersDays01to19 = [
         "explanation": "Both add and remove need the same function reference — Eventsjs/first.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=XF1_MlZ5l6M",
-    "youtubeTitle": "JavaScript Event Listeners — Web Dev Simplified",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2095,8 +2095,8 @@ export const chaptersDays01to19 = [
         "explanation": "It cancels the default submit/reload so JS can handle it — projectastro."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=2ml4x0rO1PQ",
-    "youtubeTitle": "5 Mini JavaScript Projects for Beginners — Ania Kubów",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2238,8 +2238,8 @@ export const chaptersDays01to19 = [
         "explanation": "await pauses for the API response, then renders the result — Project03."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=2ml4x0rO1PQ",
-    "youtubeTitle": "5 Mini JavaScript Projects for Beginners — Ania Kubów",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2382,8 +2382,8 @@ export const chaptersDays01to19 = [
         "explanation": "Once parsed, you drill into the nested object with dot notation — Project02."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=Oive66jrwBs",
-    "youtubeTitle": "Fetch API Introduction — Traversy Media",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2519,8 +2519,8 @@ export const chaptersDays01to19 = [
         "explanation": "var is function-scoped; it doesn't exist outside — third.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=EvfRXyKa_GI",
-    "youtubeTitle": "Learn JavaScript Hoisting — Web Dev Simplified",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "youtubeSupplementUrl": "https://www.youtube.com/watch?v=8aGhZQkoFbQ",
@@ -2665,8 +2665,8 @@ export const chaptersDays01to19 = [
         "explanation": "Async callbacks queue and run after the stack empties — project01."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=1UTqFAjYx1k",
-    "youtubeTitle": "JavaScript Prototypal Inheritance — Traversy Media",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "youtubeSupplementUrl": "https://www.youtube.com/watch?v=8aGhZQkoFbQ",
     "youtubeSupplementTitle": "What the heck is the event loop anyway? — Philip Roberts · JSConf",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
@@ -2782,8 +2782,8 @@ export const chaptersDays01to19 = [
         "explanation": "await can only be used inside an async function and pauses until the Promise settles."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=PoRJizFvM7s",
-    "youtubeTitle": "Async JS — Callbacks, Promises, Async Await — Traversy Media",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2925,8 +2925,8 @@ export const chaptersDays01to19 = [
         "explanation": "Private closure variable — accessed only via validated methods — example.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=3a0I8ICR1Vg",
-    "youtubeTitle": "Learn Closures In 7 Minutes — Web Dev Simplified",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "youtubeSupplementUrl": "https://www.youtube.com/watch?v=gvicrj31JOM",
     "youtubeSupplementTitle": "JavaScript this Keyword — Programming with Mosh",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",

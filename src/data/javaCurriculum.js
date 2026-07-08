@@ -560,9 +560,9 @@ function buildLessons() {
   const lessons = [];
   let javaDay = 1;
   const defaultYt = yt(
-    'https://www.youtube.com/watch?v=eIrMbAQSU34',
-    'Java Full Course for Beginners',
-    'Bro Code',
+    'https://www.youtube.com/watch?v=eTXd89t8ngI&list=PLd3UqWTnYXOmx_J1774ukG_rvrpyWczm0',
+    'Complete Java Course (Playlist)',
+    'Durgasoft',
   );
 
   for (const { phase, courseUrl, items } of PHASE_LESSONS) {

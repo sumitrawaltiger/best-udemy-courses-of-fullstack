@@ -211,10 +211,16 @@ function renderMarkdown(text) {
 function getYoutubeEmbedUrl(url) {
   if (!url) return '';
   const id = url.match(/[?&]v=([^&]+)/)?.[1];
+  const list = url.match(/[?&]list=([^&]+)/)?.[1];
   const startMatch = url.match(/[?&]t=(\d+)(s)?/);
   const start = startMatch ? startMatch[1] : null;
-  if (!id) return '';
-  return `https://www.youtube.com/embed/${id}${start ? `?start=${start}` : ''}`;
+  const params = [];
+  if (list) params.push(`list=${list}`);
+  if (start) params.push(`start=${start}`);
+  const query = params.length ? `?${params.join('&')}` : '';
+  if (id) return `https://www.youtube.com/embed/${id}${query}`;
+  if (list) return `https://www.youtube.com/embed/videoseries?list=${list}`;
+  return '';
 }
 
 function dayLabel(chapter, track) {
