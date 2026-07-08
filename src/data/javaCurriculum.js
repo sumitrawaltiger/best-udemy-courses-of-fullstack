@@ -314,6 +314,14 @@ const SPRING_DATA_JPA_SECTIONS = [
     content:
       "**PostgreSQL** is a powerful **object-relational** database (ORDBMS). It's popular for its **SQL compliance, extensibility, performance, strong community, and data integrity**.\n\n**Why PostgreSQL over H2** for real projects: better **scalability, durability, a richer feature set, and a mature ecosystem/tooling**. H2 (in-memory) is great for quick tests, but production microservices want a persistent, robust store — and each microservice owns **its own** database (database-per-service).",
   },
+  {
+    id: 'jpa-locking',
+    title: 'Optimistic vs Pessimistic Locking (Hibernate)',
+    content:
+      "When two transactions update the same row, JPA/Hibernate offers two locking strategies to prevent **lost updates**:\n\n- **Optimistic Locking** — **no database locks**. A `@Version` column is read with the row; on update Hibernate does `UPDATE ... WHERE id = ? AND version = ?`. If another transaction already bumped the version, **0 rows match** and Hibernate throws `OptimisticLockException` — the app then re-reads and retries. Best for **read-heavy, low-contention** workloads.\n- **Pessimistic Locking** — the **first writer locks the row** (`SELECT ... FOR UPDATE` via `LockModeType.PESSIMISTIC_WRITE`); other transactions **wait** until the lock is released on commit. Best for **high-contention** writes, at the cost of throughput and possible deadlocks.\n\nThe diagram below traces both flows step by step (Alice and Peter updating the same account):",
+    image: '/java-notes/optimistic-vs-pessimistic-locking.jpg',
+    imageAlt: 'Optimistic vs Pessimistic Locking sequence diagrams — optimistic uses a version column with conflict-at-commit and retry; pessimistic locks the row so the second writer waits',
+  },
 ];
 
 // Module 34 — Spring Security Basics

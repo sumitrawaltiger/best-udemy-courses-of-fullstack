@@ -174,7 +174,7 @@ function buildLessons() {
 
   for (const { phase, items } of PHASE_LESSONS) {
     for (const [title, subtitle, topics] of items) {
-      lessons.push({
+      const lesson = {
         devopsDay: day,
         phase,
         title,
@@ -183,7 +183,13 @@ function buildLessons() {
         notionUrl: CLOUDFOLKS_DEVOPS_PACKAGE_URL,
         paidLectureUrl: KODEKLOUD_DEVOPS_URL,
         youtube: defaultYt,
-      });
+      };
+      if (title === 'CI/CD Hands-On Lab') {
+        lesson.image = '/devops-notes/project-deployment-flow.jpg';
+        lesson.imageAlt =
+          'Project deployment flow — GitHub to Jenkins CI (OWASP, SonarQube, Trivy), Docker build & push, Jenkins CD, ArgoCD deploy to Kubernetes, Prometheus/Grafana monitoring, and email notification';
+      }
+      lessons.push(lesson);
       day += 1;
     }
   }

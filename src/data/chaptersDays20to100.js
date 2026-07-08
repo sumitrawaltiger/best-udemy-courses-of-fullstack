@@ -317,7 +317,9 @@ export const chaptersDays20to100 = [
     "youtubeUrl": "https://www.youtube.com/watch?v=Pkqtfaep7ZI",
     "youtubeTitle": "Debounce Explained — Web Dev Simplified",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
-    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
+    "githubPath": "03Backend/Day03",
+    "codeRepo": "https://github.com/Rohitnegi9/Thunder/tree/main"
   },
   {
     "id": 23,
@@ -393,7 +395,9 @@ export const chaptersDays20to100 = [
     "youtubeUrl": "https://www.youtube.com/watch?v=KLvG0sLr8VY",
     "youtubeTitle": "JavaScript Classes — Programming with Mosh",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
-    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
+    "githubPath": "03Backend/Day04",
+    "codeRepo": "https://github.com/Rohitnegi9/Thunder/tree/main"
   },
   {
     "id": 24,
