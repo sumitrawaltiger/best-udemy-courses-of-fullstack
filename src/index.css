@@ -1064,6 +1064,138 @@ a:hover {
   margin-bottom: 48px;
 }
 
+/* B.Tech 4-year learning path */
+.btech-roadmap {
+  margin: 8px 0 48px;
+}
+.btech-inner {
+  background: linear-gradient(135deg, #0f172a 0%, #14231c 100%);
+  border: 1px solid #24382c;
+  border-radius: 18px;
+  padding: 32px 28px;
+  color: #e8f2ea;
+}
+.btech-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #04aa6d;
+  background: rgba(4, 170, 109, 0.12);
+  border: 1px solid rgba(4, 170, 109, 0.4);
+  border-radius: 999px;
+  padding: 4px 12px;
+  margin-bottom: 14px;
+}
+.btech-title {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 800;
+  margin: 0 0 8px;
+  color: #fff;
+}
+.btech-sub {
+  color: #9db3a5;
+  max-width: 680px;
+  margin: 0 0 26px;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+.btech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+}
+.btech-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid #24382c;
+  border-top: 3px solid var(--yr-accent, #04aa6d);
+  border-radius: 14px;
+  padding: 18px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.btech-card:hover {
+  transform: translateY(-3px);
+}
+.btech-card--y1 {
+  --yr-accent: #38bdf8;
+}
+.btech-card--y2 {
+  --yr-accent: #f0a132;
+}
+.btech-card--y3 {
+  --yr-accent: #a78bfa;
+}
+.btech-card--y4 {
+  --yr-accent: #04aa6d;
+}
+.btech-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.btech-card-icon {
+  font-size: 1.7rem;
+  line-height: 1;
+}
+.btech-card-year {
+  margin: 0;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--yr-accent, #04aa6d);
+}
+.btech-card-theme {
+  margin: 2px 0 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+}
+.btech-card-blurb {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #9db3a5;
+  flex-grow: 1;
+}
+.btech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.btech-tags span {
+  font-size: 0.72rem;
+  color: #cfe0d6;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid #2a3441;
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+.btech-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+.btech-link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #08130a;
+  background: var(--yr-accent, #04aa6d);
+  border-radius: 8px;
+  padding: 6px 11px;
+  text-decoration: none;
+  transition: filter 0.15s ease;
+}
+.btech-link:hover {
+  filter: brightness(1.1);
+}
+
 .roadmap h2,
 .lectures-section h2 {
   font-size: 24px;

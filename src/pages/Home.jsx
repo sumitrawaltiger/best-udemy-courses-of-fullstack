@@ -29,6 +29,53 @@ import LectureCard from '../components/LectureCard';
 import Syllabus from '../components/Syllabus';
 import ThunderHero from '../components/ThunderHero';
 
+const BTECH_ROADMAP = [
+  {
+    year: '1st Year',
+    theme: 'Frontend Foundations',
+    icon: '🎨',
+    accent: 'y1',
+    topics: ['HTML5', 'CSS3', 'JavaScript', 'React / Angular', 'React Native'],
+    blurb: 'Build interactive UIs and your first mobile apps — the visible half of every product.',
+    links: [
+      { label: 'JavaScript Track', to: '#syllabus' },
+      { label: 'React / Next.js', to: '/nextjs' },
+      { label: 'React Native', to: '/mobile' },
+    ],
+  },
+  {
+    year: '2nd Year',
+    theme: 'Backend with Java',
+    icon: '☕',
+    accent: 'y2',
+    topics: ['Java', 'Spring Boot', 'Microservices'],
+    blurb: 'Design robust server-side systems, REST APIs, and scalable microservices.',
+    links: [{ label: 'Java & Spring Track', to: '/java' }],
+  },
+  {
+    year: '3rd Year',
+    theme: 'Python & Agentic AI',
+    icon: '🐍',
+    accent: 'y3',
+    topics: ['Python', 'Django', 'Agentic AI with Python'],
+    blurb: 'Add Python, web frameworks, and the AI agents that are reshaping software.',
+    links: [{ label: 'Python & Agentic AI', to: '/python' }],
+  },
+  {
+    year: '4th Year',
+    theme: 'DevOps & Cloud',
+    icon: '☁️',
+    accent: 'y4',
+    topics: ['DevOps', 'Cloud', 'Kubernetes'],
+    blurb: 'Ship and scale everything you built — CI/CD, cloud, containers, and orchestration.',
+    links: [
+      { label: 'DevOps', to: '/devops' },
+      { label: 'AWS Cloud', to: '/aws' },
+      { label: 'Kubernetes', to: '/k8s' },
+    ],
+  },
+];
+
 export default function Home() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
@@ -108,6 +155,51 @@ export default function Home() {
       </section>
 
       <div className="home">
+      <section className="btech-roadmap" id="btech-roadmap">
+        <div className="btech-inner">
+          <span className="btech-badge">For Students</span>
+          <h2 className="btech-title">B.Tech CS/IT — 4-Year Learning Path</h2>
+          <p className="btech-sub">
+            A year-by-year roadmap to graduate job-ready as a full lifecycle engineer. Each year builds
+            on the last — and maps directly to a track on this site.
+          </p>
+          <div className="btech-grid">
+            {BTECH_ROADMAP.map((yr) => (
+              <article className={`btech-card btech-card--${yr.accent}`} key={yr.year}>
+                <div className="btech-card-head">
+                  <span className="btech-card-icon" aria-hidden="true">
+                    {yr.icon}
+                  </span>
+                  <div>
+                    <p className="btech-card-year">{yr.year}</p>
+                    <h3 className="btech-card-theme">{yr.theme}</h3>
+                  </div>
+                </div>
+                <p className="btech-card-blurb">{yr.blurb}</p>
+                <div className="btech-tags">
+                  {yr.topics.map((t) => (
+                    <span key={t}>{t}</span>
+                  ))}
+                </div>
+                <div className="btech-links">
+                  {yr.links.map((lnk) =>
+                    lnk.to.startsWith('#') ? (
+                      <a key={lnk.label} href={lnk.to} className="btech-link">
+                        {lnk.label} →
+                      </a>
+                    ) : (
+                      <Link key={lnk.label} to={lnk.to} className="btech-link">
+                        {lnk.label} →
+                      </Link>
+                    ),
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <div id="syllabus">
         <Syllabus />
       </div>
