@@ -43,10 +43,15 @@ export const BEST_COURSES = [
     title: 'ReactJS in Hindi (2023 Updated)',
     instructor: 'Anil Dollor',
     provider: 'Udemy',
+    note: 'Practice hands-on with ChaiCode React Labs — an interactive playground for building React apps.',
     links: [
       {
         label: 'View on Udemy',
         url: 'https://www.udemy.com/course/reactjs-in-hindi-2023-updated-by-anil-dollor/',
+      },
+      {
+        label: 'ChaiCode React Labs',
+        url: 'https://react.chaicode.com/',
       },
     ],
   },
