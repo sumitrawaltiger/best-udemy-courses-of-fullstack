@@ -184,6 +184,11 @@ function buildLessons() {
         paidLectureUrl: KODEKLOUD_DEVOPS_URL,
         youtube: defaultYt,
       };
+      if (title === 'CI/CD Concepts') {
+        lesson.image = '/devops-notes/cicd-learning-plan.jpg';
+        lesson.imageAlt =
+          '18-Day CI/CD learning plan — source to build, test, package, deploy, monitor; end-to-end flow with Git, Jenkins, GitHub Actions, Docker, Kubernetes, and monitoring; tools, deployment strategies, and the learner-to-engineer journey';
+      }
       if (title === 'CI/CD Hands-On Lab') {
         lesson.image = '/devops-notes/project-deployment-flow.jpg';
         lesson.imageAlt =
