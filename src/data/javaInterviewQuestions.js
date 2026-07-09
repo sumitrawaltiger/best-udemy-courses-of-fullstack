@@ -12,6 +12,7 @@ export const JAVA_QUESTION_CATEGORIES = [
   { id: "rest", label: "REST APIs", icon: "\ud83c\udf10" },
   { id: "security-webservices", label: "Security & Web Services", icon: "\ud83d\udd10" },
   { id: "devops-cloud", label: "DevOps & Cloud", icon: "\ud83d\ude80" },
+  { id: "tricky", label: "Tricky Puzzles", icon: "\ud83d\udd25" },
 ];
 
 export const JAVA_INTERVIEW_QUESTIONS = [
@@ -8988,6 +8989,42 @@ export const JAVA_INTERVIEW_QUESTIONS = [
     category: "concurrency-advanced",
     question: "What are the differences between a daemon thread and a user thread?",
     answer: "A daemon thread is created to serve user threads in the background, has low priority, and the JVM does not wait for it \u2014 it is terminated automatically once the last user thread ends. A user thread does foreground work, has normal priority, has an independent lifecycle, and the JVM waits for it to finish before exiting.",
+  },
+  {
+    id: "java-q1488",
+    category: "tricky",
+    question: "If indexes make queries faster, why do they slow down writes?",
+    answer: "An index is a separate, sorted data structure (usually a B-tree) kept in sync with the table. Reads get faster because the database can seek instead of scanning. But every INSERT/UPDATE/DELETE must also update every index on that table \u2014 re-balancing the B-tree, writing extra pages, and sometimes relocating rows. More indexes means more write amplification, more disk I/O per write, larger storage, and slower bulk loads. So indexes trade write throughput and space for read speed \u2014 index selectively on the columns you actually filter/join/sort on.",
+  },
+  {
+    id: "java-q1489",
+    category: "tricky",
+    question: "If Nginx can load balance traffic, why do companies still use dedicated load balancers?",
+    answer: "Nginx is an application-layer (L7) software proxy running on a server you must scale, patch, and keep highly available yourself. Dedicated load balancers \u2014 hardware appliances (F5) or managed cloud LBs (AWS ALB/NLB, GCP LB) \u2014 add L4 (TCP/UDP) balancing, huge throughput, built-in high availability and auto-scaling, health checks, SSL/TLS offload at scale, DDoS protection, and no single point of failure. They also absorb traffic at the edge before it ever reaches your app servers. In practice both are used together: a cloud/hardware LB at the edge, Nginx per service inside.",
+  },
+  {
+    id: "java-q1490",
+    category: "tricky",
+    question: "If HTTPS is encrypted, how does your ISP still know which website you visited?",
+    answer: "HTTPS encrypts the request/response bodies and the URL path \u2014 but not the metadata. Your ISP can still see the destination IP address (which maps back to a host), your DNS lookups (unless you use DNS-over-HTTPS/TLS), and the SNI (Server Name Indication) field in the TLS handshake, which sends the hostname in plaintext so the server knows which certificate to present. So they know you visited example.com and roughly how much data flowed \u2014 just not the specific pages or content. Encrypted Client Hello (ECH/ESNI) and DoH close these leaks.",
+  },
+  {
+    id: "java-q1491",
+    category: "tricky",
+    question: "Senior backend puzzle: CPU is 10%, memory 40%, disk idle, network low \u2014 yet the system is collapsing. What are you running out of?",
+    answer: "The raw hardware is fine, so you're exhausting a limited handle/concurrency resource, not CPU/RAM/disk/network. Usual culprits: file descriptors / open sockets (ulimit), a maxed-out thread pool or database connection pool where requests block waiting for a free connection, ephemeral port exhaustion (TIME_WAIT buildup), or lock contention / a deadlock making everything wait. The system is starved of concurrency capacity \u2014 connections, threads, file descriptors, or locks \u2014 while the CPU sits idle because everything is blocked, not busy.",
+  },
+  {
+    id: "java-q1492",
+    category: "tricky",
+    question: "If PostgreSQL supports JSON, why would anyone choose a NoSQL database?",
+    answer: "JSONB in Postgres is excellent, but NoSQL is chosen for reasons beyond storing JSON. NoSQL stores (MongoDB, Cassandra, DynamoDB) are built for horizontal scale-out and sharding across many nodes, very high write throughput, tunable consistency, and easy multi-region replication (AP-style). They also offer specialized data models \u2014 key-value, wide-column, document, graph, time-series \u2014 that fit specific workloads. Postgres scales vertically very well but horizontal write scaling and geo-distribution are harder. Pick NoSQL for scale and data-model fit, not merely because you have JSON.",
+  },
+  {
+    id: "java-q1493",
+    category: "tricky",
+    question: "Your app has authentication, authorization, and encryption \u2014 yet a user still accessed another user's data. What did you miss?",
+    answer: "Object-level (row-level) authorization \u2014 the classic IDOR (Insecure Direct Object Reference) flaw. You verified WHO the user is (authentication), encrypted the data, and maybe checked role/endpoint access (authorization), but you never checked that the authenticated user actually OWNS the specific resource they requested. For example GET /orders/123 returns order 123 to any logged-in user without verifying order.userId == currentUser.id. Fix it by enforcing per-object ownership/permission checks on every data access \u2014 never trust an ID from the client.",
   },
 ];
 

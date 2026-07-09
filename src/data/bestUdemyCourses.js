@@ -273,6 +273,8 @@ export const BEST_COURSES = [
     icon: '🏗️',
     title: 'Mastering System Design — From Basics to Cracking Interviews',
     provider: 'Udemy',
+    note: '12 must-know system design patterns at a glance — load balancer, API gateway, cache, replication, sharding, message queue, microservices, circuit breaker, event-driven, CQRS, saga, and service mesh.',
+    image: '/course-images/system-design-patterns.jpg',
     links: [
       {
         label: 'View on Udemy',

@@ -10,6 +10,7 @@ export const CHEATSHEET_CATEGORIES = [
   { id: 'kubernetes', label: 'Kubernetes', icon: '☸️' },
   { id: 'java', label: 'Java', icon: '☕' },
   { id: 'react', label: 'React', icon: '⚛️' },
+  { id: 'sql', label: 'SQL & Databases', icon: '🗄️' },
 ];
 
 export const CHEAT_SHEETS = [
@@ -59,6 +60,15 @@ export const CHEAT_SHEETS = [
     tags: ['Java', 'Core Java', 'PDF'],
   },
   {
+    id: 'java-interview',
+    title: 'Java Interview Cheat Sheet',
+    description:
+      'A one-page interview quick reference — OOP concepts, collections, exception handling, multithreading, Java 8+ features, and design patterns at a glance.',
+    category: 'java',
+    image: '/cheatsheets/java-interview-cheat-sheet.png',
+    tags: ['Java', 'Interview', 'OOP'],
+  },
+  {
     id: 'react',
     title: 'React 19 Cheat Sheet',
     description:
@@ -75,5 +85,14 @@ export const CHEAT_SHEETS = [
     category: 'react',
     pdf: '/cheatsheets/react-cheat-sheet-v2.pdf',
     tags: ['React', 'JSX', 'PDF'],
+  },
+  {
+    id: 'sql',
+    title: 'SQL Cheat Sheet',
+    description:
+      'A visual SQL quick reference — basic commands, joins, indexing, CTEs, filtering, subqueries, transactions, window functions, set operations, views, aggregations, and triggers.',
+    category: 'sql',
+    image: '/cheatsheets/sql-cheat-sheet.jpg',
+    tags: ['SQL', 'Database', 'Queries'],
   },
 ];
