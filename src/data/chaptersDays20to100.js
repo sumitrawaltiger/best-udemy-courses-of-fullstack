@@ -68,6 +68,36 @@ export const chaptersDays20to100 = [
         "content": "Work through Thunder's [03Backend/Day01](https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day01):\n1. **first.js** — slice N profiles from an array with a loop\n2. **second.js** — build the `http` server; run `node second.js` and hit `localhost:3000/20`\n3. **Project01–03** — the TaskVault trilogy: variable → localStorage → cloud DB\n\nRun a file with **`node second.js`** in the terminal. Match everything with the **Notion notes** (Lecture 01 & 02). Next: **TCP/IP & package.json** in Day 21.",
         "code": "// Terminal:\n// node second.js\n// → I am Listening at port 3000\n// Browser: http://localhost:3000/5",
         "tryIt": "const gitHubProfile = [{}, {}, {}, {}, {}];\nconst n = 3;\nconsole.log(gitHubProfile.slice(0, n).length);"
+      },
+      {
+        "id": "why-backend-exists",
+        "title": "Why Does Backend Exist?",
+        "content": "You know JavaScript — buttons, DOM, fetching data. A **calculator** runs entirely in the browser: no backend needed.\n\nNow build a **login**. Naively you write `if (password === \"password123\")` — but ask: where does this code live? In the browser. Anyone can open **DevTools → Sources** and read the password. The frontend is public — every line you ship is visible.\n\nYou need a place to run code the user **cannot see or touch** — not their browser, your machine. It receives the attempt, verifies it secretly, and returns only **yes or no**. That hidden place is the **backend**.",
+        "code": "// Second breaking point — the database\n// If the browser connects directly:\nBrowser ─────────────→ Database   \"give me all users\"\n// DB credentials sit in frontend JS → user copies them → SELECT * FROM users;\n// (they can read, modify, and DELETE everything)\n\n// Backend sits in the middle:\nBrowser ──→ Backend (your machine) ──→ Database\n// credentials live on the server; backend verifies the user\n// and returns ONLY that user's data — nothing more"
+      },
+      {
+        "id": "frontend-vs-backend",
+        "title": "Frontend vs Backend & Core Concepts",
+        "content": "**Backend** is just a program running on your machine, not the user's. The user can't see its code, touch it, or control it. It sits between the user and your data as a trusted middleman.\n\nEvery backend concept is one answer to a single question — how do we verify who you are and control what you can access?\n- **Authentication** — proving who you are\n- **Authorization** — what you're allowed to do\n- **APIs** — how frontend talks to backend\n- **Middleware** — checks that run before every request\n- **JWT tokens** — proving identity without passwords\n- **Database queries** — fetching only what you're allowed to see\n\nThe frontend belongs to the user; the backend belongs to you.",
+        "code": "Frontend                    Backend\n────────────────────        ────────────────────\nRuns on user's machine      Runs on your machine\nUser can see all code       User sees nothing\nCannot trust it             You fully trust it\nCannot hide secrets         Secrets live here\nMakes UI                    Makes decisions"
+      },
+      {
+        "id": "first-node-server",
+        "title": "Your First Node.js Server",
+        "content": "Node's built-in `http` module creates a server. `createServer` takes a callback `(req, res)` that runs on every request: `req.url` gives the path, `res.end(...)` sends the response, and `server.listen(3000)` starts it on port 3000.\n\nRun it with `node server.js` and open `http://localhost:3000` in the browser.",
+        "code": "const http = require('http');\n\nconst server = http.createServer((req, res) => {\n  if (req.url === \"/\") {\n    res.end(\"Hello Coder Army\");\n  } else if (req.url === \"/user\") {\n    res.end(JSON.stringify({ name: \"Rohit\" }));\n  } else {\n    res.end(\"I am best\");\n  }\n});\n\nserver.listen(3000, () => {\n  console.log(\"Hi, I am listening\");\n});"
+      },
+      {
+        "id": "commonjs-modules",
+        "title": "CommonJS — require & module.exports",
+        "content": "A **module** is a file with one responsibility (`user.js`, `payment.js`, `email.js`) whose code other files can use.\n\nNode creates a `module` object per file: `module = { exports: {} }`. Whatever you put in `module.exports` is exactly what `require()` returns — nothing else crosses the boundary (a local `let counter = 0` stays private).\n\n**How require() resolves:** built-in module → load from Node; starts with `./` → load that file; otherwise → look in `node_modules`. It runs the file, returns `module.exports`, and **caches** it (the second require is instant).\n\n**The trap:** never mix `exports.foo = ...` with `module.exports = {...}`. Node always returns `module.exports`, so anything set on `exports` after you reassign `module.exports` is silently lost. Pick one style and stick to it.",
+        "code": "// 1 — export a single function\nmodule.exports = add;                 // require('./math') -> add\n\n// 2 — export multiple as an object\nmodule.exports = { add, subtract, multiply };\nconst math = require('./math');       // math.add(2, 3)\n\n// 3 — destructure only what you need\nconst { add } = require('./math');\n\n// 4 — inline via exports (shorthand for module.exports)\nexports.add = (a, b) => a + b;\nexports.subtract = (a, b) => a - b;\n\n// ❌ WRONG — mulNumber is lost\nexports.mulNumber = function () {};\nmodule.exports = { add, subtract };   // new object -> exports link broken"
+      },
+      {
+        "id": "es-modules",
+        "title": "ES Modules — import & export",
+        "content": "**ESM** is JavaScript's official module system (TC39, 2015) — one standard for browser and Node. Enable it with `\"type\": \"module\"` in package.json (or a `.mjs` file).\n\n- **Named exports** are unlimited — you pick them by name: `export { add, subtract }` or `export function add() {}`. Import with `import { add } from './math.js'` (the **.js extension is required**). `import * as math` grabs everything; `import { add as addNumbers }` renames.\n- **Default export** is exactly one per file (its main purpose): `export default add` → `import add from './math.js'` (no braces). Two defaults would be ambiguous.\n- **Combined:** `import add, { subtract, PI } from './math.js'`.\n- **import must be at the top** — that single restriction lets Node scan all imports upfront and load them in **parallel**. Once in ESM, `require` no longer exists.",
+        "code": "CommonJS                 ESM\n────────────────         ────────────────\nrequire()                import\nmodule.exports           export\nAnywhere in file         Must be at top\nLoads one by one         Loads in parallel\nNo extension needed      .js extension required\nDefault in Node.js       Needs \"type\": \"module\""
       }
     ],
     "quiz": [
@@ -198,6 +228,42 @@ export const chaptersDays20to100 = [
         "id": "thunder-day02-practice",
         "title": "Practice — Thunder 03Backend / Day02",
         "content": "Open **[03Backend/Day02](https://github.com/Rohitnegi9/Thunder/tree/main/03Backend)** and work through:\n\n- **first.js** — HTTP server returning GitHub user JSON (try `http://localhost:9000/5`)\n- **second.js** — path-based calculator on port 3000\n- **third.js** — query-string calculator on port 3000\n- **LearnModule01** — CommonJS `require` & `module.exports`\n- **LearnModule02** — ES `import`/`export` with `package.json`\n\nKeep the [Notion notes](https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031) open while you code."
+      },
+      {
+        "id": "tcp-handshake",
+        "title": "TCP & the 3-Way Handshake",
+        "content": "**TCP** answers: how do I reliably send data between two machines — nothing lost, nothing out of order?\n\nBefore sending real data you must confirm **both directions** work:\n- **SYN** — \"Are you there?\" (you → server)\n- **SYN-ACK** — \"Yes I'm here. Did you hear me?\" (server → you) — confirms your SYN and asks you to confirm.\n- **ACK** — \"Yes I heard you.\" (you → server)\n\n**Why 3, not 2?** Two steps prove only one direction (you can reach the server); the server still doesn't know its reply reached you. Three messages are the minimum to confirm both independent directions before trusting real data.\n\nThe internet is two independent directions — one working doesn't mean both work.",
+        "code": "1)  You     →  SYN        \"Are you there?  (my seq = 1000)\"\n2)  Server  →  SYN-ACK    \"Got 1000, send 1001.  My seq = 5000\"\n3)  You     →  ACK        \"Got 5000, send 5001\"\n\n✅ You → Server works     ✅ Server → You works\n→ connection established, real data can flow"
+      },
+      {
+        "id": "tcp-detail",
+        "title": "TCP in Detail — Ports, Sockets & Sequence Numbers",
+        "content": "The **IP address** picks the machine; the **port** picks the program on it (browser, Spotify, your Node server…), so the destination is `IP:Port` — e.g. `103.21.58.1:3000`. Your OS also assigns your machine a random port so replies can return; the pair `(yourIP:port, serverIP:port)` is a **socket**.\n\nEach side picks a **starting sequence number** in the handshake and numbers every packet from there. The server **ACKs every packet** (`ACK 1002` = \"got 1001, send 1002\"). Your machine keeps a **timer** per packet — no ACK before it expires means **resend**. Packets take different routes and can arrive **out of order**; the server **buffers** them, reorders by sequence number, and reassembles the original message. Finally **FIN → ACK → FIN → ACK** closes the connection and frees memory on both sides.",
+        "code": "The complete picture:\n 1.  Find server IP + Port\n 2.  OS assigns you a random port\n 3.  SYN      → your seq number, \"ready?\"\n 4.  SYN-ACK  ← server confirms + its own seq number\n 5.  ACK      → you confirm, connection established\n 6.  Send 100 packets, numbered sequentially\n 7.  Server ACKs every packet received\n 8.  Lost packet → timer expires → resend\n 9.  Out of order → buffer → reorder → reassemble\n10.  FIN → ACK → FIN → ACK → connection closed"
+      },
+      {
+        "id": "package-json-deps",
+        "title": "package.json — Your Dependency List",
+        "content": "Share a project and it breaks on another machine — they don't have your packages. **package.json** lists every package your project needs; `npm init -y` creates it.\n\nKey fields: `name`, `version`, `main` (entry file), `scripts` (command shortcuts like `start`), `dependencies` (needed to run), and `devDependencies` (needed only while developing).\n\n- **dependencies** — `npm install express` (your app needs it in production).\n- **devDependencies** — `npm install nodemon --save-dev` (nodemon auto-restarts the server during development; production doesn't need it).",
+        "code": "{\n  \"name\": \"myproject\",\n  \"version\": \"1.0.0\",\n  \"main\": \"index.js\",\n  \"scripts\": { \"start\": \"node index.js\" },\n  \"dependencies\": { \"express\": \"^4.18.2\" },\n  \"devDependencies\": { \"nodemon\": \"^3.0.1\" }\n}"
+      },
+      {
+        "id": "semantic-versioning",
+        "title": "Semantic Versioning — Caret ^ vs Tilde ~",
+        "content": "A version has three numbers — **MAJOR.MINOR.PATCH** (e.g. `4.18.2`):\n- **PATCH** — bug fix only (`4.18.2 → 4.18.3`)\n- **MINOR** — new features, nothing breaks (`4.18.2 → 4.19.0`)\n- **MAJOR** — breaking changes (`4.18.2 → 5.0.0`)\n\nRange symbols:\n- **Tilde `~4.18.2`** — allow **patch** updates only (only the last number changes).\n- **Caret `^4.18.2`** — allow **patch and minor** (the first number can't change).\n- **No symbol `4.18.2`** — exactly this version, forever.",
+        "code": "Version 4.18.2:\n\n ~4.18.2 (tilde)      ^4.18.2 (caret)      4.18.2 (exact)\n  4.18.3  ✅ patch      4.18.3  ✅ patch      4.18.3  ❌\n  4.18.9  ✅ patch      4.19.0  ✅ minor      4.19.0  ❌\n  4.19.0  ❌ minor      4.20.5  ✅ minor      5.0.0   ❌\n  5.0.0   ❌ major      5.0.0   ❌ major"
+      },
+      {
+        "id": "lockfile-node-modules",
+        "title": "package-lock.json & node_modules",
+        "content": "`^4.18.2` means a teammate cloning months later might get `4.19.5` — same code, different version, machine-specific bugs. **package-lock.json** records the exact version actually installed, so everyone gets identical packages.\n\n- **`npm install`** — flexible; follows the lock file but can update it when you add packages. Use in development.\n- **`npm ci`** — strict; follows the lock file exactly and fails on mismatch. Use in production/CI pipelines.\n\n**node_modules** holds the actual downloaded code of every package — often huge. Never commit it; add `node_modules/` to `.gitignore`. Anyone who clones just runs `npm install` to recreate it.\n\nCommit package.json + package-lock.json. Never commit node_modules.",
+        "code": "myproject/\n  app.js\n  package.json          → what you need + version ranges   (commit)\n  package-lock.json     → exact versions installed          (commit)\n  node_modules/         → actual package code               (gitignore)\n    express/  lodash/  nodemon/  ..."
+      },
+      {
+        "id": "esm-project",
+        "title": "Create an ESM Project (validator)",
+        "content": "Three things are required for ESM to work: **`\"type\": \"module\"`** in package.json, **`export`** in the sharing file, and **`import` with the `.js` extension** in the using file — miss any one and it breaks.\n\nSteps: `mkdir myproject && cd myproject`, `npm init -y`, add `\"type\": \"module\"`, write `validator.js` with `export { ... }`, import it in `app.js` (with `.js`), then run `node app.js`.",
+        "code": "// validator.js\nfunction isValidEmail(email) {\n  return email.includes('@') && email.includes('.');\n}\nfunction isValidPhone(phone) {\n  return phone.length === 10 && !isNaN(phone);\n}\nfunction isStrongPassword(password) {\n  return password.length >= 8;\n}\nexport { isValidEmail, isValidPhone, isStrongPassword };\n\n// app.js\nimport { isValidEmail, isValidPhone, isStrongPassword } from './validator.js';\nconsole.log(isValidEmail('rohit@gmail.com')); // true\nconsole.log(isValidPhone('9876543210'));      // true\nconsole.log(isStrongPassword('12345678'));    // true\n// run:  node app.js"
       }
     ],
     "quiz": [
