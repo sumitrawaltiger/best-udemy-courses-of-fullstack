@@ -5,6 +5,13 @@ import { CHAICODE_INTERVIEW_URL } from './trackConfig.js';
 
 const yt = (url, title, channel = 'freeCodeCamp') => ({ url, title, channel });
 
+// ChaiCode DSA Labs — interactive playground to practice DSA puzzles.
+const CHAICODE_DSA_LABS = {
+  label: 'Practice DSA puzzles — ChaiCode DSA Labs',
+  href: 'https://dsa.chaicode.com/',
+  icon: '🧩',
+};
+
 const PHASE_LESSONS = [
   {
     phase: 'DSA Foundations',
@@ -115,7 +122,7 @@ function buildLessons() {
 
   for (const { phase, paidUrl, items } of PHASE_LESSONS) {
     for (const [title, subtitle, topics] of items) {
-      lessons.push({
+      const lesson = {
         interviewDay,
         phase,
         title,
@@ -123,7 +130,12 @@ function buildLessons() {
         topics,
         paidLectureUrl: paidUrl,
         youtube: defaultYt,
-      });
+      };
+      // Attach the ChaiCode DSA practice playground to the DSA phases.
+      if (phase === 'DSA Foundations' || phase === 'DSA Patterns & Practice') {
+        lesson.extraLinks = [CHAICODE_DSA_LABS];
+      }
+      lessons.push(lesson);
       interviewDay += 1;
     }
   }
