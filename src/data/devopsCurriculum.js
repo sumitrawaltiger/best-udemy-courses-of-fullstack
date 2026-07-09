@@ -173,6 +173,13 @@ const DEVOPS_GUIDE = {
   icon: '⬇️',
 };
 
+// Community practice repo — 2600+ DevOps exercises, questions, and answers.
+const DEVOPS_EXERCISES = {
+  label: 'DevOps Exercises & Interview Questions (GitHub)',
+  href: 'https://github.com/bregman-arie/devops-exercises',
+  icon: '📝',
+};
+
 // Content sections keyed by module title, distilled from the cheat sheet.
 const DEVOPS_SECTION_MAP = {
   'Fundamentals of DevOps': [
@@ -459,9 +466,9 @@ function buildLessons() {
   const lessons = [];
   let day = 1;
   const defaultYt = yt(
-    'https://www.youtube.com/watch?v=9BVQrS4u5V8',
-    'DevOps Engineering Course for Beginners',
-    'freeCodeCamp',
+    'https://www.youtube.com/watch?v=PfjVXb-YXbQ',
+    'Mastering DevOps Fundamentals: A Complete Beginner\'s Guide',
+    'KodeKloud',
   );
 
   for (const { phase, items } of PHASE_LESSONS) {
@@ -495,6 +502,10 @@ function buildLessons() {
       if (title === 'Fundamentals of DevOps') {
         lesson.pdfUrl = DEVOPS_GUIDE.href;
         lesson.pdfLabel = 'DevOps Cheat Sheet (PDF)';
+      }
+      // Community practice repo — surface on the intro and interview-prep modules.
+      if (title === 'Introduction to 100 Days of DevOps' || title === 'DevOps Interview Preparation') {
+        lesson.extraLinks = [...(lesson.extraLinks || []), DEVOPS_EXERCISES];
       }
       lessons.push(lesson);
       day += 1;
