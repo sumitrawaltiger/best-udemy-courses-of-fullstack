@@ -163,6 +163,298 @@ const PHASE_LESSONS = [
   },
 ];
 
+// ---------------------------------------------------------------------------
+// DevOps Cheat Sheet (286-page reference PDF) — downloadable + distilled content
+// Source file: public/devops-notes/devops-guide.pdf
+// ---------------------------------------------------------------------------
+const DEVOPS_GUIDE = {
+  label: 'Download DevOps Cheat Sheet (PDF, 286 pages)',
+  href: '/devops-notes/devops-guide.pdf',
+  icon: '⬇️',
+};
+
+// Content sections keyed by module title, distilled from the cheat sheet.
+const DEVOPS_SECTION_MAP = {
+  'Fundamentals of DevOps': [
+    {
+      id: 'devops-toolchain',
+      title: 'The DevOps Toolchain — 13 categories',
+      content:
+        'The DevOps Cheat Sheet organizes the entire engineering stack into thirteen categories. Master one category at a time and you cover the full lifecycle from code to production:\n\n' +
+        '**1. System Administration & Scripting** — Linux commands, Shell scripting, Python\n' +
+        '**2. Version Control** — Git, GitHub, GitLab, Bitbucket\n' +
+        '**3. CI/CD** — Jenkins, GitHub Actions, GitLab CI/CD, Tekton, CircleCI, ArgoCD, Flux CD\n' +
+        '**4. Infrastructure as Code (IaC)** — Terraform, Ansible, CloudFormation\n' +
+        '**5. Containerization & Orchestration** — Docker, Kubernetes\n' +
+        '**6. Cloud Services** — AWS, Azure, GCP\n' +
+        '**7. Configuration Management** — Chef, Puppet, SaltStack\n' +
+        '**8. Monitoring & Logging** — Prometheus, Grafana, ELK, Datadog, New Relic\n' +
+        '**9. Security & Compliance** — SonarQube, Trivy, OWASP Dependency-Check\n' +
+        '**10. Networking & Load Balancing** — Nginx, Apache, HAProxy, K8s Ingress\n' +
+        '**11. Databases** — MySQL, PostgreSQL, MariaDB, NoSQL, DB automation\n' +
+        '**12. Storage** — object storage, backups, IaC state, CI/CD artifacts\n' +
+        '**13. Helm** — the package manager for Kubernetes\n\n' +
+        'The full 286-page reference is attached below as a downloadable PDF.',
+    },
+  ],
+  'Linux Process Management': [
+    {
+      id: 'linux-cmd-reference',
+      title: 'Essential Linux command reference',
+      content:
+        'The DevOps engineer lives in the shell. These are the highest-frequency commands, grouped by task — the same grouping the cheat sheet uses.',
+      code:
+        '# File management\n' +
+        'ls -l            # long listing with details\n' +
+        'cp file /tmp     # copy    |  mv old new  # move/rename\n' +
+        'rm -rf dir       # remove dir + contents\n' +
+        'find /var -name "*.log"   # search files\n' +
+        'grep "error" /var/log/syslog\n\n' +
+        '# System info & monitoring\n' +
+        'top / htop       # live processes    |  df -h  # disk usage\n' +
+        'free -m          # memory (MB)        |  uptime\n' +
+        'lsof -i :8080    # what owns port 8080\n\n' +
+        '# Process management\n' +
+        'ps aux | grep nginx\n' +
+        'kill 1234        # by PID   |  pkill nginx  # by name\n\n' +
+        '# Networking\n' +
+        'curl https://example.com   |  ping google.com\n' +
+        'ss -tuln         # listening sockets  |  dig example.com',
+    },
+    {
+      id: 'linux-services-cron',
+      title: 'Services, logs & scheduling',
+      content:
+        'Managing long-running services and scheduled work is core to keeping systems healthy.',
+      code:
+        '# systemd services\n' +
+        'sudo systemctl restart nginx\n' +
+        'systemctl status jenkins\n' +
+        'journalctl -u nginx -f      # follow service logs\n\n' +
+        '# Real-time log tailing\n' +
+        'tail -f /var/log/nginx/access.log\n\n' +
+        '# Scheduling with cron\n' +
+        'crontab -e\n' +
+        '0 2 * * * /path/to/backup.sh   # run daily at 2 AM',
+    },
+  ],
+  'Shell Scripting Basics': [
+    {
+      id: 'devops-automation-scripts',
+      title: 'Real DevOps automation scripts',
+      content:
+        'The cheat sheet ships 40+ production-style bash scripts. A few high-value patterns every DevOps engineer reaches for:',
+      code:
+        '# 1. CPU usage alert (email on threshold)\n' +
+        'CPU=$(top -bn1 | grep "Cpu(s)" | awk \'{print 100 - $8}\')\n' +
+        'if (( $(echo "$CPU > 80" | bc -l) )); then\n' +
+        '  echo "High CPU: $CPU%" | mail -s "CPU Alert" ops@example.com\n' +
+        'fi\n\n' +
+        '# 2. MySQL backup + compress\n' +
+        'DATE=$(date +%F)\n' +
+        'mysqldump -u root -p"$PW" mydb > /backup/db_$DATE.sql\n' +
+        'gzip /backup/db_$DATE.sql\n\n' +
+        '# 3. Web-server health check\n' +
+        'for s in server1 server2 server3; do\n' +
+        '  curl -s --head http://$s | head -n1 | grep "200 OK" \\\n' +
+        '    >/dev/null && echo "$s up" || echo "$s DOWN"\n' +
+        'done\n\n' +
+        '# 4. Install Docker if missing\n' +
+        'if ! command -v docker &>/dev/null; then\n' +
+        '  curl -fsSL https://get.docker.com | sudo sh\n' +
+        'fi',
+    },
+  ],
+  'Git Basics': [
+    {
+      id: 'git-command-reference',
+      title: 'Git command quick reference',
+      content:
+        'Version control is category 2 of the toolchain. The everyday Git commands plus the remote-management commands you use when wiring up GitHub, GitLab, or Bitbucket:',
+      code:
+        '# Everyday workflow\n' +
+        'git status                 # what changed\n' +
+        'git add .                  # stage changes\n' +
+        'git commit -m "message"    # commit with message\n' +
+        'git push origin main       # push to remote\n' +
+        'git pull origin main       # fetch + merge\n' +
+        'git clone <repository>     # copy a repo\n\n' +
+        '# Managing remotes\n' +
+        'git remote -v                    # show remote URLs\n' +
+        'git remote add origin <url>      # add a remote\n' +
+        'git remote rename old new        # rename\n\n' +
+        '# Advanced\n' +
+        'git stash                        # shelve work-in-progress\n' +
+        'git rebase main                  # reapply commits onto main\n' +
+        'git log --oneline --graph        # compact history',
+    },
+  ],
+  'Jenkins Setup & Interface': [
+    {
+      id: 'jenkins-install-commands',
+      title: 'Install & operate Jenkins',
+      content:
+        'Jenkins is the classic CI/CD server. Install it on Ubuntu (it needs Java), then control it as a systemd service.',
+      code:
+        '# Install (Ubuntu) — Jenkins requires Java\n' +
+        'sudo apt update && sudo apt install -y openjdk-17-jdk\n' +
+        'wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key \\\n' +
+        '  | sudo tee /usr/share/keyrings/jenkins-keyring.asc >/dev/null\n' +
+        'sudo apt update && sudo apt install -y jenkins\n\n' +
+        '# First-run admin password\n' +
+        'sudo cat /var/lib/jenkins/secrets/initialAdminPassword\n' +
+        '# then open http://<server-ip>:8080\n\n' +
+        '# Service control\n' +
+        'systemctl {start|stop|restart|status} jenkins\n' +
+        'journalctl -u jenkins -f        # live logs',
+    },
+  ],
+  'Docker Fundamentals': [
+    {
+      id: 'docker-command-reference',
+      title: 'Docker command reference',
+      content:
+        'Containerization is category 5. Build, run, and manage containers with the core Docker CLI:',
+      code:
+        'docker build -t myapp:v1 .          # build image from Dockerfile\n' +
+        'docker run -d -p 8080:80 nginx      # run detached, map port\n' +
+        'docker ps                           # running containers\n' +
+        'docker exec -it <id> sh             # shell into a container\n' +
+        'docker logs -f <id>                 # follow logs\n' +
+        'docker compose up -d                # multi-container app\n' +
+        'docker system prune -af             # reclaim disk space',
+    },
+    {
+      id: 'dockerfile-best-practices',
+      title: 'Production Dockerfile best practices',
+      content:
+        'The cheat sheet stresses lean, secure images. A Spring Boot example with the recommended patterns:',
+      code:
+        'FROM openjdk:17-jdk-slim AS build\n' +
+        'WORKDIR /app\n' +
+        'COPY target/myapp.jar myapp.jar\n' +
+        'EXPOSE 8080\n' +
+        '# Run as a non-root user\n' +
+        'RUN addgroup --system app && adduser --system --ingroup app app\n' +
+        'USER app\n' +
+        'CMD ["java", "-jar", "myapp.jar"]\n\n' +
+        '# Best practices:\n' +
+        '#  - Multi-stage builds to separate build & runtime\n' +
+        '#  - Use *-slim / alpine bases for smaller images\n' +
+        '#  - Always run as a non-root user\n' +
+        '#  - --production to skip dev dependencies',
+    },
+  ],
+  'Helm Charts': [
+    {
+      id: 'helm-quick-reference',
+      title: 'Helm — the package manager for Kubernetes',
+      content:
+        'Helm is like `apt` or `yum`, but for Kubernetes. A **Chart** is a collection of templated manifests that describe an application; **values.yaml** parameterizes it.',
+      code:
+        'helm version                       # check install\n' +
+        'helm repo add bitnami https://charts.bitnami.com/bitnami\n' +
+        'helm repo update\n' +
+        'helm search repo nginx\n' +
+        'helm install myapp ./myapp-chart  # install a local chart\n' +
+        'helm upgrade myapp ./myapp-chart -f values.yaml\n' +
+        'helm list                          # installed releases\n' +
+        'helm rollback myapp 1              # roll back to revision 1\n' +
+        'helm uninstall myapp',
+    },
+  ],
+  'Terraform Basics': [
+    {
+      id: 'terraform-config-example',
+      title: 'Terraform configuration & workflow',
+      content:
+        'Infrastructure as Code is category 4. A minimal AWS EC2 config shows providers, resources, and variables; the workflow is always init → plan → apply → destroy.',
+      code:
+        '# main.tf\n' +
+        'terraform {\n' +
+        '  required_providers {\n' +
+        '    aws = { source = "hashicorp/aws", version = "~> 4.16" }\n' +
+        '  }\n' +
+        '  required_version = ">= 1.2.0"\n' +
+        '}\n' +
+        'provider "aws" { region = "us-west-2" }\n\n' +
+        'resource "aws_instance" "app_server" {\n' +
+        '  ami           = "ami-08d70e59c07c61a3a"\n' +
+        '  instance_type = "t2.micro"\n' +
+        '  tags = { Name = var.instance_name }\n' +
+        '}\n\n' +
+        '# Workflow\n' +
+        'terraform init          # download providers\n' +
+        'terraform plan          # preview changes\n' +
+        'terraform apply         # create infra (type "yes")\n' +
+        'terraform destroy       # tear it down',
+    },
+  ],
+  'Ansible Fundamentals': [
+    {
+      id: 'ansible-playbook-structure',
+      title: 'Ansible playbooks & modules',
+      content:
+        'Ansible is agentless configuration management. A **playbook** is a YAML file of **tasks** run against **hosts**; each task calls a **module**.',
+      code:
+        '# playbook.yml\n' +
+        '- name: Install and start Nginx\n' +
+        '  hosts: web\n' +
+        '  become: yes              # sudo\n' +
+        '  vars:\n' +
+        '    package_name: nginx\n' +
+        '  tasks:\n' +
+        '    - name: Install Nginx\n' +
+        '      apt:\n' +
+        '        name: "{{ package_name }}"\n' +
+        '        state: present\n' +
+        '    - name: Ensure Nginx is running\n' +
+        '      service:\n' +
+        '        name: nginx\n' +
+        '        state: started\n\n' +
+        '# Run it\n' +
+        'ansible-playbook playbook.yml\n\n' +
+        '# Common modules: command, copy, service, user, file, apt',
+    },
+  ],
+  'Container Security': [
+    {
+      id: 'security-scanning-tools',
+      title: 'Security & compliance scanning',
+      content:
+        'Category 9 shifts security left. Scan images and dependencies before they reach production:',
+      code:
+        '# Trivy — container vulnerability scanning\n' +
+        'trivy image --exit-code 1 --severity HIGH,CRITICAL myapp:latest\n\n' +
+        '# SonarQube — static code analysis (Maven)\n' +
+        'mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN\n\n' +
+        '# OWASP Dependency-Check — vulnerable dependencies\n' +
+        './dependency-check/bin/dependency-check.sh --scan /path/to/project\n' +
+        'mvn org.owasp:dependency-check-maven:check',
+    },
+  ],
+  'Prometheus Basics': [
+    {
+      id: 'prometheus-grafana-reference',
+      title: 'Prometheus & Grafana quick reference',
+      content:
+        'Category 8 is monitoring & logging. Prometheus scrapes metrics from **exporters**; you query with **PromQL** and visualize in **Grafana**.',
+      code:
+        '# Prometheus targets are pulled on an interval (prometheus.yml)\n' +
+        'scrape_configs:\n' +
+        '  - job_name: node\n' +
+        '    static_configs:\n' +
+        '      - targets: ["localhost:9100"]   # node_exporter\n\n' +
+        '# PromQL examples\n' +
+        'rate(http_requests_total[5m])          # per-second request rate\n' +
+        '100 - (avg by(instance)                # CPU usage %\n' +
+        '  (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)\n\n' +
+        '# Grafana: add Prometheus as a data source, then build\n' +
+        '# panels and alert rules on these queries.',
+    },
+  ],
+};
+
 function buildLessons() {
   const lessons = [];
   let day = 1;
@@ -193,6 +485,16 @@ function buildLessons() {
         lesson.image = '/devops-notes/project-deployment-flow.jpg';
         lesson.imageAlt =
           'Project deployment flow — GitHub to Jenkins CI (OWASP, SonarQube, Trivy), Docker build & push, Jenkins CD, ArgoCD deploy to Kubernetes, Prometheus/Grafana monitoring, and email notification';
+      }
+      // Attach distilled cheat-sheet content + the full PDF download.
+      if (DEVOPS_SECTION_MAP[title]) {
+        lesson.sections = DEVOPS_SECTION_MAP[title];
+        lesson.extraLinks = [...(lesson.extraLinks || []), DEVOPS_GUIDE];
+      }
+      // The DevOps fundamentals module is the home for the full guide download.
+      if (title === 'Fundamentals of DevOps') {
+        lesson.pdfUrl = DEVOPS_GUIDE.href;
+        lesson.pdfLabel = 'DevOps Cheat Sheet (PDF)';
       }
       lessons.push(lesson);
       day += 1;
