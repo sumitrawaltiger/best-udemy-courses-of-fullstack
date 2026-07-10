@@ -1411,6 +1411,8 @@ export const chaptersDays01to19 = [
         "id": "reduce",
         "title": "reduce — The Accumulator",
         "content": "Thunder `reducer.js` — **reduce** boils an array down to **one value**.\n\nThe callback gets `(accumulator, num)`; the second argument to reduce is the **initial value** — `0` for a sum, `1` for a product.",
+        "image": "/js-notes/reduce-array-method.jpg",
+        "imageAlt": "JavaScript Array Methods: reduce() — reduces an array to a single value, runs a callback for each element using an accumulator; great for totals, calculations and data aggregation; returns numbers, strings, objects or arrays; does not modify the original array; syntax array.reduce((accumulator, currentValue, index, array) => { return accumulator }, initialValue)",
         "code": "const arr = [10, 20, 30, 40, 50];\n\nconst sum = arr.reduce((accumulator, num) => {\n  return accumulator + num;\n}, 0);\nconsole.log(sum); // 150\n\nconst ans = arr.reduce((acc, num) => {\n  return acc * num;\n}, 1);\nconsole.log(ans); // 12000000",
         "tryIt": "const prices = [100, 200, 50];\nconst total = prices.reduce((acc, p) => acc + p, 0);\nconsole.log(\"Total:\", total);"
       },
