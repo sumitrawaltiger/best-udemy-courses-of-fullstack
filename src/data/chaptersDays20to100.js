@@ -314,70 +314,96 @@ export const chaptersDays20to100 = [
     "slug": "timers-debounce-and-throttle",
     "track": "thunder",
     "day": 22,
-    "title": "Timers, Debounce & Throttle",
-    "subtitle": "setTimeout, setInterval, and performance patterns",
+    "title": "HTTP — The Protocol of the Web",
+    "subtitle": "Lecture 02 — request/response structure, methods, status codes & statelessness",
     "duration": "2 hrs",
     "createdOn": "25 Jul 2026",
     "status": "published",
     "topics": [
-      "setTimeout & setInterval",
-      "Debounce pattern",
-      "Throttle pattern",
-      "Search input example",
-      "Scroll handlers"
+      "HTTP is a contract",
+      "Request structure",
+      "Response structure",
+      "HTTP methods",
+      "Status codes",
+      "Stateless protocol",
+      "HTTP versions"
     ],
     "sections": [
       {
-        "id": "settimeout-and-setinterval",
-        "title": "setTimeout & setInterval",
-        "content": "Learn **setTimeout & setInterval** in Day 22 of Thunder: 100 Days of Code. setTimeout, setInterval, and performance patterns",
-        "code": "function debounce(fn, delay) {\n  let timer;\n  return (...args) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(...args), delay);\n  };\n}",
-        "tryIt": "console.log(\"Day 22: Timers, Debounce & Throttle\");"
+        "id": "http-intro",
+        "title": "HTTP — HyperText Transfer Protocol",
+        "content": "**Day 22** continues **Lecture 02** from the [Thunder Notion notes](https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031). Once your server can accept connections (Day 20–21), the two sides need a shared language. That language is **HTTP**.\n\nHTTP is a **protocol** — a written **contract** that defines exactly how every **request** and **response** must be structured between two programs talking over the internet. Both sides agree on the format ahead of time, so any client can talk to any server."
       },
       {
-        "id": "debounce-pattern",
-        "title": "Debounce pattern",
-        "content": "Learn **Debounce pattern** in Day 22 of Thunder: 100 Days of Code. setTimeout, setInterval, and performance patterns",
-        "code": "function debounce(fn, delay) {\n  let timer;\n  return (...args) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(...args), delay);\n  };\n}",
-        "tryIt": "console.log(\"Day 22: Timers, Debounce & Throttle\");"
+        "id": "http-request",
+        "title": "HTTP Request Structure",
+        "content": "Every request has **four parts**, in order:\n\n1. **Request line** — the method, path, and version: `GET /users HTTP/1.1`\n2. **Headers** — key–value metadata (`Host`, `Content-Type`, `Authorization`…)\n3. **Blank line** — separates headers from the body\n4. **Body** — the actual payload\n\nThe **body only exists** in **POST, PUT, PATCH**. **GET** and **DELETE** carry no body.",
+        "code": "GET /users/15 HTTP/1.1          ← request line\nHost: localhost:3000            ← headers\nContent-Type: application/json\nAuthorization: Bearer <token>\n                                ← blank line\n{ \"name\": \"Rohit\" }            ← body (POST/PUT/PATCH only)"
       },
       {
-        "id": "throttle-pattern",
-        "title": "Throttle pattern",
-        "content": "Learn **Throttle pattern** in Day 22 of Thunder: 100 Days of Code. setTimeout, setInterval, and performance patterns",
-        "code": "function debounce(fn, delay) {\n  let timer;\n  return (...args) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(...args), delay);\n  };\n}",
-        "tryIt": "console.log(\"Day 22: Timers, Debounce & Throttle\");"
+        "id": "http-response",
+        "title": "HTTP Response Structure",
+        "content": "The response mirrors the request — also **four parts**:\n\n1. **Status line** — version, status code, and reason: `HTTP/1.1 200 OK`\n2. **Headers** — `Content-Type`, `Content-Length`, and more\n3. **Blank line**\n4. **Body** — the data sent back (HTML, JSON, text…)\n\nThe **status code** in the status line tells the client, at a glance, what happened.",
+        "code": "HTTP/1.1 200 OK                        ← status line\nContent-Type: application/json         ← headers\nContent-Length: 42\n                                       ← blank line\n{ \"id\": 15, \"name\": \"Rohit\" }         ← body"
       },
       {
-        "id": "search-input-example",
-        "title": "Search input example",
-        "content": "Learn **Search input example** in Day 22 of Thunder: 100 Days of Code. setTimeout, setInterval, and performance patterns",
-        "code": "function debounce(fn, delay) {\n  let timer;\n  return (...args) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(...args), delay);\n  };\n}",
-        "tryIt": "console.log(\"Day 22: Timers, Debounce & Throttle\");"
+        "id": "http-methods",
+        "title": "HTTP Methods — the Verbs",
+        "content": "The **method** states your intent on a resource:\n\n- **GET** — read/fetch data (no body)\n- **POST** — create a new resource (has body)\n- **PUT** — replace a resource entirely (has body)\n- **PATCH** — update part of a resource (has body)\n- **DELETE** — remove a resource (no body)\n\nSame path, different method = a **different action**. `GET /users` reads users; `POST /users` creates one.",
+        "code": "GET    /products        → list all products\nGET    /products/10     → read product 10\nPOST   /products        → create a product      (body)\nPUT    /products/10     → replace product 10     (body)\nPATCH  /products/10     → update part of it       (body)\nDELETE /products/10     → delete product 10"
+      },
+      {
+        "id": "http-status",
+        "title": "HTTP Status Codes",
+        "content": "Status codes are grouped by their **first digit**:\n\n- **1xx** — informational\n- **2xx** — success (`200 OK`, `201 Created`, `204 No Content`)\n- **3xx** — redirection (`301 Moved`, `304 Not Modified`)\n- **4xx** — client error (`400 Bad Request`, `401 Unauthorized`, `403 Forbidden`, `404 Not Found`)\n- **5xx** — server error (`500 Internal Server Error`, `503 Service Unavailable`)\n\nRule of thumb: **4xx = you (the client) messed up**, **5xx = the server messed up**.",
+        "code": "2xx  success        200 OK · 201 Created · 204 No Content\n3xx  redirect       301 Moved · 304 Not Modified\n4xx  client error   400 Bad Request · 401 Unauthorized\n                    403 Forbidden · 404 Not Found\n5xx  server error   500 Internal Error · 503 Unavailable"
+      },
+      {
+        "id": "http-stateless",
+        "title": "HTTP is Stateless",
+        "content": "Every HTTP request is **completely independent**. The server **remembers nothing** between requests — request #2 has no idea request #1 ever happened.\n\nThat is why **tokens and cookies** exist: identity must be **carried on every single request** manually. You send your token with each call, and the server re-verifies who you are every time.\n\n**Stateless = the server keeps no memory of you between requests.**",
+        "code": "Request 1:  GET /profile   (+ token)   → server verifies, responds\nRequest 2:  GET /orders    (+ token)   → server verifies AGAIN\n// The server does NOT remember request 1.\n// Every request re-proves identity via token/cookie."
+      },
+      {
+        "id": "http-versions",
+        "title": "HTTP Versions",
+        "content": "HTTP has evolved for speed:\n\n- **HTTP/1.0** — one request per connection, then close.\n- **HTTP/1.1** — persistent connections (keep-alive), reuse one connection.\n- **HTTP/2** — multiplexing: many requests over one connection at once, header compression.\n- **HTTP/3** — runs over **QUIC (UDP)**, removing TCP head-of-line blocking for lower latency.\n\nThe contract (methods, status codes, headers) stays the same — only the transport gets faster.",
+        "code": "HTTP/1.0  → 1 request per connection\nHTTP/1.1  → keep-alive, reuse connection\nHTTP/2    → multiplexing + header compression\nHTTP/3    → QUIC over UDP, lowest latency"
       }
     ],
     "quiz": [
       {
-        "question": "What is the main topic of Day 22?",
+        "question": "Which HTTP methods carry a request body?",
         "options": [
-          "Timers, Debounce & Throttle",
-          "HTML tables only",
-          "Linux kernel modules",
-          "Photoshop layers"
+          "POST, PUT, and PATCH",
+          "GET and DELETE",
+          "Only GET",
+          "All methods"
         ],
         "answer": 0,
-        "explanation": "Module 22 focuses on Timers, Debounce & Throttle."
+        "explanation": "Body exists only in POST/PUT/PATCH; GET and DELETE have no body."
       },
       {
-        "question": "Which phase includes this module?",
+        "question": "What does a 4xx status code indicate?",
         "options": [
-          "Phase 1: JavaScript Mastery",
-          "Only DevOps",
-          "Only CSS",
-          "Not part of the course"
+          "A client error — the request was wrong",
+          "A successful response",
+          "A server crash",
+          "A redirect"
         ],
         "answer": 0,
-        "explanation": "This module belongs to Phase 1: JavaScript Mastery."
+        "explanation": "4xx = client error (400/401/403/404); 5xx = server error."
+      },
+      {
+        "question": "What does 'HTTP is stateless' mean?",
+        "options": [
+          "The server remembers nothing between requests",
+          "HTTP cannot send data",
+          "The server stores all sessions forever",
+          "Requests must be sent in order"
+        ],
+        "answer": 0,
+        "explanation": "Each request is independent; tokens/cookies carry identity every time."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
@@ -385,6 +411,7 @@ export const chaptersDays20to100 = [
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "githubPath": "03Backend/Day03",
+    "notionUrl": "https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031?source=copy_link",
     "codeRepo": "https://github.com/Rohitnegi9/Thunder/tree/main"
   },
   {
@@ -392,77 +419,88 @@ export const chaptersDays20to100 = [
     "slug": "javascript-classes-and-oop",
     "track": "thunder",
     "day": 23,
-    "title": "JavaScript Classes & OOP",
-    "subtitle": "Classes, constructors, inheritance, and static methods",
+    "title": "Query Strings & Request Validation",
+    "subtitle": "Lecture 02 — parse URLs with the url module and validate every request",
     "duration": "2 hrs",
     "createdOn": "26 Jul 2026",
     "status": "published",
     "topics": [
-      "class syntax",
-      "constructor",
-      "extends & super",
-      "Static methods",
-      "OOP vs prototypes"
+      "Reading req.url",
+      "The url module",
+      "Query strings",
+      "Three checks on every request",
+      "Clean code with slice"
     ],
     "sections": [
       {
-        "id": "class-syntax",
-        "title": "class syntax",
-        "content": "Learn **class syntax** in Day 23 of Thunder: 100 Days of Code. Classes, constructors, inheritance, and static methods",
-        "code": "class Animal {\n  constructor(name) { this.name = name; }\n  speak() { console.log(this.name); }\n}\nclass Dog extends Animal {\n  speak() { console.log(this.name + \" barks\"); }\n}",
-        "tryIt": "console.log(\"Day 23: JavaScript Classes & OOP\");"
+        "id": "read-url",
+        "title": "Reading the URL — req.url",
+        "content": "**Day 23** continues **Lecture 02** ([Notion notes](https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031)). When a request comes in, **`req.url`** gives you the entire path the client asked for — e.g. `/30` or `/add?num1=10&num2=20`.\n\nOn Day 20 you parsed `/30` by hand with a loop. JavaScript already has a built-in way — **`slice(1)`** removes the leading `/` in one line. Less code, fewer bugs.",
+        "code": "// Manual (Day 20) — a whole loop just to drop the '/'\nlet str1 = \"\";\nfor (let i = 1; i < req.url.length; i++) str1 += req.url[i];\nconst number = Number(str1);\n\n// Built-in — one line\nconst number = Number(req.url.slice(1)); // \"/30\" → 30",
+        "tryIt": "console.log(Number(\"/30\".slice(1))); // 30"
       },
       {
-        "id": "constructor",
-        "title": "constructor",
-        "content": "Learn **constructor** in Day 23 of Thunder: 100 Days of Code. Classes, constructors, inheritance, and static methods",
-        "code": "class Animal {\n  constructor(name) { this.name = name; }\n  speak() { console.log(this.name); }\n}\nclass Dog extends Animal {\n  speak() { console.log(this.name + \" barks\"); }\n}",
-        "tryIt": "console.log(\"Day 23: JavaScript Classes & OOP\");"
+        "id": "query-string",
+        "title": "What is a Query String?",
+        "content": "When a user hits `http://localhost:3000/add?num1=10&num2=20`, the URL has **two parts**:\n\n- **path** — `/add`\n- **query string** — `num1=10&num2=20`\n\nThe **`?`** marks where the path ends and the query begins; **`&`** separates multiple key–value pairs. Node's built-in **`url`** module parses this cleanly. Pass **`true`** as the second argument to turn the query into a **JavaScript object** automatically — without it, the query stays a raw string.",
+        "code": "const url = require('url');\n\nconst parsed = url.parse(req.url, true);\n// parsed.pathname → \"/add\"\n// parsed.query    → { num1: \"10\", num2: \"20\" }\n\nconst num1 = Number(parsed.query.num1);\nconst num2 = Number(parsed.query.num2);\n// Try: http://localhost:3000/add?num1=10&num2=20",
+        "tryIt": "const q = 'num1=10&num2=20';\nconst obj = Object.fromEntries(new URLSearchParams(q));\nconsole.log(obj); // { num1: '10', num2: '20' }"
       },
       {
-        "id": "extends-and-super",
-        "title": "extends & super",
-        "content": "Learn **extends & super** in Day 23 of Thunder: 100 Days of Code. Classes, constructors, inheritance, and static methods",
-        "code": "class Animal {\n  constructor(name) { this.name = name; }\n  speak() { console.log(this.name); }\n}\nclass Dog extends Animal {\n  speak() { console.log(this.name + \" barks\"); }\n}",
-        "tryIt": "console.log(\"Day 23: JavaScript Classes & OOP\");"
+        "id": "three-checks",
+        "title": "Three Checks on Every Request",
+        "content": "Users send messy input. Every time a request comes in, ask **three questions** — they save you from 90% of backend bugs:\n\n1. **Is the input valid?** `/abc` → `Number(\"abc\")` is **NaN**. Looping `NaN` times returns an empty `[]` and the user is confused. Guard it and return **400**.\n2. **Is it in range?** You have 100 profiles; the user asks for `/500`. Indexes past 100 return `undefined`, so you'd send back 400 `undefined`s. Clamp or reject.\n3. **Did they hit a real route?** Unknown path → return a clear **404**, not a silent hang.",
+        "code": "const number = Number(req.url.slice(1));\n\n// 1 — invalid input (NaN)\nif (isNaN(number)) {\n  res.writeHead(400);\n  return res.end(\"Please enter a valid number\");\n}\n\n// 2 — out of range\nif (number > gitHub.length) {\n  res.writeHead(400);\n  return res.end(`Only ${gitHub.length} profiles available`);\n}\n\n// 3 — valid → respond\nres.end(JSON.stringify(gitHub.slice(0, number)));"
       },
       {
-        "id": "static-methods",
-        "title": "Static methods",
-        "content": "Learn **Static methods** in Day 23 of Thunder: 100 Days of Code. Classes, constructors, inheritance, and static methods",
-        "code": "class Animal {\n  constructor(name) { this.name = name; }\n  speak() { console.log(this.name); }\n}\nclass Dog extends Animal {\n  speak() { console.log(this.name + \" barks\"); }\n}",
-        "tryIt": "console.log(\"Day 23: JavaScript Classes & OOP\");"
+        "id": "clean-code",
+        "title": "The Clean Version — slice, not loops",
+        "content": "You originally built the result array with a `for` loop pushing one item at a time. **`slice`** does the same job in one line — no loop, no index bugs.\n\nPut it all together: parse with `slice(1)`, validate the three checks, then `slice(0, n)` the data. Short, readable, and correct.",
+        "code": "// Loop version — verbose\nconst arr = [];\nfor (let i = 0; i < number; i++) arr.push(gitHub[i]);\n\n// slice version — one line, same result\nconst arr = gitHub.slice(0, number);\n\n// Clean handler\nconst n = Number(req.url.slice(1));\nif (isNaN(n)) { res.writeHead(400); return res.end(\"Invalid\"); }\nres.end(JSON.stringify(gitHub.slice(0, n)));",
+        "tryIt": "const gitHub = [1,2,3,4,5,6,7,8,9,10];\nconsole.log(gitHub.slice(0, 3)); // [1, 2, 3]"
       }
     ],
     "quiz": [
       {
-        "question": "What is the main topic of Day 23?",
+        "question": "In url.parse(req.url, true), what does the second argument 'true' do?",
         "options": [
-          "JavaScript Classes & OOP",
-          "HTML tables only",
-          "Linux kernel modules",
-          "Photoshop layers"
+          "Parses the query string into a JavaScript object",
+          "Enables HTTPS",
+          "Caches the response",
+          "Validates the URL"
         ],
         "answer": 0,
-        "explanation": "Module 23 focuses on JavaScript Classes & OOP."
+        "explanation": "Passing true turns the query string into an object; without it, it stays a raw string."
       },
       {
-        "question": "Which phase includes this module?",
+        "question": "A user hits /abc where a number is expected. What is Number('abc')?",
         "options": [
-          "Phase 1: JavaScript Mastery",
-          "Only DevOps",
-          "Only CSS",
-          "Not part of the course"
+          "NaN — you must guard against it and return 400",
+          "0",
+          "abc",
+          "It throws an error"
         ],
         "answer": 0,
-        "explanation": "This module belongs to Phase 1: JavaScript Mastery."
+        "explanation": "Number('abc') is NaN; validate input and return a 400 instead of an empty result."
+      },
+      {
+        "question": "Which replaces a push-in-a-loop to grab the first n items?",
+        "options": [
+          "arr.slice(0, n)",
+          "arr.map(n)",
+          "arr.filter(n)",
+          "arr.reduce(n)"
+        ],
+        "answer": 0,
+        "explanation": "slice(0, n) returns the first n items in one line — no loop needed."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=KLvG0sLr8VY",
-    "youtubeTitle": "JavaScript Classes — Programming with Mosh",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "githubPath": "03Backend/Day04",
+    "notionUrl": "https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031?source=copy_link",
     "codeRepo": "https://github.com/Rohitnegi9/Thunder/tree/main"
   },
   {
@@ -470,144 +508,238 @@ export const chaptersDays20to100 = [
     "slug": "web-security-basics",
     "track": "thunder",
     "day": 24,
-    "title": "Web Security Basics",
-    "subtitle": "XSS, CSRF, CORS, and safe API usage",
+    "title": "Why Express Exists",
+    "subtitle": "The pain of raw Node and how Express cures every part of it",
     "duration": "2 hrs",
     "createdOn": "27 Jul 2026",
     "status": "published",
     "topics": [
-      "XSS attacks",
-      "CSRF overview",
-      "CORS explained",
-      "HTTPS & cookies",
-      "Security headers"
+      "Raw Node limitations",
+      "Manual routing pain",
+      "Body is a stream",
+      "No home for middleware",
+      "Raw Node → Express map"
     ],
     "sections": [
       {
-        "id": "xss-attacks",
-        "title": "XSS attacks",
-        "content": "Learn **XSS attacks** in Day 24 of Thunder: 100 Days of Code. XSS, CSRF, CORS, and safe API usage",
-        "tryIt": "console.log(\"Day 24: Web Security Basics\");"
+        "id": "raw-node-pain",
+        "title": "The Pain of Raw Node",
+        "content": "**Day 24** closes **Lecture 02** ([Notion notes](https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031)). After building servers with the raw `http` module, you feel eight limitations — in order of how badly they hurt:\n\n1. **No routing** — `req.url` + `req.method` are raw strings; routing is a giant hand-written if-else. 10 resources × 5 methods = 50 branches in one function.\n2. **No dynamic routes** — `/users/123` means `req.url.split('/')` surgery; a query or trailing slash breaks it.\n3. **The body is a stream** — `req.body` is `undefined`. You collect chunks with `req.on('data')` + `req.on('end')`, then `JSON.parse` in a try-catch — every POST, every time.\n4. **Every response is manual** — `writeHead(...)` + `end(JSON.stringify(...))` on every reply; forget the header and the browser guesses wrong.\n5. **Forget `res.end()` → the request hangs forever.** No automatic 404.\n6. **Nowhere for cross-cutting work** — logging, auth, CORS get copy-pasted into every branch.\n7. **No way to organize** — one 250-line `createServer` callback, routing and business logic fused.\n8. **No static file serving** — read with `fs`, guess the MIME type, set the header, stream it, manually.",
+        "code": "// Raw Node — the body is a stream you assemble by hand\nconst server = http.createServer((req, res) => {\n  if (req.url === '/users' && req.method === 'POST') {\n    let body = '';\n    req.on('data', chunk => { body += chunk; });\n    req.on('end', () => {\n      try {\n        const data = JSON.parse(body);\n        res.writeHead(201, { 'Content-Type': 'application/json' });\n        res.end(JSON.stringify(data));\n      } catch {\n        res.writeHead(400); res.end('Bad JSON');\n      }\n    });\n  }\n  // ...repeat this whole block for every route + method\n});"
       },
       {
-        "id": "csrf-overview",
-        "title": "CSRF overview",
-        "content": "Learn **CSRF overview** in Day 24 of Thunder: 100 Days of Code. XSS, CSRF, CORS, and safe API usage",
-        "tryIt": "console.log(\"Day 24: Web Security Basics\");"
+        "id": "express-cure",
+        "title": "Raw Node → Express, Feature by Feature",
+        "content": "**Express** is a backend framework for Node. Every one of its features is the exact helper you would have written yourself after feeling the pain above. The direct mapping:\n\n- if-else on `url` + `method` → **`app.get('/users')`, `app.post('/users')`**\n- `req.url.split('/')` → **`/users/:id` → `req.params.id`**\n- manual URL parsing → **`req.query.role`**\n- `req.on('data')` + `JSON.parse` → **`express.json()` → `req.body` just exists**\n- `writeHead` + `stringify` → **`res.status(201).json(...)`**\n- copy-pasted logging/auth → **`app.use()` middleware**\n- hanging requests → **catch-all + error handler**\n- 250-line monster → **`express.Router()`, routes in separate files**\n- manual `fs` + MIME types → **`express.static('public')`**",
+        "code": "// The same Users API in Express — 25 lines, not 250\nimport express from 'express';\nconst app = express();\n\napp.use(express.json());            // req.body just exists\n\napp.get('/users', (req, res) => res.json(users));\napp.get('/users/:id', (req, res) => res.json(users[req.params.id]));\napp.post('/users', (req, res) => {\n  users.push(req.body);\n  res.status(201).json(req.body);   // status + JSON in one line\n});\n\napp.listen(3000);"
       },
       {
-        "id": "cors-explained",
-        "title": "CORS explained",
-        "content": "Learn **CORS explained** in Day 24 of Thunder: 100 Days of Code. XSS, CSRF, CORS, and safe API usage",
-        "tryIt": "console.log(\"Day 24: Web Security Basics\");"
-      },
-      {
-        "id": "https-and-cookies",
-        "title": "HTTPS & cookies",
-        "content": "Learn **HTTPS & cookies** in Day 24 of Thunder: 100 Days of Code. XSS, CSRF, CORS, and safe API usage",
-        "tryIt": "console.log(\"Day 24: Web Security Basics\");"
+        "id": "the-reveal",
+        "title": "Express Didn't Invent Anything",
+        "content": "The lesson lands in one line:\n\n> \"Express didn't invent anything. Every feature is the helper you'd have written yourself after feeling that pain. The 250 lines you suffered through become 25 — and not one of them is magic.\"\n\nBecause you built the hard way first, Express now reads as **obvious**: routing, params, `req.body`, `res.json`, middleware — each is a named shortcut for a problem you already solved by hand. Next up (**Day 25 / Lecture 06**): Express routes and **middleware** in depth."
       }
     ],
     "quiz": [
       {
-        "question": "What is the main topic of Day 24?",
+        "question": "In raw Node, why is handling req.body painful?",
         "options": [
-          "Web Security Basics",
-          "HTML tables only",
-          "Linux kernel modules",
-          "Photoshop layers"
+          "The body arrives as a stream — you collect chunks and JSON.parse manually",
+          "req.body is always empty by design",
+          "Node forbids reading bodies",
+          "You must use a database first"
         ],
         "answer": 0,
-        "explanation": "Module 24 focuses on Web Security Basics."
+        "explanation": "req.body is undefined; you assemble chunks via req.on('data')/('end') then parse — express.json() replaces all of it."
       },
       {
-        "question": "Which phase includes this module?",
+        "question": "Which Express feature replaces req.url.split('/') for dynamic segments?",
         "options": [
-          "Phase 1: JavaScript Mastery",
-          "Only DevOps",
-          "Only CSS",
-          "Not part of the course"
+          "Route params — /users/:id → req.params.id",
+          "app.use()",
+          "express.static()",
+          "res.status()"
         ],
         "answer": 0,
-        "explanation": "This module belongs to Phase 1: JavaScript Mastery."
+        "explanation": "Route parameters make one URL segment dynamic and expose it via req.params."
+      },
+      {
+        "question": "What is the core insight about Express?",
+        "options": [
+          "It's the set of helpers you'd have written yourself — no magic",
+          "It replaces Node.js entirely",
+          "It runs only in the browser",
+          "It removes the need for HTTP"
+        ],
+        "answer": 0,
+        "explanation": "Express packages the shortcuts for the exact pains of raw Node; 250 lines become 25."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=4YjpPmdDeog",
-    "youtubeTitle": "Web App Security — Fireship",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
-    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
+    "githubPath": "03Backend/Day05",
+    "notionUrl": "https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031?source=copy_link",
+    "codeRepo": "https://github.com/Rohitnegi9/Thunder/tree/main"
   },
   {
     "id": 25,
     "slug": "javascript-mastery-review",
     "track": "thunder",
     "day": 25,
-    "title": "JavaScript Mastery Review",
-    "subtitle": "Revision, patterns, and interview-ready JS concepts",
-    "duration": "2 hrs",
+    "title": "Express & Middleware",
+    "subtitle": "Lecture 06 — routes, route/query params, middleware, app.use & app.get",
+    "duration": "2 hrs 30 mins",
     "createdOn": "28 Jul 2026",
     "status": "published",
     "topics": [
-      "Core concepts review",
-      "Common interview questions",
-      "Coding patterns",
-      "Best practices",
-      "Phase 1 recap"
+      "Express basics",
+      "req & res",
+      "Routes = method + path",
+      "Route parameters",
+      "Query parameters",
+      "Route vs query param",
+      "Middleware & next()",
+      "app.use vs app.get",
+      "express.json()",
+      "Protected routes & rate limiting"
     ],
     "sections": [
       {
-        "id": "core-concepts-review",
-        "title": "Core concepts review",
-        "content": "Learn **Core concepts review** in Day 25 of Thunder: 100 Days of Code. Revision, patterns, and interview-ready JS concepts",
-        "tryIt": "console.log(\"Day 25: JavaScript Mastery Review\");"
+        "id": "express-basics",
+        "title": "Express — Your First Server",
+        "content": "**Day 25** follows **Lecture 06** ([Express & middleware Notion notes](https://app.notion.com/p/Lecture-06-Express-and-middleware-39943ac5cab980d19823df367d602eeb)). **Express** is a backend framework for Node.js that helps you build APIs with almost no boilerplate.\n\nCreate an app, define a route with **`app.get`**, and start it with **`app.listen`**. That's a working server.",
+        "code": "import express from 'express';\nconst app = express();\n\napp.get('/', (req, res) => {\n  res.send('Hello from Express');\n});\n\napp.listen(3000, () => {\n  console.log('Server running on port 3000');\n});",
+        "tryIt": "console.log('Express: app.get(path, handler) + app.listen(port)');"
       },
       {
-        "id": "common-interview-questions",
-        "title": "Common interview questions",
-        "content": "Learn **Common interview questions** in Day 25 of Thunder: 100 Days of Code. Revision, patterns, and interview-ready JS concepts",
-        "tryIt": "console.log(\"Day 25: JavaScript Mastery Review\");"
+        "id": "req-res",
+        "title": "req and res",
+        "content": "Every route handler receives **two objects**:\n\n- **`req`** (request) — data **coming from the client**: `req.params`, `req.query`, `req.body`, `req.headers`.\n- **`res`** (response) — used to **send data back**: `res.send(...)`, `res.json(...)`, `res.status(...)`.\n\nYou read from `req`, you write to `res`.",
+        "code": "app.get('/user', (req, res) => {\n  console.log(req.query);   // data from client\n  res.json({ name: 'Rohit' }); // data back to client\n});"
       },
       {
-        "id": "coding-patterns",
-        "title": "Coding patterns",
-        "content": "Learn **Coding patterns** in Day 25 of Thunder: 100 Days of Code. Revision, patterns, and interview-ready JS concepts",
-        "tryIt": "console.log(\"Day 25: JavaScript Mastery Review\");"
+        "id": "routes-method-path",
+        "title": "A Route is Method + Path",
+        "content": "A **route is not just a URL** — it is a **method + a path** together. `app.get()` handles **GET** requests (used to fetch/read data); `app.post()` handles POST, and so on.\n\nSame path with a different method = a **different route**. So `GET /user` and `POST /user` are two separate handlers. Also, `/user` and `/user/rohit` are **different paths** — the first route won't handle the second (that needs a route parameter).",
+        "code": "app.get('/user', handlerA);   // GET  /user\napp.post('/user', handlerB);  // POST /user  → different route\n\n// /user does NOT match /user/rohit — different path"
       },
       {
-        "id": "best-practices",
-        "title": "Best practices",
-        "content": "Learn **Best practices** in Day 25 of Thunder: 100 Days of Code. Revision, patterns, and interview-ready JS concepts",
-        "tryIt": "console.log(\"Day 25: JavaScript Mastery Review\");"
+        "id": "route-params",
+        "title": "Route Parameters — Dynamic Segments",
+        "content": "A **route parameter** makes one part of the URL dynamic, so one route handles many values. Mark it with a **colon**: `/user/:username`. Express stores the actual value on **`req.params`**.\n\n`:id` matches exactly **one path segment** — `/user/123` works, `/user/123/orders` does not (that needs another param).",
+        "code": "app.get('/user/:username', (req, res) => {\n  res.send(`Hello ${req.params.username}`);\n});\n// /user/rohit  → req.params = { username: 'rohit' }\n// /user/aditya → req.params = { username: 'aditya' }\n\napp.get('/product/:id', (req, res) => {\n  res.json({ id: req.params.id });\n});",
+        "tryIt": "const params = { id: '10' };\nconsole.log(`Product ${params.id}`);"
+      },
+      {
+        "id": "route-order",
+        "title": "Route Order Matters",
+        "content": "Express checks routes **top to bottom** and runs the **first match**. Usually order doesn't matter, but a **specific** path can be swallowed by a **dynamic** one.\n\n`/users/:id` will match `/users/admin` (treating `admin` as the `id`), so if `/users/admin` is defined **after** it, it never runs. Put **specific routes before dynamic ones**.",
+        "code": "// ❌ Wrong — /users/admin is swallowed\napp.get('/users/:id', handlerA);   // matches /users/admin first\napp.get('/users/admin', handlerB); // never runs\n\n// ✅ Correct — specific before dynamic\napp.get('/users/admin', handlerB);\napp.get('/users/:id', handlerA);"
+      },
+      {
+        "id": "query-params",
+        "title": "Query Parameters",
+        "content": "A **query parameter** is extra data after **`?`** in the URL, read from **`req.query`** — no route change needed. Multiple values are separated by **`&`**.\n\nQuery params are perfect for **filter, search, sort, and pagination** — optional extras that don't change *which* resource you're hitting.",
+        "code": "// GET /search?city=delhi&role=admin\napp.get('/search', (req, res) => {\n  const { city, role } = req.query;\n  res.json({ city, role });\n  // req.query = { city: 'delhi', role: 'admin' }\n});",
+        "tryIt": "const q = new URLSearchParams('city=delhi&role=admin');\nconsole.log(q.get('city'), q.get('role'));"
+      },
+      {
+        "id": "param-vs-query",
+        "title": "Route Param vs Query Param",
+        "content": "The most important distinction:\n\n- **Route param** — use it to identify **one exact resource**. It's part of the resource's identity. Remove it and the meaning changes: `/product/10` (one product) → `/product` (all products). So `10` is a **route param**.\n- **Query param** — use it for **filter / search / sort / pagination**. Remove it and the request is still valid, just broader: `/products?category=mobile` → `/products` (all products). So `category=mobile` is a **query param**.\n\n**Simple rule:** exact identity → route param; optional refinement → query param.",
+        "code": "// Exact resource → route param\nGET /product/10            → req.params.id = '10'\n\n// Filter / search / sort → query param\nGET /products?category=mobile&sort=price\n                           → req.query = { category, sort }"
+      },
+      {
+        "id": "middleware",
+        "title": "What is Middleware?",
+        "content": "**Middleware** is a function that runs **between** the request and the final route handler. The flow is: `Request → Middleware → Route Handler → Response`.\n\nMiddleware takes **three parameters** — `(req, res, next)`. Calling **`next()`** passes control to the next function in the pipeline. If you neither call `next()` nor send a response, the **request hangs forever**. Middleware can also **stop** a request by sending a response itself (then the route handler never runs).",
+        "code": "function logger(req, res, next) {\n  console.log(`${req.method} ${req.url}`);\n  next(); // pass control onward\n}\n\n// ❌ hangs — no next(), no response\nfunction broken(req, res, next) { console.log('stuck'); }\n\n// ✅ stops the request early\nfunction blockAll(req, res, next) {\n  res.status(403).send('Blocked');\n}"
+      },
+      {
+        "id": "app-use",
+        "title": "app.use — Registering Middleware",
+        "content": "**`app.use()`** registers middleware. Unlike `app.get()` (which handles **only GET** on an **exact** path), `app.use()` runs for **all HTTP methods** and for a path **and everything under it**.\n\n- `app.use(fn)` or `app.use('/', fn)` → runs for **every** path.\n- `app.use('/user', fn)` → runs for `/user` **and** `/user/...`, but **not** `/product`.\n\nMount it **before** your routes so it runs first.",
+        "code": "app.use((req, res, next) => {   // runs for every request\n  console.log('incoming:', req.url);\n  next();\n});\n\napp.use('/admin', checkAuth);   // only the /admin branch\n\n// app.get() → one method, exact path\n// app.use() → all methods, path + everything under it"
+      },
+      {
+        "id": "express-json",
+        "title": "app.use(express.json())",
+        "content": "By default Express can't read a JSON request body. **`app.use(express.json())`** is built-in middleware that parses an incoming JSON body and puts it on **`req.body`** — so `POST`/`PUT`/`PATCH` handlers can just read `req.body`.\n\nYou don't call `next()` yourself here — `express.json()` calls it **internally**. Add this line once, near the top.",
+        "code": "app.use(express.json());\n\napp.post('/user', (req, res) => {\n  // client sent { \"name\": \"Rohit\" }\n  console.log(req.body.name); // 'Rohit'\n  res.status(201).json(req.body);\n});"
+      },
+      {
+        "id": "protected-rate",
+        "title": "Protected Routes & Rate Limiting",
+        "content": "Because middleware runs before handlers, it's the perfect home for **cross-cutting** concerns:\n\n- **Protected routes** — an `auth` middleware checks a token and either calls `next()` or replies `401`. Apply it to one route or mount it on a group (`app.use('/admin', auth)`) to protect the whole branch.\n- **Rate limiting** — a `rateLimiter` middleware caps how many requests a user can make in a time window. Apply globally for every route, or to a single route/group.",
+        "code": "function auth(req, res, next) {\n  if (!req.headers.authorization) {\n    return res.status(401).json({ error: 'Unauthorized' });\n  }\n  next();\n}\n\napp.get('/profile', auth, (req, res) => res.json(user)); // one route\napp.use('/admin', auth);   // protect the whole /admin group\napp.use(rateLimiter);      // global rate limit"
+      },
+      {
+        "id": "sending-response",
+        "title": "Sending a Response",
+        "content": "Use **`res`** to reply — and reply **only once**:\n\n- **`res.send('text')`** — send text.\n- **`res.json({ ... })`** — send JSON.\n- **`res.status(201).json({ ... })`** — set a status code, then send JSON.\n\nSending two responses throws \"headers already sent\". Use **`return`** when replying early inside a middleware or guard so the rest of the handler doesn't also run.",
+        "code": "res.send('Hello');\nres.json({ id: 1, name: 'Rohit' });\nres.status(201).json({ created: true });\n\n// return when stopping early\nif (!user) return res.status(404).json({ error: 'Not found' });\nres.json(user); // only runs if user exists"
+      },
+      {
+        "id": "mental-model",
+        "title": "Final Mental Model — Express is a Pipeline",
+        "content": "Put it together: **Express is a pipeline**. A request flows through middleware, then into the matching route handler, then out as a response.\n\n- `app.get / post / patch / delete` — handle routes by method.\n- `app.use` — register middleware.\n- **Route params** — exact resource identity.\n- **Query params** — filter / search / sort / pagination.\n- **Middleware** — common work: logging, auth, body parsing, rate limiting.\n\nCore line: *the request walks the pipeline; each middleware either passes it along with `next()` or ends it with a response.*",
+        "code": "Request\n  → express.json()      (parse body)\n  → logger              (log it)\n  → auth                (verify token, next() or 401)\n  → app.get('/users/:id') route handler\n  → res.json(...)       Response"
       }
     ],
     "quiz": [
       {
-        "question": "What is the main topic of Day 25?",
+        "question": "When should you use a route parameter instead of a query parameter?",
         "options": [
-          "JavaScript Mastery Review",
-          "HTML tables only",
-          "Linux kernel modules",
-          "Photoshop layers"
+          "To identify one exact resource (e.g. /product/10)",
+          "For filtering, sorting, or pagination",
+          "Only for POST requests",
+          "Never — they are identical"
         ],
         "answer": 0,
-        "explanation": "Module 25 focuses on JavaScript Mastery Review."
+        "explanation": "Route params = exact resource identity; query params = filter/search/sort/pagination."
       },
       {
-        "question": "Which phase includes this module?",
+        "question": "What happens if middleware neither calls next() nor sends a response?",
         "options": [
-          "Phase 1: JavaScript Mastery",
-          "Only DevOps",
-          "Only CSS",
-          "Not part of the course"
+          "The request hangs forever",
+          "Express skips to the next route automatically",
+          "It returns 404",
+          "The server crashes"
         ],
         "answer": 0,
-        "explanation": "This module belongs to Phase 1: JavaScript Mastery."
+        "explanation": "Without next() or a response, the request is stuck — middleware must pass control or end it."
+      },
+      {
+        "question": "What does app.use(express.json()) do?",
+        "options": [
+          "Parses a JSON request body onto req.body",
+          "Converts responses to JSON",
+          "Enables HTTPS",
+          "Creates the Express app"
+        ],
+        "answer": 0,
+        "explanation": "express.json() is built-in middleware that populates req.body from a JSON payload; it calls next() internally."
+      },
+      {
+        "question": "Why must /users/admin be declared before /users/:id?",
+        "options": [
+          "Otherwise /users/:id matches first and treats 'admin' as the id",
+          "Express sorts routes alphabetically",
+          "Dynamic routes are always ignored",
+          "Order never matters in Express"
+        ],
+        "answer": 0,
+        "explanation": "Express matches top-to-bottom; the dynamic /users/:id would swallow /users/admin if declared first."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=PkZNo7MFNFg",
-    "youtubeTitle": "JavaScript Interview Questions — freeCodeCamp",
+    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
-    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
+    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
+    "githubPath": "03Backend/Day06",
+    "notionUrl": "https://app.notion.com/p/Lecture-06-Express-and-middleware-39943ac5cab980d19823df367d602eeb?source=copy_link",
+    "codeRepo": "https://github.com/Rohitnegi9/Thunder/tree/main"
   },
   {
     "id": 26,
