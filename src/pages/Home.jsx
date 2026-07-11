@@ -160,10 +160,9 @@ export default function Home() {
           <span className="btech-badge">For Students</span>
           <h2 className="btech-title">B.Tech CS/IT — 4-Year Learning Path</h2>
           <p className="btech-sub">
-            A year-by-year roadmap to graduate job-ready as a full lifecycle engineer — Day 1 on{' '}
-            <strong>5 July 2026</strong>, graduation on <strong>4 July 2030</strong>. Each year builds
-            on the last, maps directly to a track on this site, and carries <strong>DSA &amp; System
-            Design practiced in that year&apos;s language</strong>.
+            A year-by-year roadmap to graduate job-ready as a full lifecycle engineer. Each year
+            builds on the last, maps directly to a track on this site, and carries <strong>DSA &amp;
+            System Design practiced in that year&apos;s language</strong>.
           </p>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
