@@ -160,7 +160,7 @@ export default function Header({ onSearch }) {
                   ? 'Python & Agentic AI — Ashok IT'
                   : track === 'nextjs'
                     ? 'React & Next.js by ChaiCode'
-                    : 'Java · Python · TypeScript · DevOps · Kubernetes';
+                    : 'TypeScript · Python · Java · DevOps';
 
   const searchPlaceholder =
     track === 'mobile'
