@@ -157,8 +157,8 @@ export const chaptersDays20to100 = [
         "explanation": "localStorage persists but only on one browser; a backend/DB shares data — Project02 vs Project03."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=w-7RQ46RgxU",
+    "youtubeTitle": "Node JS Tutorial for Beginners #1 — Introduction — Net Ninja",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "githubPath": "03Backend/Day01",
@@ -301,8 +301,8 @@ export const chaptersDays20to100 = [
         "explanation": "TCP ensures ordered, reliable transport; HTTP runs on top of it."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=04pqkGnAAkc",
+    "youtubeTitle": "package.json & npm — All You Need to Know — Automation Step by Step",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "githubPath": "03Backend/Day02",
@@ -406,8 +406,8 @@ export const chaptersDays20to100 = [
         "explanation": "Each request is independent; tokens/cookies carry identity every time."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=iYM2zFP3Zn0",
+    "youtubeTitle": "HTTP Crash Course & Exploration — Traversy Media",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "githubPath": "03Backend/Day03",
@@ -495,8 +495,8 @@ export const chaptersDays20to100 = [
         "explanation": "slice(0, n) returns the first n items in one line — no loop needed."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=9tchsy20aBI",
+    "youtubeTitle": "Parse URL & Query Params in Node HTTP Module — ProgrammingKnowledge",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "githubPath": "03Backend/Day04",
@@ -574,8 +574,8 @@ export const chaptersDays20to100 = [
         "explanation": "Express packages the shortcuts for the exact pains of raw Node; 250 lines become 25."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=45dAt9Gz8rE",
+    "youtubeTitle": "What is Express? And Why Use It — Academind",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "githubPath": "03Backend/Day05",
@@ -733,8 +733,8 @@ export const chaptersDays20to100 = [
         "explanation": "Express matches top-to-bottom; the dynamic /users/:id would swallow /users/admin if declared first."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=lY6icfhap2o",
+    "youtubeTitle": "Learn Express Middleware in 14 Minutes — Web Dev Simplified",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "githubPath": "03Backend/Day06",
