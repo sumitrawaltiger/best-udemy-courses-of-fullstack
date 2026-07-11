@@ -267,10 +267,7 @@ export default function Day022() {
             ← Day 21
           </Link>
           <p className="day001-datetime">Thunder Day 22 · 78 days left</p>
-          <Link
-            to="/learn/javascript-classes-and-oop"
-            className="day001-nav-btn day001-nav-next"
-          >
+          <Link to="/day-023" className="day001-nav-btn day001-nav-next">
             Day 23 →
           </Link>
         </header>
