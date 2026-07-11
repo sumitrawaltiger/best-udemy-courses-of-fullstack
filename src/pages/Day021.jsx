@@ -275,7 +275,7 @@ export default function Day021() {
             ← Day 20
           </Link>
           <p className="day001-datetime">Thunder Day 21 · 79 days left</p>
-          <Link to="/learn/timers-debounce-and-throttle" className="day001-nav-btn day001-nav-next">
+          <Link to="/day-022" className="day001-nav-btn day001-nav-next">
             Day 22 →
           </Link>
         </header>
