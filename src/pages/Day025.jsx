@@ -248,10 +248,7 @@ export default function Day025() {
             ← Day 24
           </Link>
           <p className="day001-datetime">Thunder Day 25 · 29 Jul 2026</p>
-          <Link
-            to="/learn/node-js-and-runtime-fundamentals"
-            className="day001-nav-btn day001-nav-next"
-          >
+          <Link to="/day-026" className="day001-nav-btn day001-nav-next">
             Day 26 →
           </Link>
         </header>
