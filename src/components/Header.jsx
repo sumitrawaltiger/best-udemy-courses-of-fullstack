@@ -190,7 +190,15 @@ export default function Header({ onSearch }) {
           <span
             className={`logo-icon ${track === 'mobile' ? 'logo-icon-mobile' : ''} ${track === 'nextjs' ? 'logo-icon-nextjs' : ''} ${track === 'python' ? 'logo-icon-python' : ''} ${track === 'java' ? 'logo-icon-java' : ''} ${track === 'aws' ? 'logo-icon-aws' : ''} ${track === 'devops' ? 'logo-icon-devops' : ''} ${track === 'k8s' ? 'logo-icon-k8s' : ''} ${track === 'interview' ? 'logo-icon-interview' : ''}`}
           >
-            {logoIcon}
+            {logoIcon === 'JS' ? (
+              <img
+                src="/lifecycle-logo.png"
+                alt="Full Lifecycle Engineer"
+                className="logo-img"
+              />
+            ) : (
+              logoIcon
+            )}
           </span>
           <div className="logo-text">
             <span className="logo-name">{logoName}</span>
