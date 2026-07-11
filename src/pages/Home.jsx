@@ -32,10 +32,10 @@ import ThunderHero from '../components/ThunderHero';
 const BTECH_ROADMAP = [
   {
     year: '1st Year',
-    theme: 'Frontend Foundations',
+    theme: 'TypeScript & Frontend',
     icon: '🎨',
     accent: 'y1',
-    topics: ['HTML5', 'CSS3', 'JavaScript', 'React / Angular', 'React Native'],
+    topics: ['TypeScript', 'JavaScript', 'React', 'Next.js', 'React Native', 'DSA & System Design in TypeScript'],
     blurb: 'Build interactive UIs and your first mobile apps — the visible half of every product.',
     links: [
       { label: 'JavaScript Track', to: '#syllabus' },
@@ -45,28 +45,28 @@ const BTECH_ROADMAP = [
   },
   {
     year: '2nd Year',
-    theme: 'Backend with Java',
-    icon: '☕',
-    accent: 'y2',
-    topics: ['Java', 'Spring Boot', 'Microservices'],
-    blurb: 'Design robust server-side systems, REST APIs, and scalable microservices.',
-    links: [{ label: 'Java & Spring Track', to: '/java' }],
-  },
-  {
-    year: '3rd Year',
     theme: 'Python & Agentic AI',
     icon: '🐍',
-    accent: 'y3',
-    topics: ['Python', 'Django', 'Agentic AI with Python'],
+    accent: 'y2',
+    topics: ['Python', 'Django', 'FastAPI', 'Agentic AI', 'DSA & System Design in Python'],
     blurb: 'Add Python, web frameworks, and the AI agents that are reshaping software.',
     links: [{ label: 'Python & Agentic AI', to: '/python' }],
   },
   {
+    year: '3rd Year',
+    theme: 'Backend with Java',
+    icon: '☕',
+    accent: 'y3',
+    topics: ['Java', 'Spring Boot', 'Microservices', 'DSA & System Design in Java'],
+    blurb: 'Design robust server-side systems, REST APIs, and scalable microservices.',
+    links: [{ label: 'Java & Spring Track', to: '/java' }],
+  },
+  {
     year: '4th Year',
-    theme: 'DevOps & Cloud',
+    theme: 'DevOps with Cloud',
     icon: '☁️',
     accent: 'y4',
-    topics: ['DevOps', 'Cloud', 'Kubernetes'],
+    topics: ['DevOps', 'Cloud', 'Kubernetes', 'CI/CD'],
     blurb: 'Ship and scale everything you built — CI/CD, cloud, containers, and orchestration.',
     links: [
       { label: 'DevOps', to: '/devops' },
@@ -160,8 +160,10 @@ export default function Home() {
           <span className="btech-badge">For Students</span>
           <h2 className="btech-title">B.Tech CS/IT — 4-Year Learning Path</h2>
           <p className="btech-sub">
-            A year-by-year roadmap to graduate job-ready as a full lifecycle engineer. Each year builds
-            on the last — and maps directly to a track on this site.
+            A year-by-year roadmap to graduate job-ready as a full lifecycle engineer — Day 1 on{' '}
+            <strong>5 July 2026</strong>, graduation on <strong>4 July 2030</strong>. Each year builds
+            on the last, maps directly to a track on this site, and carries <strong>DSA &amp; System
+            Design practiced in that year&apos;s language</strong>.
           </p>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
