@@ -953,8 +953,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=lY5icMHlVl0",
-    "youtubeTitle": "Express Middleware Explained — Academind",
+    "youtubeUrl": "https://www.youtube.com/watch?v=U-NzGQepBE8",
+    "youtubeTitle": "Express.js Middleware — The Request-Response Lifecycle — procademy",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1097,8 +1097,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=ExcKwvgN5oY",
-    "youtubeTitle": "Mongoose JS Crash Course — Net Ninja",
+    "youtubeUrl": "https://www.youtube.com/watch?v=DZBGEVgL2eE",
+    "youtubeTitle": "Mongoose Crash Course — Beginner to Advanced — Web Dev Simplified",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1241,8 +1241,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=DZF2bA0RESc",
-    "youtubeTitle": "Role Based Access Control — Web Dev Simplified",
+    "youtubeUrl": "https://www.youtube.com/watch?v=HHuiV841g_w",
+    "youtubeTitle": "Node & Express Role-Based Authorization — Dipesh Malvia",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1313,8 +1313,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=b7PUm7l5mEw",
-    "youtubeTitle": "File Upload with Node & Multer — Traversy Media",
+    "youtubeUrl": "https://www.youtube.com/watch?v=WqJ0P8JnftI",
+    "youtubeTitle": "Uploading Files with Node.js and Multer — Piyush Garg",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1457,8 +1457,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=2Crh44XwS-Q",
-    "youtubeTitle": "Express Error Handling — Web Dev Simplified",
+    "youtubeUrl": "https://www.youtube.com/watch?v=-OjIF9Zympo",
+    "youtubeTitle": "Error Handling in Express.js — The Ultimate Guide — CodeLucky",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1529,8 +1529,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=4YjpPmdDeog",
-    "youtubeTitle": "Web App Security in 100 Seconds — Fireship",
+    "youtubeUrl": "https://www.youtube.com/watch?v=DYme1m4RiwI",
+    "youtubeTitle": "Node.js Security Best Practices — Software Developer Diaries",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1745,8 +1745,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=VywxIQ2jq7c",
-    "youtubeTitle": "Postman Beginner Tutorial — Valentin Despa",
+    "youtubeUrl": "https://www.youtube.com/watch?v=MFxk5BZulVU",
+    "youtubeTitle": "Postman API Testing Tutorial for Beginners — Codemify",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1889,8 +1889,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 3: System Thinking & Scaling."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=IRQi0Zt2N00",
-    "youtubeTitle": "Monolith vs Microservices — Fireship",
+    "youtubeUrl": "https://www.youtube.com/watch?v=NdeTGlZ__Do",
+    "youtubeTitle": "Monolithic vs Microservice Architecture — Alex Hyett",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2033,8 +2033,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 3: System Thinking & Scaling."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=ymrTs66e-gc",
-    "youtubeTitle": "Message Queues Explained — Hussein Nasser",
+    "youtubeUrl": "https://www.youtube.com/watch?v=PQHf_IzmUXE",
+    "youtubeTitle": "Kafka vs RabbitMQ — Message Queues Explained — The Coding Gopher",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2105,8 +2105,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 3: System Thinking & Scaling."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=9a5TeSrrMcU",
-    "youtubeTitle": "Load Balancing Explained — Hussein Nasser",
+    "youtubeUrl": "https://www.youtube.com/watch?v=xo5V9g9joFs",
+    "youtubeTitle": "Proxy vs Reverse Proxy vs Load Balancer — TechWorld with Nana",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2177,8 +2177,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 3: System Thinking & Scaling."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=5faMjKuB9BA",
-    "youtubeTitle": "Database Sharding Explained — Gaurav Sen",
+    "youtubeUrl": "https://www.youtube.com/watch?v=be6PLMKKSto",
+    "youtubeTitle": "The Basics of Database Sharding & Partitioning — Exponent",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2249,8 +2249,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 3: System Thinking & Scaling."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=9DCEO6L5W2s",
-    "youtubeTitle": "System Design Rate Limiter — NeetCodeIO",
+    "youtubeUrl": "https://www.youtube.com/watch?v=mQCJJqUfn9Y",
+    "youtubeTitle": "Five Rate Limiting Algorithms — System Design — Hello Byte",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2321,8 +2321,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 3: System Thinking & Scaling."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=xpDnVWn5TOs",
-    "youtubeTitle": "System Design for Beginners — Fireship",
+    "youtubeUrl": "https://www.youtube.com/watch?v=EWS_CIxttVw",
+    "youtubeTitle": "Scalability Simply Explained in 10 Minutes — ByteByteGo",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2465,8 +2465,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=fMZMm_5WiNs",
-    "youtubeTitle": "Design a URL Shortener — Gaurav Sen",
+    "youtubeUrl": "https://www.youtube.com/watch?v=HHUi8F_qAXM",
+    "youtubeTitle": "How Does a URL Shortener Work? — ByteByteGo",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2537,8 +2537,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=9DCEO6L5W2s",
-    "youtubeTitle": "Design a Rate Limiter — NeetCodeIO",
+    "youtubeUrl": "https://www.youtube.com/watch?v=MIJFyUPG4Z4",
+    "youtubeTitle": "Design a Distributed Rate Limiter — Hello Interview",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2609,8 +2609,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=oiJDue2QJhQ",
-    "youtubeTitle": "Design a Notification System — Gaurav Sen",
+    "youtubeUrl": "https://www.youtube.com/watch?v=t-4r2AsJz_Q",
+    "youtubeTitle": "Build Your Own Notification Engine | System Design — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2681,8 +2681,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=QVzoQQ0Y3X4",
-    "youtubeTitle": "Design a News Feed — Gaurav Sen",
+    "youtubeUrl": "https://www.youtube.com/watch?v=Qj4-GruzyDU",
+    "youtubeTitle": "Design Facebook News Feed — System Design — Hello Interview",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2753,8 +2753,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=4BTmKfFv500",
-    "youtubeTitle": "Design a Chat Application — Gaurav Sen",
+    "youtubeUrl": "https://www.youtube.com/watch?v=vvhC64hQZMk",
+    "youtubeTitle": "WhatsApp System Design — Chat Messaging — Gaurav Sen",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2825,8 +2825,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=EpAS1axxqyI",
-    "youtubeTitle": "Design an E-commerce System — Gaurav Sen",
+    "youtubeUrl": "https://www.youtube.com/watch?v=M-l7gVm69KI",
+    "youtubeTitle": "eCommerce Architecture & Order Management Design — Architecture Bytes",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2897,8 +2897,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=M6_vlW71Xbg",
-    "youtubeTitle": "Distributed Systems Overview — Hussein Nasser",
+    "youtubeUrl": "https://www.youtube.com/watch?v=IJWwfMyPu1c",
+    "youtubeTitle": "Distributed Systems Explained — System Design — ByteMonk",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -3041,8 +3041,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=4EymT0ZMzOI",
-    "youtubeTitle": "Consistency Patterns — Hussein Nasser",
+    "youtubeUrl": "https://www.youtube.com/watch?v=gkg-FAEXIkY",
+    "youtubeTitle": "A Friendly Intro to the CAP Theorem — Studying With Alex",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -3113,8 +3113,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 4: Advanced System Design."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=UMW67RrjRyY",
-    "youtubeTitle": "System Design Interview Tips — Exponent",
+    "youtubeUrl": "https://www.youtube.com/watch?v=i7twT3x5yv8",
+    "youtubeTitle": "System Design Interview — A Step-By-Step Guide — ByteByteGo",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -3329,8 +3329,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=Rh3RA6v1ddE",
-    "youtubeTitle": "React State & Props — Net Ninja",
+    "youtubeUrl": "https://www.youtube.com/watch?v=uvEAvxWvwOs",
+    "youtubeTitle": "Props in React Explained — Bro Code",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -3401,8 +3401,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=0ZJgIjIuY7Y",
-    "youtubeTitle": "useEffect Explained — Web Dev Simplified",
+    "youtubeUrl": "https://www.youtube.com/watch?v=YxkcMszKEYY",
+    "youtubeTitle": "Master React Hooks — useEffect — Nova Designs",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -3473,8 +3473,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=Law7wfdg_ls",
-    "youtubeTitle": "React Router v6 Crash Course — Traversy Media",
+    "youtubeUrl": "https://www.youtube.com/watch?v=Ul3y1LXxzdU",
+    "youtubeTitle": "Learn React Router v6 in 45 Minutes — Web Dev Simplified",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -3545,8 +3545,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=8b0d_b8FZBw",
-    "youtubeTitle": "React Forms Tutorial — Lama Dev",
+    "youtubeUrl": "https://www.youtube.com/watch?v=yzqUCV3qPX0",
+    "youtubeTitle": "React Controlled vs Uncontrolled Components — Thapa Technical",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -3617,8 +3617,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=BCg4U1FzODY",
-    "youtubeTitle": "TypeScript Crash Course — Traversy Media",
+    "youtubeUrl": "https://www.youtube.com/watch?v=d56mG7DezGs",
+    "youtubeTitle": "TypeScript Tutorial for Beginners — Programming with Mosh",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -3689,8 +3689,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=jrKc_JxF0lQ",
-    "youtubeTitle": "React TypeScript Tutorial — Programming with Mosh",
+    "youtubeUrl": "https://www.youtube.com/watch?v=aJP1AbZSqz8",
+    "youtubeTitle": "TypeScript in React — Full Tutorial — freeCodeCamp",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -3761,8 +3761,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=pfaSUYaSgUA",
-    "youtubeTitle": "Tailwind CSS Crash Course — Traversy Media",
+    "youtubeUrl": "https://www.youtube.com/watch?v=6biMWgD6_JY",
+    "youtubeTitle": "Tailwind CSS Full Course — JavaScript Mastery",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -3977,8 +3977,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=5fLW5W9j3X0",
-    "youtubeTitle": "React Performance — Web Dev Simplified",
+    "youtubeUrl": "https://www.youtube.com/watch?v=CaShN6mCJB0",
+    "youtubeTitle": "8 React Performance Optimization Techniques — xplodivity",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -4049,8 +4049,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=jcOKU9fkgq4",
-    "youtubeTitle": "React Projects for Portfolio — JavaScript Mastery",
+    "youtubeUrl": "https://www.youtube.com/watch?v=G6D9cBaLViA",
+    "youtubeTitle": "Learn React With This ONE Project — Tech With Tim",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -4121,8 +4121,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 5: Frontend Development."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=dlvxZqK9Alc",
-    "youtubeTitle": "Deploy React App to Production — Traversy Media",
+    "youtubeUrl": "https://www.youtube.com/watch?v=AP0fKMrmyKA",
+    "youtubeTitle": "How to Deploy a React App Free on Netlify — Code Bless You",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -4265,8 +4265,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 6: Capstone Projects."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=mRQGF5yAHsQ",
-    "youtubeTitle": "MERN Stack Full Course — freeCodeCamp",
+    "youtubeUrl": "https://www.youtube.com/watch?v=F9gB5b4jgOI",
+    "youtubeTitle": "MERN Stack Tutorial for Beginners with Deployment — freeCodeCamp",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -4337,8 +4337,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 6: Capstone Projects."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=mRQGF5yAHsQ",
-    "youtubeTitle": "MERN Stack Full Course — freeCodeCamp",
+    "youtubeUrl": "https://www.youtube.com/watch?v=8-2bGey_lgk",
+    "youtubeTitle": "Full-Stack CRUD in One Video — MERN — ProjectWithMe",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -4409,8 +4409,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 6: Capstone Projects."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=SWYqp7i5TkI",
-    "youtubeTitle": "Deploy MERN App — Traversy Media",
+    "youtubeUrl": "https://www.youtube.com/watch?v=cVEOhgPziO8",
+    "youtubeTitle": "How to Deploy a Full-Stack React App Free — GreatStack",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -4481,8 +4481,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 6: Capstone Projects."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=eWEgUcOXleM",
-    "youtubeTitle": "Developer Portfolio Guide — ForrestKnight",
+    "youtubeUrl": "https://www.youtube.com/watch?v=sR-3QKoKs2k",
+    "youtubeTitle": "Responsive Portfolio Website — HTML, CSS & JS — MzCode",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -4769,8 +4769,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=HG6yIjZhxqU",
-    "youtubeTitle": "Docker Compose Tutorial — TechWorld with Nana",
+    "youtubeUrl": "https://www.youtube.com/watch?v=HG6yIjZapSA",
+    "youtubeTitle": "Docker Compose Tutorial — Programming with Mosh",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -4985,8 +4985,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=ulprqHHWROI",
-    "youtubeTitle": "AWS Certified Cloud Practitioner — freeCodeCamp",
+    "youtubeUrl": "https://www.youtube.com/watch?v=Nzv-tzU-UAw",
+    "youtubeTitle": "AWS Tutorial for Beginners — Step-by-Step Guide — Kevin Stratvert",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -5057,8 +5057,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=lsMQRioFRuU",
-    "youtubeTitle": "Deployment Strategies Explained — Hussein Nasser",
+    "youtubeUrl": "https://www.youtube.com/watch?v=AWVTKBUnoIg",
+    "youtubeTitle": "Top 5 Most-Used Deployment Strategies — ByteByteGo",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -5129,8 +5129,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=X48Gyu0nlig",
-    "youtubeTitle": "Kubernetes Course — freeCodeCamp",
+    "youtubeUrl": "https://www.youtube.com/watch?v=s_o8dwzRlu4",
+    "youtubeTitle": "Kubernetes Crash Course for Absolute Beginners — TechWorld with Nana",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -5201,8 +5201,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 7: DevOps."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=17gF_euW9Pw",
-    "youtubeTitle": "Prometheus & Grafana — TechWorld with Nana",
+    "youtubeUrl": "https://www.youtube.com/watch?v=9TJx7QTrTyo",
+    "youtubeTitle": "Server Monitoring — Prometheus & Grafana — Christian Lempa",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -5561,8 +5561,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=3oqMKAeYIyo",
-    "youtubeTitle": "OAuth 2.0 Explained — Hussein Nasser",
+    "youtubeUrl": "https://www.youtube.com/watch?v=Y2H3DXDeS3Q",
+    "youtubeTitle": "JWT Explained in Under 10 Minutes — Ariel Weinberger",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -5633,8 +5633,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=zr1MbRzsBMI",
-    "youtubeTitle": "Microservices Explained — Hussein Nasser",
+    "youtubeUrl": "https://www.youtube.com/watch?v=IFkDbsgn8yg",
+    "youtubeTitle": "All Microservices Communication Styles in 6 Minutes — Tech Vision",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -5705,8 +5705,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=K2RYJSBNzcA",
-    "youtubeTitle": "Frontend System Design — Exponent",
+    "youtubeUrl": "https://www.youtube.com/watch?v=_HjRSHeQ92k",
+    "youtubeTitle": "Frontend System Design Interview — Build Instagram — theSeniorDev",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -5777,8 +5777,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=1qw5ITr3kEo",
-    "youtubeTitle": "Behavioral Interview Tips — Dan Croitor",
+    "youtubeUrl": "https://www.youtube.com/watch?v=ld0cvWnrVsU",
+    "youtubeTitle": "Cracking the Behavioral Interview for Software Developers — Keep On Coding",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -5921,8 +5921,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=Tt08Km_XIYQ",
-    "youtubeTitle": "Tech Resume Guide — ForrestKnight",
+    "youtubeUrl": "https://www.youtube.com/watch?v=5gLVxMKeSGM",
+    "youtubeTitle": "How to Write a Winning Tech Resume — Anthony D. Mays",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -5993,8 +5993,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=yzyi-2YrhbE",
-    "youtubeTitle": "Open Source for Beginners — freeCodeCamp",
+    "youtubeUrl": "https://www.youtube.com/watch?v=v2X51AVgl3o",
+    "youtubeTitle": "Contributing to Open Source Will Change Your Life — Ali Solanki",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -6137,8 +6137,8 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Graduation & Career Prep."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=mRQGF5yAHsQ",
-    "youtubeTitle": "Full Stack Project Showcase — freeCodeCamp",
+    "youtubeUrl": "https://www.youtube.com/watch?v=Je_KYIM9QJc",
+    "youtubeTitle": "How to Become a Full Stack Developer in 2025 — Tech With Tim",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   }
