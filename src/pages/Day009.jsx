@@ -239,16 +239,13 @@ export default function Day009() {
 
       const pad = 12;
       const scale = Math.min(
-        1,
         (window.innerHeight - pad) / wrap.scrollHeight,
         (window.innerWidth - pad) / wrap.scrollWidth,
       );
 
-      if (scale < 0.99) {
-        wrap.style.transform = `scale(${scale})`;
-        wrap.style.transformOrigin = 'top center';
-        if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
-      }
+      wrap.style.transform = `scale(${scale})`;
+      wrap.style.transformOrigin = 'top center';
+      if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
 
     fitToScreen();

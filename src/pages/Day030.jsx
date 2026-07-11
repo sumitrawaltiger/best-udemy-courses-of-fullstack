@@ -2,111 +2,111 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day08';
-const DOCS_URL = 'https://mongoosejs.com/docs/guide.html';
+const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day11';
+const DOCS_URL = 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403';
 
 const LEARNT_TODAY = [
   {
-    title: 'ODM',
-    text: 'Mongoose maps JavaScript objects to MongoDB documents',
+    title: 'AuthN vs AuthZ',
+    text: 'authentication is who you are; authorization is what you may do',
   },
   {
-    title: 'Schema',
-    text: 'defines the shape — field types, defaults, and rules',
+    title: 'protect middleware',
+    text: 'verify the JWT, attach req.user, or reject with 401',
   },
   {
-    title: 'Model',
-    text: 'mongoose.model(name, schema) gives a collection interface',
+    title: 'Bearer token',
+    text: 'read it from the Authorization: Bearer <token> header',
   },
   {
-    title: 'Validation',
-    text: 'required, min/max, enum and match are built into the schema',
+    title: 'RBAC',
+    text: 'role-based access control — user vs admin vs more',
   },
   {
-    title: 'Connect',
-    text: 'mongoose.connect(uri) once at startup',
+    title: 'requireRole',
+    text: 'a guard that returns 403 when the role is not allowed',
   },
   {
-    title: 'Create',
-    text: 'new Model().save() or Model.create({...})',
+    title: 'Chained guards',
+    text: 'app.get("/admin", protect, requireRole("admin"), handler)',
   },
   {
-    title: 'Read',
-    text: 'Model.find(), findById() with chainable queries',
+    title: '401 vs 403',
+    text: '401 = not logged in; 403 = logged in but forbidden',
   },
   {
-    title: 'Update',
-    text: 'findByIdAndUpdate(id, data, { new: true }) returns the updated doc',
+    title: 'Ownership checks',
+    text: 'a user may edit only their own resource',
   },
   {
-    title: 'Delete',
-    text: 'findByIdAndDelete(id)',
+    title: 'Never trust the client',
+    text: 'always re-check permissions on the server',
   },
   {
-    title: 'Hooks',
-    text: 'pre("save") middleware — hash a password before it is stored',
+    title: 'Refresh tokens',
+    text: 'short access token + a longer-lived refresh token',
   },
 ];
 
-const SCHEMA_MODEL = [
+const PROTECT = [
   {
-    icon: '📐',
-    title: 'Schema',
+    icon: '🛂',
+    title: 'protect Middleware',
     titleClass: 'card-title-cyan',
-    subtitle: 'the shape',
-    description: 'Declare fields, types, defaults, and validation in one place.',
-    code: 'const userSchema = new mongoose.Schema({\n  name: { type: String, required: true },\n  age:  { type: Number, min: 0 },\n  email:{ type: String, unique: true },\n});',
+    subtitle: 'verify + attach',
+    description: 'Verify the JWT, attach the user to req, or reject the request.',
+    code: 'function protect(req, res, next) {\n  const token = req.headers.authorization?.split(" ")[1];\n  if (!token) return res.status(401).json({ error: "No token" });\n  req.user = jwt.verify(token, process.env.JWT_SECRET);\n  next();\n}',
   },
   {
-    icon: '🏭',
-    title: 'Model',
+    icon: '🎟️',
+    title: 'Bearer Token',
     titleClass: 'card-title-green',
-    subtitle: 'the interface',
-    description: 'Compile a schema into a Model — your handle to the collection.',
-    code: 'const User = mongoose.model("User", userSchema);\n// -> "users" collection\nawait mongoose.connect(process.env.MONGO_URI);',
+    subtitle: 'the header',
+    description: 'Clients send the token in the Authorization header.',
+    code: '// request header\nAuthorization: Bearer eyJhbGciOi...\n// server\nconst token = req.headers.authorization.split(" ")[1];',
+  },
+  {
+    icon: '🚦',
+    title: '401 vs 403',
+    titleClass: 'card-title-amber',
+    subtitle: 'which error?',
+    description: 'Not authenticated is 401; authenticated but not allowed is 403.',
+    code: '401 Unauthorized  → no / bad token (log in)\n403 Forbidden     → valid token, wrong role',
+  },
+];
+
+const ROLES = [
+  {
+    icon: '🎭',
+    title: 'Roles (RBAC)',
+    titleClass: 'card-title-cyan',
+    subtitle: 'user / admin',
+    description: 'Store a role on the user; decide access from it.',
+    code: 'role: { type: String, enum: ["user", "admin"], default: "user" }',
   },
   {
     icon: '🛡️',
-    title: 'Validation',
-    titleClass: 'card-title-amber',
-    subtitle: 'built in',
-    description: 'required, min/max, enum and match reject bad data before saving.',
-    code: 'role: { type: String, enum: ["user", "admin"], default: "user" }\npassword: { type: String, minLength: 8 }',
-  },
-];
-
-const CRUD = [
-  {
-    icon: '➕',
-    title: 'Create',
-    titleClass: 'card-title-cyan',
-    subtitle: 'save / create',
-    description: 'Build a document and persist it.',
-    code: 'const u = new User({ name: "Rohit", age: 24 });\nawait u.save();\n// or: await User.create({ name: "Rohit" });',
-  },
-  {
-    icon: '🔎',
-    title: 'Read',
+    title: 'requireRole',
     titleClass: 'card-title-green',
-    subtitle: 'find / findById',
-    description: 'Query with chainable filters, sorting, and limits.',
-    code: 'await User.find({ age: { $gte: 18 } }).sort("name").limit(10);\nawait User.findById(id);',
+    subtitle: '403 guard',
+    description: 'A factory middleware that allows only the given roles.',
+    code: 'const requireRole = (...roles) => (req, res, next) =>\n  roles.includes(req.user.role)\n    ? next()\n    : res.status(403).json({ error: "Forbidden" });',
   },
   {
-    icon: '✏️',
-    title: 'Update',
+    icon: '⛓️',
+    title: 'Chain the Guards',
     titleClass: 'card-title-amber',
-    subtitle: '{ new: true }',
-    description: 'Update and get the new document back with { new: true }.',
-    code: 'await User.findByIdAndUpdate(\n  id, { age: 25 }, { new: true, runValidators: true }\n);',
+    subtitle: 'protect → role',
+    description: 'Run authentication first, then the role check, then the handler.',
+    code: 'app.delete("/users/:id",\n  protect,\n  requireRole("admin"),\n  deleteUser);',
   },
   {
-    icon: '🗑️',
-    title: 'Delete',
+    icon: '👤',
+    title: 'Ownership',
     titleClass: 'card-title-pink',
-    subtitle: 'findByIdAndDelete',
-    description: 'Remove a document by its id.',
-    code: 'await User.findByIdAndDelete(id);',
+    subtitle: 'your own data',
+    description: 'Even with a valid token, users edit only what they own.',
+    code: 'if (post.author.toString() !== req.user.id)\n  return res.status(403).json({ error: "Not yours" });',
   },
 ];
 
@@ -115,26 +115,26 @@ const RESOURCES = [
     icon: '💻',
     title: 'Thunder GitHub',
     titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day08',
-    description: 'Schemas, models, validation, and Mongoose CRUD against MongoDB.',
+    subtitle: '03Backend / Day11',
+    description: 'protect + requireRole middleware, chained guards, and ownership checks.',
     link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Mongoose Docs',
+    title: '403 Forbidden — MDN',
     titleClass: 'card-title-green',
-    subtitle: 'Official guide',
-    description: 'The official Mongoose guide — schemas, models, queries, and middleware.',
+    subtitle: 'Official docs',
+    description: 'MDN on 403 Forbidden — when the server refuses an authorized action.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Mongoose Crash Course',
+    title: 'Role-Based Auth',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Mongoose Crash Course by Web Dev Simplified — supplement for Day 27.',
+    description: 'Node & Express Role-Based Authorization by Dipesh Malvia — for Day 30.',
     link: {
-      href: 'https://www.youtube.com/watch?v=DZBGEVgL2eE',
+      href: 'https://www.youtube.com/watch?v=HHuiV841g_w',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day027() {
+export default function Day030() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +231,12 @@ export default function Day027() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-026" className="day001-nav-btn day001-nav-home">
-            ← Day 26
+          <Link to="/day-029" className="day001-nav-btn day001-nav-home">
+            ← Day 29
           </Link>
-          <p className="day001-datetime">Thunder Day 27 · 31 Jul 2026</p>
-          <Link to="/day-028" className="day001-nav-btn day001-nav-next">
-            Day 28 →
+          <p className="day001-datetime">Thunder Day 30 · 3 Aug 2026</p>
+          <Link to="/day-031" className="day001-nav-btn day001-nav-next">
+            Day 31 →
           </Link>
         </header>
 
@@ -244,14 +244,14 @@ export default function Day027() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>Node.js</span>
-              <span>Mongoose</span>
+              <span>Security</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 27 <span aria-hidden="true">⚡</span>
+                DAY 30 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">MONGOOSE ODM</p>
+              <p className="day001-day-theme">AUTHORIZATION & PROTECTED ROUTES</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,19 +270,19 @@ export default function Day027() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '27%' }} />
+          <div className="day001-progress-bar" style={{ width: '30%' }} />
         </div>
 
         <p className="day001-summary">
-          Day twenty-seven — raw MongoDB has no structure, so I added{' '}
-          <strong>Mongoose</strong>, an ODM that maps JavaScript objects to documents. A{' '}
-          <strong>Schema</strong> defines the shape and validation; compiling it into a{' '}
-          <strong>Model</strong> gives a clean interface for CRUD —{' '}
-          <code>create</code>, <code>find</code>, <code>findByIdAndUpdate</code>, and{' '}
-          <code>findByIdAndDelete</code>. Hooks like <code>pre(&quot;save&quot;)</code> run logic
-          before a write. Code in{' '}
+          Day thirty — authentication proves <em>who</em> you are;{' '}
+          <strong>authorization</strong> decides <em>what</em> you may do. A{' '}
+          <code>protect</code> middleware verifies the <strong>Bearer</strong> token and attaches{' '}
+          <code>req.user</code>; a <code>requireRole</code> guard enforces{' '}
+          <strong>RBAC</strong> and returns <code>403</code> when the role is wrong. I chained the
+          two on protected routes, added <strong>ownership</strong> checks, and kept the rule: never
+          trust the client. Code in{' '}
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day08 on GitHub
+            03Backend/Day11 on GitHub
           </a>
           .
         </p>
@@ -306,14 +306,14 @@ export default function Day027() {
           </ul>
         </section>
 
-        <CardSection icon="📐" title="SCHEMAS & MODELS" cards={SCHEMA_MODEL} columns={3} />
-        <CardSection icon="🔁" title="MONGOOSE CRUD" cards={CRUD} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 08" cards={RESOURCES} columns={3} />
+        <CardSection icon="🛂" title="PROTECTING ROUTES" cards={PROTECT} columns={3} />
+        <CardSection icon="🎭" title="ROLES & ACCESS" cards={ROLES} columns={4} />
+        <CardSection icon="📚" title="THUNDER BACKEND DAY 11" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#Mongoose</span>
-          <span>#MongoDB</span>
+          <span>#Authorization</span>
+          <span>#RBAC</span>
           <span>#Backend</span>
           <span>#Thunder</span>
         </footer>

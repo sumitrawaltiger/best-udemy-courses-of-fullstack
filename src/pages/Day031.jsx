@@ -2,111 +2,111 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day08';
-const DOCS_URL = 'https://mongoosejs.com/docs/guide.html';
+const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day12';
+const DOCS_URL = 'https://expressjs.com/en/guide/error-handling.html';
 
 const LEARNT_TODAY = [
   {
-    title: 'ODM',
-    text: 'Mongoose maps JavaScript objects to MongoDB documents',
+    title: 'Validate input',
+    text: 'never trust req.body, req.params or req.query',
   },
   {
-    title: 'Schema',
-    text: 'defines the shape — field types, defaults, and rules',
+    title: 'Schema validation',
+    text: 'Zod / Joi / express-validator check shape before logic runs',
   },
   {
-    title: 'Model',
-    text: 'mongoose.model(name, schema) gives a collection interface',
+    title: '400 on bad input',
+    text: 'reject invalid requests with a clear message',
   },
   {
-    title: 'Validation',
-    text: 'required, min/max, enum and match are built into the schema',
+    title: 'Mongoose rules',
+    text: 'required, enum, min/max and match guard at the DB layer too',
   },
   {
-    title: 'Connect',
-    text: 'mongoose.connect(uri) once at startup',
+    title: 'try / catch',
+    text: 'wrap every async handler so errors do not crash the server',
   },
   {
-    title: 'Create',
-    text: 'new Model().save() or Model.create({...})',
+    title: 'Central error handler',
+    text: 'one (err, req, res, next) middleware — four args make it special',
   },
   {
-    title: 'Read',
-    text: 'Model.find(), findById() with chainable queries',
+    title: 'Custom error class',
+    text: 'carry a statusCode with the message',
   },
   {
-    title: 'Update',
-    text: 'findByIdAndUpdate(id, data, { new: true }) returns the updated doc',
+    title: 'next(err)',
+    text: 'forward an error to the central handler',
   },
   {
-    title: 'Delete',
-    text: 'findByIdAndDelete(id)',
+    title: 'Do not leak internals',
+    text: 'a generic 500 message in production, details only in logs',
   },
   {
-    title: 'Hooks',
-    text: 'pre("save") middleware — hash a password before it is stored',
-  },
-];
-
-const SCHEMA_MODEL = [
-  {
-    icon: '📐',
-    title: 'Schema',
-    titleClass: 'card-title-cyan',
-    subtitle: 'the shape',
-    description: 'Declare fields, types, defaults, and validation in one place.',
-    code: 'const userSchema = new mongoose.Schema({\n  name: { type: String, required: true },\n  age:  { type: Number, min: 0 },\n  email:{ type: String, unique: true },\n});',
-  },
-  {
-    icon: '🏭',
-    title: 'Model',
-    titleClass: 'card-title-green',
-    subtitle: 'the interface',
-    description: 'Compile a schema into a Model — your handle to the collection.',
-    code: 'const User = mongoose.model("User", userSchema);\n// -> "users" collection\nawait mongoose.connect(process.env.MONGO_URI);',
-  },
-  {
-    icon: '🛡️',
-    title: 'Validation',
-    titleClass: 'card-title-amber',
-    subtitle: 'built in',
-    description: 'required, min/max, enum and match reject bad data before saving.',
-    code: 'role: { type: String, enum: ["user", "admin"], default: "user" }\npassword: { type: String, minLength: 8 }',
+    title: 'dotenv',
+    text: 'load config and secrets from .env, keep them out of git',
   },
 ];
 
-const CRUD = [
+const VALIDATION = [
   {
-    icon: '➕',
-    title: 'Create',
+    icon: '🧪',
+    title: 'Never Trust Input',
     titleClass: 'card-title-cyan',
-    subtitle: 'save / create',
-    description: 'Build a document and persist it.',
-    code: 'const u = new User({ name: "Rohit", age: 24 });\nawait u.save();\n// or: await User.create({ name: "Rohit" });',
+    subtitle: 'validate first',
+    description: 'Every field from the client is untrusted until you validate it.',
+    code: '// missing / wrong-typed fields, injection, huge payloads\n// -> validate before touching the database',
   },
   {
-    icon: '🔎',
-    title: 'Read',
+    icon: '📋',
+    title: 'Schema Validation',
     titleClass: 'card-title-green',
-    subtitle: 'find / findById',
-    description: 'Query with chainable filters, sorting, and limits.',
-    code: 'await User.find({ age: { $gte: 18 } }).sort("name").limit(10);\nawait User.findById(id);',
+    subtitle: 'Zod / Joi',
+    description: 'Declare the expected shape; parse and reject bad input with 400.',
+    code: 'const schema = z.object({\n  email: z.string().email(),\n  age: z.number().min(0),\n});\nconst result = schema.safeParse(req.body);\nif (!result.success) return res.status(400).json(result.error);',
   },
   {
-    icon: '✏️',
-    title: 'Update',
+    icon: '🛢️',
+    title: 'Mongoose Rules',
     titleClass: 'card-title-amber',
-    subtitle: '{ new: true }',
-    description: 'Update and get the new document back with { new: true }.',
-    code: 'await User.findByIdAndUpdate(\n  id, { age: 25 }, { new: true, runValidators: true }\n);',
+    subtitle: 'DB-layer guard',
+    description: 'Schema validation is a second line of defence at the database.',
+    code: 'email: { type: String, required: true, match: /@/ }\nage:   { type: Number, min: 0 }',
+  },
+];
+
+const ERRORS = [
+  {
+    icon: '🧯',
+    title: 'try / catch',
+    titleClass: 'card-title-cyan',
+    subtitle: 'catch async',
+    description: 'Wrap async handlers and forward errors with next(err).',
+    code: 'app.get("/x", async (req, res, next) => {\n  try { /* ... */ }\n  catch (err) { next(err); }\n});',
   },
   {
-    icon: '🗑️',
-    title: 'Delete',
+    icon: '🎯',
+    title: 'Central Handler',
+    titleClass: 'card-title-green',
+    subtitle: '4 args',
+    description: 'One error middleware (four params) catches everything, last.',
+    code: 'app.use((err, req, res, next) => {\n  res.status(err.statusCode || 500)\n     .json({ error: err.message });\n});',
+  },
+  {
+    icon: '🏷️',
+    title: 'Custom Error',
+    titleClass: 'card-title-amber',
+    subtitle: 'status + message',
+    description: 'A small class carries the HTTP status with the message.',
+    code: 'class AppError extends Error {\n  constructor(msg, status) { super(msg); this.statusCode = status; }\n}\nthrow new AppError("Not found", 404);',
+  },
+  {
+    icon: '📄',
+    title: 'dotenv & Config',
     titleClass: 'card-title-pink',
-    subtitle: 'findByIdAndDelete',
-    description: 'Remove a document by its id.',
-    code: 'await User.findByIdAndDelete(id);',
+    subtitle: '.env',
+    description: 'Keep secrets and config in .env — never commit them.',
+    code: 'require("dotenv").config();\nconst port = process.env.PORT || 3000;\n// .gitignore -> .env',
   },
 ];
 
@@ -115,26 +115,26 @@ const RESOURCES = [
     icon: '💻',
     title: 'Thunder GitHub',
     titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day08',
-    description: 'Schemas, models, validation, and Mongoose CRUD against MongoDB.',
+    subtitle: '03Backend / Day12',
+    description: 'Input validation, a central error handler, a custom error class, and dotenv.',
     link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Mongoose Docs',
+    title: 'Express Error Handling',
     titleClass: 'card-title-green',
     subtitle: 'Official guide',
-    description: 'The official Mongoose guide — schemas, models, queries, and middleware.',
+    description: 'The official Express guide to writing error-handling middleware.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Mongoose Crash Course',
+    title: 'Error Handling in Express',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Mongoose Crash Course by Web Dev Simplified — supplement for Day 27.',
+    description: 'Error Handling in Express.js — the Ultimate Guide by CodeLucky — for Day 31.',
     link: {
-      href: 'https://www.youtube.com/watch?v=DZBGEVgL2eE',
+      href: 'https://www.youtube.com/watch?v=-OjIF9Zympo',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day027() {
+export default function Day031() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +231,15 @@ export default function Day027() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-026" className="day001-nav-btn day001-nav-home">
-            ← Day 26
+          <Link to="/day-030" className="day001-nav-btn day001-nav-home">
+            ← Day 30
           </Link>
-          <p className="day001-datetime">Thunder Day 27 · 31 Jul 2026</p>
-          <Link to="/day-028" className="day001-nav-btn day001-nav-next">
-            Day 28 →
+          <p className="day001-datetime">Thunder Day 31 · 4 Aug 2026</p>
+          <Link
+            to="/learn/authorization-and-role-based-access"
+            className="day001-nav-btn day001-nav-next"
+          >
+            Day 32 →
           </Link>
         </header>
 
@@ -244,14 +247,14 @@ export default function Day027() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>Node.js</span>
-              <span>Mongoose</span>
+              <span>Reliability</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 27 <span aria-hidden="true">⚡</span>
+                DAY 31 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">MONGOOSE ODM</p>
+              <p className="day001-day-theme">VALIDATION & ERROR HANDLING</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,19 +273,19 @@ export default function Day027() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '27%' }} />
+          <div className="day001-progress-bar" style={{ width: '31%' }} />
         </div>
 
         <p className="day001-summary">
-          Day twenty-seven — raw MongoDB has no structure, so I added{' '}
-          <strong>Mongoose</strong>, an ODM that maps JavaScript objects to documents. A{' '}
-          <strong>Schema</strong> defines the shape and validation; compiling it into a{' '}
-          <strong>Model</strong> gives a clean interface for CRUD —{' '}
-          <code>create</code>, <code>find</code>, <code>findByIdAndUpdate</code>, and{' '}
-          <code>findByIdAndDelete</code>. Hooks like <code>pre(&quot;save&quot;)</code> run logic
-          before a write. Code in{' '}
+          Day thirty-one — a real API assumes every request is hostile. I{' '}
+          <strong>validate</strong> input with a schema (Zod/Joi) and reject bad data with{' '}
+          <code>400</code>, backed by Mongoose schema rules at the database. Then I made errors
+          predictable: every async handler is wrapped in <code>try/catch</code> that calls{' '}
+          <code>next(err)</code>, a single <strong>central error middleware</strong> formats the
+          response, and a custom <code>AppError</code> carries the status code. Config and secrets
+          live in <code>.env</code> via <strong>dotenv</strong>. Code in{' '}
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day08 on GitHub
+            03Backend/Day12 on GitHub
           </a>
           .
         </p>
@@ -306,14 +309,14 @@ export default function Day027() {
           </ul>
         </section>
 
-        <CardSection icon="📐" title="SCHEMAS & MODELS" cards={SCHEMA_MODEL} columns={3} />
-        <CardSection icon="🔁" title="MONGOOSE CRUD" cards={CRUD} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 08" cards={RESOURCES} columns={3} />
+        <CardSection icon="🧪" title="VALIDATION" cards={VALIDATION} columns={3} />
+        <CardSection icon="🧯" title="ERROR HANDLING" cards={ERRORS} columns={4} />
+        <CardSection icon="📚" title="THUNDER BACKEND DAY 12" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#Mongoose</span>
-          <span>#MongoDB</span>
+          <span>#Validation</span>
+          <span>#ErrorHandling</span>
           <span>#Backend</span>
           <span>#Thunder</span>
         </footer>
