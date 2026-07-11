@@ -50,6 +50,11 @@ import Day037 from './pages/Day037';
 import Day038 from './pages/Day038';
 import Day039 from './pages/Day039';
 import Day040 from './pages/Day040';
+import Day041 from './pages/Day041';
+import Day042 from './pages/Day042';
+import Day043 from './pages/Day043';
+import Day044 from './pages/Day044';
+import Day045 from './pages/Day045';
 import InterviewQuestions from './pages/InterviewQuestions';
 import ReactInterviewQuestions from './pages/ReactInterviewQuestions';
 import NextjsInterviewQuestions from './pages/NextjsInterviewQuestions';
@@ -106,6 +111,11 @@ export default function App() {
         <Route path="/day-038" element={<Day038 />} />
         <Route path="/day-039" element={<Day039 />} />
         <Route path="/day-040" element={<Day040 />} />
+        <Route path="/day-041" element={<Day041 />} />
+        <Route path="/day-042" element={<Day042 />} />
+        <Route path="/day-043" element={<Day043 />} />
+        <Route path="/day-044" element={<Day044 />} />
+        <Route path="/day-045" element={<Day045 />} />
         <Route path="/interview-questions" element={<InterviewQuestions />} />
         <Route path="/react-interview-questions" element={<ReactInterviewQuestions />} />
         <Route path="/nextjs-interview-questions" element={<NextjsInterviewQuestions />} />

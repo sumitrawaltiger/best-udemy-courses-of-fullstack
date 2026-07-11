@@ -235,10 +235,7 @@ export default function Day040() {
             ← Day 39
           </Link>
           <p className="day001-datetime">Thunder Day 40 · 13 Aug 2026</p>
-          <Link
-            to="/learn/monolith-vs-microservices"
-            className="day001-nav-btn day001-nav-next"
-          >
+          <Link to="/day-041" className="day001-nav-btn day001-nav-next">
             Day 41 →
           </Link>
         </header>
