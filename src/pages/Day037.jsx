@@ -2,111 +2,111 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day16';
-const DOCS_URL = 'https://socket.io/docs/v4/';
+const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day18';
+const DOCS_URL = 'https://jestjs.io/docs/getting-started';
 
 const LEARNT_TODAY = [
   {
-    title: 'HTTP can’t push',
-    text: 'request/response only — the server cannot start the conversation',
+    title: 'Why test',
+    text: 'confidence to change code without breaking it',
   },
   {
-    title: 'WebSocket',
-    text: 'one persistent, two-way connection over a single TCP socket',
+    title: 'Unit vs integration',
+    text: 'a single function vs a whole route end-to-end',
   },
   {
-    title: 'Socket.io',
-    text: 'WebSockets plus fallbacks, reconnection, and rooms',
+    title: 'Jest',
+    text: 'the test runner, assertions, and mocks in one',
   },
   {
-    title: 'connection',
-    text: 'io.on("connection", socket => ...) fires per client',
+    title: 'describe / it / expect',
+    text: 'group tests, name cases, assert outcomes',
   },
   {
-    title: 'emit',
-    text: 'send a named event with a payload',
+    title: 'Supertest',
+    text: 'fire real HTTP requests at the Express app',
   },
   {
-    title: 'on',
-    text: 'listen for a named event from the other side',
+    title: 'Test database',
+    text: 'in-memory Mongo or a separate DB — never production',
   },
   {
-    title: 'broadcast',
-    text: 'socket.broadcast.emit sends to everyone except the sender',
+    title: 'Arrange-Act-Assert',
+    text: 'set up, run the thing, check the result',
   },
   {
-    title: 'Rooms',
-    text: 'group sockets together — one chat room, one channel',
+    title: 'Mocks',
+    text: 'fake external services so tests stay fast and isolated',
   },
   {
-    title: 'Use cases',
-    text: 'chat, live notifications, dashboards, collaboration',
+    title: 'Coverage',
+    text: 'see which lines your tests never touch',
   },
   {
-    title: 'Scaling',
-    text: 'a Redis adapter shares events across server instances',
-  },
-];
-
-const WHY = [
-  {
-    icon: '🚧',
-    title: 'HTTP Can’t Push',
-    titleClass: 'card-title-cyan',
-    subtitle: 'the limit',
-    description: 'The client always asks first — the server can never initiate.',
-    code: '// polling = ask again and again (wasteful)\nsetInterval(() => fetch("/messages"), 2000);',
-  },
-  {
-    icon: '🔌',
-    title: 'WebSocket',
-    titleClass: 'card-title-green',
-    subtitle: 'two-way pipe',
-    description: 'A single upgraded connection stays open for instant, bidirectional data.',
-    code: '// one handshake, then both sides can send\nGET /socket HTTP/1.1\nUpgrade: websocket',
-  },
-  {
-    icon: '⚡',
-    title: 'Socket.io',
-    titleClass: 'card-title-amber',
-    subtitle: 'batteries included',
-    description: 'WebSockets with fallbacks, auto-reconnect, rooms, and events.',
-    code: 'const io = new Server(httpServer);\nio.on("connection", (socket) => {\n  console.log("client", socket.id);\n});',
+    title: 'CI',
+    text: 'run the whole suite automatically on every push',
   },
 ];
 
-const EVENTS = [
+const BASICS = [
   {
-    icon: '🤝',
-    title: 'connection',
+    icon: '🎯',
+    title: 'Why & Levels',
     titleClass: 'card-title-cyan',
-    subtitle: 'per client',
-    description: 'Each connected client gives you a socket to talk to.',
-    code: 'io.on("connection", (socket) => {\n  socket.on("disconnect", () => {/* cleanup */});\n});',
+    subtitle: 'unit → integration',
+    description: 'Unit tests check a function; integration tests check a route.',
+    code: '// unit: does formatPrice(9.5) return "$9.50"?\n// integration: does GET /products return 200 + a list?',
   },
   {
-    icon: '📤',
-    title: 'emit / on',
+    icon: '🃏',
+    title: 'Jest',
     titleClass: 'card-title-green',
-    subtitle: 'send & listen',
-    description: 'Emit a named event on one side, listen for it on the other.',
-    code: '// client\nsocket.emit("message", "hi");\n// server\nsocket.on("message", (text) => { /* ... */ });',
+    subtitle: 'the runner',
+    description: 'Runs tests, gives assertions and mocks out of the box.',
+    code: '// package.json\n"scripts": { "test": "jest" }\n// files: *.test.js',
   },
   {
-    icon: '📣',
-    title: 'Broadcast',
+    icon: '🧱',
+    title: 'describe / it / expect',
     titleClass: 'card-title-amber',
-    subtitle: 'everyone else',
-    description: 'Send an event to all clients except the one that sent it.',
-    code: 'socket.broadcast.emit("message", text);\nio.emit("message", text); // everyone incl. sender',
+    subtitle: 'structure',
+    description: 'Group related cases, name each one, assert the outcome.',
+    code: 'describe("sum", () => {\n  it("adds two numbers", () => {\n    expect(sum(2, 3)).toBe(5);\n  });\n});',
+  },
+];
+
+const API_TESTS = [
+  {
+    icon: '📮',
+    title: 'Supertest',
+    titleClass: 'card-title-cyan',
+    subtitle: 'HTTP in tests',
+    description: 'Send requests to the app without starting a real server.',
+    code: 'import request from "supertest";\nconst res = await request(app).get("/products");\nexpect(res.status).toBe(200);',
   },
   {
-    icon: '🚪',
-    title: 'Rooms',
+    icon: '🗃️',
+    title: 'Test Database',
+    titleClass: 'card-title-green',
+    subtitle: 'isolated data',
+    description: 'Spin up an in-memory Mongo; reset it between tests.',
+    code: 'const mongod = await MongoMemoryServer.create();\nafterEach(() => Product.deleteMany({}));',
+  },
+  {
+    icon: '🎭',
+    title: 'Mocks',
+    titleClass: 'card-title-amber',
+    subtitle: 'fake the outside',
+    description: 'Replace email/payment/HTTP calls with fakes.',
+    code: 'jest.mock("../services/email");\nsendEmail.mockResolvedValue(true);',
+  },
+  {
+    icon: '📊',
+    title: 'Coverage & CI',
     titleClass: 'card-title-pink',
-    subtitle: 'group sockets',
-    description: 'Join a room and emit only to that group — perfect for chat.',
-    code: 'socket.join("room-42");\nio.to("room-42").emit("message", text);',
+    subtitle: 'measure + automate',
+    description: 'Track coverage and run the suite on every push.',
+    code: 'jest --coverage\n# GitHub Actions: run `npm test` on push',
   },
 ];
 
@@ -115,26 +115,26 @@ const RESOURCES = [
     icon: '💻',
     title: 'Thunder GitHub',
     titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day16',
-    description: 'A real-time chat with Socket.io — connection, events, broadcast, and rooms.',
+    subtitle: '03Backend / Day18',
+    description: 'Jest + Supertest suites, an in-memory test DB, mocks, and coverage.',
     link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Socket.io Docs',
+    title: 'Jest Docs',
     titleClass: 'card-title-green',
     subtitle: 'Official docs',
-    description: 'The official Socket.io v4 docs — server, client, events, and rooms.',
+    description: 'Getting started with Jest — matchers, setup, and mocking.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Learn Socket.io',
+    title: 'API Integration Testing',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Learn Socket.io in 30 Minutes by Web Dev Simplified — for Day 35.',
+    description: 'Node.js API Integration Testing — the Ultimate Guide by Alex Rusin — for Day 37.',
     link: {
-      href: 'https://www.youtube.com/watch?v=ZKEqqIO7n-k',
+      href: 'https://www.youtube.com/watch?v=LEYuxsGIeGo',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day035() {
+export default function Day037() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +231,12 @@ export default function Day035() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-034" className="day001-nav-btn day001-nav-home">
-            ← Day 34
+          <Link to="/day-036" className="day001-nav-btn day001-nav-home">
+            ← Day 36
           </Link>
-          <p className="day001-datetime">Thunder Day 35 · 8 Aug 2026</p>
-          <Link to="/day-036" className="day001-nav-btn day001-nav-next">
-            Day 36 →
+          <p className="day001-datetime">Thunder Day 37 · 10 Aug 2026</p>
+          <Link to="/day-038" className="day001-nav-btn day001-nav-next">
+            Day 38 →
           </Link>
         </header>
 
@@ -244,14 +244,14 @@ export default function Day035() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>Node.js</span>
-              <span>Real-Time</span>
+              <span>Testing</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 35 <span aria-hidden="true">⚡</span>
+                DAY 37 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">WEBSOCKETS & REAL-TIME</p>
+              <p className="day001-day-theme">TESTING APIS</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,18 +270,19 @@ export default function Day035() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '35%' }} />
+          <div className="day001-progress-bar" style={{ width: '37%' }} />
         </div>
 
         <p className="day001-summary">
-          Day thirty-five — HTTP can only answer when asked, so live features need a different
-          channel. A <strong>WebSocket</strong> is one persistent, two-way connection, and{' '}
-          <strong>Socket.io</strong> wraps it with fallbacks, reconnection, and rooms. I learned the
-          core loop — <code>io.on(&quot;connection&quot;)</code>, <code>emit</code> to send,{' '}
-          <code>on</code> to listen, <code>broadcast</code> to reach everyone else, and{' '}
-          <strong>rooms</strong> to group sockets for chat. Code in{' '}
+          Day thirty-seven — tests are what let me change code without fear. I split them into{' '}
+          <strong>unit</strong> (one function) and <strong>integration</strong> (a whole route),
+          wrote them with <strong>Jest</strong> (<code>describe</code>/<code>it</code>/
+          <code>expect</code>), and hit real endpoints using <strong>Supertest</strong> against an{' '}
+          <strong>in-memory test database</strong>. Add <strong>mocks</strong> for external
+          services, <strong>coverage</strong> to find gaps, and <strong>CI</strong> to run it all on
+          every push. Code in{' '}
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day16 on GitHub
+            03Backend/Day18 on GitHub
           </a>
           .
         </p>
@@ -305,14 +306,14 @@ export default function Day035() {
           </ul>
         </section>
 
-        <CardSection icon="🛰️" title="WHY REAL-TIME" cards={WHY} columns={3} />
-        <CardSection icon="📡" title="EVENTS & ROOMS" cards={EVENTS} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 16" cards={RESOURCES} columns={3} />
+        <CardSection icon="🧪" title="TESTING BASICS" cards={BASICS} columns={3} />
+        <CardSection icon="📮" title="API TESTS" cards={API_TESTS} columns={4} />
+        <CardSection icon="📚" title="THUNDER BACKEND DAY 18" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#WebSockets</span>
-          <span>#SocketIO</span>
+          <span>#Testing</span>
+          <span>#Jest</span>
           <span>#Backend</span>
           <span>#Thunder</span>
         </footer>

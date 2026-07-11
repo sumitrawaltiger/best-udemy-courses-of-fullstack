@@ -2,111 +2,111 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day16';
-const DOCS_URL = 'https://socket.io/docs/v4/';
+const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend';
+const DOCS_URL = 'https://github.com/goldbergyoni/nodebestpractices';
 
 const LEARNT_TODAY = [
   {
-    title: 'HTTP can’t push',
-    text: 'request/response only — the server cannot start the conversation',
+    title: 'Bring it together',
+    text: 'everything from Days 20–39 in one real project',
   },
   {
-    title: 'WebSocket',
-    text: 'one persistent, two-way connection over a single TCP socket',
+    title: 'Model the domain',
+    text: 'schemas and relationships for the whole app',
   },
   {
-    title: 'Socket.io',
-    text: 'WebSockets plus fallbacks, reconnection, and rooms',
+    title: 'REST API',
+    text: 'resources, express.Router, and controllers',
   },
   {
-    title: 'connection',
-    text: 'io.on("connection", socket => ...) fires per client',
+    title: 'Auth',
+    text: 'register/login, JWT, roles, and protected routes',
   },
   {
-    title: 'emit',
-    text: 'send a named event with a payload',
+    title: 'Validation & errors',
+    text: 'schema validation and one central error handler',
   },
   {
-    title: 'on',
-    text: 'listen for a named event from the other side',
+    title: 'Files & real-time',
+    text: 'Multer uploads plus a Socket.io channel',
   },
   {
-    title: 'broadcast',
-    text: 'socket.broadcast.emit sends to everyone except the sender',
+    title: 'Pagination & caching',
+    text: 'fast list endpoints backed by Redis',
   },
   {
-    title: 'Rooms',
-    text: 'group sockets together — one chat room, one channel',
+    title: 'Tests',
+    text: 'Jest + Supertest for the critical paths',
   },
   {
-    title: 'Use cases',
-    text: 'chat, live notifications, dashboards, collaboration',
+    title: 'Deploy',
+    text: 'env config, a host, and MongoDB Atlas',
   },
   {
-    title: 'Scaling',
-    text: 'a Redis adapter shares events across server instances',
+    title: 'Document',
+    text: 'a clear README and API reference',
   },
 ];
 
-const WHY = [
+const BUILD = [
   {
-    icon: '🚧',
-    title: 'HTTP Can’t Push',
+    icon: '🗂️',
+    title: 'Domain & API',
     titleClass: 'card-title-cyan',
-    subtitle: 'the limit',
-    description: 'The client always asks first — the server can never initiate.',
-    code: '// polling = ask again and again (wasteful)\nsetInterval(() => fetch("/messages"), 2000);',
+    subtitle: 'model + routes',
+    description: 'Design the schemas and relationships, then a clean REST surface.',
+    code: '/products  /users  /orders\nrouter + controllers per resource\nModel refs + populate where needed',
   },
   {
-    icon: '🔌',
-    title: 'WebSocket',
+    icon: '🔐',
+    title: 'Auth & Security',
     titleClass: 'card-title-green',
-    subtitle: 'two-way pipe',
-    description: 'A single upgraded connection stays open for instant, bidirectional data.',
-    code: '// one handshake, then both sides can send\nGET /socket HTTP/1.1\nUpgrade: websocket',
+    subtitle: 'lock it down',
+    description: 'JWT auth, RBAC guards, Helmet, CORS, and rate limiting.',
+    code: 'app.use(helmet(), cors(), rateLimit());\napp.use("/admin", protect, requireRole("admin"));',
+  },
+  {
+    icon: '🧯',
+    title: 'Validation & Errors',
+    titleClass: 'card-title-amber',
+    subtitle: 'be predictable',
+    description: 'Validate every input; funnel all errors to one handler.',
+    code: 'schema.parse(req.body);            // 400 on bad input\napp.use(errorHandler);             // one exit for errors',
+  },
+];
+
+const SHIP = [
+  {
+    icon: '📎',
+    title: 'Files + Real-time',
+    titleClass: 'card-title-cyan',
+    subtitle: 'Multer + Socket.io',
+    description: 'Upload media and push live updates over WebSockets.',
+    code: 'upload.single("image");\nio.to(room).emit("update", payload);',
   },
   {
     icon: '⚡',
-    title: 'Socket.io',
-    titleClass: 'card-title-amber',
-    subtitle: 'batteries included',
-    description: 'WebSockets with fallbacks, auto-reconnect, rooms, and events.',
-    code: 'const io = new Server(httpServer);\nio.on("connection", (socket) => {\n  console.log("client", socket.id);\n});',
-  },
-];
-
-const EVENTS = [
-  {
-    icon: '🤝',
-    title: 'connection',
-    titleClass: 'card-title-cyan',
-    subtitle: 'per client',
-    description: 'Each connected client gives you a socket to talk to.',
-    code: 'io.on("connection", (socket) => {\n  socket.on("disconnect", () => {/* cleanup */});\n});',
-  },
-  {
-    icon: '📤',
-    title: 'emit / on',
+    title: 'Pagination + Cache',
     titleClass: 'card-title-green',
-    subtitle: 'send & listen',
-    description: 'Emit a named event on one side, listen for it on the other.',
-    code: '// client\nsocket.emit("message", "hi");\n// server\nsocket.on("message", (text) => { /* ... */ });',
+    subtitle: 'make it fast',
+    description: 'Paginated list endpoints with a Redis cache layer.',
+    code: '.skip((page-1)*limit).limit(limit)\nredis cache-aside on hot reads',
   },
   {
-    icon: '📣',
-    title: 'Broadcast',
+    icon: '🧪',
+    title: 'Tests',
     titleClass: 'card-title-amber',
-    subtitle: 'everyone else',
-    description: 'Send an event to all clients except the one that sent it.',
-    code: 'socket.broadcast.emit("message", text);\nio.emit("message", text); // everyone incl. sender',
+    subtitle: 'Jest + Supertest',
+    description: 'Cover auth, CRUD, and the error paths.',
+    code: 'request(app).post("/login")...\nexpect(res.status).toBe(200);',
   },
   {
-    icon: '🚪',
-    title: 'Rooms',
+    icon: '🚀',
+    title: 'Deploy & Document',
     titleClass: 'card-title-pink',
-    subtitle: 'group sockets',
-    description: 'Join a room and emit only to that group — perfect for chat.',
-    code: 'socket.join("room-42");\nio.to("room-42").emit("message", text);',
+    subtitle: 'ship it',
+    description: 'Env config, a host, Atlas, a README, and an API reference.',
+    code: 'pm2 start · Atlas · /health\nREADME + API docs',
   },
 ];
 
@@ -115,26 +115,26 @@ const RESOURCES = [
     icon: '💻',
     title: 'Thunder GitHub',
     titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day16',
-    description: 'A real-time chat with Socket.io — connection, events, broadcast, and rooms.',
+    subtitle: '03Backend',
+    description: 'The full Thunder backend — every piece assembled into one project.',
     link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Socket.io Docs',
+    title: 'Node Best Practices',
     titleClass: 'card-title-green',
-    subtitle: 'Official docs',
-    description: 'The official Socket.io v4 docs — server, client, events, and rooms.',
-    link: { href: DOCS_URL, label: 'Open the docs →', external: true },
+    subtitle: 'the checklist',
+    description: 'The community Node.js best-practices repo — structure, security, and more.',
+    link: { href: DOCS_URL, label: 'Open the guide →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Learn Socket.io',
+    title: 'Full CRUD API Project',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Learn Socket.io in 30 Minutes by Web Dev Simplified — for Day 35.',
+    description: 'CRUD API Tutorial — Node, Express, MongoDB by freeCodeCamp — for the capstone.',
     link: {
-      href: 'https://www.youtube.com/watch?v=ZKEqqIO7n-k',
+      href: 'https://www.youtube.com/watch?v=_7UQPve99r4',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day035() {
+export default function Day040() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,27 +231,30 @@ export default function Day035() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-034" className="day001-nav-btn day001-nav-home">
-            ← Day 34
+          <Link to="/day-039" className="day001-nav-btn day001-nav-home">
+            ← Day 39
           </Link>
-          <p className="day001-datetime">Thunder Day 35 · 8 Aug 2026</p>
-          <Link to="/day-036" className="day001-nav-btn day001-nav-next">
-            Day 36 →
+          <p className="day001-datetime">Thunder Day 40 · 13 Aug 2026</p>
+          <Link
+            to="/learn/monolith-vs-microservices"
+            className="day001-nav-btn day001-nav-next"
+          >
+            Day 41 →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>Node.js</span>
-              <span>Real-Time</span>
+              <span>Backend</span>
+              <span>Capstone</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 35 <span aria-hidden="true">⚡</span>
+                DAY 40 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">WEBSOCKETS & REAL-TIME</p>
+              <p className="day001-day-theme">BACKEND CAPSTONE PROJECT</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,18 +273,19 @@ export default function Day035() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '35%' }} />
+          <div className="day001-progress-bar" style={{ width: '40%' }} />
         </div>
 
         <p className="day001-summary">
-          Day thirty-five — HTTP can only answer when asked, so live features need a different
-          channel. A <strong>WebSocket</strong> is one persistent, two-way connection, and{' '}
-          <strong>Socket.io</strong> wraps it with fallbacks, reconnection, and rooms. I learned the
-          core loop — <code>io.on(&quot;connection&quot;)</code>, <code>emit</code> to send,{' '}
-          <code>on</code> to listen, <code>broadcast</code> to reach everyone else, and{' '}
-          <strong>rooms</strong> to group sockets for chat. Code in{' '}
+          Day forty — the backend finale. I combined everything from Days 20–39 into one real
+          project: a domain <strong>model</strong> with relationships, a clean <strong>REST API</strong>{' '}
+          (Router + controllers), <strong>JWT auth</strong> with RBAC, <strong>validation</strong>{' '}
+          and a central error handler, <strong>file uploads</strong> and <strong>real-time</strong>{' '}
+          events, <strong>pagination + Redis caching</strong>, <strong>tests</strong>, and a full{' '}
+          <strong>deploy</strong> with docs. That closes the Node/Express chapter of the Thunder
+          course. Code in{' '}
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day16 on GitHub
+            03Backend on GitHub
           </a>
           .
         </p>
@@ -305,15 +309,15 @@ export default function Day035() {
           </ul>
         </section>
 
-        <CardSection icon="🛰️" title="WHY REAL-TIME" cards={WHY} columns={3} />
-        <CardSection icon="📡" title="EVENTS & ROOMS" cards={EVENTS} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 16" cards={RESOURCES} columns={3} />
+        <CardSection icon="🏗️" title="BUILD THE API" cards={BUILD} columns={3} />
+        <CardSection icon="🚀" title="LEVEL UP & SHIP" cards={SHIP} columns={4} />
+        <CardSection icon="📚" title="THUNDER BACKEND — FULL PROJECT" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#WebSockets</span>
-          <span>#SocketIO</span>
+          <span>#Capstone</span>
           <span>#Backend</span>
+          <span>#NodeJS</span>
           <span>#Thunder</span>
         </footer>
       </div>

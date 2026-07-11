@@ -2,111 +2,111 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day16';
-const DOCS_URL = 'https://socket.io/docs/v4/';
+const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day19';
+const DOCS_URL = 'https://redis.io/docs/latest/develop/';
 
 const LEARNT_TODAY = [
   {
-    title: 'HTTP can’t push',
-    text: 'request/response only — the server cannot start the conversation',
+    title: 'Cache',
+    text: 'keep hot data in fast memory to skip the database',
   },
   {
-    title: 'WebSocket',
-    text: 'one persistent, two-way connection over a single TCP socket',
+    title: 'Redis',
+    text: 'an in-memory key-value store — microsecond reads',
   },
   {
-    title: 'Socket.io',
-    text: 'WebSockets plus fallbacks, reconnection, and rooms',
+    title: 'Cache-aside',
+    text: 'check cache first; on a miss, read DB then set it',
   },
   {
-    title: 'connection',
-    text: 'io.on("connection", socket => ...) fires per client',
+    title: 'TTL',
+    text: 'expire keys automatically so data stays fresh',
   },
   {
-    title: 'emit',
-    text: 'send a named event with a payload',
+    title: 'GET / SET',
+    text: 'the two commands behind most caching',
   },
   {
-    title: 'on',
-    text: 'listen for a named event from the other side',
+    title: 'Serialize',
+    text: 'JSON.stringify on the way in, parse on the way out',
   },
   {
-    title: 'broadcast',
-    text: 'socket.broadcast.emit sends to everyone except the sender',
+    title: 'Invalidation',
+    text: 'bust the cache when the underlying data changes',
   },
   {
-    title: 'Rooms',
-    text: 'group sockets together — one chat room, one channel',
+    title: 'Sessions',
+    text: 'store sessions in Redis so any instance can read them',
   },
   {
-    title: 'Use cases',
-    text: 'chat, live notifications, dashboards, collaboration',
+    title: 'Rate limiting',
+    text: 'counters with EXPIRE make a simple limiter',
   },
   {
-    title: 'Scaling',
-    text: 'a Redis adapter shares events across server instances',
+    title: 'The hard part',
+    text: '"there are only two hard things… cache invalidation"',
   },
 ];
 
-const WHY = [
-  {
-    icon: '🚧',
-    title: 'HTTP Can’t Push',
-    titleClass: 'card-title-cyan',
-    subtitle: 'the limit',
-    description: 'The client always asks first — the server can never initiate.',
-    code: '// polling = ask again and again (wasteful)\nsetInterval(() => fetch("/messages"), 2000);',
-  },
-  {
-    icon: '🔌',
-    title: 'WebSocket',
-    titleClass: 'card-title-green',
-    subtitle: 'two-way pipe',
-    description: 'A single upgraded connection stays open for instant, bidirectional data.',
-    code: '// one handshake, then both sides can send\nGET /socket HTTP/1.1\nUpgrade: websocket',
-  },
+const CACHING = [
   {
     icon: '⚡',
-    title: 'Socket.io',
+    title: 'Why Cache',
+    titleClass: 'card-title-cyan',
+    subtitle: 'skip the DB',
+    description: 'Repeated reads of the same data waste database time.',
+    code: '// 200ms DB query, called 10k times/min\n// -> cache it: ~1ms from memory',
+  },
+  {
+    icon: '🧠',
+    title: 'Redis Basics',
+    titleClass: 'card-title-green',
+    subtitle: 'key-value store',
+    description: 'Set and get string values by key; everything is in RAM.',
+    code: 'await redis.set("user:42", JSON.stringify(user));\nconst raw = await redis.get("user:42");',
+  },
+  {
+    icon: '🔁',
+    title: 'Cache-Aside',
     titleClass: 'card-title-amber',
-    subtitle: 'batteries included',
-    description: 'WebSockets with fallbacks, auto-reconnect, rooms, and events.',
-    code: 'const io = new Server(httpServer);\nio.on("connection", (socket) => {\n  console.log("client", socket.id);\n});',
+    subtitle: 'the pattern',
+    description: 'Check cache → miss → read DB → set cache → return.',
+    code: 'let data = await redis.get(key);\nif (!data) {\n  data = await Product.find();\n  await redis.set(key, JSON.stringify(data));\n}',
   },
 ];
 
-const EVENTS = [
+const PRACTICE = [
   {
-    icon: '🤝',
-    title: 'connection',
+    icon: '⏳',
+    title: 'TTL & Invalidation',
     titleClass: 'card-title-cyan',
-    subtitle: 'per client',
-    description: 'Each connected client gives you a socket to talk to.',
-    code: 'io.on("connection", (socket) => {\n  socket.on("disconnect", () => {/* cleanup */});\n});',
+    subtitle: 'stay fresh',
+    description: 'Expire keys with a TTL, and delete them on writes.',
+    code: 'await redis.set(key, val, "EX", 60); // 60s TTL\nawait redis.del("products");         // on create/update',
   },
   {
-    icon: '📤',
-    title: 'emit / on',
+    icon: '🎫',
+    title: 'Sessions',
     titleClass: 'card-title-green',
-    subtitle: 'send & listen',
-    description: 'Emit a named event on one side, listen for it on the other.',
-    code: '// client\nsocket.emit("message", "hi");\n// server\nsocket.on("message", (text) => { /* ... */ });',
+    subtitle: 'shared state',
+    description: 'Store sessions in Redis so every server instance sees them.',
+    code: 'app.use(session({\n  store: new RedisStore({ client: redis }),\n  secret: process.env.SESSION_SECRET,\n}));',
   },
   {
-    icon: '📣',
-    title: 'Broadcast',
+    icon: '🚦',
+    title: 'Rate Limiting',
     titleClass: 'card-title-amber',
-    subtitle: 'everyone else',
-    description: 'Send an event to all clients except the one that sent it.',
-    code: 'socket.broadcast.emit("message", text);\nio.emit("message", text); // everyone incl. sender',
+    subtitle: 'counters',
+    description: 'INCR a per-IP key with an EXPIRE for a distributed limiter.',
+    code: 'const n = await redis.incr(ip);\nif (n === 1) await redis.expire(ip, 60);\nif (n > 100) throw new Error("Too many requests");',
   },
   {
-    icon: '🚪',
-    title: 'Rooms',
+    icon: '📦',
+    title: 'Serialize',
     titleClass: 'card-title-pink',
-    subtitle: 'group sockets',
-    description: 'Join a room and emit only to that group — perfect for chat.',
-    code: 'socket.join("room-42");\nio.to("room-42").emit("message", text);',
+    subtitle: 'strings only',
+    description: 'Redis stores strings — stringify objects going in, parse coming out.',
+    code: 'await redis.set(key, JSON.stringify(obj));\nconst obj = JSON.parse(await redis.get(key));',
   },
 ];
 
@@ -115,26 +115,26 @@ const RESOURCES = [
     icon: '💻',
     title: 'Thunder GitHub',
     titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day16',
-    description: 'A real-time chat with Socket.io — connection, events, broadcast, and rooms.',
+    subtitle: '03Backend / Day19',
+    description: 'Cache-aside with TTL, invalidation, Redis sessions, and a rate limiter.',
     link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Socket.io Docs',
+    title: 'Redis Docs',
     titleClass: 'card-title-green',
     subtitle: 'Official docs',
-    description: 'The official Socket.io v4 docs — server, client, events, and rooms.',
+    description: 'The Redis developer docs — data types, commands, and patterns.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Learn Socket.io',
+    title: 'Redis Caching in Node',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Learn Socket.io in 30 Minutes by Web Dev Simplified — for Day 35.',
+    description: 'Redis Caching in Node.js by Traversy Media — supplement for Day 38.',
     link: {
-      href: 'https://www.youtube.com/watch?v=ZKEqqIO7n-k',
+      href: 'https://www.youtube.com/watch?v=oaJq1mQ3dFI',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day035() {
+export default function Day038() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,27 +231,27 @@ export default function Day035() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-034" className="day001-nav-btn day001-nav-home">
-            ← Day 34
+          <Link to="/day-037" className="day001-nav-btn day001-nav-home">
+            ← Day 37
           </Link>
-          <p className="day001-datetime">Thunder Day 35 · 8 Aug 2026</p>
-          <Link to="/day-036" className="day001-nav-btn day001-nav-next">
-            Day 36 →
+          <p className="day001-datetime">Thunder Day 38 · 11 Aug 2026</p>
+          <Link to="/day-039" className="day001-nav-btn day001-nav-next">
+            Day 39 →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>Node.js</span>
-              <span>Real-Time</span>
+              <span>Redis</span>
+              <span>Performance</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 35 <span aria-hidden="true">⚡</span>
+                DAY 38 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">WEBSOCKETS & REAL-TIME</p>
+              <p className="day001-day-theme">CACHING WITH REDIS</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,18 +270,18 @@ export default function Day035() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '35%' }} />
+          <div className="day001-progress-bar" style={{ width: '38%' }} />
         </div>
 
         <p className="day001-summary">
-          Day thirty-five — HTTP can only answer when asked, so live features need a different
-          channel. A <strong>WebSocket</strong> is one persistent, two-way connection, and{' '}
-          <strong>Socket.io</strong> wraps it with fallbacks, reconnection, and rooms. I learned the
-          core loop — <code>io.on(&quot;connection&quot;)</code>, <code>emit</code> to send,{' '}
-          <code>on</code> to listen, <code>broadcast</code> to reach everyone else, and{' '}
-          <strong>rooms</strong> to group sockets for chat. Code in{' '}
+          Day thirty-eight — hitting the database for the same data over and over is slow, so I put{' '}
+          <strong>Redis</strong> in front of it. The <strong>cache-aside</strong> pattern checks
+          memory first and falls back to the DB on a miss; a <strong>TTL</strong> keeps entries
+          fresh and I <strong>invalidate</strong> on writes. Redis also backs{' '}
+          <strong>sessions</strong> and a distributed <strong>rate limiter</strong> (INCR + EXPIRE).
+          Just remember — cache invalidation is the hard part. Code in{' '}
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day16 on GitHub
+            03Backend/Day19 on GitHub
           </a>
           .
         </p>
@@ -305,14 +305,14 @@ export default function Day035() {
           </ul>
         </section>
 
-        <CardSection icon="🛰️" title="WHY REAL-TIME" cards={WHY} columns={3} />
-        <CardSection icon="📡" title="EVENTS & ROOMS" cards={EVENTS} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 16" cards={RESOURCES} columns={3} />
+        <CardSection icon="⚡" title="CACHING" cards={CACHING} columns={3} />
+        <CardSection icon="🛠️" title="IN PRACTICE" cards={PRACTICE} columns={4} />
+        <CardSection icon="📚" title="THUNDER BACKEND DAY 19" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#WebSockets</span>
-          <span>#SocketIO</span>
+          <span>#Redis</span>
+          <span>#Caching</span>
           <span>#Backend</span>
           <span>#Thunder</span>
         </footer>

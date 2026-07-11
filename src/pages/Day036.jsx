@@ -2,111 +2,112 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day16';
-const DOCS_URL = 'https://socket.io/docs/v4/';
+const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day17';
+const DOCS_URL =
+  'https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html';
 
 const LEARNT_TODAY = [
   {
-    title: 'HTTP can’t push',
-    text: 'request/response only — the server cannot start the conversation',
+    title: 'Helmet',
+    text: 'sets secure HTTP response headers in one line',
   },
   {
-    title: 'WebSocket',
-    text: 'one persistent, two-way connection over a single TCP socket',
+    title: 'CORS',
+    text: 'control exactly which origins may call your API',
   },
   {
-    title: 'Socket.io',
-    text: 'WebSockets plus fallbacks, reconnection, and rooms',
+    title: 'Rate limiting',
+    text: 'throttle abusive clients before they overwhelm you',
   },
   {
-    title: 'connection',
-    text: 'io.on("connection", socket => ...) fires per client',
+    title: 'Sanitize input',
+    text: 'block NoSQL injection and XSS from request data',
   },
   {
-    title: 'emit',
-    text: 'send a named event with a payload',
+    title: 'HTTPS',
+    text: 'encrypt everything in transit — no plaintext',
   },
   {
-    title: 'on',
-    text: 'listen for a named event from the other side',
+    title: 'Secrets in .env',
+    text: 'keys and tokens never live in the codebase',
   },
   {
-    title: 'broadcast',
-    text: 'socket.broadcast.emit sends to everyone except the sender',
+    title: 'Hash passwords',
+    text: 'bcrypt — never store or log a raw password',
   },
   {
-    title: 'Rooms',
-    text: 'group sockets together — one chat room, one channel',
+    title: 'Least privilege',
+    text: 'scoped DB users and narrowly-scoped tokens',
   },
   {
-    title: 'Use cases',
-    text: 'chat, live notifications, dashboards, collaboration',
+    title: 'Hide errors',
+    text: 'no stack traces or internals in production responses',
   },
   {
-    title: 'Scaling',
-    text: 'a Redis adapter shares events across server instances',
-  },
-];
-
-const WHY = [
-  {
-    icon: '🚧',
-    title: 'HTTP Can’t Push',
-    titleClass: 'card-title-cyan',
-    subtitle: 'the limit',
-    description: 'The client always asks first — the server can never initiate.',
-    code: '// polling = ask again and again (wasteful)\nsetInterval(() => fetch("/messages"), 2000);',
-  },
-  {
-    icon: '🔌',
-    title: 'WebSocket',
-    titleClass: 'card-title-green',
-    subtitle: 'two-way pipe',
-    description: 'A single upgraded connection stays open for instant, bidirectional data.',
-    code: '// one handshake, then both sides can send\nGET /socket HTTP/1.1\nUpgrade: websocket',
-  },
-  {
-    icon: '⚡',
-    title: 'Socket.io',
-    titleClass: 'card-title-amber',
-    subtitle: 'batteries included',
-    description: 'WebSockets with fallbacks, auto-reconnect, rooms, and events.',
-    code: 'const io = new Server(httpServer);\nio.on("connection", (socket) => {\n  console.log("client", socket.id);\n});',
+    title: 'Audit deps',
+    text: 'npm audit to catch vulnerable packages',
   },
 ];
 
-const EVENTS = [
+const HARDEN = [
   {
-    icon: '🤝',
-    title: 'connection',
+    icon: '⛑️',
+    title: 'Helmet',
     titleClass: 'card-title-cyan',
-    subtitle: 'per client',
-    description: 'Each connected client gives you a socket to talk to.',
-    code: 'io.on("connection", (socket) => {\n  socket.on("disconnect", () => {/* cleanup */});\n});',
+    subtitle: 'secure headers',
+    description: 'One middleware sets a dozen safe HTTP headers.',
+    code: 'import helmet from "helmet";\napp.use(helmet());\n// CSP, HSTS, X-Frame-Options, ...',
   },
   {
-    icon: '📤',
-    title: 'emit / on',
+    icon: '🌐',
+    title: 'CORS',
     titleClass: 'card-title-green',
-    subtitle: 'send & listen',
-    description: 'Emit a named event on one side, listen for it on the other.',
-    code: '// client\nsocket.emit("message", "hi");\n// server\nsocket.on("message", (text) => { /* ... */ });',
+    subtitle: 'who can call',
+    description: 'Allow only the origins you trust — not "*" in production.',
+    code: 'import cors from "cors";\napp.use(cors({ origin: "https://app.example.com" }));',
   },
   {
-    icon: '📣',
-    title: 'Broadcast',
+    icon: '🚦',
+    title: 'Rate Limiting',
     titleClass: 'card-title-amber',
-    subtitle: 'everyone else',
-    description: 'Send an event to all clients except the one that sent it.',
-    code: 'socket.broadcast.emit("message", text);\nio.emit("message", text); // everyone incl. sender',
+    subtitle: 'throttle abuse',
+    description: 'Cap requests per IP per window to blunt brute-force and DoS.',
+    code: 'import rateLimit from "express-rate-limit";\napp.use(rateLimit({ windowMs: 60_000, max: 100 }));',
+  },
+];
+
+const GUARD = [
+  {
+    icon: '🧼',
+    title: 'Sanitize Input',
+    titleClass: 'card-title-cyan',
+    subtitle: 'injection & XSS',
+    description: 'Strip Mongo operators and script tags from user data.',
+    code: 'import mongoSanitize from "express-mongo-sanitize";\napp.use(mongoSanitize()); // blocks { "$gt": "" }',
   },
   {
-    icon: '🚪',
-    title: 'Rooms',
+    icon: '🔐',
+    title: 'HTTPS & Secrets',
+    titleClass: 'card-title-green',
+    subtitle: 'encrypt + hide',
+    description: 'TLS in transit; keys in the environment, never in git.',
+    code: '// .env (gitignored)\nJWT_SECRET=...\nDB_URI=...\n// terminate TLS at the proxy / host',
+  },
+  {
+    icon: '🎯',
+    title: 'Least Privilege',
+    titleClass: 'card-title-amber',
+    subtitle: 'minimal access',
+    description: 'Scoped DB users and short-lived, narrowly-scoped tokens.',
+    code: '// DB user can read/write one database, not admin\n// tokens: short expiry + only needed claims',
+  },
+  {
+    icon: '🔎',
+    title: 'Audit Dependencies',
     titleClass: 'card-title-pink',
-    subtitle: 'group sockets',
-    description: 'Join a room and emit only to that group — perfect for chat.',
-    code: 'socket.join("room-42");\nio.to("room-42").emit("message", text);',
+    subtitle: 'npm audit',
+    description: 'Most breaches ride in through a vulnerable package.',
+    code: 'npm audit\nnpm audit fix\n// keep deps patched',
   },
 ];
 
@@ -115,26 +116,26 @@ const RESOURCES = [
     icon: '💻',
     title: 'Thunder GitHub',
     titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day16',
-    description: 'A real-time chat with Socket.io — connection, events, broadcast, and rooms.',
+    subtitle: '03Backend / Day17',
+    description: 'Helmet, CORS, rate limiting, sanitization, and secret management.',
     link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Socket.io Docs',
+    title: 'OWASP Node Cheat Sheet',
     titleClass: 'card-title-green',
-    subtitle: 'Official docs',
-    description: 'The official Socket.io v4 docs — server, client, events, and rooms.',
+    subtitle: 'Official guide',
+    description: 'The OWASP Node.js security cheat sheet — the definitive checklist.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Learn Socket.io',
+    title: 'Node Security',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Learn Socket.io in 30 Minutes by Web Dev Simplified — for Day 35.',
+    description: 'Node.js Security Best Practices by Software Developer Diaries — for Day 36.',
     link: {
-      href: 'https://www.youtube.com/watch?v=ZKEqqIO7n-k',
+      href: 'https://www.youtube.com/watch?v=DYme1m4RiwI',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +187,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day035() {
+export default function Day036() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +232,12 @@ export default function Day035() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-034" className="day001-nav-btn day001-nav-home">
-            ← Day 34
+          <Link to="/day-035" className="day001-nav-btn day001-nav-home">
+            ← Day 35
           </Link>
-          <p className="day001-datetime">Thunder Day 35 · 8 Aug 2026</p>
-          <Link to="/day-036" className="day001-nav-btn day001-nav-next">
-            Day 36 →
+          <p className="day001-datetime">Thunder Day 36 · 9 Aug 2026</p>
+          <Link to="/day-037" className="day001-nav-btn day001-nav-next">
+            Day 37 →
           </Link>
         </header>
 
@@ -244,14 +245,14 @@ export default function Day035() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>Node.js</span>
-              <span>Real-Time</span>
+              <span>Security</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 35 <span aria-hidden="true">⚡</span>
+                DAY 36 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">WEBSOCKETS & REAL-TIME</p>
+              <p className="day001-day-theme">API SECURITY BEST PRACTICES</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,18 +271,18 @@ export default function Day035() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '35%' }} />
+          <div className="day001-progress-bar" style={{ width: '36%' }} />
         </div>
 
         <p className="day001-summary">
-          Day thirty-five — HTTP can only answer when asked, so live features need a different
-          channel. A <strong>WebSocket</strong> is one persistent, two-way connection, and{' '}
-          <strong>Socket.io</strong> wraps it with fallbacks, reconnection, and rooms. I learned the
-          core loop — <code>io.on(&quot;connection&quot;)</code>, <code>emit</code> to send,{' '}
-          <code>on</code> to listen, <code>broadcast</code> to reach everyone else, and{' '}
-          <strong>rooms</strong> to group sockets for chat. Code in{' '}
+          Day thirty-six — a public API is under attack from minute one, so I hardened it.{' '}
+          <strong>Helmet</strong> sets safe headers, <strong>CORS</strong> restricts callers, and a{' '}
+          <strong>rate limiter</strong> blunts brute-force. I sanitized input against{' '}
+          <strong>NoSQL injection & XSS</strong>, moved every secret into <code>.env</code>, enforced{' '}
+          <strong>HTTPS</strong> and <strong>least privilege</strong>, hid internal errors in
+          production, and ran <code>npm audit</code>. Code in{' '}
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day16 on GitHub
+            03Backend/Day17 on GitHub
           </a>
           .
         </p>
@@ -305,14 +306,14 @@ export default function Day035() {
           </ul>
         </section>
 
-        <CardSection icon="🛰️" title="WHY REAL-TIME" cards={WHY} columns={3} />
-        <CardSection icon="📡" title="EVENTS & ROOMS" cards={EVENTS} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 16" cards={RESOURCES} columns={3} />
+        <CardSection icon="⛑️" title="HARDEN THE APP" cards={HARDEN} columns={3} />
+        <CardSection icon="🛡️" title="GUARD THE DATA" cards={GUARD} columns={4} />
+        <CardSection icon="📚" title="THUNDER BACKEND DAY 17" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#WebSockets</span>
-          <span>#SocketIO</span>
+          <span>#Security</span>
+          <span>#API</span>
           <span>#Backend</span>
           <span>#Thunder</span>
         </footer>
