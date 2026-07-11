@@ -2,111 +2,111 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day12';
-const DOCS_URL = 'https://expressjs.com/en/guide/error-handling.html';
+const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day15';
+const DOCS_URL = 'https://github.com/expressjs/multer#readme';
 
 const LEARNT_TODAY = [
   {
-    title: 'Validate input',
-    text: 'never trust req.body, req.params or req.query',
+    title: 'multipart/form-data',
+    text: 'the encoding browsers use to send files',
   },
   {
-    title: 'Schema validation',
-    text: 'Zod / Joi / express-validator check shape before logic runs',
+    title: 'Multer',
+    text: 'Express middleware that parses uploaded files',
   },
   {
-    title: '400 on bad input',
-    text: 'reject invalid requests with a clear message',
+    title: 'Storage engines',
+    text: 'diskStorage saves to disk, memoryStorage keeps a Buffer',
   },
   {
-    title: 'Mongoose rules',
-    text: 'required, enum, min/max and match guard at the DB layer too',
+    title: 'req.file / req.files',
+    text: 'where Multer puts the parsed upload(s)',
   },
   {
-    title: 'try / catch',
-    text: 'wrap every async handler so errors do not crash the server',
+    title: 'single / array',
+    text: 'upload.single("photo") vs upload.array("photos", 5)',
   },
   {
-    title: 'Central error handler',
-    text: 'one (err, req, res, next) middleware — four args make it special',
+    title: 'File filter',
+    text: 'accept only images / PDFs, reject the rest',
   },
   {
-    title: 'Custom error class',
-    text: 'carry a statusCode with the message',
+    title: 'Size limits',
+    text: 'cap fileSize so uploads cannot exhaust the server',
   },
   {
-    title: 'next(err)',
-    text: 'forward an error to the central handler',
+    title: 'Cloud storage',
+    text: 'push to S3 / Cloudinary and keep only the URL',
   },
   {
-    title: 'Do not leak internals',
-    text: 'a generic 500 message in production, details only in logs',
+    title: 'Store the URL',
+    text: 'never store binaries in Mongo — save the path/URL',
   },
   {
-    title: 'dotenv',
-    text: 'load config and secrets from .env, keep them out of git',
-  },
-];
-
-const VALIDATION = [
-  {
-    icon: '🧪',
-    title: 'Never Trust Input',
-    titleClass: 'card-title-cyan',
-    subtitle: 'validate first',
-    description: 'Every field from the client is untrusted until you validate it.',
-    code: '// missing / wrong-typed fields, injection, huge payloads\n// -> validate before touching the database',
-  },
-  {
-    icon: '📋',
-    title: 'Schema Validation',
-    titleClass: 'card-title-green',
-    subtitle: 'Zod / Joi',
-    description: 'Declare the expected shape; parse and reject bad input with 400.',
-    code: 'const schema = z.object({\n  email: z.string().email(),\n  age: z.number().min(0),\n});\nconst result = schema.safeParse(req.body);\nif (!result.success) return res.status(400).json(result.error);',
-  },
-  {
-    icon: '🛢️',
-    title: 'Mongoose Rules',
-    titleClass: 'card-title-amber',
-    subtitle: 'DB-layer guard',
-    description: 'Schema validation is a second line of defence at the database.',
-    code: 'email: { type: String, required: true, match: /@/ }\nage:   { type: Number, min: 0 }',
+    title: 'Serve statics',
+    text: 'express.static exposes locally-saved files',
   },
 ];
 
-const ERRORS = [
+const MULTER = [
   {
-    icon: '🧯',
-    title: 'try / catch',
+    icon: '📨',
+    title: 'multipart/form-data',
     titleClass: 'card-title-cyan',
-    subtitle: 'catch async',
-    description: 'Wrap async handlers and forward errors with next(err).',
-    code: 'app.get("/x", async (req, res, next) => {\n  try { /* ... */ }\n  catch (err) { next(err); }\n});',
+    subtitle: 'how files arrive',
+    description: 'Files ride in a multipart body — express.json cannot read them.',
+    code: '<form enctype="multipart/form-data" method="post">\n  <input type="file" name="photo" />\n</form>',
   },
   {
-    icon: '🎯',
-    title: 'Central Handler',
+    icon: '📎',
+    title: 'Multer Middleware',
     titleClass: 'card-title-green',
-    subtitle: '4 args',
-    description: 'One error middleware (four params) catches everything, last.',
-    code: 'app.use((err, req, res, next) => {\n  res.status(err.statusCode || 500)\n     .json({ error: err.message });\n});',
+    subtitle: 'parse uploads',
+    description: 'Add Multer to a route to parse one or many files.',
+    code: 'const upload = multer({ dest: "uploads/" });\napp.post("/avatar", upload.single("photo"), handler);\napp.post("/gallery", upload.array("photos", 5), handler);',
   },
   {
-    icon: '🏷️',
-    title: 'Custom Error',
+    icon: '📥',
+    title: 'req.file',
     titleClass: 'card-title-amber',
-    subtitle: 'status + message',
-    description: 'A small class carries the HTTP status with the message.',
-    code: 'class AppError extends Error {\n  constructor(msg, status) { super(msg); this.statusCode = status; }\n}\nthrow new AppError("Not found", 404);',
+    subtitle: 'the result',
+    description: 'Multer attaches the parsed file(s); text fields stay on req.body.',
+    code: '// req.file = { originalname, mimetype, size, path }\nres.json({ url: `/uploads/${req.file.filename}` });',
+  },
+];
+
+const STORAGE = [
+  {
+    icon: '💽',
+    title: 'Disk vs Memory',
+    titleClass: 'card-title-cyan',
+    subtitle: 'storage engine',
+    description: 'Save to disk, or keep a Buffer in memory to forward to the cloud.',
+    code: 'const storage = multer.diskStorage({\n  destination: (req, file, cb) => cb(null, "uploads/"),\n  filename: (req, file, cb) => cb(null, Date.now() + file.originalname),\n});',
   },
   {
-    icon: '📄',
-    title: 'dotenv & Config',
+    icon: '🚦',
+    title: 'Filter & Limits',
+    titleClass: 'card-title-green',
+    subtitle: 'guard uploads',
+    description: 'Accept only allowed types and cap the file size.',
+    code: 'multer({\n  limits: { fileSize: 2 * 1024 * 1024 }, // 2 MB\n  fileFilter: (req, file, cb) =>\n    cb(null, file.mimetype.startsWith("image/")),\n});',
+  },
+  {
+    icon: '☁️',
+    title: 'Cloud Storage',
+    titleClass: 'card-title-amber',
+    subtitle: 'S3 / Cloudinary',
+    description: 'For scale, stream the file to object storage instead of local disk.',
+    code: 'const result = await cloudinary.uploader.upload(req.file.path);\n// result.secure_url',
+  },
+  {
+    icon: '🔗',
+    title: 'Store the URL',
     titleClass: 'card-title-pink',
-    subtitle: '.env',
-    description: 'Keep secrets and config in .env — never commit them.',
-    code: 'require("dotenv").config();\nconst port = process.env.PORT || 3000;\n// .gitignore -> .env',
+    subtitle: 'not the bytes',
+    description: 'Save only the URL/path on the document — never the binary.',
+    code: 'user.avatar = result.secure_url;\nawait user.save();',
   },
 ];
 
@@ -115,26 +115,26 @@ const RESOURCES = [
     icon: '💻',
     title: 'Thunder GitHub',
     titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day12',
-    description: 'Input validation, a central error handler, a custom error class, and dotenv.',
+    subtitle: '03Backend / Day15',
+    description: 'Multer uploads with disk & memory storage, filters, limits, and cloud upload.',
     link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Express Error Handling',
+    title: 'Multer README',
     titleClass: 'card-title-green',
-    subtitle: 'Official guide',
-    description: 'The official Express guide to writing error-handling middleware.',
+    subtitle: 'Official docs',
+    description: 'The official Multer docs — storage engines, limits, and file filters.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Error Handling in Express',
+    title: 'File Uploads with Multer',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Error Handling in Express.js — the Ultimate Guide by CodeLucky — for Day 31.',
+    description: 'Uploading Files with Node.js and Multer by Piyush Garg — for Day 34.',
     link: {
-      href: 'https://www.youtube.com/watch?v=-OjIF9Zympo',
+      href: 'https://www.youtube.com/watch?v=WqJ0P8JnftI',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day031() {
+export default function Day034() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +231,12 @@ export default function Day031() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-030" className="day001-nav-btn day001-nav-home">
-            ← Day 30
+          <Link to="/day-033" className="day001-nav-btn day001-nav-home">
+            ← Day 33
           </Link>
-          <p className="day001-datetime">Thunder Day 31 · 4 Aug 2026</p>
-          <Link to="/day-032" className="day001-nav-btn day001-nav-next">
-            Day 32 →
+          <p className="day001-datetime">Thunder Day 34 · 7 Aug 2026</p>
+          <Link to="/day-035" className="day001-nav-btn day001-nav-next">
+            Day 35 →
           </Link>
         </header>
 
@@ -244,14 +244,14 @@ export default function Day031() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>Node.js</span>
-              <span>Reliability</span>
+              <span>Express</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 31 <span aria-hidden="true">⚡</span>
+                DAY 34 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">VALIDATION & ERROR HANDLING</p>
+              <p className="day001-day-theme">FILE UPLOADS</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,19 +270,18 @@ export default function Day031() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '31%' }} />
+          <div className="day001-progress-bar" style={{ width: '34%' }} />
         </div>
 
         <p className="day001-summary">
-          Day thirty-one — a real API assumes every request is hostile. I{' '}
-          <strong>validate</strong> input with a schema (Zod/Joi) and reject bad data with{' '}
-          <code>400</code>, backed by Mongoose schema rules at the database. Then I made errors
-          predictable: every async handler is wrapped in <code>try/catch</code> that calls{' '}
-          <code>next(err)</code>, a single <strong>central error middleware</strong> formats the
-          response, and a custom <code>AppError</code> carries the status code. Config and secrets
-          live in <code>.env</code> via <strong>dotenv</strong>. Code in{' '}
+          Day thirty-four — forms send files as <code>multipart/form-data</code>, which{' '}
+          <code>express.json()</code> can&apos;t read — so I added <strong>Multer</strong>. It parses
+          uploads onto <code>req.file</code>/<code>req.files</code>, with a{' '}
+          <strong>storage engine</strong> (disk or memory), a <strong>file filter</strong>, and a
+          size <strong>limit</strong>. For scale I push the file to <strong>cloud storage</strong>{' '}
+          (S3/Cloudinary) and store only the <strong>URL</strong> on the document. Code in{' '}
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day12 on GitHub
+            03Backend/Day15 on GitHub
           </a>
           .
         </p>
@@ -306,14 +305,14 @@ export default function Day031() {
           </ul>
         </section>
 
-        <CardSection icon="🧪" title="VALIDATION" cards={VALIDATION} columns={3} />
-        <CardSection icon="🧯" title="ERROR HANDLING" cards={ERRORS} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 12" cards={RESOURCES} columns={3} />
+        <CardSection icon="📎" title="MULTER BASICS" cards={MULTER} columns={3} />
+        <CardSection icon="🗄️" title="STORAGE" cards={STORAGE} columns={4} />
+        <CardSection icon="📚" title="THUNDER BACKEND DAY 15" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#Validation</span>
-          <span>#ErrorHandling</span>
+          <span>#FileUpload</span>
+          <span>#Multer</span>
           <span>#Backend</span>
           <span>#Thunder</span>
         </footer>

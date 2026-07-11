@@ -2,111 +2,111 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day12';
-const DOCS_URL = 'https://expressjs.com/en/guide/error-handling.html';
+const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day16';
+const DOCS_URL = 'https://socket.io/docs/v4/';
 
 const LEARNT_TODAY = [
   {
-    title: 'Validate input',
-    text: 'never trust req.body, req.params or req.query',
+    title: 'HTTP can’t push',
+    text: 'request/response only — the server cannot start the conversation',
   },
   {
-    title: 'Schema validation',
-    text: 'Zod / Joi / express-validator check shape before logic runs',
+    title: 'WebSocket',
+    text: 'one persistent, two-way connection over a single TCP socket',
   },
   {
-    title: '400 on bad input',
-    text: 'reject invalid requests with a clear message',
+    title: 'Socket.io',
+    text: 'WebSockets plus fallbacks, reconnection, and rooms',
   },
   {
-    title: 'Mongoose rules',
-    text: 'required, enum, min/max and match guard at the DB layer too',
+    title: 'connection',
+    text: 'io.on("connection", socket => ...) fires per client',
   },
   {
-    title: 'try / catch',
-    text: 'wrap every async handler so errors do not crash the server',
+    title: 'emit',
+    text: 'send a named event with a payload',
   },
   {
-    title: 'Central error handler',
-    text: 'one (err, req, res, next) middleware — four args make it special',
+    title: 'on',
+    text: 'listen for a named event from the other side',
   },
   {
-    title: 'Custom error class',
-    text: 'carry a statusCode with the message',
+    title: 'broadcast',
+    text: 'socket.broadcast.emit sends to everyone except the sender',
   },
   {
-    title: 'next(err)',
-    text: 'forward an error to the central handler',
+    title: 'Rooms',
+    text: 'group sockets together — one chat room, one channel',
   },
   {
-    title: 'Do not leak internals',
-    text: 'a generic 500 message in production, details only in logs',
+    title: 'Use cases',
+    text: 'chat, live notifications, dashboards, collaboration',
   },
   {
-    title: 'dotenv',
-    text: 'load config and secrets from .env, keep them out of git',
-  },
-];
-
-const VALIDATION = [
-  {
-    icon: '🧪',
-    title: 'Never Trust Input',
-    titleClass: 'card-title-cyan',
-    subtitle: 'validate first',
-    description: 'Every field from the client is untrusted until you validate it.',
-    code: '// missing / wrong-typed fields, injection, huge payloads\n// -> validate before touching the database',
-  },
-  {
-    icon: '📋',
-    title: 'Schema Validation',
-    titleClass: 'card-title-green',
-    subtitle: 'Zod / Joi',
-    description: 'Declare the expected shape; parse and reject bad input with 400.',
-    code: 'const schema = z.object({\n  email: z.string().email(),\n  age: z.number().min(0),\n});\nconst result = schema.safeParse(req.body);\nif (!result.success) return res.status(400).json(result.error);',
-  },
-  {
-    icon: '🛢️',
-    title: 'Mongoose Rules',
-    titleClass: 'card-title-amber',
-    subtitle: 'DB-layer guard',
-    description: 'Schema validation is a second line of defence at the database.',
-    code: 'email: { type: String, required: true, match: /@/ }\nage:   { type: Number, min: 0 }',
+    title: 'Scaling',
+    text: 'a Redis adapter shares events across server instances',
   },
 ];
 
-const ERRORS = [
+const WHY = [
   {
-    icon: '🧯',
-    title: 'try / catch',
+    icon: '🚧',
+    title: 'HTTP Can’t Push',
     titleClass: 'card-title-cyan',
-    subtitle: 'catch async',
-    description: 'Wrap async handlers and forward errors with next(err).',
-    code: 'app.get("/x", async (req, res, next) => {\n  try { /* ... */ }\n  catch (err) { next(err); }\n});',
+    subtitle: 'the limit',
+    description: 'The client always asks first — the server can never initiate.',
+    code: '// polling = ask again and again (wasteful)\nsetInterval(() => fetch("/messages"), 2000);',
   },
   {
-    icon: '🎯',
-    title: 'Central Handler',
+    icon: '🔌',
+    title: 'WebSocket',
     titleClass: 'card-title-green',
-    subtitle: '4 args',
-    description: 'One error middleware (four params) catches everything, last.',
-    code: 'app.use((err, req, res, next) => {\n  res.status(err.statusCode || 500)\n     .json({ error: err.message });\n});',
+    subtitle: 'two-way pipe',
+    description: 'A single upgraded connection stays open for instant, bidirectional data.',
+    code: '// one handshake, then both sides can send\nGET /socket HTTP/1.1\nUpgrade: websocket',
   },
   {
-    icon: '🏷️',
-    title: 'Custom Error',
+    icon: '⚡',
+    title: 'Socket.io',
     titleClass: 'card-title-amber',
-    subtitle: 'status + message',
-    description: 'A small class carries the HTTP status with the message.',
-    code: 'class AppError extends Error {\n  constructor(msg, status) { super(msg); this.statusCode = status; }\n}\nthrow new AppError("Not found", 404);',
+    subtitle: 'batteries included',
+    description: 'WebSockets with fallbacks, auto-reconnect, rooms, and events.',
+    code: 'const io = new Server(httpServer);\nio.on("connection", (socket) => {\n  console.log("client", socket.id);\n});',
+  },
+];
+
+const EVENTS = [
+  {
+    icon: '🤝',
+    title: 'connection',
+    titleClass: 'card-title-cyan',
+    subtitle: 'per client',
+    description: 'Each connected client gives you a socket to talk to.',
+    code: 'io.on("connection", (socket) => {\n  socket.on("disconnect", () => {/* cleanup */});\n});',
   },
   {
-    icon: '📄',
-    title: 'dotenv & Config',
+    icon: '📤',
+    title: 'emit / on',
+    titleClass: 'card-title-green',
+    subtitle: 'send & listen',
+    description: 'Emit a named event on one side, listen for it on the other.',
+    code: '// client\nsocket.emit("message", "hi");\n// server\nsocket.on("message", (text) => { /* ... */ });',
+  },
+  {
+    icon: '📣',
+    title: 'Broadcast',
+    titleClass: 'card-title-amber',
+    subtitle: 'everyone else',
+    description: 'Send an event to all clients except the one that sent it.',
+    code: 'socket.broadcast.emit("message", text);\nio.emit("message", text); // everyone incl. sender',
+  },
+  {
+    icon: '🚪',
+    title: 'Rooms',
     titleClass: 'card-title-pink',
-    subtitle: '.env',
-    description: 'Keep secrets and config in .env — never commit them.',
-    code: 'require("dotenv").config();\nconst port = process.env.PORT || 3000;\n// .gitignore -> .env',
+    subtitle: 'group sockets',
+    description: 'Join a room and emit only to that group — perfect for chat.',
+    code: 'socket.join("room-42");\nio.to("room-42").emit("message", text);',
   },
 ];
 
@@ -115,26 +115,26 @@ const RESOURCES = [
     icon: '💻',
     title: 'Thunder GitHub',
     titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day12',
-    description: 'Input validation, a central error handler, a custom error class, and dotenv.',
+    subtitle: '03Backend / Day16',
+    description: 'A real-time chat with Socket.io — connection, events, broadcast, and rooms.',
     link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Express Error Handling',
+    title: 'Socket.io Docs',
     titleClass: 'card-title-green',
-    subtitle: 'Official guide',
-    description: 'The official Express guide to writing error-handling middleware.',
+    subtitle: 'Official docs',
+    description: 'The official Socket.io v4 docs — server, client, events, and rooms.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Error Handling in Express',
+    title: 'Learn Socket.io',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Error Handling in Express.js — the Ultimate Guide by CodeLucky — for Day 31.',
+    description: 'Learn Socket.io in 30 Minutes by Web Dev Simplified — for Day 35.',
     link: {
-      href: 'https://www.youtube.com/watch?v=-OjIF9Zympo',
+      href: 'https://www.youtube.com/watch?v=ZKEqqIO7n-k',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day031() {
+export default function Day035() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +231,15 @@ export default function Day031() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-030" className="day001-nav-btn day001-nav-home">
-            ← Day 30
+          <Link to="/day-034" className="day001-nav-btn day001-nav-home">
+            ← Day 34
           </Link>
-          <p className="day001-datetime">Thunder Day 31 · 4 Aug 2026</p>
-          <Link to="/day-032" className="day001-nav-btn day001-nav-next">
-            Day 32 →
+          <p className="day001-datetime">Thunder Day 35 · 8 Aug 2026</p>
+          <Link
+            to="/learn/api-security-best-practices"
+            className="day001-nav-btn day001-nav-next"
+          >
+            Day 36 →
           </Link>
         </header>
 
@@ -244,14 +247,14 @@ export default function Day031() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>Node.js</span>
-              <span>Reliability</span>
+              <span>Real-Time</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 31 <span aria-hidden="true">⚡</span>
+                DAY 35 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">VALIDATION & ERROR HANDLING</p>
+              <p className="day001-day-theme">WEBSOCKETS & REAL-TIME</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,19 +273,18 @@ export default function Day031() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '31%' }} />
+          <div className="day001-progress-bar" style={{ width: '35%' }} />
         </div>
 
         <p className="day001-summary">
-          Day thirty-one — a real API assumes every request is hostile. I{' '}
-          <strong>validate</strong> input with a schema (Zod/Joi) and reject bad data with{' '}
-          <code>400</code>, backed by Mongoose schema rules at the database. Then I made errors
-          predictable: every async handler is wrapped in <code>try/catch</code> that calls{' '}
-          <code>next(err)</code>, a single <strong>central error middleware</strong> formats the
-          response, and a custom <code>AppError</code> carries the status code. Config and secrets
-          live in <code>.env</code> via <strong>dotenv</strong>. Code in{' '}
+          Day thirty-five — HTTP can only answer when asked, so live features need a different
+          channel. A <strong>WebSocket</strong> is one persistent, two-way connection, and{' '}
+          <strong>Socket.io</strong> wraps it with fallbacks, reconnection, and rooms. I learned the
+          core loop — <code>io.on(&quot;connection&quot;)</code>, <code>emit</code> to send,{' '}
+          <code>on</code> to listen, <code>broadcast</code> to reach everyone else, and{' '}
+          <strong>rooms</strong> to group sockets for chat. Code in{' '}
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day12 on GitHub
+            03Backend/Day16 on GitHub
           </a>
           .
         </p>
@@ -306,14 +308,14 @@ export default function Day031() {
           </ul>
         </section>
 
-        <CardSection icon="🧪" title="VALIDATION" cards={VALIDATION} columns={3} />
-        <CardSection icon="🧯" title="ERROR HANDLING" cards={ERRORS} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 12" cards={RESOURCES} columns={3} />
+        <CardSection icon="🛰️" title="WHY REAL-TIME" cards={WHY} columns={3} />
+        <CardSection icon="📡" title="EVENTS & ROOMS" cards={EVENTS} columns={4} />
+        <CardSection icon="📚" title="THUNDER BACKEND DAY 16" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#Validation</span>
-          <span>#ErrorHandling</span>
+          <span>#WebSockets</span>
+          <span>#SocketIO</span>
           <span>#Backend</span>
           <span>#Thunder</span>
         </footer>

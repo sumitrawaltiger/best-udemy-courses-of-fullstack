@@ -2,111 +2,111 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day12';
-const DOCS_URL = 'https://expressjs.com/en/guide/error-handling.html';
+const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day14';
+const DOCS_URL = 'https://mongoosejs.com/docs/queries.html';
 
 const LEARNT_TODAY = [
   {
-    title: 'Validate input',
-    text: 'never trust req.body, req.params or req.query',
+    title: 'Never return everything',
+    text: 'a big collection must be paged, not dumped at once',
   },
   {
-    title: 'Schema validation',
-    text: 'Zod / Joi / express-validator check shape before logic runs',
+    title: 'limit & skip',
+    text: 'limit is the page size, skip is the offset',
   },
   {
-    title: '400 on bad input',
-    text: 'reject invalid requests with a clear message',
+    title: 'page & limit params',
+    text: 'read ?page=2&limit=20 from req.query',
   },
   {
-    title: 'Mongoose rules',
-    text: 'required, enum, min/max and match guard at the DB layer too',
+    title: 'skip formula',
+    text: 'skip = (page - 1) * limit',
   },
   {
-    title: 'try / catch',
-    text: 'wrap every async handler so errors do not crash the server',
+    title: 'Filtering',
+    text: 'build a query object from req.query fields',
   },
   {
-    title: 'Central error handler',
-    text: 'one (err, req, res, next) middleware — four args make it special',
+    title: 'Sorting',
+    text: '.sort("-createdAt") for newest first',
   },
   {
-    title: 'Custom error class',
-    text: 'carry a statusCode with the message',
+    title: 'Field selection',
+    text: '.select("name price") to trim the response',
   },
   {
-    title: 'next(err)',
-    text: 'forward an error to the central handler',
+    title: 'Search',
+    text: 'regex or a text index on a field',
   },
   {
-    title: 'Do not leak internals',
-    text: 'a generic 500 message in production, details only in logs',
+    title: 'Return metadata',
+    text: 'send total, page and totalPages to the client',
   },
   {
-    title: 'dotenv',
-    text: 'load config and secrets from .env, keep them out of git',
+    title: 'Cursor pagination',
+    text: 'scales better than skip for huge datasets',
   },
 ];
 
-const VALIDATION = [
+const QUERY = [
   {
-    icon: '🧪',
-    title: 'Never Trust Input',
+    icon: '🔬',
+    title: 'Filtering',
     titleClass: 'card-title-cyan',
-    subtitle: 'validate first',
-    description: 'Every field from the client is untrusted until you validate it.',
-    code: '// missing / wrong-typed fields, injection, huge payloads\n// -> validate before touching the database',
+    subtitle: 'from req.query',
+    description: 'Turn query params into a MongoDB filter object.',
+    code: 'const filter = {};\nif (req.query.category) filter.category = req.query.category;\nif (req.query.min) filter.price = { $gte: +req.query.min };\nawait Product.find(filter);',
   },
   {
-    icon: '📋',
-    title: 'Schema Validation',
+    icon: '↕️',
+    title: 'Sorting',
     titleClass: 'card-title-green',
-    subtitle: 'Zod / Joi',
-    description: 'Declare the expected shape; parse and reject bad input with 400.',
-    code: 'const schema = z.object({\n  email: z.string().email(),\n  age: z.number().min(0),\n});\nconst result = schema.safeParse(req.body);\nif (!result.success) return res.status(400).json(result.error);',
+    subtitle: '.sort()',
+    description: 'Order results; a leading "-" means descending.',
+    code: 'await Product.find().sort("-createdAt"); // newest first\nawait Product.find().sort("price");    // cheapest first',
   },
   {
-    icon: '🛢️',
-    title: 'Mongoose Rules',
+    icon: '✂️',
+    title: 'Field Selection',
     titleClass: 'card-title-amber',
-    subtitle: 'DB-layer guard',
-    description: 'Schema validation is a second line of defence at the database.',
-    code: 'email: { type: String, required: true, match: /@/ }\nage:   { type: Number, min: 0 }',
+    subtitle: '.select()',
+    description: 'Return only the fields the client needs.',
+    code: 'await Product.find().select("name price");\n// exclude with a minus: .select("-__v")',
   },
 ];
 
-const ERRORS = [
-  {
-    icon: '🧯',
-    title: 'try / catch',
-    titleClass: 'card-title-cyan',
-    subtitle: 'catch async',
-    description: 'Wrap async handlers and forward errors with next(err).',
-    code: 'app.get("/x", async (req, res, next) => {\n  try { /* ... */ }\n  catch (err) { next(err); }\n});',
-  },
-  {
-    icon: '🎯',
-    title: 'Central Handler',
-    titleClass: 'card-title-green',
-    subtitle: '4 args',
-    description: 'One error middleware (four params) catches everything, last.',
-    code: 'app.use((err, req, res, next) => {\n  res.status(err.statusCode || 500)\n     .json({ error: err.message });\n});',
-  },
-  {
-    icon: '🏷️',
-    title: 'Custom Error',
-    titleClass: 'card-title-amber',
-    subtitle: 'status + message',
-    description: 'A small class carries the HTTP status with the message.',
-    code: 'class AppError extends Error {\n  constructor(msg, status) { super(msg); this.statusCode = status; }\n}\nthrow new AppError("Not found", 404);',
-  },
+const PAGINATION = [
   {
     icon: '📄',
-    title: 'dotenv & Config',
+    title: 'limit & skip',
+    titleClass: 'card-title-cyan',
+    subtitle: 'the primitives',
+    description: 'limit caps the page; skip jumps past earlier pages.',
+    code: 'const page = +req.query.page || 1;\nconst limit = +req.query.limit || 20;\nawait Product.find().skip((page - 1) * limit).limit(limit);',
+  },
+  {
+    icon: '🔢',
+    title: 'Page Params',
+    titleClass: 'card-title-green',
+    subtitle: '?page=2&limit=20',
+    description: 'Sensible defaults, and a cap so no one asks for 10k.',
+    code: 'const limit = Math.min(+req.query.limit || 20, 100);',
+  },
+  {
+    icon: '📦',
+    title: 'Response Shape',
+    titleClass: 'card-title-amber',
+    subtitle: 'data + meta',
+    description: 'Send the items plus enough metadata to build a pager.',
+    code: 'const total = await Product.countDocuments(filter);\nres.json({ data, page, totalPages: Math.ceil(total / limit) });',
+  },
+  {
+    icon: '🧭',
+    title: 'Cursor Pagination',
     titleClass: 'card-title-pink',
-    subtitle: '.env',
-    description: 'Keep secrets and config in .env — never commit them.',
-    code: 'require("dotenv").config();\nconst port = process.env.PORT || 3000;\n// .gitignore -> .env',
+    subtitle: 'scales further',
+    description: 'For huge data, page by a stable key instead of skip.',
+    code: '// ?after=<lastId>\nawait Product.find({ _id: { $gt: afterId } }).limit(limit);',
   },
 ];
 
@@ -115,26 +115,26 @@ const RESOURCES = [
     icon: '💻',
     title: 'Thunder GitHub',
     titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day12',
-    description: 'Input validation, a central error handler, a custom error class, and dotenv.',
+    subtitle: '03Backend / Day14',
+    description: 'Filtering, sorting, field selection, and paginated list endpoints.',
     link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Express Error Handling',
+    title: 'Mongoose Queries',
     titleClass: 'card-title-green',
-    subtitle: 'Official guide',
-    description: 'The official Express guide to writing error-handling middleware.',
+    subtitle: 'Official docs',
+    description: 'The Mongoose queries guide — find, sort, select, skip, and limit.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Error Handling in Express',
+    title: 'Search, Sort & Paginate',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Error Handling in Express.js — the Ultimate Guide by CodeLucky — for Day 31.',
+    description: 'Search, Sort, Filter & Pagination in a REST API by CyberWolves — for Day 33.',
     link: {
-      href: 'https://www.youtube.com/watch?v=-OjIF9Zympo',
+      href: 'https://www.youtube.com/watch?v=0T4GsMYnVN4',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day031() {
+export default function Day033() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,27 +231,27 @@ export default function Day031() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-030" className="day001-nav-btn day001-nav-home">
-            ← Day 30
+          <Link to="/day-032" className="day001-nav-btn day001-nav-home">
+            ← Day 32
           </Link>
-          <p className="day001-datetime">Thunder Day 31 · 4 Aug 2026</p>
-          <Link to="/day-032" className="day001-nav-btn day001-nav-next">
-            Day 32 →
+          <p className="day001-datetime">Thunder Day 33 · 6 Aug 2026</p>
+          <Link to="/day-034" className="day001-nav-btn day001-nav-next">
+            Day 34 →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>Node.js</span>
-              <span>Reliability</span>
+              <span>REST API</span>
+              <span>MongoDB</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 31 <span aria-hidden="true">⚡</span>
+                DAY 33 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">VALIDATION & ERROR HANDLING</p>
+              <p className="day001-day-theme">PAGINATION, FILTERING & SORTING</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,19 +270,18 @@ export default function Day031() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '31%' }} />
+          <div className="day001-progress-bar" style={{ width: '33%' }} />
         </div>
 
         <p className="day001-summary">
-          Day thirty-one — a real API assumes every request is hostile. I{' '}
-          <strong>validate</strong> input with a schema (Zod/Joi) and reject bad data with{' '}
-          <code>400</code>, backed by Mongoose schema rules at the database. Then I made errors
-          predictable: every async handler is wrapped in <code>try/catch</code> that calls{' '}
-          <code>next(err)</code>, a single <strong>central error middleware</strong> formats the
-          response, and a custom <code>AppError</code> carries the status code. Config and secrets
-          live in <code>.env</code> via <strong>dotenv</strong>. Code in{' '}
+          Day thirty-three — a list endpoint must never dump the whole collection. I added the four
+          list features every API needs: <strong>filtering</strong> (build a query from{' '}
+          <code>req.query</code>), <strong>sorting</strong> (<code>.sort(&quot;-createdAt&quot;)</code>),{' '}
+          <strong>field selection</strong> (<code>.select</code>), and <strong>pagination</strong>{' '}
+          with <code>skip</code>/<code>limit</code> plus a metadata envelope (<code>total</code>,{' '}
+          <code>page</code>, <code>totalPages</code>). Code in{' '}
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day12 on GitHub
+            03Backend/Day14 on GitHub
           </a>
           .
         </p>
@@ -306,14 +305,14 @@ export default function Day031() {
           </ul>
         </section>
 
-        <CardSection icon="🧪" title="VALIDATION" cards={VALIDATION} columns={3} />
-        <CardSection icon="🧯" title="ERROR HANDLING" cards={ERRORS} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 12" cards={RESOURCES} columns={3} />
+        <CardSection icon="🔎" title="QUERY FEATURES" cards={QUERY} columns={3} />
+        <CardSection icon="📄" title="PAGINATION" cards={PAGINATION} columns={4} />
+        <CardSection icon="📚" title="THUNDER BACKEND DAY 14" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#Validation</span>
-          <span>#ErrorHandling</span>
+          <span>#RESTAPI</span>
+          <span>#Pagination</span>
           <span>#Backend</span>
           <span>#Thunder</span>
         </footer>

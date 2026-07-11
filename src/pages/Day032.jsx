@@ -2,111 +2,111 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day12';
-const DOCS_URL = 'https://expressjs.com/en/guide/error-handling.html';
+const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day13';
+const DOCS_URL = 'https://mongoosejs.com/docs/populate.html';
 
 const LEARNT_TODAY = [
   {
-    title: 'Validate input',
-    text: 'never trust req.body, req.params or req.query',
+    title: 'Relationships',
+    text: 'model links between documents — a user has many posts',
   },
   {
-    title: 'Schema validation',
-    text: 'Zod / Joi / express-validator check shape before logic runs',
+    title: 'Referencing',
+    text: 'store an ObjectId that points to another document',
   },
   {
-    title: '400 on bad input',
-    text: 'reject invalid requests with a clear message',
+    title: 'Embedding',
+    text: 'nest a subdocument directly inside its parent',
   },
   {
-    title: 'Mongoose rules',
-    text: 'required, enum, min/max and match guard at the DB layer too',
+    title: 'ref',
+    text: 'the schema option that names the related Model',
   },
   {
-    title: 'try / catch',
-    text: 'wrap every async handler so errors do not crash the server',
+    title: 'populate()',
+    text: 'swap an id for the full referenced document',
   },
   {
-    title: 'Central error handler',
-    text: 'one (err, req, res, next) middleware — four args make it special',
+    title: 'One-to-many',
+    text: 'the parent (or child) holds an array of refs',
   },
   {
-    title: 'Custom error class',
-    text: 'carry a statusCode with the message',
+    title: 'Select fields',
+    text: 'populate("author", "name email") to trim the payload',
   },
   {
-    title: 'next(err)',
-    text: 'forward an error to the central handler',
+    title: 'Nested populate',
+    text: 'populate inside an already-populated document',
   },
   {
-    title: 'Do not leak internals',
-    text: 'a generic 500 message in production, details only in logs',
+    title: 'Embed vs reference',
+    text: 'embed small tightly-coupled data; reference large or shared data',
   },
   {
-    title: 'dotenv',
-    text: 'load config and secrets from .env, keep them out of git',
-  },
-];
-
-const VALIDATION = [
-  {
-    icon: '🧪',
-    title: 'Never Trust Input',
-    titleClass: 'card-title-cyan',
-    subtitle: 'validate first',
-    description: 'Every field from the client is untrusted until you validate it.',
-    code: '// missing / wrong-typed fields, injection, huge payloads\n// -> validate before touching the database',
-  },
-  {
-    icon: '📋',
-    title: 'Schema Validation',
-    titleClass: 'card-title-green',
-    subtitle: 'Zod / Joi',
-    description: 'Declare the expected shape; parse and reject bad input with 400.',
-    code: 'const schema = z.object({\n  email: z.string().email(),\n  age: z.number().min(0),\n});\nconst result = schema.safeParse(req.body);\nif (!result.success) return res.status(400).json(result.error);',
-  },
-  {
-    icon: '🛢️',
-    title: 'Mongoose Rules',
-    titleClass: 'card-title-amber',
-    subtitle: 'DB-layer guard',
-    description: 'Schema validation is a second line of defence at the database.',
-    code: 'email: { type: String, required: true, match: /@/ }\nage:   { type: Number, min: 0 }',
+    title: 'No joins',
+    text: 'MongoDB has no SQL joins — populate does it in the app layer',
   },
 ];
 
-const ERRORS = [
+const MODELING = [
   {
-    icon: '🧯',
-    title: 'try / catch',
+    icon: '🔗',
+    title: 'Reference vs Embed',
     titleClass: 'card-title-cyan',
-    subtitle: 'catch async',
-    description: 'Wrap async handlers and forward errors with next(err).',
-    code: 'app.get("/x", async (req, res, next) => {\n  try { /* ... */ }\n  catch (err) { next(err); }\n});',
+    subtitle: 'two strategies',
+    description: 'Embed small, owned data; reference large or shared data.',
+    code: '// embedded\n{ name: "Rohit", address: { city: "Delhi" } }\n\n// referenced\n{ title: "Post", author: ObjectId("665f...") }',
   },
   {
-    icon: '🎯',
-    title: 'Central Handler',
+    icon: '🧬',
+    title: 'The ref Option',
     titleClass: 'card-title-green',
-    subtitle: '4 args',
-    description: 'One error middleware (four params) catches everything, last.',
-    code: 'app.use((err, req, res, next) => {\n  res.status(err.statusCode || 500)\n     .json({ error: err.message });\n});',
+    subtitle: 'name the model',
+    description: 'A field of type ObjectId with ref points at another Model.',
+    code: 'const postSchema = new mongoose.Schema({\n  title: String,\n  author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },\n});',
   },
   {
-    icon: '🏷️',
-    title: 'Custom Error',
+    icon: '🌿',
+    title: 'One-to-Many',
     titleClass: 'card-title-amber',
-    subtitle: 'status + message',
-    description: 'A small class carries the HTTP status with the message.',
-    code: 'class AppError extends Error {\n  constructor(msg, status) { super(msg); this.statusCode = status; }\n}\nthrow new AppError("Not found", 404);',
+    subtitle: 'array of refs',
+    description: 'A user has many posts — keep refs on whichever side you query.',
+    code: 'const userSchema = new mongoose.Schema({\n  name: String,\n  posts: [{ type: ObjectId, ref: "Post" }],\n});',
+  },
+];
+
+const POPULATION = [
+  {
+    icon: '✨',
+    title: 'populate()',
+    titleClass: 'card-title-cyan',
+    subtitle: 'id → document',
+    description: 'Replace the stored id with the full referenced document.',
+    code: 'const post = await Post.findById(id).populate("author");\n// post.author is now the full User doc',
   },
   {
-    icon: '📄',
-    title: 'dotenv & Config',
+    icon: '✂️',
+    title: 'Select Fields',
+    titleClass: 'card-title-green',
+    subtitle: 'trim payload',
+    description: 'Pull only the fields you need from the referenced doc.',
+    code: 'await Post.find().populate("author", "name email");',
+  },
+  {
+    icon: '🪆',
+    title: 'Nested Populate',
+    titleClass: 'card-title-amber',
+    subtitle: 'deep refs',
+    description: 'Populate a reference that lives inside another populated doc.',
+    code: 'await Post.findById(id).populate({\n  path: "comments",\n  populate: { path: "author", select: "name" },\n});',
+  },
+  {
+    icon: '⚖️',
+    title: 'When to Embed',
     titleClass: 'card-title-pink',
-    subtitle: '.env',
-    description: 'Keep secrets and config in .env — never commit them.',
-    code: 'require("dotenv").config();\nconst port = process.env.PORT || 3000;\n// .gitignore -> .env',
+    subtitle: 'the trade-off',
+    description: 'Embed for read-together, bounded data; reference otherwise.',
+    code: '// embed  -> fewer queries, data duplicated\n// ref    -> normalized, needs populate',
   },
 ];
 
@@ -115,26 +115,26 @@ const RESOURCES = [
     icon: '💻',
     title: 'Thunder GitHub',
     titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day12',
-    description: 'Input validation, a central error handler, a custom error class, and dotenv.',
+    subtitle: '03Backend / Day13',
+    description: 'Referencing, one-to-many models, and populate across collections.',
     link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Express Error Handling',
+    title: 'Mongoose Populate',
     titleClass: 'card-title-green',
-    subtitle: 'Official guide',
-    description: 'The official Express guide to writing error-handling middleware.',
+    subtitle: 'Official docs',
+    description: 'The official Mongoose populate guide — refs, paths, and nested populate.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Error Handling in Express',
+    title: 'Populate in Mongoose',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Error Handling in Express.js — the Ultimate Guide by CodeLucky — for Day 31.',
+    description: 'Relationships with Populate in Node & Mongoose by CodingHunger — for Day 32.',
     link: {
-      href: 'https://www.youtube.com/watch?v=-OjIF9Zympo',
+      href: 'https://www.youtube.com/watch?v=E-jC8ZhOGPk',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day031() {
+export default function Day032() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,27 +231,27 @@ export default function Day031() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-030" className="day001-nav-btn day001-nav-home">
-            ← Day 30
+          <Link to="/day-031" className="day001-nav-btn day001-nav-home">
+            ← Day 31
           </Link>
-          <p className="day001-datetime">Thunder Day 31 · 4 Aug 2026</p>
-          <Link to="/day-032" className="day001-nav-btn day001-nav-next">
-            Day 32 →
+          <p className="day001-datetime">Thunder Day 32 · 5 Aug 2026</p>
+          <Link to="/day-033" className="day001-nav-btn day001-nav-next">
+            Day 33 →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>Node.js</span>
-              <span>Reliability</span>
+              <span>Mongoose</span>
+              <span>MongoDB</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 31 <span aria-hidden="true">⚡</span>
+                DAY 32 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">VALIDATION & ERROR HANDLING</p>
+              <p className="day001-day-theme">MONGOOSE RELATIONSHIPS & POPULATION</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,19 +270,18 @@ export default function Day031() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '31%' }} />
+          <div className="day001-progress-bar" style={{ width: '32%' }} />
         </div>
 
         <p className="day001-summary">
-          Day thirty-one — a real API assumes every request is hostile. I{' '}
-          <strong>validate</strong> input with a schema (Zod/Joi) and reject bad data with{' '}
-          <code>400</code>, backed by Mongoose schema rules at the database. Then I made errors
-          predictable: every async handler is wrapped in <code>try/catch</code> that calls{' '}
-          <code>next(err)</code>, a single <strong>central error middleware</strong> formats the
-          response, and a custom <code>AppError</code> carries the status code. Config and secrets
-          live in <code>.env</code> via <strong>dotenv</strong>. Code in{' '}
+          Day thirty-two — real data has <strong>relationships</strong>. MongoDB has no SQL joins, so
+          I linked documents two ways: <strong>embedding</strong> small owned data, and{' '}
+          <strong>referencing</strong> larger or shared data with an <code>ObjectId</code> and a{' '}
+          <code>ref</code>. Then <code>populate()</code> swaps those ids for full documents — with{' '}
+          field selection and even <strong>nested</strong> populate. The rule: embed what you read
+          together, reference the rest. Code in{' '}
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day12 on GitHub
+            03Backend/Day13 on GitHub
           </a>
           .
         </p>
@@ -306,14 +305,14 @@ export default function Day031() {
           </ul>
         </section>
 
-        <CardSection icon="🧪" title="VALIDATION" cards={VALIDATION} columns={3} />
-        <CardSection icon="🧯" title="ERROR HANDLING" cards={ERRORS} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 12" cards={RESOURCES} columns={3} />
+        <CardSection icon="🧩" title="DATA MODELING" cards={MODELING} columns={3} />
+        <CardSection icon="✨" title="POPULATION" cards={POPULATION} columns={4} />
+        <CardSection icon="📚" title="THUNDER BACKEND DAY 13" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#Validation</span>
-          <span>#ErrorHandling</span>
+          <span>#Mongoose</span>
+          <span>#MongoDB</span>
           <span>#Backend</span>
           <span>#Thunder</span>
         </footer>
