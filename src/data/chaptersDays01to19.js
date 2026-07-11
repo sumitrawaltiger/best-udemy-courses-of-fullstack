@@ -135,7 +135,7 @@ export const chaptersDays01to19 = [
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeTitle": "Introduction to JavaScript — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -278,8 +278,8 @@ export const chaptersDays01to19 = [
         "explanation": "Every Symbol() call creates a unique value — symB == symA is false in Thunder first.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=UXYJGHhuGA8&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Variables & Data Types (var, let, const, mutable) — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -442,8 +442,8 @@ export const chaptersDays01to19 = [
         "explanation": "Strict equality avoids type coercion bugs — Thunder recommends ===."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=WRBFDQR0oM4&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Memory Management — Stack vs Heap — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -607,8 +607,8 @@ export const chaptersDays01to19 = [
         "explanation": "do-while executes the body before checking the condition."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=7dMQr2-T--4&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Conditionals, Loops & Operators — Coder Army",
     "youtubeSupplementUrl": "https://www.youtube.com/watch?v=wssvLtVSFeI",
     "youtubeSupplementTitle": "Useful JavaScript String Methods — Code with Ania",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
@@ -789,8 +789,8 @@ export const chaptersDays01to19 = [
         "explanation": "third.js compares loop to n*(n+1)/2 for huge N."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=HTcT-TuraHM&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Numbers & Math Object — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -962,8 +962,8 @@ export const chaptersDays01to19 = [
         "explanation": "Rest operator collects remaining elements — third.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=8dgsUGEgPXo&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Strings & Dates In-Depth — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1141,8 +1141,8 @@ export const chaptersDays01to19 = [
         "explanation": "Spread is shallow — nested data still shared — object2.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=fuA8BQkQO_E&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Arrays In-Depth — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1328,8 +1328,8 @@ export const chaptersDays01to19 = [
         "explanation": "A function passed as an argument is a callback — ii.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=iuZkPCBBV5U&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Objects In-Depth — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1502,8 +1502,8 @@ export const chaptersDays01to19 = [
         "explanation": "Sets keep unique values only — sets.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=iY8LlFRLpXQ&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Functions In-Depth — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1659,8 +1659,8 @@ export const chaptersDays01to19 = [
         "explanation": "style properties use camelCase — el.style.backgroundColor."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=ijPq-u3y9cs&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "How JavaScript Runs & Hoisting — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1825,8 +1825,8 @@ export const chaptersDays01to19 = [
         "explanation": "Batching with spread does one insert instead of ten — projects/first.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=UBCPtXXMAWs&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Closures, Scope & Higher-Order Functions — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -1983,8 +1983,8 @@ export const chaptersDays01to19 = [
         "explanation": "Both add and remove need the same function reference — Eventsjs/first.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=UByPRYaMEkI&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Map, Filter, Reduce, Set & Map — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2127,8 +2127,8 @@ export const chaptersDays01to19 = [
         "explanation": "It cancels the default submit/reload so JS can handle it — projectastro."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=wLp99HGG8GQ&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "DOM Manipulation — The Document Object Model — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2270,8 +2270,8 @@ export const chaptersDays01to19 = [
         "explanation": "await pauses for the API response, then renders the result — Project03."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=2jVOkYiAl2s&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "CRUD Operations in the DOM — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2414,8 +2414,8 @@ export const chaptersDays01to19 = [
         "explanation": "Once parsed, you drill into the nested object with dot notation — Project02."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=CGjHpnm8TeE&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Events & Event Handlers — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2551,8 +2551,8 @@ export const chaptersDays01to19 = [
         "explanation": "var is function-scoped; it doesn't exist outside — third.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=dQDteO0RXrc&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "10 JavaScript Projects for Beginners — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "youtubeSupplementUrl": "https://www.youtube.com/watch?v=8aGhZQkoFbQ",
@@ -2697,8 +2697,8 @@ export const chaptersDays01to19 = [
         "explanation": "Async callbacks queue and run after the stack empties — project01."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=rsepF1ugeC8&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Event Loop — Why JS is Single-Threaded — Coder Army",
     "youtubeSupplementUrl": "https://www.youtube.com/watch?v=8aGhZQkoFbQ",
     "youtubeSupplementTitle": "What the heck is the event loop anyway? — Philip Roberts · JSConf",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
@@ -2814,8 +2814,8 @@ export const chaptersDays01to19 = [
         "explanation": "await can only be used inside an async function and pauses until the Promise settles."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=CTJLBCYod9E&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Callback Hell & Async Programming — Coder Army",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
@@ -2957,8 +2957,8 @@ export const chaptersDays01to19 = [
         "explanation": "Private closure variable — accessed only via validated methods — example.js."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=611_04Ml25c&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
-    "youtubeTitle": "Complete JavaScript Course (Playlist) — Coder Army",
+    "youtubeUrl": "https://www.youtube.com/watch?v=LYe1my0KkPo&list=PLQEaRBV9gAFuf-27K64l7-hV7o0fr9zx7",
+    "youtubeTitle": "Promises & JSON vs JS Object — Coder Army",
     "youtubeSupplementUrl": "https://www.youtube.com/watch?v=gvicrj31JOM",
     "youtubeSupplementTitle": "JavaScript this Keyword — Programming with Mosh",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
