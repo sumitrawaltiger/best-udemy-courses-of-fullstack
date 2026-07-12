@@ -178,4 +178,13 @@ export const CHEAT_SHEETS = [
     image: '/cheatsheets/system-design-cheat-sheet.jpg',
     tags: ['System Design', 'Architecture', 'Interview'],
   },
+  {
+    id: 'networking',
+    title: 'Networking Cheat Sheet',
+    description:
+      'A side-by-side networking reference mapping each core network element to its AWS, Azure, and Google Cloud equivalent — VPC / Virtual Network, subnets, load balancers, firewall / WAF, CDN, dedicated connectivity, VPN, DDoS protection, DNS, monitoring, security groups, route tables, and peering.',
+    category: 'devops-cloud',
+    image: '/cheatsheets/networking-cheat-sheet.jpg',
+    tags: ['Networking', 'AWS', 'Azure', 'GCP'],
+  },
 ];
