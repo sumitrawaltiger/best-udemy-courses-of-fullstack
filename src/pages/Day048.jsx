@@ -2,141 +2,139 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const PRIMER_URL =
-  'https://github.com/donnemartin/system-design-primer#rate-limiter';
-const DOCS_URL =
-  'https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker';
+const PRIMER_URL = 'https://microservices.io/patterns/apigateway.html';
+const DOCS_URL = 'https://microservices.io/patterns/service-registry.html';
 
 const LEARNT_TODAY = [
   {
-    title: 'Rate limiting',
-    text: 'protect a service from abuse and overload',
+    title: 'API Gateway',
+    text: 'one entry point in front of many services',
   },
   {
-    title: 'Token bucket',
-    text: 'allow short bursts up to a bucket capacity',
+    title: 'Routing',
+    text: 'forward each request to the right service',
   },
   {
-    title: 'Leaky bucket',
-    text: 'smooth requests to a steady, constant rate',
+    title: 'Cross-cutting',
+    text: 'auth, rate limiting and logging live at the edge',
   },
   {
-    title: 'Fixed vs sliding window',
-    text: 'two ways to count requests over time',
+    title: 'Aggregation',
+    text: 'combine several service calls into one response',
   },
   {
-    title: '429',
-    text: 'Too Many Requests — plus a Retry-After header',
+    title: 'BFF',
+    text: 'a backend-for-frontend tailored per client',
   },
   {
-    title: 'Timeouts',
-    text: 'never wait forever on a slow dependency',
+    title: 'Service discovery',
+    text: 'find live service instances at runtime',
   },
   {
-    title: 'Retries + backoff',
-    text: 'retry transient failures with exponential backoff + jitter',
+    title: 'Registry',
+    text: 'services register themselves and their address',
   },
   {
-    title: 'Circuit breaker',
-    text: 'stop calling a failing service to let it recover',
+    title: 'Client vs server',
+    text: 'who looks the instance up — the client or a proxy',
   },
   {
-    title: 'Bulkhead',
-    text: 'isolate failures so one pool can’t sink the rest',
+    title: 'Health & LB',
+    text: 'route only to healthy instances, spread the load',
   },
   {
-    title: 'Graceful degradation',
-    text: 'fail soft — serve a fallback, not an error',
-  },
-];
-
-const RATE_LIMIT = [
-  {
-    icon: '🚦',
-    title: 'Why Limit',
-    titleClass: 'card-title-cyan',
-    subtitle: 'protect + fair',
-    description: 'Stop brute-force, scraping, and one client hogging capacity.',
-    code: 'HTTP 429 Too Many Requests\nRetry-After: 30',
-  },
-  {
-    icon: '🪣',
-    title: 'Token / Leaky Bucket',
-    titleClass: 'card-title-green',
-    subtitle: 'the algorithms',
-    description: 'Token bucket allows bursts; leaky bucket enforces a steady rate.',
-    code: 'token : refill N/sec, spend 1 per request\nleaky : queue drains at a fixed rate',
-  },
-  {
-    icon: '🪟',
-    title: 'Window Counters',
-    titleClass: 'card-title-amber',
-    subtitle: 'fixed vs sliding',
-    description: 'Count per fixed window, or a smoother sliding window.',
-    code: 'fixed  : reset the counter every 60s\nsliding: weight the last 60s continuously',
+    title: 'Decouple clients',
+    text: 'clients never hardcode instance addresses',
   },
 ];
 
-const RESILIENCY = [
+const GATEWAY = [
   {
-    icon: '⏲️',
-    title: 'Timeouts',
+    icon: '🚪',
+    title: 'One Entry Point',
     titleClass: 'card-title-cyan',
-    subtitle: 'never hang',
-    description: 'Cap how long you wait on any downstream call.',
-    code: 'fetch(url, { signal: AbortSignal.timeout(3000) });',
+    subtitle: 'the front door',
+    description: 'Clients call the gateway; it fronts every internal service.',
+    code: 'client → API Gateway → [Auth][Orders][Cart]\n// clients never talk to services directly',
   },
   {
-    icon: '🔁',
-    title: 'Retries + Backoff',
+    icon: '🧭',
+    title: 'Routing',
     titleClass: 'card-title-green',
-    subtitle: 'politely',
-    description: 'Retry transient errors with exponential backoff and jitter.',
-    code: 'delay = base * 2 ** attempt + random()\n// retry 5xx / timeouts, not 4xx',
+    subtitle: 'to the right one',
+    description: 'Match the path/host and forward to the matching service.',
+    code: '/auth/*   → auth-service\n/orders/* → order-service',
   },
   {
-    icon: '🔌',
-    title: 'Circuit Breaker',
+    icon: '🛡️',
+    title: 'Cross-Cutting',
     titleClass: 'card-title-amber',
-    subtitle: 'stop the bleeding',
-    description: 'After repeated failures, open the circuit and fail fast.',
-    code: 'closed → (failures) → open → (cooldown) → half-open\n// half-open probes before closing again',
+    subtitle: 'at the edge',
+    description: 'Do auth, rate limiting, and logging once, centrally.',
+    code: '// gateway checks the JWT, throttles,\n// and logs — services stay focused',
   },
   {
-    icon: '🧱',
-    title: 'Bulkhead & Degrade',
+    icon: '🧩',
+    title: 'Aggregation / BFF',
     titleClass: 'card-title-pink',
-    subtitle: 'contain + soften',
-    description: 'Isolate resource pools; serve a fallback when a part is down.',
-    code: '// separate pools per dependency\n// recommendations down? show top-sellers',
+    subtitle: 'tailor responses',
+    description: 'Combine calls, or run a BFF shaped for each client.',
+    code: '/home → user + orders + recommendations\nBFF: web vs mobile get different shapes',
+  },
+];
+
+const DISCOVERY = [
+  {
+    icon: '📇',
+    title: 'Registry',
+    titleClass: 'card-title-cyan',
+    subtitle: 'who is alive',
+    description: 'Instances register their address; consumers look them up.',
+    code: 'order-service → registry: "I am at 10.0.3.7:8080"\n// Consul / Eureka / etcd',
+  },
+  {
+    icon: '↔️',
+    title: 'Client vs Server',
+    titleClass: 'card-title-green',
+    subtitle: 'who resolves',
+    description: 'The client queries the registry, or a proxy does it.',
+    code: 'client-side: app asks the registry, then calls\nserver-side: LB/proxy resolves for you',
+  },
+  {
+    icon: '❤️',
+    title: 'Health & Load',
+    titleClass: 'card-title-amber',
+    subtitle: 'route smart',
+    description: 'Only healthy instances receive traffic, balanced across them.',
+    code: '// deregister on failed health check\n// spread requests across live instances',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📘',
-    title: 'System Design Primer',
+    title: 'API Gateway Pattern',
     titleClass: 'card-title-purple',
-    subtitle: 'GitHub reference',
-    description: 'The rate limiter & resiliency notes in system-design-primer.',
-    link: { href: PRIMER_URL, label: 'Open on GitHub →', external: true },
+    subtitle: 'microservices.io',
+    description: 'The API gateway pattern — routing, aggregation, and cross-cutting concerns.',
+    link: { href: PRIMER_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '📗',
-    title: 'Circuit Breaker Pattern',
+    title: 'Service Registry',
     titleClass: 'card-title-green',
-    subtitle: 'Official docs',
-    description: 'Microsoft’s cloud design pattern for the circuit breaker.',
+    subtitle: 'Pattern docs',
+    description: 'The service registry & discovery patterns from microservices.io.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Rate Limiting Algorithms',
+    title: 'What is API Gateway?',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Five Rate Limiting Algorithms — key system-design concepts — by Hello Byte.',
+    description: 'What is API Gateway? by ByteByteGo — supplement for Day 48.',
     link: {
-      href: 'https://www.youtube.com/watch?v=mQCJJqUfn9Y',
+      href: 'https://www.youtube.com/watch?v=6ULyxuHKxg8',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -188,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day045() {
+export default function Day048() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -233,12 +231,12 @@ export default function Day045() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-044" className="day001-nav-btn day001-nav-home">
-            ← Day 44
+          <Link to="/day-047" className="day001-nav-btn day001-nav-home">
+            ← Day 47
           </Link>
-          <p className="day001-datetime">Thunder Day 45 · 18 Aug 2026</p>
-          <Link to="/day-046" className="day001-nav-btn day001-nav-next">
-            Day 46 →
+          <p className="day001-datetime">Thunder Day 48 · 21 Aug 2026</p>
+          <Link to="/day-049" className="day001-nav-btn day001-nav-next">
+            Day 49 →
           </Link>
         </header>
 
@@ -246,14 +244,14 @@ export default function Day045() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>System Design</span>
-              <span>Reliability</span>
+              <span>Microservices</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 45 <span aria-hidden="true">⚡</span>
+                DAY 48 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">RATE LIMITING & RESILIENCY</p>
+              <p className="day001-day-theme">API GATEWAY & SERVICE DISCOVERY</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -272,19 +270,19 @@ export default function Day045() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '45%' }} />
+          <div className="day001-progress-bar" style={{ width: '48%' }} />
         </div>
 
         <p className="day001-summary">
-          Day forty-five — systems fail; the goal is to fail well. <strong>Rate limiting</strong>{' '}
-          (token/leaky bucket, window counters) shields a service and returns <code>429</code> with{' '}
-          <code>Retry-After</code>. For <strong>resiliency</strong>, I cap every call with a{' '}
-          <strong>timeout</strong>, <strong>retry</strong> transient errors with exponential
-          backoff + jitter, wrap flaky dependencies in a <strong>circuit breaker</strong>, isolate
-          pools with <strong>bulkheads</strong>, and <strong>degrade gracefully</strong> with
-          fallbacks. Reference:{' '}
+          Day forty-eight — with many services, clients need one front door. An{' '}
+          <strong>API Gateway</strong> handles <strong>routing</strong>, centralizes{' '}
+          <strong>cross-cutting</strong> concerns (auth, rate limiting, logging), and can{' '}
+          <strong>aggregate</strong> calls or run a <strong>BFF</strong> per client. Behind it,{' '}
+          <strong>service discovery</strong> tracks live instances in a <strong>registry</strong> —
+          resolved client- or server-side — so traffic only reaches <strong>healthy</strong>{' '}
+          instances and clients never hardcode addresses. Reference:{' '}
           <a href={PRIMER_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            system-design-primer
+            microservices.io
           </a>
           .
         </p>
@@ -308,15 +306,15 @@ export default function Day045() {
           </ul>
         </section>
 
-        <CardSection icon="🚦" title="RATE LIMITING" cards={RATE_LIMIT} columns={3} />
-        <CardSection icon="🛡️" title="RESILIENCY" cards={RESILIENCY} columns={4} />
+        <CardSection icon="🚪" title="API GATEWAY" cards={GATEWAY} columns={4} />
+        <CardSection icon="📇" title="SERVICE DISCOVERY" cards={DISCOVERY} columns={3} />
         <CardSection icon="📚" title="SYSTEM DESIGN RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#SystemDesign</span>
-          <span>#Resiliency</span>
-          <span>#RateLimiting</span>
+          <span>#APIGateway</span>
+          <span>#Microservices</span>
           <span>#Thunder</span>
         </footer>
       </div>

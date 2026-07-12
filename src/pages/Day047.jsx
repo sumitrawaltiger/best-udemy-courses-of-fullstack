@@ -2,113 +2,112 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const PRIMER_URL =
-  'https://github.com/donnemartin/system-design-primer#rate-limiter';
+const PRIMER_URL = 'https://github.com/donnemartin/system-design-primer';
 const DOCS_URL =
-  'https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker';
+  'https://github.com/donnemartin/system-design-primer#performance-vs-scalability';
 
 const LEARNT_TODAY = [
   {
-    title: 'Rate limiting',
-    text: 'protect a service from abuse and overload',
+    title: 'Scalability',
+    text: 'handle more load by adding resources',
   },
   {
-    title: 'Token bucket',
-    text: 'allow short bursts up to a bucket capacity',
+    title: 'Vertical vs horizontal',
+    text: 'a bigger machine vs more machines',
   },
   {
-    title: 'Leaky bucket',
-    text: 'smooth requests to a steady, constant rate',
+    title: 'Availability',
+    text: 'percent uptime — measured in "nines"',
   },
   {
-    title: 'Fixed vs sliding window',
-    text: 'two ways to count requests over time',
+    title: 'Reliability',
+    text: 'keeps working correctly even when parts fail',
   },
   {
-    title: '429',
-    text: 'Too Many Requests — plus a Retry-After header',
+    title: 'Latency vs throughput',
+    text: 'time per request vs requests per second',
   },
   {
-    title: 'Timeouts',
-    text: 'never wait forever on a slow dependency',
+    title: 'Estimation',
+    text: 'back-of-the-envelope QPS, storage, bandwidth',
   },
   {
-    title: 'Retries + backoff',
-    text: 'retry transient failures with exponential backoff + jitter',
+    title: 'SLA / SLO / SLI',
+    text: 'the promise, the target, and the measurement',
   },
   {
-    title: 'Circuit breaker',
-    text: 'stop calling a failing service to let it recover',
+    title: 'Bottlenecks',
+    text: 'the single constraint that limits the whole system',
   },
   {
-    title: 'Bulkhead',
-    text: 'isolate failures so one pool can’t sink the rest',
+    title: 'Trade-offs',
+    text: 'no free lunch — CAP, cost, and complexity',
   },
   {
-    title: 'Graceful degradation',
-    text: 'fail soft — serve a fallback, not an error',
-  },
-];
-
-const RATE_LIMIT = [
-  {
-    icon: '🚦',
-    title: 'Why Limit',
-    titleClass: 'card-title-cyan',
-    subtitle: 'protect + fair',
-    description: 'Stop brute-force, scraping, and one client hogging capacity.',
-    code: 'HTTP 429 Too Many Requests\nRetry-After: 30',
-  },
-  {
-    icon: '🪣',
-    title: 'Token / Leaky Bucket',
-    titleClass: 'card-title-green',
-    subtitle: 'the algorithms',
-    description: 'Token bucket allows bursts; leaky bucket enforces a steady rate.',
-    code: 'token : refill N/sec, spend 1 per request\nleaky : queue drains at a fixed rate',
-  },
-  {
-    icon: '🪟',
-    title: 'Window Counters',
-    titleClass: 'card-title-amber',
-    subtitle: 'fixed vs sliding',
-    description: 'Count per fixed window, or a smoother sliding window.',
-    code: 'fixed  : reset the counter every 60s\nsliding: weight the last 60s continuously',
+    title: 'Requirements first',
+    text: 'nail functional + non-functional before designing',
   },
 ];
 
-const RESILIENCY = [
+const METRICS = [
   {
-    icon: '⏲️',
-    title: 'Timeouts',
+    icon: '📈',
+    title: 'Scalability',
     titleClass: 'card-title-cyan',
-    subtitle: 'never hang',
-    description: 'Cap how long you wait on any downstream call.',
-    code: 'fetch(url, { signal: AbortSignal.timeout(3000) });',
+    subtitle: 'up vs out',
+    description: 'Vertical scaling hits a ceiling; horizontal scaling adds nodes.',
+    code: 'vertical  : 8 → 64 cores (limited)\nhorizontal: 1 → N servers (the real path)',
   },
   {
-    icon: '🔁',
-    title: 'Retries + Backoff',
+    icon: '🟢',
+    title: 'Availability & Reliability',
     titleClass: 'card-title-green',
-    subtitle: 'politely',
-    description: 'Retry transient errors with exponential backoff and jitter.',
-    code: 'delay = base * 2 ** attempt + random()\n// retry 5xx / timeouts, not 4xx',
+    subtitle: 'the nines',
+    description: 'Uptime percentage; and correct behaviour under failure.',
+    code: '99.9%   → 8.7h down/year\n99.99%  → 52m down/year\n99.999% → 5m down/year',
   },
   {
-    icon: '🔌',
-    title: 'Circuit Breaker',
+    icon: '⚡',
+    title: 'Latency vs Throughput',
     titleClass: 'card-title-amber',
-    subtitle: 'stop the bleeding',
-    description: 'After repeated failures, open the circuit and fail fast.',
-    code: 'closed → (failures) → open → (cooldown) → half-open\n// half-open probes before closing again',
+    subtitle: 'speed vs volume',
+    description: 'Latency is one request’s time; throughput is total per second.',
+    code: 'latency    : 50ms per request\nthroughput : 10,000 requests / second',
+  },
+];
+
+const PROCESS = [
+  {
+    icon: '📋',
+    title: 'Requirements',
+    titleClass: 'card-title-cyan',
+    subtitle: 'functional + not',
+    description: 'What it must do, plus scale, latency, and availability targets.',
+    code: 'functional     : shorten URL, redirect\nnon-functional : 100M/day, <100ms, 99.99%',
   },
   {
-    icon: '🧱',
-    title: 'Bulkhead & Degrade',
+    icon: '🧮',
+    title: 'Estimation',
+    titleClass: 'card-title-green',
+    subtitle: 'back-of-envelope',
+    description: 'Rough QPS, storage, and bandwidth guide the whole design.',
+    code: '100M writes/day ÷ 86400 ≈ 1,160 QPS\n100M × 500B × 5yr ≈ ~90 TB',
+  },
+  {
+    icon: '🎯',
+    title: 'SLA / SLO / SLI',
+    titleClass: 'card-title-amber',
+    subtitle: 'promise → measure',
+    description: 'SLA is the promise, SLO the internal target, SLI the metric.',
+    code: 'SLI: p99 latency\nSLO: p99 < 200ms\nSLA: 99.9% or credits back',
+  },
+  {
+    icon: '🔍',
+    title: 'Bottlenecks & Trade-offs',
     titleClass: 'card-title-pink',
-    subtitle: 'contain + soften',
-    description: 'Isolate resource pools; serve a fallback when a part is down.',
-    code: '// separate pools per dependency\n// recommendations down? show top-sellers',
+    subtitle: 'no free lunch',
+    description: 'Find the constraint; every choice trades something away.',
+    code: '// CAP, cost, consistency vs latency\n// optimize the actual bottleneck first',
   },
 ];
 
@@ -118,25 +117,25 @@ const RESOURCES = [
     title: 'System Design Primer',
     titleClass: 'card-title-purple',
     subtitle: 'GitHub reference',
-    description: 'The rate limiter & resiliency notes in system-design-primer.',
+    description: 'The canonical system-design-primer — the fundamentals in one place.',
     link: { href: PRIMER_URL, label: 'Open on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Circuit Breaker Pattern',
+    title: 'Performance vs Scalability',
     titleClass: 'card-title-green',
-    subtitle: 'Official docs',
-    description: 'Microsoft’s cloud design pattern for the circuit breaker.',
+    subtitle: 'Primer section',
+    description: 'The primer’s notes on latency, throughput, and scalability.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Rate Limiting Algorithms',
+    title: 'Scalability Explained',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Five Rate Limiting Algorithms — key system-design concepts — by Hello Byte.',
+    description: 'Scalability Simply Explained in 10 Minutes by ByteByteGo — for Day 47.',
     link: {
-      href: 'https://www.youtube.com/watch?v=mQCJJqUfn9Y',
+      href: 'https://www.youtube.com/watch?v=EWS_CIxttVw',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -188,7 +187,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day045() {
+export default function Day047() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -233,12 +232,12 @@ export default function Day045() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-044" className="day001-nav-btn day001-nav-home">
-            ← Day 44
+          <Link to="/day-046" className="day001-nav-btn day001-nav-home">
+            ← Day 46
           </Link>
-          <p className="day001-datetime">Thunder Day 45 · 18 Aug 2026</p>
-          <Link to="/day-046" className="day001-nav-btn day001-nav-next">
-            Day 46 →
+          <p className="day001-datetime">Thunder Day 47 · 20 Aug 2026</p>
+          <Link to="/day-048" className="day001-nav-btn day001-nav-next">
+            Day 48 →
           </Link>
         </header>
 
@@ -246,14 +245,14 @@ export default function Day045() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>System Design</span>
-              <span>Reliability</span>
+              <span>Fundamentals</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 45 <span aria-hidden="true">⚡</span>
+                DAY 47 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">RATE LIMITING & RESILIENCY</p>
+              <p className="day001-day-theme">SYSTEM DESIGN FUNDAMENTALS</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -272,17 +271,16 @@ export default function Day045() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '45%' }} />
+          <div className="day001-progress-bar" style={{ width: '47%' }} />
         </div>
 
         <p className="day001-summary">
-          Day forty-five — systems fail; the goal is to fail well. <strong>Rate limiting</strong>{' '}
-          (token/leaky bucket, window counters) shields a service and returns <code>429</code> with{' '}
-          <code>Retry-After</code>. For <strong>resiliency</strong>, I cap every call with a{' '}
-          <strong>timeout</strong>, <strong>retry</strong> transient errors with exponential
-          backoff + jitter, wrap flaky dependencies in a <strong>circuit breaker</strong>, isolate
-          pools with <strong>bulkheads</strong>, and <strong>degrade gracefully</strong> with
-          fallbacks. Reference:{' '}
+          Day forty-seven — the vocabulary of system design. Every design balances{' '}
+          <strong>scalability</strong> (up vs out), <strong>availability</strong> (the nines),{' '}
+          <strong>reliability</strong>, and <strong>latency vs throughput</strong>. The process is
+          always the same: gather <strong>requirements</strong> (functional + non-functional), do{' '}
+          <strong>back-of-the-envelope estimation</strong>, set <strong>SLA/SLO/SLI</strong> targets,
+          find the <strong>bottleneck</strong>, and accept the <strong>trade-offs</strong>. Reference:{' '}
           <a href={PRIMER_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             system-design-primer
           </a>
@@ -308,15 +306,15 @@ export default function Day045() {
           </ul>
         </section>
 
-        <CardSection icon="🚦" title="RATE LIMITING" cards={RATE_LIMIT} columns={3} />
-        <CardSection icon="🛡️" title="RESILIENCY" cards={RESILIENCY} columns={4} />
+        <CardSection icon="📐" title="CORE METRICS" cards={METRICS} columns={3} />
+        <CardSection icon="🧭" title="THE DESIGN PROCESS" cards={PROCESS} columns={4} />
         <CardSection icon="📚" title="SYSTEM DESIGN RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#SystemDesign</span>
-          <span>#Resiliency</span>
-          <span>#RateLimiting</span>
+          <span>#Scalability</span>
+          <span>#Fundamentals</span>
           <span>#Thunder</span>
         </footer>
       </div>

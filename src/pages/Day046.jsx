@@ -2,113 +2,111 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const PRIMER_URL =
-  'https://github.com/donnemartin/system-design-primer#rate-limiter';
-const DOCS_URL =
-  'https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker';
+const PRIMER_URL = 'https://github.com/donnemartin/system-design-primer#cache';
+const DOCS_URL = 'https://www.cloudflare.com/learning/cdn/what-is-a-cdn/';
 
 const LEARNT_TODAY = [
   {
-    title: 'Rate limiting',
-    text: 'protect a service from abuse and overload',
+    title: 'Cache',
+    text: 'keep hot data closer and faster than the source',
   },
   {
-    title: 'Token bucket',
-    text: 'allow short bursts up to a bucket capacity',
+    title: 'Cache layers',
+    text: 'browser, CDN, application, and database caches',
   },
   {
-    title: 'Leaky bucket',
-    text: 'smooth requests to a steady, constant rate',
+    title: 'Cache-aside',
+    text: 'app checks cache; on a miss, read DB then set it',
   },
   {
-    title: 'Fixed vs sliding window',
-    text: 'two ways to count requests over time',
+    title: 'Write-through',
+    text: 'write cache and DB together — always consistent',
   },
   {
-    title: '429',
-    text: 'Too Many Requests — plus a Retry-After header',
+    title: 'Write-back',
+    text: 'write cache now, flush to DB later — fast but riskier',
   },
   {
-    title: 'Timeouts',
-    text: 'never wait forever on a slow dependency',
+    title: 'Eviction',
+    text: 'LRU or LFU decides what to drop when full',
   },
   {
-    title: 'Retries + backoff',
-    text: 'retry transient failures with exponential backoff + jitter',
+    title: 'TTL',
+    text: 'expire entries so stale data does not linger',
   },
   {
-    title: 'Circuit breaker',
-    text: 'stop calling a failing service to let it recover',
+    title: 'CDN',
+    text: 'edge servers serve assets from near the user',
   },
   {
-    title: 'Bulkhead',
-    text: 'isolate failures so one pool can’t sink the rest',
+    title: 'Invalidation',
+    text: 'busting the cache correctly is the hard problem',
   },
   {
-    title: 'Graceful degradation',
-    text: 'fail soft — serve a fallback, not an error',
-  },
-];
-
-const RATE_LIMIT = [
-  {
-    icon: '🚦',
-    title: 'Why Limit',
-    titleClass: 'card-title-cyan',
-    subtitle: 'protect + fair',
-    description: 'Stop brute-force, scraping, and one client hogging capacity.',
-    code: 'HTTP 429 Too Many Requests\nRetry-After: 30',
-  },
-  {
-    icon: '🪣',
-    title: 'Token / Leaky Bucket',
-    titleClass: 'card-title-green',
-    subtitle: 'the algorithms',
-    description: 'Token bucket allows bursts; leaky bucket enforces a steady rate.',
-    code: 'token : refill N/sec, spend 1 per request\nleaky : queue drains at a fixed rate',
-  },
-  {
-    icon: '🪟',
-    title: 'Window Counters',
-    titleClass: 'card-title-amber',
-    subtitle: 'fixed vs sliding',
-    description: 'Count per fixed window, or a smoother sliding window.',
-    code: 'fixed  : reset the counter every 60s\nsliding: weight the last 60s continuously',
+    title: 'Hit ratio',
+    text: 'the metric that tells you the cache is working',
   },
 ];
 
-const RESILIENCY = [
+const CACHING = [
   {
-    icon: '⏲️',
-    title: 'Timeouts',
+    icon: '🗺️',
+    title: 'Where to Cache',
     titleClass: 'card-title-cyan',
-    subtitle: 'never hang',
-    description: 'Cap how long you wait on any downstream call.',
-    code: 'fetch(url, { signal: AbortSignal.timeout(3000) });',
+    subtitle: 'many layers',
+    description: 'Caching happens at every layer between user and database.',
+    code: 'browser → CDN → load balancer → app cache → DB\n// closer to the user = faster + cheaper',
   },
   {
     icon: '🔁',
-    title: 'Retries + Backoff',
+    title: 'Read Strategy',
     titleClass: 'card-title-green',
-    subtitle: 'politely',
-    description: 'Retry transient errors with exponential backoff and jitter.',
-    code: 'delay = base * 2 ** attempt + random()\n// retry 5xx / timeouts, not 4xx',
+    subtitle: 'cache-aside',
+    description: 'Check the cache first; fall back to the DB on a miss.',
+    code: 'let v = cache.get(key);\nif (!v) { v = db.query(); cache.set(key, v, ttl); }',
   },
   {
-    icon: '🔌',
-    title: 'Circuit Breaker',
+    icon: '✍️',
+    title: 'Write Strategy',
     titleClass: 'card-title-amber',
-    subtitle: 'stop the bleeding',
-    description: 'After repeated failures, open the circuit and fail fast.',
-    code: 'closed → (failures) → open → (cooldown) → half-open\n// half-open probes before closing again',
+    subtitle: 'through vs back',
+    description: 'Write-through stays consistent; write-back is faster but can lose data.',
+    code: 'write-through: cache + DB together\nwrite-back   : cache now, DB later (batch)',
+  },
+];
+
+const CDN_POLICY = [
+  {
+    icon: '🌍',
+    title: 'CDN Edge',
+    titleClass: 'card-title-cyan',
+    subtitle: 'near the user',
+    description: 'Static assets are served from the nearest edge location.',
+    code: '// user in Delhi hits the Mumbai edge\n// not the origin in us-east-1',
   },
   {
-    icon: '🧱',
-    title: 'Bulkhead & Degrade',
+    icon: '🧹',
+    title: 'Eviction',
+    titleClass: 'card-title-green',
+    subtitle: 'LRU / LFU',
+    description: 'When the cache is full, drop the least useful entries.',
+    code: 'LRU: evict least-recently-used\nLFU: evict least-frequently-used',
+  },
+  {
+    icon: '⏳',
+    title: 'TTL & Invalidation',
+    titleClass: 'card-title-amber',
+    subtitle: 'stay fresh',
+    description: 'Expire with a TTL, and purge/version on updates.',
+    code: 'Cache-Control: max-age=3600\n// or version the URL: /app.abc123.js',
+  },
+  {
+    icon: '📊',
+    title: 'Hit Ratio',
     titleClass: 'card-title-pink',
-    subtitle: 'contain + soften',
-    description: 'Isolate resource pools; serve a fallback when a part is down.',
-    code: '// separate pools per dependency\n// recommendations down? show top-sellers',
+    subtitle: 'measure it',
+    description: 'Hits / total requests — low ratio means the cache is not helping.',
+    code: 'hitRatio = hits / (hits + misses)\n// aim high for hot, read-heavy data',
   },
 ];
 
@@ -118,25 +116,25 @@ const RESOURCES = [
     title: 'System Design Primer',
     titleClass: 'card-title-purple',
     subtitle: 'GitHub reference',
-    description: 'The rate limiter & resiliency notes in system-design-primer.',
+    description: 'The caching section of system-design-primer — layers and strategies.',
     link: { href: PRIMER_URL, label: 'Open on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Circuit Breaker Pattern',
+    title: 'What is a CDN?',
     titleClass: 'card-title-green',
-    subtitle: 'Official docs',
-    description: 'Microsoft’s cloud design pattern for the circuit breaker.',
+    subtitle: 'Cloudflare docs',
+    description: 'Cloudflare’s explainer on content delivery networks and edge caching.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Rate Limiting Algorithms',
+    title: 'How CDN Works',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Five Rate Limiting Algorithms — key system-design concepts — by Hello Byte.',
+    description: 'How CDN Works | System Design by ByteMonk — supplement for Day 46.',
     link: {
-      href: 'https://www.youtube.com/watch?v=mQCJJqUfn9Y',
+      href: 'https://www.youtube.com/watch?v=bJ9NnLLMQ78',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -188,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day045() {
+export default function Day046() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -233,12 +231,12 @@ export default function Day045() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-044" className="day001-nav-btn day001-nav-home">
-            ← Day 44
+          <Link to="/day-045" className="day001-nav-btn day001-nav-home">
+            ← Day 45
           </Link>
-          <p className="day001-datetime">Thunder Day 45 · 18 Aug 2026</p>
-          <Link to="/day-046" className="day001-nav-btn day001-nav-next">
-            Day 46 →
+          <p className="day001-datetime">Thunder Day 46 · 19 Aug 2026</p>
+          <Link to="/day-047" className="day001-nav-btn day001-nav-next">
+            Day 47 →
           </Link>
         </header>
 
@@ -246,14 +244,14 @@ export default function Day045() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>System Design</span>
-              <span>Reliability</span>
+              <span>Performance</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 45 <span aria-hidden="true">⚡</span>
+                DAY 46 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">RATE LIMITING & RESILIENCY</p>
+              <p className="day001-day-theme">CACHING & CDNs</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -272,17 +270,17 @@ export default function Day045() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '45%' }} />
+          <div className="day001-progress-bar" style={{ width: '46%' }} />
         </div>
 
         <p className="day001-summary">
-          Day forty-five — systems fail; the goal is to fail well. <strong>Rate limiting</strong>{' '}
-          (token/leaky bucket, window counters) shields a service and returns <code>429</code> with{' '}
-          <code>Retry-After</code>. For <strong>resiliency</strong>, I cap every call with a{' '}
-          <strong>timeout</strong>, <strong>retry</strong> transient errors with exponential
-          backoff + jitter, wrap flaky dependencies in a <strong>circuit breaker</strong>, isolate
-          pools with <strong>bulkheads</strong>, and <strong>degrade gracefully</strong> with
-          fallbacks. Reference:{' '}
+          Day forty-six — caching is the biggest performance lever in system design. It lives at
+          every <strong>layer</strong> — browser, CDN, app, DB — and the strategy matters:{' '}
+          <strong>cache-aside</strong> for reads, <strong>write-through</strong> or{' '}
+          <strong>write-back</strong> for writes, with <strong>LRU/LFU eviction</strong> and{' '}
+          <strong>TTLs</strong>. A <strong>CDN</strong> pushes static assets to the edge near users,
+          and the eternal challenge is <strong>invalidation</strong> — measured by your{' '}
+          <strong>hit ratio</strong>. Reference:{' '}
           <a href={PRIMER_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             system-design-primer
           </a>
@@ -308,15 +306,15 @@ export default function Day045() {
           </ul>
         </section>
 
-        <CardSection icon="🚦" title="RATE LIMITING" cards={RATE_LIMIT} columns={3} />
-        <CardSection icon="🛡️" title="RESILIENCY" cards={RESILIENCY} columns={4} />
+        <CardSection icon="⚡" title="CACHING STRATEGIES" cards={CACHING} columns={3} />
+        <CardSection icon="🌍" title="CDN & POLICY" cards={CDN_POLICY} columns={4} />
         <CardSection icon="📚" title="SYSTEM DESIGN RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#SystemDesign</span>
-          <span>#Resiliency</span>
-          <span>#RateLimiting</span>
+          <span>#Caching</span>
+          <span>#CDN</span>
           <span>#Thunder</span>
         </footer>
       </div>

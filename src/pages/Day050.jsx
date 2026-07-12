@@ -3,112 +3,111 @@ import { Link } from 'react-router-dom';
 import './Day001.css';
 
 const PRIMER_URL =
-  'https://github.com/donnemartin/system-design-primer#rate-limiter';
-const DOCS_URL =
-  'https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker';
+  'https://github.com/donnemartin/system-design-primer#design-the-twitter-timeline-and-search';
+const DOCS_URL = 'https://github.com/donnemartin/system-design-primer';
 
 const LEARNT_TODAY = [
   {
-    title: 'Rate limiting',
-    text: 'protect a service from abuse and overload',
+    title: 'Requirements',
+    text: 'post, follow, and read a personalized feed',
   },
   {
-    title: 'Token bucket',
-    text: 'allow short bursts up to a bucket capacity',
+    title: 'Fan-out on write',
+    text: 'push a new post into every follower’s feed',
   },
   {
-    title: 'Leaky bucket',
-    text: 'smooth requests to a steady, constant rate',
+    title: 'Fan-out on read',
+    text: 'build the feed by pulling posts at read time',
   },
   {
-    title: 'Fixed vs sliding window',
-    text: 'two ways to count requests over time',
+    title: 'Hybrid',
+    text: 'push for normal users, pull for celebrities',
   },
   {
-    title: '429',
-    text: 'Too Many Requests — plus a Retry-After header',
+    title: 'Feed store',
+    text: 'a precomputed timeline per user for fast reads',
   },
   {
-    title: 'Timeouts',
-    text: 'never wait forever on a slow dependency',
+    title: 'Ranking',
+    text: 'chronological, or relevance-scored',
   },
   {
-    title: 'Retries + backoff',
-    text: 'retry transient failures with exponential backoff + jitter',
+    title: 'Pagination',
+    text: 'cursor-based infinite scroll',
   },
   {
-    title: 'Circuit breaker',
-    text: 'stop calling a failing service to let it recover',
+    title: 'Caching',
+    text: 'keep hot, active feeds in memory',
   },
   {
-    title: 'Bulkhead',
-    text: 'isolate failures so one pool can’t sink the rest',
+    title: 'Celebrity problem',
+    text: 'millions of followers make write fan-out explode',
   },
   {
-    title: 'Graceful degradation',
-    text: 'fail soft — serve a fallback, not an error',
-  },
-];
-
-const RATE_LIMIT = [
-  {
-    icon: '🚦',
-    title: 'Why Limit',
-    titleClass: 'card-title-cyan',
-    subtitle: 'protect + fair',
-    description: 'Stop brute-force, scraping, and one client hogging capacity.',
-    code: 'HTTP 429 Too Many Requests\nRetry-After: 30',
-  },
-  {
-    icon: '🪣',
-    title: 'Token / Leaky Bucket',
-    titleClass: 'card-title-green',
-    subtitle: 'the algorithms',
-    description: 'Token bucket allows bursts; leaky bucket enforces a steady rate.',
-    code: 'token : refill N/sec, spend 1 per request\nleaky : queue drains at a fixed rate',
-  },
-  {
-    icon: '🪟',
-    title: 'Window Counters',
-    titleClass: 'card-title-amber',
-    subtitle: 'fixed vs sliding',
-    description: 'Count per fixed window, or a smoother sliding window.',
-    code: 'fixed  : reset the counter every 60s\nsliding: weight the last 60s continuously',
+    title: 'Eventual consistency',
+    text: 'a feed can lag a little — that’s fine',
   },
 ];
 
-const RESILIENCY = [
+const GENERATION = [
   {
-    icon: '⏲️',
-    title: 'Timeouts',
+    icon: '📋',
+    title: 'Requirements',
     titleClass: 'card-title-cyan',
-    subtitle: 'never hang',
-    description: 'Cap how long you wait on any downstream call.',
-    code: 'fetch(url, { signal: AbortSignal.timeout(3000) });',
+    subtitle: 'read-heavy',
+    description: 'Post, follow, and read a feed fast — reads dominate.',
+    code: 'functional  : post · follow · feed\nnon-func    : <200ms feed, read >> write',
   },
   {
-    icon: '🔁',
-    title: 'Retries + Backoff',
+    icon: '📤',
+    title: 'Fan-out on Write',
     titleClass: 'card-title-green',
-    subtitle: 'politely',
-    description: 'Retry transient errors with exponential backoff and jitter.',
-    code: 'delay = base * 2 ** attempt + random()\n// retry 5xx / timeouts, not 4xx',
+    subtitle: 'push model',
+    description: 'On post, write it into each follower’s feed. Fast reads.',
+    code: 'onPost(u): for f in followers(u):\n  feed[f].push(post)\n// heavy writes, instant reads',
   },
   {
-    icon: '🔌',
-    title: 'Circuit Breaker',
+    icon: '📥',
+    title: 'Fan-out on Read',
     titleClass: 'card-title-amber',
-    subtitle: 'stop the bleeding',
-    description: 'After repeated failures, open the circuit and fail fast.',
-    code: 'closed → (failures) → open → (cooldown) → half-open\n// half-open probes before closing again',
+    subtitle: 'pull model',
+    description: 'Build the feed on request by pulling followees’ posts.',
+    code: 'getFeed(u): merge(posts of followees(u))\n// light writes, heavier reads',
   },
   {
-    icon: '🧱',
-    title: 'Bulkhead & Degrade',
+    icon: '⚖️',
+    title: 'Hybrid',
     titleClass: 'card-title-pink',
-    subtitle: 'contain + soften',
-    description: 'Isolate resource pools; serve a fallback when a part is down.',
-    code: '// separate pools per dependency\n// recommendations down? show top-sellers',
+    subtitle: 'best of both',
+    description: 'Push for most users; pull celebrities’ posts at read time.',
+    code: '// normal users  → fan-out on write\n// celebrities    → fan-out on read',
+  },
+];
+
+const AT_SCALE = [
+  {
+    icon: '🗂️',
+    title: 'Feed Store & Ranking',
+    titleClass: 'card-title-cyan',
+    subtitle: 'precomputed',
+    description: 'Store a per-user timeline; rank chronologically or by score.',
+    code: 'feed:userId → [postIds...]\nrank: recency + engagement signals',
+  },
+  {
+    icon: '📜',
+    title: 'Pagination & Caching',
+    titleClass: 'card-title-green',
+    subtitle: 'infinite scroll',
+    description: 'Cursor pagination for scroll; cache active users’ feeds.',
+    code: 'GET /feed?after=<lastId>\ncache hot feeds in Redis',
+  },
+  {
+    icon: '🌟',
+    title: 'Celebrity Problem',
+    titleClass: 'card-title-amber',
+    subtitle: 'the hard case',
+    description: 'One post to 50M followers can’t fan out on write.',
+    code: '// don’t push to 50M feeds\n// merge celebrity posts at read time',
   },
 ];
 
@@ -118,25 +117,25 @@ const RESOURCES = [
     title: 'System Design Primer',
     titleClass: 'card-title-purple',
     subtitle: 'GitHub reference',
-    description: 'The rate limiter & resiliency notes in system-design-primer.',
+    description: 'The Twitter timeline design in system-design-primer — the same pattern.',
     link: { href: PRIMER_URL, label: 'Open on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Circuit Breaker Pattern',
+    title: 'Primer Solutions',
     titleClass: 'card-title-green',
-    subtitle: 'Official docs',
-    description: 'Microsoft’s cloud design pattern for the circuit breaker.',
+    subtitle: 'Worked designs',
+    description: 'More worked HLD solutions to model your own answers on.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Rate Limiting Algorithms',
+    title: 'Design a News Feed',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Five Rate Limiting Algorithms — key system-design concepts — by Hello Byte.',
+    description: 'Design Facebook News Feed — system design interview — by Hello Interview.',
     link: {
-      href: 'https://www.youtube.com/watch?v=mQCJJqUfn9Y',
+      href: 'https://www.youtube.com/watch?v=Qj4-GruzyDU',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -188,7 +187,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day045() {
+export default function Day050() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -233,12 +232,15 @@ export default function Day045() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-044" className="day001-nav-btn day001-nav-home">
-            ← Day 44
+          <Link to="/day-049" className="day001-nav-btn day001-nav-home">
+            ← Day 49
           </Link>
-          <p className="day001-datetime">Thunder Day 45 · 18 Aug 2026</p>
-          <Link to="/day-046" className="day001-nav-btn day001-nav-next">
-            Day 46 →
+          <p className="day001-datetime">Thunder Day 50 · 23 Aug 2026</p>
+          <Link
+            to="/learn/notification-system-design"
+            className="day001-nav-btn day001-nav-next"
+          >
+            Day 51 →
           </Link>
         </header>
 
@@ -246,14 +248,14 @@ export default function Day045() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>System Design</span>
-              <span>Reliability</span>
+              <span>HLD Case Study</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 45 <span aria-hidden="true">⚡</span>
+                DAY 50 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">RATE LIMITING & RESILIENCY</p>
+              <p className="day001-day-theme">DESIGN A NEWS FEED</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -272,17 +274,17 @@ export default function Day045() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '45%' }} />
+          <div className="day001-progress-bar" style={{ width: '50%' }} />
         </div>
 
         <p className="day001-summary">
-          Day forty-five — systems fail; the goal is to fail well. <strong>Rate limiting</strong>{' '}
-          (token/leaky bucket, window counters) shields a service and returns <code>429</code> with{' '}
-          <code>Retry-After</code>. For <strong>resiliency</strong>, I cap every call with a{' '}
-          <strong>timeout</strong>, <strong>retry</strong> transient errors with exponential
-          backoff + jitter, wrap flaky dependencies in a <strong>circuit breaker</strong>, isolate
-          pools with <strong>bulkheads</strong>, and <strong>degrade gracefully</strong> with
-          fallbacks. Reference:{' '}
+          Day fifty — halfway! The classic <strong>news feed</strong> HLD. The core choice is{' '}
+          <strong>fan-out on write</strong> (push each post into followers’ feeds — instant reads) vs{' '}
+          <strong>fan-out on read</strong> (build the feed on request — light writes). The real
+          answer is <strong>hybrid</strong>: push for normal users, pull for <strong>celebrities</strong>{' '}
+          to avoid an exploding write. Add a precomputed <strong>feed store</strong>,{' '}
+          <strong>ranking</strong>, cursor <strong>pagination</strong>, and caching — eventual
+          consistency is fine. Reference:{' '}
           <a href={PRIMER_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             system-design-primer
           </a>
@@ -308,15 +310,15 @@ export default function Day045() {
           </ul>
         </section>
 
-        <CardSection icon="🚦" title="RATE LIMITING" cards={RATE_LIMIT} columns={3} />
-        <CardSection icon="🛡️" title="RESILIENCY" cards={RESILIENCY} columns={4} />
+        <CardSection icon="📰" title="FEED GENERATION" cards={GENERATION} columns={4} />
+        <CardSection icon="📈" title="AT SCALE" cards={AT_SCALE} columns={3} />
         <CardSection icon="📚" title="SYSTEM DESIGN RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#SystemDesign</span>
-          <span>#Resiliency</span>
-          <span>#RateLimiting</span>
+          <span>#HLD</span>
+          <span>#NewsFeed</span>
           <span>#Thunder</span>
         </footer>
       </div>

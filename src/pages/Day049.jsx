@@ -2,113 +2,112 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const PRIMER_URL =
-  'https://github.com/donnemartin/system-design-primer#rate-limiter';
+const PRIMER_URL = 'https://github.com/donnemartin/system-design-primer';
 const DOCS_URL =
-  'https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker';
+  'https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md';
 
 const LEARNT_TODAY = [
   {
-    title: 'Rate limiting',
-    text: 'protect a service from abuse and overload',
+    title: 'Requirements',
+    text: 'shorten a URL, redirect fast, optional analytics',
   },
   {
-    title: 'Token bucket',
-    text: 'allow short bursts up to a bucket capacity',
+    title: 'Read-heavy',
+    text: 'redirects vastly outnumber creations (100:1+)',
   },
   {
-    title: 'Leaky bucket',
-    text: 'smooth requests to a steady, constant rate',
+    title: 'API',
+    text: 'POST /shorten and GET /:code',
   },
   {
-    title: 'Fixed vs sliding window',
-    text: 'two ways to count requests over time',
+    title: 'Short code',
+    text: 'base62 of an id, or a hash of the URL',
   },
   {
-    title: '429',
-    text: 'Too Many Requests — plus a Retry-After header',
+    title: 'Key generation',
+    text: 'a counter + base62, or a key-generation service',
   },
   {
-    title: 'Timeouts',
-    text: 'never wait forever on a slow dependency',
+    title: 'Storage',
+    text: 'a key-value store: code → long URL',
   },
   {
-    title: 'Retries + backoff',
-    text: 'retry transient failures with exponential backoff + jitter',
+    title: 'Redirect',
+    text: '301 (permanent) or 302 (keeps analytics)',
   },
   {
-    title: 'Circuit breaker',
-    text: 'stop calling a failing service to let it recover',
+    title: 'Caching',
+    text: 'hot codes in Redis / a CDN',
   },
   {
-    title: 'Bulkhead',
-    text: 'isolate failures so one pool can’t sink the rest',
+    title: 'Collisions',
+    text: 'retry or use a counter to avoid duplicate codes',
   },
   {
-    title: 'Graceful degradation',
-    text: 'fail soft — serve a fallback, not an error',
-  },
-];
-
-const RATE_LIMIT = [
-  {
-    icon: '🚦',
-    title: 'Why Limit',
-    titleClass: 'card-title-cyan',
-    subtitle: 'protect + fair',
-    description: 'Stop brute-force, scraping, and one client hogging capacity.',
-    code: 'HTTP 429 Too Many Requests\nRetry-After: 30',
-  },
-  {
-    icon: '🪣',
-    title: 'Token / Leaky Bucket',
-    titleClass: 'card-title-green',
-    subtitle: 'the algorithms',
-    description: 'Token bucket allows bursts; leaky bucket enforces a steady rate.',
-    code: 'token : refill N/sec, spend 1 per request\nleaky : queue drains at a fixed rate',
-  },
-  {
-    icon: '🪟',
-    title: 'Window Counters',
-    titleClass: 'card-title-amber',
-    subtitle: 'fixed vs sliding',
-    description: 'Count per fixed window, or a smoother sliding window.',
-    code: 'fixed  : reset the counter every 60s\nsliding: weight the last 60s continuously',
+    title: 'Scale',
+    text: 'shard by code, replicate reads, cache aggressively',
   },
 ];
 
-const RESILIENCY = [
+const DESIGN = [
   {
-    icon: '⏲️',
-    title: 'Timeouts',
+    icon: '📋',
+    title: 'Requirements & Scale',
     titleClass: 'card-title-cyan',
-    subtitle: 'never hang',
-    description: 'Cap how long you wait on any downstream call.',
-    code: 'fetch(url, { signal: AbortSignal.timeout(3000) });',
-  },
-  {
-    icon: '🔁',
-    title: 'Retries + Backoff',
-    titleClass: 'card-title-green',
-    subtitle: 'politely',
-    description: 'Retry transient errors with exponential backoff and jitter.',
-    code: 'delay = base * 2 ** attempt + random()\n// retry 5xx / timeouts, not 4xx',
+    subtitle: 'read-heavy',
+    description: 'Shorten + redirect; estimate the read:write ratio and storage.',
+    code: '100M writes/day → ~1.2K QPS\nreads ≈ 100× → ~120K QPS\n5 yr × 500B ≈ ~90 TB',
   },
   {
     icon: '🔌',
-    title: 'Circuit Breaker',
-    titleClass: 'card-title-amber',
-    subtitle: 'stop the bleeding',
-    description: 'After repeated failures, open the circuit and fail fast.',
-    code: 'closed → (failures) → open → (cooldown) → half-open\n// half-open probes before closing again',
+    title: 'The API',
+    titleClass: 'card-title-green',
+    subtitle: 'two endpoints',
+    description: 'Create a short code, then redirect it to the long URL.',
+    code: 'POST /shorten { url }  → { code }\nGET  /:code           → 302 Location: long',
   },
   {
-    icon: '🧱',
-    title: 'Bulkhead & Degrade',
+    icon: '🔑',
+    title: 'Short-Code Generation',
+    titleClass: 'card-title-amber',
+    subtitle: 'base62',
+    description: 'Encode a unique id in base62, or hash and take a prefix.',
+    code: 'id = counter++            // 1,000,000\ncode = base62(id)         // "4c92"\n// [0-9a-zA-Z] = 62^7 ≈ 3.5 trillion',
+  },
+  {
+    icon: '🗄️',
+    title: 'Storage',
     titleClass: 'card-title-pink',
-    subtitle: 'contain + soften',
-    description: 'Isolate resource pools; serve a fallback when a part is down.',
-    code: '// separate pools per dependency\n// recommendations down? show top-sellers',
+    subtitle: 'key → value',
+    description: 'A KV store maps the code to the original URL.',
+    code: '{ code: "4c92", url: "https://...", clicks: 0 }\n// primary key = code',
+  },
+];
+
+const SCALE = [
+  {
+    icon: '↪️',
+    title: 'Redirect Flow',
+    titleClass: 'card-title-cyan',
+    subtitle: '301 vs 302',
+    description: 'Look up the code and redirect — 302 lets you count clicks.',
+    code: 'GET /4c92 → lookup → 302 → long URL\n// 301 is cached by browsers (no analytics)',
+  },
+  {
+    icon: '⚡',
+    title: 'Caching',
+    titleClass: 'card-title-green',
+    subtitle: 'hot codes',
+    description: 'A small set of links get most traffic — cache them.',
+    code: 'redis.get(code) || db.get(code)\n// 90%+ hit ratio on popular links',
+  },
+  {
+    icon: '📈',
+    title: 'Scale Out',
+    titleClass: 'card-title-amber',
+    subtitle: 'shard + replicate',
+    description: 'Shard by code, add read replicas, and lean on the cache.',
+    code: 'shard: hash(code) % N\nreplicas for reads · cache in front',
   },
 ];
 
@@ -118,25 +117,25 @@ const RESOURCES = [
     title: 'System Design Primer',
     titleClass: 'card-title-purple',
     subtitle: 'GitHub reference',
-    description: 'The rate limiter & resiliency notes in system-design-primer.',
+    description: 'The primer’s worked solutions — a great template for this HLD.',
     link: { href: PRIMER_URL, label: 'Open on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Circuit Breaker Pattern',
+    title: 'Pastebin Design',
     titleClass: 'card-title-green',
-    subtitle: 'Official docs',
-    description: 'Microsoft’s cloud design pattern for the circuit breaker.',
+    subtitle: 'Worked solution',
+    description: 'A step-by-step primer solution that mirrors the URL-shortener design.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Rate Limiting Algorithms',
+    title: 'URL Shortener Design',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Five Rate Limiting Algorithms — key system-design concepts — by Hello Byte.',
+    description: 'How Does a URL Shortener Work? by ByteByteGo — supplement for Day 49.',
     link: {
-      href: 'https://www.youtube.com/watch?v=mQCJJqUfn9Y',
+      href: 'https://www.youtube.com/watch?v=HHUi8F_qAXM',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -188,7 +187,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day045() {
+export default function Day049() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -233,12 +232,12 @@ export default function Day045() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-044" className="day001-nav-btn day001-nav-home">
-            ← Day 44
+          <Link to="/day-048" className="day001-nav-btn day001-nav-home">
+            ← Day 48
           </Link>
-          <p className="day001-datetime">Thunder Day 45 · 18 Aug 2026</p>
-          <Link to="/day-046" className="day001-nav-btn day001-nav-next">
-            Day 46 →
+          <p className="day001-datetime">Thunder Day 49 · 22 Aug 2026</p>
+          <Link to="/day-050" className="day001-nav-btn day001-nav-next">
+            Day 50 →
           </Link>
         </header>
 
@@ -246,14 +245,14 @@ export default function Day045() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>System Design</span>
-              <span>Reliability</span>
+              <span>HLD Case Study</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 45 <span aria-hidden="true">⚡</span>
+                DAY 49 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">RATE LIMITING & RESILIENCY</p>
+              <p className="day001-day-theme">DESIGN A URL SHORTENER</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -272,17 +271,17 @@ export default function Day045() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '45%' }} />
+          <div className="day001-progress-bar" style={{ width: '49%' }} />
         </div>
 
         <p className="day001-summary">
-          Day forty-five — systems fail; the goal is to fail well. <strong>Rate limiting</strong>{' '}
-          (token/leaky bucket, window counters) shields a service and returns <code>429</code> with{' '}
-          <code>Retry-After</code>. For <strong>resiliency</strong>, I cap every call with a{' '}
-          <strong>timeout</strong>, <strong>retry</strong> transient errors with exponential
-          backoff + jitter, wrap flaky dependencies in a <strong>circuit breaker</strong>, isolate
-          pools with <strong>bulkheads</strong>, and <strong>degrade gracefully</strong> with
-          fallbacks. Reference:{' '}
+          Day forty-nine — first HLD case study: a <strong>URL shortener</strong>. It is{' '}
+          <strong>read-heavy</strong>, so I nailed the <strong>requirements</strong> and estimates,
+          designed a two-endpoint <strong>API</strong>, and generated short codes with{' '}
+          <strong>base62</strong> over a unique id (billions of combinations, no collisions). A{' '}
+          <strong>key-value store</strong> maps code → URL, redirects use <strong>302</strong> for
+          analytics, and <strong>caching</strong> plus <strong>sharding + replication</strong> carry
+          the read load. Reference:{' '}
           <a href={PRIMER_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             system-design-primer
           </a>
@@ -308,15 +307,15 @@ export default function Day045() {
           </ul>
         </section>
 
-        <CardSection icon="🚦" title="RATE LIMITING" cards={RATE_LIMIT} columns={3} />
-        <CardSection icon="🛡️" title="RESILIENCY" cards={RESILIENCY} columns={4} />
+        <CardSection icon="🧩" title="THE DESIGN" cards={DESIGN} columns={4} />
+        <CardSection icon="📈" title="GOING BIG" cards={SCALE} columns={3} />
         <CardSection icon="📚" title="SYSTEM DESIGN RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#SystemDesign</span>
-          <span>#Resiliency</span>
-          <span>#RateLimiting</span>
+          <span>#HLD</span>
+          <span>#URLShortener</span>
           <span>#Thunder</span>
         </footer>
       </div>
