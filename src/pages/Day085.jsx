@@ -2,139 +2,140 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://docs.docker.com/get-started/';
-const PLAY_URL = 'https://labs.play-with-docker.com/';
+const DOCS_URL =
+  'https://docs.aws.amazon.com/whitepapers/latest/overview-deployment-options/introduction.html';
+const KODEKLOUD_URL = 'https://kodekloud.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'Why Docker',
-    text: 'ends "works on my machine" with reproducible envs',
+    title: 'Recreate',
+    text: 'stop the old version, start the new — brief downtime',
   },
   {
-    title: 'Image vs container',
-    text: 'a blueprint vs a running instance of it',
+    title: 'Rolling',
+    text: 'replace instances gradually, a few at a time',
   },
   {
-    title: 'Dockerfile',
-    text: 'the recipe that builds an image',
+    title: 'Blue/Green',
+    text: 'two full environments; switch traffic instantly',
   },
   {
-    title: 'build & run',
-    text: 'docker build then docker run',
+    title: 'Canary',
+    text: 'release to a small % first, then ramp up',
   },
   {
-    title: 'Ports',
-    text: '-p host:container maps a port',
+    title: 'Feature flags',
+    text: 'decouple deploying code from releasing a feature',
   },
   {
-    title: 'Volumes',
-    text: '-v persists data outside the container',
+    title: 'Health checks',
+    text: 'gate the rollout on healthy instances',
   },
   {
-    title: 'Layers & cache',
-    text: 'order Dockerfile steps for fast rebuilds',
+    title: 'Rollback',
+    text: 'blue/green flips back instantly',
   },
   {
-    title: 'Registry',
-    text: 'push/pull images from Docker Hub',
+    title: 'Zero downtime',
+    text: 'the goal for user-facing services',
   },
   {
-    title: 'Multi-stage',
-    text: 'build then copy — small final images',
+    title: 'Traffic shifting',
+    text: 'the load balancer or mesh moves users over',
   },
   {
-    title: 'Manage',
-    text: 'docker ps / logs / exec',
+    title: 'Observability',
+    text: 'watch metrics/errors during the rollout',
   },
 ];
 
-const CONTAINERS = [
+const STRATEGIES = [
   {
-    icon: '🐳',
-    title: 'Why Docker',
+    icon: '♻️',
+    title: 'Recreate',
     titleClass: 'card-title-cyan',
-    subtitle: 'consistency',
-    description: 'Package the app + its deps so it runs the same everywhere.',
-    code: '// same image on laptop, CI, and prod\n// no "but it worked locally"',
+    subtitle: 'simplest',
+    description: 'Tear down the old, bring up the new — expect downtime.',
+    code: 'stop v1 → start v2\n// simple, but a gap of unavailability',
   },
   {
-    icon: '🖼️',
-    title: 'Image vs Container',
+    icon: '🔃',
+    title: 'Rolling',
     titleClass: 'card-title-green',
-    subtitle: 'blueprint vs run',
-    description: 'An image is a template; a container is it, running.',
-    code: 'image     → docker run → container\n// many containers from one image',
+    subtitle: 'gradual',
+    description: 'Swap instances in batches so the app stays up.',
+    code: 'replace 1/4 at a time\nold + new run side by side briefly',
   },
   {
-    icon: '📜',
-    title: 'Dockerfile',
+    icon: '🔵',
+    title: 'Blue/Green',
     titleClass: 'card-title-amber',
-    subtitle: 'the recipe',
-    description: 'Declare the base, deps, code, and start command.',
-    code: 'FROM node:20-slim\nWORKDIR /app\nCOPY . . && RUN npm ci\nCMD ["node", "server.js"]',
+    subtitle: 'instant switch',
+    description: 'Two identical envs; flip the router to the new one.',
+    code: 'blue = live, green = new\ntest green → switch traffic → keep blue for rollback',
   },
   {
-    icon: '▶️',
-    title: 'Build & Run',
+    icon: '🐤',
+    title: 'Canary',
     titleClass: 'card-title-pink',
-    subtitle: 'two commands',
-    description: 'Build the image, then run a container from it.',
-    code: 'docker build -t myapp .\ndocker run -d -p 3000:3000 myapp',
+    subtitle: 'test in prod',
+    description: 'Send 5% of traffic to the new version; watch, then ramp.',
+    code: '5% → 25% → 50% → 100%\n// halt and roll back if errors spike',
   },
 ];
 
-const PRACTICE = [
+const SAFE = [
   {
-    icon: '🔌',
-    title: 'Ports & Volumes',
+    icon: '🚩',
+    title: 'Feature Flags',
     titleClass: 'card-title-cyan',
-    subtitle: 'connect + persist',
-    description: 'Expose ports and keep data across container restarts.',
-    code: '-p 8080:80        # map a port\n-v data:/var/lib   # persist a volume',
+    subtitle: 'decouple',
+    description: 'Ship code dark; turn the feature on independently.',
+    code: 'if (flags.newCheckout) renderNew();\n// deploy != release',
   },
   {
-    icon: '🧱',
-    title: 'Layers & Registry',
+    icon: '❤️',
+    title: 'Health & Rollback',
     titleClass: 'card-title-green',
-    subtitle: 'cache + share',
-    description: 'Cache-friendly layers; push images to a registry.',
-    code: '// COPY package.json first → cache npm ci\ndocker push user/myapp:1.0',
+    subtitle: 'safety net',
+    description: 'Gate on health checks; revert instantly on trouble.',
+    code: 'readiness/liveness probes\nblue/green: flip back in seconds',
   },
   {
-    icon: '🛠️',
-    title: 'Manage Containers',
+    icon: '📊',
+    title: 'Observe',
     titleClass: 'card-title-amber',
-    subtitle: 'inspect',
-    description: 'List, read logs, and shell into running containers.',
-    code: 'docker ps · docker logs -f <id>\ndocker exec -it <id> sh',
+    subtitle: 'watch it',
+    description: 'Monitor errors, latency, and traffic during rollout.',
+    code: 'error rate ↑ → auto-halt\ndashboards + alerts on the new version',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'Docker Get Started',
+    title: 'AWS Deployment Options',
     titleClass: 'card-title-green',
-    subtitle: 'Official docs',
-    description: 'Docker’s official getting-started guide — images and containers.',
+    subtitle: 'Whitepaper',
+    description: 'AWS’ overview of deployment strategies and their trade-offs.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '🧪',
-    title: 'Play with Docker',
+    title: 'KodeKloud',
     titleClass: 'card-title-purple',
-    subtitle: 'Try it live',
-    description: 'A free in-browser Docker playground — no local install needed.',
-    link: { href: PLAY_URL, label: 'Open the playground →', external: true },
+    subtitle: 'Hands-on labs',
+    description: 'Practice rolling, blue/green, and canary deploys in KodeKloud.',
+    link: { href: KODEKLOUD_URL, label: 'Open KodeKloud →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Docker Tutorial',
+    title: 'Top 5 Strategies',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'The Only Docker Tutorial You Need To Get Started by The Coding Sloth — for Day 80.',
+    description: 'Top 5 Most-Used Deployment Strategies by ByteByteGo — supplement for Day 85.',
     link: {
-      href: 'https://www.youtube.com/watch?v=DQdB7wFEygo',
+      href: 'https://www.youtube.com/watch?v=AWVTKBUnoIg',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +187,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day080() {
+export default function Day085() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +232,15 @@ export default function Day080() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-079" className="day001-nav-btn day001-nav-home">
-            ← Day 79
+          <Link to="/day-084" className="day001-nav-btn day001-nav-home">
+            ← Day 84
           </Link>
-          <p className="day001-datetime">Thunder Day 80 · 22 Sep 2026</p>
-          <Link to="/day-081" className="day001-nav-btn day001-nav-next">
-            Day 81 →
+          <p className="day001-datetime">Thunder Day 85 · 27 Sep 2026</p>
+          <Link
+            to="/learn/kubernetes-introduction"
+            className="day001-nav-btn day001-nav-next"
+          >
+            Day 86 →
           </Link>
         </header>
 
@@ -244,14 +248,14 @@ export default function Day080() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>DevOps</span>
-              <span>Docker</span>
+              <span>Deployment</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 80 <span aria-hidden="true">⚡</span>
+                DAY 85 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">DOCKER FUNDAMENTALS</p>
+              <p className="day001-day-theme">DEPLOYMENT STRATEGIES</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,19 +274,19 @@ export default function Day080() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '80%' }} />
+          <div className="day001-progress-bar" style={{ width: '85%' }} />
         </div>
 
         <p className="day001-summary">
-          Day eighty — <strong>Docker</strong> packages an app and its dependencies so it runs the
-          same everywhere. An <strong>image</strong> is the blueprint (built from a{' '}
-          <strong>Dockerfile</strong>) and a <strong>container</strong> is it running —{' '}
-          <code>docker build</code> then <code>docker run</code>. Map <strong>ports</strong>, persist{' '}
-          <strong>volumes</strong>, order layers for <strong>cache</strong>, push to a{' '}
-          <strong>registry</strong>, slim images with <strong>multi-stage</strong> builds, and manage
-          with <code>ps</code>/<code>logs</code>/<code>exec</code>. Reference:{' '}
+          Day eighty-five — how to ship without breaking users. <strong>Recreate</strong> is simple
+          but has downtime; <strong>rolling</strong> replaces instances gradually;{' '}
+          <strong>blue/green</strong> keeps two environments and flips traffic (instant rollback);
+          and <strong>canary</strong> sends a small % to the new version first. Make it safe with{' '}
+          <strong>feature flags</strong>, <strong>health checks</strong>, fast{' '}
+          <strong>rollback</strong>, and <strong>observability</strong> during the rollout — all
+          aiming for <strong>zero downtime</strong>. Reference:{' '}
           <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Docker docs
+            AWS deployment options
           </a>
           .
         </p>
@@ -306,15 +310,15 @@ export default function Day080() {
           </ul>
         </section>
 
-        <CardSection icon="🐳" title="CONTAINERS" cards={CONTAINERS} columns={4} />
-        <CardSection icon="🛠️" title="IN PRACTICE" cards={PRACTICE} columns={3} />
-        <CardSection icon="📚" title="DOCKER RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="🚀" title="STRATEGIES" cards={STRATEGIES} columns={4} />
+        <CardSection icon="🛡️" title="SAFE RELEASES" cards={SAFE} columns={3} />
+        <CardSection icon="📚" title="DEPLOYMENT RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#DevOps</span>
-          <span>#Docker</span>
-          <span>#Containers</span>
+          <span>#Deployment</span>
+          <span>#BlueGreen</span>
           <span>#Thunder</span>
         </footer>
       </div>

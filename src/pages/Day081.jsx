@@ -2,121 +2,121 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://docs.docker.com/get-started/';
+const DOCS_URL = 'https://docs.docker.com/compose/';
 const PLAY_URL = 'https://labs.play-with-docker.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'Why Docker',
-    text: 'ends "works on my machine" with reproducible envs',
+    title: 'Multi-container',
+    text: 'app + database + cache running together',
   },
   {
-    title: 'Image vs container',
-    text: 'a blueprint vs a running instance of it',
+    title: 'docker-compose.yml',
+    text: 'declare the whole stack in one file',
   },
   {
-    title: 'Dockerfile',
-    text: 'the recipe that builds an image',
+    title: 'services',
+    text: 'each container’s image, ports, and env',
   },
   {
-    title: 'build & run',
-    text: 'docker build then docker run',
+    title: 'depends_on',
+    text: 'control the startup order',
   },
   {
-    title: 'Ports',
-    text: '-p host:container maps a port',
+    title: 'networks',
+    text: 'services reach each other by name',
   },
   {
-    title: 'Volumes',
-    text: '-v persists data outside the container',
+    title: 'volumes',
+    text: 'persist database data across restarts',
   },
   {
-    title: 'Layers & cache',
-    text: 'order Dockerfile steps for fast rebuilds',
+    title: 'env & .env',
+    text: 'per-service configuration',
   },
   {
-    title: 'Registry',
-    text: 'push/pull images from Docker Hub',
+    title: 'up / down',
+    text: 'start and tear down the entire stack',
   },
   {
-    title: 'Multi-stage',
-    text: 'build then copy — small final images',
+    title: 'build vs image',
+    text: 'build locally or pull from a registry',
   },
   {
-    title: 'Manage',
-    text: 'docker ps / logs / exec',
+    title: 'scale',
+    text: 'run multiple replicas of a service',
   },
 ];
 
-const CONTAINERS = [
+const COMPOSE = [
   {
-    icon: '🐳',
-    title: 'Why Docker',
+    icon: '🧩',
+    title: 'Why Compose',
     titleClass: 'card-title-cyan',
-    subtitle: 'consistency',
-    description: 'Package the app + its deps so it runs the same everywhere.',
-    code: '// same image on laptop, CI, and prod\n// no "but it worked locally"',
-  },
-  {
-    icon: '🖼️',
-    title: 'Image vs Container',
-    titleClass: 'card-title-green',
-    subtitle: 'blueprint vs run',
-    description: 'An image is a template; a container is it, running.',
-    code: 'image     → docker run → container\n// many containers from one image',
+    subtitle: 'one command',
+    description: 'Real apps are many containers — Compose runs them together.',
+    code: '// instead of 4 long docker run commands\ndocker compose up   // starts the whole stack',
   },
   {
     icon: '📜',
-    title: 'Dockerfile',
-    titleClass: 'card-title-amber',
-    subtitle: 'the recipe',
-    description: 'Declare the base, deps, code, and start command.',
-    code: 'FROM node:20-slim\nWORKDIR /app\nCOPY . . && RUN npm ci\nCMD ["node", "server.js"]',
+    title: 'The YAML',
+    titleClass: 'card-title-green',
+    subtitle: 'declarative',
+    description: 'One file describes every service and its config.',
+    code: 'services:\n  web:   { build: ., ports: ["3000:3000"] }\n  db:    { image: mongo, volumes: ["data:/data/db"] }',
   },
   {
-    icon: '▶️',
-    title: 'Build & Run',
+    icon: '🔗',
+    title: 'Services & Networks',
+    titleClass: 'card-title-amber',
+    subtitle: 'talk by name',
+    description: 'Compose puts services on a network; use the service name as host.',
+    code: '// web connects to the db as:\nmongodb://db:27017/app',
+  },
+  {
+    icon: '💾',
+    title: 'Volumes & Env',
     titleClass: 'card-title-pink',
-    subtitle: 'two commands',
-    description: 'Build the image, then run a container from it.',
-    code: 'docker build -t myapp .\ndocker run -d -p 3000:3000 myapp',
+    subtitle: 'persist + config',
+    description: 'Named volumes keep data; env vars configure each service.',
+    code: 'volumes: [ "data:/data/db" ]\nenvironment: [ "NODE_ENV=production" ]',
   },
 ];
 
-const PRACTICE = [
+const RUN = [
   {
-    icon: '🔌',
-    title: 'Ports & Volumes',
+    icon: '▶️',
+    title: 'up / down',
     titleClass: 'card-title-cyan',
-    subtitle: 'connect + persist',
-    description: 'Expose ports and keep data across container restarts.',
-    code: '-p 8080:80        # map a port\n-v data:/var/lib   # persist a volume',
+    subtitle: 'lifecycle',
+    description: 'Start the stack detached; tear it down cleanly.',
+    code: 'docker compose up -d\ndocker compose down   # + -v to drop volumes',
   },
   {
-    icon: '🧱',
-    title: 'Layers & Registry',
+    icon: '⛓️',
+    title: 'depends_on & Health',
     titleClass: 'card-title-green',
-    subtitle: 'cache + share',
-    description: 'Cache-friendly layers; push images to a registry.',
-    code: '// COPY package.json first → cache npm ci\ndocker push user/myapp:1.0',
+    subtitle: 'ordering',
+    description: 'Start dependencies first; wait for them to be healthy.',
+    code: 'depends_on:\n  db: { condition: service_healthy }',
   },
   {
-    icon: '🛠️',
-    title: 'Manage Containers',
+    icon: '📈',
+    title: 'Build & Scale',
     titleClass: 'card-title-amber',
-    subtitle: 'inspect',
-    description: 'List, read logs, and shell into running containers.',
-    code: 'docker ps · docker logs -f <id>\ndocker exec -it <id> sh',
+    subtitle: 'grow',
+    description: 'Rebuild after changes; run multiple replicas.',
+    code: 'docker compose up --build\ndocker compose up --scale web=3',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'Docker Get Started',
+    title: 'Docker Compose Docs',
     titleClass: 'card-title-green',
     subtitle: 'Official docs',
-    description: 'Docker’s official getting-started guide — images and containers.',
+    description: 'The official Compose docs — services, networks, and volumes.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
@@ -124,17 +124,17 @@ const RESOURCES = [
     title: 'Play with Docker',
     titleClass: 'card-title-purple',
     subtitle: 'Try it live',
-    description: 'A free in-browser Docker playground — no local install needed.',
+    description: 'Run Compose stacks in a free in-browser Docker environment.',
     link: { href: PLAY_URL, label: 'Open the playground →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Docker Tutorial',
+    title: 'Docker Compose Tutorial',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'The Only Docker Tutorial You Need To Get Started by The Coding Sloth — for Day 80.',
+    description: 'Docker Compose Tutorial by Programming with Mosh — supplement for Day 81.',
     link: {
-      href: 'https://www.youtube.com/watch?v=DQdB7wFEygo',
+      href: 'https://www.youtube.com/watch?v=HG6yIjZapSA',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day080() {
+export default function Day081() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +231,12 @@ export default function Day080() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-079" className="day001-nav-btn day001-nav-home">
-            ← Day 79
+          <Link to="/day-080" className="day001-nav-btn day001-nav-home">
+            ← Day 80
           </Link>
-          <p className="day001-datetime">Thunder Day 80 · 22 Sep 2026</p>
-          <Link to="/day-081" className="day001-nav-btn day001-nav-next">
-            Day 81 →
+          <p className="day001-datetime">Thunder Day 81 · 23 Sep 2026</p>
+          <Link to="/day-082" className="day001-nav-btn day001-nav-next">
+            Day 82 →
           </Link>
         </header>
 
@@ -249,9 +249,9 @@ export default function Day080() {
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 80 <span aria-hidden="true">⚡</span>
+                DAY 81 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">DOCKER FUNDAMENTALS</p>
+              <p className="day001-day-theme">DOCKER COMPOSE & MULTI-CONTAINER APPS</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,19 +270,19 @@ export default function Day080() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '80%' }} />
+          <div className="day001-progress-bar" style={{ width: '81%' }} />
         </div>
 
         <p className="day001-summary">
-          Day eighty — <strong>Docker</strong> packages an app and its dependencies so it runs the
-          same everywhere. An <strong>image</strong> is the blueprint (built from a{' '}
-          <strong>Dockerfile</strong>) and a <strong>container</strong> is it running —{' '}
-          <code>docker build</code> then <code>docker run</code>. Map <strong>ports</strong>, persist{' '}
-          <strong>volumes</strong>, order layers for <strong>cache</strong>, push to a{' '}
-          <strong>registry</strong>, slim images with <strong>multi-stage</strong> builds, and manage
-          with <code>ps</code>/<code>logs</code>/<code>exec</code>. Reference:{' '}
+          Day eighty-one — real apps are <strong>multi-container</strong> (web + db + cache), and{' '}
+          <strong>Docker Compose</strong> runs them all from one <code>docker-compose.yml</code>.
+          Each <strong>service</strong> gets its image, ports, and env; they share a{' '}
+          <strong>network</strong> and reach each other by name, with <strong>volumes</strong>{' '}
+          persisting data. <code>docker compose up</code> starts the whole stack (respecting{' '}
+          <strong>depends_on</strong>), and you can <strong>build</strong> and <strong>scale</strong>{' '}
+          services too. Reference:{' '}
           <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Docker docs
+            Docker Compose docs
           </a>
           .
         </p>
@@ -306,15 +306,15 @@ export default function Day080() {
           </ul>
         </section>
 
-        <CardSection icon="🐳" title="CONTAINERS" cards={CONTAINERS} columns={4} />
-        <CardSection icon="🛠️" title="IN PRACTICE" cards={PRACTICE} columns={3} />
+        <CardSection icon="🧩" title="COMPOSE" cards={COMPOSE} columns={4} />
+        <CardSection icon="▶️" title="RUN THE STACK" cards={RUN} columns={3} />
         <CardSection icon="📚" title="DOCKER RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#DevOps</span>
           <span>#Docker</span>
-          <span>#Containers</span>
+          <span>#Compose</span>
           <span>#Thunder</span>
         </footer>
       </div>

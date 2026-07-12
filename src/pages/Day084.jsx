@@ -2,139 +2,139 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://docs.docker.com/get-started/';
-const PLAY_URL = 'https://labs.play-with-docker.com/';
+const DOCS_URL = 'https://aws.amazon.com/getting-started/';
+const FREE_URL = 'https://aws.amazon.com/free/';
 
 const LEARNT_TODAY = [
   {
-    title: 'Why Docker',
-    text: 'ends "works on my machine" with reproducible envs',
+    title: 'Cloud',
+    text: 'on-demand compute & storage — no servers to own',
   },
   {
-    title: 'Image vs container',
-    text: 'a blueprint vs a running instance of it',
+    title: 'Regions & AZs',
+    text: 'global regions built from redundant availability zones',
   },
   {
-    title: 'Dockerfile',
-    text: 'the recipe that builds an image',
+    title: 'EC2',
+    text: 'virtual servers you rent by the hour',
   },
   {
-    title: 'build & run',
-    text: 'docker build then docker run',
+    title: 'S3',
+    text: 'durable object storage for files and backups',
   },
   {
-    title: 'Ports',
-    text: '-p host:container maps a port',
+    title: 'IAM',
+    text: 'users, roles, and policies — least privilege',
   },
   {
-    title: 'Volumes',
-    text: '-v persists data outside the container',
+    title: 'VPC',
+    text: 'your own private, isolated network',
   },
   {
-    title: 'Layers & cache',
-    text: 'order Dockerfile steps for fast rebuilds',
+    title: 'RDS',
+    text: 'managed relational databases',
   },
   {
-    title: 'Registry',
-    text: 'push/pull images from Docker Hub',
+    title: 'Lambda',
+    text: 'serverless functions — no server to manage',
   },
   {
-    title: 'Multi-stage',
-    text: 'build then copy — small final images',
+    title: 'Pricing',
+    text: 'pay-as-you-go, with a generous free tier',
   },
   {
-    title: 'Manage',
-    text: 'docker ps / logs / exec',
+    title: 'Shared responsibility',
+    text: 'AWS secures the cloud; you secure what’s in it',
   },
 ];
 
-const CONTAINERS = [
+const CORE = [
   {
-    icon: '🐳',
-    title: 'Why Docker',
+    icon: '🖥️',
+    title: 'EC2',
     titleClass: 'card-title-cyan',
-    subtitle: 'consistency',
-    description: 'Package the app + its deps so it runs the same everywhere.',
-    code: '// same image on laptop, CI, and prod\n// no "but it worked locally"',
+    subtitle: 'compute',
+    description: 'Launch virtual machines of any size, on demand.',
+    code: '// pick an AMI + instance type\nt3.micro · Ubuntu · SSH in and run your app',
   },
   {
-    icon: '🖼️',
-    title: 'Image vs Container',
+    icon: '🪣',
+    title: 'S3',
     titleClass: 'card-title-green',
-    subtitle: 'blueprint vs run',
-    description: 'An image is a template; a container is it, running.',
-    code: 'image     → docker run → container\n// many containers from one image',
+    subtitle: 'object storage',
+    description: 'Store unlimited files with 11 nines of durability.',
+    code: 's3://my-bucket/images/photo.jpg\n// static hosting, backups, uploads',
   },
   {
-    icon: '📜',
-    title: 'Dockerfile',
+    icon: '🔑',
+    title: 'IAM',
     titleClass: 'card-title-amber',
-    subtitle: 'the recipe',
-    description: 'Declare the base, deps, code, and start command.',
-    code: 'FROM node:20-slim\nWORKDIR /app\nCOPY . . && RUN npm ci\nCMD ["node", "server.js"]',
+    subtitle: 'access',
+    description: 'Grant least-privilege access with users, roles, policies.',
+    code: '// role: read-only S3, nothing else\n// never use the root account daily',
   },
   {
-    icon: '▶️',
-    title: 'Build & Run',
+    icon: '🕸️',
+    title: 'VPC',
     titleClass: 'card-title-pink',
-    subtitle: 'two commands',
-    description: 'Build the image, then run a container from it.',
-    code: 'docker build -t myapp .\ndocker run -d -p 3000:3000 myapp',
+    subtitle: 'networking',
+    description: 'A private network with subnets, routes, and security groups.',
+    code: 'public subnet → load balancer\nprivate subnet → app + database',
   },
 ];
 
-const PRACTICE = [
+const MORE = [
   {
-    icon: '🔌',
-    title: 'Ports & Volumes',
+    icon: '🗄️',
+    title: 'RDS & Lambda',
     titleClass: 'card-title-cyan',
-    subtitle: 'connect + persist',
-    description: 'Expose ports and keep data across container restarts.',
-    code: '-p 8080:80        # map a port\n-v data:/var/lib   # persist a volume',
+    subtitle: 'managed + serverless',
+    description: 'Managed databases; run code without servers.',
+    code: 'RDS: Postgres/MySQL, backups + failover\nLambda: function runs on an event, scales to zero',
   },
   {
-    icon: '🧱',
-    title: 'Layers & Registry',
+    icon: '🌍',
+    title: 'Regions & AZs',
     titleClass: 'card-title-green',
-    subtitle: 'cache + share',
-    description: 'Cache-friendly layers; push images to a registry.',
-    code: '// COPY package.json first → cache npm ci\ndocker push user/myapp:1.0',
+    subtitle: 'resilience',
+    description: 'Deploy across zones for high availability.',
+    code: 'region: ap-south-1 (Mumbai)\nspread instances across 2–3 AZs',
   },
   {
-    icon: '🛠️',
-    title: 'Manage Containers',
+    icon: '💳',
+    title: 'Pricing & Model',
     titleClass: 'card-title-amber',
-    subtitle: 'inspect',
-    description: 'List, read logs, and shell into running containers.',
-    code: 'docker ps · docker logs -f <id>\ndocker exec -it <id> sh',
+    subtitle: 'pay + secure',
+    description: 'Pay for what you use; know the responsibility split.',
+    code: 'free tier for a year · set billing alerts\nAWS: of the cloud · You: in the cloud',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'Docker Get Started',
+    title: 'AWS Getting Started',
     titleClass: 'card-title-green',
     subtitle: 'Official docs',
-    description: 'Docker’s official getting-started guide — images and containers.',
+    description: 'AWS’ getting-started hub — core services and tutorials.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
-    icon: '🧪',
-    title: 'Play with Docker',
+    icon: '🆓',
+    title: 'AWS Free Tier',
     titleClass: 'card-title-purple',
-    subtitle: 'Try it live',
-    description: 'A free in-browser Docker playground — no local install needed.',
-    link: { href: PLAY_URL, label: 'Open the playground →', external: true },
+    subtitle: 'Practice free',
+    description: 'Spin up EC2, S3, RDS, and Lambda within the free tier.',
+    link: { href: FREE_URL, label: 'Open Free Tier →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Docker Tutorial',
+    title: 'AWS for Beginners',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'The Only Docker Tutorial You Need To Get Started by The Coding Sloth — for Day 80.',
+    description: 'AWS Tutorial for Beginners — step-by-step by Kevin Stratvert — for Day 84.',
     link: {
-      href: 'https://www.youtube.com/watch?v=DQdB7wFEygo',
+      href: 'https://www.youtube.com/watch?v=Nzv-tzU-UAw',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day080() {
+export default function Day084() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,27 +231,27 @@ export default function Day080() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-079" className="day001-nav-btn day001-nav-home">
-            ← Day 79
+          <Link to="/day-083" className="day001-nav-btn day001-nav-home">
+            ← Day 83
           </Link>
-          <p className="day001-datetime">Thunder Day 80 · 22 Sep 2026</p>
-          <Link to="/day-081" className="day001-nav-btn day001-nav-next">
-            Day 81 →
+          <p className="day001-datetime">Thunder Day 84 · 26 Sep 2026</p>
+          <Link to="/day-085" className="day001-nav-btn day001-nav-next">
+            Day 85 →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>DevOps</span>
-              <span>Docker</span>
+              <span>Cloud</span>
+              <span>AWS</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 80 <span aria-hidden="true">⚡</span>
+                DAY 84 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">DOCKER FUNDAMENTALS</p>
+              <p className="day001-day-theme">AWS CLOUD BASICS</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -264,25 +264,25 @@ export default function Day080() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">DEVOPS</p>
+              <p className="day001-profile-role">AWS · CLOUD</p>
             </div>
           </div>
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '80%' }} />
+          <div className="day001-progress-bar" style={{ width: '84%' }} />
         </div>
 
         <p className="day001-summary">
-          Day eighty — <strong>Docker</strong> packages an app and its dependencies so it runs the
-          same everywhere. An <strong>image</strong> is the blueprint (built from a{' '}
-          <strong>Dockerfile</strong>) and a <strong>container</strong> is it running —{' '}
-          <code>docker build</code> then <code>docker run</code>. Map <strong>ports</strong>, persist{' '}
-          <strong>volumes</strong>, order layers for <strong>cache</strong>, push to a{' '}
-          <strong>registry</strong>, slim images with <strong>multi-stage</strong> builds, and manage
-          with <code>ps</code>/<code>logs</code>/<code>exec</code>. Reference:{' '}
+          Day eighty-four — the <strong>cloud</strong> gives on-demand compute and storage across
+          global <strong>regions</strong> and <strong>availability zones</strong>. The core AWS
+          services: <strong>EC2</strong> (virtual servers), <strong>S3</strong> (object storage),{' '}
+          <strong>IAM</strong> (least-privilege access), and <strong>VPC</strong> (private
+          networking) — plus <strong>RDS</strong> and <strong>Lambda</strong>. It’s{' '}
+          <strong>pay-as-you-go</strong> with a free tier, under a <strong>shared responsibility</strong>{' '}
+          model. Reference:{' '}
           <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Docker docs
+            AWS getting started
           </a>
           .
         </p>
@@ -306,15 +306,15 @@ export default function Day080() {
           </ul>
         </section>
 
-        <CardSection icon="🐳" title="CONTAINERS" cards={CONTAINERS} columns={4} />
-        <CardSection icon="🛠️" title="IN PRACTICE" cards={PRACTICE} columns={3} />
-        <CardSection icon="📚" title="DOCKER RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="☁️" title="CORE SERVICES" cards={CORE} columns={4} />
+        <CardSection icon="🧩" title="MORE & THE MODEL" cards={MORE} columns={3} />
+        <CardSection icon="📚" title="AWS RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
+          <span>#Cloud</span>
+          <span>#AWS</span>
           <span>#DevOps</span>
-          <span>#Docker</span>
-          <span>#Containers</span>
           <span>#Thunder</span>
         </footer>
       </div>

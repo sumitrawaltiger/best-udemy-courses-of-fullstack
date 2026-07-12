@@ -2,139 +2,140 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://docs.docker.com/get-started/';
-const PLAY_URL = 'https://labs.play-with-docker.com/';
+const DOCS_URL =
+  'https://www.atlassian.com/continuous-delivery/principles/continuous-integration-vs-delivery-vs-deployment';
+const KODEKLOUD_URL = 'https://kodekloud.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'Why Docker',
-    text: 'ends "works on my machine" with reproducible envs',
+    title: 'CI',
+    text: 'integrate and test on every push, automatically',
   },
   {
-    title: 'Image vs container',
-    text: 'a blueprint vs a running instance of it',
+    title: 'CD',
+    text: 'deliver (to staging) or deploy (to prod) automatically',
   },
   {
-    title: 'Dockerfile',
-    text: 'the recipe that builds an image',
+    title: 'Pipeline stages',
+    text: 'build → test → deploy, in order',
   },
   {
-    title: 'build & run',
-    text: 'docker build then docker run',
+    title: 'Fail fast',
+    text: 'catch problems in the earliest stage',
   },
   {
-    title: 'Ports',
-    text: '-p host:container maps a port',
+    title: 'Artifacts',
+    text: 'build once, promote the same artifact onward',
   },
   {
-    title: 'Volumes',
-    text: '-v persists data outside the container',
+    title: 'Environments',
+    text: 'dev → staging → production',
   },
   {
-    title: 'Layers & cache',
-    text: 'order Dockerfile steps for fast rebuilds',
+    title: 'Automated tests',
+    text: 'the gate that must pass to proceed',
   },
   {
-    title: 'Registry',
-    text: 'push/pull images from Docker Hub',
+    title: 'Rollback',
+    text: 'revert quickly when a deploy goes wrong',
   },
   {
-    title: 'Multi-stage',
-    text: 'build then copy — small final images',
+    title: 'Secrets',
+    text: 'injected at runtime, never committed',
   },
   {
-    title: 'Manage',
-    text: 'docker ps / logs / exec',
+    title: 'Tools',
+    text: 'GitHub Actions, GitLab CI, Jenkins',
   },
 ];
 
-const CONTAINERS = [
+const CI = [
   {
-    icon: '🐳',
-    title: 'Why Docker',
+    icon: '🔄',
+    title: 'Continuous Integration',
     titleClass: 'card-title-cyan',
-    subtitle: 'consistency',
-    description: 'Package the app + its deps so it runs the same everywhere.',
-    code: '// same image on laptop, CI, and prod\n// no "but it worked locally"',
+    subtitle: 'merge often',
+    description: 'Every push triggers an automated build and test run.',
+    code: 'push → checkout → install → lint → test\n// broken build blocks the merge',
   },
   {
-    icon: '🖼️',
-    title: 'Image vs Container',
+    icon: '🪜',
+    title: 'Pipeline Stages',
     titleClass: 'card-title-green',
-    subtitle: 'blueprint vs run',
-    description: 'An image is a template; a container is it, running.',
-    code: 'image     → docker run → container\n// many containers from one image',
+    subtitle: 'in sequence',
+    description: 'A pipeline runs ordered stages; a failure stops it.',
+    code: 'build → test → package → deploy\n// each stage gates the next',
   },
   {
-    icon: '📜',
-    title: 'Dockerfile',
+    icon: '⚡',
+    title: 'Fail Fast',
     titleClass: 'card-title-amber',
-    subtitle: 'the recipe',
-    description: 'Declare the base, deps, code, and start command.',
-    code: 'FROM node:20-slim\nWORKDIR /app\nCOPY . . && RUN npm ci\nCMD ["node", "server.js"]',
+    subtitle: 'early feedback',
+    description: 'Cheap, fast checks first so failures surface quickly.',
+    code: 'lint + unit tests (seconds)\nthen slower integration/e2e',
   },
   {
-    icon: '▶️',
-    title: 'Build & Run',
+    icon: '📦',
+    title: 'Artifacts',
     titleClass: 'card-title-pink',
-    subtitle: 'two commands',
-    description: 'Build the image, then run a container from it.',
-    code: 'docker build -t myapp .\ndocker run -d -p 3000:3000 myapp',
+    subtitle: 'build once',
+    description: 'Build a single artifact/image and promote it through envs.',
+    code: 'build image :sha → test it → deploy the SAME image\n// never rebuild per environment',
   },
 ];
 
-const PRACTICE = [
+const CD = [
   {
-    icon: '🔌',
-    title: 'Ports & Volumes',
+    icon: '🚚',
+    title: 'Delivery vs Deployment',
     titleClass: 'card-title-cyan',
-    subtitle: 'connect + persist',
-    description: 'Expose ports and keep data across container restarts.',
-    code: '-p 8080:80        # map a port\n-v data:/var/lib   # persist a volume',
+    subtitle: 'the difference',
+    description: 'Delivery = ready to release; deployment = auto to prod.',
+    code: 'CDelivery : one click to prod\nCDeployment: every green build → prod',
   },
   {
-    icon: '🧱',
-    title: 'Layers & Registry',
+    icon: '🌍',
+    title: 'Environments',
     titleClass: 'card-title-green',
-    subtitle: 'cache + share',
-    description: 'Cache-friendly layers; push images to a registry.',
-    code: '// COPY package.json first → cache npm ci\ndocker push user/myapp:1.0',
+    subtitle: 'promote',
+    description: 'Move a build through dev → staging → production.',
+    code: 'merge → staging (auto)\napprove → production',
   },
   {
-    icon: '🛠️',
-    title: 'Manage Containers',
+    icon: '↩️',
+    title: 'Rollback & Secrets',
     titleClass: 'card-title-amber',
-    subtitle: 'inspect',
-    description: 'List, read logs, and shell into running containers.',
-    code: 'docker ps · docker logs -f <id>\ndocker exec -it <id> sh',
+    subtitle: 'safety',
+    description: 'Revert bad deploys fast; inject secrets securely.',
+    code: 'redeploy previous image on failure\nsecrets from the CI vault, not git',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'Docker Get Started',
+    title: 'CI vs CD vs CD',
     titleClass: 'card-title-green',
-    subtitle: 'Official docs',
-    description: 'Docker’s official getting-started guide — images and containers.',
+    subtitle: 'Atlassian guide',
+    description: 'Atlassian’s clear explainer on integration, delivery, and deployment.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '🧪',
-    title: 'Play with Docker',
+    title: 'KodeKloud',
     titleClass: 'card-title-purple',
-    subtitle: 'Try it live',
-    description: 'A free in-browser Docker playground — no local install needed.',
-    link: { href: PLAY_URL, label: 'Open the playground →', external: true },
+    subtitle: 'Hands-on labs',
+    description: 'Practice real CI/CD and DevOps pipelines in KodeKloud labs.',
+    link: { href: KODEKLOUD_URL, label: 'Open KodeKloud →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Docker Tutorial',
+    title: 'CI/CD Explained',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'The Only Docker Tutorial You Need To Get Started by The Coding Sloth — for Day 80.',
+    description: 'DevOps CI/CD Explained in 100 Seconds by Fireship — supplement for Day 82.',
     link: {
-      href: 'https://www.youtube.com/watch?v=DQdB7wFEygo',
+      href: 'https://www.youtube.com/watch?v=scEDHsr3APg',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +187,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day080() {
+export default function Day082() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +232,12 @@ export default function Day080() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-079" className="day001-nav-btn day001-nav-home">
-            ← Day 79
+          <Link to="/day-081" className="day001-nav-btn day001-nav-home">
+            ← Day 81
           </Link>
-          <p className="day001-datetime">Thunder Day 80 · 22 Sep 2026</p>
-          <Link to="/day-081" className="day001-nav-btn day001-nav-next">
-            Day 81 →
+          <p className="day001-datetime">Thunder Day 82 · 24 Sep 2026</p>
+          <Link to="/day-083" className="day001-nav-btn day001-nav-next">
+            Day 83 →
           </Link>
         </header>
 
@@ -244,14 +245,14 @@ export default function Day080() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>DevOps</span>
-              <span>Docker</span>
+              <span>CI/CD</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 80 <span aria-hidden="true">⚡</span>
+                DAY 82 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">DOCKER FUNDAMENTALS</p>
+              <p className="day001-day-theme">CI/CD PIPELINES</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,19 +271,19 @@ export default function Day080() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '80%' }} />
+          <div className="day001-progress-bar" style={{ width: '82%' }} />
         </div>
 
         <p className="day001-summary">
-          Day eighty — <strong>Docker</strong> packages an app and its dependencies so it runs the
-          same everywhere. An <strong>image</strong> is the blueprint (built from a{' '}
-          <strong>Dockerfile</strong>) and a <strong>container</strong> is it running —{' '}
-          <code>docker build</code> then <code>docker run</code>. Map <strong>ports</strong>, persist{' '}
-          <strong>volumes</strong>, order layers for <strong>cache</strong>, push to a{' '}
-          <strong>registry</strong>, slim images with <strong>multi-stage</strong> builds, and manage
-          with <code>ps</code>/<code>logs</code>/<code>exec</code>. Reference:{' '}
+          Day eighty-two — automate the path from commit to production.{' '}
+          <strong>CI</strong> builds and tests on every push (fail fast on cheap checks);{' '}
+          <strong>CD</strong> then delivers or deploys automatically. A <strong>pipeline</strong>{' '}
+          runs ordered stages — build → test → deploy — producing one <strong>artifact</strong> that
+          is promoted through <strong>dev → staging → prod</strong>. Add automated{' '}
+          <strong>tests</strong> as the gate, fast <strong>rollback</strong>, and injected{' '}
+          <strong>secrets</strong>. Reference:{' '}
           <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Docker docs
+            CI vs CD guide
           </a>
           .
         </p>
@@ -306,15 +307,15 @@ export default function Day080() {
           </ul>
         </section>
 
-        <CardSection icon="🐳" title="CONTAINERS" cards={CONTAINERS} columns={4} />
-        <CardSection icon="🛠️" title="IN PRACTICE" cards={PRACTICE} columns={3} />
-        <CardSection icon="📚" title="DOCKER RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="🔄" title="CONTINUOUS INTEGRATION" cards={CI} columns={4} />
+        <CardSection icon="🚚" title="CONTINUOUS DELIVERY" cards={CD} columns={3} />
+        <CardSection icon="📚" title="CI/CD RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#DevOps</span>
-          <span>#Docker</span>
-          <span>#Containers</span>
+          <span>#CICD</span>
+          <span>#Pipelines</span>
           <span>#Thunder</span>
         </footer>
       </div>
