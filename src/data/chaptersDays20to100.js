@@ -2341,7 +2341,8 @@ export const chaptersDays20to100 = [
       "Non-functional requirements",
       "Back-of-envelope math",
       "HLD diagrams",
-      "API design"
+      "API design",
+      "Rollback strategy"
     ],
     "sections": [
       {
@@ -2367,6 +2368,13 @@ export const chaptersDays20to100 = [
         "title": "HLD diagrams",
         "content": "Learn **HLD diagrams** in Day 48 of Thunder: 100 Days of Code. Requirements, estimation, and high-level diagrams",
         "tryIt": "console.log(\"Day 48: System Design Fundamentals\");"
+      },
+      {
+        "id": "rollback-strategy",
+        "title": "Rollback Strategy",
+        "content": "The fastest rollback strategy is to **decouple deployment from release** using **feature flags**. You deploy new code to 100% of servers but keep the feature dark behind a flag, then release gradually and roll back instantly if something breaks.\n\n**How it works:**\n- **Deploy ≠ release** — CI/CD ships the code to all app servers, but the new path stays behind a flag (e.g. `rollout = 5%`).\n- **Feature flag service** (LaunchDarkly, Unleash, Redis) is the central place to manage flags and rollout rules; every request checks it.\n- **Progressive rollout** — eligible users (5%) get the new checkout, everyone else (95%) gets the old one. Eligibility uses rules like user-ID hashing, country, device, or user segment.\n- **Monitor everything** — Prometheus, Grafana, and Sentry track health and business metrics continuously.\n- **Ramp or roll back** — if healthy, increase 5% → 25% → 50% → 100%; if an error spike is detected, **flip the flag OFF** and every user instantly falls back to the old path — no redeploy needed.\n\n**Key takeaways:** deploy to 100% of servers, release gradually with feature flags, monitor everything, and roll back instantly by flipping a flag. Other strategies — redeploying the previous version, blue-green switchover, or aborting a canary — are slower because they need a fresh deploy or traffic shift.",
+        "image": "/system-design-notes/feature-flag-rollback.jpg",
+        "imageAlt": "Feature-flag rollback strategy — deploy to 100% of servers behind a flag, read the flag per request via a feature flag service, roll out progressively (5% → 25% → 50% → 100%) with eligibility rules, monitor with Prometheus/Grafana/Sentry, and instantly roll back by flipping the flag OFF on an error spike"
       }
     ],
     "quiz": [
