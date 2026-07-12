@@ -302,6 +302,14 @@ const PYTHON_DATA_STRUCTURES_SECTIONS = [
     code: "# normal way vs comprehension\nnumbers = [i for i in range(1, 6)]\nsquares = [i * i for i in range(1, 6)]\neven_numbers = [i for i in range(1, 11) if i % 2 == 0]\n\nnames = [\"ravi\", \"sita\", \"kiran\"]\nupper_names = [name.upper() for name in names]\n\nmarks = [80, 30, 90, 45, 20]\nresults = [\"Pass\" if mark >= 35 else \"Fail\" for mark in marks]\n\nprices = [1000, 2000, 5000]\nprice_with_gst = [price + (price * 18 / 100) for price in prices]\nprint(numbers, squares, even_numbers, results, price_with_gst)",
   },
   {
+    id: "zip-function",
+    title: "zip() — Pairing Iterables Together",
+    content: "**zip()** pairs related items from multiple iterables together while looping — cleaner code with **no manual indexing** and **no range(len())**. Think of it like a **zipper**: one item from list A + one item from list B = one pair.\n\n- **Loop through multiple lists at once** without indexes.\n- **Convert to a list** of tuples with `list(zip(...))`.\n- **Build a dictionary** with `dict(zip(keys, values))`.\n- **Important rule:** `zip()` stops at the **shortest** iterable — extra items in the longer list are ignored.\n\nGreat for reports, data cleaning, CSV processing, API formatting, and automation. Interview-ready line: *zip() combines multiple iterables element by element, making parallel iteration cleaner and more readable.*",
+    code: "names = [\"Alex\", \"Sam\", \"Mia\"]\nscores = [85, 92, 78]\n\n# loop over both lists together\nfor name, score in zip(names, scores):\n    print(name, score)\n\n# convert to a list of pairs\npairs = list(zip(names, scores))\n# [(\"Alex\", 85), (\"Sam\", 92), (\"Mia\", 78)]\n\n# build a dictionary\nstudent_scores = dict(zip(names, scores))\n# {\"Alex\": 85, \"Sam\": 92, \"Mia\": 78}\n\n# zip() stops at the shortest list\na = [1, 2, 3]\nb = [10, 20]\nprint(list(zip(a, b)))   # [(1, 10), (2, 20)] -> 3 is ignored",
+    image: "/python-notes/python-zip-explained.jpg",
+    imageAlt: "Python zip() explained simply — zip() pairs related items together while looping: pairs items, loops through multiple lists at once (no manual indexing, no range(len)), works like a zipper, real output, convert to a list, build dictionaries, stops at the shortest list, and real-project use cases",
+  },
+  {
     id: "what-is-a-tuple",
     title: "What is a Tuple?",
     content: "A **tuple** stores multiple values in a single variable — similar to a list, but **immutable** (cannot be changed). Tuples are **ordered**, **allow duplicates**, can store different data types, are **faster than lists**, and are used to store **fixed data**.\n\nSyntax: `my_tuple = (value1, value2, value3)`",
