@@ -1921,8 +1921,10 @@ export const chaptersDays20to100 = [
       {
         "id": "redis-basics",
         "title": "Redis basics",
-        "content": "Learn **Redis basics** in Day 42 of Thunder: 100 Days of Code. In-memory caching, TTL, and cache strategies",
-        "tryIt": "console.log(\"Day 42: Caching with Redis\");"
+        "content": "**Redis** (REmote DIctionary Server) is an **in-memory data store** — it keeps data in RAM, which makes it extremely fast (**microsecond latency**).\n\n**Data structures** — Redis is more than key-value: **String, Hash, List, Set, Sorted Set, Stream, Bitmap,** and **HyperLogLog** — different structures for different use cases.\n\n**Common use cases:**\n- **Caching** — store frequently accessed data (product details, user profiles).\n- **Session storage** — share user sessions across multiple servers.\n- **Rate limiting** — track and limit requests per user or IP.\n- **Leaderboards** — Sorted Sets rank users efficiently.\n- **Pub/Sub messaging** — publish and subscribe to channels.\n- **API response cache** — cache API responses to reduce DB load.\n\n**Redis vs a database:** Redis is in-memory (microseconds), optionally persistent (RDB / AOF), and holds frequently accessed data; a database is on disk (milliseconds), persistent, and is the **source of truth**. **Redis does not replace your database** — it complements it: on a request, check the cache first; a **HIT** returns from Redis, a **MISS** fetches from the DB and updates Redis.\n\nUsed in production by Netflix, Discord, GitHub, Pinterest, Stack Overflow, and Shopify.\n\n*Infographic by Vishwanath Patil (@patilvishi).*",
+        "tryIt": "console.log(\"Day 42: Caching with Redis\");",
+        "image": "/redis-notes/redis-explained.jpg",
+        "imageAlt": "Redis Explained — in-memory data store; data structures (String, Hash, List, Set, Sorted Set, Stream, Bitmap, HyperLogLog); use cases (caching, sessions, rate limiting, leaderboards, pub/sub, API cache); Redis vs database; cache hit/miss flow; and where Redis fits between the application and the database"
       },
       {
         "id": "cache-aside-pattern",
