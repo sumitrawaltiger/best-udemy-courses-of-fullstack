@@ -2342,7 +2342,8 @@ export const chaptersDays20to100 = [
       "Back-of-envelope math",
       "HLD diagrams",
       "API design",
-      "Rollback strategy"
+      "Rollback strategy",
+      "Software testing strategies"
     ],
     "sections": [
       {
@@ -2375,6 +2376,13 @@ export const chaptersDays20to100 = [
         "content": "The fastest rollback strategy is to **decouple deployment from release** using **feature flags**. You deploy new code to 100% of servers but keep the feature dark behind a flag, then release gradually and roll back instantly if something breaks.\n\n**How it works:**\n- **Deploy ≠ release** — CI/CD ships the code to all app servers, but the new path stays behind a flag (e.g. `rollout = 5%`).\n- **Feature flag service** (LaunchDarkly, Unleash, Redis) is the central place to manage flags and rollout rules; every request checks it.\n- **Progressive rollout** — eligible users (5%) get the new checkout, everyone else (95%) gets the old one. Eligibility uses rules like user-ID hashing, country, device, or user segment.\n- **Monitor everything** — Prometheus, Grafana, and Sentry track health and business metrics continuously.\n- **Ramp or roll back** — if healthy, increase 5% → 25% → 50% → 100%; if an error spike is detected, **flip the flag OFF** and every user instantly falls back to the old path — no redeploy needed.\n\n**Key takeaways:** deploy to 100% of servers, release gradually with feature flags, monitor everything, and roll back instantly by flipping a flag. Other strategies — redeploying the previous version, blue-green switchover, or aborting a canary — are slower because they need a fresh deploy or traffic shift.",
         "image": "/system-design-notes/feature-flag-rollback.jpg",
         "imageAlt": "Feature-flag rollback strategy — deploy to 100% of servers behind a flag, read the flag per request via a feature flag service, roll out progressively (5% → 25% → 50% → 100%) with eligibility rules, monitor with Prometheus/Grafana/Sentry, and instantly roll back by flipping the flag OFF on an error spike"
+      },
+      {
+        "id": "software-testing-strategies",
+        "title": "Software Testing Strategies",
+        "content": "A system is only as reliable as the tests protecting it. The main types of software testing every engineer should know:\n\n- **Unit Testing** — validates individual components in isolation.\n- **Integration Testing** — ensures components work correctly together.\n- **System Testing** — evaluates the complete system against requirements.\n- **Load Testing** — measures performance under expected & peak load.\n- **Error Testing** — verifies behavior with invalid or unexpected inputs.\n- **Test Automation** — automates test execution for speed & consistency.\n- **Regression Testing** — ensures changes do not break existing functionality.\n- **UAT (User Acceptance Testing)** — confirms the system meets user expectations.\n- **Black Box Testing** — validates behavior using inputs & outputs only.\n- **White Box Testing** — tests internal logic, paths, & code structure.\n- **Exploratory Testing** — finds issues through experience-driven testing.\n- **Boundary Testing** — tests values at the limits of input ranges.\n\n*Infographic by Neo Kim (newsletter.systemdesign.one).*",
+        "image": "/system-design-notes/software-testing-types.jpg",
+        "imageAlt": "12 Types of System Testing for Software Engineers — Unit, Integration, System, Load, Error, Test Automation, Regression, UAT, Black Box, White Box, Exploratory, and Boundary testing"
       }
     ],
     "quiz": [
