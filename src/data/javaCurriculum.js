@@ -330,6 +330,15 @@ const SPRING_DATA_JPA_SECTIONS = [
     image: '/java-notes/optimistic-vs-pessimistic-locking.jpg',
     imageAlt: 'Optimistic vs Pessimistic Locking sequence diagrams — optimistic uses a version column with conflict-at-commit and retry; pessimistic locks the row so the second writer waits',
   },
+  {
+    id: 'sql-group-by-having',
+    title: 'SQL: GROUP BY & HAVING',
+    content:
+      "Working with the database behind JPA — whether via JPQL, native queries, or `@Query` — means knowing SQL aggregation. **GROUP BY** groups rows that have the same values into summary rows; **HAVING** filters those grouped results based on a condition.\n\n**GROUP BY vs HAVING:**\n- **GROUP BY** groups rows with the same values, is used after `WHERE` and before `HAVING`, works on individual rows, and is paired with aggregate functions.\n- **HAVING** filters the grouped results, is used after `GROUP BY`, and works on groups (aggregate results).\n\n**Key rule:** **`WHERE` filters *before* grouping; `HAVING` filters *after* grouping.** Always use an aggregate function with `GROUP BY`.\n\n**Common aggregate functions:** `COUNT()` (number of rows), `SUM()` (total), `AVG()` (average), `MIN()`, and `MAX()`.\n\nThis is the backbone of reporting, analytics, and dashboards. Example goal on a `sales(sale_id, product, category, region, amount, sale_date)` table: find total sales by category and show only those above 10000.",
+    code: "-- 1. Total sales by category\nSELECT category, SUM(amount) AS total_sales\nFROM sales\nGROUP BY category;\n\n-- 2. Categories with total sales > 10000  (HAVING filters the groups)\nSELECT category, SUM(amount) AS total_sales\nFROM sales\nGROUP BY category\nHAVING SUM(amount) > 10000;\n\n-- 3. WHERE filters rows first, then GROUP BY + HAVING on the groups\nSELECT region, SUM(amount) AS total_sales\nFROM sales\nWHERE sale_date >= '2024-06-01' AND sale_date < '2024-07-01'\nGROUP BY region\nHAVING SUM(amount) > 10000;",
+    image: '/java-notes/sql-group-by-having.jpg',
+    imageAlt: 'SQL GROUP BY & HAVING for data engineers — GROUP BY groups rows into summary rows, HAVING filters the grouped results, WHERE filters before grouping while HAVING filters after, common aggregate functions (COUNT, SUM, AVG, MIN, MAX), and sales-table query examples with sample results',
+  },
 ];
 
 // Module 34 — Spring Security Basics
