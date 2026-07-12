@@ -312,6 +312,22 @@
   color: #c9d1d9;
   white-space: pre;
 }
+.iq-answer-image {
+  display: block;
+  margin: 14px 0 0;
+  border: 1px solid var(--iq-line);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+.iq-answer-image:hover {
+  border-color: var(--iq-accent, #58a6ff);
+}
+.iq-answer-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 
 /* Empty + footer */
 .iq-empty {

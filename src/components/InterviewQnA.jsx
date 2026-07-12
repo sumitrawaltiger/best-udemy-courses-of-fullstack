@@ -46,6 +46,16 @@ function QuestionItem({ item, index, categories, isOpen, onToggle }) {
         <div className="iq-answer">
           <p className="iq-answer-text">{renderAnswer(item.answer)}</p>
           {item.code && <pre className="iq-code">{item.code}</pre>}
+          {item.image && (
+            <a
+              href={item.image}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="iq-answer-image"
+            >
+              <img src={item.image} alt={item.imageAlt || item.question} loading="lazy" />
+            </a>
+          )}
         </div>
       )}
     </article>
