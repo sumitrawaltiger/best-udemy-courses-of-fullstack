@@ -1110,6 +1110,17 @@ export const pythonLessons = [
     image: '/python-notes/agentic-ai-big-picture.jpg',
     imageAlt: 'Agentic AI: The Big Picture — AI & ML, Deep Learning, Gen AI, AI Agents, and Agentic AI concentric map',
     youtube: yt('https://www.youtube.com/watch?v=sal78ACtGTc', 'Agentic AI Explained', 'IBM Technology'),
+    sections: [
+      {
+        id: 'agentic-ai-roadmap-2025',
+        title: 'Agentic AI Roadmap 2025',
+        content:
+          "A complete field map for becoming an Agentic AI engineer in 2025 — the 11 areas to learn, roughly in order:\n\n1. **Programming & Prompting** — Python / JS / TS, scripting & automation, and prompting concepts (chain-of-thought, multi-agent, reflection, task-planning).\n2. **Basics of AI Agents** — agent architectures (ReAct, CAMEL, AutoGPT), **MCP** & **A2A** protocols, goal decomposition, planning and feedback loops.\n3. **LLMs & APIs** — OpenAI, Claude, Gemini, Mistral, open-source LLMs, function calling and output parsing.\n4. **Tool Use & Integration** — tool systems, memory integration, external APIs, file/search/code-interpreter tools.\n5. **Agent Frameworks** — LangChain, AutoGen, CrewAI, LlamaIndex, Semantic Kernel, Haystack.\n6. **Orchestration & Automation** — LangGraph, n8n, Make, Zapier, DAGs, guardrails, conditional workflows.\n7. **Memory Management** — short / long / episodic memory and vector stores (Pinecone, Weaviate, Chroma, FAISS).\n8. **Knowledge & RAG** — retrieval-augmented generation, embeddings, indexing, query refinement, hybrid search.\n9. **Deployment** — FastAPI / Streamlit / Gradio, serverless, Docker, Kubernetes, agent hosting.\n10. **Monitoring & Evaluation** — LangSmith, logging / tracing, auto-eval loops, dashboards.\n11. **Security & Governance** — prompt-injection protection, API-key management, RBAC, red-teaming, compliance.\n\n*Roadmap by Brij Kishore Pandey (@brijpandeyji).*",
+        image: '/python-notes/agentic-ai-roadmap-2025.jpg',
+        imageAlt:
+          'Agentic AI Roadmap 2025 — 11 areas: Programming & Prompting, Basics of AI Agents, LLMs & APIs, Tool Use & Integration, Agent Frameworks, Orchestration & Automation, Memory Management, Knowledge & RAG, Deployment, Monitoring & Evaluation, and Security & Governance',
+      },
+    ],
   },
   {
     pyDay: 44,
