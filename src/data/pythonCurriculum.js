@@ -802,7 +802,18 @@ export const pythonLessons = [
     topics: ['Classes & objects', 'Inheritance', 'Polymorphism', 'Encapsulation', 'Abstraction'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=Ej_02ICOIgs', 'Python OOP', 'Corey Schafer'),
-    sections: PYTHON_OOP_SECTIONS,
+    sections: [
+      ...PYTHON_OOP_SECTIONS,
+      {
+        id: 'unit-testing-project-structure',
+        title: 'Unit Testing & Project Structure',
+        content:
+          "Once you can write code, the next step to real-world Python is **testing it** and **structuring the project** so it stays maintainable.\n\n**Why testing matters** — it catches bugs early, prevents regressions, supports refactoring, documents expected behavior, and improves confidence. Tests are your safety net for future changes.\n\n**Unit testing basics** — test small units of code in isolation, use assertions to verify behavior, and follow the **AAA pattern**: **Arrange** (set up data & preconditions), **Act** (execute the code), **Assert** (verify the result). Keep tests fast, reliable, and repeatable.\n\n**pytest** — simple, powerful, and flexible: zero boilerplate for test discovery, rich output and fixtures, parametrization and markers, and a great plugin ecosystem. Run with `pytest -v -ra --cov=your_package`.\n\n**Project folder structure** — `src/your_package/` for source code, `tests/` where all tests live, plus config & metadata files: `pyproject.toml`, `README.md`, `.gitignore`, `.env.example`, and `requirements.txt`.\n\n**Config & environment files** — `.env` (local env vars, not committed), `.env.example` (template for contributors), `pyproject.toml` (project metadata + tool config for black, isort, pytest), `requirements.txt` (dependencies), and `.gitignore`. Use **python-dotenv** to load `.env`, keep secrets out of version control, and pin dependencies for stability.\n\n**Best practices** — write tests before or with code (TDD mindset), keep tests independent and isolated, use descriptive names, aim for high coverage on critical logic, use fixtures & factory functions, mock external services & I/O, and keep tests deterministic. Good tests = living documentation.\n\n**Common mistakes** — writing no tests, tests that depend on each other, slow/flaky tests, testing implementation instead of behavior, ignoring edge cases, skipping CI/CD, and hardcoding config & secrets.\n\n**Trade-offs vs benefits** — the cost is some initial time investment, more upfront planning, and a learning curve; the payoff is a lower bug count, easier refactoring, faster onboarding, confident releases, and long-term time savings. Quality today → stability tomorrow.",
+        code: "# tests/test_module.py\nimport pytest\nfrom my_project.module import add\n\ndef test_add_positive():\n    assert add(2, 3) == 5\n\n@pytest.mark.parametrize(\n    \"a,b,expected\",\n    [(0, 0, 0), (-1, 1, 0), (5, -2, 3)],\n)\ndef test_add_various(a, b, expected):\n    assert add(a, b) == expected\n\ndef test_add_type_error():\n    with pytest.raises(TypeError):\n        add(\"a\", 1)",
+        image: '/python-notes/python-testing-project-structure.jpg',
+        imageAlt: 'Testing and Real-World Project Structure in Python — problem statement, use cases, why testing matters, unit testing basics (AAA pattern), pytest overview, project folder structure, config & environment files, example test code, development workflow diagram, best practices, common mistakes, and trade-offs & maintainability benefits',
+      },
+    ],
   },
   {
     pyDay: 10,
