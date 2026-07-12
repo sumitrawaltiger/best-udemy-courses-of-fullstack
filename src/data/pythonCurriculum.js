@@ -774,6 +774,16 @@ export const pythonLessons = [
     topics: ['open() & read/write', 'with context manager', 'File paths', 'CSV & JSON files', 'os module'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=Uh2ebFW8OYM', 'Python File Handling', 'Corey Schafer'),
+    sections: [
+      {
+        id: 'file-handling-and-json',
+        title: 'File Handling & JSON in Python',
+        content:
+          "Reading, writing, storing, and exchanging structured data using files and JSON.\n\n**Opening & reading** — `with open('file.txt', 'r') as f:` then `f.read()` (whole file), loop `for line in f` (line by line), or `f.readlines()` (list of lines).\n\n**Writing** — `'w'` overwrites, `'a'` appends, and `f.writelines(lines)` writes many lines.\n\n**File modes** — `'r'` read (default), `'w'` write/truncate, `'a'` append, `'x'` create (fail if exists), `'b'` binary, `'t'` text (default), `'+'` read & write. Combine, e.g. `'rb'`, `'w+'`.\n\n**Always use `with open(...)`** — it opens the file safely and closes it automatically even if an error occurs.\n\n**JSON** (JavaScript Object Notation) — a lightweight, human-readable, language-independent, key-value format supporting nested objects and arrays. Write with `json.dump(data, f, indent=4)` (indent makes it pretty) and read with `data = json.load(f)`.\n\n**Real-world uses** — app settings/profiles, API data exchange, configuration files, data logging, and ETL pipelines.\n\n**Best practices** — use `with open(...)`, pick the right mode, `json.dump` with `indent`, handle exceptions with `try/except`, keep JSON keys consistent, and validate JSON before processing.\n\n**Common mistakes** — forgetting to close files (use `with`!), using `'w'` instead of `'a'` and losing data, not handling `FileNotFoundError`, assuming JSON is always valid, and writing binary data in text mode.",
+        image: '/python-notes/file-handling-and-json.jpg',
+        imageAlt: 'File Handling and JSON in Python — problem statement, use cases, opening & reading files, writing files, file modes, with open(), JSON basics, JSON read/write code examples, file workflow diagram, real-world use cases, best practices, and common mistakes & trade-offs',
+      },
+    ],
   },
   {
     pyDay: 8,
