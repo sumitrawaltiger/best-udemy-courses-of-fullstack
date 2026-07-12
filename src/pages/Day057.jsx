@@ -2,111 +2,113 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const PRIMER_URL = 'https://github.com/donnemartin/system-design-primer';
-const DOCS_URL = 'https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing';
+const PRIMER_URL =
+  'https://github.com/donnemartin/system-design-primer#availability-patterns';
+const DOCS_URL =
+  'https://github.com/donnemartin/system-design-primer#consistency-patterns';
 
 const LEARNT_TODAY = [
   {
-    title: 'Distributed system',
-    text: 'many nodes cooperating to look like one',
+    title: 'Strong consistency',
+    text: 'every read returns the latest write',
   },
   {
-    title: 'Why distribute',
-    text: 'scale, availability, and fault tolerance',
+    title: 'Eventual consistency',
+    text: 'replicas converge to the same value over time',
   },
   {
-    title: 'The fallacies',
-    text: 'the network is not reliable, fast, or free',
+    title: 'Read-your-writes',
+    text: 'you always see your own updates',
   },
   {
-    title: 'Partitions',
-    text: 'nodes lose contact and must cope',
+    title: 'Monotonic reads',
+    text: 'reads never go backwards in time',
   },
   {
-    title: 'Replication',
-    text: 'copies keep data available under failure',
+    title: 'Quorum',
+    text: 'R + W > N gives read-after-write consistency',
   },
   {
-    title: 'Consensus',
-    text: 'nodes agree on a value — Raft / Paxos',
+    title: 'Sync vs async replication',
+    text: 'wait for replicas, or fire-and-forget',
   },
   {
-    title: 'Consistency models',
-    text: 'strong vs eventual',
+    title: 'Failover',
+    text: 'promote a replica when the primary dies',
   },
   {
-    title: 'No global clock',
-    text: 'use logical clocks to order events',
+    title: 'Active-active vs passive',
+    text: 'both serve, or one waits as backup',
   },
   {
-    title: 'Idempotency',
-    text: 'retries are inevitable — design for them',
+    title: 'Conflict resolution',
+    text: 'last-write-wins, vector clocks, or CRDTs',
   },
   {
-    title: 'Failure is normal',
-    text: 'assume nodes and links will fail',
-  },
-];
-
-const BASICS = [
-  {
-    icon: '🌐',
-    title: 'What & Why',
-    titleClass: 'card-title-cyan',
-    subtitle: 'one from many',
-    description: 'Many machines act as one to scale and survive failures.',
-    code: '// one big box → a ceiling + a single point of failure\n// many nodes → scale + redundancy',
-  },
-  {
-    icon: '🕳️',
-    title: 'The Fallacies',
-    titleClass: 'card-title-green',
-    subtitle: 'wrong assumptions',
-    description: 'The network is unreliable, has latency, and can fail anytime.',
-    code: '// NOT true: reliable · zero latency ·\n// infinite bandwidth · secure · one admin',
-  },
-  {
-    icon: '💥',
-    title: 'Failure is Normal',
-    titleClass: 'card-title-amber',
-    subtitle: 'plan for it',
-    description: 'At scale, something is always down — design around it.',
-    code: 'retries + timeouts + idempotency\nhealth checks + automatic failover',
+    title: 'Pick per use case',
+    text: 'money → strong; feed → eventual',
   },
 ];
 
-const PROBLEMS = [
+const CONSISTENCY = [
   {
-    icon: '🧬',
-    title: 'Replication',
+    icon: '🎯',
+    title: 'Strong vs Eventual',
     titleClass: 'card-title-cyan',
-    subtitle: 'copies',
-    description: 'Multiple copies keep data available and reads fast.',
-    code: 'primary + replicas\n// trade freshness (lag) for availability',
+    subtitle: 'the spectrum',
+    description: 'Strong always shows the newest write; eventual catches up.',
+    code: 'strong  : slower, always correct\neventual: faster, briefly stale',
   },
   {
-    icon: '🤝',
-    title: 'Consensus',
+    icon: '👁️',
+    title: 'Client Guarantees',
     titleClass: 'card-title-green',
-    subtitle: 'agree on truth',
-    description: 'Nodes elect a leader and agree on an ordered log.',
-    code: 'Raft / Paxos → one agreed value\n// leader election + replicated log',
+    subtitle: 'session models',
+    description: 'Read-your-writes and monotonic reads keep UX sane.',
+    code: 'read-your-writes: see your own edits\nmonotonic reads : never see older data next',
   },
   {
-    icon: '🎚️',
-    title: 'Consistency Models',
+    icon: '🗳️',
+    title: 'Quorum',
     titleClass: 'card-title-amber',
-    subtitle: 'strong vs eventual',
-    description: 'Strong reads see the latest write; eventual converges later.',
-    code: 'strong  : always the newest (slower)\neventual: converges soon (faster, cheaper)',
+    subtitle: 'R + W > N',
+    description: 'Overlap read and write sets to guarantee freshness.',
+    code: 'N=3, W=2, R=2 → R + W (4) > N (3)\n// a read always overlaps the last write',
   },
   {
-    icon: '⏰',
-    title: 'Clocks & Ordering',
+    icon: '🔁',
+    title: 'Replication',
     titleClass: 'card-title-pink',
-    subtitle: 'no global time',
-    description: 'Wall clocks drift; logical clocks order events instead.',
-    code: 'Lamport / vector clocks\n// "happened-before" without a global clock',
+    subtitle: 'sync vs async',
+    description: 'Sync waits for replicas (safe); async is fast (may lose data).',
+    code: 'sync : ack after replicas write (durable)\nasync: ack immediately (can lose recent)',
+  },
+];
+
+const AVAILABILITY = [
+  {
+    icon: '🔀',
+    title: 'Failover',
+    titleClass: 'card-title-cyan',
+    subtitle: 'survive failure',
+    description: 'Detect a dead primary and promote a replica automatically.',
+    code: 'primary down → elect + promote replica\n// mind split-brain (fencing)',
+  },
+  {
+    icon: '🟰',
+    title: 'Active-Active / Passive',
+    titleClass: 'card-title-green',
+    subtitle: 'topology',
+    description: 'Both nodes serve, or one stands by to take over.',
+    code: 'active-active : both serve (scale + risk conflicts)\nactive-passive: one serves, one waits',
+  },
+  {
+    icon: '🧩',
+    title: 'Conflict Resolution',
+    titleClass: 'card-title-amber',
+    subtitle: 'reconcile',
+    description: 'Concurrent writes must be merged deterministically.',
+    code: 'LWW           : last-write-wins (simple, lossy)\nvector clocks / CRDTs: merge without loss',
   },
 ];
 
@@ -116,25 +118,25 @@ const RESOURCES = [
     title: 'System Design Primer',
     titleClass: 'card-title-purple',
     subtitle: 'GitHub reference',
-    description: 'system-design-primer — the distributed-systems building blocks.',
+    description: 'The availability patterns in system-design-primer — replication & failover.',
     link: { href: PRIMER_URL, label: 'Open on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'The 8 Fallacies',
+    title: 'Consistency Patterns',
     titleClass: 'card-title-green',
-    subtitle: 'Reference',
-    description: 'The fallacies of distributed computing — assumptions that bite everyone.',
-    link: { href: DOCS_URL, label: 'Open the page →', external: true },
+    subtitle: 'Primer section',
+    description: 'The consistency patterns section — weak, eventual, and strong.',
+    link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Distributed Systems',
+    title: 'Strong vs Eventual',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Distributed Systems Explained | System Design by ByteMonk — for Day 55.',
+    description: 'Data Consistency — Strong vs Eventual Consistency — by Shiran Afergan — for Day 57.',
     link: {
-      href: 'https://www.youtube.com/watch?v=IJWwfMyPu1c',
+      href: 'https://www.youtube.com/watch?v=WZqGS-wczaY',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +188,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day055() {
+export default function Day057() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +233,12 @@ export default function Day055() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-054" className="day001-nav-btn day001-nav-home">
-            ← Day 54
+          <Link to="/day-056" className="day001-nav-btn day001-nav-home">
+            ← Day 56
           </Link>
-          <p className="day001-datetime">Thunder Day 55 · 28 Aug 2026</p>
-          <Link to="/day-056" className="day001-nav-btn day001-nav-next">
-            Day 56 →
+          <p className="day001-datetime">Thunder Day 57 · 30 Aug 2026</p>
+          <Link to="/day-058" className="day001-nav-btn day001-nav-next">
+            Day 58 →
           </Link>
         </header>
 
@@ -249,9 +251,9 @@ export default function Day055() {
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 55 <span aria-hidden="true">⚡</span>
+                DAY 57 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">DISTRIBUTED SYSTEMS BASICS</p>
+              <p className="day001-day-theme">CONSISTENCY & AVAILABILITY PATTERNS</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,16 +272,18 @@ export default function Day055() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '55%' }} />
+          <div className="day001-progress-bar" style={{ width: '57%' }} />
         </div>
 
         <p className="day001-summary">
-          Day fifty-five — the theory under every design so far. A <strong>distributed system</strong>{' '}
-          makes many nodes act as one for scale and availability — but the network is unreliable (the{' '}
-          <strong>fallacies</strong>) and <strong>failure is normal</strong>. The core problems are{' '}
-          <strong>replication</strong>, <strong>consensus</strong> (Raft/Paxos), <strong>consistency
-          models</strong> (strong vs eventual), and <strong>ordering without a global clock</strong>{' '}
-          (logical clocks). This sets up tomorrow’s <strong>CAP theorem</strong>. Reference:{' '}
+          Day fifty-seven — the patterns that implement the CAP choice.{' '}
+          <strong>Consistency</strong> ranges from <strong>strong</strong> to{' '}
+          <strong>eventual</strong>, with session guarantees like{' '}
+          <strong>read-your-writes</strong> and <strong>monotonic reads</strong>, and{' '}
+          <strong>quorums</strong> (R + W &gt; N) for freshness.{' '}
+          <strong>Availability</strong> comes from <strong>replication</strong> (sync vs async),{' '}
+          <strong>failover</strong>, <strong>active-active/passive</strong> topologies, and{' '}
+          <strong>conflict resolution</strong> (LWW, vector clocks, CRDTs). Reference:{' '}
           <a href={PRIMER_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             system-design-primer
           </a>
@@ -305,15 +309,15 @@ export default function Day055() {
           </ul>
         </section>
 
-        <CardSection icon="🌐" title="THE BASICS" cards={BASICS} columns={3} />
-        <CardSection icon="🧠" title="CORE PROBLEMS" cards={PROBLEMS} columns={4} />
+        <CardSection icon="🎯" title="CONSISTENCY" cards={CONSISTENCY} columns={4} />
+        <CardSection icon="🟢" title="AVAILABILITY" cards={AVAILABILITY} columns={3} />
         <CardSection icon="📚" title="SYSTEM DESIGN RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#SystemDesign</span>
-          <span>#DistributedSystems</span>
-          <span>#Consensus</span>
+          <span>#Consistency</span>
+          <span>#Availability</span>
           <span>#Thunder</span>
         </footer>
       </div>

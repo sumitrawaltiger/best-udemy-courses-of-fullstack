@@ -2,111 +2,112 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const PRIMER_URL = 'https://github.com/donnemartin/system-design-primer';
-const DOCS_URL = 'https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing';
+const PRIMER_URL =
+  'https://github.com/donnemartin/system-design-primer#consistency-patterns';
+const DOCS_URL = 'https://en.wikipedia.org/wiki/CAP_theorem';
 
 const LEARNT_TODAY = [
   {
-    title: 'Distributed system',
-    text: 'many nodes cooperating to look like one',
+    title: 'CAP',
+    text: 'Consistency, Availability, Partition tolerance — pick two',
   },
   {
-    title: 'Why distribute',
-    text: 'scale, availability, and fault tolerance',
+    title: 'Partitions happen',
+    text: 'the network will split, so you really choose C vs A',
   },
   {
-    title: 'The fallacies',
-    text: 'the network is not reliable, fast, or free',
+    title: 'CP systems',
+    text: 'stay consistent, may reject requests during a partition',
   },
   {
-    title: 'Partitions',
-    text: 'nodes lose contact and must cope',
+    title: 'AP systems',
+    text: 'stay available, may return stale data',
   },
   {
-    title: 'Replication',
-    text: 'copies keep data available under failure',
+    title: 'Consistency (CAP)',
+    text: 'every read sees the most recent write',
   },
   {
-    title: 'Consensus',
-    text: 'nodes agree on a value — Raft / Paxos',
+    title: 'Availability',
+    text: 'every request gets a non-error response',
   },
   {
-    title: 'Consistency models',
-    text: 'strong vs eventual',
+    title: 'No CA in reality',
+    text: 'partition tolerance is mandatory at scale',
   },
   {
-    title: 'No global clock',
-    text: 'use logical clocks to order events',
+    title: 'PACELC',
+    text: 'else (no partition), trade latency vs consistency',
   },
   {
-    title: 'Idempotency',
-    text: 'retries are inevitable — design for them',
+    title: 'Examples',
+    text: 'CP: HBase, Mongo; AP: Cassandra, Dynamo',
   },
   {
-    title: 'Failure is normal',
-    text: 'assume nodes and links will fail',
-  },
-];
-
-const BASICS = [
-  {
-    icon: '🌐',
-    title: 'What & Why',
-    titleClass: 'card-title-cyan',
-    subtitle: 'one from many',
-    description: 'Many machines act as one to scale and survive failures.',
-    code: '// one big box → a ceiling + a single point of failure\n// many nodes → scale + redundancy',
-  },
-  {
-    icon: '🕳️',
-    title: 'The Fallacies',
-    titleClass: 'card-title-green',
-    subtitle: 'wrong assumptions',
-    description: 'The network is unreliable, has latency, and can fail anytime.',
-    code: '// NOT true: reliable · zero latency ·\n// infinite bandwidth · secure · one admin',
-  },
-  {
-    icon: '💥',
-    title: 'Failure is Normal',
-    titleClass: 'card-title-amber',
-    subtitle: 'plan for it',
-    description: 'At scale, something is always down — design around it.',
-    code: 'retries + timeouts + idempotency\nhealth checks + automatic failover',
+    title: 'Tunable',
+    text: 'many databases let you choose per operation',
   },
 ];
 
-const PROBLEMS = [
+const THEOREM = [
   {
-    icon: '🧬',
-    title: 'Replication',
+    icon: '🔺',
+    title: 'The CAP Triangle',
     titleClass: 'card-title-cyan',
-    subtitle: 'copies',
-    description: 'Multiple copies keep data available and reads fast.',
-    code: 'primary + replicas\n// trade freshness (lag) for availability',
+    subtitle: 'pick two',
+    description: 'A distributed store can guarantee at most two of the three.',
+    code: '      Consistency\n         /\\\n        /  \\\n Availability — Partition tolerance',
   },
   {
-    icon: '🤝',
-    title: 'Consensus',
+    icon: '🌩️',
+    title: 'Partitions Are Real',
     titleClass: 'card-title-green',
-    subtitle: 'agree on truth',
-    description: 'Nodes elect a leader and agree on an ordered log.',
-    code: 'Raft / Paxos → one agreed value\n// leader election + replicated log',
+    subtitle: 'the catch',
+    description: 'Networks fail, so P is a given — the real choice is C or A.',
+    code: '// with a partition you must pick:\n// stay Consistent  OR  stay Available',
   },
   {
-    icon: '🎚️',
-    title: 'Consistency Models',
+    icon: '⚖️',
+    title: 'CP vs AP',
     titleClass: 'card-title-amber',
-    subtitle: 'strong vs eventual',
-    description: 'Strong reads see the latest write; eventual converges later.',
-    code: 'strong  : always the newest (slower)\neventual: converges soon (faster, cheaper)',
+    subtitle: 'the decision',
+    description: 'CP rejects to stay correct; AP answers, possibly stale.',
+    code: 'CP: reject/wait → always correct (banking)\nAP: respond → maybe stale (feeds, carts)',
+  },
+];
+
+const BEYOND = [
+  {
+    icon: '🎯',
+    title: 'Consistency',
+    titleClass: 'card-title-cyan',
+    subtitle: 'latest write',
+    description: 'Every node returns the newest value — or an error.',
+    code: 'write X=2 → every read returns 2\n// no stale reads allowed',
   },
   {
-    icon: '⏰',
-    title: 'Clocks & Ordering',
+    icon: '🟢',
+    title: 'Availability',
+    titleClass: 'card-title-green',
+    subtitle: 'always answers',
+    description: 'Every request gets a response, even if not the freshest.',
+    code: 'read → always returns something\n// possibly an older value',
+  },
+  {
+    icon: '🧮',
+    title: 'PACELC',
+    titleClass: 'card-title-amber',
+    subtitle: 'the extension',
+    description: 'On Partition: A vs C. Else: Latency vs Consistency.',
+    code: 'if Partition: Availability vs Consistency\nElse:         Latency vs Consistency',
+  },
+  {
+    icon: '🎛️',
+    title: 'Tunable & Examples',
     titleClass: 'card-title-pink',
-    subtitle: 'no global time',
-    description: 'Wall clocks drift; logical clocks order events instead.',
-    code: 'Lamport / vector clocks\n// "happened-before" without a global clock',
+    subtitle: 'in the wild',
+    description: 'Real databases sit on a spectrum and are often tunable.',
+    code: 'CP: HBase, MongoDB (default)\nAP: Cassandra, DynamoDB (tunable N/R/W)',
   },
 ];
 
@@ -116,25 +117,25 @@ const RESOURCES = [
     title: 'System Design Primer',
     titleClass: 'card-title-purple',
     subtitle: 'GitHub reference',
-    description: 'system-design-primer — the distributed-systems building blocks.',
+    description: 'The consistency & availability patterns in system-design-primer.',
     link: { href: PRIMER_URL, label: 'Open on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'The 8 Fallacies',
+    title: 'CAP Theorem',
     titleClass: 'card-title-green',
     subtitle: 'Reference',
-    description: 'The fallacies of distributed computing — assumptions that bite everyone.',
+    description: 'The CAP theorem explained — the formal statement and consequences.',
     link: { href: DOCS_URL, label: 'Open the page →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Distributed Systems',
+    title: 'Intro to CAP',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Distributed Systems Explained | System Design by ByteMonk — for Day 55.',
+    description: 'A Friendly Intro to the CAP Theorem by Studying With Alex — for Day 56.',
     link: {
-      href: 'https://www.youtube.com/watch?v=IJWwfMyPu1c',
+      href: 'https://www.youtube.com/watch?v=gkg-FAEXIkY',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +187,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day055() {
+export default function Day056() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +232,12 @@ export default function Day055() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-054" className="day001-nav-btn day001-nav-home">
-            ← Day 54
+          <Link to="/day-055" className="day001-nav-btn day001-nav-home">
+            ← Day 55
           </Link>
-          <p className="day001-datetime">Thunder Day 55 · 28 Aug 2026</p>
-          <Link to="/day-056" className="day001-nav-btn day001-nav-next">
-            Day 56 →
+          <p className="day001-datetime">Thunder Day 56 · 29 Aug 2026</p>
+          <Link to="/day-057" className="day001-nav-btn day001-nav-next">
+            Day 57 →
           </Link>
         </header>
 
@@ -249,9 +250,9 @@ export default function Day055() {
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 55 <span aria-hidden="true">⚡</span>
+                DAY 56 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">DISTRIBUTED SYSTEMS BASICS</p>
+              <p className="day001-day-theme">CAP THEOREM & CONSISTENCY</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,16 +271,17 @@ export default function Day055() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '55%' }} />
+          <div className="day001-progress-bar" style={{ width: '56%' }} />
         </div>
 
         <p className="day001-summary">
-          Day fifty-five — the theory under every design so far. A <strong>distributed system</strong>{' '}
-          makes many nodes act as one for scale and availability — but the network is unreliable (the{' '}
-          <strong>fallacies</strong>) and <strong>failure is normal</strong>. The core problems are{' '}
-          <strong>replication</strong>, <strong>consensus</strong> (Raft/Paxos), <strong>consistency
-          models</strong> (strong vs eventual), and <strong>ordering without a global clock</strong>{' '}
-          (logical clocks). This sets up tomorrow’s <strong>CAP theorem</strong>. Reference:{' '}
+          Day fifty-six — the <strong>CAP theorem</strong>: a distributed store gives at most two of{' '}
+          <strong>Consistency</strong>, <strong>Availability</strong>, and{' '}
+          <strong>Partition tolerance</strong>. Since partitions are inevitable, the real choice is{' '}
+          <strong>CP</strong> (reject to stay correct — banking) vs <strong>AP</strong> (answer,
+          maybe stale — feeds, carts). <strong>PACELC</strong> extends it: when there’s no partition,
+          you still trade <strong>latency vs consistency</strong> — and most databases are{' '}
+          <strong>tunable</strong>. Reference:{' '}
           <a href={PRIMER_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             system-design-primer
           </a>
@@ -305,15 +307,15 @@ export default function Day055() {
           </ul>
         </section>
 
-        <CardSection icon="🌐" title="THE BASICS" cards={BASICS} columns={3} />
-        <CardSection icon="🧠" title="CORE PROBLEMS" cards={PROBLEMS} columns={4} />
+        <CardSection icon="🔺" title="THE THEOREM" cards={THEOREM} columns={3} />
+        <CardSection icon="🧠" title="BEYOND CAP" cards={BEYOND} columns={4} />
         <CardSection icon="📚" title="SYSTEM DESIGN RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#SystemDesign</span>
-          <span>#DistributedSystems</span>
-          <span>#Consensus</span>
+          <span>#CAP</span>
+          <span>#Consistency</span>
           <span>#Thunder</span>
         </footer>
       </div>
