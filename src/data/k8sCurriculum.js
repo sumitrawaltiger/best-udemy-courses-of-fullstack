@@ -249,6 +249,15 @@ const K8S_SLIDES_SECTIONS = [
     content: "A **cluster** has a **Control Plane (master)** and **Worker Nodes (data plane)**.\n\n**Control Plane** components: **etcd** (key-value store of cluster state), **API Server** (the front door — all interactions go through it), **Scheduler** (assigns Pods to nodes), and **Controller Manager** (+ optional Cloud Controller Manager).\n\n**Worker Nodes** run the workloads via the **kubelet** (talks to the API server, manages Pods), a **container runtime** (containerd/CRI-O), and **kube-proxy** (networking).",
   },
   {
+    id: "k8s-components-explained",
+    title: "Kubernetes Components at a Glance",
+    content:
+      "A quick-reference map of the 25 core Kubernetes objects and components, grouped by role:\n\n- **Compute & workloads** — Pod, Node, Cluster, Deployment, ReplicaSet, StatefulSet, DaemonSet, Job, CronJob.\n- **Networking & access** — Service, ClusterIP, NodePort, LoadBalancer, Ingress.\n- **Config & storage** — ConfigMap, Secret, Volume, PersistentVolume (PV), PersistentVolumeClaim (PVC), Namespace.\n- **Control plane & node agents** — Kubelet, Kube-Proxy, API Server, Controller Manager, Scheduler.\n\nEach of these is covered in depth in the sections below — use this as your visual index.",
+    image: '/k8s-notes/kubernetes-components-explained.jpg',
+    imageAlt:
+      'Kubernetes Components Explained — 25 components: Pod, Node, Cluster, Deployment, ReplicaSet, StatefulSet, DaemonSet, Job, CronJob, Service, ClusterIP, NodePort, LoadBalancer, Ingress, ConfigMap, Secret, Volume, PersistentVolume, PersistentVolumeClaim, Namespace, Kubelet, Kube-Proxy, API Server, Controller Manager, and Scheduler',
+  },
+  {
     id: "kubectl-cli",
     title: "The kubectl CLI",
     content: "**kubectl** is how you interact with a cluster via the API server. Commands fall into a few buckets: viewing resources, creating/applying manifests, updating, deleting, and debugging.",
