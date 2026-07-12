@@ -12,6 +12,7 @@ export const CHEATSHEET_CATEGORIES = [
   { id: 'java', label: 'Java', icon: '☕' },
   { id: 'react', label: 'React', icon: '⚛️' },
   { id: 'sql', label: 'SQL & Databases', icon: '🗄️' },
+  { id: 'system-design', label: 'System Design', icon: '📐' },
 ];
 
 export const CHEAT_SHEETS = [
@@ -167,5 +168,14 @@ export const CHEAT_SHEETS = [
     category: 'sql',
     image: '/cheatsheets/sql-cheat-sheet.jpg',
     tags: ['SQL', 'Database', 'Queries'],
+  },
+  {
+    id: 'system-design',
+    title: 'System Design Cheat Sheet',
+    description:
+      'A one-page system design reference — the 5 pillars, a design approach, scale estimation, core components, high-level architecture, storage options, scaling strategies, consistency models, bottlenecks, design patterns, fault tolerance, the CAP theorem, worked examples, key metrics, and interview tips.',
+    category: 'system-design',
+    image: '/cheatsheets/system-design-cheat-sheet.jpg',
+    tags: ['System Design', 'Architecture', 'Interview'],
   },
 ];
