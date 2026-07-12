@@ -52,6 +52,42 @@ export const CHEAT_SHEETS = [
     tags: ['Python', 'DSA', 'Algorithms'],
   },
   {
+    id: 'python-basics',
+    title: 'Python Basics — Full Revision Notes',
+    description:
+      'A full revision sheet for Python fundamentals — what Python is, key features, syntax rules, keywords & identifiers, variables, data types overview, and exam tips.',
+    category: 'python',
+    image: '/cheatsheets/python-basics-revision-notes.jpeg',
+    tags: ['Python', 'Basics', 'Revision'],
+  },
+  {
+    id: 'python-lists',
+    title: 'Python Lists',
+    description:
+      'Everything about Python lists — definition, key features, creating & accessing lists, indexing & slicing, list methods, list comprehension, and list vs tuple.',
+    category: 'python',
+    image: '/cheatsheets/python-lists-cheat-sheet.jpeg',
+    tags: ['Python', 'Lists', 'Data Structures'],
+  },
+  {
+    id: 'python-tuples',
+    title: 'Python Tuples',
+    description:
+      'A complete Python tuples reference — definition, key features, creating & accessing tuples, common operations, methods, packing & unpacking, and tuple vs list.',
+    category: 'python',
+    image: '/cheatsheets/python-tuples-cheat-sheet.jpeg',
+    tags: ['Python', 'Tuples', 'Immutable'],
+  },
+  {
+    id: 'python-dictionaries',
+    title: 'Python Dictionaries',
+    description:
+      'A complete Python dictionaries reference — definition, key features, creating & updating, common operations, methods, iterating, dict vs list, and revision points.',
+    category: 'python',
+    image: '/cheatsheets/python-dictionaries-cheat-sheet.jpeg',
+    tags: ['Python', 'Dictionaries', 'Key-Value'],
+  },
+  {
     id: 'postman',
     title: 'Postman Cheat Sheet',
     description:
