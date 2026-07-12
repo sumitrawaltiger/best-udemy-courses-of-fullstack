@@ -2,139 +2,139 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://www.typescriptlang.org/docs/handbook/intro.html';
-const PLAY_URL = 'https://www.typescriptlang.org/play';
+const DOCS_URL = 'https://tailwindcss.com/docs/utility-first';
+const PLAY_URL = 'https://play.tailwindcss.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'TypeScript',
-    text: 'a typed superset of JavaScript that compiles to JS',
+    title: 'Utility-first',
+    text: 'compose UIs from tiny, single-purpose classes',
   },
   {
-    title: 'Static typing',
-    text: 'catch type errors at compile time, not runtime',
+    title: 'Style in markup',
+    text: 'no context-switching to a CSS file',
   },
   {
-    title: 'Basic types',
-    text: 'string, number, boolean, array, any, unknown',
+    title: 'Spacing scale',
+    text: 'p-4, m-2, gap-6 — a consistent 4px scale',
   },
   {
-    title: 'Inference',
-    text: 'TS figures out the type when it can',
+    title: 'Flex & grid',
+    text: 'flex, grid, justify-*, items-*',
   },
   {
-    title: 'Interfaces & types',
-    text: 'describe the shape of objects',
+    title: 'Colors',
+    text: 'bg-*, text-* with numeric shades',
   },
   {
-    title: 'Union & literal',
-    text: 'string | number, "on" | "off"',
+    title: 'Responsive',
+    text: 'sm: md: lg: prefixes, mobile-first',
   },
   {
-    title: 'Optional & readonly',
-    text: 'name?: string, readonly id',
+    title: 'States',
+    text: 'hover:, focus:, active: variants',
   },
   {
-    title: 'Typed functions',
-    text: 'annotate params and the return type',
+    title: 'Dark mode',
+    text: 'the dark: variant',
   },
   {
-    title: 'Generics',
-    text: 'reusable, type-safe code with <T>',
+    title: 'Reuse',
+    text: 'extract components or use @apply',
   },
   {
-    title: 'tsc',
-    text: 'the compiler that emits plain JavaScript',
+    title: 'Only used ships',
+    text: 'the engine purges unused classes',
   },
 ];
 
-const BASICS = [
+const UTILITY = [
   {
-    icon: '🛡️',
-    title: 'Why TypeScript',
+    icon: '🧱',
+    title: 'Utility-First',
     titleClass: 'card-title-cyan',
-    subtitle: 'safety',
-    description: 'Types catch bugs early and power great editor tooling.',
-    code: 'let n: number = 5;\nn = "hi"; // ❌ compile error, not a runtime surprise',
+    subtitle: 'the idea',
+    description: 'Build any design by stacking small utility classes.',
+    code: '<button class="px-4 py-2 rounded bg-blue-600 text-white">\n  Save\n</button>',
   },
   {
-    icon: '🔤',
-    title: 'Basic Types',
+    icon: '📏',
+    title: 'Spacing & Sizing',
     titleClass: 'card-title-green',
-    subtitle: 'the primitives',
-    description: 'Annotate values, arrays, and more.',
-    code: 'let name: string;\nlet ok: boolean;\nlet nums: number[] = [1, 2, 3];',
+    subtitle: 'the scale',
+    description: 'Padding, margin, width, height on a consistent scale.',
+    code: 'p-4  m-2  w-full  h-12  gap-6  max-w-md',
   },
   {
-    icon: '🔎',
-    title: 'Inference',
+    icon: '🧭',
+    title: 'Flex & Grid',
     titleClass: 'card-title-amber',
-    subtitle: 'less typing',
-    description: 'TS infers types from values, so you annotate less.',
-    code: 'let count = 0;        // inferred: number\nconst tags = ["a"];   // inferred: string[]',
+    subtitle: 'layout',
+    description: 'Flexbox and grid with alignment utilities.',
+    code: '<div class="flex items-center justify-between gap-4">\n<div class="grid grid-cols-3 gap-6">',
   },
   {
-    icon: 'ƒ',
-    title: 'Typed Functions',
+    icon: '🎨',
+    title: 'Colors & Type',
     titleClass: 'card-title-pink',
-    subtitle: 'params + return',
-    description: 'Type inputs and outputs; TS checks callers.',
-    code: 'function add(a: number, b: number): number {\n  return a + b;\n}',
+    subtitle: 'theme',
+    description: 'Background, text colors, and typography utilities.',
+    code: 'bg-slate-900  text-white  text-lg  font-bold\ntext-gray-500  tracking-tight',
   },
 ];
 
-const SHAPES = [
+const RESPONSIVE = [
   {
-    icon: '📐',
-    title: 'Interfaces & Types',
+    icon: '📱',
+    title: 'Breakpoints',
     titleClass: 'card-title-cyan',
-    subtitle: 'object shapes',
-    description: 'Describe the structure objects must have.',
-    code: 'interface User {\n  id: number;\n  name: string;\n  email?: string; // optional\n}',
+    subtitle: 'mobile-first',
+    description: 'Prefix a class to apply it from a breakpoint up.',
+    code: '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">\n// base = mobile, md: from 768px',
   },
   {
-    icon: '🔀',
-    title: 'Union & Literal',
+    icon: '✨',
+    title: 'States & Dark Mode',
     titleClass: 'card-title-green',
-    subtitle: 'either / exact',
-    description: 'A value that is one of several types or exact strings.',
-    code: 'type Id = string | number;\ntype Status = "idle" | "loading" | "done";',
+    subtitle: 'variants',
+    description: 'Style hover/focus and adapt to dark mode.',
+    code: 'hover:bg-blue-700  focus:ring-2\ndark:bg-slate-800  dark:text-white',
   },
   {
-    icon: '📦',
-    title: 'Generics',
+    icon: '♻️',
+    title: 'Reuse & JIT',
     titleClass: 'card-title-amber',
-    subtitle: 'reusable types',
-    description: 'Write once, keep full type safety for any type.',
-    code: 'function first<T>(arr: T[]): T { return arr[0]; }\nfirst([1, 2, 3]); // T = number',
+    subtitle: 'stay DRY',
+    description: 'Extract components, or @apply utilities in CSS.',
+    code: '.btn { @apply px-4 py-2 rounded bg-blue-600; }\n// JIT ships only classes you use',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'TypeScript Handbook',
+    title: 'Tailwind Docs',
     titleClass: 'card-title-green',
     subtitle: 'Official docs',
-    description: 'The official TypeScript handbook — the complete language reference.',
+    description: 'The Tailwind utility-first documentation — every class explained.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '🧪',
-    title: 'TypeScript Playground',
+    title: 'Tailwind Play',
     titleClass: 'card-title-purple',
     subtitle: 'Try it live',
-    description: 'Write TS and see the compiled JS + type errors instantly.',
+    description: 'Prototype Tailwind in the browser with instant preview.',
     link: { href: PLAY_URL, label: 'Open the playground →', external: true },
   },
   {
     icon: '▶️',
-    title: 'TypeScript for Beginners',
+    title: 'Tailwind Full Course',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'TypeScript Tutorial for Beginners by Programming with Mosh — for Day 65.',
+    description: 'Tailwind CSS Full Course by JavaScript Mastery — supplement for Day 67.',
     link: {
-      href: 'https://www.youtube.com/watch?v=d56mG7DezGs',
+      href: 'https://www.youtube.com/watch?v=6biMWgD6_JY',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day065() {
+export default function Day067() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,27 +231,27 @@ export default function Day065() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-064" className="day001-nav-btn day001-nav-home">
-            ← Day 64
+          <Link to="/day-066" className="day001-nav-btn day001-nav-home">
+            ← Day 66
           </Link>
-          <p className="day001-datetime">Thunder Day 65 · 7 Sep 2026</p>
-          <Link to="/day-066" className="day001-nav-btn day001-nav-next">
-            Day 66 →
+          <p className="day001-datetime">Thunder Day 67 · 9 Sep 2026</p>
+          <Link to="/day-068" className="day001-nav-btn day001-nav-next">
+            Day 68 →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>TypeScript</span>
-              <span>Frontend</span>
+              <span>Tailwind</span>
+              <span>CSS</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 65 <span aria-hidden="true">⚡</span>
+                DAY 67 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">TYPESCRIPT ESSENTIALS</p>
+              <p className="day001-day-theme">TAILWIND CSS FUNDAMENTALS</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -264,25 +264,26 @@ export default function Day065() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · FRONTEND</p>
+              <p className="day001-profile-role">TAILWIND · FRONTEND</p>
             </div>
           </div>
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '65%' }} />
+          <div className="day001-progress-bar" style={{ width: '67%' }} />
         </div>
 
         <p className="day001-summary">
-          Day sixty-five — <strong>TypeScript</strong>, a typed superset of JavaScript that catches
-          errors at <strong>compile time</strong>. I learned the <strong>basic types</strong>,{' '}
-          leaned on <strong>inference</strong> to write less, typed <strong>functions</strong>, and
-          modeled object shapes with <strong>interfaces / types</strong>.{' '}
-          <strong>Union & literal</strong> types express “either/exact,” and <strong>generics</strong>{' '}
-          keep reusable code fully type-safe. <code>tsc</code> compiles it all down to plain JS — the
-          foundation for typing React tomorrow. Docs:{' '}
-          <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            TypeScript Handbook
+          Day sixty-seven — <strong>Tailwind CSS</strong>, a <strong>utility-first</strong> framework
+          where you style directly in the markup with tiny classes. A consistent{' '}
+          <strong>spacing scale</strong>, <strong>flex/grid</strong> utilities, and{' '}
+          <strong>color</strong> + typography classes cover most designs; then{' '}
+          <strong>responsive</strong> prefixes (<code>md:</code>, <code>lg:</code>),{' '}
+          <strong>state variants</strong> (<code>hover:</code>, <code>focus:</code>), and{' '}
+          <code>dark:</code> mode adapt it — while the engine ships only the classes you use.
+          Prototype at{' '}
+          <a href={PLAY_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
+            Tailwind Play
           </a>
           .
         </p>
@@ -306,14 +307,14 @@ export default function Day065() {
           </ul>
         </section>
 
-        <CardSection icon="🔤" title="THE BASICS" cards={BASICS} columns={4} />
-        <CardSection icon="📐" title="SHAPES & MORE" cards={SHAPES} columns={3} />
-        <CardSection icon="📚" title="TYPESCRIPT RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="🧱" title="UTILITY-FIRST" cards={UTILITY} columns={4} />
+        <CardSection icon="📱" title="RESPONSIVE & MORE" cards={RESPONSIVE} columns={3} />
+        <CardSection icon="📚" title="TAILWIND RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#TypeScript</span>
-          <span>#Types</span>
+          <span>#TailwindCSS</span>
+          <span>#CSS</span>
           <span>#Frontend</span>
           <span>#Thunder</span>
         </footer>

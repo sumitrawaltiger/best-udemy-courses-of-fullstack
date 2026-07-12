@@ -2,139 +2,139 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://www.typescriptlang.org/docs/handbook/intro.html';
-const PLAY_URL = 'https://www.typescriptlang.org/play';
+const DOCS_URL = 'https://redux-toolkit.js.org/introduction/getting-started';
+const LABS_URL = 'https://react.chaicode.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'TypeScript',
-    text: 'a typed superset of JavaScript that compiles to JS',
+    title: 'Redux',
+    text: 'a predictable, centralized state container',
   },
   {
-    title: 'Static typing',
-    text: 'catch type errors at compile time, not runtime',
+    title: 'Redux Toolkit',
+    text: 'the official, batteries-included way to use Redux',
   },
   {
-    title: 'Basic types',
-    text: 'string, number, boolean, array, any, unknown',
+    title: 'Store',
+    text: 'configureStore holds the whole app state',
   },
   {
-    title: 'Inference',
-    text: 'TS figures out the type when it can',
+    title: 'Slice',
+    text: 'createSlice bundles state, reducers, and actions',
   },
   {
-    title: 'Interfaces & types',
-    text: 'describe the shape of objects',
+    title: 'Immer',
+    text: 'write "mutating" reducers safely — it stays immutable',
   },
   {
-    title: 'Union & literal',
-    text: 'string | number, "on" | "off"',
+    title: 'useSelector',
+    text: 'read a piece of state into a component',
   },
   {
-    title: 'Optional & readonly',
-    text: 'name?: string, readonly id',
+    title: 'useDispatch',
+    text: 'dispatch actions to update state',
   },
   {
-    title: 'Typed functions',
-    text: 'annotate params and the return type',
+    title: 'Provider',
+    text: 'wraps the app with the store',
   },
   {
-    title: 'Generics',
-    text: 'reusable, type-safe code with <T>',
+    title: 'Async',
+    text: 'createAsyncThunk or RTK Query for data',
   },
   {
-    title: 'tsc',
-    text: 'the compiler that emits plain JavaScript',
+    title: 'When to use',
+    text: 'large, shared, cross-cutting client state',
   },
 ];
 
-const BASICS = [
+const RTK = [
   {
-    icon: '🛡️',
-    title: 'Why TypeScript',
+    icon: '🏪',
+    title: 'Why Redux',
     titleClass: 'card-title-cyan',
-    subtitle: 'safety',
-    description: 'Types catch bugs early and power great editor tooling.',
-    code: 'let n: number = 5;\nn = "hi"; // ❌ compile error, not a runtime surprise',
+    subtitle: 'one store',
+    description: 'A single source of truth with predictable updates.',
+    code: 'action → reducer → new state → UI\n// one-way, traceable, debuggable',
   },
   {
-    icon: '🔤',
-    title: 'Basic Types',
+    icon: '⚙️',
+    title: 'Store',
     titleClass: 'card-title-green',
-    subtitle: 'the primitives',
-    description: 'Annotate values, arrays, and more.',
-    code: 'let name: string;\nlet ok: boolean;\nlet nums: number[] = [1, 2, 3];',
+    subtitle: 'configureStore',
+    description: 'Combine slices into one configured store.',
+    code: 'const store = configureStore({\n  reducer: { cart: cartReducer },\n});',
   },
   {
-    icon: '🔎',
-    title: 'Inference',
+    icon: '🍰',
+    title: 'Slice',
     titleClass: 'card-title-amber',
-    subtitle: 'less typing',
-    description: 'TS infers types from values, so you annotate less.',
-    code: 'let count = 0;        // inferred: number\nconst tags = ["a"];   // inferred: string[]',
+    subtitle: 'createSlice',
+    description: 'State + reducers + auto-generated actions in one place.',
+    code: 'const cart = createSlice({\n  name: "cart", initialState: [],\n  reducers: { add: (s, a) => { s.push(a.payload); } },\n});',
   },
   {
-    icon: 'ƒ',
-    title: 'Typed Functions',
+    icon: '🧊',
+    title: 'Immer',
     titleClass: 'card-title-pink',
-    subtitle: 'params + return',
-    description: 'Type inputs and outputs; TS checks callers.',
-    code: 'function add(a: number, b: number): number {\n  return a + b;\n}',
+    subtitle: 'safe mutation',
+    description: 'Write direct “mutations”; Immer produces new state.',
+    code: 's.push(item);  // looks mutable\n// RTK/Immer makes it immutable under the hood',
   },
 ];
 
-const SHAPES = [
+const USING = [
   {
-    icon: '📐',
-    title: 'Interfaces & Types',
+    icon: '👀',
+    title: 'useSelector / useDispatch',
     titleClass: 'card-title-cyan',
-    subtitle: 'object shapes',
-    description: 'Describe the structure objects must have.',
-    code: 'interface User {\n  id: number;\n  name: string;\n  email?: string; // optional\n}',
+    subtitle: 'read + write',
+    description: 'Select state into components; dispatch to change it.',
+    code: 'const items = useSelector(s => s.cart);\nconst dispatch = useDispatch();\ndispatch(add(product));',
   },
   {
-    icon: '🔀',
-    title: 'Union & Literal',
+    icon: '🔌',
+    title: 'Provider',
     titleClass: 'card-title-green',
-    subtitle: 'either / exact',
-    description: 'A value that is one of several types or exact strings.',
-    code: 'type Id = string | number;\ntype Status = "idle" | "loading" | "done";',
+    subtitle: 'wire it up',
+    description: 'Wrap the app so any component can reach the store.',
+    code: '<Provider store={store}>\n  <App />\n</Provider>',
   },
   {
-    icon: '📦',
-    title: 'Generics',
+    icon: '🌐',
+    title: 'Async Data',
     titleClass: 'card-title-amber',
-    subtitle: 'reusable types',
-    description: 'Write once, keep full type safety for any type.',
-    code: 'function first<T>(arr: T[]): T { return arr[0]; }\nfirst([1, 2, 3]); // T = number',
+    subtitle: 'thunk / RTK Query',
+    description: 'Handle side effects and server cache the RTK way.',
+    code: 'createAsyncThunk("cart/load", fetchCart)\n// or RTK Query for caching + fetching',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'TypeScript Handbook',
+    title: 'Redux Toolkit Docs',
     titleClass: 'card-title-green',
     subtitle: 'Official docs',
-    description: 'The official TypeScript handbook — the complete language reference.',
+    description: 'Getting started with Redux Toolkit — store, slices, and RTK Query.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '🧪',
-    title: 'TypeScript Playground',
+    title: 'ChaiCode React Labs',
     titleClass: 'card-title-purple',
-    subtitle: 'Try it live',
-    description: 'Write TS and see the compiled JS + type errors instantly.',
-    link: { href: PLAY_URL, label: 'Open the playground →', external: true },
+    subtitle: 'Interactive playground',
+    description: 'Wire up a Redux store in a real app hands-on.',
+    link: { href: LABS_URL, label: 'Open the labs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'TypeScript for Beginners',
+    title: 'Redux Toolkit Tutorial',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'TypeScript Tutorial for Beginners by Programming with Mosh — for Day 65.',
+    description: 'React Redux Toolkit Tutorial for Beginners by PedroTech — for Day 69.',
     link: {
-      href: 'https://www.youtube.com/watch?v=d56mG7DezGs',
+      href: 'https://www.youtube.com/watch?v=QgK_-G-hWeA',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day065() {
+export default function Day069() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,27 +231,27 @@ export default function Day065() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-064" className="day001-nav-btn day001-nav-home">
-            ← Day 64
+          <Link to="/day-068" className="day001-nav-btn day001-nav-home">
+            ← Day 68
           </Link>
-          <p className="day001-datetime">Thunder Day 65 · 7 Sep 2026</p>
-          <Link to="/day-066" className="day001-nav-btn day001-nav-next">
-            Day 66 →
+          <p className="day001-datetime">Thunder Day 69 · 11 Sep 2026</p>
+          <Link to="/day-070" className="day001-nav-btn day001-nav-next">
+            Day 70 →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>TypeScript</span>
-              <span>Frontend</span>
+              <span>React</span>
+              <span>Redux</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 65 <span aria-hidden="true">⚡</span>
+                DAY 69 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">TYPESCRIPT ESSENTIALS</p>
+              <p className="day001-day-theme">REDUX TOOLKIT</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -264,25 +264,25 @@ export default function Day065() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · FRONTEND</p>
+              <p className="day001-profile-role">REACT · FRONTEND</p>
             </div>
           </div>
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '65%' }} />
+          <div className="day001-progress-bar" style={{ width: '69%' }} />
         </div>
 
         <p className="day001-summary">
-          Day sixty-five — <strong>TypeScript</strong>, a typed superset of JavaScript that catches
-          errors at <strong>compile time</strong>. I learned the <strong>basic types</strong>,{' '}
-          leaned on <strong>inference</strong> to write less, typed <strong>functions</strong>, and
-          modeled object shapes with <strong>interfaces / types</strong>.{' '}
-          <strong>Union & literal</strong> types express “either/exact,” and <strong>generics</strong>{' '}
-          keep reusable code fully type-safe. <code>tsc</code> compiles it all down to plain JS — the
-          foundation for typing React tomorrow. Docs:{' '}
+          Day sixty-nine — for large, shared client state, <strong>Redux Toolkit</strong> is the
+          official, modern way to do Redux. <code>configureStore</code> holds the{' '}
+          <strong>store</strong>, and each <code>createSlice</code> bundles state, reducers, and
+          auto-generated actions — with <strong>Immer</strong> letting you write “mutating” code
+          safely. Components read with <code>useSelector</code> and update via{' '}
+          <code>useDispatch</code>, all wrapped by the <strong>Provider</strong>. For async, reach
+          for <strong>createAsyncThunk</strong> or <strong>RTK Query</strong>. Docs:{' '}
           <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            TypeScript Handbook
+            Redux Toolkit
           </a>
           .
         </p>
@@ -306,15 +306,15 @@ export default function Day065() {
           </ul>
         </section>
 
-        <CardSection icon="🔤" title="THE BASICS" cards={BASICS} columns={4} />
-        <CardSection icon="📐" title="SHAPES & MORE" cards={SHAPES} columns={3} />
-        <CardSection icon="📚" title="TYPESCRIPT RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="🏪" title="REDUX TOOLKIT" cards={RTK} columns={4} />
+        <CardSection icon="🔗" title="USING IT" cards={USING} columns={3} />
+        <CardSection icon="📚" title="REDUX RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#TypeScript</span>
-          <span>#Types</span>
-          <span>#Frontend</span>
+          <span>#React</span>
+          <span>#Redux</span>
+          <span>#ReduxToolkit</span>
           <span>#Thunder</span>
         </footer>
       </div>

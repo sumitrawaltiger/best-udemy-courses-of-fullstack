@@ -2,139 +2,139 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://www.typescriptlang.org/docs/handbook/intro.html';
-const PLAY_URL = 'https://www.typescriptlang.org/play';
+const DOCS_URL = 'https://react.dev/learn/typescript';
+const LABS_URL = 'https://react.chaicode.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'TypeScript',
-    text: 'a typed superset of JavaScript that compiles to JS',
+    title: 'Typed props',
+    text: 'an interface describes what a component accepts',
   },
   {
-    title: 'Static typing',
-    text: 'catch type errors at compile time, not runtime',
+    title: 'No FC needed',
+    text: 'annotate the props param directly',
   },
   {
-    title: 'Basic types',
-    text: 'string, number, boolean, array, any, unknown',
+    title: 'useState<T>',
+    text: 'give state an explicit type when inference is not enough',
   },
   {
-    title: 'Inference',
-    text: 'TS figures out the type when it can',
+    title: 'Event types',
+    text: 'React.ChangeEvent<HTMLInputElement> and friends',
   },
   {
-    title: 'Interfaces & types',
-    text: 'describe the shape of objects',
+    title: 'children',
+    text: 'typed as React.ReactNode',
   },
   {
-    title: 'Union & literal',
-    text: 'string | number, "on" | "off"',
+    title: 'useRef<T>',
+    text: 'typed DOM and value refs',
   },
   {
-    title: 'Optional & readonly',
-    text: 'name?: string, readonly id',
+    title: 'Typed hooks',
+    text: 'custom hooks get inferred or explicit return types',
   },
   {
-    title: 'Typed functions',
-    text: 'annotate params and the return type',
+    title: 'Variant props',
+    text: 'discriminated unions model component variants',
   },
   {
-    title: 'Generics',
-    text: 'reusable, type-safe code with <T>',
+    title: 'Generic components',
+    text: 'reusable, type-safe components with <T,>',
   },
   {
-    title: 'tsc',
-    text: 'the compiler that emits plain JavaScript',
+    title: 'Setup',
+    text: '.tsx files + a Vite React-TS template',
   },
 ];
 
-const BASICS = [
-  {
-    icon: '🛡️',
-    title: 'Why TypeScript',
-    titleClass: 'card-title-cyan',
-    subtitle: 'safety',
-    description: 'Types catch bugs early and power great editor tooling.',
-    code: 'let n: number = 5;\nn = "hi"; // ❌ compile error, not a runtime surprise',
-  },
-  {
-    icon: '🔤',
-    title: 'Basic Types',
-    titleClass: 'card-title-green',
-    subtitle: 'the primitives',
-    description: 'Annotate values, arrays, and more.',
-    code: 'let name: string;\nlet ok: boolean;\nlet nums: number[] = [1, 2, 3];',
-  },
-  {
-    icon: '🔎',
-    title: 'Inference',
-    titleClass: 'card-title-amber',
-    subtitle: 'less typing',
-    description: 'TS infers types from values, so you annotate less.',
-    code: 'let count = 0;        // inferred: number\nconst tags = ["a"];   // inferred: string[]',
-  },
-  {
-    icon: 'ƒ',
-    title: 'Typed Functions',
-    titleClass: 'card-title-pink',
-    subtitle: 'params + return',
-    description: 'Type inputs and outputs; TS checks callers.',
-    code: 'function add(a: number, b: number): number {\n  return a + b;\n}',
-  },
-];
-
-const SHAPES = [
+const TYPING = [
   {
     icon: '📐',
-    title: 'Interfaces & Types',
+    title: 'Props Interface',
     titleClass: 'card-title-cyan',
-    subtitle: 'object shapes',
-    description: 'Describe the structure objects must have.',
-    code: 'interface User {\n  id: number;\n  name: string;\n  email?: string; // optional\n}',
+    subtitle: 'the contract',
+    description: 'Describe accepted props; TS checks every usage.',
+    code: 'interface CardProps { title: string; price?: number }\nfunction Card({ title, price }: CardProps) { ... }',
+  },
+  {
+    icon: '🎛️',
+    title: 'Typed State',
+    titleClass: 'card-title-green',
+    subtitle: 'useState<T>',
+    description: 'Annotate when the initial value isn’t enough.',
+    code: 'const [user, setUser] = useState<User | null>(null);',
+  },
+  {
+    icon: '🖱️',
+    title: 'Events',
+    titleClass: 'card-title-amber',
+    subtitle: 'typed handlers',
+    description: 'Event objects have precise React types.',
+    code: 'const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>\n  setText(e.target.value);',
+  },
+  {
+    icon: '👶',
+    title: 'children',
+    titleClass: 'card-title-pink',
+    subtitle: 'ReactNode',
+    description: 'Anything renderable — elements, strings, arrays.',
+    code: 'interface Props { children: React.ReactNode }',
+  },
+];
+
+const PATTERNS = [
+  {
+    icon: '📌',
+    title: 'Typed Refs & Hooks',
+    titleClass: 'card-title-cyan',
+    subtitle: 'useRef<T>',
+    description: 'Type DOM refs and your own custom hooks.',
+    code: 'const inputRef = useRef<HTMLInputElement>(null);\nfunction useToggle(): [boolean, () => void] { ... }',
   },
   {
     icon: '🔀',
-    title: 'Union & Literal',
+    title: 'Variant Props',
     titleClass: 'card-title-green',
-    subtitle: 'either / exact',
-    description: 'A value that is one of several types or exact strings.',
-    code: 'type Id = string | number;\ntype Status = "idle" | "loading" | "done";',
+    subtitle: 'discriminated unions',
+    description: 'Model mutually-exclusive prop shapes safely.',
+    code: 'type Btn =\n | { variant: "link"; href: string }\n | { variant: "button"; onClick: () => void };',
   },
   {
-    icon: '📦',
-    title: 'Generics',
+    icon: '⚙️',
+    title: 'Setup',
     titleClass: 'card-title-amber',
-    subtitle: 'reusable types',
-    description: 'Write once, keep full type safety for any type.',
-    code: 'function first<T>(arr: T[]): T { return arr[0]; }\nfirst([1, 2, 3]); // T = number',
+    subtitle: '.tsx + Vite',
+    description: 'Use the React-TS template; components live in .tsx.',
+    code: 'npm create vite@latest app -- --template react-ts',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'TypeScript Handbook',
+    title: 'React + TypeScript',
     titleClass: 'card-title-green',
-    subtitle: 'Official docs',
-    description: 'The official TypeScript handbook — the complete language reference.',
+    subtitle: 'react.dev',
+    description: 'The official React guide to using TypeScript with components.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '🧪',
-    title: 'TypeScript Playground',
+    title: 'ChaiCode React Labs',
     titleClass: 'card-title-purple',
-    subtitle: 'Try it live',
-    description: 'Write TS and see the compiled JS + type errors instantly.',
-    link: { href: PLAY_URL, label: 'Open the playground →', external: true },
+    subtitle: 'Interactive playground',
+    description: 'Practice typed React components hands-on.',
+    link: { href: LABS_URL, label: 'Open the labs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'TypeScript for Beginners',
+    title: 'TypeScript in React',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'TypeScript Tutorial for Beginners by Programming with Mosh — for Day 65.',
+    description: 'TypeScript in React — Full Tutorial by freeCodeCamp — for Day 66.',
     link: {
-      href: 'https://www.youtube.com/watch?v=d56mG7DezGs',
+      href: 'https://www.youtube.com/watch?v=aJP1AbZSqz8',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day065() {
+export default function Day066() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,27 +231,27 @@ export default function Day065() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-064" className="day001-nav-btn day001-nav-home">
-            ← Day 64
+          <Link to="/day-065" className="day001-nav-btn day001-nav-home">
+            ← Day 65
           </Link>
-          <p className="day001-datetime">Thunder Day 65 · 7 Sep 2026</p>
-          <Link to="/day-066" className="day001-nav-btn day001-nav-next">
-            Day 66 →
+          <p className="day001-datetime">Thunder Day 66 · 8 Sep 2026</p>
+          <Link to="/day-067" className="day001-nav-btn day001-nav-next">
+            Day 67 →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
+              <span>React</span>
               <span>TypeScript</span>
-              <span>Frontend</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 65 <span aria-hidden="true">⚡</span>
+                DAY 66 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">TYPESCRIPT ESSENTIALS</p>
+              <p className="day001-day-theme">TYPESCRIPT WITH REACT</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -264,25 +264,25 @@ export default function Day065() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · FRONTEND</p>
+              <p className="day001-profile-role">REACT · TYPESCRIPT</p>
             </div>
           </div>
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '65%' }} />
+          <div className="day001-progress-bar" style={{ width: '66%' }} />
         </div>
 
         <p className="day001-summary">
-          Day sixty-five — <strong>TypeScript</strong>, a typed superset of JavaScript that catches
-          errors at <strong>compile time</strong>. I learned the <strong>basic types</strong>,{' '}
-          leaned on <strong>inference</strong> to write less, typed <strong>functions</strong>, and
-          modeled object shapes with <strong>interfaces / types</strong>.{' '}
-          <strong>Union & literal</strong> types express “either/exact,” and <strong>generics</strong>{' '}
-          keep reusable code fully type-safe. <code>tsc</code> compiles it all down to plain JS — the
-          foundation for typing React tomorrow. Docs:{' '}
-          <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            TypeScript Handbook
+          Day sixty-six — combining yesterday’s TypeScript with React. Components get a{' '}
+          <strong>props interface</strong>, state uses <code>useState&lt;T&gt;</code>, and event
+          handlers take precise types like{' '}
+          <code>React.ChangeEvent&lt;HTMLInputElement&gt;</code>. <code>children</code> is{' '}
+          <code>React.ReactNode</code>, refs use <code>useRef&lt;T&gt;</code>, and{' '}
+          <strong>discriminated unions</strong> model component variants. Scaffold with the Vite{' '}
+          <strong>react-ts</strong> template and write everything in <code>.tsx</code>. Practice at{' '}
+          <a href={LABS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
+            ChaiCode React Labs
           </a>
           .
         </p>
@@ -306,14 +306,14 @@ export default function Day065() {
           </ul>
         </section>
 
-        <CardSection icon="🔤" title="THE BASICS" cards={BASICS} columns={4} />
-        <CardSection icon="📐" title="SHAPES & MORE" cards={SHAPES} columns={3} />
-        <CardSection icon="📚" title="TYPESCRIPT RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="📐" title="TYPING COMPONENTS" cards={TYPING} columns={4} />
+        <CardSection icon="🧩" title="PATTERNS" cards={PATTERNS} columns={3} />
+        <CardSection icon="📚" title="REACT RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
+          <span>#React</span>
           <span>#TypeScript</span>
-          <span>#Types</span>
           <span>#Frontend</span>
           <span>#Thunder</span>
         </footer>
