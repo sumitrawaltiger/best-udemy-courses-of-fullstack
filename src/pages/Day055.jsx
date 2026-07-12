@@ -2,112 +2,111 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const PRIMER_URL =
-  'https://github.com/donnemartin/system-design-primer#design-the-twitter-timeline-and-search';
-const DOCS_URL = 'https://github.com/donnemartin/system-design-primer';
+const PRIMER_URL = 'https://github.com/donnemartin/system-design-primer';
+const DOCS_URL = 'https://en.wikipedia.org/wiki/Fallacies_of_distributed_computing';
 
 const LEARNT_TODAY = [
   {
-    title: 'Requirements',
-    text: 'post, follow, and read a personalized feed',
+    title: 'Distributed system',
+    text: 'many nodes cooperating to look like one',
   },
   {
-    title: 'Fan-out on write',
-    text: 'push a new post into every follower’s feed',
+    title: 'Why distribute',
+    text: 'scale, availability, and fault tolerance',
   },
   {
-    title: 'Fan-out on read',
-    text: 'build the feed by pulling posts at read time',
+    title: 'The fallacies',
+    text: 'the network is not reliable, fast, or free',
   },
   {
-    title: 'Hybrid',
-    text: 'push for normal users, pull for celebrities',
+    title: 'Partitions',
+    text: 'nodes lose contact and must cope',
   },
   {
-    title: 'Feed store',
-    text: 'a precomputed timeline per user for fast reads',
+    title: 'Replication',
+    text: 'copies keep data available under failure',
   },
   {
-    title: 'Ranking',
-    text: 'chronological, or relevance-scored',
+    title: 'Consensus',
+    text: 'nodes agree on a value — Raft / Paxos',
   },
   {
-    title: 'Pagination',
-    text: 'cursor-based infinite scroll',
+    title: 'Consistency models',
+    text: 'strong vs eventual',
   },
   {
-    title: 'Caching',
-    text: 'keep hot, active feeds in memory',
+    title: 'No global clock',
+    text: 'use logical clocks to order events',
   },
   {
-    title: 'Celebrity problem',
-    text: 'millions of followers make write fan-out explode',
+    title: 'Idempotency',
+    text: 'retries are inevitable — design for them',
   },
   {
-    title: 'Eventual consistency',
-    text: 'a feed can lag a little — that’s fine',
+    title: 'Failure is normal',
+    text: 'assume nodes and links will fail',
   },
 ];
 
-const GENERATION = [
+const BASICS = [
   {
-    icon: '📋',
-    title: 'Requirements',
+    icon: '🌐',
+    title: 'What & Why',
     titleClass: 'card-title-cyan',
-    subtitle: 'read-heavy',
-    description: 'Post, follow, and read a feed fast — reads dominate.',
-    code: 'functional  : post · follow · feed\nnon-func    : <200ms feed, read >> write',
+    subtitle: 'one from many',
+    description: 'Many machines act as one to scale and survive failures.',
+    code: '// one big box → a ceiling + a single point of failure\n// many nodes → scale + redundancy',
   },
   {
-    icon: '📤',
-    title: 'Fan-out on Write',
+    icon: '🕳️',
+    title: 'The Fallacies',
     titleClass: 'card-title-green',
-    subtitle: 'push model',
-    description: 'On post, write it into each follower’s feed. Fast reads.',
-    code: 'onPost(u): for f in followers(u):\n  feed[f].push(post)\n// heavy writes, instant reads',
+    subtitle: 'wrong assumptions',
+    description: 'The network is unreliable, has latency, and can fail anytime.',
+    code: '// NOT true: reliable · zero latency ·\n// infinite bandwidth · secure · one admin',
   },
   {
-    icon: '📥',
-    title: 'Fan-out on Read',
+    icon: '💥',
+    title: 'Failure is Normal',
     titleClass: 'card-title-amber',
-    subtitle: 'pull model',
-    description: 'Build the feed on request by pulling followees’ posts.',
-    code: 'getFeed(u): merge(posts of followees(u))\n// light writes, heavier reads',
+    subtitle: 'plan for it',
+    description: 'At scale, something is always down — design around it.',
+    code: 'retries + timeouts + idempotency\nhealth checks + automatic failover',
+  },
+];
+
+const PROBLEMS = [
+  {
+    icon: '🧬',
+    title: 'Replication',
+    titleClass: 'card-title-cyan',
+    subtitle: 'copies',
+    description: 'Multiple copies keep data available and reads fast.',
+    code: 'primary + replicas\n// trade freshness (lag) for availability',
   },
   {
-    icon: '⚖️',
-    title: 'Hybrid',
+    icon: '🤝',
+    title: 'Consensus',
+    titleClass: 'card-title-green',
+    subtitle: 'agree on truth',
+    description: 'Nodes elect a leader and agree on an ordered log.',
+    code: 'Raft / Paxos → one agreed value\n// leader election + replicated log',
+  },
+  {
+    icon: '🎚️',
+    title: 'Consistency Models',
+    titleClass: 'card-title-amber',
+    subtitle: 'strong vs eventual',
+    description: 'Strong reads see the latest write; eventual converges later.',
+    code: 'strong  : always the newest (slower)\neventual: converges soon (faster, cheaper)',
+  },
+  {
+    icon: '⏰',
+    title: 'Clocks & Ordering',
     titleClass: 'card-title-pink',
-    subtitle: 'best of both',
-    description: 'Push for most users; pull celebrities’ posts at read time.',
-    code: '// normal users  → fan-out on write\n// celebrities    → fan-out on read',
-  },
-];
-
-const AT_SCALE = [
-  {
-    icon: '🗂️',
-    title: 'Feed Store & Ranking',
-    titleClass: 'card-title-cyan',
-    subtitle: 'precomputed',
-    description: 'Store a per-user timeline; rank chronologically or by score.',
-    code: 'feed:userId → [postIds...]\nrank: recency + engagement signals',
-  },
-  {
-    icon: '📜',
-    title: 'Pagination & Caching',
-    titleClass: 'card-title-green',
-    subtitle: 'infinite scroll',
-    description: 'Cursor pagination for scroll; cache active users’ feeds.',
-    code: 'GET /feed?after=<lastId>\ncache hot feeds in Redis',
-  },
-  {
-    icon: '🌟',
-    title: 'Celebrity Problem',
-    titleClass: 'card-title-amber',
-    subtitle: 'the hard case',
-    description: 'One post to 50M followers can’t fan out on write.',
-    code: '// don’t push to 50M feeds\n// merge celebrity posts at read time',
+    subtitle: 'no global time',
+    description: 'Wall clocks drift; logical clocks order events instead.',
+    code: 'Lamport / vector clocks\n// "happened-before" without a global clock',
   },
 ];
 
@@ -117,25 +116,25 @@ const RESOURCES = [
     title: 'System Design Primer',
     titleClass: 'card-title-purple',
     subtitle: 'GitHub reference',
-    description: 'The Twitter timeline design in system-design-primer — the same pattern.',
+    description: 'system-design-primer — the distributed-systems building blocks.',
     link: { href: PRIMER_URL, label: 'Open on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Primer Solutions',
+    title: 'The 8 Fallacies',
     titleClass: 'card-title-green',
-    subtitle: 'Worked designs',
-    description: 'More worked HLD solutions to model your own answers on.',
-    link: { href: DOCS_URL, label: 'Open the docs →', external: true },
+    subtitle: 'Reference',
+    description: 'The fallacies of distributed computing — assumptions that bite everyone.',
+    link: { href: DOCS_URL, label: 'Open the page →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Design a News Feed',
+    title: 'Distributed Systems',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Design Facebook News Feed — system design interview — by Hello Interview.',
+    description: 'Distributed Systems Explained | System Design by ByteMonk — for Day 55.',
     link: {
-      href: 'https://www.youtube.com/watch?v=Qj4-GruzyDU',
+      href: 'https://www.youtube.com/watch?v=IJWwfMyPu1c',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -187,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day050() {
+export default function Day055() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -232,12 +231,15 @@ export default function Day050() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-049" className="day001-nav-btn day001-nav-home">
-            ← Day 49
+          <Link to="/day-054" className="day001-nav-btn day001-nav-home">
+            ← Day 54
           </Link>
-          <p className="day001-datetime">Thunder Day 50 · 23 Aug 2026</p>
-          <Link to="/day-051" className="day001-nav-btn day001-nav-next">
-            Day 51 →
+          <p className="day001-datetime">Thunder Day 55 · 28 Aug 2026</p>
+          <Link
+            to="/learn/cap-theorem-and-consistency"
+            className="day001-nav-btn day001-nav-next"
+          >
+            Day 56 →
           </Link>
         </header>
 
@@ -245,14 +247,14 @@ export default function Day050() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>System Design</span>
-              <span>HLD Case Study</span>
+              <span>Distributed</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 50 <span aria-hidden="true">⚡</span>
+                DAY 55 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">DESIGN A NEWS FEED</p>
+              <p className="day001-day-theme">DISTRIBUTED SYSTEMS BASICS</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -271,17 +273,16 @@ export default function Day050() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '50%' }} />
+          <div className="day001-progress-bar" style={{ width: '55%' }} />
         </div>
 
         <p className="day001-summary">
-          Day fifty — halfway! The classic <strong>news feed</strong> HLD. The core choice is{' '}
-          <strong>fan-out on write</strong> (push each post into followers’ feeds — instant reads) vs{' '}
-          <strong>fan-out on read</strong> (build the feed on request — light writes). The real
-          answer is <strong>hybrid</strong>: push for normal users, pull for <strong>celebrities</strong>{' '}
-          to avoid an exploding write. Add a precomputed <strong>feed store</strong>,{' '}
-          <strong>ranking</strong>, cursor <strong>pagination</strong>, and caching — eventual
-          consistency is fine. Reference:{' '}
+          Day fifty-five — the theory under every design so far. A <strong>distributed system</strong>{' '}
+          makes many nodes act as one for scale and availability — but the network is unreliable (the{' '}
+          <strong>fallacies</strong>) and <strong>failure is normal</strong>. The core problems are{' '}
+          <strong>replication</strong>, <strong>consensus</strong> (Raft/Paxos), <strong>consistency
+          models</strong> (strong vs eventual), and <strong>ordering without a global clock</strong>{' '}
+          (logical clocks). This sets up tomorrow’s <strong>CAP theorem</strong>. Reference:{' '}
           <a href={PRIMER_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             system-design-primer
           </a>
@@ -307,15 +308,15 @@ export default function Day050() {
           </ul>
         </section>
 
-        <CardSection icon="📰" title="FEED GENERATION" cards={GENERATION} columns={4} />
-        <CardSection icon="📈" title="AT SCALE" cards={AT_SCALE} columns={3} />
+        <CardSection icon="🌐" title="THE BASICS" cards={BASICS} columns={3} />
+        <CardSection icon="🧠" title="CORE PROBLEMS" cards={PROBLEMS} columns={4} />
         <CardSection icon="📚" title="SYSTEM DESIGN RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#SystemDesign</span>
-          <span>#HLD</span>
-          <span>#NewsFeed</span>
+          <span>#DistributedSystems</span>
+          <span>#Consensus</span>
           <span>#Thunder</span>
         </footer>
       </div>

@@ -2,112 +2,111 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const PRIMER_URL =
-  'https://github.com/donnemartin/system-design-primer#design-the-twitter-timeline-and-search';
-const DOCS_URL = 'https://github.com/donnemartin/system-design-primer';
+const PRIMER_URL = 'https://github.com/donnemartin/system-design-primer';
+const DOCS_URL = 'https://ably.com/topic/websockets';
 
 const LEARNT_TODAY = [
   {
     title: 'Requirements',
-    text: 'post, follow, and read a personalized feed',
+    text: '1:1 and group chat, receipts, presence, media',
   },
   {
-    title: 'Fan-out on write',
-    text: 'push a new post into every follower’s feed',
+    title: 'WebSockets',
+    text: 'a persistent connection for real-time messages',
   },
   {
-    title: 'Fan-out on read',
-    text: 'build the feed by pulling posts at read time',
+    title: 'Connection servers',
+    text: 'hold millions of open sockets, one per device',
   },
   {
-    title: 'Hybrid',
-    text: 'push for normal users, pull for celebrities',
+    title: 'Message flow',
+    text: 'sender → server → recipient (or store if offline)',
   },
   {
-    title: 'Feed store',
-    text: 'a precomputed timeline per user for fast reads',
+    title: 'Offline delivery',
+    text: 'queue messages, deliver when the user reconnects',
   },
   {
-    title: 'Ranking',
-    text: 'chronological, or relevance-scored',
+    title: 'Receipts',
+    text: 'sent, delivered, and read acknowledgements',
   },
   {
-    title: 'Pagination',
-    text: 'cursor-based infinite scroll',
+    title: 'Group chat',
+    text: 'fan-out one message to all members',
   },
   {
-    title: 'Caching',
-    text: 'keep hot, active feeds in memory',
+    title: 'Presence',
+    text: 'online / last-seen status',
   },
   {
-    title: 'Celebrity problem',
-    text: 'millions of followers make write fan-out explode',
+    title: 'Storage',
+    text: 'messages in a fast store; media in blob + CDN',
   },
   {
-    title: 'Eventual consistency',
-    text: 'a feed can lag a little — that’s fine',
+    title: 'Scale',
+    text: 'shard by user; a gateway routes to the right server',
   },
 ];
 
-const GENERATION = [
+const REALTIME = [
   {
     icon: '📋',
     title: 'Requirements',
     titleClass: 'card-title-cyan',
-    subtitle: 'read-heavy',
-    description: 'Post, follow, and read a feed fast — reads dominate.',
-    code: 'functional  : post · follow · feed\nnon-func    : <200ms feed, read >> write',
+    subtitle: 'chat + more',
+    description: '1:1 & group messaging, delivery/read receipts, presence.',
+    code: 'functional : send · deliver · receipts · presence\nnon-func   : low latency, ordered, reliable',
   },
   {
-    icon: '📤',
-    title: 'Fan-out on Write',
+    icon: '🔌',
+    title: 'WebSocket Connections',
     titleClass: 'card-title-green',
-    subtitle: 'push model',
-    description: 'On post, write it into each follower’s feed. Fast reads.',
-    code: 'onPost(u): for f in followers(u):\n  feed[f].push(post)\n// heavy writes, instant reads',
+    subtitle: 'stay connected',
+    description: 'Each device holds a long-lived socket to a connection server.',
+    code: 'device ── ws ──► connection-server\n// millions of persistent sockets',
+  },
+  {
+    icon: '➡️',
+    title: 'Message Flow',
+    titleClass: 'card-title-amber',
+    subtitle: 'route it',
+    description: 'Find the recipient’s server and push, or store if offline.',
+    code: 'send → server → lookup recipient\n  online?  push over their socket\n  offline? persist + deliver later',
   },
   {
     icon: '📥',
-    title: 'Fan-out on Read',
-    titleClass: 'card-title-amber',
-    subtitle: 'pull model',
-    description: 'Build the feed on request by pulling followees’ posts.',
-    code: 'getFeed(u): merge(posts of followees(u))\n// light writes, heavier reads',
-  },
-  {
-    icon: '⚖️',
-    title: 'Hybrid',
+    title: 'Offline Delivery',
     titleClass: 'card-title-pink',
-    subtitle: 'best of both',
-    description: 'Push for most users; pull celebrities’ posts at read time.',
-    code: '// normal users  → fan-out on write\n// celebrities    → fan-out on read',
+    subtitle: 'never lost',
+    description: 'Queue undelivered messages; flush on reconnect.',
+    code: 'inbox[user].push(msg)\non reconnect → drain inbox in order',
   },
 ];
 
-const AT_SCALE = [
+const FEATURES = [
   {
-    icon: '🗂️',
-    title: 'Feed Store & Ranking',
+    icon: '✅',
+    title: 'Receipts & Presence',
     titleClass: 'card-title-cyan',
-    subtitle: 'precomputed',
-    description: 'Store a per-user timeline; rank chronologically or by score.',
-    code: 'feed:userId → [postIds...]\nrank: recency + engagement signals',
+    subtitle: 'status',
+    description: 'Track sent/delivered/read and online/last-seen.',
+    code: 'status: sent → delivered → read\npresence: online | last-seen 5m ago',
   },
   {
-    icon: '📜',
-    title: 'Pagination & Caching',
+    icon: '👥',
+    title: 'Group Chat',
     titleClass: 'card-title-green',
-    subtitle: 'infinite scroll',
-    description: 'Cursor pagination for scroll; cache active users’ feeds.',
-    code: 'GET /feed?after=<lastId>\ncache hot feeds in Redis',
+    subtitle: 'fan-out',
+    description: 'One message replicates to every group member’s inbox.',
+    code: 'for m in group.members:\n  deliver(m, msg)  // cap group size',
   },
   {
-    icon: '🌟',
-    title: 'Celebrity Problem',
+    icon: '🗄️',
+    title: 'Storage & Scale',
     titleClass: 'card-title-amber',
-    subtitle: 'the hard case',
-    description: 'One post to 50M followers can’t fan out on write.',
-    code: '// don’t push to 50M feeds\n// merge celebrity posts at read time',
+    subtitle: 'shard it',
+    description: 'Messages in a fast store, media on a CDN; shard by user.',
+    code: 'messages: Cassandra / KV (by chatId)\nmedia: blob + CDN · shard by userId',
   },
 ];
 
@@ -117,25 +116,25 @@ const RESOURCES = [
     title: 'System Design Primer',
     titleClass: 'card-title-purple',
     subtitle: 'GitHub reference',
-    description: 'The Twitter timeline design in system-design-primer — the same pattern.',
+    description: 'system-design-primer — real-time delivery, fan-out, and sharding.',
     link: { href: PRIMER_URL, label: 'Open on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Primer Solutions',
+    title: 'WebSockets Explained',
     titleClass: 'card-title-green',
-    subtitle: 'Worked designs',
-    description: 'More worked HLD solutions to model your own answers on.',
+    subtitle: 'Ably docs',
+    description: 'A clear primer on WebSockets — the backbone of a chat system.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Design a News Feed',
+    title: 'WhatsApp System Design',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Design Facebook News Feed — system design interview — by Hello Interview.',
+    description: 'WhatsApp System Design — chat messaging systems — by Gaurav Sen — for Day 52.',
     link: {
-      href: 'https://www.youtube.com/watch?v=Qj4-GruzyDU',
+      href: 'https://www.youtube.com/watch?v=vvhC64hQZMk',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -187,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day050() {
+export default function Day052() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -232,12 +231,12 @@ export default function Day050() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-049" className="day001-nav-btn day001-nav-home">
-            ← Day 49
+          <Link to="/day-051" className="day001-nav-btn day001-nav-home">
+            ← Day 51
           </Link>
-          <p className="day001-datetime">Thunder Day 50 · 23 Aug 2026</p>
-          <Link to="/day-051" className="day001-nav-btn day001-nav-next">
-            Day 51 →
+          <p className="day001-datetime">Thunder Day 52 · 25 Aug 2026</p>
+          <Link to="/day-053" className="day001-nav-btn day001-nav-next">
+            Day 53 →
           </Link>
         </header>
 
@@ -250,9 +249,9 @@ export default function Day050() {
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 50 <span aria-hidden="true">⚡</span>
+                DAY 52 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">DESIGN A NEWS FEED</p>
+              <p className="day001-day-theme">DESIGN A CHAT SYSTEM</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -271,17 +270,17 @@ export default function Day050() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '50%' }} />
+          <div className="day001-progress-bar" style={{ width: '52%' }} />
         </div>
 
         <p className="day001-summary">
-          Day fifty — halfway! The classic <strong>news feed</strong> HLD. The core choice is{' '}
-          <strong>fan-out on write</strong> (push each post into followers’ feeds — instant reads) vs{' '}
-          <strong>fan-out on read</strong> (build the feed on request — light writes). The real
-          answer is <strong>hybrid</strong>: push for normal users, pull for <strong>celebrities</strong>{' '}
-          to avoid an exploding write. Add a precomputed <strong>feed store</strong>,{' '}
-          <strong>ranking</strong>, cursor <strong>pagination</strong>, and caching — eventual
-          consistency is fine. Reference:{' '}
+          Day fifty-two — a WhatsApp-style <strong>chat system</strong>. Real-time needs persistent{' '}
+          <strong>WebSocket</strong> connections held by <strong>connection servers</strong>; a
+          message routes sender → server → recipient, or is <strong>stored</strong> and delivered on
+          reconnect. Add <strong>sent/delivered/read receipts</strong>, <strong>presence</strong>,
+          and <strong>group fan-out</strong>. Messages live in a fast store, media on a{' '}
+          <strong>CDN</strong>, and everything <strong>shards by user</strong> behind a routing
+          gateway. Reference:{' '}
           <a href={PRIMER_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             system-design-primer
           </a>
@@ -307,15 +306,15 @@ export default function Day050() {
           </ul>
         </section>
 
-        <CardSection icon="📰" title="FEED GENERATION" cards={GENERATION} columns={4} />
-        <CardSection icon="📈" title="AT SCALE" cards={AT_SCALE} columns={3} />
+        <CardSection icon="💬" title="REAL-TIME" cards={REALTIME} columns={4} />
+        <CardSection icon="📈" title="FEATURES & SCALE" cards={FEATURES} columns={3} />
         <CardSection icon="📚" title="SYSTEM DESIGN RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#SystemDesign</span>
           <span>#HLD</span>
-          <span>#NewsFeed</span>
+          <span>#Chat</span>
           <span>#Thunder</span>
         </footer>
       </div>

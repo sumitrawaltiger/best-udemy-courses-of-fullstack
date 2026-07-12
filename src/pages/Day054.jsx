@@ -2,112 +2,111 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const PRIMER_URL =
-  'https://github.com/donnemartin/system-design-primer#design-the-twitter-timeline-and-search';
-const DOCS_URL = 'https://github.com/donnemartin/system-design-primer';
+const PRIMER_URL = 'https://github.com/donnemartin/system-design-primer#rate-limiter';
+const DOCS_URL = 'https://redis.io/glossary/rate-limiting/';
 
 const LEARNT_TODAY = [
   {
     title: 'Requirements',
-    text: 'post, follow, and read a personalized feed',
+    text: 'cap requests per user / IP / API key',
   },
   {
-    title: 'Fan-out on write',
-    text: 'push a new post into every follower’s feed',
+    title: 'Where to place it',
+    text: 'at the client, the gateway, or the service',
   },
   {
-    title: 'Fan-out on read',
-    text: 'build the feed by pulling posts at read time',
+    title: 'Algorithm',
+    text: 'token bucket vs sliding window — now design it',
   },
   {
-    title: 'Hybrid',
-    text: 'push for normal users, pull for celebrities',
+    title: 'Distributed counter',
+    text: 'one shared count across many servers',
   },
   {
-    title: 'Feed store',
-    text: 'a precomputed timeline per user for fast reads',
+    title: 'Redis',
+    text: 'atomic INCR + EXPIRE backs the counter',
   },
   {
-    title: 'Ranking',
-    text: 'chronological, or relevance-scored',
+    title: 'Sliding window log',
+    text: 'precise but memory-heavy',
   },
   {
-    title: 'Pagination',
-    text: 'cursor-based infinite scroll',
+    title: 'Response',
+    text: '429 + Retry-After + rate-limit headers',
   },
   {
-    title: 'Caching',
-    text: 'keep hot, active feeds in memory',
+    title: 'Local vs global',
+    text: 'per-node speed vs centralized accuracy',
   },
   {
-    title: 'Celebrity problem',
-    text: 'millions of followers make write fan-out explode',
+    title: 'Race conditions',
+    text: 'atomic ops or a Lua script fix them',
   },
   {
-    title: 'Eventual consistency',
-    text: 'a feed can lag a little — that’s fine',
+    title: 'Trade-offs',
+    text: 'accuracy vs memory vs latency',
   },
 ];
 
-const GENERATION = [
+const DESIGN = [
   {
     icon: '📋',
-    title: 'Requirements',
+    title: 'Requirements & Placement',
     titleClass: 'card-title-cyan',
-    subtitle: 'read-heavy',
-    description: 'Post, follow, and read a feed fast — reads dominate.',
-    code: 'functional  : post · follow · feed\nnon-func    : <200ms feed, read >> write',
+    subtitle: 'where + what',
+    description: 'Limit per key; usually at the gateway, in front of services.',
+    code: 'key: userId / IP / apiKey\nplace: API gateway (central, before services)',
+  },
+  {
+    icon: '🪣',
+    title: 'Algorithm Choice',
+    titleClass: 'card-title-green',
+    subtitle: 'bucket / window',
+    description: 'Token bucket allows bursts; sliding window is smooth.',
+    code: 'token bucket : refill N/sec, spend on request\nsliding window: weighted count over last T',
+  },
+  {
+    icon: '🧠',
+    title: 'Distributed Counter',
+    titleClass: 'card-title-amber',
+    subtitle: 'Redis',
+    description: 'A shared Redis counter keeps all nodes in agreement.',
+    code: 'n = INCR key\nif (n === 1) EXPIRE key 60\nif (n > limit) reject',
   },
   {
     icon: '📤',
-    title: 'Fan-out on Write',
-    titleClass: 'card-title-green',
-    subtitle: 'push model',
-    description: 'On post, write it into each follower’s feed. Fast reads.',
-    code: 'onPost(u): for f in followers(u):\n  feed[f].push(post)\n// heavy writes, instant reads',
-  },
-  {
-    icon: '📥',
-    title: 'Fan-out on Read',
-    titleClass: 'card-title-amber',
-    subtitle: 'pull model',
-    description: 'Build the feed on request by pulling followees’ posts.',
-    code: 'getFeed(u): merge(posts of followees(u))\n// light writes, heavier reads',
-  },
-  {
-    icon: '⚖️',
-    title: 'Hybrid',
+    title: 'The Response',
     titleClass: 'card-title-pink',
-    subtitle: 'best of both',
-    description: 'Push for most users; pull celebrities’ posts at read time.',
-    code: '// normal users  → fan-out on write\n// celebrities    → fan-out on read',
+    subtitle: 'be helpful',
+    description: 'Return 429 with headers so clients can back off.',
+    code: 'HTTP 429 Too Many Requests\nRetry-After: 30\nX-RateLimit-Remaining: 0',
   },
 ];
 
-const AT_SCALE = [
+const EDGE = [
   {
-    icon: '🗂️',
-    title: 'Feed Store & Ranking',
+    icon: '🌐',
+    title: 'Local vs Global',
     titleClass: 'card-title-cyan',
-    subtitle: 'precomputed',
-    description: 'Store a per-user timeline; rank chronologically or by score.',
-    code: 'feed:userId → [postIds...]\nrank: recency + engagement signals',
+    subtitle: 'the trade',
+    description: 'Per-node counters are fast but leaky; central is accurate.',
+    code: 'local : fast, N× the real limit\nglobal: exact, one Redis round-trip',
   },
   {
-    icon: '📜',
-    title: 'Pagination & Caching',
+    icon: '⚔️',
+    title: 'Race Conditions',
     titleClass: 'card-title-green',
-    subtitle: 'infinite scroll',
-    description: 'Cursor pagination for scroll; cache active users’ feeds.',
-    code: 'GET /feed?after=<lastId>\ncache hot feeds in Redis',
+    subtitle: 'atomic',
+    description: 'Read-then-write races overcount; keep it atomic.',
+    code: '// use INCR (atomic) or a Lua script\n// not GET then SET',
   },
   {
-    icon: '🌟',
-    title: 'Celebrity Problem',
+    icon: '⚖️',
+    title: 'Accuracy Trade-offs',
     titleClass: 'card-title-amber',
-    subtitle: 'the hard case',
-    description: 'One post to 50M followers can’t fan out on write.',
-    code: '// don’t push to 50M feeds\n// merge celebrity posts at read time',
+    subtitle: 'pick two',
+    description: 'Precise logs cost memory; approximate windows are cheap.',
+    code: 'sliding log   : exact, more memory\nfixed window  : cheap, edge bursts',
   },
 ];
 
@@ -117,25 +116,25 @@ const RESOURCES = [
     title: 'System Design Primer',
     titleClass: 'card-title-purple',
     subtitle: 'GitHub reference',
-    description: 'The Twitter timeline design in system-design-primer — the same pattern.',
+    description: 'The rate-limiter notes in system-design-primer.',
     link: { href: PRIMER_URL, label: 'Open on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Primer Solutions',
+    title: 'Redis Rate Limiting',
     titleClass: 'card-title-green',
-    subtitle: 'Worked designs',
-    description: 'More worked HLD solutions to model your own answers on.',
+    subtitle: 'Official glossary',
+    description: 'Redis’ guide to implementing rate limiting with atomic counters.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Design a News Feed',
+    title: 'Distributed Rate Limiter',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Design Facebook News Feed — system design interview — by Hello Interview.',
+    description: 'Design a Distributed Rate Limiter with an ex-Meta staff eng — Hello Interview.',
     link: {
-      href: 'https://www.youtube.com/watch?v=Qj4-GruzyDU',
+      href: 'https://www.youtube.com/watch?v=MIJFyUPG4Z4',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -187,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day050() {
+export default function Day054() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -232,12 +231,12 @@ export default function Day050() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-049" className="day001-nav-btn day001-nav-home">
-            ← Day 49
+          <Link to="/day-053" className="day001-nav-btn day001-nav-home">
+            ← Day 53
           </Link>
-          <p className="day001-datetime">Thunder Day 50 · 23 Aug 2026</p>
-          <Link to="/day-051" className="day001-nav-btn day001-nav-next">
-            Day 51 →
+          <p className="day001-datetime">Thunder Day 54 · 27 Aug 2026</p>
+          <Link to="/day-055" className="day001-nav-btn day001-nav-next">
+            Day 55 →
           </Link>
         </header>
 
@@ -250,9 +249,9 @@ export default function Day050() {
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 50 <span aria-hidden="true">⚡</span>
+                DAY 54 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">DESIGN A NEWS FEED</p>
+              <p className="day001-day-theme">DESIGN A RATE LIMITER</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -271,17 +270,17 @@ export default function Day050() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '50%' }} />
+          <div className="day001-progress-bar" style={{ width: '54%' }} />
         </div>
 
         <p className="day001-summary">
-          Day fifty — halfway! The classic <strong>news feed</strong> HLD. The core choice is{' '}
-          <strong>fan-out on write</strong> (push each post into followers’ feeds — instant reads) vs{' '}
-          <strong>fan-out on read</strong> (build the feed on request — light writes). The real
-          answer is <strong>hybrid</strong>: push for normal users, pull for <strong>celebrities</strong>{' '}
-          to avoid an exploding write. Add a precomputed <strong>feed store</strong>,{' '}
-          <strong>ranking</strong>, cursor <strong>pagination</strong>, and caching — eventual
-          consistency is fine. Reference:{' '}
+          Day fifty-four — the interview classic: <strong>design a rate limiter</strong>. Cap
+          requests per <strong>key</strong> (user/IP/API key), usually at the{' '}
+          <strong>gateway</strong>, with a <strong>token bucket</strong> or{' '}
+          <strong>sliding window</strong>. The trick is going <strong>distributed</strong> — a shared{' '}
+          <strong>Redis</strong> counter (atomic <code>INCR</code> + <code>EXPIRE</code>) so every
+          node agrees — returning <code>429</code> with <code>Retry-After</code>. Then the trade-offs:
+          local vs global, race conditions, and accuracy vs memory. Reference:{' '}
           <a href={PRIMER_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             system-design-primer
           </a>
@@ -307,15 +306,15 @@ export default function Day050() {
           </ul>
         </section>
 
-        <CardSection icon="📰" title="FEED GENERATION" cards={GENERATION} columns={4} />
-        <CardSection icon="📈" title="AT SCALE" cards={AT_SCALE} columns={3} />
+        <CardSection icon="🚦" title="THE DESIGN" cards={DESIGN} columns={4} />
+        <CardSection icon="🧩" title="EDGE CASES" cards={EDGE} columns={3} />
         <CardSection icon="📚" title="SYSTEM DESIGN RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#SystemDesign</span>
           <span>#HLD</span>
-          <span>#NewsFeed</span>
+          <span>#RateLimiter</span>
           <span>#Thunder</span>
         </footer>
       </div>

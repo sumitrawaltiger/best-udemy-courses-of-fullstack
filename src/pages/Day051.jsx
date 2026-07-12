@@ -2,112 +2,111 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const PRIMER_URL =
-  'https://github.com/donnemartin/system-design-primer#design-the-twitter-timeline-and-search';
-const DOCS_URL = 'https://github.com/donnemartin/system-design-primer';
+const PRIMER_URL = 'https://github.com/donnemartin/system-design-primer';
+const DOCS_URL = 'https://docs.aws.amazon.com/sns/latest/dg/welcome.html';
 
 const LEARNT_TODAY = [
   {
     title: 'Requirements',
-    text: 'post, follow, and read a personalized feed',
+    text: 'send at high volume across channels, reliably',
   },
   {
-    title: 'Fan-out on write',
-    text: 'push a new post into every follower’s feed',
+    title: 'Channels',
+    text: 'email, SMS, push, and in-app notifications',
   },
   {
-    title: 'Fan-out on read',
-    text: 'build the feed by pulling posts at read time',
+    title: 'Producer → queue → workers',
+    text: 'decouple triggering from actually sending',
   },
   {
-    title: 'Hybrid',
-    text: 'push for normal users, pull for celebrities',
+    title: 'Fan-out',
+    text: 'one event can notify many recipients',
   },
   {
-    title: 'Feed store',
-    text: 'a precomputed timeline per user for fast reads',
+    title: 'Templates',
+    text: 'reusable, localized message templates',
   },
   {
-    title: 'Ranking',
-    text: 'chronological, or relevance-scored',
+    title: 'Preferences',
+    text: 'per-user opt-in / opt-out per channel',
   },
   {
-    title: 'Pagination',
-    text: 'cursor-based infinite scroll',
+    title: 'Retries & DLQ',
+    text: 'retry failures; park poison messages',
   },
   {
-    title: 'Caching',
-    text: 'keep hot, active feeds in memory',
+    title: 'Idempotency',
+    text: 'a key prevents duplicate sends',
   },
   {
-    title: 'Celebrity problem',
-    text: 'millions of followers make write fan-out explode',
+    title: 'Rate limits',
+    text: 'throttle per user and per provider',
   },
   {
-    title: 'Eventual consistency',
-    text: 'a feed can lag a little — that’s fine',
+    title: 'Priority lanes',
+    text: 'transactional beats marketing',
   },
 ];
 
-const GENERATION = [
+const DESIGN = [
   {
     icon: '📋',
-    title: 'Requirements',
+    title: 'Requirements & Channels',
     titleClass: 'card-title-cyan',
-    subtitle: 'read-heavy',
-    description: 'Post, follow, and read a feed fast — reads dominate.',
-    code: 'functional  : post · follow · feed\nnon-func    : <200ms feed, read >> write',
+    subtitle: 'multi-channel',
+    description: 'One system delivers email, SMS, push, and in-app.',
+    code: 'functional : send via N channels\nnon-func   : millions/day, reliable, low-latency',
   },
   {
-    icon: '📤',
-    title: 'Fan-out on Write',
+    icon: '📨',
+    title: 'Queue + Workers',
     titleClass: 'card-title-green',
-    subtitle: 'push model',
-    description: 'On post, write it into each follower’s feed. Fast reads.',
-    code: 'onPost(u): for f in followers(u):\n  feed[f].push(post)\n// heavy writes, instant reads',
+    subtitle: 'decouple sending',
+    description: 'Events go to a queue; workers pull and dispatch per channel.',
+    code: 'trigger → queue → [email][sms][push] workers\n// producer never waits on a provider',
   },
   {
-    icon: '📥',
-    title: 'Fan-out on Read',
+    icon: '📝',
+    title: 'Templates',
     titleClass: 'card-title-amber',
-    subtitle: 'pull model',
-    description: 'Build the feed on request by pulling followees’ posts.',
-    code: 'getFeed(u): merge(posts of followees(u))\n// light writes, heavier reads',
+    subtitle: 'reusable content',
+    description: 'Render localized templates with per-user variables.',
+    code: '"Hi {name}, your order {id} shipped"\n// versioned, localized, testable',
   },
   {
-    icon: '⚖️',
-    title: 'Hybrid',
+    icon: '🎚️',
+    title: 'Preferences',
     titleClass: 'card-title-pink',
-    subtitle: 'best of both',
-    description: 'Push for most users; pull celebrities’ posts at read time.',
-    code: '// normal users  → fan-out on write\n// celebrities    → fan-out on read',
+    subtitle: 'respect opt-out',
+    description: 'Check each user’s channel preferences before sending.',
+    code: 'if (!prefs[user].push) skip("push");\n// unsubscribe + quiet hours',
   },
 ];
 
-const AT_SCALE = [
+const RELIABILITY = [
   {
-    icon: '🗂️',
-    title: 'Feed Store & Ranking',
+    icon: '🔁',
+    title: 'Retries & DLQ',
     titleClass: 'card-title-cyan',
-    subtitle: 'precomputed',
-    description: 'Store a per-user timeline; rank chronologically or by score.',
-    code: 'feed:userId → [postIds...]\nrank: recency + engagement signals',
+    subtitle: 'deliver reliably',
+    description: 'Retry transient provider failures; DLQ the rest.',
+    code: 'send → fail → retry (backoff) → DLQ\n// alert on DLQ growth',
   },
   {
-    icon: '📜',
-    title: 'Pagination & Caching',
+    icon: '🔑',
+    title: 'Idempotency',
     titleClass: 'card-title-green',
-    subtitle: 'infinite scroll',
-    description: 'Cursor pagination for scroll; cache active users’ feeds.',
-    code: 'GET /feed?after=<lastId>\ncache hot feeds in Redis',
+    subtitle: 'no duplicates',
+    description: 'A dedupe key ensures each notification sends once.',
+    code: 'key = hash(event + user + channel)\nif (seen(key)) return; // exactly-once-ish',
   },
   {
-    icon: '🌟',
-    title: 'Celebrity Problem',
+    icon: '🚦',
+    title: 'Rate & Priority',
     titleClass: 'card-title-amber',
-    subtitle: 'the hard case',
-    description: 'One post to 50M followers can’t fan out on write.',
-    code: '// don’t push to 50M feeds\n// merge celebrity posts at read time',
+    subtitle: 'fair + timely',
+    description: 'Throttle per provider; route urgent messages first.',
+    code: 'lanes: transactional > marketing\nrespect provider quotas',
   },
 ];
 
@@ -117,25 +116,25 @@ const RESOURCES = [
     title: 'System Design Primer',
     titleClass: 'card-title-purple',
     subtitle: 'GitHub reference',
-    description: 'The Twitter timeline design in system-design-primer — the same pattern.',
+    description: 'system-design-primer — queues, workers, and reliable delivery patterns.',
     link: { href: PRIMER_URL, label: 'Open on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Primer Solutions',
+    title: 'AWS SNS',
     titleClass: 'card-title-green',
-    subtitle: 'Worked designs',
-    description: 'More worked HLD solutions to model your own answers on.',
+    subtitle: 'Official docs',
+    description: 'Amazon SNS — a real pub/sub notification service, as a reference.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Design a News Feed',
+    title: 'Notification Engine',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Design Facebook News Feed — system design interview — by Hello Interview.',
+    description: 'Build Your Own Notification Engine | System Design by Coder Army — for Day 51.',
     link: {
-      href: 'https://www.youtube.com/watch?v=Qj4-GruzyDU',
+      href: 'https://www.youtube.com/watch?v=t-4r2AsJz_Q',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -187,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day050() {
+export default function Day051() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -232,12 +231,12 @@ export default function Day050() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-049" className="day001-nav-btn day001-nav-home">
-            ← Day 49
+          <Link to="/day-050" className="day001-nav-btn day001-nav-home">
+            ← Day 50
           </Link>
-          <p className="day001-datetime">Thunder Day 50 · 23 Aug 2026</p>
-          <Link to="/day-051" className="day001-nav-btn day001-nav-next">
-            Day 51 →
+          <p className="day001-datetime">Thunder Day 51 · 24 Aug 2026</p>
+          <Link to="/day-052" className="day001-nav-btn day001-nav-next">
+            Day 52 →
           </Link>
         </header>
 
@@ -250,9 +249,9 @@ export default function Day050() {
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 50 <span aria-hidden="true">⚡</span>
+                DAY 51 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">DESIGN A NEWS FEED</p>
+              <p className="day001-day-theme">DESIGN A NOTIFICATION SYSTEM</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -271,17 +270,17 @@ export default function Day050() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '50%' }} />
+          <div className="day001-progress-bar" style={{ width: '51%' }} />
         </div>
 
         <p className="day001-summary">
-          Day fifty — halfway! The classic <strong>news feed</strong> HLD. The core choice is{' '}
-          <strong>fan-out on write</strong> (push each post into followers’ feeds — instant reads) vs{' '}
-          <strong>fan-out on read</strong> (build the feed on request — light writes). The real
-          answer is <strong>hybrid</strong>: push for normal users, pull for <strong>celebrities</strong>{' '}
-          to avoid an exploding write. Add a precomputed <strong>feed store</strong>,{' '}
-          <strong>ranking</strong>, cursor <strong>pagination</strong>, and caching — eventual
-          consistency is fine. Reference:{' '}
+          Day fifty-one — designing a <strong>notification system</strong> that spans{' '}
+          <strong>email, SMS, push, and in-app</strong>. The core is a{' '}
+          <strong>producer → queue → workers</strong> pipeline so triggering never waits on a slow
+          provider, with <strong>templates</strong> and per-user <strong>preferences</strong>.
+          Reliability comes from <strong>retries + DLQ</strong>, <strong>idempotency</strong> keys to
+          avoid duplicates, and <strong>rate limits</strong> with priority lanes for transactional vs
+          marketing. Reference:{' '}
           <a href={PRIMER_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             system-design-primer
           </a>
@@ -307,15 +306,15 @@ export default function Day050() {
           </ul>
         </section>
 
-        <CardSection icon="📰" title="FEED GENERATION" cards={GENERATION} columns={4} />
-        <CardSection icon="📈" title="AT SCALE" cards={AT_SCALE} columns={3} />
+        <CardSection icon="🧩" title="THE DESIGN" cards={DESIGN} columns={4} />
+        <CardSection icon="🛡️" title="RELIABILITY" cards={RELIABILITY} columns={3} />
         <CardSection icon="📚" title="SYSTEM DESIGN RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#SystemDesign</span>
           <span>#HLD</span>
-          <span>#NewsFeed</span>
+          <span>#Notifications</span>
           <span>#Thunder</span>
         </footer>
       </div>
