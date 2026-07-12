@@ -64,8 +64,7 @@ export default function Layout() {
         </p>
         <p className="footer-sub">
           Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data
-          Structures → Interview Prep. <strong>1461 days</strong> (4 years): 5 Jul 2026 → 4 Jul 2030. Interview Prep
-          = <strong>504 days (72 weeks)</strong>.
+          Structures → Interview Prep = <strong>504 days (72 weeks)</strong>.
         </p>
         <p className="footer-community">
           <a href={discordCommunity} target="_blank" rel="noopener noreferrer">
