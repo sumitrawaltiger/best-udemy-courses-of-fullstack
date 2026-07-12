@@ -219,6 +219,14 @@ const MICROSERVICES_DESIGN_SECTIONS = [
     image: '/java-notes/microservices-design-patterns.jpg',
     imageAlt: 'Design Patterns for Microservices map — Decomposition, Integration, Database, Observability, and Cross-Cutting Concern pattern families',
   },
+  {
+    id: 'nine-microservice-patterns',
+    title: '9 Essential Java Microservice Patterns',
+    content:
+      "The nine patterns you reach for again and again, at a glance:\n\n- **API Gateway** — one entry point that routes clients to the right microservice.\n- **Circuit Breaker (Resilience4j)** — stop calling a failing service (closed → open → half-open) to prevent cascading failures.\n- **Database per Service** — each service (User, Order, Inventory) owns its own database.\n- **Saga Pattern** — coordinate distributed transactions across services with compensating rollbacks on failure.\n- **CQRS** — split the write model from the read model so each is optimized independently.\n- **Event Sourcing** — store state as an immutable log of events rather than a single snapshot.\n- **Service Discovery (Eureka Registry)** — services register themselves and are found by name at runtime.\n- **Strangler Fig** — migrate a monolith incrementally, peeling features into microservices.\n- **Bulkhead** — isolate resource pools so one overloaded component can't sink the whole ship.",
+    image: '/java-notes/java-microservice-9-design-patterns.jpg',
+    imageAlt: 'Nine Java microservice design patterns — API Gateway, Circuit Breaker, Database per Service, Saga, CQRS, Event Sourcing, Service Discovery, Strangler Fig, and Bulkhead',
+  },
 ];
 
 // ---------------------------------------------------------------------------
