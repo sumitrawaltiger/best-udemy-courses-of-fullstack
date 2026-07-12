@@ -6,6 +6,7 @@
 export const CHEATSHEET_CATEGORIES = [
   { id: 'api-tools', label: 'API & Tools', icon: '🛠️' },
   { id: 'languages', label: 'Languages', icon: '💻' },
+  { id: 'python', label: 'Python', icon: '🐍' },
   { id: 'devops-cloud', label: 'DevOps & Cloud', icon: '☁️' },
   { id: 'kubernetes', label: 'Kubernetes', icon: '☸️' },
   { id: 'java', label: 'Java', icon: '☕' },
@@ -14,6 +15,42 @@ export const CHEATSHEET_CATEGORIES = [
 ];
 
 export const CHEAT_SHEETS = [
+  {
+    id: 'python-ultimate',
+    title: 'Python — The Ultimate Cheat Sheet',
+    description:
+      'A one-page Python quick reference — basics, data structures, operators, control flow, functions, common modules, file handling, list comprehensions, exceptions, and handy snippets.',
+    category: 'python',
+    image: '/cheatsheets/python-ultimate-cheat-sheet.jpeg',
+    tags: ['Python', 'Basics', 'Reference'],
+  },
+  {
+    id: 'python-for-loops',
+    title: 'For Loops in Python',
+    description:
+      'Everything about Python for loops — syntax, iterating over lists, strings, tuples, dictionaries and range(), loop control (break, continue, pass), nested loops, and quick tips.',
+    category: 'python',
+    image: '/cheatsheets/python-for-loops-cheat-sheet.jpeg',
+    tags: ['Python', 'For Loop', 'Iteration'],
+  },
+  {
+    id: 'python-loops',
+    title: 'Loops in Python',
+    description:
+      'A visual guide to Python loops — for vs while, syntax and examples, loop control statements, common use cases, nested loops, and a side-by-side for/while cheat sheet.',
+    category: 'python',
+    image: '/cheatsheets/python-loops-cheat-sheet.jpeg',
+    tags: ['Python', 'Loops', 'While'],
+  },
+  {
+    id: 'python-dsa',
+    title: 'DSA in Python',
+    description:
+      'Data Structures & Algorithms in Python at a glance — core data structures, basic examples, common algorithms, time complexity, real-world uses, and quick tips.',
+    category: 'python',
+    image: '/cheatsheets/python-dsa-cheat-sheet.jpeg',
+    tags: ['Python', 'DSA', 'Algorithms'],
+  },
   {
     id: 'postman',
     title: 'Postman Cheat Sheet',

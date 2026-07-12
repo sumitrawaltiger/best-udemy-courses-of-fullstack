@@ -105,12 +105,31 @@
   font-size: 0.72rem;
 }
 
+/* Category sections */
+.cs-section {
+  margin-top: 2.75rem;
+  scroll-margin-top: 5rem;
+}
+.cs-section:first-of-type {
+  margin-top: 2rem;
+}
+.cs-section-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--cs-border);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 /* Grid */
 .cs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.25rem;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 .cs-card {
   background: var(--cs-panel);

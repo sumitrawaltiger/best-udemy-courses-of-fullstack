@@ -119,11 +119,18 @@ export default function CheatSheets() {
         {CHEAT_SHEETS.length === 0 ? (
           <div className="cs-empty">No cheat sheets yet — check back soon.</div>
         ) : (
-          <div className="cs-grid">
-            {CHEAT_SHEETS.map((sheet) => (
-              <CheatSheetCard key={sheet.id} sheet={sheet} onZoom={setZoomed} />
-            ))}
-          </div>
+          CHEATSHEET_CATEGORIES.filter((cat) => countFor(cat.id) > 0).map((cat) => (
+            <section key={cat.id} id={`cs-section-${cat.id}`} className="cs-section">
+              <h2 className="cs-section-title">
+                <span aria-hidden="true">{cat.icon}</span> {cat.label} Cheat Sheets
+              </h2>
+              <div className="cs-grid">
+                {CHEAT_SHEETS.filter((s) => s.category === cat.id).map((sheet) => (
+                  <CheatSheetCard key={sheet.id} sheet={sheet} onZoom={setZoomed} />
+                ))}
+              </div>
+            </section>
+          ))
         )}
 
         <footer className="cs-footer">
