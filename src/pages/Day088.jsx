@@ -2,140 +2,139 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL =
-  'https://docs.aws.amazon.com/whitepapers/latest/overview-deployment-options/introduction.html';
-const KODEKLOUD_URL = 'https://kodekloud.com/';
+const DOCS_URL = 'https://developer.hashicorp.com/terraform/intro';
+const REGISTRY_URL = 'https://registry.terraform.io/';
 
 const LEARNT_TODAY = [
   {
-    title: 'Recreate',
-    text: 'stop the old version, start the new — brief downtime',
+    title: 'IaC',
+    text: 'infrastructure defined and versioned as code',
   },
   {
-    title: 'Rolling',
-    text: 'replace instances gradually, a few at a time',
+    title: 'Declarative',
+    text: 'describe the desired state, not the steps',
   },
   {
-    title: 'Blue/Green',
-    text: 'two full environments; switch traffic instantly',
+    title: 'Providers',
+    text: 'plugins for AWS, GCP, Azure, and more',
   },
   {
-    title: 'Canary',
-    text: 'release to a small % first, then ramp up',
+    title: 'Resources',
+    text: 'the infra objects to create (an EC2, a bucket)',
   },
   {
-    title: 'Feature flags',
-    text: 'decouple deploying code from releasing a feature',
+    title: 'init / plan / apply',
+    text: 'the core Terraform workflow',
   },
   {
-    title: 'Health checks',
-    text: 'gate the rollout on healthy instances',
+    title: 'State',
+    text: 'a state file tracks what really exists',
   },
   {
-    title: 'Rollback',
-    text: 'blue/green flips back instantly',
+    title: 'Variables & outputs',
+    text: 'parameterize inputs, export values',
   },
   {
-    title: 'Zero downtime',
-    text: 'the goal for user-facing services',
+    title: 'Modules',
+    text: 'reusable, composable infrastructure',
   },
   {
-    title: 'Traffic shifting',
-    text: 'the load balancer or mesh moves users over',
+    title: 'Remote state',
+    text: 'store state in S3 for team collaboration',
   },
   {
-    title: 'Observability',
-    text: 'watch metrics/errors during the rollout',
+    title: 'Idempotent',
+    text: 'apply is safe to run again — converges to state',
   },
 ];
 
-const STRATEGIES = [
+const IAC = [
   {
-    icon: '♻️',
-    title: 'Recreate',
+    icon: '📜',
+    title: 'Why IaC',
     titleClass: 'card-title-cyan',
-    subtitle: 'simplest',
-    description: 'Tear down the old, bring up the new — expect downtime.',
-    code: 'stop v1 → start v2\n// simple, but a gap of unavailability',
+    subtitle: 'code, not clicks',
+    description: 'Provision infra reproducibly and review it like code.',
+    code: '// no manual console clicking\n// git-tracked, peer-reviewed infrastructure',
   },
   {
-    icon: '🔃',
-    title: 'Rolling',
+    icon: '🔌',
+    title: 'Providers & Resources',
     titleClass: 'card-title-green',
-    subtitle: 'gradual',
-    description: 'Swap instances in batches so the app stays up.',
-    code: 'replace 1/4 at a time\nold + new run side by side briefly',
+    subtitle: 'declare it',
+    description: 'A provider talks to a cloud; resources are what you create.',
+    code: 'provider "aws" { region = "ap-south-1" }\nresource "aws_instance" "web" { ami = "...", instance_type = "t3.micro" }',
   },
   {
-    icon: '🔵',
-    title: 'Blue/Green',
+    icon: '🔁',
+    title: 'The Workflow',
     titleClass: 'card-title-amber',
-    subtitle: 'instant switch',
-    description: 'Two identical envs; flip the router to the new one.',
-    code: 'blue = live, green = new\ntest green → switch traffic → keep blue for rollback',
+    subtitle: 'init → plan → apply',
+    description: 'Initialize, preview the diff, then apply it.',
+    code: 'terraform init    # download providers\nterraform plan    # preview changes\nterraform apply   # make them real',
   },
   {
-    icon: '🐤',
-    title: 'Canary',
+    icon: '🗂️',
+    title: 'State',
     titleClass: 'card-title-pink',
-    subtitle: 'test in prod',
-    description: 'Send 5% of traffic to the new version; watch, then ramp.',
-    code: '5% → 25% → 50% → 100%\n// halt and roll back if errors spike',
+    subtitle: 'source of truth',
+    description: 'The state file maps config to real resources.',
+    code: 'terraform.tfstate\n// diff = desired (code) vs actual (state)',
   },
 ];
 
-const SAFE = [
+const SCALE = [
   {
-    icon: '🚩',
-    title: 'Feature Flags',
+    icon: '🎚️',
+    title: 'Variables & Outputs',
     titleClass: 'card-title-cyan',
-    subtitle: 'decouple',
-    description: 'Ship code dark; turn the feature on independently.',
-    code: 'if (flags.newCheckout) renderNew();\n// deploy != release',
+    subtitle: 'parameterize',
+    description: 'Inputs make configs reusable; outputs export values.',
+    code: 'variable "instance_type" { default = "t3.micro" }\noutput "public_ip" { value = aws_instance.web.public_ip }',
   },
   {
-    icon: '❤️',
-    title: 'Health & Rollback',
+    icon: '📦',
+    title: 'Modules',
     titleClass: 'card-title-green',
-    subtitle: 'safety net',
-    description: 'Gate on health checks; revert instantly on trouble.',
-    code: 'readiness/liveness probes\nblue/green: flip back in seconds',
+    subtitle: 'reuse infra',
+    description: 'Package resources into reusable modules.',
+    code: 'module "vpc" {\n  source = "./modules/vpc"\n  cidr   = "10.0.0.0/16"\n}',
   },
   {
-    icon: '📊',
-    title: 'Observe',
+    icon: '☁️',
+    title: 'Remote State',
     titleClass: 'card-title-amber',
-    subtitle: 'watch it',
-    description: 'Monitor errors, latency, and traffic during rollout.',
-    code: 'error rate ↑ → auto-halt\ndashboards + alerts on the new version',
+    subtitle: 'for teams',
+    description: 'Share state via a backend, with locking.',
+    code: 'backend "s3" {\n  bucket = "tf-state", key = "app/terraform.tfstate"\n}',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'AWS Deployment Options',
+    title: 'Terraform Intro',
     titleClass: 'card-title-green',
-    subtitle: 'Whitepaper',
-    description: 'AWS’ overview of deployment strategies and their trade-offs.',
+    subtitle: 'Official docs',
+    description: 'HashiCorp’s intro to Terraform — providers, state, and workflow.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
-    icon: '🧪',
-    title: 'KodeKloud',
+    icon: '🧩',
+    title: 'Terraform Registry',
     titleClass: 'card-title-purple',
-    subtitle: 'Hands-on labs',
-    description: 'Practice rolling, blue/green, and canary deploys in KodeKloud.',
-    link: { href: KODEKLOUD_URL, label: 'Open KodeKloud →', external: true },
+    subtitle: 'Modules & providers',
+    description: 'Thousands of ready-made providers and reusable modules.',
+    link: { href: REGISTRY_URL, label: 'Browse the registry →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Top 5 Strategies',
+    title: 'Terraform in 15 min',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Top 5 Most-Used Deployment Strategies by ByteByteGo — supplement for Day 85.',
+    description: 'Terraform Explained in 15 Minutes by TechWorld with Nana — for Day 88.',
     link: {
-      href: 'https://www.youtube.com/watch?v=AWVTKBUnoIg',
+      href: 'https://www.youtube.com/watch?v=l5k1ai_GBDE',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -187,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day085() {
+export default function Day088() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -232,12 +231,12 @@ export default function Day085() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-084" className="day001-nav-btn day001-nav-home">
-            ← Day 84
+          <Link to="/day-087" className="day001-nav-btn day001-nav-home">
+            ← Day 87
           </Link>
-          <p className="day001-datetime">Thunder Day 85 · 27 Sep 2026</p>
-          <Link to="/day-086" className="day001-nav-btn day001-nav-next">
-            Day 86 →
+          <p className="day001-datetime">Thunder Day 88 · 30 Sep 2026</p>
+          <Link to="/day-089" className="day001-nav-btn day001-nav-next">
+            Day 89 →
           </Link>
         </header>
 
@@ -245,14 +244,14 @@ export default function Day085() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>DevOps</span>
-              <span>Deployment</span>
+              <span>Terraform</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 85 <span aria-hidden="true">⚡</span>
+                DAY 88 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">DEPLOYMENT STRATEGIES</p>
+              <p className="day001-day-theme">INFRASTRUCTURE AS CODE — TERRAFORM</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -271,19 +270,19 @@ export default function Day085() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '85%' }} />
+          <div className="day001-progress-bar" style={{ width: '88%' }} />
         </div>
 
         <p className="day001-summary">
-          Day eighty-five — how to ship without breaking users. <strong>Recreate</strong> is simple
-          but has downtime; <strong>rolling</strong> replaces instances gradually;{' '}
-          <strong>blue/green</strong> keeps two environments and flips traffic (instant rollback);
-          and <strong>canary</strong> sends a small % to the new version first. Make it safe with{' '}
-          <strong>feature flags</strong>, <strong>health checks</strong>, fast{' '}
-          <strong>rollback</strong>, and <strong>observability</strong> during the rollout — all
-          aiming for <strong>zero downtime</strong>. Reference:{' '}
+          Day eighty-eight — stop clicking in consoles: define infra as code with{' '}
+          <strong>Terraform</strong>. It’s <strong>declarative</strong> — <strong>providers</strong>{' '}
+          talk to clouds and <strong>resources</strong> describe what to create. The workflow is{' '}
+          <code>init → plan → apply</code>, with a <strong>state file</strong> as the source of
+          truth. Parameterize with <strong>variables/outputs</strong>, package reusable{' '}
+          <strong>modules</strong>, and share <strong>remote state</strong> for teams — all{' '}
+          <strong>idempotent</strong>. Reference:{' '}
           <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            AWS deployment options
+            Terraform intro
           </a>
           .
         </p>
@@ -307,15 +306,15 @@ export default function Day085() {
           </ul>
         </section>
 
-        <CardSection icon="🚀" title="STRATEGIES" cards={STRATEGIES} columns={4} />
-        <CardSection icon="🛡️" title="SAFE RELEASES" cards={SAFE} columns={3} />
-        <CardSection icon="📚" title="DEPLOYMENT RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="📜" title="IaC & TERRAFORM" cards={IAC} columns={4} />
+        <CardSection icon="📈" title="SCALE IT" cards={SCALE} columns={3} />
+        <CardSection icon="📚" title="TERRAFORM RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#DevOps</span>
-          <span>#Deployment</span>
-          <span>#BlueGreen</span>
+          <span>#Terraform</span>
+          <span>#IaC</span>
           <span>#Thunder</span>
         </footer>
       </div>

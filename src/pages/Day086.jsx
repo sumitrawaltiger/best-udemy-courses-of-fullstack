@@ -2,140 +2,139 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL =
-  'https://docs.aws.amazon.com/whitepapers/latest/overview-deployment-options/introduction.html';
-const KODEKLOUD_URL = 'https://kodekloud.com/';
+const DOCS_URL = 'https://kubernetes.io/docs/concepts/overview/';
+const PLAY_URL = 'https://labs.play-with-k8s.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'Recreate',
-    text: 'stop the old version, start the new — brief downtime',
+    title: 'Why Kubernetes',
+    text: 'orchestrate containers across many machines at scale',
   },
   {
-    title: 'Rolling',
-    text: 'replace instances gradually, a few at a time',
+    title: 'Cluster',
+    text: 'a control plane plus worker nodes',
   },
   {
-    title: 'Blue/Green',
-    text: 'two full environments; switch traffic instantly',
+    title: 'Pod',
+    text: 'the smallest unit — one or more containers',
   },
   {
-    title: 'Canary',
-    text: 'release to a small % first, then ramp up',
+    title: 'Deployment',
+    text: 'declares desired replicas + rolling updates',
   },
   {
-    title: 'Feature flags',
-    text: 'decouple deploying code from releasing a feature',
+    title: 'ReplicaSet',
+    text: 'keeps N identical pods running',
   },
   {
-    title: 'Health checks',
-    text: 'gate the rollout on healthy instances',
+    title: 'Service',
+    text: 'a stable endpoint in front of pods',
   },
   {
-    title: 'Rollback',
-    text: 'blue/green flips back instantly',
+    title: 'Self-healing',
+    text: 'restarts or reschedules failed pods',
   },
   {
-    title: 'Zero downtime',
-    text: 'the goal for user-facing services',
+    title: 'kubectl',
+    text: 'the command-line tool to drive the cluster',
   },
   {
-    title: 'Traffic shifting',
-    text: 'the load balancer or mesh moves users over',
+    title: 'YAML manifests',
+    text: 'declare desired state, apply it',
   },
   {
-    title: 'Observability',
-    text: 'watch metrics/errors during the rollout',
+    title: 'Namespaces',
+    text: 'logical isolation within a cluster',
   },
 ];
 
-const STRATEGIES = [
+const CLUSTER = [
   {
-    icon: '♻️',
-    title: 'Recreate',
+    icon: '☸️',
+    title: 'Why Kubernetes',
     titleClass: 'card-title-cyan',
-    subtitle: 'simplest',
-    description: 'Tear down the old, bring up the new — expect downtime.',
-    code: 'stop v1 → start v2\n// simple, but a gap of unavailability',
+    subtitle: 'orchestration',
+    description: 'Run, scale, and heal containers across a fleet automatically.',
+    code: '// Compose is one host;\n// K8s schedules containers across many nodes',
   },
   {
-    icon: '🔃',
-    title: 'Rolling',
+    icon: '🏗️',
+    title: 'Cluster & Nodes',
     titleClass: 'card-title-green',
-    subtitle: 'gradual',
-    description: 'Swap instances in batches so the app stays up.',
-    code: 'replace 1/4 at a time\nold + new run side by side briefly',
+    subtitle: 'the machines',
+    description: 'A control plane decides; worker nodes run the pods.',
+    code: 'control plane: API server, scheduler, etcd\nnodes: kubelet + your pods',
   },
   {
-    icon: '🔵',
-    title: 'Blue/Green',
+    icon: '📦',
+    title: 'Pods',
     titleClass: 'card-title-amber',
-    subtitle: 'instant switch',
-    description: 'Two identical envs; flip the router to the new one.',
-    code: 'blue = live, green = new\ntest green → switch traffic → keep blue for rollback',
+    subtitle: 'smallest unit',
+    description: 'A pod wraps one (or a few) containers sharing a network.',
+    code: 'apiVersion: v1\nkind: Pod\nspec: { containers: [{ image: myapp:1 }] }',
   },
   {
-    icon: '🐤',
-    title: 'Canary',
+    icon: '🔁',
+    title: 'Deployments',
     titleClass: 'card-title-pink',
-    subtitle: 'test in prod',
-    description: 'Send 5% of traffic to the new version; watch, then ramp.',
-    code: '5% → 25% → 50% → 100%\n// halt and roll back if errors spike',
+    subtitle: 'desired state',
+    description: 'Declare replicas; K8s rolls out updates safely.',
+    code: 'kind: Deployment\nspec: { replicas: 3, template: {...} }',
   },
 ];
 
-const SAFE = [
+const OPS = [
   {
-    icon: '🚩',
-    title: 'Feature Flags',
+    icon: '🌐',
+    title: 'Services',
     titleClass: 'card-title-cyan',
-    subtitle: 'decouple',
-    description: 'Ship code dark; turn the feature on independently.',
-    code: 'if (flags.newCheckout) renderNew();\n// deploy != release',
+    subtitle: 'stable networking',
+    description: 'A Service gives pods a fixed name and load-balances them.',
+    code: 'kind: Service\ntype: ClusterIP | NodePort | LoadBalancer',
   },
   {
     icon: '❤️',
-    title: 'Health & Rollback',
+    title: 'Self-Healing & Scaling',
     titleClass: 'card-title-green',
-    subtitle: 'safety net',
-    description: 'Gate on health checks; revert instantly on trouble.',
-    code: 'readiness/liveness probes\nblue/green: flip back in seconds',
+    subtitle: 'automatic',
+    description: 'Dead pods restart; scale replicas up or down on demand.',
+    code: 'kubectl scale deploy/app --replicas=5\n// HPA autoscales on CPU/metrics',
   },
   {
-    icon: '📊',
-    title: 'Observe',
+    icon: '⌨️',
+    title: 'kubectl & Manifests',
     titleClass: 'card-title-amber',
-    subtitle: 'watch it',
-    description: 'Monitor errors, latency, and traffic during rollout.',
-    code: 'error rate ↑ → auto-halt\ndashboards + alerts on the new version',
+    subtitle: 'drive it',
+    description: 'Apply YAML; inspect and debug with kubectl.',
+    code: 'kubectl apply -f deploy.yaml\nkubectl get pods · kubectl logs <pod>',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'AWS Deployment Options',
+    title: 'Kubernetes Docs',
     titleClass: 'card-title-green',
-    subtitle: 'Whitepaper',
-    description: 'AWS’ overview of deployment strategies and their trade-offs.',
+    subtitle: 'Official docs',
+    description: 'The Kubernetes concepts overview — pods, deployments, services.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '🧪',
-    title: 'KodeKloud',
+    title: 'Play with Kubernetes',
     titleClass: 'card-title-purple',
-    subtitle: 'Hands-on labs',
-    description: 'Practice rolling, blue/green, and canary deploys in KodeKloud.',
-    link: { href: KODEKLOUD_URL, label: 'Open KodeKloud →', external: true },
+    subtitle: 'Try it live',
+    description: 'A free in-browser cluster to run kubectl hands-on.',
+    link: { href: PLAY_URL, label: 'Open the playground →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Top 5 Strategies',
+    title: 'Kubernetes Crash Course',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Top 5 Most-Used Deployment Strategies by ByteByteGo — supplement for Day 85.',
+    description: 'Kubernetes Crash Course for Absolute Beginners by TechWorld with Nana — Day 86.',
     link: {
-      href: 'https://www.youtube.com/watch?v=AWVTKBUnoIg',
+      href: 'https://www.youtube.com/watch?v=s_o8dwzRlu4',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -187,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day085() {
+export default function Day086() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -232,12 +231,12 @@ export default function Day085() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-084" className="day001-nav-btn day001-nav-home">
-            ← Day 84
+          <Link to="/day-085" className="day001-nav-btn day001-nav-home">
+            ← Day 85
           </Link>
-          <p className="day001-datetime">Thunder Day 85 · 27 Sep 2026</p>
-          <Link to="/day-086" className="day001-nav-btn day001-nav-next">
-            Day 86 →
+          <p className="day001-datetime">Thunder Day 86 · 28 Sep 2026</p>
+          <Link to="/day-087" className="day001-nav-btn day001-nav-next">
+            Day 87 →
           </Link>
         </header>
 
@@ -245,14 +244,14 @@ export default function Day085() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>DevOps</span>
-              <span>Deployment</span>
+              <span>Kubernetes</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 85 <span aria-hidden="true">⚡</span>
+                DAY 86 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">DEPLOYMENT STRATEGIES</p>
+              <p className="day001-day-theme">KUBERNETES INTRODUCTION</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -271,19 +270,18 @@ export default function Day085() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '85%' }} />
+          <div className="day001-progress-bar" style={{ width: '86%' }} />
         </div>
 
         <p className="day001-summary">
-          Day eighty-five — how to ship without breaking users. <strong>Recreate</strong> is simple
-          but has downtime; <strong>rolling</strong> replaces instances gradually;{' '}
-          <strong>blue/green</strong> keeps two environments and flips traffic (instant rollback);
-          and <strong>canary</strong> sends a small % to the new version first. Make it safe with{' '}
-          <strong>feature flags</strong>, <strong>health checks</strong>, fast{' '}
-          <strong>rollback</strong>, and <strong>observability</strong> during the rollout — all
-          aiming for <strong>zero downtime</strong>. Reference:{' '}
+          Day eighty-six — beyond one host, <strong>Kubernetes</strong> orchestrates containers
+          across a <strong>cluster</strong> (control plane + worker nodes). The smallest unit is a{' '}
+          <strong>Pod</strong>; a <strong>Deployment</strong> declares replicas and rolling updates,
+          a <strong>ReplicaSet</strong> keeps them running, and a <strong>Service</strong> gives a
+          stable endpoint. K8s is <strong>self-healing</strong> and scalable, all driven declaratively
+          via <strong>YAML</strong> and <code>kubectl</code>. Reference:{' '}
           <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            AWS deployment options
+            Kubernetes docs
           </a>
           .
         </p>
@@ -307,15 +305,15 @@ export default function Day085() {
           </ul>
         </section>
 
-        <CardSection icon="🚀" title="STRATEGIES" cards={STRATEGIES} columns={4} />
-        <CardSection icon="🛡️" title="SAFE RELEASES" cards={SAFE} columns={3} />
-        <CardSection icon="📚" title="DEPLOYMENT RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="☸️" title="THE CLUSTER" cards={CLUSTER} columns={4} />
+        <CardSection icon="🌐" title="NETWORKING & OPS" cards={OPS} columns={3} />
+        <CardSection icon="📚" title="KUBERNETES RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#DevOps</span>
-          <span>#Deployment</span>
-          <span>#BlueGreen</span>
+          <span>#Kubernetes</span>
+          <span>#Containers</span>
           <span>#Thunder</span>
         </footer>
       </div>

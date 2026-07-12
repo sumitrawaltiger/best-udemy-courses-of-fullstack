@@ -2,140 +2,139 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL =
-  'https://docs.aws.amazon.com/whitepapers/latest/overview-deployment-options/introduction.html';
-const KODEKLOUD_URL = 'https://kodekloud.com/';
+const DOCS_URL = 'https://prometheus.io/docs/introduction/overview/';
+const GRAFANA_URL = 'https://grafana.com/docs/grafana/latest/';
 
 const LEARNT_TODAY = [
   {
-    title: 'Recreate',
-    text: 'stop the old version, start the new — brief downtime',
-  },
-  {
-    title: 'Rolling',
-    text: 'replace instances gradually, a few at a time',
-  },
-  {
-    title: 'Blue/Green',
-    text: 'two full environments; switch traffic instantly',
-  },
-  {
-    title: 'Canary',
-    text: 'release to a small % first, then ramp up',
-  },
-  {
-    title: 'Feature flags',
-    text: 'decouple deploying code from releasing a feature',
-  },
-  {
-    title: 'Health checks',
-    text: 'gate the rollout on healthy instances',
-  },
-  {
-    title: 'Rollback',
-    text: 'blue/green flips back instantly',
-  },
-  {
-    title: 'Zero downtime',
-    text: 'the goal for user-facing services',
-  },
-  {
-    title: 'Traffic shifting',
-    text: 'the load balancer or mesh moves users over',
-  },
-  {
     title: 'Observability',
-    text: 'watch metrics/errors during the rollout',
+    text: 'the three pillars — metrics, logs, and traces',
+  },
+  {
+    title: 'Prometheus',
+    text: 'scrapes and stores time-series metrics',
+  },
+  {
+    title: 'PromQL',
+    text: 'the query language for metrics',
+  },
+  {
+    title: 'Exporters',
+    text: 'expose metrics (node_exporter, app /metrics)',
+  },
+  {
+    title: 'Grafana',
+    text: 'dashboards and visualization',
+  },
+  {
+    title: 'Alerting',
+    text: 'Alertmanager fires on rule breaches',
+  },
+  {
+    title: 'Logs',
+    text: 'aggregate with ELK or Loki',
+  },
+  {
+    title: 'Traces',
+    text: 'follow a request across services (Jaeger)',
+  },
+  {
+    title: 'SLIs / SLOs',
+    text: 'measure and target reliability',
+  },
+  {
+    title: 'RED / USE',
+    text: 'methods to pick what to monitor',
   },
 ];
 
-const STRATEGIES = [
+const METRICS = [
   {
-    icon: '♻️',
-    title: 'Recreate',
+    icon: '🔭',
+    title: 'Observability',
     titleClass: 'card-title-cyan',
-    subtitle: 'simplest',
-    description: 'Tear down the old, bring up the new — expect downtime.',
-    code: 'stop v1 → start v2\n// simple, but a gap of unavailability',
+    subtitle: 'three pillars',
+    description: 'Metrics (numbers), logs (events), traces (request paths).',
+    code: 'metrics: rate, latency, errors\nlogs: what happened · traces: where the time went',
   },
   {
-    icon: '🔃',
-    title: 'Rolling',
+    icon: '📈',
+    title: 'Prometheus',
     titleClass: 'card-title-green',
-    subtitle: 'gradual',
-    description: 'Swap instances in batches so the app stays up.',
-    code: 'replace 1/4 at a time\nold + new run side by side briefly',
+    subtitle: 'pull-based',
+    description: 'Scrapes targets on an interval and stores time series.',
+    code: 'scrape_configs:\n  - job_name: node\n    static_configs: [{ targets: ["host:9100"] }]',
   },
   {
-    icon: '🔵',
-    title: 'Blue/Green',
+    icon: '🔎',
+    title: 'PromQL',
     titleClass: 'card-title-amber',
-    subtitle: 'instant switch',
-    description: 'Two identical envs; flip the router to the new one.',
-    code: 'blue = live, green = new\ntest green → switch traffic → keep blue for rollback',
+    subtitle: 'query it',
+    description: 'Aggregate and compute over the collected metrics.',
+    code: 'rate(http_requests_total[5m])\n100 - avg(rate(node_cpu_seconds{mode="idle"}[5m]))*100',
   },
   {
-    icon: '🐤',
-    title: 'Canary',
+    icon: '🔌',
+    title: 'Exporters',
     titleClass: 'card-title-pink',
-    subtitle: 'test in prod',
-    description: 'Send 5% of traffic to the new version; watch, then ramp.',
-    code: '5% → 25% → 50% → 100%\n// halt and roll back if errors spike',
+    subtitle: 'produce metrics',
+    description: 'Exporters and app endpoints expose /metrics to scrape.',
+    code: 'node_exporter → host metrics\napp: GET /metrics (client library)',
   },
 ];
 
-const SAFE = [
-  {
-    icon: '🚩',
-    title: 'Feature Flags',
-    titleClass: 'card-title-cyan',
-    subtitle: 'decouple',
-    description: 'Ship code dark; turn the feature on independently.',
-    code: 'if (flags.newCheckout) renderNew();\n// deploy != release',
-  },
-  {
-    icon: '❤️',
-    title: 'Health & Rollback',
-    titleClass: 'card-title-green',
-    subtitle: 'safety net',
-    description: 'Gate on health checks; revert instantly on trouble.',
-    code: 'readiness/liveness probes\nblue/green: flip back in seconds',
-  },
+const VISUALIZE = [
   {
     icon: '📊',
-    title: 'Observe',
+    title: 'Grafana',
+    titleClass: 'card-title-cyan',
+    subtitle: 'dashboards',
+    description: 'Add Prometheus as a data source and build panels.',
+    code: '// panels on PromQL queries\n// one dashboard per service',
+  },
+  {
+    icon: '🚨',
+    title: 'Alerting',
+    titleClass: 'card-title-green',
+    subtitle: 'get paged',
+    description: 'Define rules; Alertmanager routes notifications.',
+    code: 'alert: HighErrorRate\nexpr: error_rate > 0.05  for: 5m',
+  },
+  {
+    icon: '📜',
+    title: 'Logs & Traces',
     titleClass: 'card-title-amber',
-    subtitle: 'watch it',
-    description: 'Monitor errors, latency, and traffic during rollout.',
-    code: 'error rate ↑ → auto-halt\ndashboards + alerts on the new version',
+    subtitle: 'complete it',
+    description: 'Aggregate logs (Loki/ELK); trace requests (Jaeger).',
+    code: 'Loki + Grafana for logs\nOpenTelemetry → Jaeger for traces',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'AWS Deployment Options',
+    title: 'Prometheus Docs',
     titleClass: 'card-title-green',
-    subtitle: 'Whitepaper',
-    description: 'AWS’ overview of deployment strategies and their trade-offs.',
+    subtitle: 'Official docs',
+    description: 'Prometheus overview — scraping, storage, and PromQL.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
-    icon: '🧪',
-    title: 'KodeKloud',
+    icon: '📘',
+    title: 'Grafana Docs',
     titleClass: 'card-title-purple',
-    subtitle: 'Hands-on labs',
-    description: 'Practice rolling, blue/green, and canary deploys in KodeKloud.',
-    link: { href: KODEKLOUD_URL, label: 'Open KodeKloud →', external: true },
+    subtitle: 'Dashboards',
+    description: 'Build dashboards, data sources, and alerts in Grafana.',
+    link: { href: GRAFANA_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Top 5 Strategies',
+    title: 'Prometheus + Grafana',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Top 5 Most-Used Deployment Strategies by ByteByteGo — supplement for Day 85.',
+    description: 'Server Monitoring with Prometheus and Grafana by Christian Lempa — Day 87.',
     link: {
-      href: 'https://www.youtube.com/watch?v=AWVTKBUnoIg',
+      href: 'https://www.youtube.com/watch?v=9TJx7QTrTyo',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -187,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day085() {
+export default function Day087() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -232,12 +231,12 @@ export default function Day085() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-084" className="day001-nav-btn day001-nav-home">
-            ← Day 84
+          <Link to="/day-086" className="day001-nav-btn day001-nav-home">
+            ← Day 86
           </Link>
-          <p className="day001-datetime">Thunder Day 85 · 27 Sep 2026</p>
-          <Link to="/day-086" className="day001-nav-btn day001-nav-next">
-            Day 86 →
+          <p className="day001-datetime">Thunder Day 87 · 29 Sep 2026</p>
+          <Link to="/day-088" className="day001-nav-btn day001-nav-next">
+            Day 88 →
           </Link>
         </header>
 
@@ -245,14 +244,14 @@ export default function Day085() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>DevOps</span>
-              <span>Deployment</span>
+              <span>Observability</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 85 <span aria-hidden="true">⚡</span>
+                DAY 87 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">DEPLOYMENT STRATEGIES</p>
+              <p className="day001-day-theme">MONITORING & LOGGING</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -271,19 +270,19 @@ export default function Day085() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '85%' }} />
+          <div className="day001-progress-bar" style={{ width: '87%' }} />
         </div>
 
         <p className="day001-summary">
-          Day eighty-five — how to ship without breaking users. <strong>Recreate</strong> is simple
-          but has downtime; <strong>rolling</strong> replaces instances gradually;{' '}
-          <strong>blue/green</strong> keeps two environments and flips traffic (instant rollback);
-          and <strong>canary</strong> sends a small % to the new version first. Make it safe with{' '}
-          <strong>feature flags</strong>, <strong>health checks</strong>, fast{' '}
-          <strong>rollback</strong>, and <strong>observability</strong> during the rollout — all
-          aiming for <strong>zero downtime</strong>. Reference:{' '}
+          Day eighty-seven — you can’t operate what you can’t see. <strong>Observability</strong>{' '}
+          has three pillars — <strong>metrics</strong>, <strong>logs</strong>, <strong>traces</strong>.{' '}
+          <strong>Prometheus</strong> scrapes metrics from <strong>exporters</strong> and you query
+          them with <strong>PromQL</strong>; <strong>Grafana</strong> visualizes them and{' '}
+          <strong>Alertmanager</strong> pages you on breaches. Round it out with{' '}
+          <strong>log</strong> aggregation (Loki/ELK) and distributed <strong>tracing</strong>,
+          tracked against <strong>SLOs</strong>. Reference:{' '}
           <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            AWS deployment options
+            Prometheus docs
           </a>
           .
         </p>
@@ -307,15 +306,15 @@ export default function Day085() {
           </ul>
         </section>
 
-        <CardSection icon="🚀" title="STRATEGIES" cards={STRATEGIES} columns={4} />
-        <CardSection icon="🛡️" title="SAFE RELEASES" cards={SAFE} columns={3} />
-        <CardSection icon="📚" title="DEPLOYMENT RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="📈" title="METRICS" cards={METRICS} columns={4} />
+        <CardSection icon="📊" title="VISUALIZE & ALERT" cards={VISUALIZE} columns={3} />
+        <CardSection icon="📚" title="MONITORING RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#DevOps</span>
-          <span>#Deployment</span>
-          <span>#BlueGreen</span>
+          <span>#Monitoring</span>
+          <span>#Prometheus</span>
           <span>#Thunder</span>
         </footer>
       </div>
