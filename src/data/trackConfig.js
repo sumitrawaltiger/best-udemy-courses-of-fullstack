@@ -1,40 +1,44 @@
 // Learning path calendar offsets (Day 1 = 4 Jul 2026)
 export const THUNDER_DAYS = 100;
-export const NEXTJS_MODULES = 30;
+
+// After Thunder: React & Next.js + React Native through 4 Jan 2027
+// Calendar Days 101–184 = 13 Oct 2026 → 4 Jan 2027 (84 days)
+export const NEXTJS_RN_PHASE_DAYS = 84;
+export const NEXTJS_CALENDAR_DAYS = 45; // Days 101–145
+export const MOBILE_CALENDAR_DAYS = 39; // Days 146–184
+export const NEXTJS_MODULES = 30; // ChaiCode Udemy modules (fit inside NEXTJS_CALENDAR_DAYS)
+export const MOBILE_LESSONS = 25; // ChaiCode RN lessons (fit inside MOBILE_CALENDAR_DAYS)
+
 export const PYTHON_MODULES = 45;
 export const JAVA_MODULES = 50;
 export const AWS_DAYS = 100;
 export const DEVOPS_DAYS = 100;
 export const K8S_DAYS = 100;
 export const INTERVIEW_MODULES = 60;
-export const MOBILE_LESSONS = 25;
 
 export const TRACK_OFFSETS = {
   thunder: 0,
   nextjs: THUNDER_DAYS,
-  mobile: THUNDER_DAYS + NEXTJS_MODULES,
-  python: THUNDER_DAYS + NEXTJS_MODULES + MOBILE_LESSONS,
-  java: THUNDER_DAYS + NEXTJS_MODULES + MOBILE_LESSONS + PYTHON_MODULES,
-  aws: THUNDER_DAYS + NEXTJS_MODULES + MOBILE_LESSONS + PYTHON_MODULES + JAVA_MODULES,
+  mobile: THUNDER_DAYS + NEXTJS_CALENDAR_DAYS,
+  python: THUNDER_DAYS + NEXTJS_RN_PHASE_DAYS,
+  java: THUNDER_DAYS + NEXTJS_RN_PHASE_DAYS + PYTHON_MODULES,
+  aws: THUNDER_DAYS + NEXTJS_RN_PHASE_DAYS + PYTHON_MODULES + JAVA_MODULES,
   devops:
     THUNDER_DAYS +
-    NEXTJS_MODULES +
-    MOBILE_LESSONS +
+    NEXTJS_RN_PHASE_DAYS +
     PYTHON_MODULES +
     JAVA_MODULES +
     AWS_DAYS,
   k8s:
     THUNDER_DAYS +
-    NEXTJS_MODULES +
-    MOBILE_LESSONS +
+    NEXTJS_RN_PHASE_DAYS +
     PYTHON_MODULES +
     JAVA_MODULES +
     AWS_DAYS +
     DEVOPS_DAYS,
   interview:
     THUNDER_DAYS +
-    NEXTJS_MODULES +
-    MOBILE_LESSONS +
+    NEXTJS_RN_PHASE_DAYS +
     PYTHON_MODULES +
     JAVA_MODULES +
     AWS_DAYS +

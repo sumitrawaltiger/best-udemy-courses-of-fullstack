@@ -62,8 +62,8 @@ export default function NextjsHome() {
         <section className="roadmap">
           <h2>30-Module React & Next.js Roadmap</h2>
           <p className="section-desc">
-            Thunder+ starts after Day 100. All {nextjsChapters.length} modules are on this site, then React Native
-            follows.
+            Thunder+ runs Days <strong>101–145</strong> (13 Oct – 26 Nov 2026) — {nextjsChapters.length} modules plus
+            build/practice days. React Native follows through <strong>4 Jan 2027</strong> (Days 146–184).
           </p>
           <div className="roadmap-grid roadmap-nextjs">
             {nextjsChapters.map((ch) => (

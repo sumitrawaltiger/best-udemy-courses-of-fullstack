@@ -12,7 +12,10 @@ export const NEXTJS_META = {
   totalModules: 30,
   totalHours: '95+ hours',
   totalSections: 44,
+  calendarDays: 45,
+  phaseWindow: 'Days 101–145 · 13 Oct – 26 Nov 2026',
   startsAfter: 'Thunder 100 Days',
+  continuesWith: 'React Native (Days 146–184 · through 4 Jan 2027)',
 };
 
 function lessonToModule(ch) {

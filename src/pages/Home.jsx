@@ -237,10 +237,12 @@ export default function Home() {
 
       <section className="thunder-plus-section thunder-nextjs-section" id="thunder-nextjs">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-nextjs">After Day 100</span>
+          <span className="thunder-plus-badge thunder-plus-badge-nextjs">Days 101–145 · after Day 100</span>
           <h2>Thunder+ — React & Next.js</h2>
           <p className="section-desc">
-            Continue with the{' '}
+            After Thunder, spend the next phase on React & Next.js (through late November), then React Native
+            through <strong>4 Jan 2027</strong> — <strong>84 calendar days</strong> total (Days 101–184). Continue
+            with the{' '}
             <a href={NEXTJS_META.udemyUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode Udemy course
             </a>{' '}
@@ -274,15 +276,15 @@ export default function Home() {
 
       <section className="thunder-plus-section" id="thunder-plus">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge">After React & Next.js</span>
+          <span className="thunder-plus-badge">Days 146–184 · through 4 Jan 2027</span>
           <h2>Thunder++ — React Native</h2>
           <p className="section-desc">
-            Continue with the{' '}
+            Finish the 84-day post-Thunder stretch with the{' '}
             <a href={MOBILE_META.syllabusUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode Mobile Development Cohort
             </a>
             . {mobileChapters.length} lessons covering Expo, navigation, APIs, notifications, auth, and real-world app
-            projects.
+            projects — landing on <strong>4 Jan 2027</strong>.
           </p>
           <div className="thunder-plus-highlights">
             <span>📱 React Native + Expo</span>
