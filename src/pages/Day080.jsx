@@ -2,139 +2,139 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://react.dev/learn';
-const LABS_URL = 'https://react.chaicode.com/';
+const DOCS_URL = 'https://docs.docker.com/get-started/';
+const PLAY_URL = 'https://labs.play-with-docker.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'React app',
-    text: 'pages wired together with React Router',
+    title: 'Why Docker',
+    text: 'ends "works on my machine" with reproducible envs',
   },
   {
-    title: 'API layer',
-    text: 'a small axios/fetch wrapper for the backend',
+    title: 'Image vs container',
+    text: 'a blueprint vs a running instance of it',
   },
   {
-    title: 'Auth flow',
-    text: 'login, store the token, protect routes',
+    title: 'Dockerfile',
+    text: 'the recipe that builds an image',
   },
   {
-    title: 'Data fetching',
-    text: 'list & detail screens with loading states',
+    title: 'build & run',
+    text: 'docker build then docker run',
   },
   {
-    title: 'Forms',
-    text: 'create/edit with validation',
+    title: 'Ports',
+    text: '-p host:container maps a port',
   },
   {
-    title: 'State',
-    text: 'context or Redux for auth + shared data',
+    title: 'Volumes',
+    text: '-v persists data outside the container',
   },
   {
-    title: 'UI',
-    text: 'Tailwind components for a clean look',
+    title: 'Layers & cache',
+    text: 'order Dockerfile steps for fast rebuilds',
   },
   {
-    title: 'Optimistic updates',
-    text: 'update the UI before the server confirms',
+    title: 'Registry',
+    text: 'push/pull images from Docker Hub',
   },
   {
-    title: 'Error handling',
-    text: 'toasts and inline messages',
+    title: 'Multi-stage',
+    text: 'build then copy — small final images',
   },
   {
-    title: 'Wire it together',
-    text: 'frontend talks to the Day 74 API',
+    title: 'Manage',
+    text: 'docker ps / logs / exec',
   },
 ];
 
-const BUILD = [
+const CONTAINERS = [
   {
-    icon: '📄',
-    title: 'Pages & Routing',
+    icon: '🐳',
+    title: 'Why Docker',
     titleClass: 'card-title-cyan',
-    subtitle: 'the shell',
-    description: 'Lay out routes for auth, list, detail, and forms.',
-    code: '<Routes>\n  <Route path="/login" .../>\n  <Route path="/tasks" .../>\n  <Route path="/tasks/:id" .../>\n</Routes>',
+    subtitle: 'consistency',
+    description: 'Package the app + its deps so it runs the same everywhere.',
+    code: '// same image on laptop, CI, and prod\n// no "but it worked locally"',
   },
+  {
+    icon: '🖼️',
+    title: 'Image vs Container',
+    titleClass: 'card-title-green',
+    subtitle: 'blueprint vs run',
+    description: 'An image is a template; a container is it, running.',
+    code: 'image     → docker run → container\n// many containers from one image',
+  },
+  {
+    icon: '📜',
+    title: 'Dockerfile',
+    titleClass: 'card-title-amber',
+    subtitle: 'the recipe',
+    description: 'Declare the base, deps, code, and start command.',
+    code: 'FROM node:20-slim\nWORKDIR /app\nCOPY . . && RUN npm ci\nCMD ["node", "server.js"]',
+  },
+  {
+    icon: '▶️',
+    title: 'Build & Run',
+    titleClass: 'card-title-pink',
+    subtitle: 'two commands',
+    description: 'Build the image, then run a container from it.',
+    code: 'docker build -t myapp .\ndocker run -d -p 3000:3000 myapp',
+  },
+];
+
+const PRACTICE = [
   {
     icon: '🔌',
-    title: 'API Layer',
-    titleClass: 'card-title-green',
-    subtitle: 'one place',
-    description: 'Centralize base URL, headers, and the auth token.',
-    code: 'const api = axios.create({ baseURL, });\napi.interceptors.request.use(addAuthHeader);',
-  },
-  {
-    icon: '🔐',
-    title: 'Auth Flow',
-    titleClass: 'card-title-amber',
-    subtitle: 'login → guard',
-    description: 'Store the JWT, then gate protected routes.',
-    code: 'localStorage.setItem("token", token);\n<ProtectedRoute><Tasks/></ProtectedRoute>',
-  },
-  {
-    icon: '📋',
-    title: 'CRUD Screens',
-    titleClass: 'card-title-pink',
-    subtitle: 'list + detail',
-    description: 'Fetch and render, with loading/empty/error states.',
-    code: 'const { data, loading } = useTasks();\nif (loading) return <Spinner/>;',
-  },
-];
-
-const INTEGRATE = [
-  {
-    icon: '🗂️',
-    title: 'State + Forms',
+    title: 'Ports & Volumes',
     titleClass: 'card-title-cyan',
-    subtitle: 'inputs',
-    description: 'Controlled forms for create/edit; context for auth.',
-    code: 'const [form, setForm] = useState(empty);\nawait api.post("/tasks", form);',
+    subtitle: 'connect + persist',
+    description: 'Expose ports and keep data across container restarts.',
+    code: '-p 8080:80        # map a port\n-v data:/var/lib   # persist a volume',
   },
   {
-    icon: '🎨',
-    title: 'UI + UX',
+    icon: '🧱',
+    title: 'Layers & Registry',
     titleClass: 'card-title-green',
-    subtitle: 'polish',
-    description: 'Tailwind styling, optimistic updates, and toasts.',
-    code: 'setTasks(prev => [...prev, temp]); // optimistic\ntoast.success("Saved");',
+    subtitle: 'cache + share',
+    description: 'Cache-friendly layers; push images to a registry.',
+    code: '// COPY package.json first → cache npm ci\ndocker push user/myapp:1.0',
   },
   {
-    icon: '🔗',
-    title: 'Connect to Backend',
+    icon: '🛠️',
+    title: 'Manage Containers',
     titleClass: 'card-title-amber',
-    subtitle: 'end to end',
-    description: 'Point the API base URL at the Day 74 server.',
-    code: 'VITE_API_URL=http://localhost:5000/api\n// frontend ↔ backend working together',
+    subtitle: 'inspect',
+    description: 'List, read logs, and shell into running containers.',
+    code: 'docker ps · docker logs -f <id>\ndocker exec -it <id> sh',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'React Docs',
+    title: 'Docker Get Started',
     titleClass: 'card-title-green',
-    subtitle: 'react.dev',
-    description: 'The official React docs for building the client app.',
+    subtitle: 'Official docs',
+    description: 'Docker’s official getting-started guide — images and containers.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '🧪',
-    title: 'ChaiCode React Labs',
+    title: 'Play with Docker',
     titleClass: 'card-title-purple',
-    subtitle: 'Interactive playground',
-    description: 'Build the capstone frontend hands-on.',
-    link: { href: LABS_URL, label: 'Open the labs →', external: true },
+    subtitle: 'Try it live',
+    description: 'A free in-browser Docker playground — no local install needed.',
+    link: { href: PLAY_URL, label: 'Open the playground →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Full-Stack CRUD',
+    title: 'Docker Tutorial',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Full-Stack CRUD in One Video (MERN) by ProjectWithMe — for Day 75.',
+    description: 'The Only Docker Tutorial You Need To Get Started by The Coding Sloth — for Day 80.',
     link: {
-      href: 'https://www.youtube.com/watch?v=8-2bGey_lgk',
+      href: 'https://www.youtube.com/watch?v=DQdB7wFEygo',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day075() {
+export default function Day080() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,27 +231,30 @@ export default function Day075() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-074" className="day001-nav-btn day001-nav-home">
-            ← Day 74
+          <Link to="/day-079" className="day001-nav-btn day001-nav-home">
+            ← Day 79
           </Link>
-          <p className="day001-datetime">Thunder Day 75 · 17 Sep 2026</p>
-          <Link to="/day-076" className="day001-nav-btn day001-nav-next">
-            Day 76 →
+          <p className="day001-datetime">Thunder Day 80 · 22 Sep 2026</p>
+          <Link
+            to="/learn/docker-compose-and-multi-container-apps"
+            className="day001-nav-btn day001-nav-next"
+          >
+            Day 81 →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>Full-Stack</span>
-              <span>Frontend</span>
+              <span>DevOps</span>
+              <span>Docker</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 75 <span aria-hidden="true">⚡</span>
+                DAY 80 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">CAPSTONE BUILD II — FRONTEND</p>
+              <p className="day001-day-theme">DOCKER FUNDAMENTALS</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -264,25 +267,25 @@ export default function Day075() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">FULL-STACK</p>
+              <p className="day001-profile-role">DEVOPS</p>
             </div>
           </div>
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '75%' }} />
+          <div className="day001-progress-bar" style={{ width: '80%' }} />
         </div>
 
         <p className="day001-summary">
-          Day seventy-five — build the <strong>frontend</strong> and wire it to yesterday’s API. Lay
-          out <strong>pages + routing</strong>, centralize calls in an <strong>API layer</strong>,
-          and implement the <strong>auth flow</strong> (login, store the token, protect routes).
-          Add <strong>CRUD screens</strong> with loading states, controlled <strong>forms</strong>,{' '}
-          <strong>context/Redux</strong> for shared state, Tailwind <strong>UI</strong>, optimistic
-          updates, and error <strong>toasts</strong> — then point the base URL at the backend for a
-          working end-to-end app. Practice at{' '}
-          <a href={LABS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            ChaiCode React Labs
+          Day eighty — <strong>Docker</strong> packages an app and its dependencies so it runs the
+          same everywhere. An <strong>image</strong> is the blueprint (built from a{' '}
+          <strong>Dockerfile</strong>) and a <strong>container</strong> is it running —{' '}
+          <code>docker build</code> then <code>docker run</code>. Map <strong>ports</strong>, persist{' '}
+          <strong>volumes</strong>, order layers for <strong>cache</strong>, push to a{' '}
+          <strong>registry</strong>, slim images with <strong>multi-stage</strong> builds, and manage
+          with <code>ps</code>/<code>logs</code>/<code>exec</code>. Reference:{' '}
+          <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
+            Docker docs
           </a>
           .
         </p>
@@ -306,15 +309,15 @@ export default function Day075() {
           </ul>
         </section>
 
-        <CardSection icon="🖥️" title="FRONTEND BUILD" cards={BUILD} columns={4} />
-        <CardSection icon="🔗" title="INTEGRATE" cards={INTEGRATE} columns={3} />
-        <CardSection icon="📚" title="CAPSTONE RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="🐳" title="CONTAINERS" cards={CONTAINERS} columns={4} />
+        <CardSection icon="🛠️" title="IN PRACTICE" cards={PRACTICE} columns={3} />
+        <CardSection icon="📚" title="DOCKER RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#FullStack</span>
-          <span>#MERN</span>
-          <span>#React</span>
+          <span>#DevOps</span>
+          <span>#Docker</span>
+          <span>#Containers</span>
           <span>#Thunder</span>
         </footer>
       </div>

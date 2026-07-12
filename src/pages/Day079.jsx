@@ -2,139 +2,139 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://react.dev/learn';
-const LABS_URL = 'https://react.chaicode.com/';
+const DOCS_URL = 'https://linuxcommand.org/';
+const EXPLAIN_URL = 'https://explainshell.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'React app',
-    text: 'pages wired together with React Router',
+    title: 'Filesystem',
+    text: 'navigate with cd, ls, pwd from / down',
   },
   {
-    title: 'API layer',
-    text: 'a small axios/fetch wrapper for the backend',
+    title: 'Files',
+    text: 'cp, mv, rm, mkdir, cat, less, touch',
   },
   {
-    title: 'Auth flow',
-    text: 'login, store the token, protect routes',
+    title: 'Permissions',
+    text: 'rwx for user/group/other via chmod, chown',
   },
   {
-    title: 'Data fetching',
-    text: 'list & detail screens with loading states',
+    title: 'Pipes & redirects',
+    text: '| chains commands; > and >> write files',
   },
   {
-    title: 'Forms',
-    text: 'create/edit with validation',
+    title: 'Search',
+    text: 'grep for text, find for files',
   },
   {
-    title: 'State',
-    text: 'context or Redux for auth + shared data',
+    title: 'Processes',
+    text: 'ps, top, kill to manage running programs',
   },
   {
-    title: 'UI',
-    text: 'Tailwind components for a clean look',
+    title: 'Packages',
+    text: 'apt / yum / dnf install software',
   },
   {
-    title: 'Optimistic updates',
-    text: 'update the UI before the server confirms',
+    title: 'Env & PATH',
+    text: 'export vars; configure in .bashrc',
   },
   {
-    title: 'Error handling',
-    text: 'toasts and inline messages',
+    title: 'SSH',
+    text: 'connect to remote servers securely',
   },
   {
-    title: 'Wire it together',
-    text: 'frontend talks to the Day 74 API',
+    title: 'Shell scripts',
+    text: '#!/bin/bash — variables, conditionals, loops',
   },
 ];
 
-const BUILD = [
-  {
-    icon: '📄',
-    title: 'Pages & Routing',
-    titleClass: 'card-title-cyan',
-    subtitle: 'the shell',
-    description: 'Lay out routes for auth, list, detail, and forms.',
-    code: '<Routes>\n  <Route path="/login" .../>\n  <Route path="/tasks" .../>\n  <Route path="/tasks/:id" .../>\n</Routes>',
-  },
-  {
-    icon: '🔌',
-    title: 'API Layer',
-    titleClass: 'card-title-green',
-    subtitle: 'one place',
-    description: 'Centralize base URL, headers, and the auth token.',
-    code: 'const api = axios.create({ baseURL, });\napi.interceptors.request.use(addAuthHeader);',
-  },
-  {
-    icon: '🔐',
-    title: 'Auth Flow',
-    titleClass: 'card-title-amber',
-    subtitle: 'login → guard',
-    description: 'Store the JWT, then gate protected routes.',
-    code: 'localStorage.setItem("token", token);\n<ProtectedRoute><Tasks/></ProtectedRoute>',
-  },
-  {
-    icon: '📋',
-    title: 'CRUD Screens',
-    titleClass: 'card-title-pink',
-    subtitle: 'list + detail',
-    description: 'Fetch and render, with loading/empty/error states.',
-    code: 'const { data, loading } = useTasks();\nif (loading) return <Spinner/>;',
-  },
-];
-
-const INTEGRATE = [
+const SHELL = [
   {
     icon: '🗂️',
-    title: 'State + Forms',
+    title: 'Filesystem',
     titleClass: 'card-title-cyan',
-    subtitle: 'inputs',
-    description: 'Controlled forms for create/edit; context for auth.',
-    code: 'const [form, setForm] = useState(empty);\nawait api.post("/tasks", form);',
+    subtitle: 'move around',
+    description: 'Everything is a file under a single tree from /.',
+    code: 'pwd            # where am I\ncd /var/log    # go there\nls -lah        # list with details',
   },
   {
-    icon: '🎨',
-    title: 'UI + UX',
+    icon: '📄',
+    title: 'Files',
     titleClass: 'card-title-green',
-    subtitle: 'polish',
-    description: 'Tailwind styling, optimistic updates, and toasts.',
-    code: 'setTasks(prev => [...prev, temp]); // optimistic\ntoast.success("Saved");',
+    subtitle: 'create & edit',
+    description: 'Make, copy, move, remove, and read files.',
+    code: 'mkdir app && cd app\ncp a.txt b.txt · mv b.txt /tmp\ncat file · less file · rm -rf dir',
+  },
+  {
+    icon: '🔒',
+    title: 'Permissions',
+    titleClass: 'card-title-amber',
+    subtitle: 'rwx',
+    description: 'Read/write/execute for owner, group, and others.',
+    code: 'chmod 755 script.sh   # rwxr-xr-x\nchown user:group file',
   },
   {
     icon: '🔗',
-    title: 'Connect to Backend',
+    title: 'Pipes & Redirects',
+    titleClass: 'card-title-pink',
+    subtitle: 'compose',
+    description: 'Pipe output into commands; redirect to files.',
+    code: 'cat log | grep ERROR | wc -l\ncommand > out.txt   # or >> to append',
+  },
+];
+
+const POWER = [
+  {
+    icon: '🔎',
+    title: 'Search & Processes',
+    titleClass: 'card-title-cyan',
+    subtitle: 'find + manage',
+    description: 'Search files and text; inspect and kill processes.',
+    code: 'grep -r "TODO" .   ·   find . -name "*.log"\nps aux | grep node   ·   kill -9 <pid>',
+  },
+  {
+    icon: '📦',
+    title: 'Packages & SSH',
+    titleClass: 'card-title-green',
+    subtitle: 'install + connect',
+    description: 'Install software and reach remote machines.',
+    code: 'sudo apt update && sudo apt install nginx\nssh user@server-ip',
+  },
+  {
+    icon: '📜',
+    title: 'Shell Scripting',
     titleClass: 'card-title-amber',
-    subtitle: 'end to end',
-    description: 'Point the API base URL at the Day 74 server.',
-    code: 'VITE_API_URL=http://localhost:5000/api\n// frontend ↔ backend working together',
+    subtitle: 'automate',
+    description: 'Bundle commands into a script with logic.',
+    code: '#!/bin/bash\nfor f in *.txt; do echo "$f"; done',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'React Docs',
+    title: 'LinuxCommand.org',
     titleClass: 'card-title-green',
-    subtitle: 'react.dev',
-    description: 'The official React docs for building the client app.',
-    link: { href: DOCS_URL, label: 'Open the docs →', external: true },
+    subtitle: 'Reference',
+    description: 'A friendly, complete intro to the Linux command line & scripting.',
+    link: { href: DOCS_URL, label: 'Open the site →', external: true },
   },
   {
     icon: '🧪',
-    title: 'ChaiCode React Labs',
+    title: 'explainshell',
     titleClass: 'card-title-purple',
-    subtitle: 'Interactive playground',
-    description: 'Build the capstone frontend hands-on.',
-    link: { href: LABS_URL, label: 'Open the labs →', external: true },
+    subtitle: 'Try it live',
+    description: 'Paste any command and see what every flag does.',
+    link: { href: EXPLAIN_URL, label: 'Open explainshell →', external: true },
   },
   {
     icon: '▶️',
-    title: 'Full-Stack CRUD',
+    title: 'Linux Command Line',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'Full-Stack CRUD in One Video (MERN) by ProjectWithMe — for Day 75.',
+    description: 'Linux Command Line for Beginners by Keep On Coding — supplement for Day 79.',
     link: {
-      href: 'https://www.youtube.com/watch?v=8-2bGey_lgk',
+      href: 'https://www.youtube.com/watch?v=16d2lHc0Pe8',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day075() {
+export default function Day079() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,27 +231,27 @@ export default function Day075() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-074" className="day001-nav-btn day001-nav-home">
-            ← Day 74
+          <Link to="/day-078" className="day001-nav-btn day001-nav-home">
+            ← Day 78
           </Link>
-          <p className="day001-datetime">Thunder Day 75 · 17 Sep 2026</p>
-          <Link to="/day-076" className="day001-nav-btn day001-nav-next">
-            Day 76 →
+          <p className="day001-datetime">Thunder Day 79 · 21 Sep 2026</p>
+          <Link to="/day-080" className="day001-nav-btn day001-nav-next">
+            Day 80 →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>Full-Stack</span>
-              <span>Frontend</span>
+              <span>DevOps</span>
+              <span>Linux</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 75 <span aria-hidden="true">⚡</span>
+                DAY 79 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">CAPSTONE BUILD II — FRONTEND</p>
+              <p className="day001-day-theme">LINUX & SHELL ESSENTIALS</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -264,25 +264,24 @@ export default function Day075() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">FULL-STACK</p>
+              <p className="day001-profile-role">DEVOPS</p>
             </div>
           </div>
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '75%' }} />
+          <div className="day001-progress-bar" style={{ width: '79%' }} />
         </div>
 
         <p className="day001-summary">
-          Day seventy-five — build the <strong>frontend</strong> and wire it to yesterday’s API. Lay
-          out <strong>pages + routing</strong>, centralize calls in an <strong>API layer</strong>,
-          and implement the <strong>auth flow</strong> (login, store the token, protect routes).
-          Add <strong>CRUD screens</strong> with loading states, controlled <strong>forms</strong>,{' '}
-          <strong>context/Redux</strong> for shared state, Tailwind <strong>UI</strong>, optimistic
-          updates, and error <strong>toasts</strong> — then point the base URL at the backend for a
-          working end-to-end app. Practice at{' '}
-          <a href={LABS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            ChaiCode React Labs
+          Day seventy-nine — servers run <strong>Linux</strong>, so the shell is home. I drilled the{' '}
+          <strong>filesystem</strong> (cd/ls/pwd), <strong>file</strong> commands (cp/mv/rm/cat),{' '}
+          <strong>permissions</strong> (chmod/chown), and <strong>pipes &amp; redirects</strong>{' '}
+          (<code>|</code>, <code>&gt;</code>). Then the power tools — <strong>grep/find</strong>,{' '}
+          <strong>process</strong> management, <strong>package</strong> installs, <strong>SSH</strong>{' '}
+          into remote boxes, and writing <strong>bash scripts</strong> to automate it all. Reference:{' '}
+          <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
+            LinuxCommand.org
           </a>
           .
         </p>
@@ -306,15 +305,15 @@ export default function Day075() {
           </ul>
         </section>
 
-        <CardSection icon="🖥️" title="FRONTEND BUILD" cards={BUILD} columns={4} />
-        <CardSection icon="🔗" title="INTEGRATE" cards={INTEGRATE} columns={3} />
-        <CardSection icon="📚" title="CAPSTONE RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="🐧" title="THE SHELL" cards={SHELL} columns={4} />
+        <CardSection icon="🛠️" title="POWER TOOLS" cards={POWER} columns={3} />
+        <CardSection icon="📚" title="LINUX RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#FullStack</span>
-          <span>#MERN</span>
-          <span>#React</span>
+          <span>#DevOps</span>
+          <span>#Linux</span>
+          <span>#Shell</span>
           <span>#Thunder</span>
         </footer>
       </div>
