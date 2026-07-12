@@ -164,6 +164,19 @@ export default function Home() {
             builds on the last, maps directly to a track on this site, and carries <strong>DSA &amp;
             System Design practiced in that year&apos;s language</strong>.
           </p>
+          <a
+            href="/full-lifecycle-journey-banner.svg"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btech-banner"
+            aria-label="Open the 4-year dev journey banner full size"
+          >
+            <img
+              src="/full-lifecycle-journey-banner.svg"
+              alt="Full LifeCycle Engineer — 4-Year Dev Journey: Full-Stack JavaScript, Python with Agentic AI, Java Microservices, AWS Cloud, DevOps & Kubernetes, and DSA & System Design"
+              loading="lazy"
+            />
+          </a>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
               <article className={`btech-card btech-card--${yr.accent}`} key={yr.year}>
