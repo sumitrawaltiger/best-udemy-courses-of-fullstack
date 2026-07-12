@@ -2,121 +2,121 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://react.dev/reference/react/memo';
+const DOCS_URL = 'https://react.dev/learn/thinking-in-react';
 const LABS_URL = 'https://react.chaicode.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'Re-renders',
-    text: 'the main performance cost in React',
+    title: 'Build to learn',
+    text: 'projects cement concepts far better than tutorials',
   },
   {
-    title: 'React.memo',
-    text: 'skip a re-render when props are unchanged',
+    title: 'Project ideas',
+    text: 'todo, weather, notes, movie search, e-commerce UI',
   },
   {
-    title: 'useMemo',
-    text: 'cache an expensive computed value',
+    title: 'Break it down',
+    text: 'sketch the component tree and where state lives',
   },
   {
-    title: 'useCallback',
-    text: 'keep a function’s identity stable across renders',
+    title: 'Fetch data',
+    text: 'call an API in useEffect (or on an event)',
   },
   {
-    title: 'Stable keys',
-    text: 'stable list keys avoid needless remounts',
+    title: 'Loading & errors',
+    text: 'always handle the async UI states',
   },
   {
-    title: 'Code splitting',
-    text: 'lazy + Suspense load routes on demand',
+    title: 'Reusable components',
+    text: 'Button, Card, Modal — build a mini design system',
   },
   {
-    title: 'Virtualization',
-    text: 'render only the rows that are visible',
+    title: 'Routing',
+    text: 'multi-page apps with React Router',
   },
   {
-    title: 'Avoid inline objects',
-    text: 'new refs each render break memoization',
+    title: 'Persist state',
+    text: 'localStorage for offline-friendly data',
   },
   {
-    title: 'Profiler',
-    text: 'measure before optimizing anything',
+    title: 'Style it',
+    text: 'Tailwind or CSS modules for a clean look',
   },
   {
-    title: 'Don’t over-optimize',
-    text: 'premature optimization wastes effort',
+    title: 'Ship it',
+    text: 'push to GitHub and deploy — build a portfolio',
   },
 ];
 
-const AVOID = [
+const BUILD = [
   {
-    icon: '🧠',
-    title: 'React.memo',
+    icon: '🛠️',
+    title: 'Why Projects',
     titleClass: 'card-title-cyan',
-    subtitle: 'skip renders',
-    description: 'Memoize a component so equal props skip re-rendering.',
-    code: 'const Row = React.memo(function Row({ item }) { ... });\n// only re-renders when `item` changes',
+    subtitle: 'learn by doing',
+    description: 'A finished app teaches more than a dozen tutorials.',
+    code: '// pick something you would actually use\n// finish it, then improve it',
+  },
+  {
+    icon: '💡',
+    title: 'Project Ideas',
+    titleClass: 'card-title-green',
+    subtitle: 'start small',
+    description: 'Ramp from a todo to an API-driven app.',
+    code: 'todo · weather · notes\nmovie search · e-commerce UI · dashboard',
+  },
+  {
+    icon: '🧩',
+    title: 'Plan the Components',
+    titleClass: 'card-title-amber',
+    subtitle: 'think in React',
+    description: 'Break the UI into components; decide where state lives.',
+    code: '<App>\n  <Search /> <List> <Card /> </List>\n// state: query, results, loading',
+  },
+  {
+    icon: '🌐',
+    title: 'Fetch + Async UI',
+    titleClass: 'card-title-pink',
+    subtitle: 'real data',
+    description: 'Load data and render loading/error/empty states.',
+    code: 'useEffect(() => { fetch(url).then(...); }, []);\nif (loading) return <Spinner />;',
+  },
+];
+
+const POLISH = [
+  {
+    icon: '♻️',
+    title: 'Reusable UI + Routing',
+    titleClass: 'card-title-cyan',
+    subtitle: 'structure',
+    description: 'Extract shared components; add multi-page routing.',
+    code: '<Button/> <Card/> <Modal/>\n<Routes><Route path="/:id" .../></Routes>',
   },
   {
     icon: '💾',
-    title: 'useMemo',
+    title: 'Persist & Style',
     titleClass: 'card-title-green',
-    subtitle: 'cache values',
-    description: 'Avoid recomputing expensive derived data each render.',
-    code: 'const sorted = useMemo(\n  () => heavySort(items), [items]);',
+    subtitle: 'polish',
+    description: 'Save to localStorage and style with Tailwind.',
+    code: 'localStorage.setItem("todos", JSON.stringify(todos));\nclassName="rounded-lg shadow p-4"',
   },
   {
-    icon: '🔗',
-    title: 'useCallback',
+    icon: '🚀',
+    title: 'Ship It',
     titleClass: 'card-title-amber',
-    subtitle: 'stable fns',
-    description: 'Keep callback identity stable so memo’d children hold.',
-    code: 'const onAdd = useCallback((id) => dispatch(add(id)), []);\n// same reference across renders',
-  },
-  {
-    icon: '🔑',
-    title: 'Stable Keys',
-    titleClass: 'card-title-pink',
-    subtitle: 'list identity',
-    description: 'Use stable ids as keys — never the array index.',
-    code: '{items.map(i => <Row key={i.id} item={i} />)}\n// index keys cause remounts on reorder',
-  },
-];
-
-const LOAD_LESS = [
-  {
-    icon: '✂️',
-    title: 'Code Splitting',
-    titleClass: 'card-title-cyan',
-    subtitle: 'lazy + Suspense',
-    description: 'Load a route/component only when it’s needed.',
-    code: 'const Dash = lazy(() => import("./Dash"));\n<Suspense fallback={<Spinner/>}><Dash/></Suspense>',
-  },
-  {
-    icon: '📜',
-    title: 'Virtualization',
-    titleClass: 'card-title-green',
-    subtitle: 'render visible',
-    description: 'For huge lists, render only what’s on screen.',
-    code: '// react-window / react-virtualized\n// 10,000 rows → ~20 in the DOM',
-  },
-  {
-    icon: '📈',
-    title: 'Measure First',
-    titleClass: 'card-title-amber',
-    subtitle: 'Profiler',
-    description: 'Profile to find the real bottleneck before optimizing.',
-    code: 'React DevTools → Profiler → record\n// optimize the slow commit, not a guess',
+    subtitle: 'portfolio',
+    description: 'Push to GitHub and deploy — every project counts.',
+    code: 'git push · deploy to Netlify/Vercel\nadd it to your portfolio',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'React Docs — memo',
+    title: 'Thinking in React',
     titleClass: 'card-title-green',
     subtitle: 'react.dev',
-    description: 'The official reference for React.memo, useMemo, and useCallback.',
+    description: 'The official guide to breaking a UI into components and state.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
@@ -124,17 +124,17 @@ const RESOURCES = [
     title: 'ChaiCode React Labs',
     titleClass: 'card-title-purple',
     subtitle: 'Interactive playground',
-    description: 'Profile and optimize a real React app hands-on.',
+    description: 'Build real React projects hands-on.',
     link: { href: LABS_URL, label: 'Open the labs →', external: true },
   },
   {
     icon: '▶️',
-    title: '8 Optimization Techniques',
+    title: 'Learn React With a Project',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: '8 React JS Performance Optimization Techniques by xplodivity — for Day 70.',
+    description: 'Learn React With This ONE Project by Tech With Tim — for Day 71.',
     link: {
-      href: 'https://www.youtube.com/watch?v=CaShN6mCJB0',
+      href: 'https://www.youtube.com/watch?v=G6D9cBaLViA',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day070() {
+export default function Day071() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +231,12 @@ export default function Day070() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-069" className="day001-nav-btn day001-nav-home">
-            ← Day 69
+          <Link to="/day-070" className="day001-nav-btn day001-nav-home">
+            ← Day 70
           </Link>
-          <p className="day001-datetime">Thunder Day 70 · 12 Sep 2026</p>
-          <Link to="/day-071" className="day001-nav-btn day001-nav-next">
-            Day 71 →
+          <p className="day001-datetime">Thunder Day 71 · 13 Sep 2026</p>
+          <Link to="/day-072" className="day001-nav-btn day001-nav-next">
+            Day 72 →
           </Link>
         </header>
 
@@ -244,14 +244,14 @@ export default function Day070() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>React</span>
-              <span>Performance</span>
+              <span>Projects</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 70 <span aria-hidden="true">⚡</span>
+                DAY 71 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">REACT PERFORMANCE OPTIMIZATION</p>
+              <p className="day001-day-theme">FRONTEND PROJECTS</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,17 +270,16 @@ export default function Day070() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '70%' }} />
+          <div className="day001-progress-bar" style={{ width: '71%' }} />
         </div>
 
         <p className="day001-summary">
-          Day seventy — making React fast is mostly about avoiding wasted{' '}
-          <strong>re-renders</strong>. <code>React.memo</code> skips a render on equal props,{' '}
-          <code>useMemo</code> caches expensive values, and <code>useCallback</code> keeps callback
-          identity stable — backed by <strong>stable keys</strong> and avoiding inline objects. To
-          load less, <strong>code-split</strong> with <code>lazy</code> + <code>Suspense</code> and{' '}
-          <strong>virtualize</strong> big lists — but always <strong>measure with the Profiler</strong>{' '}
-          first and never over-optimize. Practice at{' '}
+          Day seventy-one — time to <strong>build</strong>. Projects cement everything: pick
+          something real (todo, weather, movie search), <strong>break the UI into components</strong>,
+          decide where state lives, then <strong>fetch data</strong> and handle{' '}
+          <strong>loading/error</strong> states. Extract <strong>reusable components</strong>, add{' '}
+          <strong>routing</strong>, <strong>persist</strong> with localStorage, style with Tailwind —
+          and <strong>ship it</strong> to GitHub + a host for your portfolio. Practice at{' '}
           <a href={LABS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             ChaiCode React Labs
           </a>
@@ -306,15 +305,15 @@ export default function Day070() {
           </ul>
         </section>
 
-        <CardSection icon="🧠" title="AVOID RE-RENDERS" cards={AVOID} columns={4} />
-        <CardSection icon="📦" title="LOAD LESS" cards={LOAD_LESS} columns={3} />
+        <CardSection icon="🛠️" title="BUILD PROJECTS" cards={BUILD} columns={4} />
+        <CardSection icon="✨" title="POLISH" cards={POLISH} columns={3} />
         <CardSection icon="📚" title="REACT RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#React</span>
-          <span>#Performance</span>
-          <span>#Optimization</span>
+          <span>#Projects</span>
+          <span>#Frontend</span>
           <span>#Thunder</span>
         </footer>
       </div>

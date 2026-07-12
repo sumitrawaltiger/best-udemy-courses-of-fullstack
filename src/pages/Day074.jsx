@@ -2,139 +2,139 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://react.dev/reference/react/memo';
-const LABS_URL = 'https://react.chaicode.com/';
+const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend';
+const DOCS_URL = 'https://expressjs.com/en/starter/installing.html';
 
 const LEARNT_TODAY = [
   {
-    title: 'Re-renders',
-    text: 'the main performance cost in React',
+    title: 'Scaffold',
+    text: 'an Express server + a MongoDB connection',
   },
   {
-    title: 'React.memo',
-    text: 'skip a re-render when props are unchanged',
+    title: 'Models',
+    text: 'Mongoose schemas for each entity',
   },
   {
-    title: 'useMemo',
-    text: 'cache an expensive computed value',
+    title: 'Routes & controllers',
+    text: 'RESTful CRUD, split cleanly',
   },
   {
-    title: 'useCallback',
-    text: 'keep a function’s identity stable across renders',
+    title: 'Auth',
+    text: 'register/login with JWT + protect middleware',
   },
   {
-    title: 'Stable keys',
-    text: 'stable list keys avoid needless remounts',
+    title: 'Validation & errors',
+    text: 'validate input; one central error handler',
   },
   {
-    title: 'Code splitting',
-    text: 'lazy + Suspense load routes on demand',
+    title: 'Env config',
+    text: '.env with dotenv for secrets',
   },
   {
-    title: 'Virtualization',
-    text: 'render only the rows that are visible',
+    title: 'Test endpoints',
+    text: 'Postman / Thunder Client while building',
   },
   {
-    title: 'Avoid inline objects',
-    text: 'new refs each render break memoization',
+    title: 'CORS',
+    text: 'allow the frontend origin to call the API',
   },
   {
-    title: 'Profiler',
-    text: 'measure before optimizing anything',
+    title: 'Seed data',
+    text: 'sample records to develop against',
   },
   {
-    title: 'Don’t over-optimize',
-    text: 'premature optimization wastes effort',
+    title: 'Clean structure',
+    text: 'models / routes / controllers / middleware',
   },
 ];
 
-const AVOID = [
+const SETUP = [
   {
-    icon: '🧠',
-    title: 'React.memo',
+    icon: '🏗️',
+    title: 'Scaffold + DB',
     titleClass: 'card-title-cyan',
-    subtitle: 'skip renders',
-    description: 'Memoize a component so equal props skip re-rendering.',
-    code: 'const Row = React.memo(function Row({ item }) { ... });\n// only re-renders when `item` changes',
+    subtitle: 'the server',
+    description: 'Boot Express and connect to MongoDB (Atlas).',
+    code: 'const app = express();\napp.use(express.json());\nawait mongoose.connect(process.env.DB_URI);',
   },
   {
-    icon: '💾',
-    title: 'useMemo',
+    icon: '📐',
+    title: 'Models',
     titleClass: 'card-title-green',
-    subtitle: 'cache values',
-    description: 'Avoid recomputing expensive derived data each render.',
-    code: 'const sorted = useMemo(\n  () => heavySort(items), [items]);',
+    subtitle: 'schemas',
+    description: 'Define a Mongoose schema per entity from the plan.',
+    code: 'const Task = mongoose.model("Task", new Schema({\n  title: { type: String, required: true },\n  done: { type: Boolean, default: false },\n  user: { type: ObjectId, ref: "User" },\n}));',
   },
   {
-    icon: '🔗',
-    title: 'useCallback',
+    icon: '🎛️',
+    title: 'Routes & Controllers',
     titleClass: 'card-title-amber',
-    subtitle: 'stable fns',
-    description: 'Keep callback identity stable so memo’d children hold.',
-    code: 'const onAdd = useCallback((id) => dispatch(add(id)), []);\n// same reference across renders',
+    subtitle: 'REST CRUD',
+    description: 'Router files stay thin; controllers hold the logic.',
+    code: 'router.get("/", getTasks);\nrouter.post("/", createTask);\napp.use("/tasks", protect, taskRouter);',
   },
   {
-    icon: '🔑',
-    title: 'Stable Keys',
+    icon: '🔐',
+    title: 'Auth',
     titleClass: 'card-title-pink',
-    subtitle: 'list identity',
-    description: 'Use stable ids as keys — never the array index.',
-    code: '{items.map(i => <Row key={i.id} item={i} />)}\n// index keys cause remounts on reorder',
+    subtitle: 'JWT',
+    description: 'Hash passwords, issue tokens, protect routes.',
+    code: 'const token = jwt.sign({ id }, process.env.JWT_SECRET);\n// protect: verify + attach req.user',
   },
 ];
 
-const LOAD_LESS = [
+const HARDEN = [
   {
-    icon: '✂️',
-    title: 'Code Splitting',
+    icon: '🧯',
+    title: 'Validation & Errors',
     titleClass: 'card-title-cyan',
-    subtitle: 'lazy + Suspense',
-    description: 'Load a route/component only when it’s needed.',
-    code: 'const Dash = lazy(() => import("./Dash"));\n<Suspense fallback={<Spinner/>}><Dash/></Suspense>',
+    subtitle: 'be robust',
+    description: 'Validate every input; funnel errors to one handler.',
+    code: 'if (!title) return res.status(400)...\napp.use(errorHandler);',
   },
   {
-    icon: '📜',
-    title: 'Virtualization',
+    icon: '⚙️',
+    title: 'Env + CORS',
     titleClass: 'card-title-green',
-    subtitle: 'render visible',
-    description: 'For huge lists, render only what’s on screen.',
-    code: '// react-window / react-virtualized\n// 10,000 rows → ~20 in the DOM',
+    subtitle: 'config',
+    description: 'Secrets in .env; allow the frontend origin.',
+    code: 'require("dotenv").config();\napp.use(cors({ origin: FRONTEND_URL }));',
   },
   {
-    icon: '📈',
-    title: 'Measure First',
+    icon: '🧪',
+    title: 'Test + Seed',
     titleClass: 'card-title-amber',
-    subtitle: 'Profiler',
-    description: 'Profile to find the real bottleneck before optimizing.',
-    code: 'React DevTools → Profiler → record\n// optimize the slow commit, not a guess',
+    subtitle: 'verify',
+    description: 'Hit endpoints in Postman; seed sample data.',
+    code: '// Thunder Client / Postman collection\n// seed script inserts demo records',
   },
 ];
 
 const RESOURCES = [
   {
+    icon: '💻',
+    title: 'Thunder Backend',
+    titleClass: 'card-title-purple',
+    subtitle: '03Backend',
+    description: 'The Thunder backend track — the reference for this capstone API.',
+    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
+  },
+  {
     icon: '📗',
-    title: 'React Docs — memo',
+    title: 'Express — Getting Started',
     titleClass: 'card-title-green',
-    subtitle: 'react.dev',
-    description: 'The official reference for React.memo, useMemo, and useCallback.',
+    subtitle: 'Official docs',
+    description: 'Install and scaffold an Express server from the docs.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
-    icon: '🧪',
-    title: 'ChaiCode React Labs',
-    titleClass: 'card-title-purple',
-    subtitle: 'Interactive playground',
-    description: 'Profile and optimize a real React app hands-on.',
-    link: { href: LABS_URL, label: 'Open the labs →', external: true },
-  },
-  {
     icon: '▶️',
-    title: '8 Optimization Techniques',
+    title: 'MERN with Deployment',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: '8 React JS Performance Optimization Techniques by xplodivity — for Day 70.',
+    description: 'MERN Stack Tutorial with Deployment by freeCodeCamp — for Day 74.',
     link: {
-      href: 'https://www.youtube.com/watch?v=CaShN6mCJB0',
+      href: 'https://www.youtube.com/watch?v=F9gB5b4jgOI',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day070() {
+export default function Day074() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,27 +231,27 @@ export default function Day070() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-069" className="day001-nav-btn day001-nav-home">
-            ← Day 69
+          <Link to="/day-073" className="day001-nav-btn day001-nav-home">
+            ← Day 73
           </Link>
-          <p className="day001-datetime">Thunder Day 70 · 12 Sep 2026</p>
-          <Link to="/day-071" className="day001-nav-btn day001-nav-next">
-            Day 71 →
+          <p className="day001-datetime">Thunder Day 74 · 16 Sep 2026</p>
+          <Link to="/day-075" className="day001-nav-btn day001-nav-next">
+            Day 75 →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>React</span>
-              <span>Performance</span>
+              <span>Full-Stack</span>
+              <span>Backend</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 70 <span aria-hidden="true">⚡</span>
+                DAY 74 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">REACT PERFORMANCE OPTIMIZATION</p>
+              <p className="day001-day-theme">CAPSTONE BUILD I — BACKEND</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -264,25 +264,25 @@ export default function Day070() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">REACT · FRONTEND</p>
+              <p className="day001-profile-role">FULL-STACK</p>
             </div>
           </div>
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '70%' }} />
+          <div className="day001-progress-bar" style={{ width: '74%' }} />
         </div>
 
         <p className="day001-summary">
-          Day seventy — making React fast is mostly about avoiding wasted{' '}
-          <strong>re-renders</strong>. <code>React.memo</code> skips a render on equal props,{' '}
-          <code>useMemo</code> caches expensive values, and <code>useCallback</code> keeps callback
-          identity stable — backed by <strong>stable keys</strong> and avoiding inline objects. To
-          load less, <strong>code-split</strong> with <code>lazy</code> + <code>Suspense</code> and{' '}
-          <strong>virtualize</strong> big lists — but always <strong>measure with the Profiler</strong>{' '}
-          first and never over-optimize. Practice at{' '}
-          <a href={LABS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            ChaiCode React Labs
+          Day seventy-four — build the <strong>backend</strong> from the plan. Scaffold{' '}
+          <strong>Express</strong> and connect <strong>MongoDB</strong>, define{' '}
+          <strong>Mongoose models</strong>, and expose RESTful <strong>routes + controllers</strong>{' '}
+          for CRUD. Add <strong>JWT auth</strong> with a protect middleware, then harden it with{' '}
+          <strong>validation</strong>, a central <strong>error handler</strong>,{' '}
+          <strong>.env</strong> config, and <strong>CORS</strong> for the frontend — testing each
+          endpoint in Postman as you go. Reference:{' '}
+          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
+            Thunder 03Backend
           </a>
           .
         </p>
@@ -306,15 +306,15 @@ export default function Day070() {
           </ul>
         </section>
 
-        <CardSection icon="🧠" title="AVOID RE-RENDERS" cards={AVOID} columns={4} />
-        <CardSection icon="📦" title="LOAD LESS" cards={LOAD_LESS} columns={3} />
-        <CardSection icon="📚" title="REACT RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="🏗️" title="BACKEND SETUP" cards={SETUP} columns={4} />
+        <CardSection icon="🛡️" title="HARDEN" cards={HARDEN} columns={3} />
+        <CardSection icon="📚" title="CAPSTONE RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#React</span>
-          <span>#Performance</span>
-          <span>#Optimization</span>
+          <span>#FullStack</span>
+          <span>#MERN</span>
+          <span>#Backend</span>
           <span>#Thunder</span>
         </footer>
       </div>

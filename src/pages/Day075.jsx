@@ -2,121 +2,121 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://react.dev/reference/react/memo';
+const DOCS_URL = 'https://react.dev/learn';
 const LABS_URL = 'https://react.chaicode.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'Re-renders',
-    text: 'the main performance cost in React',
+    title: 'React app',
+    text: 'pages wired together with React Router',
   },
   {
-    title: 'React.memo',
-    text: 'skip a re-render when props are unchanged',
+    title: 'API layer',
+    text: 'a small axios/fetch wrapper for the backend',
   },
   {
-    title: 'useMemo',
-    text: 'cache an expensive computed value',
+    title: 'Auth flow',
+    text: 'login, store the token, protect routes',
   },
   {
-    title: 'useCallback',
-    text: 'keep a function’s identity stable across renders',
+    title: 'Data fetching',
+    text: 'list & detail screens with loading states',
   },
   {
-    title: 'Stable keys',
-    text: 'stable list keys avoid needless remounts',
+    title: 'Forms',
+    text: 'create/edit with validation',
   },
   {
-    title: 'Code splitting',
-    text: 'lazy + Suspense load routes on demand',
+    title: 'State',
+    text: 'context or Redux for auth + shared data',
   },
   {
-    title: 'Virtualization',
-    text: 'render only the rows that are visible',
+    title: 'UI',
+    text: 'Tailwind components for a clean look',
   },
   {
-    title: 'Avoid inline objects',
-    text: 'new refs each render break memoization',
+    title: 'Optimistic updates',
+    text: 'update the UI before the server confirms',
   },
   {
-    title: 'Profiler',
-    text: 'measure before optimizing anything',
+    title: 'Error handling',
+    text: 'toasts and inline messages',
   },
   {
-    title: 'Don’t over-optimize',
-    text: 'premature optimization wastes effort',
+    title: 'Wire it together',
+    text: 'frontend talks to the Day 74 API',
   },
 ];
 
-const AVOID = [
+const BUILD = [
   {
-    icon: '🧠',
-    title: 'React.memo',
+    icon: '📄',
+    title: 'Pages & Routing',
     titleClass: 'card-title-cyan',
-    subtitle: 'skip renders',
-    description: 'Memoize a component so equal props skip re-rendering.',
-    code: 'const Row = React.memo(function Row({ item }) { ... });\n// only re-renders when `item` changes',
+    subtitle: 'the shell',
+    description: 'Lay out routes for auth, list, detail, and forms.',
+    code: '<Routes>\n  <Route path="/login" .../>\n  <Route path="/tasks" .../>\n  <Route path="/tasks/:id" .../>\n</Routes>',
   },
   {
-    icon: '💾',
-    title: 'useMemo',
+    icon: '🔌',
+    title: 'API Layer',
     titleClass: 'card-title-green',
-    subtitle: 'cache values',
-    description: 'Avoid recomputing expensive derived data each render.',
-    code: 'const sorted = useMemo(\n  () => heavySort(items), [items]);',
+    subtitle: 'one place',
+    description: 'Centralize base URL, headers, and the auth token.',
+    code: 'const api = axios.create({ baseURL, });\napi.interceptors.request.use(addAuthHeader);',
+  },
+  {
+    icon: '🔐',
+    title: 'Auth Flow',
+    titleClass: 'card-title-amber',
+    subtitle: 'login → guard',
+    description: 'Store the JWT, then gate protected routes.',
+    code: 'localStorage.setItem("token", token);\n<ProtectedRoute><Tasks/></ProtectedRoute>',
+  },
+  {
+    icon: '📋',
+    title: 'CRUD Screens',
+    titleClass: 'card-title-pink',
+    subtitle: 'list + detail',
+    description: 'Fetch and render, with loading/empty/error states.',
+    code: 'const { data, loading } = useTasks();\nif (loading) return <Spinner/>;',
+  },
+];
+
+const INTEGRATE = [
+  {
+    icon: '🗂️',
+    title: 'State + Forms',
+    titleClass: 'card-title-cyan',
+    subtitle: 'inputs',
+    description: 'Controlled forms for create/edit; context for auth.',
+    code: 'const [form, setForm] = useState(empty);\nawait api.post("/tasks", form);',
+  },
+  {
+    icon: '🎨',
+    title: 'UI + UX',
+    titleClass: 'card-title-green',
+    subtitle: 'polish',
+    description: 'Tailwind styling, optimistic updates, and toasts.',
+    code: 'setTasks(prev => [...prev, temp]); // optimistic\ntoast.success("Saved");',
   },
   {
     icon: '🔗',
-    title: 'useCallback',
+    title: 'Connect to Backend',
     titleClass: 'card-title-amber',
-    subtitle: 'stable fns',
-    description: 'Keep callback identity stable so memo’d children hold.',
-    code: 'const onAdd = useCallback((id) => dispatch(add(id)), []);\n// same reference across renders',
-  },
-  {
-    icon: '🔑',
-    title: 'Stable Keys',
-    titleClass: 'card-title-pink',
-    subtitle: 'list identity',
-    description: 'Use stable ids as keys — never the array index.',
-    code: '{items.map(i => <Row key={i.id} item={i} />)}\n// index keys cause remounts on reorder',
-  },
-];
-
-const LOAD_LESS = [
-  {
-    icon: '✂️',
-    title: 'Code Splitting',
-    titleClass: 'card-title-cyan',
-    subtitle: 'lazy + Suspense',
-    description: 'Load a route/component only when it’s needed.',
-    code: 'const Dash = lazy(() => import("./Dash"));\n<Suspense fallback={<Spinner/>}><Dash/></Suspense>',
-  },
-  {
-    icon: '📜',
-    title: 'Virtualization',
-    titleClass: 'card-title-green',
-    subtitle: 'render visible',
-    description: 'For huge lists, render only what’s on screen.',
-    code: '// react-window / react-virtualized\n// 10,000 rows → ~20 in the DOM',
-  },
-  {
-    icon: '📈',
-    title: 'Measure First',
-    titleClass: 'card-title-amber',
-    subtitle: 'Profiler',
-    description: 'Profile to find the real bottleneck before optimizing.',
-    code: 'React DevTools → Profiler → record\n// optimize the slow commit, not a guess',
+    subtitle: 'end to end',
+    description: 'Point the API base URL at the Day 74 server.',
+    code: 'VITE_API_URL=http://localhost:5000/api\n// frontend ↔ backend working together',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'React Docs — memo',
+    title: 'React Docs',
     titleClass: 'card-title-green',
     subtitle: 'react.dev',
-    description: 'The official reference for React.memo, useMemo, and useCallback.',
+    description: 'The official React docs for building the client app.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
@@ -124,17 +124,17 @@ const RESOURCES = [
     title: 'ChaiCode React Labs',
     titleClass: 'card-title-purple',
     subtitle: 'Interactive playground',
-    description: 'Profile and optimize a real React app hands-on.',
+    description: 'Build the capstone frontend hands-on.',
     link: { href: LABS_URL, label: 'Open the labs →', external: true },
   },
   {
     icon: '▶️',
-    title: '8 Optimization Techniques',
+    title: 'Full-Stack CRUD',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: '8 React JS Performance Optimization Techniques by xplodivity — for Day 70.',
+    description: 'Full-Stack CRUD in One Video (MERN) by ProjectWithMe — for Day 75.',
     link: {
-      href: 'https://www.youtube.com/watch?v=CaShN6mCJB0',
+      href: 'https://www.youtube.com/watch?v=8-2bGey_lgk',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day070() {
+export default function Day075() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,27 +231,30 @@ export default function Day070() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-069" className="day001-nav-btn day001-nav-home">
-            ← Day 69
+          <Link to="/day-074" className="day001-nav-btn day001-nav-home">
+            ← Day 74
           </Link>
-          <p className="day001-datetime">Thunder Day 70 · 12 Sep 2026</p>
-          <Link to="/day-071" className="day001-nav-btn day001-nav-next">
-            Day 71 →
+          <p className="day001-datetime">Thunder Day 75 · 17 Sep 2026</p>
+          <Link
+            to="/learn/full-stack-capstone-deploy"
+            className="day001-nav-btn day001-nav-next"
+          >
+            Day 76 →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>React</span>
-              <span>Performance</span>
+              <span>Full-Stack</span>
+              <span>Frontend</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 70 <span aria-hidden="true">⚡</span>
+                DAY 75 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">REACT PERFORMANCE OPTIMIZATION</p>
+              <p className="day001-day-theme">CAPSTONE BUILD II — FRONTEND</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -264,23 +267,23 @@ export default function Day070() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">REACT · FRONTEND</p>
+              <p className="day001-profile-role">FULL-STACK</p>
             </div>
           </div>
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '70%' }} />
+          <div className="day001-progress-bar" style={{ width: '75%' }} />
         </div>
 
         <p className="day001-summary">
-          Day seventy — making React fast is mostly about avoiding wasted{' '}
-          <strong>re-renders</strong>. <code>React.memo</code> skips a render on equal props,{' '}
-          <code>useMemo</code> caches expensive values, and <code>useCallback</code> keeps callback
-          identity stable — backed by <strong>stable keys</strong> and avoiding inline objects. To
-          load less, <strong>code-split</strong> with <code>lazy</code> + <code>Suspense</code> and{' '}
-          <strong>virtualize</strong> big lists — but always <strong>measure with the Profiler</strong>{' '}
-          first and never over-optimize. Practice at{' '}
+          Day seventy-five — build the <strong>frontend</strong> and wire it to yesterday’s API. Lay
+          out <strong>pages + routing</strong>, centralize calls in an <strong>API layer</strong>,
+          and implement the <strong>auth flow</strong> (login, store the token, protect routes).
+          Add <strong>CRUD screens</strong> with loading states, controlled <strong>forms</strong>,{' '}
+          <strong>context/Redux</strong> for shared state, Tailwind <strong>UI</strong>, optimistic
+          updates, and error <strong>toasts</strong> — then point the base URL at the backend for a
+          working end-to-end app. Practice at{' '}
           <a href={LABS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             ChaiCode React Labs
           </a>
@@ -306,15 +309,15 @@ export default function Day070() {
           </ul>
         </section>
 
-        <CardSection icon="🧠" title="AVOID RE-RENDERS" cards={AVOID} columns={4} />
-        <CardSection icon="📦" title="LOAD LESS" cards={LOAD_LESS} columns={3} />
-        <CardSection icon="📚" title="REACT RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="🖥️" title="FRONTEND BUILD" cards={BUILD} columns={4} />
+        <CardSection icon="🔗" title="INTEGRATE" cards={INTEGRATE} columns={3} />
+        <CardSection icon="📚" title="CAPSTONE RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
+          <span>#FullStack</span>
+          <span>#MERN</span>
           <span>#React</span>
-          <span>#Performance</span>
-          <span>#Optimization</span>
           <span>#Thunder</span>
         </footer>
       </div>
