@@ -2,139 +2,139 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://react.dev/learn';
-const LABS_URL = 'https://react.chaicode.com/';
+const DOCS_URL = 'https://www.typescriptlang.org/docs/handbook/intro.html';
+const PLAY_URL = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
   {
-    title: 'React',
-    text: 'a library for building UIs from reusable components',
+    title: 'TypeScript',
+    text: 'a typed superset of JavaScript that compiles to JS',
   },
   {
-    title: 'Component',
-    text: 'a function that returns UI (JSX)',
+    title: 'Static typing',
+    text: 'catch type errors at compile time, not runtime',
   },
   {
-    title: 'JSX',
-    text: 'HTML-like syntax written inside JavaScript',
+    title: 'Basic types',
+    text: 'string, number, boolean, array, any, unknown',
   },
   {
-    title: '{expressions}',
-    text: 'embed any JS value or expression in JSX',
+    title: 'Inference',
+    text: 'TS figures out the type when it can',
   },
   {
-    title: 'One root',
-    text: 'return a single parent — or a fragment <>…</>',
+    title: 'Interfaces & types',
+    text: 'describe the shape of objects',
   },
   {
-    title: 'className',
-    text: 'not class — JSX uses camelCase attributes',
+    title: 'Union & literal',
+    text: 'string | number, "on" | "off"',
   },
   {
-    title: 'Lists & keys',
-    text: 'map over data and give each item a stable key',
+    title: 'Optional & readonly',
+    text: 'name?: string, readonly id',
   },
   {
-    title: 'Conditional rendering',
-    text: 'ternary or && to show UI conditionally',
+    title: 'Typed functions',
+    text: 'annotate params and the return type',
   },
   {
-    title: 'Declarative',
-    text: 'describe the UI for a state; React updates the DOM',
+    title: 'Generics',
+    text: 'reusable, type-safe code with <T>',
   },
   {
-    title: 'Virtual DOM',
-    text: 'React diffs and patches only what changed',
+    title: 'tsc',
+    text: 'the compiler that emits plain JavaScript',
   },
 ];
 
 const BASICS = [
   {
-    icon: '⚛️',
-    title: 'What is React',
+    icon: '🛡️',
+    title: 'Why TypeScript',
     titleClass: 'card-title-cyan',
-    subtitle: 'component UIs',
-    description: 'Build interfaces by composing small, reusable components.',
-    code: '<App>\n  <Header />\n  <Feed />\n  <Footer />\n</App>',
+    subtitle: 'safety',
+    description: 'Types catch bugs early and power great editor tooling.',
+    code: 'let n: number = 5;\nn = "hi"; // ❌ compile error, not a runtime surprise',
   },
   {
-    icon: '🧩',
-    title: 'Components',
+    icon: '🔤',
+    title: 'Basic Types',
     titleClass: 'card-title-green',
-    subtitle: 'functions → UI',
-    description: 'A component is a function that returns JSX.',
-    code: 'function Welcome() {\n  return <h1>Hello, Thunder!</h1>;\n}',
+    subtitle: 'the primitives',
+    description: 'Annotate values, arrays, and more.',
+    code: 'let name: string;\nlet ok: boolean;\nlet nums: number[] = [1, 2, 3];',
   },
   {
-    icon: '🪄',
-    title: 'Declarative & Virtual DOM',
+    icon: '🔎',
+    title: 'Inference',
     titleClass: 'card-title-amber',
-    subtitle: 'describe, don’t poke',
-    description: 'You describe the UI; React diffs and patches the real DOM.',
-    code: '// you: UI = f(state)\n// React: diffs virtual DOM → minimal DOM updates',
+    subtitle: 'less typing',
+    description: 'TS infers types from values, so you annotate less.',
+    code: 'let count = 0;        // inferred: number\nconst tags = ["a"];   // inferred: string[]',
+  },
+  {
+    icon: 'ƒ',
+    title: 'Typed Functions',
+    titleClass: 'card-title-pink',
+    subtitle: 'params + return',
+    description: 'Type inputs and outputs; TS checks callers.',
+    code: 'function add(a: number, b: number): number {\n  return a + b;\n}',
   },
 ];
 
-const JSX = [
+const SHAPES = [
   {
-    icon: '📝',
-    title: 'JSX Syntax',
+    icon: '📐',
+    title: 'Interfaces & Types',
     titleClass: 'card-title-cyan',
-    subtitle: 'HTML in JS',
-    description: 'Write markup in JavaScript; it compiles to function calls.',
-    code: 'const el = <h1 className="title">Hi</h1>;\n// → React.createElement("h1", ...)',
+    subtitle: 'object shapes',
+    description: 'Describe the structure objects must have.',
+    code: 'interface User {\n  id: number;\n  name: string;\n  email?: string; // optional\n}',
   },
   {
-    icon: '🔡',
-    title: '{expressions}',
+    icon: '🔀',
+    title: 'Union & Literal',
     titleClass: 'card-title-green',
-    subtitle: 'embed JS',
-    description: 'Curly braces drop any JavaScript value into the markup.',
-    code: 'const name = "Sumit";\nreturn <p>Hello {name.toUpperCase()}</p>;',
+    subtitle: 'either / exact',
+    description: 'A value that is one of several types or exact strings.',
+    code: 'type Id = string | number;\ntype Status = "idle" | "loading" | "done";',
   },
   {
-    icon: '🏷️',
-    title: 'Attributes',
+    icon: '📦',
+    title: 'Generics',
     titleClass: 'card-title-amber',
-    subtitle: 'camelCase',
-    description: 'className, onClick, htmlFor — attributes are camelCased.',
-    code: '<button className="btn" onClick={fn}>Go</button>\n<label htmlFor="email">Email</label>',
-  },
-  {
-    icon: '📋',
-    title: 'Lists & Conditionals',
-    titleClass: 'card-title-pink',
-    subtitle: 'map + keys',
-    description: 'Render lists with keys; use ternary / && to branch.',
-    code: '{items.map(i => <li key={i.id}>{i.text}</li>)}\n{isOpen ? <Panel /> : null}',
+    subtitle: 'reusable types',
+    description: 'Write once, keep full type safety for any type.',
+    code: 'function first<T>(arr: T[]): T { return arr[0]; }\nfirst([1, 2, 3]); // T = number',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'React Docs',
+    title: 'TypeScript Handbook',
     titleClass: 'card-title-green',
-    subtitle: 'react.dev/learn',
-    description: 'The official, interactive React documentation — the best starting point.',
+    subtitle: 'Official docs',
+    description: 'The official TypeScript handbook — the complete language reference.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
     icon: '🧪',
-    title: 'ChaiCode React Labs',
+    title: 'TypeScript Playground',
     titleClass: 'card-title-purple',
-    subtitle: 'Interactive playground',
-    description: 'Practice React hands-on in the ChaiCode React Labs playground.',
-    link: { href: LABS_URL, label: 'Open the labs →', external: true },
+    subtitle: 'Try it live',
+    description: 'Write TS and see the compiled JS + type errors instantly.',
+    link: { href: PLAY_URL, label: 'Open the playground →', external: true },
   },
   {
     icon: '▶️',
-    title: 'React JS Crash Course',
+    title: 'TypeScript for Beginners',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'React JS Crash Course by Traversy Media — supplement for Day 60.',
+    description: 'TypeScript Tutorial for Beginners by Programming with Mosh — for Day 65.',
     link: {
-      href: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8',
+      href: 'https://www.youtube.com/watch?v=d56mG7DezGs',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day060() {
+export default function Day065() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,27 +231,30 @@ export default function Day060() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-059" className="day001-nav-btn day001-nav-home">
-            ← Day 59
+          <Link to="/day-064" className="day001-nav-btn day001-nav-home">
+            ← Day 64
           </Link>
-          <p className="day001-datetime">Thunder Day 60 · 2 Sep 2026</p>
-          <Link to="/day-061" className="day001-nav-btn day001-nav-next">
-            Day 61 →
+          <p className="day001-datetime">Thunder Day 65 · 7 Sep 2026</p>
+          <Link
+            to="/learn/typescript-with-react"
+            className="day001-nav-btn day001-nav-next"
+          >
+            Day 66 →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>React</span>
+              <span>TypeScript</span>
               <span>Frontend</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 60 <span aria-hidden="true">⚡</span>
+                DAY 65 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">REACT FUNDAMENTALS & JSX</p>
+              <p className="day001-day-theme">TYPESCRIPT ESSENTIALS</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -264,25 +267,25 @@ export default function Day060() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">REACT · FRONTEND</p>
+              <p className="day001-profile-role">TYPESCRIPT · FRONTEND</p>
             </div>
           </div>
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '60%' }} />
+          <div className="day001-progress-bar" style={{ width: '65%' }} />
         </div>
 
         <p className="day001-summary">
-          Day sixty — a new phase: the <strong>frontend with React</strong>. React builds UIs from
-          reusable <strong>components</strong> — functions that return <strong>JSX</strong>, an
-          HTML-like syntax inside JavaScript. Curly braces embed{' '}
-          <strong>{'{'}expressions{'}'}</strong>, attributes are camelCased (<code>className</code>,{' '}
-          <code>onClick</code>), and lists render with <strong>keys</strong>. Best of all it’s{' '}
-          <strong>declarative</strong>: you describe the UI for a state and React diffs the{' '}
-          <strong>virtual DOM</strong> to update only what changed. Practice at{' '}
-          <a href={LABS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            ChaiCode React Labs
+          Day sixty-five — <strong>TypeScript</strong>, a typed superset of JavaScript that catches
+          errors at <strong>compile time</strong>. I learned the <strong>basic types</strong>,{' '}
+          leaned on <strong>inference</strong> to write less, typed <strong>functions</strong>, and
+          modeled object shapes with <strong>interfaces / types</strong>.{' '}
+          <strong>Union & literal</strong> types express “either/exact,” and <strong>generics</strong>{' '}
+          keep reusable code fully type-safe. <code>tsc</code> compiles it all down to plain JS — the
+          foundation for typing React tomorrow. Docs:{' '}
+          <a href={DOCS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
+            TypeScript Handbook
           </a>
           .
         </p>
@@ -306,14 +309,14 @@ export default function Day060() {
           </ul>
         </section>
 
-        <CardSection icon="⚛️" title="REACT BASICS" cards={BASICS} columns={3} />
-        <CardSection icon="📝" title="JSX" cards={JSX} columns={4} />
-        <CardSection icon="📚" title="REACT RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="🔤" title="THE BASICS" cards={BASICS} columns={4} />
+        <CardSection icon="📐" title="SHAPES & MORE" cards={SHAPES} columns={3} />
+        <CardSection icon="📚" title="TYPESCRIPT RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#React</span>
-          <span>#JSX</span>
+          <span>#TypeScript</span>
+          <span>#Types</span>
           <span>#Frontend</span>
           <span>#Thunder</span>
         </footer>

@@ -2,121 +2,121 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://react.dev/learn';
+const DOCS_URL = 'https://react.dev/learn/passing-props-to-a-component';
 const LABS_URL = 'https://react.chaicode.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'React',
-    text: 'a library for building UIs from reusable components',
+    title: 'Composition',
+    text: 'build big UIs by nesting small components',
   },
   {
-    title: 'Component',
-    text: 'a function that returns UI (JSX)',
+    title: 'Props',
+    text: 'read-only data passed from parent to child',
   },
   {
-    title: 'JSX',
-    text: 'HTML-like syntax written inside JavaScript',
+    title: 'One-way flow',
+    text: 'data always flows down the tree',
   },
   {
-    title: '{expressions}',
-    text: 'embed any JS value or expression in JSX',
+    title: 'Destructuring',
+    text: 'function Card({ title, price }) reads props cleanly',
   },
   {
-    title: 'One root',
-    text: 'return a single parent — or a fragment <>…</>',
+    title: 'children',
+    text: 'whatever you nest between the tags',
   },
   {
-    title: 'className',
-    text: 'not class — JSX uses camelCase attributes',
+    title: 'State',
+    text: 'a component’s own data that can change',
   },
   {
-    title: 'Lists & keys',
-    text: 'map over data and give each item a stable key',
+    title: 'useState',
+    text: 'const [v, setV] = useState(initial)',
   },
   {
-    title: 'Conditional rendering',
-    text: 'ternary or && to show UI conditionally',
+    title: 'Re-render',
+    text: 'calling setV re-renders with the new value',
   },
   {
-    title: 'Declarative',
-    text: 'describe the UI for a state; React updates the DOM',
+    title: 'Props vs state',
+    text: 'passed-in and read-only vs owned and mutable',
   },
   {
-    title: 'Virtual DOM',
-    text: 'React diffs and patches only what changed',
-  },
-];
-
-const BASICS = [
-  {
-    icon: '⚛️',
-    title: 'What is React',
-    titleClass: 'card-title-cyan',
-    subtitle: 'component UIs',
-    description: 'Build interfaces by composing small, reusable components.',
-    code: '<App>\n  <Header />\n  <Feed />\n  <Footer />\n</App>',
-  },
-  {
-    icon: '🧩',
-    title: 'Components',
-    titleClass: 'card-title-green',
-    subtitle: 'functions → UI',
-    description: 'A component is a function that returns JSX.',
-    code: 'function Welcome() {\n  return <h1>Hello, Thunder!</h1>;\n}',
-  },
-  {
-    icon: '🪄',
-    title: 'Declarative & Virtual DOM',
-    titleClass: 'card-title-amber',
-    subtitle: 'describe, don’t poke',
-    description: 'You describe the UI; React diffs and patches the real DOM.',
-    code: '// you: UI = f(state)\n// React: diffs virtual DOM → minimal DOM updates',
+    title: 'Lifting state up',
+    text: 'move shared state to a common parent',
   },
 ];
 
-const JSX = [
+const PROPS = [
   {
-    icon: '📝',
-    title: 'JSX Syntax',
+    icon: '📦',
+    title: 'Passing Props',
     titleClass: 'card-title-cyan',
-    subtitle: 'HTML in JS',
-    description: 'Write markup in JavaScript; it compiles to function calls.',
-    code: 'const el = <h1 className="title">Hi</h1>;\n// → React.createElement("h1", ...)',
+    subtitle: 'parent → child',
+    description: 'Pass data down as attributes; children read them.',
+    code: '<Card title="Thunder" price={499} />\n\nfunction Card(props) { return <h3>{props.title}</h3>; }',
   },
   {
-    icon: '🔡',
-    title: '{expressions}',
+    icon: '🎁',
+    title: 'Destructure & children',
     titleClass: 'card-title-green',
-    subtitle: 'embed JS',
-    description: 'Curly braces drop any JavaScript value into the markup.',
-    code: 'const name = "Sumit";\nreturn <p>Hello {name.toUpperCase()}</p>;',
+    subtitle: 'clean access',
+    description: 'Destructure props; use children for nested content.',
+    code: 'function Card({ title, children }) {\n  return <div><h3>{title}</h3>{children}</div>;\n}',
   },
   {
-    icon: '🏷️',
-    title: 'Attributes',
+    icon: '⬇️',
+    title: 'One-Way Flow',
     titleClass: 'card-title-amber',
-    subtitle: 'camelCase',
-    description: 'className, onClick, htmlFor — attributes are camelCased.',
-    code: '<button className="btn" onClick={fn}>Go</button>\n<label htmlFor="email">Email</label>',
+    subtitle: 'read-only',
+    description: 'Props are immutable; children never edit them directly.',
+    code: '// child can NOT do: props.title = "x"\n// to change data, call a parent callback',
+  },
+];
+
+const STATE = [
+  {
+    icon: '🎛️',
+    title: 'useState',
+    titleClass: 'card-title-cyan',
+    subtitle: 'local data',
+    description: 'A hook that gives a value and a setter.',
+    code: 'const [count, setCount] = useState(0);\n<button onClick={() => setCount(count + 1)}>{count}</button>',
   },
   {
-    icon: '📋',
-    title: 'Lists & Conditionals',
+    icon: '🔄',
+    title: 'Re-render on Change',
+    titleClass: 'card-title-green',
+    subtitle: 'reactive',
+    description: 'Setting state schedules a re-render with the new value.',
+    code: 'setCount(c => c + 1); // functional update\n// UI reflects the latest state automatically',
+  },
+  {
+    icon: '⚖️',
+    title: 'Props vs State',
+    titleClass: 'card-title-amber',
+    subtitle: 'know the diff',
+    description: 'Props come from outside; state is owned inside.',
+    code: 'props : passed in, read-only\nstate : owned, changeable via setState',
+  },
+  {
+    icon: '⬆️',
+    title: 'Lifting State Up',
     titleClass: 'card-title-pink',
-    subtitle: 'map + keys',
-    description: 'Render lists with keys; use ternary / && to branch.',
-    code: '{items.map(i => <li key={i.id}>{i.text}</li>)}\n{isOpen ? <Panel /> : null}',
+    subtitle: 'share it',
+    description: 'Two components share state via their closest parent.',
+    code: '// parent holds state, passes value + setter down\n<Child value={v} onChange={setV} />',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'React Docs',
+    title: 'React Docs — Props',
     titleClass: 'card-title-green',
-    subtitle: 'react.dev/learn',
-    description: 'The official, interactive React documentation — the best starting point.',
+    subtitle: 'react.dev',
+    description: 'The official guide to passing props and managing state.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
@@ -124,17 +124,17 @@ const RESOURCES = [
     title: 'ChaiCode React Labs',
     titleClass: 'card-title-purple',
     subtitle: 'Interactive playground',
-    description: 'Practice React hands-on in the ChaiCode React Labs playground.',
+    description: 'Practice components, props, and state hands-on.',
     link: { href: LABS_URL, label: 'Open the labs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'React JS Crash Course',
+    title: 'Props in React',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'React JS Crash Course by Traversy Media — supplement for Day 60.',
+    description: 'PROPS in React Explained by Bro Code — supplement for Day 61.',
     link: {
-      href: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8',
+      href: 'https://www.youtube.com/watch?v=uvEAvxWvwOs',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day060() {
+export default function Day061() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +231,12 @@ export default function Day060() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-059" className="day001-nav-btn day001-nav-home">
-            ← Day 59
+          <Link to="/day-060" className="day001-nav-btn day001-nav-home">
+            ← Day 60
           </Link>
-          <p className="day001-datetime">Thunder Day 60 · 2 Sep 2026</p>
-          <Link to="/day-061" className="day001-nav-btn day001-nav-next">
-            Day 61 →
+          <p className="day001-datetime">Thunder Day 61 · 3 Sep 2026</p>
+          <Link to="/day-062" className="day001-nav-btn day001-nav-next">
+            Day 62 →
           </Link>
         </header>
 
@@ -249,9 +249,9 @@ export default function Day060() {
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 60 <span aria-hidden="true">⚡</span>
+                DAY 61 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">REACT FUNDAMENTALS & JSX</p>
+              <p className="day001-day-theme">COMPONENTS, PROPS & STATE</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,17 +270,17 @@ export default function Day060() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '60%' }} />
+          <div className="day001-progress-bar" style={{ width: '61%' }} />
         </div>
 
         <p className="day001-summary">
-          Day sixty — a new phase: the <strong>frontend with React</strong>. React builds UIs from
-          reusable <strong>components</strong> — functions that return <strong>JSX</strong>, an
-          HTML-like syntax inside JavaScript. Curly braces embed{' '}
-          <strong>{'{'}expressions{'}'}</strong>, attributes are camelCased (<code>className</code>,{' '}
-          <code>onClick</code>), and lists render with <strong>keys</strong>. Best of all it’s{' '}
-          <strong>declarative</strong>: you describe the UI for a state and React diffs the{' '}
-          <strong>virtual DOM</strong> to update only what changed. Practice at{' '}
+          Day sixty-one — the heart of React: <strong>components, props, and state</strong>.{' '}
+          <strong>Props</strong> pass read-only data down the tree (one-way flow), read cleanly with{' '}
+          <strong>destructuring</strong> and the <strong>children</strong> prop.{' '}
+          <strong>State</strong> is a component’s own changeable data via{' '}
+          <code>useState</code> — calling the setter triggers a <strong>re-render</strong>. Know the
+          difference (passed-in vs owned), and when two components need the same data,{' '}
+          <strong>lift state up</strong> to a shared parent. Practice at{' '}
           <a href={LABS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             ChaiCode React Labs
           </a>
@@ -306,15 +306,15 @@ export default function Day060() {
           </ul>
         </section>
 
-        <CardSection icon="⚛️" title="REACT BASICS" cards={BASICS} columns={3} />
-        <CardSection icon="📝" title="JSX" cards={JSX} columns={4} />
+        <CardSection icon="📦" title="PROPS" cards={PROPS} columns={3} />
+        <CardSection icon="🎛️" title="STATE" cards={STATE} columns={4} />
         <CardSection icon="📚" title="REACT RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#React</span>
-          <span>#JSX</span>
-          <span>#Frontend</span>
+          <span>#Props</span>
+          <span>#State</span>
           <span>#Thunder</span>
         </footer>
       </div>

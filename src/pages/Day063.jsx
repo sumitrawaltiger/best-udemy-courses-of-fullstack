@@ -2,121 +2,121 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://react.dev/learn';
+const DOCS_URL = 'https://reactrouter.com/en/main/start/tutorial';
 const LABS_URL = 'https://react.chaicode.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'React',
-    text: 'a library for building UIs from reusable components',
+    title: 'SPA routing',
+    text: 'change views on the client — no full page reload',
   },
   {
-    title: 'Component',
-    text: 'a function that returns UI (JSX)',
+    title: 'BrowserRouter',
+    text: 'wraps the app to enable routing',
   },
   {
-    title: 'JSX',
-    text: 'HTML-like syntax written inside JavaScript',
+    title: 'Routes & Route',
+    text: 'map a URL path to an element',
   },
   {
-    title: '{expressions}',
-    text: 'embed any JS value or expression in JSX',
+    title: 'Link / NavLink',
+    text: 'navigate without a reload; NavLink knows "active"',
   },
   {
-    title: 'One root',
-    text: 'return a single parent — or a fragment <>…</>',
+    title: 'Dynamic routes',
+    text: '/user/:id → read it with useParams',
   },
   {
-    title: 'className',
-    text: 'not class — JSX uses camelCase attributes',
+    title: 'Nested routes',
+    text: 'shared layouts with an <Outlet />',
   },
   {
-    title: 'Lists & keys',
-    text: 'map over data and give each item a stable key',
+    title: 'useNavigate',
+    text: 'navigate from code (after a login, etc.)',
   },
   {
-    title: 'Conditional rendering',
-    text: 'ternary or && to show UI conditionally',
+    title: 'Index route',
+    text: 'the default child of a layout',
   },
   {
-    title: 'Declarative',
-    text: 'describe the UI for a state; React updates the DOM',
+    title: '404 route',
+    text: 'path="*" catches everything else',
   },
   {
-    title: 'Virtual DOM',
-    text: 'React diffs and patches only what changed',
-  },
-];
-
-const BASICS = [
-  {
-    icon: '⚛️',
-    title: 'What is React',
-    titleClass: 'card-title-cyan',
-    subtitle: 'component UIs',
-    description: 'Build interfaces by composing small, reusable components.',
-    code: '<App>\n  <Header />\n  <Feed />\n  <Footer />\n</App>',
-  },
-  {
-    icon: '🧩',
-    title: 'Components',
-    titleClass: 'card-title-green',
-    subtitle: 'functions → UI',
-    description: 'A component is a function that returns JSX.',
-    code: 'function Welcome() {\n  return <h1>Hello, Thunder!</h1>;\n}',
-  },
-  {
-    icon: '🪄',
-    title: 'Declarative & Virtual DOM',
-    titleClass: 'card-title-amber',
-    subtitle: 'describe, don’t poke',
-    description: 'You describe the UI; React diffs and patches the real DOM.',
-    code: '// you: UI = f(state)\n// React: diffs virtual DOM → minimal DOM updates',
+    title: 'Query params',
+    text: 'read/write with useSearchParams',
   },
 ];
 
-const JSX = [
+const ROUTES = [
   {
-    icon: '📝',
-    title: 'JSX Syntax',
+    icon: '🧭',
+    title: 'SPA Routing',
     titleClass: 'card-title-cyan',
-    subtitle: 'HTML in JS',
-    description: 'Write markup in JavaScript; it compiles to function calls.',
-    code: 'const el = <h1 className="title">Hi</h1>;\n// → React.createElement("h1", ...)',
+    subtitle: 'no reload',
+    description: 'Swap components by URL while the page stays loaded.',
+    code: '<BrowserRouter>\n  <App />\n</BrowserRouter>',
   },
   {
-    icon: '🔡',
-    title: '{expressions}',
+    icon: '🗺️',
+    title: 'Routes & Route',
     titleClass: 'card-title-green',
-    subtitle: 'embed JS',
-    description: 'Curly braces drop any JavaScript value into the markup.',
-    code: 'const name = "Sumit";\nreturn <p>Hello {name.toUpperCase()}</p>;',
+    subtitle: 'path → element',
+    description: 'Declare which component renders for each path.',
+    code: '<Routes>\n  <Route path="/" element={<Home />} />\n  <Route path="/about" element={<About />} />\n</Routes>',
   },
   {
-    icon: '🏷️',
-    title: 'Attributes',
+    icon: '🔗',
+    title: 'Dynamic Routes',
     titleClass: 'card-title-amber',
-    subtitle: 'camelCase',
-    description: 'className, onClick, htmlFor — attributes are camelCased.',
-    code: '<button className="btn" onClick={fn}>Go</button>\n<label htmlFor="email">Email</label>',
+    subtitle: 'useParams',
+    description: 'A colon marks a dynamic segment read via useParams.',
+    code: '<Route path="/user/:id" element={<User />} />\nconst { id } = useParams();',
   },
   {
-    icon: '📋',
-    title: 'Lists & Conditionals',
+    icon: '🪆',
+    title: 'Nested Routes',
     titleClass: 'card-title-pink',
-    subtitle: 'map + keys',
-    description: 'Render lists with keys; use ternary / && to branch.',
-    code: '{items.map(i => <li key={i.id}>{i.text}</li>)}\n{isOpen ? <Panel /> : null}',
+    subtitle: 'layouts',
+    description: 'Wrap children in a layout and render them at <Outlet />.',
+    code: '<Route path="/dash" element={<Layout />}>\n  <Route index element={<Overview />} />\n</Route>',
+  },
+];
+
+const NAVIGATION = [
+  {
+    icon: '➡️',
+    title: 'Link / NavLink',
+    titleClass: 'card-title-cyan',
+    subtitle: 'declarative nav',
+    description: 'Link navigates; NavLink adds an active class.',
+    code: '<Link to="/about">About</Link>\n<NavLink to="/feed" className={({isActive}) => ...} />',
+  },
+  {
+    icon: '🎮',
+    title: 'useNavigate',
+    titleClass: 'card-title-green',
+    subtitle: 'programmatic',
+    description: 'Redirect from code after an action completes.',
+    code: 'const navigate = useNavigate();\nawait login(); navigate("/dashboard");',
+  },
+  {
+    icon: '🚧',
+    title: '404 & Query Params',
+    titleClass: 'card-title-amber',
+    subtitle: 'catch-all + search',
+    description: 'A wildcard route for 404s; useSearchParams for ?q=.',
+    code: '<Route path="*" element={<NotFound />} />\nconst [params] = useSearchParams(); params.get("q");',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'React Docs',
+    title: 'React Router Docs',
     titleClass: 'card-title-green',
-    subtitle: 'react.dev/learn',
-    description: 'The official, interactive React documentation — the best starting point.',
+    subtitle: 'Official tutorial',
+    description: 'The official React Router tutorial — routes, params, and nesting.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
@@ -124,17 +124,17 @@ const RESOURCES = [
     title: 'ChaiCode React Labs',
     titleClass: 'card-title-purple',
     subtitle: 'Interactive playground',
-    description: 'Practice React hands-on in the ChaiCode React Labs playground.',
+    description: 'Build multi-page React apps hands-on.',
     link: { href: LABS_URL, label: 'Open the labs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'React JS Crash Course',
+    title: 'React Router in 45 min',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'React JS Crash Course by Traversy Media — supplement for Day 60.',
+    description: 'Learn React Router v6 in 45 Minutes by Web Dev Simplified — for Day 63.',
     link: {
-      href: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8',
+      href: 'https://www.youtube.com/watch?v=Ul3y1LXxzdU',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day060() {
+export default function Day063() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +231,12 @@ export default function Day060() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-059" className="day001-nav-btn day001-nav-home">
-            ← Day 59
+          <Link to="/day-062" className="day001-nav-btn day001-nav-home">
+            ← Day 62
           </Link>
-          <p className="day001-datetime">Thunder Day 60 · 2 Sep 2026</p>
-          <Link to="/day-061" className="day001-nav-btn day001-nav-next">
-            Day 61 →
+          <p className="day001-datetime">Thunder Day 63 · 5 Sep 2026</p>
+          <Link to="/day-064" className="day001-nav-btn day001-nav-next">
+            Day 64 →
           </Link>
         </header>
 
@@ -244,14 +244,14 @@ export default function Day060() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>React</span>
-              <span>Frontend</span>
+              <span>Routing</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 60 <span aria-hidden="true">⚡</span>
+                DAY 63 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">REACT FUNDAMENTALS & JSX</p>
+              <p className="day001-day-theme">REACT ROUTER & NAVIGATION</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,17 +270,17 @@ export default function Day060() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '60%' }} />
+          <div className="day001-progress-bar" style={{ width: '63%' }} />
         </div>
 
         <p className="day001-summary">
-          Day sixty — a new phase: the <strong>frontend with React</strong>. React builds UIs from
-          reusable <strong>components</strong> — functions that return <strong>JSX</strong>, an
-          HTML-like syntax inside JavaScript. Curly braces embed{' '}
-          <strong>{'{'}expressions{'}'}</strong>, attributes are camelCased (<code>className</code>,{' '}
-          <code>onClick</code>), and lists render with <strong>keys</strong>. Best of all it’s{' '}
-          <strong>declarative</strong>: you describe the UI for a state and React diffs the{' '}
-          <strong>virtual DOM</strong> to update only what changed. Practice at{' '}
+          Day sixty-three — React is a single page, so <strong>React Router</strong> gives it many
+          views without a reload. <strong>BrowserRouter</strong> wraps the app,{' '}
+          <strong>Routes/Route</strong> map paths to elements, and <strong>Link/NavLink</strong>{' '}
+          navigate client-side. <strong>Dynamic routes</strong> (<code>/user/:id</code> via{' '}
+          <code>useParams</code>) and <strong>nested routes</strong> with <code>&lt;Outlet /&gt;</code>{' '}
+          build real apps, while <code>useNavigate</code>, a <code>path=&quot;*&quot;</code> 404, and{' '}
+          <code>useSearchParams</code> round it out. Practice at{' '}
           <a href={LABS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             ChaiCode React Labs
           </a>
@@ -306,15 +306,15 @@ export default function Day060() {
           </ul>
         </section>
 
-        <CardSection icon="⚛️" title="REACT BASICS" cards={BASICS} columns={3} />
-        <CardSection icon="📝" title="JSX" cards={JSX} columns={4} />
+        <CardSection icon="🗺️" title="ROUTES" cards={ROUTES} columns={4} />
+        <CardSection icon="🧭" title="NAVIGATION" cards={NAVIGATION} columns={3} />
         <CardSection icon="📚" title="REACT RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#React</span>
-          <span>#JSX</span>
-          <span>#Frontend</span>
+          <span>#ReactRouter</span>
+          <span>#SPA</span>
           <span>#Thunder</span>
         </footer>
       </div>

@@ -2,121 +2,121 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://react.dev/learn';
+const DOCS_URL = 'https://react.dev/reference/react/useEffect';
 const LABS_URL = 'https://react.chaicode.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'React',
-    text: 'a library for building UIs from reusable components',
+    title: 'Hooks',
+    text: 'use React features from function components',
   },
   {
-    title: 'Component',
-    text: 'a function that returns UI (JSX)',
+    title: 'useState',
+    text: 'local, reactive component state',
   },
   {
-    title: 'JSX',
-    text: 'HTML-like syntax written inside JavaScript',
+    title: 'useEffect',
+    text: 'run side effects after the render commits',
   },
   {
-    title: '{expressions}',
-    text: 'embed any JS value or expression in JSX',
+    title: 'Dependency array',
+    text: 'controls when the effect re-runs',
   },
   {
-    title: 'One root',
-    text: 'return a single parent — or a fragment <>…</>',
+    title: '[] deps',
+    text: 'run once, on mount',
   },
   {
-    title: 'className',
-    text: 'not class — JSX uses camelCase attributes',
+    title: 'Cleanup',
+    text: 'return a function to tear down the effect',
   },
   {
-    title: 'Lists & keys',
-    text: 'map over data and give each item a stable key',
+    title: 'Effects are for',
+    text: 'fetching, subscriptions, timers, manual DOM',
   },
   {
-    title: 'Conditional rendering',
-    text: 'ternary or && to show UI conditionally',
+    title: 'Rules of hooks',
+    text: 'call at the top level, only in components/hooks',
   },
   {
-    title: 'Declarative',
-    text: 'describe the UI for a state; React updates the DOM',
+    title: 'Complete deps',
+    text: 'list everything the effect uses to avoid stale values',
   },
   {
-    title: 'Virtual DOM',
-    text: 'React diffs and patches only what changed',
-  },
-];
-
-const BASICS = [
-  {
-    icon: '⚛️',
-    title: 'What is React',
-    titleClass: 'card-title-cyan',
-    subtitle: 'component UIs',
-    description: 'Build interfaces by composing small, reusable components.',
-    code: '<App>\n  <Header />\n  <Feed />\n  <Footer />\n</App>',
-  },
-  {
-    icon: '🧩',
-    title: 'Components',
-    titleClass: 'card-title-green',
-    subtitle: 'functions → UI',
-    description: 'A component is a function that returns JSX.',
-    code: 'function Welcome() {\n  return <h1>Hello, Thunder!</h1>;\n}',
-  },
-  {
-    icon: '🪄',
-    title: 'Declarative & Virtual DOM',
-    titleClass: 'card-title-amber',
-    subtitle: 'describe, don’t poke',
-    description: 'You describe the UI; React diffs and patches the real DOM.',
-    code: '// you: UI = f(state)\n// React: diffs virtual DOM → minimal DOM updates',
+    title: 'Maybe skip it',
+    text: 'you might not need an effect for derived data',
   },
 ];
 
-const JSX = [
+const STATE_HOOK = [
   {
-    icon: '📝',
-    title: 'JSX Syntax',
+    icon: '🎛️',
+    title: 'useState',
     titleClass: 'card-title-cyan',
-    subtitle: 'HTML in JS',
-    description: 'Write markup in JavaScript; it compiles to function calls.',
-    code: 'const el = <h1 className="title">Hi</h1>;\n// → React.createElement("h1", ...)',
+    subtitle: 'reactive value',
+    description: 'Holds state; updating it re-renders the component.',
+    code: 'const [text, setText] = useState("");\n<input value={text} onChange={e => setText(e.target.value)} />',
   },
   {
-    icon: '🔡',
-    title: '{expressions}',
+    icon: '🔧',
+    title: 'Updating State',
     titleClass: 'card-title-green',
-    subtitle: 'embed JS',
-    description: 'Curly braces drop any JavaScript value into the markup.',
-    code: 'const name = "Sumit";\nreturn <p>Hello {name.toUpperCase()}</p>;',
+    subtitle: 'immutable',
+    description: 'Never mutate — replace with a new value/object.',
+    code: 'setItems(prev => [...prev, newItem]);\nsetUser(u => ({ ...u, name }));',
   },
   {
-    icon: '🏷️',
-    title: 'Attributes',
+    icon: '📏',
+    title: 'Rules of Hooks',
     titleClass: 'card-title-amber',
-    subtitle: 'camelCase',
-    description: 'className, onClick, htmlFor — attributes are camelCased.',
-    code: '<button className="btn" onClick={fn}>Go</button>\n<label htmlFor="email">Email</label>',
+    subtitle: 'top level only',
+    description: 'Never call hooks in loops, conditions, or nested functions.',
+    code: '// ✅ top of the component\n// ❌ inside if / for / callbacks',
+  },
+];
+
+const EFFECT_HOOK = [
+  {
+    icon: '⚙️',
+    title: 'useEffect',
+    titleClass: 'card-title-cyan',
+    subtitle: 'side effects',
+    description: 'Runs after render — for anything outside React.',
+    code: 'useEffect(() => {\n  document.title = `Count: ${count}`;\n});',
   },
   {
     icon: '📋',
-    title: 'Lists & Conditionals',
+    title: 'Dependency Array',
+    titleClass: 'card-title-green',
+    subtitle: 'when it runs',
+    description: 'React re-runs the effect only when a dep changes.',
+    code: 'useEffect(fn, [])       // once, on mount\nuseEffect(fn, [id])     // when id changes',
+  },
+  {
+    icon: '🧹',
+    title: 'Cleanup',
+    titleClass: 'card-title-amber',
+    subtitle: 'tear down',
+    description: 'Return a function to cancel timers/subscriptions.',
+    code: 'useEffect(() => {\n  const t = setInterval(tick, 1000);\n  return () => clearInterval(t);\n}, []);',
+  },
+  {
+    icon: '🎯',
+    title: 'When to Use',
     titleClass: 'card-title-pink',
-    subtitle: 'map + keys',
-    description: 'Render lists with keys; use ternary / && to branch.',
-    code: '{items.map(i => <li key={i.id}>{i.text}</li>)}\n{isOpen ? <Panel /> : null}',
+    subtitle: 'not always',
+    description: 'Use for external systems; derive data during render instead.',
+    code: '// yes: fetch, subscribe, timers\n// no: value you can compute from props/state',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'React Docs',
+    title: 'React Docs — useEffect',
     titleClass: 'card-title-green',
-    subtitle: 'react.dev/learn',
-    description: 'The official, interactive React documentation — the best starting point.',
+    subtitle: 'react.dev',
+    description: 'The official reference for useEffect, deps, and cleanup.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
@@ -124,17 +124,17 @@ const RESOURCES = [
     title: 'ChaiCode React Labs',
     titleClass: 'card-title-purple',
     subtitle: 'Interactive playground',
-    description: 'Practice React hands-on in the ChaiCode React Labs playground.',
+    description: 'Practice hooks and effects hands-on.',
     link: { href: LABS_URL, label: 'Open the labs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'React JS Crash Course',
+    title: 'Learn useEffect',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'React JS Crash Course by Traversy Media — supplement for Day 60.',
+    description: 'Learn React Hooks: useEffect — Simply Explained! by Cosden Solutions — for Day 62.',
     link: {
-      href: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8',
+      href: 'https://www.youtube.com/watch?v=-4XpG5_Lj_o',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day060() {
+export default function Day062() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +231,12 @@ export default function Day060() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-059" className="day001-nav-btn day001-nav-home">
-            ← Day 59
+          <Link to="/day-061" className="day001-nav-btn day001-nav-home">
+            ← Day 61
           </Link>
-          <p className="day001-datetime">Thunder Day 60 · 2 Sep 2026</p>
-          <Link to="/day-061" className="day001-nav-btn day001-nav-next">
-            Day 61 →
+          <p className="day001-datetime">Thunder Day 62 · 4 Sep 2026</p>
+          <Link to="/day-063" className="day001-nav-btn day001-nav-next">
+            Day 63 →
           </Link>
         </header>
 
@@ -244,14 +244,14 @@ export default function Day060() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>React</span>
-              <span>Frontend</span>
+              <span>Hooks</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 60 <span aria-hidden="true">⚡</span>
+                DAY 62 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">REACT FUNDAMENTALS & JSX</p>
+              <p className="day001-day-theme">HOOKS — useState & useEffect</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,17 +270,17 @@ export default function Day060() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '60%' }} />
+          <div className="day001-progress-bar" style={{ width: '62%' }} />
         </div>
 
         <p className="day001-summary">
-          Day sixty — a new phase: the <strong>frontend with React</strong>. React builds UIs from
-          reusable <strong>components</strong> — functions that return <strong>JSX</strong>, an
-          HTML-like syntax inside JavaScript. Curly braces embed{' '}
-          <strong>{'{'}expressions{'}'}</strong>, attributes are camelCased (<code>className</code>,{' '}
-          <code>onClick</code>), and lists render with <strong>keys</strong>. Best of all it’s{' '}
-          <strong>declarative</strong>: you describe the UI for a state and React diffs the{' '}
-          <strong>virtual DOM</strong> to update only what changed. Practice at{' '}
+          Day sixty-two — <strong>hooks</strong> unlock React features in function components.{' '}
+          <code>useState</code> holds reactive state (update it immutably), and{' '}
+          <code>useEffect</code> runs <strong>side effects</strong> after render — fetching,
+          subscriptions, timers. The <strong>dependency array</strong> controls when it runs (
+          <code>[]</code> = once on mount), and returning a function handles <strong>cleanup</strong>.
+          Follow the <strong>rules of hooks</strong>, list complete deps, and remember you might not
+          need an effect for derived data. Practice at{' '}
           <a href={LABS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             ChaiCode React Labs
           </a>
@@ -306,15 +306,15 @@ export default function Day060() {
           </ul>
         </section>
 
-        <CardSection icon="⚛️" title="REACT BASICS" cards={BASICS} columns={3} />
-        <CardSection icon="📝" title="JSX" cards={JSX} columns={4} />
+        <CardSection icon="🎛️" title="STATE HOOK" cards={STATE_HOOK} columns={3} />
+        <CardSection icon="⚙️" title="EFFECT HOOK" cards={EFFECT_HOOK} columns={4} />
         <CardSection icon="📚" title="REACT RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#React</span>
-          <span>#JSX</span>
-          <span>#Frontend</span>
+          <span>#Hooks</span>
+          <span>#useEffect</span>
           <span>#Thunder</span>
         </footer>
       </div>

@@ -2,121 +2,121 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const DOCS_URL = 'https://react.dev/learn';
+const DOCS_URL = 'https://react.dev/reference/react-dom/components/input';
 const LABS_URL = 'https://react.chaicode.com/';
 
 const LEARNT_TODAY = [
   {
-    title: 'React',
-    text: 'a library for building UIs from reusable components',
+    title: 'Controlled input',
+    text: 'the value comes from React state',
   },
   {
-    title: 'Component',
-    text: 'a function that returns UI (JSX)',
+    title: 'onChange',
+    text: 'update state on every keystroke',
   },
   {
-    title: 'JSX',
-    text: 'HTML-like syntax written inside JavaScript',
+    title: 'Single source of truth',
+    text: 'state, not the DOM, holds the value',
   },
   {
-    title: '{expressions}',
-    text: 'embed any JS value or expression in JSX',
+    title: 'Multiple inputs',
+    text: 'one handler keyed by the field name',
   },
   {
-    title: 'One root',
-    text: 'return a single parent — or a fragment <>…</>',
+    title: 'Submit',
+    text: 'e.preventDefault() to stop the reload',
   },
   {
-    title: 'className',
-    text: 'not class — JSX uses camelCase attributes',
+    title: 'Validation',
+    text: 'derive errors from the current state',
   },
   {
-    title: 'Lists & keys',
-    text: 'map over data and give each item a stable key',
+    title: 'Checkbox & select',
+    text: 'use checked and value accordingly',
   },
   {
-    title: 'Conditional rendering',
-    text: 'ternary or && to show UI conditionally',
+    title: 'Uncontrolled',
+    text: 'read values from a ref on submit',
   },
   {
-    title: 'Declarative',
-    text: 'describe the UI for a state; React updates the DOM',
+    title: 'Controlled vs not',
+    text: 'live control vs less code',
   },
   {
-    title: 'Virtual DOM',
-    text: 'React diffs and patches only what changed',
+    title: 'Form libraries',
+    text: 'React Hook Form for big, complex forms',
   },
 ];
 
-const BASICS = [
+const CONTROLLED = [
   {
-    icon: '⚛️',
-    title: 'What is React',
+    icon: '🎛️',
+    title: 'Controlled Input',
     titleClass: 'card-title-cyan',
-    subtitle: 'component UIs',
-    description: 'Build interfaces by composing small, reusable components.',
-    code: '<App>\n  <Header />\n  <Feed />\n  <Footer />\n</App>',
+    subtitle: 'state-driven',
+    description: 'Bind value to state and update it via onChange.',
+    code: 'const [email, setEmail] = useState("");\n<input value={email} onChange={e => setEmail(e.target.value)} />',
   },
   {
-    icon: '🧩',
-    title: 'Components',
+    icon: '🗝️',
+    title: 'Multiple Inputs',
     titleClass: 'card-title-green',
-    subtitle: 'functions → UI',
-    description: 'A component is a function that returns JSX.',
-    code: 'function Welcome() {\n  return <h1>Hello, Thunder!</h1>;\n}',
+    subtitle: 'one handler',
+    description: 'Store a form object; update by input name.',
+    code: 'const [form, setForm] = useState({ name: "", email: "" });\nonChange={e => setForm({ ...form, [e.target.name]: e.target.value })}',
   },
   {
-    icon: '🪄',
-    title: 'Declarative & Virtual DOM',
+    icon: '📤',
+    title: 'Submit',
     titleClass: 'card-title-amber',
-    subtitle: 'describe, don’t poke',
-    description: 'You describe the UI; React diffs and patches the real DOM.',
-    code: '// you: UI = f(state)\n// React: diffs virtual DOM → minimal DOM updates',
+    subtitle: 'preventDefault',
+    description: 'Handle submit in JS; stop the default page reload.',
+    code: 'function onSubmit(e) {\n  e.preventDefault();\n  api.post("/signup", form);\n}',
+  },
+  {
+    icon: '✅',
+    title: 'Validation',
+    titleClass: 'card-title-pink',
+    subtitle: 'from state',
+    description: 'Compute errors from state and show them live.',
+    code: 'const errors = {};\nif (!form.email.includes("@")) errors.email = "Invalid";',
   },
 ];
 
-const JSX = [
-  {
-    icon: '📝',
-    title: 'JSX Syntax',
-    titleClass: 'card-title-cyan',
-    subtitle: 'HTML in JS',
-    description: 'Write markup in JavaScript; it compiles to function calls.',
-    code: 'const el = <h1 className="title">Hi</h1>;\n// → React.createElement("h1", ...)',
-  },
-  {
-    icon: '🔡',
-    title: '{expressions}',
-    titleClass: 'card-title-green',
-    subtitle: 'embed JS',
-    description: 'Curly braces drop any JavaScript value into the markup.',
-    code: 'const name = "Sumit";\nreturn <p>Hello {name.toUpperCase()}</p>;',
-  },
+const BEYOND = [
   {
     icon: '🏷️',
-    title: 'Attributes',
-    titleClass: 'card-title-amber',
-    subtitle: 'camelCase',
-    description: 'className, onClick, htmlFor — attributes are camelCased.',
-    code: '<button className="btn" onClick={fn}>Go</button>\n<label htmlFor="email">Email</label>',
+    title: 'Uncontrolled & Refs',
+    titleClass: 'card-title-cyan',
+    subtitle: 'the DOM way',
+    description: 'Let the DOM hold the value; read it with a ref on submit.',
+    code: 'const ref = useRef();\n<input ref={ref} />\n// on submit: ref.current.value',
   },
   {
-    icon: '📋',
-    title: 'Lists & Conditionals',
-    titleClass: 'card-title-pink',
-    subtitle: 'map + keys',
-    description: 'Render lists with keys; use ternary / && to branch.',
-    code: '{items.map(i => <li key={i.id}>{i.text}</li>)}\n{isOpen ? <Panel /> : null}',
+    icon: '☑️',
+    title: 'Checkbox & Select',
+    titleClass: 'card-title-green',
+    subtitle: 'other inputs',
+    description: 'Checkboxes use checked; selects use value.',
+    code: '<input type="checkbox" checked={agree}\n  onChange={e => setAgree(e.target.checked)} />',
+  },
+  {
+    icon: '📚',
+    title: 'Form Libraries',
+    titleClass: 'card-title-amber',
+    subtitle: 'scale up',
+    description: 'React Hook Form cuts re-renders and boilerplate.',
+    code: 'const { register, handleSubmit } = useForm();\n<input {...register("email")} />',
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📗',
-    title: 'React Docs',
+    title: 'React Docs — Inputs',
     titleClass: 'card-title-green',
-    subtitle: 'react.dev/learn',
-    description: 'The official, interactive React documentation — the best starting point.',
+    subtitle: 'react.dev',
+    description: 'The official docs for controlled form inputs in React.',
     link: { href: DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
@@ -124,17 +124,17 @@ const RESOURCES = [
     title: 'ChaiCode React Labs',
     titleClass: 'card-title-purple',
     subtitle: 'Interactive playground',
-    description: 'Practice React hands-on in the ChaiCode React Labs playground.',
+    description: 'Build and validate real forms hands-on.',
     link: { href: LABS_URL, label: 'Open the labs →', external: true },
   },
   {
     icon: '▶️',
-    title: 'React JS Crash Course',
+    title: 'Controlled Components',
     titleClass: 'card-title-amber',
     subtitle: 'Free YouTube',
-    description: 'React JS Crash Course by Traversy Media — supplement for Day 60.',
+    description: 'React Controlled vs Uncontrolled Components by Thapa Technical — for Day 64.',
     link: {
-      href: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8',
+      href: 'https://www.youtube.com/watch?v=yzqUCV3qPX0',
       label: 'Watch on YouTube →',
       external: true,
     },
@@ -186,7 +186,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day060() {
+export default function Day064() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -231,12 +231,12 @@ export default function Day060() {
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-059" className="day001-nav-btn day001-nav-home">
-            ← Day 59
+          <Link to="/day-063" className="day001-nav-btn day001-nav-home">
+            ← Day 63
           </Link>
-          <p className="day001-datetime">Thunder Day 60 · 2 Sep 2026</p>
-          <Link to="/day-061" className="day001-nav-btn day001-nav-next">
-            Day 61 →
+          <p className="day001-datetime">Thunder Day 64 · 6 Sep 2026</p>
+          <Link to="/day-065" className="day001-nav-btn day001-nav-next">
+            Day 65 →
           </Link>
         </header>
 
@@ -244,14 +244,14 @@ export default function Day060() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>React</span>
-              <span>Frontend</span>
+              <span>Forms</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
-                DAY 60 <span aria-hidden="true">⚡</span>
+                DAY 64 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">REACT FUNDAMENTALS & JSX</p>
+              <p className="day001-day-theme">FORMS & CONTROLLED COMPONENTS</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -270,17 +270,17 @@ export default function Day060() {
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '60%' }} />
+          <div className="day001-progress-bar" style={{ width: '64%' }} />
         </div>
 
         <p className="day001-summary">
-          Day sixty — a new phase: the <strong>frontend with React</strong>. React builds UIs from
-          reusable <strong>components</strong> — functions that return <strong>JSX</strong>, an
-          HTML-like syntax inside JavaScript. Curly braces embed{' '}
-          <strong>{'{'}expressions{'}'}</strong>, attributes are camelCased (<code>className</code>,{' '}
-          <code>onClick</code>), and lists render with <strong>keys</strong>. Best of all it’s{' '}
-          <strong>declarative</strong>: you describe the UI for a state and React diffs the{' '}
-          <strong>virtual DOM</strong> to update only what changed. Practice at{' '}
+          Day sixty-four — forms in React. A <strong>controlled input</strong> takes its{' '}
+          <code>value</code> from state and updates on <code>onChange</code>, so state is the{' '}
+          <strong>single source of truth</strong>. Handle many inputs with one name-keyed handler,{' '}
+          <strong>preventDefault</strong> on submit, and derive <strong>validation</strong> errors
+          from state. There’s also the <strong>uncontrolled</strong> approach (refs), the right
+          handling for checkboxes/selects, and <strong>React Hook Form</strong> for large forms.
+          Practice at{' '}
           <a href={LABS_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             ChaiCode React Labs
           </a>
@@ -306,15 +306,15 @@ export default function Day060() {
           </ul>
         </section>
 
-        <CardSection icon="⚛️" title="REACT BASICS" cards={BASICS} columns={3} />
-        <CardSection icon="📝" title="JSX" cards={JSX} columns={4} />
+        <CardSection icon="🎛️" title="CONTROLLED FORMS" cards={CONTROLLED} columns={4} />
+        <CardSection icon="🧩" title="BEYOND" cards={BEYOND} columns={3} />
         <CardSection icon="📚" title="REACT RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
           <span>#React</span>
-          <span>#JSX</span>
-          <span>#Frontend</span>
+          <span>#Forms</span>
+          <span>#ControlledComponents</span>
           <span>#Thunder</span>
         </footer>
       </div>
