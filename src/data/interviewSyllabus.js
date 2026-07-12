@@ -16,10 +16,10 @@ export const INTERVIEW_RESOURCES = [
 ];
 
 export const INTERVIEW_META = {
-  title: 'Thunder++ — Interview Preparation',
-  subtitle: 'DSA, System Design & Interviews — ChaiCode + GeeksForGeeks',
+  title: 'Thunder++ — System Design',
+  subtitle: 'System Design for 100 days — HLD, LLD & case studies (ChaiCode + GeeksForGeeks)',
   description:
-    'Crack tech interviews with data structures, system design case studies, mock interviews, and full-stack prep from ChaiCode and GeeksForGeeks.',
+    'From 31 Jul to 7 Nov 2028: deep System Design study — HLD/LLD, scalability, and case studies from ChaiCode and GeeksForGeeks. Data Structures follows from 8 Nov 2028.',
   chaicodeUrl: CHAICODE_INTERVIEW_URL,
   gfgDsaUrl: GFG_DSA_URL,
   gfgSystemDesignUrl: GFG_SYSTEM_DESIGN_URL,
@@ -28,7 +28,64 @@ export const INTERVIEW_META = {
   resources: INTERVIEW_RESOURCES,
   instructors: 'Hitesh Choudhary — ChaiCode & GeeksForGeeks',
   totalModules: 60,
-  startsAfter: 'Kubernetes',
+  calendarDays: 100,
+  phaseWindow: 'Days 759–858 · 31 Jul – 7 Nov 2028',
+  startsAfter: 'Kubernetes (through 30 Jul 2028)',
+  endsOn: '7 Nov 2028',
+  continuesWith: 'Data Structures (Days 859–958 · 8 Nov 2028 – 15 Feb 2029)',
+  focusAreas: ['System Design', 'HLD / LLD', 'Scalability', 'Case studies'],
+};
+
+export const DSA_META = {
+  title: 'Thunder++ — Data Structures',
+  subtitle: 'Data Structures & Algorithms for 100 days — GeeksForGeeks + ChaiCode',
+  description:
+    'From 8 Nov 2028 to 15 Feb 2029: deep DSA study — arrays, trees, graphs, DP, and patterns — with GeeksForGeeks Self Paced and ChaiCode practice. Interview Preparation follows from 16 Feb 2029.',
+  gfgDsaUrl: GFG_DSA_URL,
+  chaicodeUrl: CHAICODE_INTERVIEW_URL,
+  gfgCoursesUrl: GFG_COURSES_URL,
+  calendarDays: 100,
+  phaseWindow: 'Days 859–958 · 8 Nov 2028 – 15 Feb 2029',
+  startsAfter: 'System Design (through 7 Nov 2028)',
+  endsOn: '15 Feb 2029',
+  continuesWith:
+    'Interview Preparation — 504 days (72 weeks) · 16 Feb 2029 – 4 Jul 2030',
+  focusAreas: ['Arrays & Strings', 'Trees & Graphs', 'DP & Patterns', 'Problem solving'],
+  path: '/interview',
+};
+
+export const INTERVIEW_PREP_META = {
+  title: 'Thunder++ — Interview Preparation',
+  subtitle: '504 days (72 weeks) — final phase of 1461 days / 4 years of study',
+  description:
+    'From 16 Feb 2029 to 4 Jul 2030: Interview Preparation for 504 days (72 weeks) with ChaiCode and GeeksForGeeks — mocks, company prep, behavioral rounds, and full-stack readiness. Completes 1461 days of study from 5 Jul 2026 to 4 Jul 2030.',
+  chaicodeUrl: CHAICODE_INTERVIEW_URL,
+  gfgInterviewUrl: GFG_INTERVIEW_PREP_URL,
+  gfgCoursesUrl: GFG_COURSES_URL,
+  gfgDsaUrl: GFG_DSA_URL,
+  gfgSystemDesignUrl: GFG_SYSTEM_DESIGN_URL,
+  resources: INTERVIEW_RESOURCES,
+  instructors: 'Hitesh Choudhary — ChaiCode & GeeksForGeeks',
+  calendarDays: 504,
+  weeks: 72,
+  phaseWindow: '504 days (72 weeks) · 16 Feb 2029 – 4 Jul 2030',
+  startsAfter: 'Data Structures (through 15 Feb 2029)',
+  endsOn: '4 Jul 2030',
+  journey: '1461 days · 4 years · 5 Jul 2026 → 4 Jul 2030',
+  focusAreas: ['Mock interviews', 'Online assessments', 'Behavioral & HR', 'Full-stack readiness'],
+  path: '/interview',
+};
+
+export const JOURNEY_META = {
+  title: '4-Year Full-Stack Journey',
+  startLabel: '5 Jul 2026',
+  endLabel: '4 Jul 2030',
+  years: 4,
+  totalDays: 1461,
+  interviewPrepDays: 504,
+  interviewPrepWeeks: 72,
+  summary:
+    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → Interview Prep.',
 };
 
 function lessonToModule(ch) {

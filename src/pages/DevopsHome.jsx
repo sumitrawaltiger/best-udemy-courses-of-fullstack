@@ -106,7 +106,8 @@ export default function DevopsHome() {
         <section className="roadmap">
           <h2>100-Day DevOps Roadmap</h2>
           <p className="section-desc">
-            All {devopsChapters.length} days from Linux to Kubernetes. Then continue to the Kubernetes learning path.
+            Runs <strong>13 Jan – 21 Apr 2028</strong> (Days 559–658 · 100 days). All {devopsChapters.length} days from
+            Linux to Kubernetes. The Kubernetes path starts <strong>22 Apr 2028</strong>.
           </p>
           <div className="roadmap-grid roadmap-100 roadmap-devops">
             {devopsChapters.map((ch) => (

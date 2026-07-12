@@ -9,13 +9,16 @@ export const DEVOPS_META = {
   title: 'Thunder++ — 100 Days of DevOps',
   subtitle: 'KodeKloud 100 Days of DevOps + CloudFolks Hub DevOps Engineering',
   description:
-    'Master the DevOps stack hands-on — Linux, Git, Jenkins, Docker, Kubernetes, Ansible, Terraform, and monitoring.',
+    'Master the DevOps stack hands-on — Linux, Git, Jenkins, Docker, Kubernetes, Ansible, Terraform, and monitoring — 13 Jan to 21 Apr 2028.',
   kodekloudUrl: KODEKLOUD_DEVOPS_URL,
   kodekloudPathUrl: KODEKLOUD_DEVOPS_PATH_URL,
   cloudfolksUrl: CLOUDFOLKS_DEVOPS_PACKAGE_URL,
   instructors: 'Bhavesh Atara — CloudFolks Hub',
   totalDays: 100,
-  startsAfter: '100 Days of AWS Cloud',
+  calendarDays: 100,
+  phaseWindow: 'Days 559–658 · 13 Jan – 21 Apr 2028',
+  startsAfter: '100 Days of AWS Cloud (through 12 Jan 2028)',
+  endsOn: '21 Apr 2028',
 };
 
 function lessonToModule(ch) {

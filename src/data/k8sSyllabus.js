@@ -25,7 +25,7 @@ export const K8S_META = {
   title: 'Thunder++ — Kubernetes',
   subtitle: 'KodeKloud Kubernetes Learning Path — from basics to CKA',
   description:
-    'Master Kubernetes with hands-on labs, playgrounds, challenges, and CKA certification prep on KodeKloud.',
+    'Master Kubernetes with hands-on labs, playgrounds, challenges, and CKA certification prep on KodeKloud — 22 Apr to 30 Jul 2028.',
   pathUrl: KODEKLOUD_K8S_PATH_URL,
   beginnersUrl: KODEKLOUD_K8S_BEGINNERS_URL,
   ckaUrl: KODEKLOUD_CKA_URL,
@@ -36,7 +36,10 @@ export const K8S_META = {
   resources: K8S_RESOURCES,
   instructors: 'Mumshad Mannambeth — KodeKloud',
   totalDays: 100,
-  startsAfter: '100 Days of DevOps',
+  calendarDays: 100,
+  phaseWindow: 'Days 659–758 · 22 Apr – 30 Jul 2028',
+  startsAfter: '100 Days of DevOps (through 21 Apr 2028)',
+  endsOn: '30 Jul 2028',
 };
 
 function lessonToModule(ch) {

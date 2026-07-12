@@ -6,7 +6,7 @@ export default function AwsHero({ children, actions }) {
     <div className="aws-hero-block">
       <span className="aws-level-badge">
         <span className="aws-level-icon" aria-hidden="true">☁️</span>
-        After Java & Spring
+        After Java · 5 Oct 2027 – 12 Jan 2028
       </span>
 
       <h1 className="aws-title">

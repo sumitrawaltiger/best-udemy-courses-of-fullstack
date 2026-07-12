@@ -14,7 +14,7 @@ import { JAVA_META } from '../data/javaSyllabus';
 import { AWS_META } from '../data/awsSyllabus';
 import { DEVOPS_META } from '../data/devopsSyllabus';
 import { K8S_META } from '../data/k8sSyllabus';
-import { INTERVIEW_META } from '../data/interviewSyllabus';
+import { INTERVIEW_META, DSA_META, INTERVIEW_PREP_META, JOURNEY_META } from '../data/interviewSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import { JS_INTERVIEW_QUESTIONS } from '../data/interviewQuestions';
@@ -241,7 +241,7 @@ export default function Home() {
           <h2>Thunder+ — React & Next.js</h2>
           <p className="section-desc">
             After Thunder, spend the next phase on React & Next.js (through late November), then React Native
-            through <strong>4 Jan 2027</strong> — <strong>84 calendar days</strong> total (Days 101–184). Continue
+            through <strong>4 Jan 2027</strong> — Days <strong>101–185</strong>. Continue
             with the{' '}
             <a href={NEXTJS_META.udemyUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode Udemy course
@@ -276,15 +276,15 @@ export default function Home() {
 
       <section className="thunder-plus-section" id="thunder-plus">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge">Days 146–184 · through 4 Jan 2027</span>
+          <span className="thunder-plus-badge">Days 146–185 · through 4 Jan 2027</span>
           <h2>Thunder++ — React Native</h2>
           <p className="section-desc">
-            Finish the 84-day post-Thunder stretch with the{' '}
+            Finish the post-Thunder frontend stretch with the{' '}
             <a href={MOBILE_META.syllabusUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode Mobile Development Cohort
             </a>
             . {mobileChapters.length} lessons covering Expo, navigation, APIs, notifications, auth, and real-world app
-            projects — landing on <strong>4 Jan 2027</strong>.
+            projects — landing on <strong>4 Jan 2027</strong>. Python & Agentic AI starts the next day.
           </p>
           <div className="thunder-plus-highlights">
             <span>📱 React Native + Expo</span>
@@ -313,10 +313,13 @@ export default function Home() {
 
       <section className="thunder-plus-section thunder-python-section" id="thunder-python">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-python">After React Native</span>
+          <span className="thunder-plus-badge thunder-plus-badge-python">
+            Days 186–305 · 5 Jan – 4 May 2027
+          </span>
           <h2>Thunder++ — Python & Agentic AI</h2>
           <p className="section-desc">
-            Learn Gen AI & Agentic AI with Python at{' '}
+            From <strong>5 Jan 2027</strong> to <strong>4 May 2027</strong> (4 months / 120 calendar days): Python
+            study, Django, FastAPI, and Agentic AI at{' '}
             <a href={PYTHON_META.portalUrl} target="_blank" rel="noopener noreferrer">
               {PYTHON_META.institute}
             </a>
@@ -324,10 +327,10 @@ export default function Home() {
             Django, FastAPI, LangGraph, MCP, and n8n.
           </p>
           <div className="thunder-plus-highlights">
-            <span>🐍 Python & OOP</span>
-            <span>🧠 ML & Transformers</span>
-            <span>🔗 LangChain & RAG</span>
-            <span>🤖 Agentic AI & n8n</span>
+            <span>🐍 Python study</span>
+            <span>🌐 Django</span>
+            <span>⚡ FastAPI</span>
+            <span>🤖 Agentic AI</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/python" className="btn btn-python btn-lg">
@@ -350,18 +353,22 @@ export default function Home() {
 
       <section className="thunder-plus-section thunder-java-section" id="thunder-java">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-java">After Python & Agentic AI</span>
+          <span className="thunder-plus-badge thunder-plus-badge-java">
+            Days 306–458 · 5 May – 4 Oct 2027
+          </span>
           <h2>Thunder++ — Java & Spring</h2>
           <p className="section-desc">
-            Master Java and Spring with {JAVA_META.courses.length} Udemy courses — core Java, Java 8/9, JDBC, Spring
-            Framework 6, Spring Boot microservices, Docker, Kubernetes, CQRS, and event-driven architecture.{' '}
-            {javaChapters.length} modules mapped on this site.
+            From <strong>5 May 2027</strong> to <strong>4 Oct 2027</strong> (153 calendar days):{' '}
+            <strong>J2SE</strong>, <strong>J2EE</strong>, <strong>JPA</strong>, <strong>Spring Boot</strong>, and{' '}
+            <strong>Microservices</strong> — mapped from {JAVA_META.courses.length} Udemy courses into{' '}
+            {javaChapters.length} modules on this site.
           </p>
           <div className="thunder-plus-highlights">
-            <span>☕ Java Core & OOP</span>
-            <span>🍃 Spring Boot & Cloud</span>
-            <span>🐳 Docker & Kubernetes</span>
-            <span>📡 Event-Driven Microservices</span>
+            <span>☕ J2SE</span>
+            <span>🏢 J2EE</span>
+            <span>🗄️ JPA</span>
+            <span>🍃 Spring Boot</span>
+            <span>📡 Microservices</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/java" className="btn btn-java btn-lg">
@@ -384,10 +391,13 @@ export default function Home() {
 
       <section className="thunder-plus-section thunder-aws-section" id="thunder-aws">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-aws">After Java & Spring</span>
+          <span className="thunder-plus-badge thunder-plus-badge-aws">
+            Days 459–558 · 5 Oct 2027 – 12 Jan 2028
+          </span>
           <h2>Thunder++ — 100 Days of AWS Cloud</h2>
           <p className="section-desc">
-            Master AWS with{' '}
+            From <strong>5 Oct 2027</strong> for <strong>100 days</strong> (through{' '}
+            <strong>12 Jan 2028</strong>): master AWS with{' '}
             <a href={AWS_META.kodekloudUrl} target="_blank" rel="noopener noreferrer">
               KodeKloud 100 Days of Cloud
             </a>{' '}
@@ -425,10 +435,13 @@ export default function Home() {
 
       <section className="thunder-plus-section thunder-devops-section" id="thunder-devops">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-devops">After 100 Days of AWS</span>
+          <span className="thunder-plus-badge thunder-plus-badge-devops">
+            Days 559–658 · 13 Jan – 21 Apr 2028
+          </span>
           <h2>Thunder++ — 100 Days of DevOps</h2>
           <p className="section-desc">
-            Master the DevOps stack with{' '}
+            From <strong>13 Jan 2028</strong> for <strong>100 days</strong> (through{' '}
+            <strong>21 Apr 2028</strong>): master the DevOps stack with{' '}
             <a href={DEVOPS_META.kodekloudUrl} target="_blank" rel="noopener noreferrer">
               KodeKloud 100 Days of DevOps
             </a>{' '}
@@ -466,10 +479,13 @@ export default function Home() {
 
       <section className="thunder-plus-section thunder-k8s-section" id="thunder-k8s">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-k8s">After 100 Days of DevOps</span>
+          <span className="thunder-plus-badge thunder-plus-badge-k8s">
+            Days 659–758 · 22 Apr – 30 Jul 2028
+          </span>
           <h2>Thunder++ — Kubernetes</h2>
           <p className="section-desc">
-            Master Kubernetes with the{' '}
+            From <strong>22 Apr 2028</strong> for <strong>100 days</strong> (through{' '}
+            <strong>30 Jul 2028</strong>): master Kubernetes with the{' '}
             <a href={K8S_META.pathUrl} target="_blank" rel="noopener noreferrer">
               KodeKloud Kubernetes Learning Path
             </a>
@@ -514,32 +530,35 @@ export default function Home() {
 
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-interview">After Kubernetes</span>
-          <h2>Thunder++ — DSA & Interview Prep</h2>
+          <span className="thunder-plus-badge thunder-plus-badge-interview">
+            Days 759–858 · 31 Jul – 7 Nov 2028
+          </span>
+          <h2>Thunder++ — System Design</h2>
           <p className="section-desc">
-            Crack tech interviews with{' '}
-            <a href={INTERVIEW_META.chaicodeUrl} target="_blank" rel="noopener noreferrer">
-              ChaiCode All-in-One Interview Preparation
+            From <strong>31 Jul 2028</strong> for <strong>100 days</strong> (through{' '}
+            <strong>7 Nov 2028</strong>): deep <strong>System Design</strong> study with{' '}
+            <a href={INTERVIEW_META.gfgSystemDesignUrl} target="_blank" rel="noopener noreferrer">
+              GeeksForGeeks System Design
             </a>{' '}
             and{' '}
-            <a href={INTERVIEW_META.gfgCoursesUrl} target="_blank" rel="noopener noreferrer">
-              GeeksForGeeks paid courses
+            <a href={INTERVIEW_META.chaicodeUrl} target="_blank" rel="noopener noreferrer">
+              ChaiCode Interview Preparation
             </a>
-            . {interviewChapters.length} modules covering DSA, system design case studies, mock interviews, and
-            full-stack interview readiness.
+            . {interviewChapters.length} modules covering HLD/LLD, scalability, and case studies. Data Structures
+            starts <strong>8 Nov 2028</strong>.
           </p>
           <div className="thunder-plus-highlights">
-            <span>📊 DSA & Patterns</span>
             <span>🏗️ System Design</span>
-            <span>🎯 ChaiCode Mocks</span>
+            <span>📐 HLD & LLD</span>
+            <span>📈 Scalability</span>
             <span>💚 GeeksForGeeks</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/interview" className="btn btn-interview btn-lg">
-              Explore Interview Track
+              Explore System Design
             </Link>
             <Link to="/interview/learn/introduction-to-interview-prep" className="btn btn-interview-chaicode btn-lg">
-              Start IP Module 1
+              Start SD Module 1
             </Link>
             <a
               href={INTERVIEW_META.gfgSystemDesignUrl}
@@ -548,6 +567,101 @@ export default function Home() {
               className="btn btn-interview-chaicode-outline btn-lg"
             >
               GfG System Design
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="thunder-plus-section thunder-interview-section" id="thunder-dsa">
+        <div className="thunder-plus-inner">
+          <span className="thunder-plus-badge thunder-plus-badge-interview">
+            Days 859–958 · 8 Nov 2028 – 15 Feb 2029
+          </span>
+          <h2>Thunder++ — Data Structures</h2>
+          <p className="section-desc">
+            From <strong>8 Nov 2028</strong> for <strong>100 days</strong> (through{' '}
+            <strong>15 Feb 2029</strong>): deep <strong>Data Structures & Algorithms</strong> study with{' '}
+            <a href={DSA_META.gfgDsaUrl} target="_blank" rel="noopener noreferrer">
+              GeeksForGeeks DSA Self Paced
+            </a>{' '}
+            and{' '}
+            <a href={DSA_META.chaicodeUrl} target="_blank" rel="noopener noreferrer">
+              ChaiCode practice
+            </a>
+            . Arrays, trees, graphs, DP, and problem-solving patterns. Interview Preparation starts{' '}
+            <strong>16 Feb 2029</strong>.
+          </p>
+          <div className="thunder-plus-highlights">
+            <span>📊 Arrays & Strings</span>
+            <span>🌳 Trees & Graphs</span>
+            <span>🧩 DP & Patterns</span>
+            <span>💚 GeeksForGeeks DSA</span>
+          </div>
+          <div className="thunder-plus-actions">
+            <Link to="/interview" className="btn btn-interview btn-lg">
+              Explore DSA Track
+            </Link>
+            <a
+              href={DSA_META.gfgDsaUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-interview-chaicode btn-lg"
+            >
+              GfG DSA Self Paced
+            </a>
+            <Link to="/interview#chaicode" className="btn btn-interview-chaicode-outline btn-lg">
+              Interview Prep →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
+        <div className="thunder-plus-inner">
+          <span className="thunder-plus-badge thunder-plus-badge-interview">
+            504 days (72 weeks) · 16 Feb 2029 – 4 Jul 2030
+          </span>
+          <h2>Thunder++ — Interview Preparation</h2>
+          <p className="section-desc">
+            From <strong>16 Feb 2029</strong> through <strong>4 Jul 2030</strong>: final{' '}
+            <strong>Interview Preparation</strong> for <strong>{INTERVIEW_PREP_META.calendarDays} days</strong> (
+            <strong>{INTERVIEW_PREP_META.weeks} weeks</strong>) with{' '}
+            <a href={INTERVIEW_PREP_META.chaicodeUrl} target="_blank" rel="noopener noreferrer">
+              ChaiCode
+            </a>{' '}
+            and{' '}
+            <a href={INTERVIEW_PREP_META.gfgInterviewUrl} target="_blank" rel="noopener noreferrer">
+              GeeksForGeeks
+            </a>
+            — mocks, online assessments, behavioral rounds, and full-stack readiness. That closes the full journey:{' '}
+            <strong>{JOURNEY_META.totalDays} days</strong> of study ({JOURNEY_META.years} years) from{' '}
+            {JOURNEY_META.startLabel} to {JOURNEY_META.endLabel}.
+          </p>
+          <div className="thunder-plus-highlights">
+            <span>🎯 Mock interviews</span>
+            <span>📝 Online assessments</span>
+            <span>🗣️ Behavioral & HR</span>
+            <span>🚀 Full-stack readiness</span>
+          </div>
+          <div className="thunder-plus-actions">
+            <Link to="/interview" className="btn btn-interview btn-lg">
+              Explore Interview Prep
+            </Link>
+            <a
+              href={INTERVIEW_PREP_META.chaicodeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-interview-chaicode btn-lg"
+            >
+              ChaiCode Prep
+            </a>
+            <a
+              href={INTERVIEW_PREP_META.gfgInterviewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-interview-chaicode-outline btn-lg"
+            >
+              GfG Interview Prep
             </a>
           </div>
         </div>

@@ -6,7 +6,7 @@ export default function K8sHero({ children, actions }) {
     <div className="k8s-hero-block">
       <span className="k8s-level-badge">
         <span className="k8s-level-icon" aria-hidden="true">☸️</span>
-        After 100 Days of DevOps
+        After DevOps · 22 Apr – 30 Jul 2028
       </span>
 
       <h1 className="k8s-title">

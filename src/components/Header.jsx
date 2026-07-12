@@ -129,7 +129,7 @@ export default function Header({ onSearch }) {
     track === 'mobile'
       ? 'Thunder++ Mobile'
       : track === 'interview'
-        ? 'Thunder++ Interview Prep'
+        ? 'Thunder++ System Design'
         : track === 'k8s'
           ? 'Thunder++ Kubernetes'
           : track === 'devops'

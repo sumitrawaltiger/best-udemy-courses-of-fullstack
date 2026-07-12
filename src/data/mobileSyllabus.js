@@ -16,8 +16,8 @@ export const MOBILE_META = {
   cohortUrl: 'https://hitesh.ai/mobile-dev',
   coursePortal: 'https://courses.chaicode.com',
   totalLessons: 25,
-  calendarDays: 39,
-  phaseWindow: 'Days 146–184 · 27 Nov 2026 – 4 Jan 2027',
+  calendarDays: 40,
+  phaseWindow: 'Days 146–185 · 27 Nov 2026 – 4 Jan 2027',
   startsAfter: 'React & Next.js (Days 101–145)',
   endsOn: '4 Jan 2027',
 };

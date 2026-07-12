@@ -92,7 +92,7 @@ const TRACK_CONFIG = {
   interview: {
     list: interviewChapters,
     basePath: '/interview/learn',
-    heading: 'Interview Preparation',
+    heading: 'System Design',
     dayLabel: (ch) => `IP ${ch.interviewDay}`,
     total: INTERVIEW_MODULES,
     unit: 'modules',

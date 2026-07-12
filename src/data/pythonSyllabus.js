@@ -11,7 +11,11 @@ export const PYTHON_META = {
   institute: 'Ashok IT',
   tagline: 'Learn Here.. Lead Anywhere..!!',
   totalModules: 45,
-  startsAfter: 'React Native',
+  calendarDays: 120,
+  phaseWindow: 'Days 186–305 · 5 Jan – 4 May 2027',
+  startsAfter: 'React Native (through 4 Jan 2027)',
+  endsOn: '4 May 2027',
+  focusAreas: ['Python study', 'Django', 'FastAPI', 'Agentic AI'],
 };
 
 function lessonToModule(ch) {

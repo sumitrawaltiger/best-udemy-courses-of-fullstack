@@ -6,28 +6,28 @@ export default function InterviewHero({ children, actions }) {
     <div className="interview-hero-block">
       <span className="interview-level-badge">
         <span className="interview-level-icon" aria-hidden="true">🎯</span>
-        After Kubernetes
+        1461 days · IP 504d (72w) · ends 4 Jul 2030
       </span>
 
       <h1 className="interview-title">
         <span className="interview-title-line">Thunder++</span>
-        <span className="interview-title-line">Interview Preparation</span>
+        <span className="interview-title-line">System Design</span>
       </h1>
 
       <p className="interview-subtitle">{INTERVIEW_META.subtitle}</p>
 
       <div className="interview-meta-row">
         <span className="interview-meta-tag">
+          <span aria-hidden="true">📅</span>
+          {INTERVIEW_META.calendarDays} Days
+        </span>
+        <span className="interview-meta-tag">
+          <span aria-hidden="true">🏗️</span>
+          System Design
+        </span>
+        <span className="interview-meta-tag">
           <span aria-hidden="true">📊</span>
           {INTERVIEW_META.totalModules} Modules
-        </span>
-        <span className="interview-meta-tag">
-          <span aria-hidden="true">🧩</span>
-          DSA & System Design
-        </span>
-        <span className="interview-meta-tag">
-          <span aria-hidden="true">🎓</span>
-          ChaiCode
         </span>
         <span className="interview-meta-tag">
           <span aria-hidden="true">💚</span>

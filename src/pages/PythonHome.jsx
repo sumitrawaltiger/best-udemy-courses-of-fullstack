@@ -61,8 +61,8 @@ export default function PythonHome() {
         <section className="roadmap">
           <h2>45-Module Python & AI Roadmap</h2>
           <p className="section-desc">
-            Thunder++ continues after React Native. All {pythonChapters.length} modules from Python basics to
-            Agentic AI.
+            Runs <strong>5 Jan – 4 May 2027</strong> (Days 186–305 · 120 calendar days). Cover Python study, Django,
+            FastAPI, and Agentic AI — {pythonChapters.length} modules with room for projects and practice.
           </p>
           <div className="roadmap-grid roadmap-python">
             {pythonChapters.map((ch) => (

@@ -25,14 +25,18 @@ export const JAVA_UDEMY_COURSES = [
 
 export const JAVA_META = {
   title: 'Thunder++ — Java & Spring',
-  subtitle: 'Java core, JDBC, Spring Framework 6, and microservices — 9 Udemy courses',
+  subtitle: 'J2SE, J2EE, JPA, Spring Boot & Microservices — 9 Udemy courses',
   description:
-    'Master Java from fundamentals through Spring Boot microservices, Kubernetes, CQRS, and event-driven architecture.',
+    'Master Java from J2SE fundamentals through J2EE, JPA, Spring Boot, and microservices — 5 May to 4 Oct 2027.',
   primaryUdemyUrl: JAVA_UDEMY_COMPLETE_URL,
   courses: JAVA_UDEMY_COURSES,
   instructors: 'Udemy — Java & Spring instructors',
   totalModules: 50,
-  startsAfter: 'Python & Agentic AI',
+  calendarDays: 153,
+  phaseWindow: 'Days 306–458 · 5 May – 4 Oct 2027',
+  startsAfter: 'Python & Agentic AI (through 4 May 2027)',
+  endsOn: '4 Oct 2027',
+  focusAreas: ['J2SE', 'J2EE', 'JPA', 'Spring Boot', 'Microservices'],
 };
 
 function lessonToModule(ch) {

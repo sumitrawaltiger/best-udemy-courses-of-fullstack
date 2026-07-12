@@ -10,14 +10,17 @@ export const AWS_META = {
   title: 'Thunder++ — 100 Days of AWS Cloud',
   subtitle: 'KodeKloud 100 Days of Cloud + CloudFolks Hub AWS Solutions Architect',
   description:
-    'Master AWS and multi-cloud engineering with 100 hands-on tasks, CloudFolks SAA-C03 training, and real cloud console practice.',
+    'Master AWS and multi-cloud engineering with 100 hands-on tasks, CloudFolks SAA-C03 training, and real cloud console practice — 5 Oct 2027 to 12 Jan 2028.',
   kodekloudUrl: KODEKLOUD_CLOUD_URL,
   cloudfolksUrl: CLOUDFOLKS_HUB_URL,
   cloudfolksCourseUrl: CLOUDFOLKS_AWS_COURSE_URL,
   udemyUrl: AWS_UDEMY_SAA_URL,
   instructors: 'Bhavesh Atara — CloudFolks Hub',
   totalDays: 100,
-  startsAfter: 'Java & Spring',
+  calendarDays: 100,
+  phaseWindow: 'Days 459–558 · 5 Oct 2027 – 12 Jan 2028',
+  startsAfter: 'Java & Spring (through 4 Oct 2027)',
+  endsOn: '12 Jan 2028',
 };
 
 function lessonToModule(ch) {

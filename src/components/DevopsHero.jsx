@@ -6,7 +6,7 @@ export default function DevopsHero({ children, actions }) {
     <div className="devops-hero-block">
       <span className="devops-level-badge">
         <span className="devops-level-icon" aria-hidden="true">⚙️</span>
-        After 100 Days of AWS
+        After AWS · 13 Jan – 21 Apr 2028
       </span>
 
       <h1 className="devops-title">
