@@ -89,6 +89,15 @@ export const CHEAT_SHEETS = [
     tags: ['Python', 'Dictionaries', 'Key-Value'],
   },
   {
+    id: 'python-quick',
+    title: 'Python Cheat Sheet — Quick Reference',
+    description:
+      'A one-page Python quick reference with code snippets — basics (print, variables, type, input), data types (list, tuple, set, dict), conditionals, loops, functions, classes, file operations, and error handling.',
+    category: 'python',
+    image: '/cheatsheets/python-quick-cheat-sheet.jpg',
+    tags: ['Python', 'Reference', 'Snippets'],
+  },
+  {
     id: 'postman',
     title: 'Postman Cheat Sheet',
     description:
