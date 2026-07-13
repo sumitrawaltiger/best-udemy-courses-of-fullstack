@@ -4,6 +4,8 @@ import './Day001.css';
 
 const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day07';
 const DOCS_URL = 'https://www.mongodb.com/docs/manual/crud/';
+const NOTION_URL =
+  'https://app.notion.com/p/Lecture-07-MongoDB-internal-Architecture-39c43ac5cab98048bae2c02c1fa32830';
 
 const LEARNT_TODAY = [
   {
@@ -45,6 +47,10 @@ const LEARNT_TODAY = [
   {
     title: 'Atlas',
     text: 'MongoDB Atlas runs a managed database in the cloud',
+  },
+  {
+    title: 'Indexes & B-trees',
+    text: 'createIndex builds a B-tree/B+ tree so search, range & sort are fast — not a full collection scan',
   },
 ];
 
@@ -110,7 +116,55 @@ const CRUD = [
   },
 ];
 
+const INDEX_INTERNALS = [
+  {
+    icon: '📥',
+    title: 'Array → Sorted Array',
+    titleClass: 'card-title-cyan',
+    subtitle: 'write vs search',
+    description:
+      'An unsorted array appends in O(1) but searches in O(n). Sorting by id gives O(log n) binary search — but now insert/delete must shift elements (O(n)).',
+    code: 'unsorted: write O(1),  search O(n)\nsorted:   search O(log n), insert/delete O(n)\n// good for adding, bad for finding',
+  },
+  {
+    icon: '🌳',
+    title: 'BST → Balanced BST',
+    titleClass: 'card-title-green',
+    subtitle: 'pointers + height',
+    description:
+      'Pointers avoid shifting; a plain BST is O(log n) but O(n) when skewed into a linked list. AVL / Red-Black self-balance to keep O(log n) — fast in RAM, but each node is a random disk read.',
+    code: 'BST:      avg O(log n), worst O(n)\nbalanced: O(log n),  range O(log n + k)\n// great in RAM, bad on disk',
+  },
+  {
+    icon: '📦',
+    title: 'B-Tree',
+    titleClass: 'card-title-amber',
+    subtitle: 'many keys per page',
+    description:
+      'Disk reads happen in pages, so one node holds many sorted keys. Height drops to ~3–5 for millions of rows — one read brings many keys, so far fewer disk jumps.',
+    code: '[10 | 20 | 30 | 40 | 50 | 60]\nsearch O(log_m n) · 1 disk read = many keys',
+  },
+  {
+    icon: '🔗',
+    title: 'B+ Tree → Index',
+    titleClass: 'card-title-pink',
+    subtitle: 'linked leaves',
+    description:
+      'B+ trees keep all data at sorted, linked leaf pages, so range scans read sequentially (O(log n + k)). A MongoDB index is exactly this — createIndex builds an ordered tree for equality, range, sort & pagination.',
+    code: 'db.users.createIndex({ email: 1 })\nfind({ price: { $gte: 500, $lte: 1000 } })\n// reach start, then scan linked leaves',
+  },
+];
+
 const RESOURCES = [
+  {
+    icon: '📝',
+    title: 'Full Lecture Notes',
+    titleClass: 'card-title-cyan',
+    subtitle: 'Notion · Lecture 07',
+    description:
+      'MongoDB internal architecture — the complete journey from arrays to B+ trees and indexes.',
+    link: { href: NOTION_URL, label: 'Open on Notion →', external: true },
+  },
   {
     icon: '💻',
     title: 'Thunder GitHub',
@@ -279,7 +333,14 @@ export default function Day026() {
           grouped into <strong>collections</strong> — no fixed schema, every document keyed by a
           unique <code>_id</code>. I connected from Node and ran full <strong>CRUD</strong>:{' '}
           <code>insertOne</code>, <code>find</code>, <code>updateOne</code>, and{' '}
-          <code>deleteOne</code>. Code in{' '}
+          <code>deleteOne</code>. Then <strong>Lecture 07 — internal architecture</strong>: why an{' '}
+          <strong>index</strong> is a <strong>B-tree / B+ tree</strong> — the journey from arrays →
+          sorted arrays → BST → balanced BST → B-Tree → B+ Tree, so databases do fewer disk reads.
+          Full notes on{' '}
+          <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
+            Notion
+          </a>{' '}
+          · code in{' '}
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             03Backend/Day07 on GitHub
           </a>
@@ -307,7 +368,13 @@ export default function Day026() {
 
         <CardSection icon="🍃" title="THE DOCUMENT MODEL" cards={DOCUMENT_MODEL} columns={3} />
         <CardSection icon="🔁" title="CRUD OPERATIONS" cards={CRUD} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 07" cards={RESOURCES} columns={3} />
+        <CardSection
+          icon="🧭"
+          title="INSIDE A MONGODB INDEX · ARRAY → B+ TREE"
+          cards={INDEX_INTERNALS}
+          columns={4}
+        />
+        <CardSection icon="📚" title="NOTES & RESOURCES · THUNDER BACKEND DAY 07" cards={RESOURCES} columns={4} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
