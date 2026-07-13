@@ -176,6 +176,15 @@ const AWS_SAA_SLIDES = {
 
 const CLOUD_BASICS_SECTIONS = [
   {
+    id: 'aws-overview',
+    title: 'AWS & Cloud Computing Overview',
+    content:
+      "**AWS (Amazon Web Services)** is the world's most popular cloud platform — build, deploy, and scale applications on the cloud.\n\n**What is cloud computing?** The delivery of IT services over the internet — on-demand, pay-as-you-go resources with no need to manage physical hardware.\n\n**What is AWS?** A comprehensive cloud platform offering **200+ fully featured services** — global, reliable, secure, and scalable.\n\n**Why companies use AWS** — reduce infrastructure cost, rapid innovation and agility, scalable and flexible resources, high availability and reliability, and global reach in minutes.\n\n**Benefits** — pay-as-you-go pricing, elasticity & scalability, high availability, security & compliance, and a wide range of services.\n\n**AWS Global Infrastructure** — **Regions** (separate geographic areas), **Availability Zones (AZ)** (multiple data centers per region), **Edge Locations** (CDN for fast content delivery), **Local & Wavelength Zones** (closer to users for low latency), and multiple data centers powering millions of applications worldwide.\n\n**Top AWS services** — EC2, S3, RDS, Lambda, VPC.\n\n**Remember:** you don't manage infrastructure — you focus on building the business while AWS handles the heavy lifting.",
+    image: '/aws-notes/aws-overview.jpg',
+    imageAlt:
+      'AWS overview — what cloud computing is (IT over the internet, on-demand, pay-as-you-go), what AWS is (200+ services), why companies use AWS, benefits, AWS Global Infrastructure (regions, availability zones, edge locations, local zones, data centers), and top services (EC2, S3, RDS, Lambda, VPC)',
+  },
+  {
     id: 'multi-cloud-networking-cheat-sheet',
     title: 'Multi-Cloud Networking Cheat Sheet (AWS · Azure · GCP)',
     content:
@@ -195,6 +204,56 @@ const VPC_FUNDAMENTALS_SECTIONS = [
     image: '/aws-notes/vpc-networking-fundamentals.jpg',
     imageAlt:
       'VPC & Networking Fundamentals — VPC anatomy (CIDR /16 to /28, public and private subnets, route table, gateways), gateway types (Internet Gateway, NAT Gateway, Egress-Only Internet Gateway, Carrier Gateway), connecting VPCs with peering and Transit Gateway, extending on-premises with Direct Connect and VPN, VPC Flow Logs, and NACL (subnet level) vs Security Group (instance level)',
+  },
+];
+
+const GLOBAL_INFRA_SECTIONS = [
+  {
+    id: 'aws-global-infrastructure',
+    title: 'AWS Global Infrastructure',
+    content:
+      "AWS offers a secure, reliable, and global network of data centers to run your applications anywhere in the world.\n\n**Regions** — a Region is a separate geographic area, completely isolated from other Regions, and each has multiple AZs. Example: `us-east-1` (N. Virginia). Others: `eu-west-1` (Ireland), `ap-south-1` (Mumbai), `ap-southeast-2` (Sydney).\n\n**Availability Zones (AZ)** — one or more data centers with independent power, cooling, and networking; designed for high availability and connected with low latency (e.g. `use1-az1`, `use1-az2`, `use1-az3`).\n\n**Edge Locations** — used by CloudFront (CDN) to deliver content closer to users; not used to run AWS resources; hundreds worldwide.\n\n**Local Zones** — extend AWS infrastructure closer to large population centers for lower latency on real-time apps; dependent on a parent Region.\n\n**Remember:** Region → multiple AZs; AZ → multiple data centers; Edge & Local Zones → closer to users. Real-world: a user in India hits the nearest Edge/Local Zone, and data is processed in the AWS Region (Mumbai).",
+    image: '/aws-notes/aws-global-infrastructure.jpg',
+    imageAlt:
+      'AWS Global Infrastructure — Regions (separate geographic areas, isolated, each with multiple AZs; us-east-1, eu-west-1, ap-south-1, ap-southeast-2), Availability Zones (independent power/cooling/networking, low-latency links), Edge Locations (CloudFront CDN closer to users), and Local Zones (extend infrastructure closer to population centers, dependent on a parent region)',
+  },
+];
+
+const IAM_SECTIONS = [
+  {
+    id: 'aws-iam',
+    title: 'IAM — Identity & Access Management',
+    content:
+      "**IAM (Identity & Access Management)** lets you securely manage access to AWS services and resources for your users and applications. Flow: **User → Group → Policy → AWS Services** (permissions control access to resources).\n\n- **Users** — an individual identity with unique credentials; can belong to one or more groups.\n- **Groups** — a collection of users; permissions are applied to the group for easier management.\n- **Roles** — used by AWS services or external users for **temporary access** with **no long-term credentials**.\n- **Policies** — JSON documents that define permissions (Allow/Deny) and attach to users, groups, or roles.\n- **MFA (Multi-Factor Authentication)** — an extra layer of security requiring a second verification (OTP / authenticator app).\n- **Least Privilege Principle** — grant the minimum permissions necessary; best practice for all AWS accounts.\n\n**Remember:** users are people, roles are for applications/services, and policies define what is allowed. **Best practice:** use groups to manage permissions, enable MFA for all users, and always follow least privilege.",
+    code: "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\"s3:ListBucket\", \"s3:GetObject\"],\n      \"Resource\": [\n        \"arn:aws:s3:::my-bucket\",\n        \"arn:aws:s3:::my-bucket/*\"\n      ]\n    }\n  ]\n}",
+    image: '/aws-notes/aws-iam.jpg',
+    imageAlt:
+      'AWS IAM — users (individual identities), groups (collections of users), roles (temporary access for services/external users), policies (JSON Allow/Deny documents), MFA (second verification), and the least privilege principle, with a How IAM Works flow (User → Group → Policy → AWS Services) and an example read-only S3 policy',
+  },
+];
+
+const EC2_SECTIONS = [
+  {
+    id: 'aws-ec2',
+    title: 'EC2 — Virtual Servers',
+    content:
+      "**Amazon EC2 (Elastic Compute Cloud)** provides secure, resizable **compute capacity** in the cloud — you get virtual servers in minutes with full control of OS, storage, networking, and security.\n\n- **Instance Types** — different types for different workloads; families `t, m, c, r, i, g`; choose based on CPU, memory, storage, and network.\n- **AMI (Amazon Machine Image)** — a pre-configured template (OS + software + settings); use the AWS Marketplace or a custom AMI.\n- **Key Pair** — used to securely connect to EC2; a public key + private key (`.pem`); keep the private key safe.\n- **Security Groups** — act as a virtual firewall controlling inbound & outbound traffic by IP, port, and protocol.\n- **Elastic IP** — a static IPv4 address; not attached by default; can re-attach to a running instance.\n\n**Launch flow:** AMI (OS template) → Instance Type (size) → Security Group (firewall) → Key Pair (access) → EC2 Instance (running), optionally with an Elastic IP.\n\n**Remember:** you pay for running instances; **Stop** = stop charging (EBS data safe); **Terminate** = delete. **Best practice:** least privilege in security groups, use IAM roles for EC2 (not access keys), enable CloudWatch monitoring, and stop unused instances.",
+    code: "# Example: launch an EC2 instance\n# 1. Choose an AMI (e.g. Amazon Linux 2)\n# 2. Select instance type (e.g. t3.micro)\n# 3. Configure security group (allow SSH 22)\n# 4. Create/select a key pair (.pem)\n# 5. Launch\n# 6. (optional) Allocate & associate an Elastic IP\n\n# Connect to EC2 (Linux)\nssh -i your-key.pem ec2-user@<Public-IP>",
+    image: '/aws-notes/aws-ec2.jpg',
+    imageAlt:
+      'Amazon EC2 virtual servers — what EC2 is (resizable compute, full OS control), instance types (families t/m/c/r/i/g), AMI (pre-configured OS template), key pair (secure connect), security groups (virtual firewall), elastic IP (static address), the launch flow (AMI → instance type → security group → key pair → running instance), and an SSH connect example',
+  },
+];
+
+const STORAGE_SECTIONS = [
+  {
+    id: 'aws-storage-services',
+    title: 'AWS Storage Services (S3 · EBS · EFS · Glacier)',
+    content:
+      "AWS provides secure, durable, and scalable storage for every type of data.\n\n- **S3** — object storage; highly scalable; **11 nines (99.999999999%)** durability; for any type of data (static sites, backups, media, data lakes). Access over the internet (HTTP/HTTPS). Cost: $.\n- **EBS** — block storage for EC2 instances; high performance; data tied to an AZ (OS, databases, low-latency apps). Cost: $$.\n- **EFS** — file storage shared across multiple instances; auto-scaling; NFS; used with Linux (shared files, content management). Cost: $$.\n- **Glacier** — archive storage; very low cost; retrieval takes minutes–hours; for long-term backup, compliance, and archives. Cost: $.\n\n**When to use which:** S3 for objects/backups/logs/static content/data lakes; EBS for EC2 boot volumes, databases, high-performance apps; EFS for shared file systems across multiple EC2 instances; Glacier for long-term archives and cold data.\n\n**Remember:** S3 = object storage (internet scale), EBS = block storage (EC2), EFS = file storage (shared), Glacier = archive (low cost). **Best practice:** choose the right storage for the workload, use S3 lifecycle policies to reduce cost, and encrypt data at rest and in transit.",
+    image: '/aws-notes/aws-storage-services.jpg',
+    imageAlt:
+      'AWS storage services — S3 (object storage, 11 nines durability), EBS (block storage for EC2, tied to an AZ), EFS (shared file storage, NFS, auto-scaling), and Glacier (archive, very low cost), with a storage comparison table (type, access, durability, performance, use case, cost) and when-to-use-which guidance',
   },
 ];
 
@@ -570,9 +629,21 @@ function buildLessons() {
         paidLectureUrl: KODEKLOUD_CLOUD_URL,
         youtube: defaultYt,
       };
-      // Enrich the cloud-basics and VPC foundation modules with visual note sections.
+      // Enrich foundation modules with visual note sections mapped to their topics.
       if (title === 'Cloud Practitioner Concepts') {
         lesson.sections = CLOUD_BASICS_SECTIONS;
+      }
+      if (title === 'AWS Global Infrastructure') {
+        lesson.sections = GLOBAL_INFRA_SECTIONS;
+      }
+      if (title === 'IAM Users, Groups & Policies') {
+        lesson.sections = IAM_SECTIONS;
+      }
+      if (title === 'EC2 Instance Types & Pricing') {
+        lesson.sections = EC2_SECTIONS;
+      }
+      if (title === 'S3 Fundamentals') {
+        lesson.sections = STORAGE_SECTIONS;
       }
       if (title === 'VPC Fundamentals') {
         lesson.sections = VPC_FUNDAMENTALS_SECTIONS;
