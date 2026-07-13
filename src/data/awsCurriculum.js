@@ -174,6 +174,30 @@ const AWS_SAA_SLIDES = {
   icon: '📄',
 };
 
+const CLOUD_BASICS_SECTIONS = [
+  {
+    id: 'multi-cloud-networking-cheat-sheet',
+    title: 'Multi-Cloud Networking Cheat Sheet (AWS · Azure · GCP)',
+    content:
+      "Every major cloud provides the same networking building blocks under different names. This mapping lets you translate an architecture across **AWS, Azure, and Google Cloud**:\n\n- **Virtual Private Cloud** — AWS **VPC** · Azure **Virtual Network (VNet)** · GCP **VPC**.\n- **Subnet** — AWS **Subnet** · Azure **Subnet** · GCP **Subnetwork**.\n- **Load Balancer** — AWS **Elastic Load Balancer** · Azure **Load Balancer** · GCP **Cloud Load Balancing**.\n- **Firewall / WAF** — AWS **Web Application Firewall** · Azure **Web Application Firewall** · GCP **Cloud Armor**.\n- **Content Delivery Network** — AWS **CloudFront** · Azure **Content Delivery Network** · GCP **Cloud CDN**.\n- **Dedicated Connectivity** — AWS **Direct Connect** · Azure **ExpressRoute** · GCP **Cloud Interconnect**.\n- **Virtual Private Network** — AWS **VPN Connection** · Azure **VPN Gateway** · GCP **Cloud VPN**.\n- **DDoS Protection** — AWS **Shield** · Azure **DDoS Protection** · GCP **Cloud Armor**.\n- **DNS** — AWS **Route 53** · Azure **DNS** · GCP **Cloud DNS**.\n- **Network Monitoring** — AWS **CloudWatch** · Azure **Monitor** · GCP **Cloud Monitoring**.\n- **Security Groups** — AWS **Security Groups** · Azure **Security Groups** · GCP **Firewall Rules**.\n- **Route Tables** — AWS **Route Tables** · Azure **Route Tables** · GCP **Routes**.\n- **Network Peering** — AWS **VPC Peering** · Azure **VNet Peering** · GCP **VPC Network Peering**.\n- **Global distribution** — AWS **Global Accelerator** · Azure **VNet Peering** · GCP **Global Load Balancing**.\n\nSame concepts, different labels — learn the building blocks once and you can design on any cloud.",
+    image: '/aws-notes/networking-cheat-sheet.jpg',
+    imageAlt:
+      'Networking cheat sheet mapping each network element to its AWS, Azure, and Google Cloud equivalent — Virtual Private Cloud, subnet, load balancer, firewall/WAF, CDN, dedicated connectivity, VPN, DDoS protection, DNS, network monitoring, security groups, route tables, and peering',
+  },
+];
+
+const VPC_FUNDAMENTALS_SECTIONS = [
+  {
+    id: 'vpc-networking-fundamentals',
+    title: 'VPC & Networking Fundamentals',
+    content:
+      "A **VPC (Virtual Private Cloud)** is a logically isolated section of the AWS cloud where you launch resources. Its size is set by a CIDR block from **/16 (65,536 IPs) down to /28 (16 IPs)**.\n\n**Subnets** partition the VPC:\n- **Public subnet** (e.g. `10.0.1.0/24`) — has a route to an Internet Gateway.\n- **Private subnet** (e.g. `10.0.2.0/24`) — no direct inbound internet.\n\n**Route table** — directs traffic, e.g. `10.0.0.0/16 → local`, `0.0.0.0/0 → igw-...` (internet), `::/0 → eigw-...` (IPv6 egress-only).\n\n**Gateways:**\n- **Internet Gateway (IGW)** — enables inbound + outbound internet; required for inbound internet access.\n- **NAT Gateway** — lets private-subnet instances reach the internet for **outbound only** (e.g. install security patches); blocks inbound-initiated connections.\n- **Egress-Only Internet Gateway** — outbound-only over **IPv6**, blocks inbound IPv6.\n- **Carrier Gateway** — for wavelength / carrier (5G) networks.\n\n**Connecting VPCs & networks:**\n- **VPC Peering** — connect two VPCs; **no transitive routing**, and it gets complex at scale.\n- **AWS Transit Gateway** — a central **hub-and-spoke** router; each network connects once, easily connecting thousands of VPCs and on-prem.\n\n**Extend on-premises to AWS:**\n- **AWS Direct Connect** — a dedicated private connection.\n- **AWS VPN** — secure over the internet.\n- **AWS Transit Gateway** — hub for many networks.\n- **Site-to-Site VPN** — Virtual Private Gateway + Customer Gateway.\n\n**VPC Flow Logs** — capture IP traffic to/from network interfaces and publish to **CloudWatch Logs** or **Amazon S3**.\n\n**Security layers:** **NACL = subnet level** (stateless) · **Security Group = instance level** (stateful).",
+    image: '/aws-notes/vpc-networking-fundamentals.jpg',
+    imageAlt:
+      'VPC & Networking Fundamentals — VPC anatomy (CIDR /16 to /28, public and private subnets, route table, gateways), gateway types (Internet Gateway, NAT Gateway, Egress-Only Internet Gateway, Carrier Gateway), connecting VPCs with peering and Transit Gateway, extending on-premises with Direct Connect and VPN, VPC Flow Logs, and NACL (subnet level) vs Security Group (instance level)',
+  },
+];
+
 const SAA_OVERVIEW_SECTIONS = [
   {
     id: 'saa-exam-format',
@@ -546,6 +570,13 @@ function buildLessons() {
         paidLectureUrl: KODEKLOUD_CLOUD_URL,
         youtube: defaultYt,
       };
+      // Enrich the cloud-basics and VPC foundation modules with visual note sections.
+      if (title === 'Cloud Practitioner Concepts') {
+        lesson.sections = CLOUD_BASICS_SECTIONS;
+      }
+      if (title === 'VPC Fundamentals') {
+        lesson.sections = VPC_FUNDAMENTALS_SECTIONS;
+      }
       // Attach Stephane Maarek's SAA-C03 slide deck across the SAA-C03 phase,
       // and enrich each exam-domain module with content sections from it.
       if (phase === 'Solutions Architect SAA-C03') {
