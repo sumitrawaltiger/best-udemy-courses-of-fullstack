@@ -370,6 +370,15 @@ const SPRING_DATA_JPA_SECTIONS = [
     image: '/java-notes/sql-constraints-part2.jpg',
     imageAlt: 'SQL Constraints Part 2 Deep Dive & Best Practices — constraint enforcement flow, each constraint with examples, cascading actions (CASCADE, SET NULL, RESTRICT, NO ACTION), a company database example, composite constraints, ALTER TABLE add/modify/drop, constraints and NULL values, best practices with naming conventions, and common errors with fixes',
   },
+  {
+    id: 'sql-joins',
+    title: 'SQL Joins (Visual Guide)',
+    content:
+      "Joins combine rows from two tables (A and B) on a matching key. The Venn diagrams below show exactly which rows each join returns:\n\n- **INNER JOIN** — only the rows that match in **both** A and B (the intersection).\n- **FULL JOIN** (FULL OUTER) — **all** rows from both A and B; unmatched sides are filled with NULLs (the union).\n- **FULL JOIN + `WHERE A.key IS NULL OR B.key IS NULL`** — only the rows that are in A **or** B but **not both** (the symmetric difference / outer anti-join).\n- **LEFT JOIN** — all rows from **A**, plus matching rows from B (NULLs where B has no match).\n- **LEFT JOIN + `WHERE B.key IS NULL`** — rows in **A only** (the part of A with no match in B).\n- **RIGHT JOIN** — all rows from **B**, plus matching rows from A.\n- **RIGHT JOIN + `WHERE B.key IS NULL`** — rows in **B only** (the part of B with no match in A).\n\nIn **JPA/Hibernate** you rarely write these by hand — entity relationships (`@ManyToOne`, `@OneToMany`) generate joins, `JOIN FETCH` in JPQL eagerly loads associations, and you can drop to native SQL for full control. Knowing the join semantics helps you reason about what your queries actually return.",
+    code: "-- INNER JOIN: rows matching in both tables\nSELECT * FROM A INNER JOIN B ON A.key = B.key;\n\n-- LEFT JOIN: all A, matching B (NULLs where none)\nSELECT * FROM A LEFT JOIN B ON A.key = B.key;\n\n-- A only (rows in A with no match in B)\nSELECT * FROM A LEFT JOIN B ON A.key = B.key\nWHERE B.key IS NULL;\n\n-- FULL OUTER JOIN: everything from both sides\nSELECT * FROM A FULL JOIN B ON A.key = B.key;\n\n-- Only rows NOT in both (symmetric difference)\nSELECT * FROM A FULL JOIN B ON A.key = B.key\nWHERE A.key IS NULL OR B.key IS NULL;",
+    image: '/java-notes/sql-joins.jpg',
+    imageAlt: 'SQL Joins visual guide with Venn diagrams — INNER JOIN (intersection), FULL JOIN (union), FULL JOIN with A.key or B.key IS NULL (only unmatched rows), LEFT JOIN (all A plus matches), LEFT JOIN with B.key IS NULL (A only), RIGHT JOIN (all B plus matches), and RIGHT JOIN with B.key IS NULL (B only), each with its SQL query',
+  },
 ];
 
 // Module 34 — Spring Security Basics
