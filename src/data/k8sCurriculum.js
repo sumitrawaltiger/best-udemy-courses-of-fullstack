@@ -272,7 +272,9 @@ const K8S_SLIDES_SECTIONS = [
   {
     id: "yaml-manifests",
     title: "Object Management & YAML Manifests",
-    content: "You manage objects **imperatively** (quick commands) or **declaratively** (`kubectl apply -f`, the recommended, auditable way). Every manifest has four top-level fields:\n- **apiVersion** — API group + version\n- **kind** — the object type (Pod, Deployment, Service…)\n- **metadata** — name, labels, namespace\n- **spec** — the desired configuration for that object",
+    content: "You manage objects **imperatively** (quick commands) or **declaratively** (`kubectl apply -f`, the recommended, auditable way). Every manifest has four top-level fields:\n- **apiVersion** — API group + version\n- **kind** — the object type (Pod, Deployment, Service…)\n- **metadata** — name, labels, namespace\n- **spec** — the desired configuration for that object\n\n(`status` is added by Kubernetes to report the current state.) The visual below breaks down real YAML **line-by-line** for the common objects — **Pod, Deployment, Service, ConfigMap, Secret,** and **Namespace** — plus a complete Deployment + Service example, common fields, and useful commands. Remember: YAML is the **declaration**, Kubernetes is the **engine** — you declare the desired state and K8s makes it happen.",
+    image: '/k8s-notes/kubernetes-yaml-explained.jpg',
+    imageAlt: 'Kubernetes YAML explained line-by-line — annotated Pod, Deployment, Service, ConfigMap, Secret, and Namespace manifests, a complete Deployment + Service application example, common K8s YAML fields (apiVersion, kind, metadata, name, labels, spec, status), useful kubectl commands, and best practices',
   },
   {
     id: "replicasets-deployments",
