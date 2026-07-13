@@ -234,6 +234,20 @@ const MICROSERVICES_DESIGN_SECTIONS = [
 // Professional eCommerce Masterclass" (493-slide deck). Modules 31–40 & 45.
 // ---------------------------------------------------------------------------
 
+// Core Java — Methods (visual note)
+const JAVA_METHODS_SECTIONS = [
+  {
+    id: 'methods-in-java',
+    title: 'Methods in Java',
+    content:
+      "A **method** is a block of code that performs a specific task — it helps with **reusability, readability, and maintainability**.\n\n**Method syntax:** `returnType methodName(parameters) { ... return value; }` — a **return type** (`int`, `void`, etc.), a **method name** (identifier), and **parameters** (inputs to the method). If the return type is **void**, the method does not return any value.\n\n**Types of methods:**\n- **Built-in methods** — provided by Java (e.g. `println()`, `length()`, `substring()`, `toString()`).\n- **User-defined methods** — created by the programmer for specific tasks.\n- **With a return type** — returns a value to the caller.\n- **Without a return type (void)** — performs an action but returns nothing.\n\n**Method call flow:** `main()` starts → the method is called → control jumps to the method body → execution completes → control returns to the calling point (the next statement).\n\n**Passing parameters — Java is always pass-by-value:** changes made to a parameter inside a method do **not** affect the caller's original value.\n\n**Key points** — a method should have a clear purpose and do one thing well, use meaningful names (verb + noun), keep methods small and focused, reuse them, and remember `main()` is also a method.\n\n**Common mistakes** — forgetting to return a value in a non-void method, calling a method with the wrong number/type of arguments, assuming changes to parameters affect the original values, and writing very long methods that are hard to read.",
+    code: "public class Demo {\n\n    // method WITHOUT return value (void) — just performs an action\n    static void greet() {\n        System.out.println(\"Hello, Java!\");\n    }\n\n    // method WITH a return value\n    static int add(int a, int b) {\n        return a + b;\n    }\n\n    // Java is pass-by-value\n    static void change(int x) {\n        x = 100;   // does not affect the caller\n    }\n\n    public static void main(String[] args) {\n        greet();                  // Hello, Java!\n        int sum = add(5, 7);      // method call\n        System.out.println(sum);  // 12\n\n        int n = 10;\n        change(n);\n        System.out.println(n);    // 10 (unchanged)\n    }\n}",
+    image: '/java-notes/methods-in-java.jpg',
+    imageAlt:
+      'Methods in Java visual note — method syntax (return type, method name, parameters), example of a void method and a method with a return value, types of methods (built-in and user-defined, with and without return), method call flow, passing parameters (Java is pass-by-value), key points, common mistakes, and interview takeaways',
+  },
+];
+
 // Module 31 — Spring Boot Fundamentals
 const SPRING_BOOT_FUNDAMENTALS_SECTIONS = [
   {
@@ -627,6 +641,9 @@ function buildLessons() {
           },
           embarkxLink,
         ];
+      }
+      if (title === 'OOP — Classes & Objects') {
+        lesson.sections = JAVA_METHODS_SECTIONS;
       }
       if (title === 'Building REST APIs') {
         lesson.sections = REST_API_SECTIONS;
