@@ -205,6 +205,15 @@ const VPC_FUNDAMENTALS_SECTIONS = [
     imageAlt:
       'VPC & Networking Fundamentals — VPC anatomy (CIDR /16 to /28, public and private subnets, route table, gateways), gateway types (Internet Gateway, NAT Gateway, Egress-Only Internet Gateway, Carrier Gateway), connecting VPCs with peering and Transit Gateway, extending on-premises with Direct Connect and VPN, VPC Flow Logs, and NACL (subnet level) vs Security Group (instance level)',
   },
+  {
+    id: 'aws-networking-basics',
+    title: 'Networking Basics — VPC, Subnets, IGW, NAT & CIDR',
+    content:
+      "AWS networking helps your resources communicate securely with the internet and each other.\n\n- **VPC (Virtual Private Cloud)** — your isolated network in AWS where you control IP ranges, subnets, route tables, and gateways; resources in a VPC can communicate privately.\n- **Public vs Private Subnet** — a **public subnet** has a route to an Internet Gateway (resources are publicly accessible); a **private subnet** has no direct route to the internet (more secure and isolated).\n- **Internet Gateway (IGW)** — connects your VPC to the internet and enables internet access for resources in public subnets.\n- **Route Table** — contains rules (routes) that direct traffic; associated with a subnet; decides where network traffic goes.\n- **NAT Gateway** — lets resources in private subnets reach the internet (outbound only) and blocks inbound traffic from the internet; use one NAT Gateway per AZ for high availability.\n- **CIDR basics** — defines the IP address range in a network, format `A.B.C.D/n`; e.g. `10.0.0.0/16` (65,536 IPs); `/24` = 256 IPs, `/16` = 65,536 IPs.\n\n**Typical VPC architecture:** a VPC (`10.0.0.0/16`) with public subnets (`10.0.1.0/24`, `10.0.3.0/24`) reaching the internet via an IGW, and private subnets (`10.0.2.0/24`, `10.0.4.0/24`) reaching outbound internet via a NAT Gateway, spread across two AZs.\n\n**Remember:** public subnet → internet access; private subnet → no direct internet; NAT Gateway → outbound internet for private subnets. **Best practice:** put databases and backend services in private subnets, place a NAT Gateway in each AZ, and use route tables to control traffic flow.",
+    image: '/aws-notes/aws-networking-basics.jpg',
+    imageAlt:
+      'AWS Networking Basics — VPC (isolated network), public vs private subnets, Internet Gateway, route tables, NAT Gateway, and CIDR basics, with a typical VPC architecture diagram (public and private subnets across two AZs, IGW for public, NAT Gateway for private outbound)',
+  },
 ];
 
 const GLOBAL_INFRA_SECTIONS = [
@@ -254,6 +263,30 @@ const STORAGE_SECTIONS = [
     image: '/aws-notes/aws-storage-services.jpg',
     imageAlt:
       'AWS storage services — S3 (object storage, 11 nines durability), EBS (block storage for EC2, tied to an AZ), EFS (shared file storage, NFS, auto-scaling), and Glacier (archive, very low cost), with a storage comparison table (type, access, durability, performance, use case, cost) and when-to-use-which guidance',
+  },
+];
+
+const ELB_SECTIONS = [
+  {
+    id: 'aws-load-balancer-autoscaling',
+    title: 'Load Balancer & Auto Scaling',
+    content:
+      "Distribute traffic, handle load, and scale your applications automatically for high availability.\n\n- **Why a load balancer?** Distribute incoming traffic across multiple instances, prevent overload on a single server, improve availability and fault tolerance, and perform health checks.\n- **ALB (Application Load Balancer)** — operates at **Layer 7 (HTTP/HTTPS)**; routes based on URL / host / path / headers; ideal for web apps and microservices; supports SSL termination.\n- **NLB (Network Load Balancer)** — operates at **Layer 4 (TCP/UDP)**; handles millions of requests per second at ultra-low latency; ideal for high-performance apps.\n- **Auto Scaling Group (ASG)** — automatically adjusts the number of instances, maintains availability, replaces unhealthy instances, and works with load balancers.\n- **Scaling policies** — **Target Tracking** (recommended: keep a metric like CPU = 50%, auto-adjust capacity) and **Step Scaling** (scale based on CloudWatch alarms with defined steps).\n\n**ALB vs NLB:** ALB is Layer 7 (path/host/query/header routing, web apps/APIs/microservices, SSL termination, no static IP); NLB is Layer 4 (IP/port routing, high-performance/gaming/IoT, ultra-high performance, static IP, SSL pass-through).\n\n**High availability:** users → load balancer (ALB/NLB) → Auto Scaling Group across multiple AZs, with health checks; CloudWatch monitors and alarms trigger scaling.\n\n**Remember:** ALB = smart routing for applications, NLB = speed & performance at the network level, ASG = scale out/in automatically. **Best practice:** ALB for most web apps, NLB for high-throughput/low-latency, always enable health checks, and spread instances across multiple AZs.",
+    image: '/aws-notes/aws-load-balancer-autoscaling.jpg',
+    imageAlt:
+      'AWS Load Balancer & Auto Scaling — why load balancers (distribute traffic, prevent overload, health checks), ALB (Layer 7 HTTP/HTTPS routing), NLB (Layer 4 TCP/UDP, ultra-low latency), Auto Scaling Group, scaling policies (target tracking, step scaling), a high-availability diagram (users → load balancer → ASG across AZs with CloudWatch alarms), and an ALB vs NLB comparison table',
+  },
+];
+
+const ROUTE53_SECTIONS = [
+  {
+    id: 'aws-route53-dns',
+    title: 'Route 53 & DNS',
+    content:
+      "**Amazon Route 53** is a scalable and highly available **DNS web service**.\n\n- **DNS basics** — DNS translates domain names to IP addresses (the internet's phonebook) using a distributed, hierarchical system.\n- **Hosted Zone** — a container for DNS records; **public** (internet-facing) or **private** (inside a VPC only).\n- **Record types** — **A** (domain → IPv4), **AAAA** (domain → IPv6), **CNAME** (alias of another domain), **MX** (mail exchange), **TXT** (text information).\n- **Health checks** — monitor the health of your resources via HTTP / HTTPS / TCP / DNS; used for failover routing.\n- **Routing policies** — **Simple** (default, single resource), **Weighted** (split traffic by weight), **Latency** (route by latency), **Failover** (active-passive), **Geolocation** (route by user location), and **Geoproximity** (route close to users).\n\n**Domain flow:** a user enters `www.example.com` → the browser checks its cache → a query goes to Route 53 DNS → Route 53 resolves the IP → the browser connects to the server → the response is returned to the user.\n\n**Remember:** DNS = Domain Name System; Route 53 = AWS's DNS service; it converts domain names to IP addresses. **Best practice:** use the appropriate routing policy for your use case, enable health checks for critical apps, and use Alias records to route to AWS resources.",
+    image: '/aws-notes/aws-route53-dns.jpg',
+    imageAlt:
+      'Amazon Route 53 & DNS — DNS basics (domain names to IPs), hosted zones (public and private), record types (A, AAAA, CNAME, MX, TXT), health checks, routing policies (simple, weighted, latency, failover, geolocation, geoproximity), and a domain resolution flow from browser cache to Route 53 to the server',
   },
 ];
 
@@ -644,6 +677,12 @@ function buildLessons() {
       }
       if (title === 'S3 Fundamentals') {
         lesson.sections = STORAGE_SECTIONS;
+      }
+      if (title === 'Elastic Load Balancing') {
+        lesson.sections = ELB_SECTIONS;
+      }
+      if (title === 'Route 53 DNS') {
+        lesson.sections = ROUTE53_SECTIONS;
       }
       if (title === 'VPC Fundamentals') {
         lesson.sections = VPC_FUNDAMENTALS_SECTIONS;
