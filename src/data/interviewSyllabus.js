@@ -17,9 +17,9 @@ export const INTERVIEW_RESOURCES = [
 
 export const INTERVIEW_META = {
   title: 'Thunder++ — System Design',
-  subtitle: 'System Design for 100 days — HLD, LLD & case studies (ChaiCode + GeeksForGeeks)',
+  subtitle: 'System Design for 100 days — the complete lifecycle (ChaiCode + GeeksForGeeks 12-week program)',
   description:
-    'From 31 Jul to 7 Nov 2028: deep System Design study — HLD/LLD, scalability, and case studies from ChaiCode and GeeksForGeeks. Data Structures follows from 8 Nov 2028.',
+    "From 31 Jul to 7 Nov 2028: master the complete System Design lifecycle, following GeeksForGeeks' 12-week, 24-module live program plus ChaiCode. Covers scalability foundations, databases & caching, messaging/events & API design, microservices, resilience, observability & security, cloud/DevOps, and real-world case studies (URL shortener → WhatsApp → Instagram → Uber) with production-grade capstone builds. Data Structures follows from 8 Nov 2028.",
   chaicodeUrl: CHAICODE_INTERVIEW_URL,
   gfgDsaUrl: GFG_DSA_URL,
   gfgSystemDesignUrl: GFG_SYSTEM_DESIGN_URL,
@@ -33,7 +33,29 @@ export const INTERVIEW_META = {
   startsAfter: 'Kubernetes (through 30 Jul 2028)',
   endsOn: '7 Nov 2028',
   continuesWith: 'Data Structures (Days 859–958 · 8 Nov 2028 – 15 Feb 2029)',
-  focusAreas: ['System Design', 'HLD / LLD', 'Scalability', 'Case studies'],
+  focusAreas: [
+    'Scalability foundations',
+    'Databases & caching',
+    'Messaging, events & APIs',
+    'Microservices & resilience',
+    'Observability & security',
+    'Cloud, DevOps & case studies',
+  ],
+  techStack: [
+    'PostgreSQL',
+    'Redis',
+    'RabbitMQ',
+    'Apache Kafka',
+    'REST / GraphQL / gRPC',
+    'WebSockets',
+    'AWS',
+    'Docker',
+    'Kubernetes',
+    'Prometheus / Grafana',
+    'Terraform',
+    'OAuth 2.0 / JWT',
+    'RAG & LLM APIs',
+  ],
 };
 
 export const DSA_META = {
