@@ -288,6 +288,8 @@ const PYTHON_DATA_STRUCTURES_SECTIONS = [
     title: "List Operations",
     content: "- **append()** — adds an element at the end\n- **insert()** — adds an element at a specified index\n- **extend()** — adds multiple elements\n- **remove()** — removes a specified value\n- **pop()** — removes by index (or the last element if no index)\n- **clear()** — removes all elements\n- **del** — deletes an element or the entire list",
     code: "courses = [\"Python\", \"Java\"]\ncourses.append(\"DevOps\")\ncourses.insert(1, \"GEN AI\")\nprint(courses)\n\nfrontend = [\"HTML\", \"CSS\"]\nbackend = [\"Python\", \"Django\"]\nfrontend.extend(backend)\nprint(frontend)\n\ncourses.remove(\"Java\")\ncourses.pop()\ncourses.clear()\n\ncourses = [\"Python\", \"Java\", \"DevOps\"]\ndel courses[1]\nprint(courses)",
+    image: "/python-notes/python-list-methods.jpg",
+    imageAlt: "Python List Methods visual — input, method, and output for .append() (adds to the end), .insert(1, x) (adds at an index), .pop(1) (removes by index), .remove(x) (removes a value), .reverse() (reverses order), .sort() (sorts), .index(x) (returns the position), and .count(x) (returns how many times a value appears)",
   },
   {
     id: "list-functions",
