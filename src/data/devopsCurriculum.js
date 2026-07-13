@@ -462,6 +462,19 @@ const DEVOPS_SECTION_MAP = {
   ],
 };
 
+const LINUX_VIRTUALIZATION_SECTIONS = [
+  {
+    id: 'linux-virtualization',
+    title: 'Linux Virtualization — KVM, QEMU & libvirt',
+    content:
+      "Virtualization lets you run multiple virtual machines on a single physical server — the backbone of modern cloud and datacenter environments. Three open-source tools form the Linux virtualization stack:\n\n- **KVM (Kernel-based Virtual Machine)** — turns the Linux kernel itself into a **hypervisor**, using hardware virtualization extensions (Intel VT-x / AMD-V) to run VMs efficiently. High performance, supports many guest OSes, and works with QEMU and libvirt.\n- **QEMU (Quick Emulator)** — a machine emulator and virtualizer that provides **hardware device emulation** and runs the guest OS. KVM uses QEMU for device emulation; it's usually driven through libvirt rather than directly.\n- **libvirt** — a common **management API** (and the `libvirtd` daemon) to manage KVM, QEMU, Xen, LXC, and more. Tools like `virt-manager`, `virsh`, and OpenStack build on it.\n\n**How they work together:** Hardware → Linux Kernel → **KVM (kernel module)** + **QEMU (emulator)** → **libvirt (API & daemon)** → management tools (`virt-manager`, `virsh`, OpenStack). KVM provides virtualization, QEMU emulates devices, and libvirt manages everything.\n\n**Check & enable:** verify CPU support with `egrep -c '(vmx|svm)' /proc/cpuinfo` (should be > 0), load modules (`modprobe kvm_intel` or `kvm_amd`), and make sure the **libvirtd** service is running (`systemctl status libvirtd`).\n\n**Manage VMs with `virsh`:** `virsh list --all` (list), `virsh start <vm>` / `virsh shutdown <vm>`, `virsh console <vm>`, and `virsh dominfo <vm>`. Create new VMs with `virt-install` (or `virt-manager` for a GUI), and manage **virtual networks** (`virsh net-list`) and **storage pools** (`virsh pool-list`).\n\n**Useful tools** — `virt-manager` (GUI), `virsh` (CLI), `virt-install` (create VMs), `virt-viewer` (VM console), `virt-top` (monitor resources). **Key takeaway:** KVM uses your CPU's virtualization extensions, QEMU emulates hardware, and libvirt provides the API and management layer — together a robust open-source virtualization stack.",
+    code: "# Check if KVM (CPU virtualization) is supported — should return > 0\negrep -c '(vmx|svm)' /proc/cpuinfo\n\n# Install on Ubuntu/Debian\nsudo apt update\nsudo apt install -y qemu-kvm libvirt-daemon-system \\\n  libvirt-clients bridge-utils virt-manager\nsudo usermod -aG libvirt $USER   # log out/in for group to apply\n\n# Make sure the libvirt service is running\nsudo systemctl enable --now libvirtd\n\n# Manage VMs with virsh\nvirsh list --all\nvirsh start myvm\nvirsh shutdown myvm\nvirsh dominfo myvm\n\n# Create a new VM from an ISO\nsudo virt-install \\\n  --name myvm --memory 2048 --vcpus 2 \\\n  --disk path=/var/lib/libvirt/images/myvm.qcow2,size=20 \\\n  --cdrom /iso/ubuntu.iso --os-variant ubuntu22.04",
+    image: '/devops-notes/linux-virtualization-kvm-qemu-libvirt.jpg',
+    imageAlt:
+      'Linux Virtualization — KVM, QEMU, and libvirt: KVM (kernel-based hypervisor using Intel VT-x/AMD-V), QEMU (hardware emulator), and libvirt (management API and libvirtd daemon); how they layer over the Linux kernel and hardware; installation on Ubuntu/Debian; managing VMs, virtual networks, and storage pools with virsh and virt-install; useful tools (virt-manager, virsh, virt-install, virt-viewer, virt-top); and a virsh quick-reference',
+  },
+];
+
 function buildLessons() {
   const lessons = [];
   let day = 1;
@@ -497,6 +510,10 @@ function buildLessons() {
       if (DEVOPS_SECTION_MAP[title]) {
         lesson.sections = DEVOPS_SECTION_MAP[title];
         lesson.extraLinks = [...(lesson.extraLinks || []), DEVOPS_GUIDE];
+      }
+      // Add the Linux virtualization visual note to the process-management module.
+      if (title === 'Linux Process Management') {
+        lesson.sections = [...(lesson.sections || []), ...LINUX_VIRTUALIZATION_SECTIONS];
       }
       // The DevOps fundamentals module is the home for the full guide download.
       if (title === 'Fundamentals of DevOps') {
