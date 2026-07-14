@@ -3,141 +3,149 @@ import { Link } from 'react-router-dom';
 import './Day001.css';
 
 const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day08';
-const DOCS_URL = 'https://mongoosejs.com/docs/guide.html';
+const NOTION_URL =
+  'https://app.notion.com/p/Lecture08-Create-Your-own-Database-39d43ac5cab98036b6e8c65bf50a731f';
+const FS_DOCS_URL = 'https://nodejs.org/api/fs.html';
+const EXPRESS_URL = 'https://expressjs.com/en/starter/basic-routing.html';
 
 const LEARNT_TODAY = [
   {
-    title: 'ODM',
-    text: 'Mongoose maps JavaScript objects to MongoDB documents',
+    title: 'What is a database',
+    text: 'persistent storage you can create, read, update & delete',
   },
   {
-    title: 'Schema',
-    text: 'defines the shape — field types, defaults, and rules',
+    title: 'File as storage',
+    text: 'a JSON text file (database.txt) can act as your database',
   },
   {
-    title: 'Model',
-    text: 'mongoose.model(name, schema) gives a collection interface',
+    title: 'readDB',
+    text: 'fs.readFileSync + JSON.parse to load records into memory',
   },
   {
-    title: 'Validation',
-    text: 'required, min/max, enum and match are built into the schema',
+    title: 'writeDB',
+    text: 'JSON.stringify + fs.writeFileSync to persist back to disk',
   },
   {
-    title: 'Connect',
-    text: 'mongoose.connect(uri) once at startup',
+    title: 'express.json()',
+    text: 'middleware to parse JSON request bodies',
   },
   {
     title: 'Create',
-    text: 'new Model().save() or Model.create({...})',
+    text: 'POST /accounts — push a new account and write the file',
   },
   {
     title: 'Read',
-    text: 'Model.find(), findById() with chainable queries',
+    text: 'GET /accounts (all) and /accounts/:accountNumber (find one)',
   },
   {
     title: 'Update',
-    text: 'findByIdAndUpdate(id, data, { new: true }) returns the updated doc',
+    text: 'PATCH deposit — find the account, change balance, write back',
   },
   {
     title: 'Delete',
-    text: 'findByIdAndDelete(id)',
+    text: 'filter out the account by number, then write back',
   },
   {
-    title: 'Hooks',
-    text: 'pre("save") middleware — hash a password before it is stored',
+    title: 'Why real DBs',
+    text: 'file DBs lack indexing, concurrency & querying — use MongoDB at scale',
   },
 ];
 
-const SCHEMA_MODEL = [
+const FILE_DB = [
   {
-    icon: '📐',
-    title: 'Schema',
+    icon: '🧠',
+    title: 'The Idea',
     titleClass: 'card-title-cyan',
-    subtitle: 'the shape',
-    description: 'Declare fields, types, defaults, and validation in one place.',
-    code: 'const userSchema = new mongoose.Schema({\n  name: { type: String, required: true },\n  age:  { type: Number, min: 0 },\n  email:{ type: String, unique: true },\n});',
+    subtitle: 'storage + CRUD',
+    description:
+      'A database is just persistent storage with create/read/update/delete. Build one with Express + the file system before reaching for MongoDB.',
+    code: 'import express from "express";\nimport fs from "fs";\n\nconst app = express();\napp.use(express.json());\n\nconst DB_FILE = "./database.txt"; // our "database"',
   },
   {
-    icon: '🏭',
-    title: 'Model',
+    icon: '💾',
+    title: 'readDB / writeDB',
     titleClass: 'card-title-green',
-    subtitle: 'the interface',
-    description: 'Compile a schema into a Model — your handle to the collection.',
-    code: 'const User = mongoose.model("User", userSchema);\n// -> "users" collection\nawait mongoose.connect(process.env.MONGO_URI);',
+    subtitle: 'load & save JSON',
+    description: 'Two helpers do all the persistence — read the file, parse it; stringify, write it.',
+    code: 'function readDB() {\n  const data = fs.readFileSync(DB_FILE, "utf-8");\n  return JSON.parse(data);\n}\nfunction writeDB(data) {\n  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));\n}',
   },
   {
-    icon: '🛡️',
-    title: 'Validation',
+    icon: '🏦',
+    title: 'The Record',
     titleClass: 'card-title-amber',
-    subtitle: 'built in',
-    description: 'required, min/max, enum and match reject bad data before saving.',
-    code: 'role: { type: String, enum: ["user", "admin"], default: "user" }\npassword: { type: String, minLength: 8 }',
+    subtitle: 'a bank account',
+    description: 'Each record is a plain object; push it onto the array and persist the whole file.',
+    code: 'const newAccount = {\n  name, accountNumber, city, age, balance\n};\naccounts.push(newAccount);\nwriteDB(accounts);',
   },
 ];
 
-const CRUD = [
+const BANK_CRUD = [
   {
     icon: '➕',
     title: 'Create',
     titleClass: 'card-title-cyan',
-    subtitle: 'save / create',
-    description: 'Build a document and persist it.',
-    code: 'const u = new User({ name: "Rohit", age: 24 });\nawait u.save();\n// or: await User.create({ name: "Rohit" });',
+    subtitle: 'POST /accounts',
+    description: 'Read the file, push the new account, write it back.',
+    code: 'app.post("/accounts", (req, res) => {\n  const accounts = readDB();\n  accounts.push(req.body);\n  writeDB(accounts);\n  res.json({ message: "Account created" });\n});',
   },
   {
     icon: '🔎',
     title: 'Read',
     titleClass: 'card-title-green',
-    subtitle: 'find / findById',
-    description: 'Query with chainable filters, sorting, and limits.',
-    code: 'await User.find({ age: { $gte: 18 } }).sort("name").limit(10);\nawait User.findById(id);',
+    subtitle: 'GET all / one',
+    description: 'Return every account, or find one by account number.',
+    code: 'app.get("/accounts", (req, res) => res.json(readDB()));\n\napp.get("/accounts/:accountNumber", (req, res) => {\n  const acc = readDB().find(\n    (a) => a.accountNumber == req.params.accountNumber);\n  res.json(acc);\n});',
   },
   {
-    icon: '✏️',
-    title: 'Update',
+    icon: '💰',
+    title: 'Deposit',
     titleClass: 'card-title-amber',
-    subtitle: '{ new: true }',
-    description: 'Update and get the new document back with { new: true }.',
-    code: 'await User.findByIdAndUpdate(\n  id, { age: 25 }, { new: true, runValidators: true }\n);',
+    subtitle: 'PATCH .../deposit',
+    description: 'Find the account, add the amount to its balance, write back.',
+    code: 'app.patch("/accounts/:accountNumber/deposit", (req, res) => {\n  const accounts = readDB();\n  const acc = accounts.find(\n    (a) => a.accountNumber == req.params.accountNumber);\n  acc.balance += req.body.amount;\n  writeDB(accounts);\n  res.json({ message: "Balance increased", account: acc });\n});',
   },
   {
     icon: '🗑️',
     title: 'Delete',
     titleClass: 'card-title-pink',
-    subtitle: 'findByIdAndDelete',
-    description: 'Remove a document by its id.',
-    code: 'await User.findByIdAndDelete(id);',
+    subtitle: 'DELETE /:number',
+    description: 'Filter the account out of the array and write the file.',
+    code: 'app.delete("/accounts/:accountNumber", (req, res) => {\n  let accounts = readDB();\n  accounts = accounts.filter(\n    (a) => a.accountNumber != req.params.accountNumber);\n  writeDB(accounts);\n  res.json({ message: "Account deleted" });\n});',
   },
 ];
 
 const RESOURCES = [
   {
+    icon: '📝',
+    title: 'Full Lecture Notes',
+    titleClass: 'card-title-cyan',
+    subtitle: 'Notion · Lecture 08',
+    description: 'Create Your Own Database — the complete file-based bank API walkthrough.',
+    link: { href: NOTION_URL, label: 'Open on Notion →', external: true },
+  },
+  {
     icon: '💻',
     title: 'Thunder GitHub',
     titleClass: 'card-title-purple',
     subtitle: '03Backend / Day08',
-    description: 'Schemas, models, validation, and Mongoose CRUD against MongoDB.',
+    description: 'The full Express + fs file database and bank CRUD routes.',
     link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
   },
   {
     icon: '📗',
-    title: 'Mongoose Docs',
+    title: 'Node.js fs Docs',
     titleClass: 'card-title-green',
-    subtitle: 'Official guide',
-    description: 'The official Mongoose guide — schemas, models, queries, and middleware.',
-    link: { href: DOCS_URL, label: 'Open the docs →', external: true },
+    subtitle: 'File System',
+    description: 'The official Node.js reference for readFileSync, writeFileSync, and more.',
+    link: { href: FS_DOCS_URL, label: 'Open the docs →', external: true },
   },
   {
-    icon: '▶️',
-    title: 'Mongoose Crash Course',
+    icon: '🚏',
+    title: 'Express Routing',
     titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: 'Mongoose Crash Course by Web Dev Simplified — supplement for Day 27.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=DZBGEVgL2eE',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    subtitle: 'Official guide',
+    description: 'How GET / POST / PATCH / DELETE routes and req.params work in Express.',
+    link: { href: EXPRESS_URL, label: 'Open the docs →', external: true },
   },
 ];
 
@@ -244,14 +252,14 @@ export default function Day027() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>Node.js</span>
-              <span>Mongoose</span>
+              <span>Express</span>
               <span>100 Days</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
                 DAY 27 <span aria-hidden="true">⚡</span>
               </h1>
-              <p className="day001-day-theme">MONGOOSE ODM</p>
+              <p className="day001-day-theme">CREATE YOUR OWN DATABASE</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -274,13 +282,17 @@ export default function Day027() {
         </div>
 
         <p className="day001-summary">
-          Day twenty-seven — raw MongoDB has no structure, so I added{' '}
-          <strong>Mongoose</strong>, an ODM that maps JavaScript objects to documents. A{' '}
-          <strong>Schema</strong> defines the shape and validation; compiling it into a{' '}
-          <strong>Model</strong> gives a clean interface for CRUD —{' '}
-          <code>create</code>, <code>find</code>, <code>findByIdAndUpdate</code>, and{' '}
-          <code>findByIdAndDelete</code>. Hooks like <code>pre(&quot;save&quot;)</code> run logic
-          before a write. Code in{' '}
+          Day twenty-seven — before reaching for a real database, understand what one is: persistent
+          storage with <strong>create / read / update / delete</strong>. In Lecture 08 I built my own{' '}
+          <strong>file-based database</strong> — an Express bank API that stores accounts as JSON in a
+          text file (<code>database.txt</code>). <code>readDB</code> uses{' '}
+          <code>fs.readFileSync</code> + <code>JSON.parse</code>; <code>writeDB</code> uses{' '}
+          <code>JSON.stringify</code> + <code>fs.writeFileSync</code>. Full CRUD: create, read all/one,
+          check balance, deposit, and delete — the foundation a real DB automates. Full notes on{' '}
+          <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
+            Notion
+          </a>{' '}
+          · code in{' '}
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             03Backend/Day08 on GitHub
           </a>
@@ -306,14 +318,14 @@ export default function Day027() {
           </ul>
         </section>
 
-        <CardSection icon="📐" title="SCHEMAS & MODELS" cards={SCHEMA_MODEL} columns={3} />
-        <CardSection icon="🔁" title="MONGOOSE CRUD" cards={CRUD} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 08" cards={RESOURCES} columns={3} />
+        <CardSection icon="🗄️" title="A FILE AS A DATABASE" cards={FILE_DB} columns={3} />
+        <CardSection icon="🏦" title="BANK API · CRUD ROUTES" cards={BANK_CRUD} columns={4} />
+        <CardSection icon="📚" title="NOTES & RESOURCES · THUNDER BACKEND DAY 08" cards={RESOURCES} columns={4} />
 
         <footer className="day001-hashtags">
           <span>#100DaysOfCode</span>
-          <span>#Mongoose</span>
-          <span>#MongoDB</span>
+          <span>#NodeJS</span>
+          <span>#Express</span>
           <span>#Backend</span>
           <span>#Thunder</span>
         </footer>
