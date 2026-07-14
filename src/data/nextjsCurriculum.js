@@ -164,10 +164,28 @@ export const nextjsLessons = [
     nextDay: 18,
     phase: 'Backend & Databases',
     title: 'TanStack Query & Data Fetching',
-    subtitle: 'Client-side data sync, caching, and mutations in React',
-    topics: ['useQuery', 'useMutation', 'Query keys', 'Prefetching', 'Optimistic updates'],
+    subtitle: 'Client-side data sync, caching, and mutations — REST & GraphQL',
+    topics: ['useQuery', 'useMutation', 'Query keys', 'Prefetching', 'GraphQL data fetching'],
     notionUrl: UDEMY,
     youtube: yt('https://www.youtube.com/watch?v=novnyCaa7To', 'TanStack Query Tutorial', 'Web Dev Simplified'),
+    sections: [
+      {
+        id: 'tanstack-query-data-fetching',
+        title: 'TanStack Query — Client-Side Data Fetching',
+        content:
+          "**TanStack Query** (React Query) manages **server state** on the client — fetching, caching, syncing, and updating data from your backend without hand-rolling loading/error/refetch logic.\n\n- **`useQuery`** — fetch and cache read data, keyed by a **query key**; handles loading, error, caching, background refetch, and stale-while-revalidate.\n- **`useMutation`** — create/update/delete, with **optimistic updates** and cache invalidation on success.\n- **Prefetching** — warm the cache ahead of navigation for instant pages.\n\nIt's transport-agnostic: the query function can call a **REST** endpoint, a **GraphQL** API, or any async source — so TanStack Query pairs naturally with GraphQL for backend-to-frontend data flow.",
+        code: "const { data, isLoading, error } = useQuery({\n  queryKey: ['user', id],\n  queryFn: () => fetch(`/api/users/${id}`).then(r => r.json()),\n});\n\n// GraphQL works the same way — just POST a query string:\nconst { data } = useQuery({\n  queryKey: ['user', id],\n  queryFn: () => request('/graphql', `{ user(id: ${id}) { id name email } }`),\n});",
+      },
+      {
+        id: 'how-graphql-resolves-queries',
+        title: 'How GraphQL Resolves Queries (Backend → Frontend)',
+        content:
+          "GraphQL lets the client describe **exactly what data it needs**, and the server figures out **how** to retrieve it — no over-fetching or under-fetching. The full flow, backend to frontend:\n\n1. **The client sends a query** — it specifies exactly which fields it needs (e.g. `user(id: 1) { id name email posts { title } }`).\n2. **GraphQL validates the query** — it's checked against the **schema** (`type User`, `type Post`); invalid fields or types are rejected.\n3. **The resolvers are executed** — each requested field has a **resolver function** that knows how to fetch its data.\n4. **Data is fetched** — resolvers pull from SQL databases, REST APIs, or other services, retrieving only the requested information and combining multiple sources into one response.\n5. **The results are assembled** — GraphQL builds a response that matches the query's shape; nested objects are resolved automatically.\n6. **A single JSON response is returned** — the client receives only the requested fields, nothing extra.\n\n**In short:** you describe *what* data you need; GraphQL figures out *how* to retrieve it efficiently through its resolvers. **Benefits:** get exactly what you need, fewer requests, a flexible & powerful API, and a better developer experience.",
+        image: '/nextjs-notes/graphql-query-resolution.jpg',
+        imageAlt:
+          'How GraphQL resolves queries — 6 steps from client to response: (1) client sends a query specifying exact fields, (2) GraphQL validates it against the schema, (3) resolvers execute per field, (4) data is fetched from SQL/REST/services, (5) results are assembled to match the query shape, (6) a single JSON response with only the requested fields is returned; plus the end-to-end flow and key benefits',
+      },
+    ],
   },
   {
     nextDay: 19,
