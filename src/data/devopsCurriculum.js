@@ -227,6 +227,9 @@ const DEVOPS_SECTION_MAP = {
         '# Networking\n' +
         'curl https://example.com   |  ping google.com\n' +
         'ss -tuln         # listening sockets  |  dig example.com',
+      image: '/devops-notes/linux-basic-commands.jpg',
+      imageAlt:
+        'Common Linux commands reference — basic commands (ls, cd, pwd, mkdir, rmdir, rm, cp, mv), file viewing (cat, less, head, tail, nano, vim, touch, echo), search & help (grep, find, locate, which, whereis, man, info, help), permissions & disk (chmod, chown, chgrp, df, du, free, top, htop), process & job control (ps, kill, killall, jobs, bg, fg, Ctrl+C, Ctrl+Z), archives & transfer (tar, gzip, gunzip, zip, unzip, ssh, scp, sftp), and system info (uname, uptime, whoami, id, history, clear, exit, reboot)',
     },
     {
       id: 'linux-services-cron',
