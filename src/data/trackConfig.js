@@ -68,10 +68,15 @@ export const JAVA_MASTERCLASS_CALENDAR_DAYS = 60;
 // Calendar Days 1419–1448 — carved out of the interview-preparation window
 export const JS_PROJECTS_CALENDAR_DAYS = 30;
 
-// Interview Preparation: 21 Jun 2030 → 4 Jul 2030
-// 14 days (~2 weeks) — final phase (504 − 100 SQL − 50 React − 100 Python − 100 JS − 50 LeetCode − 60 Java − 30 JS Projects)
-export const INTERVIEW_PREP_CALENDAR_DAYS = 14; // ~2 weeks
-export const INTERVIEW_PREP_WEEKS = 2;
+// Two-Week Python Bootcamp (Basics to Data Analysis): 21 Jun 2030 → 4 Jul 2030 (14 days)
+// Calendar Days 1449–1462 — the final phase; consumes the last of the old interview-prep window
+export const PYTHON_DATA_BOOTCAMP_CALENDAR_DAYS = 14; // ~2 weeks
+export const PYTHON_DATA_BOOTCAMP_WEEKS = 2;
+
+// Interview Preparation: fully carved out — 0 dedicated calendar days remain.
+// The old 504-day window is now entirely SQL(100)+React(50)+Python(100)+JS(100)+LeetCode(50)+Java(60)+JS Projects(30)+Two-Week Python(14).
+export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
+export const INTERVIEW_PREP_WEEKS = 0;
 
 // Full journey: 5 Jul 2026 → 4 Jul 2030 = 1461 study days (4 years)
 // Day 1 of the journey = 5 Jul 2026; last day = 4 Jul 2030

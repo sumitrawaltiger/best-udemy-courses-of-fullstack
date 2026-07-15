@@ -181,7 +181,7 @@ export const JS_PROJECTS_META = {
   title: 'Thunder++ — 30 JavaScript Projects in 30 Days',
   subtitle: '30 days building 30 real-world JS projects with HTML, CSS & JS (Course Max One, Udemy)',
   description:
-    "From 22 May 2030 to 20 Jun 2030: a 30-day project sprint — build 30 unique real-world apps from scratch and grow a web-developer portfolio, strengthening core JavaScript, HTML, and CSS skills. Following Course Max One's \"30 JavaScript Projects in 30 Days – HTML, CSS & JS\" (Udemy — 6.5 hours). Carved from the interview-preparation window; Interview Preparation then continues for 14 days from 21 Jun 2030.",
+    "From 22 May 2030 to 20 Jun 2030: a 30-day project sprint — build 30 unique real-world apps from scratch and grow a web-developer portfolio, strengthening core JavaScript, HTML, and CSS skills. Following Course Max One's \"30 JavaScript Projects in 30 Days – HTML, CSS & JS\" (Udemy — 6.5 hours). Carved from the interview-preparation window; a Two-Week Python Bootcamp then closes the journey from 21 Jun 2030.",
   courseUrl: 'https://www.udemy.com/course/30-javascript-projects-in-30-days/',
   instructor: 'Course Max One',
   provider: 'Udemy',
@@ -189,30 +189,26 @@ export const JS_PROJECTS_META = {
   phaseWindow: 'Days 1419–1448 · 22 May – 20 Jun 2030',
   startsAfter: 'Java Masterclass — 60 Days (through 21 May 2030)',
   endsOn: '20 Jun 2030',
-  continuesWith: 'Interview Preparation — 14 days · 21 Jun 2030 – 4 Jul 2030',
+  continuesWith: 'Two-Week Python Bootcamp — 14 days · 21 Jun 2030 – 4 Jul 2030',
   focusAreas: ['30 JS projects', 'HTML, CSS & JavaScript', 'Portfolio building', 'Real-world apps'],
   path: '/interview',
 };
 
-export const INTERVIEW_PREP_META = {
-  title: 'Thunder++ — Interview Preparation',
-  subtitle: '14 days (~2 weeks) — final phase of 1461 days / 4 years of study',
+export const PYTHON_DATA_BOOTCAMP_META = {
+  title: 'Thunder++ — Two-Week Python Bootcamp',
+  subtitle: '14 days from basics to data analysis (Ayman Khoshouey, Udemy) — the final phase of 1461 days / 4 years',
   description:
-    'From 21 Jun 2030 to 4 Jul 2030: Interview Preparation for 14 days (~2 weeks) with ChaiCode and GeeksForGeeks — mocks, company prep, behavioral rounds, and full-stack readiness. (504-day window minus the 100 Days of SQL, 50 Days React Bootcamp, 100 Days of Python, 100 Days of JavaScript, 50 Days LeetCode in Java, 60 Days Java Masterclass, and 30 JavaScript Projects phases.) Completes 1461 days of study from 5 Jul 2026 to 4 Jul 2030.',
-  chaicodeUrl: CHAICODE_INTERVIEW_URL,
-  gfgInterviewUrl: GFG_INTERVIEW_PREP_URL,
-  gfgCoursesUrl: GFG_COURSES_URL,
-  gfgDsaUrl: GFG_DSA_URL,
-  gfgSystemDesignUrl: GFG_SYSTEM_DESIGN_URL,
-  resources: INTERVIEW_RESOURCES,
-  instructors: 'Hitesh Choudhary — ChaiCode & GeeksForGeeks',
+    "From 21 Jun 2030 to 4 Jul 2030: a two-week Python bootcamp that closes the 4-year journey — Python fundamentals through data analysis with Pandas, visualization, statistics, and reporting techniques. Following Ayman Khoshouey's \"[New] Two-Week Python Bootcamp: From Basics to Data Analysis\" (Udemy). This final 14-day phase consumes the last of the old interview-preparation window and completes 1461 days of study from 5 Jul 2026 to 4 Jul 2030.",
+  courseUrl: 'https://www.udemy.com/course/learn-python-from-start-to-unlimited/',
+  instructor: 'Ayman Khoshouey',
+  provider: 'Udemy',
   calendarDays: 14,
   weeks: 2,
-  phaseWindow: '14 days (~2 weeks) · 21 Jun 2030 – 4 Jul 2030',
+  phaseWindow: 'Days 1449–1462 · 21 Jun – 4 Jul 2030',
   startsAfter: 'JS Projects — 30 Days (through 20 Jun 2030)',
   endsOn: '4 Jul 2030',
   journey: '1461 days · 4 years · 5 Jul 2026 → 4 Jul 2030',
-  focusAreas: ['Mock interviews', 'Online assessments', 'Behavioral & HR', 'Full-stack readiness'],
+  focusAreas: ['Python fundamentals', 'Pandas & data analysis', 'Visualization', 'Statistics & reporting'],
   path: '/interview',
 };
 
@@ -222,10 +218,10 @@ export const JOURNEY_META = {
   endLabel: '4 Jul 2030',
   years: 4,
   totalDays: 1461,
-  interviewPrepDays: 14,
-  interviewPrepWeeks: 2,
+  finalPhaseDays: 14,
+  finalPhaseWeeks: 2,
   summary:
-    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → SQL → React Bootcamp → Python Bootcamp → JavaScript Bootcamp → LeetCode in Java → Java Masterclass → 30 JS Projects → Interview Prep.',
+    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → SQL → React Bootcamp → Python Bootcamp → JavaScript Bootcamp → LeetCode in Java → Java Masterclass → 30 JS Projects → Two-Week Python Bootcamp.',
 };
 
 function lessonToModule(ch) {

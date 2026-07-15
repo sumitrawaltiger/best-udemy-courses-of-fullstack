@@ -113,10 +113,10 @@ export const LEARNING_PATH = [
     path: '/interview',
   },
   {
-    id: 'interviewPrep',
-    label: 'Interview Prep',
-    short: 'IP',
-    desc: '14 days (~2 weeks) · ends 4 Jul 2030',
+    id: 'pythonDataBootcamp',
+    label: 'Two-Week Python Bootcamp',
+    short: 'PyDA',
+    desc: '21 Jun – 4 Jul 2030 · 14 days',
     path: '/interview',
   },
 ];

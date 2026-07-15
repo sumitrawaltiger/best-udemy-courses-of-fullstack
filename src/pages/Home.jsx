@@ -14,7 +14,7 @@ import { JAVA_META } from '../data/javaSyllabus';
 import { AWS_META } from '../data/awsSyllabus';
 import { DEVOPS_META } from '../data/devopsSyllabus';
 import { K8S_META } from '../data/k8sSyllabus';
-import { INTERVIEW_META, DSA_META, INTERVIEW_PREP_META, JOURNEY_META } from '../data/interviewSyllabus';
+import { INTERVIEW_META, DSA_META, PYTHON_DATA_BOOTCAMP_META, JOURNEY_META } from '../data/interviewSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import { JS_INTERVIEW_QUESTIONS } from '../data/interviewQuestions';
@@ -634,47 +634,35 @@ export default function Home() {
           <span className="thunder-plus-badge thunder-plus-badge-interview">
             14 days (~2 weeks) · 21 Jun 2030 – 4 Jul 2030
           </span>
-          <h2>Thunder++ — Interview Preparation</h2>
+          <h2>Thunder++ — Two-Week Python Bootcamp</h2>
           <p className="section-desc">
-            From <strong>21 Jun 2030</strong> through <strong>4 Jul 2030</strong>: final{' '}
-            <strong>Interview Preparation</strong> for <strong>{INTERVIEW_PREP_META.calendarDays} days</strong> (
-            <strong>{INTERVIEW_PREP_META.weeks} weeks</strong>) with{' '}
-            <a href={INTERVIEW_PREP_META.chaicodeUrl} target="_blank" rel="noopener noreferrer">
-              ChaiCode
-            </a>{' '}
-            and{' '}
-            <a href={INTERVIEW_PREP_META.gfgInterviewUrl} target="_blank" rel="noopener noreferrer">
-              GeeksForGeeks
+            From <strong>21 Jun 2030</strong> through <strong>4 Jul 2030</strong>: a final{' '}
+            <strong>Two-Week Python Bootcamp</strong> for <strong>{PYTHON_DATA_BOOTCAMP_META.calendarDays} days</strong> (
+            <strong>{PYTHON_DATA_BOOTCAMP_META.weeks} weeks</strong>) —{' '}
+            <a href={PYTHON_DATA_BOOTCAMP_META.courseUrl} target="_blank" rel="noopener noreferrer">
+              {PYTHON_DATA_BOOTCAMP_META.instructor}'s course on Udemy
             </a>
-            — mocks, online assessments, behavioral rounds, and full-stack readiness. That closes the full journey:{' '}
+            {' '}takes Python from basics to data analysis with Pandas, visualization, statistics, and reporting. That closes the full journey:{' '}
             <strong>{JOURNEY_META.totalDays} days</strong> of study ({JOURNEY_META.years} years) from{' '}
             {JOURNEY_META.startLabel} to {JOURNEY_META.endLabel}.
           </p>
           <div className="thunder-plus-highlights">
-            <span>🎯 Mock interviews</span>
-            <span>📝 Online assessments</span>
-            <span>🗣️ Behavioral & HR</span>
-            <span>🚀 Full-stack readiness</span>
+            <span>🐍 Python fundamentals</span>
+            <span>🐼 Pandas & data analysis</span>
+            <span>📊 Visualization & statistics</span>
+            <span>📝 Reporting techniques</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/interview" className="btn btn-interview btn-lg">
-              Explore Interview Prep
+              Explore Final Phase
             </Link>
             <a
-              href={INTERVIEW_PREP_META.chaicodeUrl}
+              href={PYTHON_DATA_BOOTCAMP_META.courseUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-interview-chaicode btn-lg"
             >
-              ChaiCode Prep
-            </a>
-            <a
-              href={INTERVIEW_PREP_META.gfgInterviewUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-interview-chaicode-outline btn-lg"
-            >
-              GfG Interview Prep
+              View on Udemy
             </a>
           </div>
         </div>

@@ -394,4 +394,20 @@ export const BEST_COURSES = [
       },
     ],
   },
+  {
+    id: 'python-data-bootcamp',
+    category: 'cs-interview',
+    skill: 'Python → Data Analysis (2-Week)',
+    icon: '🐍',
+    title: '[New] Two-Week Python Bootcamp: From Basics to Data Analysis',
+    instructor: 'Ayman Khoshouey',
+    provider: 'Udemy',
+    note: 'The final phase of the journey (21 Jun – 4 Jul 2030, 14 days) — Python fundamentals through data analysis with Pandas, visualization, statistics, and reporting techniques.',
+    links: [
+      {
+        label: 'View on Udemy',
+        url: 'https://www.udemy.com/course/learn-python-from-start-to-unlimited/',
+      },
+    ],
+  },
 ];
