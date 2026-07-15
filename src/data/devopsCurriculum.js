@@ -573,6 +573,12 @@ function buildLessons() {
       if (title === 'Introduction to 100 Days of DevOps' || title === 'DevOps Interview Preparation') {
         lesson.extraLinks = [...(lesson.extraLinks || []), DEVOPS_EXERCISES];
       }
+      // Docker roadmap overview on Day 1.
+      if (title === 'Introduction to 100 Days of DevOps') {
+        lesson.image = '/devops-notes/docker-roadmap-2026.jpg';
+        lesson.imageAlt =
+          'Docker Roadmap 2026 — how Docker works (code → Dockerfile → image → container → volume → network), a quick learning path (containers, images, Dockerfile, Compose, volumes & networks, deploy & scale), an essential commands cheat sheet (containers, images, compose, volumes, networks), why use Docker, real-world use cases, a typical application stack, a Dockerfile example, best practices, and pro tips';
+      }
       lessons.push(lesson);
       day += 1;
     }
