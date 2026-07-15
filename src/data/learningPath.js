@@ -106,10 +106,17 @@ export const LEARNING_PATH = [
     path: '/interview',
   },
   {
+    id: 'jsProjects',
+    label: '30 JS Projects',
+    short: 'JS30',
+    desc: '22 May – 20 Jun 2030 · 30 days',
+    path: '/interview',
+  },
+  {
     id: 'interviewPrep',
     label: 'Interview Prep',
     short: 'IP',
-    desc: '44 days (~6 weeks) · ends 4 Jul 2030',
+    desc: '14 days (~2 weeks) · ends 4 Jul 2030',
     path: '/interview',
   },
 ];

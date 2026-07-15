@@ -378,4 +378,20 @@ export const BEST_COURSES = [
       },
     ],
   },
+  {
+    id: 'js-projects-30',
+    category: 'cs-interview',
+    skill: '30 JS Projects (30-Day)',
+    icon: '🟨',
+    title: '30 JavaScript Projects in 30 Days – HTML, CSS & JS',
+    instructor: 'Course Max One',
+    provider: 'Udemy',
+    note: 'A 30-day project sprint (22 May – 20 Jun 2030, carved from the interview-prep window) — build 30 unique real-world apps from scratch and grow a web-developer portfolio while strengthening core JavaScript, HTML, and CSS. 6.5 hours.',
+    links: [
+      {
+        label: 'View on Udemy',
+        url: 'https://www.udemy.com/course/30-javascript-projects-in-30-days/',
+      },
+    ],
+  },
 ];

@@ -64,10 +64,14 @@ export const LEETCODE_JAVA_CALENDAR_DAYS = 50;
 // Calendar Days 1359–1418 — carved out of the interview-preparation window
 export const JAVA_MASTERCLASS_CALENDAR_DAYS = 60;
 
-// Interview Preparation: 22 May 2030 → 4 Jul 2030
-// 44 days (~6 weeks) — final phase (504 − 100 SQL − 50 React − 100 Python − 100 JS − 50 LeetCode − 60 Java)
-export const INTERVIEW_PREP_CALENDAR_DAYS = 44; // ~6 weeks
-export const INTERVIEW_PREP_WEEKS = 6;
+// JS Projects (30 JavaScript Projects in 30 Days): 22 May 2030 → 20 Jun 2030 (30 days)
+// Calendar Days 1419–1448 — carved out of the interview-preparation window
+export const JS_PROJECTS_CALENDAR_DAYS = 30;
+
+// Interview Preparation: 21 Jun 2030 → 4 Jul 2030
+// 14 days (~2 weeks) — final phase (504 − 100 SQL − 50 React − 100 Python − 100 JS − 50 LeetCode − 60 Java − 30 JS Projects)
+export const INTERVIEW_PREP_CALENDAR_DAYS = 14; // ~2 weeks
+export const INTERVIEW_PREP_WEEKS = 2;
 
 // Full journey: 5 Jul 2026 → 4 Jul 2030 = 1461 study days (4 years)
 // Day 1 of the journey = 5 Jul 2026; last day = 4 Jul 2030

@@ -164,7 +164,7 @@ export const JAVA_MASTERCLASS_META = {
   title: 'Thunder++ — 60 Days of Java',
   subtitle: '60 days mastering Java by building real-world projects (Denis Panjuta, Udemy)',
   description:
-    "From 23 Mar 2030 to 21 May 2030: a 60-day complete Java masterclass — master Java from basics to advanced, OOP principles, JavaFX desktop apps, Spring Boot web apps & microservices, REST APIs, and file/database handling with Spring Data & H2. Following Denis Panjuta's \"60 Days of Java: The Complete Java Masterclass\" (Udemy — 49.5 hours). Carved from the interview-preparation window; Interview Preparation then continues for 44 days from 22 May 2030.",
+    "From 23 Mar 2030 to 21 May 2030: a 60-day complete Java masterclass — master Java from basics to advanced, OOP principles, JavaFX desktop apps, Spring Boot web apps & microservices, REST APIs, and file/database handling with Spring Data & H2. Following Denis Panjuta's \"60 Days of Java: The Complete Java Masterclass\" (Udemy — 49.5 hours). Carved from the interview-preparation window; a 30 JavaScript Projects in 30 Days phase then follows from 22 May 2030.",
   courseUrl: 'https://www.udemy.com/course/javamasterclass/',
   instructor: 'Denis Panjuta',
   provider: 'Udemy',
@@ -172,16 +172,33 @@ export const JAVA_MASTERCLASS_META = {
   phaseWindow: 'Days 1359–1418 · 23 Mar – 21 May 2030',
   startsAfter: 'LeetCode in Java — 50 Days (through 22 Mar 2030)',
   endsOn: '21 May 2030',
-  continuesWith: 'Interview Preparation — 44 days · 22 May 2030 – 4 Jul 2030',
+  continuesWith: 'JS Projects — 30 JavaScript Projects in 30 Days · 22 May 2030 – 20 Jun 2030',
   focusAreas: ['Core Java & OOP', 'JavaFX desktop apps', 'Spring Boot & REST APIs', 'Microservices & databases'],
+  path: '/interview',
+};
+
+export const JS_PROJECTS_META = {
+  title: 'Thunder++ — 30 JavaScript Projects in 30 Days',
+  subtitle: '30 days building 30 real-world JS projects with HTML, CSS & JS (Course Max One, Udemy)',
+  description:
+    "From 22 May 2030 to 20 Jun 2030: a 30-day project sprint — build 30 unique real-world apps from scratch and grow a web-developer portfolio, strengthening core JavaScript, HTML, and CSS skills. Following Course Max One's \"30 JavaScript Projects in 30 Days – HTML, CSS & JS\" (Udemy — 6.5 hours). Carved from the interview-preparation window; Interview Preparation then continues for 14 days from 21 Jun 2030.",
+  courseUrl: 'https://www.udemy.com/course/30-javascript-projects-in-30-days/',
+  instructor: 'Course Max One',
+  provider: 'Udemy',
+  calendarDays: 30,
+  phaseWindow: 'Days 1419–1448 · 22 May – 20 Jun 2030',
+  startsAfter: 'Java Masterclass — 60 Days (through 21 May 2030)',
+  endsOn: '20 Jun 2030',
+  continuesWith: 'Interview Preparation — 14 days · 21 Jun 2030 – 4 Jul 2030',
+  focusAreas: ['30 JS projects', 'HTML, CSS & JavaScript', 'Portfolio building', 'Real-world apps'],
   path: '/interview',
 };
 
 export const INTERVIEW_PREP_META = {
   title: 'Thunder++ — Interview Preparation',
-  subtitle: '44 days (~6 weeks) — final phase of 1461 days / 4 years of study',
+  subtitle: '14 days (~2 weeks) — final phase of 1461 days / 4 years of study',
   description:
-    'From 22 May 2030 to 4 Jul 2030: Interview Preparation for 44 days (~6 weeks) with ChaiCode and GeeksForGeeks — mocks, company prep, behavioral rounds, and full-stack readiness. (504-day window minus the 100 Days of SQL, 50 Days React Bootcamp, 100 Days of Python, 100 Days of JavaScript, 50 Days LeetCode in Java, and 60 Days Java Masterclass phases.) Completes 1461 days of study from 5 Jul 2026 to 4 Jul 2030.',
+    'From 21 Jun 2030 to 4 Jul 2030: Interview Preparation for 14 days (~2 weeks) with ChaiCode and GeeksForGeeks — mocks, company prep, behavioral rounds, and full-stack readiness. (504-day window minus the 100 Days of SQL, 50 Days React Bootcamp, 100 Days of Python, 100 Days of JavaScript, 50 Days LeetCode in Java, 60 Days Java Masterclass, and 30 JavaScript Projects phases.) Completes 1461 days of study from 5 Jul 2026 to 4 Jul 2030.',
   chaicodeUrl: CHAICODE_INTERVIEW_URL,
   gfgInterviewUrl: GFG_INTERVIEW_PREP_URL,
   gfgCoursesUrl: GFG_COURSES_URL,
@@ -189,10 +206,10 @@ export const INTERVIEW_PREP_META = {
   gfgSystemDesignUrl: GFG_SYSTEM_DESIGN_URL,
   resources: INTERVIEW_RESOURCES,
   instructors: 'Hitesh Choudhary — ChaiCode & GeeksForGeeks',
-  calendarDays: 44,
-  weeks: 6,
-  phaseWindow: '44 days (~6 weeks) · 22 May 2030 – 4 Jul 2030',
-  startsAfter: 'Java Masterclass — 60 Days (through 21 May 2030)',
+  calendarDays: 14,
+  weeks: 2,
+  phaseWindow: '14 days (~2 weeks) · 21 Jun 2030 – 4 Jul 2030',
+  startsAfter: 'JS Projects — 30 Days (through 20 Jun 2030)',
   endsOn: '4 Jul 2030',
   journey: '1461 days · 4 years · 5 Jul 2026 → 4 Jul 2030',
   focusAreas: ['Mock interviews', 'Online assessments', 'Behavioral & HR', 'Full-stack readiness'],
@@ -205,10 +222,10 @@ export const JOURNEY_META = {
   endLabel: '4 Jul 2030',
   years: 4,
   totalDays: 1461,
-  interviewPrepDays: 44,
-  interviewPrepWeeks: 6,
+  interviewPrepDays: 14,
+  interviewPrepWeeks: 2,
   summary:
-    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → SQL → React Bootcamp → Python Bootcamp → JavaScript Bootcamp → LeetCode in Java → Java Masterclass → Interview Prep.',
+    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → SQL → React Bootcamp → Python Bootcamp → JavaScript Bootcamp → LeetCode in Java → Java Masterclass → 30 JS Projects → Interview Prep.',
 };
 
 function lessonToModule(ch) {
