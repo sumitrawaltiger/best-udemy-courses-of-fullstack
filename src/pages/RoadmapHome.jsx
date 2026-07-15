@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ROADMAP_ARCS, ROADMAP_STATS, ROADMAP_PHASES } from '../data/roadmapPhases';
 import { JOURNEY_META } from '../data/interviewSyllabus';
 
-const ROADMAP_POSTER = '/roadmap-notes/four-year-study-plan.jpg';
+const ROADMAP_POSTER = '/roadmap-notes/four-year-study-plan-v2.jpg';
 
 function PhaseLink({ phase, children }) {
   if (phase.href) {
