@@ -314,4 +314,20 @@ export const BEST_COURSES = [
       },
     ],
   },
+  {
+    id: 'python-bootcamp',
+    category: 'cs-interview',
+    skill: 'Python (100-Day Bootcamp)',
+    icon: '🐍',
+    title: '100 Days of Code: The Complete Python Pro Bootcamp',
+    instructor: 'Dr. Angela Yu',
+    provider: 'Udemy',
+    note: 'A 100-day Python pro bootcamp (16 Jul – 23 Oct 2029, carved from the interview-prep window) — build 100 projects across automation, web dev (Flask), data science (Pandas/NumPy), and games. 52 hours, Bestseller.',
+    links: [
+      {
+        label: 'View on Udemy',
+        url: 'https://www.udemy.com/course/100-days-of-code/',
+      },
+    ],
+  },
 ];
