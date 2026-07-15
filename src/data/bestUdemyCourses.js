@@ -330,4 +330,20 @@ export const BEST_COURSES = [
       },
     ],
   },
+  {
+    id: 'js-bootcamp',
+    category: 'cs-interview',
+    skill: 'JavaScript (100-Day Bootcamp)',
+    icon: '🟨',
+    title: '100 Days of JavaScript',
+    instructor: 'Ewomazino Akpareva',
+    provider: 'Udemy',
+    note: 'A 100-day JavaScript project bootcamp (24 Oct 2029 – 31 Jan 2030, carved from the interview-prep window) — sharpen JS skills by building projects with HTML, CSS, Flexbox, Grid, Bootstrap, ES6 classes, and DOM manipulation. 60.5 hours.',
+    links: [
+      {
+        label: 'View on Udemy',
+        url: 'https://www.udemy.com/course/100-days-of-javascript/',
+      },
+    ],
+  },
 ];

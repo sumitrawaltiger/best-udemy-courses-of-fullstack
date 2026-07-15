@@ -52,10 +52,14 @@ export const REACT_BOOTCAMP_CALENDAR_DAYS = 50;
 // Calendar Days 1109–1208 — carved out of the interview-preparation window
 export const PYTHON_BOOTCAMP_CALENDAR_DAYS = 100;
 
-// Interview Preparation: 24 Oct 2029 → 4 Jul 2030
-// 254 days (~36 weeks) — final phase (504 − 100 SQL − 50 React − 100 Python)
-export const INTERVIEW_PREP_CALENDAR_DAYS = 254; // ~36 weeks
-export const INTERVIEW_PREP_WEEKS = 36;
+// JavaScript Bootcamp (100 Days of JavaScript): 24 Oct 2029 → 31 Jan 2030 (100 days)
+// Calendar Days 1209–1308 — carved out of the interview-preparation window
+export const JS_BOOTCAMP_CALENDAR_DAYS = 100;
+
+// Interview Preparation: 1 Feb 2030 → 4 Jul 2030
+// 154 days (~22 weeks) — final phase (504 − 100 SQL − 50 React − 100 Python − 100 JS)
+export const INTERVIEW_PREP_CALENDAR_DAYS = 154; // ~22 weeks
+export const INTERVIEW_PREP_WEEKS = 22;
 
 // Full journey: 5 Jul 2026 → 4 Jul 2030 = 1461 study days (4 years)
 // Day 1 of the journey = 5 Jul 2026; last day = 4 Jul 2030

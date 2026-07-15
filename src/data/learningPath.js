@@ -85,10 +85,17 @@ export const LEARNING_PATH = [
     path: '/interview',
   },
   {
+    id: 'jsBootcamp',
+    label: '100 Days of JavaScript',
+    short: 'JsB',
+    desc: '24 Oct 2029 – 31 Jan 2030 · 100 days',
+    path: '/interview',
+  },
+  {
     id: 'interviewPrep',
     label: 'Interview Prep',
     short: 'IP',
-    desc: '254 days (~36 weeks) · ends 4 Jul 2030',
+    desc: '154 days (~22 weeks) · ends 4 Jul 2030',
     path: '/interview',
   },
 ];

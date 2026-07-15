@@ -113,7 +113,7 @@ export const PYTHON_BOOTCAMP_META = {
   title: 'Thunder++ — 100 Days of Code (Python)',
   subtitle: '100 days building 100 Python projects (Dr. Angela Yu, Udemy)',
   description:
-    "From 16 Jul 2029 to 23 Oct 2029: a 100-day Python pro bootcamp — build 100 projects across automation, web dev, data science, and games with Flask, Selenium, Beautiful Soup, Pandas, NumPy, and more. Following Dr. Angela Yu's \"100 Days of Code: The Complete Python Pro Bootcamp\" (Udemy — 52 hours). Carved from the interview-preparation window; Interview Preparation then continues for 254 days from 24 Oct 2029.",
+    "From 16 Jul 2029 to 23 Oct 2029: a 100-day Python pro bootcamp — build 100 projects across automation, web dev, data science, and games with Flask, Selenium, Beautiful Soup, Pandas, NumPy, and more. Following Dr. Angela Yu's \"100 Days of Code: The Complete Python Pro Bootcamp\" (Udemy — 52 hours). Carved from the interview-preparation window; a 100 Days of JavaScript bootcamp then follows from 24 Oct 2029.",
   courseUrl: 'https://www.udemy.com/course/100-days-of-code/',
   instructor: 'Dr. Angela Yu',
   provider: 'Udemy',
@@ -121,16 +121,33 @@ export const PYTHON_BOOTCAMP_META = {
   phaseWindow: 'Days 1109–1208 · 16 Jul – 23 Oct 2029',
   startsAfter: 'React Bootcamp — 50 Days (through 15 Jul 2029)',
   endsOn: '23 Oct 2029',
-  continuesWith: 'Interview Preparation — 254 days · 24 Oct 2029 – 4 Jul 2030',
+  continuesWith: 'JavaScript Bootcamp — 100 Days of JavaScript · 24 Oct 2029 – 31 Jan 2030',
   focusAreas: ['100 Python projects', 'Automation & web (Flask)', 'Data science (Pandas/NumPy)', 'Games & GUIs'],
+  path: '/interview',
+};
+
+export const JS_BOOTCAMP_META = {
+  title: 'Thunder++ — 100 Days of JavaScript',
+  subtitle: '100 days building projects with HTML, CSS & JavaScript (Ewomazino Akpareva, Udemy)',
+  description:
+    "From 24 Oct 2029 to 31 Jan 2030: a 100-day JavaScript project bootcamp — sharpen JS skills by building projects with HTML, CSS, Flexbox, Grid, Bootstrap, ES6 classes, arrow functions, events, and DOM manipulation. Following Ewomazino Akpareva's \"100 Days of JavaScript\" (Udemy — 60.5 hours). Carved from the interview-preparation window; Interview Preparation then continues for 154 days from 1 Feb 2030.",
+  courseUrl: 'https://www.udemy.com/course/100-days-of-javascript/',
+  instructor: 'Ewomazino Akpareva',
+  provider: 'Udemy',
+  calendarDays: 100,
+  phaseWindow: 'Days 1209–1308 · 24 Oct 2029 – 31 Jan 2030',
+  startsAfter: 'Python Bootcamp — 100 Days (through 23 Oct 2029)',
+  endsOn: '31 Jan 2030',
+  continuesWith: 'Interview Preparation — 154 days · 1 Feb 2030 – 4 Jul 2030',
+  focusAreas: ['100 JS projects', 'HTML, CSS, Flexbox & Grid', 'ES6 & DOM manipulation', 'Bootstrap'],
   path: '/interview',
 };
 
 export const INTERVIEW_PREP_META = {
   title: 'Thunder++ — Interview Preparation',
-  subtitle: '254 days (~36 weeks) — final phase of 1461 days / 4 years of study',
+  subtitle: '154 days (~22 weeks) — final phase of 1461 days / 4 years of study',
   description:
-    'From 24 Oct 2029 to 4 Jul 2030: Interview Preparation for 254 days (~36 weeks) with ChaiCode and GeeksForGeeks — mocks, company prep, behavioral rounds, and full-stack readiness. (504-day window minus the 100 Days of SQL, 50 Days React Bootcamp, and 100 Days of Python phases.) Completes 1461 days of study from 5 Jul 2026 to 4 Jul 2030.',
+    'From 1 Feb 2030 to 4 Jul 2030: Interview Preparation for 154 days (~22 weeks) with ChaiCode and GeeksForGeeks — mocks, company prep, behavioral rounds, and full-stack readiness. (504-day window minus the 100 Days of SQL, 50 Days React Bootcamp, 100 Days of Python, and 100 Days of JavaScript phases.) Completes 1461 days of study from 5 Jul 2026 to 4 Jul 2030.',
   chaicodeUrl: CHAICODE_INTERVIEW_URL,
   gfgInterviewUrl: GFG_INTERVIEW_PREP_URL,
   gfgCoursesUrl: GFG_COURSES_URL,
@@ -138,10 +155,10 @@ export const INTERVIEW_PREP_META = {
   gfgSystemDesignUrl: GFG_SYSTEM_DESIGN_URL,
   resources: INTERVIEW_RESOURCES,
   instructors: 'Hitesh Choudhary — ChaiCode & GeeksForGeeks',
-  calendarDays: 254,
-  weeks: 36,
-  phaseWindow: '254 days (~36 weeks) · 24 Oct 2029 – 4 Jul 2030',
-  startsAfter: 'Python Bootcamp — 100 Days (through 23 Oct 2029)',
+  calendarDays: 154,
+  weeks: 22,
+  phaseWindow: '154 days (~22 weeks) · 1 Feb 2030 – 4 Jul 2030',
+  startsAfter: 'JavaScript Bootcamp — 100 Days (through 31 Jan 2030)',
   endsOn: '4 Jul 2030',
   journey: '1461 days · 4 years · 5 Jul 2026 → 4 Jul 2030',
   focusAreas: ['Mock interviews', 'Online assessments', 'Behavioral & HR', 'Full-stack readiness'],
@@ -154,10 +171,10 @@ export const JOURNEY_META = {
   endLabel: '4 Jul 2030',
   years: 4,
   totalDays: 1461,
-  interviewPrepDays: 254,
-  interviewPrepWeeks: 36,
+  interviewPrepDays: 154,
+  interviewPrepWeeks: 22,
   summary:
-    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → SQL → React Bootcamp → Python Bootcamp → Interview Prep.',
+    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → SQL → React Bootcamp → Python Bootcamp → JavaScript Bootcamp → Interview Prep.',
 };
 
 function lessonToModule(ch) {

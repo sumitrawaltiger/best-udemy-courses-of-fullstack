@@ -6,7 +6,7 @@ export default function InterviewHero({ children, actions }) {
     <div className="interview-hero-block">
       <span className="interview-level-badge">
         <span className="interview-level-icon" aria-hidden="true">🎯</span>
-        1461 days · SQL 100d · React 50d · Py 100d · IP 254d (~36w) · ends 4 Jul 2030
+        1461 days · SQL 100d · React 50d · Py 100d · JS 100d · IP 154d (~22w) · ends 4 Jul 2030
       </span>
 
       <h1 className="interview-title">
