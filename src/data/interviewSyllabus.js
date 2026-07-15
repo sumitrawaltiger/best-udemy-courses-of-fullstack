@@ -62,7 +62,7 @@ export const DSA_META = {
   title: 'Thunder++ — Data Structures',
   subtitle: 'Data Structures & Algorithms for 100 days — GeeksForGeeks + ChaiCode',
   description:
-    'From 8 Nov 2028 to 15 Feb 2029: deep DSA study — arrays, trees, graphs, DP, and patterns — with GeeksForGeeks Self Paced and ChaiCode practice. Interview Preparation follows from 16 Feb 2029.',
+    'From 8 Nov 2028 to 15 Feb 2029: deep DSA study — arrays, trees, graphs, DP, and patterns — with GeeksForGeeks Self Paced and ChaiCode practice. 100 Days of SQL follows from 16 Feb 2029.',
   gfgDsaUrl: GFG_DSA_URL,
   chaicodeUrl: CHAICODE_INTERVIEW_URL,
   gfgCoursesUrl: GFG_COURSES_URL,
@@ -70,17 +70,33 @@ export const DSA_META = {
   phaseWindow: 'Days 859–958 · 8 Nov 2028 – 15 Feb 2029',
   startsAfter: 'System Design (through 7 Nov 2028)',
   endsOn: '15 Feb 2029',
-  continuesWith:
-    'Interview Preparation — 504 days (72 weeks) · 16 Feb 2029 – 4 Jul 2030',
+  continuesWith: 'SQL — 100 Days of SQL · 16 Feb – 26 May 2029',
   focusAreas: ['Arrays & Strings', 'Trees & Graphs', 'DP & Patterns', 'Problem solving'],
+  path: '/interview',
+};
+
+export const SQL_META = {
+  title: 'Thunder++ — 100 Days of SQL',
+  subtitle: '100 days of SQL — ace the SQL interviews like a pro (Ankit Bansal, Udemy)',
+  description:
+    "From 16 Feb 2029 to 26 May 2029: 100 Days of SQL — build problem-solving skills, practice daily, and crack real interview questions. Following Ankit Bansal's \"100 Days of SQL: Ace The SQL Interviews Like a PRO!!\" (Udemy — 22.5 hours, 119 coding exercises, 43 role plays). Carved from the interview-preparation window; Interview Preparation then continues for 404 days from 27 May 2029.",
+  courseUrl: 'https://www.udemy.com/course/100-days-of-sql/',
+  instructor: 'Ankit Bansal',
+  provider: 'Udemy',
+  calendarDays: 100,
+  phaseWindow: 'Days 959–1058 · 16 Feb – 26 May 2029',
+  startsAfter: 'Data Structures (through 15 Feb 2029)',
+  endsOn: '26 May 2029',
+  continuesWith: 'Interview Preparation — 404 days · 27 May 2029 – 4 Jul 2030',
+  focusAreas: ['SQL interview questions', 'Problem-solving mindset', 'Query optimization', 'Pattern recognition'],
   path: '/interview',
 };
 
 export const INTERVIEW_PREP_META = {
   title: 'Thunder++ — Interview Preparation',
-  subtitle: '504 days (72 weeks) — final phase of 1461 days / 4 years of study',
+  subtitle: '404 days (~58 weeks) — final phase of 1461 days / 4 years of study',
   description:
-    'From 16 Feb 2029 to 4 Jul 2030: Interview Preparation for 504 days (72 weeks) with ChaiCode and GeeksForGeeks — mocks, company prep, behavioral rounds, and full-stack readiness. Completes 1461 days of study from 5 Jul 2026 to 4 Jul 2030.',
+    'From 27 May 2029 to 4 Jul 2030: Interview Preparation for 404 days (~58 weeks) with ChaiCode and GeeksForGeeks — mocks, company prep, behavioral rounds, and full-stack readiness. (504-day window minus the 100 Days of SQL phase.) Completes 1461 days of study from 5 Jul 2026 to 4 Jul 2030.',
   chaicodeUrl: CHAICODE_INTERVIEW_URL,
   gfgInterviewUrl: GFG_INTERVIEW_PREP_URL,
   gfgCoursesUrl: GFG_COURSES_URL,
@@ -88,10 +104,10 @@ export const INTERVIEW_PREP_META = {
   gfgSystemDesignUrl: GFG_SYSTEM_DESIGN_URL,
   resources: INTERVIEW_RESOURCES,
   instructors: 'Hitesh Choudhary — ChaiCode & GeeksForGeeks',
-  calendarDays: 504,
-  weeks: 72,
-  phaseWindow: '504 days (72 weeks) · 16 Feb 2029 – 4 Jul 2030',
-  startsAfter: 'Data Structures (through 15 Feb 2029)',
+  calendarDays: 404,
+  weeks: 58,
+  phaseWindow: '404 days (~58 weeks) · 27 May 2029 – 4 Jul 2030',
+  startsAfter: 'SQL — 100 Days of SQL (through 26 May 2029)',
   endsOn: '4 Jul 2030',
   journey: '1461 days · 4 years · 5 Jul 2026 → 4 Jul 2030',
   focusAreas: ['Mock interviews', 'Online assessments', 'Behavioral & HR', 'Full-stack readiness'],
@@ -104,10 +120,10 @@ export const JOURNEY_META = {
   endLabel: '4 Jul 2030',
   years: 4,
   totalDays: 1461,
-  interviewPrepDays: 504,
-  interviewPrepWeeks: 72,
+  interviewPrepDays: 404,
+  interviewPrepWeeks: 58,
   summary:
-    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → Interview Prep.',
+    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → SQL → Interview Prep.',
 };
 
 function lessonToModule(ch) {

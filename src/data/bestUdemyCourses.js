@@ -282,4 +282,20 @@ export const BEST_COURSES = [
       },
     ],
   },
+  {
+    id: 'sql',
+    category: 'cs-interview',
+    skill: 'SQL',
+    icon: '🗃️',
+    title: '100 Days of SQL: Ace The SQL Interviews Like a PRO!!',
+    instructor: 'Ankit Bansal',
+    provider: 'Udemy',
+    note: 'A 100-day SQL phase (16 Feb – 26 May 2029, carved from the interview-prep window) — build problem-solving skills, practice daily, and crack real SQL interview questions. 22.5 hours, 119 coding exercises, 43 role plays.',
+    links: [
+      {
+        label: 'View on Udemy',
+        url: 'https://www.udemy.com/course/100-days-of-sql/',
+      },
+    ],
+  },
 ];

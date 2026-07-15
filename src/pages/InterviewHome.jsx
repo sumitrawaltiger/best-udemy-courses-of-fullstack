@@ -70,9 +70,10 @@ export default function InterviewHome() {
           <h2>100-Day System Design Roadmap</h2>
           <p className="section-desc">
             This track covers the finale of the journey: <strong>System Design</strong> (31 Jul – 7 Nov 2028),{' '}
-            <strong>Data Structures</strong> (8 Nov 2028 – 15 Feb 2029), then{' '}
-            <strong>Interview Preparation</strong> for <strong>504 days (72 weeks)</strong> — 16 Feb 2029 to{' '}
-            <strong>4 Jul 2030</strong>. Total study: <strong>1461 days</strong> from 5 Jul 2026 to 4 Jul 2030.{' '}
+            <strong>Data Structures</strong> (8 Nov 2028 – 15 Feb 2029), <strong>100 Days of SQL</strong>{' '}
+            (16 Feb – 26 May 2029), then <strong>Interview Preparation</strong> for{' '}
+            <strong>404 days (~58 weeks)</strong> — 27 May 2029 to <strong>4 Jul 2030</strong>. Total study:{' '}
+            <strong>1461 days</strong> from 5 Jul 2026 to 4 Jul 2030.{' '}
             {interviewChapters.length} modules on this track support these phases.
           </p>
           <div className="roadmap-grid roadmap-interview">
@@ -87,7 +88,7 @@ export default function InterviewHome() {
               <span className="legend-dot published legend-dot-interview" /> {interviewChapters.length} modules
             </span>
             <span>
-              <span className="legend-dot published" /> IP: 504 days (72 weeks) → 4 Jul 2030 · 1461 total
+              <span className="legend-dot published" /> SQL 100d · IP 404d (~58w) → 4 Jul 2030 · 1461 total
             </span>
           </div>
         </section>

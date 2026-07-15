@@ -40,10 +40,14 @@ export const INTERVIEW_MODULES = 60; // ChaiCode + GfG modules (fit inside INTER
 // Calendar Days 859–958
 export const DSA_CALENDAR_DAYS = 100;
 
-// Interview Preparation: 16 Feb 2029 → 4 Jul 2030
-// 504 days = 72 weeks — final phase of the 4-year journey
-export const INTERVIEW_PREP_CALENDAR_DAYS = 504; // 72 weeks
-export const INTERVIEW_PREP_WEEKS = 72;
+// SQL (100 Days of SQL): 16 Feb 2029 → 26 May 2029 (100 days)
+// Calendar Days 959–1058 — carved out of the interview-preparation window
+export const SQL_CALENDAR_DAYS = 100;
+
+// Interview Preparation: 27 May 2029 → 4 Jul 2030
+// 404 days (~58 weeks) — final phase of the 4-year journey (504 − 100 SQL days)
+export const INTERVIEW_PREP_CALENDAR_DAYS = 404; // ~58 weeks
+export const INTERVIEW_PREP_WEEKS = 58;
 
 // Full journey: 5 Jul 2026 → 4 Jul 2030 = 1461 study days (4 years)
 // Day 1 of the journey = 5 Jul 2026; last day = 4 Jul 2030
