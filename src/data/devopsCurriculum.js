@@ -551,6 +551,11 @@ function buildLessons() {
         lesson.imageAlt =
           'Project deployment flow — GitHub to Jenkins CI (OWASP, SonarQube, Trivy), Docker build & push, Jenkins CD, ArgoCD deploy to Kubernetes, Prometheus/Grafana monitoring, and email notification';
       }
+      if (title === 'Jenkins Pipelines') {
+        lesson.image = '/devops-notes/jenkins-cicd-pipeline.jpg';
+        lesson.imageAlt =
+          'Jenkins CI/CD Pipeline — automate, build, test, deploy, repeat: (1) code commit (developer pushes to GitHub), (2) Jenkins trigger (webhook detects changes and starts the pipeline), (3) build & test (checkout code, install dependencies, run tests, code quality, build application), (4) dockerize (build a Docker image and push to a registry), (5) deploy (Argo CD GitOps sync to a Kubernetes cluster), and (6) monitor (Grafana dashboards, metrics, alerts and notifications)';
+      }
       // Attach distilled cheat-sheet content + the full PDF download.
       if (DEVOPS_SECTION_MAP[title]) {
         lesson.sections = DEVOPS_SECTION_MAP[title];
