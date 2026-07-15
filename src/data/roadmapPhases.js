@@ -99,11 +99,11 @@ export const ROADMAP_PHASES = [
     source: 'ChaiCode', to: '/interview#dsa-foundations',
   },
   {
-    n: 11, arc: 'interview', icon: '🗃️',
-    title: '100 Days of SQL',
+    n: 11, arc: 'interview', icon: '🧠',
+    title: '100 Days of JavaScript DSA',
     window: '16 Feb – 26 May 2029', days: 100, dayRange: 'Days 959–1058',
-    source: 'Udemy · Ankit Bansal',
-    href: 'https://www.udemy.com/course/100-days-of-sql/',
+    source: 'Udemy · Elshad Karimov',
+    href: 'https://www.udemy.com/course/javascript-data-structures-and-algorithms/',
   },
   {
     n: 12, arc: 'interview', icon: '⚛️',

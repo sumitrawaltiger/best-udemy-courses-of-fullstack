@@ -70,7 +70,7 @@ export default function InterviewHome() {
           <h2>100-Day System Design Roadmap</h2>
           <p className="section-desc">
             This track covers the finale of the journey: <strong>System Design</strong> (31 Jul – 7 Nov 2028),{' '}
-            <strong>Data Structures</strong> (8 Nov 2028 – 15 Feb 2029), <strong>100 Days of SQL</strong>{' '}
+            <strong>Data Structures</strong> (8 Nov 2028 – 15 Feb 2029), <strong>100 Days of JavaScript DSA</strong>{' '}
             (16 Feb – 26 May 2029), a <strong>50 Days React Bootcamp</strong> (27 May – 15 Jul 2029), a{' '}
             <strong>100 Days of Python</strong> bootcamp (16 Jul – 23 Oct 2029), a{' '}
             <strong>100 Days of JavaScript</strong> bootcamp (24 Oct 2029 – 31 Jan 2030), a{' '}
@@ -94,7 +94,7 @@ export default function InterviewHome() {
               <span className="legend-dot published legend-dot-interview" /> {interviewChapters.length} modules
             </span>
             <span>
-              <span className="legend-dot published" /> SQL 100d · React 50d · Py 100d · JS 100d · LC 50d · Java 60d · JS30 30d · PyDA 14d (~2w) → 4 Jul 2030 · 1461 total
+              <span className="legend-dot published" /> JS-DSA 100d · React 50d · Py 100d · JS 100d · LC 50d · Java 60d · JS30 30d · PyDA 14d (~2w) → 4 Jul 2030 · 1461 total
             </span>
           </div>
         </section>

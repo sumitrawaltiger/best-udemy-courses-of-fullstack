@@ -62,7 +62,7 @@ export const DSA_META = {
   title: 'Thunder++ — Data Structures',
   subtitle: 'Data Structures & Algorithms for 100 days — GeeksForGeeks + ChaiCode',
   description:
-    'From 8 Nov 2028 to 15 Feb 2029: deep DSA study — arrays, trees, graphs, DP, and patterns — with GeeksForGeeks Self Paced and ChaiCode practice. 100 Days of SQL follows from 16 Feb 2029.',
+    'From 8 Nov 2028 to 15 Feb 2029: deep DSA study — arrays, trees, graphs, DP, and patterns — with GeeksForGeeks Self Paced and ChaiCode practice. 100 Days of JavaScript DSA follows from 16 Feb 2029.',
   gfgDsaUrl: GFG_DSA_URL,
   chaicodeUrl: CHAICODE_INTERVIEW_URL,
   gfgCoursesUrl: GFG_COURSES_URL,
@@ -70,25 +70,25 @@ export const DSA_META = {
   phaseWindow: 'Days 859–958 · 8 Nov 2028 – 15 Feb 2029',
   startsAfter: 'System Design (through 7 Nov 2028)',
   endsOn: '15 Feb 2029',
-  continuesWith: 'SQL — 100 Days of SQL · 16 Feb – 26 May 2029',
+  continuesWith: 'JavaScript DSA — 100 Days of Code · 16 Feb – 26 May 2029',
   focusAreas: ['Arrays & Strings', 'Trees & Graphs', 'DP & Patterns', 'Problem solving'],
   path: '/interview',
 };
 
-export const SQL_META = {
-  title: 'Thunder++ — 100 Days of SQL',
-  subtitle: '100 days of SQL — ace the SQL interviews like a pro (Ankit Bansal, Udemy)',
+export const JS_DSA_META = {
+  title: 'Thunder++ — 100 Days of JavaScript DSA',
+  subtitle: '100 days of JavaScript Data Structures & Algorithms — zero to hero, LeetCode-ready (Elshad Karimov, Udemy)',
   description:
-    "From 16 Feb 2029 to 26 May 2029: 100 Days of SQL — build problem-solving skills, practice daily, and crack real interview questions. Following Ankit Bansal's \"100 Days of SQL: Ace The SQL Interviews Like a PRO!!\" (Udemy — 22.5 hours, 119 coding exercises, 43 role plays). Carved from the interview-preparation window; a 50 Days React Bootcamp then follows from 27 May 2029.",
-  courseUrl: 'https://www.udemy.com/course/100-days-of-sql/',
-  instructor: 'Ankit Bansal',
+    "From 16 Feb 2029 to 26 May 2029: 100 Days of Code — JavaScript Data Structures & Algorithms from zero to hero, with 100+ LeetCode / FAANG-style interview questions, Big-O analysis, and daily hands-on exercises. Following Elshad Karimov's \"100 Days of Code: JavaScript Data Structures and Algorithms\" (Udemy). Carved from the interview-preparation window; a 50 Days React Bootcamp then follows from 27 May 2029.",
+  courseUrl: 'https://www.udemy.com/course/javascript-data-structures-and-algorithms/',
+  instructor: 'Elshad Karimov',
   provider: 'Udemy',
   calendarDays: 100,
   phaseWindow: 'Days 959–1058 · 16 Feb – 26 May 2029',
   startsAfter: 'Data Structures (through 15 Feb 2029)',
   endsOn: '26 May 2029',
   continuesWith: 'React Bootcamp — 50 Days · 27 May – 15 Jul 2029',
-  focusAreas: ['SQL interview questions', 'Problem-solving mindset', 'Query optimization', 'Pattern recognition'],
+  focusAreas: ['DS & Algorithms in JS', 'LeetCode interview questions', 'Big-O complexity', 'Problem-solving patterns'],
   path: '/interview',
 };
 
@@ -102,7 +102,7 @@ export const REACT_BOOTCAMP_META = {
   provider: 'Udemy',
   calendarDays: 50,
   phaseWindow: 'Days 1059–1108 · 27 May – 15 Jul 2029',
-  startsAfter: 'SQL — 100 Days of SQL (through 26 May 2029)',
+  startsAfter: 'JavaScript DSA — 100 Days (through 26 May 2029)',
   endsOn: '15 Jul 2029',
   continuesWith: 'Python Bootcamp — 100 Days of Code · 16 Jul – 23 Oct 2029',
   focusAreas: ['50 real-world projects', 'React Hooks', 'REST APIs & Socket', 'Firebase & Bootstrap'],
@@ -221,7 +221,7 @@ export const JOURNEY_META = {
   finalPhaseDays: 14,
   finalPhaseWeeks: 2,
   summary:
-    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → SQL → React Bootcamp → Python Bootcamp → JavaScript Bootcamp → LeetCode in Java → Java Masterclass → 30 JS Projects → Two-Week Python Bootcamp.',
+    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → JavaScript DSA → React Bootcamp → Python Bootcamp → JavaScript Bootcamp → LeetCode in Java → Java Masterclass → 30 JS Projects → Two-Week Python Bootcamp.',
 };
 
 function lessonToModule(ch) {

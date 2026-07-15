@@ -40,9 +40,9 @@ export const INTERVIEW_MODULES = 60; // ChaiCode + GfG modules (fit inside INTER
 // Calendar Days 859–958
 export const DSA_CALENDAR_DAYS = 100;
 
-// SQL (100 Days of SQL): 16 Feb 2029 → 26 May 2029 (100 days)
+// JS DSA (100 Days of Code: JavaScript Data Structures & Algorithms): 16 Feb 2029 → 26 May 2029 (100 days)
 // Calendar Days 959–1058 — carved out of the interview-preparation window
-export const SQL_CALENDAR_DAYS = 100;
+export const JS_DSA_CALENDAR_DAYS = 100;
 
 // React Bootcamp (50 Days React Bootcamp): 27 May 2029 → 15 Jul 2029 (50 days)
 // Calendar Days 1059–1108 — carved out of the interview-preparation window

@@ -64,9 +64,9 @@ export const LEARNING_PATH = [
     path: '/interview#dsa-foundations',
   },
   {
-    id: 'sql',
-    label: '100 Days of SQL',
-    short: 'SQL',
+    id: 'jsDsa',
+    label: '100 Days of JS DSA',
+    short: 'DSA',
     desc: '16 Feb – 26 May 2029 · 100 days',
     path: '/interview',
   },
