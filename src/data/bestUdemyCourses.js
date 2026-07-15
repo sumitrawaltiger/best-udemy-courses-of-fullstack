@@ -298,4 +298,20 @@ export const BEST_COURSES = [
       },
     ],
   },
+  {
+    id: 'react-bootcamp',
+    category: 'cs-interview',
+    skill: 'React Projects (50-Day Bootcamp)',
+    icon: '⚛️',
+    title: '50 Days React Bootcamp: Build 50 Real World React Projects',
+    instructor: 'Sufa Digital',
+    provider: 'Udemy',
+    note: 'A 50-day React project bootcamp (27 May – 15 Jul 2029, carved from the interview-prep window) — build 50 real-world React apps with Hooks, REST APIs, Socket, Firebase, and Bootstrap.',
+    links: [
+      {
+        label: 'View on Udemy',
+        url: 'https://www.udemy.com/course/build-real-world-application-projects-using-react/',
+      },
+    ],
+  },
 ];

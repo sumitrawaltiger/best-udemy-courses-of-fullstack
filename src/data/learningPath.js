@@ -71,10 +71,17 @@ export const LEARNING_PATH = [
     path: '/interview',
   },
   {
+    id: 'reactBootcamp',
+    label: '50 Days React Bootcamp',
+    short: 'RB',
+    desc: '27 May – 15 Jul 2029 · 50 days',
+    path: '/interview',
+  },
+  {
     id: 'interviewPrep',
     label: 'Interview Prep',
     short: 'IP',
-    desc: '404 days (~58 weeks) · ends 4 Jul 2030',
+    desc: '354 days (~51 weeks) · ends 4 Jul 2030',
     path: '/interview',
   },
 ];

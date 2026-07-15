@@ -632,11 +632,11 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            404 days (~58 weeks) · 27 May 2029 – 4 Jul 2030
+            354 days (~51 weeks) · 16 Jul 2029 – 4 Jul 2030
           </span>
           <h2>Thunder++ — Interview Preparation</h2>
           <p className="section-desc">
-            From <strong>27 May 2029</strong> through <strong>4 Jul 2030</strong>: final{' '}
+            From <strong>16 Jul 2029</strong> through <strong>4 Jul 2030</strong>: final{' '}
             <strong>Interview Preparation</strong> for <strong>{INTERVIEW_PREP_META.calendarDays} days</strong> (
             <strong>{INTERVIEW_PREP_META.weeks} weeks</strong>) with{' '}
             <a href={INTERVIEW_PREP_META.chaicodeUrl} target="_blank" rel="noopener noreferrer">

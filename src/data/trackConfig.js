@@ -44,10 +44,14 @@ export const DSA_CALENDAR_DAYS = 100;
 // Calendar Days 959–1058 — carved out of the interview-preparation window
 export const SQL_CALENDAR_DAYS = 100;
 
-// Interview Preparation: 27 May 2029 → 4 Jul 2030
-// 404 days (~58 weeks) — final phase of the 4-year journey (504 − 100 SQL days)
-export const INTERVIEW_PREP_CALENDAR_DAYS = 404; // ~58 weeks
-export const INTERVIEW_PREP_WEEKS = 58;
+// React Bootcamp (50 Days React Bootcamp): 27 May 2029 → 15 Jul 2029 (50 days)
+// Calendar Days 1059–1108 — carved out of the interview-preparation window
+export const REACT_BOOTCAMP_CALENDAR_DAYS = 50;
+
+// Interview Preparation: 16 Jul 2029 → 4 Jul 2030
+// 354 days (~51 weeks) — final phase of the 4-year journey (504 − 100 SQL − 50 React)
+export const INTERVIEW_PREP_CALENDAR_DAYS = 354; // ~51 weeks
+export const INTERVIEW_PREP_WEEKS = 51;
 
 // Full journey: 5 Jul 2026 → 4 Jul 2030 = 1461 study days (4 years)
 // Day 1 of the journey = 5 Jul 2026; last day = 4 Jul 2030

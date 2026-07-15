@@ -79,7 +79,7 @@ export const SQL_META = {
   title: 'Thunder++ — 100 Days of SQL',
   subtitle: '100 days of SQL — ace the SQL interviews like a pro (Ankit Bansal, Udemy)',
   description:
-    "From 16 Feb 2029 to 26 May 2029: 100 Days of SQL — build problem-solving skills, practice daily, and crack real interview questions. Following Ankit Bansal's \"100 Days of SQL: Ace The SQL Interviews Like a PRO!!\" (Udemy — 22.5 hours, 119 coding exercises, 43 role plays). Carved from the interview-preparation window; Interview Preparation then continues for 404 days from 27 May 2029.",
+    "From 16 Feb 2029 to 26 May 2029: 100 Days of SQL — build problem-solving skills, practice daily, and crack real interview questions. Following Ankit Bansal's \"100 Days of SQL: Ace The SQL Interviews Like a PRO!!\" (Udemy — 22.5 hours, 119 coding exercises, 43 role plays). Carved from the interview-preparation window; a 50 Days React Bootcamp then follows from 27 May 2029.",
   courseUrl: 'https://www.udemy.com/course/100-days-of-sql/',
   instructor: 'Ankit Bansal',
   provider: 'Udemy',
@@ -87,16 +87,33 @@ export const SQL_META = {
   phaseWindow: 'Days 959–1058 · 16 Feb – 26 May 2029',
   startsAfter: 'Data Structures (through 15 Feb 2029)',
   endsOn: '26 May 2029',
-  continuesWith: 'Interview Preparation — 404 days · 27 May 2029 – 4 Jul 2030',
+  continuesWith: 'React Bootcamp — 50 Days · 27 May – 15 Jul 2029',
   focusAreas: ['SQL interview questions', 'Problem-solving mindset', 'Query optimization', 'Pattern recognition'],
+  path: '/interview',
+};
+
+export const REACT_BOOTCAMP_META = {
+  title: 'Thunder++ — 50 Days React Bootcamp',
+  subtitle: '50 days building 50 real-world React projects (Sufa Digital, Udemy)',
+  description:
+    "From 27 May 2029 to 15 Jul 2029: a 50-day React project bootcamp — build 50 real-world React apps with Hooks, REST APIs, Socket, Firebase, and Bootstrap. Following Sufa Digital's \"50 Days React Bootcamp: Build 50 Real World React Projects\" (Udemy). Carved from the interview-preparation window; Interview Preparation then continues for 354 days from 16 Jul 2029.",
+  courseUrl: 'https://www.udemy.com/course/build-real-world-application-projects-using-react/',
+  instructor: 'Sufa Digital',
+  provider: 'Udemy',
+  calendarDays: 50,
+  phaseWindow: 'Days 1059–1108 · 27 May – 15 Jul 2029',
+  startsAfter: 'SQL — 100 Days of SQL (through 26 May 2029)',
+  endsOn: '15 Jul 2029',
+  continuesWith: 'Interview Preparation — 354 days · 16 Jul 2029 – 4 Jul 2030',
+  focusAreas: ['50 real-world projects', 'React Hooks', 'REST APIs & Socket', 'Firebase & Bootstrap'],
   path: '/interview',
 };
 
 export const INTERVIEW_PREP_META = {
   title: 'Thunder++ — Interview Preparation',
-  subtitle: '404 days (~58 weeks) — final phase of 1461 days / 4 years of study',
+  subtitle: '354 days (~51 weeks) — final phase of 1461 days / 4 years of study',
   description:
-    'From 27 May 2029 to 4 Jul 2030: Interview Preparation for 404 days (~58 weeks) with ChaiCode and GeeksForGeeks — mocks, company prep, behavioral rounds, and full-stack readiness. (504-day window minus the 100 Days of SQL phase.) Completes 1461 days of study from 5 Jul 2026 to 4 Jul 2030.',
+    'From 16 Jul 2029 to 4 Jul 2030: Interview Preparation for 354 days (~51 weeks) with ChaiCode and GeeksForGeeks — mocks, company prep, behavioral rounds, and full-stack readiness. (504-day window minus the 100 Days of SQL and 50 Days React Bootcamp phases.) Completes 1461 days of study from 5 Jul 2026 to 4 Jul 2030.',
   chaicodeUrl: CHAICODE_INTERVIEW_URL,
   gfgInterviewUrl: GFG_INTERVIEW_PREP_URL,
   gfgCoursesUrl: GFG_COURSES_URL,
@@ -104,10 +121,10 @@ export const INTERVIEW_PREP_META = {
   gfgSystemDesignUrl: GFG_SYSTEM_DESIGN_URL,
   resources: INTERVIEW_RESOURCES,
   instructors: 'Hitesh Choudhary — ChaiCode & GeeksForGeeks',
-  calendarDays: 404,
-  weeks: 58,
-  phaseWindow: '404 days (~58 weeks) · 27 May 2029 – 4 Jul 2030',
-  startsAfter: 'SQL — 100 Days of SQL (through 26 May 2029)',
+  calendarDays: 354,
+  weeks: 51,
+  phaseWindow: '354 days (~51 weeks) · 16 Jul 2029 – 4 Jul 2030',
+  startsAfter: 'React Bootcamp — 50 Days (through 15 Jul 2029)',
   endsOn: '4 Jul 2030',
   journey: '1461 days · 4 years · 5 Jul 2026 → 4 Jul 2030',
   focusAreas: ['Mock interviews', 'Online assessments', 'Behavioral & HR', 'Full-stack readiness'],
@@ -120,10 +137,10 @@ export const JOURNEY_META = {
   endLabel: '4 Jul 2030',
   years: 4,
   totalDays: 1461,
-  interviewPrepDays: 404,
-  interviewPrepWeeks: 58,
+  interviewPrepDays: 354,
+  interviewPrepWeeks: 51,
   summary:
-    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → SQL → Interview Prep.',
+    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → SQL → React Bootcamp → Interview Prep.',
 };
 
 function lessonToModule(ch) {
