@@ -228,6 +228,7 @@ export default function Day048() {
   }, []);
 
   return (
+    <>
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
@@ -319,5 +320,58 @@ export default function Day048() {
         </footer>
       </div>
     </div>
+      <section
+        style={{
+          background: '#0d1117',
+          padding: '8px 16px 56px',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <figure style={{ maxWidth: '860px', width: '100%', margin: 0 }}>
+          <h2
+            style={{
+              color: '#e6edf3',
+              fontSize: '1.05rem',
+              fontWeight: 700,
+              margin: '0 0 12px',
+              textAlign: 'center',
+            }}
+          >
+            <span aria-hidden="true">📌</span> Day 48 Reference — Securing APIs with Rate Limiting &amp;
+            Throttling
+          </h2>
+          <a
+            href="/thunder-notes/day48-rate-limiting.jpg"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="/thunder-notes/day48-rate-limiting.jpg"
+              alt="Securing APIs with Rate Limiting and Request Throttling — why it matters, key concepts (rate limiting, throttling, quota, window), how it works (client to API gateway/middleware rate limiter to allow/block/delay), common algorithms (fixed window, sliding window log, sliding window counter, token bucket, leaky bucket), rate-limit headers, example 429 responses, implementations in Node.js express-rate-limit, Python FastAPI slowapi, and Redis sliding window, where to store counters, example limits by endpoint, common pitfalls, monitoring, and a security checklist"
+              loading="lazy"
+              style={{
+                width: '100%',
+                height: 'auto',
+                display: 'block',
+                borderRadius: '14px',
+                border: '1px solid #2a3441',
+              }}
+            />
+          </a>
+          <figcaption
+            style={{
+              color: '#8fb6c2',
+              fontSize: '0.82rem',
+              textAlign: 'center',
+              marginTop: '10px',
+            }}
+          >
+            Rate limiting &amp; throttling — algorithms, headers, Node/Python/Redis implementations,
+            and best practices. Click to open full size.
+          </figcaption>
+        </figure>
+      </section>
+    </>
   );
 }
