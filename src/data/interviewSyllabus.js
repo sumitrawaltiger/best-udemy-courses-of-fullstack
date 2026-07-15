@@ -130,7 +130,7 @@ export const JS_BOOTCAMP_META = {
   title: 'Thunder++ — 100 Days of JavaScript',
   subtitle: '100 days building projects with HTML, CSS & JavaScript (Ewomazino Akpareva, Udemy)',
   description:
-    "From 24 Oct 2029 to 31 Jan 2030: a 100-day JavaScript project bootcamp — sharpen JS skills by building projects with HTML, CSS, Flexbox, Grid, Bootstrap, ES6 classes, arrow functions, events, and DOM manipulation. Following Ewomazino Akpareva's \"100 Days of JavaScript\" (Udemy — 60.5 hours). Carved from the interview-preparation window; Interview Preparation then continues for 154 days from 1 Feb 2030.",
+    "From 24 Oct 2029 to 31 Jan 2030: a 100-day JavaScript project bootcamp — sharpen JS skills by building projects with HTML, CSS, Flexbox, Grid, Bootstrap, ES6 classes, arrow functions, events, and DOM manipulation. Following Ewomazino Akpareva's \"100 Days of JavaScript\" (Udemy — 60.5 hours). Carved from the interview-preparation window; a 50 Days LeetCode in Java phase then follows from 1 Feb 2030.",
   courseUrl: 'https://www.udemy.com/course/100-days-of-javascript/',
   instructor: 'Ewomazino Akpareva',
   provider: 'Udemy',
@@ -138,16 +138,33 @@ export const JS_BOOTCAMP_META = {
   phaseWindow: 'Days 1209–1308 · 24 Oct 2029 – 31 Jan 2030',
   startsAfter: 'Python Bootcamp — 100 Days (through 23 Oct 2029)',
   endsOn: '31 Jan 2030',
-  continuesWith: 'Interview Preparation — 154 days · 1 Feb 2030 – 4 Jul 2030',
+  continuesWith: 'LeetCode in Java — 50 Days · 1 Feb 2030 – 22 Mar 2030',
   focusAreas: ['100 JS projects', 'HTML, CSS, Flexbox & Grid', 'ES6 & DOM manipulation', 'Bootstrap'],
+  path: '/interview',
+};
+
+export const LEETCODE_JAVA_META = {
+  title: 'Thunder++ — LeetCode in Java',
+  subtitle: '50 days of LeetCode algorithms & coding-interview questions in Java (Holczer Balazs, Udemy)',
+  description:
+    "From 1 Feb 2030 to 22 Mar 2030: a 50-day LeetCode grind in Java — algorithms, data structures, and the coding-interview questions companies ask, solved and explained step by step. Following Holczer Balazs's \"LeetCode in Java: Algorithms Coding Interview Questions\" (Udemy). Carved from the interview-preparation window; Interview Preparation then continues for 104 days from 23 Mar 2030.",
+  courseUrl: 'https://www.udemy.com/course/leetcode-in-java-algorithms-coding-interview-questions/',
+  instructor: 'Holczer Balazs',
+  provider: 'Udemy',
+  calendarDays: 50,
+  phaseWindow: 'Days 1309–1358 · 1 Feb – 22 Mar 2030',
+  startsAfter: 'JavaScript Bootcamp — 100 Days (through 31 Jan 2030)',
+  endsOn: '22 Mar 2030',
+  continuesWith: 'Interview Preparation — 104 days · 23 Mar 2030 – 4 Jul 2030',
+  focusAreas: ['LeetCode problem patterns', 'Algorithms in Java', 'Coding-interview questions', 'Data structures'],
   path: '/interview',
 };
 
 export const INTERVIEW_PREP_META = {
   title: 'Thunder++ — Interview Preparation',
-  subtitle: '154 days (~22 weeks) — final phase of 1461 days / 4 years of study',
+  subtitle: '104 days (~15 weeks) — final phase of 1461 days / 4 years of study',
   description:
-    'From 1 Feb 2030 to 4 Jul 2030: Interview Preparation for 154 days (~22 weeks) with ChaiCode and GeeksForGeeks — mocks, company prep, behavioral rounds, and full-stack readiness. (504-day window minus the 100 Days of SQL, 50 Days React Bootcamp, 100 Days of Python, and 100 Days of JavaScript phases.) Completes 1461 days of study from 5 Jul 2026 to 4 Jul 2030.',
+    'From 23 Mar 2030 to 4 Jul 2030: Interview Preparation for 104 days (~15 weeks) with ChaiCode and GeeksForGeeks — mocks, company prep, behavioral rounds, and full-stack readiness. (504-day window minus the 100 Days of SQL, 50 Days React Bootcamp, 100 Days of Python, 100 Days of JavaScript, and 50 Days LeetCode in Java phases.) Completes 1461 days of study from 5 Jul 2026 to 4 Jul 2030.',
   chaicodeUrl: CHAICODE_INTERVIEW_URL,
   gfgInterviewUrl: GFG_INTERVIEW_PREP_URL,
   gfgCoursesUrl: GFG_COURSES_URL,
@@ -155,10 +172,10 @@ export const INTERVIEW_PREP_META = {
   gfgSystemDesignUrl: GFG_SYSTEM_DESIGN_URL,
   resources: INTERVIEW_RESOURCES,
   instructors: 'Hitesh Choudhary — ChaiCode & GeeksForGeeks',
-  calendarDays: 154,
-  weeks: 22,
-  phaseWindow: '154 days (~22 weeks) · 1 Feb 2030 – 4 Jul 2030',
-  startsAfter: 'JavaScript Bootcamp — 100 Days (through 31 Jan 2030)',
+  calendarDays: 104,
+  weeks: 15,
+  phaseWindow: '104 days (~15 weeks) · 23 Mar 2030 – 4 Jul 2030',
+  startsAfter: 'LeetCode in Java — 50 Days (through 22 Mar 2030)',
   endsOn: '4 Jul 2030',
   journey: '1461 days · 4 years · 5 Jul 2026 → 4 Jul 2030',
   focusAreas: ['Mock interviews', 'Online assessments', 'Behavioral & HR', 'Full-stack readiness'],
@@ -171,10 +188,10 @@ export const JOURNEY_META = {
   endLabel: '4 Jul 2030',
   years: 4,
   totalDays: 1461,
-  interviewPrepDays: 154,
-  interviewPrepWeeks: 22,
+  interviewPrepDays: 104,
+  interviewPrepWeeks: 15,
   summary:
-    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → SQL → React Bootcamp → Python Bootcamp → JavaScript Bootcamp → Interview Prep.',
+    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → SQL → React Bootcamp → Python Bootcamp → JavaScript Bootcamp → LeetCode in Java → Interview Prep.',
 };
 
 function lessonToModule(ch) {

@@ -56,10 +56,14 @@ export const PYTHON_BOOTCAMP_CALENDAR_DAYS = 100;
 // Calendar Days 1209–1308 — carved out of the interview-preparation window
 export const JS_BOOTCAMP_CALENDAR_DAYS = 100;
 
-// Interview Preparation: 1 Feb 2030 → 4 Jul 2030
-// 154 days (~22 weeks) — final phase (504 − 100 SQL − 50 React − 100 Python − 100 JS)
-export const INTERVIEW_PREP_CALENDAR_DAYS = 154; // ~22 weeks
-export const INTERVIEW_PREP_WEEKS = 22;
+// LeetCode in Java (50 Days of LeetCode): 1 Feb 2030 → 22 Mar 2030 (50 days)
+// Calendar Days 1309–1358 — carved out of the interview-preparation window
+export const LEETCODE_JAVA_CALENDAR_DAYS = 50;
+
+// Interview Preparation: 23 Mar 2030 → 4 Jul 2030
+// 104 days (~15 weeks) — final phase (504 − 100 SQL − 50 React − 100 Python − 100 JS − 50 LeetCode)
+export const INTERVIEW_PREP_CALENDAR_DAYS = 104; // ~15 weeks
+export const INTERVIEW_PREP_WEEKS = 15;
 
 // Full journey: 5 Jul 2026 → 4 Jul 2030 = 1461 study days (4 years)
 // Day 1 of the journey = 5 Jul 2026; last day = 4 Jul 2030

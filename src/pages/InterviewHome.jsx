@@ -73,8 +73,9 @@ export default function InterviewHome() {
             <strong>Data Structures</strong> (8 Nov 2028 – 15 Feb 2029), <strong>100 Days of SQL</strong>{' '}
             (16 Feb – 26 May 2029), a <strong>50 Days React Bootcamp</strong> (27 May – 15 Jul 2029), a{' '}
             <strong>100 Days of Python</strong> bootcamp (16 Jul – 23 Oct 2029), a{' '}
-            <strong>100 Days of JavaScript</strong> bootcamp (24 Oct 2029 – 31 Jan 2030), then{' '}
-            <strong>Interview Preparation</strong> for <strong>154 days (~22 weeks)</strong> — 1 Feb 2030 to{' '}
+            <strong>100 Days of JavaScript</strong> bootcamp (24 Oct 2029 – 31 Jan 2030), a{' '}
+            <strong>50 Days LeetCode in Java</strong> phase (1 Feb – 22 Mar 2030), then{' '}
+            <strong>Interview Preparation</strong> for <strong>104 days (~15 weeks)</strong> — 23 Mar 2030 to{' '}
             <strong>4 Jul 2030</strong>. Total study: <strong>1461 days</strong> from 5 Jul 2026 to 4 Jul 2030.{' '}
             {interviewChapters.length} modules on this track support these phases.
           </p>
@@ -90,7 +91,7 @@ export default function InterviewHome() {
               <span className="legend-dot published legend-dot-interview" /> {interviewChapters.length} modules
             </span>
             <span>
-              <span className="legend-dot published" /> SQL 100d · React 50d · Py 100d · JS 100d · IP 154d (~22w) → 4 Jul 2030 · 1461 total
+              <span className="legend-dot published" /> SQL 100d · React 50d · Py 100d · JS 100d · LC 50d · IP 104d (~15w) → 4 Jul 2030 · 1461 total
             </span>
           </div>
         </section>

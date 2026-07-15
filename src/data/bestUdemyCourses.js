@@ -346,4 +346,20 @@ export const BEST_COURSES = [
       },
     ],
   },
+  {
+    id: 'leetcode-java',
+    category: 'cs-interview',
+    skill: 'LeetCode in Java (50-Day)',
+    icon: '🧩',
+    title: 'LeetCode in Java: Algorithms Coding Interview Questions',
+    instructor: 'Holczer Balazs',
+    provider: 'Udemy',
+    note: 'A 50-day LeetCode grind in Java (1 Feb – 22 Mar 2030, carved from the interview-prep window) — algorithms, data structures, and the coding-interview questions companies ask, solved and explained step by step.',
+    links: [
+      {
+        label: 'View on Udemy',
+        url: 'https://www.udemy.com/course/leetcode-in-java-algorithms-coding-interview-questions/',
+      },
+    ],
+  },
 ];

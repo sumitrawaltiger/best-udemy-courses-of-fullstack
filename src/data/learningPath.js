@@ -92,10 +92,17 @@ export const LEARNING_PATH = [
     path: '/interview',
   },
   {
+    id: 'leetcodeJava',
+    label: 'LeetCode in Java',
+    short: 'LC',
+    desc: '1 Feb – 22 Mar 2030 · 50 days',
+    path: '/interview',
+  },
+  {
     id: 'interviewPrep',
     label: 'Interview Prep',
     short: 'IP',
-    desc: '154 days (~22 weeks) · ends 4 Jul 2030',
+    desc: '104 days (~15 weeks) · ends 4 Jul 2030',
     path: '/interview',
   },
 ];
