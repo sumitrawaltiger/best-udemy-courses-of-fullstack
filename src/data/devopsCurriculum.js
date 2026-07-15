@@ -478,6 +478,48 @@ const LINUX_VIRTUALIZATION_SECTIONS = [
   },
 ];
 
+const DOCKER_NETWORKING_SECTIONS = [
+  {
+    id: 'docker-network-drivers',
+    title: 'Docker Network Drivers — Bridge, Host, Overlay & Custom',
+    content:
+      "Containers need to communicate with each other, the outside world, and across hosts. Docker gives you several **network drivers** — pick the right one for the job:\n\n- **Bridge (default)** — single host, high isolation, good performance. Containers get a private IP on a virtual bridge (`docker0`); best for default / standalone apps.\n- **Host** — single host, **no isolation**, best performance. The container shares the host's network stack directly; best for high-performance apps.\n- **Overlay** — **multi-host** (Docker Swarm), high isolation, good performance. Connects containers across multiple hosts; best for multi-host microservices (requires Swarm mode).\n- **Custom (user-defined bridge)** — single host, high isolation, good performance. A user-defined network with custom rules and **built-in DNS** so containers reach each other **by name**; best for isolated apps.\n\n**Why it matters:** isolation (separate apps on different networks), communication (containers on the same network can talk), flexibility (choose the right driver), and security (control traffic with network boundaries).\n\n**Common use cases:** microservices communication, multi-tier apps, external access (load balancer / API), and cross-host communication.\n\n**Best practices:** use **user-defined bridge networks** instead of the default bridge for isolation, prefer **overlay** for multi-host, avoid **host** networking unless necessary, limit published ports (prefer a reverse proxy), and name networks meaningfully (e.g. `backend-net`, `frontend-net`).",
+    code:
+      'docker network ls                     # list all networks\n' +
+      'docker network inspect <name>         # inspect a network\n' +
+      'docker network create <name>          # user-defined bridge\n' +
+      'docker network create -d overlay <n>  # overlay (swarm)\n' +
+      'docker run -d --network <name> <img>  # run a container on a network\n' +
+      'docker network connect <net> <ctr>    # attach a running container\n' +
+      'docker network disconnect <net> <ctr>\n' +
+      'docker network rm <name>              # remove a network',
+    image: '/devops-notes/docker-day7-networking.jpg',
+    imageAlt:
+      'Docker Networking Day 7 — network drivers overview (bridge, host, overlay, custom with scope, isolation, performance, and best-for), architecture diagrams for each driver, network highlights (isolation, communication, flexibility, security), common use cases, essential network commands with examples, use-case examples (microservices on a custom network, multi-host with overlay, high performance with host), a bridge network workflow, and best practices',
+  },
+  {
+    id: 'docker-frontend-backend-project',
+    title: 'Project — Connect Frontend & Backend with Docker Networking',
+    content:
+      "A hands-on project: connect a **frontend** and a **backend** using a user-defined Docker network so they find each other **by name** (Docker DNS).\n\n**Project structure:** `my-app/` with a `backend/` (Dockerfile + `server.js` — a Node/Express API on port 5000 exposing `GET /api/hello` → `{ message: \"Hello from backend!\" }`) and a `frontend/` (Dockerfile + `index.html` + `app.js` that fetches `http://backend:5000/api/hello` and renders the message).\n\n**Steps:**\n1. **Create a user-defined bridge network** (`docker network create app-network`) — containers can find each other by name, with better isolation and built-in DNS.\n2. **Backend** — a Dockerfile on `node:20-alpine`; build it and run it on the network as `backend`.\n3. **Frontend** — a Dockerfile on `nginx:alpine`; build it and run it on the same network as `frontend`, published on port 8080.\n4. **How they communicate** — both containers are on `app-network`; the frontend requests `http://backend:5000/api/hello`; **Docker DNS resolves `backend`** to the backend container's IP; the response flows back.\n5. **Run & test** — open `http://localhost:8080` and you see \"Hello from backend!\". Tip: no need to expose port 5000 to the host if only the frontend calls it — and you can recreate the containers anytime and they reconnect on the same network.",
+    code:
+      '# 1. Create a user-defined bridge network\n' +
+      'docker network create app-network\n\n' +
+      '# 2. Backend (node:20-alpine · EXPOSE 5000 · CMD ["node","server.js"])\n' +
+      'docker build -t my-backend ./backend\n' +
+      'docker run -d --name backend --network app-network -p 5000:5000 my-backend\n\n' +
+      '# 3. Frontend (nginx:alpine serving index.html)\n' +
+      'docker build -t my-frontend ./frontend\n' +
+      'docker run -d --name frontend --network app-network -p 8080:80 my-frontend\n\n' +
+      '# frontend app.js calls http://backend:5000/api/hello — Docker DNS resolves "backend"\n\n' +
+      '# 4. Stop & remove (optional)\n' +
+      'docker stop frontend backend && docker rm frontend backend',
+    image: '/devops-notes/docker-frontend-backend-networking.jpg',
+    imageAlt:
+      'Project: connect a frontend and backend using Docker networking — project structure (my-app with a backend Node.js API and a frontend HTML+JS app), create a user-defined bridge network (docker network create app-network), backend Dockerfile (node:20-alpine) build and run, frontend Dockerfile (nginx:alpine) build and run, how they communicate via Docker DNS on the shared network, run and test at localhost:8080, stopping containers, and a quick command reference',
+  },
+];
+
 function buildLessons() {
   const lessons = [];
   let day = 1;
@@ -517,6 +559,10 @@ function buildLessons() {
       // Add the Linux virtualization visual note to the process-management module.
       if (title === 'Linux Process Management') {
         lesson.sections = [...(lesson.sections || []), ...LINUX_VIRTUALIZATION_SECTIONS];
+      }
+      // Docker networking visual notes (drivers reference + frontend/backend project).
+      if (title === 'Docker Networking') {
+        lesson.sections = [...(lesson.sections || []), ...DOCKER_NETWORKING_SECTIONS];
       }
       // The DevOps fundamentals module is the home for the full guide download.
       if (title === 'Fundamentals of DevOps') {
