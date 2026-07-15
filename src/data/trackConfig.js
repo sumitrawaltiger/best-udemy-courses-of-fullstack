@@ -68,13 +68,13 @@ export const JAVA_MASTERCLASS_CALENDAR_DAYS = 60;
 // Calendar Days 1419–1448 — carved out of the interview-preparation window
 export const JS_PROJECTS_CALENDAR_DAYS = 30;
 
-// Two-Week Python Bootcamp (Basics to Data Analysis): 21 Jun 2030 → 4 Jul 2030 (14 days)
+// Two-Week JavaScript Bootcamp (Learn JavaScript in 2 Weeks): 21 Jun 2030 → 4 Jul 2030 (14 days)
 // Calendar Days 1449–1462 — the final phase; consumes the last of the old interview-prep window
-export const PYTHON_DATA_BOOTCAMP_CALENDAR_DAYS = 14; // ~2 weeks
-export const PYTHON_DATA_BOOTCAMP_WEEKS = 2;
+export const JS_TWO_WEEK_CALENDAR_DAYS = 14; // ~2 weeks
+export const JS_TWO_WEEK_WEEKS = 2;
 
 // Interview Preparation: fully carved out — 0 dedicated calendar days remain.
-// The old 504-day window is now entirely SQL(100)+React(50)+Python(100)+JS(100)+LeetCode(50)+Java(60)+JS Projects(30)+Two-Week Python(14).
+// The old 504-day window is now entirely JS-DSA(100)+React(50)+Python(100)+JS(100)+LeetCode(50)+Java(60)+JS Projects(30)+Two-Week JS(14).
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 

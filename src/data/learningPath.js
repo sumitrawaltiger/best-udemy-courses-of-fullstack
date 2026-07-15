@@ -113,9 +113,9 @@ export const LEARNING_PATH = [
     path: '/interview',
   },
   {
-    id: 'pythonDataBootcamp',
-    label: 'Two-Week Python Bootcamp',
-    short: 'PyDA',
+    id: 'jsTwoWeek',
+    label: 'Two-Week JavaScript Bootcamp',
+    short: 'JS2w',
     desc: '21 Jun – 4 Jul 2030 · 14 days',
     path: '/interview',
   },

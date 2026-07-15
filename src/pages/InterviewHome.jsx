@@ -77,7 +77,7 @@ export default function InterviewHome() {
             <strong>50 Days LeetCode in Java</strong> phase (1 Feb – 22 Mar 2030), a{' '}
             <strong>60 Days of Java</strong> masterclass (23 Mar – 21 May 2030), a{' '}
             <strong>30 JavaScript Projects</strong> sprint (22 May – 20 Jun 2030), then a{' '}
-            <strong>Two-Week Python Bootcamp</strong> (basics to data analysis) closing the journey for{' '}
+            <strong>Two-Week JavaScript Bootcamp</strong> closing the journey for{' '}
             <strong>14 days (~2 weeks)</strong> — 21 Jun 2030 to{' '}
             <strong>4 Jul 2030</strong>. Total study: <strong>1461 days</strong> from 5 Jul 2026 to 4 Jul 2030.{' '}
             {interviewChapters.length} modules on this track support these phases.
@@ -94,7 +94,7 @@ export default function InterviewHome() {
               <span className="legend-dot published legend-dot-interview" /> {interviewChapters.length} modules
             </span>
             <span>
-              <span className="legend-dot published" /> JS-DSA 100d · React 50d · Py 100d · JS 100d · LC 50d · Java 60d · JS30 30d · PyDA 14d (~2w) → 4 Jul 2030 · 1461 total
+              <span className="legend-dot published" /> JS-DSA 100d · React 50d · Py 100d · JS 100d · LC 50d · Java 60d · JS30 30d · JS2w 14d (~2w) → 4 Jul 2030 · 1461 total
             </span>
           </div>
         </section>

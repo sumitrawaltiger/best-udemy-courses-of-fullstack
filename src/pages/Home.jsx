@@ -14,7 +14,7 @@ import { JAVA_META } from '../data/javaSyllabus';
 import { AWS_META } from '../data/awsSyllabus';
 import { DEVOPS_META } from '../data/devopsSyllabus';
 import { K8S_META } from '../data/k8sSyllabus';
-import { INTERVIEW_META, DSA_META, PYTHON_DATA_BOOTCAMP_META, JOURNEY_META } from '../data/interviewSyllabus';
+import { INTERVIEW_META, DSA_META, JS_TWO_WEEK_META, JOURNEY_META } from '../data/interviewSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import { JS_INTERVIEW_QUESTIONS } from '../data/interviewQuestions';
@@ -634,30 +634,30 @@ export default function Home() {
           <span className="thunder-plus-badge thunder-plus-badge-interview">
             14 days (~2 weeks) · 21 Jun 2030 – 4 Jul 2030
           </span>
-          <h2>Thunder++ — Two-Week Python Bootcamp</h2>
+          <h2>Thunder++ — Two-Week JavaScript Bootcamp</h2>
           <p className="section-desc">
             From <strong>21 Jun 2030</strong> through <strong>4 Jul 2030</strong>: a final{' '}
-            <strong>Two-Week Python Bootcamp</strong> for <strong>{PYTHON_DATA_BOOTCAMP_META.calendarDays} days</strong> (
-            <strong>{PYTHON_DATA_BOOTCAMP_META.weeks} weeks</strong>) —{' '}
-            <a href={PYTHON_DATA_BOOTCAMP_META.courseUrl} target="_blank" rel="noopener noreferrer">
-              {PYTHON_DATA_BOOTCAMP_META.instructor}'s course on Udemy
+            <strong>Two-Week JavaScript Bootcamp</strong> for <strong>{JS_TWO_WEEK_META.calendarDays} days</strong> (
+            <strong>{JS_TWO_WEEK_META.weeks} weeks</strong>) —{' '}
+            <a href={JS_TWO_WEEK_META.courseUrl} target="_blank" rel="noopener noreferrer">
+              {JS_TWO_WEEK_META.instructor}'s course on Udemy
             </a>
-            {' '}takes Python from basics to data analysis with Pandas, visualization, statistics, and reporting. That closes the full journey:{' '}
+            {' '}takes JavaScript from the very beginning to advanced — functions, arrays, objects, the DOM, events, and hands-on projects. That closes the full journey:{' '}
             <strong>{JOURNEY_META.totalDays} days</strong> of study ({JOURNEY_META.years} years) from{' '}
             {JOURNEY_META.startLabel} to {JOURNEY_META.endLabel}.
           </p>
           <div className="thunder-plus-highlights">
-            <span>🐍 Python fundamentals</span>
-            <span>🐼 Pandas & data analysis</span>
-            <span>📊 Visualization & statistics</span>
-            <span>📝 Reporting techniques</span>
+            <span>🟨 JavaScript fundamentals</span>
+            <span>🔧 Functions, arrays & objects</span>
+            <span>🖱️ DOM, events & forms</span>
+            <span>🚀 Hands-on projects</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/interview" className="btn btn-interview btn-lg">
               Explore Final Phase
             </Link>
             <a
-              href={PYTHON_DATA_BOOTCAMP_META.courseUrl}
+              href={JS_TWO_WEEK_META.courseUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-interview-chaicode btn-lg"

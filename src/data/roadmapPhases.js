@@ -148,10 +148,10 @@ export const ROADMAP_PHASES = [
     href: 'https://www.udemy.com/course/30-javascript-projects-in-30-days/',
   },
   {
-    n: 18, arc: 'interview', icon: '🐼', final: true,
-    title: 'Two-Week Python Bootcamp',
+    n: 18, arc: 'interview', icon: '🟨', final: true,
+    title: 'Two-Week JavaScript Bootcamp',
     window: '21 Jun – 4 Jul 2030', days: 14, dayRange: 'Days 1449–1462',
-    source: 'Udemy · Ayman Khoshouey',
-    href: 'https://www.udemy.com/course/learn-python-from-start-to-unlimited/',
+    source: 'Udemy · Coding2GO',
+    href: 'https://www.udemy.com/course/javascript-course-coding2go/',
   },
 ];
