@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ROADMAP_ARCS, ROADMAP_STATS, ROADMAP_PHASES } from '../data/roadmapPhases';
 import { JOURNEY_META } from '../data/interviewSyllabus';
+
+const ROADMAP_POSTER = '/roadmap-notes/four-year-study-plan.jpg';
 
 function PhaseLink({ phase, children }) {
   if (phase.href) {
@@ -18,6 +21,8 @@ function PhaseLink({ phase, children }) {
 }
 
 export default function RoadmapHome() {
+  const [posterOpen, setPosterOpen] = useState(false);
+
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
@@ -36,6 +41,28 @@ export default function RoadmapHome() {
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="roadmap-poster-section">
+        <h2 className="roadmap-poster-heading">The plan at a glance</h2>
+        <figure className="roadmap-poster">
+          <button
+            type="button"
+            className="roadmap-poster-btn"
+            onClick={() => setPosterOpen(true)}
+            aria-label="Open the full study-plan poster"
+          >
+            <img
+              src={ROADMAP_POSTER}
+              alt="1461 Days · 4 Years of Growth — the complete study plan, all 18 phases with windows, days, and sources"
+              loading="lazy"
+            />
+            <span className="roadmap-poster-zoom">🔍 Click to zoom</span>
+          </button>
+          <figcaption className="roadmap-poster-cap">
+            1461 Days · 4 Years of Growth — the complete study plan (5 Jul 2026 → 4 Jul 2030).
+          </figcaption>
+        </figure>
       </section>
 
       <div className="roadmap-timeline">
@@ -109,6 +136,30 @@ export default function RoadmapHome() {
           </Link>
         </div>
       </section>
+
+      {posterOpen && (
+        <div
+          className="roadmap-lightbox"
+          onClick={() => setPosterOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Study plan poster, full size"
+        >
+          <button
+            type="button"
+            className="roadmap-lightbox-close"
+            onClick={() => setPosterOpen(false)}
+            aria-label="Close"
+          >
+            ✕
+          </button>
+          <img
+            src={ROADMAP_POSTER}
+            alt="1461 Days · 4 Years of Growth — the complete study plan"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 }
