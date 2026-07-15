@@ -272,6 +272,9 @@ export default function Header({ onSearch }) {
           </div>
 
           <div className="header-nav-actions">
+            <Link to="/roadmap" className="header-nav-link" onClick={closeMenu}>
+              Roadmap
+            </Link>
             <a href={TRACK_SYLLABUS[track]} className="header-nav-link" onClick={closeMenu}>
               Syllabus
             </a>
