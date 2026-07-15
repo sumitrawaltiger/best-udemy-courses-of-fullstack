@@ -8,7 +8,7 @@ export const chaptersDays20to100 = [
     "title": "Introduction to Node.js",
     "subtitle": "Backend begins — the runtime, require, your first HTTP server & why backends exist",
     "duration": "2 hrs",
-    "createdOn": "24 Jul 2026",
+    "createdOn": "5 Aug 2026",
     "status": "published",
     "topics": [
       "What is Node.js",
@@ -173,7 +173,7 @@ export const chaptersDays20to100 = [
     "title": "TCP/IP and package.json",
     "subtitle": "Lecture 02 — networking, HTTP servers, and npm project setup",
     "duration": "2 hrs 22 mins",
-    "createdOn": "24 Jul 2026",
+    "createdOn": "5 Aug 2026",
     "status": "published",
     "topics": [
       "TCP/IP & client–server",
@@ -317,7 +317,7 @@ export const chaptersDays20to100 = [
     "title": "HTTP — The Protocol of the Web",
     "subtitle": "Lecture 02 — request/response structure, methods, status codes & statelessness",
     "duration": "2 hrs",
-    "createdOn": "25 Jul 2026",
+    "createdOn": "6 Aug 2026",
     "status": "published",
     "topics": [
       "HTTP is a contract",
@@ -422,7 +422,7 @@ export const chaptersDays20to100 = [
     "title": "Query Strings & Request Validation",
     "subtitle": "Lecture 02 — parse URLs with the url module and validate every request",
     "duration": "2 hrs",
-    "createdOn": "26 Jul 2026",
+    "createdOn": "7 Aug 2026",
     "status": "published",
     "topics": [
       "Reading req.url",
@@ -511,7 +511,7 @@ export const chaptersDays20to100 = [
     "title": "Why Express Exists",
     "subtitle": "The pain of raw Node and how Express cures every part of it",
     "duration": "2 hrs",
-    "createdOn": "27 Jul 2026",
+    "createdOn": "8 Aug 2026",
     "status": "published",
     "topics": [
       "Raw Node limitations",
@@ -590,7 +590,7 @@ export const chaptersDays20to100 = [
     "title": "Express & Middleware",
     "subtitle": "Lecture 06 — routes, route/query params, middleware, app.use & app.get",
     "duration": "2 hrs 30 mins",
-    "createdOn": "28 Jul 2026",
+    "createdOn": "9 Aug 2026",
     "status": "published",
     "topics": [
       "Express basics",
@@ -749,7 +749,7 @@ export const chaptersDays20to100 = [
     "title": "Node.js & Runtime Fundamentals",
     "subtitle": "V8, npm, modules, and the Node event loop",
     "duration": "2 hrs",
-    "createdOn": "29 Jul 2026",
+    "createdOn": "10 Aug 2026",
     "status": "published",
     "topics": [
       "What is Node.js",
@@ -822,7 +822,7 @@ export const chaptersDays20to100 = [
     "title": "HTTP, REST & Express.js",
     "subtitle": "Build your first REST API with Express",
     "duration": "2 hrs",
-    "createdOn": "30 Jul 2026",
+    "createdOn": "11 Aug 2026",
     "status": "published",
     "topics": [
       "HTTP methods & status codes",
@@ -894,7 +894,7 @@ export const chaptersDays20to100 = [
     "title": "Middleware & Request Lifecycle",
     "subtitle": "How requests flow through Express middleware",
     "duration": "2 hrs",
-    "createdOn": "31 Jul 2026",
+    "createdOn": "12 Aug 2026",
     "status": "published",
     "topics": [
       "What is middleware",
@@ -966,7 +966,7 @@ export const chaptersDays20to100 = [
     "title": "MongoDB & Database Design",
     "subtitle": "NoSQL documents, collections, and CRUD operations",
     "duration": "2 hrs",
-    "createdOn": "1 Aug 2026",
+    "createdOn": "13 Aug 2026",
     "status": "published",
     "topics": [
       "MongoDB basics",
@@ -1038,7 +1038,7 @@ export const chaptersDays20to100 = [
     "title": "Mongoose ODM",
     "subtitle": "Schemas, models, validation, and relationships",
     "duration": "2 hrs",
-    "createdOn": "2 Aug 2026",
+    "createdOn": "14 Aug 2026",
     "status": "published",
     "topics": [
       "Mongoose schemas",
@@ -1110,7 +1110,7 @@ export const chaptersDays20to100 = [
     "title": "Authentication with JWT",
     "subtitle": "Register, login, tokens, and protected routes",
     "duration": "2 hrs",
-    "createdOn": "3 Aug 2026",
+    "createdOn": "15 Aug 2026",
     "status": "published",
     "topics": [
       "Auth vs authorization",
@@ -1182,7 +1182,7 @@ export const chaptersDays20to100 = [
     "title": "Authorization & Role-Based Access",
     "subtitle": "Roles, permissions, and access control patterns",
     "duration": "2 hrs",
-    "createdOn": "4 Aug 2026",
+    "createdOn": "16 Aug 2026",
     "status": "published",
     "topics": [
       "RBAC concepts",
@@ -1254,7 +1254,7 @@ export const chaptersDays20to100 = [
     "title": "File Uploads & Cloud Storage",
     "subtitle": "Multer, file validation, and cloud buckets",
     "duration": "2 hrs",
-    "createdOn": "5 Aug 2026",
+    "createdOn": "17 Aug 2026",
     "status": "published",
     "topics": [
       "Multipart form data",
@@ -1326,7 +1326,7 @@ export const chaptersDays20to100 = [
     "title": "WebSockets & Real-Time APIs",
     "subtitle": "Socket.io, rooms, and live updates",
     "duration": "2 hrs",
-    "createdOn": "6 Aug 2026",
+    "createdOn": "18 Aug 2026",
     "status": "published",
     "topics": [
       "HTTP vs WebSockets",
@@ -1398,7 +1398,7 @@ export const chaptersDays20to100 = [
     "title": "Error Handling & Validation",
     "subtitle": "Express-validator, custom errors, and API responses",
     "duration": "2 hrs",
-    "createdOn": "7 Aug 2026",
+    "createdOn": "19 Aug 2026",
     "status": "published",
     "topics": [
       "Validation middleware",
@@ -1470,7 +1470,7 @@ export const chaptersDays20to100 = [
     "title": "API Security Best Practices",
     "subtitle": "Helmet, rate limiting, sanitization, and secrets",
     "duration": "2 hrs",
-    "createdOn": "8 Aug 2026",
+    "createdOn": "20 Aug 2026",
     "status": "published",
     "topics": [
       "Helmet.js",
@@ -1542,7 +1542,7 @@ export const chaptersDays20to100 = [
     "title": "REST API Project — Part 1",
     "subtitle": "Project setup, models, and core endpoints",
     "duration": "2 hrs",
-    "createdOn": "9 Aug 2026",
+    "createdOn": "21 Aug 2026",
     "status": "published",
     "topics": [
       "Project architecture",
@@ -1614,7 +1614,7 @@ export const chaptersDays20to100 = [
     "title": "REST API Project — Part 2",
     "subtitle": "Auth integration, middleware, and deployment prep",
     "duration": "2 hrs",
-    "createdOn": "10 Aug 2026",
+    "createdOn": "22 Aug 2026",
     "status": "published",
     "topics": [
       "Adding authentication",
@@ -1686,7 +1686,7 @@ export const chaptersDays20to100 = [
     "title": "API Testing with Postman",
     "subtitle": "Collections, environments, and automated tests",
     "duration": "2 hrs",
-    "createdOn": "11 Aug 2026",
+    "createdOn": "23 Aug 2026",
     "status": "published",
     "topics": [
       "Postman collections",
@@ -1758,7 +1758,7 @@ export const chaptersDays20to100 = [
     "title": "Backend Capstone Project",
     "subtitle": "Build and ship a production-ready API",
     "duration": "2 hrs",
-    "createdOn": "12 Aug 2026",
+    "createdOn": "24 Aug 2026",
     "status": "published",
     "topics": [
       "Capstone requirements",
@@ -1830,7 +1830,7 @@ export const chaptersDays20to100 = [
     "title": "Monolith vs Microservices",
     "subtitle": "Architecture trade-offs and when to split services",
     "duration": "2 hrs",
-    "createdOn": "13 Aug 2026",
+    "createdOn": "25 Aug 2026",
     "status": "published",
     "topics": [
       "Monolith benefits",
@@ -1902,7 +1902,7 @@ export const chaptersDays20to100 = [
     "title": "Caching with Redis",
     "subtitle": "In-memory caching, TTL, and cache strategies",
     "duration": "2 hrs",
-    "createdOn": "14 Aug 2026",
+    "createdOn": "26 Aug 2026",
     "status": "published",
     "topics": [
       "Why caching",
@@ -1976,7 +1976,7 @@ export const chaptersDays20to100 = [
     "title": "Message Queues & Pub/Sub",
     "subtitle": "Async communication with queues and events",
     "duration": "2 hrs",
-    "createdOn": "15 Aug 2026",
+    "createdOn": "27 Aug 2026",
     "status": "published",
     "topics": [
       "Message queues",
@@ -2048,7 +2048,7 @@ export const chaptersDays20to100 = [
     "title": "Load Balancing & Reverse Proxies",
     "subtitle": "Nginx, horizontal scaling, and traffic distribution",
     "duration": "2 hrs",
-    "createdOn": "16 Aug 2026",
+    "createdOn": "28 Aug 2026",
     "status": "published",
     "topics": [
       "Load balancer types",
@@ -2120,7 +2120,7 @@ export const chaptersDays20to100 = [
     "title": "Database Scaling & Sharding",
     "subtitle": "Replication, sharding, and read replicas",
     "duration": "2 hrs",
-    "createdOn": "17 Aug 2026",
+    "createdOn": "29 Aug 2026",
     "status": "published",
     "topics": [
       "Vertical vs horizontal scaling",
@@ -2192,7 +2192,7 @@ export const chaptersDays20to100 = [
     "title": "Rate Limiting & Throttling",
     "subtitle": "Protect APIs from abuse and overload",
     "duration": "2 hrs",
-    "createdOn": "18 Aug 2026",
+    "createdOn": "30 Aug 2026",
     "status": "published",
     "topics": [
       "Why rate limit",
@@ -2264,7 +2264,7 @@ export const chaptersDays20to100 = [
     "title": "Backend Scaling Patterns",
     "subtitle": "Putting it together — scalable backend architecture",
     "duration": "2 hrs",
-    "createdOn": "19 Aug 2026",
+    "createdOn": "31 Aug 2026",
     "status": "published",
     "topics": [
       "Scaling checklist",
@@ -2336,7 +2336,7 @@ export const chaptersDays20to100 = [
     "title": "System Design Fundamentals",
     "subtitle": "Requirements, estimation, and high-level diagrams",
     "duration": "2 hrs",
-    "createdOn": "20 Aug 2026",
+    "createdOn": "1 Sept 2026",
     "status": "published",
     "topics": [
       "Functional requirements",
@@ -2466,7 +2466,7 @@ export const chaptersDays20to100 = [
     "title": "URL Shortener — HLD",
     "subtitle": "Design TinyURL / bit.ly at scale",
     "duration": "2 hrs",
-    "createdOn": "21 Aug 2026",
+    "createdOn": "2 Sept 2026",
     "status": "published",
     "topics": [
       "Use cases",
@@ -2538,7 +2538,7 @@ export const chaptersDays20to100 = [
     "title": "Rate Limiter Design",
     "subtitle": "Design a distributed rate limiting service",
     "duration": "2 hrs",
-    "createdOn": "22 Aug 2026",
+    "createdOn": "3 Sept 2026",
     "status": "published",
     "topics": [
       "Requirements",
@@ -2610,7 +2610,7 @@ export const chaptersDays20to100 = [
     "title": "Notification System Design",
     "subtitle": "Push, email, SMS at scale",
     "duration": "2 hrs",
-    "createdOn": "23 Aug 2026",
+    "createdOn": "4 Sept 2026",
     "status": "published",
     "topics": [
       "Notification types",
@@ -2682,7 +2682,7 @@ export const chaptersDays20to100 = [
     "title": "News Feed Design",
     "subtitle": "Fan-out on write vs fan-out on read",
     "duration": "2 hrs",
-    "createdOn": "24 Aug 2026",
+    "createdOn": "5 Sept 2026",
     "status": "published",
     "topics": [
       "Feed generation",
@@ -2754,7 +2754,7 @@ export const chaptersDays20to100 = [
     "title": "Chat Application Design",
     "subtitle": "Real-time messaging at scale",
     "duration": "2 hrs",
-    "createdOn": "25 Aug 2026",
+    "createdOn": "6 Sept 2026",
     "status": "published",
     "topics": [
       "WebSockets at scale",
@@ -2826,7 +2826,7 @@ export const chaptersDays20to100 = [
     "title": "E-commerce Platform Design",
     "subtitle": "Catalog, cart, orders, and payments",
     "duration": "2 hrs",
-    "createdOn": "26 Aug 2026",
+    "createdOn": "7 Sept 2026",
     "status": "published",
     "topics": [
       "Product catalog",
@@ -2898,7 +2898,7 @@ export const chaptersDays20to100 = [
     "title": "Distributed Systems Basics",
     "subtitle": "Nodes, partitions, clocks, and consensus intro",
     "duration": "2 hrs",
-    "createdOn": "27 Aug 2026",
+    "createdOn": "8 Sept 2026",
     "status": "published",
     "topics": [
       "Distributed nodes",
@@ -2970,7 +2970,7 @@ export const chaptersDays20to100 = [
     "title": "CAP Theorem & Consistency",
     "subtitle": "Consistency, availability, and partition tolerance",
     "duration": "2 hrs",
-    "createdOn": "28 Aug 2026",
+    "createdOn": "9 Sept 2026",
     "status": "published",
     "topics": [
       "CAP theorem",
@@ -3042,7 +3042,7 @@ export const chaptersDays20to100 = [
     "title": "Consistency & Availability Patterns",
     "subtitle": "Replication, quorum, and conflict resolution",
     "duration": "2 hrs",
-    "createdOn": "29 Aug 2026",
+    "createdOn": "10 Sept 2026",
     "status": "published",
     "topics": [
       "Replication strategies",
@@ -3114,7 +3114,7 @@ export const chaptersDays20to100 = [
     "title": "HLD Interview Preparation",
     "subtitle": "Framework, communication, and mock interviews",
     "duration": "2 hrs",
-    "createdOn": "30 Aug 2026",
+    "createdOn": "11 Sept 2026",
     "status": "published",
     "topics": [
       "Interview framework",
@@ -3186,7 +3186,7 @@ export const chaptersDays20to100 = [
     "title": "System Design Playground",
     "subtitle": "Practice problems and phase 4 recap",
     "duration": "2 hrs",
-    "createdOn": "31 Aug 2026",
+    "createdOn": "12 Sept 2026",
     "status": "published",
     "topics": [
       "Practice problems",
@@ -3258,7 +3258,7 @@ export const chaptersDays20to100 = [
     "title": "React Fundamentals & JSX",
     "subtitle": "Components, JSX, and your first React app",
     "duration": "2 hrs",
-    "createdOn": "1 Sept 2026",
+    "createdOn": "13 Sept 2026",
     "status": "published",
     "topics": [
       "What is React",
@@ -3330,7 +3330,7 @@ export const chaptersDays20to100 = [
     "title": "Components, Props & State",
     "subtitle": "useState, lifting state, and component composition",
     "duration": "2 hrs",
-    "createdOn": "2 Sept 2026",
+    "createdOn": "14 Sept 2026",
     "status": "published",
     "topics": [
       "Functional components",
@@ -3402,7 +3402,7 @@ export const chaptersDays20to100 = [
     "title": "useEffect & Lifecycle",
     "subtitle": "Side effects, dependencies, and cleanup",
     "duration": "2 hrs",
-    "createdOn": "3 Sept 2026",
+    "createdOn": "15 Sept 2026",
     "status": "published",
     "topics": [
       "useEffect basics",
@@ -3474,7 +3474,7 @@ export const chaptersDays20to100 = [
     "title": "React Router & Navigation",
     "subtitle": "SPA routing, nested routes, and URL params",
     "duration": "2 hrs",
-    "createdOn": "4 Sept 2026",
+    "createdOn": "16 Sept 2026",
     "status": "published",
     "topics": [
       "React Router setup",
@@ -3546,7 +3546,7 @@ export const chaptersDays20to100 = [
     "title": "Forms & Controlled Components",
     "subtitle": "Form state, validation, and user input in React",
     "duration": "2 hrs",
-    "createdOn": "5 Sept 2026",
+    "createdOn": "17 Sept 2026",
     "status": "published",
     "topics": [
       "Controlled inputs",
@@ -3618,7 +3618,7 @@ export const chaptersDays20to100 = [
     "title": "TypeScript Essentials",
     "subtitle": "Types, interfaces, generics, and TS with JS",
     "duration": "2 hrs",
-    "createdOn": "6 Sept 2026",
+    "createdOn": "18 Sept 2026",
     "status": "published",
     "topics": [
       "Why TypeScript",
@@ -3690,7 +3690,7 @@ export const chaptersDays20to100 = [
     "title": "TypeScript with React",
     "subtitle": "Typing components, props, hooks, and events",
     "duration": "2 hrs",
-    "createdOn": "7 Sept 2026",
+    "createdOn": "19 Sept 2026",
     "status": "published",
     "topics": [
       "Typing props",
@@ -3762,7 +3762,7 @@ export const chaptersDays20to100 = [
     "title": "Tailwind CSS Fundamentals",
     "subtitle": "Utility-first CSS and responsive design",
     "duration": "2 hrs",
-    "createdOn": "8 Sept 2026",
+    "createdOn": "20 Sept 2026",
     "status": "published",
     "topics": [
       "Utility classes",
@@ -3834,7 +3834,7 @@ export const chaptersDays20to100 = [
     "title": "Context API & State Management",
     "subtitle": "Global state without prop drilling",
     "duration": "2 hrs",
-    "createdOn": "9 Sept 2026",
+    "createdOn": "21 Sept 2026",
     "status": "published",
     "topics": [
       "createContext",
@@ -3906,7 +3906,7 @@ export const chaptersDays20to100 = [
     "title": "Redux Toolkit",
     "subtitle": "Store, slices, and async thunks",
     "duration": "2 hrs",
-    "createdOn": "10 Sept 2026",
+    "createdOn": "22 Sept 2026",
     "status": "published",
     "topics": [
       "Redux concepts",
@@ -3978,7 +3978,7 @@ export const chaptersDays20to100 = [
     "title": "React Performance Optimization",
     "subtitle": "memo, useMemo, useCallback, and lazy loading",
     "duration": "2 hrs",
-    "createdOn": "11 Sept 2026",
+    "createdOn": "23 Sept 2026",
     "status": "published",
     "topics": [
       "React.memo",
@@ -4050,7 +4050,7 @@ export const chaptersDays20to100 = [
     "title": "Frontend Projects",
     "subtitle": "Build real UIs with React + Tailwind",
     "duration": "2 hrs",
-    "createdOn": "12 Sept 2026",
+    "createdOn": "24 Sept 2026",
     "status": "published",
     "topics": [
       "Project planning",
@@ -4122,7 +4122,7 @@ export const chaptersDays20to100 = [
     "title": "Deploying React Applications",
     "subtitle": "Vercel, Netlify, and production builds",
     "duration": "2 hrs",
-    "createdOn": "13 Sept 2026",
+    "createdOn": "25 Sept 2026",
     "status": "published",
     "topics": [
       "Production build",
@@ -4194,7 +4194,7 @@ export const chaptersDays20to100 = [
     "title": "Full-Stack Capstone Planning",
     "subtitle": "Architecture, milestones, and tech stack decisions",
     "duration": "2 hrs",
-    "createdOn": "14 Sept 2026",
+    "createdOn": "26 Sept 2026",
     "status": "published",
     "topics": [
       "Capstone overview",
@@ -4266,7 +4266,7 @@ export const chaptersDays20to100 = [
     "title": "Full-Stack Capstone — Build I",
     "subtitle": "Backend API, database, and auth",
     "duration": "2 hrs",
-    "createdOn": "15 Sept 2026",
+    "createdOn": "27 Sept 2026",
     "status": "published",
     "topics": [
       "Project setup",
@@ -4338,7 +4338,7 @@ export const chaptersDays20to100 = [
     "title": "Full-Stack Capstone — Build II",
     "subtitle": "React frontend, state, and API integration",
     "duration": "2 hrs",
-    "createdOn": "16 Sept 2026",
+    "createdOn": "28 Sept 2026",
     "status": "published",
     "topics": [
       "React UI build",
@@ -4410,7 +4410,7 @@ export const chaptersDays20to100 = [
     "title": "Full-Stack Capstone — Deploy",
     "subtitle": "Docker, cloud deploy, and go live",
     "duration": "2 hrs",
-    "createdOn": "17 Sept 2026",
+    "createdOn": "29 Sept 2026",
     "status": "published",
     "topics": [
       "Dockerize app",
@@ -4482,7 +4482,7 @@ export const chaptersDays20to100 = [
     "title": "Portfolio & Code Review",
     "subtitle": "Polish, document, and present your capstone",
     "duration": "2 hrs",
-    "createdOn": "18 Sept 2026",
+    "createdOn": "30 Sept 2026",
     "status": "published",
     "topics": [
       "README & docs",
@@ -4554,7 +4554,7 @@ export const chaptersDays20to100 = [
     "title": "Git & GitHub Advanced Workflows",
     "subtitle": "Branches, PRs, rebasing, and collaboration",
     "duration": "2 hrs",
-    "createdOn": "19 Sept 2026",
+    "createdOn": "1 Oct 2026",
     "status": "published",
     "topics": [
       "Branching strategies",
@@ -4626,7 +4626,7 @@ export const chaptersDays20to100 = [
     "title": "Linux & Shell Essentials",
     "subtitle": "Commands, permissions, and scripting basics",
     "duration": "2 hrs",
-    "createdOn": "20 Sept 2026",
+    "createdOn": "2 Oct 2026",
     "status": "published",
     "topics": [
       "Linux file system",
@@ -4698,7 +4698,7 @@ export const chaptersDays20to100 = [
     "title": "Docker Fundamentals",
     "subtitle": "Images, containers, volumes, and Dockerfile",
     "duration": "2 hrs",
-    "createdOn": "21 Sept 2026",
+    "createdOn": "3 Oct 2026",
     "status": "published",
     "topics": [
       "What is Docker",
@@ -4770,7 +4770,7 @@ export const chaptersDays20to100 = [
     "title": "Docker Compose & Multi-Container Apps",
     "subtitle": "Orchestrate app, DB, and cache with Compose",
     "duration": "2 hrs",
-    "createdOn": "22 Sept 2026",
+    "createdOn": "4 Oct 2026",
     "status": "published",
     "topics": [
       "docker-compose.yml",
@@ -4842,7 +4842,7 @@ export const chaptersDays20to100 = [
     "title": "CI/CD Pipelines",
     "subtitle": "Automate build, test, and deploy",
     "duration": "2 hrs",
-    "createdOn": "23 Sept 2026",
+    "createdOn": "5 Oct 2026",
     "status": "published",
     "topics": [
       "CI vs CD",
@@ -4914,7 +4914,7 @@ export const chaptersDays20to100 = [
     "title": "GitHub Actions Deep Dive",
     "subtitle": "Workflows, secrets, and matrix builds",
     "duration": "2 hrs",
-    "createdOn": "24 Sept 2026",
+    "createdOn": "6 Oct 2026",
     "status": "published",
     "topics": [
       "Workflow syntax",
@@ -4986,7 +4986,7 @@ export const chaptersDays20to100 = [
     "title": "AWS Cloud Basics",
     "subtitle": "EC2, S3, RDS, and cloud fundamentals",
     "duration": "2 hrs",
-    "createdOn": "25 Sept 2026",
+    "createdOn": "7 Oct 2026",
     "status": "published",
     "topics": [
       "Cloud computing intro",
@@ -5058,7 +5058,7 @@ export const chaptersDays20to100 = [
     "title": "Deployment Strategies",
     "subtitle": "Blue-green, rolling, and canary deployments",
     "duration": "2 hrs",
-    "createdOn": "26 Sept 2026",
+    "createdOn": "8 Oct 2026",
     "status": "published",
     "topics": [
       "Deployment types",
@@ -5130,7 +5130,7 @@ export const chaptersDays20to100 = [
     "title": "Kubernetes Introduction",
     "subtitle": "Pods, services, deployments, and kubectl",
     "duration": "2 hrs",
-    "createdOn": "27 Sept 2026",
+    "createdOn": "9 Oct 2026",
     "status": "published",
     "topics": [
       "Why Kubernetes",
@@ -5202,7 +5202,7 @@ export const chaptersDays20to100 = [
     "title": "Monitoring & Logging",
     "subtitle": "Logs, metrics, alerts, and observability",
     "duration": "2 hrs",
-    "createdOn": "28 Sept 2026",
+    "createdOn": "10 Oct 2026",
     "status": "published",
     "topics": [
       "Logging best practices",
@@ -5274,7 +5274,7 @@ export const chaptersDays20to100 = [
     "title": "Infrastructure as Code — Terraform",
     "subtitle": "Provision cloud resources with code",
     "duration": "2 hrs",
-    "createdOn": "29 Sept 2026",
+    "createdOn": "11 Oct 2026",
     "status": "published",
     "topics": [
       "IaC concepts",
@@ -5346,7 +5346,7 @@ export const chaptersDays20to100 = [
     "title": "DevOps Capstone",
     "subtitle": "End-to-end pipeline from code to production",
     "duration": "2 hrs",
-    "createdOn": "30 Sept 2026",
+    "createdOn": "12 Oct 2026",
     "status": "published",
     "topics": [
       "Capstone pipeline",
@@ -5418,7 +5418,7 @@ export const chaptersDays20to100 = [
     "title": "Full-Stack Architecture Review",
     "subtitle": "Connect frontend, backend, DB, cache, and deploy",
     "duration": "2 hrs",
-    "createdOn": "1 Oct 2026",
+    "createdOn": "13 Oct 2026",
     "status": "published",
     "topics": [
       "Architecture layers",
@@ -5490,7 +5490,7 @@ export const chaptersDays20to100 = [
     "title": "Database Indexing & Query Optimization",
     "subtitle": "Indexes, explain plans, and performance tuning",
     "duration": "2 hrs",
-    "createdOn": "2 Oct 2026",
+    "createdOn": "14 Oct 2026",
     "status": "published",
     "topics": [
       "Why indexes",
@@ -5562,7 +5562,7 @@ export const chaptersDays20to100 = [
     "title": "Authentication in Production",
     "subtitle": "OAuth, sessions, refresh tokens, and SSO",
     "duration": "2 hrs",
-    "createdOn": "3 Oct 2026",
+    "createdOn": "15 Oct 2026",
     "status": "published",
     "topics": [
       "OAuth 2.0",
@@ -5634,7 +5634,7 @@ export const chaptersDays20to100 = [
     "title": "Microservices Communication",
     "subtitle": "REST, gRPC, and event-driven integration",
     "duration": "2 hrs",
-    "createdOn": "4 Oct 2026",
+    "createdOn": "16 Oct 2026",
     "status": "published",
     "topics": [
       "Sync vs async",
@@ -5706,7 +5706,7 @@ export const chaptersDays20to100 = [
     "title": "Frontend System Design",
     "subtitle": "Performance, bundling, CDN, and UI architecture",
     "duration": "2 hrs",
-    "createdOn": "5 Oct 2026",
+    "createdOn": "17 Oct 2026",
     "status": "published",
     "topics": [
       "Frontend architecture",
@@ -5778,7 +5778,7 @@ export const chaptersDays20to100 = [
     "title": "Behavioral Interview Prep",
     "subtitle": "STAR method, stories, and communication",
     "duration": "2 hrs",
-    "createdOn": "6 Oct 2026",
+    "createdOn": "18 Oct 2026",
     "status": "published",
     "topics": [
       "STAR method",
@@ -5850,7 +5850,7 @@ export const chaptersDays20to100 = [
     "title": "DSA for Web Developers",
     "subtitle": "Essential data structures for coding interviews",
     "duration": "2 hrs",
-    "createdOn": "7 Oct 2026",
+    "createdOn": "19 Oct 2026",
     "status": "published",
     "topics": [
       "Arrays & strings",
@@ -5922,7 +5922,7 @@ export const chaptersDays20to100 = [
     "title": "Building Your Tech Resume",
     "subtitle": "Resume, LinkedIn, and GitHub profile optimization",
     "duration": "2 hrs",
-    "createdOn": "8 Oct 2026",
+    "createdOn": "20 Oct 2026",
     "status": "published",
     "topics": [
       "Resume structure",
@@ -5994,7 +5994,7 @@ export const chaptersDays20to100 = [
     "title": "Open Source Contribution",
     "subtitle": "Find projects, contribute PRs, and grow your network",
     "duration": "2 hrs",
-    "createdOn": "9 Oct 2026",
+    "createdOn": "21 Oct 2026",
     "status": "published",
     "topics": [
       "Why open source",
@@ -6066,7 +6066,7 @@ export const chaptersDays20to100 = [
     "title": "100 Days Retrospective",
     "subtitle": "Review your journey and plan what is next",
     "duration": "2 hrs",
-    "createdOn": "10 Oct 2026",
+    "createdOn": "22 Oct 2026",
     "status": "published",
     "topics": [
       "Skills acquired",
@@ -6138,7 +6138,7 @@ export const chaptersDays20to100 = [
     "title": "Graduation Project Showcase",
     "subtitle": "Present your work and celebrate 100 days!",
     "duration": "2 hrs",
-    "createdOn": "11 Oct 2026",
+    "createdOn": "23 Oct 2026",
     "status": "published",
     "topics": [
       "Final presentation",

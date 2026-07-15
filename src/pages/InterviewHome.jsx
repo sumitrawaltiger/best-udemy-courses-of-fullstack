@@ -69,17 +69,17 @@ export default function InterviewHome() {
         <section className="roadmap">
           <h2>100-Day System Design Roadmap</h2>
           <p className="section-desc">
-            This track covers the finale of the journey: <strong>System Design</strong> (31 Jul – 7 Nov 2028),{' '}
-            <strong>Data Structures</strong> (8 Nov 2028 – 15 Feb 2029), <strong>100 Days of JavaScript DSA</strong>{' '}
-            (16 Feb – 26 May 2029), a <strong>50 Days React Bootcamp</strong> (27 May – 15 Jul 2029), a{' '}
-            <strong>100 Days of Python</strong> bootcamp (16 Jul – 23 Oct 2029), a{' '}
-            <strong>100 Days of JavaScript</strong> bootcamp (24 Oct 2029 – 31 Jan 2030), a{' '}
-            <strong>50 Days LeetCode in Java</strong> phase (1 Feb – 22 Mar 2030), a{' '}
-            <strong>60 Days of Java</strong> masterclass (23 Mar – 21 May 2030), a{' '}
-            <strong>30 JavaScript Projects</strong> sprint (22 May – 20 Jun 2030), then a{' '}
+            This track covers the finale of the journey: <strong>System Design</strong> (12 Aug – 19 Nov 2028),{' '}
+            <strong>Data Structures</strong> (20 Nov 2028 – 27 Feb 2029), <strong>100 Days of JavaScript DSA</strong>{' '}
+            (28 Feb – 7 Jun 2029), a <strong>50 Days React Bootcamp</strong> (8 Jun – 27 Jul 2029), a{' '}
+            <strong>100 Days of Python</strong> bootcamp (28 Jul – 4 Nov 2029), a{' '}
+            <strong>100 Days of JavaScript</strong> bootcamp (5 Nov 2029 – 12 Feb 2030), a{' '}
+            <strong>50 Days LeetCode in Java</strong> phase (13 Feb – 3 Apr 2030), a{' '}
+            <strong>60 Days of Java</strong> masterclass (4 Apr – 2 Jun 2030), a{' '}
+            <strong>30 JavaScript Projects</strong> sprint (3 Jun – 2 Jul 2030), then a{' '}
             <strong>Two-Week JavaScript Bootcamp</strong> closing the journey for{' '}
-            <strong>14 days (~2 weeks)</strong> — 21 Jun 2030 to{' '}
-            <strong>4 Jul 2030</strong>. Total study: <strong>1461 days</strong> from 5 Jul 2026 to 4 Jul 2030.{' '}
+            <strong>14 days (~2 weeks)</strong> — 3 Jul 2030 to{' '}
+            <strong>16 Jul 2030</strong>. Total study: <strong>1461 days</strong> from 17 Jul 2026 to 16 Jul 2030.{' '}
             {interviewChapters.length} modules on this track support these phases.
           </p>
           <div className="roadmap-grid roadmap-interview">
@@ -94,7 +94,7 @@ export default function InterviewHome() {
               <span className="legend-dot published legend-dot-interview" /> {interviewChapters.length} modules
             </span>
             <span>
-              <span className="legend-dot published" /> JS-DSA 100d · React 50d · Py 100d · JS 100d · LC 50d · Java 60d · JS30 30d · JS2w 14d (~2w) → 4 Jul 2030 · 1461 total
+              <span className="legend-dot published" /> JS-DSA 100d · React 50d · Py 100d · JS 100d · LC 50d · Java 60d · JS30 30d · JS2w 14d (~2w) → 16 Jul 2030 · 1461 total
             </span>
           </div>
         </section>

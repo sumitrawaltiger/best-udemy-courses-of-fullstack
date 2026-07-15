@@ -7,7 +7,7 @@ export const chaptersDays01to19 = [
     "title": "Introduction to JavaScript",
     "subtitle": "HTML, CSS, JS — how the web works",
     "duration": "2 hrs 25 mins",
-    "createdOn": "5 Jul 2026",
+    "createdOn": "17 Jul 2026",
     "status": "published",
     "topics": [
       "What is JavaScript?",
@@ -146,7 +146,7 @@ export const chaptersDays01to19 = [
     "title": "Data Types in JavaScript",
     "subtitle": "Primitives, typeof, objects, arrays & functions",
     "duration": "2 hrs 10 mins",
-    "createdOn": "6 Jul 2026",
+    "createdOn": "18 Jul 2026",
     "status": "published",
     "topics": [
       "Primitive vs non-primitive",
@@ -290,7 +290,7 @@ export const chaptersDays01to19 = [
     "title": "Operators & Data Types",
     "subtitle": "Arithmetic, comparison, logical ops & primitive vs reference",
     "duration": "2 hrs 5 mins",
-    "createdOn": "7 Jul 2026",
+    "createdOn": "19 Jul 2026",
     "status": "published",
     "topics": [
       "Arithmetic operators",
@@ -454,7 +454,7 @@ export const chaptersDays01to19 = [
     "title": "Loops, Numbers, Math & Strings",
     "subtitle": "if/else, for/while loops, Math object & string methods",
     "duration": "2 hrs 5 mins",
-    "createdOn": "8 Jul 2026",
+    "createdOn": "20 Jul 2026",
     "status": "published",
     "topics": [
       "if / else if / else",
@@ -621,7 +621,7 @@ export const chaptersDays01to19 = [
     "title": "Control Flow & Patterns",
     "subtitle": "Number series, multiplication tables, sum formula & star patterns",
     "duration": "2 hrs",
-    "createdOn": "9 Jul 2026",
+    "createdOn": "21 Jul 2026",
     "status": "published",
     "topics": [
       "Loops for repetition",
@@ -801,7 +801,7 @@ export const chaptersDays01to19 = [
     "title": "Arrays & Objects",
     "subtitle": "Indexing, push/pop, slice/splice, 2D arrays & spread",
     "duration": "2 hrs",
-    "createdOn": "10 Jul 2026",
+    "createdOn": "22 Jul 2026",
     "status": "published",
     "topics": [
       "What is an array?",
@@ -974,7 +974,7 @@ export const chaptersDays01to19 = [
     "title": "Objects & Date",
     "subtitle": "Deep objects, sort, keys/entries, cloning & real data",
     "duration": "2 hrs",
-    "createdOn": "11 Jul 2026",
+    "createdOn": "23 Jul 2026",
     "status": "published",
     "topics": [
       "Why objects?",
@@ -1153,7 +1153,7 @@ export const chaptersDays01to19 = [
     "title": "Date & Functions",
     "subtitle": "Date object, timestamps, three ways to write functions, IIFE & callbacks",
     "duration": "2 hrs",
-    "createdOn": "12 Jul 2026",
+    "createdOn": "24 Jul 2026",
     "status": "published",
     "topics": [
       "Date object & getters",
@@ -1340,7 +1340,7 @@ export const chaptersDays01to19 = [
     "title": "Callbacks, forEach, map, filter, reduce",
     "subtitle": "Build the methods yourself, then master the real ones — plus Sets",
     "duration": "2 hrs",
-    "createdOn": "13 Jul 2026",
+    "createdOn": "25 Jul 2026",
     "status": "published",
     "topics": [
       "Callback recap",
@@ -1514,7 +1514,7 @@ export const chaptersDays01to19 = [
     "title": "Introduction to the DOM",
     "subtitle": "The document tree, selecting elements, and changing content & style",
     "duration": "2 hrs",
-    "createdOn": "14 Jul 2026",
+    "createdOn": "26 Jul 2026",
     "status": "published",
     "topics": [
       "What is the DOM?",
@@ -1671,7 +1671,7 @@ export const chaptersDays01to19 = [
     "title": "DOM CRUD & Events",
     "subtitle": "Handle events, create & insert nodes, and render UI from data",
     "duration": "2 hrs",
-    "createdOn": "15 Jul 2026",
+    "createdOn": "27 Jul 2026",
     "status": "published",
     "topics": [
       "Element as an object",
@@ -1837,7 +1837,7 @@ export const chaptersDays01to19 = [
     "title": "Events & JavaScript Projects",
     "subtitle": "The event model in depth, then 5 hands-on mini projects",
     "duration": "2 hrs",
-    "createdOn": "16 Jul 2026",
+    "createdOn": "28 Jul 2026",
     "status": "published",
     "topics": [
       "The event object & e.target",
@@ -1995,7 +1995,7 @@ export const chaptersDays01to19 = [
     "title": "JavaScript Projects Part 2",
     "subtitle": "Seven mini apps — inputs, timers, async fetch, and forms",
     "duration": "2 hrs",
-    "createdOn": "17 Jul 2026",
+    "createdOn": "29 Jul 2026",
     "status": "published",
     "topics": [
       "Reading input.value",
@@ -2139,7 +2139,7 @@ export const chaptersDays01to19 = [
     "title": "JavaScript Projects",
     "subtitle": "Capstone apps — a quiz, Tic Tac Toe, and a weather app",
     "duration": "2 hrs",
-    "createdOn": "18 Jul 2026",
+    "createdOn": "30 Jul 2026",
     "status": "published",
     "topics": [
       "Answer-key grading",
@@ -2282,7 +2282,7 @@ export const chaptersDays01to19 = [
     "title": "JSON vs JS Object",
     "subtitle": "Serialization, the fetch API, and rendering real API data",
     "duration": "2 hrs",
-    "createdOn": "19 Jul 2026",
+    "createdOn": "31 Jul 2026",
     "status": "published",
     "topics": [
       "JSON is a string",
@@ -2426,7 +2426,7 @@ export const chaptersDays01to19 = [
     "title": "Memory Management & How JS Works",
     "subtitle": "Execution context, the two phases, hoisting, TDZ, scope & the call stack",
     "duration": "2 hrs",
-    "createdOn": "20 Jul 2026",
+    "createdOn": "1 Aug 2026",
     "status": "published",
     "topics": [
       "Execution context",
@@ -2565,7 +2565,7 @@ export const chaptersDays01to19 = [
     "title": "Prototypes, Classes & Event Loop",
     "subtitle": "The prototype chain, ES6 classes, inheritance & how async runs",
     "duration": "2 hrs",
-    "createdOn": "21 Jul 2026",
+    "createdOn": "2 Aug 2026",
     "status": "published",
     "topics": [
       "Prototype chain",
@@ -2711,7 +2711,7 @@ export const chaptersDays01to19 = [
     "title": "Callback Hell & Promises",
     "subtitle": "Async patterns from callbacks to promises",
     "duration": "2 hrs",
-    "createdOn": "18 Jul 2026",
+    "createdOn": "30 Jul 2026",
     "status": "published",
     "topics": [
       "Callback hell",
@@ -2826,7 +2826,7 @@ export const chaptersDays01to19 = [
     "title": "Closures & the this Keyword",
     "subtitle": "How this is bound, call/apply/bind, closures & data privacy",
     "duration": "2 hrs",
-    "createdOn": "23 Jul 2026",
+    "createdOn": "4 Aug 2026",
     "status": "published",
     "topics": [
       "globalThis, window & global",
