@@ -764,7 +764,18 @@ export const pythonLessons = [
     topics: ['Defining functions', 'Parameters & return', 'Lambda functions', 'map()', 'filter()'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=9Os0o3wzssI', 'Python Functions', 'Corey Schafer'),
-    sections: PYTHON_FUNCTIONS_SECTIONS,
+    sections: [
+      ...PYTHON_FUNCTIONS_SECTIONS,
+      {
+        id: 'functions-in-python-reference',
+        title: 'Functions in Python — Visual Reference',
+        content:
+          "Functions help you write **reusable and organized code** — instead of repeating the same code, put it in a function and call it whenever needed. This one-page reference covers the essentials:\n\n- **Define & call** — `def` creates a function; call it by name (`greet()`).\n- **Parameters & arguments** — functions accept inputs; you can pass **multiple** parameters (`def add(a, b)`).\n- **Return** — `return` sends a value back to the caller (very important in real projects).\n- **Default parameters** — assign defaults (`def country(name=\"India\")`) so arguments are optional.\n- **Lambda functions** — small anonymous one-liners (`square = lambda x: x * x`), common in data analysis & automation.\n- **Recursion** — a function calling itself (with a base case to stop).\n- **Variable scope** — **local** (inside a function) vs **global** (outside) variables.\n- **Modules & imports** — organize code into files; use `import math` or `from random import randint` to reuse built-in and external libraries.\n\n**Common beginner mistakes:** forgetting indentation, missing a return statement, confusing parameters and arguments, and infinite recursion. **Pro tip:** write small, reusable functions with meaningful names.",
+        code: "# define & call\ndef greet(name=\"Python\"):   # default parameter\n    return f\"Hello, {name}\"\nprint(greet())            # Hello, Python\n\n# multiple params + return\ndef add(a, b):\n    return a + b\nprint(add(10, 20))        # 30\n\n# lambda\nsquare = lambda x: x * x\nprint(square(4))          # 16\n\n# recursion\ndef countdown(n):\n    if n == 0:\n        return\n    print(n)\n    countdown(n - 1)\ncountdown(5)              # 5 4 3 2 1\n\n# modules\nimport math\nprint(math.sqrt(25))      # 5.0",
+        image: '/python-notes/python-functions-part3.jpg',
+        imageAlt: 'Functions in Python visual reference — what a function is (def and call), function parameters and multiple parameters, the return statement, default parameters, lambda functions, recursion basics, variable scope (local vs global), modules in Python, import statements, practice programs, and common beginner mistakes',
+      },
+    ],
   },
   {
     pyDay: 6,
