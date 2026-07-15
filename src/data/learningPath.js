@@ -99,10 +99,17 @@ export const LEARNING_PATH = [
     path: '/interview',
   },
   {
+    id: 'javaMasterclass',
+    label: '60 Days of Java',
+    short: 'JvM',
+    desc: '23 Mar – 21 May 2030 · 60 days',
+    path: '/interview',
+  },
+  {
     id: 'interviewPrep',
     label: 'Interview Prep',
     short: 'IP',
-    desc: '104 days (~15 weeks) · ends 4 Jul 2030',
+    desc: '44 days (~6 weeks) · ends 4 Jul 2030',
     path: '/interview',
   },
 ];

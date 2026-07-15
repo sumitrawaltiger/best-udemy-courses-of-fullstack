@@ -362,4 +362,20 @@ export const BEST_COURSES = [
       },
     ],
   },
+  {
+    id: 'java-masterclass',
+    category: 'cs-interview',
+    skill: 'Java Masterclass (60-Day)',
+    icon: '☕',
+    title: '60 Days of Java: The Complete Java Masterclass',
+    instructor: 'Denis Panjuta',
+    provider: 'Udemy',
+    note: 'A 60-day complete Java masterclass (23 Mar – 21 May 2030, carved from the interview-prep window) — master Java from basics to advanced with OOP, JavaFX desktop apps, Spring Boot, REST APIs, microservices, and database handling. 49.5 hours.',
+    links: [
+      {
+        label: 'View on Udemy',
+        url: 'https://www.udemy.com/course/javamasterclass/',
+      },
+    ],
+  },
 ];
