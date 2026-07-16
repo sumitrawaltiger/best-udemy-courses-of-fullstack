@@ -32,11 +32,12 @@ import ThunderHero from '../components/ThunderHero';
 const BTECH_ROADMAP = [
   {
     year: '1st Year',
-    theme: 'TypeScript & Frontend',
+    dates: '17 Jul 2026 – 16 Jul 2027',
+    theme: 'TypeScript Stack',
     icon: '🎨',
     accent: 'y1',
-    topics: ['TypeScript', 'JavaScript', 'React', 'Next.js', 'React Native', 'DSA & System Design in TypeScript'],
-    blurb: 'Build interactive UIs and your first mobile apps — the visible half of every product.',
+    topics: ['TypeScript', 'JavaScript', 'React JS', 'Next.js', 'React Native', 'Express', 'DSA in JavaScript', 'System Design in JavaScript'],
+    blurb: 'The TypeScript stack end to end — interactive UIs, mobile apps, and Node/Express backends, with DSA & system design practiced in JavaScript.',
     links: [
       { label: 'JavaScript Track', to: '#syllabus' },
       { label: 'React / Next.js', to: '/nextjs' },
@@ -45,29 +46,32 @@ const BTECH_ROADMAP = [
   },
   {
     year: '2nd Year',
-    theme: 'Python & Agentic AI',
+    dates: '17 Jul 2027 – 16 Jul 2028',
+    theme: 'Python Stack',
     icon: '🐍',
     accent: 'y2',
-    topics: ['Python', 'Django', 'FastAPI', 'Agentic AI', 'DSA & System Design in Python'],
-    blurb: 'Add Python, web frameworks, and the AI agents that are reshaping software.',
+    topics: ['Python', 'Django', 'Agentic AI in Python', 'DSA in Python', 'System Design in Python'],
+    blurb: 'The Python stack — core Python, Django web apps, and Agentic AI, with DSA & system design practiced in Python.',
     links: [{ label: 'Python & Agentic AI', to: '/python' }],
   },
   {
     year: '3rd Year',
-    theme: 'Backend with Java',
+    dates: '17 Jul 2028 – 16 Jul 2029',
+    theme: 'Java Stack',
     icon: '☕',
     accent: 'y3',
-    topics: ['Java', 'Spring Boot', 'Microservices', 'DSA & System Design in Java'],
-    blurb: 'Design robust server-side systems, REST APIs, and scalable microservices.',
+    topics: ['Java', 'Spring Boot', 'Microservices', 'DSA in Java', 'System Design in Java', 'Java Design Patterns'],
+    blurb: 'The Java stack — Spring Boot, microservices, and design patterns, with DSA & system design practiced in Java.',
     links: [{ label: 'Java & Spring Track', to: '/java' }],
   },
   {
     year: '4th Year',
-    theme: 'DevOps with Cloud',
+    dates: '17 Jul 2029 – 16 Jul 2030',
+    theme: 'DevOps & Cloud',
     icon: '☁️',
     accent: 'y4',
-    topics: ['DevOps', 'Cloud', 'Kubernetes', 'CI/CD'],
-    blurb: 'Ship and scale everything you built — CI/CD, cloud, containers, and orchestration.',
+    topics: ['DevOps', 'AWS', 'Kubernetes', 'Docker', 'CI/CD'],
+    blurb: 'Dedicated to DevOps — AWS, Kubernetes, Docker, and CI/CD to ship and scale everything you built.',
     links: [
       { label: 'DevOps', to: '/devops' },
       { label: 'AWS Cloud', to: '/aws' },
@@ -187,6 +191,7 @@ export default function Home() {
                   <div>
                     <p className="btech-card-year">{yr.year}</p>
                     <h3 className="btech-card-theme">{yr.theme}</h3>
+                    <p className="btech-card-dates">{yr.dates}</p>
                   </div>
                 </div>
                 <p className="btech-card-blurb">{yr.blurb}</p>

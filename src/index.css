@@ -1184,6 +1184,13 @@ a:hover {
   font-weight: 800;
   color: #fff;
 }
+.btech-card-dates {
+  margin: 3px 0 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #9db3a5;
+  letter-spacing: 0.01em;
+}
 .btech-card-blurb {
   margin: 0;
   font-size: 0.85rem;
