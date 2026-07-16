@@ -19,7 +19,7 @@ export const INTERVIEW_META = {
   title: 'Thunder++ — System Design',
   subtitle: 'System Design for 100 days — the complete lifecycle (ChaiCode + GeeksForGeeks 12-week program)',
   description:
-    "From 12 Aug to 19 Nov 2028: master the complete System Design lifecycle, following GeeksForGeeks' 12-week, 24-module live program plus ChaiCode. Covers scalability foundations, databases & caching, messaging/events & API design, microservices, resilience, observability & security, cloud/DevOps, and real-world case studies (URL shortener → WhatsApp → Instagram → Uber) with production-grade capstone builds. Data Structures follows from 20 Nov 2028.",
+    "System Design is practiced every year in that year's language — first in JavaScript (28 May – 16 Jul 2027), then Python (Year 2) and Java (Year 3). Following GeeksForGeeks' 12-week, 24-module live program plus ChaiCode: scalability foundations, databases & caching, messaging/events & API design, microservices, resilience, observability & security, cloud/DevOps, and real-world case studies (URL shortener → WhatsApp → Instagram → Uber) with production-grade capstone builds.",
   chaicodeUrl: CHAICODE_INTERVIEW_URL,
   gfgDsaUrl: GFG_DSA_URL,
   gfgSystemDesignUrl: GFG_SYSTEM_DESIGN_URL,
@@ -29,10 +29,10 @@ export const INTERVIEW_META = {
   instructors: 'Hitesh Choudhary — ChaiCode & GeeksForGeeks',
   totalModules: 60,
   calendarDays: 100,
-  phaseWindow: 'Days 759–858 · 12 Aug – 19 Nov 2028',
-  startsAfter: 'Kubernetes (through 11 Aug 2028)',
-  endsOn: '19 Nov 2028',
-  continuesWith: 'Data Structures (Days 859–958 · 20 Nov 2028 – 27 Feb 2029)',
+  phaseWindow: 'Each year · JavaScript first (Days 316–365 · 28 May – 16 Jul 2027)',
+  startsAfter: 'DSA in JavaScript (through 27 May 2027)',
+  endsOn: '16 Jul 2027 (JS) · repeats each year in that language',
+  continuesWith: 'Year 2 · Python stack (from 17 Jul 2027)',
   focusAreas: [
     'Scalability foundations',
     'Databases & caching',
@@ -62,15 +62,15 @@ export const DSA_META = {
   title: 'Thunder++ — Data Structures',
   subtitle: 'Data Structures & Algorithms for 100 days — GeeksForGeeks + ChaiCode',
   description:
-    'From 20 Nov 2028 to 27 Feb 2029: deep DSA study — arrays, trees, graphs, DP, and patterns — with GeeksForGeeks Self Paced and ChaiCode practice. 100 Days of JavaScript DSA follows from 28 Feb 2029.',
+    'DSA is practiced every year in that year’s language — first in JavaScript (17 Feb – 27 May 2027, Elshad Karimov’s 100 Days of Code: JS DSA), then Python (Year 2) and Java (Year 3). Arrays, trees, graphs, DP, and problem-solving patterns with GeeksForGeeks Self Paced and ChaiCode practice.',
   gfgDsaUrl: GFG_DSA_URL,
   chaicodeUrl: CHAICODE_INTERVIEW_URL,
   gfgCoursesUrl: GFG_COURSES_URL,
   calendarDays: 100,
-  phaseWindow: 'Days 859–958 · 20 Nov 2028 – 27 Feb 2029',
-  startsAfter: 'System Design (through 19 Nov 2028)',
-  endsOn: '27 Feb 2029',
-  continuesWith: 'JavaScript DSA — 100 Days of Code · 28 Feb – 7 Jun 2029',
+  phaseWindow: 'Each year · JavaScript first (Days 216–315 · 17 Feb – 27 May 2027)',
+  startsAfter: 'Express / Node.js (through 16 Feb 2027)',
+  endsOn: '27 May 2027 (JS) · repeats each year in that language',
+  continuesWith: 'System Design in JavaScript · 28 May – 16 Jul 2027',
   focusAreas: ['Arrays & Strings', 'Trees & Graphs', 'DP & Patterns', 'Problem solving'],
   path: '/interview',
 };
@@ -221,7 +221,7 @@ export const JOURNEY_META = {
   finalPhaseDays: 14,
   finalPhaseWeeks: 2,
   summary:
-    'Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data Structures → JavaScript DSA → React Bootcamp → Python Bootcamp → JavaScript Bootcamp → LeetCode in Java → Java Masterclass → 30 JS Projects → Two-Week JavaScript Bootcamp.',
+    'Year 1 TypeScript (JavaScript → React & Next.js → React Native → Node/Express → DSA in JS → System Design in JS) → Year 2 Python (Python → Django → Agentic AI → DSA in Python → System Design in Python) → Year 3 Java (Spring Boot → Microservices → Design Patterns → DSA in Java → System Design in Java) → Year 4 DevOps (AWS → Docker → Kubernetes → DevOps & CI/CD).',
 };
 
 function lessonToModule(ch) {

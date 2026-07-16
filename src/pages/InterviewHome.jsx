@@ -67,19 +67,13 @@ export default function InterviewHome() {
         </div>
 
         <section className="roadmap">
-          <h2>100-Day System Design Roadmap</h2>
+          <h2>DSA &amp; System Design — Every Year</h2>
           <p className="section-desc">
-            This track covers the finale of the journey: <strong>System Design</strong> (12 Aug – 19 Nov 2028),{' '}
-            <strong>Data Structures</strong> (20 Nov 2028 – 27 Feb 2029), <strong>100 Days of JavaScript DSA</strong>{' '}
-            (28 Feb – 7 Jun 2029), a <strong>50 Days React Bootcamp</strong> (8 Jun – 27 Jul 2029), a{' '}
-            <strong>100 Days of Python</strong> bootcamp (28 Jul – 4 Nov 2029), a{' '}
-            <strong>100 Days of JavaScript</strong> bootcamp (5 Nov 2029 – 12 Feb 2030), a{' '}
-            <strong>50 Days LeetCode in Java</strong> phase (13 Feb – 3 Apr 2030), a{' '}
-            <strong>60 Days of Java</strong> masterclass (4 Apr – 2 Jun 2030), a{' '}
-            <strong>30 JavaScript Projects</strong> sprint (3 Jun – 2 Jul 2030), then a{' '}
-            <strong>Two-Week JavaScript Bootcamp</strong> closing the journey for{' '}
-            <strong>14 days (~2 weeks)</strong> — 3 Jul 2030 to{' '}
-            <strong>16 Jul 2030</strong>. Total study: <strong>1461 days</strong> from 17 Jul 2026 to 16 Jul 2030.{' '}
+            In the re-sequenced 4-year plan, <strong>DSA</strong> and <strong>System Design</strong> are practiced{' '}
+            <strong>every year in that year’s language</strong>:{' '}
+            <strong>JavaScript</strong> in Year 1 (DSA 17 Feb – 27 May 2027 · System Design 28 May – 16 Jul 2027),{' '}
+            <strong>Python</strong> in Year 2 (18 Feb – 16 Jul 2028), and <strong>Java</strong> in Year 3
+            (7 Feb – 16 Jul 2029). Total study: <strong>1461 days</strong> from 17 Jul 2026 to 16 Jul 2030.{' '}
             {interviewChapters.length} modules on this track support these phases.
           </p>
           <div className="roadmap-grid roadmap-interview">
@@ -94,7 +88,7 @@ export default function InterviewHome() {
               <span className="legend-dot published legend-dot-interview" /> {interviewChapters.length} modules
             </span>
             <span>
-              <span className="legend-dot published" /> JS-DSA 100d · React 50d · Py 100d · JS 100d · LC 50d · Java 60d · JS30 30d · JS2w 14d (~2w) → 16 Jul 2030 · 1461 total
+              <span className="legend-dot published" /> DSA & System Design each year: JS (Y1) · Python (Y2) · Java (Y3) → 16 Jul 2030 · 1461 total
             </span>
           </div>
         </section>

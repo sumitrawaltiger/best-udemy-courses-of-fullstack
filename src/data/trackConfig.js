@@ -87,53 +87,18 @@ export const JOURNEY_TOTAL_DAYS = 1461;
 // Factory calendar (Day 1 = 16 Jul 2026): journey day N ≈ factory day N+1; last factory day = 1462
 export const JOURNEY_END_FACTORY_DAY = 1462;
 
+// Explicit day-offsets for the re-sequenced 4-year plan (offset = phase start day − 1).
+// Year 1 (JS/TS): Days 1–365 · Year 2 (Python): 366–731 · Year 3 (Java): 732–1096 · Year 4 (DevOps): 1097–1461.
 export const TRACK_OFFSETS = {
-  thunder: 0,
-  nextjs: THUNDER_DAYS,
-  mobile: THUNDER_DAYS + NEXTJS_CALENDAR_DAYS,
-  python: THUNDER_DAYS + NEXTJS_RN_PHASE_DAYS,
-  java: THUNDER_DAYS + NEXTJS_RN_PHASE_DAYS + PYTHON_CALENDAR_DAYS,
-  aws: THUNDER_DAYS + NEXTJS_RN_PHASE_DAYS + PYTHON_CALENDAR_DAYS + JAVA_CALENDAR_DAYS,
-  devops:
-    THUNDER_DAYS +
-    NEXTJS_RN_PHASE_DAYS +
-    PYTHON_CALENDAR_DAYS +
-    JAVA_CALENDAR_DAYS +
-    AWS_DAYS,
-  k8s:
-    THUNDER_DAYS +
-    NEXTJS_RN_PHASE_DAYS +
-    PYTHON_CALENDAR_DAYS +
-    JAVA_CALENDAR_DAYS +
-    AWS_DAYS +
-    DEVOPS_DAYS,
-  interview:
-    THUNDER_DAYS +
-    NEXTJS_RN_PHASE_DAYS +
-    PYTHON_CALENDAR_DAYS +
-    JAVA_CALENDAR_DAYS +
-    AWS_DAYS +
-    DEVOPS_DAYS +
-    K8S_DAYS,
-  dsa:
-    THUNDER_DAYS +
-    NEXTJS_RN_PHASE_DAYS +
-    PYTHON_CALENDAR_DAYS +
-    JAVA_CALENDAR_DAYS +
-    AWS_DAYS +
-    DEVOPS_DAYS +
-    K8S_DAYS +
-    INTERVIEW_CALENDAR_DAYS,
-  interviewPrep:
-    THUNDER_DAYS +
-    NEXTJS_RN_PHASE_DAYS +
-    PYTHON_CALENDAR_DAYS +
-    JAVA_CALENDAR_DAYS +
-    AWS_DAYS +
-    DEVOPS_DAYS +
-    K8S_DAYS +
-    INTERVIEW_CALENDAR_DAYS +
-    DSA_CALENDAR_DAYS,
+  thunder: 0, // Thunder JavaScript — Days 1–100 (17 Jul – 24 Oct 2026)
+  nextjs: 100, // React & Next.js — Days 101–150 (25 Oct – 13 Dec 2026)
+  mobile: 150, // React Native — Days 151–190 (14 Dec 2026 – 22 Jan 2027)
+  interview: 315, // System Design in JavaScript — Days 316–365 (28 May – 16 Jul 2027)
+  python: 365, // Python stack — Year 2 (from 17 Jul 2027)
+  java: 731, // Java stack — Year 3 (from 17 Jul 2028)
+  aws: 1096, // AWS Cloud — Days 1097–1196 (17 Jul – 24 Oct 2029)
+  k8s: 1236, // Kubernetes — Days 1237–1336 (4 Dec 2029 – 13 Mar 2030)
+  devops: 1336, // DevOps & CI/CD — Days 1337–1461 (14 Mar – 16 Jul 2030)
 };
 
 export const NEXTJS_UDEMY_URL =

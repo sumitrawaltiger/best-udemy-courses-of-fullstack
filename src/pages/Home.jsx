@@ -14,7 +14,7 @@ import { JAVA_META } from '../data/javaSyllabus';
 import { AWS_META } from '../data/awsSyllabus';
 import { DEVOPS_META } from '../data/devopsSyllabus';
 import { K8S_META } from '../data/k8sSyllabus';
-import { INTERVIEW_META, DSA_META, JS_TWO_WEEK_META, JOURNEY_META } from '../data/interviewSyllabus';
+import { INTERVIEW_META, DSA_META, JOURNEY_META } from '../data/interviewSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import { JS_INTERVIEW_QUESTIONS } from '../data/interviewQuestions';
@@ -255,11 +255,11 @@ export default function Home() {
 
       <section className="thunder-plus-section thunder-nextjs-section" id="thunder-nextjs">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-nextjs">Days 101–145 · after Day 100</span>
+          <span className="thunder-plus-badge thunder-plus-badge-nextjs">Year 1 · Days 101–150 · 25 Oct – 13 Dec 2026</span>
           <h2>Thunder+ — React & Next.js</h2>
           <p className="section-desc">
-            After Thunder, spend the next phase on React & Next.js (through late November), then React Native
-            through <strong>16 Jan 2027</strong> — Days <strong>101–185</strong>. Continue
+            After Thunder, spend the next phase on React &amp; Next.js (<strong>25 Oct – 13 Dec 2026</strong>), then React Native
+            through <strong>22 Jan 2027</strong> — Days <strong>101–190</strong>. Continue
             with the{' '}
             <a href={NEXTJS_META.udemyUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode Udemy course
@@ -294,7 +294,7 @@ export default function Home() {
 
       <section className="thunder-plus-section" id="thunder-plus">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge">Days 146–185 · through 16 Jan 2027</span>
+          <span className="thunder-plus-badge">Year 1 · Days 151–190 · through 22 Jan 2027</span>
           <h2>Thunder++ — React Native</h2>
           <p className="section-desc">
             Finish the post-Thunder frontend stretch with the{' '}
@@ -302,7 +302,7 @@ export default function Home() {
               ChaiCode Mobile Development Cohort
             </a>
             . {mobileChapters.length} lessons covering Expo, navigation, APIs, notifications, auth, and real-world app
-            projects — landing on <strong>16 Jan 2027</strong>. Python & Agentic AI starts the next day.
+            projects — landing on <strong>22 Jan 2027</strong>. Node/Express and JavaScript DSA &amp; System Design close out Year 1; the Python stack opens Year 2 on 17 Jul 2027.
           </p>
           <div className="thunder-plus-highlights">
             <span>📱 React Native + Expo</span>
@@ -332,11 +332,11 @@ export default function Home() {
       <section className="thunder-plus-section thunder-python-section" id="thunder-python">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-python">
-            Days 186–305 · 17 Jan – 16 May 2027
+            Year 2 · Days 366–581 · 17 Jul 2027 – 17 Feb 2028
           </span>
           <h2>Thunder++ — Python & Agentic AI</h2>
           <p className="section-desc">
-            From <strong>17 Jan 2027</strong> to <strong>16 May 2027</strong> (4 months / 120 calendar days): Python
+            <strong>Year 2 (17 Jul 2027 – 17 Feb 2028)</strong> is the Python stack: Python
             study, Django, FastAPI, and Agentic AI at{' '}
             <a href={PYTHON_META.portalUrl} target="_blank" rel="noopener noreferrer">
               {PYTHON_META.institute}
@@ -372,13 +372,13 @@ export default function Home() {
       <section className="thunder-plus-section thunder-java-section" id="thunder-java">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-java">
-            Days 306–458 · 17 May – 16 Oct 2027
+            Year 3 · Days 732–936 · 17 Jul 2028 – 6 Feb 2029
           </span>
           <h2>Thunder++ — Java & Spring</h2>
           <p className="section-desc">
-            From <strong>17 May 2027</strong> to <strong>16 Oct 2027</strong> (153 calendar days):{' '}
-            <strong>J2SE</strong>, <strong>J2EE</strong>, <strong>JPA</strong>, <strong>Spring Boot</strong>, and{' '}
-            <strong>Microservices</strong> — mapped from {JAVA_META.courses.length} Udemy courses into{' '}
+            <strong>Year 3 (17 Jul 2028 – 6 Feb 2029)</strong> is the Java stack:{' '}
+            <strong>J2SE</strong>, <strong>J2EE</strong>, <strong>JPA</strong>, <strong>Spring Boot</strong>,{' '}
+            <strong>Microservices</strong>, and <strong>Java Design Patterns</strong> — mapped from {JAVA_META.courses.length} Udemy courses into{' '}
             {javaChapters.length} modules on this site.
           </p>
           <div className="thunder-plus-highlights">
@@ -410,12 +410,12 @@ export default function Home() {
       <section className="thunder-plus-section thunder-aws-section" id="thunder-aws">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-aws">
-            Days 459–558 · 17 Oct 2027 – 24 Jan 2028
+            Year 4 · Days 1097–1196 · 17 Jul – 24 Oct 2029
           </span>
           <h2>Thunder++ — 100 Days of AWS Cloud</h2>
           <p className="section-desc">
-            From <strong>17 Oct 2027</strong> for <strong>100 days</strong> (through{' '}
-            <strong>24 Jan 2028</strong>): master AWS with{' '}
+            <strong>Year 4</strong> opens with AWS — from <strong>17 Jul 2029</strong> for <strong>100 days</strong> (through{' '}
+            <strong>24 Oct 2029</strong>): master AWS with{' '}
             <a href={AWS_META.kodekloudUrl} target="_blank" rel="noopener noreferrer">
               KodeKloud 100 Days of Cloud
             </a>{' '}
@@ -454,12 +454,12 @@ export default function Home() {
       <section className="thunder-plus-section thunder-devops-section" id="thunder-devops">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-devops">
-            Days 559–658 · 25 Jan – 3 May 2028
+            Year 4 finale · Days 1337–1461 · 14 Mar – 16 Jul 2030
           </span>
-          <h2>Thunder++ — 100 Days of DevOps</h2>
+          <h2>Thunder++ — DevOps &amp; CI/CD</h2>
           <p className="section-desc">
-            From <strong>25 Jan 2028</strong> for <strong>100 days</strong> (through{' '}
-            <strong>3 May 2028</strong>): master the DevOps stack with{' '}
+            The journey closes with DevOps &amp; CI/CD — from <strong>14 Mar 2030</strong> for <strong>125 days</strong> (through{' '}
+            <strong>16 Jul 2030</strong>): master the DevOps stack with{' '}
             <a href={DEVOPS_META.kodekloudUrl} target="_blank" rel="noopener noreferrer">
               KodeKloud 100 Days of DevOps
             </a>{' '}
@@ -498,12 +498,12 @@ export default function Home() {
       <section className="thunder-plus-section thunder-k8s-section" id="thunder-k8s">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-k8s">
-            Days 659–758 · 4 May – 11 Aug 2028
+            Year 4 · Days 1237–1336 · 4 Dec 2029 – 13 Mar 2030
           </span>
           <h2>Thunder++ — Kubernetes</h2>
           <p className="section-desc">
-            From <strong>4 May 2028</strong> for <strong>100 days</strong> (through{' '}
-            <strong>11 Aug 2028</strong>): master Kubernetes with the{' '}
+            From <strong>4 Dec 2029</strong> for <strong>100 days</strong> (through{' '}
+            <strong>13 Mar 2030</strong>): master Kubernetes with the{' '}
             <a href={K8S_META.pathUrl} target="_blank" rel="noopener noreferrer">
               KodeKloud Kubernetes Learning Path
             </a>
@@ -549,12 +549,12 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            Days 759–858 · 12 Aug – 19 Nov 2028
+            Every year · first in JavaScript (28 May – 16 Jul 2027)
           </span>
           <h2>Thunder++ — System Design</h2>
           <p className="section-desc">
-            From <strong>12 Aug 2028</strong> for <strong>100 days</strong> (through{' '}
-            <strong>19 Nov 2028</strong>): deep <strong>System Design</strong> study with{' '}
+            <strong>System Design</strong> is practiced <strong>every year in that year’s language</strong> — first in
+            JavaScript (<strong>28 May – 16 Jul 2027</strong>), then Python (Year 2) and Java (Year 3): deep study with{' '}
             <a href={INTERVIEW_META.gfgSystemDesignUrl} target="_blank" rel="noopener noreferrer">
               GeeksForGeeks System Design
             </a>{' '}
@@ -562,8 +562,7 @@ export default function Home() {
             <a href={INTERVIEW_META.chaicodeUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode Interview Preparation
             </a>
-            . {interviewChapters.length} modules covering HLD/LLD, scalability, and case studies. Data Structures
-            starts <strong>20 Nov 2028</strong>.
+            . {interviewChapters.length} modules covering HLD/LLD, scalability, and case studies — re-applied in each year’s stack language.
           </p>
           <div className="thunder-plus-highlights">
             <span>🏗️ System Design</span>
@@ -593,12 +592,12 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-dsa">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            Days 859–958 · 20 Nov 2028 – 27 Feb 2029
+            Every year · first in JavaScript (17 Feb – 27 May 2027)
           </span>
           <h2>Thunder++ — Data Structures</h2>
           <p className="section-desc">
-            From <strong>20 Nov 2028</strong> for <strong>100 days</strong> (through{' '}
-            <strong>27 Feb 2029</strong>): deep <strong>Data Structures & Algorithms</strong> study with{' '}
+            <strong>DSA</strong> is practiced <strong>every year in that year’s language</strong> — first in JavaScript
+            (<strong>17 Feb – 27 May 2027</strong>, Elshad Karimov), then Python (Year 2) and Java (Year 3): deep <strong>Data Structures &amp; Algorithms</strong> study with{' '}
             <a href={DSA_META.gfgDsaUrl} target="_blank" rel="noopener noreferrer">
               GeeksForGeeks DSA Self Paced
             </a>{' '}
@@ -606,8 +605,7 @@ export default function Home() {
             <a href={DSA_META.chaicodeUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode practice
             </a>
-            . Arrays, trees, graphs, DP, and problem-solving patterns. Interview Preparation starts{' '}
-            <strong>28 Feb 2029</strong>.
+            . Arrays, trees, graphs, DP, and problem-solving patterns — solved in each year’s stack language.
           </p>
           <div className="thunder-plus-highlights">
             <span>📊 Arrays & Strings</span>
@@ -637,38 +635,29 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            14 days (~2 weeks) · 3 Jul 2030 – 16 Jul 2030
+            4 years · 4 stacks · {JOURNEY_META.totalDays} days
           </span>
-          <h2>Thunder++ — Two-Week JavaScript Bootcamp</h2>
+          <h2>Thunder++ — The 4-Year Journey</h2>
           <p className="section-desc">
-            From <strong>3 Jul 2030</strong> through <strong>16 Jul 2030</strong>: a final{' '}
-            <strong>Two-Week JavaScript Bootcamp</strong> for <strong>{JS_TWO_WEEK_META.calendarDays} days</strong> (
-            <strong>{JS_TWO_WEEK_META.weeks} weeks</strong>) —{' '}
-            <a href={JS_TWO_WEEK_META.courseUrl} target="_blank" rel="noopener noreferrer">
-              {JS_TWO_WEEK_META.instructor}'s course on Udemy
-            </a>
-            {' '}takes JavaScript from the very beginning to advanced — functions, arrays, objects, the DOM, events, and hands-on projects. That closes the full journey:{' '}
+            Four stack-years, back to back: <strong>Year 1 TypeScript</strong>, <strong>Year 2 Python</strong>,{' '}
+            <strong>Year 3 Java</strong>, and <strong>Year 4 DevOps</strong> — each carrying DSA &amp; System Design in
+            that year’s language. That closes the full journey:{' '}
             <strong>{JOURNEY_META.totalDays} days</strong> of study ({JOURNEY_META.years} years) from{' '}
-            {JOURNEY_META.startLabel} to {JOURNEY_META.endLabel}.
+            {JOURNEY_META.startLabel} to {JOURNEY_META.endLabel}, studying 5:00–8:00 AM daily.
           </p>
           <div className="thunder-plus-highlights">
-            <span>🟨 JavaScript fundamentals</span>
-            <span>🔧 Functions, arrays & objects</span>
-            <span>🖱️ DOM, events & forms</span>
-            <span>🚀 Hands-on projects</span>
+            <span>🎨 Year 1 · TypeScript</span>
+            <span>🐍 Year 2 · Python</span>
+            <span>☕ Year 3 · Java</span>
+            <span>☁️ Year 4 · DevOps</span>
           </div>
           <div className="thunder-plus-actions">
-            <Link to="/interview" className="btn btn-interview btn-lg">
-              Explore Final Phase
+            <Link to="/roadmap" className="btn btn-interview btn-lg">
+              View Full Roadmap
             </Link>
-            <a
-              href={JS_TWO_WEEK_META.courseUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-interview-chaicode btn-lg"
-            >
-              View on Udemy
-            </a>
+            <Link to="/interview" className="btn btn-interview-chaicode btn-lg">
+              DSA &amp; System Design →
+            </Link>
           </div>
         </div>
       </section>
