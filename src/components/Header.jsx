@@ -275,6 +275,9 @@ export default function Header({ onSearch }) {
             <Link to="/roadmap" className="header-nav-link" onClick={closeMenu}>
               Roadmap
             </Link>
+            <Link to="/prerequisites" className="header-nav-link" onClick={closeMenu}>
+              Prerequisites
+            </Link>
             <a href={TRACK_SYLLABUS[track]} className="header-nav-link" onClick={closeMenu}>
               Syllabus
             </a>

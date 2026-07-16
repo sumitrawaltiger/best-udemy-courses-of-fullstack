@@ -123,6 +123,8 @@ import CheatSheets from './pages/CheatSheets';
 import BestUdemyCourses from './pages/BestUdemyCourses';
 import AboutFounder from './pages/AboutFounder';
 import RoadmapHome from './pages/RoadmapHome';
+import Prerequisites from './pages/Prerequisites';
+import PrereqDay from './pages/PrereqDay';
 
 export default function App() {
   return (
@@ -242,6 +244,8 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="roadmap" element={<RoadmapHome />} />
+          <Route path="prerequisites" element={<Prerequisites />} />
+          <Route path="prerequisites/day/:day" element={<PrereqDay />} />
           <Route path="about-founder" element={<AboutFounder />} />
           <Route path="learn/:slug" element={<Chapter />} />
           <Route path="nextjs" element={<NextjsHome />} />
