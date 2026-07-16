@@ -10,6 +10,7 @@ import K8sHome from './pages/K8sHome';
 import InterviewHome from './pages/InterviewHome';
 import MobileHome from './pages/MobileHome';
 import Chapter from './pages/Chapter';
+import Day000 from './pages/Day000';
 import Day001 from './pages/Day001';
 import Day002 from './pages/Day002';
 import Day003 from './pages/Day003';
@@ -127,6 +128,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/day-000" element={<Day000 />} />
         <Route path="/day-001" element={<Day001 />} />
         <Route path="/day-002" element={<Day002 />} />
         <Route path="/day-003" element={<Day003 />} />
