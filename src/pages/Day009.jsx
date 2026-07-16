@@ -2,188 +2,108 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const NOTION_URL =
-  'https://app.notion.com/p/Lecture09-Callback-forEach-map-filter-reduce-37d43ac5cab980e0a44ef39a89b81143?source=copy_link';
-
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture09';
+const TS_MODULES = 'https://www.typescriptlang.org/docs/handbook/2/modules.html';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
+  { title: 'ES modules', text: 'each file is its own module — `export` what you share, `import` what you need' },
+  { title: 'Named exports', text: '`export function add()` / `import { add } from "./math"` — many per file, exact names' },
+  { title: 'Default export', text: '`export default` — one main thing per file, imported under any name' },
+  { title: 'Re-exports', text: '`export * from "./math"` bundles a folder into one clean entry point (barrel file)' },
+  { title: 'type-only imports', text: '`import type { User } from "./types"` — erased entirely, no runtime cost' },
+  { title: 'Path & extensions', text: 'relative paths (./ ../) resolve local files; module resolution finds packages' },
+  { title: 'Declaration files', text: '.d.ts files describe the types of plain-JS libraries so TS understands them' },
+  { title: 'DefinitelyTyped', text: '`npm i -D @types/xyz` pulls community types for libraries that don’t ship their own' },
+  { title: 'declare', text: '`declare` describes something that exists at runtime but has no TS source' },
+  { title: 'moduleResolution', text: 'tsconfig tells TS how to find modules — "bundler" for Vite/modern tooling' },
+];
+
+const EXPORTS = [
   {
-    title: 'Callback recap',
-    text: 'calculator(10, 20, mul) — the caller passes the operation as a function',
+    icon: '📤', title: 'Named Exports', titleClass: 'card-title-cyan', subtitle: 'Many Per File',
+    description: 'Export as many values as you like by name, then import exactly the ones you need. The names must match — great for tree-shaking and clarity.',
+    code: '// math.ts\nexport const PI = 3.14;\nexport function add(a: number, b: number) { return a + b; }\n// app.ts\nimport { add, PI } from "./math";',
   },
   {
-    title: 'Anonymous & arrow callbacks',
-    text: 'calculator(15, 3, (a, b) => a / b) — no named function needed',
+    icon: '⭐', title: 'Default Export', titleClass: 'card-title-purple', subtitle: 'One Main Export',
+    description: 'A file can have a single default export — its "main" thing. Import it under any name you choose. React components often use this.',
+    code: '// User.ts\nexport default class User {}\n// app.ts\nimport User from "./User";',
   },
   {
-    title: 'Bubble sort',
-    text: 'built sorting by hand with nested loops before trusting sort()',
-  },
-  {
-    title: 'Sort with a callback',
-    text: 'Callback(arr[j], arr[j+1]) decides the swap — (a, b) => a > b for ascending',
-  },
-  {
-    title: 'Array.prototype',
-    text: 'attach your own methods — sorting, forLoop, filtered — to every array',
-  },
-  {
-    title: 'forEach',
-    text: 'callback receives (value, index, array) — extra params are just ignored',
-  },
-  {
-    title: 'map',
-    text: 'arr.map(num => num * 5) — new transformed array, same length',
-  },
-  {
-    title: 'filter & this',
-    text: 'built filtered() with for...of over this — then used the real filter',
-  },
-  {
-    title: 'reduce',
-    text: 'accumulator pattern — sum with initial 0, product with initial 1',
-  },
-  {
-    title: 'Sets',
-    text: 'unique values only — add/has, dedupe emails with [...new Set(email)]',
+    icon: '🛢️', title: 'Barrel Files', titleClass: 'card-title-amber', subtitle: 'Re-export',
+    description: 'Re-export from an index file so consumers import from one clean path instead of many deep ones — a tidy public API for a folder.',
+    code: '// index.ts\nexport * from "./math";\nexport { default as User } from "./User";',
   },
 ];
 
-const CALLBACK_PATTERNS = [
+const TYPES_IN = [
   {
-    icon: '🧮',
-    title: 'Calculator Callback',
-    titleClass: 'card-title-cyan',
-    subtitle: 'first.js',
-    description: 'One calculator, any operation — add, sub, mul, or an inline arrow.',
-    code: 'function calculator(num1, num2, caller) {\n  const result = caller(num1, num2);\n  console.log(`Your result ${result}`);\n}\ncalculator(10, 20, mul);\ncalculator(15, 3, (a, b) => a / b);',
+    icon: '🏷️', title: 'type-only Imports', titleClass: 'card-title-cyan', subtitle: 'Zero Runtime',
+    description: 'import type brings in only the type, guaranteed to be erased from the compiled JS. It documents intent and avoids accidental runtime dependencies.',
+    code: 'import type { User } from "./types";\nfunction show(u: User) {}',
   },
   {
-    icon: '🫧',
-    title: 'Build Your Own Sort',
-    titleClass: 'card-title-green',
-    subtitle: 'customize.js → callback.js',
-    description: 'Bubble sort by hand — then let a callback decide when to swap.',
-    code: 'Array.prototype.sorting = function (Callback) {\n  // bubble sort\n  if (Callback(arr[j], arr[j + 1])) {\n    /* swap */\n  }\n};\narr.sorting((a, b) => a > b);',
+    icon: '📄', title: 'Declaration Files', titleClass: 'card-title-blue', subtitle: '.d.ts',
+    description: 'A .d.ts file contains only types — no implementation. TypeScript uses it to understand plain-JavaScript libraries and your own runtime globals.',
+    code: '// legacy.d.ts\ndeclare function legacyInit(config: object): void;',
   },
   {
-    icon: '🔁',
-    title: 'Custom forLoop',
-    titleClass: 'card-title-blue',
-    subtitle: 'forEach.js',
-    description: 'Rebuild forEach yourself — call the callback with (value, index, array).',
-    code: 'Array.prototype.forLoop = function (Callback) {\n  for (let i = 0; i < arr.length; i++) {\n    Callback(arr[i], i, arr);\n  }\n};',
+    icon: '📦', title: '@types Packages', titleClass: 'card-title-amber', subtitle: 'DefinitelyTyped',
+    description: 'Many JS libraries ship without types. Install the community @types package and TypeScript instantly understands the library’s API.',
+    code: 'npm i -D @types/node\n// now Node globals are typed',
+  },
+  {
+    icon: '🌍', title: 'declare Globals', titleClass: 'card-title-lime', subtitle: 'Describe What Exists',
+    description: 'Use declare to tell TypeScript about values that exist at runtime (a script global, an env var) without providing the implementation.',
+    code: 'declare const APP_VERSION: string;\nconsole.log(APP_VERSION);',
   },
 ];
 
-const CORE_METHODS = [
+const RESOLUTION = [
   {
-    icon: '📢',
-    title: 'forEach',
-    titleClass: 'card-title-cyan',
-    subtitle: '(value, index, array)',
-    description: 'Runs the callback for every element — extra params come as undefined.',
-    code: 'const arr = [10, 20, 8];\narr.forEach((i, j, k) => {\n  console.log(i, j, k);\n});',
+    icon: '🧭', title: 'Module Resolution', titleClass: 'card-title-cyan', subtitle: 'How TS Finds Files',
+    description: 'moduleResolution in tsconfig controls how imports are located. Modern Vite/Next projects use "bundler" so imports resolve like your bundler does.',
+    code: '// tsconfig.json\n"moduleResolution": "bundler",\n"module": "ESNext"',
   },
   {
-    icon: '🗺️',
-    title: 'map',
-    titleClass: 'card-title-green',
-    subtitle: 'map.js',
-    description: 'Transform every element — returns a new array of the same length.',
-    code: 'const arr = [10, 20, 40, 73, 18];\nconst newArr = arr.map((num) => num * 5);\nconsole.log(newArr);',
+    icon: '🗂️', title: 'Path Aliases', titleClass: 'card-title-purple', subtitle: 'Clean Imports',
+    description: 'Configure paths to import from "@/utils" instead of "../../../utils" — cleaner code and easier refactors across a growing project.',
+    code: '"baseUrl": ".",\n"paths": { "@/*": ["src/*"] }',
   },
   {
-    icon: '🚰',
-    title: 'filter',
-    titleClass: 'card-title-amber',
-    subtitle: 'filter.js',
-    description: 'Keep elements that pass the test — built filtered() with this first.',
-    code: 'Array.prototype.filtered = function (Callback) {\n  const answer = [];\n  for (let num of this)\n    if (Callback(num)) answer.push(num);\n  return answer;\n};\narr.filtered((num) => num > 10);',
+    icon: '🔁', title: 'isolatedModules', titleClass: 'card-title-amber', subtitle: 'Bundler-Friendly',
+    description: 'With bundlers like Vite, each file is transpiled alone. isolatedModules makes TypeScript flag patterns that can’t be compiled file-by-file.',
+    code: '"isolatedModules": true',
   },
   {
-    icon: '🧮',
-    title: 'reduce',
-    titleClass: 'card-title-pink',
-    subtitle: 'reducer.js',
-    description: 'Boil an array down to one value — accumulator plus initial value.',
-    code: 'const sum = arr.reduce((acc, num) => {\n  return acc + num;\n}, 0);\nconst product = arr.reduce((acc, num) => acc * num, 1);',
+    icon: '🔜', title: 'Next: tsconfig & DOM', titleClass: 'card-title-lime', subtitle: 'Day 10 Preview',
+    description: 'Tomorrow closes the TypeScript core: the tsconfig options that matter, plus typing the DOM and events for real browser code.',
+    link: { href: '/day-010', label: 'Go to Day 10 →' },
   },
 ];
 
-const REAL_WORLD_AND_SETS = [
+const RESOURCES = [
   {
-    icon: '🛒',
-    title: 'Filter + Map Chain',
-    titleClass: 'card-title-cyan',
-    subtitle: 'realworld.js',
-    description: '20 products → 15 in stock → clean {name, category, price} objects.',
-    code: 'const pro = products\n  .filter((goods) => goods.inStock)\n  .map((goods) => ({\n    name: goods.name,\n    price: goods.price,\n  }));',
+    icon: '📘', title: 'Modules', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
+    description: 'The handbook chapter on ES modules in TypeScript — exports/imports, type-only imports, and how module resolution works.',
+    link: { href: TS_MODULES, label: 'Read the Modules chapter →', external: true },
   },
   {
-    icon: '🎯',
-    title: 'Set — Unique Values',
-    titleClass: 'card-title-green',
-    subtitle: 'sets.js',
-    description: 'Duplicates vanish — but two identical-looking objects stay separate.',
-    code: 'const arr = [10, 20, 30, 20, 10, "Rohit", "Rohit"];\nconst s1 = new Set(arr);\nconsole.log(s1);',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Multi-File Mode',
+    description: 'The Playground supports multiple files — export from one and import into another to watch module resolution and type-only imports in action.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '➕',
-    title: 'add & has',
-    titleClass: 'card-title-amber',
-    subtitle: 'Set methods',
-    description: 'add() ignores repeats; has() answers membership in O(1).',
-    code: 'const s1 = new Set();\ns1.add(10);\ns1.add(43);\ns1.add(43); // ignored\nconsole.log(s1.has(20));',
-  },
-  {
-    icon: '📧',
-    title: 'Dedupe Emails',
-    titleClass: 'card-title-purple',
-    subtitle: 'Set → spread → array',
-    description: 'Classic interview one-liner — unique list back as a real array.',
-    code: "const email = ['rohit@gmail', 'mohit@gmail.com', 'rohit@gmail'];\nconst arr = [...new Set(email)];\nconsole.log(arr);",
-  },
-];
-
-const THUNDER_RESOURCES = [
-  {
-    icon: '📓',
-    title: 'Lecture 09 — Notion',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Official Thunder Notes',
-    description: 'Callback, forEach, map, filter, reduce — plus Sets and real-world chains.',
-    link: { href: NOTION_URL, label: 'Open Notion notes →', external: true },
-  },
-  {
-    icon: '💻',
-    title: 'Thunder GitHub',
-    titleClass: 'card-title-purple',
-    subtitle: 'Lecture09 Code',
-    description: 'first.js, callback.js, forEach.js, map.js, filter.js, reducer.js, sets.js.',
-    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
-  },
-  {
-    icon: '▶️',
-    title: 'map/filter/reduce — Ania',
-    titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: 'map(), filter() & reduce() by Code with Ania — supplement for Lecture 09.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=PojpwEbOQJg',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    description: 'Every React/Next.js file is a module and every npm library needs types — modules are the plumbing of the whole year’s code.',
+    link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -191,18 +111,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -211,13 +122,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -225,135 +132,85 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day009() {
   const scaleRef = useRef(null);
-
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-008" className="day001-nav-btn day001-nav-home">
-            ← Day 8
-          </Link>
-          <p className="day001-datetime">Thunder Day 9 · 25 Jul 2026</p>
-          <Link to="/day-010" className="day001-nav-btn day001-nav-next">
-            Day 10 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-008" className="day001-nav-btn day001-nav-prev">← Day 8</Link>
+          <p className="day001-datetime">TypeScript Day 9 · 25 Jul 2026</p>
+          <Link to="/day-010" className="day001-nav-btn day001-nav-next">Day 10 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>JavaScript</span>
-              <span>Thunder</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Modules</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 9 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">CALLBACKS & ARRAY METHODS</p>
+              <h1 className="day001-day-num">DAY 9 <span aria-hidden="true">📦</span></h1>
+              <p className="day001-day-theme">MODULES & DECLARATION FILES</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">JS · THUNDER</p>
+              <p className="day001-profile-role">TS · TYPESCRIPT</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '9%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '9%' }} /></div>
 
         <p className="day001-summary">
-          Day nine — following{' '}
-          <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Thunder Lecture 09
-          </a>
-          . I rebuilt sort, forEach, and filter by hand on Array.prototype to understand callbacks,
-          then used the real forEach, map, filter, and reduce — chained filter + map on a 20-product
-          catalog and deduped data with Sets in{' '}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Lecture09 on GitHub
-          </a>
-          . Building the method yourself is the fastest way to stop fearing it.
+          Day 9 organizes code across files. I used ES <strong>modules</strong> — <strong>named</strong> and{' '}
+          <strong>default</strong> exports, <strong>barrel</strong> re-exports, and <code>import type</code> for
+          zero-runtime type imports. I learned how <strong>.d.ts declaration files</strong> and{' '}
+          <code>@types</code> packages let TypeScript understand plain-JS libraries, used <code>declare</code>{' '}
+          for globals, and configured <strong>module resolution</strong> and path aliases in tsconfig.
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="🔁" title="CALLBACK PATTERNS" cards={CALLBACK_PATTERNS} columns={3} />
-        <CardSection icon="🧰" title="CORE ARRAY METHODS" cards={CORE_METHODS} columns={4} />
-        <CardSection icon="🛒" title="REAL WORLD & SETS" cards={REAL_WORLD_AND_SETS} columns={4} />
-        <CardSection icon="📚" title="THUNDER LECTURE 09" cards={THUNDER_RESOURCES} columns={3} />
+        <CardSection icon="📤" title="EXPORTS & IMPORTS" cards={EXPORTS} columns={3} />
+        <CardSection icon="🏷️" title="TYPES ACROSS FILES" cards={TYPES_IN} columns={4} />
+        <CardSection icon="🧭" title="RESOLUTION & CONFIG" cards={RESOLUTION} columns={4} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#JavaScript</span>
-          <span>#ArrayMethods</span>
-          <span>#Thunder</span>
-          <span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Modules</span><span>#WebDev</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>
