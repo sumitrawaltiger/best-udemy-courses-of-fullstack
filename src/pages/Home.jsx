@@ -36,8 +36,8 @@ const BTECH_ROADMAP = [
     theme: 'TypeScript Stack',
     icon: '🎨',
     accent: 'y1',
-    topics: ['TypeScript', 'JavaScript', 'React JS', 'Next.js', 'React Native', 'Express', 'DSA in JavaScript', 'System Design in JavaScript'],
-    blurb: 'The TypeScript stack end to end — interactive UIs, mobile apps, and Node/Express backends, with DSA & system design practiced in JavaScript.',
+    topics: ['TypeScript', 'React JS', 'Next.js', 'React Native', 'Express', 'DSA in JavaScript', 'System Design in JavaScript'],
+    blurb: 'Starts with TypeScript — HTML5, CSS3 & JavaScript are assumed prerequisites — then React, Next.js, React Native, and Node/Express, with DSA & system design in JavaScript.',
     links: [
       { label: 'JavaScript Track', to: '#syllabus' },
       { label: 'React / Next.js', to: '/nextjs' },

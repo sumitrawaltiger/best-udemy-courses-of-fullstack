@@ -9,7 +9,7 @@ export const ROADMAP_ARCS = [
     label: 'Year 1 · TypeScript Stack',
     range: 'Days 1–365',
     dates: '17 Jul 2026 – 16 Jul 2027',
-    blurb: 'The TypeScript stack end to end — JS, React, Next.js, React Native, Node/Express, plus DSA & system design in JavaScript.',
+    blurb: 'Starts with TypeScript (HTML5, CSS3 & JavaScript are assumed prerequisites), then React, Next.js, React Native, Node/Express, plus DSA & system design in JavaScript.',
   },
   {
     id: 'y2',
@@ -44,10 +44,11 @@ export const ROADMAP_STATS = [
 export const ROADMAP_PHASES = [
   // ---------------- Year 1 · TypeScript Stack ----------------
   {
-    n: 1, arc: 'y1', icon: '🟨',
-    title: 'Thunder — JavaScript',
+    n: 1, arc: 'y1', icon: '🔷',
+    title: 'TypeScript',
     window: '17 Jul – 24 Oct 2026', days: 100, dayRange: 'Days 1–100',
-    source: 'Thunder++ · Rohit Negi', to: '/',
+    source: 'Udemy · TypeScript Course (HTML/CSS/JS prereq)',
+    href: 'https://www.udemy.com/course/typescript-course/',
   },
   {
     n: 2, arc: 'y1', icon: '⚛️',

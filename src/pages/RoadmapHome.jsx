@@ -30,8 +30,8 @@ export default function RoadmapHome() {
         <h1 className="roadmap-hero-title">The 4-Year Learning Path</h1>
         <p className="roadmap-hero-sub">
           {JOURNEY_META.totalDays} days of study, one phase at a time — every morning from{' '}
-          <strong>5:00–8:00 AM</strong> (Bangkok, UTC+7). From first JavaScript line to
-          interview-ready full lifecycle engineer.
+          <strong>5:00–8:00 AM</strong> (Bangkok, UTC+7). Starting from TypeScript (HTML/CSS/JS
+          assumed) to interview-ready full lifecycle engineer.
         </p>
         <div className="roadmap-stats">
           {ROADMAP_STATS.map((s) => (

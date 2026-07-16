@@ -36,8 +36,12 @@ const SETUP_CHECKLIST = [
     text: 'reviewed the full 4-year, 20-phase plan — Year 1 TypeScript, Year 2 Python, Year 3 Java, Year 4 DevOps',
   },
   {
+    title: 'Prerequisites confirmed',
+    text: 'HTML5, CSS3 & JavaScript are already known — they’re the prerequisites, so Day 1 starts straight into TypeScript',
+  },
+  {
     title: 'Accounts ready',
-    text: 'signed in to the course platforms (Thunder++, Udemy, ChaiCode, KodeKloud) so Day 1 starts with zero friction',
+    text: 'signed in to the course platforms (Udemy, ChaiCode, KodeKloud) so Day 1 starts with zero friction',
   },
   {
     title: 'Deploy target',
@@ -134,12 +138,12 @@ const STUDY_SYSTEM = [
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
-    icon: '⚡',
+    icon: '🔷',
     title: 'Day 1 Starts Tomorrow',
     titleClass: 'card-title-lime',
-    subtitle: '17 Jul 2026 · Thunder JavaScript',
+    subtitle: '17 Jul 2026 · TypeScript',
     description:
-      'Tomorrow is Day 1: Thunder — Introduction to JavaScript with Rohit Negi. Environment is ready, accounts are live, and the routine is locked. Time to build.',
+      'Tomorrow is Day 1: TypeScript — the first phase of the Year 1 stack. HTML5, CSS3 & JavaScript are assumed prerequisites, so the journey opens straight into typed JavaScript. Environment is ready, accounts are live, routine is locked. Time to build.',
     link: { href: '/day-001', label: 'Preview Day 1 →' },
   },
 ];
