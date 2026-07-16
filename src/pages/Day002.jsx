@@ -2,208 +2,187 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const NOTION_URL =
-  'https://app.notion.com/p/Lecture-02-Data-types-in-JS-37343ac5cab980f8b24ee3cf1ea0c8fa?source=copy_link';
-
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture02';
+const TS_EVERYDAY = 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
   {
-    title: 'Primitive vs non-primitive',
-    text: 'primitives (number, string, boolean, undefined, null, symbol, bigint) are immutable and copied by value — objects, arrays, and functions are reference types',
+    title: 'Arrays',
+    text: 'type a list with `number[]` or `Array<number>` — every element is checked, push the wrong type and TS complains',
   },
   {
-    title: 'Number',
-    text: 'one type for integers and decimals — Thunder uses 20 and 20.7 in first.js',
+    title: 'Tuples',
+    text: 'a fixed-length array with a type per position: `[string, number]` — great for pairs like [name, age]',
   },
   {
-    title: 'String',
-    text: 'text with double quotes, single quotes, or backtick template literals like `Rohit ${age} is a Good Boy`',
+    title: 'Object types',
+    text: 'describe shape inline: `{ name: string; age: number }` — optional fields use a `?`',
   },
   {
-    title: 'Boolean',
-    text: 'true or false — the type behind every if-statement you will write later',
+    title: 'any vs unknown',
+    text: 'any turns off checking (avoid it); unknown is the safe version — you must narrow it before use',
   },
   {
-    title: 'undefined & null',
-    text: 'undefined means not assigned yet; null is an intentional empty value — typeof null is the famous "object" quirk',
+    title: 'union types',
+    text: '`string | number` means "either type" — the foundation of modelling real-world data',
   },
   {
-    title: 'BigInt & Symbol',
-    text: 'BigInt handles huge integers with n suffix; Symbol() creates unique identifiers that never compare equal',
+    title: 'literal types',
+    text: 'a value can be a specific literal: `let dir: "left" | "right"` — only those exact strings are allowed',
   },
   {
-    title: 'typeof',
-    text: 'your debugging superpower — run typeof on any value to see what you are working with',
+    title: 'type aliases',
+    text: '`type ID = string | number` names a type so you can reuse it everywhere',
   },
   {
-    title: 'Objects',
-    text: 'key-value pairs like { name: "Rohit", age: 30, city: "dwarka" } — the most important non-primitive type',
+    title: 'void & never',
+    text: 'void = returns nothing; never = never returns (throws or loops forever)',
   },
   {
-    title: 'Arrays & functions',
-    text: 'arrays hold ordered lists of mixed types; functions are reusable blocks that can return values',
+    title: 'null & undefined',
+    text: 'with strictNullChecks they are their own types — you handle "missing" on purpose',
   },
   {
-    title: 'let vs const',
-    text: 'let can be reassigned; const cannot — primitives copy by value so changing b does not change a',
+    title: 'type assertions',
+    text: '`value as string` tells TS "trust me, I know the type" — use sparingly and only when you truly know',
   },
 ];
 
-const PRIMITIVE_TYPES = [
+const COLLECTIONS = [
   {
-    icon: '🔢',
-    title: 'Number',
+    icon: '📚',
+    title: 'Arrays',
     titleClass: 'card-title-cyan',
-    subtitle: 'Integers & Decimals',
+    subtitle: 'Typed Lists',
     description:
-      'JavaScript has one number type — 20 and 20.7 both work. No separate int or float like C++.',
-    code: 'let firstNumber = 20;\nlet secondNumber = 20.7;\nconsole.log(typeof firstNumber);',
+      'Declare an array of one element type. TypeScript checks every item you add, so a list of numbers can never accidentally hold a string.',
+    code: 'let scores: number[] = [90, 85, 100];\nlet names: Array<string> = ["A", "B"];\nscores.push("x"); // ❌ not a number',
   },
   {
-    icon: '📝',
-    title: 'String',
-    titleClass: 'card-title-green',
-    subtitle: 'Text & Template Literals',
+    icon: '📦',
+    title: 'Tuples',
+    titleClass: 'card-title-purple',
+    subtitle: 'Fixed-Length, Typed Positions',
     description:
-      'Use ", \', or backticks. Template literals embed variables: `Rohit ${age} is a Good Boy`.',
-    code: 'let name = "Rohit Negi";\nlet msg = `Hello ${name}`;',
+      'A tuple fixes both the length and the type at each index — perfect for a coordinate or a [key, value] pair returned from a function.',
+    code: 'let user: [string, number] = ["Sumit", 26];\nlet point: [number, number] = [10, 20];\nuser = [26, "Sumit"]; // ❌ wrong order',
   },
   {
-    icon: '✅',
-    title: 'Boolean',
-    titleClass: 'card-title-blue',
-    subtitle: 'true / false',
-    description: 'Logical values for conditions. Every decision in your code eventually comes down to booleans.',
-    code: 'let active = true;\nlet done = false;',
+    icon: '🧩',
+    title: 'Object Types',
+    titleClass: 'card-title-amber',
+    subtitle: 'Describe The Shape',
+    description:
+      'Annotate an object with the fields it must have. A ? marks an optional property. Tomorrow’s interfaces give these shapes a reusable name.',
+    code: 'let dev: { name: string; age?: number };\ndev = { name: "Sumit" };      // ok, age optional\ndev = { age: 26 };            // ❌ name missing',
+  },
+];
+
+const FLEXIBLE = [
+  {
+    icon: '🌀',
+    title: 'any',
+    titleClass: 'card-title-pink',
+    subtitle: 'The Escape Hatch',
+    description:
+      'any opts a value out of type checking entirely. It’s occasionally useful when migrating JS, but it defeats the purpose of TypeScript — reach for unknown instead.',
+    code: 'let data: any = 42;\ndata.toUpperCase(); // no error, may crash at runtime',
   },
   {
     icon: '❓',
-    title: 'undefined',
-    titleClass: 'card-title-amber',
-    subtitle: 'Not Assigned Yet',
-    description: 'A variable declared with let but no value is undefined until you assign something.',
-    code: 'let a;\nconsole.log(a); // undefined',
-  },
-  {
-    icon: '⭕',
-    title: 'null',
-    titleClass: 'card-title-pink',
-    subtitle: 'Intentional Empty',
-    description: 'null means "nothing here on purpose." typeof null returns "object" — a 1995 bug never fixed.',
-    code: 'let b = null;\nconsole.log(typeof b); // "object"',
-  },
-  {
-    icon: '🔣',
-    title: 'BigInt & Symbol',
-    titleClass: 'card-title-purple',
-    subtitle: 'Large Ints & Unique IDs',
-    description:
-      'BigInt: append n for huge numbers. Symbol: every Symbol("Rohit") is unique — symB == symA is false.',
-    code: 'let big = 27343285947319574913n;\nlet id = Symbol("Rohit");',
-  },
-];
-
-const NON_PRIMITIVE = [
-  {
-    icon: '📦',
-    title: 'Object',
-    titleClass: 'card-title-lime',
-    subtitle: 'Key-Value Pairs',
-    description:
-      'The most important non-primitive. Store real-world entities: { name: "Rohit", age: 30, city: "dwarka" }.',
-    code: 'let person = {\n  name: "Rohit",\n  age: 30\n};\nconsole.log(person.name);',
-  },
-  {
-    icon: '📋',
-    title: 'Array',
+    title: 'unknown',
     titleClass: 'card-title-cyan',
-    subtitle: 'Ordered Lists',
+    subtitle: 'Safe any',
     description:
-      'Mixed types in one list: [10, 20, 30, "Rohit", 9.3, true]. Order matters; index starts at 0.',
-    code: 'let arr = [10, 20, "Rohit", true];\nconsole.log(arr[2]);',
+      'unknown accepts anything but forbids using it until you narrow it. It forces you to prove the type before you touch the value — safety without lying.',
+    code: 'let val: unknown = getInput();\nif (typeof val === "string") {\n  val.toUpperCase(); // ✅ narrowed to string\n}',
   },
   {
-    icon: '⚙️',
-    title: 'Function',
-    titleClass: 'card-title-amber',
-    subtitle: 'Reusable Logic',
-    description:
-      'Blocks of code you can call again and again. Can return a value or just run side effects.',
-    code: 'let greet = function () {\n  return 10;\n};\nconsole.log(greet());',
-  },
-];
-
-const TYPE_TOOLS = [
-  {
-    icon: '🔍',
-    title: 'typeof Operator',
-    titleClass: 'card-title-green',
-    subtitle: 'Check Any Value',
-    description:
-      'Run typeof on every value while learning. Thunder homework in first.js: typeof on string, number, object, and more.',
-    code: 'console.log(typeof "Rohit");\nconsole.log(typeof 42);\nconsole.log(typeof {});',
-  },
-  {
-    icon: '🔄',
-    title: 'Copy by Value',
+    icon: '🔀',
+    title: 'Union Types',
     titleClass: 'card-title-blue',
-    subtitle: 'Primitives',
+    subtitle: '"Either / Or"',
     description:
-      'let a = 30; let b = a; b = 70 — a stays 30 because primitives copy by value, not reference.',
-    code: 'let a = 30;\nlet b = a;\nb = 70;\nconsole.log(a, b); // 30 70',
+      'A union lets a value be one of several types. You narrow it with typeof or a check, and TypeScript tracks which branch you’re in.',
+    code: 'let id: string | number;\nid = 101;      // ok\nid = "A-101";  // ok\nid = true;     // ❌',
   },
   {
-    icon: '🔒',
-    title: 'const Rules',
-    titleClass: 'card-title-pink',
-    subtitle: 'Cannot Reassign',
-    description:
-      'const a = 10; a = 7 throws TypeError. Use const by default; let only when the value must change.',
-    code: 'const course = "Thunder";\nlet day = 2;\nday = 3;',
-  },
-  {
-    icon: '🧪',
-    title: 'first.js Homework',
+    icon: '🎯',
+    title: 'Literal Types',
     titleClass: 'card-title-lime',
-    subtitle: 'Thunder Lecture02',
+    subtitle: 'Exact Values',
     description:
-      'Uncomment each block in first.js one at a time. Build your own person object and run typeof on everything.',
-    code: 'let a = "Rohit";\nconsole.log(typeof a);\n\nlet obj = { name: "Rohit", age: 20 };\nconsole.log(typeof obj);',
+      'Constrain a value to specific literals. Combined with unions, this models real options — like a status that can only be a known set of strings.',
+    code: 'let status: "active" | "paused" | "done";\nstatus = "active"; // ✅\nstatus = "old";    // ❌',
   },
 ];
 
-const THUNDER_RESOURCES = [
+const NAMING = [
   {
-    icon: '📓',
-    title: 'Lecture 02 — Notion',
+    icon: '🏷️',
+    title: 'Type Aliases',
     titleClass: 'card-title-cyan',
-    subtitle: 'Official Thunder Notes',
+    subtitle: 'Name Any Type',
     description:
-      'Data types in JS — primitives, non-primitives, typeof, objects, arrays, functions, let vs const, and homework.',
-    link: { href: NOTION_URL, label: 'Open Notion notes →', external: true },
+      'type gives a name to any type — a union, an object shape, a tuple. Reuse it everywhere and change it in one place.',
+    code: 'type ID = string | number;\ntype Point = { x: number; y: number };\nlet a: ID = 7;\nlet p: Point = { x: 1, y: 2 };',
   },
   {
-    icon: '💻',
-    title: 'Thunder GitHub',
+    icon: '🕳️',
+    title: 'void & never',
     titleClass: 'card-title-purple',
-    subtitle: 'Lecture02 Code',
+    subtitle: 'Nothing & Impossible',
     description:
-      'first.js walks every data type with commented examples. rohit.cpp is a tiny C++ demo — peek under the hood.',
-    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
+      'void is the return type of a function that returns nothing. never is for functions that never return — they throw or loop forever.',
+    code: 'function log(msg: string): void {\n  console.log(msg);\n}\nfunction fail(m: string): never {\n  throw new Error(m);\n}',
   },
   {
-    icon: '▶️',
-    title: 'Code with Ania — Data Types',
+    icon: '🚧',
+    title: 'null & undefined',
     titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
+    subtitle: 'Handled On Purpose',
     description:
-      'Data Types in JavaScript — a free supplement video while you follow Thunder Lecture 02 and Notion notes.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=nCwQY8inRvU',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+      'With strictNullChecks, null and undefined are distinct types you must account for — usually via a union — so "cannot read property of undefined" disappears.',
+    code: 'let name: string | null = null;\nname = "Sumit";\nlet n = name?.toUpperCase(); // safe access',
+  },
+  {
+    icon: '👉',
+    title: 'Type Assertions',
+    titleClass: 'card-title-lime',
+    subtitle: '"Trust Me"',
+    description:
+      'When you know more than the compiler (e.g. a DOM element), assert the type with as. Use it rarely — a wrong assertion silences a real error.',
+    code: 'const el = document.getElementById("app") as HTMLDivElement;\nel.innerText = "Hi";',
+  },
+];
+
+const RESOURCES = [
+  {
+    icon: '📘',
+    title: 'Everyday Types',
+    titleClass: 'card-title-cyan',
+    subtitle: 'TS Handbook',
+    description:
+      'The handbook chapter that covers exactly today’s ground — arrays, objects, unions, literals, and the any/unknown distinction.',
+    link: { href: TS_EVERYDAY, label: 'Read Everyday Types →', external: true },
+  },
+  {
+    icon: '🎮',
+    title: 'TS Playground',
+    titleClass: 'card-title-purple',
+    subtitle: 'Test Every Snippet',
+    description:
+      'Paste any example from today and hover the variables to see their inferred types. The fastest feedback loop for learning the type system.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+  },
+  {
+    icon: '🔜',
+    title: 'Next: Functions',
+    titleClass: 'card-title-amber',
+    subtitle: 'Day 3 Preview',
+    description:
+      'Tomorrow we type function parameters and return values, optional and default params, rest args, and function types.',
+    link: { href: '/day-003', label: 'Go to Day 3 →' },
   },
 ];
 
@@ -296,94 +275,92 @@ export default function Day002() {
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
-        <header className="day001-topbar">
-          <Link to="/day-001" className="day001-nav-btn day001-nav-home">
-            ← Day 1
-          </Link>
-          <p className="day001-datetime">Thunder Day 2 · 18 Jul 2026</p>
-          <Link to="/day-003" className="day001-nav-btn day001-nav-next">
-            Day 3 →
-          </Link>
-        </header>
+      <header className="day001-topbar">
+        <Link to="/" className="day001-nav-btn day001-nav-home">
+          Home
+        </Link>
+        <Link to="/day-001" className="day001-nav-btn day001-nav-prev">
+          ← Day 1
+        </Link>
+        <p className="day001-datetime">TypeScript Day 2 · 18 Jul 2026</p>
+        <Link to="/day-003" className="day001-nav-btn day001-nav-next">
+          Day 3 →
+        </Link>
+      </header>
 
-        <div className="day001-hero">
-          <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>JavaScript</span>
-              <span>Thunder</span>
-              <span>100 Days</span>
-            </div>
-            <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 2 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">DATA TYPES IN JAVASCRIPT</p>
-            </div>
+      <div className="day001-hero">
+        <div className="day001-hero-left">
+          <div className="day001-tags">
+            <span>TypeScript</span>
+            <span>Year 1</span>
+            <span>Types</span>
           </div>
-          <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
-            <div>
-              <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">JS · THUNDER</p>
-            </div>
+          <div className="day001-title-block">
+            <h1 className="day001-day-num">
+              DAY 2 <span aria-hidden="true">🧱</span>
+            </h1>
+            <p className="day001-day-theme">BASIC TYPES — ARRAYS, UNIONS & MORE</p>
           </div>
         </div>
-
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '2%' }} />
+        <div className="day001-profile">
+          <img
+            src="/sumit-profile.png"
+            alt="Sumit Rawal"
+            className="day001-avatar"
+            width={48}
+            height={48}
+          />
+          <div>
+            <p className="day001-profile-name">Sumit Rawal</p>
+            <p className="day001-profile-role">TS · TYPESCRIPT</p>
+          </div>
         </div>
+      </div>
 
-        <p className="day001-summary">
-          Day two of my 100-day journey — following{' '}
-          <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Thunder Lecture 02
-          </a>
-          . I learned the 7 primitive types and 3 non-primitive types, ran <code>typeof</code> on
-          everything, built objects and arrays, and worked through{' '}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            first.js on GitHub
-          </a>
-          . Primitives copy by value; objects live by reference. Now I know what kind of data I am
-          holding before I write logic.
-        </p>
+      <div className="day001-progress-wrap">
+        <div className="day001-progress-bar" style={{ width: '2%' }} />
+      </div>
 
-        <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
-          <ul className="day001-learnt-list">
-            {LEARNT_TODAY.map((item) => (
-              <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
+      <p className="day001-summary">
+        Day 2 goes past the primitives into the types you use every day. I learned to type{' '}
+        <strong>arrays</strong> and <strong>tuples</strong>, describe <strong>object shapes</strong> inline, and
+        model real data with <strong>union</strong> and <strong>literal</strong> types. I saw why{' '}
+        <code>unknown</code> is the safe cousin of <code>any</code>, named reusable types with{' '}
+        <code>type</code> aliases, and met <code>void</code>, <code>never</code>, and safe{' '}
+        <code>null</code> handling. This is the vocabulary the rest of TypeScript is built on.
+      </p>
 
-        <CardSection icon="🧱" title="PRIMITIVE TYPES" cards={PRIMITIVE_TYPES} columns={3} />
-        <CardSection icon="🔗" title="NON-PRIMITIVE TYPES" cards={NON_PRIMITIVE} columns={3} />
-        <CardSection icon="🛠️" title="TYPE TOOLS & PRACTICE" cards={TYPE_TOOLS} columns={4} />
-        <CardSection icon="📚" title="THUNDER LECTURE 02" cards={THUNDER_RESOURCES} columns={3} />
+      <section className="day001-learnt">
+        <h2 className="day001-learnt-title">
+          <span className="day001-learnt-line" aria-hidden="true" />
+          WHAT I LEARNED TODAY
+        </h2>
+        <ul className="day001-learnt-list">
+          {LEARNT_TODAY.map((item) => (
+            <li key={item.title}>
+              <span className="day001-check" aria-hidden="true">
+                ✓
+              </span>
+              <span>
+                <strong>{item.title}</strong> — {item.text}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-        <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#JavaScript</span>
-          <span>#DataTypes</span>
-          <span>#Thunder</span>
-          <span>#JSLearnHub</span>
-        </footer>
+      <CardSection icon="📚" title="COLLECTIONS & OBJECTS" cards={COLLECTIONS} columns={3} />
+      <CardSection icon="🔀" title="FLEXIBLE TYPES" cards={FLEXIBLE} columns={4} />
+      <CardSection icon="🏷️" title="NAMING & SPECIAL TYPES" cards={NAMING} columns={4} />
+      <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
+
+      <footer className="day001-hashtags">
+        <span>#100DaysOfCode</span>
+        <span>#TypeScript</span>
+        <span>#TypeSafety</span>
+        <span>#WebDev</span>
+        <span>#JSLearnHub</span>
+      </footer>
       </div>
     </div>
   );
