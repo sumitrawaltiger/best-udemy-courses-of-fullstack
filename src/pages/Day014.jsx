@@ -2,100 +2,100 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const MDN_PROMISE = 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise';
+const TS_RELEASE = 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html';
 const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
-  { title: 'Promise<T>', text: 'a Promise carries a value type — `Promise<User>` resolves to a User' },
-  { title: 'async returns a Promise', text: 'an async function always returns Promise<T>, even if you return a plain value' },
-  { title: 'await unwraps it', text: 'await a Promise<T> and you get a T — typed and ready to use' },
-  { title: 'Typing async functions', text: 'annotate the return as Promise<T> or let TS infer it from the body' },
-  { title: 'Awaited<T>', text: 'the utility that unwraps (even nested) Promises to their value type' },
-  { title: 'Errors are unknown', text: 'in a catch block the error is unknown — narrow it before use' },
-  { title: 'Promise.all', text: 'runs promises in parallel; the result tuple is precisely typed' },
-  { title: 'Promise.allSettled', text: 'never rejects — each result is typed as fulfilled or rejected' },
-  { title: 'Typed setTimeout', text: 'wrap timers in a Promise<void> for clean, typed delays' },
-  { title: 'No floating promises', text: 'await or handle every promise — lint rules catch forgotten ones' },
+  { title: 'Custom type guards', text: 'a function returning `x is T` teaches TS how to narrow your own shapes' },
+  { title: 'Assertion functions', text: '`asserts x is T` throws if wrong and narrows for the rest of the scope' },
+  { title: 'asserts condition', text: '`function assert(c): asserts c` narrows after a runtime check' },
+  { title: 'satisfies operator', text: 'check a value against a type WITHOUT widening it — keep the precise type' },
+  { title: 'as const', text: 'freeze a literal into its narrowest readonly type — great with satisfies' },
+  { title: 'Guard reuse', text: 'name guards once (isUser, isError) and reuse across the codebase' },
+  { title: 'unknown at the boundary', text: 'accept unknown from JSON/APIs, then guard it into a safe type' },
+  { title: 'Guard vs assertion', text: 'a guard returns boolean to branch; an assertion throws to guarantee' },
+  { title: 'Retire risky casts', text: 'guards & satisfies replace most `as` casts with checked narrowing' },
+  { title: 'satisfies vs :', text: 'an annotation widens the value; satisfies checks but keeps it precise' },
 ];
 
-const BASICS = [
+const GUARDS = [
   {
-    icon: '🔮', title: 'Promise<T>', titleClass: 'card-title-cyan', subtitle: 'A Future Value, Typed',
-    description: 'A Promise is generic over the value it will resolve to. Typing it means everything downstream — .then callbacks and await — is fully checked.',
-    code: 'const p: Promise<number> = Promise.resolve(42);\np.then((n) => n.toFixed(2)); // n is number',
+    icon: '🛡️', title: 'Custom Type Guards', titleClass: 'card-title-cyan', subtitle: 'x is T',
+    description: 'A predicate function with an `is` return type tells TypeScript how to narrow a value. Reuse it anywhere you need to prove a shape at runtime.',
+    code: 'function isUser(v: unknown): v is { name: string } {\n  return typeof v === "object" && v !== null && "name" in v;\n}\nif (isUser(data)) data.name; // ✅ narrowed',
   },
   {
-    icon: '⚡', title: 'async / await', titleClass: 'card-title-purple', subtitle: 'Unwrap Cleanly',
-    description: 'An async function always returns a Promise. await pauses until it resolves and hands you the typed value — no manual .then chains.',
-    code: 'async function getUser(): Promise<User> {\n  const res = await fetch("/api/me");\n  return res.json();\n}\nconst u = await getUser(); // u: User',
+    icon: '🧯', title: 'Assertion Functions', titleClass: 'card-title-purple', subtitle: 'asserts x is T',
+    description: 'An assertion function throws when the check fails and narrows the value afterward — a typed invariant() that guarantees the shape from that point on.',
+    code: 'function assertUser(v: unknown): asserts v is { name: string } {\n  if (!isUser(v)) throw new Error("not a user");\n}\nassertUser(data);\ndata.name; // ✅ narrowed after the call',
   },
   {
-    icon: '⏳', title: 'Awaited<T>', titleClass: 'card-title-amber', subtitle: 'Unwrap In Types',
-    description: 'The Awaited utility resolves a Promise’s value type at the type level, even through nesting — handy for typing wrappers around async code.',
-    code: 'type R = Awaited<ReturnType<typeof getUser>>; // User',
-  },
-];
-
-const ERRORS = [
-  {
-    icon: '🎣', title: 'catch is unknown', titleClass: 'card-title-cyan', subtitle: 'Narrow Before Use',
-    description: 'Under strict settings the caught error is unknown, because anything can be thrown. Narrow with instanceof before reading a message.',
-    code: 'try {\n  await getUser();\n} catch (e) {\n  if (e instanceof Error) console.log(e.message);\n}',
-  },
-  {
-    icon: '🧵', title: 'Promise.all', titleClass: 'card-title-blue', subtitle: 'Parallel, Typed Tuple',
-    description: 'Promise.all runs promises concurrently and resolves to a precisely typed tuple — position 0 is the first promise’s type, and so on.',
-    code: 'const [user, posts] = await Promise.all([\n  getUser(),   // Promise<User>\n  getPosts(),  // Promise<Post[]>\n]); // [User, Post[]]',
-  },
-  {
-    icon: '🧮', title: 'Promise.allSettled', titleClass: 'card-title-amber', subtitle: 'Never Rejects',
-    description: 'allSettled resolves with a status per promise. TypeScript types each result as fulfilled (with value) or rejected (with reason) — narrow on status.',
-    code: 'const r = await Promise.allSettled([getUser()]);\nif (r[0].status === "fulfilled") r[0].value;',
-  },
-  {
-    icon: '⏱️', title: 'Typed Delays', titleClass: 'card-title-lime', subtitle: 'Promisify Timers',
-    description: 'Wrap setTimeout in a Promise<void> to get a clean, awaitable sleep — the typed building block for retries and polling.',
-    code: 'const sleep = (ms: number) =>\n  new Promise<void>((res) => setTimeout(res, ms));\nawait sleep(500);',
+    icon: '❗', title: 'asserts condition', titleClass: 'card-title-amber', subtitle: 'Runtime Invariants',
+    description: 'A plain `asserts c` narrows based on a boolean condition — after assert(x !== null), TypeScript knows x is non-null for the rest of the block.',
+    code: 'function assert(c: unknown): asserts c {\n  if (!c) throw new Error("assertion failed");\n}\nassert(user);\nuser.name; // user is non-null here',
   },
 ];
 
-const PATTERNS = [
+const SATISFIES = [
   {
-    icon: '🔁', title: 'Sequential vs Parallel', titleClass: 'card-title-cyan', subtitle: 'Await Wisely',
-    description: 'Awaiting in a loop runs serially; Promise.all runs in parallel. TypeScript types both the same, but the performance difference is real.',
-    code: '// parallel — faster\nconst results = await Promise.all(ids.map(getById));',
+    icon: '✅', title: 'satisfies', titleClass: 'card-title-cyan', subtitle: 'Check Without Widening',
+    description: 'satisfies validates a value against a type but keeps the precise inferred type — you get error-checking AND exact autocomplete, unlike a plain annotation.',
+    code: 'const config = {\n  port: 3000,\n  host: "localhost",\n} satisfies Record<string, string | number>;\nconfig.port.toFixed(); // still number ✅',
   },
   {
-    icon: '🚫', title: 'No Floating Promises', titleClass: 'card-title-purple', subtitle: 'Handle Every One',
-    description: 'A promise you never await or catch can swallow errors silently. Lint rules (no-floating-promises) flag them so nothing slips through.',
-    code: 'void logAsync(); // explicit "I’m ignoring this"',
+    icon: '🧊', title: 'as const', titleClass: 'card-title-blue', subtitle: 'Narrowest Literal',
+    description: 'as const makes a value deeply readonly and infers the tightest literal types — the perfect partner for satisfies and for building typed constant maps.',
+    code: 'const ROUTES = ["/", "/about"] as const;\ntype Route = typeof ROUTES[number]; // "/" | "/about"',
   },
   {
-    icon: '🌐', title: 'Toward Typed fetch', titleClass: 'card-title-amber', subtitle: 'A Taste Of Day 15',
-    description: 'res.json() returns Promise<any>. Tomorrow we make it Promise<T> with a typed fetch wrapper so API data is safe from the first line.',
-    code: 'const data = await res.json(); // any 😬 — fix tomorrow',
+    icon: '🆚', title: 'satisfies vs :', titleClass: 'card-title-amber', subtitle: 'Why It’s Better',
+    description: 'A `: Type` annotation widens the value to that type. satisfies checks conformance but leaves the value at its precise inferred type — best of both worlds.',
+    code: 'const a: Record<string, number> = { x: 1 }; // keys widened\nconst b = { x: 1 } satisfies Record<string, number>; // keys kept',
   },
   {
-    icon: '🔜', title: 'Next: Typed fetch & APIs', titleClass: 'card-title-lime', subtitle: 'Day 15 Preview',
-    description: 'Tomorrow: a generic, typed fetch wrapper, modelling API responses with interfaces, and safely turning JSON into typed data.',
+    icon: '🌐', title: 'unknown At Boundaries', titleClass: 'card-title-lime', subtitle: 'Guard External Data',
+    description: 'Type API and JSON input as unknown, then guard it into a real type. This is the safe pattern for everything that crosses your app’s edge.',
+    code: 'const raw: unknown = await res.json();\nif (isUser(raw)) use(raw);',
+  },
+];
+
+const APPLY = [
+  {
+    icon: '♻️', title: 'Reusable Guards', titleClass: 'card-title-cyan', subtitle: 'A Small Library',
+    description: 'Collect guards like isString, isUser, and isApiError in one module. They become the trusted gates through which untyped data becomes typed.',
+    code: 'export const isError = (e: unknown): e is Error =>\n  e instanceof Error;',
+  },
+  {
+    icon: '🎯', title: 'Retire Risky Casts', titleClass: 'card-title-purple', subtitle: 'Guards Over as',
+    description: 'Most `as` casts hide potential bugs. Replacing them with guards or satisfies keeps the checking on — safer code with the same convenience.',
+    code: '// risky:  const u = data as User;\n// safe:   if (isUser(data)) { const u = data; }',
+  },
+  {
+    icon: '🔗', title: 'Guards + Unions', titleClass: 'card-title-amber', subtitle: 'Bullet-Proof Handling',
+    description: 'Pair guards with the discriminated unions from Day 9 to handle every variant of a value safely — and let never catch any case you forget.',
+    code: 'if (isCircle(shape)) return area(shape);',
+  },
+  {
+    icon: '🔜', title: 'Next: Async & fetch', titleClass: 'card-title-lime', subtitle: 'Day 15 Preview',
+    description: 'Tomorrow: async TypeScript — Promises, await, and a typed fetch wrapper so API data is safe from the first line.',
     link: { href: '/day-015', label: 'Go to Day 15 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Promise (MDN)', titleClass: 'card-title-cyan', subtitle: 'The Foundation',
-    description: 'The definitive JavaScript reference for Promises — states, chaining, all/allSettled/race. TypeScript simply adds the value types on top.',
-    link: { href: MDN_PROMISE, label: 'Read Promise on MDN →', external: true },
+    icon: '📘', title: 'satisfies (4.9)', titleClass: 'card-title-cyan', subtitle: 'Release Notes',
+    description: 'The satisfies operator’s introduction, with the exact examples that show why it beats a plain annotation for config objects.',
+    link: { href: TS_RELEASE, label: 'Read the 4.9 notes →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Await In The Browser',
-    description: 'Write an async function, await it, and hover the result to confirm the unwrapped type. Then throw inside and check the unknown in catch.',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Guard It Live',
+    description: 'Write a guard, feed it unknown data, and watch the type narrow inside the if. Then compare `: Type` vs satisfies on the same object.',
     link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
     icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Every data fetch, timer, and API call in React/Next.js is async — typed promises keep all of it safe and predictable.',
+    description: 'Guards and satisfies are how real apps stay safe at the edges — API responses, forms, and config. You’ll use them all year.',
     link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
@@ -167,10 +167,10 @@ export default function Day014() {
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Async</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Guards</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 14 <span aria-hidden="true">⚡</span></h1>
-              <p className="day001-day-theme">ASYNC TYPESCRIPT — PROMISES & await</p>
+              <h1 className="day001-day-num">DAY 14 <span aria-hidden="true">🛡️</span></h1>
+              <p className="day001-day-theme">GUARDS, ASSERTIONS & satisfies</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -185,11 +185,11 @@ export default function Day014() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '14%' }} /></div>
 
         <p className="day001-summary">
-          Day 14 types asynchronous code. I worked with <code>Promise&lt;T&gt;</code>, saw that{' '}
-          <strong>async</strong> functions always return a Promise, and used <strong>await</strong> to unwrap the
-          typed value. I handled errors where <code>catch</code> gives <code>unknown</code>, ran work in parallel
-          with <strong>Promise.all</strong> (typed tuples) and <strong>allSettled</strong>, and built a typed{' '}
-          <code>sleep</code>. Async is now as type-safe as everything else.
+          Day 14 makes untyped data safe. I wrote custom <strong>type guards</strong> (<code>x is T</code>) and{' '}
+          <strong>assertion functions</strong> (<code>asserts x is T</code>) to narrow my own shapes, and used{' '}
+          the <strong>satisfies</strong> operator with <code>as const</code> to validate values without losing their
+          precise inferred types. Together these replace most risky <code>as</code> casts — the safe way to turn{' '}
+          <code>unknown</code> API and JSON data into trustworthy types.
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +204,13 @@ export default function Day014() {
           </ul>
         </section>
 
-        <CardSection icon="🔮" title="PROMISES & await" cards={BASICS} columns={3} />
-        <CardSection icon="🎣" title="ERRORS & COMBINATORS" cards={ERRORS} columns={4} />
-        <CardSection icon="🧭" title="PATTERNS" cards={PATTERNS} columns={4} />
+        <CardSection icon="🛡️" title="GUARDS & ASSERTIONS" cards={GUARDS} columns={3} />
+        <CardSection icon="✅" title="satisfies & as const" cards={SATISFIES} columns={4} />
+        <CardSection icon="🛠️" title="APPLYING THEM" cards={APPLY} columns={4} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Async</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#TypeGuards</span><span>#WebDev</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

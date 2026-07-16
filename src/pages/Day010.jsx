@@ -2,101 +2,101 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_TSCONFIG = 'https://www.typescriptlang.org/tsconfig';
+const TS_UTILITY = 'https://www.typescriptlang.org/docs/handbook/utility-types.html';
 const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
-  { title: 'tsconfig.json', text: 'the compiler’s control panel — targets, modules, strictness, and output all live here' },
-  { title: 'target & lib', text: 'target sets the JS version emitted; lib picks which built-in type definitions are available' },
-  { title: 'strict family', text: 'strict turns on noImplicitAny, strictNullChecks, and friends — the real safety' },
-  { title: 'outDir & rootDir', text: 'keep source in src and compiled JS in dist, cleanly separated' },
-  { title: 'DOM types', text: 'lib "DOM" gives document, window, and every element type out of the box' },
-  { title: 'Typed elements', text: 'querySelector<HTMLInputElement> returns the exact element type, with the right props' },
-  { title: 'Typed events', text: 'event handlers receive typed events — MouseEvent, KeyboardEvent, and more' },
-  { title: 'Non-null assertion', text: 'the `!` postfix says "this is not null" — use only when you truly know' },
-  { title: 'noEmit & tsc --noEmit', text: 'type-check without producing files — perfect for CI and Vite projects' },
-  { title: 'skipLibCheck', text: 'speeds up builds by not re-checking library .d.ts files' },
+  { title: 'Utility types', text: 'built-in generics that transform a type into a new one — no manual retyping' },
+  { title: 'Partial<T>', text: 'makes every property optional — perfect for update/patch functions' },
+  { title: 'Required<T>', text: 'the opposite — makes every property required, stripping the ?' },
+  { title: 'Readonly<T>', text: 'freezes every property so it can’t be reassigned' },
+  { title: 'Pick<T, K>', text: 'keep only the listed keys — a smaller type from a bigger one' },
+  { title: 'Omit<T, K>', text: 'drop the listed keys — the inverse of Pick' },
+  { title: 'Record<K, V>', text: 'build a map type: `Record<string, number>` — keys of K, values of V' },
+  { title: 'Return/Parameters', text: 'ReturnType<F> and Parameters<F> read types straight out of a function' },
+  { title: 'NonNullable<T>', text: 'removes null and undefined from a type' },
+  { title: 'They compose', text: 'combine them: `Readonly<Partial<User>>` — powerful, declarative type maths' },
 ];
 
-const CONFIG = [
+const SHAPE_MODS = [
   {
-    icon: '🎛️', title: 'target & module', titleClass: 'card-title-cyan', subtitle: 'What JS Comes Out',
-    description: 'target sets the JavaScript version tsc emits; module sets the module system. Modern web projects target ES2022 with ESNext modules.',
-    code: '"target": "ES2022",\n"module": "ESNext",\n"moduleResolution": "bundler"',
+    icon: '🧩', title: 'Partial<T>', titleClass: 'card-title-cyan', subtitle: 'All Optional',
+    description: 'Partial makes every field optional — exactly what an update function needs, so callers can pass only the fields they want to change.',
+    code: 'interface User { name: string; age: number }\nfunction update(id: number, patch: Partial<User>) {}\nupdate(1, { age: 27 }); // ✅ name omitted',
   },
   {
-    icon: '📚', title: 'lib', titleClass: 'card-title-purple', subtitle: 'Which APIs Exist',
-    description: 'lib chooses which built-in type declarations load. Include "DOM" for the browser and "ES2022" for modern JS features like Array.at.',
-    code: '"lib": ["ES2022", "DOM", "DOM.Iterable"]',
+    icon: '❗', title: 'Required<T>', titleClass: 'card-title-purple', subtitle: 'All Required',
+    description: 'Required strips every ? and demands all properties — useful when you’ve finished building an object and want to guarantee it’s complete.',
+    code: 'interface Opts { a?: number; b?: number }\nconst full: Required<Opts> = { a: 1, b: 2 };',
   },
   {
-    icon: '🚦', title: 'strict Family', titleClass: 'card-title-amber', subtitle: 'The Safety Switches',
-    description: 'One flag, many checks: strict enables noImplicitAny, strictNullChecks, strictFunctionTypes, and more. Always on for new projects.',
-    code: '"strict": true,\n// noImplicitAny, strictNullChecks, ...\n"noUnusedLocals": true',
-  },
-];
-
-const OUTPUT = [
-  {
-    icon: '📁', title: 'outDir & rootDir', titleClass: 'card-title-cyan', subtitle: 'Source vs Build',
-    description: 'rootDir marks where your source lives and outDir where compiled JS goes — keep src and dist separate so builds stay clean.',
-    code: '"rootDir": "src",\n"outDir": "dist"',
-  },
-  {
-    icon: '🚫', title: 'noEmit', titleClass: 'card-title-blue', subtitle: 'Type-Check Only',
-    description: 'In Vite/Next projects the bundler compiles the code, so you run tsc only to type-check. noEmit (or tsc --noEmit) checks without writing files.',
-    code: '"noEmit": true\n// tsc --noEmit  → CI type gate',
-  },
-  {
-    icon: '⚡', title: 'skipLibCheck', titleClass: 'card-title-amber', subtitle: 'Faster Builds',
-    description: 'skipLibCheck tells TypeScript not to re-verify third-party .d.ts files. It trades a little strictness for a noticeably faster check.',
-    code: '"skipLibCheck": true',
-  },
-  {
-    icon: '🧾', title: 'tsc --init', titleClass: 'card-title-lime', subtitle: 'A Good Starting Point',
-    description: 'Generate a commented tsconfig with tsc --init, then trim it to the options you actually use. Every project starts here.',
-    code: 'tsc --init\n# creates a documented tsconfig.json',
+    icon: '🧊', title: 'Readonly<T>', titleClass: 'card-title-amber', subtitle: 'All Frozen',
+    description: 'Readonly makes every property immutable at the type level — the same idea as Episode 5’s readonly, applied to a whole type at once.',
+    code: 'const cfg: Readonly<{ url: string }> = { url: "/api" };\ncfg.url = "/x"; // ❌ read-only',
   },
 ];
 
-const DOM = [
+const SELECT = [
   {
-    icon: '🌐', title: 'DOM Types', titleClass: 'card-title-cyan', subtitle: 'document & window',
-    description: 'With lib "DOM", TypeScript knows the whole browser API. document, window, elements, and events are all fully typed — autocomplete everywhere.',
-    code: 'const title = document.title; // string\nwindow.addEventListener("load", () => {});',
+    icon: '🎯', title: 'Pick<T, K>', titleClass: 'card-title-cyan', subtitle: 'Keep Some Keys',
+    description: 'Pick builds a new type with only the keys you name — carve a small, focused type (like component props) out of a larger model.',
+    code: 'interface User { id: number; name: string; email: string }\ntype Card = Pick<User, "id" | "name">;',
   },
   {
-    icon: '🎯', title: 'Typed Elements', titleClass: 'card-title-purple', subtitle: 'The Right Element Type',
-    description: 'querySelector returns a general Element by default. Pass the specific type so you get the properties that element actually has.',
-    code: 'const input = document.querySelector<HTMLInputElement>("#name");\ninput?.value; // string, only exists on inputs',
+    icon: '✂️', title: 'Omit<T, K>', titleClass: 'card-title-blue', subtitle: 'Drop Some Keys',
+    description: 'Omit is Pick’s inverse — remove the keys you don’t want. Ideal for a "create" type that excludes a server-generated id.',
+    code: 'type NewUser = Omit<User, "id">;\nfunction create(u: NewUser) {}',
   },
   {
-    icon: '🖱️', title: 'Typed Events', titleClass: 'card-title-amber', subtitle: 'Know The Event',
-    description: 'Event listeners hand you a typed event object. TypeScript knows a "click" gives a MouseEvent and "keydown" a KeyboardEvent.',
-    code: 'btn.addEventListener("click", (e: MouseEvent) => {\n  console.log(e.clientX);\n});',
+    icon: '🗺️', title: 'Record<K, V>', titleClass: 'card-title-amber', subtitle: 'Typed Maps',
+    description: 'Record constructs an object type with keys of K and values of V — the clean way to type dictionaries, lookups, and config maps.',
+    code: 'type Roles = Record<"admin" | "user", boolean>;\nconst r: Roles = { admin: true, user: false };',
   },
   {
-    icon: '❗', title: 'Non-null Assertion', titleClass: 'card-title-lime', subtitle: 'The ! Operator',
-    description: 'When you’re certain an element exists, a trailing ! removes null from its type. Use sparingly — a wrong ! reintroduces the crash TS was preventing.',
-    code: 'const root = document.getElementById("app")!;\nroot.innerHTML = "Hi";',
+    icon: '🚫', title: 'NonNullable<T>', titleClass: 'card-title-lime', subtitle: 'Strip null | undefined',
+    description: 'NonNullable removes null and undefined from a union — pairs well with narrowing to represent "definitely present" values.',
+    code: 'type Maybe = string | null | undefined;\ntype Sure = NonNullable<Maybe>; // string',
+  },
+];
+
+const FROM_FN = [
+  {
+    icon: '↩️', title: 'ReturnType<F>', titleClass: 'card-title-cyan', subtitle: 'Read A Return Type',
+    description: 'Extract the return type of a function type without running it — keep a derived type in sync with its source automatically.',
+    code: 'function makeUser() { return { id: 1, name: "S" }; }\ntype User = ReturnType<typeof makeUser>;',
+  },
+  {
+    icon: '📥', title: 'Parameters<F>', titleClass: 'card-title-purple', subtitle: 'Read Argument Types',
+    description: 'Parameters gives a tuple of a function’s argument types — handy for wrappers, decorators, and forwarding calls type-safely.',
+    code: 'function log(msg: string, level: number) {}\ntype Args = Parameters<typeof log>; // [string, number]',
+  },
+  {
+    icon: '🔗', title: 'They Compose', titleClass: 'card-title-amber', subtitle: 'Stack Them Up',
+    description: 'Utility types are just generics, so they nest. Combine them to express precise intent declaratively instead of hand-writing variants.',
+    code: 'type DraftUser = Readonly<Partial<Omit<User, "id">>>;',
+  },
+  {
+    icon: '🔜', title: 'Next: Modules', titleClass: 'card-title-lime', subtitle: 'Day 11 Preview',
+    description: 'Tomorrow: ES modules in TypeScript — import/export, default vs named, type-only imports, and declaration files (.d.ts).',
+    link: { href: '/day-011', label: 'Go to Day 11 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'tsconfig Reference', titleClass: 'card-title-cyan', subtitle: 'Every Option',
-    description: 'The searchable reference for every tsconfig option, with examples and recommendations. Bookmark it for the rest of Year 1.',
-    link: { href: TS_TSCONFIG, label: 'Open the tsconfig reference →', external: true },
+    icon: '📘', title: 'Utility Types', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
+    description: 'The complete reference of built-in utility types — every one from today plus Exclude, Extract, and Awaited.',
+    link: { href: TS_UTILITY, label: 'Read Utility Types →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Toggle Options Live',
-    description: 'The Playground’s settings let you flip strict, target, and lib and watch the errors and emitted JS change instantly.',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Transform Types Live',
+    description: 'Apply Partial, Pick, and Omit to a type and hover the result to see the transformed shape. Utility types make sense instantly this way.',
     link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '🏁', title: 'Core Complete', titleClass: 'card-title-amber', subtitle: 'Days 1–10 Done',
-    description: 'That’s the TypeScript core: types, functions, interfaces, classes, generics, narrowing, utility types, modules, and config. Next up: React & Next.js in TypeScript.',
-    link: { href: '/roadmap', label: 'See what’s next →' },
+    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    description: 'Partial for form state, Pick/Omit for props and DTOs, Record for lookups — these appear on nearly every React/Next.js screen.',
+    link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
 
@@ -167,10 +167,10 @@ export default function Day010() {
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Config · DOM</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Utility Types</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 10 <span aria-hidden="true">⚙️</span></h1>
-              <p className="day001-day-theme">TSCONFIG & TYPING THE DOM</p>
+              <h1 className="day001-day-num">DAY 10 <span aria-hidden="true">🧰</span></h1>
+              <p className="day001-day-theme">UTILITY TYPES — TRANSFORM TYPES</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -185,11 +185,11 @@ export default function Day010() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '10%' }} /></div>
 
         <p className="day001-summary">
-          Day 10 wires TypeScript to the real world. I learned the <strong>tsconfig</strong> options that matter —{' '}
-          <code>target</code>, <code>lib</code>, the <code>strict</code> family, <code>outDir</code>, and{' '}
-          <code>noEmit</code> for type-checking Vite projects. Then I typed the <strong>DOM</strong>: exact element
-          types from <code>querySelector&lt;T&gt;</code>, typed <strong>events</strong>, and the{' '}
-          <code>!</code> non-null assertion. That completes the TypeScript core — next comes React &amp; Next.js in TS.
+          Day 10 is type maths with the built-in <strong>utility types</strong>. I reshaped types with{' '}
+          <code>Partial</code>, <code>Required</code>, and <code>Readonly</code>; selected keys with{' '}
+          <code>Pick</code> and <code>Omit</code>; built maps with <code>Record</code>; and read types straight
+          out of functions with <code>ReturnType</code> and <code>Parameters</code>. Because they’re generics,
+          they <strong>compose</strong> — declarative, reusable, and everywhere in real code.
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +204,13 @@ export default function Day010() {
           </ul>
         </section>
 
-        <CardSection icon="🎛️" title="TSCONFIG ESSENTIALS" cards={CONFIG} columns={3} />
-        <CardSection icon="📁" title="OUTPUT & CHECKING" cards={OUTPUT} columns={4} />
-        <CardSection icon="🌐" title="TYPING THE DOM" cards={DOM} columns={4} />
+        <CardSection icon="🔧" title="RESHAPE PROPERTIES" cards={SHAPE_MODS} columns={3} />
+        <CardSection icon="🎯" title="SELECT & MAP KEYS" cards={SELECT} columns={4} />
+        <CardSection icon="🧠" title="FROM FUNCTIONS & COMPOSITION" cards={FROM_FN} columns={4} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#tsconfig</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#UtilityTypes</span><span>#WebDev</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

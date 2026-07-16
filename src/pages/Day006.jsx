@@ -2,100 +2,100 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_GENERICS = 'https://www.typescriptlang.org/docs/handbook/2/generics.html';
+const TS_OBJECTS = 'https://www.typescriptlang.org/docs/handbook/2/objects.html';
 const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
-  { title: 'Why generics', text: 'write one reusable function/type that works with any type — without losing type safety to `any`' },
-  { title: 'Generic functions', text: '`function first<T>(arr: T[]): T` keeps the element type flowing from input to output' },
-  { title: 'Type parameters', text: '`<T>` is a placeholder the compiler fills in from how you call the function' },
-  { title: 'Inference', text: 'you rarely pass `<T>` explicitly — TS infers it: `first([1,2,3])` gives T = number' },
-  { title: 'Constraints', text: '`<T extends { length: number }>` limits T to types that have what you use' },
-  { title: 'Generic interfaces', text: '`interface Box<T> { value: T }` — reusable containers for any element type' },
-  { title: 'Generic classes', text: '`class Stack<T>` — a type-safe stack, queue, or store for any type' },
-  { title: 'Default type params', text: '`<T = string>` gives a fallback when the type can’t be inferred' },
-  { title: 'keyof', text: '`keyof T` is the union of a type’s keys — the base of type-safe property access' },
-  { title: 'Multiple params', text: '`<K, V>` for maps and pairs — several placeholders at once' },
+  { title: 'interface basics', text: 'name an object shape once: `interface User { name: string; age: number }` and reuse it everywhere' },
+  { title: 'Optional properties', text: 'a trailing `?` makes a field optional: `email?: string`' },
+  { title: 'readonly properties', text: '`readonly id: number` can be set once and never reassigned' },
+  { title: 'Method signatures', text: 'interfaces can declare methods: `greet(): string` — implementers must provide them' },
+  { title: 'Index signatures', text: '`[key: string]: number` describes an object with arbitrary string keys' },
+  { title: 'Extending interfaces', text: '`interface Admin extends User` inherits fields and adds more' },
+  { title: 'implements', text: 'a class can `implements User` — the compiler checks it has the shape' },
+  { title: 'Declaration merging', text: 'two interfaces with the same name merge into one — a TS-only superpower' },
+  { title: 'interface vs type', text: 'interfaces extend/merge; type aliases do unions & mapped types' },
+  { title: 'Callable interfaces', text: 'an interface can describe a function: `interface Op { (a: number): number }`' },
 ];
 
-const WHY = [
+const DEFINING = [
   {
-    icon: '♻️', title: 'The Problem', titleClass: 'card-title-cyan', subtitle: 'any Throws Away Types',
-    description: 'A function typed with any works for everything but returns any — you lose autocomplete and checks. Generics keep it reusable AND typed.',
-    code: 'function firstAny(arr: any[]): any { return arr[0]; }\nconst n = firstAny([1, 2]); // n is any 😞',
+    icon: '📐', title: 'Interface Basics', titleClass: 'card-title-cyan', subtitle: 'Name A Shape',
+    description: 'Yesterday we typed object shapes inline. An interface names that shape once so you can reuse it everywhere — cleaner and self-documenting.',
+    code: 'interface User {\n  name: string;\n  age: number;\n}\nconst u: User = { name: "Sumit", age: 26 };',
   },
   {
-    icon: '🧩', title: 'Generic Functions', titleClass: 'card-title-purple', subtitle: 'A Type Placeholder',
-    description: 'Introduce a type parameter <T>. It links the input and output, so the element type flows straight through and the result is precisely typed.',
-    code: 'function first<T>(arr: T[]): T {\n  return arr[0];\n}\nconst n = first([1, 2]);   // n is number ✅\nconst s = first(["a"]);    // s is string ✅',
+    icon: '❔', title: 'Optional Properties', titleClass: 'card-title-purple', subtitle: 'The ? Marker',
+    description: 'Mark a field optional with ?. The object is valid with or without it, and TypeScript makes you handle the "maybe missing" case when you read it.',
+    code: 'interface User {\n  name: string;\n  email?: string;   // optional\n}\nconst a: User = { name: "Sumit" }; // ✅',
   },
   {
-    icon: '🔮', title: 'Inference', titleClass: 'card-title-amber', subtitle: 'TS Fills In T',
-    description: 'You almost never write <T> at the call site — TypeScript infers it from the argument. Explicit type arguments are there when you need them.',
-    code: 'first<number>([1, 2]); // explicit (optional)\nfirst([1, 2]);         // inferred T = number',
-  },
-];
-
-const POWER = [
-  {
-    icon: '🔗', title: 'Constraints', titleClass: 'card-title-cyan', subtitle: 'extends',
-    description: 'Restrict a type parameter with extends so you can safely use the members you need — like requiring a .length before reading it.',
-    code: 'function longest<T extends { length: number }>(a: T, b: T) {\n  return a.length >= b.length ? a : b;\n}\nlongest([1,2], [1,2,3]);',
-  },
-  {
-    icon: '📦', title: 'Generic Interfaces', titleClass: 'card-title-blue', subtitle: 'Reusable Shapes',
-    description: 'Parameterize an interface to describe a container of any type — the pattern behind API response wrappers and React component props.',
-    code: 'interface ApiResult<T> {\n  data: T;\n  ok: boolean;\n}\nconst r: ApiResult<string[]> = { data: [], ok: true };',
-  },
-  {
-    icon: '🗃️', title: 'Generic Classes', titleClass: 'card-title-amber', subtitle: 'Type-Safe Containers',
-    description: 'A generic class builds fully typed data structures once and reuses them for any element type — a Stack<number> and Stack<string> from the same code.',
-    code: 'class Stack<T> {\n  private items: T[] = [];\n  push(x: T) { this.items.push(x); }\n  pop() { return this.items.pop(); }\n}',
-  },
-  {
-    icon: '🔑', title: 'keyof & Access', titleClass: 'card-title-lime', subtitle: 'Type-Safe Props',
-    description: 'keyof T yields the union of a type’s keys, letting you write a getter that only accepts real property names and returns the exact value type.',
-    code: 'function get<T, K extends keyof T>(obj: T, key: K): T[K] {\n  return obj[key];\n}\nget({ a: 1 }, "a"); // number, "b" ❌',
+    icon: '🔒', title: 'readonly', titleClass: 'card-title-amber', subtitle: 'Set Once',
+    description: 'readonly fields can be assigned at creation but never changed afterward — perfect for IDs, timestamps, and configuration you must not mutate.',
+    code: 'interface Account {\n  readonly id: number;\n  balance: number;\n}\nacc.id = 5; // ❌ cannot reassign',
   },
 ];
 
-const MORE = [
+const SHAPES = [
   {
-    icon: '🅰️', title: 'Multiple Params', titleClass: 'card-title-cyan', subtitle: '<K, V>',
-    description: 'Use several type parameters for pairs and maps. Each is inferred independently, keeping keys and values precisely typed together.',
-    code: 'function pair<K, V>(k: K, v: V): [K, V] {\n  return [k, v];\n}\npair("age", 26); // [string, number]',
+    icon: '🧮', title: 'Methods', titleClass: 'card-title-cyan', subtitle: 'Behaviour In The Shape',
+    description: 'Interfaces can require methods, not just data. Any object or class that satisfies the interface must implement them with matching types.',
+    code: 'interface Logger {\n  log(msg: string): void;\n}\nconst c: Logger = { log: (m) => console.log(m) };',
   },
   {
-    icon: '🧯', title: 'Default Params', titleClass: 'card-title-purple', subtitle: '<T = string>',
-    description: 'Give a type parameter a default so callers who don’t specify one still get a sensible type instead of unknown.',
-    code: 'interface Box<T = string> { value: T; }\nconst b: Box = { value: "hi" }; // T defaults to string',
+    icon: '🗂️', title: 'Index Signatures', titleClass: 'card-title-blue', subtitle: 'Arbitrary Keys',
+    description: 'When you don’t know the keys ahead of time, an index signature types them all at once — like a dictionary of scores or a config map.',
+    code: 'interface Scores {\n  [player: string]: number;\n}\nconst s: Scores = { alice: 10, bob: 7 };',
   },
   {
-    icon: '🌐', title: 'Everywhere In Libraries', titleClass: 'card-title-amber', subtitle: 'Array, Promise, Map',
-    description: 'Generics aren’t exotic — Array<T>, Promise<T>, and Map<K, V> are all generic. Learning them unlocks the entire typed ecosystem.',
-    code: 'const p: Promise<number> = fetchCount();\nconst m: Map<string, number> = new Map();',
+    icon: '📞', title: 'Callable Interfaces', titleClass: 'card-title-amber', subtitle: 'Describe A Function',
+    description: 'An interface can describe a function’s call signature — an alternative to a function type alias, and it can carry extra properties too.',
+    code: 'interface Op {\n  (a: number, b: number): number;\n}\nconst add: Op = (a, b) => a + b;',
   },
   {
-    icon: '🔜', title: 'Next: Enums & Narrowing', titleClass: 'card-title-lime', subtitle: 'Day 7 Preview',
-    description: 'Tomorrow: enums, type guards, and discriminated unions — how TypeScript narrows a broad type down to a precise one.',
+    icon: '🔗', title: 'Merging', titleClass: 'card-title-lime', subtitle: 'Same Name = One Type',
+    description: 'Declare an interface twice and TypeScript merges them. Libraries use this to let you augment their types — something type aliases cannot do.',
+    code: 'interface Box { w: number; }\ninterface Box { h: number; }\n// Box now has w and h',
+  },
+];
+
+const REUSE = [
+  {
+    icon: '🧬', title: 'Extending', titleClass: 'card-title-cyan', subtitle: 'Inherit & Add',
+    description: 'One interface can extend another (or several), inheriting all fields and adding new ones — build complex shapes from simple, reusable pieces.',
+    code: 'interface User { name: string; }\ninterface Admin extends User {\n  role: "admin";\n}',
+  },
+  {
+    icon: '🏗️', title: 'implements', titleClass: 'card-title-purple', subtitle: 'Classes Honour Shapes',
+    description: 'A class can implement an interface. TypeScript then verifies the class truly provides every property and method the interface demands.',
+    code: 'class AppUser implements User {\n  name = "Sumit";\n}',
+  },
+  {
+    icon: '⚖️', title: 'interface vs type', titleClass: 'card-title-amber', subtitle: 'When To Use Which',
+    description: 'Use interface for object shapes you may extend or that a class implements. Use type for unions, tuples, and mapped types. Pick one and stay consistent.',
+    code: 'interface A { x: number }   // extendable\ntype B = A | { y: number } // unions',
+  },
+  {
+    icon: '🔜', title: 'Next: Classes', titleClass: 'card-title-lime', subtitle: 'Day 7 Preview',
+    description: 'Tomorrow: classes in TypeScript — access modifiers, readonly fields, parameter properties, implements, and abstract classes.',
     link: { href: '/day-007', label: 'Go to Day 7 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Generics', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
-    description: 'The reference chapter on generics — type parameters, constraints, generic classes/interfaces, and default parameters.',
-    link: { href: TS_GENERICS, label: 'Read the Generics chapter →', external: true },
+    icon: '📘', title: 'Object Types', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
+    description: 'The handbook chapter on interfaces and object types — optional/readonly properties, index signatures, and extending.',
+    link: { href: TS_OBJECTS, label: 'Read Object Types →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Watch T Flow',
-    description: 'Call a generic function with different arguments and hover the result to watch TypeScript infer T each time. Generics click fast this way.',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Try It Live',
+    description: 'Define an interface, build objects that satisfy it, and break them on purpose to see the exact error messages TypeScript produces.',
     link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
     icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Generics power hooks, data fetching, and reusable components in React/Next.js — you’ll use useState<T> and typed fetch all year.',
+    description: 'Interfaces are how you model props, API responses, and state — the backbone of typed React & Next.js later this year.',
     link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
@@ -167,10 +167,10 @@ export default function Day006() {
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Generics</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Interfaces</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 6 <span aria-hidden="true">🧩</span></h1>
-              <p className="day001-day-theme">GENERICS — REUSABLE TYPE SAFETY</p>
+              <h1 className="day001-day-num">DAY 6 <span aria-hidden="true">📐</span></h1>
+              <p className="day001-day-theme">INTERFACES — MODELLING OBJECT SHAPES</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -185,11 +185,12 @@ export default function Day006() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '6%' }} /></div>
 
         <p className="day001-summary">
-          Day 6 unlocks reuse without losing safety: <strong>generics</strong>. I wrote generic{' '}
-          <strong>functions</strong> where the type <code>&lt;T&gt;</code> flows from input to output, added{' '}
-          <strong>constraints</strong> with <code>extends</code>, built generic <strong>interfaces</strong> and{' '}
-          <strong>classes</strong> (a typed Stack), and used <code>keyof</code> for type-safe property access.
-          This is how <code>Array&lt;T&gt;</code>, <code>Promise&lt;T&gt;</code>, and React hooks are typed.
+          Day 6 gives the object shapes from Episode 5 a reusable name. I used <strong>interfaces</strong> to
+          describe objects once, with <strong>optional</strong> and <strong>readonly</strong> properties,{' '}
+          <strong>method</strong> and <strong>index</strong> signatures. I learned to <strong>extend</strong>{' '}
+          interfaces, have classes <code>implements</code> them, saw <strong>declaration merging</strong>, and
+          settled the <code>interface</code> vs <code>type</code> question. This is how I’ll model props and API
+          data all year.
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +205,13 @@ export default function Day006() {
           </ul>
         </section>
 
-        <CardSection icon="♻️" title="WHY GENERICS" cards={WHY} columns={3} />
-        <CardSection icon="🔗" title="CONSTRAINTS & CONTAINERS" cards={POWER} columns={4} />
-        <CardSection icon="🚀" title="GOING FURTHER" cards={MORE} columns={4} />
+        <CardSection icon="📐" title="DEFINING INTERFACES" cards={DEFINING} columns={3} />
+        <CardSection icon="🧩" title="SHAPES & SIGNATURES" cards={SHAPES} columns={4} />
+        <CardSection icon="🧬" title="EXTEND & IMPLEMENT" cards={REUSE} columns={4} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Generics</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Interfaces</span><span>#WebDev</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

@@ -2,100 +2,100 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_NARROWING = 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html';
+const TS_CLASSES = 'https://www.typescriptlang.org/docs/handbook/2/classes.html';
 const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
-  { title: 'Numeric enums', text: '`enum Dir { Up, Down }` auto-numbers members 0, 1, 2… a named set of constants' },
-  { title: 'String enums', text: '`enum Status { Active = "ACTIVE" }` — readable values that survive in the compiled JS' },
-  { title: 'const enums', text: '`const enum` is inlined at compile time — zero runtime cost when you just need the values' },
-  { title: 'Union of literals', text: 'often better than an enum: `type Status = "active" | "done"` — lighter and structural' },
-  { title: 'Narrowing', text: 'TS shrinks a broad type to a precise one inside a check — no casting needed' },
-  { title: 'typeof guards', text: '`if (typeof x === "string")` narrows a union to just the string branch' },
-  { title: 'in operator', text: '`if ("wings" in animal)` narrows by which property exists' },
-  { title: 'instanceof', text: 'narrow class instances: `if (err instanceof TypeError)` gives you the exact type' },
-  { title: 'Discriminated unions', text: 'a shared literal "tag" field lets TS pick the exact member — the pattern for state & events' },
-  { title: 'Exhaustiveness', text: 'a `never` default in a switch guarantees you handled every case' },
+  { title: 'Typed classes', text: 'fields and methods carry types — `class Point { x: number; y: number }`' },
+  { title: 'Constructors', text: 'initialize typed fields; strict mode ensures every field is assigned' },
+  { title: 'public / private / protected', text: 'access modifiers control who can touch a member' },
+  { title: 'Parameter properties', text: '`constructor(private id: number)` declares and assigns in one line' },
+  { title: 'readonly fields', text: '`private readonly key: string` — assigned once in the constructor' },
+  { title: 'Getters & setters', text: 'accessors expose controlled access to private state' },
+  { title: 'implements', text: 'a class can implement an interface — TS verifies the shape matches' },
+  { title: 'Inheritance', text: '`extends` a base class, call `super()`, override methods with correct types' },
+  { title: 'abstract classes', text: 'a base you cannot instantiate; abstract methods must be implemented' },
+  { title: 'static members', text: 'belong to the class itself — shared counters, factories, constants' },
 ];
 
-const ENUMS = [
+const BASICS = [
   {
-    icon: '🔢', title: 'Numeric Enums', titleClass: 'card-title-cyan', subtitle: 'Auto-Numbered Constants',
-    description: 'An enum names a group of related constants. Members auto-increment from 0 unless you set values — handy for directions, roles, and states.',
-    code: 'enum Direction { Up, Down, Left, Right }\nlet d: Direction = Direction.Up; // 0',
+    icon: '🏛️', title: 'Typed Class', titleClass: 'card-title-cyan', subtitle: 'Fields + Constructor',
+    description: 'Declare typed fields and initialize them in the constructor. Under strict mode, TypeScript ensures every field ends up assigned before use.',
+    code: 'class Point {\n  x: number;\n  y: number;\n  constructor(x: number, y: number) {\n    this.x = x; this.y = y;\n  }\n}',
   },
   {
-    icon: '🔤', title: 'String Enums', titleClass: 'card-title-purple', subtitle: 'Readable Values',
-    description: 'String enums give each member an explicit string value, which stays meaningful in logs, storage, and the compiled JavaScript.',
-    code: 'enum Status {\n  Active = "ACTIVE",\n  Done = "DONE",\n}\nlet s = Status.Active; // "ACTIVE"',
+    icon: '🎯', title: 'Parameter Properties', titleClass: 'card-title-purple', subtitle: 'Declare + Assign',
+    description: 'Prefix a constructor parameter with an access modifier and TypeScript declares and assigns the field for you — the same class in a fraction of the code.',
+    code: 'class Point {\n  constructor(public x: number, public y: number) {}\n}\n// x and y are created and set automatically',
   },
   {
-    icon: '🎯', title: 'Union of Literals', titleClass: 'card-title-amber', subtitle: 'Often A Better Enum',
-    description: 'A union of string literals gives the same "one of these" guarantee with no runtime object generated — many TS teams prefer it over enums.',
-    code: 'type Status = "active" | "paused" | "done";\nfunction set(s: Status) { /* ... */ }\nset("active"); set("x"); // ❌',
-  },
-];
-
-const NARROW = [
-  {
-    icon: '🔍', title: 'typeof Guards', titleClass: 'card-title-cyan', subtitle: 'Narrow A Union',
-    description: 'Inside a typeof check, TypeScript narrows a union to a single type — so you can call string methods only where the value is actually a string.',
-    code: 'function fmt(x: string | number) {\n  if (typeof x === "string") return x.trim();\n  return x.toFixed(2);\n}',
-  },
-  {
-    icon: '🏷️', title: 'in Operator', titleClass: 'card-title-blue', subtitle: 'Narrow By Property',
-    description: 'The in operator narrows by which property a value has — a lightweight way to tell two object shapes apart without a class.',
-    code: 'type Fish = { swim(): void };\ntype Bird = { fly(): void };\nfunction move(a: Fish | Bird) {\n  if ("swim" in a) a.swim(); else a.fly();\n}',
-  },
-  {
-    icon: '🧬', title: 'instanceof', titleClass: 'card-title-amber', subtitle: 'Narrow Class Instances',
-    description: 'instanceof narrows to a specific class — invaluable in catch blocks and when handling values that could be one of several class types.',
-    code: 'try { risky(); }\ncatch (e) {\n  if (e instanceof TypeError) console.log(e.name);\n}',
-  },
-  {
-    icon: '🛡️', title: 'Type Predicates', titleClass: 'card-title-lime', subtitle: 'Custom Guards',
-    description: 'Write your own guard with a `x is T` return type. TypeScript then trusts it to narrow — reusable checks for complex shapes.',
-    code: 'function isString(x: unknown): x is string {\n  return typeof x === "string";\n}',
+    icon: '🔒', title: 'Access Modifiers', titleClass: 'card-title-amber', subtitle: 'public · private · protected',
+    description: 'public is the default; private hides a member from outside the class; protected allows subclasses but not the outside world. Encapsulation, enforced at compile time.',
+    code: 'class Account {\n  private balance = 0;\n  deposit(n: number) { this.balance += n; }\n}\nacc.balance; // ❌ private',
   },
 ];
 
-const UNIONS = [
+const STATE = [
   {
-    icon: '🎫', title: 'Discriminated Unions', titleClass: 'card-title-cyan', subtitle: 'The Tag Pattern',
-    description: 'Give each union member a shared literal "kind" field. Switching on it narrows to the exact member — the go-to pattern for state machines and events.',
-    code: 'type Shape =\n  | { kind: "circle"; r: number }\n  | { kind: "square"; s: number };\nfunction area(sh: Shape) {\n  if (sh.kind === "circle") return Math.PI * sh.r ** 2;\n  return sh.s ** 2;\n}',
+    icon: '🔐', title: 'readonly Fields', titleClass: 'card-title-cyan', subtitle: 'Set Once In Constructor',
+    description: 'readonly members can only be assigned where they’re declared or in the constructor. Combine with private for immutable, hidden state.',
+    code: 'class User {\n  constructor(private readonly id: number) {}\n}',
   },
   {
-    icon: '✅', title: 'Exhaustiveness', titleClass: 'card-title-purple', subtitle: 'never Catches Gaps',
-    description: 'Assign the leftover value to never in a switch default. If you later add a case and forget to handle it, the compiler errors immediately.',
-    code: 'default: {\n  const _exhaustive: never = sh;\n  return _exhaustive;\n}',
+    icon: '🎚️', title: 'Getters & Setters', titleClass: 'card-title-blue', subtitle: 'Controlled Access',
+    description: 'Expose private state through get/set accessors — validate on write, compute on read, all while looking like a plain property to callers.',
+    code: 'class Temp {\n  private _c = 0;\n  get f() { return this._c * 1.8 + 32; }\n  set c(v: number) { this._c = v; }\n}',
   },
   {
-    icon: '⚡', title: 'const enum', titleClass: 'card-title-amber', subtitle: 'Zero Runtime Cost',
-    description: 'A const enum is erased and its values inlined at compile time — the readability of an enum without shipping an object to the browser.',
-    code: 'const enum Log { Info, Warn, Error }\nconsole.log(Log.Warn); // compiles to 1',
+    icon: '⚙️', title: 'static Members', titleClass: 'card-title-amber', subtitle: 'On The Class Itself',
+    description: 'static fields and methods belong to the class, not instances — ideal for counters, constants, and factory helpers shared across all objects.',
+    code: 'class Id {\n  static next = 1;\n  static make() { return Id.next++; }\n}\nId.make(); // 1',
   },
   {
-    icon: '🔜', title: 'Next: Utility Types', titleClass: 'card-title-lime', subtitle: 'Day 8 Preview',
-    description: 'Tomorrow: the built-in utility types — Partial, Required, Readonly, Pick, Omit, and Record — that transform types for you.',
+    icon: '📜', title: 'implements', titleClass: 'card-title-lime', subtitle: 'Honour An Interface',
+    description: 'A class can implement one or more of yesterday’s interfaces. TypeScript checks that it provides every required property and method.',
+    code: 'interface Named { name: string; }\nclass Dog implements Named {\n  name = "Rex";\n}',
+  },
+];
+
+const INHERIT = [
+  {
+    icon: '🧬', title: 'Inheritance', titleClass: 'card-title-cyan', subtitle: 'extends & super',
+    description: 'Extend a base class to inherit its members, call super() in the constructor, and override methods — TypeScript checks the overrides stay compatible.',
+    code: 'class Animal {\n  constructor(public name: string) {}\n  speak() { return "..."; }\n}\nclass Dog extends Animal {\n  speak() { return "Woof"; }\n}',
+  },
+  {
+    icon: '🚫', title: 'abstract Classes', titleClass: 'card-title-purple', subtitle: 'Blueprints',
+    description: 'An abstract class can’t be instantiated directly. It defines shared code plus abstract methods that every subclass must implement.',
+    code: 'abstract class Shape {\n  abstract area(): number;\n}\nclass Square extends Shape {\n  constructor(private s: number) { super(); }\n  area() { return this.s ** 2; }\n}',
+  },
+  {
+    icon: '🧩', title: 'Classes + Generics', titleClass: 'card-title-amber', subtitle: 'A Taste Of Day 8',
+    description: 'Classes can be generic too — a Box<T> holds any type safely. That’s the bridge to tomorrow’s topic: generics.',
+    code: 'class Box<T> {\n  constructor(public value: T) {}\n}\nconst b = new Box<string>("hi");',
+  },
+  {
+    icon: '🔜', title: 'Next: Generics', titleClass: 'card-title-lime', subtitle: 'Day 8 Preview',
+    description: 'Tomorrow we make types reusable with generics — generic functions, constraints, and generic interfaces & classes.',
     link: { href: '/day-008', label: 'Go to Day 8 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Narrowing', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
-    description: 'The handbook chapter on narrowing — typeof, in, instanceof, type predicates, and discriminated unions. The heart of today.',
-    link: { href: TS_NARROWING, label: 'Read Narrowing →', external: true },
+    icon: '📘', title: 'Classes', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
+    description: 'The full reference on TypeScript classes — modifiers, parameter properties, accessors, inheritance, and abstract classes.',
+    link: { href: TS_CLASSES, label: 'Read the Classes chapter →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Watch It Narrow',
-    description: 'Write a union, add a guard, and hover the variable inside the branch to see the type shrink. The clearest way to feel narrowing work.',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Build A Class',
+    description: 'Write a class, mark a field private, and try to access it from outside to see the compiler stop you. Fast, hands-on reinforcement.',
     link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
     icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Discriminated unions model Redux/reducer actions and API states — you’ll reach for them constantly in React & Next.js.',
+    description: 'Classes power services, models, and stores. Later years reuse the same OOP ideas in Python and Java — the concepts transfer.',
     link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
@@ -167,10 +167,10 @@ export default function Day007() {
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Narrowing</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Classes</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 7 <span aria-hidden="true">🎫</span></h1>
-              <p className="day001-day-theme">ENUMS & TYPE NARROWING</p>
+              <h1 className="day001-day-num">DAY 7 <span aria-hidden="true">🏛️</span></h1>
+              <p className="day001-day-theme">CLASSES & OOP IN TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -185,11 +185,11 @@ export default function Day007() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '7%' }} /></div>
 
         <p className="day001-summary">
-          Day 7 covers named constants and precise types. I learned numeric, string, and{' '}
-          <code>const</code> <strong>enums</strong> — and why a <strong>union of literals</strong> is often
-          better. Then <strong>narrowing</strong>: <code>typeof</code>, <code>in</code>, <code>instanceof</code>,
-          custom <strong>type predicates</strong>, and <strong>discriminated unions</strong> with{' '}
-          <code>never</code>-checked exhaustiveness. This is how TypeScript turns a broad type into an exact one.
+          Day 7 brings object-oriented TypeScript. I wrote <strong>typed classes</strong> with constructors,
+          used <strong>access modifiers</strong> (public/private/protected) and <strong>parameter properties</strong>,
+          added <strong>readonly</strong> fields, <strong>getters/setters</strong>, and <strong>static</strong> members.
+          Then <strong>inheritance</strong> with <code>extends</code>/<code>super</code>, <code>implements</code> for
+          yesterday’s interfaces, and <strong>abstract</strong> base classes. Real encapsulation, checked at compile time.
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +204,13 @@ export default function Day007() {
           </ul>
         </section>
 
-        <CardSection icon="🔢" title="ENUMS & LITERALS" cards={ENUMS} columns={3} />
-        <CardSection icon="🔍" title="NARROWING TECHNIQUES" cards={NARROW} columns={4} />
-        <CardSection icon="🎫" title="UNIONS & EXHAUSTIVENESS" cards={UNIONS} columns={4} />
+        <CardSection icon="🏛️" title="CLASS BASICS" cards={BASICS} columns={3} />
+        <CardSection icon="🔐" title="STATE & ACCESS" cards={STATE} columns={4} />
+        <CardSection icon="🧬" title="INHERITANCE & ABSTRACTION" cards={INHERIT} columns={4} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Narrowing</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#OOP</span><span>#WebDev</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

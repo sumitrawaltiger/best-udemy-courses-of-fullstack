@@ -2,100 +2,100 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_MAPPED = 'https://www.typescriptlang.org/docs/handbook/2/mapped-types.html';
+const TS_MODULES = 'https://www.typescriptlang.org/docs/handbook/2/modules.html';
 const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
-  { title: 'Intersection types', text: '`A & B` combines two types into one that has all members of both' },
-  { title: 'Intersection vs union', text: '& = "and" (all fields), | = "or" (one of) — opposite tools for combining types' },
-  { title: 'Mapped types', text: 'transform every key of a type: `{ [K in keyof T]: ... }` — how Partial & Readonly are built' },
-  { title: 'Key remapping', text: '`as` in a mapped type renames keys — build getters like getName from name' },
-  { title: 'Modifiers', text: 'add or remove ? and readonly with +/- inside a mapped type' },
-  { title: 'keyof + indexed access', text: '`T[keyof T]` is the union of all a type’s value types' },
-  { title: 'Build your own utilities', text: 'reimplement Partial<T> and Readonly<T> from scratch with mapped types' },
-  { title: 'Composition over inheritance', text: 'intersections let you mix small capability types into a bigger one' },
-  { title: 'Records are mapped types', text: 'Record<K, V> is just a mapped type over a key union' },
-  { title: 'Homomorphic mapping', text: 'mapping over keyof T preserves optional/readonly automatically' },
+  { title: 'ES modules', text: 'each file is its own module — `export` what you share, `import` what you need' },
+  { title: 'Named exports', text: '`export function add()` / `import { add } from "./math"` — many per file' },
+  { title: 'Default export', text: '`export default` — one main thing per file, imported under any name' },
+  { title: 'Re-exports', text: '`export * from "./math"` bundles a folder into one entry point (barrel file)' },
+  { title: 'type-only imports', text: '`import type { User }` — erased entirely, no runtime cost' },
+  { title: 'Declaration files', text: '.d.ts files describe the types of plain-JS libraries' },
+  { title: 'DefinitelyTyped', text: '`npm i -D @types/xyz` pulls community types for untyped libraries' },
+  { title: 'declare', text: 'describes something that exists at runtime but has no TS source' },
+  { title: 'moduleResolution', text: 'tsconfig tells TS how to find modules — "bundler" for Vite/modern tooling' },
+  { title: 'Path aliases', text: 'import from "@/utils" instead of "../../../utils"' },
 ];
 
-const INTERSECTIONS = [
+const EXPORTS = [
   {
-    icon: '➕', title: 'Intersection Types', titleClass: 'card-title-cyan', subtitle: 'A & B',
-    description: 'An intersection merges types — the result must satisfy all of them at once. It’s how you compose small capability types into a bigger, complete one.',
-    code: 'type Named = { name: string };\ntype Aged = { age: number };\ntype Person = Named & Aged;\nconst p: Person = { name: "Sumit", age: 26 };',
+    icon: '📤', title: 'Named Exports', titleClass: 'card-title-cyan', subtitle: 'Many Per File',
+    description: 'Export as many values as you like by name, then import exactly the ones you need. The names must match — great for tree-shaking and clarity.',
+    code: '// math.ts\nexport const PI = 3.14;\nexport function add(a: number, b: number) { return a + b; }\n// app.ts\nimport { add, PI } from "./math";',
   },
   {
-    icon: '⚖️', title: '& vs |', titleClass: 'card-title-purple', subtitle: 'And vs Or',
-    description: 'Intersection (&) demands all members; union (|) allows one of several. They’re complementary — use & to combine shapes, | to represent alternatives.',
-    code: 'type Both = Named & Aged;   // has name AND age\ntype Either = Named | Aged; // name OR age',
+    icon: '⭐', title: 'Default Export', titleClass: 'card-title-purple', subtitle: 'One Main Export',
+    description: 'A file can have a single default export — its "main" thing. Import it under any name you choose. React components often use this.',
+    code: '// User.ts\nexport default class User {}\n// app.ts\nimport User from "./User";',
   },
   {
-    icon: '🧩', title: 'Mixins By Composition', titleClass: 'card-title-amber', subtitle: 'Small Capabilities',
-    description: 'Define tiny capability types (Serializable, Timestamped) and intersect them onto your models — flexible composition without deep inheritance.',
-    code: 'type Timestamped = { createdAt: Date };\ntype Post = { title: string } & Timestamped;',
-  },
-];
-
-const MAPPED = [
-  {
-    icon: '🗺️', title: 'Mapped Types', titleClass: 'card-title-cyan', subtitle: 'Transform Every Key',
-    description: 'A mapped type walks over every key of a type and produces a new one. This is the machinery behind Partial, Readonly, and Record.',
-    code: 'type MyPartial<T> = {\n  [K in keyof T]?: T[K];\n};\ntype U = MyPartial<{ a: number; b: string }>;',
-  },
-  {
-    icon: '🔒', title: 'Modifiers', titleClass: 'card-title-blue', subtitle: 'Add / Remove ? readonly',
-    description: 'Inside a mapped type you can add or strip optionality and readonly with + and -. That’s exactly how Required<T> removes every ?.',
-    code: 'type MyReadonly<T> = {\n  readonly [K in keyof T]: T[K];\n};\ntype Mutable<T> = {\n  -readonly [K in keyof T]: T[K];\n};',
-  },
-  {
-    icon: '🏷️', title: 'Key Remapping', titleClass: 'card-title-amber', subtitle: 'as In Mapped Types',
-    description: 'Rename keys as you map them with the as clause and template literals — generate a getter type from every property automatically.',
-    code: 'type Getters<T> = {\n  [K in keyof T as `get${Capitalize<string & K>}`]: () => T[K];\n};',
-  },
-  {
-    icon: '🔑', title: 'Indexed Access', titleClass: 'card-title-lime', subtitle: 'T[K] & T[keyof T]',
-    description: 'Look up a property’s type with T["name"], or get the union of all value types with T[keyof T] — the basis of type-safe generic access.',
-    code: 'type User = { id: number; name: string };\ntype IdType = User["id"];        // number\ntype Values = User[keyof User];  // number | string',
+    icon: '🛢️', title: 'Barrel Files', titleClass: 'card-title-amber', subtitle: 'Re-export',
+    description: 'Re-export from an index file so consumers import from one clean path instead of many deep ones — a tidy public API for a folder.',
+    code: '// index.ts\nexport * from "./math";\nexport { default as User } from "./User";',
   },
 ];
 
-const APPLY = [
+const TYPES_IN = [
   {
-    icon: '🛠️', title: 'Rebuild Utility Types', titleClass: 'card-title-cyan', subtitle: 'Understand By Building',
-    description: 'Reimplement Pick and Record with mapped types and you’ll never be confused by the built-ins again — they’re all just mapped types under the hood.',
-    code: 'type MyRecord<K extends string, V> = {\n  [P in K]: V;\n};',
+    icon: '🏷️', title: 'type-only Imports', titleClass: 'card-title-cyan', subtitle: 'Zero Runtime',
+    description: 'import type brings in only the type, guaranteed to be erased from the compiled JS. It documents intent and avoids accidental runtime dependencies.',
+    code: 'import type { User } from "./types";\nfunction show(u: User) {}',
   },
   {
-    icon: '🧬', title: 'Homomorphic Mapping', titleClass: 'card-title-purple', subtitle: 'Preserves Modifiers',
-    description: 'When you map over keyof T directly, TypeScript keeps each key’s original optional/readonly modifiers — so transformations stay faithful.',
-    code: 'type Clone<T> = { [K in keyof T]: T[K] };\n// optional/readonly flags survive',
+    icon: '📄', title: 'Declaration Files', titleClass: 'card-title-blue', subtitle: '.d.ts',
+    description: 'A .d.ts file contains only types — no implementation. TypeScript uses it to understand plain-JavaScript libraries and your own runtime globals.',
+    code: '// legacy.d.ts\ndeclare function legacyInit(config: object): void;',
   },
   {
-    icon: '🎯', title: 'Where It Shows Up', titleClass: 'card-title-amber', subtitle: 'Forms, DTOs, State',
-    description: 'Partial form drafts, readonly config, key-remapped event maps — mapped and intersection types quietly power the typed patterns you use daily.',
-    code: 'type Draft<T> = Partial<Readonly<T>>;',
+    icon: '📦', title: '@types Packages', titleClass: 'card-title-amber', subtitle: 'DefinitelyTyped',
+    description: 'Many JS libraries ship without types. Install the community @types package and TypeScript instantly understands the library’s API.',
+    code: 'npm i -D @types/node\n// now Node globals are typed',
   },
   {
-    icon: '🔜', title: 'Next: Conditional Types', titleClass: 'card-title-lime', subtitle: 'Day 12 Preview',
-    description: 'Tomorrow: conditional types (T extends U ? X : Y), infer, and template literal types — the type-level "if" and string building.',
+    icon: '🌍', title: 'declare Globals', titleClass: 'card-title-lime', subtitle: 'Describe What Exists',
+    description: 'Use declare to tell TypeScript about values that exist at runtime (a script global, an env var) without providing the implementation.',
+    code: 'declare const APP_VERSION: string;\nconsole.log(APP_VERSION);',
+  },
+];
+
+const RESOLUTION = [
+  {
+    icon: '🧭', title: 'Module Resolution', titleClass: 'card-title-cyan', subtitle: 'How TS Finds Files',
+    description: 'moduleResolution in tsconfig controls how imports are located. Modern Vite/Next projects use "bundler" so imports resolve like your bundler does.',
+    code: '// tsconfig.json\n"moduleResolution": "bundler",\n"module": "ESNext"',
+  },
+  {
+    icon: '🗂️', title: 'Path Aliases', titleClass: 'card-title-purple', subtitle: 'Clean Imports',
+    description: 'Configure paths to import from "@/utils" instead of "../../../utils" — cleaner code and easier refactors across a growing project.',
+    code: '"baseUrl": ".",\n"paths": { "@/*": ["src/*"] }',
+  },
+  {
+    icon: '🔁', title: 'isolatedModules', titleClass: 'card-title-amber', subtitle: 'Bundler-Friendly',
+    description: 'With bundlers like Vite, each file is transpiled alone. isolatedModules makes TypeScript flag patterns that can’t be compiled file-by-file.',
+    code: '"isolatedModules": true',
+  },
+  {
+    icon: '🔜', title: 'Next: Typing the DOM', titleClass: 'card-title-lime', subtitle: 'Day 12 Preview',
+    description: 'Tomorrow: typing the browser — DOM types, typed elements from querySelector, typed events, and the non-null assertion.',
     link: { href: '/day-012', label: 'Go to Day 12 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Mapped Types', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
-    description: 'The handbook chapter on mapped types — modifiers, key remapping, and how the built-in utility types are constructed.',
-    link: { href: TS_MAPPED, label: 'Read Mapped Types →', external: true },
+    icon: '📘', title: 'Modules', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
+    description: 'The handbook chapter on ES modules in TypeScript — exports/imports, type-only imports, and how module resolution works.',
+    link: { href: TS_MODULES, label: 'Read the Modules chapter →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Build A Mapped Type',
-    description: 'Write MyPartial and MyReadonly, apply them, and hover the result to confirm they match the built-ins. Type-level programming, hands-on.',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Multi-File Mode',
+    description: 'The Playground supports multiple files — export from one and import into another to watch module resolution and type-only imports in action.',
     link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
     icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Advanced types make libraries and your own helpers feel magical — the foundation for the type-safe patterns used all year.',
+    description: 'Every React/Next.js file is a module and every npm library needs types — modules are the plumbing of the whole year’s code.',
     link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
@@ -167,10 +167,10 @@ export default function Day011() {
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Advanced Types</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Modules</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 11 <span aria-hidden="true">🗺️</span></h1>
-              <p className="day001-day-theme">INTERSECTION & MAPPED TYPES</p>
+              <h1 className="day001-day-num">DAY 11 <span aria-hidden="true">📦</span></h1>
+              <p className="day001-day-theme">MODULES & DECLARATION FILES</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -185,11 +185,11 @@ export default function Day011() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '11%' }} /></div>
 
         <p className="day001-summary">
-          Day 11 begins advanced types. I combined shapes with <strong>intersection</strong> types (<code>A &amp; B</code>)
-          and contrasted them with unions. Then <strong>mapped types</strong> — transforming every key of a type,
-          adding/removing <code>?</code> and <code>readonly</code>, and <strong>remapping keys</strong> with{' '}
-          <code>as</code>. I rebuilt <code>Partial</code> and <code>Readonly</code> by hand, which finally
-          demystifies how the built-in utility types actually work.
+          Day 11 organizes code across files. I used ES <strong>modules</strong> — <strong>named</strong> and{' '}
+          <strong>default</strong> exports, <strong>barrel</strong> re-exports, and <code>import type</code> for
+          zero-runtime type imports. I learned how <strong>.d.ts declaration files</strong> and{' '}
+          <code>@types</code> packages let TypeScript understand plain-JS libraries, used <code>declare</code>{' '}
+          for globals, and configured <strong>module resolution</strong> and path aliases in tsconfig.
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +204,13 @@ export default function Day011() {
           </ul>
         </section>
 
-        <CardSection icon="➕" title="INTERSECTIONS" cards={INTERSECTIONS} columns={3} />
-        <CardSection icon="🗺️" title="MAPPED TYPES" cards={MAPPED} columns={4} />
-        <CardSection icon="🛠️" title="APPLYING THEM" cards={APPLY} columns={4} />
+        <CardSection icon="📤" title="EXPORTS & IMPORTS" cards={EXPORTS} columns={3} />
+        <CardSection icon="🏷️" title="TYPES ACROSS FILES" cards={TYPES_IN} columns={4} />
+        <CardSection icon="🧭" title="RESOLUTION & CONFIG" cards={RESOLUTION} columns={4} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#AdvancedTypes</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Modules</span><span>#WebDev</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

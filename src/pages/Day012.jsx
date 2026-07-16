@@ -2,100 +2,100 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_CONDITIONAL = 'https://www.typescriptlang.org/docs/handbook/2/conditional-types.html';
+const MDN_DOM = 'https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model';
 const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
-  { title: 'Conditional types', text: '`T extends U ? X : Y` — a type-level if/else that picks a type from a condition' },
-  { title: 'infer', text: 'capture a type from within a condition: `T extends Array<infer E> ? E : never`' },
-  { title: 'Distributive conditionals', text: 'conditionals over a union apply to each member — the basis of Exclude/Extract' },
-  { title: 'Exclude & Extract', text: 'built-ins made from conditionals — filter members in or out of a union' },
-  { title: 'Template literal types', text: '`type Ev = `on${Capitalize<T>}`` builds string types from other types' },
-  { title: 'String helpers', text: 'Uppercase, Lowercase, Capitalize, Uncapitalize transform literal strings in types' },
-  { title: 'Pattern types', text: 'template literals model shapes like `${string}px` or route params' },
-  { title: 'Awaited<T>', text: 'unwraps the value type inside a Promise — built with recursive conditionals' },
-  { title: 'ReturnType internals', text: 'ReturnType is a conditional with infer — you can now read how it works' },
-  { title: 'never as a filter', text: 'a conditional resolving to never drops that branch — key to filtering unions' },
+  { title: 'lib "DOM"', text: 'the tsconfig lib that makes document, window, and every element type available' },
+  { title: 'DOM types', text: 'document, window, elements, and events are all fully typed out of the box' },
+  { title: 'Typed elements', text: 'querySelector<HTMLInputElement> returns the exact element type' },
+  { title: 'Element vs specific', text: 'a plain Element lacks .value — pass the specific type to get it' },
+  { title: 'Possibly null', text: 'querySelector can return null — narrow before using the element' },
+  { title: 'Typed events', text: 'addEventListener gives a typed event — MouseEvent, KeyboardEvent, and more' },
+  { title: 'currentTarget', text: 'typed to the element the handler is bound to — safer than target' },
+  { title: 'Non-null assertion', text: 'the `!` postfix says "this is not null" — use only when you truly know' },
+  { title: 'classList & dataset', text: 'typed helpers for classes and data-* attributes' },
+  { title: 'Forms', text: 'HTMLFormElement and HTMLInputElement expose exactly the right properties' },
 ];
 
-const CONDITIONAL = [
+const BASICS = [
   {
-    icon: '🔀', title: 'Conditional Types', titleClass: 'card-title-cyan', subtitle: 'Type-Level if/else',
-    description: 'Choose a type based on a relationship: T extends U ? X : Y. The type system decides at compile time which branch applies.',
-    code: 'type IsString<T> = T extends string ? "yes" : "no";\ntype A = IsString<string>; // "yes"\ntype B = IsString<number>; // "no"',
+    icon: '📚', title: 'lib "DOM"', titleClass: 'card-title-cyan', subtitle: 'Turn On The Browser',
+    description: 'The lib option chooses which built-in type declarations load. Include "DOM" and TypeScript knows the whole browser API — document, window, and every element.',
+    code: '"lib": ["ES2022", "DOM", "DOM.Iterable"]',
   },
   {
-    icon: '🕵️', title: 'infer', titleClass: 'card-title-purple', subtitle: 'Extract A Type',
-    description: 'infer captures a type from inside a condition — pull the element type out of an array, or the return type out of a function.',
-    code: 'type ElementOf<T> = T extends Array<infer E> ? E : never;\ntype N = ElementOf<number[]>; // number',
+    icon: '🌐', title: 'DOM Types', titleClass: 'card-title-purple', subtitle: 'document & window',
+    description: 'With the DOM lib on, browser globals are fully typed. You get autocomplete for every property and method, and mistakes are caught immediately.',
+    code: 'const title = document.title; // string\nwindow.addEventListener("load", () => {});',
   },
   {
-    icon: '🧮', title: 'Distributive', titleClass: 'card-title-amber', subtitle: 'Over Unions',
-    description: 'A conditional over a naked type parameter distributes across each union member — the mechanism behind Exclude and Extract.',
-    code: 'type MyExclude<T, U> = T extends U ? never : T;\ntype R = MyExclude<"a" | "b" | "c", "b">; // "a" | "c"',
-  },
-];
-
-const TEMPLATE = [
-  {
-    icon: '🔤', title: 'Template Literal Types', titleClass: 'card-title-cyan', subtitle: 'Build String Types',
-    description: 'Compose new string literal types from existing ones with backtick syntax — generate event names, CSS values, or route strings in the type system.',
-    code: 'type Color = "red" | "blue";\ntype ClassName = `text-${Color}`;\n// "text-red" | "text-blue"',
-  },
-  {
-    icon: '🔠', title: 'String Utilities', titleClass: 'card-title-blue', subtitle: 'Uppercase & Friends',
-    description: 'Uppercase, Lowercase, Capitalize, and Uncapitalize transform literal strings inside types — perfect for deriving getter or handler names.',
-    code: 'type Ev<T extends string> = `on${Capitalize<T>}`;\ntype C = Ev<"click">; // "onClick"',
-  },
-  {
-    icon: '🧩', title: 'Pattern Types', titleClass: 'card-title-amber', subtitle: 'Model String Shapes',
-    description: 'Template literals can require a shape like `${number}px` or a route with params — the compiler then rejects malformed strings.',
-    code: 'type Px = `${number}px`;\nlet w: Px = "12px"; // ✅\nlet x: Px = "12em"; // ❌',
-  },
-  {
-    icon: '⏳', title: 'Awaited<T>', titleClass: 'card-title-lime', subtitle: 'Unwrap A Promise',
-    description: 'Awaited recursively unwraps nested Promises to their resolved value type — a real-world conditional+infer utility you’ll use with async code.',
-    code: 'type R = Awaited<Promise<string>>; // string',
+    icon: '🎯', title: 'Typed Elements', titleClass: 'card-title-amber', subtitle: 'The Right Element Type',
+    description: 'querySelector returns a general Element by default — which has no .value. Pass the specific type so you get the properties that element actually has.',
+    code: 'const input = document.querySelector<HTMLInputElement>("#name");\ninput?.value; // string, only exists on inputs',
   },
 ];
 
-const APPLY = [
+const SAFETY = [
   {
-    icon: '🔎', title: 'Read The Built-ins', titleClass: 'card-title-cyan', subtitle: 'ReturnType, Parameters',
-    description: 'ReturnType<F> = F extends (...a: any) => infer R ? R : never. Conditionals + infer are how nearly every "read a type" utility is written.',
-    code: 'type MyReturn<F> = F extends (...a: any[]) => infer R ? R : never;',
+    icon: '🚧', title: 'Possibly null', titleClass: 'card-title-cyan', subtitle: 'Narrow First',
+    description: 'querySelector returns T | null because the element might not exist. TypeScript forces you to handle that — optional chaining or a guard.',
+    code: 'const el = document.getElementById("app");\nif (el) el.textContent = "Hi";\n// or: el?.textContent',
   },
   {
-    icon: '🧯', title: 'never As A Filter', titleClass: 'card-title-purple', subtitle: 'Drop Branches',
-    description: 'When a distributive conditional yields never for some members, those members vanish from the resulting union — the trick behind filtering types.',
-    code: 'type NonNull<T> = T extends null | undefined ? never : T;',
+    icon: '❗', title: 'Non-null Assertion', titleClass: 'card-title-blue', subtitle: 'The ! Operator',
+    description: 'When you’re certain an element exists, a trailing ! removes null from its type. Use sparingly — a wrong ! reintroduces the crash TS was preventing.',
+    code: 'const root = document.getElementById("app")!;\nroot.innerHTML = "Hi";',
   },
   {
-    icon: '🎯', title: 'Where It Shows Up', titleClass: 'card-title-amber', subtitle: 'Libraries & APIs',
-    description: 'Typed routers, form libraries, and ORMs use conditional and template types to give you exact autocomplete for strings and shapes.',
-    code: 'type Route = `/users/${string}`;',
+    icon: '🖱️', title: 'Typed Events', titleClass: 'card-title-amber', subtitle: 'Know The Event',
+    description: 'Event listeners hand you a typed event object. TypeScript knows a "click" gives a MouseEvent and "keydown" a KeyboardEvent — with all their properties.',
+    code: 'btn.addEventListener("click", (e: MouseEvent) => {\n  console.log(e.clientX);\n});',
   },
   {
-    icon: '🔜', title: 'Next: Guards & satisfies', titleClass: 'card-title-lime', subtitle: 'Day 13 Preview',
-    description: 'Tomorrow: assertion functions (asserts), custom type guards in depth, and the satisfies operator for validated-yet-inferred values.',
+    icon: '🎪', title: 'currentTarget', titleClass: 'card-title-lime', subtitle: 'Safer Than target',
+    description: 'currentTarget is typed to the element the handler is attached to; target is where the event originated and is broader. Prefer currentTarget.',
+    code: 'input.addEventListener("input", (e) => {\n  console.log(e.currentTarget.value);\n});',
+  },
+];
+
+const PRACTICAL = [
+  {
+    icon: '📝', title: 'Forms & Inputs', titleClass: 'card-title-cyan', subtitle: 'Exactly The Right Props',
+    description: 'HTMLFormElement, HTMLInputElement, and HTMLSelectElement each expose their real properties — value, checked, and the form’s elements collection.',
+    code: 'const form = document.querySelector<HTMLFormElement>("#f")!;\nform.addEventListener("submit", (e) => e.preventDefault());',
+  },
+  {
+    icon: '🎨', title: 'classList & dataset', titleClass: 'card-title-purple', subtitle: 'Typed Helpers',
+    description: 'classList gives typed add/remove/toggle, and dataset exposes data-* attributes as a typed record — no string fiddling required.',
+    code: 'el.classList.toggle("dark");\nconst id = el.dataset.userId; // string | undefined',
+  },
+  {
+    icon: '🧾', title: 'Creating Elements', titleClass: 'card-title-amber', subtitle: 'Inferred By Tag',
+    description: 'createElement infers the element type from the tag name — createElement("input") gives an HTMLInputElement, with .value available immediately.',
+    code: 'const input = document.createElement("input");\ninput.value = "typed!"; // ✅ knows it’s an input',
+  },
+  {
+    icon: '🔜', title: 'Next: Advanced Types', titleClass: 'card-title-lime', subtitle: 'Day 13 Preview',
+    description: 'Tomorrow: advanced types — intersections, mapped types, conditional types with infer, and template literal types.',
     link: { href: '/day-013', label: 'Go to Day 13 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Conditional Types', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
-    description: 'The reference on conditional types and infer, plus the template literal types chapter — everything from today in detail.',
-    link: { href: TS_CONDITIONAL, label: 'Read Conditional Types →', external: true },
+    icon: '📘', title: 'The DOM (MDN)', titleClass: 'card-title-cyan', subtitle: 'The Reference',
+    description: 'MDN’s Document Object Model reference — the elements, events, and APIs that TypeScript’s DOM lib types for you.',
+    link: { href: MDN_DOM, label: 'Read the DOM docs →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type-Level Coding',
-    description: 'Write a conditional with infer and watch it resolve as you change the input. This is where advanced types finally feel concrete.',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type An Element',
+    description: 'Call querySelector with and without a type argument and hover the result — the difference between Element and HTMLInputElement is instantly clear.',
     link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
     icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'You won’t write these daily, but reading them unlocks powerful libraries and lets you build precise, self-documenting APIs.',
+    description: 'React abstracts the DOM, but its event and element types are these same ones — this knowledge carries straight into typed React.',
     link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
@@ -167,10 +167,10 @@ export default function Day012() {
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Type-Level</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>DOM</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 12 <span aria-hidden="true">🔀</span></h1>
-              <p className="day001-day-theme">CONDITIONAL & TEMPLATE LITERAL TYPES</p>
+              <h1 className="day001-day-num">DAY 12 <span aria-hidden="true">🌐</span></h1>
+              <p className="day001-day-theme">TYPING THE DOM</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -185,11 +185,12 @@ export default function Day012() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '12%' }} /></div>
 
         <p className="day001-summary">
-          Day 12 is type-level programming. I learned <strong>conditional types</strong> (<code>T extends U ? X : Y</code>),
-          used <code>infer</code> to extract types, and saw how <strong>distributive</strong> conditionals build{' '}
-          <code>Exclude</code>/<code>Extract</code>. Then <strong>template literal types</strong> to construct string
-          types with <code>Capitalize</code> and pattern shapes like <code>{'`${number}px`'}</code>. I can now read
-          how <code>ReturnType</code> and <code>Awaited</code> are actually built.
+          Day 12 wires TypeScript to the browser. With <code>lib: ["DOM"]</code> from my tsconfig (Episode 2),
+          <code>document</code> and <code>window</code> are fully typed. I got exact element types from{' '}
+          <code>querySelector&lt;HTMLInputElement&gt;</code>, narrowed the possibly-<code>null</code> result, and
+          handled <strong>typed events</strong> (<code>MouseEvent</code>, <code>KeyboardEvent</code>) preferring{' '}
+          <code>currentTarget</code>. Plus <code>classList</code>, <code>dataset</code>, and the{' '}
+          <code>!</code> non-null assertion — used sparingly.
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +205,13 @@ export default function Day012() {
           </ul>
         </section>
 
-        <CardSection icon="🔀" title="CONDITIONAL TYPES" cards={CONDITIONAL} columns={3} />
-        <CardSection icon="🔤" title="TEMPLATE LITERAL TYPES" cards={TEMPLATE} columns={4} />
-        <CardSection icon="🛠️" title="APPLYING THEM" cards={APPLY} columns={4} />
+        <CardSection icon="🌐" title="DOM TYPES" cards={BASICS} columns={3} />
+        <CardSection icon="🛡️" title="NULL SAFETY & EVENTS" cards={SAFETY} columns={4} />
+        <CardSection icon="🧰" title="IN PRACTICE" cards={PRACTICAL} columns={4} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#TypeLevel</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#DOM</span><span>#WebDev</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

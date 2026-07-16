@@ -2,101 +2,101 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_RELEASE = 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const TS_MAPPED = 'https://www.typescriptlang.org/docs/handbook/2/mapped-types.html';
+const TS_CONDITIONAL = 'https://www.typescriptlang.org/docs/handbook/2/conditional-types.html';
 
 const LEARNT_TODAY = [
-  { title: 'Custom type guards', text: 'a function returning `x is T` teaches TS how to narrow your own shapes' },
-  { title: 'Assertion functions', text: '`asserts x is T` throws if wrong and narrows for the rest of the scope' },
-  { title: 'asserts condition', text: '`function assert(c): asserts c` narrows after a runtime check — like invariant()' },
-  { title: 'satisfies operator', text: 'check a value against a type WITHOUT widening it — keep the precise inferred type' },
-  { title: 'as const', text: 'freeze a literal into its narrowest readonly type — great with satisfies' },
-  { title: 'Discriminated guards', text: 'combine a tag field with guards for bullet-proof union handling' },
-  { title: 'Guard reuse', text: 'name guards once (isUser, isError) and reuse across the codebase' },
-  { title: 'unknown at the boundary', text: 'accept unknown from JSON/APIs, then guard it into a safe type' },
-  { title: 'Guard vs assertion', text: 'a guard returns boolean to branch; an assertion throws to guarantee' },
-  { title: 'Never trust as blindly', text: 'guards & satisfies replace most risky `as` casts with checked narrowing' },
+  { title: 'Intersection types', text: '`A & B` combines two types into one that has all members of both' },
+  { title: '& vs |', text: '& = "and" (all fields), | = "or" (one of) — opposite tools for combining types' },
+  { title: 'Mapped types', text: 'transform every key: `{ [K in keyof T]: ... }` — how Partial & Readonly are built' },
+  { title: 'Modifiers', text: 'add or remove ? and readonly with +/- inside a mapped type' },
+  { title: 'Key remapping', text: '`as` in a mapped type renames keys — build getters from properties' },
+  { title: 'Conditional types', text: '`T extends U ? X : Y` — a type-level if/else' },
+  { title: 'infer', text: 'capture a type from within a condition: `T extends Array<infer E> ? E : never`' },
+  { title: 'Distributive', text: 'conditionals over a union apply to each member — the basis of Exclude/Extract' },
+  { title: 'Template literal types', text: '`` `on${Capitalize<T>}` `` builds string types from other types' },
+  { title: 'Read the built-ins', text: 'ReturnType and Awaited are just conditionals with infer' },
 ];
 
-const GUARDS = [
+const COMBINE = [
   {
-    icon: '🛡️', title: 'Custom Type Guards', titleClass: 'card-title-cyan', subtitle: 'x is T',
-    description: 'A predicate function with an `is` return type tells TypeScript how to narrow a value. Reuse it anywhere you need to prove a shape at runtime.',
-    code: 'function isUser(v: unknown): v is { name: string } {\n  return typeof v === "object" && v !== null && "name" in v;\n}\nif (isUser(data)) data.name; // ✅ narrowed',
+    icon: '➕', title: 'Intersection Types', titleClass: 'card-title-cyan', subtitle: 'A & B',
+    description: 'An intersection merges types — the result must satisfy all of them at once. It’s how you compose small capability types into a bigger, complete one.',
+    code: 'type Named = { name: string };\ntype Aged = { age: number };\ntype Person = Named & Aged;\nconst p: Person = { name: "Sumit", age: 26 };',
   },
   {
-    icon: '🧯', title: 'Assertion Functions', titleClass: 'card-title-purple', subtitle: 'asserts x is T',
-    description: 'An assertion function throws when the check fails and narrows the value afterward — a typed invariant() that guarantees the shape from that point on.',
-    code: 'function assertUser(v: unknown): asserts v is { name: string } {\n  if (!isUser(v)) throw new Error("not a user");\n}\nassertUser(data);\ndata.name; // ✅ narrowed after the call',
+    icon: '⚖️', title: '& vs |', titleClass: 'card-title-purple', subtitle: 'And vs Or',
+    description: 'Intersection (&) demands all members; union (|) allows one of several. They’re complementary — use & to combine shapes, | to represent alternatives.',
+    code: 'type Both = Named & Aged;   // has name AND age\ntype Either = Named | Aged; // name OR age',
   },
   {
-    icon: '❗', title: 'asserts condition', titleClass: 'card-title-amber', subtitle: 'Runtime Invariants',
-    description: 'A plain `asserts c` narrows based on a boolean condition — after assert(x !== null), TypeScript knows x is non-null for the rest of the block.',
-    code: 'function assert(c: unknown): asserts c {\n  if (!c) throw new Error("assertion failed");\n}\nassert(user);\nuser.name; // user is non-null here',
-  },
-];
-
-const SATISFIES = [
-  {
-    icon: '✅', title: 'satisfies', titleClass: 'card-title-cyan', subtitle: 'Check Without Widening',
-    description: 'satisfies validates a value against a type but keeps the precise inferred type — you get error-checking AND exact autocomplete, unlike a plain annotation.',
-    code: 'const config = {\n  port: 3000,\n  host: "localhost",\n} satisfies Record<string, string | number>;\nconfig.port.toFixed(); // still number ✅',
-  },
-  {
-    icon: '🧊', title: 'as const', titleClass: 'card-title-blue', subtitle: 'Narrowest Literal',
-    description: 'as const makes a value deeply readonly and infers the tightest literal types — the perfect partner for satisfies and for building typed constant maps.',
-    code: 'const ROUTES = ["/", "/about"] as const;\ntype Route = typeof ROUTES[number]; // "/" | "/about"',
-  },
-  {
-    icon: '🆚', title: 'satisfies vs :', titleClass: 'card-title-amber', subtitle: 'Why It’s Better',
-    description: 'A `: Type` annotation widens the value to that type. satisfies checks conformance but leaves the value at its precise inferred type — best of both worlds.',
-    code: 'const a: Record<string, number> = { x: 1 }; // a.x is number, keys widened\nconst b = { x: 1 } satisfies Record<string, number>; // keys kept: "x"',
-  },
-  {
-    icon: '🌐', title: 'unknown At Boundaries', titleClass: 'card-title-lime', subtitle: 'Guard External Data',
-    description: 'Type API and JSON input as unknown, then guard it into a real type. This is the safe pattern for everything that crosses your app’s edge.',
-    code: 'const raw: unknown = await res.json();\nif (isUser(raw)) use(raw);',
+    icon: '🧩', title: 'Compose Capabilities', titleClass: 'card-title-amber', subtitle: 'Mixins By Intersection',
+    description: 'Define tiny capability types (Serializable, Timestamped) and intersect them onto your models — flexible composition without deep inheritance.',
+    code: 'type Timestamped = { createdAt: Date };\ntype Post = { title: string } & Timestamped;',
   },
 ];
 
-const APPLY = [
+const MAPPED = [
   {
-    icon: '♻️', title: 'Reusable Guards', titleClass: 'card-title-cyan', subtitle: 'A Small Library',
-    description: 'Collect guards like isString, isUser, and isApiError in one module. They become the trusted gates through which untyped data becomes typed.',
-    code: 'export const isError = (e: unknown): e is Error =>\n  e instanceof Error;',
+    icon: '🗺️', title: 'Mapped Types', titleClass: 'card-title-cyan', subtitle: 'Transform Every Key',
+    description: 'A mapped type walks over every key of a type and produces a new one. This is the machinery behind Partial, Readonly, and Record from Day 10.',
+    code: 'type MyPartial<T> = {\n  [K in keyof T]?: T[K];\n};',
   },
   {
-    icon: '🎯', title: 'Retire Risky Casts', titleClass: 'card-title-purple', subtitle: 'Guards Over as',
-    description: 'Most `as` casts hide potential bugs. Replacing them with guards or satisfies keeps the checking on — safer code with the same convenience.',
-    code: '// risky:  const u = data as User;\n// safe:   if (isUser(data)) { const u = data; }',
+    icon: '🔒', title: 'Modifiers', titleClass: 'card-title-blue', subtitle: 'Add / Remove ? readonly',
+    description: 'Inside a mapped type you can add or strip optionality and readonly with + and -. That’s exactly how Required<T> removes every ?.',
+    code: 'type MyReadonly<T> = {\n  readonly [K in keyof T]: T[K];\n};\ntype Mutable<T> = {\n  -readonly [K in keyof T]: T[K];\n};',
   },
   {
-    icon: '🔗', title: 'Guards + Unions', titleClass: 'card-title-amber', subtitle: 'Bullet-Proof Handling',
-    description: 'Pair guards with discriminated unions to handle every variant of a value safely — and let never catch any case you forget.',
-    code: 'if (isCircle(shape)) return area(shape);',
+    icon: '🏷️', title: 'Key Remapping', titleClass: 'card-title-amber', subtitle: 'as In Mapped Types',
+    description: 'Rename keys as you map them with the as clause and template literals — generate a getter type from every property automatically.',
+    code: 'type Getters<T> = {\n  [K in keyof T as `get${Capitalize<string & K>}`]: () => T[K];\n};',
   },
   {
-    icon: '🔜', title: 'Next: Async TypeScript', titleClass: 'card-title-lime', subtitle: 'Day 14 Preview',
-    description: 'Tomorrow: Promises and async/await in TypeScript — typing async functions, awaiting values, and handling errors from async code.',
-    link: { href: '/day-014', label: 'Go to Day 14 →' },
+    icon: '🔑', title: 'Indexed Access', titleClass: 'card-title-lime', subtitle: 'T[K] & T[keyof T]',
+    description: 'Look up a property’s type with T["name"], or get the union of all value types with T[keyof T] — the basis of type-safe generic access.',
+    code: 'type User = { id: number; name: string };\ntype IdType = User["id"];        // number\ntype Values = User[keyof User];  // number | string',
+  },
+];
+
+const CONDITIONAL = [
+  {
+    icon: '🔀', title: 'Conditional Types', titleClass: 'card-title-cyan', subtitle: 'Type-Level if/else',
+    description: 'Choose a type based on a relationship: T extends U ? X : Y. The type system decides at compile time which branch applies.',
+    code: 'type IsString<T> = T extends string ? "yes" : "no";\ntype A = IsString<string>; // "yes"',
+  },
+  {
+    icon: '🕵️', title: 'infer', titleClass: 'card-title-purple', subtitle: 'Extract A Type',
+    description: 'infer captures a type from inside a condition — pull the element type out of an array, or the return type out of a function. This is how ReturnType works.',
+    code: 'type ElementOf<T> = T extends Array<infer E> ? E : never;\ntype MyReturn<F> = F extends (...a: any[]) => infer R ? R : never;',
+  },
+  {
+    icon: '🧮', title: 'Distributive', titleClass: 'card-title-amber', subtitle: 'Over Unions',
+    description: 'A conditional over a naked type parameter distributes across each union member — the mechanism behind Exclude and Extract, with never filtering branches out.',
+    code: 'type MyExclude<T, U> = T extends U ? never : T;\ntype R = MyExclude<"a" | "b" | "c", "b">; // "a" | "c"',
+  },
+  {
+    icon: '🔤', title: 'Template Literal Types', titleClass: 'card-title-lime', subtitle: 'Build String Types',
+    description: 'Compose new string literal types from existing ones — generate event names or require shapes like `${number}px`. Capitalize/Uppercase transform them.',
+    code: 'type Ev<T extends string> = `on${Capitalize<T>}`;\ntype C = Ev<"click">; // "onClick"\ntype Px = `${number}px`;',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'satisfies (4.9)', titleClass: 'card-title-cyan', subtitle: 'Release Notes',
-    description: 'The satisfies operator’s introduction, with the exact examples that show why it beats a plain annotation for config objects.',
-    link: { href: TS_RELEASE, label: 'Read the 4.9 notes →', external: true },
+    icon: '📘', title: 'Mapped Types', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
+    description: 'The chapter on mapped types — modifiers, key remapping, and how the built-in utility types are constructed.',
+    link: { href: TS_MAPPED, label: 'Read Mapped Types →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Guard It Live',
-    description: 'Write a guard, feed it unknown data, and watch the type narrow inside the if. Then compare `: Type` vs satisfies on the same object.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '📗', title: 'Conditional Types', titleClass: 'card-title-purple', subtitle: 'TS Handbook',
+    description: 'The reference on conditional types and infer, plus template literal types — the other half of today’s ground.',
+    link: { href: TS_CONDITIONAL, label: 'Read Conditional Types →', external: true },
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Guards and satisfies are how real apps stay safe at the edges — API responses, forms, and config. You’ll use them all year.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: Guards & satisfies', titleClass: 'card-title-amber', subtitle: 'Day 14 Preview',
+    description: 'Tomorrow: custom type guards, assertion functions, and the satisfies operator — making untrusted data safe.',
+    link: { href: '/day-014', label: 'Go to Day 14 →' },
   },
 ];
 
@@ -167,10 +167,10 @@ export default function Day013() {
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Guards</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Advanced Types</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 13 <span aria-hidden="true">🛡️</span></h1>
-              <p className="day001-day-theme">GUARDS, ASSERTIONS & satisfies</p>
+              <h1 className="day001-day-num">DAY 13 <span aria-hidden="true">🗺️</span></h1>
+              <p className="day001-day-theme">ADVANCED TYPES — MAPPED & CONDITIONAL</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -185,11 +185,13 @@ export default function Day013() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '13%' }} /></div>
 
         <p className="day001-summary">
-          Day 13 makes untyped data safe. I wrote custom <strong>type guards</strong> (<code>x is T</code>) and{' '}
-          <strong>assertion functions</strong> (<code>asserts x is T</code>) to narrow my own shapes, and used{' '}
-          the <strong>satisfies</strong> operator with <code>as const</code> to validate values without losing their
-          precise inferred types. Together these replace most risky <code>as</code> casts — the safe way to turn{' '}
-          <code>unknown</code> API and JSON data into trustworthy types.
+          Day 13 is type-level programming. I combined shapes with <strong>intersections</strong> (<code>A &amp; B</code>),
+          then used <strong>mapped types</strong> to transform every key — adding/removing <code>?</code> and{' '}
+          <code>readonly</code>, and <strong>remapping keys</strong> with <code>as</code>. Then{' '}
+          <strong>conditional types</strong> (<code>T extends U ? X : Y</code>) with <code>infer</code>, how{' '}
+          <strong>distributive</strong> conditionals build <code>Exclude</code>, and{' '}
+          <strong>template literal types</strong> for string types. I can now read how <code>Partial</code>,{' '}
+          <code>ReturnType</code>, and <code>Awaited</code> are actually built.
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +206,13 @@ export default function Day013() {
           </ul>
         </section>
 
-        <CardSection icon="🛡️" title="GUARDS & ASSERTIONS" cards={GUARDS} columns={3} />
-        <CardSection icon="✅" title="satisfies & as const" cards={SATISFIES} columns={4} />
-        <CardSection icon="🛠️" title="APPLYING THEM" cards={APPLY} columns={4} />
+        <CardSection icon="➕" title="INTERSECTIONS" cards={COMBINE} columns={3} />
+        <CardSection icon="🗺️" title="MAPPED TYPES" cards={MAPPED} columns={4} />
+        <CardSection icon="🔀" title="CONDITIONAL & TEMPLATE TYPES" cards={CONDITIONAL} columns={4} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#TypeGuards</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#AdvancedTypes</span><span>#TypeLevel</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

@@ -2,23 +2,65 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
+const MDN_PROMISE = 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise';
 const MDN_FETCH = 'https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API';
 const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
-  { title: 'res.json() is any', text: 'fetch’s .json() returns Promise<any> — a hole in type safety we have to close' },
-  { title: 'Generic fetch wrapper', text: 'a `getJSON<T>` helper returns Promise<T> so responses are typed at the call site' },
-  { title: 'Model responses', text: 'describe API payloads with interfaces — one source of truth for the shape' },
-  { title: 'DTOs', text: 'data-transfer types for what the server sends, separate from your app models' },
+  { title: 'Promise<T>', text: 'a Promise carries a value type — `Promise<User>` resolves to a User' },
+  { title: 'async returns a Promise', text: 'an async function always returns Promise<T>, even for a plain value' },
+  { title: 'await unwraps it', text: 'await a Promise<T> and you get a T — typed and ready to use' },
+  { title: 'Awaited<T>', text: 'the utility that unwraps (even nested) Promises to their value type' },
+  { title: 'Errors are unknown', text: 'in a catch block the error is unknown — narrow it before use' },
+  { title: 'Promise.all', text: 'runs promises in parallel; the result tuple is precisely typed' },
+  { title: 'res.json() is any', text: 'fetch’s .json() returns Promise<any> — a hole in type safety' },
+  { title: 'Generic fetch wrapper', text: 'a `getJSON<T>` helper returns Promise<T> so responses are typed' },
   { title: 'Check res.ok', text: 'fetch only rejects on network errors — check response.ok for HTTP errors' },
-  { title: 'Query params typed', text: 'build URLs from typed params to avoid typos and missing values' },
-  { title: 'Envelope types', text: 'model wrappers like { data: T; error?: string } generically' },
   { title: 'Type ≠ runtime check', text: 'annotations are erased — the server could still lie, so validate at the edge' },
-  { title: 'Abort & signal', text: 'AbortController cancels requests; the signal is fully typed' },
-  { title: 'Map DTO → model', text: 'transform the raw response into a clean typed model your app uses' },
 ];
 
-const WRAPPER = [
+const PROMISES = [
+  {
+    icon: '🔮', title: 'Promise<T>', titleClass: 'card-title-cyan', subtitle: 'A Future Value, Typed',
+    description: 'A Promise is generic over the value it will resolve to. Typing it means everything downstream — .then callbacks and await — is fully checked.',
+    code: 'const p: Promise<number> = Promise.resolve(42);\np.then((n) => n.toFixed(2)); // n is number',
+  },
+  {
+    icon: '⚡', title: 'async / await', titleClass: 'card-title-purple', subtitle: 'Unwrap Cleanly',
+    description: 'An async function always returns a Promise. await pauses until it resolves and hands you the typed value — no manual .then chains.',
+    code: 'async function getUser(): Promise<User> {\n  const res = await fetch("/api/me");\n  return res.json();\n}\nconst u = await getUser(); // u: User',
+  },
+  {
+    icon: '🎣', title: 'catch is unknown', titleClass: 'card-title-amber', subtitle: 'Narrow Before Use',
+    description: 'Under strict settings the caught error is unknown, because anything can be thrown. Narrow with instanceof before reading a message.',
+    code: 'try { await getUser(); }\ncatch (e) {\n  if (e instanceof Error) console.log(e.message);\n}',
+  },
+];
+
+const COMBINE = [
+  {
+    icon: '🧵', title: 'Promise.all', titleClass: 'card-title-cyan', subtitle: 'Parallel, Typed Tuple',
+    description: 'Promise.all runs promises concurrently and resolves to a precisely typed tuple — position 0 is the first promise’s type, and so on.',
+    code: 'const [user, posts] = await Promise.all([\n  getUser(),   // Promise<User>\n  getPosts(),  // Promise<Post[]>\n]); // [User, Post[]]',
+  },
+  {
+    icon: '🧮', title: 'Promise.allSettled', titleClass: 'card-title-blue', subtitle: 'Never Rejects',
+    description: 'allSettled resolves with a status per promise. TypeScript types each result as fulfilled (with value) or rejected (with reason) — narrow on status.',
+    code: 'const r = await Promise.allSettled([getUser()]);\nif (r[0].status === "fulfilled") r[0].value;',
+  },
+  {
+    icon: '⏳', title: 'Awaited<T>', titleClass: 'card-title-amber', subtitle: 'Unwrap In Types',
+    description: 'The Awaited utility resolves a Promise’s value type at the type level, even through nesting — built with the conditionals and infer from Day 13.',
+    code: 'type R = Awaited<ReturnType<typeof getUser>>; // User',
+  },
+  {
+    icon: '⏱️', title: 'Typed Delays', titleClass: 'card-title-lime', subtitle: 'Promisify Timers',
+    description: 'Wrap setTimeout in a Promise<void> to get a clean, awaitable sleep — the typed building block for retries and polling.',
+    code: 'const sleep = (ms: number) =>\n  new Promise<void>((res) => setTimeout(res, ms));\nawait sleep(500);',
+  },
+];
+
+const FETCH = [
   {
     icon: '🕳️', title: 'The any Hole', titleClass: 'card-title-cyan', subtitle: 'res.json()',
     description: 'Fetch’s .json() resolves to any, so everything downstream loses checking. Left unfixed, one wrong field crashes at runtime — exactly what TS should prevent.',
@@ -27,76 +69,35 @@ const WRAPPER = [
   {
     icon: '🧰', title: 'Generic getJSON<T>', titleClass: 'card-title-purple', subtitle: 'Type The Result',
     description: 'A tiny generic wrapper casts the parsed body to T and returns Promise<T>. Every caller now gets a typed response with autocomplete and checks.',
-    code: 'async function getJSON<T>(url: string): Promise<T> {\n  const res = await fetch(url);\n  if (!res.ok) throw new Error(`HTTP ${res.status}`);\n  return res.json() as Promise<T>;\n}',
+    code: 'async function getJSON<T>(url: string): Promise<T> {\n  const res = await fetch(url);\n  if (!res.ok) throw new Error(`HTTP ${res.status}`);\n  return res.json() as Promise<T>;\n}\nconst user = await getJSON<User>("/api/user");',
   },
   {
-    icon: '📞', title: 'Typed Calls', titleClass: 'card-title-amber', subtitle: 'Pass The Shape',
-    description: 'Call the wrapper with the expected type and the returned value is fully typed — the JSON boundary is finally under the type system’s control.',
-    code: 'interface User { id: number; name: string }\nconst user = await getJSON<User>("/api/user");\nuser.name; // string ✅',
-  },
-];
-
-const MODEL = [
-  {
-    icon: '🧩', title: 'Model Responses', titleClass: 'card-title-cyan', subtitle: 'One Source Of Truth',
-    description: 'Describe each API payload with an interface. Change it in one place and every usage updates — the shape of your data becomes documentation.',
-    code: 'interface Post {\n  id: number;\n  title: string;\n  authorId: number;\n}',
-  },
-  {
-    icon: '✉️', title: 'Envelope Types', titleClass: 'card-title-blue', subtitle: 'Generic Wrappers',
-    description: 'Many APIs wrap data in { data, error, meta }. Model that once generically and reuse it for every endpoint’s payload type.',
-    code: 'interface ApiResponse<T> {\n  data: T;\n  error?: string;\n}\nconst r = await getJSON<ApiResponse<Post[]>>("/posts");',
-  },
-  {
-    icon: '🔗', title: 'Typed URLs', titleClass: 'card-title-amber', subtitle: 'Params Without Typos',
-    description: 'Build query strings from a typed params object with URLSearchParams so a missing or misspelled parameter becomes a compile error.',
-    code: 'function q(params: Record<string, string>) {\n  return "?" + new URLSearchParams(params);\n}\ngetJSON<Post[]>("/posts" + q({ tag: "ts" }));',
-  },
-  {
-    icon: '🛑', title: 'Abort & signal', titleClass: 'card-title-lime', subtitle: 'Cancel Requests',
-    description: 'AbortController lets you cancel a fetch — essential for cleaning up requests when a component unmounts. The signal is fully typed.',
-    code: 'const c = new AbortController();\nfetch(url, { signal: c.signal });\nc.abort();',
-  },
-];
-
-const SAFETY = [
-  {
-    icon: '⚠️', title: 'Types Aren’t Checks', titleClass: 'card-title-cyan', subtitle: 'The Server Can Lie',
-    description: 'getJSON<T> trusts the server. Annotations are erased at runtime, so a wrong payload passes silently. Validate untrusted data at the boundary.',
-    code: '// tomorrow: validate raw with a guard or schema\nif (isUser(raw)) use(raw);',
-  },
-  {
-    icon: '🔄', title: 'DTO → Model', titleClass: 'card-title-purple', subtitle: 'Clean Your Data',
-    description: 'Keep the raw server shape (DTO) separate from your app model. A small mapper converts snake_case, dates, and nested ids into clean typed objects.',
-    code: 'const toUser = (d: UserDTO): User => ({\n  id: d.id, name: d.full_name,\n});',
-  },
-  {
-    icon: '🎯', title: 'One API Module', titleClass: 'card-title-amber', subtitle: 'Centralize Calls',
-    description: 'Put getJSON and every endpoint function in one api.ts. Components call typed functions, never raw fetch — consistent, testable, safe.',
-    code: 'export const api = {\n  getUser: () => getJSON<User>("/api/user"),\n};',
+    icon: '⚠️', title: 'Types Aren’t Checks', titleClass: 'card-title-amber', subtitle: 'The Server Can Lie',
+    description: 'getJSON<T> trusts the server. Annotations are erased at runtime, so a wrong payload passes silently. Validating untrusted data is tomorrow’s topic.',
+    code: '// Day 16: validate with a Zod schema\nconst user = UserSchema.parse(raw);',
   },
   {
     icon: '🔜', title: 'Next: Runtime Validation', titleClass: 'card-title-lime', subtitle: 'Day 16 Preview',
-    description: 'Tomorrow: closing the trust gap with runtime validation (Zod-style schemas) so types and reality always agree.',
+    description: 'Tomorrow: closing the trust gap with Zod — schemas that validate real data and infer the type from one source of truth.',
     link: { href: '/day-016', label: 'Go to Day 16 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Fetch API (MDN)', titleClass: 'card-title-cyan', subtitle: 'The Reference',
+    icon: '📘', title: 'Promise (MDN)', titleClass: 'card-title-cyan', subtitle: 'The Foundation',
+    description: 'The definitive reference for Promises — states, chaining, all/allSettled/race. TypeScript simply adds the value types on top.',
+    link: { href: MDN_PROMISE, label: 'Read Promise on MDN →', external: true },
+  },
+  {
+    icon: '🌐', title: 'Fetch API (MDN)', titleClass: 'card-title-purple', subtitle: 'Requests & Responses',
     description: 'How fetch, Response, and Request work — status, .ok, headers, and body parsing. TypeScript types layer neatly on top of these.',
     link: { href: MDN_FETCH, label: 'Read the Fetch API →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Build getJSON',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-amber', subtitle: 'Build getJSON',
     description: 'Write the generic wrapper and call it with different interfaces to watch the return type change. The JSON boundary becomes tangible.',
     link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
-  },
-  {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'A typed API layer is the backbone of every React/Next.js screen — data in, typed, safe, and testable.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
 
@@ -167,10 +168,10 @@ export default function Day015() {
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>APIs</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Async · APIs</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 15 <span aria-hidden="true">🌐</span></h1>
-              <p className="day001-day-theme">TYPED fetch & API RESPONSES</p>
+              <h1 className="day001-day-num">DAY 15 <span aria-hidden="true">⚡</span></h1>
+              <p className="day001-day-theme">ASYNC TYPESCRIPT & TYPED fetch</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -185,11 +186,14 @@ export default function Day015() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '15%' }} /></div>
 
         <p className="day001-summary">
-          Day 15 closes the biggest hole in type safety: <code>res.json()</code> returns <code>any</code>. I built a
-          generic <strong>getJSON&lt;T&gt;</strong> wrapper so responses are typed, modelled payloads with{' '}
-          <strong>interfaces</strong> and <strong>envelope</strong> types, checked <code>res.ok</code>, and mapped
-          raw <strong>DTOs</strong> into clean app models. I also learned the crucial caveat — types are erased, so
-          untrusted data still needs runtime validation (tomorrow’s topic).
+          Day 15 types asynchronous code and the network. I worked with <code>Promise&lt;T&gt;</code>, saw that{' '}
+          <strong>async</strong> functions always return a Promise, and used <strong>await</strong> to unwrap the
+          typed value — handling errors where <code>catch</code> gives <code>unknown</code> and running work in
+          parallel with <strong>Promise.all</strong>. Then I closed the biggest hole in type safety: since{' '}
+          <code>res.json()</code> returns <code>any</code>, I built a generic{' '}
+          <strong>getJSON&lt;T&gt;</strong> wrapper that checks <code>res.ok</code> and returns{' '}
+          <code>Promise&lt;T&gt;</code>. The caveat: types are erased, so untrusted data still needs runtime
+          validation — tomorrow.
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +208,13 @@ export default function Day015() {
           </ul>
         </section>
 
-        <CardSection icon="🧰" title="A TYPED fetch WRAPPER" cards={WRAPPER} columns={3} />
-        <CardSection icon="🧩" title="MODELLING RESPONSES" cards={MODEL} columns={4} />
-        <CardSection icon="🛡️" title="SAFETY & STRUCTURE" cards={SAFETY} columns={4} />
+        <CardSection icon="🔮" title="PROMISES & await" cards={PROMISES} columns={3} />
+        <CardSection icon="🧵" title="COMBINATORS & UNWRAPPING" cards={COMBINE} columns={4} />
+        <CardSection icon="🌐" title="A TYPED fetch WRAPPER" cards={FETCH} columns={4} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#APIs</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Async</span><span>#APIs</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

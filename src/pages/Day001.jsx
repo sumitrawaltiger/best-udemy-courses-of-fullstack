@@ -4,194 +4,115 @@ import './Day001.css';
 
 const TS_HANDBOOK = 'https://www.typescriptlang.org/docs/handbook/intro.html';
 const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const EP_IMAGE = '/typescript-notes/ep01-introduction-to-typescript.jpeg';
 
 const LEARNT_TODAY = [
-  {
-    title: 'What TypeScript is',
-    text: 'a strongly-typed superset of JavaScript — every valid JS file is valid TS, plus optional static types',
-  },
-  {
-    title: 'Why add types',
-    text: 'catch bugs at compile time (before you run) — typos, wrong arguments, and null mistakes surface in the editor',
-  },
-  {
-    title: 'TS compiles to JS',
-    text: 'browsers and Node run JavaScript, so tsc "transpiles" your .ts down to plain .js — types are erased at runtime',
-  },
-  {
-    title: 'Install the compiler',
-    text: 'npm i -g typescript gives you tsc — compile a file with `tsc app.ts` to produce app.js',
-  },
-  {
-    title: 'tsconfig.json',
-    text: 'the project’s compiler settings — target, module, outDir, and strict; generate one with `tsc --init`',
-  },
-  {
-    title: 'Type annotations',
-    text: 'add a type after a colon: `let name: string = "Sumit"` — the compiler now enforces it',
-  },
-  {
-    title: 'Type inference',
-    text: 'TypeScript often guesses the type for you — `let n = 5` is inferred as number, no annotation needed',
-  },
-  {
-    title: 'strict mode',
-    text: 'turn on "strict": true in tsconfig — the safety net that makes TypeScript actually worth it',
-  },
-  {
-    title: 'ts-node for quick runs',
-    text: 'run a .ts file directly during learning with `npx ts-node app.ts` — no manual compile step',
-  },
-  {
-    title: 'Structural typing',
-    text: 'TS checks the shape of a value, not its name — "if it has the right fields, it fits"',
-  },
+  { title: 'What TypeScript is', text: 'a superset of JavaScript that adds static typing — write better, safer, more maintainable code' },
+  { title: 'Static typing', text: 'types are checked before the code runs, so mistakes surface in the editor' },
+  { title: 'Better IDE support', text: 'autocompletion and IntelliSense come from the types you write' },
+  { title: 'Early error detection', text: 'catch errors at compile time, not at runtime in front of users' },
+  { title: 'Easier refactoring', text: 'rename and restructure with the compiler watching your back' },
+  { title: 'Works with existing JS', text: 'every valid JavaScript file is already valid TypeScript — adopt it gradually' },
+  { title: 'JS vs TS', text: 'JS: dynamic typing, runtime errors. TS: static typing, compile-time errors, scales better' },
+  { title: 'TS compiles to JS', text: '.ts → TypeScript Compiler (tsc) → .js that runs in any browser or Node' },
+  { title: 'Installing', text: 'npm install -g typescript, then tsc -v to confirm the compiler is ready' },
+  { title: 'First program', text: 'hello.ts → tsc hello.ts → node hello.js → "Hello, TypeScript!"' },
 ];
 
 const WHAT_WHY = [
   {
-    icon: '🔷',
-    title: 'What is TypeScript?',
-    titleClass: 'card-title-cyan',
-    subtitle: 'JavaScript + Types',
+    icon: '🔷', title: 'What is TypeScript?', titleClass: 'card-title-cyan', subtitle: 'A Superset of JavaScript',
     description:
-      'TypeScript is JavaScript with a type system bolted on. You write almost the same code, but you can describe the shape of your data. The compiler checks it and then produces ordinary JavaScript that runs anywhere JS runs.',
-    footer: '+ Prerequisite: you already know HTML5, CSS3 & JavaScript.',
+      'TypeScript is a superset of JavaScript that adds static typing. It helps us write better, safer, and more maintainable code — while still producing plain JavaScript underneath.',
+    footer: '+ Static typing · IDE support · Early errors · Modern JS features',
   },
   {
-    icon: '🛡️',
-    title: 'Why over JavaScript?',
-    titleClass: 'card-title-purple',
-    subtitle: 'Errors Before Runtime',
+    icon: '💡', title: 'Why TypeScript?', titleClass: 'card-title-purple', subtitle: 'Confidence, Not Restriction',
     description:
-      'In JS a typo like user.nmae is undefined at runtime — maybe deep in production. TypeScript flags it in your editor as you type. Types are living documentation and autocomplete for your whole codebase.',
-    code: 'const user = { name: "Sumit" };\nconsole.log(user.nmae); // ❌ TS error: Property \'nmae\' does not exist',
+      'Catch errors at compile time instead of runtime. Get real autocompletion and IntelliSense, refactor safely, and keep large projects sane. TypeScript doesn’t change JavaScript — it makes JavaScript awesome.',
+    code: 'let message: string = "Hello!";\nmessage = 42; // ❌ caught before it ever runs',
   },
   {
-    icon: '🧬',
-    title: 'A Superset of JS',
-    titleClass: 'card-title-amber',
-    subtitle: 'All Your JS Still Works',
+    icon: '🤝', title: 'Works With Existing JS', titleClass: 'card-title-amber', subtitle: 'Nothing Is Wasted',
     description:
-      'Every valid .js file is already valid TypeScript. You adopt types gradually — rename to .ts and add annotations where they help. Nothing you learned in JavaScript is thrown away.',
+      'Every valid .js file is already valid TypeScript. You can adopt types file by file — HTML5, CSS3 and JavaScript are the prerequisites, and they all still apply.',
     link: { href: TS_HANDBOOK, label: 'Read the TS Handbook →', external: true },
   },
 ];
 
-const SETUP = [
+const VS = [
   {
-    icon: '📥',
-    title: 'Install the Compiler',
-    titleClass: 'card-title-green',
-    subtitle: 'tsc',
+    icon: '🟨', title: 'JavaScript (JS)', titleClass: 'card-title-amber', subtitle: 'Dynamic',
     description:
-      'TypeScript ships as an npm package. Install it globally to get the tsc command, then check the version to confirm it’s on your PATH.',
-    code: 'npm i -g typescript\ntsc -v   # Version 5.x',
+      'Dynamic typing, errors show up at runtime, limited IDE support, and harder to maintain as a project grows. Flexible, but it trusts you completely.',
+    code: 'let x = 5;\nx = "five"; // fine in JS — until it breaks',
   },
   {
-    icon: '⚙️',
-    title: 'tsconfig.json',
-    titleClass: 'card-title-blue',
-    subtitle: 'Project Settings',
+    icon: '🔷', title: 'TypeScript (TS)', titleClass: 'card-title-cyan', subtitle: 'Static',
     description:
-      'Run tsc --init to create a tsconfig. It controls how your project compiles — the target JS version, module system, output folder, and the all-important strict flag.',
-    code: '// tsconfig.json (essentials)\n{\n  "compilerOptions": {\n    "target": "ES2022",\n    "outDir": "dist",\n    "strict": true\n  }\n}',
+      'Static typing, errors at compile time, excellent IDE support, and far easier to maintain and scale. The compiler is a second pair of eyes on every line.',
+    code: 'let x: number = 5;\nx = "five"; // ❌ Type \'string\' is not assignable',
   },
   {
-    icon: '🔁',
-    title: 'Compile to JavaScript',
-    titleClass: 'card-title-cyan',
-    subtitle: 'tsc app.ts',
+    icon: '🔁', title: 'The Pipeline', titleClass: 'card-title-blue', subtitle: '.ts → tsc → .js',
     description:
-      'The compiler reads app.ts, type-checks it, and emits app.js. Use tsc --watch to recompile automatically every time you save.',
-    code: 'tsc app.ts       # → app.js\ntsc --watch      # recompile on save',
-  },
-  {
-    icon: '⚡',
-    title: 'Run Instantly',
-    titleClass: 'card-title-pink',
-    subtitle: 'ts-node',
-    description:
-      'While learning, skip the compile-then-run dance. ts-node runs a .ts file directly so you can experiment fast.',
-    code: 'npx ts-node app.ts\n// runs the TypeScript file directly',
+      'You write TypeScript (.ts). The TypeScript Compiler checks the types and emits JavaScript (.js) that runs in any browser or on Node. Types are erased at runtime.',
+    code: 'hello.ts  →  tsc  →  hello.js  (runs anywhere)',
   },
 ];
 
-const FIRST_TYPES = [
+const FIRST = [
   {
-    icon: '🏷️',
-    title: 'Type Annotations',
-    titleClass: 'card-title-cyan',
-    subtitle: 'The Colon Syntax',
+    icon: '📥', title: 'Install TypeScript', titleClass: 'card-title-green', subtitle: 'npm + tsc',
     description:
-      'Add a type after a colon to tell TypeScript what a variable holds. Assign the wrong kind of value and the compiler stops you.',
-    code: 'let username: string = "Sumit";\nlet age: number = 26;\nlet isDev: boolean = true;\n\nage = "twenty-six"; // ❌ Type \'string\' is not assignable to \'number\'',
+      'Install the compiler globally with npm, then check the version to confirm tsc is on your PATH and ready to use.',
+    code: '# using npm\nnpm install -g typescript\n\n# check version\ntsc -v',
   },
   {
-    icon: '🔮',
-    title: 'Type Inference',
-    titleClass: 'card-title-green',
-    subtitle: 'TS Guesses For You',
+    icon: '📄', title: 'Write hello.ts', titleClass: 'card-title-cyan', subtitle: 'Your First Types',
     description:
-      'You rarely annotate everything. When you initialize a variable, TypeScript infers its type — so let score = 0 is already a number and gets full checking.',
-    code: 'let score = 0;      // inferred: number\nlet course = "TS";  // inferred: string\nscore = "high";     // ❌ error, still typed',
+      'Create a .ts file and annotate a variable with a type. This is the whole idea of TypeScript in two lines — a value, and a promise about what it is.',
+    code: 'let message: string = "Hello, TypeScript!";\nconsole.log(message);',
   },
   {
-    icon: '🧱',
-    title: 'Primitive Types',
-    titleClass: 'card-title-blue',
-    subtitle: 'The Building Blocks',
+    icon: '🔨', title: 'Compile It', titleClass: 'card-title-blue', subtitle: 'tsc hello.ts',
     description:
-      'string, number, boolean, plus null and undefined. There is no separate int/float — all numbers are number. These are the atoms every larger type is built from.',
-    code: 'let a: string;\nlet b: number;\nlet c: boolean;\nlet d: null;\nlet e: undefined;',
+      'Run the compiler on the file. It type-checks your code and produces hello.js — plain JavaScript with the types stripped away.',
+    code: 'tsc hello.ts   # → hello.js',
   },
   {
-    icon: '🚦',
-    title: 'strict Mode',
-    titleClass: 'card-title-lime',
-    subtitle: 'Why TS Is Worth It',
+    icon: '▶️', title: 'Run The Output', titleClass: 'card-title-lime', subtitle: 'node hello.js',
     description:
-      'Turn on "strict": true. It enables noImplicitAny, strictNullChecks and more — the checks that actually catch the null/undefined bugs that crash real apps.',
-    code: '// with strictNullChecks:\nfunction hi(name?: string) {\n  return name.toUpperCase(); // ❌ name possibly undefined\n}',
+      'Execute the emitted JavaScript with Node and see your first TypeScript program print. .ts is what you write; .js is what runs.',
+    code: 'node hello.js\n// → Hello, TypeScript! 🙂',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘',
-    title: 'TypeScript Handbook',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Official Docs',
+    icon: '📘', title: 'TypeScript Handbook', titleClass: 'card-title-cyan', subtitle: 'Official Docs',
     description:
-      'The canonical, free guide to TypeScript from the team that builds it. Start with "The Basics" and "Everyday Types" — exactly what Day 1 covers.',
+      'The canonical, free guide from the team that builds TypeScript. Start with "The Basics" — exactly what Episode 1 covers.',
     link: { href: TS_HANDBOOK, label: 'Open the Handbook →', external: true },
   },
   {
-    icon: '🎮',
-    title: 'TS Playground',
-    titleClass: 'card-title-purple',
-    subtitle: 'Try It In The Browser',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Try It In The Browser',
     description:
-      'Write TypeScript and watch it compile to JavaScript live, with full error messages — no install needed. The fastest way to test any snippet from today.',
+      'Write TypeScript and watch it compile to JavaScript live, with full error messages — no install needed. Perfect for today’s snippets.',
     link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '🎓',
-    title: 'TypeScript Course',
-    titleClass: 'card-title-amber',
-    subtitle: 'Year 1 · Phase 1',
+    icon: '🔜', title: 'Next: Setting Up', titleClass: 'card-title-amber', subtitle: 'Day 2 Preview',
     description:
-      'The Udemy TypeScript Course anchors this 100-day phase (17 Jul – 24 Oct 2026). HTML5, CSS3 & JavaScript are the prerequisites, so we start straight into typed JS.',
-    link: { href: 'https://www.udemy.com/course/typescript-course/', label: 'View the course →', external: true },
+      'Tomorrow is Episode 2 — setting up TypeScript properly: installing, tsconfig.json, the compiler options that matter, and compiling a real project.',
+    link: { href: '/day-002', label: 'Go to Day 2 →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -199,18 +120,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -219,13 +131,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -237,131 +145,107 @@ export default function Day001() {
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
-    <div className="day001-page">
-      <div className="day001-scale-wrap" ref={scaleRef}>
-      <header className="day001-topbar">
-        <Link to="/" className="day001-nav-btn day001-nav-home">
-          Home
-        </Link>
-        <Link to="/day-000" className="day001-nav-btn day001-nav-prev">
-          ← Day 0
-        </Link>
-        <p className="day001-datetime">TypeScript Day 1 · 17 Jul 2026</p>
-        <Link to="/day-002" className="day001-nav-btn day001-nav-next">
-          Day 2 →
-        </Link>
-      </header>
+    <>
+      <div className="day001-page">
+        <div className="day001-scale-wrap" ref={scaleRef}>
+          <header className="day001-topbar">
+            <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+            <Link to="/day-000" className="day001-nav-btn day001-nav-prev">← Day 0</Link>
+            <p className="day001-datetime">TypeScript Day 1 · 17 Jul 2026</p>
+            <Link to="/day-002" className="day001-nav-btn day001-nav-next">Day 2 →</Link>
+          </header>
 
-      <div className="day001-hero">
-        <div className="day001-hero-left">
-          <div className="day001-tags">
-            <span>TypeScript</span>
-            <span>Year 1</span>
-            <span>Types</span>
+          <div className="day001-hero">
+            <div className="day001-hero-left">
+              <div className="day001-tags"><span>TypeScript</span><span>Episode 1</span><span>Year 1</span></div>
+              <div className="day001-title-block">
+                <h1 className="day001-day-num">DAY 1 <span aria-hidden="true">🔷</span></h1>
+                <p className="day001-day-theme">INTRODUCTION TO TYPESCRIPT</p>
+              </div>
+            </div>
+            <div className="day001-profile">
+              <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
+              <div>
+                <p className="day001-profile-name">Sumit Rawal</p>
+                <p className="day001-profile-role">TS · TYPESCRIPT</p>
+              </div>
+            </div>
           </div>
-          <div className="day001-title-block">
-            <h1 className="day001-day-num">
-              DAY 1 <span aria-hidden="true">🔷</span>
-            </h1>
-            <p className="day001-day-theme">INTRODUCTION TO TYPESCRIPT</p>
-          </div>
-        </div>
-        <div className="day001-profile">
-          <img
-            src="/sumit-profile.png"
-            alt="Sumit Rawal"
-            className="day001-avatar"
-            width={48}
-            height={48}
-          />
-          <div>
-            <p className="day001-profile-name">Sumit Rawal</p>
-            <p className="day001-profile-role">TS · TYPESCRIPT</p>
-          </div>
+
+          <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '1%' }} /></div>
+
+          <p className="day001-summary">
+            Day one of the 4-year journey — <strong>Episode 1</strong> of my TypeScript series. TypeScript is a{' '}
+            <strong>superset of JavaScript</strong> that adds <strong>static typing</strong>: catch errors at
+            compile time, get real autocompletion, refactor safely, and scale big projects. It works with all my
+            existing JavaScript (HTML5/CSS3/JS are the prerequisites). I compared <strong>JS vs TS</strong>, saw the{' '}
+            <code>.ts → tsc → .js</code> pipeline, installed the compiler, and ran my first program.{' '}
+            <em>If JavaScript lets you write code, TypeScript helps you write code with confidence.</em>
+          </p>
+
+          <section className="day001-learnt">
+            <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
+            <ul className="day001-learnt-list">
+              {LEARNT_TODAY.map((item) => (
+                <li key={item.title}>
+                  <span className="day001-check" aria-hidden="true">✓</span>
+                  <span><strong>{item.title}</strong> — {item.text}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <CardSection icon="🔷" title="WHAT & WHY" cards={WHAT_WHY} columns={3} />
+          <CardSection icon="⚖️" title="JAVASCRIPT vs TYPESCRIPT" cards={VS} columns={3} />
+          <CardSection icon="🛠️" title="INSTALL & FIRST PROGRAM" cards={FIRST} columns={4} />
+          <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
+
+          <footer className="day001-hashtags">
+            <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Episode1</span><span>#WebDev</span><span>#JSLearnHub</span>
+          </footer>
         </div>
       </div>
 
-      <div className="day001-progress-wrap">
-        <div className="day001-progress-bar" style={{ width: '1%' }} />
-      </div>
-
-      <p className="day001-summary">
-        Day one of the 4-year journey — and it starts with <strong>TypeScript</strong>. Since HTML5, CSS3 and
-        JavaScript are prerequisites, I dive straight into typed JavaScript: what TypeScript is, why static types
-        catch bugs before runtime, and how <code>tsc</code> compiles <code>.ts</code> down to plain{' '}
-        <code>.js</code>. I installed the compiler, generated a <code>tsconfig.json</code>, turned on{' '}
-        <code>strict</code>, wrote my first type annotations, and saw type inference and errors light up right in the
-        editor. JavaScript now has a safety net.
-      </p>
-
-      <section className="day001-learnt">
-        <h2 className="day001-learnt-title">
-          <span className="day001-learnt-line" aria-hidden="true" />
-          WHAT I LEARNED TODAY
-        </h2>
-        <ul className="day001-learnt-list">
-          {LEARNT_TODAY.map((item) => (
-            <li key={item.title}>
-              <span className="day001-check" aria-hidden="true">
-                ✓
-              </span>
-              <span>
-                <strong>{item.title}</strong> — {item.text}
-              </span>
-            </li>
-          ))}
-        </ul>
+      <section style={{ background: '#0d1117', padding: '8px 16px 56px', display: 'flex', justifyContent: 'center' }}>
+        <figure style={{ maxWidth: '860px', width: '100%', margin: 0 }}>
+          <h2 style={{ color: '#e6edf3', fontSize: '1.05rem', fontWeight: 700, margin: '0 0 12px', textAlign: 'center' }}>
+            <span aria-hidden="true">📌</span> Episode 1 Notes — Introduction to TypeScript
+          </h2>
+          <a href={EP_IMAGE} target="_blank" rel="noopener noreferrer">
+            <img
+              src={EP_IMAGE}
+              alt="TypeScript Series Episode 1 — Introduction to TypeScript: what TypeScript is (a superset of JavaScript adding static typing), key points (static typing, better IDE support, early error detection, improved code quality, modern JavaScript features), why TypeScript (catch errors at compile time, better autocompletion and IntelliSense, easier refactoring, safer code for large projects, works with existing JavaScript), JavaScript vs TypeScript comparison table, the .ts to TypeScript Compiler to .js pipeline, installing TypeScript with npm install -g typescript and tsc -v, and a first program: hello.ts with a typed message, compiled with tsc hello.ts and run with node hello.js"
+              loading="lazy"
+              style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '14px', border: '1px solid #2a3441' }}
+            />
+          </a>
+          <figcaption style={{ color: '#8fb6c2', fontSize: '0.82rem', textAlign: 'center', marginTop: '10px' }}>
+            My handwritten Episode 1 notes — what &amp; why, JS vs TS, the compiler pipeline, and the first program.
+            Click to open full size.
+          </figcaption>
+        </figure>
       </section>
-
-      <CardSection icon="🔷" title="WHAT & WHY" cards={WHAT_WHY} columns={3} />
-      <CardSection icon="🧰" title="SETUP & TOOLING" cards={SETUP} columns={4} />
-      <CardSection icon="🏷️" title="FIRST TYPES" cards={FIRST_TYPES} columns={4} />
-      <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
-
-      <footer className="day001-hashtags">
-        <span>#100DaysOfCode</span>
-        <span>#TypeScript</span>
-        <span>#TypeSafety</span>
-        <span>#WebDev</span>
-        <span>#JSLearnHub</span>
-      </footer>
-      </div>
-    </div>
+    </>
   );
 }

@@ -2,100 +2,100 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_UTILITY = 'https://www.typescriptlang.org/docs/handbook/utility-types.html';
+const TS_GENERICS = 'https://www.typescriptlang.org/docs/handbook/2/generics.html';
 const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
-  { title: 'Utility types', text: 'built-in generics that transform a type into a new one — no manual retyping' },
-  { title: 'Partial<T>', text: 'makes every property optional — perfect for update/patch functions' },
-  { title: 'Required<T>', text: 'the opposite — makes every property required, stripping the ?' },
-  { title: 'Readonly<T>', text: 'freezes every property so it can’t be reassigned' },
-  { title: 'Pick<T, K>', text: 'keep only the listed keys — a smaller type from a bigger one' },
-  { title: 'Omit<T, K>', text: 'drop the listed keys — the inverse of Pick' },
-  { title: 'Record<K, V>', text: 'build a map type: `Record<string, number>` — keys of K, values of V' },
-  { title: 'Return/Parameters', text: 'ReturnType<F> and Parameters<F> read types straight out of a function' },
-  { title: 'NonNullable<T>', text: 'removes null and undefined from a type' },
-  { title: 'They compose', text: 'combine them: `Readonly<Partial<User>>` — powerful, declarative type maths' },
+  { title: 'Why generics', text: 'write one reusable function/type that works with any type — without losing safety to `any`' },
+  { title: 'Generic functions', text: '`function first<T>(arr: T[]): T` keeps the element type flowing from input to output' },
+  { title: 'Type parameters', text: '`<T>` is a placeholder the compiler fills in from how you call the function' },
+  { title: 'Inference', text: 'you rarely pass `<T>` explicitly — `first([1,2,3])` gives T = number' },
+  { title: 'Constraints', text: '`<T extends { length: number }>` limits T to types that have what you use' },
+  { title: 'Generic interfaces', text: '`interface Box<T> { value: T }` — reusable containers for any element type' },
+  { title: 'Generic classes', text: '`class Stack<T>` — a type-safe stack, queue, or store for any type' },
+  { title: 'Default type params', text: '`<T = string>` gives a fallback when the type can’t be inferred' },
+  { title: 'keyof', text: '`keyof T` is the union of a type’s keys — the base of type-safe property access' },
+  { title: 'Multiple params', text: '`<K, V>` for maps and pairs — several placeholders at once' },
 ];
 
-const SHAPE_MODS = [
+const WHY = [
   {
-    icon: '🧩', title: 'Partial<T>', titleClass: 'card-title-cyan', subtitle: 'All Optional',
-    description: 'Partial makes every field optional — exactly what an update function needs, so callers can pass only the fields they want to change.',
-    code: 'interface User { name: string; age: number }\nfunction update(id: number, patch: Partial<User>) {}\nupdate(1, { age: 27 }); // ✅ name omitted',
+    icon: '♻️', title: 'The Problem', titleClass: 'card-title-cyan', subtitle: 'any Throws Away Types',
+    description: 'A function typed with any works for everything but returns any — you lose autocomplete and checks. Generics keep it reusable AND typed.',
+    code: 'function firstAny(arr: any[]): any { return arr[0]; }\nconst n = firstAny([1, 2]); // n is any 😞',
   },
   {
-    icon: '❗', title: 'Required<T>', titleClass: 'card-title-purple', subtitle: 'All Required',
-    description: 'Required strips every ? and demands all properties — useful when you’ve finished building an object and want to guarantee it’s complete.',
-    code: 'interface Opts { a?: number; b?: number }\nconst full: Required<Opts> = { a: 1, b: 2 };',
+    icon: '🧩', title: 'Generic Functions', titleClass: 'card-title-purple', subtitle: 'A Type Placeholder',
+    description: 'Introduce a type parameter <T>. It links the input and output, so the element type flows straight through and the result is precisely typed.',
+    code: 'function first<T>(arr: T[]): T {\n  return arr[0];\n}\nconst n = first([1, 2]);   // n is number ✅\nconst s = first(["a"]);    // s is string ✅',
   },
   {
-    icon: '🧊', title: 'Readonly<T>', titleClass: 'card-title-amber', subtitle: 'All Frozen',
-    description: 'Readonly makes every property immutable at the type level, so accidental reassignment becomes a compile error — great for config and state.',
-    code: 'const cfg: Readonly<{ url: string }> = { url: "/api" };\ncfg.url = "/x"; // ❌ read-only',
-  },
-];
-
-const SELECT = [
-  {
-    icon: '🎯', title: 'Pick<T, K>', titleClass: 'card-title-cyan', subtitle: 'Keep Some Keys',
-    description: 'Pick builds a new type with only the keys you name — carve a small, focused type (like component props) out of a larger model.',
-    code: 'interface User { id: number; name: string; email: string }\ntype Card = Pick<User, "id" | "name">;',
-  },
-  {
-    icon: '✂️', title: 'Omit<T, K>', titleClass: 'card-title-blue', subtitle: 'Drop Some Keys',
-    description: 'Omit is Pick’s inverse — remove the keys you don’t want. Ideal for a "create" type that excludes a server-generated id.',
-    code: 'type NewUser = Omit<User, "id">;\nfunction create(u: NewUser) {}',
-  },
-  {
-    icon: '🗺️', title: 'Record<K, V>', titleClass: 'card-title-amber', subtitle: 'Typed Maps',
-    description: 'Record constructs an object type with keys of K and values of V — the clean way to type dictionaries, lookups, and config maps.',
-    code: 'type Roles = Record<"admin" | "user", boolean>;\nconst r: Roles = { admin: true, user: false };',
-  },
-  {
-    icon: '🚫', title: 'NonNullable<T>', titleClass: 'card-title-lime', subtitle: 'Strip null | undefined',
-    description: 'NonNullable removes null and undefined from a union — pairs well with narrowing to represent "definitely present" values.',
-    code: 'type Maybe = string | null | undefined;\ntype Sure = NonNullable<Maybe>; // string',
+    icon: '🔮', title: 'Inference', titleClass: 'card-title-amber', subtitle: 'TS Fills In T',
+    description: 'You almost never write <T> at the call site — TypeScript infers it from the argument. Explicit type arguments are there when you need them.',
+    code: 'first<number>([1, 2]); // explicit (optional)\nfirst([1, 2]);         // inferred T = number',
   },
 ];
 
-const FROM_FN = [
+const POWER = [
   {
-    icon: '↩️', title: 'ReturnType<F>', titleClass: 'card-title-cyan', subtitle: 'Read A Return Type',
-    description: 'Extract the return type of a function type without running it — keep a derived type in sync with its source automatically.',
-    code: 'function makeUser() { return { id: 1, name: "S" }; }\ntype User = ReturnType<typeof makeUser>;',
+    icon: '🔗', title: 'Constraints', titleClass: 'card-title-cyan', subtitle: 'extends',
+    description: 'Restrict a type parameter with extends so you can safely use the members you need — like requiring a .length before reading it.',
+    code: 'function longest<T extends { length: number }>(a: T, b: T) {\n  return a.length >= b.length ? a : b;\n}\nlongest([1,2], [1,2,3]);',
   },
   {
-    icon: '📥', title: 'Parameters<F>', titleClass: 'card-title-purple', subtitle: 'Read Argument Types',
-    description: 'Parameters gives a tuple of a function’s argument types — handy for wrappers, decorators, and forwarding calls type-safely.',
-    code: 'function log(msg: string, level: number) {}\ntype Args = Parameters<typeof log>; // [string, number]',
+    icon: '📦', title: 'Generic Interfaces', titleClass: 'card-title-blue', subtitle: 'Reusable Shapes',
+    description: 'Parameterize an interface to describe a container of any type — the pattern behind API response wrappers and React component props.',
+    code: 'interface ApiResult<T> {\n  data: T;\n  ok: boolean;\n}\nconst r: ApiResult<string[]> = { data: [], ok: true };',
   },
   {
-    icon: '🔗', title: 'They Compose', titleClass: 'card-title-amber', subtitle: 'Stack Them Up',
-    description: 'Utility types are just generics, so they nest. Combine them to express precise intent declaratively instead of hand-writing variants.',
-    code: 'type DraftUser = Readonly<Partial<Omit<User, "id">>>;',
+    icon: '🗃️', title: 'Generic Classes', titleClass: 'card-title-amber', subtitle: 'Type-Safe Containers',
+    description: 'A generic class builds fully typed data structures once and reuses them for any element type — a Stack<number> and Stack<string> from the same code.',
+    code: 'class Stack<T> {\n  private items: T[] = [];\n  push(x: T) { this.items.push(x); }\n  pop() { return this.items.pop(); }\n}',
   },
   {
-    icon: '🔜', title: 'Next: Modules', titleClass: 'card-title-lime', subtitle: 'Day 9 Preview',
-    description: 'Tomorrow: ES modules in TypeScript — import/export, default vs named, type-only imports, and declaration files (.d.ts).',
+    icon: '🔑', title: 'keyof & Access', titleClass: 'card-title-lime', subtitle: 'Type-Safe Props',
+    description: 'keyof T yields the union of a type’s keys, letting you write a getter that only accepts real property names and returns the exact value type.',
+    code: 'function get<T, K extends keyof T>(obj: T, key: K): T[K] {\n  return obj[key];\n}\nget({ a: 1 }, "a"); // number, "b" ❌',
+  },
+];
+
+const MORE = [
+  {
+    icon: '🅰️', title: 'Multiple Params', titleClass: 'card-title-cyan', subtitle: '<K, V>',
+    description: 'Use several type parameters for pairs and maps. Each is inferred independently, keeping keys and values precisely typed together.',
+    code: 'function pair<K, V>(k: K, v: V): [K, V] {\n  return [k, v];\n}\npair("age", 26); // [string, number]',
+  },
+  {
+    icon: '🧯', title: 'Default Params', titleClass: 'card-title-purple', subtitle: '<T = string>',
+    description: 'Give a type parameter a default so callers who don’t specify one still get a sensible type instead of unknown.',
+    code: 'interface Box<T = string> { value: T; }\nconst b: Box = { value: "hi" }; // T defaults to string',
+  },
+  {
+    icon: '🌐', title: 'Everywhere In Libraries', titleClass: 'card-title-amber', subtitle: 'Array, Promise, Map',
+    description: 'Generics aren’t exotic — Array<T>, Promise<T>, and Map<K, V> are all generic. Learning them unlocks the entire typed ecosystem.',
+    code: 'const p: Promise<number> = fetchCount();\nconst m: Map<string, number> = new Map();',
+  },
+  {
+    icon: '🔜', title: 'Next: Enums & Narrowing', titleClass: 'card-title-lime', subtitle: 'Day 9 Preview',
+    description: 'Tomorrow: enums, type guards, and discriminated unions — how TypeScript narrows a broad type down to a precise one.',
     link: { href: '/day-009', label: 'Go to Day 9 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Utility Types', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
-    description: 'The complete reference of built-in utility types — every one from today plus Exclude, Extract, and Awaited.',
-    link: { href: TS_UTILITY, label: 'Read Utility Types →', external: true },
+    icon: '📘', title: 'Generics', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
+    description: 'The reference chapter on generics — type parameters, constraints, generic classes/interfaces, and default parameters.',
+    link: { href: TS_GENERICS, label: 'Read the Generics chapter →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Transform Types Live',
-    description: 'Apply Partial, Pick, and Omit to a type and hover the result to see the transformed shape. Utility types make sense instantly this way.',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Watch T Flow',
+    description: 'Call a generic function with different arguments and hover the result to watch TypeScript infer T each time. Generics click fast this way.',
     link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
     icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Partial for form state, Pick/Omit for props and DTOs, Record for lookups — these appear on nearly every React/Next.js screen.',
+    description: 'Generics power hooks, data fetching, and reusable components in React/Next.js — you’ll use useState<T> and typed fetch all year.',
     link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
@@ -167,10 +167,10 @@ export default function Day008() {
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Utility Types</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Generics</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 8 <span aria-hidden="true">🧰</span></h1>
-              <p className="day001-day-theme">UTILITY TYPES — TRANSFORM TYPES</p>
+              <h1 className="day001-day-num">DAY 8 <span aria-hidden="true">🧩</span></h1>
+              <p className="day001-day-theme">GENERICS — REUSABLE TYPE SAFETY</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -185,11 +185,11 @@ export default function Day008() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '8%' }} /></div>
 
         <p className="day001-summary">
-          Day 8 is type maths with the built-in <strong>utility types</strong>. I reshaped types with{' '}
-          <code>Partial</code>, <code>Required</code>, and <code>Readonly</code>; selected keys with{' '}
-          <code>Pick</code> and <code>Omit</code>; built maps with <code>Record</code>; and read types straight
-          out of functions with <code>ReturnType</code> and <code>Parameters</code>. Because they’re generics,
-          they <strong>compose</strong> — declarative, reusable, and everywhere in real code.
+          Day 8 unlocks reuse without losing safety: <strong>generics</strong>. I wrote generic{' '}
+          <strong>functions</strong> where the type <code>&lt;T&gt;</code> flows from input to output, added{' '}
+          <strong>constraints</strong> with <code>extends</code>, built generic <strong>interfaces</strong> and{' '}
+          <strong>classes</strong> (a typed Stack), and used <code>keyof</code> for type-safe property access.
+          This is how <code>Array&lt;T&gt;</code>, <code>Promise&lt;T&gt;</code>, and React hooks are typed.
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +204,13 @@ export default function Day008() {
           </ul>
         </section>
 
-        <CardSection icon="🔧" title="RESHAPE PROPERTIES" cards={SHAPE_MODS} columns={3} />
-        <CardSection icon="🎯" title="SELECT & MAP KEYS" cards={SELECT} columns={4} />
-        <CardSection icon="🧠" title="FROM FUNCTIONS & COMPOSITION" cards={FROM_FN} columns={4} />
+        <CardSection icon="♻️" title="WHY GENERICS" cards={WHY} columns={3} />
+        <CardSection icon="🔗" title="CONSTRAINTS & CONTAINERS" cards={POWER} columns={4} />
+        <CardSection icon="🚀" title="GOING FURTHER" cards={MORE} columns={4} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#UtilityTypes</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Generics</span><span>#WebDev</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

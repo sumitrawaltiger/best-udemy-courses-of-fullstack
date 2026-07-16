@@ -2,186 +2,115 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_EVERYDAY = 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html';
+const TS_TSCONFIG = 'https://www.typescriptlang.org/tsconfig';
 const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const EP_IMAGE = '/typescript-notes/ep02-setting-up-typescript.jpeg';
 
 const LEARNT_TODAY = [
+  { title: 'Install as a dev dependency', text: 'TypeScript is tooling — install it with npm (globally or per project)' },
+  { title: 'tsc', text: 'the TypeScript Compiler — the command that type-checks and emits JavaScript' },
+  { title: 'tsc --init', text: 'generates a tsconfig.json with sensible, documented defaults' },
+  { title: 'tsconfig.json', text: 'tells the compiler how to compile — it never runs in JS, it just gives instructions' },
+  { title: 'target', text: 'sets the JavaScript version the compiler emits (e.g. ES2018 / ES2022)' },
+  { title: 'module', text: 'the module system for the output — CommonJS or ESNext' },
+  { title: 'outDir & rootDir', text: 'source lives in ./src, compiled output goes to ./dist — cleanly separated' },
+  { title: 'strict', text: 'enables all strict type-checking options — the safety net worth having on' },
+  { title: 'Compile the project', text: 'plain `tsc` compiles every .ts file based on tsconfig.json' },
+  { title: 'Watch mode', text: '`tsc -w` recompiles automatically every time you save' },
+];
+
+const INSTALL = [
   {
-    title: 'Arrays',
-    text: 'type a list with `number[]` or `Array<number>` — every element is checked, push the wrong type and TS complains',
+    icon: '📥', title: 'Installing TypeScript', titleClass: 'card-title-cyan', subtitle: 'A Dev Dependency',
+    description:
+      'TypeScript is a build tool, not a runtime library. Install it with npm — globally for quick experiments, or per project so everyone uses the same version.',
+    code: '# Install TypeScript globally\nnpm install -g typescript\n\n# Check version\ntsc -v   → should print the version',
   },
   {
-    title: 'Tuples',
-    text: 'a fixed-length array with a type per position: `[string, number]` — great for pairs like [name, age]',
+    icon: '⚙️', title: 'The tsc Compiler', titleClass: 'card-title-purple', subtitle: 'Checks + Emits',
+    description:
+      'tsc is the TypeScript Compiler. It reads your .ts files, checks the types, reports errors, and then generates clean JavaScript that runs anywhere.',
+    code: 'tsc          # compile the project\ntsc index.ts # compile a single file',
   },
   {
-    title: 'Object types',
-    text: 'describe shape inline: `{ name: string; age: number }` — optional fields use a `?`',
-  },
-  {
-    title: 'any vs unknown',
-    text: 'any turns off checking (avoid it); unknown is the safe version — you must narrow it before use',
-  },
-  {
-    title: 'union types',
-    text: '`string | number` means "either type" — the foundation of modelling real-world data',
-  },
-  {
-    title: 'literal types',
-    text: 'a value can be a specific literal: `let dir: "left" | "right"` — only those exact strings are allowed',
-  },
-  {
-    title: 'type aliases',
-    text: '`type ID = string | number` names a type so you can reuse it everywhere',
-  },
-  {
-    title: 'void & never',
-    text: 'void = returns nothing; never = never returns (throws or loops forever)',
-  },
-  {
-    title: 'null & undefined',
-    text: 'with strictNullChecks they are their own types — you handle "missing" on purpose',
-  },
-  {
-    title: 'type assertions',
-    text: '`value as string` tells TS "trust me, I know the type" — use sparingly and only when you truly know',
+    icon: '🧾', title: 'tsc --init', titleClass: 'card-title-amber', subtitle: 'Create tsconfig.json',
+    description:
+      'Generate a documented tsconfig.json in one command, then trim it to the options you actually use. Every real project starts here.',
+    code: 'tsc --init   # creates tsconfig.json',
   },
 ];
 
-const COLLECTIONS = [
+const CONFIG = [
   {
-    icon: '📚',
-    title: 'Arrays',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Typed Lists',
+    icon: '🎛️', title: 'target', titleClass: 'card-title-cyan', subtitle: 'Which JS Version',
     description:
-      'Declare an array of one element type. TypeScript checks every item you add, so a list of numbers can never accidentally hold a string.',
-    code: 'let scores: number[] = [90, 85, 100];\nlet names: Array<string> = ["A", "B"];\nscores.push("x"); // ❌ not a number',
+      'target sets the JavaScript version the compiler emits. Older targets support older browsers; modern targets produce cleaner, smaller output.',
+    code: '"target": "ES2018"',
   },
   {
-    icon: '📦',
-    title: 'Tuples',
-    titleClass: 'card-title-purple',
-    subtitle: 'Fixed-Length, Typed Positions',
+    icon: '📦', title: 'module', titleClass: 'card-title-blue', subtitle: 'Module System',
     description:
-      'A tuple fixes both the length and the type at each index — perfect for a coordinate or a [key, value] pair returned from a function.',
-    code: 'let user: [string, number] = ["Sumit", 26];\nlet point: [number, number] = [10, 20];\nuser = [26, "Sumit"]; // ❌ wrong order',
+      'module chooses how imports/exports are emitted — CommonJS for classic Node, ESNext for modern bundlers and native ES modules.',
+    code: '"module": "CommonJS"  // or "ESNext"',
   },
   {
-    icon: '🧩',
-    title: 'Object Types',
-    titleClass: 'card-title-amber',
-    subtitle: 'Describe The Shape',
+    icon: '📁', title: 'outDir & rootDir', titleClass: 'card-title-amber', subtitle: 'Source vs Build',
     description:
-      'Annotate an object with the fields it must have. A ? marks an optional property. Tomorrow’s interfaces give these shapes a reusable name.',
-    code: 'let dev: { name: string; age?: number };\ndev = { name: "Sumit" };      // ok, age optional\ndev = { age: 26 };            // ❌ name missing',
+      'rootDir marks where your source lives and outDir where the compiled JavaScript goes — keep ./src and ./dist separate so builds stay clean.',
+    code: '"outDir": "./dist",\n"rootDir": "./src"',
+  },
+  {
+    icon: '🚦', title: 'strict', titleClass: 'card-title-lime', subtitle: 'All The Safety',
+    description:
+      'strict turns on every strict type-checking option at once — the single most valuable flag in the whole file. Always on for new projects.',
+    code: '"strict": true,\n"esModuleInterop": true,\n"forceConsistentCasingInFileNames": true',
   },
 ];
 
-const FLEXIBLE = [
+const COMPILE = [
   {
-    icon: '🌀',
-    title: 'any',
-    titleClass: 'card-title-pink',
-    subtitle: 'The Escape Hatch',
+    icon: '🗂️', title: 'Project Structure', titleClass: 'card-title-cyan', subtitle: 'src → dist',
     description:
-      'any opts a value out of type checking entirely. It’s occasionally useful when migrating JS, but it defeats the purpose of TypeScript — reach for unknown instead.',
-    code: 'let data: any = 42;\ndata.toUpperCase(); // no error, may crash at runtime',
+      'A minimal typed project: your code in src/, the config at the root, and the compiler’s output in dist/. Simple, and it scales.',
+    code: 'my-app/\n├─ src/\n│  └─ index.ts\n└─ tsconfig.json',
   },
   {
-    icon: '❓',
-    title: 'unknown',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Safe any',
+    icon: '🔁', title: 'Compile The Project', titleClass: 'card-title-purple', subtitle: 'tsc',
     description:
-      'unknown accepts anything but forbids using it until you narrow it. It forces you to prove the type before you touch the value — safety without lying.',
-    code: 'let val: unknown = getInput();\nif (typeof val === "string") {\n  val.toUpperCase(); // ✅ narrowed to string\n}',
+      'Run plain tsc and it compiles every .ts file according to tsconfig.json — no need to list files by hand.',
+    code: '# compiles all .ts based on tsconfig.json\ntsc',
   },
   {
-    icon: '🔀',
-    title: 'Union Types',
-    titleClass: 'card-title-blue',
-    subtitle: '"Either / Or"',
+    icon: '👀', title: 'Watch Mode', titleClass: 'card-title-amber', subtitle: 'tsc -w',
     description:
-      'A union lets a value be one of several types. You narrow it with typeof or a check, and TypeScript tracks which branch you’re in.',
-    code: 'let id: string | number;\nid = 101;      // ok\nid = "A-101";  // ok\nid = true;     // ❌',
+      'Watch mode recompiles the moment you save, so you see type errors instantly while you work. The everyday development loop.',
+    code: 'tsc -w   # watch mode',
   },
   {
-    icon: '🎯',
-    title: 'Literal Types',
-    titleClass: 'card-title-lime',
-    subtitle: 'Exact Values',
+    icon: '📤', title: 'The Output', titleClass: 'card-title-lime', subtitle: 'Clean JavaScript',
     description:
-      'Constrain a value to specific literals. Combined with unions, this models real options — like a status that can only be a known set of strings.',
-    code: 'let status: "active" | "paused" | "done";\nstatus = "active"; // ✅\nstatus = "old";    // ❌',
-  },
-];
-
-const NAMING = [
-  {
-    icon: '🏷️',
-    title: 'Type Aliases',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Name Any Type',
-    description:
-      'type gives a name to any type — a union, an object shape, a tuple. Reuse it everywhere and change it in one place.',
-    code: 'type ID = string | number;\ntype Point = { x: number; y: number };\nlet a: ID = 7;\nlet p: Point = { x: 1, y: 2 };',
-  },
-  {
-    icon: '🕳️',
-    title: 'void & never',
-    titleClass: 'card-title-purple',
-    subtitle: 'Nothing & Impossible',
-    description:
-      'void is the return type of a function that returns nothing. never is for functions that never return — they throw or loop forever.',
-    code: 'function log(msg: string): void {\n  console.log(msg);\n}\nfunction fail(m: string): never {\n  throw new Error(m);\n}',
-  },
-  {
-    icon: '🚧',
-    title: 'null & undefined',
-    titleClass: 'card-title-amber',
-    subtitle: 'Handled On Purpose',
-    description:
-      'With strictNullChecks, null and undefined are distinct types you must account for — usually via a union — so "cannot read property of undefined" disappears.',
-    code: 'let name: string | null = null;\nname = "Sumit";\nlet n = name?.toUpperCase(); // safe access',
-  },
-  {
-    icon: '👉',
-    title: 'Type Assertions',
-    titleClass: 'card-title-lime',
-    subtitle: '"Trust Me"',
-    description:
-      'When you know more than the compiler (e.g. a DOM element), assert the type with as. Use it rarely — a wrong assertion silences a real error.',
-    code: 'const el = document.getElementById("app") as HTMLDivElement;\nel.innerText = "Hi";',
+      'The compiler checks types, finds errors, then generates clean JavaScript that runs in any browser or Node.js. Types never reach runtime.',
+    code: '// index.ts\nlet message: string = "Hello TypeScript!";\n// → index.js\nvar message = "Hello TypeScript!";',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘',
-    title: 'Everyday Types',
-    titleClass: 'card-title-cyan',
-    subtitle: 'TS Handbook',
+    icon: '📘', title: 'tsconfig Reference', titleClass: 'card-title-cyan', subtitle: 'Every Option',
     description:
-      'The handbook chapter that covers exactly today’s ground — arrays, objects, unions, literals, and the any/unknown distinction.',
-    link: { href: TS_EVERYDAY, label: 'Read Everyday Types →', external: true },
+      'The searchable reference for every tsconfig option with examples and recommendations. Bookmark it — you’ll return all year.',
+    link: { href: TS_TSCONFIG, label: 'Open the tsconfig reference →', external: true },
   },
   {
-    icon: '🎮',
-    title: 'TS Playground',
-    titleClass: 'card-title-purple',
-    subtitle: 'Test Every Snippet',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Toggle Options Live',
     description:
-      'Paste any example from today and hover the variables to see their inferred types. The fastest feedback loop for learning the type system.',
+      'The Playground lets you flip target, strict, and module and watch the emitted JavaScript and errors change instantly.',
     link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '🔜',
-    title: 'Next: Functions',
-    titleClass: 'card-title-amber',
-    subtitle: 'Day 3 Preview',
+    icon: '🔜', title: 'Next: Type System Basics', titleClass: 'card-title-amber', subtitle: 'Day 3 Preview',
     description:
-      'Tomorrow we type function parameters and return values, optional and default params, rest args, and function types.',
+      'Tomorrow is Episode 3 — the type system itself: annotations, inference, primitives, and the any / unknown / never types.',
     link: { href: '/day-003', label: 'Go to Day 3 →' },
   },
 ];
@@ -189,9 +118,7 @@ const RESOURCES = [
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -199,18 +126,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -219,13 +137,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -237,131 +151,108 @@ export default function Day002() {
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
-    <div className="day001-page">
-      <div className="day001-scale-wrap" ref={scaleRef}>
-      <header className="day001-topbar">
-        <Link to="/" className="day001-nav-btn day001-nav-home">
-          Home
-        </Link>
-        <Link to="/day-001" className="day001-nav-btn day001-nav-prev">
-          ← Day 1
-        </Link>
-        <p className="day001-datetime">TypeScript Day 2 · 18 Jul 2026</p>
-        <Link to="/day-003" className="day001-nav-btn day001-nav-next">
-          Day 3 →
-        </Link>
-      </header>
+    <>
+      <div className="day001-page">
+        <div className="day001-scale-wrap" ref={scaleRef}>
+          <header className="day001-topbar">
+            <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+            <Link to="/day-001" className="day001-nav-btn day001-nav-prev">← Day 1</Link>
+            <p className="day001-datetime">TypeScript Day 2 · 18 Jul 2026</p>
+            <Link to="/day-003" className="day001-nav-btn day001-nav-next">Day 3 →</Link>
+          </header>
 
-      <div className="day001-hero">
-        <div className="day001-hero-left">
-          <div className="day001-tags">
-            <span>TypeScript</span>
-            <span>Year 1</span>
-            <span>Types</span>
+          <div className="day001-hero">
+            <div className="day001-hero-left">
+              <div className="day001-tags"><span>TypeScript</span><span>Episode 2</span><span>Setup</span></div>
+              <div className="day001-title-block">
+                <h1 className="day001-day-num">DAY 2 <span aria-hidden="true">⚙️</span></h1>
+                <p className="day001-day-theme">SETTING UP TYPESCRIPT</p>
+              </div>
+            </div>
+            <div className="day001-profile">
+              <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
+              <div>
+                <p className="day001-profile-name">Sumit Rawal</p>
+                <p className="day001-profile-role">TS · TYPESCRIPT</p>
+              </div>
+            </div>
           </div>
-          <div className="day001-title-block">
-            <h1 className="day001-day-num">
-              DAY 2 <span aria-hidden="true">🧱</span>
-            </h1>
-            <p className="day001-day-theme">BASIC TYPES — ARRAYS, UNIONS & MORE</p>
-          </div>
-        </div>
-        <div className="day001-profile">
-          <img
-            src="/sumit-profile.png"
-            alt="Sumit Rawal"
-            className="day001-avatar"
-            width={48}
-            height={48}
-          />
-          <div>
-            <p className="day001-profile-name">Sumit Rawal</p>
-            <p className="day001-profile-role">TS · TYPESCRIPT</p>
-          </div>
+
+          <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '2%' }} /></div>
+
+          <p className="day001-summary">
+            <strong>Episode 2</strong> — setting up the environment properly. I installed TypeScript with npm and met{' '}
+            <code>tsc</code>, the compiler. Then <code>tsc --init</code> to generate{' '}
+            <strong>tsconfig.json</strong> — the file that tells the compiler <em>how</em> to compile (it never runs
+            in JS, it just gives instructions). I learned the options that matter: <code>target</code>,{' '}
+            <code>module</code>, <code>outDir</code>, <code>rootDir</code>, and <code>strict</code>, then compiled a{' '}
+            <code>src → dist</code> project with <code>tsc</code> and <code>tsc -w</code>.{' '}
+            <em>Write in TypeScript, run anywhere.</em>
+          </p>
+
+          <section className="day001-learnt">
+            <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
+            <ul className="day001-learnt-list">
+              {LEARNT_TODAY.map((item) => (
+                <li key={item.title}>
+                  <span className="day001-check" aria-hidden="true">✓</span>
+                  <span><strong>{item.title}</strong> — {item.text}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <CardSection icon="📥" title="INSTALLING" cards={INSTALL} columns={3} />
+          <CardSection icon="🎛️" title="tsconfig.json — IMPORTANT OPTIONS" cards={CONFIG} columns={4} />
+          <CardSection icon="🔁" title="COMPILE TS → JS" cards={COMPILE} columns={4} />
+          <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
+
+          <footer className="day001-hashtags">
+            <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Episode2</span><span>#tsconfig</span><span>#JSLearnHub</span>
+          </footer>
         </div>
       </div>
 
-      <div className="day001-progress-wrap">
-        <div className="day001-progress-bar" style={{ width: '2%' }} />
-      </div>
-
-      <p className="day001-summary">
-        Day 2 goes past the primitives into the types you use every day. I learned to type{' '}
-        <strong>arrays</strong> and <strong>tuples</strong>, describe <strong>object shapes</strong> inline, and
-        model real data with <strong>union</strong> and <strong>literal</strong> types. I saw why{' '}
-        <code>unknown</code> is the safe cousin of <code>any</code>, named reusable types with{' '}
-        <code>type</code> aliases, and met <code>void</code>, <code>never</code>, and safe{' '}
-        <code>null</code> handling. This is the vocabulary the rest of TypeScript is built on.
-      </p>
-
-      <section className="day001-learnt">
-        <h2 className="day001-learnt-title">
-          <span className="day001-learnt-line" aria-hidden="true" />
-          WHAT I LEARNED TODAY
-        </h2>
-        <ul className="day001-learnt-list">
-          {LEARNT_TODAY.map((item) => (
-            <li key={item.title}>
-              <span className="day001-check" aria-hidden="true">
-                ✓
-              </span>
-              <span>
-                <strong>{item.title}</strong> — {item.text}
-              </span>
-            </li>
-          ))}
-        </ul>
+      <section style={{ background: '#0d1117', padding: '8px 16px 56px', display: 'flex', justifyContent: 'center' }}>
+        <figure style={{ maxWidth: '860px', width: '100%', margin: 0 }}>
+          <h2 style={{ color: '#e6edf3', fontSize: '1.05rem', fontWeight: 700, margin: '0 0 12px', textAlign: 'center' }}>
+            <span aria-hidden="true">📌</span> Episode 2 Notes — Setting Up TypeScript
+          </h2>
+          <a href={EP_IMAGE} target="_blank" rel="noopener noreferrer">
+            <img
+              src={EP_IMAGE}
+              alt="TypeScript Series Episode 2 — Setting Up TypeScript: installing TypeScript as a dev dependency with npm install -g typescript and checking with tsc -v, the tsc TypeScript Compiler, creating tsconfig.json with tsc --init, a sample tsconfig with compilerOptions target ES2018, module CommonJS, outDir ./dist, rootDir ./src, strict true, esModuleInterop and forceConsistentCasingInFileNames, important options explained (target, module, outDir, rootDir, strict), project structure with src/index.ts and tsconfig.json, and compiling TypeScript to JavaScript with tsc and tsc -w watch mode"
+              loading="lazy"
+              style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '14px', border: '1px solid #2a3441' }}
+            />
+          </a>
+          <figcaption style={{ color: '#8fb6c2', fontSize: '0.82rem', textAlign: 'center', marginTop: '10px' }}>
+            My handwritten Episode 2 notes — installing, tsconfig.json options, project structure, and compiling.
+            Click to open full size.
+          </figcaption>
+        </figure>
       </section>
-
-      <CardSection icon="📚" title="COLLECTIONS & OBJECTS" cards={COLLECTIONS} columns={3} />
-      <CardSection icon="🔀" title="FLEXIBLE TYPES" cards={FLEXIBLE} columns={4} />
-      <CardSection icon="🏷️" title="NAMING & SPECIAL TYPES" cards={NAMING} columns={4} />
-      <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
-
-      <footer className="day001-hashtags">
-        <span>#100DaysOfCode</span>
-        <span>#TypeScript</span>
-        <span>#TypeSafety</span>
-        <span>#WebDev</span>
-        <span>#JSLearnHub</span>
-      </footer>
-      </div>
-    </div>
+    </>
   );
 }

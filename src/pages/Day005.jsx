@@ -2,100 +2,115 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_CLASSES = 'https://www.typescriptlang.org/docs/handbook/2/classes.html';
+const TS_OBJECTS = 'https://www.typescriptlang.org/docs/handbook/2/objects.html';
 const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const EP_IMAGE = '/typescript-notes/ep05-data-types.jpeg';
 
 const LEARNT_TODAY = [
-  { title: 'Typed classes', text: 'fields and methods carry types — `class Point { x: number; y: number }` is fully checked' },
-  { title: 'Constructors', text: 'the constructor initializes typed fields; strict mode makes sure every field is assigned' },
-  { title: 'public / private / protected', text: 'access modifiers control who can touch a member — private hides it from the outside' },
-  { title: 'Parameter properties', text: 'declare and assign a field in one line: `constructor(private id: number)` — less boilerplate' },
-  { title: 'readonly fields', text: 'combine with modifiers: `private readonly key: string` — assigned once in the constructor' },
-  { title: 'Getters & setters', text: 'accessor methods with `get`/`set` expose controlled access to private state' },
-  { title: 'implements', text: 'a class can implement an interface — TS verifies the shape matches' },
-  { title: 'Inheritance', text: '`extends` a base class, call `super()`, and override methods with correct types' },
-  { title: 'abstract classes', text: 'a base you cannot instantiate; abstract methods must be implemented by subclasses' },
-  { title: 'static members', text: 'belong to the class itself, not instances — shared counters, factories, constants' },
+  { title: 'Arrays', text: 'store multiple values of the same type: `let numbers: number[] = [1, 2, 3]`' },
+  { title: 'Array rules', text: 'use Type[] to define the array type — all elements must be the same type' },
+  { title: 'Array methods', text: 'push() add at end · pop() remove last · shift() remove first · unshift() add at first · length' },
+  { title: 'Tuples', text: 'an array with fixed length and known types: `[string, number, boolean]`' },
+  { title: 'Why tuples', text: 'when you know the exact number of elements and their specific order' },
+  { title: 'Objects', text: 'store key-value pairs — define the shape, all properties required by default' },
+  { title: 'Optional properties', text: 'use ? to make a property optional: `age?: number`' },
+  { title: 'readonly', text: 'makes data immutable — it cannot be changed after it is set' },
+  { title: 'Why readonly', text: 'prevent accidental changes, improve code safety, great for constants and configs' },
+  { title: 'as const', text: 'makes all properties readonly and literal — freezes an entire object' },
 ];
 
-const BASICS = [
+const ARRAYS = [
   {
-    icon: '🏛️', title: 'Typed Class', titleClass: 'card-title-cyan', subtitle: 'Fields + Constructor',
-    description: 'Declare typed fields and initialize them in the constructor. Under strict mode, TypeScript ensures every field ends up assigned before use.',
-    code: 'class Point {\n  x: number;\n  y: number;\n  constructor(x: number, y: number) {\n    this.x = x; this.y = y;\n  }\n}',
+    icon: '📚', title: 'Arrays', titleClass: 'card-title-cyan', subtitle: 'Same Type, Many Values',
+    description:
+      'An array stores multiple values of the same type. Use Type[] to declare it — every element is checked, so a list of numbers can never hold a string.',
+    code: '// number array\nlet numbers: number[] = [1, 2, 3, 4, 5];\nnumbers.push(6);   // [1,2,3,4,5,6]\n\n// string array\nlet names: string[] = ["Faisal", "Ahmad"];\nnames.push("Developer");',
   },
   {
-    icon: '🎯', title: 'Parameter Properties', titleClass: 'card-title-purple', subtitle: 'Declare + Assign',
-    description: 'Prefix a constructor parameter with an access modifier and TypeScript declares and assigns the field for you — the same class in a fraction of the code.',
-    code: 'class Point {\n  constructor(public x: number, public y: number) {}\n}\n// x and y are created and set automatically',
+    icon: '🔧', title: 'Common Methods', titleClass: 'card-title-purple', subtitle: 'Typed Operations',
+    description:
+      'All the familiar array methods are fully typed — push adds at the end, pop removes the last, shift removes the first, unshift adds at the front, length gives the size.',
+    code: 'push()    → add at end\npop()     → remove last\nshift()   → remove first\nunshift() → add at first\nlength    → get size',
   },
   {
-    icon: '🔒', title: 'Access Modifiers', titleClass: 'card-title-amber', subtitle: 'public · private · protected',
-    description: 'public is the default; private hides a member from outside the class; protected allows subclasses but not the outside world. Encapsulation, enforced at compile time.',
-    code: 'class Account {\n  private balance = 0;\n  deposit(n: number) { this.balance += n; }\n}\nacc.balance; // ❌ private',
-  },
-];
-
-const STATE = [
-  {
-    icon: '🔐', title: 'readonly Fields', titleClass: 'card-title-cyan', subtitle: 'Set Once In Constructor',
-    description: 'readonly members can only be assigned where they’re declared or in the constructor. Combine with private for immutable, hidden state.',
-    code: 'class User {\n  constructor(private readonly id: number) {}\n}',
-  },
-  {
-    icon: '🎚️', title: 'Getters & Setters', titleClass: 'card-title-blue', subtitle: 'Controlled Access',
-    description: 'Expose private state through get/set accessors — validate on write, compute on read, all while looking like a plain property to callers.',
-    code: 'class Temp {\n  private _c = 0;\n  get f() { return this._c * 1.8 + 32; }\n  set c(v: number) { this._c = v; }\n}',
-  },
-  {
-    icon: '⚙️', title: 'static Members', titleClass: 'card-title-amber', subtitle: 'On The Class Itself',
-    description: 'static fields and methods belong to the class, not instances — ideal for counters, constants, and factory helpers shared across all objects.',
-    code: 'class Id {\n  static next = 1;\n  static make() { return Id.next++; }\n}\nId.make(); // 1',
-  },
-  {
-    icon: '📜', title: 'implements', titleClass: 'card-title-lime', subtitle: 'Honour An Interface',
-    description: 'A class can implement one or more interfaces. TypeScript checks that it provides every required property and method with matching types.',
-    code: 'interface Named { name: string; }\nclass Dog implements Named {\n  name = "Rex";\n}',
+    icon: '📦', title: 'Tuples', titleClass: 'card-title-amber', subtitle: 'Fixed Length & Order',
+    description:
+      'A tuple is an array with a fixed length and a known type at each position — use it when you know the exact number of elements and their specific order.',
+    code: 'let user: [string, number, boolean] = ["Faisal", 21, true];\nconsole.log(user[0]);  // Faisal\nconsole.log(user[1]);  // 21\n// user.push("extra"); ❌ Tuple type of length 3\n\nlet rgb: [number, number, number] = [255, 0, 128];',
   },
 ];
 
-const INHERIT = [
+const OBJECTS = [
   {
-    icon: '🧬', title: 'Inheritance', titleClass: 'card-title-cyan', subtitle: 'extends & super',
-    description: 'Extend a base class to inherit its members, call super() in the constructor, and override methods — TypeScript checks the overrides stay compatible.',
-    code: 'class Animal {\n  constructor(public name: string) {}\n  speak() { return "..."; }\n}\nclass Dog extends Animal {\n  speak() { return "Woof"; }\n}',
+    icon: '🧩', title: 'Objects', titleClass: 'card-title-cyan', subtitle: 'Key-Value Pairs',
+    description:
+      'Objects store key-value pairs. Define the shape of the object up front — all properties are required by default, so nothing can be silently missing.',
+    code: 'let user: {\n  name: string;\n  age: number;\n  isStudent: boolean;\n} = {\n  name: "Faisal",\n  age: 21,\n  isStudent: true,\n};',
   },
   {
-    icon: '🚫', title: 'abstract Classes', titleClass: 'card-title-purple', subtitle: 'Blueprints',
-    description: 'An abstract class can’t be instantiated directly. It defines shared code plus abstract methods that every subclass must implement — a stricter base than a plain class.',
-    code: 'abstract class Shape {\n  abstract area(): number;\n}\nclass Square extends Shape {\n  constructor(private s: number) { super(); }\n  area() { return this.s ** 2; }\n}',
+    icon: '❔', title: 'Optional Properties', titleClass: 'card-title-blue', subtitle: 'Use a ?',
+    description:
+      'Mark a property optional with ? so it can be omitted. Objects with or without it are both valid — but a wrong type still isn’t.',
+    code: 'type User = {\n  name: string;\n  age?: number;    // optional\n  email?: string;  // optional\n};\nconst user1: User = { name: "Faisal" };          // ✅\nconst user2: User = { name: "Faisal", age: 21 }; // ✅',
   },
   {
-    icon: '🧩', title: 'Classes + Generics', titleClass: 'card-title-amber', subtitle: 'A Taste Of Day 6',
-    description: 'Classes can be generic too — a Box<T> holds any type safely. That’s the bridge to tomorrow’s topic: generics.',
-    code: 'class Box<T> {\n  constructor(public value: T) {}\n}\nconst b = new Box<string>("hi");',
+    icon: '🌍', title: 'Model Real Entities', titleClass: 'card-title-amber', subtitle: 'Why It Matters',
+    description:
+      'Objects let you represent real-world entities cleanly — a user, a product, an API response. Define the shape once and every usage is checked against it.',
+    footer: '+ Objects help us represent real world entities cleanly.',
   },
   {
-    icon: '🔜', title: 'Next: Generics', titleClass: 'card-title-lime', subtitle: 'Day 6 Preview',
-    description: 'Tomorrow we make types reusable with generics — generic functions, constraints, and generic interfaces & classes.',
+    icon: '🔜', title: 'Next: Interfaces', titleClass: 'card-title-lime', subtitle: 'Day 6 Preview',
+    description:
+      'Tomorrow: interfaces — giving these object shapes a reusable name, with extending, implementing, and interface vs type.',
     link: { href: '/day-006', label: 'Go to Day 6 →' },
+  },
+];
+
+const READONLY = [
+  {
+    icon: '🔒', title: 'readonly Types', titleClass: 'card-title-cyan', subtitle: 'Immutable Data',
+    description:
+      'readonly makes data immutable — once set, it cannot be changed. Try to reassign or push and the compiler stops you.',
+    code: '// readonly array\nlet readonlyNumbers: readonly number[] = [1, 2, 3];\n// readonlyNumbers.push(4); ❌ Error\n\n// readonly tuple\nlet point: readonly [number, number] = [10, 20];\n// point[0] = 100; ❌ Error',
+  },
+  {
+    icon: '🛡️', title: 'Why readonly?', titleClass: 'card-title-purple', subtitle: 'Safety By Default',
+    description:
+      'Prevent accidental changes, improve code safety, and make intent obvious. It’s especially valuable for constants and configuration you must not mutate.',
+    footer: '+ Prevent accidental changes · Improve code safety · Great for constants and configs',
+  },
+  {
+    icon: '🧊', title: 'as const', titleClass: 'card-title-amber', subtitle: 'Freeze Everything',
+    description:
+      'Another way: as const makes all properties readonly and literal at once — the entire object becomes immutable and precisely typed.',
+    code: 'const config = {\n  apiUrl: "https://api.com",\n  timeout: 5000,\n} as const; // entire object is readonly',
+  },
+  {
+    icon: '🏆', title: 'Key Takeaway', titleClass: 'card-title-lime', subtitle: 'The Payoff',
+    description:
+      'Strongly typed data structures mean fewer bugs, better code, and happy developers. Arrays, tuples, objects, and readonly are the shapes real data lives in.',
+    footer: '+ Strongly typed data structures = Fewer bugs + Better code + Happy Developers!',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Classes', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
-    description: 'The full reference on TypeScript classes — modifiers, parameter properties, accessors, inheritance, and abstract classes.',
-    link: { href: TS_CLASSES, label: 'Read the Classes chapter →', external: true },
+    icon: '📘', title: 'Object Types', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
+    description:
+      'The handbook chapter on object types — optional and readonly properties, index signatures, and how shapes are checked.',
+    link: { href: TS_OBJECTS, label: 'Read Object Types →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Build A Class',
-    description: 'Write a class, mark a field private, and try to access it from outside to see the compiler stop you. Fast, hands-on reinforcement.',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Break It On Purpose',
+    description:
+      'Build an array, a tuple, and a readonly object — then try to push to the tuple or reassign a readonly field and read the exact errors.',
     link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
     icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Classes power services, models, and stores. Later years reuse the same OOP ideas in Python and Java — the concepts transfer.',
+    description:
+      'Arrays, tuples, and object shapes are how you model props, API data, and state — the vocabulary for everything ahead this year.',
     link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
@@ -132,6 +147,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day005() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -156,63 +172,86 @@ export default function Day005() {
   }, []);
 
   return (
-    <div className="day001-page">
-      <div className="day001-scale-wrap" ref={scaleRef}>
-        <header className="day001-topbar">
-          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-004" className="day001-nav-btn day001-nav-prev">← Day 4</Link>
-          <p className="day001-datetime">TypeScript Day 5 · 21 Jul 2026</p>
-          <Link to="/day-006" className="day001-nav-btn day001-nav-next">Day 6 →</Link>
-        </header>
+    <>
+      <div className="day001-page">
+        <div className="day001-scale-wrap" ref={scaleRef}>
+          <header className="day001-topbar">
+            <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+            <Link to="/day-004" className="day001-nav-btn day001-nav-prev">← Day 4</Link>
+            <p className="day001-datetime">TypeScript Day 5 · 21 Jul 2026</p>
+            <Link to="/day-006" className="day001-nav-btn day001-nav-next">Day 6 →</Link>
+          </header>
 
-        <div className="day001-hero">
-          <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Classes</span></div>
-            <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 5 <span aria-hidden="true">🏛️</span></h1>
-              <p className="day001-day-theme">CLASSES & OOP IN TYPESCRIPT</p>
+          <div className="day001-hero">
+            <div className="day001-hero-left">
+              <div className="day001-tags"><span>TypeScript</span><span>Episode 5</span><span>Data Types</span></div>
+              <div className="day001-title-block">
+                <h1 className="day001-day-num">DAY 5 <span aria-hidden="true">📦</span></h1>
+                <p className="day001-day-theme">DATA TYPES — ARRAYS, TUPLES, OBJECTS & READONLY</p>
+              </div>
+            </div>
+            <div className="day001-profile">
+              <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
+              <div>
+                <p className="day001-profile-name">Sumit Rawal</p>
+                <p className="day001-profile-role">TS · TYPESCRIPT</p>
+              </div>
             </div>
           </div>
-          <div className="day001-profile">
-            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
-            <div>
-              <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · TYPESCRIPT</p>
-            </div>
-          </div>
+
+          <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '5%' }} /></div>
+
+          <p className="day001-summary">
+            <strong>Episode 5</strong> — structuring real data. <strong>Arrays</strong> hold many values of the same
+            type (<code>Type[]</code>), <strong>tuples</strong> fix both the length and the type at each position,
+            and <strong>objects</strong> store key-value pairs with a defined shape (properties required by default,{' '}
+            <code>?</code> to make one optional). Then <strong>readonly</strong> makes data immutable — with{' '}
+            <code>as const</code> to freeze a whole object. TypeScript helps me structure data better and avoid bugs
+            early. <em>Strongly typed data structures = fewer bugs + better code.</em>
+          </p>
+
+          <section className="day001-learnt">
+            <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
+            <ul className="day001-learnt-list">
+              {LEARNT_TODAY.map((item) => (
+                <li key={item.title}>
+                  <span className="day001-check" aria-hidden="true">✓</span>
+                  <span><strong>{item.title}</strong> — {item.text}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <CardSection icon="📚" title="ARRAYS & TUPLES" cards={ARRAYS} columns={3} />
+          <CardSection icon="🧩" title="OBJECTS" cards={OBJECTS} columns={4} />
+          <CardSection icon="🔒" title="READONLY TYPES" cards={READONLY} columns={4} />
+          <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
+
+          <footer className="day001-hashtags">
+            <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Episode5</span><span>#DataTypes</span><span>#JSLearnHub</span>
+          </footer>
         </div>
-
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '5%' }} /></div>
-
-        <p className="day001-summary">
-          Day 5 brings object-oriented TypeScript. I wrote <strong>typed classes</strong> with constructors,
-          used <strong>access modifiers</strong> (public/private/protected) and <strong>parameter properties</strong>,
-          added <strong>readonly</strong> fields, <strong>getters/setters</strong>, and <strong>static</strong> members.
-          Then <strong>inheritance</strong> with <code>extends</code>/<code>super</code>, <code>implements</code> for
-          interfaces, and <strong>abstract</strong> base classes. Real encapsulation, checked at compile time.
-        </p>
-
-        <section className="day001-learnt">
-          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
-          <ul className="day001-learnt-list">
-            {LEARNT_TODAY.map((item) => (
-              <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">✓</span>
-                <span><strong>{item.title}</strong> — {item.text}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <CardSection icon="🏛️" title="CLASS BASICS" cards={BASICS} columns={3} />
-        <CardSection icon="🔐" title="STATE & ACCESS" cards={STATE} columns={4} />
-        <CardSection icon="🧬" title="INHERITANCE & ABSTRACTION" cards={INHERIT} columns={4} />
-        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
-
-        <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#OOP</span><span>#WebDev</span><span>#JSLearnHub</span>
-        </footer>
       </div>
-    </div>
+
+      <section style={{ background: '#0d1117', padding: '8px 16px 56px', display: 'flex', justifyContent: 'center' }}>
+        <figure style={{ maxWidth: '860px', width: '100%', margin: 0 }}>
+          <h2 style={{ color: '#e6edf3', fontSize: '1.05rem', fontWeight: 700, margin: '0 0 12px', textAlign: 'center' }}>
+            <span aria-hidden="true">📌</span> Episode 5 Notes — Data Types: Arrays, Tuples, Objects &amp; Readonly
+          </h2>
+          <a href={EP_IMAGE} target="_blank" rel="noopener noreferrer">
+            <img
+              src={EP_IMAGE}
+              alt="TypeScript Series Episode 5 — Data Types: arrays storing multiple values of the same type using Type[] with number and string array examples and common methods (push, pop, shift, unshift, length), tuples as arrays with fixed length and known types such as [string, number, boolean] and an rgb example, objects storing key-value pairs with a defined shape and optional properties using a question mark, and readonly types making data immutable including readonly arrays and tuples, why readonly prevents accidental changes and improves code safety, and using as const to make an entire object readonly and literal"
+              loading="lazy"
+              style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '14px', border: '1px solid #2a3441' }}
+            />
+          </a>
+          <figcaption style={{ color: '#8fb6c2', fontSize: '0.82rem', textAlign: 'center', marginTop: '10px' }}>
+            My handwritten Episode 5 notes — arrays &amp; methods, tuples, object shapes, and readonly / as const.
+            Click to open full size.
+          </figcaption>
+        </figure>
+      </section>
+    </>
   );
 }
