@@ -6,6 +6,7 @@
 export const CHEATSHEET_CATEGORIES = [
   { id: 'api-tools', label: 'API & Tools', icon: '🛠️' },
   { id: 'languages', label: 'Languages', icon: '💻' },
+  { id: 'javascript', label: 'JavaScript', icon: '🟨' },
   { id: 'python', label: 'Python', icon: '🐍' },
   { id: 'devops-cloud', label: 'DevOps & Cloud', icon: '☁️' },
   { id: 'kubernetes', label: 'Kubernetes', icon: '☸️' },
@@ -16,6 +17,15 @@ export const CHEATSHEET_CATEGORIES = [
 ];
 
 export const CHEAT_SHEETS = [
+  {
+    id: 'javascript-series-47',
+    title: 'The JavaScript Series — 47 Illustrated Episodes',
+    description:
+      'A complete hand-drawn JavaScript journey in 47 one-page episodes. Starts with the history — the origins of JS, the Browser Wars, ECMAScript standardization, the Dark Ages, ES5 and the ES6+ game changer — then walks the language itself: variables, types, functions, arrays, objects, strings, scope, closures, this, prototypes, DOM & events, event delegation, async/await, promises, Fetch API, LocalStorage & SessionStorage, modules, iterators, generators, and finishes with how the JavaScript engine actually runs your code.',
+    category: 'javascript',
+    pdf: '/cheatsheets/javascript-series-47-episodes.pdf',
+    tags: ['JavaScript', 'ES6+', 'DOM', 'Async', 'Fetch', 'JS Engine', '47 Episodes'],
+  },
   {
     id: 'python-ultimate',
     title: 'Python — The Ultimate Cheat Sheet',
