@@ -62,6 +62,17 @@ body:has(.day001-page) {
   color: #fff;
 }
 
+.day001-nav-prev {
+  background: rgba(255, 255, 255, 0.05);
+  color: #9aa3b5;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.day001-nav-prev:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
 .day001-nav-next {
   background: rgba(0, 255, 136, 0.12);
   color: #00ff88;
@@ -455,6 +466,7 @@ body:has(.day001-page) {
   }
 
   .day001-nav-home,
+  .day001-nav-prev,
   .day001-nav-next {
     justify-content: center;
   }
