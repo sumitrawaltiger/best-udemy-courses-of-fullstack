@@ -2,180 +2,108 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const NOTION_URL =
-  'https://app.notion.com/p/Lecture12-Even-and-Project-in-Javascript-38343ac5cab980aab918f7f4dc5c2fff?source=copy_link';
-
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture12';
+const TS_CONDITIONAL = 'https://www.typescriptlang.org/docs/handbook/2/conditional-types.html';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
+  { title: 'Conditional types', text: '`T extends U ? X : Y` — a type-level if/else that picks a type from a condition' },
+  { title: 'infer', text: 'capture a type from within a condition: `T extends Array<infer E> ? E : never`' },
+  { title: 'Distributive conditionals', text: 'conditionals over a union apply to each member — the basis of Exclude/Extract' },
+  { title: 'Exclude & Extract', text: 'built-ins made from conditionals — filter members in or out of a union' },
+  { title: 'Template literal types', text: '`type Ev = `on${Capitalize<T>}`` builds string types from other types' },
+  { title: 'String helpers', text: 'Uppercase, Lowercase, Capitalize, Uncapitalize transform literal strings in types' },
+  { title: 'Pattern types', text: 'template literals model shapes like `${string}px` or route params' },
+  { title: 'Awaited<T>', text: 'unwraps the value type inside a Promise — built with recursive conditionals' },
+  { title: 'ReturnType internals', text: 'ReturnType is a conditional with infer — you can now read how it works' },
+  { title: 'never as a filter', text: 'a conditional resolving to never drops that branch — key to filtering unions' },
+];
+
+const CONDITIONAL = [
   {
-    title: 'The event object',
-    text: 'the callback gets e — e.target is the exact element that fired it',
+    icon: '🔀', title: 'Conditional Types', titleClass: 'card-title-cyan', subtitle: 'Type-Level if/else',
+    description: 'Choose a type based on a relationship: T extends U ? X : Y. The type system decides at compile time which branch applies.',
+    code: 'type IsString<T> = T extends string ? "yes" : "no";\ntype A = IsString<string>; // "yes"\ntype B = IsString<number>; // "no"',
   },
   {
-    title: 'Event delegation',
-    text: 'one listener on the parent handles all children via e.target',
+    icon: '🕵️', title: 'infer', titleClass: 'card-title-purple', subtitle: 'Extract A Type',
+    description: 'infer captures a type from inside a condition — pull the element type out of an array, or the return type out of a function.',
+    code: 'type ElementOf<T> = T extends Array<infer E> ? E : never;\ntype N = ElementOf<number[]>; // number',
   },
   {
-    title: 'Bubbling vs capturing',
-    text: 'events bubble child→parent; the true flag on addEventListener flips to capture',
-  },
-  {
-    title: 'removeEventListener',
-    text: 'a named handler can unhook itself — fire once, then stop listening',
-  },
-  {
-    title: 'Random Quote Generator',
-    text: 'Math.floor(Math.random()*50) picks a quote, click swaps the h2',
-  },
-  {
-    title: 'Color switcher',
-    text: 'button ids 0–4 index a color array — dblclick on the parent, read e.target.id',
-  },
-  {
-    title: 'Counter with guard',
-    text: 'increment/decrement, if (count == 0) return to block going negative',
-  },
-  {
-    title: 'Form submit',
-    text: 'e.preventDefault() stops the reload; Number(input.value) adds the numbers',
-  },
-  {
-    title: 'Live text counter',
-    text: 'the input event fires on every keystroke — trim().split(" ") for words',
-  },
-  {
-    title: 'Homework: joke generator',
-    text: 'data.js jokes array — same random-pick pattern as the quote app',
+    icon: '🧮', title: 'Distributive', titleClass: 'card-title-amber', subtitle: 'Over Unions',
+    description: 'A conditional over a naked type parameter distributes across each union member — the mechanism behind Exclude and Extract.',
+    code: 'type MyExclude<T, U> = T extends U ? never : T;\ntype R = MyExclude<"a" | "b" | "c", "b">; // "a" | "c"',
   },
 ];
 
-const EVENT_CONCEPTS = [
+const TEMPLATE = [
   {
-    icon: '🎯',
-    title: 'Event Object & target',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Eventsjs/first.js',
-    description: 'The callback receives e — e.target is the element actually clicked.',
-    code: 'parent.addEventListener("click", (e) => {\n  console.log(e);\n  e.target.textContent = "I am clicked";\n});',
+    icon: '🔤', title: 'Template Literal Types', titleClass: 'card-title-cyan', subtitle: 'Build String Types',
+    description: 'Compose new string literal types from existing ones with backtick syntax — generate event names, CSS values, or route strings in the type system.',
+    code: 'type Color = "red" | "blue";\ntype ClassName = `text-${Color}`;\n// "text-red" | "text-blue"',
   },
   {
-    icon: '🫧',
-    title: 'Bubbling & Capturing',
-    titleClass: 'card-title-green',
-    subtitle: 'Third argument',
-    description: 'Events bubble child → parent; pass true to listen in the capture phase.',
-    code: 'grandParent.addEventListener("click", fn, true);  // capture\nparent.addEventListener("click", fn, false);     // bubble',
+    icon: '🔠', title: 'String Utilities', titleClass: 'card-title-blue', subtitle: 'Uppercase & Friends',
+    description: 'Uppercase, Lowercase, Capitalize, and Uncapitalize transform literal strings inside types — perfect for deriving getter or handler names.',
+    code: 'type Ev<T extends string> = `on${Capitalize<T>}`;\ntype C = Ev<"click">; // "onClick"',
   },
   {
-    icon: '🔌',
-    title: 'removeEventListener',
-    titleClass: 'card-title-blue',
-    subtitle: 'Named handler',
-    description: 'A named function can unhook itself — react once, then stop listening.',
-    code: 'function handle() {\n  button.textContent = "Clicked";\n  button.removeEventListener("click", handle);\n}\nbutton.addEventListener("click", handle);',
+    icon: '🧩', title: 'Pattern Types', titleClass: 'card-title-amber', subtitle: 'Model String Shapes',
+    description: 'Template literals can require a shape like `${number}px` or a route with params — the compiler then rejects malformed strings.',
+    code: 'type Px = `${number}px`;\nlet w: Px = "12px"; // ✅\nlet x: Px = "12em"; // ❌',
+  },
+  {
+    icon: '⏳', title: 'Awaited<T>', titleClass: 'card-title-lime', subtitle: 'Unwrap A Promise',
+    description: 'Awaited recursively unwraps nested Promises to their resolved value type — a real-world conditional+infer utility you’ll use with async code.',
+    code: 'type R = Awaited<Promise<string>>; // string',
   },
 ];
 
-const PROJECTS_A = [
+const APPLY = [
   {
-    icon: '💬',
-    title: 'Random Quote Generator',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Project1',
-    description: '50 quotes — click the button, a random one lands in the h2.',
-    code: 'button.addEventListener("click", () => {\n  const index = Math.floor(Math.random() * 50);\n  h2.textContent = quotes[index];\n});',
+    icon: '🔎', title: 'Read The Built-ins', titleClass: 'card-title-cyan', subtitle: 'ReturnType, Parameters',
+    description: 'ReturnType<F> = F extends (...a: any) => infer R ? R : never. Conditionals + infer are how nearly every "read a type" utility is written.',
+    code: 'type MyReturn<F> = F extends (...a: any[]) => infer R ? R : never;',
   },
   {
-    icon: '🎨',
-    title: 'Color Switcher',
-    titleClass: 'card-title-green',
-    subtitle: 'Project2 · delegation',
-    description: 'Button ids 0–4 index a color array; dblclick the parent, read e.target.id.',
-    code: 'const color = ["red", "blue", "orange", "green", "pink"];\nparent.addEventListener("dblclick", (e) => {\n  body.style.backgroundColor = color[e.target.id];\n});',
+    icon: '🧯', title: 'never As A Filter', titleClass: 'card-title-purple', subtitle: 'Drop Branches',
+    description: 'When a distributive conditional yields never for some members, those members vanish from the resulting union — the trick behind filtering types.',
+    code: 'type NonNull<T> = T extends null | undefined ? never : T;',
   },
   {
-    icon: '🔢',
-    title: 'Counter',
-    titleClass: 'card-title-amber',
-    subtitle: 'Project3 · guard',
-    description: 'Increment and decrement, with a guard so the count never goes below 0.',
-    code: 'Button2.addEventListener("click", () => {\n  if (count == 0) return;\n  count--;\n  h1.textContent = `Counter is: ${count}`;\n});',
+    icon: '🎯', title: 'Where It Shows Up', titleClass: 'card-title-amber', subtitle: 'Libraries & APIs',
+    description: 'Typed routers, form libraries, and ORMs use conditional and template types to give you exact autocomplete for strings and shapes.',
+    code: 'type Route = `/users/${string}`;',
+  },
+  {
+    icon: '🔜', title: 'Next: Guards & satisfies', titleClass: 'card-title-lime', subtitle: 'Day 13 Preview',
+    description: 'Tomorrow: assertion functions (asserts), custom type guards in depth, and the satisfies operator for validated-yet-inferred values.',
+    link: { href: '/day-013', label: 'Go to Day 13 →' },
   },
 ];
 
-const PROJECTS_B = [
+const RESOURCES = [
   {
-    icon: '➕',
-    title: 'Form Adder',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Project4 · submit',
-    description: 'preventDefault stops the reload; Number() converts inputs before adding.',
-    code: 'form.addEventListener("submit", (e) => {\n  e.preventDefault();\n  const n1 = Number(first.value);\n  const n2 = Number(second.value);\n  p.textContent = `Result is: ${n1 + n2}`;\n});',
+    icon: '📘', title: 'Conditional Types', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
+    description: 'The reference on conditional types and infer, plus the template literal types chapter — everything from today in detail.',
+    link: { href: TS_CONDITIONAL, label: 'Read Conditional Types →', external: true },
   },
   {
-    icon: '📝',
-    title: 'Live Text Counter',
-    titleClass: 'card-title-green',
-    subtitle: 'Project5 · input',
-    description: 'The input event fires per keystroke — trim, split, count chars & words.',
-    code: 'TextArea.addEventListener("input", () => {\n  const total = TextArea.value.trim();\n  const arr = total.split(" ");\n  TextCount.textContent = `TextCount: ${total.length}`;\n});',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type-Level Coding',
+    description: 'Write a conditional with infer and watch it resolve as you change the input. This is where advanced types finally feel concrete.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '😂',
-    title: 'Joke Generator',
-    titleClass: 'card-title-amber',
-    subtitle: 'data.js · homework',
-    description: 'Ten jokes in an array — reuse the random-pick pattern from Project 1.',
-    code: 'const index = Math.floor(Math.random() * jokes.length);\nel.textContent = jokes[index];',
-  },
-  {
-    icon: '🧠',
-    title: 'Why It Matters',
-    titleClass: 'card-title-pink',
-    subtitle: 'Events + DOM + data',
-    description: 'Every project is the same loop: select, listen, update from state or data.',
-    code: '// select → addEventListener → update DOM\n// this pattern powers every UI',
-  },
-];
-
-const THUNDER_RESOURCES = [
-  {
-    icon: '📓',
-    title: 'Lecture 12 — Notion',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Official Thunder Notes',
-    description: 'Events & Projects — delegation, bubbling, and 5 hands-on mini apps.',
-    link: { href: NOTION_URL, label: 'Open Notion notes →', external: true },
-  },
-  {
-    icon: '💻',
-    title: 'Thunder GitHub',
-    titleClass: 'card-title-purple',
-    subtitle: 'Lecture12 Code',
-    description: 'Eventsjs + Project1–5 + data.js — quote, color, counter, form, text counter.',
-    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
-  },
-  {
-    icon: '▶️',
-    title: 'Event Listeners',
-    titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: 'JavaScript Event Listeners by Web Dev Simplified — supplement for Lecture 12.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=XF1_MlZ5l6M',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    description: 'You won’t write these daily, but reading them unlocks powerful libraries and lets you build precise, self-documenting APIs.',
+    link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -183,18 +111,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -203,13 +122,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -217,135 +132,85 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day012() {
   const scaleRef = useRef(null);
-
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-011" className="day001-nav-btn day001-nav-home">
-            ← Day 11
-          </Link>
-          <p className="day001-datetime">Thunder Day 12 · 28 Jul 2026</p>
-          <Link to="/day-013" className="day001-nav-btn day001-nav-next">
-            Day 13 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-011" className="day001-nav-btn day001-nav-prev">← Day 11</Link>
+          <p className="day001-datetime">TypeScript Day 12 · 28 Jul 2026</p>
+          <Link to="/day-013" className="day001-nav-btn day001-nav-next">Day 13 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>JavaScript</span>
-              <span>Thunder</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Type-Level</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 12 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">EVENTS & PROJECTS</p>
+              <h1 className="day001-day-num">DAY 12 <span aria-hidden="true">🔀</span></h1>
+              <p className="day001-day-theme">CONDITIONAL & TEMPLATE LITERAL TYPES</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">JS · THUNDER</p>
+              <p className="day001-profile-role">TS · TYPESCRIPT</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '12%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '12%' }} /></div>
 
         <p className="day001-summary">
-          Day twelve — following{' '}
-          <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Thunder Lecture 12
-          </a>
-          . First the deeper event model — the event object, delegation via <code>e.target</code>,
-          bubbling vs capturing, and removing listeners — then five mini projects: a quote generator,
-          color switcher, counter, form adder, and live text counter in{' '}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Lecture12 on GitHub
-          </a>
-          . This is the day JavaScript stops being theory.
+          Day 12 is type-level programming. I learned <strong>conditional types</strong> (<code>T extends U ? X : Y</code>),
+          used <code>infer</code> to extract types, and saw how <strong>distributive</strong> conditionals build{' '}
+          <code>Exclude</code>/<code>Extract</code>. Then <strong>template literal types</strong> to construct string
+          types with <code>Capitalize</code> and pattern shapes like <code>{'`${number}px`'}</code>. I can now read
+          how <code>ReturnType</code> and <code>Awaited</code> are actually built.
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="🎧" title="EVENT MODEL" cards={EVENT_CONCEPTS} columns={3} />
-        <CardSection icon="🛠️" title="MINI PROJECTS — PART 1" cards={PROJECTS_A} columns={3} />
-        <CardSection icon="🚀" title="MINI PROJECTS — PART 2" cards={PROJECTS_B} columns={4} />
-        <CardSection icon="📚" title="THUNDER LECTURE 12" cards={THUNDER_RESOURCES} columns={3} />
+        <CardSection icon="🔀" title="CONDITIONAL TYPES" cards={CONDITIONAL} columns={3} />
+        <CardSection icon="🔤" title="TEMPLATE LITERAL TYPES" cards={TEMPLATE} columns={4} />
+        <CardSection icon="🛠️" title="APPLYING THEM" cards={APPLY} columns={4} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#JavaScript</span>
-          <span>#Events</span>
-          <span>#Projects</span>
-          <span>#Thunder</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#TypeLevel</span><span>#WebDev</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

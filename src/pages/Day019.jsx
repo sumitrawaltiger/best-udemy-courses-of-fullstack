@@ -2,180 +2,108 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const NOTION_URL =
-  'https://app.notion.com/p/Lecture-19-Closure-and-This-Keyword-38f43ac5cab9806e98f2f95649ffb759?source=copy_link';
-
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture19';
+const REFACTORING_GURU = 'https://refactoring.guru/design-patterns/typescript';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
+  { title: 'Design patterns', text: 'reusable solutions to common design problems — clearer, more flexible code' },
+  { title: 'Program to interfaces', text: 'depend on abstractions, not concrete classes — the core OOP principle' },
+  { title: 'Factory', text: 'a function/class that creates objects, hiding which concrete type is built' },
+  { title: 'Strategy', text: 'swap interchangeable behaviours behind one interface at runtime' },
+  { title: 'Singleton', text: 'guarantee one shared instance — a typed module often does this better' },
+  { title: 'Observer', text: 'notify many subscribers when state changes — events, done type-safely' },
+  { title: 'Adapter', text: 'wrap a mismatched API to fit the interface your code expects' },
+  { title: 'Dependency injection', text: 'pass collaborators in via constructor — testable, decoupled classes' },
+  { title: 'Composition > inheritance', text: 'combine small typed pieces instead of deep class hierarchies' },
+  { title: 'Generics + patterns', text: 'generics make patterns reusable across any type safely' },
+];
+
+const CREATIONAL = [
   {
-    title: 'globalThis',
-    text: 'window in the browser, global in Node — globalThis points to whichever it is',
+    icon: '🏭', title: 'Factory', titleClass: 'card-title-cyan', subtitle: 'Hide Construction',
+    description: 'A factory decides which concrete type to create behind one return type. Callers get the interface and never depend on a specific class.',
+    code: 'interface Logger { log(m: string): void }\nfunction makeLogger(env: string): Logger {\n  return env === "prod" ? new FileLogger() : new ConsoleLogger();\n}',
   },
   {
-    title: 'this in a function',
-    text: 'non-strict → global object; strict mode → undefined (both browser & Node)',
+    icon: '1️⃣', title: 'Singleton', titleClass: 'card-title-purple', subtitle: 'One Shared Instance',
+    description: 'Ensure a single instance of something like a config or cache. In TypeScript a module-level constant is often the cleanest, typed singleton.',
+    code: '// db.ts — module singleton\nexport const db = new Database();\n// every import shares the same db',
   },
   {
-    title: 'this in a method',
-    text: 'points to the object that invoked it — the thing before the dot',
-  },
-  {
-    title: 'call & apply',
-    text: 'borrow a function for any object — call takes args listed, apply takes an array',
-  },
-  {
-    title: 'bind',
-    text: 'returns a new function permanently tied to a given this and preset args',
-  },
-  {
-    title: 'Arrow functions & this',
-    text: 'arrows have no own this — they borrow it from the nearest outer scope',
-  },
-  {
-    title: 'setInterval fix',
-    text: 'use an arrow inside setInterval so this.timer still points to the object',
-  },
-  {
-    title: 'Closures',
-    text: 'an inner function remembers its outer variables even after the outer returns',
-  },
-  {
-    title: 'Counter pattern',
-    text: 'counter() returns increment, which keeps its own private count across calls',
-  },
-  {
-    title: 'Closures for privacy',
-    text: 'the bank pattern hides balance in a closure — only credit/debit can touch it',
+    icon: '🔌', title: 'Adapter', titleClass: 'card-title-amber', subtitle: 'Fit A Mismatched API',
+    description: 'Wrap a third-party or legacy API so it satisfies the interface your app expects — swap implementations without touching call sites.',
+    code: 'class StripeAdapter implements PaymentGateway {\n  pay(amount: number) { return stripe.charge(amount); }\n}',
   },
 ];
 
-const THIS_KEYWORD = [
+const BEHAVIOURAL = [
   {
-    icon: '🌍',
-    title: 'globalThis',
-    titleClass: 'card-title-cyan',
-    subtitle: 'first.js',
-    description: 'window (browser) or global (Node) — globalThis is the portable name.',
-    code: 'console.log(globalThis);\n// window in Chrome, global in Node',
+    icon: '🎛️', title: 'Strategy', titleClass: 'card-title-cyan', subtitle: 'Swap Behaviour',
+    description: 'Define a family of interchangeable behaviours behind one interface and pick at runtime — sorting orders, pricing rules, or auth methods.',
+    code: 'interface Sort<T> { run(a: T[]): T[] }\nfunction sortWith<T>(data: T[], s: Sort<T>) {\n  return s.run(data);\n}',
   },
   {
-    icon: '🎯',
-    title: 'this Binding Rules',
-    titleClass: 'card-title-green',
-    subtitle: 'Depends on the call',
-    description: 'In a method → the object; in a plain function → global (or undefined in strict).',
-    code: 'const user1 = {\n  name: "Rohit",\n  greet() { console.log(this); }\n};\nuser1.greet(); // this === user1',
+    icon: '📡', title: 'Observer', titleClass: 'card-title-blue', subtitle: 'Publish / Subscribe',
+    description: 'Let objects subscribe to changes and be notified when they happen — the pattern behind event emitters and reactive state, fully typed.',
+    code: 'type Listener<T> = (value: T) => void;\nclass Store<T> {\n  private ls: Listener<T>[] = [];\n  subscribe(l: Listener<T>) { this.ls.push(l); }\n}',
   },
   {
-    icon: '🔧',
-    title: 'call, apply & bind',
-    titleClass: 'card-title-amber',
-    subtitle: 'Set this yourself',
-    description: 'Borrow a function for any object; bind returns a reusable bound copy.',
-    code: 'increment.call(user1, 30, 300);\nincrement.apply(user1, [30, 300]);\nconst ref = increment.bind(user1, 30, 300);\nref();',
+    icon: '💉', title: 'Dependency Injection', titleClass: 'card-title-amber', subtitle: 'Pass Collaborators In',
+    description: 'Instead of a class creating its dependencies, accept them via the constructor typed as interfaces. Instantly testable — swap in mocks with no changes.',
+    code: 'class UserService {\n  constructor(private repo: UserRepo) {}\n  get(id: number) { return this.repo.find(id); }\n}',
   },
   {
-    icon: '🏹',
-    title: 'Arrow & this',
-    titleClass: 'card-title-pink',
-    subtitle: 'No own this',
-    description: 'Arrows borrow this from the outer scope — great inside setInterval.',
-    code: 'stopWatch: function () {\n  setInterval(() => {\n    this.timer++; // this = the object\n  }, 1000);\n}',
+    icon: '🧬', title: 'Composition > Inheritance', titleClass: 'card-title-lime', subtitle: 'Combine Small Pieces',
+    description: 'Favour composing small typed capabilities (via intersections or injected collaborators) over deep class trees — more flexible and easier to change.',
+    code: 'type Service = Loggable & Cacheable & Timestamped;',
   },
 ];
 
-const CLOSURES = [
+const PRINCIPLES = [
   {
-    icon: '🪆',
-    title: 'Lexical Scope',
-    titleClass: 'card-title-cyan',
-    subtitle: 'closures.js',
-    description: 'Inner functions see outer variables; lookups walk up the scope chain.',
-    code: 'let a = 10;\nfunction greet() {\n  let a = 90;\n  function meet() { console.log(a); }\n  meet(); // 90\n}',
+    icon: '🎯', title: 'Program To Interfaces', titleClass: 'card-title-cyan', subtitle: 'Depend On Abstractions',
+    description: 'The thread through every pattern: code against interfaces, not concrete classes. TypeScript’s structural typing makes this natural and safe.',
+    code: 'function notify(ch: Channel) { ch.send("hi"); }\n// any Channel implementation works',
   },
   {
-    icon: '🔒',
-    title: 'What Is a Closure',
-    titleClass: 'card-title-green',
-    subtitle: 'Remembered scope',
-    description: 'The returned function keeps its outer variables alive after counter() ends.',
-    code: 'function counter() {\n  let count = 0;\n  function increment() { count++; console.log(count); }\n  return increment;\n}\nconst c = counter();\nc(); // 1\nc(); // 2',
+    icon: '🧩', title: 'Generics Make Them Reusable', titleClass: 'card-title-purple', subtitle: 'One Pattern, Any Type',
+    description: 'Add a type parameter and a pattern works for every type — a generic Store<T>, Repository<T>, or Strategy<T> serves the whole app.',
+    code: 'interface Repository<T> {\n  find(id: number): Promise<T | null>;\n}',
   },
   {
-    icon: '🎁',
-    title: 'Higher-Order Functions',
-    titleClass: 'card-title-amber',
-    subtitle: 'hof.js',
-    description: 'A function that returns a function — call it in two steps or at once.',
-    code: 'function increment(amount) {\n  return function mul(num) {\n    console.log(num * amount);\n  };\n}\nincrement(30)(10); // 300',
+    icon: '⚖️', title: 'Use Them Sparingly', titleClass: 'card-title-amber', subtitle: 'Patterns Serve Code',
+    description: 'Patterns are tools, not goals. Reach for one when it removes real duplication or coupling — over-engineering hurts as much as no structure.',
+    code: '// simplest thing that works, then refactor to a pattern',
+  },
+  {
+    icon: '🔜', title: 'Next: Capstone Project', titleClass: 'card-title-lime', subtitle: 'Day 20 Preview',
+    description: 'Tomorrow ties Days 1–19 together: build a fully typed CLI task manager applying types, generics, validation, errors, and patterns.',
+    link: { href: '/day-020', label: 'Go to Day 20 →' },
   },
 ];
 
-const PRIVACY = [
+const RESOURCES = [
   {
-    icon: '🏦',
-    title: 'The Privacy Problem',
-    titleClass: 'card-title-cyan',
-    subtitle: 'example.js',
-    description: 'A plain object exposes balance — anyone can overwrite it with junk.',
-    code: 'user1.balance = "Rohit"; // oops, corrupted\nuser1.checkBalance(); // "Rohit"',
+    icon: '📘', title: 'Patterns in TypeScript', titleClass: 'card-title-cyan', subtitle: 'Refactoring Guru',
+    description: 'Clear, illustrated explanations and TypeScript examples of every classic design pattern — the best reference to keep as you build.',
+    link: { href: REFACTORING_GURU, label: 'Browse the patterns →', external: true },
   },
   {
-    icon: '🛡️',
-    title: 'Closures Hide Data',
-    titleClass: 'card-title-green',
-    subtitle: 'Private balance',
-    description: 'balance lives inside bank() — only the returned methods can reach it.',
-    code: 'function bank() {\n  let balance = 200;\n  return {\n    credit(a) { if (typeof a === "number") balance += a; },\n    checkBalance() { console.log(balance); }\n  };\n}',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Prototype A Pattern',
+    description: 'Implement a Strategy or Factory with interfaces and generics, then swap the concrete class to feel the decoupling that patterns provide.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '✅',
-    title: 'Controlled Access',
-    titleClass: 'card-title-amber',
-    subtitle: 'Only via methods',
-    description: 'No way to set balance directly — every change goes through validation.',
-    code: 'const user = bank();\nuser.credit(200);\nuser.checkBalance(); // 400\n// user.balance -> undefined (private!)',
-  },
-];
-
-const THUNDER_RESOURCES = [
-  {
-    icon: '📓',
-    title: 'Lecture 19 — Notion',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Official Thunder Notes',
-    description: 'Closures & the this keyword — scope, call/apply/bind, and data privacy.',
-    link: { href: NOTION_URL, label: 'Open Notion notes →', external: true },
-  },
-  {
-    icon: '💻',
-    title: 'Thunder GitHub',
-    titleClass: 'card-title-purple',
-    subtitle: 'Lecture19 Code',
-    description: 'first.js this, closures.js, hof.js, example.js bank privacy pattern.',
-    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
-  },
-  {
-    icon: '▶️',
-    title: 'Closures in 7 Min',
-    titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: 'Learn Closures In 7 Minutes by Web Dev Simplified — supplement for Lecture 19.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=3a0I8ICR1Vg',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    description: 'These OOP ideas recur in Java (Year 3) and shape how you structure React hooks and services — learn them once, reuse them everywhere.',
+    link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -183,18 +111,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -203,13 +122,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -217,136 +132,86 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day019() {
   const scaleRef = useRef(null);
-
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-018" className="day001-nav-btn day001-nav-home">
-            ← Day 18
-          </Link>
-          <p className="day001-datetime">Thunder Day 19 · 4 Aug 2026</p>
-          <Link to="/day-020" className="day001-nav-btn day001-nav-next">
-            Day 20 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-018" className="day001-nav-btn day001-nav-prev">← Day 18</Link>
+          <p className="day001-datetime">TypeScript Day 19 · 4 Aug 2026</p>
+          <Link to="/day-020" className="day001-nav-btn day001-nav-next">Day 20 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>JavaScript</span>
-              <span>Thunder</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Patterns</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 19 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">CLOSURES & THE this KEYWORD</p>
+              <h1 className="day001-day-num">DAY 19 <span aria-hidden="true">🏗️</span></h1>
+              <p className="day001-day-theme">DESIGN PATTERNS IN TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">JS · THUNDER</p>
+              <p className="day001-profile-role">TS · TYPESCRIPT</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '19%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '19%' }} /></div>
 
         <p className="day001-summary">
-          Day nineteen — following{' '}
-          <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Thunder Lecture 19
-          </a>
-          . Two of JavaScript&apos;s trickiest topics, demystified: how <code>this</code> is decided
-          by <em>how</em> a function is called (method, plain, strict, or arrow) and how to steer it
-          with call/apply/bind — plus closures, where an inner function remembers its outer scope, all
-          the way to hiding private data in{' '}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Lecture19 on GitHub
-          </a>
-          . Closures power the counter and the private-balance bank.
+          Day 19 structures code with classic <strong>design patterns</strong>, typed. I built a{' '}
+          <strong>Factory</strong> and <strong>Adapter</strong>, swapped behaviour with <strong>Strategy</strong>,
+          notified subscribers with <strong>Observer</strong>, and decoupled classes via{' '}
+          <strong>dependency injection</strong>. The thread through all of them: <em>program to interfaces</em>,
+          use <strong>generics</strong> to make patterns reusable, and prefer <strong>composition</strong> over deep
+          inheritance — applied only where they remove real coupling.
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="🎯" title="THE this KEYWORD" cards={THIS_KEYWORD} columns={4} />
-        <CardSection icon="🔒" title="CLOSURES & HOF" cards={CLOSURES} columns={3} />
-        <CardSection icon="🏦" title="CLOSURES FOR PRIVACY" cards={PRIVACY} columns={3} />
-        <CardSection icon="📚" title="THUNDER LECTURE 19" cards={THUNDER_RESOURCES} columns={3} />
+        <CardSection icon="🏭" title="CREATIONAL & STRUCTURAL" cards={CREATIONAL} columns={3} />
+        <CardSection icon="🎛️" title="BEHAVIOURAL & DECOUPLING" cards={BEHAVIOURAL} columns={4} />
+        <CardSection icon="🎯" title="PRINCIPLES" cards={PRINCIPLES} columns={4} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#JavaScript</span>
-          <span>#Closures</span>
-          <span>#thisKeyword</span>
-          <span>#Thunder</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#DesignPatterns</span><span>#WebDev</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

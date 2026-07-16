@@ -2,188 +2,108 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const NOTION_URL =
-  'https://app.notion.com/p/Lecture12-Even-and-Project-in-Javascript-38343ac5cab980aab918f7f4dc5c2fff?source=copy_link';
-
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture13';
+const TS_RELEASE = 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
+  { title: 'Custom type guards', text: 'a function returning `x is T` teaches TS how to narrow your own shapes' },
+  { title: 'Assertion functions', text: '`asserts x is T` throws if wrong and narrows for the rest of the scope' },
+  { title: 'asserts condition', text: '`function assert(c): asserts c` narrows after a runtime check — like invariant()' },
+  { title: 'satisfies operator', text: 'check a value against a type WITHOUT widening it — keep the precise inferred type' },
+  { title: 'as const', text: 'freeze a literal into its narrowest readonly type — great with satisfies' },
+  { title: 'Discriminated guards', text: 'combine a tag field with guards for bullet-proof union handling' },
+  { title: 'Guard reuse', text: 'name guards once (isUser, isError) and reuse across the codebase' },
+  { title: 'unknown at the boundary', text: 'accept unknown from JSON/APIs, then guard it into a safe type' },
+  { title: 'Guard vs assertion', text: 'a guard returns boolean to branch; an assertion throws to guarantee' },
+  { title: 'Never trust as blindly', text: 'guards & satisfies replace most risky `as` casts with checked narrowing' },
+];
+
+const GUARDS = [
   {
-    title: 'Reading input values',
-    text: 'input.value is always a string — .length, Number(), and trim() come in handy',
+    icon: '🛡️', title: 'Custom Type Guards', titleClass: 'card-title-cyan', subtitle: 'x is T',
+    description: 'A predicate function with an `is` return type tells TypeScript how to narrow a value. Reuse it anywhere you need to prove a shape at runtime.',
+    code: 'function isUser(v: unknown): v is { name: string } {\n  return typeof v === "object" && v !== null && "name" in v;\n}\nif (isUser(data)) data.name; // ✅ narrowed',
   },
   {
-    title: 'Password strength loop',
-    text: 'walk each char, flag capital/small/number/special, then check length ≥ 8',
+    icon: '🧯', title: 'Assertion Functions', titleClass: 'card-title-purple', subtitle: 'asserts x is T',
+    description: 'An assertion function throws when the check fails and narrows the value afterward — a typed invariant() that guarantees the shape from that point on.',
+    code: 'function assertUser(v: unknown): asserts v is { name: string } {\n  if (!isUser(v)) throw new Error("not a user");\n}\nassertUser(data);\ndata.name; // ✅ narrowed after the call',
   },
   {
-    title: 'setInterval',
-    text: 'run a callback every N ms — a live clock is new Date().toLocaleString() each second',
-  },
-  {
-    title: 'setTimeout vs setInterval',
-    text: 'setTimeout fires once; setInterval repeats until cleared',
-  },
-  {
-    title: 'Countdown maths',
-    text: 'target timestamp − Date.now(), then divide down into days/hours/mins/secs',
-  },
-  {
-    title: 'async / await + fetch',
-    text: 'await fetch(url), await response.text() — talk to a real AI text API',
-  },
-  {
-    title: 'Loading & disabled states',
-    text: 'show "AI is thinking…", disable the button, remove the bubble when the reply lands',
-  },
-  {
-    title: 'new Image() + onload',
-    text: 'preload in memory, swap it in only once onload fires — no broken images',
-  },
-  {
-    title: 'encodeURIComponent',
-    text: 'make spaces and symbols URL-safe before building an API endpoint',
-  },
-  {
-    title: 'Multi-field forms',
-    text: 'astrology app reads 5 fields, indexes arrays by day/month/year for a result',
+    icon: '❗', title: 'asserts condition', titleClass: 'card-title-amber', subtitle: 'Runtime Invariants',
+    description: 'A plain `asserts c` narrows based on a boolean condition — after assert(x !== null), TypeScript knows x is non-null for the rest of the block.',
+    code: 'function assert(c: unknown): asserts c {\n  if (!c) throw new Error("assertion failed");\n}\nassert(user);\nuser.name; // user is non-null here',
   },
 ];
 
-const PROJECTS_A = [
+const SATISFIES = [
   {
-    icon: '💘',
-    title: 'Love Calculator',
-    titleClass: 'card-title-cyan',
-    subtitle: 'project01',
-    description: 'Two names in — value.length feeds a formula, result mod 101 as a percent.',
-    code: 'const v1 = Boys.value.length;\nconst v2 = Girls.value.length;\nconst result = (v1 * v2 * v1 * v2) % 101;\nh2.textContent = `Result is: ${result}%`;',
+    icon: '✅', title: 'satisfies', titleClass: 'card-title-cyan', subtitle: 'Check Without Widening',
+    description: 'satisfies validates a value against a type but keeps the precise inferred type — you get error-checking AND exact autocomplete, unlike a plain annotation.',
+    code: 'const config = {\n  port: 3000,\n  host: "localhost",\n} satisfies Record<string, string | number>;\nconfig.port.toFixed(); // still number ✅',
   },
   {
-    icon: '🔒',
-    title: 'Password Strength',
-    titleClass: 'card-title-green',
-    subtitle: 'Project02 · input',
-    description: 'Scan each char for capital/small/number/special, require length ≥ 8.',
-    code: 'for (let i = 0; i < password.length; i++) {\n  const ch = password[i];\n  if (ch >= "A" && ch <= "Z") hasCapital = true;\n  // ...small, number, special\n}',
+    icon: '🧊', title: 'as const', titleClass: 'card-title-blue', subtitle: 'Narrowest Literal',
+    description: 'as const makes a value deeply readonly and infers the tightest literal types — the perfect partner for satisfies and for building typed constant maps.',
+    code: 'const ROUTES = ["/", "/about"] as const;\ntype Route = typeof ROUTES[number]; // "/" | "/about"',
   },
   {
-    icon: '🕐',
-    title: 'Digital Clock',
-    titleClass: 'card-title-amber',
-    subtitle: 'Project03 · setInterval',
-    description: 'Every second, paint the current time from a fresh Date object.',
-    code: 'setInterval(() => {\n  const time = new Date();\n  h1.textContent = time.toLocaleString();\n}, 1000);',
+    icon: '🆚', title: 'satisfies vs :', titleClass: 'card-title-amber', subtitle: 'Why It’s Better',
+    description: 'A `: Type` annotation widens the value to that type. satisfies checks conformance but leaves the value at its precise inferred type — best of both worlds.',
+    code: 'const a: Record<string, number> = { x: 1 }; // a.x is number, keys widened\nconst b = { x: 1 } satisfies Record<string, number>; // keys kept: "x"',
   },
   {
-    icon: '⏳',
-    title: 'Olympic Countdown',
-    titleClass: 'card-title-pink',
-    subtitle: 'Project04 · timestamps',
-    description: 'Subtract now from the 2028 timestamp, break it into d:h:m:s.',
-    code: 'const remaining = olympicTs - Date.now();\nconst days = Math.floor(remaining / (1000 * 60 * 60 * 24));\n// then hours, minutes, seconds',
+    icon: '🌐', title: 'unknown At Boundaries', titleClass: 'card-title-lime', subtitle: 'Guard External Data',
+    description: 'Type API and JSON input as unknown, then guard it into a real type. This is the safe pattern for everything that crosses your app’s edge.',
+    code: 'const raw: unknown = await res.json();\nif (isUser(raw)) use(raw);',
   },
 ];
 
-const PROJECTS_B = [
+const APPLY = [
   {
-    icon: '🤖',
-    title: 'AI Chatbot',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Projectchat · async/fetch',
-    description: 'Await a real text API, show a loading bubble, auto-scroll the chat.',
-    code: 'const url = "https://text.pollinations.ai/" + encodeURIComponent(message);\nconst response = await fetch(url);\nconst aiReply = await response.text();',
+    icon: '♻️', title: 'Reusable Guards', titleClass: 'card-title-cyan', subtitle: 'A Small Library',
+    description: 'Collect guards like isString, isUser, and isApiError in one module. They become the trusted gates through which untyped data becomes typed.',
+    code: 'export const isError = (e: unknown): e is Error =>\n  e instanceof Error;',
   },
   {
-    icon: '🎨',
-    title: 'AI Image Generator',
-    titleClass: 'card-title-green',
-    subtitle: 'Projectimg · new Image()',
-    description: 'An <img> src can be an AI URL — preload, then swap in onload.',
-    code: 'const img = new Image();\nimg.onload = () => imageArea.appendChild(img);\nimg.src = "https://image.pollinations.ai/prompt/" + encodeURIComponent(prompt);',
+    icon: '🎯', title: 'Retire Risky Casts', titleClass: 'card-title-purple', subtitle: 'Guards Over as',
+    description: 'Most `as` casts hide potential bugs. Replacing them with guards or satisfies keeps the checking on — safer code with the same convenience.',
+    code: '// risky:  const u = data as User;\n// safe:   if (isUser(data)) { const u = data; }',
   },
   {
-    icon: '🔮',
-    title: 'Astrology Insights',
-    titleClass: 'card-title-amber',
-    subtitle: 'projectastro · form',
-    description: 'Read 5 fields on submit, index arrays by day/month/year for a reading.',
-    code: 'const text = `Your Zodiac sign is ${zodiacSigns[month - 1]}.\n${compliments[day - 1]}. ${predictions[(name.length * surname.length) % 20]}`;',
+    icon: '🔗', title: 'Guards + Unions', titleClass: 'card-title-amber', subtitle: 'Bullet-Proof Handling',
+    description: 'Pair guards with discriminated unions to handle every variant of a value safely — and let never catch any case you forget.',
+    code: 'if (isCircle(shape)) return area(shape);',
   },
   {
-    icon: '🧩',
-    title: 'The Common Pattern',
-    titleClass: 'card-title-pink',
-    subtitle: 'Every project',
-    description: 'Select → listen → compute or fetch → render. Timers and APIs just extend it.',
-    code: '// select → addEventListener\n// → compute / await fetch\n// → update the DOM',
+    icon: '🔜', title: 'Next: Async TypeScript', titleClass: 'card-title-lime', subtitle: 'Day 14 Preview',
+    description: 'Tomorrow: Promises and async/await in TypeScript — typing async functions, awaiting values, and handling errors from async code.',
+    link: { href: '/day-014', label: 'Go to Day 14 →' },
   },
 ];
 
-const NEW_TOOLS = [
+const RESOURCES = [
   {
-    icon: '⏱️',
-    title: 'Timers',
-    titleClass: 'card-title-cyan',
-    subtitle: 'setInterval / setTimeout',
-    description: 'Repeat every N ms, or fire once after a delay — the heart of clocks & countdowns.',
-    code: 'setInterval(fn, 1000); // every second\nsetTimeout(fn, 3000);  // once, after 3s',
+    icon: '📘', title: 'satisfies (4.9)', titleClass: 'card-title-cyan', subtitle: 'Release Notes',
+    description: 'The satisfies operator’s introduction, with the exact examples that show why it beats a plain annotation for config objects.',
+    link: { href: TS_RELEASE, label: 'Read the 4.9 notes →', external: true },
   },
   {
-    icon: '🌐',
-    title: 'async / await + fetch',
-    titleClass: 'card-title-green',
-    subtitle: 'Real network calls',
-    description: 'await pauses for the response — .text() or .json() reads the body.',
-    code: 'const res = await fetch(url);\nconst data = await res.text();',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Guard It Live',
+    description: 'Write a guard, feed it unknown data, and watch the type narrow inside the if. Then compare `: Type` vs satisfies on the same object.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '🖼️',
-    title: 'Image Preloading',
-    titleClass: 'card-title-amber',
-    subtitle: 'new Image() + onload',
-    description: 'Build an img in memory, wait for onload, then attach — no flicker.',
-    code: 'const img = new Image();\nimg.onload = () => root.appendChild(img);\nimg.src = url;',
-  },
-];
-
-const THUNDER_RESOURCES = [
-  {
-    icon: '📓',
-    title: 'Lecture 13 — Notion',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Official Thunder Notes',
-    description: 'Projects Part 2 — timers, async fetch, AI chat & image, form-driven apps.',
-    link: { href: NOTION_URL, label: 'Open Notion notes →', external: true },
-  },
-  {
-    icon: '💻',
-    title: 'Thunder GitHub',
-    titleClass: 'card-title-purple',
-    subtitle: 'Lecture13 Code',
-    description: 'project01–04 + Projectchat, Projectimg, projectastro — 7 mini apps.',
-    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
-  },
-  {
-    icon: '▶️',
-    title: '5 Mini Projects',
-    titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: '5 Mini JavaScript Projects by Ania Kubów — supplement for Lecture 13.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=2ml4x0rO1PQ',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    description: 'Guards and satisfies are how real apps stay safe at the edges — API responses, forms, and config. You’ll use them all year.',
+    link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -191,18 +111,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -211,13 +122,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -225,135 +132,85 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day013() {
   const scaleRef = useRef(null);
-
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-012" className="day001-nav-btn day001-nav-home">
-            ← Day 12
-          </Link>
-          <p className="day001-datetime">Thunder Day 13 · 29 Jul 2026</p>
-          <Link to="/day-014" className="day001-nav-btn day001-nav-next">
-            Day 14 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-012" className="day001-nav-btn day001-nav-prev">← Day 12</Link>
+          <p className="day001-datetime">TypeScript Day 13 · 29 Jul 2026</p>
+          <Link to="/day-014" className="day001-nav-btn day001-nav-next">Day 14 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>JavaScript</span>
-              <span>Thunder</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Guards</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 13 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">JS PROJECTS · PART 2</p>
+              <h1 className="day001-day-num">DAY 13 <span aria-hidden="true">🛡️</span></h1>
+              <p className="day001-day-theme">GUARDS, ASSERTIONS & satisfies</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">JS · THUNDER</p>
+              <p className="day001-profile-role">TS · TYPESCRIPT</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '13%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '13%' }} /></div>
 
         <p className="day001-summary">
-          Day thirteen — following{' '}
-          <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Thunder Lecture 13
-          </a>
-          . Seven projects that pushed past static UIs: a love calculator, password-strength meter,
-          live clock, Olympic countdown, and — the big ones — an AI chatbot and image generator using
-          async/await and fetch, plus a form-driven astrology app in{' '}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Lecture13 on GitHub
-          </a>
-          . Timers and real APIs made JavaScript feel alive.
+          Day 13 makes untyped data safe. I wrote custom <strong>type guards</strong> (<code>x is T</code>) and{' '}
+          <strong>assertion functions</strong> (<code>asserts x is T</code>) to narrow my own shapes, and used{' '}
+          the <strong>satisfies</strong> operator with <code>as const</code> to validate values without losing their
+          precise inferred types. Together these replace most risky <code>as</code> casts — the safe way to turn{' '}
+          <code>unknown</code> API and JSON data into trustworthy types.
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="🛠️" title="PROJECTS — INPUTS & TIMERS" cards={PROJECTS_A} columns={4} />
-        <CardSection icon="🚀" title="PROJECTS — ASYNC & FORMS" cards={PROJECTS_B} columns={4} />
-        <CardSection icon="🧰" title="NEW TOOLS UNLOCKED" cards={NEW_TOOLS} columns={3} />
-        <CardSection icon="📚" title="THUNDER LECTURE 13" cards={THUNDER_RESOURCES} columns={3} />
+        <CardSection icon="🛡️" title="GUARDS & ASSERTIONS" cards={GUARDS} columns={3} />
+        <CardSection icon="✅" title="satisfies & as const" cards={SATISFIES} columns={4} />
+        <CardSection icon="🛠️" title="APPLYING THEM" cards={APPLY} columns={4} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#JavaScript</span>
-          <span>#Projects</span>
-          <span>#AsyncAwait</span>
-          <span>#Thunder</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#TypeGuards</span><span>#WebDev</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

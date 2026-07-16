@@ -2,180 +2,108 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const NOTION_URL =
-  'https://app.notion.com/p/Lecture-17-Prototype-classes-and-Eventloop-in-JS-38c43ac5cab9805f9b60eaf160aa057e?source=copy_link';
-
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture17';
+const TS_HANDBOOK = 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
+  { title: 'catch is unknown', text: 'anything can be thrown, so a caught value is unknown — narrow it before use' },
+  { title: 'instanceof Error', text: 'the standard first check: narrow to Error to read message and stack safely' },
+  { title: 'Custom error classes', text: 'extend Error for NotFoundError, ValidationError — typed, discriminable failures' },
+  { title: 'Discriminated errors', text: 'a `name`/`code` field lets you switch over error kinds exhaustively' },
+  { title: 'Result pattern', text: 'return { ok: true, value } | { ok: false, error } instead of throwing' },
+  { title: 'Errors as values', text: 'the Result approach makes failure part of the type — callers must handle it' },
+  { title: 'never for exhaustiveness', text: 'a never default guarantees every error case is handled' },
+  { title: 'Rethrow safely', text: 'narrow, add context, and rethrow — don’t swallow unknown errors' },
+  { title: 'Error cause', text: 'the `cause` option chains the original error for better diagnostics' },
+  { title: 'Boundaries catch', text: 'handle errors where you can act — logging, UI messages, retries' },
+];
+
+const CATCHING = [
   {
-    title: 'Prototype chain',
-    text: 'every object links to a __proto__ — JS looks up missing keys along that chain',
+    icon: '🎣', title: 'unknown In catch', titleClass: 'card-title-cyan', subtitle: 'Narrow First',
+    description: 'Under strict settings a caught value is unknown because JavaScript can throw anything. Check the type before reading properties.',
+    code: 'try { risky(); }\ncatch (e) {\n  if (e instanceof Error) console.log(e.message);\n  else console.log("unknown throw", e);\n}',
   },
   {
-    title: 'Manual __proto__',
-    text: 'obj2.__proto__ = obj1 makes obj2 borrow obj1.greet() even though it never defined it',
+    icon: '🏷️', title: 'Custom Error Classes', titleClass: 'card-title-purple', subtitle: 'Typed Failures',
+    description: 'Extend Error to model specific failures. Each class is a distinct type you can instanceof-check, carrying its own extra data.',
+    code: 'class NotFoundError extends Error {\n  constructor(public id: number) {\n    super(`Missing ${id}`);\n    this.name = "NotFoundError";\n  }\n}',
   },
   {
-    title: 'Built-ins are prototypes',
-    text: 'hasOwnProperty, toString, and array.push all come from the prototype',
-  },
-  {
-    title: 'Why classes',
-    text: 'stop copy-pasting the same object shape + method into user1, user2, user3',
-  },
-  {
-    title: 'class & constructor',
-    text: 'constructor runs on new, assigning this.name, this.age for each instance',
-  },
-  {
-    title: 'Shared methods',
-    text: 'greet() and increase() live once on Person.prototype, shared by all instances',
-  },
-  {
-    title: 'the new keyword',
-    text: 'new Person("Rohit", 20) builds a fresh object wired to the class prototype',
-  },
-  {
-    title: 'Inheritance',
-    text: 'class Customer extends Person reuses all of Person and adds more',
-  },
-  {
-    title: 'super()',
-    text: 'super(name, age) runs the parent constructor before the child adds its fields',
-  },
-  {
-    title: 'Event loop',
-    text: 'setInterval callbacks wait in a queue; the event loop runs them when the stack is clear',
+    icon: '🔀', title: 'Discriminated Errors', titleClass: 'card-title-amber', subtitle: 'Switch On Kind',
+    description: 'Give errors a literal name or code and switch over them. TypeScript narrows to the exact error type in each branch — like discriminated unions.',
+    code: 'if (err instanceof NotFoundError) return 404;\nif (err instanceof ValidationError) return 400;',
   },
 ];
 
-const PROTOTYPES = [
+const RESULT = [
   {
-    icon: '🔗',
-    title: 'The Prototype Chain',
-    titleClass: 'card-title-cyan',
-    subtitle: 'index.js',
-    description: 'Point one object at another — it inherits methods it never defined.',
-    code: 'const obj1 = { name: "Rohit", greet() { console.log(`Hello ${this.name}`); } };\nconst obj2 = { balance: 70 };\nobj2.__proto__ = obj1;\nobj2.greet(); // "Hello Rohit"',
+    icon: '📦', title: 'The Result Type', titleClass: 'card-title-cyan', subtitle: 'Errors As Values',
+    description: 'Instead of throwing, return a Result — a union of success and failure. The type forces every caller to handle the error path explicitly.',
+    code: 'type Result<T, E = Error> =\n  | { ok: true; value: T }\n  | { ok: false; error: E };',
   },
   {
-    icon: '🧰',
-    title: 'Built-ins Live There',
-    titleClass: 'card-title-green',
-    subtitle: 'Inherited methods',
-    description: 'hasOwnProperty, toString, array.push — all from the prototype.',
-    code: 'obj1.hasOwnProperty("name"); // true\nobj1.toString();\n[10, 20].push(30); // Array.prototype.push',
+    icon: '↩️', title: 'Return, Don’t Throw', titleClass: 'card-title-blue', subtitle: 'Explicit Failure',
+    description: 'A function that returns Result makes failure part of its signature. No hidden exceptions — the compiler reminds you to deal with error.',
+    code: 'function parseAge(s: string): Result<number> {\n  const n = Number(s);\n  return isNaN(n) ? { ok: false, error: new Error("NaN") }\n                  : { ok: true, value: n };\n}',
   },
   {
-    icon: '❓',
-    title: 'Why This Matters',
-    titleClass: 'card-title-amber',
-    subtitle: 'The problem',
-    description: 'Repeating the same shape + method per object is wasteful — classes fix it.',
-    code: '// user1, user2, user3 each repeat\n// increase() — same code, 3 copies',
+    icon: '🧭', title: 'Consume A Result', titleClass: 'card-title-amber', subtitle: 'Narrow On ok',
+    description: 'Check result.ok and TypeScript narrows to the right branch — value on success, error on failure. Clean, exhaustive handling every time.',
+    code: 'const r = parseAge(input);\nif (r.ok) use(r.value);\nelse show(r.error.message);',
+  },
+  {
+    icon: '✅', title: 'Exhaustiveness', titleClass: 'card-title-lime', subtitle: 'never Catches Gaps',
+    description: 'When switching over error kinds, assign the leftover to never in the default. Add a new error later and forget to handle it — the compiler stops you.',
+    code: 'default: { const _: never = err; throw err; }',
   },
 ];
 
-const CLASSES = [
+const PRACTICE = [
   {
-    icon: '🏛️',
-    title: 'class & constructor',
-    titleClass: 'card-title-cyan',
-    subtitle: 'second.js',
-    description: 'A blueprint — constructor sets each instance up on new.',
-    code: 'class Person {\n  constructor(name, age) {\n    this.name = name;\n    this.age = age;\n  }\n  greet() { console.log(`Hi ${this.name}`); }\n}',
+    icon: '🔗', title: 'Error cause', titleClass: 'card-title-cyan', subtitle: 'Chain Context',
+    description: 'The Error cause option preserves the original error while adding context — invaluable for tracing a failure through layers of your app.',
+    code: 'throw new Error("Load failed", { cause: err });',
   },
   {
-    icon: '✨',
-    title: 'the new keyword',
-    titleClass: 'card-title-green',
-    subtitle: 'Make instances',
-    description: 'new builds a fresh object wired to Person.prototype.',
-    code: 'const user1 = new Person("Rohit", 20);\nconst user2 = new Person("Sohan", 10);\nuser1.greet(); // Hi Rohit',
+    icon: '🚧', title: 'Handle At Boundaries', titleClass: 'card-title-purple', subtitle: 'Where You Can Act',
+    description: 'Let errors bubble to a boundary that can respond — a route handler, a UI error boundary, a retry. Don’t bury them in the middle of logic.',
+    code: '// route:\ntry { return await handler(); }\ncatch (e) { return toHttpError(e); }',
   },
   {
-    icon: '♻️',
-    title: 'Shared Methods',
-    titleClass: 'card-title-amber',
-    subtitle: 'classes.js',
-    description: 'increase() defined once, shared by every instance via the prototype.',
-    code: 'increase() { this.age++; }\n// one method, all users share it',
+    icon: '🔁', title: 'Rethrow Safely', titleClass: 'card-title-amber', subtitle: 'Add, Don’t Swallow',
+    description: 'If you can’t handle an error, narrow it, add context, and rethrow. Swallowing an unknown error hides the very bug you need to see.',
+    code: 'catch (e) {\n  if (!(e instanceof Error)) throw e;\n  throw new AppError("step 2 failed", { cause: e });\n}',
   },
   {
-    icon: '🧬',
-    title: 'extends & super',
-    titleClass: 'card-title-pink',
-    subtitle: 'third.js',
-    description: 'Customer inherits Person, then super() runs the parent constructor.',
-    code: 'class Customer extends Person {\n  constructor(name, age, balance, city) {\n    super(name, age);\n    this.balance = balance;\n  }\n}',
+    icon: '🔜', title: 'Next: TypeScript + Node', titleClass: 'card-title-lime', subtitle: 'Day 18 Preview',
+    description: 'Tomorrow: TypeScript with Node.js — @types/node, typed scripts, reading env and files, and a small typed CLI.',
+    link: { href: '/day-018', label: 'Go to Day 18 →' },
   },
 ];
 
-const EVENT_LOOP = [
+const RESOURCES = [
   {
-    icon: '🧵',
-    title: 'Single-Threaded JS',
-    titleClass: 'card-title-cyan',
-    subtitle: 'One call stack',
-    description: 'JS does one thing at a time — async work is offloaded, not parallel.',
-    code: 'console.log("1");\nsetTimeout(() => console.log("2"), 0);\nconsole.log("3");\n// Output: 1, 3, 2',
+    icon: '📘', title: 'Narrowing', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
+    description: 'The narrowing chapter underpins error handling — instanceof, discriminated unions, and exhaustiveness with never all apply directly to errors.',
+    link: { href: TS_HANDBOOK, label: 'Read Narrowing →', external: true },
   },
   {
-    icon: '🔁',
-    title: 'setInterval & the Queue',
-    titleClass: 'card-title-green',
-    subtitle: 'project01',
-    description: 'The timer callback waits in a queue; the loop runs it when the stack is free.',
-    code: 'setInterval(() => {\n  console.log("Hello");\n}, 2000);',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Model A Result',
+    description: 'Write the Result type and a function that returns it, then consume it. See how failure becomes something the compiler makes you handle.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '⚙️',
-    title: 'The Event Loop',
-    titleClass: 'card-title-amber',
-    subtitle: 'Stack → queue',
-    description: 'When the call stack empties, the loop pushes the next queued callback onto it.',
-    code: '// stack runs sync code\n// timers/promises wait in queues\n// event loop feeds them back in',
-  },
-];
-
-const THUNDER_RESOURCES = [
-  {
-    icon: '📓',
-    title: 'Lecture 17 — Notion',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Official Thunder Notes',
-    description: 'Prototypes, classes & event loop — inheritance and async execution.',
-    link: { href: NOTION_URL, label: 'Open Notion notes →', external: true },
-  },
-  {
-    icon: '💻',
-    title: 'Thunder GitHub',
-    titleClass: 'card-title-purple',
-    subtitle: 'Lecture17 Code',
-    description: 'index.js proto, second/classes.js classes, third.js extends, project01 loop.',
-    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
-  },
-  {
-    icon: '▶️',
-    title: 'The Event Loop',
-    titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: 'What the heck is the event loop anyway? by Philip Roberts — must-watch for Lecture 17.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=8aGhZQkoFbQ',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    description: 'Solid error handling keeps React screens and Node services resilient. These patterns carry into Python and Java in later years too.',
+    link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -183,18 +111,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -203,13 +122,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -217,136 +132,85 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day017() {
   const scaleRef = useRef(null);
-
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-016" className="day001-nav-btn day001-nav-home">
-            ← Day 16
-          </Link>
-          <p className="day001-datetime">Thunder Day 17 · 2 Aug 2026</p>
-          <Link to="/day-018" className="day001-nav-btn day001-nav-next">
-            Day 18 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-016" className="day001-nav-btn day001-nav-prev">← Day 16</Link>
+          <p className="day001-datetime">TypeScript Day 17 · 2 Aug 2026</p>
+          <Link to="/day-018" className="day001-nav-btn day001-nav-next">Day 18 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>JavaScript</span>
-              <span>Thunder</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Errors</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 17 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">PROTOTYPES, CLASSES & EVENT LOOP</p>
+              <h1 className="day001-day-num">DAY 17 <span aria-hidden="true">🎣</span></h1>
+              <p className="day001-day-theme">ERROR HANDLING PATTERNS</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">JS · THUNDER</p>
+              <p className="day001-profile-role">TS · TYPESCRIPT</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '17%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '17%' }} /></div>
 
         <p className="day001-summary">
-          Day seventeen — following{' '}
-          <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Thunder Lecture 17
-          </a>
-          . The OOP core of JavaScript: every object inherits through a prototype chain, and{' '}
-          <code>class</code> is clean syntax over it — constructor, shared methods, and inheritance
-          with <code>extends</code>/<code>super</code>. Then the event loop showed how setInterval
-          callbacks get queued and run, traced through{' '}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Lecture17 on GitHub
-          </a>
-          . Prototypes explain why JS objects just work.
+          Day 17 makes failure type-safe. Since a caught error is <code>unknown</code>, I narrowed with{' '}
+          <code>instanceof</code> and built <strong>custom error classes</strong> to model specific failures. Then
+          the <strong>Result pattern</strong> — returning <code>{'{ ok, value | error }'}</code> instead of
+          throwing — makes errors part of the type so callers must handle them. Plus <code>cause</code> for
+          context and <code>never</code> for exhaustive handling. Robust, predictable failure.
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="🔗" title="PROTOTYPES" cards={PROTOTYPES} columns={3} />
-        <CardSection icon="🏛️" title="CLASSES & INHERITANCE" cards={CLASSES} columns={4} />
-        <CardSection icon="🔁" title="THE EVENT LOOP" cards={EVENT_LOOP} columns={3} />
-        <CardSection icon="📚" title="THUNDER LECTURE 17" cards={THUNDER_RESOURCES} columns={3} />
+        <CardSection icon="🎣" title="CATCHING & TYPING ERRORS" cards={CATCHING} columns={3} />
+        <CardSection icon="📦" title="THE RESULT PATTERN" cards={RESULT} columns={4} />
+        <CardSection icon="🧭" title="IN PRACTICE" cards={PRACTICE} columns={4} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#JavaScript</span>
-          <span>#Prototypes</span>
-          <span>#Classes</span>
-          <span>#EventLoop</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#ErrorHandling</span><span>#WebDev</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

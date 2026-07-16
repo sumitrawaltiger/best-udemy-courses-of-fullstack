@@ -2,180 +2,108 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const NOTION_URL =
-  'https://app.notion.com/p/Lecture16-Memory-management-and-How-JS-code-works-38b43ac5cab980af918bf13d86ec5d6c?source=copy_link';
-
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/02Javascript/Lecture16';
+const ZOD = 'https://zod.dev';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
+  { title: 'Types are compile-time', text: 'annotations vanish at runtime — they cannot check real data by themselves' },
+  { title: 'Runtime validation', text: 'a schema library checks actual values and throws or returns errors on bad data' },
+  { title: 'Zod schemas', text: '`z.object({...})` describes a shape you can both validate and infer a type from' },
+  { title: 'z.infer', text: 'derive the static TypeScript type straight from a schema — one source of truth' },
+  { title: 'parse vs safeParse', text: 'parse throws on failure; safeParse returns a typed success/error result' },
+  { title: 'Validate at the boundary', text: 'run schemas on API responses, form input, and env vars — the app’s edges' },
+  { title: 'Rich rules', text: 'min, max, email, url, regex, refine — validation and typing together' },
+  { title: 'Transforms', text: 'schemas can coerce and reshape data (string → Date) as they validate' },
+  { title: 'Composability', text: 'build big schemas from small ones, just like types' },
+  { title: 'Types + reality agree', text: 'validation guarantees the data actually matches the inferred type' },
+];
+
+const WHY = [
   {
-    title: 'Execution context',
-    text: 'the box JS runs your code in — it has a memory (variable) part and a code part',
+    icon: '⚠️', title: 'The Trust Gap', titleClass: 'card-title-cyan', subtitle: 'Types Don’t Run',
+    description: 'getJSON<User> tells the compiler what to expect, but the server could send anything. Since types are erased, bad data slips through until it crashes.',
+    code: 'const user = await getJSON<User>("/api/user");\n// if the server lies, user.name may be undefined',
   },
   {
-    title: 'Two phases',
-    text: 'phase 1 allocates memory (hoisting); phase 2 executes line by line',
+    icon: '🛡️', title: 'Runtime Validation', titleClass: 'card-title-purple', subtitle: 'Check Real Values',
+    description: 'A schema validates actual data at runtime and reports exactly what’s wrong. Pair it with types and your app never processes malformed input.',
+    code: 'const result = UserSchema.safeParse(raw);\nif (!result.success) handle(result.error);',
   },
   {
-    title: 'var hoisting',
-    text: 'var is hoisted as undefined — logging it before assignment prints undefined, not an error',
-  },
-  {
-    title: 'Function hoisting',
-    text: 'function declarations are fully hoisted — you can call addNumber before it appears',
-  },
-  {
-    title: 'Temporal Dead Zone',
-    text: 'let and const are hoisted too, but stay <uninitialized> until their line runs',
-  },
-  {
-    title: 'let/const before init',
-    text: 'touching them in the TDZ throws a ReferenceError — unlike var',
-  },
-  {
-    title: 'Function expressions',
-    text: 'const addNumber = function(){} — the const is in the TDZ, so no early call',
-  },
-  {
-    title: 'Execution fills memory',
-    text: 'phase 2 replaces the placeholders — a = 10, b = 20, sum1 = 30',
-  },
-  {
-    title: 'Function scope',
-    text: 'var declared inside a function does not exist outside it',
-  },
-  {
-    title: 'Call stack',
-    text: 'each call gets its own execution context, pushed and popped as functions run',
+    icon: '🔗', title: 'One Source Of Truth', titleClass: 'card-title-amber', subtitle: 'z.infer',
+    description: 'Define the schema once; derive the TypeScript type from it with z.infer. The static type and the runtime check can never drift apart.',
+    code: 'const UserSchema = z.object({ id: z.number(), name: z.string() });\ntype User = z.infer<typeof UserSchema>;',
   },
 ];
 
-const EXECUTION = [
+const ZOD_CARDS = [
   {
-    icon: '📦',
-    title: 'Execution Context',
-    titleClass: 'card-title-cyan',
-    subtitle: 'first.js',
-    description: 'Every program runs inside a context with two parts: memory and code.',
-    code: '// Global Execution Context\n// ├─ Memory (variables + functions)\n// └─ Code (runs line by line)',
+    icon: '🧱', title: 'Define A Schema', titleClass: 'card-title-cyan', subtitle: 'z.object',
+    description: 'Describe a shape with z.object and field schemas. It reads like an interface but is a real value you can run against data.',
+    code: 'import { z } from "zod";\nconst Post = z.object({\n  id: z.number(),\n  title: z.string().min(1),\n});',
   },
   {
-    icon: '1️⃣',
-    title: 'Phase 1 — Memory',
-    titleClass: 'card-title-green',
-    subtitle: 'Allocation / hoisting',
-    description: 'JS scans first: var → undefined, functions → full, let/const → TDZ.',
-    code: '// a = <uninitialized> (TDZ)\n// b = <uninitialized> (TDZ)\n// addNumber = <uninitialized> (TDZ)',
+    icon: '🎯', title: 'parse vs safeParse', titleClass: 'card-title-blue', subtitle: 'Throw or Return',
+    description: 'parse throws a detailed error on invalid data; safeParse returns { success, data | error }. Use safeParse to handle failures without try/catch.',
+    code: 'const ok = Post.parse(raw);          // throws if invalid\nconst r = Post.safeParse(raw);       // { success, data? }',
   },
   {
-    icon: '2️⃣',
-    title: 'Phase 2 — Execution',
-    titleClass: 'card-title-amber',
-    subtitle: 'Line by line',
-    description: 'Now values are assigned and functions actually run.',
-    code: 'let a = 10;\nconst b = 20;\nconst sum1 = addNumber(a, b);\nconsole.log(sum1); // 30',
+    icon: '✨', title: 'Rich Rules', titleClass: 'card-title-amber', subtitle: 'email · min · regex',
+    description: 'Schemas carry validation rules — email, url, min/max, regex, refine — so a valid parse means the data is genuinely correct, not just the right type.',
+    code: 'const Signup = z.object({\n  email: z.string().email(),\n  age: z.number().min(18),\n});',
+  },
+  {
+    icon: '🔄', title: 'Transforms', titleClass: 'card-title-lime', subtitle: 'Validate + Reshape',
+    description: 'A schema can coerce and transform as it validates — turn an ISO string into a Date, trim whitespace, or map a DTO into your model in one step.',
+    code: 'const WithDate = z.object({\n  createdAt: z.string().transform((s) => new Date(s)),\n});',
   },
 ];
 
-const HOISTING = [
+const APPLY = [
   {
-    icon: '🎈',
-    title: 'var Hoisting',
-    titleClass: 'card-title-cyan',
-    subtitle: 'index.js',
-    description: 'var is hoisted as undefined — reading it early is not an error.',
-    code: 'console.log(a, b); // undefined undefined\nvar a = 10;\nvar b = 20;',
+    icon: '🌐', title: 'Validate API Data', titleClass: 'card-title-cyan', subtitle: 'The Real Win',
+    description: 'Wrap getJSON to parse the response with a schema. Now the type isn’t a hopeful annotation — it’s guaranteed by a runtime check.',
+    code: 'async function get<T>(url: string, schema: z.ZodType<T>) {\n  const raw = await (await fetch(url)).json();\n  return schema.parse(raw);\n}',
   },
   {
-    icon: '🏗️',
-    title: 'Function Hoisting',
-    titleClass: 'card-title-green',
-    subtitle: 'Call before define',
-    description: 'Function declarations are fully hoisted — callable before their line.',
-    code: 'const sum1 = addNumber(a, b); // works!\nfunction addNumber(n1, n2) {\n  return n1 + n2;\n}',
+    icon: '📝', title: 'Validate Forms', titleClass: 'card-title-purple', subtitle: 'Input You Don’t Control',
+    description: 'Form input is untrusted too. The same schema validates it and gives field-level error messages — reused across client and server.',
+    code: 'const r = Signup.safeParse(formData);',
   },
   {
-    icon: '⛔',
-    title: 'Temporal Dead Zone',
-    titleClass: 'card-title-amber',
-    subtitle: 'let & const',
-    description: 'Hoisted but uninitialized — using them early throws a ReferenceError.',
-    code: '// console.log(x); // ReferenceError\nlet x = 10; // TDZ ends here',
+    icon: '🧬', title: 'Compose Schemas', titleClass: 'card-title-amber', subtitle: 'Small → Big',
+    description: 'Extend and merge schemas just like types — .extend, .merge, .partial, .pick. Your validation stays as modular as your type definitions.',
+    code: 'const Admin = User.extend({ role: z.literal("admin") });',
   },
   {
-    icon: '🧬',
-    title: 'Function Expressions',
-    titleClass: 'card-title-pink',
-    subtitle: 'const = function',
-    description: 'The const holding the function is in the TDZ — no early call.',
-    code: 'const addNumber = function (n1, n2) {\n  return n1 + n2;\n};',
+    icon: '🔜', title: 'Next: Error Handling', titleClass: 'card-title-lime', subtitle: 'Day 17 Preview',
+    description: 'Tomorrow: robust error handling in TypeScript — custom error classes, the unknown catch, and a typed Result pattern.',
+    link: { href: '/day-017', label: 'Go to Day 17 →' },
   },
 ];
 
-const SCOPE_STACK = [
+const RESOURCES = [
   {
-    icon: '🔒',
-    title: 'Function Scope',
-    titleClass: 'card-title-cyan',
-    subtitle: 'third.js',
-    description: 'A var inside a function lives and dies there — invisible outside.',
-    code: 'function greet() {\n  var a = 20;\n}\ngreet();\n// console.log(a); // ReferenceError',
+    icon: '📘', title: 'Zod Docs', titleClass: 'card-title-cyan', subtitle: 'Schema Validation',
+    description: 'The official Zod documentation — schemas, refinements, transforms, and the z.infer type helper. The de-facto standard for TS validation.',
+    link: { href: ZOD, label: 'Open zod.dev →', external: true },
   },
   {
-    icon: '📚',
-    title: 'The Call Stack',
-    titleClass: 'card-title-green',
-    subtitle: 'Push & pop',
-    description: 'Each call gets its own context, pushed on call, popped on return.',
-    code: 'function a() { b(); }\nfunction b() { console.log("in b"); }\na(); // stack: a → b → (pop) → (pop)',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type ↔ Schema',
+    description: 'Model the same shape as an interface and a schema, then use z.infer to prove they match. Feel how a schema is both a type and a check.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '💥',
-    title: 'Stack Overflow',
-    titleClass: 'card-title-amber',
-    subtitle: 'Runaway recursion',
-    description: 'A function that never stops calling itself fills the stack and crashes.',
-    code: 'function loop() {\n  return loop(); // no base case!\n}\n// loop(); // Maximum call stack exceeded',
-  },
-];
-
-const THUNDER_RESOURCES = [
-  {
-    icon: '📓',
-    title: 'Lecture 16 — Notion',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Official Thunder Notes',
-    description: 'Memory & how JS runs — execution context, hoisting, TDZ, scope.',
-    link: { href: NOTION_URL, label: 'Open Notion notes →', external: true },
-  },
-  {
-    icon: '💻',
-    title: 'Thunder GitHub',
-    titleClass: 'card-title-purple',
-    subtitle: 'Lecture16 Code',
-    description: 'first.js (TDZ), index.js (var + fn hoisting), third.js (scope).',
-    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
-  },
-  {
-    icon: '▶️',
-    title: 'JavaScript Hoisting',
-    titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: 'Learn JavaScript Hoisting by Web Dev Simplified — supplement for Lecture 16.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=EvfRXyKa_GI',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    description: 'Validation guards the edges of every app — API, forms, env. You’ll pair Zod with typed fetch and React forms throughout the year.',
+    link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -183,18 +111,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -203,13 +122,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -217,136 +132,85 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day016() {
   const scaleRef = useRef(null);
-
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-015" className="day001-nav-btn day001-nav-home">
-            ← Day 15
-          </Link>
-          <p className="day001-datetime">Thunder Day 16 · 1 Aug 2026</p>
-          <Link to="/day-017" className="day001-nav-btn day001-nav-next">
-            Day 17 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-015" className="day001-nav-btn day001-nav-prev">← Day 15</Link>
+          <p className="day001-datetime">TypeScript Day 16 · 1 Aug 2026</p>
+          <Link to="/day-017" className="day001-nav-btn day001-nav-next">Day 17 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>JavaScript</span>
-              <span>Thunder</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Validation</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 16 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">MEMORY & HOW JS RUNS</p>
+              <h1 className="day001-day-num">DAY 16 <span aria-hidden="true">🛡️</span></h1>
+              <p className="day001-day-theme">RUNTIME VALIDATION WITH ZOD</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">JS · THUNDER</p>
+              <p className="day001-profile-role">TS · TYPESCRIPT</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '16%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '16%' }} /></div>
 
         <p className="day001-summary">
-          Day sixteen — following{' '}
-          <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Thunder Lecture 16
-          </a>
-          . Under the hood: JS runs every program through an execution context in two phases — memory
-          allocation then execution. That explains hoisting, why <code>var</code> logs undefined
-          before its line, why <code>let</code>/<code>const</code> sit in the Temporal Dead Zone, and
-          how function scope and the call stack work, traced through{' '}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Lecture16 on GitHub
-          </a>
-          . The mental model that makes JS stop being magic.
+          Day 16 closes the trust gap. Because types are erased at runtime, I learned to <strong>validate</strong>{' '}
+          real data with <strong>Zod</strong> schemas — <code>z.object</code> to describe a shape,{' '}
+          <code>z.infer</code> to derive the type from it (one source of truth), and <code>parse</code>/
+          <code>safeParse</code> to check values. Validating at the app’s <strong>boundaries</strong> — APIs,
+          forms, env — means the inferred type and reality finally always agree.
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="⚙️" title="EXECUTION CONTEXT" cards={EXECUTION} columns={3} />
-        <CardSection icon="🎈" title="HOISTING & TDZ" cards={HOISTING} columns={4} />
-        <CardSection icon="📚" title="SCOPE & CALL STACK" cards={SCOPE_STACK} columns={3} />
-        <CardSection icon="📚" title="THUNDER LECTURE 16" cards={THUNDER_RESOURCES} columns={3} />
+        <CardSection icon="⚠️" title="WHY VALIDATE" cards={WHY} columns={3} />
+        <CardSection icon="🧱" title="ZOD SCHEMAS" cards={ZOD_CARDS} columns={4} />
+        <CardSection icon="🛠️" title="APPLYING IT" cards={APPLY} columns={4} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#JavaScript</span>
-          <span>#Hoisting</span>
-          <span>#ExecutionContext</span>
-          <span>#Thunder</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Zod</span><span>#WebDev</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>
