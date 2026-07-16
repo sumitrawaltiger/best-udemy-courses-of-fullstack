@@ -2,151 +2,108 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day10';
-const DOCS_URL = 'https://jwt.io/introduction';
+const TANSTACK = 'https://tanstack.com/query/latest/docs/framework/react/overview';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
+  { title: 'The loading pattern', text: 'model data, loading, and error as one typed state — a discriminated union' },
+  { title: 'Fetch in effect', text: 'load on mount with useEffect, guarding against unmount' },
+  { title: 'Typed responses', text: 'reuse getJSON<T> so fetched data is typed from the first line' },
+  { title: 'Validate at the edge', text: 'parse the response with a Zod schema before trusting it' },
+  { title: 'Race conditions', text: 'ignore stale responses when the request changes mid-flight' },
+  { title: 'TanStack Query', text: 'the standard data library — caching, refetch, and great TS support' },
+  { title: 'useQuery<T>', text: 'returns typed { data, isLoading, error } with caching built in' },
+  { title: 'Query keys', text: 'a typed array key identifies and caches each query' },
+  { title: 'Mutations', text: 'useMutation types the input and result of writes' },
+  { title: 'Less code, safer', text: 'a query library removes most manual state and bugs' },
+];
+
+const MANUAL = [
   {
-    title: 'Authentication',
-    text: 'proving who a user is — the front door of every secure API',
+    icon: '🎫', title: 'One State Union', titleClass: 'card-title-cyan', subtitle: 'No Impossible States',
+    description: 'Model the request as a discriminated union rather than separate booleans. loading, error, and data can’t contradict each other — the compiler ensures it.',
+    code: 'type Req<T> =\n  | { status: "loading" }\n  | { status: "error"; msg: string }\n  | { status: "success"; data: T };',
   },
   {
-    title: 'Never store plaintext',
-    text: 'passwords are hashed, never saved as-is',
+    icon: '🌀', title: 'Fetch In useEffect', titleClass: 'card-title-purple', subtitle: 'Load On Mount',
+    description: 'Kick off the request in an effect, updating the union as it resolves. Reuse the typed getJSON<T> wrapper so data is safe end to end.',
+    code: 'useEffect(() => {\n  getJSON<User>("/api/me")\n    .then((data) => set({ status: "success", data }))\n    .catch((e) => set({ status: "error", msg: String(e) }));\n}, []);',
   },
   {
-    title: 'bcrypt',
-    text: 'bcrypt.hash is one-way and salted; bcrypt.compare verifies',
-  },
-  {
-    title: 'Register',
-    text: 'hash the password, then save the user',
-  },
-  {
-    title: 'Login',
-    text: 'find the user, compare the password hash',
-  },
-  {
-    title: 'JWT',
-    text: 'a signed token carrying the user id — no server-side session',
-  },
-  {
-    title: 'jwt.sign',
-    text: 'issue a token with a secret and an expiry',
-  },
-  {
-    title: 'jwt.verify',
-    text: 'check the signature on every protected request',
-  },
-  {
-    title: 'Stateless auth',
-    text: 'the token IS the session — HTTP remembers nothing',
-  },
-  {
-    title: 'Secrets in .env',
-    text: 'keep JWT_SECRET out of code with dotenv',
+    icon: '🏁', title: 'Race Conditions', titleClass: 'card-title-amber', subtitle: 'Ignore Stale',
+    description: 'If the URL changes before a response arrives, an old result can overwrite a new one. A cleanup flag (or AbortController) discards stale responses.',
+    code: 'let active = true;\n// on resolve: if (active) set(...)\nreturn () => { active = false; };',
   },
 ];
 
-const PASSWORDS = [
+const RENDER = [
   {
-    icon: '🚫',
-    title: 'Never Store Plaintext',
-    titleClass: 'card-title-cyan',
-    subtitle: 'hash it',
-    description: 'A leaked database must never reveal real passwords — hash before saving.',
-    code: '// ❌ never\nuser.password = req.body.password;\n// ✅ hash first\nuser.password = await bcrypt.hash(req.body.password, 10);',
+    icon: '🖼️', title: 'Render Each State', titleClass: 'card-title-cyan', subtitle: 'Exhaustive UI',
+    description: 'Switch over the status union in render so every state has a UI — spinner, error, or data. TypeScript narrows data to be present only in success.',
+    code: 'if (req.status === "loading") return <Spinner />;\nif (req.status === "error") return <Err msg={req.msg} />;\nreturn <Profile user={req.data} />;',
   },
   {
-    icon: '🧂',
-    title: 'bcrypt',
-    titleClass: 'card-title-green',
-    subtitle: 'salted + one-way',
-    description: 'bcrypt adds a salt and is one-way; you can only compare, not reverse.',
-    code: 'const hash = await bcrypt.hash(password, 10);\nconst ok = await bcrypt.compare(password, hash); // true/false',
+    icon: '🛡️', title: 'Validate The Response', titleClass: 'card-title-blue', subtitle: 'Zod At The Edge',
+    description: 'Since the server can lie, parse the response with a schema before storing it. Now the success data is guaranteed to match the type.',
+    code: 'const data = UserSchema.parse(await res.json());',
   },
   {
-    icon: '🔑',
-    title: 'Register & Login',
-    titleClass: 'card-title-amber',
-    subtitle: 'the two flows',
-    description: 'Register hashes and saves; login finds the user and compares.',
-    code: '// login\nconst user = await User.findOne({ email });\nif (!user || !(await bcrypt.compare(password, user.password)))\n  return res.status(401).json({ error: "Invalid credentials" });',
+    icon: '🧹', title: 'Manual Gets Tedious', titleClass: 'card-title-amber', subtitle: 'Why A Library',
+    description: 'Caching, refetching, retries, and dedup are a lot to hand-roll. That repetition is exactly what a data library solves — enter TanStack Query.',
+    code: '// caching + refetch + retry by hand = a lot',
+  },
+  {
+    icon: '⚡', title: 'useQuery<T>', titleClass: 'card-title-lime', subtitle: 'TanStack Query',
+    description: 'useQuery gives typed data plus isLoading and error, with caching and background refetch built in — the data hook from Day 28, done right.',
+    code: 'const { data, isLoading } = useQuery<User>({\n  queryKey: ["me"],\n  queryFn: () => getJSON<User>("/api/me"),\n});',
   },
 ];
 
-const JWT = [
+const QUERY = [
   {
-    icon: '🎫',
-    title: 'What is a JWT',
-    titleClass: 'card-title-cyan',
-    subtitle: 'header.payload.signature',
-    description: 'A signed, base64 token — the payload holds claims like the user id.',
-    code: '// xxxxx.yyyyy.zzzzz\n// header  . payload . signature\n// payload: { id: "665f...", iat, exp }',
+    icon: '🔑', title: 'Query Keys', titleClass: 'card-title-cyan', subtitle: 'Identify & Cache',
+    description: 'A typed array key uniquely identifies a query for caching and invalidation — ["user", id] caches per user and refetches when id changes.',
+    code: 'useQuery({ queryKey: ["user", id], queryFn: () => getUser(id) });',
   },
   {
-    icon: '✍️',
-    title: 'Sign a Token',
-    titleClass: 'card-title-green',
-    subtitle: 'jwt.sign',
-    description: 'On login, sign a token with the secret and an expiry.',
-    code: 'const token = jwt.sign(\n  { id: user._id },\n  process.env.JWT_SECRET,\n  { expiresIn: "1d" }\n);',
+    icon: '✍️', title: 'Mutations', titleClass: 'card-title-purple', subtitle: 'Typed Writes',
+    description: 'useMutation types both the variables you send and the result you get back, then invalidates related queries so the UI stays fresh.',
+    code: 'const m = useMutation({ mutationFn: (t: NewTask) => createTask(t) });\nm.mutate({ title: "Learn TS" });',
   },
   {
-    icon: '🔍',
-    title: 'Verify a Token',
-    titleClass: 'card-title-amber',
-    subtitle: 'jwt.verify',
-    description: 'Middleware verifies the token on each request and attaches the user.',
-    code: 'const token = req.headers.authorization?.split(" ")[1];\nconst payload = jwt.verify(token, process.env.JWT_SECRET);\nreq.user = payload; // { id, iat, exp }',
+    icon: '🎯', title: 'Less State, Fewer Bugs', titleClass: 'card-title-amber', subtitle: 'The Payoff',
+    description: 'A query library removes most manual loading/error state, handles caching and retries, and keeps everything typed — dramatically less code.',
+    code: '// no useEffect, no manual union — it’s handled',
   },
   {
-    icon: '📄',
-    title: 'Secret in .env',
-    titleClass: 'card-title-pink',
-    subtitle: 'dotenv',
-    description: 'The signing secret lives in the environment, never in source.',
-    code: '// .env\nJWT_SECRET=super-long-random-string\n// code\nrequire("dotenv").config();',
+    icon: '🔜', title: 'Next: React TS Capstone', titleClass: 'card-title-lime', subtitle: 'Day 30 Preview',
+    description: 'Tomorrow ties Days 21–29 together into a small, fully typed React app — components, hooks, forms, context, and data fetching.',
+    link: { href: '/day-030', label: 'Go to Day 30 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻',
-    title: 'Thunder GitHub',
-    titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day10',
-    description: 'Register/login with bcrypt hashing and JWT issuing & verifying.',
-    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
+    icon: '📘', title: 'TanStack Query', titleClass: 'card-title-cyan', subtitle: 'The Data Library',
+    description: 'The official docs for TanStack Query — queries, mutations, caching, and its excellent TypeScript support. The industry standard for data fetching.',
+    link: { href: TANSTACK, label: 'Read the TanStack docs →', external: true },
   },
   {
-    icon: '📗',
-    title: 'JWT Introduction',
-    titleClass: 'card-title-green',
-    subtitle: 'jwt.io',
-    description: 'The official introduction to JSON Web Tokens — structure and claims.',
-    link: { href: DOCS_URL, label: 'Read on jwt.io →', external: true },
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Model The Union',
+    description: 'Write the Req<T> union and a render switch, then confirm data only exists in the success branch. The pattern prevents a whole class of bugs.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '▶️',
-    title: 'JWT Authentication',
-    titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: 'JWT Authentication Tutorial (Node.js) by Web Dev Simplified — for Day 29.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=mbsmsi7l3r4',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    description: 'Typed data fetching powers nearly every screen. TanStack Query + Zod + typed fetch is the stack you’ll use through React & Next.js.',
+    link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -154,18 +111,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -174,13 +122,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -188,133 +132,85 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day029() {
   const scaleRef = useRef(null);
-
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-028" className="day001-nav-btn day001-nav-home">
-            ← Day 28
-          </Link>
-          <p className="day001-datetime">Thunder Day 29 · 14 Aug 2026</p>
-          <Link to="/day-030" className="day001-nav-btn day001-nav-next">
-            Day 30 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-028" className="day001-nav-btn day001-nav-prev">← Day 28</Link>
+          <p className="day001-datetime">TypeScript Day 29 · 14 Aug 2026</p>
+          <Link to="/day-030" className="day001-nav-btn day001-nav-next">Day 30 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>Node.js</span>
-              <span>Auth</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Data Fetching</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 29 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">AUTHENTICATION — HASHING & JWT</p>
+              <h1 className="day001-day-num">DAY 29 <span aria-hidden="true">🌐</span></h1>
+              <p className="day001-day-theme">DATA FETCHING IN REACT TS</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">NODE · THUNDER</p>
+              <p className="day001-profile-role">TS · REACT</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '29%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '29%' }} /></div>
 
         <p className="day001-summary">
-          Day twenty-nine — an open API is a liability, so I added <strong>authentication</strong>.
-          Passwords are never stored in plain text — <strong>bcrypt</strong> hashes them one-way with
-          a salt, and <code>bcrypt.compare</code> checks a login. Once verified, I issue a{' '}
-          <strong>JWT</strong> — a signed token carrying the user id — with <code>jwt.sign</code>,
-          and verify it on every protected request with <code>jwt.verify</code>. Because HTTP is
-          stateless, the token is the session. Code in{' '}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day10 on GitHub
-          </a>
-          .
+          Day 29 loads data safely. I modelled requests as a <strong>discriminated union</strong> of{' '}
+          loading/error/success (no impossible states), fetched with a typed <code>getJSON&lt;T&gt;</code> in an
+          effect, <strong>validated</strong> with Zod, and handled <strong>race conditions</strong>. Then I moved
+          to <strong>TanStack Query</strong> — <code>useQuery&lt;T&gt;</code> for typed, cached data,{' '}
+          <strong>query keys</strong>, and typed <strong>mutations</strong> — far less code and far fewer bugs.
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="🔒" title="HASHING PASSWORDS" cards={PASSWORDS} columns={3} />
-        <CardSection icon="🎫" title="JSON WEB TOKENS" cards={JWT} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 10" cards={RESOURCES} columns={3} />
+        <CardSection icon="🎫" title="THE MANUAL PATTERN" cards={MANUAL} columns={3} />
+        <CardSection icon="🖼️" title="RENDER & SCALE UP" cards={RENDER} columns={4} />
+        <CardSection icon="⚡" title="TANSTACK QUERY" cards={QUERY} columns={4} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#Auth</span>
-          <span>#JWT</span>
-          <span>#Backend</span>
-          <span>#Thunder</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#DataFetching</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

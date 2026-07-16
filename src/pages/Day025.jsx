@@ -2,161 +2,108 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const NOTION_URL =
-  'https://app.notion.com/p/Lecture-06-Express-and-middleware-39943ac5cab980d19823df367d602eeb?source=copy_link';
-
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day06';
+const REACT_EVENTS = 'https://react.dev/learn/responding-to-events';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
+  { title: 'Synthetic events', text: 'React wraps DOM events in typed SyntheticEvent objects' },
+  { title: 'onChange typing', text: 'React.ChangeEvent<HTMLInputElement> gives e.target.value as string' },
+  { title: 'onSubmit typing', text: 'React.FormEvent<HTMLFormElement> — call e.preventDefault()' },
+  { title: 'onClick typing', text: 'React.MouseEvent<HTMLButtonElement> for button handlers' },
+  { title: 'Controlled inputs', text: 'value + onChange keep React state as the single source of truth' },
+  { title: 'Inline vs named handlers', text: 'inline handlers infer the event; named handlers need an annotation' },
+  { title: 'Multiple inputs', text: 'one handler with e.target.name updates a typed form object' },
+  { title: 'Selects & checkboxes', text: 'checked for checkboxes, value for selects — each typed correctly' },
+  { title: 'Validation + Zod', text: 'parse the form object with a schema before submitting' },
+  { title: 'Form libraries', text: 'React Hook Form + Zod give typed, validated forms with less code' },
+];
+
+const EVENTS = [
   {
-    title: 'Express',
-    text: 'a backend framework for Node — build APIs with almost no boilerplate',
+    icon: '🖱️', title: 'Event Types', titleClass: 'card-title-cyan', subtitle: 'React.*Event',
+    description: 'React events are typed generics over the element. onClick gets a MouseEvent, onChange a ChangeEvent — each knowing the right target properties.',
+    code: 'function onClick(e: React.MouseEvent<HTMLButtonElement>) {\n  console.log(e.currentTarget.name);\n}',
   },
   {
-    title: 'req & res',
-    text: 'read incoming data from req, send data back with res',
+    icon: '⌨️', title: 'onChange', titleClass: 'card-title-purple', subtitle: 'Read Input Values',
+    description: 'Type the change event with the input element and e.target.value is a typed string — the basis of every controlled input.',
+    code: 'function onChange(e: React.ChangeEvent<HTMLInputElement>) {\n  setName(e.target.value);\n}',
   },
   {
-    title: 'Route = method + path',
-    text: 'GET /user and POST /user are two different routes',
-  },
-  {
-    title: 'Route params',
-    text: '/user/:id → req.params — the exact identity of one resource',
-  },
-  {
-    title: 'Query params',
-    text: 'req.query — filter, search, sort and pagination',
-  },
-  {
-    title: 'Route order',
-    text: 'specific before dynamic — /users/admin before /users/:id',
-  },
-  {
-    title: 'Middleware',
-    text: 'a function that runs between the request and the route handler',
-  },
-  {
-    title: 'next()',
-    text: 'passes control onward — forget it and the request hangs',
-  },
-  {
-    title: 'app.use',
-    text: 'registers middleware for all methods and a path + everything under it',
-  },
-  {
-    title: 'express.json()',
-    text: 'built-in middleware that parses a JSON body onto req.body',
+    icon: '📨', title: 'onSubmit', titleClass: 'card-title-amber', subtitle: 'Handle Submits',
+    description: 'Type the submit event with the form element, call preventDefault to stop the page reload, then read and validate the form’s state.',
+    code: 'function onSubmit(e: React.FormEvent<HTMLFormElement>) {\n  e.preventDefault();\n  submit(form);\n}',
   },
 ];
 
-const ROUTES = [
+const FORMS = [
   {
-    icon: '🚀',
-    title: 'First Server',
-    titleClass: 'card-title-cyan',
-    subtitle: 'app.get + listen',
-    description: 'Create the app, define a route, start it — a working server.',
-    code: 'const app = express();\napp.get("/", (req, res) => res.send("Hello"));\napp.listen(3000);',
+    icon: '🎛️', title: 'Controlled Inputs', titleClass: 'card-title-cyan', subtitle: 'State As Truth',
+    description: 'A controlled input reads value from state and writes back via onChange. React state is the single source of truth, and TypeScript types both ends.',
+    code: 'const [name, setName] = useState("");\n<input value={name}\n  onChange={(e) => setName(e.target.value)} />',
   },
   {
-    icon: '🛣️',
-    title: 'Method + Path',
-    titleClass: 'card-title-green',
-    subtitle: 'a route',
-    description: 'Same path, different method = a different route entirely.',
-    code: 'app.get("/user", handlerA);   // GET /user\napp.post("/user", handlerB);  // POST /user',
+    icon: '🧩', title: 'One Object, Many Inputs', titleClass: 'card-title-blue', subtitle: 'name + spread',
+    description: 'Keep the whole form as one typed object and update the field matching e.target.name — a single handler for many inputs, fully typed.',
+    code: 'const [form, setForm] = useState<Form>({ name: "", email: "" });\nconst set = (e: React.ChangeEvent<HTMLInputElement>) =>\n  setForm((f) => ({ ...f, [e.target.name]: e.target.value }));',
   },
   {
-    icon: '🔗',
-    title: 'Route Params',
-    titleClass: 'card-title-amber',
-    subtitle: 'exact resource',
-    description: ':id makes one segment dynamic — read it from req.params.',
-    code: 'app.get("/user/:id", (req, res) => {\n  res.json({ id: req.params.id });\n});',
+    icon: '☑️', title: 'Checkboxes & Selects', titleClass: 'card-title-amber', subtitle: 'checked vs value',
+    description: 'Read checkboxes with e.target.checked (boolean) and selects with e.target.value. TypeScript exposes exactly the right property per element.',
+    code: 'const agree = e.target.checked; // boolean\nconst role = e.target.value;    // string',
   },
   {
-    icon: '🔍',
-    title: 'Query Params',
-    titleClass: 'card-title-pink',
-    subtitle: 'filter / sort',
-    description: 'Optional refinement after "?" — read from req.query.',
-    code: '// /search?city=delhi&role=admin\nconst { city, role } = req.query;',
+    icon: '🛡️', title: 'Validate On Submit', titleClass: 'card-title-lime', subtitle: 'Zod Schema',
+    description: 'Before acting, parse the form object with a Zod schema. You get typed data on success and field errors on failure — reused from Day 16.',
+    code: 'const r = FormSchema.safeParse(form);\nif (!r.success) setErrors(r.error.format());',
   },
 ];
 
-const MIDDLEWARE = [
+const LIBS = [
   {
-    icon: '⚙️',
-    title: 'What is Middleware',
-    titleClass: 'card-title-cyan',
-    subtitle: '(req, res, next)',
-    description: 'Runs between request and handler — call next() to pass control.',
-    code: 'function logger(req, res, next) {\n  console.log(req.method, req.url);\n  next();\n}',
+    icon: '📚', title: 'React Hook Form', titleClass: 'card-title-cyan', subtitle: 'Less Boilerplate',
+    description: 'For real forms, React Hook Form manages state, validation, and errors with great TypeScript support — far less code than wiring inputs by hand.',
+    code: 'const { register, handleSubmit } = useForm<Form>();',
   },
   {
-    icon: '🔌',
-    title: 'app.use',
-    titleClass: 'card-title-green',
-    subtitle: 'register it',
-    description: 'Runs for all methods, a path and everything under it — before routes.',
-    code: 'app.use(logger);            // every request\napp.use("/admin", checkAuth); // /admin branch',
+    icon: '🔗', title: 'RHF + Zod', titleClass: 'card-title-purple', subtitle: 'Typed & Validated',
+    description: 'Pair React Hook Form with a Zod resolver to get one schema driving both the types and the validation — the modern typed-forms stack.',
+    code: 'useForm<Form>({ resolver: zodResolver(FormSchema) });',
   },
   {
-    icon: '📦',
-    title: 'express.json()',
-    titleClass: 'card-title-amber',
-    subtitle: 'parse the body',
-    description: 'Built-in middleware — populates req.body from a JSON payload.',
-    code: 'app.use(express.json());\napp.post("/user", (req, res) => {\n  res.status(201).json(req.body);\n});',
+    icon: '🎯', title: 'currentTarget vs target', titleClass: 'card-title-amber', subtitle: 'Know The Difference',
+    description: 'currentTarget is the element the handler is attached to (well-typed); target is where the event originated (broader). Prefer currentTarget for safety.',
+    code: 'e.currentTarget.value; // typed to the bound element',
   },
   {
-    icon: '🛡️',
-    title: 'Protect & Limit',
-    titleClass: 'card-title-pink',
-    subtitle: 'auth + rate limit',
-    description: 'Middleware is the home for auth checks and rate limiting.',
-    code: 'function auth(req, res, next) {\n  if (!req.headers.authorization)\n    return res.status(401).json({ error: "no" });\n  next();\n}',
+    icon: '🔜', title: 'Next: useReducer', titleClass: 'card-title-lime', subtitle: 'Day 26 Preview',
+    description: 'Tomorrow: managing complex state with useReducer — typed state, discriminated action unions, and exhaustive reducers.',
+    link: { href: '/day-026', label: 'Go to Day 26 →' },
   },
 ];
 
-const THUNDER_RESOURCES = [
+const RESOURCES = [
   {
-    icon: '📓',
-    title: 'Lecture 06 — Notion',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Express & Middleware',
-    description: 'Routes, route/query params, route order, middleware, app.use and express.json().',
-    link: { href: NOTION_URL, label: 'Open Notion notes →', external: true },
+    icon: '📘', title: 'Responding To Events', titleClass: 'card-title-cyan', subtitle: 'react.dev',
+    description: 'React’s guide to event handlers — the mental model and patterns that the TypeScript event types build directly on top of.',
+    link: { href: REACT_EVENTS, label: 'Read the events guide →', external: true },
   },
   {
-    icon: '💻',
-    title: 'Thunder GitHub',
-    titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day06',
-    description: 'A Product API in Express — routes, params, middleware and JSON responses.',
-    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type A Handler',
+    description: 'Write an onChange handler and hover e.target to confirm value is a string. Then try onSubmit and see the form element type.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '▶️',
-    title: 'Express Middleware',
-    titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: 'Learn Express Middleware in 14 minutes — Web Dev Simplified, supplement for Day 25.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=lY6icfhap2o',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    description: 'Forms are where users meet your app. Typed events + Zod validation make them robust — a pattern you’ll reuse on every screen.',
+    link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -164,18 +111,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -184,13 +122,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -198,137 +132,85 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day025() {
   const scaleRef = useRef(null);
-
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-024" className="day001-nav-btn day001-nav-home">
-            ← Day 24
-          </Link>
-          <p className="day001-datetime">Thunder Day 25 · 10 Aug 2026</p>
-          <Link to="/day-026" className="day001-nav-btn day001-nav-next">
-            Day 26 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-024" className="day001-nav-btn day001-nav-prev">← Day 24</Link>
+          <p className="day001-datetime">TypeScript Day 25 · 10 Aug 2026</p>
+          <Link to="/day-026" className="day001-nav-btn day001-nav-next">Day 26 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>Express</span>
-              <span>Middleware</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Events · Forms</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 25 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">EXPRESS & MIDDLEWARE</p>
+              <h1 className="day001-day-num">DAY 25 <span aria-hidden="true">📨</span></h1>
+              <p className="day001-day-theme">EVENTS & FORMS IN REACT TS</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">NODE · THUNDER</p>
+              <p className="day001-profile-role">TS · REACT</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '25%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '25%' }} /></div>
 
         <p className="day001-summary">
-          Day twenty-five — following{' '}
-          <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Thunder Lecture 06
-          </a>
-          . Express is a <strong>pipeline</strong>: a request flows through middleware, into the
-          matching route handler, then out as a response. I learned routes as{' '}
-          <code>method + path</code>, <code>req.params</code> for exact resources vs{' '}
-          <code>req.query</code> for filters, why route order matters, and{' '}
-          <strong>middleware</strong> — <code>(req, res, next)</code>, <code>app.use</code>,{' '}
-          <code>express.json()</code>, and auth/rate-limit guards. Product API in{' '}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day06 on GitHub
-          </a>
-          .
+          Day 25 types user input. React’s <strong>synthetic events</strong> are typed generics — I used{' '}
+          <code>ChangeEvent</code>, <code>FormEvent</code>, and <code>MouseEvent</code> to read values and handle
+          submits. I built <strong>controlled inputs</strong> with React state as the source of truth, updated a
+          single typed form object across many inputs via <code>e.target.name</code>, handled checkboxes/selects,
+          and <strong>validated</strong> with Zod on submit — then saw how React Hook Form + Zod cut the boilerplate.
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="🛣️" title="ROUTES & PARAMS" cards={ROUTES} columns={4} />
-        <CardSection icon="⚙️" title="MIDDLEWARE" cards={MIDDLEWARE} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 06" cards={THUNDER_RESOURCES} columns={3} />
+        <CardSection icon="🖱️" title="TYPED EVENTS" cards={EVENTS} columns={3} />
+        <CardSection icon="🎛️" title="CONTROLLED FORMS" cards={FORMS} columns={4} />
+        <CardSection icon="📚" title="LIBRARIES & DETAILS" cards={LIBS} columns={4} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#Express</span>
-          <span>#Middleware</span>
-          <span>#Backend</span>
-          <span>#Thunder</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#Forms</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

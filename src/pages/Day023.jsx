@@ -2,153 +2,108 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const NOTION_URL =
-  'https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031?source=copy_link';
-
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day04';
+const REACT_HOOKS_TS = 'https://react.dev/learn/typescript#typing-usestate';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
+  { title: 'useState inference', text: 'useState(0) infers number — no generic needed for simple values' },
+  { title: 'Explicit generics', text: 'useState<Type>() when the initial value can’t reveal the type' },
+  { title: 'Union state', text: 'useState<"idle" | "loading" | "done"> for state machines' },
+  { title: 'Nullable state', text: 'useState<User | null>(null) — the common "not loaded yet" shape' },
+  { title: 'Object state', text: 'type the whole object; updates must produce the same shape' },
+  { title: 'Array state', text: 'useState<Task[]>([]) — every item stays checked' },
+  { title: 'Functional updates', text: 'setCount(c => c + 1) — the updater is typed too' },
+  { title: 'Lazy initialization', text: 'useState(() => compute()) runs once; the return type is inferred' },
+  { title: 'Setter type', text: 'React.Dispatch<React.SetStateAction<T>> when you pass a setter as a prop' },
+  { title: 'Derive, don’t duplicate', text: 'compute values from state instead of storing extra state' },
+];
+
+const BASICS = [
   {
-    title: 'req.url',
-    text: 'the entire path the client asked for — "/30" or "/add?num1=10&num2=20"',
+    icon: '🔮', title: 'Inference', titleClass: 'card-title-cyan', subtitle: 'The Common Case',
+    description: 'When the initial value reveals the type, useState infers it — count is number, name is string. No generic argument required.',
+    code: 'const [count, setCount] = useState(0);      // number\nconst [name, setName] = useState("Sumit"); // string',
   },
   {
-    title: 'slice(1)',
-    text: 'drop the leading "/" in one line — no hand-written loop needed',
+    icon: '🏷️', title: 'Explicit Generic', titleClass: 'card-title-purple', subtitle: 'When Inference Can’t',
+    description: 'If the initial value doesn’t reveal the full type — an empty array, or null now / object later — pass the type explicitly.',
+    code: 'const [tasks, setTasks] = useState<Task[]>([]);\nconst [user, setUser] = useState<User | null>(null);',
   },
   {
-    title: 'Query string',
-    text: 'the part after "?" — key=value pairs joined by "&"',
-  },
-  {
-    title: 'The url module',
-    text: 'url.parse(req.url, true) splits pathname from a ready-made query object',
-  },
-  {
-    title: 'The true flag',
-    text: 'turns the query string into a JavaScript object automatically',
-  },
-  {
-    title: 'Check 1 — valid?',
-    text: 'Number("abc") is NaN — guard it and return 400 instead of an empty result',
-  },
-  {
-    title: 'Check 2 — in range?',
-    text: 'cap at your data length or you send back a pile of undefineds',
-  },
-  {
-    title: 'Check 3 — real route?',
-    text: 'unknown path gets a clear 404, never a silent hang',
-  },
-  {
-    title: 'slice(0, n)',
-    text: 'grab the first n items in one line — replace the push-in-a-loop',
-  },
-  {
-    title: 'Three checks',
-    text: 'valid, in range, real route — they kill 90% of backend bugs',
+    icon: '🚦', title: 'Union State', titleClass: 'card-title-amber', subtitle: 'Model A State Machine',
+    description: 'A literal union captures the exact states a value can be in — the clean, type-safe way to represent loading and status flows.',
+    code: 'const [status, setStatus] =\n  useState<"idle" | "loading" | "error" | "done">("idle");',
   },
 ];
 
-const READING_URL = [
+const UPDATES = [
   {
-    icon: '🔗',
-    title: 'Reading req.url',
-    titleClass: 'card-title-cyan',
-    subtitle: 'The whole path',
-    description: 'req.url gives the entire path — parse it by hand, or let a built-in do it.',
-    code: '// Manual — a loop just to drop the "/"\nlet s = "";\nfor (let i = 1; i < req.url.length; i++) s += req.url[i];\n\n// Built-in — one line\nconst n = Number(req.url.slice(1)); // "/30" -> 30',
+    icon: '🔁', title: 'Functional Updates', titleClass: 'card-title-cyan', subtitle: 'Based On Previous',
+    description: 'When new state depends on the old, pass an updater function. Its parameter is typed as the current state, so the math stays checked.',
+    code: 'setCount((c) => c + 1);\nsetTasks((prev) => [...prev, newTask]);',
   },
   {
-    icon: '❓',
-    title: 'The url Module',
-    titleClass: 'card-title-green',
-    subtitle: 'url.parse',
-    description: 'Splits the pathname from a ready-made query object — pass true.',
-    code: 'const url = require("url");\nconst parsed = url.parse(req.url, true);\n// parsed.pathname -> "/add"\n// parsed.query    -> { num1: "10", num2: "20" }',
+    icon: '🥚', title: 'Lazy Initialization', titleClass: 'card-title-blue', subtitle: 'Compute Once',
+    description: 'Pass a function to useState to compute the initial value only on the first render. The return type is inferred just like a value.',
+    code: 'const [data] = useState(() => JSON.parse(localStorage.getItem("d") ?? "[]"));',
   },
   {
-    icon: '🔎',
-    title: 'Query Strings',
-    titleClass: 'card-title-amber',
-    subtitle: '?num1=10&num2=20',
-    description: '"?" starts the query, "&" separates each key=value pair.',
-    code: '// GET /add?num1=10&num2=20\nconst n1 = Number(parsed.query.num1);\nconst n2 = Number(parsed.query.num2);',
+    icon: '🧩', title: 'Object State', titleClass: 'card-title-amber', subtitle: 'Type The Whole Shape',
+    description: 'Type object state with an interface. Because state is replaced (not merged), spread the previous object when updating one field.',
+    code: 'const [form, setForm] = useState<Form>({ name: "", age: 0 });\nsetForm((f) => ({ ...f, name: "S" }));',
+  },
+  {
+    icon: '📤', title: 'Passing Setters', titleClass: 'card-title-lime', subtitle: 'Dispatch Type',
+    description: 'To pass a setter to a child, type the prop as React.Dispatch<React.SetStateAction<T>> so the child can update state safely.',
+    code: 'interface Props {\n  setCount: React.Dispatch<React.SetStateAction<number>>;\n}',
   },
 ];
 
-const VALIDATION = [
+const PRACTICE = [
   {
-    icon: '🛡️',
-    title: 'Valid Input?',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Guard NaN',
-    description: '/abc gives NaN — reject it with a 400 before doing any work.',
-    code: 'const n = Number(req.url.slice(1));\nif (isNaN(n)) {\n  res.writeHead(400);\n  return res.end("Enter a valid number");\n}',
+    icon: '🧠', title: 'Derive, Don’t Store', titleClass: 'card-title-cyan', subtitle: 'One Source Of Truth',
+    description: 'Compute values from existing state during render instead of keeping duplicate state in sync. Fewer bugs, and the types stay simple.',
+    code: 'const completed = tasks.filter((t) => t.done).length; // derived',
   },
   {
-    icon: '📏',
-    title: 'In Range?',
-    titleClass: 'card-title-green',
-    subtitle: 'Cap it',
-    description: 'You have 100 profiles; /500 would send 400 undefineds. Clamp or reject.',
-    code: 'if (n > gitHub.length) {\n  res.writeHead(400);\n  return res.end(`Only ${gitHub.length} available`);\n}',
+    icon: '🎯', title: 'Narrow Before Use', titleClass: 'card-title-purple', subtitle: 'Nullable State',
+    description: 'With User | null state, guard before reading. TypeScript makes the "still loading" branch impossible to forget.',
+    code: 'if (!user) return <Spinner />;\nreturn <p>{user.name}</p>;',
   },
   {
-    icon: '🚧',
-    title: 'Real Route?',
-    titleClass: 'card-title-amber',
-    subtitle: '404 not hang',
-    description: 'An unknown path should return a clear 404 — never leave the tab spinning.',
-    code: '// no branch matched\nres.writeHead(404);\nres.end("Not found");',
+    icon: '⚖️', title: 'Keep State Minimal', titleClass: 'card-title-amber', subtitle: 'Less Is Safer',
+    description: 'Store the smallest set of independent values; a union often replaces several booleans. Typed, minimal state is easier to reason about.',
+    code: '// instead of isLoading + isError + data flags:\n// use one status union + data',
   },
   {
-    icon: '🧹',
-    title: 'Clean with slice',
-    titleClass: 'card-title-pink',
-    subtitle: 'No loops',
-    description: 'slice(0, n) returns the first n items — drop the manual push loop.',
-    code: '// loop\nconst arr = [];\nfor (let i = 0; i < n; i++) arr.push(gitHub[i]);\n\n// slice — same result, one line\nconst arr = gitHub.slice(0, n);',
+    icon: '🔜', title: 'Next: useEffect & Refs', titleClass: 'card-title-lime', subtitle: 'Day 24 Preview',
+    description: 'Tomorrow: typing side effects with useEffect (deps, cleanup) and typed refs with useRef for DOM and mutable values.',
+    link: { href: '/day-024', label: 'Go to Day 24 →' },
   },
 ];
 
-const THUNDER_RESOURCES = [
+const RESOURCES = [
   {
-    icon: '📓',
-    title: 'Lecture 01 & 02 — Notion',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Official Thunder Notes',
-    description: 'Reading req.url, the url module, query strings, and the three validation checks.',
-    link: { href: NOTION_URL, label: 'Open Notion notes →', external: true },
+    icon: '📘', title: 'Typing useState', titleClass: 'card-title-cyan', subtitle: 'react.dev',
+    description: 'React’s guide to typing hooks, starting with useState — inference, explicit generics, and the common nullable and union patterns.',
+    link: { href: REACT_HOOKS_TS, label: 'Read the hooks TS guide →', external: true },
   },
   {
-    icon: '💻',
-    title: 'Thunder GitHub',
-    titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day04',
-    description: 'HTTP servers that parse URLs and query strings, with validation guards.',
-    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'State Types Live',
+    description: 'Model union and object state, then set a wrong value to watch the compiler catch it. Union state clicks fast this way.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '▶️',
-    title: 'Parse URL in Node',
-    titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: 'Parse URLs & extract query params with the Node http module — supplement for Day 23.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=9tchsy20aBI',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    description: 'Typed state is the heart of every interactive component — forms, toggles, and data loading all rely on it.',
+    link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -156,18 +111,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -176,13 +122,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -190,136 +132,86 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day023() {
   const scaleRef = useRef(null);
-
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-022" className="day001-nav-btn day001-nav-home">
-            ← Day 22
-          </Link>
-          <p className="day001-datetime">Thunder Day 23 · 8 Aug 2026</p>
-          <Link to="/day-024" className="day001-nav-btn day001-nav-next">
-            Day 24 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-022" className="day001-nav-btn day001-nav-prev">← Day 22</Link>
+          <p className="day001-datetime">TypeScript Day 23 · 8 Aug 2026</p>
+          <Link to="/day-024" className="day001-nav-btn day001-nav-next">Day 24 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>Node.js</span>
-              <span>Backend</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>useState</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 23 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">QUERY STRINGS & REQUEST VALIDATION</p>
+              <h1 className="day001-day-num">DAY 23 <span aria-hidden="true">🔮</span></h1>
+              <p className="day001-day-theme">useState & TYPING STATE</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">NODE · THUNDER</p>
+              <p className="day001-profile-role">TS · REACT</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '23%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '23%' }} /></div>
 
         <p className="day001-summary">
-          Day twenty-three — following{' '}
-          <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Thunder Lecture 01 &amp; 02
-          </a>
-          . Users send messy input, so I stopped trusting <code>req.url</code>. I parsed it cleanly
-          with the <code>url</code> module (<code>url.parse(req.url, true)</code>), read named{' '}
-          <code>query</code> params instead of splitting by hand, and guarded every request with
-          three checks — <strong>valid, in range, real route</strong>. Then I swapped hand-rolled
-          loops for <code>slice</code>. Code in{' '}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day04 on GitHub
-          </a>
-          .
+          Day 23 types component state. <code>useState</code> usually <strong>infers</strong> the type, but I used
+          explicit <strong>generics</strong> for empty arrays and nullable values, and literal{' '}
+          <strong>unions</strong> to model status machines. I used <strong>functional updates</strong>,{' '}
+          <strong>lazy initialization</strong>, typed object/array state, and the{' '}
+          <code>Dispatch&lt;SetStateAction&lt;T&gt;&gt;</code> type when passing setters down — plus the habit of{' '}
+          <strong>deriving</strong> values instead of duplicating state.
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="🔗" title="READING THE URL" cards={READING_URL} columns={3} />
-        <CardSection icon="🛡️" title="VALIDATE EVERY REQUEST" cards={VALIDATION} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 04" cards={THUNDER_RESOURCES} columns={3} />
+        <CardSection icon="🔮" title="TYPING useState" cards={BASICS} columns={3} />
+        <CardSection icon="🔁" title="UPDATES & SHAPES" cards={UPDATES} columns={4} />
+        <CardSection icon="🧠" title="GOOD PRACTICE" cards={PRACTICE} columns={4} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#NodeJS</span>
-          <span>#Backend</span>
-          <span>#Validation</span>
-          <span>#Thunder</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#Hooks</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

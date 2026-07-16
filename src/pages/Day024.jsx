@@ -2,161 +2,108 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const NOTION_URL =
-  'https://app.notion.com/p/Lecture01-and-02-Introduction-to-NodeJs-39243ac5cab98091a218e8e5b4a6a031?source=copy_link';
-
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day05';
+const REACT_EFFECT = 'https://react.dev/reference/react/useEffect';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
+  { title: 'useEffect basics', text: 'run side effects after render — subscriptions, timers, data fetching' },
+  { title: 'Dependency array', text: 'the deps control when the effect re-runs — [] means once on mount' },
+  { title: 'Cleanup function', text: 'return a function to tear down subscriptions and timers' },
+  { title: 'Typed cleanup', text: 'the return type is `void | (() => void)` — TS keeps it honest' },
+  { title: 'Async in effects', text: 'you can’t make the effect async directly — call an inner async function' },
+  { title: 'useRef for DOM', text: 'useRef<HTMLInputElement>(null) — a typed handle to an element' },
+  { title: 'useRef for values', text: 'a mutable box that survives renders without causing re-renders' },
+  { title: 'ref null check', text: 'ref.current can be null until mounted — narrow before using' },
+  { title: 'AbortController', text: 'cancel fetches in cleanup to avoid setting state after unmount' },
+  { title: 'Effects are last resort', text: 'prefer derived values and event handlers over effects when possible' },
+];
+
+const EFFECTS = [
   {
-    title: 'No routing',
-    text: 'raw Node is a giant if-else on req.url + req.method — 50 branches in one function',
+    icon: '🌀', title: 'useEffect', titleClass: 'card-title-cyan', subtitle: 'Side Effects',
+    description: 'useEffect runs code after the render is painted — the place for subscriptions, timers, and syncing with external systems. The deps array controls re-runs.',
+    code: 'useEffect(() => {\n  document.title = `Count: ${count}`;\n}, [count]);',
   },
   {
-    title: 'No dynamic routes',
-    text: '/users/123 means req.url.split("/") — a query or trailing slash breaks it',
+    icon: '🧹', title: 'Cleanup', titleClass: 'card-title-purple', subtitle: 'Tear Down',
+    description: 'Return a cleanup function to undo the effect — remove listeners, clear intervals. React runs it before the next effect and on unmount.',
+    code: 'useEffect(() => {\n  const id = setInterval(tick, 1000);\n  return () => clearInterval(id);\n}, []);',
   },
   {
-    title: 'Body is a stream',
-    text: 'req.body is undefined — collect chunks with req.on("data") then JSON.parse',
-  },
-  {
-    title: 'Manual responses',
-    text: 'writeHead + end(JSON.stringify(...)) on every single reply',
-  },
-  {
-    title: 'Forget res.end()',
-    text: 'and the request hangs forever — no automatic 404 either',
-  },
-  {
-    title: 'No home for the cross-cutting',
-    text: 'logging, auth, CORS get copy-pasted into every branch',
-  },
-  {
-    title: 'No organization',
-    text: 'one 250-line createServer callback — routing and business logic fused',
-  },
-  {
-    title: 'Express cures each pain',
-    text: 'routing, params, req.body, res.json, middleware — one helper per problem',
-  },
-  {
-    title: 'No magic',
-    text: 'every feature is the helper you would have written yourself',
-  },
-  {
-    title: '250 lines → 25',
-    text: 'the same Users API, a tenth of the code',
+    icon: '⚡', title: 'Async Effects', titleClass: 'card-title-amber', subtitle: 'The Right Pattern',
+    description: 'An effect can’t be async (it must return cleanup or nothing). Define an async function inside and call it — clean and correctly typed.',
+    code: 'useEffect(() => {\n  (async () => { setData(await getData()); })();\n}, []);',
   },
 ];
 
-const RAW_PAIN = [
+const REFS = [
   {
-    icon: '🌀',
-    title: 'No Routing',
-    titleClass: 'card-title-cyan',
-    subtitle: 'if-else forever',
-    description: 'url + method are raw strings — routing is a hand-written if-else chain.',
-    code: 'if (req.url === "/users" && req.method === "GET") { ... }\nelse if (req.url === "/users" && req.method === "POST") { ... }\n// 10 resources x 5 methods = 50 branches',
+    icon: '🎯', title: 'DOM Refs', titleClass: 'card-title-cyan', subtitle: 'Typed Element Handle',
+    description: 'useRef<HTMLInputElement>(null) gives a typed handle to a DOM node. Attach it via ref and TypeScript knows the element’s exact API.',
+    code: 'const inputRef = useRef<HTMLInputElement>(null);\n<input ref={inputRef} />;\ninputRef.current?.focus();',
   },
   {
-    icon: '🌊',
-    title: 'Body is a Stream',
-    titleClass: 'card-title-green',
-    subtitle: 'req.body?',
-    description: 'undefined by default — you assemble it from chunks, then parse, every time.',
-    code: 'let body = "";\nreq.on("data", c => { body += c; });\nreq.on("end", () => {\n  const data = JSON.parse(body); // in a try-catch\n});',
+    icon: '🚧', title: 'Null Until Mounted', titleClass: 'card-title-blue', subtitle: 'Narrow current',
+    description: 'ref.current is null before the element mounts. Optional chaining or a guard makes access safe — TypeScript forces you to consider it.',
+    code: 'if (inputRef.current) inputRef.current.value = "hi";',
   },
   {
-    icon: '📝',
-    title: 'Every Response Manual',
-    titleClass: 'card-title-amber',
-    subtitle: 'paperwork',
-    description: 'Set the header, stringify the body — forget one and the browser guesses wrong.',
-    code: 'res.writeHead(200, { "Content-Type": "application/json" });\nres.end(JSON.stringify(data));\n// two lines, every single reply',
+    icon: '📦', title: 'Mutable Value Refs', titleClass: 'card-title-amber', subtitle: 'Survive Renders',
+    description: 'A ref is also a mutable box that persists across renders without triggering one — perfect for timer ids, previous values, or instance data.',
+    code: 'const renders = useRef(0);\nrenders.current++; // no re-render',
   },
   {
-    icon: '⏳',
-    title: 'Hangs Forever',
-    titleClass: 'card-title-pink',
-    subtitle: 'no res.end()',
-    description: 'Miss a branch or forget to end — the tab spins silently. No auto 404.',
-    code: '// no match, no res.end()\n// → request never finishes',
+    icon: '🛑', title: 'AbortController', titleClass: 'card-title-lime', subtitle: 'Cancel In Cleanup',
+    description: 'Abort in-flight fetches during cleanup so you never call setState on an unmounted component — a common, well-typed pattern.',
+    code: 'useEffect(() => {\n  const c = new AbortController();\n  fetch(url, { signal: c.signal });\n  return () => c.abort();\n}, [url]);',
   },
 ];
 
-const EXPRESS_CURE = [
+const PRACTICE = [
   {
-    icon: '🧭',
-    title: 'Routing',
-    titleClass: 'card-title-cyan',
-    subtitle: 'app.get / app.post',
-    description: 'A named method + path — no if-else chain to maintain.',
-    code: 'app.get("/users", handler);\napp.post("/users", handler);',
+    icon: '📋', title: 'Get Deps Right', titleClass: 'card-title-cyan', subtitle: 'exhaustive-deps',
+    description: 'List every value the effect uses in the deps array. The react-hooks/exhaustive-deps lint rule flags missing ones so effects stay correct.',
+    code: 'useEffect(() => { load(id); }, [id]); // include id',
   },
   {
-    icon: '🔗',
-    title: 'Params & Query',
-    titleClass: 'card-title-green',
-    subtitle: 'req.params / req.query',
-    description: 'Dynamic segments and filters, parsed for you.',
-    code: 'app.get("/users/:id", (req, res) =>\n  res.json(users[req.params.id]));\n// /users/7?role=admin -> req.query.role',
+    icon: '🧠', title: 'Effects Are Last Resort', titleClass: 'card-title-purple', subtitle: 'Prefer Alternatives',
+    description: 'Not everything belongs in an effect. Derive values during render and respond to input in event handlers; reserve effects for external systems.',
+    code: '// no effect needed:\nconst full = `${first} ${last}`;',
   },
   {
-    icon: '📦',
-    title: 'Body Just Exists',
-    titleClass: 'card-title-amber',
-    subtitle: 'express.json()',
-    description: 'One line of middleware and req.body is ready — no streams.',
-    code: 'app.use(express.json());\napp.post("/users", (req, res) => {\n  console.log(req.body); // done\n});',
+    icon: '🎛️', title: 'forwardRef Types', titleClass: 'card-title-amber', subtitle: 'Expose A Ref',
+    description: 'When a component needs to forward a ref to its inner element, forwardRef carries the element type through so callers get the right ref.',
+    code: 'const Input = forwardRef<HTMLInputElement, Props>((p, ref) => (\n  <input ref={ref} {...p} />\n));',
   },
   {
-    icon: '✨',
-    title: 'Clean Responses',
-    titleClass: 'card-title-pink',
-    subtitle: 'res.status().json()',
-    description: 'Status code and JSON in a single, readable line.',
-    code: 'res.status(201).json(newUser);',
+    icon: '🔜', title: 'Next: Events & Forms', titleClass: 'card-title-lime', subtitle: 'Day 25 Preview',
+    description: 'Tomorrow: typing events and forms — onChange/onSubmit, controlled inputs, and reading typed values from form elements.',
+    link: { href: '/day-025', label: 'Go to Day 25 →' },
   },
 ];
 
-const THUNDER_RESOURCES = [
+const RESOURCES = [
   {
-    icon: '📓',
-    title: 'Lecture 01 & 02 — Notion',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Official Thunder Notes',
-    description: 'The eight limitations of raw Node and the direct mapping to each Express feature.',
-    link: { href: NOTION_URL, label: 'Open Notion notes →', external: true },
+    icon: '📘', title: 'useEffect', titleClass: 'card-title-cyan', subtitle: 'react.dev',
+    description: 'The official reference for useEffect — dependencies, cleanup, and the mental model for when an effect is (and isn’t) the right tool.',
+    link: { href: REACT_EFFECT, label: 'Read the useEffect docs →', external: true },
   },
   {
-    icon: '💻',
-    title: 'Thunder GitHub',
-    titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day05',
-    description: 'The same Users API built twice — raw http first, then Express, side by side.',
-    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type A Ref',
+    description: 'Declare useRef with and without an element type and see how current is typed. Then try accessing it without a null check.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '▶️',
-    title: 'What is Express?',
-    titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: 'What is Express and why should we use it — Academind, supplement for Day 24.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=45dAt9Gz8rE',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    description: 'Effects and refs connect React to timers, the DOM, and data. Getting their types right prevents whole classes of runtime bugs.',
+    link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -164,18 +111,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -184,13 +122,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -198,136 +132,86 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day024() {
   const scaleRef = useRef(null);
-
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-023" className="day001-nav-btn day001-nav-home">
-            ← Day 23
-          </Link>
-          <p className="day001-datetime">Thunder Day 24 · 9 Aug 2026</p>
-          <Link to="/day-025" className="day001-nav-btn day001-nav-next">
-            Day 25 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-023" className="day001-nav-btn day001-nav-prev">← Day 23</Link>
+          <p className="day001-datetime">TypeScript Day 24 · 9 Aug 2026</p>
+          <Link to="/day-025" className="day001-nav-btn day001-nav-next">Day 25 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>Node.js</span>
-              <span>Express</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Effects · Refs</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 24 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">WHY EXPRESS EXISTS</p>
+              <h1 className="day001-day-num">DAY 24 <span aria-hidden="true">🌀</span></h1>
+              <p className="day001-day-theme">useEffect & TYPED REFS</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">NODE · THUNDER</p>
+              <p className="day001-profile-role">TS · REACT</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '24%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '24%' }} /></div>
 
         <p className="day001-summary">
-          Day twenty-four — following{' '}
-          <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Thunder Lecture 01 &amp; 02
-          </a>
-          . After building servers with the raw <code>http</code> module, the pain is obvious: no
-          routing, no dynamic paths, the body arrives as a <strong>stream</strong>, and every
-          response is manual paperwork. <strong>Express</strong> is every helper I would have written
-          myself — <code>app.get</code>, <code>req.params</code>, <code>express.json()</code>,{' '}
-          <code>res.json</code>. The 250 lines become 25, and not one is magic. Both versions in{' '}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day05 on GitHub
-          </a>
-          .
+          Day 24 handles side effects and refs. I used <code>useEffect</code> with the right{' '}
+          <strong>dependency array</strong> and <strong>cleanup</strong>, and the inner-async-function pattern for
+          fetching. I typed <code>useRef&lt;HTMLInputElement&gt;</code> for DOM handles (narrowing the possibly-
+          <code>null</code> <code>current</code>), used refs as <strong>mutable boxes</strong> that survive renders,
+          and cancelled requests with <strong>AbortController</strong> in cleanup — while remembering effects are a
+          last resort.
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="🔥" title="THE PAIN OF RAW NODE" cards={RAW_PAIN} columns={4} />
-        <CardSection icon="🚀" title="EXPRESS CURES IT" cards={EXPRESS_CURE} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 05" cards={THUNDER_RESOURCES} columns={3} />
+        <CardSection icon="🌀" title="useEffect" cards={EFFECTS} columns={3} />
+        <CardSection icon="🎯" title="TYPED REFS" cards={REFS} columns={4} />
+        <CardSection icon="🧠" title="GOOD PRACTICE" cards={PRACTICE} columns={4} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#NodeJS</span>
-          <span>#Express</span>
-          <span>#Backend</span>
-          <span>#Thunder</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#Hooks</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

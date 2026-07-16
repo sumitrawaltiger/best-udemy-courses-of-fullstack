@@ -2,159 +2,108 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day08';
-const NOTION_URL =
-  'https://app.notion.com/p/Lecture08-Create-Your-own-Database-39d43ac5cab98036b6e8c65bf50a731f';
-const FS_DOCS_URL = 'https://nodejs.org/api/fs.html';
-const EXPRESS_URL = 'https://expressjs.com/en/starter/basic-routing.html';
+const REACT_CONTEXT = 'https://react.dev/reference/react/useContext';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
+  { title: 'Context', text: 'share values across the tree without prop-drilling — themes, auth, settings' },
+  { title: 'createContext type', text: 'give the context a precise value type so consumers are checked' },
+  { title: 'The null default trap', text: 'a default of null forces every consumer to null-check — the guard hook fixes it' },
+  { title: 'Provider', text: 'a typed Provider passes the value down; children read it with useContext' },
+  { title: 'Custom hook guard', text: 'wrap useContext in a hook that throws if used outside the Provider' },
+  { title: 'Context + reducer', text: 'expose reducer state and dispatch through context for typed global state' },
+  { title: 'Split contexts', text: 'separate value and dispatch contexts to reduce re-renders' },
+  { title: 'Memo the value', text: 'useMemo the provider value so consumers don’t re-render needlessly' },
+  { title: 'Not a state manager', text: 'context shares state; it doesn’t optimize like Redux/Zustand' },
+  { title: 'Typed everywhere', text: 'from createContext to the hook, the value type flows end to end' },
+];
+
+const CREATE = [
   {
-    title: 'What is a database',
-    text: 'persistent storage you can create, read, update & delete',
+    icon: '🌳', title: 'Why Context', titleClass: 'card-title-cyan', subtitle: 'No Prop-Drilling',
+    description: 'Context lets deeply nested components read shared values — theme, current user, settings — without threading props through every layer.',
+    code: 'interface Theme { mode: "light" | "dark"; toggle(): void }',
   },
   {
-    title: 'File as storage',
-    text: 'a JSON text file (database.txt) can act as your database',
+    icon: '🏷️', title: 'createContext', titleClass: 'card-title-purple', subtitle: 'Type The Value',
+    description: 'Type the context by its value. Using undefined as the default (with strict checks) forces you to provide a real value — enforced by the guard hook.',
+    code: 'const ThemeContext = createContext<Theme | undefined>(undefined);',
   },
   {
-    title: 'readDB',
-    text: 'fs.readFileSync + JSON.parse to load records into memory',
-  },
-  {
-    title: 'writeDB',
-    text: 'JSON.stringify + fs.writeFileSync to persist back to disk',
-  },
-  {
-    title: 'express.json()',
-    text: 'middleware to parse JSON request bodies',
-  },
-  {
-    title: 'Create',
-    text: 'POST /accounts — push a new account and write the file',
-  },
-  {
-    title: 'Read',
-    text: 'GET /accounts (all) and /accounts/:accountNumber (find one)',
-  },
-  {
-    title: 'Update',
-    text: 'PATCH deposit — find the account, change balance, write back',
-  },
-  {
-    title: 'Delete',
-    text: 'filter out the account by number, then write back',
-  },
-  {
-    title: 'Why real DBs',
-    text: 'file DBs lack indexing, concurrency & querying — use MongoDB at scale',
+    icon: '📦', title: 'The Provider', titleClass: 'card-title-amber', subtitle: 'Pass It Down',
+    description: 'Wrap the tree in a Provider that supplies the typed value. Everything inside can read it — no matter how deep — with full type safety.',
+    code: 'function ThemeProvider({ children }: { children: React.ReactNode }) {\n  const value = useThemeState();\n  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;\n}',
   },
 ];
 
-const FILE_DB = [
+const CONSUME = [
   {
-    icon: '🧠',
-    title: 'The Idea',
-    titleClass: 'card-title-cyan',
-    subtitle: 'storage + CRUD',
-    description:
-      'A database is just persistent storage with create/read/update/delete. Build one with Express + the file system before reaching for MongoDB.',
-    code: 'import express from "express";\nimport fs from "fs";\n\nconst app = express();\napp.use(express.json());\n\nconst DB_FILE = "./database.txt"; // our "database"',
+    icon: '🪝', title: 'The Guard Hook', titleClass: 'card-title-cyan', subtitle: 'Throw If Missing',
+    description: 'Wrap useContext in a custom hook that throws when the value is undefined. Consumers get a non-null type and a clear error if the Provider is missing.',
+    code: 'function useTheme() {\n  const ctx = useContext(ThemeContext);\n  if (!ctx) throw new Error("useTheme outside ThemeProvider");\n  return ctx; // Theme, never undefined\n}',
   },
   {
-    icon: '💾',
-    title: 'readDB / writeDB',
-    titleClass: 'card-title-green',
-    subtitle: 'load & save JSON',
-    description: 'Two helpers do all the persistence — read the file, parse it; stringify, write it.',
-    code: 'function readDB() {\n  const data = fs.readFileSync(DB_FILE, "utf-8");\n  return JSON.parse(data);\n}\nfunction writeDB(data) {\n  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));\n}',
+    icon: '⚡', title: 'Clean Consumption', titleClass: 'card-title-blue', subtitle: 'No Null Checks',
+    description: 'Thanks to the guard hook, components call useTheme() and immediately use the value — no repeated null checks scattered around the codebase.',
+    code: 'function Button() {\n  const { mode, toggle } = useTheme();\n  return <button onClick={toggle}>{mode}</button>;\n}',
   },
   {
-    icon: '🏦',
-    title: 'The Record',
-    titleClass: 'card-title-amber',
-    subtitle: 'a bank account',
-    description: 'Each record is a plain object; push it onto the array and persist the whole file.',
-    code: 'const newAccount = {\n  name, accountNumber, city, age, balance\n};\naccounts.push(newAccount);\nwriteDB(accounts);',
+    icon: '🔗', title: 'Context + Reducer', titleClass: 'card-title-amber', subtitle: 'Typed Global State',
+    description: 'Put yesterday’s reducer state and dispatch into context to get app-wide, typed state without a library — Redux-like ergonomics, zero deps.',
+    code: 'const [state, dispatch] = useReducer(reducer, init);\n<Store.Provider value={{ state, dispatch }}>{children}</Store.Provider>',
+  },
+  {
+    icon: '✂️', title: 'Split Contexts', titleClass: 'card-title-lime', subtitle: 'Fewer Re-renders',
+    description: 'Separate the value context from the dispatch context so components that only dispatch don’t re-render when state changes. A common performance win.',
+    code: '<StateCtx.Provider value={state}>\n  <DispatchCtx.Provider value={dispatch}>...',
   },
 ];
 
-const BANK_CRUD = [
+const PRACTICE = [
   {
-    icon: '➕',
-    title: 'Create',
-    titleClass: 'card-title-cyan',
-    subtitle: 'POST /accounts',
-    description: 'Read the file, push the new account, write it back.',
-    code: 'app.post("/accounts", (req, res) => {\n  const accounts = readDB();\n  accounts.push(req.body);\n  writeDB(accounts);\n  res.json({ message: "Account created" });\n});',
+    icon: '🧠', title: 'Memoize The Value', titleClass: 'card-title-cyan', subtitle: 'useMemo',
+    description: 'A new object literal as the provider value re-renders all consumers each render. Wrap it in useMemo so it only changes when its inputs do.',
+    code: 'const value = useMemo(() => ({ mode, toggle }), [mode]);',
   },
   {
-    icon: '🔎',
-    title: 'Read',
-    titleClass: 'card-title-green',
-    subtitle: 'GET all / one',
-    description: 'Return every account, or find one by account number.',
-    code: 'app.get("/accounts", (req, res) => res.json(readDB()));\n\napp.get("/accounts/:accountNumber", (req, res) => {\n  const acc = readDB().find(\n    (a) => a.accountNumber == req.params.accountNumber);\n  res.json(acc);\n});',
+    icon: '⚖️', title: 'Not A State Manager', titleClass: 'card-title-purple', subtitle: 'Know The Limits',
+    description: 'Context distributes state; it doesn’t batch or select like Redux/Zustand. For large, frequently-updated state, reach for a dedicated library.',
+    code: '// heavy global state? → Zustand / Redux Toolkit',
   },
   {
-    icon: '💰',
-    title: 'Deposit',
-    titleClass: 'card-title-amber',
-    subtitle: 'PATCH .../deposit',
-    description: 'Find the account, add the amount to its balance, write back.',
-    code: 'app.patch("/accounts/:accountNumber/deposit", (req, res) => {\n  const accounts = readDB();\n  const acc = accounts.find(\n    (a) => a.accountNumber == req.params.accountNumber);\n  acc.balance += req.body.amount;\n  writeDB(accounts);\n  res.json({ message: "Balance increased", account: acc });\n});',
+    icon: '🎯', title: 'One Concern Per Context', titleClass: 'card-title-amber', subtitle: 'Keep Them Focused',
+    description: 'Prefer several small, focused contexts (auth, theme, cart) over one giant one. Smaller contexts mean fewer re-renders and clearer types.',
+    code: 'AuthContext · ThemeContext · CartContext',
   },
   {
-    icon: '🗑️',
-    title: 'Delete',
-    titleClass: 'card-title-pink',
-    subtitle: 'DELETE /:number',
-    description: 'Filter the account out of the array and write the file.',
-    code: 'app.delete("/accounts/:accountNumber", (req, res) => {\n  let accounts = readDB();\n  accounts = accounts.filter(\n    (a) => a.accountNumber != req.params.accountNumber);\n  writeDB(accounts);\n  res.json({ message: "Account deleted" });\n});',
+    icon: '🔜', title: 'Next: Custom Hooks', titleClass: 'card-title-lime', subtitle: 'Day 28 Preview',
+    description: 'Tomorrow: building your own typed hooks — generic hooks, tuple returns, and a reusable useFetch<T>.',
+    link: { href: '/day-028', label: 'Go to Day 28 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📝',
-    title: 'Full Lecture Notes',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Notion · Lecture 08',
-    description: 'Create Your Own Database — the complete file-based bank API walkthrough.',
-    link: { href: NOTION_URL, label: 'Open on Notion →', external: true },
+    icon: '📘', title: 'useContext', titleClass: 'card-title-cyan', subtitle: 'react.dev',
+    description: 'The official reference for context and useContext — creating, providing, and reading context, with the patterns the types build on.',
+    link: { href: REACT_CONTEXT, label: 'Read the useContext docs →', external: true },
   },
   {
-    icon: '💻',
-    title: 'Thunder GitHub',
-    titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day08',
-    description: 'The full Express + fs file database and bank CRUD routes.',
-    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type A Context',
+    description: 'Create a context with an undefined default, then write the guard hook and confirm it returns a non-undefined type. The pattern becomes clear.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '📗',
-    title: 'Node.js fs Docs',
-    titleClass: 'card-title-green',
-    subtitle: 'File System',
-    description: 'The official Node.js reference for readFileSync, writeFileSync, and more.',
-    link: { href: FS_DOCS_URL, label: 'Open the docs →', external: true },
-  },
-  {
-    icon: '🚏',
-    title: 'Express Routing',
-    titleClass: 'card-title-amber',
-    subtitle: 'Official guide',
-    description: 'How GET / POST / PATCH / DELETE routes and req.params work in Express.',
-    link: { href: EXPRESS_URL, label: 'Open the docs →', external: true },
+    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    description: 'Typed context + reducer is the "no-library" global state pattern you’ll use in most React & Next.js apps this year.',
+    link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -162,18 +111,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -182,13 +122,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -196,138 +132,85 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day027() {
   const scaleRef = useRef(null);
-
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-026" className="day001-nav-btn day001-nav-home">
-            ← Day 26
-          </Link>
-          <p className="day001-datetime">Thunder Day 27 · 12 Aug 2026</p>
-          <Link to="/day-028" className="day001-nav-btn day001-nav-next">
-            Day 28 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-026" className="day001-nav-btn day001-nav-prev">← Day 26</Link>
+          <p className="day001-datetime">TypeScript Day 27 · 12 Aug 2026</p>
+          <Link to="/day-028" className="day001-nav-btn day001-nav-next">Day 28 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>Node.js</span>
-              <span>Express</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Context</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 27 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">CREATE YOUR OWN DATABASE</p>
+              <h1 className="day001-day-num">DAY 27 <span aria-hidden="true">🌳</span></h1>
+              <p className="day001-day-theme">CONTEXT API WITH TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">NODE · THUNDER</p>
+              <p className="day001-profile-role">TS · REACT</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '27%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '27%' }} /></div>
 
         <p className="day001-summary">
-          Day twenty-seven — before reaching for a real database, understand what one is: persistent
-          storage with <strong>create / read / update / delete</strong>. In Lecture 08 I built my own{' '}
-          <strong>file-based database</strong> — an Express bank API that stores accounts as JSON in a
-          text file (<code>database.txt</code>). <code>readDB</code> uses{' '}
-          <code>fs.readFileSync</code> + <code>JSON.parse</code>; <code>writeDB</code> uses{' '}
-          <code>JSON.stringify</code> + <code>fs.writeFileSync</code>. Full CRUD: create, read all/one,
-          check balance, deposit, and delete — the foundation a real DB automates. Full notes on{' '}
-          <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Notion
-          </a>{' '}
-          · code in{' '}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day08 on GitHub
-          </a>
-          .
+          Day 27 shares state without prop-drilling using <strong>Context</strong>. I typed{' '}
+          <code>createContext</code> by its value, avoided the null-default trap with a{' '}
+          <strong>custom guard hook</strong> that throws outside its Provider (returning a non-undefined type), and
+          combined <strong>context + reducer</strong> for typed global state with zero libraries. I also learned to{' '}
+          <strong>memoize</strong> the provider value and <strong>split</strong> contexts to keep re-renders down.
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="🗄️" title="A FILE AS A DATABASE" cards={FILE_DB} columns={3} />
-        <CardSection icon="🏦" title="BANK API · CRUD ROUTES" cards={BANK_CRUD} columns={4} />
-        <CardSection icon="📚" title="NOTES & RESOURCES · THUNDER BACKEND DAY 08" cards={RESOURCES} columns={4} />
+        <CardSection icon="🌳" title="CREATE & PROVIDE" cards={CREATE} columns={3} />
+        <CardSection icon="🪝" title="CONSUME SAFELY" cards={CONSUME} columns={4} />
+        <CardSection icon="🧠" title="GOOD PRACTICE" cards={PRACTICE} columns={4} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#NodeJS</span>
-          <span>#Express</span>
-          <span>#Backend</span>
-          <span>#Thunder</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#Context</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>

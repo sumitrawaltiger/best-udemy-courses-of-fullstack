@@ -2,205 +2,108 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day07';
-const DOCS_URL = 'https://www.mongodb.com/docs/manual/crud/';
-const NOTION_URL =
-  'https://app.notion.com/p/Lecture-07-MongoDB-internal-Architecture-39c43ac5cab98048bae2c02c1fa32830';
+const REACT_REDUCER = 'https://react.dev/reference/react/useReducer';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
+  { title: 'useReducer', text: 'manage complex state with a reducer function instead of many useState calls' },
+  { title: 'State type', text: 'model the whole state shape with an interface or type' },
+  { title: 'Action union', text: 'a discriminated union of actions — the safest way to type dispatch' },
+  { title: 'type discriminant', text: 'each action has a literal `type` field the reducer switches on' },
+  { title: 'Typed payloads', text: 'each action carries exactly the data its case needs' },
+  { title: 'Exhaustive switch', text: 'a never default guarantees every action is handled' },
+  { title: 'dispatch is typed', text: 'you can only dispatch valid actions — typos are compile errors' },
+  { title: 'Reducer is pure', text: 'no side effects — return new state, never mutate the old' },
+  { title: 'useReducer vs useState', text: 'reducer wins when updates are complex or interrelated' },
+  { title: 'Pairs with Context', text: 'reducer + context gives typed app-wide state without a library' },
+];
+
+const SETUP = [
   {
-    title: 'NoSQL',
-    text: 'MongoDB stores flexible JSON-like documents — not rows and tables',
+    icon: '🧩', title: 'Model State', titleClass: 'card-title-cyan', subtitle: 'One Shape',
+    description: 'Start by typing the whole state. A single interface makes the reducer’s input and output explicit and keeps every field checked.',
+    code: 'interface State {\n  count: number;\n  status: "idle" | "busy";\n}',
   },
   {
-    title: 'Documents & collections',
-    text: 'a document is one record; a collection is a group of documents',
+    icon: '🎫', title: 'Action Union', titleClass: 'card-title-purple', subtitle: 'Discriminated',
+    description: 'Model actions as a discriminated union keyed by a literal type. This is the single most important pattern for a type-safe reducer.',
+    code: 'type Action =\n  | { type: "inc"; by: number }\n  | { type: "reset" };',
   },
   {
-    title: 'BSON & _id',
-    text: 'documents are stored as binary JSON, each with a unique _id',
-  },
-  {
-    title: 'No fixed schema',
-    text: 'two documents in the same collection can have different fields',
-  },
-  {
-    title: 'Connect from Node',
-    text: 'MongoClient + a connection string (mongodb://... or an Atlas URI)',
-  },
-  {
-    title: 'Create',
-    text: 'insertOne / insertMany to add documents',
-  },
-  {
-    title: 'Read',
-    text: 'find / findOne with a query filter object',
-  },
-  {
-    title: 'Update',
-    text: 'updateOne / updateMany with the $set operator',
-  },
-  {
-    title: 'Delete',
-    text: 'deleteOne / deleteMany by filter',
-  },
-  {
-    title: 'Atlas',
-    text: 'MongoDB Atlas runs a managed database in the cloud',
-  },
-  {
-    title: 'Indexes & B-trees',
-    text: 'createIndex builds a B-tree/B+ tree so search, range & sort are fast — not a full collection scan',
+    icon: '⚙️', title: 'The Reducer', titleClass: 'card-title-amber', subtitle: 'Pure & Typed',
+    description: 'The reducer takes (state, action) and returns new state. Switching on action.type narrows to the exact action, so payloads are fully typed.',
+    code: 'function reducer(s: State, a: Action): State {\n  switch (a.type) {\n    case "inc": return { ...s, count: s.count + a.by };\n    case "reset": return { ...s, count: 0 };\n  }\n}',
   },
 ];
 
-const DOCUMENT_MODEL = [
+const USE = [
   {
-    icon: '🍃',
-    title: 'NoSQL vs SQL',
-    titleClass: 'card-title-cyan',
-    subtitle: 'documents, not tables',
-    description: 'MongoDB keeps flexible documents instead of fixed rows and columns.',
-    code: '// SQL row            // MongoDB document\n// id | name | age     {\n//  1 | Rohit | 24        _id: ObjectId("..."),\n//                        name: "Rohit",\n//                        age: 24\n//                      }',
+    icon: '📤', title: 'Dispatch Is Typed', titleClass: 'card-title-cyan', subtitle: 'Only Valid Actions',
+    description: 'useReducer returns [state, dispatch]. dispatch only accepts actions from your union — a misspelled type or a missing payload is a compile error.',
+    code: 'const [state, dispatch] = useReducer(reducer, initial);\ndispatch({ type: "inc", by: 2 }); // ✅\ndispatch({ type: "inc" });        // ❌ by missing',
   },
   {
-    icon: '📄',
-    title: 'Documents & Collections',
-    titleClass: 'card-title-green',
-    subtitle: 'the building blocks',
-    description: 'A document is one JSON-like record; a collection groups related documents.',
-    code: 'users (collection)\n ├─ { _id, name: "Rohit", age: 24 }\n └─ { _id, name: "Aditya", city: "Delhi" }\n// fields can differ per document',
+    icon: '✅', title: 'Exhaustiveness', titleClass: 'card-title-blue', subtitle: 'never Catches Gaps',
+    description: 'Add a default that assigns the action to never. Introduce a new action later and forget its case — the compiler stops the build.',
+    code: 'default: {\n  const _exhaustive: never = a;\n  return s;\n}',
   },
   {
-    icon: '🔑',
-    title: 'The _id',
-    titleClass: 'card-title-amber',
-    subtitle: 'unique key',
-    description: 'Every document gets a unique _id (ObjectId) if you do not supply one.',
-    code: '{ _id: ObjectId("665f..."), name: "Rohit" }\n// auto-generated, unique, indexed',
+    icon: '🧊', title: 'Keep It Pure', titleClass: 'card-title-amber', subtitle: 'No Mutation',
+    description: 'A reducer must be pure: no fetch, no mutation. Return a new state object every time — spread the old one and change only what’s needed.',
+    code: 'return { ...s, count: s.count + a.by }; // new object',
+  },
+  {
+    icon: '⚖️', title: 'Reducer vs useState', titleClass: 'card-title-lime', subtitle: 'When To Reach For It',
+    description: 'Prefer useReducer when several pieces of state change together or transitions get complex — it centralizes the logic and types every path.',
+    code: '// many related updates? → reducer\n// one simple value?     → useState',
   },
 ];
 
-const CRUD = [
+const APPLY = [
   {
-    icon: '➕',
-    title: 'Create',
-    titleClass: 'card-title-cyan',
-    subtitle: 'insertOne',
-    description: 'Add one or many documents to a collection.',
-    code: 'await db.collection("users").insertOne({\n  name: "Rohit", age: 24\n});\n// insertMany([...]) for several',
+    icon: '🌐', title: 'Loading State Machine', titleClass: 'card-title-cyan', subtitle: 'A Real Example',
+    description: 'A fetch flow is a natural reducer: idle → loading → success/error. The union of states and actions makes impossible combinations unrepresentable.',
+    code: 'type S =\n  | { status: "loading" }\n  | { status: "ok"; data: User }\n  | { status: "err"; msg: string };',
   },
   {
-    icon: '🔎',
-    title: 'Read',
-    titleClass: 'card-title-green',
-    subtitle: 'find',
-    description: 'Query with a filter object; find returns a cursor, findOne one doc.',
-    code: 'await db.collection("users").find({ age: { $gt: 18 } }).toArray();\nawait db.collection("users").findOne({ name: "Rohit" });',
+    icon: '🔗', title: 'Pairs With Context', titleClass: 'card-title-purple', subtitle: 'App-Wide State',
+    description: 'Put a reducer’s state and dispatch into Context and you have typed global state without Redux — the topic of tomorrow’s lesson.',
+    code: '// tomorrow: useReducer + Context',
   },
   {
-    icon: '✏️',
-    title: 'Update',
-    titleClass: 'card-title-amber',
-    subtitle: '$set',
-    description: 'Match with a filter, change fields with the $set operator.',
-    code: 'await db.collection("users").updateOne(\n  { name: "Rohit" },\n  { $set: { age: 25 } }\n);',
+    icon: '🧠', title: 'Actions As Events', titleClass: 'card-title-amber', subtitle: 'Describe Intent',
+    description: 'Name actions after what happened ("todo_added"), not how state changes. The reducer decides the "how" — clearer and easier to evolve.',
+    code: 'dispatch({ type: "todo_added", title });',
   },
   {
-    icon: '🗑️',
-    title: 'Delete',
-    titleClass: 'card-title-pink',
-    subtitle: 'deleteOne',
-    description: 'Remove documents that match the filter.',
-    code: 'await db.collection("users").deleteOne({ name: "Rohit" });\n// deleteMany({ age: { $lt: 13 } })',
-  },
-];
-
-const INDEX_INTERNALS = [
-  {
-    icon: '📥',
-    title: 'Array → Sorted Array',
-    titleClass: 'card-title-cyan',
-    subtitle: 'write vs search',
-    description:
-      'An unsorted array appends in O(1) but searches in O(n). Sorting by id gives O(log n) binary search — but now insert/delete must shift elements (O(n)).',
-    code: 'unsorted: write O(1),  search O(n)\nsorted:   search O(log n), insert/delete O(n)\n// good for adding, bad for finding',
-  },
-  {
-    icon: '🌳',
-    title: 'BST → Balanced BST',
-    titleClass: 'card-title-green',
-    subtitle: 'pointers + height',
-    description:
-      'Pointers avoid shifting; a plain BST is O(log n) but O(n) when skewed into a linked list. AVL / Red-Black self-balance to keep O(log n) — fast in RAM, but each node is a random disk read.',
-    code: 'BST:      avg O(log n), worst O(n)\nbalanced: O(log n),  range O(log n + k)\n// great in RAM, bad on disk',
-  },
-  {
-    icon: '📦',
-    title: 'B-Tree',
-    titleClass: 'card-title-amber',
-    subtitle: 'many keys per page',
-    description:
-      'Disk reads happen in pages, so one node holds many sorted keys. Height drops to ~3–5 for millions of rows — one read brings many keys, so far fewer disk jumps.',
-    code: '[10 | 20 | 30 | 40 | 50 | 60]\nsearch O(log_m n) · 1 disk read = many keys',
-  },
-  {
-    icon: '🔗',
-    title: 'B+ Tree → Index',
-    titleClass: 'card-title-pink',
-    subtitle: 'linked leaves',
-    description:
-      'B+ trees keep all data at sorted, linked leaf pages, so range scans read sequentially (O(log n + k)). A MongoDB index is exactly this — createIndex builds an ordered tree for equality, range, sort & pagination.',
-    code: 'db.users.createIndex({ email: 1 })\nfind({ price: { $gte: 500, $lte: 1000 } })\n// reach start, then scan linked leaves',
+    icon: '🔜', title: 'Next: Context API', titleClass: 'card-title-lime', subtitle: 'Day 27 Preview',
+    description: 'Tomorrow: the Context API in TypeScript — a typed context, provider, and a custom hook that guards against missing providers.',
+    link: { href: '/day-027', label: 'Go to Day 27 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📝',
-    title: 'Full Lecture Notes',
-    titleClass: 'card-title-cyan',
-    subtitle: 'Notion · Lecture 07',
-    description:
-      'MongoDB internal architecture — the complete journey from arrays to B+ trees and indexes.',
-    link: { href: NOTION_URL, label: 'Open on Notion →', external: true },
+    icon: '📘', title: 'useReducer', titleClass: 'card-title-cyan', subtitle: 'react.dev',
+    description: 'The official reference for useReducer — the reducer contract, dispatch, and when it’s the better choice over useState.',
+    link: { href: REACT_REDUCER, label: 'Read the useReducer docs →', external: true },
   },
   {
-    icon: '💻',
-    title: 'Thunder GitHub',
-    titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day07',
-    description: 'Connecting to MongoDB from Node and running create/read/update/delete.',
-    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type A Reducer',
+    description: 'Write a discriminated Action union and a reducer, then dispatch a bad action to watch the compiler reject it. The pattern clicks fast.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '📗',
-    title: 'MongoDB CRUD Docs',
-    titleClass: 'card-title-green',
-    subtitle: 'Official docs',
-    description: 'The official reference for insert, find, update, and delete operations.',
-    link: { href: DOCS_URL, label: 'Open the docs →', external: true },
-  },
-  {
-    icon: '▶️',
-    title: 'MongoDB Crash Course',
-    titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: 'MongoDB Crash Course by Web Dev Simplified — supplement for Day 26.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=ofme2o29ngU',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    description: 'Typed reducers scale from a single component to app-wide state, and the same action-union idea reappears in Redux and beyond.',
+    link: { href: '/roadmap', label: 'See the full roadmap →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -208,18 +111,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -228,13 +122,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -242,146 +132,85 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day026() {
   const scaleRef = useRef(null);
-
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-025" className="day001-nav-btn day001-nav-home">
-            ← Day 25
-          </Link>
-          <p className="day001-datetime">Thunder Day 26 · 11 Aug 2026</p>
-          <Link to="/day-027" className="day001-nav-btn day001-nav-next">
-            Day 27 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-025" className="day001-nav-btn day001-nav-prev">← Day 25</Link>
+          <p className="day001-datetime">TypeScript Day 26 · 11 Aug 2026</p>
+          <Link to="/day-027" className="day001-nav-btn day001-nav-next">Day 27 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>Node.js</span>
-              <span>MongoDB</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>useReducer</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 26 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">MONGODB & NOSQL</p>
+              <h1 className="day001-day-num">DAY 26 <span aria-hidden="true">⚙️</span></h1>
+              <p className="day001-day-theme">useReducer WITH TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">NODE · THUNDER</p>
+              <p className="day001-profile-role">TS · REACT</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '26%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '26%' }} /></div>
 
         <p className="day001-summary">
-          Day twenty-six — the backend needs a place to store data permanently. I met{' '}
-          <strong>MongoDB</strong>, a NoSQL database of flexible JSON-like <strong>documents</strong>{' '}
-          grouped into <strong>collections</strong> — no fixed schema, every document keyed by a
-          unique <code>_id</code>. I connected from Node and ran full <strong>CRUD</strong>:{' '}
-          <code>insertOne</code>, <code>find</code>, <code>updateOne</code>, and{' '}
-          <code>deleteOne</code>. Then <strong>Lecture 07 — internal architecture</strong>: why an{' '}
-          <strong>index</strong> is a <strong>B-tree / B+ tree</strong> — the journey from arrays →
-          sorted arrays → BST → balanced BST → B-Tree → B+ Tree, so databases do fewer disk reads.
-          Full notes on{' '}
-          <a href={NOTION_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            Notion
-          </a>{' '}
-          · code in{' '}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day07 on GitHub
-          </a>
-          .
+          Day 26 manages complex state with <code>useReducer</code>. I typed the <strong>state</strong> shape and
+          modelled actions as a <strong>discriminated union</strong> keyed by a literal <code>type</code>. Switching
+          on it inside a <strong>pure</strong> reducer narrows each action’s <strong>payload</strong>, and a{' '}
+          <code>never</code> default guarantees <strong>exhaustive</strong> handling. Because <code>dispatch</code>{' '}
+          only accepts valid actions, typos become compile errors — and it pairs perfectly with Context tomorrow.
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="🍃" title="THE DOCUMENT MODEL" cards={DOCUMENT_MODEL} columns={3} />
-        <CardSection icon="🔁" title="CRUD OPERATIONS" cards={CRUD} columns={4} />
-        <CardSection
-          icon="🧭"
-          title="INSIDE A MONGODB INDEX · ARRAY → B+ TREE"
-          cards={INDEX_INTERNALS}
-          columns={4}
-        />
-        <CardSection icon="📚" title="NOTES & RESOURCES · THUNDER BACKEND DAY 07" cards={RESOURCES} columns={4} />
+        <CardSection icon="🧩" title="STATE, ACTIONS, REDUCER" cards={SETUP} columns={3} />
+        <CardSection icon="📤" title="USING IT SAFELY" cards={USE} columns={4} />
+        <CardSection icon="🌐" title="APPLYING IT" cards={APPLY} columns={4} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#MongoDB</span>
-          <span>#NoSQL</span>
-          <span>#Backend</span>
-          <span>#Thunder</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#Hooks</span><span>#JSLearnHub</span>
         </footer>
       </div>
     </div>
