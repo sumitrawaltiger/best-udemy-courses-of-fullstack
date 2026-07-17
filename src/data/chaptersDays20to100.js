@@ -814,78 +814,152 @@ export const chaptersDays20to100 = [
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
     "githubPath": "Lecture26"
   },
-  {
-    "id": 27,
-    "slug": "http-rest-and-express-js",
-    "track": "thunder",
-    "day": 27,
-    "title": "HTTP, REST & Express.js",
-    "subtitle": "Build your first REST API with Express",
-    "duration": "2 hrs",
-    "createdOn": "11 Aug 2026",
-    "status": "published",
-    "topics": [
-      "HTTP methods & status codes",
-      "REST principles",
-      "Express setup",
-      "Routes & controllers",
-      "Postman testing"
-    ],
-    "sections": [
-      {
-        "id": "http-methods-and-status-codes",
-        "title": "HTTP methods & status codes",
-        "content": "Learn **HTTP methods & status codes** in Day 27 of Thunder: 100 Days of Code. Build your first REST API with Express",
-        "tryIt": "console.log(\"Day 27: HTTP, REST & Express.js\");"
-      },
-      {
-        "id": "rest-principles",
-        "title": "REST principles",
-        "content": "Learn **REST principles** in Day 27 of Thunder: 100 Days of Code. Build your first REST API with Express",
-        "tryIt": "console.log(\"Day 27: HTTP, REST & Express.js\");"
-      },
-      {
-        "id": "express-setup",
-        "title": "Express setup",
-        "content": "Learn **Express setup** in Day 27 of Thunder: 100 Days of Code. Build your first REST API with Express",
-        "tryIt": "console.log(\"Day 27: HTTP, REST & Express.js\");"
-      },
-      {
-        "id": "routes-and-controllers",
-        "title": "Routes & controllers",
-        "content": "Learn **Routes & controllers** in Day 27 of Thunder: 100 Days of Code. Build your first REST API with Express",
-        "tryIt": "console.log(\"Day 27: HTTP, REST & Express.js\");"
-      }
-    ],
-    "quiz": [
-      {
-        "question": "What is the main topic of Day 27?",
-        "options": [
-          "HTTP, REST & Express.js",
-          "HTML tables only",
-          "Linux kernel modules",
-          "Photoshop layers"
-        ],
-        "answer": 0,
-        "explanation": "Module 27 focuses on HTTP, REST & Express.js."
-      },
-      {
-        "question": "Which phase includes this module?",
-        "options": [
-          "Phase 2: Backend Mastery",
-          "Only DevOps",
-          "Only CSS",
-          "Not part of the course"
-        ],
-        "answer": 0,
-        "explanation": "This module belongs to Phase 2: Backend Mastery."
-      }
-    ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=L72fhGm1tfE",
-    "youtubeTitle": "Node.js Express Crash Course — Traversy Media",
-    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
-    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
-  },
+    {
+      "id": 27,
+      "slug": "http-rest-and-express-js",
+      "track": "thunder",
+      "day": 27,
+      "title": "Create Your Own Database",
+      "subtitle": "Lecture 08 — a file-based bank database with fs, JSON & Express",
+      "duration": "2 hrs",
+      "createdOn": "11 Aug 2026",
+      "status": "published",
+      "notionUrl": "https://app.notion.com/p/Lecture08-Create-Your-own-Database-39d43ac5cab98036b6e8c65bf50a731f?source=copy_link",
+      "topics": [
+        "A file as a database",
+        "fs.readFileSync & JSON.parse",
+        "fs.writeFileSync & JSON.stringify",
+        "readDB & writeDB helpers",
+        "Create account (POST)",
+        "Read all / read one",
+        "Read balance",
+        "Deposit (PATCH)",
+        "Delete account (DELETE)",
+        "Why we outgrow a file"
+      ],
+      "sections": [
+        {
+          "id": "the-idea",
+          "title": "The Idea — a file as your database",
+          "content": "**Day 27** follows **Lecture 08** ([Create Your own Database Notion notes](https://app.notion.com/p/Lecture08-Create-Your-own-Database-39d43ac5cab98036b6e8c65bf50a731f?source=copy_link)).\n\nBefore reaching for MongoDB, we build a **database by hand** — using nothing but a **text file** and Node's built-in **`fs`** module.\n\nThe whole store is one file, `database.txt`, holding a **JSON array of accounts**. Every request reads that file, works on a plain JavaScript array, and writes it back.\n\nThis is the **first thought** behind every database: data must survive a server restart, so it has to leave memory and land on **disk**.\n\n**Before you run it:** `database.txt` must already exist and contain an empty array `[]` — otherwise `JSON.parse` has nothing valid to parse.",
+          "code": "import express from \"express\";\nimport fs from \"fs\";\n\nconst app = express();\napp.use(express.json());\n\nconst DB_FILE = \"./database.txt\";"
+        },
+        {
+          "id": "read-db",
+          "title": "readDB() — file → JavaScript",
+          "content": "Reading the database is two steps:\n\n1. **`fs.readFileSync(DB_FILE, \"utf-8\")`** — read the file's raw text. The `\"utf-8\"` argument matters: without it you get a **Buffer** instead of a string.\n2. **`JSON.parse(data)`** — turn that text into a real JavaScript array you can `.find()`, `.push()` and `.filter()`.\n\nThe file always holds **text**. `JSON.parse` is the bridge from text back into objects.",
+          "code": "function readDB() {\n  const data = fs.readFileSync(DB_FILE, \"utf-8\");\n  return JSON.parse(data);\n}"
+        },
+        {
+          "id": "write-db",
+          "title": "writeDB() — JavaScript → file",
+          "content": "Writing is the mirror image:\n\n1. **`JSON.stringify(data, null, 2)`** — turn the array back into text. The `2` is the **indentation**, which is why `database.txt` stays readable instead of collapsing onto one line.\n2. **`fs.writeFileSync(DB_FILE, ...)`** — overwrite the file with that text.\n\nNote that `writeFileSync` **replaces the whole file** every time. We never append — we always write the complete array back.",
+          "code": "function writeDB(data) {\n  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));\n}"
+        },
+        {
+          "id": "sync-and-json",
+          "title": "Why Sync, and why these two helpers",
+          "content": "`readFileSync` and `writeFileSync` are **synchronous** — they **block** the event loop until the disk finishes. That is fine for learning, and it keeps the code simple to read, but it is exactly what you would *not* do in production: one slow disk read holds up every other request.\n\nWrapping the file access in **`readDB()`** and **`writeDB()`** is the important move. Every route now speaks in **arrays and objects**, not files. That is the same idea a real database driver gives you — and when we swap in MongoDB on Day 28, only these two helpers disappear.\n\n**The pattern every route follows:**\n\n```\nread the file  →  work on the array  →  write the file back\n```"
+        },
+        {
+          "id": "setup-and-home",
+          "title": "Setup & the home route",
+          "content": "**`express.json()`** is what makes `req.body` work — without it, the POST and PATCH routes below would see `undefined` instead of the JSON you sent.\n\nThe home route is a simple health check: hit `/` and the server tells you it is alive.",
+          "code": "app.get(\"/\", (req, res) => {\n  res.send(\"Bank File Database is running\");\n});\n\napp.listen(3000, () => {\n  console.log(\"Server running on port 3000\");\n});"
+        },
+        {
+          "id": "create-account",
+          "title": "1. Create account — POST /accounts",
+          "content": "The full read → modify → write cycle:\n\n1. `readDB()` loads the current accounts.\n2. Build `newAccount` by picking the fields off `req.body`.\n3. `accounts.push(newAccount)` adds it **to the array in memory**.\n4. `writeDB(accounts)` persists the whole array back to disk.\n\nStep 4 is the one that matters — without it the account exists only until the next request.\n\nNotice there is **no validation**: whatever the client sends becomes the account. A real schema (Day 28's Mongoose) is what fixes that.",
+          "code": "app.post(\"/accounts\", (req, res) => {\n  const accounts = readDB();\n\n  const newAccount = {\n    name: req.body.name,\n    accountNumber: req.body.accountNumber,\n    city: req.body.city,\n    age: req.body.age,\n    balance: req.body.balance\n  };\n\n  accounts.push(newAccount);\n\n  writeDB(accounts);\n\n  res.json({\n    message: \"Account created successfully\",\n    account: newAccount\n  });\n});"
+        },
+        {
+          "id": "read-accounts",
+          "title": "2 & 3. Read all accounts, read one account",
+          "content": "**Read all** is the simplest route on the server — read the file, send the array.\n\n**Read one** uses **`.find()`** to search the array by account number. This is where our hand-made database shows its cost: to find a single account, we read **every** account into memory and scan the whole array. A real database uses an **index** instead.\n\n**Why `==` and not `===`?** `req.params.accountNumber` always arrives as a **string** (`\"101\"`), while the stored `accountNumber` is a **number** (`101`). `==` compares loosely and converts the types, so `\"101\" == 101` is `true`. With `===` this lookup would never match.",
+          "code": "// Read all\napp.get(\"/accounts\", (req, res) => {\n  const accounts = readDB();\n  res.json(accounts);\n});\n\n// Read one\napp.get(\"/accounts/:accountNumber\", (req, res) => {\n  const accounts = readDB();\n\n  const account = accounts.find((acc) => {\n    return acc.accountNumber == req.params.accountNumber;\n  });\n\n  res.json(account);\n});"
+        },
+        {
+          "id": "read-balance",
+          "title": "4. Read balance — a narrower response",
+          "content": "The same `.find()` lookup, but instead of returning the whole account we build a **smaller response object** with just the account number and balance.\n\nThis is a useful habit: the route decides **what the client sees**, not the storage format. You rarely want to hand back the raw record.",
+          "code": "app.get(\"/accounts/:accountNumber/balance\", (req, res) => {\n  const accounts = readDB();\n\n  const account = accounts.find((acc) => {\n    return acc.accountNumber == req.params.accountNumber;\n  });\n\n  res.json({\n    accountNumber: account.accountNumber,\n    balance: account.balance\n  });\n});"
+        },
+        {
+          "id": "deposit",
+          "title": "5. Increase balance — PATCH /accounts/:accountNumber/deposit",
+          "content": "**PATCH**, not PUT — we are changing **one field**, not replacing the account.\n\nThe subtle part is why this works at all: `.find()` returns a **reference** to the object inside the `accounts` array. Mutating `account.balance` therefore changes the array too — which is why `writeDB(accounts)` on the next line saves the new balance even though we never touched `accounts` directly.\n\nMiss that `writeDB()` call and the deposit vanishes the moment the request ends.",
+          "code": "app.patch(\"/accounts/:accountNumber/deposit\", (req, res) => {\n  const accounts = readDB();\n\n  const account = accounts.find((acc) => {\n    return acc.accountNumber == req.params.accountNumber;\n  });\n\n  account.balance = account.balance + req.body.amount;\n\n  writeDB(accounts);\n\n  res.json({\n    message: \"Balance increased successfully\",\n    account: account\n  });\n});"
+        },
+        {
+          "id": "delete-account",
+          "title": "6. Delete account — filter, don't splice",
+          "content": "Deleting is a **`.filter()`** that keeps every account **except** the one matching — note `!=` (not equal), the mirror of the `==` used to find.\n\n`.filter()` returns a **new array**, which is why `accounts` is declared with **`let`** here and not `const` — we reassign it to the filtered result, then write that back.\n\nIf the account number does not exist, nothing is removed and the route still reports success — another gap a real database layer would close.",
+          "code": "app.delete(\"/accounts/:accountNumber\", (req, res) => {\n  let accounts = readDB();\n\n  accounts = accounts.filter((acc) => {\n    return acc.accountNumber != req.params.accountNumber;\n  });\n\n  writeDB(accounts);\n\n  res.json({\n    message: \"Account deleted successfully\"\n  });\n});"
+        },
+        {
+          "id": "complete-server",
+          "title": "Complete Server File",
+          "content": "The whole file-based bank database in one file — `fs` + JSON + Express, no database engine anywhere.",
+          "code": "import express from \"express\";\nimport fs from \"fs\";\n\nconst app = express();\napp.use(express.json());\n\nconst DB_FILE = \"./database.txt\";\n\nfunction readDB() {\n  const data = fs.readFileSync(DB_FILE, \"utf-8\");\n  return JSON.parse(data);\n}\n\nfunction writeDB(data) {\n  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));\n}\n\n// Home route\napp.get(\"/\", (req, res) => {\n  res.send(\"Bank File Database is running\");\n});\n\n// 1. Create account\napp.post(\"/accounts\", (req, res) => {\n  const accounts = readDB();\n\n  const newAccount = {\n    name: req.body.name,\n    accountNumber: req.body.accountNumber,\n    city: req.body.city,\n    age: req.body.age,\n    balance: req.body.balance\n  };\n\n  accounts.push(newAccount);\n\n  writeDB(accounts);\n\n  res.json({\n    message: \"Account created successfully\",\n    account: newAccount\n  });\n});\n\n// 2. Read all accounts\napp.get(\"/accounts\", (req, res) => {\n  const accounts = readDB();\n\n  res.json(accounts);\n});\n\n// 3. Read one account\napp.get(\"/accounts/:accountNumber\", (req, res) => {\n  const accounts = readDB();\n\n  const account = accounts.find((acc) => {\n    return acc.accountNumber == req.params.accountNumber;\n  });\n\n  res.json(account);\n});\n\n// 4. Read balance\napp.get(\"/accounts/:accountNumber/balance\", (req, res) => {\n  const accounts = readDB();\n\n  const account = accounts.find((acc) => {\n    return acc.accountNumber == req.params.accountNumber;\n  });\n\n  res.json({\n    accountNumber: account.accountNumber,\n    balance: account.balance\n  });\n});\n\n// 5. Increase balance\napp.patch(\"/accounts/:accountNumber/deposit\", (req, res) => {\n  const accounts = readDB();\n\n  const account = accounts.find((acc) => {\n    return acc.accountNumber == req.params.accountNumber;\n  });\n\n  account.balance = account.balance + req.body.amount;\n\n  writeDB(accounts);\n\n  res.json({\n    message: \"Balance increased successfully\",\n    account: account\n  });\n});\n\n// 6. Delete account\napp.delete(\"/accounts/:accountNumber\", (req, res) => {\n  let accounts = readDB();\n\n  accounts = accounts.filter((acc) => {\n    return acc.accountNumber != req.params.accountNumber;\n  });\n\n  writeDB(accounts);\n\n  res.json({\n    message: \"Account deleted successfully\"\n  });\n});\n\napp.listen(3000, () => {\n  console.log(\"Server running on port 3000\");\n});"
+        },
+        {
+          "id": "why-we-outgrow-a-file",
+          "title": "Why we outgrow this — the bridge to MongoDB",
+          "content": "This file database genuinely works, and building it is the point: you now know exactly **what a database does for you**, because you did it by hand.\n\nBut the cracks are visible in our own code:\n\n- **It reads everything to find one thing.** `.find()` scans the whole array — no indexes.\n- **It rewrites everything to change one thing.** `writeDB()` replaces the entire file on every deposit.\n- **It blocks.** `readFileSync`/`writeFileSync` stall the event loop.\n- **Two requests at once can clobber each other.** Both read the same array, both write it back — the second overwrites the first. No transactions, no locking.\n- **Nothing is validated.** Any shape of data can land in the file.\n- **No unique constraint.** Two accounts can share an account number.\n\nEvery one of these is something a real database solves — and every one has a direct answer in **Day 28**: indexes and queries, `$inc` for atomic updates, a connection pool, schema validation, and `unique: true`.\n\n**Next:** [Day 28 — MongoDB & Mongoose](/learn/middleware-and-request-lifecycle)."
+        }
+      ],
+      "quiz": [
+        {
+          "question": "Why does the lookup use == instead of === when comparing account numbers?",
+          "options": [
+            "Because req.params.accountNumber is a string while the stored accountNumber is a number, and == converts the types so \"101\" == 101 is true",
+            "Because === does not work inside .find()",
+            "Because == is faster than === in Node.js",
+            "Because account numbers are stored as booleans"
+          ],
+          "answer": 0,
+          "explanation": "Route params always arrive as strings. With === the comparison \"101\" === 101 would be false and the account would never be found."
+        },
+        {
+          "question": "In the deposit route, why does writeDB(accounts) save the new balance even though we only modified `account`?",
+          "options": [
+            "Because .find() returns a reference to the object inside the accounts array, so mutating it also changes the array",
+            "Because writeDB automatically re-reads the file first",
+            "Because Express syncs req.body to disk",
+            "Because JSON.stringify searches for changed objects"
+          ],
+          "answer": 0,
+          "explanation": ".find() hands back a reference, not a copy. Mutating account.balance mutates the object that lives inside the accounts array, which is what gets written back."
+        },
+        {
+          "question": "Why is `accounts` declared with `let` in the delete route but `const` everywhere else?",
+          "options": [
+            "Because .filter() returns a new array that is reassigned to accounts, and const cannot be reassigned",
+            "Because delete routes cannot use const",
+            "Because let is required whenever you call writeDB",
+            "Because filter mutates the array in place"
+          ],
+          "answer": 0,
+          "explanation": ".filter() does not mutate — it returns a new array. That new array is reassigned to `accounts`, which requires `let`."
+        },
+        {
+          "question": "What is the main risk of two deposit requests arriving at the same time in this file database?",
+          "options": [
+            "Both read the same array and both write it back, so the second write overwrites the first — the lost update problem",
+            "The file will be deleted",
+            "Express will reject the second request automatically",
+            "JSON.parse will throw a RangeError"
+          ],
+          "answer": 0,
+          "explanation": "There are no transactions or locking. Each request reads the whole file, modifies its own copy, and overwrites the file — so concurrent writes clobber each other. Real databases solve this with atomic operations like $inc."
+        }
+      ],
+      "youtubeUrl": "https://www.youtube.com/watch?v=L72fhGm1tfE",
+      "youtubeTitle": "Express JS Crash Course — Traversy Media",
+      "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+      "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
+    },
     {
       "id": 28,
       "slug": "middleware-and-request-lifecycle",
