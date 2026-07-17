@@ -745,6 +745,107 @@ const DOCKER_MERN_COMPOSE_SECTIONS = [
   },
 ];
 
+const LINUX_TROUBLESHOOTING_SECTIONS = [
+  {
+    id: "why-troubleshooting-matters",
+    title: "Why Troubleshooting Matters + Toolkit Overview",
+    content: "Problems happen. Knowing the right troubleshooting tools and recovery techniques helps you **diagnose issues fast, fix systems confidently, and keep services running**. This day introduces a compact troubleshooting toolkit built around three tracing/inspection tools plus a rescue workflow.\n\n- **strace** — traces the **system calls and signals** made by a process, so you see exactly what a program asks the kernel to do.\n- **ltrace** — traces the **library calls** a process makes to shared libraries (LIBC, `ld.so`, etc.).\n- **lsof** — **lists open files, sockets, and processes** using files or ports.\n- **Recovery Mode** — **boots into a rescue mode** to repair broken systems that won't start normally.\n\nTogether these let you watch a program from the outside (syscalls and library calls), see what resources it holds open, and recover a machine that won't boot.",
+    image: "/devops-notes/linux-troubleshooting-strace-ltrace-lsof.jpg",
+    imageAlt: "Learning Linux Day 28/30 infographic on Linux troubleshooting covering strace (trace system calls and signals), ltrace (trace library calls), lsof (list open files, sockets, ports), and Recovery Mode. It includes basic usage, examples and useful-options tables for each tool, common use cases, quick one-liners (who is using port 22, who deleted a file still in use, trace why a program fails, trace library calls), Recovery Mode steps (access GRUB menu, boot to recovery mode, common tasks with mount/fsck/chroot/apt --fix-broken/passwd, and remount root read-write), a Diagnosing System Issues symptom-to-command table, a Useful Commands Arsenal (dmesg, journalctl, systemctl status, ps aux, free, df, uptime, cat /etc release), an example 7-step troubleshooting flow, best practices, a strace vs ltrace vs lsof comparison table, and key takeaways.",
+  },
+  {
+    id: "strace-trace-system-calls",
+    title: "1. strace — Trace System Calls",
+    content: "**strace** shows the **system calls, signals, and errors** of a running process. Because almost everything a program does eventually goes through the kernel (opening files, reading, network I/O), strace is ideal for spotting exactly where a program fails and with which errno. You can start a fresh command under strace, attach to an already-running process by PID, or write the trace to a file for later study.\n\nUseful options:\n\n- `-f` — Follow child processes.\n- `-o file` — Write output to file.\n- `-e trace=...` — Trace specific syscalls (e.g., `-e trace=open`).\n- `-s <size>` — Set string size to print.\n- `-tt` — Print timestamps.\n\n**Tip:** strace is great for debugging **\"Permission denied\"**, **\"File not found\"**, and other syscall issues.",
+    code: "# Basic usage\n$ strace <command> [options]\n\n# Trace a command\n$ strace ls -l\n\n# Trace a running process (by PID)\n$ strace -p 1234\n\n# Save output to file\n$ strace -o trace.log ls -l",
+  },
+  {
+    id: "ltrace-trace-library-calls",
+    title: "2. ltrace — Trace Library Calls",
+    content: "**ltrace** shows the calls a program makes to **shared libraries** (LIBC, `ld.so`, etc.). Where strace works at the kernel boundary, ltrace works one layer up at the user-space library boundary, so it reveals which library functions the program invokes and with what arguments. This makes it perfect for debugging application-level issues such as memory allocation failures or dynamic-loading problems. You can trace a command, log output to a file, or filter to specific library functions.\n\nUseful options:\n\n- `-f` — Follow child processes.\n- `-o file` — Write output to file.\n- `-e expr` — Filter expression (e.g., `malloc`).\n- `-s <size>` — Set string size to print.\n- `-tt` — Print timestamps.\n\n**Tip:** ltrace helps debug application issues related to library usage (e.g., `malloc` failures, `dlopen`).",
+    code: "# Basic usage\n$ ltrace <command> [options]\n\n# Trace a command\n$ ltrace ls\n\n# Trace with output to file\n$ ltrace -o ltrace.log mysql\n\n# Show only specific library calls\n$ ltrace -e malloc,free ./app",
+  },
+  {
+    id: "lsof-list-open-files",
+    title: "3. lsof — List Open Files",
+    content: "**lsof** (List Open Files) shows what **files, sockets, and devices** are in use. In Linux nearly everything is a file, so lsof is the go-to tool for questions like \"which process is holding this file open?\", \"who is listening on this port?\", or \"why can't I unmount this disk?\". You can list everything, narrow to a specific file, look up network connections, or list files opened by a given PID or user.\n\nUseful options:\n\n- `-i` — List network connections.\n- `-p <pid>` — List files opened by PID.\n- `-u <user>` — List files opened by user.\n- `-D <dir>` — Search files under a directory.\n- `-nP` — Don't resolve names/ports.\n\n**Tip:** lsof is powerful for finding **\"Address already in use\"** and file lock issues.",
+    code: "# Basic usage\n$ lsof [options] [file|dir|pid]\n\n# List open files by all processes\n$ lsof\n\n# Find which process uses a file\n$ lsof /var/log/syslog\n\n# Find which process uses a port (e.g., 80)\n$ lsof -i :80\n\n# List files opened by a PID\n$ lsof -p 1234",
+  },
+  {
+    id: "common-use-cases-one-liners",
+    title: "4. Common Use Cases + Quick One-Liners",
+    content: "These tools cover the everyday diagnostic questions a Linux admin faces. Common use cases:\n\n- **Trace a failing command** — strace.\n- **Debug library problems** — ltrace.\n- **Find process using a port** — `lsof -i :port`.\n- **Find process locking a file** — `lsof /path/file`.\n- **Debug hung or stuck services**.\n- **Investigate permission or syscall errors**.\n\nThe quick one-liners below answer the most frequent real-world questions: which process is bound to SSH's port, which deleted-but-still-open file is eating disk, why a program keeps failing, and what library calls a program makes.",
+    code: "# Who is using port 22?\n$ lsof -i :22\n\n# Who deleted a file but still in use?\n$ lsof | grep deleted\n\n# Trace why a program fails\n$ strace -f -o out.log ./myapp\n\n# Trace library calls of program\n$ ltrace -o lib.log ./myapp",
+  },
+  {
+    id: "recovery-mode",
+    title: "5. Recovery Mode — When the System Won't Boot or Is Broken",
+    content: "When a system won't boot normally, **Recovery Mode** gives you a minimal environment to repair it.\n\n**5.1 Access GRUB Menu:** Restart the system, then press and hold **Shift** (BIOS) or **Esc** (UEFI) to open the GRUB menu. Typical entries include Ubuntu, *Advanced options for Ubuntu*, *Memory test (memtest86+)*, and *UEFI Firmware Settings*.\n\n**5.2 Boot to Recovery Mode:** Select **Advanced options for your OS**, then choose **recovery mode** (sometimes shown as \"root\" or \"rescue mode\").\n\n**5.3 Common Tasks in Recovery Mode:** Mount the root filesystem, check the disk with `fsck`, `chroot` into it, fix broken packages, or reset a forgotten root password (see commands).\n\n**5.4 Remount Root as Read-Write:** Recovery mode often mounts root read-only; remount it read-write before making changes, verify with `mount`, then reboot.",
+    code: "# 5.3 Common Tasks in Recovery Mode\n\n# Mount root filesystem (if needed)\nsudo mount /dev/sdaX /mnt\ncd /mnt\n\n# Check disk\nfsck -y /dev/sdaX\n\n# Check and fix packages\nchroot\napt update && apt --fix-broken install\nexit\n\n# Reset forgotten root password (Debian/Ubuntu)\npasswd root\n\n# 5.4 Remount Root as Read-Write\n# If mounted read-only:\nsudo mount -o remount,rw /\n\n# Check mount:\nmount | grep ' on / '\n\n# Exit and reboot:\nreboot",
+  },
+  {
+    id: "diagnosing-issues-arsenal-flow",
+    title: "6–8. Diagnosing Issues, Useful Commands Arsenal & Example Flow",
+    content: "**Diagnosing System Issues** (Symptom → Tool/Command):\n\n- **Program not working** → `strace ./app`.\n- **Missing library errors** → `ltrace ./app`.\n- **Port already in use** → `lsof -i :port`.\n- **File busy or locked** → `lsof /path/file`.\n- **Service crashed** → `journalctl -xeu service`.\n- **High CPU / Memory** → `top`, `htop`, `ps aux`.\n- **Disk issues** → `df -h`, `dmesg | tail`.\n\n**Useful Commands Arsenal:**\n\n- `dmesg | tail` — Check kernel messages.\n- `journalctl -xe` — View recent system errors.\n- `systemctl status <svc>` — Check service status.\n- `ps aux | less` — List running processes.\n- `free -h` — Check memory usage.\n- `df -h` — Check disk usage.\n- `uptime` — System load and uptime.\n- `cat /etc/*/release` — OS release info.\n\n**Example Troubleshooting Flow:** (1) Identify the problem (error message, service down, etc.); (2) Check logs: `journalctl -xe`; (3) Check running processes: `ps aux / top`; (4) Find open files/ports: `lsof -i / lsof /path/file`; (5) Trace system calls: `strace <command>`; (6) Trace library calls: `ltrace <command>`; (7) If system won't boot → use Recovery Mode. Overall pattern: **Problem → Diagnose → Isolate → Fix → Verify**.",
+  },
+  {
+    id: "comparison-best-practices-takeaways",
+    title: "9–11. strace vs ltrace vs lsof, Best Practices & Key Takeaways",
+    content: "**strace vs ltrace vs lsof** (Feature / strace / ltrace / lsof):\n\n- **What it traces** — strace: System calls, signals; ltrace: Library calls; lsof: Open files, sockets, devices.\n- **Works at** — strace: Kernel level; ltrace: User-space (libs); lsof: System view.\n- **Use for** — strace: Syscall errors, permissions, file, network issues; ltrace: Library problems, memory, `dlopen`, `malloc` issues; lsof: File locks, ports, deleted files, network.\n- **Overhead** — strace: Higher; ltrace: Lower; lsof: Medium.\n\n**Best Practices:**\n\n- Always check logs first.\n- Use the right tool for the job.\n- Work carefully in recovery mode.\n- Don't forget to remount root as RW.\n- Backup important data regularly.\n- Document fixes for future reference.\n\n**Key Takeaways:**\n\n- **strace** helps you see what the program asks the kernel to do.\n- **ltrace** shows what library calls the program makes.\n- **lsof** reveals which resources are in use by processes.\n- **Recovery mode** is your safety net when Linux won't boot.\n- Practice these tools — they save time and stress. Great Linux admins don't avoid problems; they know how to solve them.",
+  },
+];
+
+const LINUX_HARDENING_SECTIONS = [
+  {
+    id: "why-hardening-matters",
+    title: "Why Hardening Matters & the Five-Pillar Overview",
+    content: "**Hardening** reduces your attack surface and protects systems from unauthorized access, misconfiguration, and threats. A secure system is stable, reliable, and trusted, so hardening is not an optional extra but the foundation that keeps everything else you build safe.\n\nThe poster organizes all of Linux hardening around five pillars. Understanding these gives you a mental checklist to apply to any machine:\n\n- **Secure Access** — restrict and protect remote and local access so only the right people can log in.\n- **Least Privilege** — use the minimal privileges required to perform a task, limiting the damage any account or process can do.\n- **Keep Updated** — apply security updates and patches regularly to close known vulnerabilities.\n- **Monitor & Audit** — monitor logs and audit system activity continuously to catch intrusions early.\n- **Backup & Recovery** — back up important data and test recovery plans so you can restore after failure or compromise.",
+    image: "/devops-notes/linux-hardening-secure-config.jpg",
+    imageAlt: "Learning Linux Day 29/30 infographic titled 'Linux Hardening: Secure Configuration and Best Practices' by @e_opore. It opens with a 'Why It Matters' panel and a five-pillar hardening overview (Secure Access, Least Privilege, Keep Updated, Monitor & Audit, Backup & Recovery), then walks through sixteen numbered areas: securing users and authentication, SSH configuration, updates and patching, firewall/UFW, file permissions and ownership, disabling unnecessary services, kernel/sysctl hardening, logging and monitoring with fail2ban, a security checklist, important secure directories and files, backup and recovery with rsync, a best-practices summary, quick-reference commands, recovery mode, hardening your mindset, and key takeaways. Each area pairs a checklist with verbatim command and config examples.",
+  },
+  {
+    id: "users-and-ssh",
+    title: "Secure Users & SSH Configuration",
+    content: "**1. Secure User and Authentication.** Authentication is the front door, so lock it down. Strong passwords and passphrases resist brute force, SSH key authentication removes the weakest link entirely, minimal-privilege accounts limit blast radius, and locking inactive accounts closes forgotten entry points.\n\n- Use strong passwords and passphrases.\n- Disable root login over SSH.\n- Use SSH key authentication.\n- Create users with minimal privileges.\n- Lock inactive accounts.\n\n**Tip:** Use SSH keys and disable password login.\n\n**2. Secure SSH Configuration.** SSH is the most common remote entry point, so hardening `sshd` matters most. Changing the default port cuts automated scanning noise, restricting `AllowUsers` limits who can even attempt a login, key-based auth stops password guessing, and disabling unused auth methods shrinks the attack surface.\n\n- Change the default SSH port.\n- Limit SSH access to specific users or IPs.\n- Use key-based authentication.\n- Disable unused authentication methods.\n\n**Tip:** Always test before locking yourself out. Edit the config with `sudo nano /etc/ssh/sshd_config` and restart the service to apply changes.",
+    code: "# Disable root SSH login\nsudo nano /etc/ssh/sshd_config\nPermitRootLogin no\nPasswordAuthentication no\n\n# Restart SSH service\nsudo systemctl restart sshd\n\n# /etc/ssh/sshd_config\nPort 2222\nPermitRootLogin no\nPasswordAuthentication no\nAllowUsers devops alice\n\n# Restart SSH\nsudo systemctl restart sshd",
+  },
+  {
+    id: "updates-and-firewall",
+    title: "Updates, Patching & the Firewall (UFW)",
+    content: "**3. Update and Patch Regularly.** Most real-world compromises exploit known, already-patched vulnerabilities. Keeping packages current, enabling automatic security updates via `unattended-upgrades`, and removing unused packages all shrink the window of exposure.\n\n- Keep system and packages up to date.\n- Enable automatic security updates.\n- Remove unused packages.\n\n**Tip:** Reboot after critical kernel updates.\n\n**4. Firewall and Network Protection.** A firewall enforces a default-deny posture so only services you explicitly allow are reachable. With **UFW** you deny all incoming by default, allow outgoing, then open just SSH, HTTP (80), and HTTPS (443). This blocks malicious or unused connections while keeping needed services available.\n\n- Enable and configure a firewall.\n- Allow only necessary ports and services.\n- Block malicious or unused connections.\n\n**Tip:** Default deny incoming traffic. Verify rules afterward with `sudo ufw status verbose`.",
+    code: "# Update and patch (Ubuntu/Debian)\nsudo apt update && sudo apt upgrade -y\nsudo apt autoremove -y\nsudo apt install unattended-upgrades\n\n# Enable automatic updates\nsudo dpkg-reconfigure -plow unattended-upgrades\n\n# Firewall (UFW)\nsudo ufw default deny incoming\nsudo ufw default allow outgoing\nsudo ufw allow ssh\nsudo ufw allow 80/tcp\nsudo ufw allow 443/tcp\nsudo ufw enable\nsudo ufw status verbose",
+  },
+  {
+    id: "permissions-and-services",
+    title: "File Permissions & Disabling Unnecessary Services",
+    content: "**5. File Permissions and Ownership.** Permissions enforce least privilege at the filesystem level. Correct ownership and mode bits keep sensitive files readable only by those who need them, removing world-writable permissions stops tampering, and ACLs give fine-grained control when standard modes are not enough. For example `chmod 640` on a file allows owner read/write and group read only; `chmod 750` on a directory keeps it off-limits to others.\n\n- Follow the principle of least privilege.\n- Set correct ownership for files and dirs.\n- Remove world-writable permissions.\n- Use ACLs for fine-grained control.\n\n**Tip:** Protect sensitive files like `/etc/shadow`.\n\n**6. Disable Unnecessary Services.** Every running service is a potential entry point. List what is running, then disable and stop anything you do not need, such as legacy `telnet`. Fewer services means a smaller attack surface.\n\n- List running services.\n- Disable and stop unused services.\n- Reduce attack surface.\n\n**Tip:** Only run what you need.",
+    code: "# Set file permissions\nchmod 640 /home/devops\n\n# Set directory permissions\nchmod 750 /home/devops\n\n# Set ownership\nsudo chown devops:devops /home/devops/file.txt\n\n# List services\nde systemctl list-units --type=service\n\n# Disable and stop a service\nsudo systemctl disable telnet\nsudo systemctl stop telnet",
+  },
+  {
+    id: "kernel-and-logging",
+    title: "Kernel/Sysctl Hardening & Logging with fail2ban",
+    content: "**7. Kernel and Sysctl Hardening.** Kernel network parameters control how the system handles packets. Tuning them via `/etc/sysctl.d/99-hardening.conf` prevents IP spoofing and unwanted forwarding, ignores ICMP redirects that could reroute traffic, and enables TCP SYN cookies to resist SYN-flood denial-of-service attacks. Apply changes with `sysctl --system`.\n\n- Tune kernel parameters for security.\n- Prevent IP spoofing and packet forwarding.\n- Ignore ICMP redirects.\n\n**Tip:** Apply changes and reboot to test.\n\n**8. Logging and Monitoring.** Logs are how you detect and investigate attacks. Enable logging for auth and system events, watch them for suspicious activity, and use **fail2ban** to automatically ban IPs that repeatedly fail login, defeating brute-force attempts without manual effort.\n\n- Enable logging for auth and system events.\n- Monitor logs for suspicious activity.\n- Use tools like fail2ban for brute force.\n\n**Tip:** Review logs in `/var/log/` regularly.",
+    code: "# /etc/sysctl.d/99-hardening.conf\nnet.ipv4.ip_forward = 0\nnet.ipv4.conf.all.accept_redirects = 0\nnet.ipv4.conf.default.accept_redirects = 0\nnet.ipv4.conf.default.secure_redirects = 0\nnet.ipv4.tcp_syncookies = 1\n\n# Apply settings\nsudo sysctl --system\n\n# Install fail2ban\nsudo apt install fail2ban -y\n\n# Enable and start\nsudo systemctl enable fail2ban\nsudo systemctl start fail2ban\n\n# Check status\nsudo fail2ban-client status",
+  },
+  {
+    id: "checklist-and-secure-files",
+    title: "Security Checklist & Important Secure Files",
+    content: "**9. Security Checklist.** Use this end-to-end list to confirm a system is hardened before it goes into service:\n\n- Disable root SSH login.\n- Use strong passwords and SSH keys.\n- Keep system and packages updated.\n- Enable firewall and close unused ports.\n- Disable unnecessary services.\n- Set proper file permissions and ownership.\n- Enable logging and monitoring.\n- Backup important data regularly.\n- Test recovery procedures.\n\n**10. Important Secure Directories and Files.** Know where security-critical data lives so you can protect and audit it (Path — Purpose):\n\n- `/etc/passwd` — User account info.\n- `/etc/shadow` — Encrypted passwords.\n- `/etc/sudoers` — Sudo access control.\n- `/etc/ssh/sshd_config` — SSH server configuration.\n- `/etc/hosts.deny` — Deny hosts (legacy).\n- `/etc/fail2ban/` — Fail2ban configuration.\n- `/var/log/auth.log` — Authentication logs.\n- `/etc/sysctl.conf` — Kernel network settings.",
+  },
+  {
+    id: "backup-and-recovery",
+    title: "Backup, Recovery & Recovery Mode",
+    content: "**11. Backup and Recovery.** Backups are your last line of defense when hardening fails or hardware dies. Back up configs and important data, test restoration regularly so you know it actually works, and store copies securely off-site so a single compromise or disaster cannot destroy both the system and its backups. The example uses `rsync` to archive `/etc/` and `/home/` while preserving permissions.\n\n- Backup configs and important data.\n- Test restoration regularly.\n- Store backups securely off-site.\n\n**Tip:** Backups are your last line of defense.\n\n**14. Recovery Mode — When Things Go Wrong.** If a misconfiguration locks you out, boot into recovery to fix it:\n\n- Boot to GRUB menu.\n- Select **Advanced options** then **Recovery mode**.\n- Choose **root** — Drop to root shell prompt.\n- Remount the filesystem as read-write.\n- Fix issues (remove bad config, reset password, etc.).\n- Reboot.",
+    code: "# Backup with rsync\nsudo rsync -avz /etc/ /backup/etc/\nsudo rsync -avz /home/ /backup/home/\n\n# Recovery mode: remount root as read-write\nmount -o remount,rw /\n\n# Reboot when done\nreboot",
+  },
+  {
+    id: "quick-reference-and-takeaways",
+    title: "Quick Reference, Best Practices & Key Takeaways",
+    content: "**13. Quick Reference Commands** (Task — Command):\n\n- Check open ports — `sudo ss -tuln`\n- List running services — `systemctl list-units --type=service`\n- Check failed logins — `sudo fail2ban-client status`\n- View system logs — `journalctl -xe`\n- Check disk usage — `df -h`\n- Check memory usage — `free -h`\n- Check user sessions — `who`\n\n**12. Security Best Practices Summary.**\n\n- **Access Control** — limit access to only authorized users.\n- **Network Security** — use firewall, VPN, and secure protocols.\n- **System Updates** — keep OS, packages, and firmware updated.\n- **Monitoring** — monitor logs, alerts, and system performance.\n- **Data Protection** — encrypt sensitive data and protect backups.\n- **Incident Response** — have a plan and test it regularly.\n- **Documentation** — document your changes and policies.\n\n**15. Harden Your Mindset.** Security is not a one-time task: think before you install, automate and document, and review and improve continuously. \"A secure system is a well-configured and well-maintained system.\"\n\n**16. Key Takeaways.**\n\n- Minimize and monitor access.\n- Keep systems updated and patched.\n- Use strong authentication methods.\n- Monitor and audit continuously.\n- Back up and test recovery.\n- Security is everyone's responsibility.",
+    code: "sudo ss -tuln\nsystemctl list-units --type=service\nsudo fail2ban-client status\njournalctl -xe\ndf -h\nfree -h\nwho",
+  },
+];
+
 function buildLessons() {
   const lessons = [];
   let day = 1;
@@ -789,6 +890,18 @@ function buildLessons() {
       // Add the Linux virtualization visual note to the process-management module.
       if (title === 'Linux Process Management') {
         lesson.sections = [...(lesson.sections || []), ...LINUX_VIRTUALIZATION_SECTIONS];
+      }
+      // Linux troubleshooting toolkit — strace, ltrace, lsof, recovery mode.
+      if (title === 'Linux Process Management') {
+        lesson.sections = [...(lesson.sections || []), ...LINUX_TROUBLESHOOTING_SECTIONS];
+        lesson.image = LINUX_TROUBLESHOOTING_SECTIONS[0].image;
+        lesson.imageAlt = LINUX_TROUBLESHOOTING_SECTIONS[0].imageAlt;
+      }
+      // Linux hardening — secure configuration & best practices.
+      if (title === 'Disable Root Login') {
+        lesson.sections = [...LINUX_HARDENING_SECTIONS, ...(lesson.sections || [])];
+        lesson.image = LINUX_HARDENING_SECTIONS[0].image;
+        lesson.imageAlt = LINUX_HARDENING_SECTIONS[0].imageAlt;
       }
       // The Linux final-project capstone — build a production-ready Linux server.
       // Docker Compose — the MERN stack multi-container project.
