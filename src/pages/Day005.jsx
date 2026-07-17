@@ -60,9 +60,9 @@ const OBJECTS = [
     footer: '+ Objects help us represent real world entities cleanly.',
   },
   {
-    icon: '🔜', title: 'Next: Interfaces', titleClass: 'card-title-lime', subtitle: 'Day 6 Preview',
+    icon: '🔜', title: 'Next: Advanced Types', titleClass: 'card-title-lime', subtitle: 'Day 6 Preview',
     description:
-      'Tomorrow: interfaces — giving these object shapes a reusable name, with extending, implementing, and interface vs type.',
+      'Tomorrow (Episode 6): union types, literal types, type aliases and intersection types — modelling real-world scenarios more precisely.',
     link: { href: '/day-006', label: 'Go to Day 6 →' },
   },
 ];

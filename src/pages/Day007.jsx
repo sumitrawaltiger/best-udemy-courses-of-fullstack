@@ -6,6 +6,10 @@ const TS_CLASSES = 'https://www.typescriptlang.org/docs/handbook/2/classes.html'
 const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
+  { title: 'interface basics', text: 'name an object shape once: `interface User { name: string; age: number }` and reuse it everywhere' },
+  { title: 'Optional & readonly', text: '`email?: string` is optional; `readonly id: number` is set once and never reassigned' },
+  { title: 'Declaration merging', text: 'two interfaces with the same name merge into one — a TS-only superpower aliases lack' },
+  { title: 'interface vs type', text: 'interfaces extend/merge; type aliases do unions & mapped types' },
   { title: 'Typed classes', text: 'fields and methods carry types — `class Point { x: number; y: number }`' },
   { title: 'Constructors', text: 'initialize typed fields; strict mode ensures every field is assigned' },
   { title: 'public / private / protected', text: 'access modifiers control who can touch a member' },
@@ -16,6 +20,29 @@ const LEARNT_TODAY = [
   { title: 'Inheritance', text: '`extends` a base class, call `super()`, override methods with correct types' },
   { title: 'abstract classes', text: 'a base you cannot instantiate; abstract methods must be implemented' },
   { title: 'static members', text: 'belong to the class itself — shared counters, factories, constants' },
+];
+
+const INTERFACES = [
+  {
+    icon: '📐', title: 'Interface Basics', titleClass: 'card-title-cyan', subtitle: 'Name A Shape',
+    description: 'An interface names an object shape once so you can reuse it everywhere. Day 6 named types with `type`; `interface` is the other way — and the one classes are built to honour.',
+    code: 'interface User {\n  name: string;\n  age: number;\n}\nconst u: User = { name: "Sumit", age: 26 };',
+  },
+  {
+    icon: '❔', title: 'Optional & readonly', titleClass: 'card-title-purple', subtitle: '? and readonly',
+    description: 'A trailing ? makes a field optional, and readonly fields are set once at creation and never reassigned — perfect for IDs and timestamps.',
+    code: 'interface Account {\n  readonly id: number;\n  email?: string;   // optional\n  balance: number;\n}\nacc.id = 5; // ❌ cannot reassign',
+  },
+  {
+    icon: '🧮', title: 'Methods & Index Signatures', titleClass: 'card-title-amber', subtitle: 'Behaviour & Dynamic Keys',
+    description: 'Interfaces can require methods, not just data. An index signature types keys you do not know ahead of time — a dictionary or config map.',
+    code: 'interface Logger {\n  log(msg: string): void;\n}\ninterface Scores {\n  [player: string]: number;\n}',
+  },
+  {
+    icon: '⚖️', title: 'interface vs type', titleClass: 'card-title-lime', subtitle: 'When To Use Which',
+    description: 'Interfaces extend and merge — declare one twice and TypeScript merges them, which libraries use for augmentation. Type aliases (Day 6) do unions, tuples and mapped types. Use interface for object shapes a class implements.',
+    code: 'interface Box { w: number; }\ninterface Box { h: number; }\n// Box now has w and h — aliases cannot do this',
+  },
 ];
 
 const BASICS = [
@@ -167,10 +194,10 @@ export default function Day007() {
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Classes</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Interfaces</span><span>Classes</span></div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">DAY 7 <span aria-hidden="true">🏛️</span></h1>
-              <p className="day001-day-theme">CLASSES & OOP IN TYPESCRIPT</p>
+              <p className="day001-day-theme">INTERFACES, CLASSES &amp; OOP</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -204,6 +231,7 @@ export default function Day007() {
           </ul>
         </section>
 
+        <CardSection icon="📐" title="INTERFACES — MODELLING OBJECT SHAPES" cards={INTERFACES} columns={4} />
         <CardSection icon="🏛️" title="CLASS BASICS" cards={BASICS} columns={3} />
         <CardSection icon="🔐" title="STATE & ACCESS" cards={STATE} columns={4} />
         <CardSection icon="🧬" title="INHERITANCE & ABSTRACTION" cards={INHERIT} columns={4} />
