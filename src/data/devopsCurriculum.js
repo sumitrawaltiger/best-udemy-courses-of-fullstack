@@ -846,6 +846,97 @@ const LINUX_HARDENING_SECTIONS = [
   },
 ];
 
+const DOCKER_VOLUMES_SECTIONS = [
+  {
+    id: "why-volumes-and-types",
+    title: "Why Volumes & the Three Volume Types",
+    content: "**Containers are ephemeral.** When a container is removed, everything written to its writable layer disappears with it. **Volumes persist data beyond the lifecycle of a container**, so databases, logs and uploads survive restarts, upgrades and even deletion of the container that created them.\n\nDocker offers three volume types:\n\n- **Named Volumes** — managed by Docker and stored on the Docker host in Docker's own storage area. They are the portable, recommended choice for production.\n- **Bind Mounts** — map a host path or file directly into the container, so changes on the host reflect instantly inside the container. Ideal for development.\n- **tmpfs Mounts** — stored in the host's memory (RAM) and therefore **non-persistent**; data vanishes when the container stops. Good for secrets and scratch data.\n\nThe guiding rule: **Volumes = data durability. Containers = stateless execution.**",
+    image: "/devops-notes/docker-volumes-persistent-storage.jpg",
+    imageAlt: "Day 6 Docker infographic titled 'Docker Volumes - Persistent Storage and Data Management' by @e_opore. A left-hand vertical flow covers 1. Why Volumes (containers are ephemeral, volumes persist data beyond a container's lifecycle), 2. Volume Types (Named Volumes managed by Docker, Bind Mounts mapping a host path, tmpfs Mounts stored in host memory), 3. Volume Lifecycle (Create, Use, Remove), 4. Common Use Cases (database data, application logs, user uploads, cache and build artifacts) and 5. Best Practices. The right side shows a VOLUME COMMANDS table with an example block, a USING VOLUMES WITH CONTAINERS table for named/bind/tmpfs syntax, three PRACTICAL EXAMPLES (MySQL named volume, bind mount for app source, tmpfs for temporary data), a VOLUME INSPECTION EXAMPLE showing docker volume inspect JSON output, a 6-step VOLUME WORKFLOW OVERVIEW, a QUICK REFERENCE table, TIPS, and a MySQL backup example. The closing tip reads 'Volumes = Data durability. Containers = Stateless execution.'",
+  },
+  {
+    id: "volume-commands-lifecycle",
+    title: "Volume Commands & Lifecycle",
+    content: "The **volume lifecycle** has three stages: **Create** the volume (`docker volume create`), **Use** it by attaching it to a container, and **Remove** it when no longer needed (`docker volume rm`).\n\nThe core management commands:\n\n- `docker volume create <name>` — Create a named volume\n- `docker volume ls` — List all volumes\n- `docker volume inspect <name>` — Inspect a volume\n- `docker volume rm <name>` — Remove a specific volume\n- `docker volume prune` — Remove unused volumes\n- `docker volume ls -qf dangling=true` — List dangling (unused) volumes\n- `docker volume prune -f` — Remove all dangling volumes\n\nDangling volumes are ones no container references; pruning reclaims disk space.",
+    code: "$ docker volume create mydata\n$ docker volume ls\n$ docker volume inspect mydata\n$ docker volume rm mydata\n$ docker volume prune",
+  },
+  {
+    id: "using-volumes-with-containers",
+    title: "Using Volumes with Containers",
+    content: "You attach storage at `docker run` time. Each type has its own syntax, using either the short `-v` flag or the more explicit `--mount` form.\n\n- **Named Volume** — Syntax: `-v <volume-name>:<container-path>` or `--mount source=<volume-name>,target=<container-path>`. Example: `docker run -d -v mydata:/var/lib/mysql mysql:8`\n- **Bind Mount** — Syntax: `-v <host-path>:<container-path>` or `--mount type=bind,src=<host-path>,dst=<container-path>`. Example: `docker run -d -v /data/mysql:/var/lib/mysql mysql:8`\n- **tmpfs Mount** — Syntax: `--mount type=tmpfs,dst=<container-path>`. Example: `docker run -d --mount type=tmpfs,dst=/tmp nginx`\n\nWith a named volume Docker manages the storage; with a bind mount you point at a specific host directory; with tmpfs the data lives only in memory.",
+    code: "# Named Volume\ndocker run -d -v mydata:/var/lib/mysql mysql:8\n\n# Bind Mount\ndocker run -d -v /data/mysql:/var/lib/mysql mysql:8\n\n# tmpfs Mount\ndocker run -d --mount type=tmpfs,dst=/tmp nginx",
+  },
+  {
+    id: "practical-examples",
+    title: "Practical Examples",
+    content: "Three real-world scenarios show each volume type in action.\n\n**1. Persisting MySQL Data with a Named Volume** — first create the volume, then run MySQL with the volume mounted at `/var/lib/mysql`. The **data persists even if the container is removed**, because it lives in the named volume rather than the container layer.\n\n**2. Using a Bind Mount for App Source Code** — mount your current working directory into the container's app folder. **Changes on the host reflect in the container instantly**, which makes live-reload development workflows possible without rebuilding the image.\n\n**3. tmpfs Mount for Temporary Data** — mount a tmpfs at `/tmp`. **Data in `/tmp` is stored in memory, not on disk**, so it is fast and automatically discarded when the container stops.",
+    code: "# 1. Persisting MySQL Data with Named Volume\ndocker volume create\ndocker run -d --name mysql \\\n  -v mysql_data:/var/lib/mysql \\\n  -e MYSQL_ROOT_PASSWORD=secret \\\n  mysql:8\n\n# 2. Using Bind Mount for App Source Code\ndocker run -d -p 3000:3000 \\\n  -v $(pwd)/app:/usr/src/app \\\n  --name nodeapp node:20\n\n# 3. tmpfs Mount for Temporary Data\ndocker run -d --name web \\\n  --mount type=tmpfs,dst=/tmp \\\n  nginx",
+  },
+  {
+    id: "inspection-and-workflow",
+    title: "Inspecting a Volume & Workflow Overview",
+    content: "`docker volume inspect <name>` returns JSON metadata about a volume. Key fields to read:\n\n- **Driver: local (default)** — the storage driver managing the volume.\n- **Mountpoint** — the path on the host where the volume's data actually lives.\n- **Scope: local** — the volume is local to this host, not shared swarm-wide.\n\nThe end-to-end **volume workflow** proves persistence in six steps:\n\n- **1. Create Volume** — `docker volume create mydata`\n- **2. Run Container** — `docker run -v mydata:/data app`\n- **3. Data Written** — data is stored in the volume\n- **4. Remove Container** — `docker rm -f <id>`\n- **5. Data Still Safe** — the volume remains intact\n- **6. Reuse Volume** — attach it to a new container\n\nThe container is disposable; the volume and its data are not.",
+    code: "$ docker volume inspect mysql_data\n[\n    {\n        \"CreatedAt\": \"2024-05-12T10:30:00Z\",\n        \"Driver\": \"local\",\n        \"Mountpoint\": \"/var/lib/docker/volumes/mysql_data/_data\",\n        \"Name\": \"mysql_data\",\n        \"Scope\": \"local\"\n    }\n]",
+  },
+  {
+    id: "use-cases-best-practices",
+    title: "Common Use Cases & Best Practices",
+    content: "**Common use cases** for volumes:\n\n- **Database data** (MySQL, Postgres)\n- **Application logs**\n- **User uploads & assets**\n- **Cache & build artifacts**\n\n**Best practices** to follow:\n\n- Use **named volumes for portability**.\n- **Back up important data regularly**.\n- **Avoid storing sensitive data in containers**.\n- Use **volumes for stateful applications**.\n\nA practical corollary from the tips: use bind mounts in development for live code editing, but prefer named volumes in production for portability and Docker-managed storage. Volumes live outside the container's writable layer, which is exactly why they survive container removal.",
+  },
+  {
+    id: "backup-quick-reference",
+    title: "Backup Example & Quick Reference",
+    content: "To back up a MySQL named volume safely, **stop the container first** so the data is at rest, then **archive the volume's mountpoint** on the host into a tarball you can upload or store safely.\n\n**Quick reference** of everyday commands:\n\n- **Create volume** — `docker volume create <name>`\n- **List volumes** — `docker volume ls`\n- **Inspect volume** — `docker volume inspect <name>`\n- **Remove volume** — `docker volume rm <name>`\n- **Prune unused** — `docker volume prune`\n- **Run with volume** — `docker run -v <name>:<path> image`\n\n**Tips:**\n\n- Volumes live outside the container writable layer.\n- Great for databases, logs, and user-generated content.\n- Use bind mounts in dev, named volumes in prod.\n- Back up volumes by backing up their mountpoint on the host.\n\nRun `docker volume --help` to explore all subcommands.",
+    code: "# Backup Example (MySQL Volume)\n# Stop container\ndocker stop mysql\n\n# Backup volume\nsudo tar czf mysql_backup.tar.gz \\\n  /var/lib/docker/volumes/mysql_data/_data\n\n# Then upload or store safely\n\n# Explore all subcommands\n$ docker volume --help",
+  },
+];
+
+const DOCKER_POSTGRES_PROJECT_SECTIONS = [
+  {
+    id: "project-overview",
+    title: "Project overview — persist PostgreSQL with a named volume",
+    content: "This hands-on project proves that a **Docker named volume** keeps PostgreSQL data alive even after the container that created it is gone. The key idea: a container's own filesystem is disposable, but a named volume lives independently, managed by Docker outside any single container.\n\nYou will create a volume called `pgdata`, run PostgreSQL with that volume mounted at its data directory, add some rows, then delete the container entirely. When you launch a **brand-new container** using the same `pgdata` volume, the data is still there. That is persistence: the database files never lived inside the container, so removing the container never touched them.",
+    image: "/devops-notes/docker-postgres-persistent-project.jpg",
+    imageAlt: "Infographic titled 'Project: Run PostgreSQL with persistent data' by @e_opore, showing an 8-step flowchart: create a Docker named volume pgdata, run a postgres:16 container mounting that volume at /var/lib/postgresql/data, verify with docker ps, connect via psql, create a users table and insert Alice and Bob, stop and remove the container, run a new container reusing the same pgdata volume, and verify the rows still exist. Ends with a Useful Commands panel for Volumes, Containers, and Connect.",
+  },
+  {
+    id: "create-volume-run-postgres",
+    title: "Create the volume & run PostgreSQL",
+    content: "**Step 1 — Create the data volume.** Run `docker volume create pgdata` to make a named volume. **Tip:** named volumes are managed by Docker and survive container removals, which is exactly what makes this project work.\n\n**Step 2 — Run the PostgreSQL container** and attach the volume. The environment variables set the initial superuser (`POSTGRES_USER=myuser`), its password (`POSTGRES_PASSWORD=mypassword`), and a starting database (`POSTGRES_DB=mydb`). `-p 5432:5432` publishes the Postgres port to your host.\n\nThe crucial flag is `-v pgdata:/var/lib/postgresql/data`, which mounts the named volume onto Postgres's data directory. **What's happening:** all database files are written into the volume, not into the container's filesystem, so stopping or removing the container never loses your data.",
+    code: "# Step 1: Create a named volume to persist your database data\ndocker volume create pgdata\n\n# Step 2: Run a PostgreSQL container and attach the volume\ndocker run -d \\\n  --name postgres-db \\\n  -e POSTGRES_USER=myuser \\\n  -e POSTGRES_PASSWORD=mypassword \\\n  -e POSTGRES_DB=mydb \\\n  -p 5432:5432 \\\n  -v pgdata:/var/lib/postgresql/data \\\n  postgres:16",
+  },
+  {
+    id: "verify-and-connect",
+    title: "Verify the container & connect with psql",
+    content: "**Step 3 — Verify the container is running.** Run `docker ps` to check the running container. The expected (truncated) output shows the container ID, the `postgres:16` image, the `docker-entrypoint.s...` command, a status like `Up 2 minutes`, and the published port mapping `0.0.0.0:5432->5432/tcp`.\n\n**Step 4 — Connect to PostgreSQL** using `psql` from inside the container. `docker exec -it postgres-db psql -U myuser -d mydb` opens an interactive psql shell as user `myuser` on database `mydb`. Once **inside the psql shell** you can run SQL such as `SELECT version();` to confirm the server version, and type `\\q` to quit back to your host shell.",
+    code: "# Step 3: Check the running container\ndocker ps\n\n# Expected Output (truncated):\n# CONTAINER ID   IMAGE         COMMAND                   STATUS         PORTS\n# a1b2c3d4e5f6   postgres:16   \"docker-entrypoint.s...\"  Up 2 minutes   0.0.0.0:5432->5432/tcp\n\n# Step 4: Connect to the database using psql\ndocker exec -it postgres-db psql -U myuser -d mydb\n\n# Inside psql shell:\nmydb=> SELECT version();\nmydb=> \\q",
+  },
+  {
+    id: "create-test-data",
+    title: "Create test data (table + rows)",
+    content: "**Step 5 — Create test data** so you have something to prove persistence with. Inside the psql shell, create a `users` table with an auto-incrementing `id` (a `SERIAL PRIMARY KEY`) and a required `name` column (`TEXT NOT NULL`).\n\nThen insert two rows, `'Alice'` and `'Bob'`, and run `SELECT * FROM users;` to read them back. The **sample result** shows two rows: id `1` Alice and id `2` Bob, reported as `(2 rows)`. Remember these rows are being written into the `pgdata` volume, not into the container, which is why they will survive the next steps.",
+    code: "-- Step 5: Create a table and insert data\nCREATE TABLE users (\n  id SERIAL PRIMARY KEY,\n  name TEXT NOT NULL\n);\n\nINSERT INTO users (name) VALUES ('Alice'), ('Bob');\nSELECT * FROM users;\n\n-- Sample Result:\n-- id | name\n-- ----+------\n--  1 | Alice\n--  2 | Bob\n-- (2 rows)",
+  },
+  {
+    id: "stop-remove-container",
+    title: "Stop & remove the container (data stays in the volume)",
+    content: "**Step 6 — Stop and remove the container.** First `docker stop postgres-db` to stop it, then `docker rm postgres-db` to remove it entirely. Removing a container normally throws away everything written inside it.\n\n**Tip:** the volume is **not** removed, so your data is still saved. Because Postgres wrote all its files into the `pgdata` named volume — which Docker manages independently of any container — deleting the container leaves the volume and every row inside it untouched. The data is safe in the volume, ready to be picked up by a new container.",
+    code: "# Step 6: Stop and remove the container (data is safe in the volume)\ndocker stop postgres-db\ndocker rm postgres-db",
+  },
+  {
+    id: "rerun-and-verify-persistence",
+    title: "Re-run a new container on the same volume & verify persistence",
+    content: "**Step 7 — Run a new container using the same volume.** Start a fresh container with the exact same `docker run` command, importantly reusing `-v pgdata:/var/lib/postgresql/data`. This new container will use the **existing** `pgdata` volume, so Postgres starts up pointing at the same data directory it used before.\n\n**Step 8 — Verify data persists.** Connect again with `docker exec -it postgres-db psql -U myuser -d mydb` and run `SELECT * FROM users;`. The **result** still shows id `1` Alice and id `2` Bob, `(2 rows)`. The rows survived a full container removal — proof that the named volume, not the container, holds your database. You did it: you're now running PostgreSQL with persistent data using Docker.",
+    code: "# Step 7: Start a new container using the same volume\ndocker run -d \\\n  --name postgres-db \\\n  -e POSTGRES_USER=myuser \\\n  -e POSTGRES_PASSWORD=mypassword \\\n  -e POSTGRES_DB=mydb \\\n  -p 5432:5432 \\\n  -v pgdata:/var/lib/postgresql/data \\\n  postgres:16\n\n# Step 8: Connect again and check your data is still there\ndocker exec -it postgres-db psql -U myuser -d mydb\nmydb=> SELECT * FROM users;\n\n# Result:\n# id | name\n# ---- + ------\n#  1 | Alice\n#  2 | Bob\n# (2 rows)",
+  },
+  {
+    id: "useful-commands",
+    title: "Useful commands reference",
+    content: "A quick reference panel grouping the everyday Docker commands for this workflow into three categories.\n\n- **Volumes** — list, inspect, and remove named volumes. Note that removing a volume deletes its data.\n- **Containers** — list running or all containers and view a container's logs.\n- **Connect** — open a shell inside the container, or connect straight into the database with psql.",
+    code: "# Volumes\ndocker volume ls              # List volumes\ndocker volume inspect pgdata  # Inspect volume\ndocker volume rm pgdata       # Remove volume (deletes data)\n\n# Containers\ndocker ps                     # List running containers\ndocker ps -a                  # List all containers\ndocker logs postgres-db       # View container logs\n\n# Connect\ndocker exec -it postgres-db bash                       # Open bash shell\ndocker exec -it postgres-db psql -U myuser -d mydb     # Connect to the database",
+  },
+];
+
 function buildLessons() {
   const lessons = [];
   let day = 1;
@@ -928,6 +1019,12 @@ function buildLessons() {
       // Docker networking visual notes (drivers reference + frontend/backend project).
       if (title === 'Docker Networking') {
         lesson.sections = [...(lesson.sections || []), ...DOCKER_NETWORKING_SECTIONS];
+      }
+      // Docker Volumes — persistent storage concept + the PostgreSQL persistence project.
+      if (title === 'Docker Volumes') {
+        lesson.sections = [...DOCKER_VOLUMES_SECTIONS, ...DOCKER_POSTGRES_PROJECT_SECTIONS];
+        lesson.image = DOCKER_VOLUMES_SECTIONS[0].image;
+        lesson.imageAlt = DOCKER_VOLUMES_SECTIONS[0].imageAlt;
       }
       // The DevOps fundamentals module is the home for the full guide download.
       if (title === 'Fundamentals of DevOps') {
