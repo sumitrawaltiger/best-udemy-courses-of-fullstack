@@ -7,6 +7,37 @@ function pad(n) {
   return String(n).padStart(2, '0');
 }
 
+// Inline markdown: **bold** and `code` only.
+function inline(text, key) {
+  return text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g).map((part, i) => {
+    if (!part) return null;
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={`${key}-${i}`}>{part.slice(2, -2)}</strong>;
+    }
+    if (part.startsWith('`') && part.endsWith('`')) {
+      return <code key={`${key}-${i}`}>{part.slice(1, -1)}</code>;
+    }
+    return <span key={`${key}-${i}`}>{part}</span>;
+  });
+}
+
+// Paragraphs split on blank lines; "- " lines become a list.
+function prose(text, key) {
+  return text.split('\n\n').map((block, b) => {
+    const lines = block.split('\n');
+    if (lines.every((l) => l.trim().startsWith('- '))) {
+      return (
+        <ul key={`${key}-b${b}`} className="prereq-theory-list">
+          {lines.map((l, i) => (
+            <li key={i}>{inline(l.trim().slice(2), `${key}-b${b}-${i}`)}</li>
+          ))}
+        </ul>
+      );
+    }
+    return <p key={`${key}-b${b}`}>{inline(block, `${key}-b${b}`)}</p>;
+  });
+}
+
 export default function PrereqDay() {
   const { day } = useParams();
   const [zoom, setZoom] = useState(false);
@@ -34,6 +65,7 @@ export default function PrereqDay() {
   const prev = PREREQ_DAYS.find((d) => d.day === entry.day - 1);
   const next = PREREQ_DAYS.find((d) => d.day === entry.day + 1);
   const progress = Math.round((entry.day / PREREQ_META.totalDays) * 100);
+  const snippets = entry.snippets || (entry.code ? [{ label: 'Example', code: entry.code }] : []);
 
   return (
     <div className={`prereq-page prereq-day-page prereq-theme-${entry.group}`}>
@@ -85,17 +117,16 @@ export default function PrereqDay() {
         <section className="prereq-notes">
           <h2 className="prereq-notes-title">
             <span className="prereq-notes-line" aria-hidden="true" />
-            THE NOTES
+            KEY POINTS
           </h2>
           <ul className="prereq-notes-list">
             {entry.notes.map((n) => (
               <li key={n.k}>
                 <span className="prereq-note-k">{n.k}</span>
-                <span className="prereq-note-v">{n.v}</span>
+                <span className="prereq-note-v">{inline(n.v, `n-${n.k}`)}</span>
               </li>
             ))}
           </ul>
-          {entry.code && <pre className="prereq-code">{entry.code}</pre>}
           <div className="prereq-notes-tags">
             {entry.tags.map((t) => (
               <span key={t}>#{t.replace(/\s+/g, '')}</span>
@@ -114,10 +145,53 @@ export default function PrereqDay() {
             <span className="prereq-figure-zoom">🔍 Click to zoom</span>
           </button>
           <figcaption>
-            Episode {pad(entry.day)} · {entry.title}
+            Episode {pad(entry.day)} · {entry.title} — the original one-page episode
           </figcaption>
         </figure>
       </div>
+
+      {entry.theory?.length > 0 && (
+        <section className="prereq-theory">
+          <h2 className="prereq-theory-heading">
+            <span className="prereq-notes-line" aria-hidden="true" />
+            THE FULL NOTES
+          </h2>
+          <p className="prereq-theory-intro">
+            Everything on the episode above, written out — so you can read it instead of squinting at it.
+          </p>
+          {entry.theory.map((t, i) => (
+            <article key={t.h} className="prereq-theory-block">
+              <h3 className="prereq-theory-h">
+                <span className="prereq-theory-num">{pad(i + 1)}</span>
+                {t.h}
+              </h3>
+              <div className="prereq-theory-body">{prose(t.p, `t${i}`)}</div>
+              {t.code && <pre className="prereq-code">{t.code}</pre>}
+            </article>
+          ))}
+        </section>
+      )}
+
+      {snippets.length > 0 && (
+        <section className="prereq-snippets">
+          <h2 className="prereq-theory-heading">
+            <span className="prereq-notes-line" aria-hidden="true" />
+            THE CODE
+          </h2>
+          <p className="prereq-theory-intro">
+            Every snippet from the episode, transcribed so you can copy and run it.
+          </p>
+          <div className="prereq-snippet-grid">
+            {snippets.map((s, i) => (
+              <figure key={`${s.label}-${i}`} className="prereq-snippet">
+                <figcaption className="prereq-snippet-label">{s.label}</figcaption>
+                <pre className="prereq-code">{s.code}</pre>
+                {s.note && <p className="prereq-snippet-note">{inline(s.note, `sn${i}`)}</p>}
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
 
       {zoom && (
         <div
