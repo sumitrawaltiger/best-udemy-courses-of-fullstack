@@ -520,6 +520,86 @@ const DOCKER_NETWORKING_SECTIONS = [
   },
 ];
 
+const LINUX_FINAL_PROJECT_SECTIONS = [
+  {
+    id: 'linux-final-project-goal',
+    title: 'Linux Final Project — Building a Production-Ready Server',
+    content:
+      "The capstone of Learning Linux (Day 30/30): put everything together by building a **secure, fast, reliable, and maintainable** Linux server that can run real-world applications in production.\n\n**The goal — four qualities of a production server:**\n\n- **Secure** — lock down the system and allow only what is necessary.\n- **Fast** — optimize performance and resource usage for your workload.\n- **Reliable** — ensure high uptime with monitoring, backups, and recovery.\n- **Maintainable** — keep the server easy to manage, update, and troubleshoot.\n\nThe project runs as **12 stages**, from planning the box to validating it under load. The example stack throughout is **Nginx + Node.js + PostgreSQL** on **Ubuntu 22.04 LTS**, fronted by a UFW firewall and a Uptime Kuma monitor.",
+    image: '/devops-notes/learning-linux-final-project.jpg',
+    imageAlt:
+      'Learning Linux Day 30/30 — Linux Final Project: Building a Production-Ready Linux Server. Why this project (a secure, fast, reliable, maintainable server for production) and the goal (Secure, Fast, Reliable, Maintainable). Twelve stages: 1 Plan your server, 2 Initial server setup, 3 Secure your server, 4 Install & configure services (Nginx + Node.js + PostgreSQL), 5 Deploy your application (PM2), 6 Performance tuning, 7 Monitoring & logging (htop, Uptime Kuma), 8 Backup & recovery (rsync off-site), 9 Automate with scripts, 10 Final security hardening (lynis), 11 Documentation, 12 Test & validate. A production server architecture (Internet → UFW firewall → Nginx reverse proxy → Node.js app → PostgreSQL, with Uptime Kuma monitoring and remote backups), a useful-commands cheat sheet, and a project success checklist.',
+  },
+  {
+    id: 'linux-plan-and-setup',
+    title: '1–2 · Plan & Initial Setup',
+    content:
+      "**1. Plan your server.** Decide before you build: define the purpose (web server, API, DB, file server, etc.), choose the OS (**Ubuntu 22.04 LTS** recommended), pick a cloud provider or VPS, and plan users, services, domains, and backups. Example setup: Ubuntu 22.04 LTS, 2 vCPU, 2 GB RAM, 40 GB SSD.\n\n**2. Initial server setup.** The first-login checklist that turns a raw box into a working one: update system packages, configure the hostname, create a non-root user, configure SSH (key-based), set the timezone and locale, and enable the UFW firewall.",
+    code:
+      '# Update system\nsudo apt update && sudo apt upgrade -y\n\n' +
+      '# Create a non-root user with sudo\nsudo adduser deploy\nsudo usermod -aG sudo deploy\n\n' +
+      '# Configure the firewall (allow SSH before enabling!)\nsudo ufw allow OpenSSH\nsudo ufw enable',
+  },
+  {
+    id: 'linux-secure-server',
+    title: '3 · Secure Your Server',
+    content:
+      "Harden the box before it faces the internet. The security checklist:\n\n- **Disable root login** — no direct root over SSH.\n- **Use SSH key authentication** — turn off password auth.\n- **Change the SSH port** (optional) — reduces automated noise.\n- **Enable fail2ban** — bans IPs after repeated failed logins.\n- **Configure firewall rules** — only open the ports you serve.\n- **Disable unnecessary services** — shrink the attack surface.\n\nEdit `/etc/ssh/sshd_config` to set `PermitRootLogin no`, restart SSH, then install and enable fail2ban.",
+    code:
+      '# Disable root login\nsudo nano /etc/ssh/sshd_config\n# PermitRootLogin no\n\n' +
+      '# Restart SSH to apply\nsudo systemctl restart sshd\n\n' +
+      '# Enable fail2ban\nsudo apt install fail2ban -y\nsudo systemctl enable --now fail2ban',
+  },
+  {
+    id: 'linux-install-services',
+    title: '4 · Install & Configure Services',
+    content:
+      "Install the application stack — the example is **Nginx + Node.js + PostgreSQL**:\n\n- **Install and configure Nginx** — the web server / reverse proxy.\n- **Install Node.js** — the application runtime (via NodeSource).\n- **Install and configure PostgreSQL** — the database.\n- **Enable and start services** so they survive reboots.\n- **Configure a reverse proxy** so Nginx forwards traffic to the app.\n\nNginx sits in front and proxies requests to the Node.js app; PostgreSQL backs the app with persistent data.",
+    code:
+      '# Install Nginx\nsudo apt install nginx -y\n\n' +
+      '# Install Node.js (using NodeSource)\ncurl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -\nsudo apt install nodejs -y\n\n' +
+      '# Install PostgreSQL\nsudo apt install postgresql postgresql-contrib -y',
+  },
+  {
+    id: 'linux-deploy-and-tune',
+    title: '5–6 · Deploy Your Application & Performance Tuning',
+    content:
+      "**5. Deploy your application.** Upload your application code, install dependencies, configure environment variables, run the app with a **process manager (PM2)** so it restarts on crash and on boot, and test it end-to-end.\n\n**6. Performance tuning.** Squeeze more out of the box: optimize system settings, configure **swap** (if needed), tune open files and connections (raise `nofile` limits in `/etc/security/limits.conf`), enable **compression** in Nginx (gzip), and use caching where possible. Restart Nginx after config changes.",
+    code:
+      '# 5. Deploy with PM2\ncd /var/www/myapp\nnpm install --production\npm2 start server.js --name myapp\npm2 save\npm2 startup\n\n' +
+      '# 6. Raise open-file limits in /etc/security/limits.conf\n#   soft nofile 65536\n#   hard nofile 65536\n\n' +
+      '# Enable gzip in /etc/nginx/nginx.conf, then restart\nsudo systemctl restart nginx',
+  },
+  {
+    id: 'linux-monitor-and-backup',
+    title: '7–8 · Monitoring, Logging, Backup & Recovery',
+    content:
+      "**7. Monitoring & logging.** You can't fix what you can't see: monitor system resources, monitor application health, centralize logs, and set up alerts. `htop` + `curl` cover basic monitoring; **Uptime Kuma** (run as a container) gives a status dashboard and alerting.\n\n**8. Backup & recovery.** Reliability is backups you have actually tested: automate regular backups, store them **off-site or in another region**, test the restore process, and document the recovery steps. `rsync` to a remote backup server, dated by day, is a simple robust baseline — and restoring is the same command in reverse.",
+    code:
+      '# 7. Basic monitoring\nsudo apt install htop curl -y\n\n' +
+      '# Uptime Kuma (optional) — status page + alerts\ndocker run -d --restart=always \\\n  -p 3001:3001 \\\n  -v kuma:/app/data \\\n  louislam/uptime-kuma:1\n\n' +
+      '# 8. Backup /etc and app data off-site\nrsync -av /etc /var/www/myapp \\\n  backup@backup-server:/backups/$(date +%F)/\n\n' +
+      '# Restore from a dated backup\nrsync -av backup@backup-server:/backups/2026-06-01/ \\\n  /etc /var/www/myapp',
+  },
+  {
+    id: 'linux-automate-harden-document',
+    title: '9–11 · Automate, Harden & Document',
+    content:
+      "**9. Automate with scripts.** Create scripts for repeatable tasks — system updates, backups, service health checks, and log rotation — so routine work is one command, not a checklist you forget.\n\n**10. Final security hardening.** Keep the system updated, review permissions, audit logs regularly, disable unused features, use strong passwords and keys, and follow the **principle of least privilege**. Quick check: `sudo lynis audit system` and `sudo ufw status verbose`.\n\n**11. Documentation.** Document the server for your future self (or your team): a system overview, installed services and versions, configuration changes, backup & recovery steps, important commands, and access details (stored safely).",
+    code:
+      '#!/bin/bash\n# backup.sh — dated off-site backup\nDATE=$(date +%F)\nrsync -av /etc /var/www/myapp \\\n  backup@backup-server:/backups/$DATE/\necho "Backup completed: $DATE"\n\n' +
+      '# 10. Final security audit\nsudo lynis audit system\nsudo ufw status verbose',
+  },
+  {
+    id: 'linux-architecture-and-validate',
+    title: '12 · Test, Validate & the Full Architecture',
+    content:
+      "**12. Test & validate.** Prove it works before you trust it: stress-test the application, check that services restart, simulate failures and recover, verify backups, run security scans, and confirm monitoring & alerts fire.\n\n**Production server architecture:** Internet → **UFW firewall** → **Nginx** (reverse proxy) → **Node.js** (app) → **PostgreSQL** (database), with **Uptime Kuma** monitoring and **remote-storage backups** off to the side.\n\n**Project success checklist** — you're done when: the server is secure and allows only necessary access; all services are running and start on boot; the application is live and reachable via domain/IP; monitoring and alerts are configured; backups are automated and tested; documentation is complete; and you can recover from a failure. Hit all seven and you have built a production-ready Linux server.",
+    code:
+      '# Useful commands cheat sheet\nuname -a                              # system info\ndf -h                                 # disk usage\nfree -h                               # memory usage\nhtop                                  # process monitor\nsystemctl status <service>            # service status\nsudo systemctl restart <service>      # restart a service\njournalctl -xe                        # view logs\nsudo ss -tuln                         # open ports\nsudo ufw status verbose               # firewall status\nsudo lynis audit system               # security audit',
+  },
+];
+
 function buildLessons() {
   const lessons = [];
   let day = 1;
@@ -564,6 +644,12 @@ function buildLessons() {
       // Add the Linux virtualization visual note to the process-management module.
       if (title === 'Linux Process Management') {
         lesson.sections = [...(lesson.sections || []), ...LINUX_VIRTUALIZATION_SECTIONS];
+      }
+      // The Linux final-project capstone — build a production-ready Linux server.
+      if (title === 'Linux Hands-On Lab') {
+        lesson.sections = [...LINUX_FINAL_PROJECT_SECTIONS, ...(lesson.sections || [])];
+        lesson.image = '/devops-notes/learning-linux-final-project.jpg';
+        lesson.imageAlt = LINUX_FINAL_PROJECT_SECTIONS[0].imageAlt;
       }
       // Docker networking visual notes (drivers reference + frontend/backend project).
       if (title === 'Docker Networking') {
