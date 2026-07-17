@@ -600,6 +600,151 @@ const LINUX_FINAL_PROJECT_SECTIONS = [
   },
 ];
 
+const DOCKER_ENV_SECRETS_SECTIONS = [
+  {
+    id: "why-config-management-matters",
+    title: "Why Configuration Management Matters",
+    content: "Configuration and secrets should live **outside** your application code and Docker images, not baked in. The poster opens with four reasons this matters. First, it keeps sensitive data such as passwords and API keys **out of images**, so a leaked or shared image never exposes credentials. Second, it makes apps **portable across environments** — the same image runs in dev, staging, and production, changing only its configuration. Third, it **separates config from code** for flexibility, so you reconfigure without rebuilding. Fourth, it **improves security and compliance** by controlling and auditing who can read secrets. The guiding idea, echoed in the closing tip, is that config changes often while code changes less, so keeping them separate leads to secure, scalable applications.",
+    image: "/devops-notes/docker-env-secrets-config.jpg",
+    imageAlt: "Day 9 Docker infographic titled 'Environment Variables, Secrets, and Configuration Management' by @e_opore. A left-hand vertical flow lists five stages: 1 Why It Matters (keep secrets out of images, portability, separate config from code, security & compliance), 2 Environment Variables, 3 Secrets, 4 Config Management Options, 5 Best Practices. The right side holds panels: an ENVIRONMENT VARIABLES BASICS table (method, where defined, scope, use case), a Dockerfile ENV example, passing env at runtime via docker run and docker-compose, using a .env file with compose, DOCKER SECRETS in Swarm mode (create/use/access plus a swarm quick example and note), a CONFIGURATION MANAGEMENT OPTIONS comparison table (.env files, Docker Compose configs, Docker Secrets, External Secret Stores, SOPS/git-crypt with pros/cons/best-for), a Node.js app-using-env example, an External Secret Store AWS Secrets Manager example, a five-step config workflow, a QUICK REFERENCE command table, BEST PRACTICES, a .gitignore example, and a closing tip that config changes often while code changes less.",
+  },
+  {
+    id: "environment-variables-basics",
+    title: "Environment Variables Basics",
+    content: "Environment variables are the primary way to inject configuration into containers. Docker offers several methods, each defined in a different place with a different scope. The poster's basics table lists all five:\n\n- **Dockerfile ENV** — defined in the Dockerfile; scope is image build-time (still available at runtime by default); use case is **non-sensitive defaults**.\n- **docker run -e** — defined on the CLI; scope is container runtime; use case is **quick overrides**.\n- **docker-compose.yml environment** — defined in the Compose file; scope is container runtime; use case is **app configuration**.\n- **--env-file** — defined via CLI or Compose; scope is container runtime; use case is **loading many values from a file**.\n- **System ENV** — defined in the host OS; scope is passed down to the container; use case is **host-specific values**.\n\nThe accompanying Dockerfile example bakes non-sensitive defaults with `ENV`, sets a `WORKDIR`, copies the app, and defines the start command. Prefer runtime env over hardcoding, and never place secrets in a Dockerfile since they persist in image layers.",
+    code: "FROM node:20-alpine\n\nENV NODE_ENV=production \\\n    APP_PORT=3000 \\\n    LOG_LEVEL=info\n\nWORKDIR /app\n\nCOPY . .\n\nCMD [\"node\", \"server.js\"]",
+  },
+  {
+    id: "passing-env-at-runtime",
+    title: "Passing Environment Variables at Runtime",
+    content: "Runtime injection is preferred over hardcoding because the same image can be reconfigured per environment. The poster shows three approaches. With **docker run**, you pass each variable using repeated `-e KEY=VALUE` flags alongside the port mapping. With **docker-compose.yml**, you list values under a service's `environment:` block, which is cleaner for multi-variable apps and version-controllable (for non-secret values). For many variables, a **.env file** keeps them out of the command line and out of the Compose file: define `KEY=VALUE` lines in `.env`, then point Compose at it with `--env-file`. Compose also auto-loads a file literally named `.env` in the project directory. Remember these `.env` files hold plain text, so they belong in `.gitignore`, never in version control.",
+    code: "# docker run\n$ docker run -d \\\n  -e DB_HOST=db \\\n  -e DB_USER=myuser \\\n  -e DB_PASS=mypassword \\\n  -p 3000:3000 myapp:1.0\n\n# docker-compose.yml\nservices:\n  web:\n    image: myapp:1.0\n    environment:\n      - DB_HOST=db\n      - DB_USER=myuser\n      - DB_PASS=mypassword\n\n# .env\nDB_HOST=db\nDB_USER=myuser\nDB_PASS=mypassword\nAPP_PORT=3000\n\n# Load the .env file with Compose\n$ docker compose --env-file .env up -d",
+  },
+  {
+    id: "docker-secrets-swarm-mode",
+    title: "Docker Secrets in Swarm Mode",
+    content: "Environment variables are convenient but not truly secret — they can leak through logs, `docker inspect`, or child processes. For sensitive data, Docker Swarm provides **Docker Secrets**, which are encrypted and mounted as files rather than exposed as env vars. The workflow has three parts. **Create the secret** by piping a value into `docker secret create`. **Use the secret** in a service by declaring it under the service's `secrets:` block and marking it `external: true`. **Access it in the container**, where Docker mounts it at `/run/secrets/<name>`; your app reads that file, for example with `fs.readFileSync('/run/secrets/db_pass', 'utf8')`. The swarm quick example shows initializing swarm, creating the secret, and launching a service that consumes it. Per the note: **secrets are encrypted in transit and at rest in Docker Swarm**, and they are **not available in standalone mode** — there you must use external tools or env files.",
+    code: "# 1. Create Secret\n$ echo \"mypassword\" | \\\n  docker secret create db_pass -\n\n# 2. Use Secret in Service (compose)\nservices:\n  web:\n    image: myapp:1.0\n    secrets:\n      - db_pass\nsecrets:\n  db_pass:\n    external: true\n\n# 3. Access Secret in Container\n# File mounted at: /run/secrets/db_pass\n# Read in app:\nfs.readFileSync('/run/secrets/db_pass', 'utf8')\n\n# Swarm Quick Example\n$ docker swarm init\n$ echo \"mypassword\" | \\\n  docker secret create db_pass -\n$ docker service create --name myapp \\\n  --secret db_pass \\\n  -p 3000:3000 myapp:1.0",
+  },
+  {
+    id: "configuration-management-options",
+    title: "Configuration Management Options Compared",
+    content: "There is no single right tool — the poster compares five options across description, pros, cons, and best fit so you can match the tool to the sensitivity and scale of your config:\n\n- **.env Files** — simple key=value file loaded at runtime; pros: easy, widely supported; cons: not secure for secrets; best for: **non-sensitive config**.\n- **Docker Compose configs** — inject config files into containers (Swarm); pros: versioned, separated from image; cons: Swarm mode only; best for: **app config files**.\n- **Docker Secrets (Swarm)** — secure secret storage and injection; pros: secure, encrypted; cons: Swarm mode only, more setup; best for: **secrets in production**.\n- **External Secret Stores (Vault, AWS, etc.)** — use external systems to store and fetch secrets; pros: enterprise-grade, rotation, audit; cons: more complexity, network dependency; best for: **production, multi-environment**.\n- **SOPS / git-crypt** — encrypt files in a Git repository; pros: keep secrets in Git securely; cons: requires tooling and discipline; best for: **GitOps workflows**.\n\nThe pattern: start with `.env` for harmless values and graduate to Docker Secrets or an external store as data becomes sensitive and environments multiply.",
+  },
+  {
+    id: "node-app-env-and-external-stores",
+    title: "Node.js App Using Env and External Secret Stores",
+    content: "A concrete example ties it together: a Node.js app reads all its configuration from `process.env`, so the same code works everywhere and only the injected values change. The `.env` file supplies `DB_HOST`, `DB_USER`, `DB_PASS`, and `PORT`, and `app.js` reads each via `process.env`, falling back to a default port with `|| 3000`. For production-grade secret handling, the poster shows an **external secret store** flow using **AWS Secrets Manager**: the containerized app fetches the secret from the manager at runtime, the secret is mounted or used in memory, and the app consumes it — nothing sensitive is stored in the image or repo. An entrypoint script pulls the value with the AWS CLI (`aws secretsmanager get-secret-value`). This gives you rotation, auditing, and centralized control, at the cost of added complexity and a network dependency.",
+    code: "# .env\nDB_HOST=db\nDB_USER=myuser\nDB_PASS=mypassword\nPORT=3000\n\n// app.js\nconst dbHost = process.env.DB_HOST;\nconst dbUser = process.env.DB_USER;\nconst dbPass = process.env.DB_PASS;\nconst port = process.env.PORT || 3000;\n\nconsole.log(`Connecting to ${dbHost} as ${dbUser}`);\n\n# External Secret Store (AWS Secrets Manager)\n# Flow: App (Container) -> Fetch Secret at Runtime\n#       -> AWS Secrets Manager -> Mount/Use Secret -> App Uses Secret\n\n# Using AWS CLI in entrypoint script\naws secretsmanager get-secret-value \\\n  --secret-id myapp/db \\\n  --query SecretString --output text",
+  },
+  {
+    id: "workflow-best-practices-quick-reference",
+    title: "Config Workflow, Best Practices, and Quick Reference",
+    content: "The poster closes with an end-to-end workflow, hardening rules, and a command cheat sheet. The **config workflow** has five steps: 1) define `.env.example` with no secrets, 2) developers set their own `.env` with local values, 3) `docker compose up` runs the app, 4) use secrets in production via Swarm or an external store, and 5) rotate and monitor regularly.\n\n**Best practices:** separate config from code; use environment-specific settings; never store secrets in images or Git; use Docker Secrets or external secret managers; rotate secrets and limit access; audit and monitor secret usage. Related list: never commit secrets to Git, use `.env.example` (no secrets), use least-privilege access, rotate secrets and review access, and log without exposing sensitive values.\n\nThe **quick reference** maps tasks to commands:\n- Set env var (run): `docker run -e KEY=VALUE image`\n- Set env var (compose): `environment:` then `- KEY=VALUE`\n- Load from file: `docker run --env-file .env image` or `docker compose --env-file .env up`\n- Dockerfile ENV: `ENV KEY=VALUE`\n- Create secret (swarm): `echo \"value\" | docker secret create name -`\n- List secrets: `docker secret ls`\n- Inspect secret: `docker secret inspect name`\n\nThe **.gitignore example** shows exactly what to exclude so secrets stay out of version control. Closing tip: config changes often, code changes less — keep them separate for secure, scalable applications.",
+    code: "# .gitignore example\n.env\n*.env\nsecrets/\n*.key\n*.pem\ndocker-compose.override.yml\n\n# Quick reference commands\ndocker run -e KEY=VALUE image\ndocker run --env-file .env image\ndocker compose --env-file .env up\ndocker secret create name -\ndocker secret ls\ndocker secret inspect name\n\n$ docker compose up -d",
+  },
+];
+
+const DOCKER_SECURE_KEYS_SECTIONS = [
+  {
+    id: "project-overview-why-secrets",
+    title: "Project overview: why Docker Secrets",
+    content: "This project builds a small Node.js API service, `secure-app/`, that needs an external API key but must never expose it. The folder holds a `Dockerfile`, `app.js`, a harmless `.env.example`, and a `docker-compose.yml`. The application reads its key from `process.env.API_KEY` and sends it as a `Bearer` token when calling an external API.\n\n**Why use Docker Secrets?** They keep sensitive data out of images and env files; the value is not visible in `docker inspect`; secrets are mounted as in-memory files inside the container; and overall this is far more secure than passing environment variables, which leak into logs, image layers, and inspect output.",
+    code: "secure-app/\n├── Dockerfile\n├── app.js\n├── .env.example\n└── docker-compose.yml\n\n// app.js (reads API key from env)\nconst axios = require('axios');\nconst apiKey = process.env.API_KEY;\nif (!apiKey) {\n  console.error('API_KEY is not set!');\n  process.exit(1);\n}\n\napp.get('/data', async (req, res) => {\n  const resp = await axios.get('https://api.example.com/data', {\n    headers: { Authorization: `Bearer ${apiKey}` }\n  });\n  res.json(resp.data);\n});",
+    image: "/devops-notes/docker-secure-api-keys.jpg",
+    imageAlt: "A vertical infographic titled 'Project: Secure API keys inside Docker' by @e_opore on X, teaching how to use Docker Secrets to keep an API key out of images and environment variables. A numbered flowchart down the left runs through nine steps: 1 Project Structure (a secure-app/ folder with Dockerfile, app.js, .env.example, docker-compose.yml, an app.js snippet that reads process.env.API_KEY and calls an external API with a Bearer token, and a 'Why use Docker Secrets?' panel), 2 Create a Docker Secret via echo piped into docker secret create, 3 Use the Secret in Docker Compose with a services.app block, a secrets list, and a top-level secrets api_key marked external: true, 4 Read the Secret in Your App with fs.readFileSync('/run/secrets/api_key','utf8').trim(), 5 Remove .env and Avoid Leaks listing anti-patterns (ENV API_KEY=, COPY .env, docker run -e API_KEY=), 6 Build and Run with docker compose up --build -d and docker compose ps, 7 Test the Secure Endpoint at localhost:3000/data showing an API Response JSON, 8 Inspect Without Revealing Secrets using docker compose exec to list and cat /run/secrets, and 9 Clean Up with docker compose down and docker secret rm api_key. A Quick Reference panel at the bottom summarizes Create Secret, Use in Compose, Mount Path, and Best Practices, ending with 'You did it! Your API keys are now secure inside Docker.'",
+  },
+  {
+    id: "create-docker-secret",
+    title: "Create a Docker secret",
+    content: "First turn your raw API key into a Docker secret. You pipe the key value into `docker secret create`, giving the secret the name `api_key`. The trailing `-` tells Docker to read the secret's content from standard input instead of from a file, so the key is never written to disk in your project.\n\n**Tip:** Secrets are stored inside the Docker engine itself and are never baked into images. Once created, the plaintext value lives only in the engine's encrypted store and is exposed to a container solely as a mounted file at runtime. Keep the value `sk_live_ABCDEF1234567890` as an example placeholder only — substitute your own real key when you run this.",
+    code: "echo \"sk_live_ABCDEF1234567890\" | \\\n  docker secret create api_key -",
+  },
+  {
+    id: "use-secret-in-compose",
+    title: "Use the secret in docker-compose.yml",
+    content: "Next, wire the secret into Compose. Under `services.app` you add a `secrets:` list naming `api_key`, and at the top level you declare the `api_key` secret with `external: true`.\n\n**What's happening:** The secret `api_key` is provided by the Docker engine, not by Compose. It is mounted inside the container at `/run/secrets/api_key` by default, and your app reads the secret from that file.\n\n**Note:** `external: true` tells Compose to use an existing secret you already created (in step 2) instead of trying to create a new one. Without it, Compose would expect to manage the secret's lifecycle itself.",
+    code: "version: '3.9'\nservices:\n  app:\n    build: .\n    ports:\n      - \"3000:3000\"\n    secrets:\n      - api_key\n\nsecrets:\n  api_key:\n    external: true",
+  },
+  {
+    id: "read-secret-in-app",
+    title: "Read the secret in your app",
+    content: "Because the secret arrives as a file rather than an environment variable, your app must read it from the filesystem. Use Node's `fs` module to read `/run/secrets/api_key`, decode it as `utf8`, and call `.trim()` to strip any trailing newline. After that the `apiKey` variable is used exactly as before when building the `Bearer` header.\n\n**Tip:** Secrets are mounted as files, so your app should read the value at runtime rather than expecting it in `process.env`. This is why the mount path `/run/secrets/` matters: it is an in-memory `tmpfs`, so the key never touches the container's disk layers.",
+    code: "const fs = require('fs');\nconst path = '/run/secrets/api_key';\nconst apiKey = fs.readFileSync(path, 'utf8').trim();\n\n// use apiKey as before...",
+  },
+  {
+    id: "remove-env-avoid-leaks",
+    title: "Remove .env and anti-patterns to avoid",
+    content: "With the secret in place, delete any real `.env` file and never pass the API key through environment variables or bake it into an image. Each of these common shortcuts permanently embeds the key where it can leak: an image layer, a committed file, or a process listing.\n\n**Avoid these:**\n\n- `ENV API_KEY=...` in the Dockerfile bakes the key into every image layer, visible to anyone who pulls the image.\n- `COPY .env .` copies your secrets straight into the image.\n- `docker run -e API_KEY=...` exposes the key in shell history, `docker inspect`, and the process environment.",
+    code: "# Avoid these ✗\nENV API_KEY=...\nCOPY .env .\ndocker run -e API_KEY=...",
+  },
+  {
+    id: "build-run-test",
+    title: "Build, run and test",
+    content: "Now build and start everything. `docker compose up --build -d` rebuilds the image and launches the containers in the background (detached), and `docker compose ps` confirms the service is up.\n\nThen test the secure endpoint: open a browser to `http://localhost:3000/data`. You should see data returned from the external API, proving the app authenticated successfully using the mounted secret rather than any env var. A healthy call returns an API Response JSON like the one shown, with a `status` of `ok` and a `data` array.",
+    code: "# Build and start the containers\ndocker compose up --build -d\n\n# Check status\ndocker compose ps\n\n# Test: open http://localhost:3000/data\n# API Response:\n{\n  \"status\": \"ok\",\n  \"data\": [ ... ]\n}",
+  },
+  {
+    id: "inspect-and-clean-up",
+    title: "Inspect without revealing, then clean up",
+    content: "You can verify the secret is mounted without printing it into your normal workflow. `docker compose exec app ls -l /run/secrets` lists the mounted secret file and its permissions (owned by root, read-only), while `cat` on the file would reveal the value — useful for debugging but something you avoid in shared output. The `ls` result shows the `api_key` file present with restrictive `-r--------` permissions.\n\nFinally, clean up. `docker compose down` stops and removes the containers, but the secret itself remains stored in Docker. Remove secrets you no longer need with `docker secret rm api_key`.",
+    code: "# Verify the secret is mounted (value not shown)\ndocker compose exec app ls -l /run/secrets\ndocker compose exec app cat /run/secrets/api_key\n\n# Result:\n# total 4\n# -r--------  1 root root 28 May 30 12:00 api_key\n# sk_live_ABCDEF1234567890\n\n# Clean up (secret remains in Docker)\ndocker compose down\n\n# Remove a secret you no longer need\ndocker secret rm api_key",
+  },
+  {
+    id: "quick-reference-best-practices",
+    title: "Quick reference and best practices",
+    content: "A summary of the whole workflow. Create a secret by piping a value into `docker secret create name -`, and list them with `docker secret ls`. Use it in Compose by adding the secret under `services.<service>.secrets` and declaring it under top-level `secrets:` with `external: true`. The default mount path is `/run/secrets/<secret_name>` — read that file to get the value.\n\n**Best practices:**\n\n- Never commit secrets to source control.\n- Use Docker Secrets in production.\n- Use least-privilege access so only the services that need a secret can read it.\n- Rotate keys regularly.\n\nDo all this and your API keys are now secure inside Docker.",
+    code: "# Create Secret\necho \"mysecret\" | docker secret create name -\ndocker secret ls\n\n# Use in Compose\nservices:\n  app:\n    secrets:\n      - my_secret\nsecrets:\n  my_secret:\n    external: true\n\n# Mount Path (default)\n/run/secrets/<secret_name>\n# Read the file to get the value.",
+  },
+];
+
+const DOCKER_MERN_COMPOSE_SECTIONS = [
+  {
+    id: "project-overview-structure",
+    title: "Project Overview & Structure",
+    content: "This project containerizes a full **MERN** (MongoDB, Express, React, Node) stack so the entire application runs with a single command, with no manual database installs or version conflicts on your machine.\n\nThe repository root is `mern-app/`. Inside it live two application folders and two configuration files:\n\n- `backend/` holds the Express/Node API and its own `Dockerfile`, `package.json`, and `server.js`.\n- `frontend/` holds the React app with its `Dockerfile`, `package.json`, and the usual React files.\n- `.env` sits in the root and stores shared environment values.\n- `docker-compose.yml` sits in the root and orchestrates everything.\n\nFour pieces run together: **MongoDB** (database), **Express** (backend API), **React** (frontend UI), and **Node.js** (the runtime powering both JavaScript services). Compose ties them into one isolated network so they can talk to each other by name.",
+    code: "mern-app/\n├── backend/\n│   ├── Dockerfile\n│   ├── package.json\n│   └── server.js\n├── frontend/\n│   ├── Dockerfile\n│   ├── package.json\n│   └── ... (React files)\n├── .env\n└── docker-compose.yml\n\nServices we will run:\n- MongoDB   (Database)\n- Backend   (Express API)\n- Frontend  (React App)",
+    image: "/devops-notes/docker-compose-mern-project.jpg",
+    imageAlt: "A dense flowchart-style infographic titled 'Project: Build a MERN stack application using Docker Compose' by @e_opore, walking through eight numbered steps down the left as diamond nodes: (1) Project Structure showing a mern-app/ folder with backend/ and frontend/ subfolders each holding a Dockerfile and package.json, plus a root .env and docker-compose.yml, and icons for the four services MongoDB (Database), Express.js (Backend), React (Frontend) and Node.js (Runtime); (2) Backend Dockerfile using node:20-alpine exposing port 5000; (3) Frontend Dockerfile using node:20-alpine exposing port 3000; (4) the full docker-compose.yml defining mongo, backend and frontend services with a mongo_data named volume, depends_on links, and 'What's happening?' and 'Note' callouts; (5) Environment Variables in a root .env file with MONGO_URI and PORT; (6) Start the Application with docker compose up --build -d and docker compose ps; (7) Access the Application at frontend localhost:3000, backend localhost:5000/api/health, and MongoDB localhost:27017; (8) Stop the Application with docker compose down and a -v tip; and a bottom Useful Commands panel grouped into Manage, Logs, Build and Other.",
+  },
+  {
+    id: "backend-dockerfile",
+    title: "Backend Dockerfile",
+    content: "The backend image starts `FROM node:20-alpine`, a small Alpine-Linux base with Node 20 already installed, keeping the image lightweight. `WORKDIR /app` sets the working directory so every later command runs there.\n\nThe build copies `package*.json` first and runs `npm install` **before** copying the rest of the source. This ordering is deliberate: Docker caches each layer, so as long as your dependencies do not change, the slow `npm install` step is reused from cache and only your changed source code triggers a rebuild.\n\nAfter dependencies are installed, `COPY . .` brings in the application code. `EXPOSE 5000` documents that the container listens on port `5000` internally, and `CMD [\"node\", \"server.js\"]` launches the Express server when the container starts.\n\nTip from the poster: the **backend runs on port 5000 inside the container**.",
+    code: "# backend/Dockerfile\nFROM node:20-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm install\nCOPY . .\nEXPOSE 5000\nCMD [\"node\", \"server.js\"]",
+  },
+  {
+    id: "frontend-dockerfile",
+    title: "Frontend Dockerfile",
+    content: "The frontend image follows the same pattern as the backend, again building `FROM node:20-alpine` with `WORKDIR /app`. It copies `package*.json` first, runs `npm install`, then copies the remaining React source with `COPY . .` — reusing the same layer-caching trick so dependency installs are cached independently of source changes.\n\nThe key differences are the port and the start command. `EXPOSE 3000` reflects that the **React dev server runs on port 3000**, the default for Create React App. The container starts with `CMD [\"npm\", \"start\"]`, which launches the React development server.\n\n(Note: the poster's image shows the command as `\"npde\"`, which is an OCR/typo artifact — the correct command is `npm start`.)",
+    code: "# frontend/Dockerfile\nFROM node:20-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm install\nCOPY . .\nEXPOSE 3000\nCMD [\"npm\", \"start\"]",
+  },
+  {
+    id: "docker-compose-explained",
+    title: "The docker-compose.yml Explained",
+    content: "This single file defines all three services and how they connect. Compose creates one private network for the project so the containers can reach each other.\n\nThe **mongo** service uses the official `mongo:6` image directly (no build needed), publishes `27017:27017`, and mounts a **named volume** `mongo_data` at `/data/db`. A named volume is why your database **survives container restarts** — data lives in a Docker-managed volume, not inside the disposable container filesystem.\n\nThe **backend** service is built from `./backend`, maps `5000:5000`, receives `MONGO_URI` and `PORT` via environment, and declares `depends_on: mongo` so Compose **starts MongoDB first**. Notice the URI is `mongodb://mongo:27017/mernapp` — it targets the host `mongo`.\n\nThe **frontend** service builds from `./frontend`, maps `3000:3000`, and `depends_on: backend`.\n\n**What's happening?**\n\n- MongoDB stores data in a named volume (`mongo_data`).\n- The backend connects to MongoDB using the service name `mongo`.\n- The frontend calls the backend at `http://localhost:5000`.\n\n**Note:** Service names (`mongo`, `backend`, `frontend`) act as hostnames inside the Docker network, so `mongo` resolves to the database container automatically — there is no need to expose MongoDB to the host at all.",
+    code: "version: '3.9'\nservices:\n  mongo:\n    image: mongo:6\n    container_name: mongo\n    restart: unless-stopped\n    ports:\n      - \"27017:27017\"\n    volumes:\n      - mongo_data:/data/db\n\n  backend:\n    build: ./backend\n    container_name: backend\n    restart: unless-stopped\n    ports:\n      - \"5000:5000\"\n    environment:\n      - MONGO_URI=mongodb://mongo:27017/mernapp\n      - PORT=5000\n    depends_on:\n      - mongo\n\n  frontend:\n    build: ./frontend\n    container_name: frontend\n    restart: unless-stopped\n    ports:\n      - \"3000:3000\"\n    depends_on:\n      - backend\n\nvolumes:\n  mongo_data:",
+  },
+  {
+    id: "environment-variables",
+    title: "Environment Variables (.env)",
+    content: "A `.env` file in the **root folder** keeps configuration out of your code. The backend reads `MONGO_URI` and `PORT` from environment variables rather than hard-coding them, which lets you change the database target or port without touching source.\n\n`MONGO_URI=mongodb://mongo:27017/mernapp` again uses the service name `mongo` as the hostname — the same value Compose injects into the backend service. `mernapp` is the database name that MongoDB will create on first use.\n\n`PORT=5000` tells the Express server which port to listen on, matching the `EXPOSE 5000` in the backend Dockerfile and the `5000:5000` mapping in Compose. Keeping these three in sync is what makes the pieces line up.",
+    code: "# .env (in root folder)\nMONGO_URI=mongodb://mongo:27017/mernapp\nPORT=5000",
+  },
+  {
+    id: "run-access-stop",
+    title: "Run, Access & Stop the App",
+    content: "**Start all services** with `docker compose up --build -d`. The `--build` flag (re)builds the images from your Dockerfiles, and `-d` runs everything **detached** in the background so your terminal stays free. Verify the containers are up with `docker compose ps`, which lists each service and its status.\n\n**Access the application** in your browser once it is running:\n\n- Frontend (React App): `http://localhost:3000`\n- Backend API: `http://localhost:5000/api/health`\n- MongoDB: `localhost:27017` (only if you connect with a DB tool)\n\nWhen all three respond, the MERN app is running: React frontend, Express backend, and MongoDB database.\n\n**Stop all services** with `docker compose down`, which stops and removes the containers. Tip: use `docker compose down -v` to also remove the named volume — but be careful, that **deletes your database data**.",
+    code: "# Start all services (build + detached)\ndocker compose up --build -d\n\n# Check running containers\ndocker compose ps\n\n# Access in browser\n# Frontend:  http://localhost:3000\n# Backend:   http://localhost:5000/api/health\n# MongoDB:   localhost:27017\n\n# Stop all services\ndocker compose down\n\n# Stop and remove volumes too (deletes DB data)\ndocker compose down -v",
+  },
+  {
+    id: "useful-commands",
+    title: "Useful Commands Reference",
+    content: "The poster closes with a quick-reference panel of the commands you will reach for most, grouped by purpose.\n\n- **Manage** covers the lifecycle: bring the stack up detached, tear it down, or tear it down along with its volumes.\n- **Logs** let you inspect output — view all logs at once, or follow a single service such as the backend in real time with `-f`.\n- **Build** rebuilds images — all of them, or just one named service when only that piece changed.\n- **Other** utilities list containers and drop you into a shell inside a running container for debugging.\n\nMaster these and you can operate the whole MERN stack from one directory. You did it — you've built and run a full MERN stack application with Docker Compose.",
+    code: "# Manage\ndocker compose up -d          # Start in detached mode\ndocker compose down           # Stop and remove containers\ndocker compose down -v        # Stop and remove volumes too\n\n# Logs\ndocker compose logs           # View logs\ndocker compose logs -f backend  # Follow backend logs\n\n# Build\ndocker compose build          # Build all services\ndocker compose build backend  # Build specific service\n\n# Other\ndocker compose ps             # List containers\ndocker compose exec backend sh  # Open shell inside backend",
+  },
+];
+
 function buildLessons() {
   const lessons = [];
   let day = 1;
@@ -646,6 +791,22 @@ function buildLessons() {
         lesson.sections = [...(lesson.sections || []), ...LINUX_VIRTUALIZATION_SECTIONS];
       }
       // The Linux final-project capstone — build a production-ready Linux server.
+      // Docker Compose — the MERN stack multi-container project.
+      if (title === 'Docker Compose') {
+        lesson.sections = [...DOCKER_MERN_COMPOSE_SECTIONS, ...(lesson.sections || [])];
+        lesson.image = DOCKER_MERN_COMPOSE_SECTIONS[0].image;
+        lesson.imageAlt = DOCKER_MERN_COMPOSE_SECTIONS[0].imageAlt;
+      }
+      // Container Security — env/secrets/config concepts + the secure-API-keys project.
+      if (title === 'Container Security') {
+        lesson.sections = [
+          ...DOCKER_ENV_SECRETS_SECTIONS,
+          ...DOCKER_SECURE_KEYS_SECTIONS,
+          ...(lesson.sections || []),
+        ];
+        lesson.image = DOCKER_ENV_SECRETS_SECTIONS[0].image;
+        lesson.imageAlt = DOCKER_ENV_SECRETS_SECTIONS[0].imageAlt;
+      }
       if (title === 'Linux Hands-On Lab') {
         lesson.sections = [...LINUX_FINAL_PROJECT_SECTIONS, ...(lesson.sections || [])];
         lesson.image = '/devops-notes/learning-linux-final-project.jpg';
