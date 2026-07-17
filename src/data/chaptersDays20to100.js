@@ -741,79 +741,146 @@ export const chaptersDays20to100 = [
     "notionUrl": "https://app.notion.com/p/Lecture-06-Express-and-middleware-39943ac5cab980d19823df367d602eeb?source=copy_link",
     "codeRepo": "https://github.com/Rohitnegi9/Thunder/tree/main"
   },
-  {
-    "id": 26,
-    "slug": "node-js-and-runtime-fundamentals",
-    "track": "thunder",
-    "day": 26,
-    "title": "Node.js & Runtime Fundamentals",
-    "subtitle": "V8, npm, modules, and the Node event loop",
-    "duration": "2 hrs",
-    "createdOn": "10 Aug 2026",
-    "status": "published",
-    "topics": [
-      "What is Node.js",
-      "npm & package.json",
-      "CommonJS vs ESM",
-      "Node REPL",
-      "Event loop in Node"
-    ],
-    "sections": [
-      {
-        "id": "what-is-node-js",
-        "title": "What is Node.js",
-        "content": "Learn **What is Node.js** in Day 26 of Thunder: 100 Days of Code. V8, npm, modules, and the Node event loop",
-        "tryIt": "console.log(\"Day 26: Node.js & Runtime Fundamentals\");"
-      },
-      {
-        "id": "npm-and-package-json",
-        "title": "npm & package.json",
-        "content": "Learn **npm & package.json** in Day 26 of Thunder: 100 Days of Code. V8, npm, modules, and the Node event loop",
-        "tryIt": "console.log(\"Day 26: Node.js & Runtime Fundamentals\");"
-      },
-      {
-        "id": "commonjs-vs-esm",
-        "title": "CommonJS vs ESM",
-        "content": "Learn **CommonJS vs ESM** in Day 26 of Thunder: 100 Days of Code. V8, npm, modules, and the Node event loop",
-        "tryIt": "console.log(\"Day 26: Node.js & Runtime Fundamentals\");"
-      },
-      {
-        "id": "node-repl",
-        "title": "Node REPL",
-        "content": "Learn **Node REPL** in Day 26 of Thunder: 100 Days of Code. V8, npm, modules, and the Node event loop",
-        "tryIt": "console.log(\"Day 26: Node.js & Runtime Fundamentals\");"
-      }
-    ],
-    "quiz": [
-      {
-        "question": "What is the main topic of Day 26?",
-        "options": [
-          "Node.js & Runtime Fundamentals",
-          "HTML tables only",
-          "Linux kernel modules",
-          "Photoshop layers"
-        ],
-        "answer": 0,
-        "explanation": "Module 26 focuses on Node.js & Runtime Fundamentals."
-      },
-      {
-        "question": "Which phase includes this module?",
-        "options": [
-          "Phase 2: Backend Mastery",
-          "Only DevOps",
-          "Only CSS",
-          "Not part of the course"
-        ],
-        "answer": 0,
-        "explanation": "This module belongs to Phase 2: Backend Mastery."
-      }
-    ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=TlB_eWDSMt4",
-    "youtubeTitle": "Node.js Crash Course — Programming with Mosh",
-    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
-    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course",
-    "githubPath": "Lecture26"
-  },
+    {
+      "id": 26,
+      "slug": "node-js-and-runtime-fundamentals",
+      "track": "thunder",
+      "day": 26,
+      "title": "MongoDB Internal Architecture",
+      "subtitle": "Lecture 07 — from array to B+ Tree: why databases index the way they do",
+      "duration": "2 hrs 30 mins",
+      "createdOn": "10 Aug 2026",
+      "status": "published",
+      "notionUrl": "https://app.notion.com/p/Lecture-07-MongoDB-internal-Architecture-39c43ac5cab98048bae2c02c1fa32830?source=copy_link",
+      "topics": [
+        "Unsorted array",
+        "Sorted array & binary search",
+        "Normal BST & skew",
+        "Balanced BST (AVL / Red-Black)",
+        "Secondary storage & disk pages",
+        "B-Tree & fanout",
+        "B+ Tree & linked leaves",
+        "MongoDB indexes",
+        "Range queries",
+        "Complexity comparison"
+      ],
+      "sections": [
+        {
+          "id": "unsorted-array",
+          "title": "1. Start with an unsorted array",
+          "content": "**Day 26** follows **Lecture 07** ([MongoDB internal Architecture Notion notes](https://app.notion.com/p/Lecture-07-MongoDB-internal-Architecture-39c43ac5cab98048bae2c02c1fa32830?source=copy_link)).\n\nStart at the simplest possible store — an array of users.\n\n**A new user comes. Where do we insert?** At the end — `users.push(...)`. That is cheap.\n\nBut everything else is a scan. For **update**, the insight is: *updating the value is not hard — finding that user is hard.* First we search the array, then we update. **Delete** is the same, plus shifting if we want the array to stay compact.\n\n> **Array is good for adding data, but bad for finding, updating, and deleting data.**",
+          "code": "const users = [\n  { id: 1, name: \"Aman\" },\n  { id: 2, name: \"Rohit\" },\n  { id: 3, name: \"Priya\" }\n];\n\nusers.push({ id: 4, name: \"Neha\" });\n\n// Operation           Complexity\n// -----------------   ----------------\n// Create              O(1) amortized\n// Read/search by id   O(n)\n// Update              O(n)\n// Delete              O(n)"
+        },
+        {
+          "id": "sorted-array",
+          "title": "2. Sorted array + binary search",
+          "content": "**What if we keep the data sorted by `id`?** Now search is no longer a scan — **binary search** finds `id = 3` in `O(log n)`.\n\n**Important correction — update is NOT always `O(n)` in a sorted array.** It depends on *which field* you change:\n\n- Change a **non-sorted field** (`\"Rohit\"` → `\"Rohit Negi\"`, sorted by `id`): search is `O(log n)` and the update is simple.\n- Change the **sorted field** (`id: 5` → `id: 100`): the element may need to move, so shifting can become `O(n)`.\n\nAlso, if you are storing **variable-size records in a file**, a bigger update can create storage problems. That is a **storage-engine** problem, not just an array problem.\n\n> **Sorted array improves search, but makes insert and delete costly because shifting is expensive.**",
+          "code": "[\n  { id: 1, name: \"Aman\" },\n  { id: 2, name: \"Rohit\" },\n  { id: 3, name: \"Priya\" },\n  { id: 4, name: \"Neha\" }\n]\n\n// Find id = 3  ->  binary search\n\n// Operation      Complexity\n// ------------   -------------------------------------------\n// Create         O(n)\n// Read/search    O(log n)\n// Update         usually O(log n), but O(n) if the sorted key changes\n// Delete         O(n)"
+        },
+        {
+          "id": "normal-bst",
+          "title": "3. Normal BST — avoiding the shift",
+          "content": "**Can we avoid shifting?** Instead of keeping everything side by side like an array, let us **connect data using pointers**. Now an insert does not shift many elements.\n\nBut there is a problem: insert `10, 20, 30, 40` in order and the tree **becomes a linked list**.\n\nSo **do not say BST is always `O(n)`**. Say:\n\n> **Normal BST is good only if it remains balanced. If it becomes skewed, it behaves like a linked list.**",
+          "code": "// Balanced shape\n        50\n      /    \\\n    30      70\n   /  \\    /  \\\n 20   40  60   80\n\n// Skewed shape — degenerates into a linked list\n10\n  \\\n   20\n     \\\n      30\n        \\\n         40\n\n// Operation      Average     Worst case\n// ------------   ---------   ----------\n// Create         O(log n)    O(n)\n// Read/search    O(log n)    O(n)\n// Update key     O(log n)    O(n)\n// Delete         O(log n)    O(n)"
+        },
+        {
+          "id": "balanced-bst",
+          "title": "4. Balanced BST — and the real problem",
+          "content": "**What if the tree automatically balances itself?** That is an **AVL Tree** or **Red-Black Tree** — height stays around `log n`, so every operation is `O(log n)`.\n\n**Is a balanced BST bad for range queries?** **Algorithmically, no.** To find all users with `id` between 30 and 70: find 30 in `O(log n)`, then inorder-traverse until 70 in `O(k)` — so `O(log n + k)`, where `k` is the number of results.\n\n**But here is the real problem:** a balanced BST is good **in RAM**, but not great for database storage **on disk** — because each node may live in a different place. Node 50 at disk block A, node 30 at block X, node 40 at block M. A range query keeps **jumping to different disk locations**.\n\n> **Balanced BST is not bad mathematically. It is bad for database storage because it causes too many random disk reads.**",
+          "code": "// Range query: find all users with id between 30 and 70\n//   Find 30:            O(log n)\n//   Inorder until 70:   O(k)\n//   Total:              O(log n + k)\n\n// But on disk, the nodes are scattered:\n//   Node 50 -> disk block A\n//   Node 30 -> disk block X\n//   Node 40 -> disk block M\n//   Node 60 -> disk block P\n//   => random reads, one node at a time\n\n// Operation      Complexity\n// ------------   ----------\n// Create         O(log n)\n// Read/search    O(log n)\n// Update key     O(log n)\n// Delete         O(log n)"
+        },
+        {
+          "id": "secondary-storage",
+          "title": "5. Now introduce secondary storage",
+          "content": "**This is the most important transition in the lecture.**\n\nTill now we were thinking **like programmers**: one node, one object, one pointer. But a **database thinks differently**, because data is usually **bigger than RAM**. Data lives on **SSD/disk** — and disk **does not like tiny random reads**.\n\nDisk and SSD read data in **blocks/pages**. So the database asks:\n\n> **If I am reading from disk anyway, why should I bring only one key? Let me bring many nearby keys together.**\n\n**That is the birth of the B-Tree.**"
+        },
+        {
+          "id": "b-tree",
+          "title": "6. B-Tree — many keys in one box",
+          "content": "A B-Tree node is **not** like a BST node with one value. Think of a node as a **box**:\n\n> **In BST, one box contains one item. In B-Tree, one box contains many sorted items.**\n\nWhen the database reads **one page** from disk, it gets **many keys together**. That is powerful — a balanced BST gives you **1 disk read = 1 key**, while a B-Tree gives you **1 disk read = many keys**.\n\nSo the tree height becomes very small: a BST height may be around **20–30** for millions of records, while a **B-Tree height may be 3–5**.\n\nWiredTiger's docs describe its tree as **page-based**: root/internal pages store keys and references, leaf pages store key/value data, and pages **split** when they reach their limit.\n\nSearch is `O(log base m of n)`, where `m` is the **fanout** — how many children one node can have. But **for databases, do not focus only on Big-O. Focus on disk reads.**\n\n> **B-Tree reduces the number of disk jumps.**\n\n**Is a B-Tree bad for range queries?** Not exactly — it is better than a BST for disk. But in a normal B-Tree, values can live in **both internal and leaf nodes**, so range traversal is less straightforward. B+ Tree makes range queries cleaner and faster.",
+          "code": "// BST node — one value per box\n[50]\n\n// B-Tree node/page — many sorted keys per box\n[10 | 20 | 30 | 40 | 50 | 60]\n\n// A B-Tree\n              [30 | 60]\n             /    |     \\\n [1..29]   [31..59]   [61..100]\n\n// Balanced BST:  1 disk read = 1 key/node\n// B-Tree:        1 disk read = many keys"
+        },
+        {
+          "id": "b-plus-tree",
+          "title": "7. B+ Tree — the final upgrade",
+          "content": "The **B+ Tree rule**:\n\n- **Internal nodes** = only keys, for navigation\n- **Leaf nodes** = the actual data / record pointer\n- **Leaf nodes** = sorted **and connected**\n\nNow a range query becomes beautiful. To find all `id` between 35 and 80: **use the tree to reach 35** in `O(log n)`, then **scan leaf nodes one by one** until 80. Because the leaves are sorted **and linked**, the database moves **sequentially** instead of jumping randomly.\n\nComplexity is `O(log n + k)` — but in **database terms** it is `O(tree height + number of pages scanned)`, which is the number that actually matters.\n\n> **B+ Tree is like a book index plus connected pages. First it helps you jump to the correct page, then you keep reading the next pages in order.**",
+          "code": "              [30 | 60]\n             /    |     \\\n          /       |       \\\n\n// Leaf level — sorted AND linked:\n[1, 5, 9, 20] -> [31, 35, 40, 55] -> [61, 70, 80, 99]\n\n// Find all id between 35 and 80:\n//   1. Use the tree to reach 35   -> O(log n)\n//   2. Scan leaves in order until 80\n//   => O(log n + k)  =  O(tree height + pages scanned)"
+        },
+        {
+          "id": "mongodb-indexes",
+          "title": "8. Connect this directly to MongoDB",
+          "content": "**MongoDB does not search every document every time.** If we create an **index**, MongoDB maintains a **tree-like ordered structure** for that field.\n\n**Without an index**, it is a **collection scan** — check document 1, check document 2, check document 3, and so on. **With an index**, it goes through the B-tree/B+tree-style structure, finds the email quickly, and fetches the matching document.\n\nMongoDB's docs state that indexes **store a small portion of collection data in an easy-to-traverse form, ordered by the indexed field's values** — and that this ordering is what supports **equality, range queries, and sorted results**.",
+          "code": "db.users.createIndex({ email: 1 });\n\n// Simplified mental model of the email index:\n//   aman@gmail.com   -> document location\n//   neha@gmail.com   -> document location\n//   rohit@gmail.com  -> document location\n\ndb.users.find({ email: \"rohit@gmail.com\" });\n\n// Without index:  collection scan — check every document\n// With index:     traverse the tree, find the email, fetch the document"
+        },
+        {
+          "id": "range-query-mongodb",
+          "title": "9. Range query example in MongoDB",
+          "content": "This is the B+ Tree leaf scan showing up directly in MongoDB.\n\nWith an index on `price`, MongoDB can **reach the first price ≥ 500**, **scan index entries in order until price > 1000**, then **fetch the matching documents** — exactly the \"jump to the page, then read forward\" behaviour from section 7.\n\nThis is why indexes are powerful for **equality search, range queries, sorting, and pagination**.",
+          "code": "db.products.createIndex({ price: 1 });\n\ndb.products.find({\n  price: { $gte: 500, $lte: 1000 }\n});\n\n// 1. Reach first price >= 500\n// 2. Scan index entries until price > 1000\n// 3. Fetch matching documents"
+        },
+        {
+          "id": "complexity-table",
+          "title": "10. Final complexity comparison",
+          "content": "The corrected table for the whole journey.\n\nFor B-Tree and B+ Tree, the key line is:\n\n> **Big-O looks similar to a balanced BST, but real database performance improves because one node contains many keys, and one disk read brings many related keys together.**",
+          "code": "Structure        Create      Read        Update            Delete      Main problem\n--------------   ---------   ---------   ---------------   ---------   ---------------------------\nUnsorted array   O(1)        O(n)        O(n)              O(n)        Search is slow\nSorted array     O(n)        O(log n)    O(log n) or O(n)  O(n)        Insert/delete shifting\nNormal BST       O(log n)*   O(log n)*   O(log n)*         O(log n)*   Can become skewed\nBalanced BST     O(log n)    O(log n)    O(log n)          O(log n)    Too many random disk reads\nB-Tree           O(log n)    O(log n)    O(log n)          O(log n)    Good for disk, okay for range\nB+ Tree          O(log n)    O(log n)    O(log n)          O(log n)    Best for DB-style range scans\n\n* Normal BST: average case. Worst case is O(n) when skewed."
+        },
+        {
+          "id": "punchline",
+          "title": "The final teaching punchline",
+          "content": "The whole lecture in one arc:\n\n- **Array** was good for **writing**.\n- **Sorted array** was good for **searching**.\n- **BST** avoided **shifting**.\n- **Balanced BST** controlled **height**.\n- But database data lives **on disk**, so we need **fewer disk reads**.\n- **B-Tree** puts **many sorted keys in one page**.\n- **B+ Tree** keeps all actual data at the **leaf level** and **connects the leaves**, so range queries become efficient.\n\n> **That is why databases like MongoDB use B-tree/B+tree-style index structures internally.**\n\n**Next:** [Day 27 — Create Your Own Database](/learn/http-rest-and-express-js), where we build a database by hand and feel exactly why all of this exists."
+        }
+      ],
+      "quiz": [
+        {
+          "question": "Why is a balanced BST considered a poor fit for database storage, even though its Big-O is O(log n)?",
+          "options": [
+            "Because its nodes are scattered across different disk blocks, so traversal causes too many random disk reads",
+            "Because its height grows linearly with the number of records",
+            "Because it cannot perform range queries at all",
+            "Because it only supports integer keys"
+          ],
+          "answer": 0,
+          "explanation": "A balanced BST is not bad mathematically — it is bad for database storage. Each node may sit in a different disk block, so a range query keeps jumping to random disk locations."
+        },
+        {
+          "question": "What is the core insight that leads from a balanced BST to a B-Tree?",
+          "options": [
+            "Disk reads in blocks/pages anyway, so one node should hold many sorted keys instead of one",
+            "Pointers are slower than array indexes",
+            "Trees should never be balanced",
+            "RAM is always larger than the dataset"
+          ],
+          "answer": 0,
+          "explanation": "If you are reading from disk anyway, why bring only one key? Bring many nearby keys together. That is the birth of the B-Tree — 1 disk read = many keys, so height drops from ~20-30 to 3-5."
+        },
+        {
+          "question": "What makes a B+ Tree better than a B-Tree for range scans?",
+          "options": [
+            "Internal nodes hold only navigation keys while all data sits in sorted, linked leaf nodes, so scans move sequentially",
+            "B+ Trees have no internal nodes",
+            "B+ Trees store data only in internal nodes",
+            "B+ Trees are always shorter than B-Trees"
+          ],
+          "answer": 0,
+          "explanation": "In a normal B-Tree values can live in both internal and leaf nodes, making traversal less straightforward. A B+ Tree keeps data at the leaf level and links the leaves, so you jump to the start then read forward in order."
+        },
+        {
+          "question": "In a sorted array, when does an update become O(n) rather than O(log n)?",
+          "options": [
+            "When you update the sorted field itself, so the element must move and shifting occurs",
+            "Always — updates in a sorted array are always O(n)",
+            "Only when the array holds fewer than 10 elements",
+            "Never — updates are always O(log n)"
+          ],
+          "answer": 0,
+          "explanation": "Updating a non-sorted field (name) is a O(log n) search plus a simple write. But updating the sorted key (id: 5 -> 100) may require moving the element, so shifting can become O(n)."
+        }
+      ],
+      "youtubeUrl": "https://www.youtube.com/watch?v=aZjYr87r1b8",
+      "youtubeTitle": "B Trees and B+ Trees — How they are useful in Databases — Abdul Bari",
+      "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+      "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
+    },
     {
       "id": 27,
       "slug": "http-rest-and-express-js",
@@ -858,9 +925,10 @@ export const chaptersDays20to100 = [
         },
         {
           "id": "sync-and-json",
-          "title": "Why Sync, and why these two helpers",
-          "content": "`readFileSync` and `writeFileSync` are **synchronous** — they **block** the event loop until the disk finishes. That is fine for learning, and it keeps the code simple to read, but it is exactly what you would *not* do in production: one slow disk read holds up every other request.\n\nWrapping the file access in **`readDB()`** and **`writeDB()`** is the important move. Every route now speaks in **arrays and objects**, not files. That is the same idea a real database driver gives you — and when we swap in MongoDB on Day 28, only these two helpers disappear.\n\n**The pattern every route follows:**\n\n```\nread the file  →  work on the array  →  write the file back\n```"
-        },
+        "title": "Why Sync, and why these two helpers",
+        "content": "`readFileSync` and `writeFileSync` are **synchronous** — they **block** the event loop until the disk finishes. That is fine for learning, and it keeps the code simple to read, but it is exactly what you would *not* do in production: one slow disk read holds up every other request.\n\nWrapping the file access in **`readDB()`** and **`writeDB()`** is the important move. Every route now speaks in **arrays and objects**, not files. That is the same idea a real database driver gives you — and when we swap in MongoDB on Day 28, only these two helpers disappear.\n\n**The pattern every route follows:**",
+        "code": "read the file  →  work on the array  →  write the file back"
+      },
         {
           "id": "setup-and-home",
           "title": "Setup & the home route",
@@ -1001,8 +1069,8 @@ export const chaptersDays20to100 = [
         {
           "id": "database-collection-document",
           "title": "Database, Collection, Document",
-          "content": "Think like this:\n\n- **Database** = main container\n- **Collection** = group of similar documents\n- **Document** = actual data object\n\nStructure:\n\n```\nbankDB\n└── customers\n    ├── customer document 1\n    ├── customer document 2\n    └── customer document 3\n```",
-          "code": "// Database: bankDB\n// Collection: customers\n// Document:\n{\n  name: \"Rohit\",\n  accountNumber: 101,\n  balance: 5000\n}"
+          "content": "Think like this:\n\n- **Database** = main container\n- **Collection** = group of similar documents\n- **Document** = actual data object",
+          "code": "bankDB\n└── customers\n    ├── customer document 1\n    ├── customer document 2\n    └── customer document 3\n\n// Database: bankDB\n// Collection: customers\n// Document:\n{\n  name: \"Rohit\",\n  accountNumber: 101,\n  balance: 5000\n}"
         },
         {
           "id": "what-is-bson",
@@ -1090,9 +1158,10 @@ export const chaptersDays20to100 = [
         },
         {
           "id": "final-summary",
-          "title": "Final First Thought Summary",
-          "content": "MongoDB stores data as documents. Mongoose helps us create structure around those documents.\n\n**Flow:**\n\n```\nClient sends request\n        ↓\nExpress route receives request\n        ↓\nMongoose model runs query\n        ↓\nMongoDB stores/fetches data\n        ↓\nResponse goes back to client\n```\n\n**Core mental model:**\n\n- **Database** → stores data\n- **Collection** → group of documents\n- **Document** → actual data object\n- **BSON** → internal storage format\n- **_id** → unique document identity\n- **Schema** → rules/shape of document\n- **Model** → tool to perform database operations\n- **Connection** → reusable link between server and database"
-        }
+        "title": "Final First Thought Summary",
+        "content": "MongoDB stores data as documents. Mongoose helps us create structure around those documents.\n\n**Core mental model:**\n\n- **Database** → stores data\n- **Collection** → group of documents\n- **Document** → actual data object\n- **BSON** → internal storage format\n- **_id** → unique document identity\n- **Schema** → rules/shape of document\n- **Model** → tool to perform database operations\n- **Connection** → reusable link between server and database",
+        "code": "Client sends request\n        ↓\nExpress route receives request\n        ↓\nMongoose model runs query\n        ↓\nMongoDB stores/fetches data\n        ↓\nResponse goes back to client"
+      }
       ],
       "quiz": [
         {
