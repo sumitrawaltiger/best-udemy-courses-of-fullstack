@@ -886,78 +886,191 @@ export const chaptersDays20to100 = [
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
-  {
-    "id": 28,
-    "slug": "middleware-and-request-lifecycle",
-    "track": "thunder",
-    "day": 28,
-    "title": "Middleware & Request Lifecycle",
-    "subtitle": "How requests flow through Express middleware",
-    "duration": "2 hrs",
-    "createdOn": "12 Aug 2026",
-    "status": "published",
-    "topics": [
-      "What is middleware",
-      "app.use vs route middleware",
-      "req, res, next",
-      "Logging middleware",
-      "Error middleware"
-    ],
-    "sections": [
-      {
-        "id": "what-is-middleware",
-        "title": "What is middleware",
-        "content": "Learn **What is middleware** in Day 28 of Thunder: 100 Days of Code. How requests flow through Express middleware",
-        "tryIt": "console.log(\"Day 28: Middleware & Request Lifecycle\");"
-      },
-      {
-        "id": "app-use-vs-route-middleware",
-        "title": "app.use vs route middleware",
-        "content": "Learn **app.use vs route middleware** in Day 28 of Thunder: 100 Days of Code. How requests flow through Express middleware",
-        "tryIt": "console.log(\"Day 28: Middleware & Request Lifecycle\");"
-      },
-      {
-        "id": "req-res-next",
-        "title": "req, res, next",
-        "content": "Learn **req, res, next** in Day 28 of Thunder: 100 Days of Code. How requests flow through Express middleware",
-        "tryIt": "console.log(\"Day 28: Middleware & Request Lifecycle\");"
-      },
-      {
-        "id": "logging-middleware",
-        "title": "Logging middleware",
-        "content": "Learn **Logging middleware** in Day 28 of Thunder: 100 Days of Code. How requests flow through Express middleware",
-        "tryIt": "console.log(\"Day 28: Middleware & Request Lifecycle\");"
-      }
-    ],
-    "quiz": [
-      {
-        "question": "What is the main topic of Day 28?",
-        "options": [
-          "Middleware & Request Lifecycle",
-          "HTML tables only",
-          "Linux kernel modules",
-          "Photoshop layers"
-        ],
-        "answer": 0,
-        "explanation": "Module 28 focuses on Middleware & Request Lifecycle."
-      },
-      {
-        "question": "Which phase includes this module?",
-        "options": [
-          "Phase 2: Backend Mastery",
-          "Only DevOps",
-          "Only CSS",
-          "Not part of the course"
-        ],
-        "answer": 0,
-        "explanation": "This module belongs to Phase 2: Backend Mastery."
-      }
-    ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=U-NzGQepBE8",
-    "youtubeTitle": "Express.js Middleware — The Request-Response Lifecycle — procademy",
-    "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
-    "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
-  },
+    {
+      "id": 28,
+      "slug": "middleware-and-request-lifecycle",
+      "track": "thunder",
+      "day": 28,
+      "title": "MongoDB & Mongoose",
+      "subtitle": "Lecture 09 — documents, BSON, _id, schema, model, connection & queries",
+      "duration": "2 hrs 30 mins",
+      "createdOn": "12 Aug 2026",
+      "status": "published",
+      "notionUrl": "https://app.notion.com/p/Lecture09-MongoDB-and-Mongoose-39f43ac5cab9801da031d61c7de89719",
+      "topics": [
+        "Why we need a database",
+        "MongoDB documents",
+        "Database, collection, document",
+        "BSON vs JSON",
+        "_id & ObjectId",
+        "Mongoose ODM",
+        "mongoose.connect & connection pool",
+        "Schema & validation rules",
+        "Model & timestamps",
+        "CRUD routes",
+        "Filters, $gt, $inc",
+        "Query shapes: $in, $or, $and"
+      ],
+      "sections": [
+        {
+          "id": "why-database",
+          "title": "First Thought — Why do we need a database?",
+          "content": "**Day 28** follows **Lecture 09** ([MongoDB and Mongoose Notion notes](https://app.notion.com/p/Lecture09-MongoDB-and-Mongoose-39f43ac5cab9801da031d61c7de89719)).\n\nIn backend, our server needs to store data **permanently**. If we store data only inside an array, it **disappears when the server restarts**. So we need a database.\n\nA database helps us:\n\n- store data permanently\n- fetch data when needed\n- update existing data\n- delete data\n- search/filter data",
+          "code": "{\n  name: \"Rohit\",\n  accountNumber: 101,\n  city: \"Dehradun\",\n  age: 25,\n  balance: 5000\n}"
+        },
+        {
+          "id": "what-is-mongodb",
+          "title": "What is MongoDB?",
+          "content": "MongoDB is a database where we store data in the form of **documents**. A document looks like a **JavaScript object**.\n\nMongoDB stores records as **BSON documents** — a binary representation of JSON-like documents that supports more data types than JSON.",
+          "code": "{\n  name: \"Rohit\",\n  age: 25,\n  city: \"Dehradun\"\n}"
+        },
+        {
+          "id": "database-collection-document",
+          "title": "Database, Collection, Document",
+          "content": "Think like this:\n\n- **Database** = main container\n- **Collection** = group of similar documents\n- **Document** = actual data object\n\nStructure:\n\n```\nbankDB\n└── customers\n    ├── customer document 1\n    ├── customer document 2\n    └── customer document 3\n```",
+          "code": "// Database: bankDB\n// Collection: customers\n// Document:\n{\n  name: \"Rohit\",\n  accountNumber: 101,\n  balance: 5000\n}"
+        },
+        {
+          "id": "what-is-bson",
+          "title": "What is BSON?",
+          "content": "**BSON = Binary JSON.** We write data in JSON-like format, but MongoDB internally stores it as BSON.\n\n**Why?** Because MongoDB should understand the *types*: `name` is string, `age` is number, `isActive` is boolean, `createdAt` is Date, `_id` is ObjectId.\n\n- **JSON** is good for humans and APIs.\n- **BSON** is good for database storage and type understanding.\n\nBSON supports extra types like **ObjectId, Date, Int32, Int64, Decimal128, Binary data, and Timestamp**.",
+          "code": "{\n  name: \"Aman\",\n  age: 22,\n  isActive: true\n}"
+        },
+        {
+          "id": "object-id",
+          "title": "What is _id?",
+          "content": "Every MongoDB document needs a **unique identity**. If you do not provide `_id`, MongoDB **automatically creates it**.\n\nUse of `_id`:\n\n- uniquely identify one document\n- update the exact document\n- delete the exact document\n- fetch the exact document\n\nFor beginner projects, let MongoDB generate `_id` automatically.",
+          "code": "{\n  _id: ObjectId(\"6a588620783c80fbbcf26db8\"),\n  name: \"Rohit\",\n  age: 25\n}\n\ndb.customers.findOne({\n  _id: ObjectId(\"6a588620783c80fbbcf26db8\")\n})"
+        },
+        {
+          "id": "what-is-mongoose",
+          "title": "What is Mongoose?",
+          "content": "Mongoose is an **ODM = Object Data Modeling**.\n\nSimple meaning: **Mongoose helps us work with MongoDB using structured JavaScript code.**\n\nMongoose helps with: schema, model, validation, default values, timestamps, query methods, middleware/hooks, and clean code structure.\n\nMongoose says everything starts with a **Schema**, and a schema maps to a MongoDB collection and defines the shape of documents inside it.",
+          "code": "// Without Mongoose\ndb.collection(\"customers\").findOne({ accountNumber: 101 })\n\n// With Mongoose\nCustomer.findOne({ accountNumber: 101 })"
+        },
+        {
+          "id": "mongoose-connect",
+          "title": "Why do we need mongoose.connect()?",
+          "content": "Before our backend can query MongoDB, it must **connect** to MongoDB. This creates a **long-lived connection** between Node.js and the MongoDB database.\n\nIt is **not a WebSocket** connection — it is a **TCP-based database connection** handled by the MongoDB driver.\n\nWhen connection happens: the MongoDB URI is read → the MongoDB server is found → a TCP connection is created → a TLS/SSL secure channel is created → username/password authentication happens → the connection pool is prepared → queries can now run.\n\n**Meaning: first connect the database, then start accepting API requests.**",
+          "code": "await mongoose.connect(process.env.MONGO_URI);\n\napp.listen(3000, () => {\n  console.log(\"Server started\");\n});"
+        },
+        {
+          "id": "connection-pool",
+          "title": "Why not connect on every request?",
+          "content": "**Bad approach** — calling `mongoose.connect()` inside a route handler.\n\n**Problem:** every request opens a DB connection, every request authenticates again → more delay, more load, bad performance.\n\n**Good approach:** the server starts → the DB connection is created **once** → all requests reuse the existing connection.\n\nMongoose/the MongoDB driver maintains a **connection pool** — multiple ready-made database connections. If 10 requests come together, they can use different available connections from the pool.",
+          "code": "// ❌ Bad — connects on every request\napp.get(\"/customers\", async (req, res) => {\n  await mongoose.connect(process.env.MONGO_URI);\n  const customers = await Customer.find();\n  res.json(customers);\n});"
+        },
+        {
+          "id": "schema",
+          "title": "What is Schema?",
+          "content": "Schema is the **blueprint/rule** of a document. It tells Mongoose that `name` should be String, `accountNumber` should be Number, and so on.\n\n**Schema with rules:**\n\n- `required: true` → field must be present\n- `trim: true` → remove extra spaces\n- `unique: true` → duplicate value not allowed\n- `min: 1` → value should be at least 1\n- `enum` → only selected values allowed\n- `default` → use default value if not provided\n\nMongoose SchemaTypes handle defaults, validation, getters, setters, and field behavior.",
+          "code": "const customerSchema = new mongoose.Schema({\n  name: { type: String, required: true, trim: true },\n  accountNumber: { type: Number, required: true, unique: true },\n  city: { type: String, required: true, trim: true },\n  age: { type: Number, required: true, min: 1 },\n  balance: { type: Number, required: true, min: 0 },\n  accountType: {\n    type: String,\n    enum: [\"saving\", \"current\"],\n    default: \"saving\"\n  }\n});"
+        },
+        {
+          "id": "model",
+          "title": "What is Model?",
+          "content": "Schema only **defines structure**. Model is used to actually **perform database operations**.\n\nMongoose defines a Model as the main tool for interacting with MongoDB, created from Schema definitions.\n\n**Mental model:**\n\n- **Schema** = blueprint\n- **Model** = tool to talk to the database\n- **Document** = actual stored data",
+          "code": "const Customer = mongoose.model(\"Customer\", customerSchema);\n\nCustomer.create()\nCustomer.find()\nCustomer.findOne()\nCustomer.findOneAndUpdate()\nCustomer.findOneAndDelete()"
+        },
+        {
+          "id": "timestamps",
+          "title": "What are timestamps?",
+          "content": "If we pass `{ timestamps: true }` as the schema's second argument, Mongoose automatically adds **`createdAt`** and **`updatedAt`** Date properties.\n\n- `createdAt` → when the document was created\n- `updatedAt` → when the document was last changed",
+          "code": "{\n  name: \"Rohit\",\n  balance: 5000,\n  createdAt: \"2026-07-16T10:00:00Z\",\n  updatedAt: \"2026-07-16T10:00:00Z\"\n}"
+        },
+        {
+          "id": "complete-model-file",
+          "title": "Complete Model File",
+          "content": "The full `models/customer.model.js` — schema + rules + timestamps + model, exported as default.",
+          "code": "import mongoose from \"mongoose\";\n\nconst customerSchema = new mongoose.Schema(\n  {\n    name: { type: String, required: true, trim: true },\n    accountNumber: { type: Number, required: true, unique: true },\n    city: { type: String, required: true, trim: true },\n    age: { type: Number, required: true, min: 1 },\n    balance: { type: Number, required: true, min: 0 },\n    accountType: {\n      type: String,\n      enum: [\"saving\", \"current\"],\n      default: \"saving\"\n    }\n  },\n  {\n    timestamps: true\n  }\n);\n\nconst Customer = mongoose.model(\"Customer\", customerSchema);\n\nexport default Customer;"
+        },
+        {
+          "id": "express-mongo-setup",
+          "title": "Basic Express + MongoDB Setup",
+          "content": "Connect first, then listen. `express.json()` is needed so `req.body` is parsed for the POST/PATCH routes below.",
+          "code": "import express from \"express\";\nimport mongoose from \"mongoose\";\nimport Customer from \"./models/customer.model.js\";\n\nconst app = express();\n\napp.use(express.json());\n\nawait mongoose.connect(process.env.MONGO_URI);\n\nconsole.log(\"MongoDB connected\");\n\napp.listen(3000, () => {\n  console.log(\"Server running on port 3000\");\n});"
+        },
+        {
+          "id": "crud-routes",
+          "title": "CRUD — Create, Read, Update, Delete",
+          "content": "The core bank-account routes: **create** a customer, **fetch all**, **fetch one** by account number, **update** the balance, and **delete**.\n\n`new: true` means **return the updated document** (without it, `findOneAndUpdate` returns the document as it was *before* the update).",
+          "code": "// Create\napp.post(\"/customers\", async (req, res) => {\n  const customer = await Customer.create(req.body);\n  res.json({ message: \"Customer created successfully\", customer });\n});\n\n// Fetch all\napp.get(\"/customers\", async (req, res) => {\n  const customers = await Customer.find();\n  res.json(customers);\n});\n\n// Fetch by account number\napp.get(\"/customers/:accountNumber\", async (req, res) => {\n  const customer = await Customer.findOne({\n    accountNumber: req.params.accountNumber\n  });\n  res.json(customer);\n});\n\n// Update balance\napp.patch(\"/customers/:accountNumber/balance\", async (req, res) => {\n  const customer = await Customer.findOneAndUpdate(\n    { accountNumber: req.params.accountNumber },\n    { balance: req.body.balance },\n    { new: true }\n  );\n  res.json({ message: \"Balance updated successfully\", customer });\n});\n\n// Delete\napp.delete(\"/customers/:accountNumber\", async (req, res) => {\n  const customer = await Customer.findOneAndDelete({\n    accountNumber: req.params.accountNumber\n  });\n  res.json({ message: \"Customer deleted successfully\", customer });\n});"
+        },
+        {
+          "id": "deposit-withdraw",
+          "title": "Deposit & Withdraw — $inc vs save()",
+          "content": "**Deposit** uses **`$inc`** (increment) — current balance 5000 + amount 2000 = new balance 7000. It updates atomically in one query.\n\n**Withdraw** needs a **check first**, so we fetch the document, compare the balance, reject if insufficient, then mutate and `save()`.",
+          "code": "// Deposit — $inc\napp.patch(\"/customers/:accountNumber/deposit\", async (req, res) => {\n  const customer = await Customer.findOneAndUpdate(\n    { accountNumber: req.params.accountNumber },\n    { $inc: { balance: req.body.amount } },\n    { new: true }\n  );\n  res.json({ message: \"Amount deposited successfully\", customer });\n});\n\n// Withdraw — check, then save\napp.patch(\"/customers/:accountNumber/withdraw\", async (req, res) => {\n  const { amount } = req.body;\n  const customer = await Customer.findOne({\n    accountNumber: req.params.accountNumber\n  });\n\n  if (customer.balance < amount) {\n    return res.json({ message: \"Insufficient balance\" });\n  }\n\n  customer.balance = customer.balance - amount;\n  await customer.save();\n\n  res.json({ message: \"Amount withdrawn successfully\", customer });\n});"
+        },
+        {
+          "id": "filters-and-route-order",
+          "title": "Filters & Important Route Order",
+          "content": "Filter with query params: `/customers/filter/balance?minBalance=10000` uses **`$gt`** (greater than). MongoDB query filters use the form `{ field: { operator: value } }`.\n\n**Important — write specific routes BEFORE dynamic routes.** If `/customers/:accountNumber` is registered first, Express may treat `filter` as an `accountNumber`.",
+          "code": "// ✅ Correct order\napp.get(\"/customers/filter/balance\", async (req, res) => {\n  const customers = await Customer.find({\n    balance: { $gt: req.query.minBalance }\n  });\n  res.json(customers);\n});\n\napp.get(\"/customers/filter/city\", async (req, res) => {\n  const customers = await Customer.find({ city: req.query.city });\n  res.json(customers);\n});\n\napp.get(\"/customers/:accountNumber\", ...) // dynamic route LAST"
+        },
+        {
+          "id": "query-shapes",
+          "title": "Query Shapes — the whole mental model",
+          "content": "A MongoDB query is just an **object**: `Model.find({ fieldName: condition })`. There are only **3 shapes**:\n\n**Shape 1 — simple equality:** `{ city: \"Delhi\" }`. Multiple fields in the same object means **AND** by default.\n\n**Shape 2 — field with operator:** `{ balance: { $gt: 10000 } }`. Use for greater/less/not-equal/in-list.\n\n**Shape 3 — logical operator with array:** `{ $or: [ {...}, {...} ] }` — each condition is a separate object.\n\n**Why does `$or` use an array but AND does not?** Because an object already naturally supports AND. But OR can't be written as `{ city: \"Delhi\", city: \"Mumbai\" }` — the same key can't appear twice in a JS object. So MongoDB uses an array.\n\n**Final rule:**\n\n- **AND between fields** → put fields in the same object\n- **OR between conditions** → use `$or` with an array\n- **Multiple values for the same field** → use `$in` with an array\n- **Greater/less/not equal** → use field with an operator object\n\n> MongoDB query is just an object. If the condition is simple, write the value directly. If the condition needs logic, use `$operator`. If there are multiple choices or conditions, use an array.",
+          "code": "// Exact match\nCustomer.find({ city: \"Delhi\" });\n\n// AND (same object, multiple fields)\nCustomer.find({ city: \"Delhi\", accountType: \"saving\" });\n\n// Comparison operators\nCustomer.find({ balance: { $gt: 10000 } });\nCustomer.find({ age: { $gte: 18 } });\nCustomer.find({ city: { $ne: \"Delhi\" } });\nCustomer.find({ balance: { $gte: 10000, $lte: 50000 } });\n\n// One field, many allowed values → $in\nCustomer.find({ city: { $in: [\"Delhi\", \"Mumbai\", \"Pune\"] } });\n\n// Any one condition can match → $or\nCustomer.find({\n  $or: [\n    { city: \"Delhi\" },\n    { balance: { $gt: 50000 } }\n  ]\n});"
+        },
+        {
+          "id": "final-summary",
+          "title": "Final First Thought Summary",
+          "content": "MongoDB stores data as documents. Mongoose helps us create structure around those documents.\n\n**Flow:**\n\n```\nClient sends request\n        ↓\nExpress route receives request\n        ↓\nMongoose model runs query\n        ↓\nMongoDB stores/fetches data\n        ↓\nResponse goes back to client\n```\n\n**Core mental model:**\n\n- **Database** → stores data\n- **Collection** → group of documents\n- **Document** → actual data object\n- **BSON** → internal storage format\n- **_id** → unique document identity\n- **Schema** → rules/shape of document\n- **Model** → tool to perform database operations\n- **Connection** → reusable link between server and database"
+        }
+      ],
+      "quiz": [
+        {
+          "question": "Why does MongoDB store documents as BSON instead of JSON?",
+          "options": [
+            "Because BSON is binary and supports extra types like ObjectId, Date and Decimal128, so MongoDB understands each field's type",
+            "Because BSON is easier for humans to read",
+            "Because JSON cannot be sent over HTTP",
+            "Because BSON files are always smaller than JSON"
+          ],
+          "answer": 0,
+          "explanation": "JSON is good for humans and APIs; BSON is good for database storage and type understanding. BSON adds types such as ObjectId, Date, Int32, Int64, Decimal128, Binary data and Timestamp."
+        },
+        {
+          "question": "Why should you call mongoose.connect() once at startup instead of inside every route?",
+          "options": [
+            "Because connecting per request re-authenticates every time and adds delay; connecting once lets all requests reuse the connection pool",
+            "Because mongoose.connect() can only be called once ever",
+            "Because routes cannot contain await",
+            "Because it converts BSON to JSON"
+          ],
+          "answer": 0,
+          "explanation": "Connecting on every request opens a DB connection and authenticates again each time — more delay, more load, bad performance. Connect once at startup and the driver's connection pool serves all requests."
+        },
+        {
+          "question": "In Mongoose, what is the difference between a Schema and a Model?",
+          "options": [
+            "Schema is the blueprint that defines the shape/rules; Model is the tool used to perform database operations",
+            "Schema runs queries; Model defines validation",
+            "They are the same thing",
+            "Schema is for MongoDB, Model is for Express"
+          ],
+          "answer": 0,
+          "explanation": "Schema = blueprint, Model = tool to talk to the database, Document = actual stored data."
+        },
+        {
+          "question": "Why must /customers/filter/balance be registered before /customers/:accountNumber?",
+          "options": [
+            "Because Express matches routes in order and would otherwise treat 'filter' as the :accountNumber value",
+            "Because query params only work on the first route",
+            "Because $gt requires a specific route",
+            "Because dynamic routes are not allowed in Express"
+          ],
+          "answer": 0,
+          "explanation": "Write specific routes before dynamic routes — otherwise Express may treat 'filter' as an accountNumber."
+        }
+      ],
+      "youtubeUrl": "https://www.youtube.com/watch?v=ofme2o29ngU",
+      "youtubeTitle": "MongoDB Crash Course — Web Dev Simplified",
+      "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
+      "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
+    },
   {
     "id": 29,
     "slug": "mongodb-and-database-design",
