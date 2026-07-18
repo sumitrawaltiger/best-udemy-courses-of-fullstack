@@ -121,6 +121,7 @@ import SqlQueryPuzzles from './pages/SqlQueryPuzzles';
 import SpringBootEcommerceRoadmap from './pages/SpringBootEcommerceRoadmap';
 import CheatSheets from './pages/CheatSheets';
 import BestUdemyCourses from './pages/BestUdemyCourses';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import AboutFounder from './pages/AboutFounder';
 import RoadmapHome from './pages/RoadmapHome';
 import Prerequisites from './pages/Prerequisites';
@@ -241,6 +242,7 @@ export default function App() {
         <Route path="/spring-boot-ecommerce-roadmap" element={<SpringBootEcommerceRoadmap />} />
         <Route path="/cheat-sheets" element={<CheatSheets />} />
         <Route path="/best-udemy-courses" element={<BestUdemyCourses />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="roadmap" element={<RoadmapHome />} />
