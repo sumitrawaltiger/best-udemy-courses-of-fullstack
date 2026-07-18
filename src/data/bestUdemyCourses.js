@@ -290,7 +290,7 @@ export const BEST_COURSES = [
     title: '100 Days of Code: JavaScript Data Structures and Algorithms',
     instructor: 'Elshad Karimov',
     provider: 'Udemy',
-    note: 'A 100-day JavaScript DSA phase (28 Feb – 7 Jun 2029, carved from the interview-prep window) — data structures & algorithms from zero to hero with 100+ LeetCode / FAANG-style interview questions and Big-O analysis. 4.6★.',
+    note: 'A 100-day JavaScript DSA phase (7 Mar – 14 Jun 2029, carved from the interview-prep window) — data structures & algorithms from zero to hero with 100+ LeetCode / FAANG-style interview questions and Big-O analysis. 4.6★.',
     links: [
       {
         label: 'View on Udemy',
@@ -306,7 +306,7 @@ export const BEST_COURSES = [
     title: '50 Days React Bootcamp: Build 50 Real World React Projects',
     instructor: 'Sufa Digital',
     provider: 'Udemy',
-    note: 'A 50-day React project bootcamp (8 Jun – 27 Jul 2029, carved from the interview-prep window) — build 50 real-world React apps with Hooks, REST APIs, Socket, Firebase, and Bootstrap.',
+    note: 'A 50-day React project bootcamp (15 Jun – 3 Aug 2029, carved from the interview-prep window) — build 50 real-world React apps with Hooks, REST APIs, Socket, Firebase, and Bootstrap.',
     links: [
       {
         label: 'View on Udemy',
@@ -322,7 +322,7 @@ export const BEST_COURSES = [
     title: '100 Days of Code: The Complete Python Pro Bootcamp',
     instructor: 'Dr. Angela Yu',
     provider: 'Udemy',
-    note: 'A 100-day Python pro bootcamp (28 Jul – 4 Nov 2029, carved from the interview-prep window) — build 100 projects across automation, web dev (Flask), data science (Pandas/NumPy), and games. 52 hours, Bestseller.',
+    note: 'A 100-day Python pro bootcamp (4 Aug – 11 Nov 2029, carved from the interview-prep window) — build 100 projects across automation, web dev (Flask), data science (Pandas/NumPy), and games. 52 hours, Bestseller.',
     links: [
       {
         label: 'View on Udemy',
@@ -338,7 +338,7 @@ export const BEST_COURSES = [
     title: '100 Days of JavaScript',
     instructor: 'Ewomazino Akpareva',
     provider: 'Udemy',
-    note: 'A 100-day JavaScript project bootcamp (5 Nov 2029 – 12 Feb 2030, carved from the interview-prep window) — sharpen JS skills by building projects with HTML, CSS, Flexbox, Grid, Bootstrap, ES6 classes, and DOM manipulation. 60.5 hours.',
+    note: 'A 100-day JavaScript project bootcamp (12 Nov 2029 – 19 Feb 2030, carved from the interview-prep window) — sharpen JS skills by building projects with HTML, CSS, Flexbox, Grid, Bootstrap, ES6 classes, and DOM manipulation. 60.5 hours.',
     links: [
       {
         label: 'View on Udemy',
@@ -354,7 +354,7 @@ export const BEST_COURSES = [
     title: 'LeetCode in Java: Algorithms Coding Interview Questions',
     instructor: 'Holczer Balazs',
     provider: 'Udemy',
-    note: 'A 50-day LeetCode grind in Java (13 Feb – 3 Apr 2030, carved from the interview-prep window) — algorithms, data structures, and the coding-interview questions companies ask, solved and explained step by step.',
+    note: 'A 50-day LeetCode grind in Java (20 Feb – 10 Apr 2030, carved from the interview-prep window) — algorithms, data structures, and the coding-interview questions companies ask, solved and explained step by step.',
     links: [
       {
         label: 'View on Udemy',
@@ -370,7 +370,7 @@ export const BEST_COURSES = [
     title: '60 Days of Java: The Complete Java Masterclass',
     instructor: 'Denis Panjuta',
     provider: 'Udemy',
-    note: 'A 60-day complete Java masterclass (4 Apr – 2 Jun 2030, carved from the interview-prep window) — master Java from basics to advanced with OOP, JavaFX desktop apps, Spring Boot, REST APIs, microservices, and database handling. 49.5 hours.',
+    note: 'A 60-day complete Java masterclass (11 Apr – 9 Jun 2030, carved from the interview-prep window) — master Java from basics to advanced with OOP, JavaFX desktop apps, Spring Boot, REST APIs, microservices, and database handling. 49.5 hours.',
     links: [
       {
         label: 'View on Udemy',
@@ -386,7 +386,7 @@ export const BEST_COURSES = [
     title: '30 JavaScript Projects in 30 Days – HTML, CSS & JS',
     instructor: 'Course Max One',
     provider: 'Udemy',
-    note: 'A 30-day project sprint (3 Jun – 2 Jul 2030, carved from the interview-prep window) — build 30 unique real-world apps from scratch and grow a web-developer portfolio while strengthening core JavaScript, HTML, and CSS. 6.5 hours.',
+    note: 'A 30-day project sprint (10 Jun – 9 Jul 2030, carved from the interview-prep window) — build 30 unique real-world apps from scratch and grow a web-developer portfolio while strengthening core JavaScript, HTML, and CSS. 6.5 hours.',
     links: [
       {
         label: 'View on Udemy',
@@ -402,7 +402,7 @@ export const BEST_COURSES = [
     title: 'Learn JavaScript in 2 Weeks (Complete JavaScript Bootcamp)',
     instructor: 'Fabian & Pavel Coding2GO',
     provider: 'Udemy',
-    note: 'The final phase of the journey (3 Jul – 16 Jul 2030, 14 days) — JavaScript from the very beginning to advanced: data types, loops, functions, arrays, objects, the DOM, events, forms, and hands-on projects.',
+    note: 'The final phase of the journey (10 Jul – 23 Jul 2030, 14 days) — JavaScript from the very beginning to advanced: data types, loops, functions, arrays, objects, the DOM, events, forms, and hands-on projects.',
     links: [
       {
         label: 'View on Udemy',

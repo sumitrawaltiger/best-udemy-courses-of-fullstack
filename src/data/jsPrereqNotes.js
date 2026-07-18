@@ -1,6 +1,6 @@
 // JavaScript prerequisite notes — 47 illustrated episodes, one per day.
 // HTML5, CSS3 and JavaScript are prerequisites for the 4-year plan, which starts
-// at TypeScript on Day 1 (17 Jul 2026). These notes are the JavaScript refresher
+// at TypeScript on Day 1 (24 Jul 2026). These notes are the JavaScript refresher
 // that sits underneath it. Each day pairs a hand-drawn episode with written notes.
 
 export const PREREQ_META = {

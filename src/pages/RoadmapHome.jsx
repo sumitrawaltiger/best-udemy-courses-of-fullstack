@@ -26,7 +26,7 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 17 Jul 2026 → 16 Jul 2030</span>
+        <span className="roadmap-hero-badge">📍 24 Jul 2026 → 23 Jul 2030</span>
         <h1 className="roadmap-hero-title">The 4-Year Learning Path</h1>
         <p className="roadmap-hero-sub">
           {JOURNEY_META.totalDays} days of study, one phase at a time — every morning from{' '}
@@ -60,7 +60,7 @@ export default function RoadmapHome() {
             <span className="roadmap-poster-zoom">🔍 Click to zoom</span>
           </button>
           <figcaption className="roadmap-poster-cap">
-            1461 Days · 4 Years of Growth — the complete study plan (17 Jul 2026 → 16 Jul 2030).
+            1461 Days · 4 Years of Growth — the complete study plan (24 Jul 2026 → 23 Jul 2030).
           </figcaption>
         </figure>
       </section>
@@ -116,7 +116,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">16 Jul 2030 · 1,461 days complete</p>
+            <p className="roadmap-finish-date">23 Jul 2030 · 1,461 days complete</p>
           </div>
         </div>
       </div>

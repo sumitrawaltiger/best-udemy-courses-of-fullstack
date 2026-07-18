@@ -6,7 +6,7 @@ export default function InterviewHero({ children, actions }) {
     <div className="interview-hero-block">
       <span className="interview-level-badge">
         <span className="interview-level-icon" aria-hidden="true">🎯</span>
-        1461 days · 4 stacks · DSA & System Design each year in that year’s language · ends 16 Jul 2030
+        1461 days · 4 stacks · DSA & System Design each year in that year’s language · ends 23 Jul 2030
       </span>
 
       <h1 className="interview-title">

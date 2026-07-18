@@ -141,7 +141,7 @@ const STUDY_SYSTEM = [
     icon: '🔷',
     title: 'Day 1 Starts Tomorrow',
     titleClass: 'card-title-lime',
-    subtitle: '17 Jul 2026 · TypeScript',
+    subtitle: '24 Jul 2026 · TypeScript',
     description:
       'Tomorrow is Day 1: TypeScript — the first phase of the Year 1 stack. HTML5, CSS3 & JavaScript are assumed prerequisites, so the journey opens straight into typed JavaScript. Environment is ready, accounts are live, routine is locked. Time to build.',
     link: { href: '/day-001', label: 'Preview Day 1 →' },
@@ -241,7 +241,7 @@ export default function Day000() {
           <Link to="/" className="day001-nav-btn day001-nav-home">
             Home
           </Link>
-          <p className="day001-datetime">Study Day 0 · 16 Jul 2026</p>
+          <p className="day001-datetime">Study Day 0 · 23 Jul 2026</p>
           <Link to="/day-001" className="day001-nav-btn day001-nav-next">
             Day 1 →
           </Link>
@@ -288,7 +288,7 @@ export default function Day000() {
             GitHub
           </a>{' '}
           and Netlify accounts, and locking the routine (wake 4 AM, study 5:00–8:00 AM). No lectures yet —
-          just clearing every obstacle so <strong>Day 1 (17 Jul 2026)</strong> starts with zero friction. Sharpen the
+          just clearing every obstacle so <strong>Day 1 (24 Jul 2026)</strong> starts with zero friction. Sharpen the
           axe before the first swing.
         </p>
 

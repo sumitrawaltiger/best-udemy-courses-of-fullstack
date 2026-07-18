@@ -71,9 +71,9 @@ export default function InterviewHome() {
           <p className="section-desc">
             In the re-sequenced 4-year plan, <strong>DSA</strong> and <strong>System Design</strong> are practiced{' '}
             <strong>every year in that year’s language</strong>:{' '}
-            <strong>JavaScript</strong> in Year 1 (DSA 17 Feb – 27 May 2027 · System Design 28 May – 16 Jul 2027),{' '}
-            <strong>Python</strong> in Year 2 (18 Feb – 16 Jul 2028), and <strong>Java</strong> in Year 3
-            (7 Feb – 16 Jul 2029). Total study: <strong>1461 days</strong> from 17 Jul 2026 to 16 Jul 2030.{' '}
+            <strong>JavaScript</strong> in Year 1 (DSA 24 Feb – 3 Jun 2027 · System Design 4 Jun – 23 Jul 2027),{' '}
+            <strong>Python</strong> in Year 2 (25 Feb – 23 Jul 2028), and <strong>Java</strong> in Year 3
+            (14 Feb – 23 Jul 2029). Total study: <strong>1461 days</strong> from 24 Jul 2026 to 23 Jul 2030.{' '}
             {interviewChapters.length} modules on this track support these phases.
           </p>
           <div className="roadmap-grid roadmap-interview">
@@ -88,7 +88,7 @@ export default function InterviewHome() {
               <span className="legend-dot published legend-dot-interview" /> {interviewChapters.length} modules
             </span>
             <span>
-              <span className="legend-dot published" /> DSA & System Design each year: JS (Y1) · Python (Y2) · Java (Y3) → 16 Jul 2030 · 1461 total
+              <span className="legend-dot published" /> DSA & System Design each year: JS (Y1) · Python (Y2) · Java (Y3) → 23 Jul 2030 · 1461 total
             </span>
           </div>
         </section>

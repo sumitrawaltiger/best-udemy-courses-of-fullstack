@@ -234,7 +234,7 @@ export default function Day089() {
           <Link to="/day-088" className="day001-nav-btn day001-nav-home">
             ← Day 88
           </Link>
-          <p className="day001-datetime">Thunder Day 89 · 13 Oct 2026</p>
+          <p className="day001-datetime">Thunder Day 89 · 20 Oct 2026</p>
           <Link to="/day-090" className="day001-nav-btn day001-nav-next">
             Day 90 →
           </Link>

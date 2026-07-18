@@ -1,74 +1,74 @@
-// Learning path calendar offsets (Day 1 = 16 Jul 2026)
+// Learning path calendar offsets (Day 1 = 23 Jul 2026)
 export const THUNDER_DAYS = 100;
 
-// After Thunder: React & Next.js + React Native through 16 Jan 2027
-// Calendar Days 101–185 = 24 Oct 2026 → 16 Jan 2027 (85 calendar days; ~84 learning days after Day 100)
+// After Thunder: React & Next.js + React Native through 23 Jan 2027
+// Calendar Days 101–185 = 31 Oct 2026 → 23 Jan 2027 (85 calendar days; ~84 learning days after Day 100)
 export const NEXTJS_RN_PHASE_DAYS = 85;
 export const NEXTJS_CALENDAR_DAYS = 45; // Days 101–145
-export const MOBILE_CALENDAR_DAYS = 40; // Days 146–185 · through 16 Jan 2027
+export const MOBILE_CALENDAR_DAYS = 40; // Days 146–185 · through 23 Jan 2027
 export const NEXTJS_MODULES = 30; // ChaiCode Udemy modules (fit inside NEXTJS_CALENDAR_DAYS)
 export const MOBILE_LESSONS = 25; // ChaiCode RN lessons (fit inside MOBILE_CALENDAR_DAYS)
 
-// Python & Agentic AI: 17 Jan 2027 → 16 May 2027 (4 months)
+// Python & Agentic AI: 24 Jan 2027 → 23 May 2027 (4 months)
 // Calendar Days 186–305 (120 days)
 export const PYTHON_CALENDAR_DAYS = 120;
 export const PYTHON_MODULES = 45; // Ashok IT modules (fit inside PYTHON_CALENDAR_DAYS)
 
-// Java & Spring: 17 May 2027 → 16 Oct 2027
+// Java & Spring: 24 May 2027 → 23 Oct 2027
 // Calendar Days 306–458 (153 days) — J2SE, J2EE, JPA, Spring Boot, Microservices
 export const JAVA_CALENDAR_DAYS = 153;
 export const JAVA_MODULES = 50; // Udemy-mapped modules (fit inside JAVA_CALENDAR_DAYS)
 
-// AWS Cloud: 17 Oct 2027 → 24 Jan 2028 (100 days)
+// AWS Cloud: 24 Oct 2027 → 31 Jan 2028 (100 days)
 // Calendar Days 459–558
 export const AWS_DAYS = 100;
 
-// DevOps: 25 Jan 2028 → 3 May 2028 (100 days)
+// DevOps: 1 Feb 2028 → 10 May 2028 (100 days)
 // Calendar Days 559–658
 export const DEVOPS_DAYS = 100;
 
-// Kubernetes: 4 May 2028 → 11 Aug 2028 (100 days)
+// Kubernetes: 11 May 2028 → 18 Aug 2028 (100 days)
 // Calendar Days 659–758
 export const K8S_DAYS = 100;
 
-// System Design (Interview track): 12 Aug 2028 → 19 Nov 2028 (100 days)
+// System Design (Interview track): 19 Aug 2028 → 26 Nov 2028 (100 days)
 // Calendar Days 759–858
 export const INTERVIEW_CALENDAR_DAYS = 100;
 export const INTERVIEW_MODULES = 60; // ChaiCode + GfG modules (fit inside INTERVIEW_CALENDAR_DAYS)
 
-// Data Structures: 20 Nov 2028 → 27 Feb 2029 (100 days)
+// Data Structures: 27 Nov 2028 → 6 Mar 2029 (100 days)
 // Calendar Days 859–958
 export const DSA_CALENDAR_DAYS = 100;
 
-// JS DSA (100 Days of Code: JavaScript Data Structures & Algorithms): 28 Feb 2029 → 7 Jun 2029 (100 days)
+// JS DSA (100 Days of Code: JavaScript Data Structures & Algorithms): 7 Mar 2029 → 14 Jun 2029 (100 days)
 // Calendar Days 959–1058 — carved out of the interview-preparation window
 export const JS_DSA_CALENDAR_DAYS = 100;
 
-// React Bootcamp (50 Days React Bootcamp): 8 Jun 2029 → 27 Jul 2029 (50 days)
+// React Bootcamp (50 Days React Bootcamp): 15 Jun 2029 → 3 Aug 2029 (50 days)
 // Calendar Days 1059–1108 — carved out of the interview-preparation window
 export const REACT_BOOTCAMP_CALENDAR_DAYS = 50;
 
-// Python Bootcamp (100 Days of Code Python): 28 Jul 2029 → 4 Nov 2029 (100 days)
+// Python Bootcamp (100 Days of Code Python): 4 Aug 2029 → 11 Nov 2029 (100 days)
 // Calendar Days 1109–1208 — carved out of the interview-preparation window
 export const PYTHON_BOOTCAMP_CALENDAR_DAYS = 100;
 
-// JavaScript Bootcamp (100 Days of JavaScript): 5 Nov 2029 → 12 Feb 2030 (100 days)
+// JavaScript Bootcamp (100 Days of JavaScript): 12 Nov 2029 → 19 Feb 2030 (100 days)
 // Calendar Days 1209–1308 — carved out of the interview-preparation window
 export const JS_BOOTCAMP_CALENDAR_DAYS = 100;
 
-// LeetCode in Java (50 Days of LeetCode): 13 Feb 2030 → 3 Apr 2030 (50 days)
+// LeetCode in Java (50 Days of LeetCode): 20 Feb 2030 → 10 Apr 2030 (50 days)
 // Calendar Days 1309–1358 — carved out of the interview-preparation window
 export const LEETCODE_JAVA_CALENDAR_DAYS = 50;
 
-// Java Masterclass (60 Days of Java): 4 Apr 2030 → 2 Jun 2030 (60 days)
+// Java Masterclass (60 Days of Java): 11 Apr 2030 → 9 Jun 2030 (60 days)
 // Calendar Days 1359–1418 — carved out of the interview-preparation window
 export const JAVA_MASTERCLASS_CALENDAR_DAYS = 60;
 
-// JS Projects (30 JavaScript Projects in 30 Days): 3 Jun 2030 → 2 Jul 2030 (30 days)
+// JS Projects (30 JavaScript Projects in 30 Days): 10 Jun 2030 → 9 Jul 2030 (30 days)
 // Calendar Days 1419–1448 — carved out of the interview-preparation window
 export const JS_PROJECTS_CALENDAR_DAYS = 30;
 
-// Two-Week JavaScript Bootcamp (Learn JavaScript in 2 Weeks): 3 Jul 2030 → 16 Jul 2030 (14 days)
+// Two-Week JavaScript Bootcamp (Learn JavaScript in 2 Weeks): 10 Jul 2030 → 23 Jul 2030 (14 days)
 // Calendar Days 1449–1462 — the final phase; consumes the last of the old interview-prep window
 export const JS_TWO_WEEK_CALENDAR_DAYS = 14; // ~2 weeks
 export const JS_TWO_WEEK_WEEKS = 2;
@@ -78,27 +78,27 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: 17 Jul 2026 → 16 Jul 2030 = 1461 study days (4 years)
-// Day 1 of the journey = 17 Jul 2026; last day = 16 Jul 2030
-export const JOURNEY_START_LABEL = '17 Jul 2026';
-export const JOURNEY_END_LABEL = '16 Jul 2030';
+// Full journey: 24 Jul 2026 → 23 Jul 2030 = 1461 study days (4 years)
+// Day 1 of the journey = 24 Jul 2026; last day = 23 Jul 2030
+export const JOURNEY_START_LABEL = '24 Jul 2026';
+export const JOURNEY_END_LABEL = '23 Jul 2030';
 export const JOURNEY_YEARS = 4;
 export const JOURNEY_TOTAL_DAYS = 1461;
-// Factory calendar (Day 1 = 16 Jul 2026): journey day N ≈ factory day N+1; last factory day = 1462
+// Factory calendar (Day 1 = 23 Jul 2026): journey day N ≈ factory day N+1; last factory day = 1462
 export const JOURNEY_END_FACTORY_DAY = 1462;
 
 // Explicit day-offsets for the re-sequenced 4-year plan (offset = phase start day − 1).
 // Year 1 (JS/TS): Days 1–365 · Year 2 (Python): 366–731 · Year 3 (Java): 732–1096 · Year 4 (DevOps): 1097–1461.
 export const TRACK_OFFSETS = {
-  thunder: 0, // Thunder JavaScript — Days 1–100 (17 Jul – 24 Oct 2026)
-  nextjs: 100, // React & Next.js — Days 101–150 (25 Oct – 13 Dec 2026)
-  mobile: 150, // React Native — Days 151–190 (14 Dec 2026 – 22 Jan 2027)
-  interview: 315, // System Design in JavaScript — Days 316–365 (28 May – 16 Jul 2027)
-  python: 365, // Python stack — Year 2 (from 17 Jul 2027)
-  java: 731, // Java stack — Year 3 (from 17 Jul 2028)
-  aws: 1096, // AWS Cloud — Days 1097–1196 (17 Jul – 24 Oct 2029)
-  k8s: 1236, // Kubernetes — Days 1237–1336 (4 Dec 2029 – 13 Mar 2030)
-  devops: 1336, // DevOps & CI/CD — Days 1337–1461 (14 Mar – 16 Jul 2030)
+  thunder: 0, // Thunder JavaScript — Days 1–100 (24 Jul – 31 Oct 2026)
+  nextjs: 100, // React & Next.js — Days 101–150 (1 Nov – 20 Dec 2026)
+  mobile: 150, // React Native — Days 151–190 (21 Dec 2026 – 29 Jan 2027)
+  interview: 315, // System Design in JavaScript — Days 316–365 (4 Jun – 23 Jul 2027)
+  python: 365, // Python stack — Year 2 (from 24 Jul 2027)
+  java: 731, // Java stack — Year 3 (from 24 Jul 2028)
+  aws: 1096, // AWS Cloud — Days 1097–1196 (24 Jul – 31 Oct 2029)
+  k8s: 1236, // Kubernetes — Days 1237–1336 (11 Dec 2029 – 20 Mar 2030)
+  devops: 1336, // DevOps & CI/CD — Days 1337–1461 (21 Mar – 23 Jul 2030)
 };
 
 export const NEXTJS_UDEMY_URL =

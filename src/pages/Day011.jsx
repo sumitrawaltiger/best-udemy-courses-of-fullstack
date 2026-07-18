@@ -161,7 +161,7 @@ export default function Day011() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-010" className="day001-nav-btn day001-nav-prev">← Day 10</Link>
-          <p className="day001-datetime">TypeScript Day 11 · 27 Jul 2026</p>
+          <p className="day001-datetime">TypeScript Day 11 · 3 Aug 2026</p>
           <Link to="/day-012" className="day001-nav-btn day001-nav-next">Day 12 →</Link>
         </header>
 
