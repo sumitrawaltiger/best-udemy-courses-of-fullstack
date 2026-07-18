@@ -248,6 +248,219 @@ const JAVA_METHODS_SECTIONS = [
   },
 ];
 
+// Deep Copy vs Shallow Copy — 8-page visual note (attached to OOP — Classes & Objects)
+const DEEP_SHALLOW_COPY_SECTIONS = [
+  {
+    id: 'deep-vs-shallow-core-model',
+    title: 'Deep Copy vs Shallow Copy — Core Mental Model',
+    content:
+      "A variable of an object type stores a **reference, not the object itself**. Assignment copies the reference value, so both variables point to the **same object**.\n\n**Shallow copy** creates a new outer (top-level) object but keeps references to the nested mutable objects. It is faster and cheaper than deep copying; changes to shared nested state can affect both copies. Useful when shared state is intentional or the nested data is immutable.\n\n**Deep copy** creates a new top-level object **and** new nested mutable objects, so mutating the copy does not affect the original. It uses more CPU and memory and must handle cycles, shared identity and large graphs. Best for ownership boundaries, snapshots and independent processing.\n\n**Visual reference graph** — the original user and a shallow copy both point to the same `Address A1` (`city = \"Delhi\"`), while a deep copy owns its own `Address A2`. A1 is shared by the original and the shallow copy; A2 belongs only to the deep copy.\n\n**Deep is a domain decision** — do not blindly clone an entire object graph. Sockets, database sessions, thread pools, locks and Spring services should **not** be deep-copied. Preserve shared identity only when the domain requires it, and remember immutable values such as `String` can normally be shared safely.\n\n**Key takeaway:** assignment copies a reference; a real copy requires creating another object. The full 8-page note is available as a [downloadable PDF](/java-notes/deep-copy-vs-shallow-copy.pdf).",
+    code: `// Shallow copy — the nested Address is shared
+User copy = new User(original.id, original.address);
+
+// Deep copy — the nested Address is duplicated
+User copy = new User(original.id, new Address(original.address));`,
+    image: '/java-notes/deep-copy-vs-shallow-copy-p1.jpg',
+    imageAlt:
+      'Deep vs shallow copy core mental model — a variable stores a reference not the object, shallow copy shares nested mutable objects while deep copy duplicates them, a reference graph where the original and shallow copy share Address A1 (Delhi) and the deep copy owns Address A2, and the rule that deep copying is a domain decision (do not deep-copy sockets, sessions, thread pools, locks or services)',
+  },
+  {
+    id: 'deep-vs-shallow-assignment-final',
+    title: 'Assignment, Field Modification & final',
+    content:
+      "**Assignment creates an alias.** No second object is created — the two variables are aliases for the same mutable object, so any mutation through either is visible through the other.\n\n**A `final` reference is not immutability.** `final` stops the variable from being **reassigned**, but the referenced object can still change unless its API is immutable. `final` fields improve design, yet deep immutability also requires immutable nested state.\n\n**Shallow copy constructor** — copies the outer object but shares the nested mutable reference (`this.address = other.address`). Use only when the shared nested state is intentional or immutable.\n\n**Deep copy constructor** — copies the nested mutable state (`this.address = new Address(other.address)`), so the original stays unchanged. Copy constructors are explicit, testable and usually the safest default.\n\n**Key takeaway:** `final` protects the variable from reassignment; it does not make the referenced object immutable.",
+    code: `// Assignment copies the reference (alias)
+Address a = new Address("Delhi");
+Address b = a;                 // reference copied
+b.setCity("Mumbai");
+System.out.println(a.getCity()); // Mumbai
+System.out.println(a == b);      // true
+
+// A final reference is NOT immutability
+final Address address = new Address("Delhi");
+address.setCity("Mumbai");         // allowed
+// address = new Address("Pune");  // compile error
+
+// Shallow copy constructor — nested object shared
+class User {
+    private final String name;
+    private final Address address;
+    User(User other) {
+        this.name = other.name;        // safe: String is immutable
+        this.address = other.address;  // shared mutable reference
+    }
+}
+
+// Deep copy constructor — nested state copied
+class User {
+    private final String name;
+    private final Address address;
+    User(User other) {
+        this.name = other.name;
+        this.address = new Address(other.address);
+    }
+}`,
+    image: '/java-notes/deep-copy-vs-shallow-copy-p2.jpg',
+    imageAlt:
+      'Assignment, field modification and final — assignment creates an alias (a and b point to the same Address, mutating one is visible through the other), a final reference cannot be reassigned but the object can still change, a shallow copy constructor that shares the nested Address, and a deep copy constructor that creates a new Address',
+  },
+  {
+    id: 'deep-vs-shallow-method-arguments',
+    title: 'Passing Objects as Method Arguments (Pass-by-Value)',
+    content:
+      "Java is **always pass-by-value** — for objects, the copied value is a reference.\n\n**Mutating the object** — the method receives its own copy of the reference, but both references still point to the same `User`, so calling a mutating method changes the shared object and the caller sees it.\n\n**Reassigning the parameter** — only the method's local parameter is reassigned; the caller still holds its original reference. This is the clearest proof that Java is not pass-by-reference.\n\n**Mutable collection argument** — passing a `List` shares the list object, so `roles.add(\"ADMIN\")` inside the method is visible to the caller.\n\n**Copy at the boundary** — when a method needs ownership, take a defensive local copy (for example deep-copy each element) and mutate only the local working copy.\n\n**Production-safe API design** — prefer immutable request objects, document whether a method mutates its arguments, return a new result instead of modifying input when practical, avoid automatic copying on performance-critical paths (define ownership clearly), and never use a copy to hide unclear responsibilities.\n\n**Key takeaway:** mutation through the parameter is visible; reassigning the parameter is not.",
+    code: `// Mutating the object — the caller sees the change
+static void rename(User user) {
+    user.setName("Aisha");
+}
+User original = new User("Sara");
+rename(original);
+System.out.println(original.getName()); // Aisha
+
+// Reassigning the parameter — the caller is unchanged
+static void replace(User user) {
+    user = new User("Aisha");
+}
+replace(original);
+System.out.println(original.getName()); // Sara
+
+// Mutable collection argument — the list is shared
+static void addRole(List<String> roles) {
+    roles.add("ADMIN");
+}
+
+// Copy at the boundary — take ownership
+static Result process(List<Order> input) {
+    List<Order> working = input.stream()
+        .map(Order::new) // deep copy each element
+        .toList();
+    return calculate(working);
+}`,
+    image: '/java-notes/deep-copy-vs-shallow-copy-p3.jpg',
+    imageAlt:
+      'Passing objects as method arguments — Java is pass-by-value so mutating the object through a parameter is visible to the caller (rename sets the name), reassigning the parameter is not (replace does not change the caller), a shared mutable List argument, taking a defensive copy at the boundary, and production-safe API design rules',
+  },
+  {
+    id: 'deep-vs-shallow-return-values',
+    title: 'Return Values & Defensive Copying',
+    content:
+      "**Leaking internal state** — an unsafe getter that returns the internal list (`return rows;`) lets the caller add, remove or reorder internal data, so `report.getRows().clear()` destroys internal state. This breaks encapsulation and may violate invariants.\n\n**Returning an immutable snapshot** — a safer getter maps to an immutable DTO and returns an unmodifiable list. The list cannot be structurally modified, and the mapped values should also be immutable. Snapshot creation has a cost — measure it on hot paths.\n\n**Arrays require a defensive copy** — copy on input **and** output with `Arrays.copyOf(...)` so the internal array is never handed out. For primitive arrays, copying duplicates the values and isolates the storage.\n\n**View vs copy vs deep copy:**\n- `Collections.unmodifiableList(x)` — a **view** of x; elements **shared**.\n- `new ArrayList<>(x)` — a **new list**; elements **shared**.\n- `List.copyOf(x)` — an **unmodifiable copy**; elements **shared** (may reuse an existing immutable list; rejects null elements).\n- `x.stream().map(Foo::new).toList()` — a **new list**; elements **copied**.\n\n**Key takeaway:** returning a mutable field transfers mutation power unless you copy or expose an immutable abstraction.",
+    code: `// Unsafe getter — leaks internal state
+class Report {
+    private final List<Row> rows = new ArrayList<>();
+    List<Row> getRows() {
+        return rows; // caller gets the internal list
+    }
+}
+report.getRows().clear(); // internal state destroyed
+
+// Safer getter — return an immutable snapshot
+List<RowView> getRows() {
+    return rows.stream()
+        .map(RowView::from) // immutable DTO snapshot
+        .toList();          // unmodifiable list
+}
+
+// Arrays — copy on input AND output
+class Secret {
+    private final byte[] value;
+    Secret(byte[] value) {
+        this.value = Arrays.copyOf(value, value.length);
+    }
+    byte[] value() {
+        return Arrays.copyOf(value, value.length);
+    }
+}`,
+    image: '/java-notes/deep-copy-vs-shallow-copy-p4.jpg',
+    imageAlt:
+      'Return values and defensive copying — an unsafe getter that returns the internal list lets callers destroy state, a safer getter returns an immutable DTO snapshot, arrays need a defensive copy on input and output with Arrays.copyOf, and a comparison of unmodifiableList (view), new ArrayList (new list, shared elements), List.copyOf (unmodifiable copy, shared elements) and stream map new (copied elements)',
+  },
+  {
+    id: 'deep-vs-shallow-arrays-collections-maps',
+    title: 'Arrays, Collections & Maps',
+    content:
+      "The container and its elements have **separate copy semantics** — a new collection does not automatically mean new element objects.\n\n**Primitive array** — `Arrays.copyOf` gives separate storage and primitive values are copied, so `b[0] = 99` does not change `a[0]`.\n\n**Object array** — the array object is new, but each element reference is shallow-copied, so `b[0].setName(\"B\")` is visible through `a[0]`.\n\n**List copy options** — `new ArrayList<>(original)` and `List.copyOf(original)` copy the **structure** but share elements; only `original.stream().map(User::new).toList()` copies the `User` elements.\n\n**Map copying** — `new HashMap<>(original)` is shallow. To copy values, rebuild the map with `Collectors.toMap`. Immutable `String` keys can be shared while mutable values are explicitly copied.\n\n**Concurrency collection warning** — `CopyOnWriteArrayList` copies its internal array on writes but does not deep-copy the elements; `ConcurrentHashMap` provides thread-safe operations, yet stored mutable values can still be changed unsafely. A collection snapshot is stable only if its elements are immutable or independently copied. For concurrent workflows, immutable messages and versioned snapshots are easier to reason about.\n\n**Key takeaway:** a new collection does not automatically mean new element objects.",
+    code: `// Primitive array — values are copied
+int[] a = {1, 2, 3};
+int[] b = Arrays.copyOf(a, a.length);
+b[0] = 99;
+System.out.println(a[0]); // 1
+
+// Object array — elements are shared
+User[] a = { new User("A") };
+User[] b = Arrays.copyOf(a, a.length);
+b[0].setName("B");
+System.out.println(a[0].getName()); // B
+
+// List copy options
+List<User> shallow = new ArrayList<>(original);        // elements shared
+List<User> immutableStructure = List.copyOf(original); // elements shared
+List<User> deep = original.stream()
+    .map(User::new)
+    .toList();                                         // elements copied
+
+// Map — copy the values explicitly
+Map<String, User> deepValues = original.entrySet()
+    .stream()
+    .collect(Collectors.toMap(
+        Map.Entry::getKey,
+        e -> new User(e.getValue())
+    ));`,
+    image: '/java-notes/deep-copy-vs-shallow-copy-p5.jpg',
+    imageAlt:
+      'Arrays, collections and maps copy semantics — a primitive array copy has separate values, an object array copy shares element references, list copy options (new ArrayList and List.copyOf share elements while stream map new copies them), map copying that shares immutable String keys but copies mutable values, and a concurrency warning that CopyOnWriteArrayList and ConcurrentHashMap do not deep-copy elements',
+  },
+  {
+    id: 'deep-vs-shallow-copy-techniques',
+    title: 'Copy Techniques: What to Use in Production',
+    content:
+      "Explicit code is usually safer than generic graph cloning.\n\n**Copy constructor / factory** — explicit and type-safe, lets you choose deep vs shared fields, can reset IDs, versions or audit fields, and is easy to unit-test and review (`Order copy = Order.copyOf(original)`). This is the **recommended default**.\n\n**Builder / wither** — good for immutable objects and makes changed fields visible at call sites, but nested mutable values still need explicit copying (Lombok `toBuilder()` is shallow unless you replace nested fields).\n\n**Records** — record components are `final`, but referenced objects may still be mutable, so a record is **shallowly** immutable, not automatically deeply immutable. Use immutable components or copy mutable inputs in the canonical constructor.\n\n**`Object.clone()`** — performs a field-by-field **shallow** copy, requires `Cloneable` and awkward exception handling, does not call constructors, and makes it easy to forget nested mutable state. Usually avoid it in new production code.\n\n**Serialization / JSON round trip** — convenient for prototypes or rare operations, but slower and allocation-heavy, can lose subtype, transient, identity or precision information, and Java serialization has security and versioning concerns. Do not use it as the default deep-copy strategy.\n\n**Generated mapping** — MapStruct can generate explicit field mappings at compile time (Entity to DTO, API snapshots, copy boundaries). Nested mappings must still be configured deliberately, and business rules and database calls should remain outside the mapper.\n\n**Key takeaway:** prefer the smallest explicit copy that communicates ownership and preserves invariants.",
+    code: `// Copy constructor / factory (recommended)
+Order copy = Order.copyOf(original);
+
+// Builder / wither
+Order revised = original.toBuilder()
+    .status(APPROVED)
+    .build();
+
+// Record — shallowly immutable
+record Team(List<User> members) { }
+// members can still reference a mutable list`,
+    image: '/java-notes/deep-copy-vs-shallow-copy-p6.jpg',
+    imageAlt:
+      'Copy techniques for production — copy constructor or factory (recommended, explicit and type-safe), builder or wither for immutable objects, records are only shallowly immutable, Object.clone() is a shallow copy to usually avoid, serialization or JSON round trip should not be the default deep copy, and generated mapping with MapStruct for explicit field mappings',
+  },
+  {
+    id: 'deep-vs-shallow-production-scenarios',
+    title: 'Production Scenarios & Recommended Choices',
+    content:
+      "Where accidental sharing causes real defects — copy at ownership boundaries, not automatically at every method call.\n\n- **API request input** — use an immutable DTO or validated defensive copy; do not let controller input mutate domain state directly.\n- **API response** — return an immutable response DTO snapshot; returning entities can leak lazy proxies and internal fields.\n- **Cache value** — store an immutable value or deep snapshot; caller mutation can corrupt later cache hits.\n- **Async task / event** — publish an immutable message or copied payload; the publisher and consumer may run after the source changes.\n- **JPA / Hibernate entity** — use an explicit DTO or factory and reset `id`/`version`; `clone` may copy identity, proxies, cycles and lazy associations.\n- **Audit / history** — store an immutable version snapshot; keep only the required state, since large graphs are expensive.\n- **Concurrent algorithm** — give each worker a per-worker copy or an immutable shared input; shallow nested state can create race conditions.\n\n**Worked examples** — cache immutable DTOs, not mutable entities; publish a snapshot that cannot change later; map managed entities to purpose-built copies.\n\n**Key takeaway:** copy at ownership boundaries — not automatically at every method call.",
+    image: '/java-notes/deep-copy-vs-shallow-copy-p7.jpg',
+    imageAlt:
+      'Production scenarios and recommended copy choices — a table mapping scenarios (API request input, API response, cache value, async task or event, JPA/Hibernate entity, audit/history, concurrent algorithm) to recommended approaches (immutable DTO, snapshot, per-worker copy) and production cautions, plus cache, event and ORM examples',
+  },
+  {
+    id: 'deep-vs-shallow-decision-tests-interview',
+    title: 'Decision Guide, Tests & Interview Revision',
+    content:
+      "**Decision guide** — Will the receiver mutate the object? If not, prefer immutable sharing. Must mutations remain independent? Copy the mutable state inside that ownership boundary. Is the graph large or cyclic? Avoid generic deep cloning and design a smaller snapshot. Are IDs, versions, secrets or lazy proxies present? Use an explicit mapper or factory. Is this a hot path? Benchmark allocation rate, latency and GC impact. Can the contract state ownership instead of copying? Clear APIs often remove the need.\n\n**Unit-test the copy contract** — assert the copy is a different object and its nested objects are different, then mutate the copy and assert the original is unchanged. Also test collections, nulls, cycles and identity-sensitive relationships.\n\n**30-second interview answers:**\n- Assignment does not copy an object; it copies the reference value.\n- Java always passes arguments by value; object mutations can be visible because both references point to the same object.\n- A shallow copy duplicates the outer object but shares nested references.\n- A deep copy duplicates the mutable state required for independent ownership.\n- `List.copyOf` makes the list unmodifiable but does not deep-copy the elements.\n- `Object.clone()` is shallow by default and is usually avoided in modern production code.\n\n**Final production checklist** — copy boundary documented, mutable nested fields identified, IDs/versions/audit fields handled intentionally, collections and elements copied at the correct depth, no accidental copying of services or resources, tests proving independent mutation where required, and performance measured under realistic load.\n\n**Key takeaway:** the correct answer is not always deep copy — it is explicit ownership with tested behavior.",
+    code: `// JUnit — test the copy contract
+User original = sampleUser();
+User copy = new User(original);
+
+assertNotSame(original, copy);
+assertNotSame(original.getAddress(), copy.getAddress());
+
+copy.getAddress().setCity("Pune");
+
+assertEquals("Delhi", original.getAddress().getCity());
+assertEquals("Pune",  copy.getAddress().getCity());`,
+    image: '/java-notes/deep-copy-vs-shallow-copy-p8.jpg',
+    imageAlt:
+      'Decision guide, tests and interview revision — a decision checklist for choosing copy semantics, a JUnit test asserting the copy and its nested Address are different objects and mutating the copy leaves the original unchanged, 30-second interview answers about assignment, pass-by-value, shallow vs deep copy, List.copyOf and Object.clone, and a final production checklist',
+  },
+];
+
 // Module 31 — Spring Boot Fundamentals
 const SPRING_BOOT_FUNDAMENTALS_SECTIONS = [
   {
@@ -679,7 +892,7 @@ function buildLessons() {
         ];
       }
       if (title === 'OOP — Classes & Objects') {
-        lesson.sections = JAVA_METHODS_SECTIONS;
+        lesson.sections = [...JAVA_METHODS_SECTIONS, ...DEEP_SHALLOW_COPY_SECTIONS];
       }
       if (title === 'Building REST APIs') {
         lesson.sections = REST_API_SECTIONS;
