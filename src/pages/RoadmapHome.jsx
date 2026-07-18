@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ROADMAP_ARCS, ROADMAP_STATS, ROADMAP_PHASES } from '../data/roadmapPhases';
 import { JOURNEY_META } from '../data/interviewSyllabus';
 
-const ROADMAP_POSTER = '/roadmap-notes/four-year-study-plan-v4.jpg';
+const ROADMAP_POSTER = '/roadmap-notes/four-year-study-plan-v5.jpg';
 
 function PhaseLink({ phase, children }) {
   if (phase.href) {
@@ -54,7 +54,7 @@ export default function RoadmapHome() {
           >
             <img
               src={ROADMAP_POSTER}
-              alt="1461 Days · 4 Years of Growth — the complete study plan, all 18 phases with windows, days, and sources"
+              alt="Road to Full Lifecycle Engineer · 4-Year Study Plan — Day 1 is 24 Jul 2026 and the final day 23 Jul 2030 (1,461 days, 3 hrs daily 5:00–8:00 AM). All 20 phases across 4 stack-years with their dates, day counts, and course sources: Year 1 TypeScript stack (TypeScript, React & Next.js, React Native, Express/Node, DSA & System Design in JavaScript), Year 2 Python stack (Python, Django, Agentic AI, DSA & System Design in Python), Year 3 Java stack (Java & Spring Boot, Microservices, Design Patterns, DSA & System Design in Java), Year 4 DevOps & Cloud (AWS, Docker, Kubernetes, DevOps & CI/CD). Each year also builds Agentic AI in that year's language; HTML5, CSS3 & JavaScript are assumed prerequisites"
               loading="lazy"
             />
             <span className="roadmap-poster-zoom">🔍 Click to zoom</span>
