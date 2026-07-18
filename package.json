@@ -8,7 +8,8 @@
     "build": "vite build",
     "generate:days": "node scripts/generate-days-20-100.mjs",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "export:mobile": "node scripts/export-mobile-data.mjs"
   },
   "dependencies": {
     "react": "^19.2.6",
