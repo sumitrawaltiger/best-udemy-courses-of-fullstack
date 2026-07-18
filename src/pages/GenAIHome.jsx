@@ -17,7 +17,7 @@ export default function GenAIHome() {
           <h1 className="genai-title">GenAI Engineering Bootcamp</h1>
           <p className="genai-tagline">{GENAI_META.subtitle}</p>
           <div className="genai-stats">
-            <div className="genai-stat"><span className="genai-stat-val">13</span><span className="genai-stat-label">modules</span></div>
+            <div className="genai-stat"><span className="genai-stat-val">{genaiChapters.length}</span><span className="genai-stat-label">modules</span></div>
             <div className="genai-stat"><span className="genai-stat-val">3</span><span className="genai-stat-label">parts</span></div>
             <div className="genai-stat"><span className="genai-stat-val">LangChain.js</span><span className="genai-stat-label">· LangGraph · LangSmith</span></div>
             <div className="genai-stat"><span className="genai-stat-val">2</span><span className="genai-stat-label">agent projects + capstone</span></div>
@@ -37,7 +37,7 @@ export default function GenAIHome() {
 
       <div className="home genai-home">
         <section className="genai-syllabus" id="genai-syllabus">
-          <h2>The 13-Module Syllabus</h2>
+          <h2>The {genaiChapters.length}-Module Syllabus</h2>
           <p className="section-desc">
             A comprehensive journey from zero to hero — the fundamentals of Generative AI and the Transformer
             architecture, then building, testing and deploying sophisticated <strong>autonomous AI agents</strong>{' '}
@@ -67,9 +67,9 @@ export default function GenAIHome() {
         </section>
 
         <section className="roadmap">
-          <h2>13-Module GenAI Roadmap</h2>
+          <h2>{genaiChapters.length}-Module GenAI Roadmap</h2>
           <p className="section-desc">
-            Year 1 · <strong>Days 191–203</strong>, right after React Native — Agentic AI built entirely in
+            Year 1 · <strong>Days 191–204</strong>, right after React Native — Agentic AI built entirely in
             JavaScript. Graduate with a portfolio of intelligent agents and the skill set of a modern AI Engineer.
           </p>
           <div className="roadmap-grid roadmap-genai">

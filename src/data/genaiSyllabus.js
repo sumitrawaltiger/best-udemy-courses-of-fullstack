@@ -14,9 +14,9 @@ export const GENAI_META = {
   langchainJs: 'https://js.langchain.com/docs/introduction/',
   langgraphJs: 'https://langchain-ai.github.io/langgraphjs/',
   langsmith: 'https://docs.smith.langchain.com/',
-  totalModules: 13,
-  calendarDays: 13,
-  phaseWindow: 'Days 191–203 · Year 1',
+  totalModules: 14,
+  calendarDays: 14,
+  phaseWindow: 'Days 191–204 · Year 1',
   startsAfter: 'React Native (Days 151–190)',
 };
 
@@ -48,13 +48,13 @@ export const genaiParts = [
   {
     id: 'part-2',
     title: 'Part II · Building Applications & Autonomous Agents',
-    blurb: 'LangChain, RAG, your first autonomous agent, and multi-agent systems with LangGraph.',
-    modules: modulesForRange(6, 10),
+    blurb: 'Write your first code, then LangChain, RAG, your first autonomous agent, and multi-agent systems with LangGraph.',
+    modules: modulesForRange(6, 11),
   },
   {
     id: 'part-3',
     title: 'Part III · Production, Evaluation & Mastery',
     blurb: 'Deploy and scale agents, evaluate with LangSmith, and ship a full-stack capstone.',
-    modules: modulesForRange(11, 13),
+    modules: modulesForRange(12, 14),
   },
 ];
