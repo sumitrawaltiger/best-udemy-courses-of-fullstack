@@ -216,6 +216,18 @@ const VPC_FUNDAMENTALS_SECTIONS = [
   },
 ];
 
+const NAT_GATEWAY_SECTIONS = [
+  {
+    id: 'vpc-endpoint-vs-nat-gateway',
+    title: 'VPC Endpoint vs NAT Gateway',
+    content:
+      "Both let resources in a **private subnet** reach services they can't reach directly — but they solve *opposite* problems. The one-line mental model: **NAT Gateway = go outside (to the internet); VPC Endpoint = stay inside AWS.**\n\n**VPC Endpoint — private access to AWS services:**\n- Connects private resources to **AWS services** (S3, DynamoDB, and private AWS APIs) without leaving the AWS network.\n- **Traffic stays inside AWS** — it never touches the public internet, which is more private and secure.\n- Better for private, secure **AWS-to-AWS** communication.\n- Can **reduce NAT Gateway usage and cost**, since S3/DynamoDB traffic no longer flows through NAT.\n- Think: *\"Stay inside AWS.\"*\n\n**NAT Gateway — outbound internet access:**\n- Lets **private-subnet** resources **access the internet** (outbound only; it blocks inbound-initiated connections).\n- Used for **software updates, third-party APIs, and external services** — anything that isn't an AWS service.\n- Good for outbound internet access from otherwise-private resources; it reaches **public endpoints**.\n- Useful when your app **must access non-AWS services**.\n- Think: *\"Go out to the internet.\"*\n\n**Simple difference:** VPC Endpoint = private access to AWS services · NAT Gateway = outbound internet access.\n\n**Use a VPC Endpoint when:**\n- Your private app needs **S3** or **DynamoDB**.\n- You want private **AWS-only traffic** and stronger security boundaries.\n- You want to **reduce NAT usage** (and its cost).\n\n**Use a NAT Gateway when:**\n- Your private server needs **internet access**.\n- You call **third-party APIs** or need **software updates**.\n- Your app must reach **public websites** or needs **external outbound access**.\n\n**The traffic-path difference (fetching from S3):**\n- **Without a VPC Endpoint:** Private EC2 → NAT Gateway → Internet → S3 (traffic leaves AWS and comes back — extra hops, NAT cost).\n- **With a VPC Endpoint:** Private EC2 → VPC Endpoint → S3 (traffic never leaves AWS — fewer hops, no NAT charge for it).\n\n**Best-practice warning:** don't route *all* private traffic through a NAT Gateway just because it works — put AWS-service traffic (S3, DynamoDB) on VPC Endpoints to keep it private and cut NAT data-processing cost, and reserve the NAT Gateway for genuine internet-bound traffic.\n\n*Infographic by CloudFolks / @e_opore-style AWS sketch note.*",
+    image: '/aws-notes/vpc-endpoint-vs-nat-gateway.jpg',
+    imageAlt:
+      'VPC Endpoint vs NAT Gateway — private AWS access vs outbound internet access. VPC Endpoint connects private resources to AWS services (S3, DynamoDB, private APIs) with traffic staying inside AWS, better for secure AWS-to-AWS communication and reducing NAT cost ("stay inside AWS"); NAT Gateway lets private-subnet resources reach the internet for software updates, third-party APIs and external services ("go out to the internet"). Use a VPC Endpoint when the app needs S3/DynamoDB or private AWS traffic; use a NAT Gateway when it needs internet, third-party APIs, or software updates. Traffic paths: without a VPC Endpoint, Private EC2 → NAT Gateway → Internet → S3; with a VPC Endpoint, Private EC2 → VPC Endpoint → S3. Warning: do not send all private traffic through NAT Gateway just because it works.',
+  },
+];
+
 const GLOBAL_INFRA_SECTIONS = [
   {
     id: 'aws-global-infrastructure',
@@ -686,6 +698,11 @@ function buildLessons() {
       }
       if (title === 'VPC Fundamentals') {
         lesson.sections = VPC_FUNDAMENTALS_SECTIONS;
+      }
+      if (title === 'NAT Gateway & Bastion Hosts') {
+        lesson.sections = NAT_GATEWAY_SECTIONS;
+        lesson.image = NAT_GATEWAY_SECTIONS[0].image;
+        lesson.imageAlt = NAT_GATEWAY_SECTIONS[0].imageAlt;
       }
       // Attach Stephane Maarek's SAA-C03 slide deck across the SAA-C03 phase,
       // and enrich each exam-domain module with content sections from it.
