@@ -529,6 +529,277 @@ const REST_API_SECTIONS = [
   },
 ];
 
+// MapStruct with Spring Boot — 7-page cheat sheet (attached to Building REST APIs, after the DTO pattern)
+const MAPSTRUCT_SECTIONS = [
+  {
+    id: 'mapstruct-overview-setup',
+    title: 'MapStruct with Spring Boot — Overview & Quick Setup',
+    content:
+      "**MapStruct** is a code generator that simplifies object mapping in Java. It generates the mapping implementation at **compile time** — no reflection — so it delivers the highest performance and pairs naturally with the DTO pattern above.\n\n**Why MapStruct?** compile-time type safety, high performance (no reflection), less boilerplate code, easy to test, IDE friendly, and it works great with Spring Boot.\n\n**When to use it:** Entity ⇄ DTO mapping, Request ⇄ Response mapping, microservices and APIs, large projects (to avoid manual mapping), and complex nested object mapping.\n\n**Quick setup in Spring Boot:**\n- **1. Add the dependency** — `org.mapstruct:mapstruct`.\n- **2. Add the annotation processor** (Maven) — `mapstruct-processor` with `scope = provided`.\n- **3. Define the mapper interface** — annotate it with `@Mapper` and declare `toDto` / `toEntity` methods.\n- **4. Use it in Spring Boot** — inject the mapper into a `@Service` via the constructor.\n\nThe full 7-page cheat sheet is available as a [downloadable PDF](/java-notes/mapstruct-with-spring-boot.pdf).",
+    code: `<!-- 1. Dependency -->
+<dependency>
+    <groupId>org.mapstruct</groupId>
+    <artifactId>mapstruct</artifactId>
+    <version>1.5.5.Final</version>
+</dependency>
+
+<!-- 2. Annotation processor (Maven) -->
+<dependency>
+    <groupId>org.mapstruct</groupId>
+    <artifactId>mapstruct-processor</artifactId>
+    <version>1.5.5.Final</version>
+    <scope>provided</scope>
+</dependency>
+
+// 3. Enable in a mapper interface
+@Mapper
+public interface UserMapper {
+    UserDto toDto(User user);
+    User toEntity(UserDto dto);
+}
+
+// 4. Use in Spring Boot
+@Service
+public class UserService {
+    private final UserMapper mapper;
+    public UserService(UserMapper mapper) {
+        this.mapper = mapper;
+    }
+}`,
+    image: '/java-notes/mapstruct-with-spring-boot-p1.jpg',
+    imageAlt:
+      'MapStruct with Spring Boot cheat sheet overview — MapStruct is a compile-time code generator for object mapping (no reflection), why to use it (type safety, performance, less boilerplate, testable, IDE friendly), when to use it (Entity/DTO and Request/Response mapping, microservices, large projects, nested objects), and the four-step Spring Boot setup (dependency, annotation processor, @Mapper interface, inject into a @Service)',
+  },
+  {
+    id: 'mapstruct-basic-mapping',
+    title: 'Basic Mapping Examples',
+    content:
+      "- **Simple mapping** — declare `toDto` / `toEntity` and MapStruct maps fields with matching names automatically.\n- **Different field names** — `@Mapping(source = \"fullName\", target = \"name\")` maps mismatched fields.\n- **Ignore a field** — `@Mapping(target = \"password\", ignore = true)` skips a field (for example, never expose a password).\n- **Constant value** — `@Mapping(target = \"status\", constant = \"ACTIVE\")` sets a fixed value.\n- **Default expression** — `@Mapping(target = \"createdAt\", expression = \"java(java.time.LocalDateTime.now())\")` runs Java to supply a value.\n- **Nested mapping** — if an `Order` contains a `Customer`, MapStruct automatically uses the `CustomerMapper` for the nested object.\n\n**Key takeaway:** MapStruct generates the implementation at compile time — fast, type-safe and easy to maintain; use `@Mapping` for custom logic.",
+    code: `// Different field names
+@Mapper
+public interface UserMapper {
+    @Mapping(source = "fullName", target = "name")
+    @Mapping(source = "emailId",  target = "email")
+    UserDto toDto(User user);
+}
+
+// Ignore a field
+@Mapping(target = "password", ignore = true)
+UserDto toDto(User user);
+
+// Constant value
+@Mapping(target = "status", constant = "ACTIVE")
+UserDto toDto(User user);
+
+// Default expression
+@Mapping(target = "createdAt",
+         expression = "java(java.time.LocalDateTime.now())")
+UserDto toDto(User user);`,
+    image: '/java-notes/mapstruct-with-spring-boot-p2.jpg',
+    imageAlt:
+      'MapStruct basic mapping examples — simple mapping, mapping different field names with @Mapping source and target, ignoring a field, setting a constant value, a default expression using java(...), and nested mapping where MapStruct automatically reuses a CustomerMapper for a nested Customer object',
+  },
+  {
+    id: 'mapstruct-advanced-mapping',
+    title: 'Advanced Mapping',
+    content:
+      "- **Collection mapping** — declare `List<UserDto> toDtoList(List<User> users)` and MapStruct maps each element.\n- **Update an existing object (partial update)** — `@MappingTarget` updates the passed-in object instead of creating a new one.\n- **Map with a custom method** — a `default` method (for example converting `priceInCents` to a `BigDecimal price`) is used automatically.\n- **Multiple source objects** — combine two sources: `toResponse(User user, Address address)` with `@Mapping(source = \"address.city\", target = \"city\")`.\n- **Inherit configuration** — put shared mappings in a `@MapperConfig` interface and reference it with `@Mapper(config = CentralConfig.class)`.\n\n**Useful annotations:** `@Mapper` (marks the interface), `@Mapping` (custom field mapping), `@Mappings` (multiple mappings), `@MappingTarget` (update an existing object), `@Context` (pass context or services), `@MapperConfig` (reusable configuration), and `@EnumMapping` (enum strategies).",
+    code: `// Collection mapping
+List<UserDto> toDtoList(List<User> users);
+Set<User> toEntitySet(Set<UserDto> dtos);
+
+// Update existing object (partial update)
+@Mapping(target = "id", ignore = true)
+void updateUserFromDto(UserDto dto, @MappingTarget User user);
+
+// Map with a custom default method
+@Mapping(source = "priceInCents", target = "price")
+ProductDto toDto(Product product);
+
+default BigDecimal toPrice(Integer priceInCents) {
+    if (priceInCents == null) return null;
+    return new BigDecimal(priceInCents).divide(new BigDecimal(100));
+}
+
+// Inherit configuration
+@MapperConfig
+public interface CentralConfig {
+    @Mapping(target = "createdAt",
+             expression = "java(java.time.LocalDateTime.now())")
+}
+
+@Mapper(config = CentralConfig.class)
+public interface OrderMapper {
+    OrderDto toDto(Order order);
+}`,
+    image: '/java-notes/mapstruct-with-spring-boot-p3.jpg',
+    imageAlt:
+      'MapStruct advanced mapping — collection mapping of lists and sets, updating an existing object with @MappingTarget for partial updates, a custom default method to convert priceInCents to a BigDecimal, combining multiple source objects, inheriting configuration via @MapperConfig, and a list of useful annotations (@Mapper, @Mapping, @Mappings, @MappingTarget, @Context, @MapperConfig, @EnumMapping)',
+  },
+  {
+    id: 'mapstruct-configuration',
+    title: 'Configuration & Component Model',
+    content:
+      "- **Component model** — `@Mapper(componentModel = \"spring\")` makes the mapper a Spring bean so you can `@Autowired` it or inject it via the constructor.\n- **Injection strategy** — `injectionStrategy = InjectionStrategy.CONSTRUCTOR` controls how dependencies are injected. Options: `FIELD` (default), `CONSTRUCTOR` (recommended), `SETTER`.\n- **Unmapped target policy** — `unmappedTargetPolicy = ReportingPolicy.ERROR` **fails the build** if any target field is not mapped. Options: `IGNORE` (default), `WARN`, `ERROR`.\n- **Null value handling** — `nullValuePropertyMappingStrategy = IGNORE` means null values in the source will not overwrite target values (ideal for partial updates); `nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS` generates null checks for all source properties.\n- **Date / time format** — `@Mapping(target = \"date\", dateFormat = \"dd-MM-yyyy\")` formats dates during mapping.\n\n**Remember:** good mapping is not about magic — it's about clarity and correctness.",
+    code: `@Mapper(
+    componentModel = "spring",
+    injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+    unmappedTargetPolicy = ReportingPolicy.ERROR,
+    nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+    nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
+)
+public interface UserMapper {
+
+    void updateUser(UserDto dto, @MappingTarget User user);
+
+    @Mapping(target = "date", dateFormat = "dd-MM-yyyy")
+    EventDto toDto(Event event);
+}`,
+    image: '/java-notes/mapstruct-with-spring-boot-p4.jpg',
+    imageAlt:
+      'MapStruct configuration and component model — componentModel = spring to create a Spring bean, injection strategy options (FIELD default, CONSTRUCTOR recommended, SETTER), unmappedTargetPolicy options (IGNORE, WARN, ERROR) to fail the build on unmapped fields, null value handling with nullValuePropertyMappingStrategy IGNORE and nullValueCheckStrategy ALWAYS, and date/time formatting with dateFormat',
+  },
+  {
+    id: 'mapstruct-best-practices',
+    title: 'Design Patterns & Best Practices',
+    content:
+      "- **Layered mapping** — map through clear layers: `Entity → DTO → Response` and `Request → DTO → Entity`.\n- **Mapper composition** — reuse other mappers inside a mapper with `@Mapper(uses = {AddressMapper.class})` for modular, reusable mapping.\n- **Avoid business logic** — keep mappers simple; don't add business rules; use the service layer for logic.\n- **Keep mappers small** — split large mappers into multiple focused ones for readability and maintainability.\n- **Test your mappers** — write JUnit tests (with Mockito) that assert the mapped output.\n\n**Best-practices checklist:** use constructor injection, keep mappers focused and small, use `@MapperConfig` for common settings, enable `unmappedTargetPolicy = ERROR`, and write unit tests for critical mappings.\n\n**Common pitfalls:** adding business logic in a mapper, ignoring null handling, not testing mappers, large monolithic mappers, and forgetting to update mappings after model changes.",
+    code: `// Mapper composition — reuse other mappers
+@Mapper(uses = { AddressMapper.class })
+public interface UserMapper {
+    UserDto toDto(User user);
+}
+
+// Test your mappers (JUnit + Mockito)
+@ExtendWith(MockitoExtension.class)
+class UserMapperTest {
+
+    private final UserMapper mapper =
+        Mappers.getMapper(UserMapper.class);
+
+    @Test
+    void testToDto() {
+        User user = new User();
+        user.setId(1L);
+        user.setName("John");
+
+        UserDto dto = mapper.toDto(user);
+
+        assertEquals("John", dto.getName());
+    }
+}`,
+    image: '/java-notes/mapstruct-with-spring-boot-p5.jpg',
+    imageAlt:
+      'MapStruct design patterns and best practices — layered mapping (Entity to DTO to Response), mapper composition with uses, avoiding business logic in mappers, keeping mappers small, testing mappers with JUnit and Mockito, a best-practices checklist (constructor injection, small focused mappers, @MapperConfig, unmappedTargetPolicy ERROR, unit tests), and common pitfalls',
+  },
+  {
+    id: 'mapstruct-real-world-example',
+    title: 'Real-World Example & Spring Boot Properties',
+    content:
+      "**A complete User module** — entities (`User` with a nested `Address`), a `UserDto`, a Spring mapper that renames fields and flattens `address.city`, and its use in a service.\n\n**MapStruct + Spring Boot properties** — MapStruct itself has **no runtime properties**, but you can configure the compiler behavior via Maven/Gradle compiler args:\n- `mapstruct.defaultComponentModel=spring` — default Spring component model (no need to repeat `componentModel = \"spring\"`).\n- `mapstruct.unmappedTargetPolicy=ERROR` — fail the build if any target field is not mapped.\n- `mapstruct.suppressGeneratorTimestamp=true` — cleaner git diffs (no timestamp in generated files).\n\n**Key takeaway:** MapStruct + Spring Boot = clean, fast, type-safe and maintainable code — write less boilerplate and more business value.",
+    code: `// Entities
+@Data
+class User {
+    private Long id;
+    private String fullName;
+    private String email;
+    private LocalDateTime createdAt;
+    private Address address;
+}
+@Data
+class Address {
+    private String city;
+    private String country;
+}
+
+// DTO
+@Data
+class UserDto {
+    private Long id;
+    private String name;
+    private String emailId;
+    private String city;
+}
+
+// Mapper
+@Mapper(componentModel = "spring")
+public interface UserMapper {
+    @Mapping(source = "fullName",     target = "name")
+    @Mapping(source = "email",        target = "emailId")
+    @Mapping(source = "address.city", target = "city")
+    UserDto toDto(User user);
+}
+
+// Usage in a service
+@Service
+public class UserService {
+    private final UserRepository repo;
+    private final UserMapper mapper;
+
+    public UserDto getUser(Long id) {
+        User user = repo.findById(id).orElseThrow();
+        return mapper.toDto(user);
+    }
+}
+
+<!-- Maven compiler plugin (recommended) -->
+<configuration>
+    <compilerArgs>
+        <arg>-Amapstruct.defaultComponentModel=spring</arg>
+        <arg>-Amapstruct.unmappedTargetPolicy=ERROR</arg>
+        <arg>-Amapstruct.suppressGeneratorTimestamp=true</arg>
+    </compilerArgs>
+</configuration>`,
+    image: '/java-notes/mapstruct-with-spring-boot-p6.jpg',
+    imageAlt:
+      'MapStruct real-world User module — User and Address entities, a UserDto, a Spring @Mapper that renames fullName to name and email to emailId and flattens address.city, usage inside a @Service that fetches an entity and returns a DTO, and the MapStruct + Spring Boot compiler properties (defaultComponentModel=spring, unmappedTargetPolicy=ERROR, suppressGeneratorTimestamp=true)',
+  },
+  {
+    id: 'mapstruct-json-transformation',
+    title: 'Sample JSON File Transformation (Jackson + MapStruct)',
+    content:
+      "An end-to-end JSON transformation combining **Jackson** (JSON parsing) with **MapStruct** (object mapping).\n\n**The flow:** an input JSON file is read by Jackson into a request DTO → MapStruct maps the request to a domain entity → MapStruct maps the entity to a response → Jackson writes the response back to JSON.\n\n- **Input JSON** — for example `user-input.json` with `fullName`, `email` and a nested `address`.\n- **Java types** — `record CreateUserRequest(...)`, `record AddressRequest(...)` and a `User` domain class.\n- **Mapper** — `@Mapper(componentModel = \"spring\", unmappedTargetPolicy = ReportingPolicy.ERROR)` with `toEntity(CreateUserRequest)` and `toResponse(User)`.\n- **Read, map, write** — `objectMapper.readValue(...)` → `mapper.toEntity(request)` → `mapper.toResponse(user)` → `objectMapper.writeValueAsString(response)`.\n\n**Important:** Jackson reads and writes JSON files; MapStruct maps Java objects using generated compile-time code.\n\n**Production rule:** keep parsing, mapping and business logic as separate responsibilities.",
+    code: `// Java request / domain / response
+record AddressRequest(String city, String country) {}
+record CreateUserRequest(String fullName, String email,
+                         AddressRequest address) {}
+class User {
+    String displayName; String email; String city; String status;
+}
+
+// MapStruct mapper
+@Mapper(componentModel = "spring",
+        unmappedTargetPolicy = ReportingPolicy.ERROR)
+interface UserMapper {
+    @Mapping(target = "displayName", source = "fullName")
+    @Mapping(target = "city",        source = "address.city")
+    @Mapping(target = "status",      constant = "ACTIVE")
+    User toEntity(CreateUserRequest source);
+
+    @Mapping(target = "name",     source = "displayName")
+    @Mapping(target = "location", source = "city")
+    UserResponse toResponse(User source);
+}
+
+// Read, map and write (Jackson + MapStruct)
+CreateUserRequest request = objectMapper.readValue(
+    resource.getInputStream(), CreateUserRequest.class);
+
+User user = mapper.toEntity(request);
+UserResponse response = mapper.toResponse(user);
+
+String result = objectMapper
+    .writerWithDefaultPrettyPrinter()
+    .writeValueAsString(response);
+
+// Flow: JSON file -> Jackson DTO -> MapStruct entity
+//       -> MapStruct response -> Jackson JSON`,
+    image: '/java-notes/mapstruct-with-spring-boot-p7.jpg',
+    imageAlt:
+      'MapStruct plus Spring Boot sample JSON file transformation — an input JSON file, Java records for the request and a User domain class, a MapStruct mapper with toEntity and toResponse, and reading/mapping/writing with Jackson objectMapper, illustrating the flow JSON file to Jackson DTO to MapStruct entity to MapStruct response to Jackson JSON, with the rule to keep parsing, mapping and business logic separate',
+  },
+];
+
 // Module 33 — Spring Data JPA
 const SPRING_DATA_JPA_SECTIONS = [
   {
@@ -895,7 +1166,7 @@ function buildLessons() {
         lesson.sections = [...JAVA_METHODS_SECTIONS, ...DEEP_SHALLOW_COPY_SECTIONS];
       }
       if (title === 'Building REST APIs') {
-        lesson.sections = REST_API_SECTIONS;
+        lesson.sections = [...REST_API_SECTIONS, ...MAPSTRUCT_SECTIONS];
         lesson.extraLinks = [embarkxLink];
       }
       if (title === 'Spring Data JPA') {
