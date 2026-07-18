@@ -69,6 +69,19 @@ export const nextjsLessons = [
     topics: ['Rules of hooks', 'useEffect', 'Custom hook patterns', 'useRef', 'Data fetching hooks'],
     notionUrl: UDEMY,
     youtube: yt('https://www.youtube.com/watch?v=6ThXsUwLWvc', 'Custom Hooks in React', 'Web Dev Simplified'),
+    image: '/nextjs-notes/react-hooks-essential.jpg',
+    imageAlt:
+      'React Hooks — essential hooks every React developer should know: useState (store state), useEffect (side effects), useMemo (cache expensive calculations), useCallback (cache functions), useRef (DOM / mutable values), useContext (share data), and useReducer (complex state), each with a code snippet, plus a quick-summary mapping every hook to its purpose. Use the right hook for the right job.',
+    sections: [
+      {
+        id: 'essential-react-hooks',
+        title: 'The Essential React Hooks (Every Dev Should Know)',
+        content:
+          "Before you extract logic into your own **custom hooks**, you need the built-in hooks fluently — a custom hook is just a function that composes these. The seven every React developer reaches for:\n\n- **`useState` → store state.** Holds a piece of component state and a setter; calling the setter re-renders the component with the new value.\n- **`useEffect` → side effects.** Runs code *after* render for things outside React's world — data fetching, subscriptions, timers, manual DOM work. The **dependency array** controls when it re-runs (empty `[]` = once on mount; `[dep]` = when `dep` changes).\n- **`useMemo` → cache expensive calculations.** Memoizes a *computed value* so an expensive calculation only re-runs when its dependencies change — not on every render.\n- **`useCallback` → cache functions.** Memoizes a *function reference* so it stays stable across renders — important when passing callbacks to memoized children or effect dependencies.\n- **`useRef` → DOM / mutable values.** Holds a mutable value that **persists across renders without causing a re-render** — commonly a reference to a DOM node (`inputRef.current.focus()`) or an instance variable.\n- **`useContext` → share data.** Reads a value from a React Context, so deeply nested components get shared data (theme, auth, locale) **without prop drilling**.\n- **`useReducer` → complex state.** Manages state via an **action → reducer → new state** flow; better than `useState` when state is complex or the next state depends on the previous one.\n\n**Quick summary:** useState = store state · useEffect = side effects · useMemo = cache calculations · useCallback = cache functions · useRef = DOM / mutable values · useContext = share data · useReducer = complex state.\n\n**The rule of thumb:** use the right hook for the right job and you write clean, efficient React. `useMemo`/`useCallback` are optimizations — reach for them when you actually have an expensive calc or a referential-equality problem, not by default.",
+        code:
+          "// useState — store state\nconst [count, setCount] = useState(0);\nsetCount(count + 1);\n\n// useEffect — side effects\nuseEffect(() => {\n  fetchData();\n}, [dependency]);\n\n// useMemo — cache expensive calculations\nconst result = useMemo(() => expensiveCalc(a, b), [a, b]);\n\n// useCallback — cache functions\nconst memoizedFn = useCallback(() => {\n  doSomething();\n}, [dependency]);\n\n// useRef — DOM / mutable values\nconst inputRef = useRef();\ninputRef.current.focus();\n\n// useContext — share data\nconst theme = useContext(ThemeContext);\n\n// useReducer — complex state\nconst [state, dispatch] = useReducer(reducer, initialState);",
+      },
+    ],
   },
   {
     nextDay: 8,
