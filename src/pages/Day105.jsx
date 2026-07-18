@@ -157,7 +157,7 @@ export default function Day105() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-104" className="day001-nav-btn day001-nav-prev">← Day 104</Link>
           <p className="day001-datetime">React Native Day 105</p>
-          <Link to="/mobile" className="day001-nav-btn day001-nav-next">RN Track →</Link>
+          <Link to="/day-106" className="day001-nav-btn day001-nav-next">Day 106 →</Link>
         </header>
 
         <div className="day001-hero">
