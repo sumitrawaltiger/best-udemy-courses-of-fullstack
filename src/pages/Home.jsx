@@ -652,9 +652,6 @@ export default function Home() {
             <span>☁️ Year 4 · DevOps</span>
           </div>
           <div className="thunder-plus-actions">
-            <Link to="/roadmap" className="btn btn-interview btn-lg">
-              View Full Roadmap
-            </Link>
             <Link to="/interview" className="btn btn-interview-chaicode btn-lg">
               DSA &amp; System Design →
             </Link>

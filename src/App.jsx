@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import NextjsHome from './pages/NextjsHome';
@@ -123,7 +123,6 @@ import CheatSheets from './pages/CheatSheets';
 import BestUdemyCourses from './pages/BestUdemyCourses';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import AboutFounder from './pages/AboutFounder';
-import RoadmapHome from './pages/RoadmapHome';
 import Prerequisites from './pages/Prerequisites';
 import PrereqDay from './pages/PrereqDay';
 
@@ -245,7 +244,7 @@ export default function App() {
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="roadmap" element={<RoadmapHome />} />
+          <Route path="roadmap" element={<Navigate to="/" replace />} />
           <Route path="prerequisites" element={<Prerequisites />} />
           <Route path="prerequisites/day/:day" element={<PrereqDay />} />
           <Route path="about-founder" element={<AboutFounder />} />

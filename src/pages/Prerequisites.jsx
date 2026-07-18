@@ -31,9 +31,6 @@ export default function Prerequisites() {
           >
             ↗ Open the full PDF
           </a>
-          <Link to="/roadmap" className="prereq-btn prereq-btn-ghost">
-            See the 4-year roadmap
-          </Link>
         </div>
         <div className="prereq-stats">
           <div className="prereq-stat">
