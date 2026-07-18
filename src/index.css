@@ -6098,3 +6098,104 @@ a:hover {
   background: #7c3aed;
   color: #fff;
 }
+
+/* ── GenAI lesson pages: self-contained dark theme (cohesive with the violet hero) ── */
+.chapter-genai {
+  background: linear-gradient(180deg, #0e0b1a 0%, #0d1117 100%);
+  color: #e2e8f0;
+  border: 1px solid #241b3a;
+  border-radius: 18px;
+  padding: 28px clamp(16px, 3vw, 36px);
+}
+.chapter-genai .chapter-header { border-bottom-color: #2a2140; }
+.chapter-genai .chapter-breadcrumb,
+.chapter-genai .chapter-breadcrumb a,
+.chapter-genai .chapter-meta,
+.chapter-genai .chapter-subtitle { color: #a9b4c2; }
+.chapter-genai .chapter-breadcrumb a:hover { color: #c4b5fd; }
+.chapter-genai h1,
+.chapter-genai h2,
+.chapter-genai h3 { color: #f5f3ff; }
+.chapter-genai .chapter-badge {
+  background: rgba(139, 92, 246, 0.16);
+  color: #c4b5fd;
+  border: 1px solid rgba(139, 92, 246, 0.4);
+}
+
+/* Sections */
+.chapter-genai .chapter-section { border-color: #241b38; }
+.chapter-genai .chapter-section h2,
+.chapter-genai .chapter-section h3 { color: #ede9fe; }
+.chapter-genai .section-content { color: #cbd5e1; }
+.chapter-genai .section-content strong { color: #f5f3ff; }
+.chapter-genai .section-content a { color: #a78bfa; }
+.chapter-genai .section-num { background: #8b5cf6; color: #fff; }
+
+/* Inline code chips */
+.chapter-genai .section-content code,
+.chapter-genai .learn-list code,
+.chapter-genai .chapter-intro code {
+  background: #1e1b2e;
+  color: #e9d5ff;
+  border: 1px solid #33285a;
+}
+
+/* Intro / outline / learn list */
+.chapter-genai .chapter-intro,
+.chapter-genai .outline,
+.chapter-genai .learn-list,
+.chapter-genai .learn-list li { color: #cbd5e1; }
+.chapter-genai .chapter-intro { background: #14121f; border-color: #271e3d; }
+
+/* Code blocks */
+.chapter-genai .code-block {
+  border: 1px solid #271e3d;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Quiz */
+.chapter-genai .quiz {
+  background: #14121f;
+  border: 1px solid #271e3d;
+  color: #e2e8f0;
+}
+.chapter-genai .quiz-title,
+.chapter-genai .quiz-q-text,
+.chapter-genai .quiz-question { color: #f5f3ff; }
+.chapter-genai .quiz-num { color: #a78bfa; }
+.chapter-genai .quiz-option {
+  background: #0f0d19;
+  border: 1px solid #2a2140;
+  color: #e2e8f0;
+}
+.chapter-genai .quiz-option:hover { border-color: #8b5cf6; }
+
+/* Prev/next nav */
+.chapter-genai .chapter-nav { border-top-color: #241b38; }
+.chapter-genai .nav-prev,
+.chapter-genai .nav-next {
+  background: #14121f;
+  border: 1px solid #271e3d;
+}
+.chapter-genai .nav-prev:hover,
+.chapter-genai .nav-next:hover { border-color: #8b5cf6; }
+.chapter-genai .nav-label { color: #9aa7b4; }
+.chapter-genai .nav-title { color: #e2e8f0; }
+
+/* YouTube block */
+.chapter-genai .youtube-block {
+  background: #14121f;
+  border: 1px solid #271e3d;
+}
+.chapter-genai .youtube-block-title { color: #f5f3ff; }
+
+/* GenAI code blocks — darken to match the theme (plain pre/code, no syntax spans) */
+.chapter-genai .code-block pre { background: #0f0d19; }
+.chapter-genai .code-block pre code,
+.chapter-genai .code-block code { color: #e6edf3; }
+.chapter-genai .code-block-header {
+  background: #1b1530;
+  color: #c4b5fd;
+  border-bottom: 1px solid #2a2140;
+}
