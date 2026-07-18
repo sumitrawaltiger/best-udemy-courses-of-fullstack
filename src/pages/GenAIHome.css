@@ -1,0 +1,198 @@
+/* GenAI Engineering track — Year 1, Agentic AI in JavaScript.
+   Accent: violet (#8b5cf6) with an emerald secondary (#10b981). */
+
+.genai-hero {
+  background:
+    radial-gradient(1100px 460px at 78% -12%, rgba(139, 92, 246, 0.28), transparent 60%),
+    radial-gradient(900px 420px at 8% 0%, rgba(16, 185, 129, 0.18), transparent 55%),
+    linear-gradient(180deg, #0e0b1a 0%, #0d1117 100%);
+  border-bottom: 1px solid #241b3a;
+  padding: 56px 20px 48px;
+}
+
+.genai-hero-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.genai-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #c4b5fd;
+  background: rgba(139, 92, 246, 0.14);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+
+.genai-title {
+  margin: 16px 0 8px;
+  font-size: clamp(2rem, 5vw, 3.1rem);
+  font-weight: 800;
+  line-height: 1.05;
+  color: #f5f3ff;
+  background: linear-gradient(90deg, #a78bfa, #22d3ee 55%, #34d399);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.genai-tagline {
+  max-width: 720px;
+  color: #cbd5e1;
+  font-size: 1.05rem;
+  line-height: 1.55;
+  margin: 0 0 22px;
+}
+
+.genai-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.genai-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid #2a2140;
+  border-radius: 12px;
+  padding: 10px 16px;
+}
+
+.genai-stat-val {
+  color: #a78bfa;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.genai-stat-label {
+  color: #94a3b8;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.genai-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Outline buttons need lighter ink on the dark hero than the global (light-card) default. */
+.genai-hero-actions .btn-outline-genai {
+  color: #c4b5fd;
+  border-color: rgba(139, 92, 246, 0.6);
+}
+.genai-hero-actions .btn-outline-genai:hover {
+  background: rgba(139, 92, 246, 0.16);
+  color: #ede9fe;
+}
+
+/* Button styles (.btn-genai / .btn-outline-genai) live in index.css so they
+   also work on the Home track card. The hero just reuses them. */
+
+/* Syllabus */
+.genai-syllabus {
+  padding-top: 8px;
+}
+
+.genai-parts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.genai-part {
+  background: #14121f;
+  border: 1px solid #271e3d;
+  border-radius: 16px;
+  padding: 18px 18px 10px;
+}
+
+.genai-part-head h3 {
+  margin: 0 0 6px;
+  font-size: 1.02rem;
+  color: #ede9fe;
+}
+
+.genai-part-head p {
+  margin: 0 0 12px;
+  color: #94a3b8;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.genai-module-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.genai-module-list li {
+  border-top: 1px solid #241b38;
+}
+
+.genai-module-list a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 4px;
+  text-decoration: none;
+  color: #e2e8f0;
+  transition: background 0.15s;
+}
+
+.genai-module-list a:hover {
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.genai-module-num {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(139, 92, 246, 0.16);
+  color: #c4b5fd;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.genai-module-title {
+  flex: 1;
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.genai-module-cta {
+  flex: 0 0 auto;
+  color: #a78bfa;
+  font-size: 0.8rem;
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.genai-module-list a:hover .genai-module-cta {
+  opacity: 1;
+}
+
+/* Roadmap accent reuse */
+.roadmap-genai .roadmap-day.published a {
+  background: rgba(139, 92, 246, 0.16);
+  color: #c4b5fd;
+}
+.roadmap-genai .roadmap-day.published a:hover {
+  background: #8b5cf6;
+  color: #fff;
+}
+.legend-dot-genai {
+  background: #8b5cf6 !important;
+}

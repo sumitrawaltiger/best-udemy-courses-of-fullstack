@@ -17,6 +17,13 @@ export const LEARNING_PATH = [
     path: '/mobile',
   },
   {
+    id: 'genai',
+    label: 'GenAI with JS',
+    short: 'GEN',
+    desc: 'Year 1 · Agentic AI in JavaScript · 13 modules',
+    path: '/genai',
+  },
+  {
     id: 'python',
     label: 'Python & AI',
     short: 'PY',

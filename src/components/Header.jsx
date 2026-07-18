@@ -13,12 +13,14 @@ function trackFromPath(path) {
   if (path.startsWith('/java')) return 'java';
   if (path.startsWith('/python')) return 'python';
   if (path.startsWith('/nextjs')) return 'nextjs';
+  if (path.startsWith('/genai')) return 'genai';
   return 'thunder';
 }
 
 const TRACK_HOME = {
   thunder: '/',
   nextjs: '/nextjs',
+  genai: '/genai',
   python: '/python',
   java: '/java',
   aws: '/aws',
@@ -31,6 +33,7 @@ const TRACK_HOME = {
 const TRACK_START = {
   thunder: '/learn/introduction-to-javascript',
   nextjs: '/nextjs/learn/introduction-to-the-course',
+  genai: '/genai/learn/the-new-age-of-ai-introduction-to-generative-ai',
   python: '/python/learn/course-introduction',
   java: '/java/learn/introduction-to-java-and-setup',
   aws: '/aws/learn/introduction-to-100-days-of-cloud',
@@ -43,6 +46,7 @@ const TRACK_START = {
 const TRACK_SYLLABUS = {
   thunder: '/#syllabus',
   nextjs: '/nextjs#nextjs-syllabus',
+  genai: '/genai#genai-syllabus',
   python: '/python#python-syllabus',
   java: '/java#java-syllabus',
   aws: '/aws#aws-syllabus',
@@ -124,7 +128,9 @@ export default function Header({ onSearch }) {
                   ? 'PY'
                   : track === 'nextjs'
                     ? 'NX'
-                    : 'JS';
+                    : track === 'genai'
+                      ? 'GEN'
+                      : 'JS';
   const logoName =
     track === 'mobile'
       ? 'Thunder++ Mobile'
@@ -142,7 +148,9 @@ export default function Header({ onSearch }) {
                   ? 'Thunder++ Python'
                   : track === 'nextjs'
                     ? 'Thunder+ Next.js'
-                    : 'Road to Full Lifecycle Engineer';
+                    : track === 'genai'
+                      ? 'Thunder+ GenAI'
+                      : 'Road to Full Lifecycle Engineer';
   const logoTagline =
     track === 'mobile'
       ? 'React Native by ChaiCode'
@@ -160,7 +168,9 @@ export default function Header({ onSearch }) {
                   ? 'Python & Agentic AI — Ashok IT'
                   : track === 'nextjs'
                     ? 'React & Next.js by ChaiCode'
-                    : 'TypeScript · Python · Java · DevOps';
+                    : track === 'genai'
+                      ? 'Agentic AI in JavaScript'
+                      : 'TypeScript · Python · Java · DevOps';
 
   const searchPlaceholder =
     track === 'mobile'
@@ -179,7 +189,9 @@ export default function Header({ onSearch }) {
                   ? 'Search Python modules...'
                   : track === 'nextjs'
                     ? 'Search modules...'
-                    : 'Search tutorials...';
+                    : track === 'genai'
+                      ? 'Search GenAI modules...'
+                      : 'Search tutorials...';
 
   return (
     <header

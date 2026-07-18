@@ -8,6 +8,8 @@ import { devopsChapters } from '../data/devopsChapters';
 import { k8sChapters } from '../data/k8sChapters';
 import { interviewChapters } from '../data/interviewChapters';
 import { mobileChapters } from '../data/mobileChapters';
+import { genaiChapters } from '../data/genaiChapters';
+import { GENAI_META } from '../data/genaiSyllabus';
 import { NEXTJS_META } from '../data/nextjsSyllabus';
 import { PYTHON_META } from '../data/pythonSyllabus';
 import { JAVA_META } from '../data/javaSyllabus';
@@ -318,6 +320,49 @@ export default function Home() {
               className="btn btn-mobile-cohort-outline btn-lg"
             >
               ChaiCode GitHub
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="thunder-plus-section thunder-genai-section" id="thunder-genai">
+        <div className="thunder-plus-inner">
+          <span className="thunder-plus-badge thunder-plus-badge-genai">
+            Year 1 · Agentic AI in JavaScript
+          </span>
+          <h2>Thunder+ — GenAI Engineering Bootcamp</h2>
+          <p className="section-desc">
+            Year 1 also builds <strong>Agentic AI in JavaScript</strong>: from the Transformer architecture to
+            production-grade autonomous agents. {genaiChapters.length} modules across 3 parts — core theory,
+            building agents, then production — with the modern stack{' '}
+            <a href={GENAI_META.langchainJs} target="_blank" rel="noopener noreferrer">
+              LangChain.js
+            </a>
+            ,{' '}
+            <a href={GENAI_META.langgraphJs} target="_blank" rel="noopener noreferrer">
+              LangGraph
+            </a>{' '}
+            and{' '}
+            <a href={GENAI_META.langsmith} target="_blank" rel="noopener noreferrer">
+              LangSmith
+            </a>
+            . Graduate with a portfolio of intelligent agents and a full-stack capstone.
+          </p>
+          <div className="thunder-plus-highlights">
+            <span>🤖 Autonomous Agents</span>
+            <span>🔗 LangChain &amp; LangGraph</span>
+            <span>📚 RAG &amp; Vector DBs</span>
+            <span>🚀 Deploy &amp; Evaluate</span>
+          </div>
+          <div className="thunder-plus-actions">
+            <Link to="/genai" className="btn btn-genai btn-lg">
+              Explore GenAI Track
+            </Link>
+            <Link to="/genai/learn/the-new-age-of-ai-introduction-to-generative-ai" className="btn btn-outline-genai btn-lg">
+              Start GenAI Module 1
+            </Link>
+            <a href={GENAI_META.langchainJs} target="_blank" rel="noopener noreferrer" className="btn btn-outline-genai btn-lg">
+              LangChain.js Docs
             </a>
           </div>
         </div>

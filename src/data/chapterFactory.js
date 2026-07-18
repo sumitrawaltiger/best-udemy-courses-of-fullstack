@@ -9,6 +9,7 @@ import {
   KODEKLOUD_K8S_PATH_URL,
   CHAICODE_INTERVIEW_URL,
   JAVA_UDEMY_COMPLETE_URL,
+  GENAI_COURSE_URL,
 } from './trackConfig.js';
 
 export function slugify(text) {
@@ -48,6 +49,16 @@ const TRACK_META = {
     sectionPrefix: (n) => `Module ${n} of Thunder+ React & Next.js`,
     quizPrefix: () => 'NX ',
     tryIt: (n, title) => `console.log("NX ${n}: ${title}");`,
+  },
+  genai: {
+    dayKey: 'genaiDay',
+    label: 'GEN',
+    offset: TRACK_OFFSETS.genai,
+    paidUrl: GENAI_COURSE_URL,
+    paidLabel: 'LangChain.js Docs',
+    sectionPrefix: (n) => `Module ${n} of GenAI Engineering with JavaScript`,
+    quizPrefix: () => 'GEN ',
+    tryIt: (n, title) => `console.log("GEN ${n}: ${title}");`,
   },
   python: {
     dayKey: 'pyDay',
@@ -170,6 +181,7 @@ export function buildChapter(entry, id, options = {}) {
     track,
     day: dayNum,
     nextDay: entry.nextDay,
+    genaiDay: entry.genaiDay,
     pyDay: entry.pyDay,
     javaDay: entry.javaDay,
     awsDay: entry.awsDay,
@@ -206,6 +218,12 @@ export function buildChapter(entry, id, options = {}) {
 
 export function buildChaptersFromCurriculum(curriculum, startId = 20, options = {}) {
   return curriculum.map((entry, index) => buildChapter(entry, startId + index, options));
+}
+
+export function buildGenaiChapters(curriculum) {
+  return curriculum.map((entry, index) =>
+    buildChapter(entry, index + 1, { track: 'genai' }),
+  );
 }
 
 export function buildNextjsChapters(curriculum) {

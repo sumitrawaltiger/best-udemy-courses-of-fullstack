@@ -9,6 +9,11 @@ export const MOBILE_CALENDAR_DAYS = 40; // Days 146–185 · through 23 Jan 2027
 export const NEXTJS_MODULES = 30; // ChaiCode Udemy modules (fit inside NEXTJS_CALENDAR_DAYS)
 export const MOBILE_LESSONS = 25; // ChaiCode RN lessons (fit inside MOBILE_CALENDAR_DAYS)
 
+// Generative AI Engineering with JavaScript — Year 1, after React Native
+export const GENAI_CALENDAR_DAYS = 13; // Days 191–203
+export const GENAI_MODULES = 13; // 13-module GenAI Engineering Bootcamp
+export const GENAI_COURSE_URL = 'https://js.langchain.com/docs/introduction/';
+
 // Python & Agentic AI: 24 Jan 2027 → 23 May 2027 (4 months)
 // Calendar Days 186–305 (120 days)
 export const PYTHON_CALENDAR_DAYS = 120;
@@ -93,6 +98,7 @@ export const TRACK_OFFSETS = {
   thunder: 0, // Thunder JavaScript — Days 1–100 (24 Jul – 31 Oct 2026)
   nextjs: 100, // React & Next.js — Days 101–150 (1 Nov – 20 Dec 2026)
   mobile: 150, // React Native — Days 151–190 (21 Dec 2026 – 29 Jan 2027)
+  genai: 190, // GenAI Engineering with JS — Days 191–203 (30 Jan – 11 Feb 2027)
   interview: 315, // System Design in JavaScript — Days 316–365 (4 Jun – 23 Jul 2027)
   python: 365, // Python stack — Year 2 (from 24 Jul 2027)
   java: 731, // Java stack — Year 3 (from 24 Jul 2028)

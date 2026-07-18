@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import NextjsHome from './pages/NextjsHome';
+import GenAIHome from './pages/GenAIHome';
 import PythonHome from './pages/PythonHome';
 import AwsHome from './pages/AwsHome';
 import JavaHome from './pages/JavaHome';
@@ -271,6 +272,8 @@ export default function App() {
           <Route path="learn/:slug" element={<Chapter />} />
           <Route path="nextjs" element={<NextjsHome />} />
           <Route path="nextjs/learn/:slug" element={<Chapter track="nextjs" />} />
+          <Route path="genai" element={<GenAIHome />} />
+          <Route path="genai/learn/:slug" element={<Chapter track="genai" />} />
           <Route path="python" element={<PythonHome />} />
           <Route path="python/learn/:slug" element={<Chapter track="python" />} />
           <Route path="java" element={<JavaHome />} />

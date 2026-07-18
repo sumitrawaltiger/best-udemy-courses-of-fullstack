@@ -6071,3 +6071,30 @@ a:hover {
   transition: background 0.15s ease;
 }
 .roadmap-lightbox-close:hover { background: rgba(255, 255, 255, 0.28); }
+
+/* ── GenAI track (Year 1 · Agentic AI in JavaScript) ── */
+.thunder-genai-section {
+  background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%);
+  border-color: rgba(139, 92, 246, 0.28);
+}
+.thunder-plus-badge-genai {
+  background: #7c3aed;
+}
+.btn-genai {
+  background: #7c3aed;
+  color: #fff;
+  border: 2px solid #7c3aed;
+}
+.btn-genai:hover {
+  background: #6d28d9;
+  border-color: #6d28d9;
+}
+.btn-outline-genai {
+  background: transparent;
+  color: #7c3aed;
+  border: 2px solid #7c3aed;
+}
+.btn-outline-genai:hover {
+  background: #7c3aed;
+  color: #fff;
+}

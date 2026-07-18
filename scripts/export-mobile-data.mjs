@@ -11,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 
 import { chapters } from '../src/data/chapters/index.js';
 import { nextjsChapters } from '../src/data/nextjsChapters/index.js';
+import { genaiChapters } from '../src/data/genaiChapters/index.js';
 import { pythonChapters } from '../src/data/pythonChapters/index.js';
 import { javaChapters } from '../src/data/javaChapters/index.js';
 import { awsChapters } from '../src/data/awsChapters/index.js';
@@ -35,14 +36,14 @@ if (!fs.existsSync(OUT_DIR)) {
 
 // ---------- chapters ----------
 function chapterDayLabel(c, track) {
-  const map = { mobile: 'rnDay', devops: 'devopsDay', k8s: 'k8sDay', interview: 'interviewDay', aws: 'awsDay', java: 'javaDay', nextjs: 'nextDay', python: 'pyDay' };
+  const map = { mobile: 'rnDay', devops: 'devopsDay', k8s: 'k8sDay', interview: 'interviewDay', aws: 'awsDay', java: 'javaDay', nextjs: 'nextDay', genai: 'genaiDay', python: 'pyDay' };
   const n = c[map[track]] ?? c.day;
-  const prefix = { mobile: 'RN Day', devops: 'DevOps Day', k8s: 'K8s Day', interview: 'IP Module', aws: 'AWS Day', java: 'Module', nextjs: 'Module', python: 'Module' }[track] || 'Day';
+  const prefix = { mobile: 'RN Day', devops: 'DevOps Day', k8s: 'K8s Day', interview: 'IP Module', aws: 'AWS Day', java: 'Module', nextjs: 'Module', genai: 'GenAI Module', python: 'Module' }[track] || 'Day';
   return `${prefix} ${n}`;
 }
 
 function exportChapters() {
-  const TRACKS = { thunder: chapters, nextjs: nextjsChapters, python: pythonChapters, java: javaChapters, aws: awsChapters, devops: devopsChapters, k8s: k8sChapters, interview: interviewChapters, mobile: mobileChapters };
+  const TRACKS = { thunder: chapters, nextjs: nextjsChapters, genai: genaiChapters, python: pythonChapters, java: javaChapters, aws: awsChapters, devops: devopsChapters, k8s: k8sChapters, interview: interviewChapters, mobile: mobileChapters };
   const out = {};
   let total = 0;
   for (const [track, arr] of Object.entries(TRACKS)) {

@@ -1,6 +1,7 @@
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { getChapterBySlug, chapters } from '../data/chapters';
 import { getNextjsChapterBySlug, nextjsChapters } from '../data/nextjsChapters';
+import { getGenaiChapterBySlug, genaiChapters } from '../data/genaiChapters';
 import { getPythonChapterBySlug, pythonChapters } from '../data/pythonChapters';
 import { getJavaChapterBySlug, javaChapters } from '../data/javaChapters';
 import { getAwsChapterBySlug, awsChapters } from '../data/awsChapters';
@@ -10,6 +11,7 @@ import { getInterviewChapterBySlug, interviewChapters } from '../data/interviewC
 import { getMobileChapterBySlug, mobileChapters } from '../data/mobileChapters';
 import { thunderRepo } from '../data/syllabus';
 import { NEXTJS_META } from '../data/nextjsSyllabus';
+import { GENAI_META } from '../data/genaiSyllabus';
 import { PYTHON_META } from '../data/pythonSyllabus';
 import { JAVA_META } from '../data/javaSyllabus';
 import { AWS_META } from '../data/awsSyllabus';
@@ -47,6 +49,23 @@ const TRACKS = {
       text: 'Get all 44 sections, projects, and AI builds on Udemy with Hitesh Choudhary & Suraj Kumar Jha.',
       cta: 'Open on Udemy →',
       btnClass: 'btn-nextjs-udemy',
+    },
+  },
+  genai: {
+    getChapter: getGenaiChapterBySlug,
+    list: () => genaiChapters,
+    homePath: '/genai',
+    learnPath: '/genai/learn',
+    cssClass: 'chapter-genai',
+    codeRepo: null,
+    codeLabel: 'Course Code',
+    lessonLabel: 'Module',
+    extraLink: { href: GENAI_META.langchainJs, label: '🔗 LangChain.js Docs' },
+    banner: {
+      title: 'Build autonomous AI agents',
+      text: 'Agentic AI in JavaScript with the modern stack — LangChain.js, LangGraph and LangSmith.',
+      cta: 'Open LangChain.js Docs →',
+      btnClass: 'btn-genai',
     },
   },
   python: {
@@ -231,6 +250,7 @@ function dayLabel(chapter, track) {
   if (track === 'aws') return `AWS Day ${chapter.awsDay}`;
   if (track === 'java') return `JV Module ${chapter.javaDay}`;
   if (track === 'nextjs') return `NX Module ${chapter.nextDay}`;
+  if (track === 'genai') return `GenAI Module ${chapter.genaiDay}`;
   if (track === 'python') return `PY Module ${chapter.pyDay}`;
   return `Day ${chapter.day}`;
 }
