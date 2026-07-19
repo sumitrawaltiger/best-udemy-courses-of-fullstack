@@ -2,151 +2,81 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const PRIMER_URL = 'https://github.com/donnemartin/system-design-primer#rate-limiter';
-const DOCS_URL = 'https://redis.io/glossary/rate-limiting/';
+const LANGSMITH = 'https://docs.smith.langchain.com/';
+const LANGGRAPH_CLOUD = 'https://langchain-ai.github.io/langgraphjs/cloud/';
 
 const LEARNT_TODAY = [
+  { title: 'Observability is mandatory', text: 'in production you can’t debug what you can’t see — tracing is not optional for agents' },
+  { title: 'What LangSmith captures', text: 'every run as spans: prompts, model calls, tool inputs/outputs, latency, tokens and errors' },
+  { title: 'Wire it in with env', text: 'a couple of env vars turn tracing on for your JS agents — no code rewrite needed' },
+  { title: 'Debug real failures', text: 'replay a failed run, see exactly which node and prompt broke, and fix the actual cause' },
+  { title: 'Cost & latency visibility', text: 'per-run token and time metrics show where the money and the slowness actually go' },
+  { title: 'Deploy to LangGraph Cloud', text: 'push a LangGraph graph to managed infra so it runs as a real service, not a laptop script' },
+  { title: 'Test via API', text: 'hit the deployed graph over HTTP; kick off runs and read results programmatically' },
+  { title: 'HITL in production', text: 'the approve/deny gate works over the API too — pause, notify a human, resume on approval' },
+];
+
+const OBSERVE = [
   {
-    title: 'Requirements',
-    text: 'cap requests per user / IP / API key',
+    icon: '🔭', title: 'Why Tracing', titleClass: 'card-title-cyan', subtitle: 'See Every Step',
+    description:
+      'Agents are multi-step and non-deterministic — when one fails, logs aren’t enough. Tracing records the whole run so you can see exactly what happened and why.',
+    footer: 'no observability → no real debugging in prod',
   },
   {
-    title: 'Where to place it',
-    text: 'at the client, the gateway, or the service',
-  },
-  {
-    title: 'Algorithm',
-    text: 'token bucket vs sliding window — now design it',
-  },
-  {
-    title: 'Distributed counter',
-    text: 'one shared count across many servers',
-  },
-  {
-    title: 'Redis',
-    text: 'atomic INCR + EXPIRE backs the counter',
-  },
-  {
-    title: 'Sliding window log',
-    text: 'precise but memory-heavy',
-  },
-  {
-    title: 'Response',
-    text: '429 + Retry-After + rate-limit headers',
-  },
-  {
-    title: 'Local vs global',
-    text: 'per-node speed vs centralized accuracy',
-  },
-  {
-    title: 'Race conditions',
-    text: 'atomic ops or a Lua script fix them',
-  },
-  {
-    title: 'Trade-offs',
-    text: 'accuracy vs memory vs latency',
+    icon: '🧵', title: 'LangSmith', titleClass: 'card-title-purple', subtitle: 'Spans & Prompts',
+    description:
+      'Connect your JS agents to LangSmith and every run becomes a trace of spans: prompts, model calls, tool I/O, tokens, latency and errors — searchable and replayable.',
+    code: '// .env\nLANGCHAIN_TRACING_V2=true\nLANGCHAIN_API_KEY=ls_...\nLANGCHAIN_PROJECT="agent-platform"\n// runs now show up as traces automatically',
   },
 ];
 
-const DESIGN = [
+const DEPLOY = [
   {
-    icon: '📋',
-    title: 'Requirements & Placement',
-    titleClass: 'card-title-cyan',
-    subtitle: 'where + what',
-    description: 'Limit per key; usually at the gateway, in front of services.',
-    code: 'key: userId / IP / apiKey\nplace: API gateway (central, before services)',
+    icon: '☁️', title: 'LangGraph Cloud', titleClass: 'card-title-cyan', subtitle: 'Managed Runtime',
+    description:
+      'Deploy your LangGraph graph to managed infrastructure. It runs as a durable service with persistence and checkpointing, not a process that dies when your laptop sleeps.',
+    code: '// define graph → deploy to LangGraph Cloud\n// get a hosted endpoint + persistence\n// checkpoints & replay come built in',
   },
   {
-    icon: '🪣',
-    title: 'Algorithm Choice',
-    titleClass: 'card-title-green',
-    subtitle: 'bucket / window',
-    description: 'Token bucket allows bursts; sliding window is smooth.',
-    code: 'token bucket : refill N/sec, spend on request\nsliding window: weighted count over last T',
+    icon: '🔌', title: 'Test Via API', titleClass: 'card-title-purple', subtitle: 'HTTP Runs',
+    description:
+      'The deployed graph is reachable over HTTP. Start runs, poll or stream results, and inspect state — the same graph you built locally, now callable from anywhere.',
+    code: '// POST /runs { input }\n// → runId; stream / poll for output\n// same typed state, now hosted',
   },
   {
-    icon: '🧠',
-    title: 'Distributed Counter',
-    titleClass: 'card-title-amber',
-    subtitle: 'Redis',
-    description: 'A shared Redis counter keeps all nodes in agreement.',
-    code: 'n = INCR key\nif (n === 1) EXPIRE key 60\nif (n > limit) reject',
-  },
-  {
-    icon: '📤',
-    title: 'The Response',
-    titleClass: 'card-title-pink',
-    subtitle: 'be helpful',
-    description: 'Return 429 with headers so clients can back off.',
-    code: 'HTTP 429 Too Many Requests\nRetry-After: 30\nX-RateLimit-Remaining: 0',
-  },
-];
-
-const EDGE = [
-  {
-    icon: '🌐',
-    title: 'Local vs Global',
-    titleClass: 'card-title-cyan',
-    subtitle: 'the trade',
-    description: 'Per-node counters are fast but leaky; central is accurate.',
-    code: 'local : fast, N× the real limit\nglobal: exact, one Redis round-trip',
-  },
-  {
-    icon: '⚔️',
-    title: 'Race Conditions',
-    titleClass: 'card-title-green',
-    subtitle: 'atomic',
-    description: 'Read-then-write races overcount; keep it atomic.',
-    code: '// use INCR (atomic) or a Lua script\n// not GET then SET',
-  },
-  {
-    icon: '⚖️',
-    title: 'Accuracy Trade-offs',
-    titleClass: 'card-title-amber',
-    subtitle: 'pick two',
-    description: 'Precise logs cost memory; approximate windows are cheap.',
-    code: 'sliding log   : exact, more memory\nfixed window  : cheap, edge bursts',
+    icon: '🧑‍⚖️', title: 'HITL Over The API', titleClass: 'card-title-amber', subtitle: 'Approve / Deny',
+    description:
+      'Human-in-the-loop survives deployment: the graph interrupts at the approve node, your app notifies a human, and the run resumes on approve or cancels on deny.',
+    code: '// run interrupts at "approve"\n// app surfaces the plan → human decides\n// POST /runs/:id/resume { approved }',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘',
-    title: 'System Design Primer',
-    titleClass: 'card-title-purple',
-    subtitle: 'GitHub reference',
-    description: 'The rate-limiter notes in system-design-primer.',
-    link: { href: PRIMER_URL, label: 'Open on GitHub →', external: true },
+    icon: '🧵', title: 'LangSmith', titleClass: 'card-title-cyan', subtitle: 'Tracing',
+    description:
+      'Observability for LLM apps — traces, prompts, token/latency metrics, datasets and evals. The debugging surface for every agent you ship.',
+    link: { href: LANGSMITH, label: 'Open LangSmith docs →', external: true },
   },
   {
-    icon: '📗',
-    title: 'Redis Rate Limiting',
-    titleClass: 'card-title-green',
-    subtitle: 'Official glossary',
-    description: 'Redis’ guide to implementing rate limiting with atomic counters.',
-    link: { href: DOCS_URL, label: 'Open the docs →', external: true },
+    icon: '☁️', title: 'LangGraph Cloud', titleClass: 'card-title-purple', subtitle: 'Deploy',
+    description:
+      'Managed hosting for LangGraph graphs — persistence, checkpointing, streaming and HITL over an API.',
+    link: { href: LANGGRAPH_CLOUD, label: 'Open the deploy guide →', external: true },
   },
   {
-    icon: '▶️',
-    title: 'Distributed Rate Limiter',
-    titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: 'Design a Distributed Rate Limiter with an ex-Meta staff eng — Hello Interview.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=MIJFyUPG4Z4',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    icon: '🔜', title: 'Next: Agentic RAG', titleClass: 'card-title-amber', subtitle: 'Day 55 Preview',
+    description:
+      'Tomorrow — the finale: production-ish Agentic RAG with a real vector DB, tools, cite-if-used policies, and a Next.js UI.',
+    link: { href: '/day-055', label: 'Go to Day 55 →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -154,18 +84,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -174,13 +95,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -192,130 +109,84 @@ export default function Day054() {
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-053" className="day001-nav-btn day001-nav-home">
-            ← Day 53
-          </Link>
-          <p className="day001-datetime">Thunder Day 54</p>
-          <Link to="/day-055" className="day001-nav-btn day001-nav-next">
-            Day 55 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-053" className="day001-nav-btn day001-nav-prev">← Day 53</Link>
+          <p className="day001-datetime">Agentic AI Day 54</p>
+          <Link to="/day-055" className="day001-nav-btn day001-nav-next">Day 55 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>System Design</span>
-              <span>HLD Case Study</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>Agentic AI</span><span>LangSmith</span><span>Deploy</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 54 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">DESIGN A RATE LIMITER</p>
+              <h1 className="day001-day-num">DAY 54 <span aria-hidden="true">🔭</span></h1>
+              <p className="day001-day-theme">DEPLOYING &amp; OBSERVING AGENTS</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">SYSTEM DESIGN</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '54%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '54%' }} /></div>
 
         <p className="day001-summary">
-          Day fifty-four — the interview classic: <strong>design a rate limiter</strong>. Cap
-          requests per <strong>key</strong> (user/IP/API key), usually at the{' '}
-          <strong>gateway</strong>, with a <strong>token bucket</strong> or{' '}
-          <strong>sliding window</strong>. The trick is going <strong>distributed</strong> — a shared{' '}
-          <strong>Redis</strong> counter (atomic <code>INCR</code> + <code>EXPIRE</code>) so every
-          node agrees — returning <code>429</code> with <code>Retry-After</code>. Then the trade-offs:
-          local vs global, race conditions, and accuracy vs memory. Reference:{' '}
-          <a href={PRIMER_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            system-design-primer
-          </a>
-          .
+          Ship it and see inside it. <strong>Observability is mandatory</strong> — agents are multi-step and
+          non-deterministic, so you can’t debug what you can’t trace. <strong>LangSmith</strong> turns every run into{' '}
+          <strong>spans</strong>: prompts, model calls, tool I/O, tokens, latency and errors — switched on with a
+          couple of <strong>env vars</strong>, no rewrite. Then <strong>deploy</strong> the LangGraph graph to{' '}
+          <strong>LangGraph Cloud</strong> so it runs as a durable service with persistence and checkpointing.{' '}
+          <strong>Test via API</strong>, and keep <strong>human-in-the-loop</strong> alive in production — the graph
+          pauses at approve, notifies a human, and resumes on <code>{'{ approved }'}</code>.{' '}
+          <em>Next: the Agentic RAG finale.</em>
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="🚦" title="THE DESIGN" cards={DESIGN} columns={4} />
-        <CardSection icon="🧩" title="EDGE CASES" cards={EDGE} columns={3} />
-        <CardSection icon="📚" title="SYSTEM DESIGN RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="🔭" title="OBSERVABILITY" cards={OBSERVE} columns={2} />
+        <CardSection icon="☁️" title="DEPLOY & TEST" cards={DEPLOY} columns={3} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#SystemDesign</span>
-          <span>#HLD</span>
-          <span>#RateLimiter</span>
-          <span>#Thunder</span>
+          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#LangSmith</span><span>#LangGraph</span><span>#Observability</span>
         </footer>
       </div>
     </div>
