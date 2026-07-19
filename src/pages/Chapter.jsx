@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { getChapterBySlug, chapters } from '../data/chapters';
 import { getNextjsChapterBySlug, nextjsChapters } from '../data/nextjsChapters';
@@ -188,6 +189,29 @@ const TRACKS = {
     },
   },
 };
+
+// Renders a figure with an image, but if the file is missing it shows a small
+// placeholder instead of the browser's broken-image icon + spilled alt text.
+function SafeFigure({ src, alt, caption, className }) {
+  const [failed, setFailed] = useState(false);
+  if (failed) {
+    return (
+      <figure className={className}>
+        <div className="chapter-image-missing">
+          <span aria-hidden="true">🖼️</span> Visual coming soon
+        </div>
+      </figure>
+    );
+  }
+  return (
+    <figure className={className}>
+      <a href={src} target="_blank" rel="noopener noreferrer">
+        <img src={src} alt={alt} loading="lazy" onError={() => setFailed(true)} />
+      </a>
+      <figcaption>{caption}</figcaption>
+    </figure>
+  );
+}
 
 function renderInlineMarkdown(text, keyPrefix) {
   const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\))/g);
@@ -495,12 +519,12 @@ export default function Chapter({ track = 'thunder' }) {
       </div>
 
       {chapter.image && (
-        <figure className="chapter-image">
-          <a href={chapter.image} target="_blank" rel="noopener noreferrer">
-            <img src={chapter.image} alt={chapter.imageAlt || `${chapter.title} visual note`} loading="lazy" />
-          </a>
-          <figcaption>Visual note — click to open full size</figcaption>
-        </figure>
+        <SafeFigure
+          className="chapter-image"
+          src={chapter.image}
+          alt={chapter.imageAlt || `${chapter.title} visual note`}
+          caption="Visual note — click to open full size"
+        />
       )}
 
       {chapter.sections.map((section, index) => (
@@ -512,16 +536,12 @@ export default function Chapter({ track = 'thunder' }) {
           <div className="section-content">{renderMarkdown(section.content)}</div>
           {section.code && <CodeBlock code={section.code} />}
           {section.image && (
-            <figure className="chapter-image section-image">
-              <a href={section.image} target="_blank" rel="noopener noreferrer">
-                <img
-                  src={section.image}
-                  alt={section.imageAlt || `${section.title} diagram`}
-                  loading="lazy"
-                />
-              </a>
-              <figcaption>Click to open full size</figcaption>
-            </figure>
+            <SafeFigure
+              className="chapter-image section-image"
+              src={section.image}
+              alt={section.imageAlt || `${section.title} diagram`}
+              caption="Click to open full size"
+            />
           )}
           {section.tryIt && <CodePlayground initialCode={section.tryIt} />}
         </section>

@@ -2074,6 +2074,15 @@ a:hover {
   font-size: 13px;
   color: var(--muted, #64748b);
 }
+.chapter-image-missing {
+  border: 1px dashed var(--border, #c3ccd8);
+  border-radius: 12px;
+  padding: 22px 18px;
+  text-align: center;
+  color: var(--muted, #6b7280);
+  font-size: 14px;
+  background: var(--panel, rgba(127, 127, 127, 0.05));
+}
 
 .section-image {
   margin: 20px 0 4px;
