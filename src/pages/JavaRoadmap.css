@@ -36,6 +36,19 @@
 .jr-poster-btn { display: block; width: 100%; border: 1px solid #d8dee7; border-radius: 14px; overflow: hidden; background: #fff; cursor: zoom-in; padding: 0; }
 .jr-poster-btn img { width: 100%; height: auto; display: block; }
 .jr-poster-cap { text-align: center; color: var(--jr-muted); font-size: 0.85rem; margin-top: 8px; }
+.jr-poster-missing {
+  border: 1px dashed #c3ccd8; border-radius: 14px; background: #f6f8fb;
+  padding: 26px 20px; text-align: center;
+}
+.jr-poster-missing-icon { font-size: 2rem; }
+.jr-poster-missing-title { font-weight: 800; color: var(--jr-ink); margin: 8px 0 4px; }
+.jr-poster-missing-note { color: var(--jr-muted); font-size: 0.88rem; margin: 0; line-height: 1.5; }
+.jr-poster-missing-note code { background: #e7ecf3; padding: 2px 6px; border-radius: 5px; font-size: 0.85em; }
+@media (prefers-color-scheme: dark) {
+  .jr-poster-missing { background: #141b26; border-color: #2a3441; }
+  .jr-poster-missing-title { color: #e6edf3; }
+  .jr-poster-missing-note code { background: #232b38; }
+}
 
 .jr-scroll-hint { color: var(--jr-muted); font-size: 0.85rem; margin: 0 0 8px; font-style: italic; }
 

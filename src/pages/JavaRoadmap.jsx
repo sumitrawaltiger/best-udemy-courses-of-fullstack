@@ -19,6 +19,7 @@ const PHASE_COLOR = Object.fromEntries(ROADMAP_PHASES.map((p) => [p.id, p.color]
 
 export default function JavaRoadmap() {
   const [zoom, setZoom] = useState(false);
+  const [imgOk, setImgOk] = useState(true);
 
   return (
     <div className="jr-page">
@@ -33,10 +34,28 @@ export default function JavaRoadmap() {
       </header>
 
       <figure className="jr-poster">
-        <button type="button" className="jr-poster-btn" onClick={() => setZoom(true)} aria-label="Zoom the Java plan">
-          <img src={JAVA_ROADMAP_META.image} alt={JAVA_ROADMAP_META.imageAlt} loading="lazy" />
-        </button>
-        <figcaption className="jr-poster-cap">The Java plan — click to zoom</figcaption>
+        {imgOk ? (
+          <>
+            <button type="button" className="jr-poster-btn" onClick={() => setZoom(true)} aria-label="Zoom the Java plan">
+              <img
+                src={JAVA_ROADMAP_META.image}
+                alt={JAVA_ROADMAP_META.imageAlt}
+                loading="lazy"
+                onError={() => setImgOk(false)}
+              />
+            </button>
+            <figcaption className="jr-poster-cap">The Java plan — click to zoom</figcaption>
+          </>
+        ) : (
+          <div className="jr-poster-missing">
+            <span className="jr-poster-missing-icon" aria-hidden="true">🖼️</span>
+            <p className="jr-poster-missing-title">Plan image not uploaded yet</p>
+            <p className="jr-poster-missing-note">
+              The full plan below is live. To show the original poster here, add the file at{' '}
+              <code>public/java-notes/java-plan-roadmap.jpg</code>.
+            </p>
+          </div>
+        )}
       </figure>
 
       <p className="jr-scroll-hint">The matrix below scrolls sideways → all 16 stages.</p>
