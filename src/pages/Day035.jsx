@@ -2,151 +2,87 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GITHUB_URL = 'https://github.com/Rohitnegi9/Thunder/tree/main/03Backend/Day16';
-const DOCS_URL = 'https://socket.io/docs/v4/';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture35and36';
+const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
 
 const LEARNT_TODAY = [
+  { title: 'An LLM is next-token prediction', text: 'given the text so far, predict the single most likely next token — then repeat, one token at a time' },
+  { title: 'It’s a giant classifier', text: 'the final layer is softmax over the whole vocabulary (~50,000 tokens) — exactly Day 34, at huge scale' },
+  { title: 'Tokenization', text: 'text is split into tokens (words / sub-words) and each maps to an id in a fixed vocabulary' },
+  { title: 'Embeddings', text: 'every token id becomes a dense vector (e.g. 768 numbers) — meaning captured as geometry' },
+  { title: 'Meaning from context', text: 'the model adjusts each token’s vector using the surrounding words, so "bank" differs by sentence' },
+  { title: 'Attention', text: '“Attention Is All You Need” — the Transformer lets every token look at every other token' },
+  { title: 'Training = predict the next word', text: 'run over massive text; each miss updates weights via the same gradient descent from Days 28–34' },
+  { title: 'Generation loops', text: 'predict a token, append it, feed it back, predict again — that stream of tokens is the answer' },
+];
+
+const CORE = [
   {
-    title: 'HTTP can’t push',
-    text: 'request/response only — the server cannot start the conversation',
+    icon: '🔮', title: 'Next-Token Prediction', titleClass: 'card-title-cyan', subtitle: 'The Whole Idea',
+    description:
+      'An LLM does one thing: read the tokens so far and predict the next one. Loop that and you get sentences, code, essays — all from repeatedly guessing the next token.',
+    code: '// "The cat sat on the" → ?\n// output over vocab: {mat: 0.61, floor: 0.12, ...}\n// pick "mat", append, predict again',
   },
   {
-    title: 'WebSocket',
-    text: 'one persistent, two-way connection over a single TCP socket',
+    icon: '🏷️', title: 'Tokenization', titleClass: 'card-title-purple', subtitle: 'Text → Ids',
+    description:
+      'Text is broken into tokens — whole words or sub-word pieces — and each maps to an id in a fixed vocabulary of ~50,000 entries. Tokens, not letters, are the model’s unit.',
+    code: '// "learning" → ["learn", "ing"] → [4821, 213]\n// vocabulary size ≈ 50,000 tokens',
   },
   {
-    title: 'Socket.io',
-    text: 'WebSockets plus fallbacks, reconnection, and rooms',
-  },
-  {
-    title: 'connection',
-    text: 'io.on("connection", socket => ...) fires per client',
-  },
-  {
-    title: 'emit',
-    text: 'send a named event with a payload',
-  },
-  {
-    title: 'on',
-    text: 'listen for a named event from the other side',
-  },
-  {
-    title: 'broadcast',
-    text: 'socket.broadcast.emit sends to everyone except the sender',
-  },
-  {
-    title: 'Rooms',
-    text: 'group sockets together — one chat room, one channel',
-  },
-  {
-    title: 'Use cases',
-    text: 'chat, live notifications, dashboards, collaboration',
-  },
-  {
-    title: 'Scaling',
-    text: 'a Redis adapter shares events across server instances',
+    icon: '🧭', title: 'Embeddings', titleClass: 'card-title-amber', subtitle: 'Id → Vector',
+    description:
+      'Each token id becomes a dense vector of numbers (e.g. 768 dims). Similar meanings sit close together — the same "meaning as geometry" idea from the embeddings lecture.',
+    code: '// 4821 → [0.12, -0.94, 0.33, ... 768 numbers]\n// king - man + woman ≈ queen',
   },
 ];
 
-const WHY = [
+const HOW = [
   {
-    icon: '🚧',
-    title: 'HTTP Can’t Push',
-    titleClass: 'card-title-cyan',
-    subtitle: 'the limit',
-    description: 'The client always asks first — the server can never initiate.',
-    code: '// polling = ask again and again (wasteful)\nsetInterval(() => fetch("/messages"), 2000);',
+    icon: '👀', title: 'Attention', titleClass: 'card-title-cyan', subtitle: 'The Transformer',
+    description:
+      '"Attention Is All You Need" (2017). Attention lets every token look at every other token and pull in context, so a word’s vector reflects the whole sentence around it.',
+    code: '// "river bank" vs "money bank"\n// attention reshapes "bank" using its neighbours\n// → the right meaning in context',
   },
   {
-    icon: '🔌',
-    title: 'WebSocket',
-    titleClass: 'card-title-green',
-    subtitle: 'two-way pipe',
-    description: 'A single upgraded connection stays open for instant, bidirectional data.',
-    code: '// one handshake, then both sides can send\nGET /socket HTTP/1.1\nUpgrade: websocket',
+    icon: '🎯', title: 'The Output Layer', titleClass: 'card-title-purple', subtitle: '50K-Way Softmax',
+    description:
+      'The top of the network is a neuron per vocabulary token. Softmax turns those scores into a probability for every possible next token — Day 34’s softmax, just 50,000-wide.',
+    code: '// final scores over 50,000 tokens\n// softmax → probability distribution\n// argmax (or sample) → next token',
   },
   {
-    icon: '⚡',
-    title: 'Socket.io',
-    titleClass: 'card-title-amber',
-    subtitle: 'batteries included',
-    description: 'WebSockets with fallbacks, auto-reconnect, rooms, and events.',
-    code: 'const io = new Server(httpServer);\nio.on("connection", (socket) => {\n  console.log("client", socket.id);\n});',
-  },
-];
-
-const EVENTS = [
-  {
-    icon: '🤝',
-    title: 'connection',
-    titleClass: 'card-title-cyan',
-    subtitle: 'per client',
-    description: 'Each connected client gives you a socket to talk to.',
-    code: 'io.on("connection", (socket) => {\n  socket.on("disconnect", () => {/* cleanup */});\n});',
-  },
-  {
-    icon: '📤',
-    title: 'emit / on',
-    titleClass: 'card-title-green',
-    subtitle: 'send & listen',
-    description: 'Emit a named event on one side, listen for it on the other.',
-    code: '// client\nsocket.emit("message", "hi");\n// server\nsocket.on("message", (text) => { /* ... */ });',
-  },
-  {
-    icon: '📣',
-    title: 'Broadcast',
-    titleClass: 'card-title-amber',
-    subtitle: 'everyone else',
-    description: 'Send an event to all clients except the one that sent it.',
-    code: 'socket.broadcast.emit("message", text);\nio.emit("message", text); // everyone incl. sender',
-  },
-  {
-    icon: '🚪',
-    title: 'Rooms',
-    titleClass: 'card-title-pink',
-    subtitle: 'group sockets',
-    description: 'Join a room and emit only to that group — perfect for chat.',
-    code: 'socket.join("room-42");\nio.to("room-42").emit("message", text);',
+    icon: '🏋️', title: 'Training', titleClass: 'card-title-amber', subtitle: 'Predict, Then Correct',
+    description:
+      'Feed it oceans of text with the next word hidden. Wrong guesses create cross-entropy loss and gradient descent nudges billions of weights — the exact loop from Days 28–34, scaled up.',
+    code: '// hide next word, predict it\n// loss = cross-entropy(pred, actual)\n// backprop → update weights → repeat',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻',
-    title: 'Thunder GitHub',
-    titleClass: 'card-title-purple',
-    subtitle: '03Backend / Day16',
-    description: 'A real-time chat with Socket.io — connection, events, broadcast, and rooms.',
-    link: { href: GITHUB_URL, label: 'View on GitHub →', external: true },
+    icon: '💻', title: 'Lecture 35 & 36', titleClass: 'card-title-cyan', subtitle: 'How To Build An LLM',
+    description:
+      'The combined Lecture35and36 material in the STRIKE GenAI repo — tokens, embeddings, attention and next-token prediction tied together.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 35 & 36 →', external: true },
   },
   {
-    icon: '📗',
-    title: 'Socket.io Docs',
-    titleClass: 'card-title-green',
-    subtitle: 'Official docs',
-    description: 'The official Socket.io v4 docs — server, client, events, and rooms.',
-    link: { href: DOCS_URL, label: 'Open the docs →', external: true },
+    icon: '📦', title: 'STRIKE GenAI Repo', titleClass: 'card-title-purple', subtitle: 'All Lectures',
+    description:
+      'The full Coder Army STRIKE GenAI course code — from the first Gemini call to agents, RAG, the AI Dev Team, and neural nets from scratch.',
+    link: { href: GH_REPO, label: 'Open the repo →', external: true },
   },
   {
-    icon: '▶️',
-    title: 'Learn Socket.io',
-    titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: 'Learn Socket.io in 30 Minutes by Web Dev Simplified — for Day 35.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=ZKEqqIO7n-k',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    icon: '🧵', title: 'It All Connects', titleClass: 'card-title-amber', subtitle: 'Where This Leads',
+    description:
+      'Neuron → gradient descent → ReLU → classification → softmax → LLM. The from-scratch detour explains what powers every agent from the earlier lectures.',
+    link: { href: '/genai', label: 'Explore the GenAI track →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -154,18 +90,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -174,13 +101,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -192,129 +115,84 @@ export default function Day035() {
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-034" className="day001-nav-btn day001-nav-home">
-            ← Day 34
-          </Link>
-          <p className="day001-datetime">Thunder Day 35</p>
-          <Link to="/day-036" className="day001-nav-btn day001-nav-next">
-            Day 36 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-034" className="day001-nav-btn day001-nav-prev">← Day 34</Link>
+          <p className="day001-datetime">Agentic AI Day 35</p>
+          <Link to="/day-036" className="day001-nav-btn day001-nav-next">Day 36 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>Node.js</span>
-              <span>Real-Time</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 35 &amp; 36</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 35 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">WEBSOCKETS & REAL-TIME</p>
+              <h1 className="day001-day-num">DAY 35 <span aria-hidden="true">🔮</span></h1>
+              <p className="day001-day-theme">HOW TO BUILD AN LLM — TOKENS, EMBEDDINGS &amp; NEXT-TOKEN</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">NODE · THUNDER</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '35%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '35%' }} /></div>
 
         <p className="day001-summary">
-          Day thirty-five — HTTP can only answer when asked, so live features need a different
-          channel. A <strong>WebSocket</strong> is one persistent, two-way connection, and{' '}
-          <strong>Socket.io</strong> wraps it with fallbacks, reconnection, and rooms. I learned the
-          core loop — <code>io.on(&quot;connection&quot;)</code>, <code>emit</code> to send,{' '}
-          <code>on</code> to listen, <code>broadcast</code> to reach everyone else, and{' '}
-          <strong>rooms</strong> to group sockets for chat. Code in{' '}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            03Backend/Day16 on GitHub
-          </a>
-          .
+          Lectures 35 &amp; 36 — it all comes together. An <strong>LLM is next-token prediction</strong>: read the
+          text so far, predict the single most likely next token, append it, and repeat. Under the hood it’s a giant{' '}
+          <strong>classifier</strong> — a <strong>50,000-way softmax</strong> over the vocabulary (exactly Day 34, at
+          scale). Text is <strong>tokenized</strong> into ids, each id becomes an <strong>embedding</strong> vector
+          (~768 numbers = meaning as geometry), and <strong>attention</strong> ("Attention Is All You Need") reshapes
+          each token using its context. <strong>Training</strong> is just hiding the next word and correcting the guess
+          with <code>cross-entropy</code> + gradient descent — the same loop from Days 28–34.{' '}
+          <em>Neuron → gradient descent → ReLU → classification → softmax → LLM. (From the lecture material.)</em>
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="🛰️" title="WHY REAL-TIME" cards={WHY} columns={3} />
-        <CardSection icon="📡" title="EVENTS & ROOMS" cards={EVENTS} columns={4} />
-        <CardSection icon="📚" title="THUNDER BACKEND DAY 16" cards={RESOURCES} columns={3} />
+        <CardSection icon="🔮" title="THE CORE IDEA" cards={CORE} columns={3} />
+        <CardSection icon="⚙️" title="HOW IT WORKS" cards={HOW} columns={3} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#WebSockets</span>
-          <span>#SocketIO</span>
-          <span>#Backend</span>
-          <span>#Thunder</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#LLM</span><span>#Transformer</span><span>#FirstPrinciples</span>
         </footer>
       </div>
     </div>
