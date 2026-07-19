@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { PREREQ_DAYS, PREREQ_GROUPS, PREREQ_META, getPrereqDay } from '../data/jsPrereqNotes';
+import { TS_DAYS, TS_GROUPS, TS_META, getTsDay } from '../data/typescriptNotes';
 import './Prerequisites.css';
 
 function pad(n) {
@@ -38,22 +38,22 @@ function prose(text, key) {
   });
 }
 
-export default function PrereqDay() {
+export default function TypescriptDay() {
   const { day } = useParams();
   const [zoom, setZoom] = useState(false);
-  const entry = getPrereqDay(day);
+  const entry = getTsDay(day);
 
   if (!entry) {
     return (
       <div className="prereq-page">
         <section className="prereq-hero">
-          <h1 className="prereq-hero-title">Day not found</h1>
+          <h1 className="prereq-hero-title">Episode not found</h1>
           <p className="prereq-hero-sub">
-            The JavaScript prerequisite series runs from Day 1 to Day {PREREQ_META.totalDays}.
+            The TypeScript series runs from Episode 1 to Episode {TS_META.totalDays}.
           </p>
           <div className="prereq-hero-actions">
-            <Link to="/prerequisites" className="prereq-btn prereq-btn-primary">
-              ← Back to all 47 days
+            <Link to="/typescript" className="prereq-btn prereq-btn-primary">
+              ← Back to all {TS_META.totalDays} episodes
             </Link>
           </div>
         </section>
@@ -61,55 +61,55 @@ export default function PrereqDay() {
     );
   }
 
-  const group = PREREQ_GROUPS.find((g) => g.id === entry.group);
-  const prev = PREREQ_DAYS.find((d) => d.day === entry.day - 1);
-  const next = PREREQ_DAYS.find((d) => d.day === entry.day + 1);
-  const progress = Math.round((entry.day / PREREQ_META.totalDays) * 100);
+  const group = TS_GROUPS.find((g) => g.id === entry.group);
+  const prev = TS_DAYS.find((d) => d.day === entry.day - 1);
+  const next = TS_DAYS.find((d) => d.day === entry.day + 1);
+  const progress = Math.round((entry.day / TS_META.totalDays) * 100);
   const snippets = entry.snippets || (entry.code ? [{ label: 'Example', code: entry.code }] : []);
 
   return (
     <div className={`prereq-page prereq-day-page prereq-theme-${entry.group}`}>
       <nav className="prereq-daynav">
-        <Link to="/prerequisites" className="prereq-daynav-btn">
-          All 47 days
+        <Link to="/typescript" className="prereq-daynav-btn">
+          All {TS_META.totalDays} episodes
         </Link>
         <span className="prereq-daynav-spacer" />
         {prev ? (
-          <Link to={`/prerequisites/day/${prev.day}`} className="prereq-daynav-btn">
-            ← Day {pad(prev.day)}
+          <Link to={`/typescript/day/${prev.day}`} className="prereq-daynav-btn">
+            ← Ep {pad(prev.day)}
           </Link>
         ) : (
-          <span className="prereq-daynav-btn is-disabled">← Day 00</span>
+          <span className="prereq-daynav-btn is-disabled">← Ep 00</span>
         )}
         {next ? (
-          <Link to={`/prerequisites/day/${next.day}`} className="prereq-daynav-btn prereq-daynav-next">
-            Day {pad(next.day)} →
+          <Link to={`/typescript/day/${next.day}`} className="prereq-daynav-btn prereq-daynav-next">
+            Ep {pad(next.day)} →
           </Link>
         ) : (
           <Link to="/typescript" className="prereq-daynav-btn prereq-daynav-next">
-            On to the TypeScript series →
+            Back to all episodes →
           </Link>
         )}
       </nav>
 
       <header className="prereq-dayhead">
         <div className="prereq-dayhead-tags">
-          <span className="prereq-daychip">Prerequisite</span>
-          <span className="prereq-daychip">JavaScript</span>
+          <span className="prereq-daychip">TypeScript</span>
+          <span className="prereq-daychip">Episode {pad(entry.day)}</span>
           <span className="prereq-daychip">
             {group?.icon} {group?.label}
           </span>
         </div>
         <h1 className="prereq-dayhead-title">
-          <span className="prereq-dayhead-num">DAY {pad(entry.day)}</span>
+          <span className="prereq-dayhead-num">EP {pad(entry.day)}</span>
           {entry.title}
         </h1>
         <p className="prereq-dayhead-tagline">{entry.tagline}</p>
-        <div className="prereq-progress" aria-label={`Day ${entry.day} of ${PREREQ_META.totalDays}`}>
+        <div className="prereq-progress" aria-label={`Episode ${entry.day} of ${TS_META.totalDays}`}>
           <div className="prereq-progress-bar" style={{ width: `${progress}%` }} />
         </div>
         <p className="prereq-progress-label">
-          Day {entry.day} of {PREREQ_META.totalDays} · {progress}% through the series
+          Episode {entry.day} of {TS_META.totalDays} · {progress}% through the series
         </p>
       </header>
 
@@ -210,12 +210,12 @@ export default function PrereqDay() {
 
       <footer className="prereq-dayfoot">
         {next ? (
-          <Link to={`/prerequisites/day/${next.day}`} className="prereq-btn prereq-btn-primary">
-            Next · Day {pad(next.day)} — {next.title} →
+          <Link to={`/typescript/day/${next.day}`} className="prereq-btn prereq-btn-primary">
+            Next · Ep {pad(next.day)} — {next.title} →
           </Link>
         ) : (
           <Link to="/typescript" className="prereq-btn prereq-btn-primary">
-            Prerequisites done · On to the TypeScript series →
+            Series complete · Back to all episodes →
           </Link>
         )}
       </footer>

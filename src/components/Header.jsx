@@ -287,6 +287,9 @@ export default function Header({ onSearch }) {
             <Link to="/prerequisites" className="header-nav-link" onClick={closeMenu}>
               Prerequisites
             </Link>
+            <Link to="/typescript" className="header-nav-link" onClick={closeMenu}>
+              TypeScript
+            </Link>
             <a href={TRACK_SYLLABUS[track]} className="header-nav-link" onClick={closeMenu}>
               Syllabus
             </a>

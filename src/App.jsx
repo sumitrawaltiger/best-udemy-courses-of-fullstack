@@ -137,6 +137,8 @@ import AboutFounder from './pages/AboutFounder';
 import RoadmapHome from './pages/RoadmapHome';
 import Prerequisites from './pages/Prerequisites';
 import PrereqDay from './pages/PrereqDay';
+import TypescriptSeries from './pages/TypescriptSeries';
+import TypescriptDay from './pages/TypescriptDay';
 
 export default function App() {
   return (
@@ -269,6 +271,8 @@ export default function App() {
           <Route path="roadmap" element={<RoadmapHome />} />
           <Route path="prerequisites" element={<Prerequisites />} />
           <Route path="prerequisites/day/:day" element={<PrereqDay />} />
+          <Route path="typescript" element={<TypescriptSeries />} />
+          <Route path="typescript/day/:day" element={<TypescriptDay />} />
           <Route path="about-founder" element={<AboutFounder />} />
           <Route path="learn/:slug" element={<Chapter />} />
           <Route path="nextjs" element={<NextjsHome />} />
