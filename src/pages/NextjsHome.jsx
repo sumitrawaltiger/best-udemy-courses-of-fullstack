@@ -62,9 +62,8 @@ export default function NextjsHome() {
         <section className="roadmap">
           <h2>30-Module React & Next.js Roadmap</h2>
           <p className="section-desc">
-            Thunder+ runs Days <strong>101–145</strong> (13 Oct – 26 Nov 2026) — {nextjsChapters.length} modules plus
-            build/practice days. React Native follows through <strong>4 Jan 2027</strong> (Days 146–185), then
-            Python & Agentic AI from <strong>5 Jan 2027</strong>.
+            {nextjsChapters.length} modules of React &amp; Next.js plus build and practice days — part of the
+            TypeScript stack.
           </p>
           <div className="roadmap-grid roadmap-nextjs">
             {nextjsChapters.map((ch) => (

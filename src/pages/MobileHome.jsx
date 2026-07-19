@@ -52,9 +52,8 @@ export default function MobileHome() {
         <section className="roadmap">
           <h2>25-Lesson Mobile Roadmap</h2>
           <p className="section-desc">
-            Thunder++ runs Days <strong>146–185</strong> (27 Nov 2026 – <strong>4 Jan 2027</strong>). All{' '}
-            {mobileChapters.length} React Native lessons are on this site, with room for projects and polish.
-            Python & Agentic AI starts <strong>5 Jan 2027</strong>.
+            All {mobileChapters.length} React Native lessons are on this site, with room for projects and polish
+            — part of the TypeScript stack.
           </p>
           <div className="roadmap-grid roadmap-mobile">
             {mobileChapters.map((ch) => (

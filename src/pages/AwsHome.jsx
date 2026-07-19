@@ -107,8 +107,7 @@ export default function AwsHome() {
         <section className="roadmap">
           <h2>100-Day AWS Cloud Roadmap</h2>
           <p className="section-desc">
-            Runs <strong>5 Oct 2027 – 12 Jan 2028</strong> (Days 459–558 · 100 days). All {awsChapters.length} days
-            mapped from KodeKloud and CloudFolks. DevOps starts <strong>13 Jan 2028</strong>.
+            All {awsChapters.length} days mapped from KodeKloud and CloudFolks — part of the DevOps phase.
           </p>
           <div className="roadmap-grid roadmap-100 roadmap-aws">
             {awsChapters.map((ch) => (

@@ -69,8 +69,8 @@ export default function GenAIHome() {
         <section className="roadmap">
           <h2>{genaiChapters.length}-Module GenAI Roadmap</h2>
           <p className="section-desc">
-            Year 1 · <strong>Days 191–204</strong>, right after React Native — Agentic AI built entirely in
-            JavaScript. Graduate with a portfolio of intelligent agents and the skill set of a modern AI Engineer.
+            Phase 1 · Agentic AI built entirely in JavaScript. Graduate with a portfolio of intelligent agents
+            and the skill set of a modern AI Engineer.
           </p>
           <div className="roadmap-grid roadmap-genai">
             {genaiChapters.map((ch) => (

@@ -59,9 +59,9 @@ export default function JavaHome() {
         <section className="roadmap">
           <h2>50-Module Java & Spring Roadmap</h2>
           <p className="section-desc">
-            Runs <strong>5 May – 4 Oct 2027</strong> (Days 306–458 · 153 calendar days). Path:{' '}
-            <strong>J2SE → J2EE → JPA → Spring Boot → Microservices</strong> — {javaChapters.length} modules, then AWS
-            Cloud from 5 Oct 2027.
+            Path:{' '}
+            <strong>J2SE → J2EE → JPA → Spring Boot → Microservices</strong> — {javaChapters.length} modules of the
+            Java stack.
           </p>
           <div className="roadmap-grid roadmap-java">
             {javaChapters.map((ch) => (

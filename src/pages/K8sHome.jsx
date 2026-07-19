@@ -117,8 +117,7 @@ export default function K8sHome() {
         <section className="roadmap">
           <h2>100-Day Kubernetes Roadmap</h2>
           <p className="section-desc">
-            Runs <strong>22 Apr – 30 Jul 2028</strong> (Days 659–758 · 100 days). All {k8sChapters.length} days from
-            cloud-native foundations to CKA. System Design starts <strong>31 Jul 2028</strong>.
+            All {k8sChapters.length} days from cloud-native foundations to CKA — part of the DevOps phase.
           </p>
           <div className="roadmap-grid roadmap-100 roadmap-k8s">
             {k8sChapters.map((ch) => (
