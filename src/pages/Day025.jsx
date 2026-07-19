@@ -2,101 +2,80 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const REACT_EVENTS = 'https://react.dev/learn/responding-to-events';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture25';
+const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
 
 const LEARNT_TODAY = [
-  { title: 'Synthetic events', text: 'React wraps DOM events in typed SyntheticEvent objects' },
-  { title: 'onChange typing', text: 'React.ChangeEvent<HTMLInputElement> gives e.target.value as string' },
-  { title: 'onSubmit typing', text: 'React.FormEvent<HTMLFormElement> — call e.preventDefault()' },
-  { title: 'onClick typing', text: 'React.MouseEvent<HTMLButtonElement> for button handlers' },
-  { title: 'Controlled inputs', text: 'value + onChange keep React state as the single source of truth' },
-  { title: 'Inline vs named handlers', text: 'inline handlers infer the event; named handlers need an annotation' },
-  { title: 'Multiple inputs', text: 'one handler with e.target.name updates a typed form object' },
-  { title: 'Selects & checkboxes', text: 'checked for checkboxes, value for selects — each typed correctly' },
-  { title: 'Validation + Zod', text: 'parse the form object with a schema before submitting' },
-  { title: 'Form libraries', text: 'React Hook Form + Zod give typed, validated forms with less code' },
+  { title: 'The build agents', text: 'Coder writes a task, Reviewer checks it, Executor runs it in Docker, Debugger fixes real errors' },
+  { title: 'The dev loop', text: 'selectNextTask → contextBuilder → Coder → Reviewer → Executor → snapshot, then repeat' },
+  { title: 'The review gate', text: 'approved → execute; rejected ≤2 → re-code; rejected >2 → simplify the task instead of forcing it' },
+  { title: 'Real execution', text: 'the Executor runs code in the Docker sandbox and captures actual output, not a guess' },
+  { title: 'Debug or escalate', text: 'on failure the Debugger diagnoses and re-codes; if it can’t, it escalates to a human' },
+  { title: 'Snapshots & rollback', text: 'Git commits after each task give a safe point; a failed debug rolls back to it' },
+  { title: 'Token control', text: 'stateCompactor and a token tracker keep the growing state and cost under budget' },
+  { title: 'Checkpointed & resumable', text: 'MemorySaver persists state so the whole team survives a crash and resumes mid-build' },
 ];
 
-const EVENTS = [
+const LOOP = [
   {
-    icon: '🖱️', title: 'Event Types', titleClass: 'card-title-cyan', subtitle: 'React.*Event',
-    description: 'React events are typed generics over the element. onClick gets a MouseEvent, onChange a ChangeEvent — each knowing the right target properties.',
-    code: 'function onClick(e: React.MouseEvent<HTMLButtonElement>) {\n  console.log(e.currentTarget.name);\n}',
+    icon: '🔁', title: 'The Dev Loop', titleClass: 'card-title-cyan', subtitle: 'One Task At A Time',
+    description:
+      'selectNextTask picks the next task, contextBuilder gathers what the Coder needs, the Coder writes it, the Reviewer checks it, and the Executor runs it — then loop to the next task.',
+    code: '// selectNextTask → contextBuilder → coderAgent\n// → reviewerAgent → executorAgent → snapshot\n// → back to selectNextTask',
   },
   {
-    icon: '⌨️', title: 'onChange', titleClass: 'card-title-purple', subtitle: 'Read Input Values',
-    description: 'Type the change event with the input element and e.target.value is a typed string — the basis of every controlled input.',
-    code: 'function onChange(e: React.ChangeEvent<HTMLInputElement>) {\n  setName(e.target.value);\n}',
+    icon: '🚦', title: 'The Review Gate', titleClass: 'card-title-purple', subtitle: 'Approve Or Retry',
+    description:
+      'The Reviewer’s verdict routes the flow: approved code goes to the Executor; rejected code (up to twice) goes back to the Coder; a third rejection triggers task simplification.',
+    code: '// approved      → executorAgent\n// rejected (≤2)  → coderAgent (retry)\n// rejected (>2)  → simplifyTask',
   },
   {
-    icon: '📨', title: 'onSubmit', titleClass: 'card-title-amber', subtitle: 'Handle Submits',
-    description: 'Type the submit event with the form element, call preventDefault to stop the page reload, then read and validate the form’s state.',
-    code: 'function onSubmit(e: React.FormEvent<HTMLFormElement>) {\n  e.preventDefault();\n  submit(form);\n}',
-  },
-];
-
-const FORMS = [
-  {
-    icon: '🎛️', title: 'Controlled Inputs', titleClass: 'card-title-cyan', subtitle: 'State As Truth',
-    description: 'A controlled input reads value from state and writes back via onChange. React state is the single source of truth, and TypeScript types both ends.',
-    code: 'const [name, setName] = useState("");\n<input value={name}\n  onChange={(e) => setName(e.target.value)} />',
-  },
-  {
-    icon: '🧩', title: 'One Object, Many Inputs', titleClass: 'card-title-blue', subtitle: 'name + spread',
-    description: 'Keep the whole form as one typed object and update the field matching e.target.name — a single handler for many inputs, fully typed.',
-    code: 'const [form, setForm] = useState<Form>({ name: "", email: "" });\nconst set = (e: React.ChangeEvent<HTMLInputElement>) =>\n  setForm((f) => ({ ...f, [e.target.name]: e.target.value }));',
-  },
-  {
-    icon: '☑️', title: 'Checkboxes & Selects', titleClass: 'card-title-amber', subtitle: 'checked vs value',
-    description: 'Read checkboxes with e.target.checked (boolean) and selects with e.target.value. TypeScript exposes exactly the right property per element.',
-    code: 'const agree = e.target.checked; // boolean\nconst role = e.target.value;    // string',
-  },
-  {
-    icon: '🛡️', title: 'Validate On Submit', titleClass: 'card-title-lime', subtitle: 'Zod Schema',
-    description: 'Before acting, parse the form object with a Zod schema. You get typed data on success and field errors on failure — reused from Day 16.',
-    code: 'const r = FormSchema.safeParse(form);\nif (!r.success) setErrors(r.error.format());',
+    icon: '🧪', title: 'Run It For Real', titleClass: 'card-title-amber', subtitle: 'Executor + Snapshot',
+    description:
+      'The Executor runs the code in the Docker sandbox. On pass, a Git snapshot commits the progress. On fail, the flow hands off to the Debugger.',
+    code: '// executor pass → snapshot (git commit)\n// executor fail → debuggerAgent',
   },
 ];
 
-const LIBS = [
+const RESILIENCE = [
   {
-    icon: '📚', title: 'React Hook Form', titleClass: 'card-title-cyan', subtitle: 'Less Boilerplate',
-    description: 'For real forms, React Hook Form manages state, validation, and errors with great TypeScript support — far less code than wiring inputs by hand.',
-    code: 'const { register, handleSubmit } = useForm<Form>();',
+    icon: '🐞', title: 'Debug Or Escalate', titleClass: 'card-title-cyan', subtitle: 'When Code Fails',
+    description:
+      'The Debugger reads the real error, finds the root cause, and sends a fix back to the Coder. If it still can’t fix it, humanEscalation asks a person to skip or guide.',
+    code: '// debugger fix     → coderAgent (try again)\n// debugger stuck   → humanEscalation → skip/guide',
   },
   {
-    icon: '🔗', title: 'RHF + Zod', titleClass: 'card-title-purple', subtitle: 'Typed & Validated',
-    description: 'Pair React Hook Form with a Zod resolver to get one schema driving both the types and the validation — the modern typed-forms stack.',
-    code: 'useForm<Form>({ resolver: zodResolver(FormSchema) });',
+    icon: '↩️', title: 'Snapshots & Rollback', titleClass: 'card-title-purple', subtitle: 'Undo Bad Code',
+    description:
+      'Because every task is committed to Git in the sandbox, a broken change can be rolled back to the last good snapshot — the team never digs itself into a hole.',
+    code: '// good task → git commit (snapshot)\n// debug failure → rollback to last snapshot',
   },
   {
-    icon: '🎯', title: 'currentTarget vs target', titleClass: 'card-title-amber', subtitle: 'Know The Difference',
-    description: 'currentTarget is the element the handler is attached to (well-typed); target is where the event originated (broader). Prefer currentTarget for safety.',
-    code: 'e.currentTarget.value; // typed to the bound element',
-  },
-  {
-    icon: '🔜', title: 'Next: useReducer', titleClass: 'card-title-lime', subtitle: 'Day 26 Preview',
-    description: 'Tomorrow: managing complex state with useReducer — typed state, discriminated action unions, and exhaustive reducers.',
-    link: { href: '/day-026', label: 'Go to Day 26 →' },
+    icon: '🧮', title: 'Budget & Verify', titleClass: 'card-title-amber', subtitle: 'Stay In Control',
+    description:
+      'phaseVerification confirms each phase is done, patternExtractor keeps code consistent, stateCompactor and the token tracker cap cost — then presentToUser and END.',
+    footer: 'verify · compact · budget · present → END',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Responding To Events', titleClass: 'card-title-cyan', subtitle: 'react.dev',
-    description: 'React’s guide to event handlers — the mental model and patterns that the TypeScript event types build directly on top of.',
-    link: { href: REACT_EVENTS, label: 'Read the events guide →', external: true },
+    icon: '💻', title: 'Lecture 25', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    description:
+      'The complete ai-dev-team-final project — all 8 agents, the full dev-loop graph, snapshots, escalation and token control.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 25 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type A Handler',
-    description: 'Write an onChange handler and hover e.target to confirm value is a string. Then try onSubmit and see the form element type.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '🏆', title: 'An Autonomous Team', titleClass: 'card-title-purple', subtitle: 'It All Comes Together',
+    description:
+      'Prompts, tools, RAG, memory, LangGraph and multi-agent orchestration — combined into a system that plans, codes, tests, debugs and iterates on real software.',
+    link: { href: '/genai', label: 'Open the GenAI track →' },
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Forms are where users meet your app. Typed events + Zod validation make them robust — a pattern you’ll reuse on every screen.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
+    description:
+      'The full Coder Army course code — next up, Lecture 26 adds a live React dashboard (WebSocket) over the AI Dev Team.',
+    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
   },
 ];
 
@@ -132,6 +111,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day025() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +141,23 @@ export default function Day025() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-024" className="day001-nav-btn day001-nav-prev">← Day 24</Link>
-          <p className="day001-datetime">TypeScript Day 25</p>
+          <p className="day001-datetime">Agentic AI Day 25</p>
           <Link to="/day-026" className="day001-nav-btn day001-nav-next">Day 26 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Events · Forms</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 25</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 25 <span aria-hidden="true">📨</span></h1>
-              <p className="day001-day-theme">EVENTS & FORMS IN REACT TS</p>
+              <h1 className="day001-day-num">DAY 25 <span aria-hidden="true">🏆</span></h1>
+              <p className="day001-day-theme">AI DEV TEAM — THE FULL DEV LOOP</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · REACT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,11 +165,13 @@ export default function Day025() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '25%' }} /></div>
 
         <p className="day001-summary">
-          Day 25 types user input. React’s <strong>synthetic events</strong> are typed generics — I used{' '}
-          <code>ChangeEvent</code>, <code>FormEvent</code>, and <code>MouseEvent</code> to read values and handle
-          submits. I built <strong>controlled inputs</strong> with React state as the source of truth, updated a
-          single typed form object across many inputs via <code>e.target.name</code>, handled checkboxes/selects,
-          and <strong>validated</strong> with Zod on submit — then saw how React Hook Form + Zod cut the boilerplate.
+          Lecture 25 completes the team. The <strong>build agents</strong> join in a <strong>dev loop</strong>:{' '}
+          <strong>selectNextTask → Coder → Reviewer → Executor</strong>, then snapshot and repeat. The Reviewer is a{' '}
+          <strong>gate</strong> — approve, re-code (≤2), or <strong>simplify</strong> a stubborn task. The Executor
+          runs code <strong>for real in Docker</strong>; failures go to the <strong>Debugger</strong>, which fixes or{' '}
+          <strong>escalates to a human</strong>. Git <strong>snapshots</strong> allow rollback, and{' '}
+          <strong>checkpoints</strong> + a <strong>token budget</strong> keep it resilient and affordable. An{' '}
+          autonomous team that actually ships. <em>25 lectures in.</em>
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +186,12 @@ export default function Day025() {
           </ul>
         </section>
 
-        <CardSection icon="🖱️" title="TYPED EVENTS" cards={EVENTS} columns={3} />
-        <CardSection icon="🎛️" title="CONTROLLED FORMS" cards={FORMS} columns={4} />
-        <CardSection icon="📚" title="LIBRARIES & DETAILS" cards={LIBS} columns={4} />
+        <CardSection icon="🔁" title="THE DEV LOOP" cards={LOOP} columns={3} />
+        <CardSection icon="🛟" title="WHEN THINGS FAIL" cards={RESILIENCE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#Forms</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AIDevTeam</span><span>#LangGraph</span><span>#Agents</span>
         </footer>
       </div>
     </div>

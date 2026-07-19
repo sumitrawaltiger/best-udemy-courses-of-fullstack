@@ -2,101 +2,94 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const REACT_HOOKS_TS = 'https://react.dev/learn/typescript#typing-usestate';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_DESIGN = 'https://github.com/Rohitnegi9/STRIKEGenAI/blob/main/Lecture23/ai-dev-team-design-v2.md';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture23';
 
 const LEARNT_TODAY = [
-  { title: 'useState inference', text: 'useState(0) infers number — no generic needed for simple values' },
-  { title: 'Explicit generics', text: 'useState<Type>() when the initial value can’t reveal the type' },
-  { title: 'Union state', text: 'useState<"idle" | "loading" | "done"> for state machines' },
-  { title: 'Nullable state', text: 'useState<User | null>(null) — the common "not loaded yet" shape' },
-  { title: 'Object state', text: 'type the whole object; updates must produce the same shape' },
-  { title: 'Array state', text: 'useState<Task[]>([]) — every item stays checked' },
-  { title: 'Functional updates', text: 'setCount(c => c + 1) — the updater is typed too' },
-  { title: 'Lazy initialization', text: 'useState(() => compute()) runs once; the return type is inferred' },
-  { title: 'Setter type', text: 'React.Dispatch<React.SetStateAction<T>> when you pass a setter as a prop' },
-  { title: 'Derive, don’t duplicate', text: 'compute values from state instead of storing extra state' },
+  { title: 'Design before code', text: 'a full V2 design document lays out the whole system — 8 agents and a 30-node LangGraph flow' },
+  { title: 'The tech stack', text: 'LangGraph (JS) + Gemini + Pinecone (memory) + Docker (sandbox) + Redis (checkpoints) + Git (rollback)' },
+  { title: 'Fixed app stack', text: 'every project is React + Express + PostgreSQL/MongoDB, which keeps agent prompts focused' },
+  { title: 'Architect in 5 steps', text: 'entities → DB schema → API endpoints → frontend pages → folder structure & package.json' },
+  { title: 'Blueprint validation', text: 'a blueprintValidator cross-checks the design before any code is written — no orphan APIs or bad FKs' },
+  { title: 'V2 fixes 10 loopholes', text: 'state persistence, rollback, pattern consistency, token budgets, scope-drift limits, sandbox health, and more' },
+  { title: 'State is the contract', text: 'the whole 30-node flow communicates through one carefully designed shared state' },
 ];
 
-const BASICS = [
+const SYSTEM = [
   {
-    icon: '🔮', title: 'Inference', titleClass: 'card-title-cyan', subtitle: 'The Common Case',
-    description: 'When the initial value reveals the type, useState infers it — count is number, name is string. No generic argument required.',
-    code: 'const [count, setCount] = useState(0);      // number\nconst [name, setName] = useState("Sumit"); // string',
+    icon: '📐', title: 'The System', titleClass: 'card-title-cyan', subtitle: '8 Agents · 30 Nodes',
+    description:
+      'An autonomous team that understands a requirement, plans it, writes and debugs code, tests it, takes feedback, iterates and deploys — modelled as a 30-node LangGraph flow.',
+    code: '// 8 agents: PM, Architect, Planner, Coder,\n//           Reviewer, Executor, Debugger, Deploy\n// orchestrated as a 30-node LangGraph',
   },
   {
-    icon: '🏷️', title: 'Explicit Generic', titleClass: 'card-title-purple', subtitle: 'When Inference Can’t',
-    description: 'If the initial value doesn’t reveal the full type — an empty array, or null now / object later — pass the type explicitly.',
-    code: 'const [tasks, setTasks] = useState<Task[]>([]);\nconst [user, setUser] = useState<User | null>(null);',
-  },
-  {
-    icon: '🚦', title: 'Union State', titleClass: 'card-title-amber', subtitle: 'Model A State Machine',
-    description: 'A literal union captures the exact states a value can be in — the clean, type-safe way to represent loading and status flows.',
-    code: 'const [status, setStatus] =\n  useState<"idle" | "loading" | "error" | "done">("idle");',
+    icon: '🧰', title: 'The Tech Stack', titleClass: 'card-title-purple', subtitle: 'Production Pieces',
+    description:
+      'LangGraph orchestrates; Gemini is the LLM; Pinecone is long-term memory; Docker sandboxes code execution; Redis checkpoints state; Git enables rollback.',
+    code: '// LangGraph · Gemini · Pinecone\n// Docker (sandbox) · Redis (checkpoints) · Git (rollback)\n// app: React + Express + PostgreSQL/MongoDB',
   },
 ];
 
-const UPDATES = [
+const FLOW = [
   {
-    icon: '🔁', title: 'Functional Updates', titleClass: 'card-title-cyan', subtitle: 'Based On Previous',
-    description: 'When new state depends on the old, pass an updater function. Its parameter is typed as the current state, so the math stays checked.',
-    code: 'setCount((c) => c + 1);\nsetTasks((prev) => [...prev, newTask]);',
+    icon: '📋', title: 'PM → Spec', titleClass: 'card-title-cyan', subtitle: 'Remove Ambiguity',
+    description:
+      'The flow starts with the PM agent: it reads the requirement, asks clarifying questions (via humanInput), and produces a precise spec everything else builds on.',
+    code: '// pmAgent → { status: "needs_clarification", questions }\n//         or { status: "spec_ready", spec }',
   },
   {
-    icon: '🥚', title: 'Lazy Initialization', titleClass: 'card-title-blue', subtitle: 'Compute Once',
-    description: 'Pass a function to useState to compute the initial value only on the first render. The return type is inferred just like a value.',
-    code: 'const [data] = useState(() => JSON.parse(localStorage.getItem("d") ?? "[]"));',
+    icon: '🏛️', title: 'Architect · 5 Steps', titleClass: 'card-title-purple', subtitle: 'Blueprint',
+    description:
+      'The Architect designs in five passes — entities and relationships, DB schema, API endpoints, frontend pages, then the folder structure and pinned dependencies.',
+    code: '// step1 entities → step2 DB schema → step3 APIs\n// → step4 pages → step5 folders + package.json\n// = one complete blueprint',
   },
   {
-    icon: '🧩', title: 'Object State', titleClass: 'card-title-amber', subtitle: 'Type The Whole Shape',
-    description: 'Type object state with an interface. Because state is replaced (not merged), spread the previous object when updating one field.',
-    code: 'const [form, setForm] = useState<Form>({ name: "", age: 0 });\nsetForm((f) => ({ ...f, name: "S" }));',
-  },
-  {
-    icon: '📤', title: 'Passing Setters', titleClass: 'card-title-lime', subtitle: 'Dispatch Type',
-    description: 'To pass a setter to a child, type the prop as React.Dispatch<React.SetStateAction<T>> so the child can update state safely.',
-    code: 'interface Props {\n  setCount: React.Dispatch<React.SetStateAction<number>>;\n}',
+    icon: '✅', title: 'Validate The Blueprint', titleClass: 'card-title-amber', subtitle: 'Before Any Code',
+    description:
+      'blueprintValidator cross-checks the design: every API maps to a DB path, every page calls a real API, every foreign key references a real table, every spec entity is covered.',
+    code: '// no orphan endpoints · valid foreign keys\n// every page → real API · full spec coverage\n// catch design bugs before writing code',
   },
 ];
 
-const PRACTICE = [
+const V2 = [
   {
-    icon: '🧠', title: 'Derive, Don’t Store', titleClass: 'card-title-cyan', subtitle: 'One Source Of Truth',
-    description: 'Compute values from existing state during render instead of keeping duplicate state in sync. Fewer bugs, and the types stay simple.',
-    code: 'const completed = tasks.filter((t) => t.done).length; // derived',
+    icon: '💾', title: 'Survives Crashes', titleClass: 'card-title-cyan', subtitle: 'Checkpointing',
+    description:
+      'Every node checkpoints its state to Redis, so a crash resumes instead of losing everything. Combined with Git auto-commits, the team can also roll back bad code.',
+    code: '// checkpoint after every node → resume on crash\n// git commit after every task → rollback on failure',
   },
   {
-    icon: '🎯', title: 'Narrow Before Use', titleClass: 'card-title-purple', subtitle: 'Nullable State',
-    description: 'With User | null state, guard before reading. TypeScript makes the "still loading" branch impossible to forget.',
-    code: 'if (!user) return <Spinner />;\nreturn <p>{user.name}</p>;',
+    icon: '🧮', title: 'Token Budgets', titleClass: 'card-title-purple', subtitle: 'No Token Bombs',
+    description:
+      'State selectors per agent and a registry compactor stop the shared state (and the token bill) from growing without bound. A token tracker enforces budget limits.',
+    code: '// per-agent state selectors · stateCompactor\n// tokenTracker with budget limits',
   },
   {
-    icon: '⚖️', title: 'Keep State Minimal', titleClass: 'card-title-amber', subtitle: 'Less Is Safer',
-    description: 'Store the smallest set of independent values; a union often replaces several booleans. Typed, minimal state is easier to reason about.',
-    code: '// instead of isLoading + isError + data flags:\n// use one status union + data',
-  },
-  {
-    icon: '🔜', title: 'Next: useEffect & Refs', titleClass: 'card-title-lime', subtitle: 'Day 24 Preview',
-    description: 'Tomorrow: typing side effects with useEffect (deps, cleanup) and typed refs with useRef for DOM and mutable values.',
-    link: { href: '/day-024', label: 'Go to Day 24 →' },
+    icon: '🛟', title: 'Scope & Safety', titleClass: 'card-title-amber', subtitle: '10 Loopholes Fixed',
+    description:
+      'V2 adds iteration limits with scope-drift detection, sandbox health checks, parallel independent tasks, and escalation instead of blindly force-approving rejected code.',
+    footer: '22 → 30 nodes · robustness over cleverness',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Typing useState', titleClass: 'card-title-cyan', subtitle: 'react.dev',
-    description: 'React’s guide to typing hooks, starting with useState — inference, explicit generics, and the common nullable and union patterns.',
-    link: { href: REACT_HOOKS_TS, label: 'Read the hooks TS guide →', external: true },
+    icon: '📄', title: 'The Design Doc', titleClass: 'card-title-cyan', subtitle: 'V2 Markdown',
+    description:
+      'The complete system design (V2) — agents, the 30-node flow, the state shape, and every loophole fix — read it in full in the repo.',
+    link: { href: GH_DESIGN, label: 'Open the design doc →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'State Types Live',
-    description: 'Model union and object state, then set a wrong value to watch the compiler catch it. Union state clicks fast this way.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '💻', title: 'Lecture 23', titleClass: 'card-title-purple', subtitle: 'GitHub',
+    description:
+      'The design lecture folder in the STRIKE GenAI repo — the plan for the AI Dev Team built over the next lectures.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 23 →', external: true },
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Typed state is the heart of every interactive component — forms, toggles, and data loading all rely on it.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: Build The Planners', titleClass: 'card-title-amber', subtitle: 'Day 24 Preview',
+    description:
+      'Tomorrow the build starts — Lecture 24: the LangGraph state, the PM/Architect/Planner agents, the blueprint validator, and the Docker sandbox.',
+    link: { href: '/day-024', label: 'Go to Day 24 →' },
   },
 ];
 
@@ -132,6 +125,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day023() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +155,23 @@ export default function Day023() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-022" className="day001-nav-btn day001-nav-prev">← Day 22</Link>
-          <p className="day001-datetime">TypeScript Day 23</p>
+          <p className="day001-datetime">Agentic AI Day 23</p>
           <Link to="/day-024" className="day001-nav-btn day001-nav-next">Day 24 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>useState</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 23</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 23 <span aria-hidden="true">🔮</span></h1>
-              <p className="day001-day-theme">useState & TYPING STATE</p>
+              <h1 className="day001-day-num">DAY 23 <span aria-hidden="true">📐</span></h1>
+              <p className="day001-day-theme">AI DEV TEAM — SYSTEM DESIGN</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · REACT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,12 +179,13 @@ export default function Day023() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '23%' }} /></div>
 
         <p className="day001-summary">
-          Day 23 types component state. <code>useState</code> usually <strong>infers</strong> the type, but I used
-          explicit <strong>generics</strong> for empty arrays and nullable values, and literal{' '}
-          <strong>unions</strong> to model status machines. I used <strong>functional updates</strong>,{' '}
-          <strong>lazy initialization</strong>, typed object/array state, and the{' '}
-          <code>Dispatch&lt;SetStateAction&lt;T&gt;&gt;</code> type when passing setters down — plus the habit of{' '}
-          <strong>deriving</strong> values instead of duplicating state.
+          Lecture 23 — the <strong>system design</strong> (V2). Before a line of code, the whole thing is designed:{' '}
+          <strong>8 agents</strong> orchestrated as a <strong>30-node LangGraph</strong> flow, on a stack of{' '}
+          <strong>Gemini + Pinecone + Docker + Redis + Git</strong>, always building{' '}
+          <strong>React + Express + PostgreSQL/MongoDB</strong>. The <strong>Architect</strong> designs in five steps,
+          a <strong>blueprintValidator</strong> cross-checks it, and <strong>V2 fixes 10 loopholes</strong> —
+          checkpointing, rollback, pattern consistency, token budgets, scope-drift limits and more.{' '}
+          <em>Robustness first. (Design-doc lecture — read it in the repo.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -205,13 +200,13 @@ export default function Day023() {
           </ul>
         </section>
 
-        <CardSection icon="🔮" title="TYPING useState" cards={BASICS} columns={3} />
-        <CardSection icon="🔁" title="UPDATES & SHAPES" cards={UPDATES} columns={4} />
-        <CardSection icon="🧠" title="GOOD PRACTICE" cards={PRACTICE} columns={4} />
+        <CardSection icon="📐" title="THE SYSTEM & STACK" cards={SYSTEM} columns={2} />
+        <CardSection icon="📋" title="THE PLANNING FLOW" cards={FLOW} columns={3} />
+        <CardSection icon="🛟" title="V2 — BUILT TO SURVIVE" cards={V2} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#Hooks</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AIDevTeam</span><span>#LangGraph</span><span>#SystemDesign</span>
         </footer>
       </div>
     </div>

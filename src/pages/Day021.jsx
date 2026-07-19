@@ -2,101 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const REACT_TS = 'https://react.dev/learn/typescript';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture21';
+const LANGGRAPH_DOCS = 'https://langchain-ai.github.io/langgraphjs/';
 
 const LEARNT_TODAY = [
-  { title: 'React + TS project', text: 'scaffold with Vite: `npm create vite@latest -- --template react-ts`' },
-  { title: '.tsx files', text: 'components live in .tsx — TypeScript plus JSX in one file' },
-  { title: 'JSX is typed', text: 'React.JSX.Element / ReactNode describe what a component returns' },
-  { title: 'Function components', text: 'a component is just a function returning JSX — type its props, infer the rest' },
-  { title: '@types/react', text: 'the type definitions that make hooks, events, and JSX fully typed' },
-  { title: 'tsconfig for React', text: '"jsx": "react-jsx" and DOM lib — Vite sets this up for you' },
-  { title: 'Return types', text: 'usually inferred; annotate as React.ReactNode when helpful' },
-  { title: 'Strict mode on', text: 'strict TypeScript + React StrictMode catch bugs early' },
-  { title: 'No PropTypes', text: 'TypeScript replaces runtime PropTypes with compile-time checks' },
-  { title: 'Type-check script', text: 'tsc --noEmit gates the build; Vite handles the actual bundling' },
+  { title: 'One agent hits limits', text: 'a single generalist agent struggles with large, multi-step tasks and long, unfocused prompts' },
+  { title: 'Divide and specialize', text: 'give each agent one narrow role with a focused prompt — it does that job far better' },
+  { title: 'Agents collaborate', text: 'one agent’s output becomes the next one’s input, forming a pipeline or a team' },
+  { title: 'Communicate via state', text: 'in LangGraph, agents do not call each other — they read and write a shared state object' },
+  { title: 'Specialization = quality', text: 'focused prompts and roles produce more reliable, higher-quality output than one do-everything prompt' },
+  { title: 'Common patterns', text: 'a planner delegating to workers, or a role-based pipeline (PM → architect → coder → reviewer)' },
+  { title: 'Next: a real team', text: 'the coming lectures build an autonomous software development team of specialized agents' },
 ];
 
-const SETUP = [
+const WHY = [
   {
-    icon: '⚡', title: 'Scaffold The App', titleClass: 'card-title-cyan', subtitle: 'Vite react-ts',
-    description: 'The fastest way to a typed React app. Vite’s react-ts template wires up TypeScript, JSX, and a working tsconfig out of the box.',
-    code: 'npm create vite@latest my-app -- --template react-ts\ncd my-app && npm i && npm run dev',
+    icon: '🧠', title: 'Why One Agent Struggles', titleClass: 'card-title-cyan', subtitle: 'Too Much At Once',
+    description:
+      'Ask a single agent to plan, code, review, test and deploy and its prompt becomes a tangle. It loses focus, forgets constraints, and quality drops as the task grows.',
+    code: '// one giant prompt: "plan + code + review + test + deploy"\n// → unfocused, error-prone, hard to control',
   },
   {
-    icon: '📄', title: '.tsx Files', titleClass: 'card-title-purple', subtitle: 'TypeScript + JSX',
-    description: 'Components go in .tsx files, which allow both TypeScript syntax and JSX. Plain logic can stay in .ts; anything with JSX must be .tsx.',
-    code: '// App.tsx\nexport default function App() {\n  return <h1>Hello, TypeScript React</h1>;\n}',
-  },
-  {
-    icon: '🧩', title: '@types/react', titleClass: 'card-title-amber', subtitle: 'The Type Defs',
-    description: 'The @types/react and @types/react-dom packages type every hook, event, and JSX element. The template installs them for you.',
-    code: 'npm i -D @types/react @types/react-dom',
+    icon: '👥', title: 'A Team Of Specialists', titleClass: 'card-title-purple', subtitle: 'Divide The Work',
+    description:
+      'Split the job across agents, each with a single responsibility and a tight prompt — a planner, a coder, a reviewer. Each becomes an expert at its one thing.',
+    code: '// planner  → break the task down\n// coder    → write one piece\n// reviewer → check it\n// each prompt stays short and focused',
   },
 ];
 
-const COMPONENTS = [
+const HOW = [
   {
-    icon: '🔤', title: 'Typed Component', titleClass: 'card-title-cyan', subtitle: 'A Function + Props Type',
-    description: 'A component is a function that returns JSX. Describe its props with an interface or type — that’s the one place you usually annotate.',
-    code: 'interface GreetingProps { name: string }\nfunction Greeting({ name }: GreetingProps) {\n  return <p>Hi, {name}</p>;\n}',
+    icon: '🔗', title: 'They Collaborate', titleClass: 'card-title-cyan', subtitle: 'Output → Input',
+    description:
+      'Agents form a workflow: the planner’s plan feeds the coder, the coder’s code feeds the reviewer. Structured hand-offs replace one overloaded model.',
+    code: '// plan  →  code  →  review  →  test\n// each stage consumes the previous stage’s output',
   },
   {
-    icon: '↩️', title: 'Return Types', titleClass: 'card-title-blue', subtitle: 'ReactNode',
-    description: 'TypeScript infers the return type, but React.ReactNode is useful when a component may return strings, elements, null, or arrays.',
-    code: 'function Maybe(): React.ReactNode {\n  return Math.random() > 0.5 ? <p>Yes</p> : null;\n}',
+    icon: '📦', title: 'Shared State', titleClass: 'card-title-purple', subtitle: 'Not Direct Calls',
+    description:
+      'In LangGraph, agents never call each other directly. They read from and write to a shared state object — the single source of truth the whole team works on.',
+    code: '// Node A writes to state → Node B reads from state\n// state is the ONLY channel between agents',
   },
   {
-    icon: '🚫', title: 'Bye PropTypes', titleClass: 'card-title-amber', subtitle: 'Compile-Time Checks',
-    description: 'TypeScript replaces the old PropTypes runtime checks with static ones. Pass a wrong prop and it’s an error in your editor, not a console warning.',
-    code: '<Greeting name={42} /> // ❌ number not assignable to string',
-  },
-  {
-    icon: '⚙️', title: 'tsconfig & jsx', titleClass: 'card-title-lime', subtitle: 'react-jsx',
-    description: 'The jsx: "react-jsx" transform means you don’t import React just to use JSX. Vite’s tsconfig already sets this and the DOM lib.',
-    code: '"jsx": "react-jsx",\n"lib": ["ES2022", "DOM", "DOM.Iterable"]',
-  },
-];
-
-const WORKFLOW = [
-  {
-    icon: '🔍', title: 'Type-Check Separately', titleClass: 'card-title-cyan', subtitle: 'tsc --noEmit',
-    description: 'Vite transpiles fast but doesn’t type-check. Run tsc --noEmit (or in CI) to catch type errors the dev server won’t stop for.',
-    code: '"scripts": { "typecheck": "tsc --noEmit" }',
-  },
-  {
-    icon: '🛡️', title: 'Strict Everything', titleClass: 'card-title-purple', subtitle: 'TS + StrictMode',
-    description: 'Keep strict on in tsconfig and wrap the app in React.StrictMode. Together they surface null bugs and effect mistakes during development.',
-    code: '<React.StrictMode><App /></React.StrictMode>',
-  },
-  {
-    icon: '🧠', title: 'Everything You Learned Applies', titleClass: 'card-title-amber', subtitle: 'Days 1–20',
-    description: 'Interfaces, generics, unions, and utility types all show up in React — props are interfaces, state is typed, events are unions. No new type system.',
-    code: 'type Props = Pick<User, "id" | "name">;',
-  },
-  {
-    icon: '🔜', title: 'Next: Props & Children', titleClass: 'card-title-lime', subtitle: 'Day 22 Preview',
-    description: 'Tomorrow: typing props in depth — children, optional/default props, function props, and discriminated prop unions.',
-    link: { href: '/day-022', label: 'Go to Day 22 →' },
+    icon: '🎼', title: 'Orchestration', titleClass: 'card-title-amber', subtitle: 'LangGraph',
+    description:
+      'A graph (from Day 20) orchestrates the team — deciding which agent runs next, when to loop, and when to stop. Multi-agent systems are LangGraph’s reason to exist.',
+    footer: 'specialized agents + shared state + a graph = a team',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'React + TypeScript', titleClass: 'card-title-cyan', subtitle: 'react.dev',
-    description: 'React’s official TypeScript guide — setup, typing components and hooks, and the common patterns you’ll use every day this year.',
-    link: { href: REACT_TS, label: 'Read the React TS guide →', external: true },
+    icon: '💻', title: 'Lecture 21', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    description:
+      'The multi-agent systems lecture and diagram in the STRIKE GenAI repo — the concept behind the AI Dev Team ahead.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 21 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'JSX Mode',
-    description: 'The Playground supports .tsx — write a small typed component and pass a wrong prop to watch the compiler catch it instantly.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '📘', title: 'LangGraph.js', titleClass: 'card-title-purple', subtitle: 'Orchestration',
+    description:
+      'The framework that runs multi-agent workflows — state, nodes, conditional edges and cycles that coordinate a team of agents.',
+    link: { href: LANGGRAPH_DOCS, label: 'LangGraph.js docs →', external: true },
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'This begins the React-in-TypeScript arc inside the TypeScript phase — the exact stack you carry into the React & Next.js phase.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: The AI Dev Team', titleClass: 'card-title-amber', subtitle: 'Day 22 Preview',
+    description:
+      'Tomorrow — Lecture 22: the vision of an autonomous software development team (like Devin) — the roles and the requirement-to-deploy pipeline.',
+    link: { href: '/day-022', label: 'Go to Day 22 →' },
   },
 ];
 
@@ -132,6 +104,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day021() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +134,23 @@ export default function Day021() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-020" className="day001-nav-btn day001-nav-prev">← Day 20</Link>
-          <p className="day001-datetime">TypeScript Day 21</p>
+          <p className="day001-datetime">Agentic AI Day 21</p>
           <Link to="/day-022" className="day001-nav-btn day001-nav-next">Day 22 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>React</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 21</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 21 <span aria-hidden="true">⚛️</span></h1>
-              <p className="day001-day-theme">REACT + TYPESCRIPT SETUP</p>
+              <h1 className="day001-day-num">DAY 21 <span aria-hidden="true">👥</span></h1>
+              <p className="day001-day-theme">MULTI-AGENT SYSTEMS — A TEAM OF AGENTS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · REACT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,11 +158,12 @@ export default function Day021() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '21%' }} /></div>
 
         <p className="day001-summary">
-          Day 21 starts React <em>in</em> TypeScript. I scaffolded a typed app with the Vite{' '}
-          <strong>react-ts</strong> template, learned that components live in <strong>.tsx</strong> files, and that{' '}
-          <code>@types/react</code> makes JSX, hooks, and events fully typed. I wrote my first typed function
-          component with an <strong>interface</strong> for its props, saw TypeScript replace <strong>PropTypes</strong>{' '}
-          with compile-time checks, and set up <code>tsc --noEmit</code> as the type gate.
+          Lecture 21 — <strong>multi-agent systems</strong>. One generalist agent buckles under large, multi-step
+          work, so we <strong>divide and specialize</strong>: each agent gets a single role and a focused prompt and
+          becomes an expert at it. The agents <strong>collaborate</strong> — one’s output is the next one’s input —
+          but they never call each other directly; they read and write a <strong>shared state</strong>, coordinated
+          by a <strong>LangGraph</strong> graph. Specialization plus orchestration is what makes a real{' '}
+          <strong>AI team</strong> possible. <em>Next, we build one. (Diagram-based lecture; standard concepts.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +178,12 @@ export default function Day021() {
           </ul>
         </section>
 
-        <CardSection icon="⚡" title="PROJECT SETUP" cards={SETUP} columns={3} />
-        <CardSection icon="🔤" title="TYPED COMPONENTS" cards={COMPONENTS} columns={4} />
-        <CardSection icon="🧭" title="WORKFLOW" cards={WORKFLOW} columns={4} />
+        <CardSection icon="🧠" title="WHY ONE AGENT ISN’T ENOUGH" cards={WHY} columns={2} />
+        <CardSection icon="🎼" title="A TEAM, ORCHESTRATED" cards={HOW} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#MultiAgent</span><span>#LangGraph</span><span>#CoderArmy</span>
         </footer>
       </div>
     </div>

@@ -2,101 +2,72 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const REACT_TS_CHEAT = 'https://react-typescript-cheatsheet.netlify.app/';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture22';
 
 const LEARNT_TODAY = [
-  { title: 'Props interface', text: 'describe every prop a component accepts with an interface or type' },
-  { title: 'Optional & default', text: 'a `?` prop plus a default value in destructuring gives an optional prop' },
-  { title: 'children', text: 'type children as React.ReactNode to accept any renderable content' },
-  { title: 'Function props', text: 'callbacks are typed like any function: `onSelect: (id: number) => void`' },
-  { title: 'Event handler props', text: 'reuse React’s handler types for onClick, onChange, etc.' },
-  { title: 'Spreading DOM props', text: 'extend ComponentProps to forward native attributes to an element' },
-  { title: 'Discriminated props', text: 'a union of prop shapes models mutually-exclusive component modes' },
-  { title: 'readonly props', text: 'props are read-only by contract — never mutate them' },
-  { title: 'Generic components', text: 'a `<T,>` component works for any item type (typed lists)' },
-  { title: 'No React.FC needed', text: 'plain typed functions are the modern, recommended style' },
+  { title: 'The vision', text: 'an autonomous AI software team (like Devin) that builds an app from a single requirement' },
+  { title: 'Eight specialized agents', text: 'PM, Architect, Planner, Coder, Reviewer, Executor, Debugger and Deploy — each owns one job' },
+  { title: 'The pipeline', text: 'understand → plan → code → review → run → debug → deploy, mostly on its own' },
+  { title: 'PM removes ambiguity', text: 'the PM agent clarifies the requirement into a precise spec before any design starts' },
+  { title: 'Architect designs', text: 'the Architect turns the spec into a blueprint — database, APIs, pages and folder structure' },
+  { title: 'Real execution', text: 'the Executor runs code in a Docker sandbox, and real errors feed the Debugger' },
+  { title: 'Human-in-the-loop', text: 'the team pauses for clarifying answers and approvals at key checkpoints' },
 ];
 
-const BASICS = [
+const VISION = [
   {
-    icon: '🧾', title: 'Props Interface', titleClass: 'card-title-cyan', subtitle: 'Describe The API',
-    description: 'An interface lists every prop with its type. It’s the component’s public contract — callers get autocomplete and errors for wrong or missing props.',
-    code: 'interface ButtonProps {\n  label: string;\n  variant: "primary" | "ghost";\n}\nfunction Button({ label, variant }: ButtonProps) { /* ... */ }',
+    icon: '🤖', title: 'Like Devin', titleClass: 'card-title-cyan', subtitle: 'Autonomous Dev Team',
+    description:
+      'The goal: hand the system a requirement and it plans, writes, reviews, runs, debugs and deploys the app — a full software team made of cooperating agents, with minimal human help.',
+    code: '// input:  "Build a task-manager app with auth"\n// output: a working, deployed app\n// in between: an AI team does the work',
   },
   {
-    icon: '❔', title: 'Optional & Default', titleClass: 'card-title-purple', subtitle: '? + Default Value',
-    description: 'Mark a prop optional with ? and supply a default in destructuring. Callers may omit it; inside, it’s always defined.',
-    code: 'interface Props { size?: "sm" | "lg" }\nfunction Tag({ size = "sm" }: Props) { /* size is defined */ }',
-  },
-  {
-    icon: '👶', title: 'children', titleClass: 'card-title-amber', subtitle: 'React.ReactNode',
-    description: 'To wrap content, accept children typed as React.ReactNode — the catch-all for elements, strings, numbers, arrays, and null.',
-    code: 'interface CardProps { children: React.ReactNode }\nfunction Card({ children }: CardProps) {\n  return <div className="card">{children}</div>;\n}',
+    icon: '🎯', title: 'One Role Per Agent', titleClass: 'card-title-purple', subtitle: 'Focused Experts',
+    description:
+      'Each agent has a single responsibility and a tight prompt, mirroring a real dev team. That focus is what keeps the code quality high across a big project.',
+    code: '// PM · Architect · Planner · Coder\n// Reviewer · Executor · Debugger · Deploy',
   },
 ];
 
-const CALLBACKS = [
+const AGENTS = [
   {
-    icon: '📞', title: 'Function Props', titleClass: 'card-title-cyan', subtitle: 'Typed Callbacks',
-    description: 'A callback prop is just a function type. Declare its parameters and return so parents pass a compatible handler and get help writing it.',
-    code: 'interface ListProps {\n  onSelect: (id: number) => void;\n}\n<List onSelect={(id) => open(id)} />',
+    icon: '📋', title: 'Plan The Work', titleClass: 'card-title-cyan', subtitle: 'PM → Architect → Planner',
+    description:
+      'The PM turns the requirement into a clear spec (asking questions if needed). The Architect designs the blueprint. The Planner breaks it into a phased, dependency-ordered task list.',
+    code: '// PM        → clarify → spec\n// Architect → DB, APIs, pages, folders\n// Planner   → ordered task plan',
   },
   {
-    icon: '🖱️', title: 'Event Handler Props', titleClass: 'card-title-blue', subtitle: 'Reuse React Types',
-    description: 'For native events, reuse React’s handler types so your prop matches exactly what onClick or onChange expect.',
-    code: 'interface Props {\n  onClick: React.MouseEventHandler<HTMLButtonElement>;\n}',
+    icon: '⌨️', title: 'Build & Verify', titleClass: 'card-title-purple', subtitle: 'Coder → Reviewer → Executor',
+    description:
+      'The Coder writes one task at a time, the Reviewer checks it for bugs and security, and the Executor actually runs it in a Docker sandbox to capture real output.',
+    code: '// Coder    → write one task\n// Reviewer → bugs, security, integration\n// Executor → run it for real (Docker)',
   },
   {
-    icon: '🔗', title: 'Extend DOM Props', titleClass: 'card-title-amber', subtitle: 'ComponentProps',
-    description: 'Forward all native attributes by extending ComponentProps of an element — your Button accepts everything a real <button> does, plus your own props.',
-    code: 'type Props = React.ComponentProps<"button"> & {\n  variant: "primary" | "ghost";\n};',
-  },
-  {
-    icon: '🚫', title: 'No React.FC', titleClass: 'card-title-lime', subtitle: 'Modern Style',
-    description: 'The React.FC helper is no longer recommended (it complicates children and generics). A plain typed function is cleaner and the current best practice.',
-    code: '// prefer: function C(props: Props) {}\n// over:   const C: React.FC<Props> = ...',
-  },
-];
-
-const ADVANCED = [
-  {
-    icon: '🎫', title: 'Discriminated Props', titleClass: 'card-title-cyan', subtitle: 'Exclusive Modes',
-    description: 'A union of prop shapes models modes that can’t mix — e.g. a link that has href OR an onClick, never both. The compiler enforces it.',
-    code: 'type Props =\n  | { as: "link"; href: string }\n  | { as: "button"; onClick: () => void };',
-  },
-  {
-    icon: '🧩', title: 'Generic Components', titleClass: 'card-title-purple', subtitle: 'Typed Lists',
-    description: 'A generic component adapts to any item type — a <List<T>> that types its items and its onSelect handler from the data you pass.',
-    code: 'function List<T>({ items, render }: {\n  items: T[]; render: (item: T) => React.ReactNode;\n}) { return <>{items.map(render)}</>; }',
-  },
-  {
-    icon: '🔒', title: 'Props Are Read-Only', titleClass: 'card-title-amber', subtitle: 'Never Mutate',
-    description: 'Props flow one way and must not be mutated. TypeScript models them as read-only by contract — change state instead, never the incoming props.',
-    code: '// ❌ props.label = "x";\n// ✅ derive local state or lift state up',
-  },
-  {
-    icon: '🔜', title: 'Next: useState', titleClass: 'card-title-lime', subtitle: 'Day 23 Preview',
-    description: 'Tomorrow: typing component state with useState — inference, explicit generics, union state, and lazy initial values.',
-    link: { href: '/day-023', label: 'Go to Day 23 →' },
+    icon: '🐞', title: 'Fix & Ship', titleClass: 'card-title-amber', subtitle: 'Debugger → Deploy',
+    description:
+      'When execution fails, the Debugger reads the real error, finds the root cause and proposes a fix. Once everything passes, the Deploy agent generates the deployment configs.',
+    code: '// Debugger → real error → root cause → fix\n// Deploy   → deployment configs & steps',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'React TS Cheatsheet', titleClass: 'card-title-cyan', subtitle: 'The Community Bible',
-    description: 'The React + TypeScript cheatsheet — the definitive, practical reference for typing props, children, events, and hooks.',
-    link: { href: REACT_TS_CHEAT, label: 'Open the cheatsheet →', external: true },
+    icon: '💻', title: 'Lecture 22', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    description:
+      'The AI Dev Team vision lecture and diagram in the STRIKE GenAI repo — the roles before the design and build.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 22 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type A Component',
-    description: 'Build a component with a props interface, then pass wrong props to see the errors. Try a discriminated prop union to feel it enforce modes.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '🧭', title: 'Why It’s The Capstone', titleClass: 'card-title-purple', subtitle: 'Everything Combined',
+    description:
+      'This project uses it all — prompts, tools, RAG, memory, LangGraph and multi-agent orchestration — to build real software autonomously.',
+    footer: 'prompts + tools + RAG + agents + LangGraph',
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Typed props are the interface between every component. Get them right and whole features refactor safely.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: The Design', titleClass: 'card-title-amber', subtitle: 'Day 23 Preview',
+    description:
+      'Tomorrow — Lecture 23: the complete system design — the tech stack, the 30-node LangGraph flow, and the V2 fixes that make it robust.',
+    link: { href: '/day-023', label: 'Go to Day 23 →' },
   },
 ];
 
@@ -132,6 +103,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day022() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +133,23 @@ export default function Day022() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-021" className="day001-nav-btn day001-nav-prev">← Day 21</Link>
-          <p className="day001-datetime">TypeScript Day 22</p>
+          <p className="day001-datetime">Agentic AI Day 22</p>
           <Link to="/day-023" className="day001-nav-btn day001-nav-next">Day 23 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>React Props</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 22</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 22 <span aria-hidden="true">🧾</span></h1>
-              <p className="day001-day-theme">TYPING PROPS & CHILDREN</p>
+              <h1 className="day001-day-num">DAY 22 <span aria-hidden="true">🤖</span></h1>
+              <p className="day001-day-theme">THE AI DEV TEAM — AN AUTONOMOUS SOFTWARE TEAM</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · REACT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,12 +157,13 @@ export default function Day022() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '22%' }} /></div>
 
         <p className="day001-summary">
-          Day 22 types the interface between components: <strong>props</strong>. I described props with{' '}
-          <strong>interfaces</strong>, made them <strong>optional with defaults</strong>, typed{' '}
-          <strong>children</strong> as <code>React.ReactNode</code>, and typed <strong>function</strong> and{' '}
-          <strong>event-handler</strong> props. I extended <code>ComponentProps</code> to forward native
-          attributes, modelled exclusive modes with <strong>discriminated props</strong>, and wrote a{' '}
-          <strong>generic</strong> list component — all without the outdated <code>React.FC</code>.
+          Lecture 22 — the big one: an <strong>autonomous AI software team</strong>, like <strong>Devin</strong>, that
+          takes a single requirement and builds the app. <strong>Eight specialized agents</strong> —{' '}
+          <strong>PM, Architect, Planner, Coder, Reviewer, Executor, Debugger, Deploy</strong> — each own one job and
+          hand work down the pipeline: <strong>understand → plan → code → review → run → debug → deploy</strong>.
+          Code runs for real in a <strong>Docker sandbox</strong>, real errors drive the Debugger, and a{' '}
+          <strong>human stays in the loop</strong> for clarifications and approvals.{' '}
+          <em>Tomorrow: the full design. (Diagram-based lecture.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -205,13 +178,12 @@ export default function Day022() {
           </ul>
         </section>
 
-        <CardSection icon="🧾" title="PROPS BASICS" cards={BASICS} columns={3} />
-        <CardSection icon="📞" title="CALLBACKS & DOM PROPS" cards={CALLBACKS} columns={4} />
-        <CardSection icon="🎫" title="ADVANCED PROPS" cards={ADVANCED} columns={4} />
+        <CardSection icon="🤖" title="THE VISION" cards={VISION} columns={2} />
+        <CardSection icon="👥" title="THE EIGHT AGENTS" cards={AGENTS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#MultiAgent</span><span>#AIDevTeam</span><span>#CoderArmy</span>
         </footer>
       </div>
     </div>

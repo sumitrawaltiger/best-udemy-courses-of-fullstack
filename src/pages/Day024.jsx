@@ -2,101 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const REACT_EFFECT = 'https://react.dev/reference/react/useEffect';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture24';
 
 const LEARNT_TODAY = [
-  { title: 'useEffect basics', text: 'run side effects after render — subscriptions, timers, data fetching' },
-  { title: 'Dependency array', text: 'the deps control when the effect re-runs — [] means once on mount' },
-  { title: 'Cleanup function', text: 'return a function to tear down subscriptions and timers' },
-  { title: 'Typed cleanup', text: 'the return type is `void | (() => void)` — TS keeps it honest' },
-  { title: 'Async in effects', text: 'you can’t make the effect async directly — call an inner async function' },
-  { title: 'useRef for DOM', text: 'useRef<HTMLInputElement>(null) — a typed handle to an element' },
-  { title: 'useRef for values', text: 'a mutable box that survives renders without causing re-renders' },
-  { title: 'ref null check', text: 'ref.current can be null until mounted — narrow before using' },
-  { title: 'AbortController', text: 'cancel fetches in cleanup to avoid setting state after unmount' },
-  { title: 'Effects are last resort', text: 'prefer derived values and event handlers over effects when possible' },
+  { title: 'State is the whole contract', text: 'in LangGraph, nodes communicate ONLY through a shared state — Node A writes, Node B reads' },
+  { title: 'Annotation.Root', text: 'the AgentState defines every field up front so checkpoints stay compatible as the graph grows' },
+  { title: 'Reducers', text: 'simple fields use last-write-wins; accumulating arrays use a merge reducer to combine old + new' },
+  { title: 'PM Agent', text: 'turns a raw requirement into a clear spec, asking clarifying questions via a humanInput node' },
+  { title: 'Architect in 5 steps', text: 'entities → DB schema → API endpoints → frontend pages → folder structure' },
+  { title: 'blueprintValidator', text: 'cross-checks the whole blueprint before planning — a router sends it back if it fails' },
+  { title: 'Sandbox + health check', text: 'spin up a Docker sandbox, then verify DB, node_modules and ports before building' },
+  { title: 'Checkpoint everything', text: 'MemorySaver persists state after each node, so a crash resumes instead of restarting' },
 ];
 
-const EFFECTS = [
+const STATE = [
   {
-    icon: '🌀', title: 'useEffect', titleClass: 'card-title-cyan', subtitle: 'Side Effects',
-    description: 'useEffect runs code after the render is painted — the place for subscriptions, timers, and syncing with external systems. The deps array controls re-runs.',
-    code: 'useEffect(() => {\n  document.title = `Count: ${count}`;\n}, [count]);',
+    icon: '📦', title: 'The Shared State', titleClass: 'card-title-cyan', subtitle: 'Annotation.Root',
+    description:
+      'Define the full state shape once with Annotation.Root. Each field notes which node owns it. Nodes never call each other — they only read and write this object.',
+    code: 'import { Annotation } from "@langchain/langgraph";\n\nexport const AgentState = Annotation.Root({\n  userRequirement: Annotation({ reducer: (_, y) => y ?? "", default: () => "" }),\n  spec: Annotation({ reducer: (_, y) => y, default: () => null }),\n  // ...all 30 nodes’ fields\n});',
   },
   {
-    icon: '🧹', title: 'Cleanup', titleClass: 'card-title-purple', subtitle: 'Tear Down',
-    description: 'Return a cleanup function to undo the effect — remove listeners, clear intervals. React runs it before the next effect and on unmount.',
-    code: 'useEffect(() => {\n  const id = setInterval(tick, 1000);\n  return () => clearInterval(id);\n}, []);',
-  },
-  {
-    icon: '⚡', title: 'Async Effects', titleClass: 'card-title-amber', subtitle: 'The Right Pattern',
-    description: 'An effect can’t be async (it must return cleanup or nothing). Define an async function inside and call it — clean and correctly typed.',
-    code: 'useEffect(() => {\n  (async () => { setData(await getData()); })();\n}, []);',
+    icon: '➕', title: 'Reducers', titleClass: 'card-title-purple', subtitle: 'How Updates Merge',
+    description:
+      'A reducer decides how a node’s output updates the state. Simple values overwrite (last write wins); lists that grow use a merge reducer so nothing is lost.',
+    code: '// simple field:  reducer: (_, y) => y        (overwrite)\n// growing list:  reducer: (x, y) => [...x, ...y] (merge)',
   },
 ];
 
-const REFS = [
+const PLAN = [
   {
-    icon: '🎯', title: 'DOM Refs', titleClass: 'card-title-cyan', subtitle: 'Typed Element Handle',
-    description: 'useRef<HTMLInputElement>(null) gives a typed handle to a DOM node. Attach it via ref and TypeScript knows the element’s exact API.',
-    code: 'const inputRef = useRef<HTMLInputElement>(null);\n<input ref={inputRef} />;\ninputRef.current?.focus();',
+    icon: '📋', title: 'PM → Architect → Planner', titleClass: 'card-title-cyan', subtitle: 'Design The Work',
+    description:
+      'The PM clarifies the requirement into a spec (looping through humanInput for answers). The Architect designs the blueprint in five steps. The Planner turns it into an ordered task list.',
+    code: '// pmAgent → spec (needs_clarification → humanInput)\n// architectStep1..5 → blueprint\n// plannerAgent → phased, dependency-ordered tasks',
   },
   {
-    icon: '🚧', title: 'Null Until Mounted', titleClass: 'card-title-blue', subtitle: 'Narrow current',
-    description: 'ref.current is null before the element mounts. Optional chaining or a guard makes access safe — TypeScript forces you to consider it.',
-    code: 'if (inputRef.current) inputRef.current.value = "hi";',
+    icon: '✅', title: 'Validate, Then Proceed', titleClass: 'card-title-purple', subtitle: 'A Router',
+    description:
+      'blueprintValidator checks the design and a router decides the next edge — proceed to planning if valid, or loop back to the Architect to fix it. Conditional edges in action.',
+    code: 'graph.addConditionalEdges("blueprintValidator", blueprintValidatorRouter, {\n  valid: "plannerAgent",\n  invalid: "architectStep1", // redesign\n});',
   },
   {
-    icon: '📦', title: 'Mutable Value Refs', titleClass: 'card-title-amber', subtitle: 'Survive Renders',
-    description: 'A ref is also a mutable box that persists across renders without triggering one — perfect for timer ids, previous values, or instance data.',
-    code: 'const renders = useRef(0);\nrenders.current++; // no re-render',
-  },
-  {
-    icon: '🛑', title: 'AbortController', titleClass: 'card-title-lime', subtitle: 'Cancel In Cleanup',
-    description: 'Abort in-flight fetches during cleanup so you never call setState on an unmounted component — a common, well-typed pattern.',
-    code: 'useEffect(() => {\n  const c = new AbortController();\n  fetch(url, { signal: c.signal });\n  return () => c.abort();\n}, [url]);',
-  },
-];
-
-const PRACTICE = [
-  {
-    icon: '📋', title: 'Get Deps Right', titleClass: 'card-title-cyan', subtitle: 'exhaustive-deps',
-    description: 'List every value the effect uses in the deps array. The react-hooks/exhaustive-deps lint rule flags missing ones so effects stay correct.',
-    code: 'useEffect(() => { load(id); }, [id]); // include id',
-  },
-  {
-    icon: '🧠', title: 'Effects Are Last Resort', titleClass: 'card-title-purple', subtitle: 'Prefer Alternatives',
-    description: 'Not everything belongs in an effect. Derive values during render and respond to input in event handlers; reserve effects for external systems.',
-    code: '// no effect needed:\nconst full = `${first} ${last}`;',
-  },
-  {
-    icon: '🎛️', title: 'forwardRef Types', titleClass: 'card-title-amber', subtitle: 'Expose A Ref',
-    description: 'When a component needs to forward a ref to its inner element, forwardRef carries the element type through so callers get the right ref.',
-    code: 'const Input = forwardRef<HTMLInputElement, Props>((p, ref) => (\n  <input ref={ref} {...p} />\n));',
-  },
-  {
-    icon: '🔜', title: 'Next: Events & Forms', titleClass: 'card-title-lime', subtitle: 'Day 25 Preview',
-    description: 'Tomorrow: typing events and forms — onChange/onSubmit, controlled inputs, and reading typed values from form elements.',
-    link: { href: '/day-025', label: 'Go to Day 25 →' },
+    icon: '🐳', title: 'Sandbox & Health Check', titleClass: 'card-title-amber', subtitle: 'Ready To Build',
+    description:
+      'setupSandbox creates a Docker environment; sandboxHealthCheck then verifies the database, node_modules and ports are actually up before any code is written into it.',
+    code: '// setupSandbox → Docker sandbox\n// sandboxHealthCheck → verify DB, deps, ports\n// (router: healthy → build · unhealthy → retry)',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'useEffect', titleClass: 'card-title-cyan', subtitle: 'react.dev',
-    description: 'The official reference for useEffect — dependencies, cleanup, and the mental model for when an effect is (and isn’t) the right tool.',
-    link: { href: REACT_EFFECT, label: 'Read the useEffect docs →', external: true },
+    icon: '💻', title: 'Lecture 24', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    description:
+      'The ai-dev-team phase-3 project — the state, graph, PM/Architect/Planner agents, blueprint validator and sandbox nodes.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 24 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type A Ref',
-    description: 'Declare useRef with and without an element type and see how current is typed. Then try accessing it without a null check.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '🧩', title: 'It’s A LangGraph', titleClass: 'card-title-purple', subtitle: 'Everything Applies',
+    description:
+      'This uses Day 20’s LangGraph directly — state, nodes, conditional edges, routers and MemorySaver checkpoints — now for a real multi-agent build.',
+    footer: 'state · nodes · routers · checkpoints',
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Effects and refs connect React to timers, the DOM, and data. Getting their types right prevents whole classes of runtime bugs.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: The Full Team', titleClass: 'card-title-amber', subtitle: 'Day 25 Preview',
+    description:
+      'Tomorrow completes it — Lecture 25: the Coder, Reviewer, Executor and Debugger agents, the dev loop, snapshots/rollback and escalation.',
+    link: { href: '/day-025', label: 'Go to Day 25 →' },
   },
 ];
 
@@ -132,6 +104,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day024() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +134,23 @@ export default function Day024() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-023" className="day001-nav-btn day001-nav-prev">← Day 23</Link>
-          <p className="day001-datetime">TypeScript Day 24</p>
+          <p className="day001-datetime">Agentic AI Day 24</p>
           <Link to="/day-025" className="day001-nav-btn day001-nav-next">Day 25 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Effects · Refs</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 24</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 24 <span aria-hidden="true">🌀</span></h1>
-              <p className="day001-day-theme">useEffect & TYPED REFS</p>
+              <h1 className="day001-day-num">DAY 24 <span aria-hidden="true">🏗️</span></h1>
+              <p className="day001-day-theme">AI DEV TEAM — PLANNING AGENTS &amp; SANDBOX</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · REACT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,12 +158,14 @@ export default function Day024() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '24%' }} /></div>
 
         <p className="day001-summary">
-          Day 24 handles side effects and refs. I used <code>useEffect</code> with the right{' '}
-          <strong>dependency array</strong> and <strong>cleanup</strong>, and the inner-async-function pattern for
-          fetching. I typed <code>useRef&lt;HTMLInputElement&gt;</code> for DOM handles (narrowing the possibly-
-          <code>null</code> <code>current</code>), used refs as <strong>mutable boxes</strong> that survive renders,
-          and cancelled requests with <strong>AbortController</strong> in cleanup — while remembering effects are a
-          last resort.
+          Lecture 24 — the build begins. The heart of it is the <strong>LangGraph state</strong>: defined once with{' '}
+          <code>Annotation.Root</code>, it is the <strong>only</strong> way nodes talk, with{' '}
+          <strong>reducers</strong> that overwrite simple fields and merge growing lists. The{' '}
+          <strong>planning agents</strong> run — <strong>PM</strong> (spec, via humanInput),{' '}
+          <strong>Architect</strong> (5-step blueprint), <strong>blueprintValidator</strong> (with a router), and{' '}
+          <strong>Planner</strong> — then a <strong>Docker sandbox</strong> is set up and{' '}
+          <strong>health-checked</strong>. Every node <strong>checkpoints</strong> so a crash resumes.{' '}
+          <em>Next: the coding agents.</em>
         </p>
 
         <section className="day001-learnt">
@@ -205,13 +180,12 @@ export default function Day024() {
           </ul>
         </section>
 
-        <CardSection icon="🌀" title="useEffect" cards={EFFECTS} columns={3} />
-        <CardSection icon="🎯" title="TYPED REFS" cards={REFS} columns={4} />
-        <CardSection icon="🧠" title="GOOD PRACTICE" cards={PRACTICE} columns={4} />
+        <CardSection icon="📦" title="THE LANGGRAPH STATE" cards={STATE} columns={2} />
+        <CardSection icon="📋" title="PLANNING & SANDBOX" cards={PLAN} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#Hooks</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AIDevTeam</span><span>#LangGraph</span><span>#CoderArmy</span>
         </footer>
       </div>
     </div>
