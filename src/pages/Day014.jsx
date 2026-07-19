@@ -2,101 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_RELEASE = 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture14';
+const NOTION = 'https://www.notion.so/2f1a9af81c98803fb2a9ce500e13ce71';
 
 const LEARNT_TODAY = [
-  { title: 'Custom type guards', text: 'a function returning `x is T` teaches TS how to narrow your own shapes' },
-  { title: 'Assertion functions', text: '`asserts x is T` throws if wrong and narrows for the rest of the scope' },
-  { title: 'asserts condition', text: '`function assert(c): asserts c` narrows after a runtime check' },
-  { title: 'satisfies operator', text: 'check a value against a type WITHOUT widening it — keep the precise type' },
-  { title: 'as const', text: 'freeze a literal into its narrowest readonly type — great with satisfies' },
-  { title: 'Guard reuse', text: 'name guards once (isUser, isError) and reuse across the codebase' },
-  { title: 'unknown at the boundary', text: 'accept unknown from JSON/APIs, then guard it into a safe type' },
-  { title: 'Guard vs assertion', text: 'a guard returns boolean to branch; an assertion throws to guarantee' },
-  { title: 'Retire risky casts', text: 'guards & satisfies replace most `as` casts with checked narrowing' },
-  { title: 'satisfies vs :', text: 'an annotation widens the value; satisfies checks but keeps it precise' },
+  { title: 'Follow-ups break retrieval', text: 'a question like "and its price?" has no meaning on its own, so it retrieves the wrong chunks' },
+  { title: 'The missing context', text: 'the meaning of a follow-up lives in the previous turns, not in the words the user just typed' },
+  { title: 'Query rewriting', text: 'before retrieving, an LLM rewrites the follow-up into a standalone, self-contained question' },
+  { title: 'Intent, then search', text: 'the model uses the chat history to resolve pronouns and references into an explicit query' },
+  { title: 'Then RAG as usual', text: 'the rewritten question embeds and retrieves correctly, then answers from the retrieved context' },
+  { title: 'RAG + memory', text: 'query rewriting plus conversation history turns basic RAG into a real document chatbot' },
+  { title: 'Small step, big gain', text: 'one extra LLM call fixes a whole class of broken multi-turn retrievals' },
 ];
 
-const GUARDS = [
+const PROBLEM = [
   {
-    icon: '🛡️', title: 'Custom Type Guards', titleClass: 'card-title-cyan', subtitle: 'x is T',
-    description: 'A predicate function with an `is` return type tells TypeScript how to narrow a value. Reuse it anywhere you need to prove a shape at runtime.',
-    code: 'function isUser(v: unknown): v is { name: string } {\n  return typeof v === "object" && v !== null && "name" in v;\n}\nif (isUser(data)) data.name; // ✅ narrowed',
+    icon: '🧩', title: 'The Follow-Up Problem', titleClass: 'card-title-cyan', subtitle: 'Context-Less Queries',
+    description:
+      'Yesterday’s RAG answered one-shot questions well. But real chats have follow-ups — "what about that?", "and its price?" — whose meaning depends entirely on the earlier turns.',
+    code: '// User: "Tell me about the useEffect hook"\n// User: "when does it run?"  ← run WHAT?\n// embedding "when does it run?" retrieves nothing useful',
   },
   {
-    icon: '🧯', title: 'Assertion Functions', titleClass: 'card-title-purple', subtitle: 'asserts x is T',
-    description: 'An assertion function throws when the check fails and narrows the value afterward — a typed invariant() that guarantees the shape from that point on.',
-    code: 'function assertUser(v: unknown): asserts v is { name: string } {\n  if (!isUser(v)) throw new Error("not a user");\n}\nassertUser(data);\ndata.name; // ✅ narrowed after the call',
-  },
-  {
-    icon: '❗', title: 'asserts condition', titleClass: 'card-title-amber', subtitle: 'Runtime Invariants',
-    description: 'A plain `asserts c` narrows based on a boolean condition — after assert(x !== null), TypeScript knows x is non-null for the rest of the block.',
-    code: 'function assert(c: unknown): asserts c {\n  if (!c) throw new Error("assertion failed");\n}\nassert(user);\nuser.name; // user is non-null here',
+    icon: '🕰️', title: 'Meaning Lives In History', titleClass: 'card-title-purple', subtitle: 'Not In The Words',
+    description:
+      'The vector search only sees the latest message. Without the conversation, "it" and "that" are meaningless, so the retrieved chunks are wrong and the answer is bad.',
+    code: '// retrieval sees only: "when does it run?"\n// it needs: "when does the useEffect hook run?"',
   },
 ];
 
-const SATISFIES = [
+const FIX = [
   {
-    icon: '✅', title: 'satisfies', titleClass: 'card-title-cyan', subtitle: 'Check Without Widening',
-    description: 'satisfies validates a value against a type but keeps the precise inferred type — you get error-checking AND exact autocomplete, unlike a plain annotation.',
-    code: 'const config = {\n  port: 3000,\n  host: "localhost",\n} satisfies Record<string, string | number>;\nconfig.port.toFixed(); // still number ✅',
+    icon: '✍️', title: 'Rewrite The Query', titleClass: 'card-title-cyan', subtitle: 'Standalone Question',
+    description:
+      'Add a step before retrieval: give the model the chat history and the new message, and ask it to produce a single, self-contained question with all references resolved.',
+    code: '// LLM prompt: "Given the chat history and the follow-up,\n// rewrite it as a standalone question."\n// "when does it run?" → "When does the useEffect hook run?"',
   },
   {
-    icon: '🧊', title: 'as const', titleClass: 'card-title-blue', subtitle: 'Narrowest Literal',
-    description: 'as const makes a value deeply readonly and infers the tightest literal types — the perfect partner for satisfies and for building typed constant maps.',
-    code: 'const ROUTES = ["/", "/about"] as const;\ntype Route = typeof ROUTES[number]; // "/" | "/about"',
+    icon: '🔎', title: 'Then Retrieve', titleClass: 'card-title-purple', subtitle: 'Correct Chunks',
+    description:
+      'Embed the rewritten, explicit question and run the normal RAG retrieval. Now the vector search finds the right chunks because the query actually contains the topic.',
+    code: '// standalone question → embed → Pinecone top-K\n// → the RIGHT chunks come back',
   },
   {
-    icon: '🆚', title: 'satisfies vs :', titleClass: 'card-title-amber', subtitle: 'Why It’s Better',
-    description: 'A `: Type` annotation widens the value to that type. satisfies checks conformance but leaves the value at its precise inferred type — best of both worlds.',
-    code: 'const a: Record<string, number> = { x: 1 }; // keys widened\nconst b = { x: 1 } satisfies Record<string, number>; // keys kept',
-  },
-  {
-    icon: '🌐', title: 'unknown At Boundaries', titleClass: 'card-title-lime', subtitle: 'Guard External Data',
-    description: 'Type API and JSON input as unknown, then guard it into a real type. This is the safe pattern for everything that crosses your app’s edge.',
-    code: 'const raw: unknown = await res.json();\nif (isUser(raw)) use(raw);',
-  },
-];
-
-const APPLY = [
-  {
-    icon: '♻️', title: 'Reusable Guards', titleClass: 'card-title-cyan', subtitle: 'A Small Library',
-    description: 'Collect guards like isString, isUser, and isApiError in one module. They become the trusted gates through which untyped data becomes typed.',
-    code: 'export const isError = (e: unknown): e is Error =>\n  e instanceof Error;',
-  },
-  {
-    icon: '🎯', title: 'Retire Risky Casts', titleClass: 'card-title-purple', subtitle: 'Guards Over as',
-    description: 'Most `as` casts hide potential bugs. Replacing them with guards or satisfies keeps the checking on — safer code with the same convenience.',
-    code: '// risky:  const u = data as User;\n// safe:   if (isUser(data)) { const u = data; }',
-  },
-  {
-    icon: '🔗', title: 'Guards + Unions', titleClass: 'card-title-amber', subtitle: 'Bullet-Proof Handling',
-    description: 'Pair guards with the discriminated unions from Day 9 to handle every variant of a value safely — and let never catch any case you forget.',
-    code: 'if (isCircle(shape)) return area(shape);',
-  },
-  {
-    icon: '🔜', title: 'Next: Async & fetch', titleClass: 'card-title-lime', subtitle: 'Day 15 Preview',
-    description: 'Tomorrow: async TypeScript — Promises, await, and a typed fetch wrapper so API data is safe from the first line.',
-    link: { href: '/day-015', label: 'Go to Day 15 →' },
+    icon: '💬', title: 'Conversational RAG', titleClass: 'card-title-amber', subtitle: 'RAG + Memory',
+    description:
+      'Combine query rewriting with the running conversation and you get a document assistant that holds a real, multi-turn discussion grounded in your data.',
+    code: '// history + follow-up → rewrite → retrieve\n// → augment → answer → append to history → repeat',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'satisfies (4.9)', titleClass: 'card-title-cyan', subtitle: 'Release Notes',
-    description: 'The satisfies operator’s introduction, with the exact examples that show why it beats a plain annotation for config objects.',
-    link: { href: TS_RELEASE, label: 'Read the 4.9 notes →', external: true },
+    icon: '📝', title: 'Lecture 14 Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    description:
+      'Rohit’s notes for this lecture on improving the RAG system for real, multi-turn conversations.',
+    link: { href: NOTION, label: 'Open Lecture 14 notes →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Guard It Live',
-    description: 'Write a guard, feed it unknown data, and watch the type narrow inside the if. Then compare `: Type` vs satisfies on the same object.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '💻', title: 'Lecture 14', titleClass: 'card-title-purple', subtitle: 'GitHub',
+    description:
+      'The lecture folder and diagram in the STRIKE GenAI repo — improving retrieval for conversational RAG.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 14 →', external: true },
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Guards and satisfies are how real apps stay safe at the edges — API responses, forms, and config. You’ll use them all year.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: Retrieval Quality', titleClass: 'card-title-amber', subtitle: 'Day 15 Preview',
+    description:
+      'Tomorrow — Lecture 15: making retrieval genuinely good with smart chunking, top-K tuning, metadata filters and re-ranking.',
+    link: { href: '/day-015', label: 'Go to Day 15 →' },
   },
 ];
 
@@ -132,6 +104,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day014() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +134,23 @@ export default function Day014() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-013" className="day001-nav-btn day001-nav-prev">← Day 13</Link>
-          <p className="day001-datetime">TypeScript Day 14</p>
+          <p className="day001-datetime">Agentic AI Day 14</p>
           <Link to="/day-015" className="day001-nav-btn day001-nav-next">Day 15 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Guards</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 14</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 14 <span aria-hidden="true">🛡️</span></h1>
-              <p className="day001-day-theme">GUARDS, ASSERTIONS & satisfies</p>
+              <h1 className="day001-day-num">DAY 14 <span aria-hidden="true">💬</span></h1>
+              <p className="day001-day-theme">CONVERSATIONAL RAG — QUERY REWRITING</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · TYPESCRIPT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,11 +158,13 @@ export default function Day014() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '14%' }} /></div>
 
         <p className="day001-summary">
-          Day 14 makes untyped data safe. I wrote custom <strong>type guards</strong> (<code>x is T</code>) and{' '}
-          <strong>assertion functions</strong> (<code>asserts x is T</code>) to narrow my own shapes, and used{' '}
-          the <strong>satisfies</strong> operator with <code>as const</code> to validate values without losing their
-          precise inferred types. Together these replace most risky <code>as</code> casts — the safe way to turn{' '}
-          <code>unknown</code> API and JSON data into trustworthy types.
+          Lecture 14 makes RAG <strong>conversational</strong>. Basic RAG breaks on <strong>follow-up questions</strong>{' '}
+          — "and its price?" or "when does it run?" mean nothing on their own, so retrieval fails. The fix is{' '}
+          <strong>query rewriting</strong>: before searching, an LLM uses the <strong>chat history</strong> to turn
+          the follow-up into a <strong>standalone question</strong> with every reference resolved. That explicit
+          query then embeds and retrieves the right chunks, and RAG proceeds as normal. One small extra step —{' '}
+          <strong>RAG + memory</strong> — and it becomes a real document chatbot.{' '}
+          <em>(This lecture is diagram-based; content reflects the standard technique.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +179,12 @@ export default function Day014() {
           </ul>
         </section>
 
-        <CardSection icon="🛡️" title="GUARDS & ASSERTIONS" cards={GUARDS} columns={3} />
-        <CardSection icon="✅" title="satisfies & as const" cards={SATISFIES} columns={4} />
-        <CardSection icon="🛠️" title="APPLYING THEM" cards={APPLY} columns={4} />
+        <CardSection icon="🧩" title="THE FOLLOW-UP PROBLEM" cards={PROBLEM} columns={2} />
+        <CardSection icon="✍️" title="QUERY REWRITING" cards={FIX} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#TypeGuards</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#CoderArmy</span><span>#LangChain</span>
         </footer>
       </div>
     </div>

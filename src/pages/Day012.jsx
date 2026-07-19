@@ -2,101 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const MDN_DOM = 'https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture12and13';
+const NOTION = 'https://www.notion.so/RAG-System-2e8a9af81c9881eab86dfe8bf32fcfb4';
+const LANGCHAIN = 'https://js.langchain.com/docs/introduction/';
 
 const LEARNT_TODAY = [
-  { title: 'lib "DOM"', text: 'the tsconfig lib that makes document, window, and every element type available' },
-  { title: 'DOM types', text: 'document, window, elements, and events are all fully typed out of the box' },
-  { title: 'Typed elements', text: 'querySelector<HTMLInputElement> returns the exact element type' },
-  { title: 'Element vs specific', text: 'a plain Element lacks .value — pass the specific type to get it' },
-  { title: 'Possibly null', text: 'querySelector can return null — narrow before using the element' },
-  { title: 'Typed events', text: 'addEventListener gives a typed event — MouseEvent, KeyboardEvent, and more' },
-  { title: 'currentTarget', text: 'typed to the element the handler is bound to — safer than target' },
-  { title: 'Non-null assertion', text: 'the `!` postfix says "this is not null" — use only when you truly know' },
-  { title: 'classList & dataset', text: 'typed helpers for classes and data-* attributes' },
-  { title: 'Forms', text: 'HTMLFormElement and HTMLInputElement expose exactly the right properties' },
+  { title: 'Meet LangChain.js', text: 'a framework that wires the RAG steps — loaders, splitters, embeddings, vector stores — together cleanly' },
+  { title: 'Load documents', text: 'PDFLoader reads a PDF file into an array of document objects to process' },
+  { title: 'Chunk the text', text: 'RecursiveCharacterTextSplitter breaks documents into pieces (chunkSize 1000, chunkOverlap 200)' },
+  { title: 'Why overlap', text: 'overlapping chunks keep context from spilling across boundaries so no idea is cut in half' },
+  { title: 'Embed each chunk', text: 'GoogleGenerativeAIEmbeddings (text-embedding-004) turns every chunk into a vector' },
+  { title: 'Store in Pinecone', text: 'PineconeStore.fromDocuments embeds and upserts all chunks into a Pinecone index in one step' },
+  { title: 'Runs once', text: 'indexing is a one-time prep — do it when documents are added or changed, not per question' },
 ];
 
-const BASICS = [
+const LANGCHAIN_CARD = [
   {
-    icon: '📚', title: 'lib "DOM"', titleClass: 'card-title-cyan', subtitle: 'Turn On The Browser',
-    description: 'The lib option chooses which built-in type declarations load. Include "DOM" and TypeScript knows the whole browser API — document, window, and every element.',
-    code: '"lib": ["ES2022", "DOM", "DOM.Iterable"]',
+    icon: '🔗', title: 'Enter LangChain.js', titleClass: 'card-title-cyan', subtitle: 'The RAG Framework',
+    description:
+      'Instead of hand-writing every step, LangChain.js gives ready-made pieces — document loaders, text splitters, embedding wrappers and vector-store adapters — that snap together.',
+    code: "import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';\nimport { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';\nimport { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';\nimport { PineconeStore } from '@langchain/pinecone';",
   },
   {
-    icon: '🌐', title: 'DOM Types', titleClass: 'card-title-purple', subtitle: 'document & window',
-    description: 'With the DOM lib on, browser globals are fully typed. You get autocomplete for every property and method, and mistakes are caught immediately.',
-    code: 'const title = document.title; // string\nwindow.addEventListener("load", () => {});',
-  },
-  {
-    icon: '🎯', title: 'Typed Elements', titleClass: 'card-title-amber', subtitle: 'The Right Element Type',
-    description: 'querySelector returns a general Element by default — which has no .value. Pass the specific type so you get the properties that element actually has.',
-    code: 'const input = document.querySelector<HTMLInputElement>("#name");\ninput?.value; // string, only exists on inputs',
+    icon: '📄', title: 'Load The PDF', titleClass: 'card-title-purple', subtitle: 'PDFLoader',
+    description:
+      'Point a loader at a file and it returns document objects with the text and metadata. LangChain has loaders for PDFs, web pages, Notion, and more.',
+    code: "const pdfLoader = new PDFLoader('./Node.pdf');\nconst rawDocs = await pdfLoader.load();\n// rawDocs = [{ pageContent, metadata }, ...]",
   },
 ];
 
-const SAFETY = [
+const CHUNK = [
   {
-    icon: '🚧', title: 'Possibly null', titleClass: 'card-title-cyan', subtitle: 'Narrow First',
-    description: 'querySelector returns T | null because the element might not exist. TypeScript forces you to handle that — optional chaining or a guard.',
-    code: 'const el = document.getElementById("app");\nif (el) el.textContent = "Hi";\n// or: el?.textContent',
+    icon: '✂️', title: 'Chunk It', titleClass: 'card-title-cyan', subtitle: 'Size + Overlap',
+    description:
+      'A whole document is too big to embed usefully. Split it into ~1000-character chunks with 200 characters of overlap so context carries across the cuts.',
+    code: "const splitter = new RecursiveCharacterTextSplitter({\n  chunkSize: 1000,\n  chunkOverlap: 200,\n});\nconst chunks = await splitter.splitDocuments(rawDocs);\n// e.g. 266 chunks → 266 vectors",
   },
   {
-    icon: '❗', title: 'Non-null Assertion', titleClass: 'card-title-blue', subtitle: 'The ! Operator',
-    description: 'When you’re certain an element exists, a trailing ! removes null from its type. Use sparingly — a wrong ! reintroduces the crash TS was preventing.',
-    code: 'const root = document.getElementById("app")!;\nroot.innerHTML = "Hi";',
+    icon: '🔢', title: 'Embed Each Chunk', titleClass: 'card-title-purple', subtitle: 'text-embedding-004',
+    description:
+      'Configure the Gemini embedding model. Every chunk becomes a vector that captures its meaning — the same embeddings idea from Day 8, now applied to your documents.',
+    code: "const embeddings = new GoogleGenerativeAIEmbeddings({\n  apiKey: process.env.GEMINI_API_KEY,\n  model: 'text-embedding-004',\n});",
   },
   {
-    icon: '🖱️', title: 'Typed Events', titleClass: 'card-title-amber', subtitle: 'Know The Event',
-    description: 'Event listeners hand you a typed event object. TypeScript knows a "click" gives a MouseEvent and "keydown" a KeyboardEvent — with all their properties.',
-    code: 'btn.addEventListener("click", (e: MouseEvent) => {\n  console.log(e.clientX);\n});',
-  },
-  {
-    icon: '🎪', title: 'currentTarget', titleClass: 'card-title-lime', subtitle: 'Safer Than target',
-    description: 'currentTarget is typed to the element the handler is attached to; target is where the event originated and is broader. Prefer currentTarget.',
-    code: 'input.addEventListener("input", (e) => {\n  console.log(e.currentTarget.value);\n});',
-  },
-];
-
-const PRACTICAL = [
-  {
-    icon: '📝', title: 'Forms & Inputs', titleClass: 'card-title-cyan', subtitle: 'Exactly The Right Props',
-    description: 'HTMLFormElement, HTMLInputElement, and HTMLSelectElement each expose their real properties — value, checked, and the form’s elements collection.',
-    code: 'const form = document.querySelector<HTMLFormElement>("#f")!;\nform.addEventListener("submit", (e) => e.preventDefault());',
-  },
-  {
-    icon: '🎨', title: 'classList & dataset', titleClass: 'card-title-purple', subtitle: 'Typed Helpers',
-    description: 'classList gives typed add/remove/toggle, and dataset exposes data-* attributes as a typed record — no string fiddling required.',
-    code: 'el.classList.toggle("dark");\nconst id = el.dataset.userId; // string | undefined',
-  },
-  {
-    icon: '🧾', title: 'Creating Elements', titleClass: 'card-title-amber', subtitle: 'Inferred By Tag',
-    description: 'createElement infers the element type from the tag name — createElement("input") gives an HTMLInputElement, with .value available immediately.',
-    code: 'const input = document.createElement("input");\ninput.value = "typed!"; // ✅ knows it’s an input',
-  },
-  {
-    icon: '🔜', title: 'Next: Advanced Types', titleClass: 'card-title-lime', subtitle: 'Day 13 Preview',
-    description: 'Tomorrow: advanced types — intersections, mapped types, conditional types with infer, and template literal types.',
-    link: { href: '/day-013', label: 'Go to Day 13 →' },
+    icon: '📦', title: 'Store In Pinecone', titleClass: 'card-title-amber', subtitle: 'One Step',
+    description:
+      'PineconeStore.fromDocuments does the whole thing — embed every chunk and upsert it into your Pinecone index. After this, your PDF is a searchable knowledge base.',
+    code: "const pinecone = new Pinecone();\nconst index = pinecone.Index(process.env.PINECONE_INDEX_NAME);\n\nawait PineconeStore.fromDocuments(chunks, embeddings, {\n  pineconeIndex: index,\n  maxConcurrency: 5,\n});",
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'The DOM (MDN)', titleClass: 'card-title-cyan', subtitle: 'The Reference',
-    description: 'MDN’s Document Object Model reference — the elements, events, and APIs that TypeScript’s DOM lib types for you.',
-    link: { href: MDN_DOM, label: 'Read the DOM docs →', external: true },
+    icon: '📝', title: 'RAG System Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    description:
+      'Rohit’s RAG System write-up — the full indexing and querying pipeline with LangChain.js and Pinecone.',
+    link: { href: NOTION, label: 'Open the RAG notes →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type An Element',
-    description: 'Call querySelector with and without a type argument and hover the result — the difference between Element and HTMLInputElement is instantly clear.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '💻', title: 'Lecture 12–13 Code', titleClass: 'card-title-purple', subtitle: 'indexing.js',
+    description:
+      'The runnable indexing.js (and query.js for tomorrow) in the STRIKE GenAI repo — the complete document RAG build.',
+    link: { href: GH_LECTURE, label: 'Open the code →', external: true },
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'React abstracts the DOM, but its event and element types are these same ones — this knowledge carries straight into typed React.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: Querying', titleClass: 'card-title-amber', subtitle: 'Day 13 Preview',
+    description:
+      'Tomorrow is the other half — Lecture 13: embed the question, retrieve the top chunks from Pinecone, and generate a grounded answer with a LangChain chain.',
+    link: { href: '/day-013', label: 'Go to Day 13 →' },
   },
 ];
 
@@ -132,6 +105,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day012() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +135,23 @@ export default function Day012() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-011" className="day001-nav-btn day001-nav-prev">← Day 11</Link>
-          <p className="day001-datetime">TypeScript Day 12</p>
+          <p className="day001-datetime">Agentic AI Day 12</p>
           <Link to="/day-013" className="day001-nav-btn day001-nav-next">Day 13 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>DOM</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 12</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 12 <span aria-hidden="true">🌐</span></h1>
-              <p className="day001-day-theme">TYPING THE DOM</p>
+              <h1 className="day001-day-num">DAY 12 <span aria-hidden="true">🗂️</span></h1>
+              <p className="day001-day-theme">RAG PART 1 — INDEXING YOUR DOCUMENTS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · TYPESCRIPT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,12 +159,13 @@ export default function Day012() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '12%' }} /></div>
 
         <p className="day001-summary">
-          Day 12 wires TypeScript to the browser. With <code>lib: ["DOM"]</code> from my tsconfig (Episode 2),
-          <code>document</code> and <code>window</code> are fully typed. I got exact element types from{' '}
-          <code>querySelector&lt;HTMLInputElement&gt;</code>, narrowed the possibly-<code>null</code> result, and
-          handled <strong>typed events</strong> (<code>MouseEvent</code>, <code>KeyboardEvent</code>) preferring{' '}
-          <code>currentTarget</code>. Plus <code>classList</code>, <code>dataset</code>, and the{' '}
-          <code>!</code> non-null assertion — used sparingly.
+          Lecture 12 — the RAG <strong>indexing</strong> pipeline, and my first taste of{' '}
+          <strong>LangChain.js</strong>. I <strong>load</strong> a PDF with <code>PDFLoader</code>,{' '}
+          <strong>chunk</strong> it with <code>RecursiveCharacterTextSplitter</code> (size 1000, overlap 200 so
+          context survives the cuts), <strong>embed</strong> each chunk with{' '}
+          <code>GoogleGenerativeAIEmbeddings</code>, and <strong>store</strong> them all in{' '}
+          <strong>Pinecone</strong> via <code>PineconeStore.fromDocuments</code>. One run turns a document into a
+          searchable knowledge base. <em>Tomorrow I query it.</em>
         </p>
 
         <section className="day001-learnt">
@@ -205,13 +180,12 @@ export default function Day012() {
           </ul>
         </section>
 
-        <CardSection icon="🌐" title="DOM TYPES" cards={BASICS} columns={3} />
-        <CardSection icon="🛡️" title="NULL SAFETY & EVENTS" cards={SAFETY} columns={4} />
-        <CardSection icon="🧰" title="IN PRACTICE" cards={PRACTICAL} columns={4} />
+        <CardSection icon="🔗" title="MEET LANGCHAIN.js" cards={LANGCHAIN_CARD} columns={2} />
+        <CardSection icon="✂️" title="CHUNK · EMBED · STORE" cards={CHUNK} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#DOM</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#LangChain</span><span>#Pinecone</span>
         </footer>
       </div>
     </div>

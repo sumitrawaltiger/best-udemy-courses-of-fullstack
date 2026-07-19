@@ -2,100 +2,72 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_MAPPED = 'https://www.typescriptlang.org/docs/handbook/2/mapped-types.html';
-const TS_CONDITIONAL = 'https://www.typescriptlang.org/docs/handbook/2/conditional-types.html';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture12and13';
+const NOTION = 'https://www.notion.so/RAG-System-2e8a9af81c9881eab86dfe8bf32fcfb4';
 
 const LEARNT_TODAY = [
-  { title: 'Intersection types', text: '`A & B` combines two types into one that has all members of both' },
-  { title: '& vs |', text: '& = "and" (all fields), | = "or" (one of) — opposite tools for combining types' },
-  { title: 'Mapped types', text: 'transform every key: `{ [K in keyof T]: ... }` — how Partial & Readonly are built' },
-  { title: 'Modifiers', text: 'add or remove ? and readonly with +/- inside a mapped type' },
-  { title: 'Key remapping', text: '`as` in a mapped type renames keys — build getters from properties' },
-  { title: 'Conditional types', text: '`T extends U ? X : Y` — a type-level if/else' },
-  { title: 'infer', text: 'capture a type from within a condition: `T extends Array<infer E> ? E : never`' },
-  { title: 'Distributive', text: 'conditionals over a union apply to each member — the basis of Exclude/Extract' },
-  { title: 'Template literal types', text: '`` `on${Capitalize<T>}` `` builds string types from other types' },
-  { title: 'Read the built-ins', text: 'ReturnType and Awaited are just conditionals with infer' },
+  { title: 'Embed the question', text: 'the query is embedded with the same model used for the documents, so they share a meaning space' },
+  { title: 'Retrieve top-K', text: 'query Pinecone for the 10 most similar chunks, with includeMetadata to get the original text back' },
+  { title: 'Build the context', text: 'join the retrieved chunk texts into one context block to hand to the model' },
+  { title: 'Augment with a template', text: 'a PromptTemplate injects the context and question and tells the model to answer only from the context' },
+  { title: 'Ground the answer', text: 'instruct it to say "I don’t have enough information" when the context does not contain the answer' },
+  { title: 'Generate', text: 'ChatGoogleGenerativeAI (gemini-2.5-flash, temperature 0.3) writes the final answer' },
+  { title: 'LangChain chains', text: 'RunnableSequence pipes promptTemplate → model → StringOutputParser into one clean chain' },
 ];
 
-const COMBINE = [
+const RETRIEVE = [
   {
-    icon: '➕', title: 'Intersection Types', titleClass: 'card-title-cyan', subtitle: 'A & B',
-    description: 'An intersection merges types — the result must satisfy all of them at once. It’s how you compose small capability types into a bigger, complete one.',
-    code: 'type Named = { name: string };\ntype Aged = { age: number };\ntype Person = Named & Aged;\nconst p: Person = { name: "Sumit", age: 26 };',
+    icon: '🎯', title: 'Embed & Retrieve', titleClass: 'card-title-cyan', subtitle: 'Top-K From Pinecone',
+    description:
+      'Embed the user’s question, then ask Pinecone for the most similar chunks. includeMetadata brings back the original text so we can feed it to the model.',
+    code: "const queryVector = await embeddings.embedQuery(question);\n\nconst results = await pineconeIndex.query({\n  topK: 10,\n  vector: queryVector,\n  includeMetadata: true,\n});",
   },
   {
-    icon: '⚖️', title: '& vs |', titleClass: 'card-title-purple', subtitle: 'And vs Or',
-    description: 'Intersection (&) demands all members; union (|) allows one of several. They’re complementary — use & to combine shapes, | to represent alternatives.',
-    code: 'type Both = Named & Aged;   // has name AND age\ntype Either = Named | Aged; // name OR age',
-  },
-  {
-    icon: '🧩', title: 'Compose Capabilities', titleClass: 'card-title-amber', subtitle: 'Mixins By Intersection',
-    description: 'Define tiny capability types (Serializable, Timestamped) and intersect them onto your models — flexible composition without deep inheritance.',
-    code: 'type Timestamped = { createdAt: Date };\ntype Post = { title: string } & Timestamped;',
+    icon: '🧱', title: 'Build The Context', titleClass: 'card-title-purple', subtitle: 'Join The Chunks',
+    description:
+      'Pull the text out of each match and join them into a single context string. This is the retrieved knowledge the model will answer from.',
+    code: "const context = results.matches\n  .map(m => m.metadata.text)\n  .join('\\n\\n---\\n\\n');",
   },
 ];
 
-const MAPPED = [
+const GENERATE = [
   {
-    icon: '🗺️', title: 'Mapped Types', titleClass: 'card-title-cyan', subtitle: 'Transform Every Key',
-    description: 'A mapped type walks over every key of a type and produces a new one. This is the machinery behind Partial, Readonly, and Record from Day 10.',
-    code: 'type MyPartial<T> = {\n  [K in keyof T]?: T[K];\n};',
+    icon: '📝', title: 'The Prompt Template', titleClass: 'card-title-cyan', subtitle: 'Augment',
+    description:
+      'A PromptTemplate slots the context and question into a fixed instruction: answer using only the context, admit when it is not there, be concise, and reuse code examples.',
+    code: "const promptTemplate = PromptTemplate.fromTemplate(`\nAnswer using ONLY the context below.\nIf the answer is not in it, say you don't have enough information.\n\nContext:\n{context}\n\nQuestion: {question}\nAnswer:`);",
   },
   {
-    icon: '🔒', title: 'Modifiers', titleClass: 'card-title-blue', subtitle: 'Add / Remove ? readonly',
-    description: 'Inside a mapped type you can add or strip optionality and readonly with + and -. That’s exactly how Required<T> removes every ?.',
-    code: 'type MyReadonly<T> = {\n  readonly [K in keyof T]: T[K];\n};\ntype Mutable<T> = {\n  -readonly [K in keyof T]: T[K];\n};',
+    icon: '🤖', title: 'The Model', titleClass: 'card-title-purple', subtitle: 'Low Temperature',
+    description:
+      'ChatGoogleGenerativeAI runs gemini-2.5-flash at a low temperature (0.3) so answers stay factual and grounded rather than creative.',
+    code: "const model = new ChatGoogleGenerativeAI({\n  apiKey: process.env.GEMINI_API_KEY,\n  model: 'gemini-2.5-flash',\n  temperature: 0.3,\n});",
   },
   {
-    icon: '🏷️', title: 'Key Remapping', titleClass: 'card-title-amber', subtitle: 'as In Mapped Types',
-    description: 'Rename keys as you map them with the as clause and template literals — generate a getter type from every property automatically.',
-    code: 'type Getters<T> = {\n  [K in keyof T as `get${Capitalize<string & K>}`]: () => T[K];\n};',
-  },
-  {
-    icon: '🔑', title: 'Indexed Access', titleClass: 'card-title-lime', subtitle: 'T[K] & T[keyof T]',
-    description: 'Look up a property’s type with T["name"], or get the union of all value types with T[keyof T] — the basis of type-safe generic access.',
-    code: 'type User = { id: number; name: string };\ntype IdType = User["id"];        // number\ntype Values = User[keyof User];  // number | string',
-  },
-];
-
-const CONDITIONAL = [
-  {
-    icon: '🔀', title: 'Conditional Types', titleClass: 'card-title-cyan', subtitle: 'Type-Level if/else',
-    description: 'Choose a type based on a relationship: T extends U ? X : Y. The type system decides at compile time which branch applies.',
-    code: 'type IsString<T> = T extends string ? "yes" : "no";\ntype A = IsString<string>; // "yes"',
-  },
-  {
-    icon: '🕵️', title: 'infer', titleClass: 'card-title-purple', subtitle: 'Extract A Type',
-    description: 'infer captures a type from inside a condition — pull the element type out of an array, or the return type out of a function. This is how ReturnType works.',
-    code: 'type ElementOf<T> = T extends Array<infer E> ? E : never;\ntype MyReturn<F> = F extends (...a: any[]) => infer R ? R : never;',
-  },
-  {
-    icon: '🧮', title: 'Distributive', titleClass: 'card-title-amber', subtitle: 'Over Unions',
-    description: 'A conditional over a naked type parameter distributes across each union member — the mechanism behind Exclude and Extract, with never filtering branches out.',
-    code: 'type MyExclude<T, U> = T extends U ? never : T;\ntype R = MyExclude<"a" | "b" | "c", "b">; // "a" | "c"',
-  },
-  {
-    icon: '🔤', title: 'Template Literal Types', titleClass: 'card-title-lime', subtitle: 'Build String Types',
-    description: 'Compose new string literal types from existing ones — generate event names or require shapes like `${number}px`. Capitalize/Uppercase transform them.',
-    code: 'type Ev<T extends string> = `on${Capitalize<T>}`;\ntype C = Ev<"click">; // "onClick"\ntype Px = `${number}px`;',
+    icon: '⛓️', title: 'The Chain', titleClass: 'card-title-amber', subtitle: 'RunnableSequence',
+    description:
+      'LangChain pipes the steps together: template → model → output parser. Invoke it with the context and question and it returns the finished answer string.',
+    code: "const chain = RunnableSequence.from([\n  promptTemplate,\n  model,\n  new StringOutputParser(),\n]);\n\nconst answer = await chain.invoke({ context, question });",
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Mapped Types', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
-    description: 'The chapter on mapped types — modifiers, key remapping, and how the built-in utility types are constructed.',
-    link: { href: TS_MAPPED, label: 'Read Mapped Types →', external: true },
+    icon: '📝', title: 'RAG System Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    description:
+      'The RAG System write-up covering both indexing (yesterday) and this querying pipeline end to end.',
+    link: { href: NOTION, label: 'Open the RAG notes →', external: true },
   },
   {
-    icon: '📗', title: 'Conditional Types', titleClass: 'card-title-purple', subtitle: 'TS Handbook',
-    description: 'The reference on conditional types and infer, plus template literal types — the other half of today’s ground.',
-    link: { href: TS_CONDITIONAL, label: 'Read Conditional Types →', external: true },
+    icon: '💻', title: 'query.js', titleClass: 'card-title-purple', subtitle: 'GitHub',
+    description:
+      'The runnable query.js — retrieve from Pinecone and answer with a LangChain chain — in the STRIKE GenAI repo.',
+    link: { href: GH_LECTURE, label: 'Open the code →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Guards & satisfies', titleClass: 'card-title-amber', subtitle: 'Day 14 Preview',
-    description: 'Tomorrow: custom type guards, assertion functions, and the satisfies operator — making untrusted data safe.',
+    icon: '🔜', title: 'Next: Better RAG', titleClass: 'card-title-amber', subtitle: 'Day 14 Preview',
+    description:
+      'Tomorrow improves the system — Lecture 14: making RAG conversational by rewriting a follow-up question into a standalone query before retrieving.',
     link: { href: '/day-014', label: 'Go to Day 14 →' },
   },
 ];
@@ -132,6 +104,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day013() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +134,23 @@ export default function Day013() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-012" className="day001-nav-btn day001-nav-prev">← Day 12</Link>
-          <p className="day001-datetime">TypeScript Day 13</p>
+          <p className="day001-datetime">Agentic AI Day 13</p>
           <Link to="/day-014" className="day001-nav-btn day001-nav-next">Day 14 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Advanced Types</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 13</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 13 <span aria-hidden="true">🗺️</span></h1>
-              <p className="day001-day-theme">ADVANCED TYPES — MAPPED & CONDITIONAL</p>
+              <h1 className="day001-day-num">DAY 13 <span aria-hidden="true">💡</span></h1>
+              <p className="day001-day-theme">RAG PART 2 — RETRIEVE, AUGMENT &amp; ANSWER</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · TYPESCRIPT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,13 +158,13 @@ export default function Day013() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '13%' }} /></div>
 
         <p className="day001-summary">
-          Day 13 is type-level programming. I combined shapes with <strong>intersections</strong> (<code>A &amp; B</code>),
-          then used <strong>mapped types</strong> to transform every key — adding/removing <code>?</code> and{' '}
-          <code>readonly</code>, and <strong>remapping keys</strong> with <code>as</code>. Then{' '}
-          <strong>conditional types</strong> (<code>T extends U ? X : Y</code>) with <code>infer</code>, how{' '}
-          <strong>distributive</strong> conditionals build <code>Exclude</code>, and{' '}
-          <strong>template literal types</strong> for string types. I can now read how <code>Partial</code>,{' '}
-          <code>ReturnType</code>, and <code>Awaited</code> are actually built.
+          Lecture 13 completes the RAG system — the <strong>querying</strong> half. I <strong>embed</strong> the
+          question, <strong>retrieve</strong> the top-10 chunks from <strong>Pinecone</strong> (with metadata),{' '}
+          <strong>build a context</strong> from them, and <strong>augment</strong> a <code>PromptTemplate</code> that
+          tells the model to answer <strong>only from the context</strong> and admit when it can’t. A low-temperature{' '}
+          <code>ChatGoogleGenerativeAI</code> generates the answer, all wired as a{' '}
+          <strong>LangChain RunnableSequence</strong>. That’s a working <strong>chat-with-your-documents</strong>{' '}
+          app. <em>Retrieve, augment, generate — done.</em>
         </p>
 
         <section className="day001-learnt">
@@ -206,13 +179,12 @@ export default function Day013() {
           </ul>
         </section>
 
-        <CardSection icon="➕" title="INTERSECTIONS" cards={COMBINE} columns={3} />
-        <CardSection icon="🗺️" title="MAPPED TYPES" cards={MAPPED} columns={4} />
-        <CardSection icon="🔀" title="CONDITIONAL & TEMPLATE TYPES" cards={CONDITIONAL} columns={4} />
+        <CardSection icon="🎯" title="RETRIEVE" cards={RETRIEVE} columns={2} />
+        <CardSection icon="⛓️" title="AUGMENT & GENERATE" cards={GENERATE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#AdvancedTypes</span><span>#TypeLevel</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#LangChain</span><span>#Pinecone</span>
         </footer>
       </div>
     </div>

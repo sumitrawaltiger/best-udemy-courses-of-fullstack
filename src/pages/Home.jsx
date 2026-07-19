@@ -18,7 +18,7 @@ import { DEVOPS_META } from '../data/devopsSyllabus';
 import { K8S_META } from '../data/k8sSyllabus';
 import { INTERVIEW_META, DSA_META } from '../data/interviewSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
-import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
+import { PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import { JS_INTERVIEW_QUESTIONS } from '../data/interviewQuestions';
 import { REACT_INTERVIEW_QUESTIONS } from '../data/reactInterviewQuestions';
 import { NEXTJS_INTERVIEW_QUESTIONS } from '../data/nextjsInterviewQuestions';
@@ -29,7 +29,6 @@ import { SQL_QUERY_PUZZLES } from '../data/sqlQueryPuzzles';
 import { BEST_COURSES } from '../data/bestUdemyCourses';
 import LectureCard from '../components/LectureCard';
 import Syllabus from '../components/Syllabus';
-import ThunderHero from '../components/ThunderHero';
 
 const BTECH_ROADMAP = [
   {
@@ -78,74 +77,69 @@ export default function Home() {
 
   return (
     <>
-      <section className="thunder-hero">
-        <div className="thunder-hero-inner">
-          <ThunderHero
-            actions={
-              <div className="thunder-hero-actions">
-                <Link to="/learn/introduction-to-javascript" className="btn btn-primary btn-lg">
-                  Start Day 1 — Free
-                </Link>
-                <a
-                  href={PAID_COURSE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-paid btn-lg"
-                >
-                  Full In-Depth Lectures
-                </a>
-                <a href="#syllabus" className="btn btn-outline-light btn-lg">
-                  View Syllabus
-                </a>
-                <Link to="/interview-questions" className="btn btn-interview btn-lg">
-                  Interview Q&amp;A 💬
-                </Link>
-                <Link to="/react-interview-questions" className="btn btn-nextjs btn-lg">
-                  React Q&amp;A ⚛️
-                </Link>
-                <Link to="/nextjs-interview-questions" className="btn btn-nextjs btn-lg">
-                  Next.js Q&amp;A ▲
-                </Link>
-                <Link to="/java-interview-questions" className="btn btn-java btn-lg">
-                  Java Q&amp;A ☕
-                </Link>
-                <Link to="/kafka-interview-questions" className="btn btn-devops btn-lg">
-                  Kafka Q&amp;A 🔀
-                </Link>
-                <Link to="/java-streams-puzzles" className="btn btn-java btn-lg">
-                  Java Streams Puzzles 🧩
-                </Link>
-                <Link to="/sql-query-puzzles" className="btn btn-python btn-lg">
-                  Tricky SQL Queries 🗄️
-                </Link>
-                <Link to="/best-udemy-courses" className="btn btn-paid btn-lg">
-                  Best Udemy Courses 🎓
-                </Link>
-                <Link to="/cheat-sheets" className="btn btn-interview btn-lg">
-                  Cheat Sheets 📄
-                </Link>
-                <Link to="/about-founder" className="btn btn-outline-light btn-lg">
-                  About theAuthor 👤
-                </Link>
-                <a
-                  href={strikeCourse}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-strike btn-lg"
-                >
-                  Thunder on Strike →
-                </a>
-              </div>
-            }
-          >
-            <p className="thunder-hero-desc">
-              My notes from the{' '}
-              <a href={thunderRepo} target="_blank" rel="noopener noreferrer">
-                Thunder course
-              </a>{' '}
-              by Rohit Negi — {chapters.length} lectures live with code examples, playground, and quizzes.
-            </p>
-          </ThunderHero>
+      <section className="genai-hero">
+        <div className="genai-hero-inner">
+          <span className="genai-badge">Phase 1 · Agentic AI in JavaScript</span>
+          <h1 className="genai-title">GenAI Engineering with JavaScript</h1>
+          <p className="genai-tagline">
+            The journey opens with <strong>Agentic AI</strong> — from how LLMs work and the Gemini SDK to tools,
+            RAG, and multi-agent systems, all in <strong>JavaScript</strong> with{' '}
+            <strong>LangChain.js, LangGraph &amp; LangSmith</strong>. Following{' '}
+            <a href={strikeCourse} target="_blank" rel="noopener noreferrer">STRIKE GenAI</a> by Rohit Negi (Coder Army).
+          </p>
+          <div className="genai-stats">
+            <div className="genai-stat"><span className="genai-stat-val">100</span><span className="genai-stat-label">days · Phase 1</span></div>
+            <div className="genai-stat"><span className="genai-stat-val">JS</span><span className="genai-stat-label">JavaScript · Gemini</span></div>
+            <div className="genai-stat"><span className="genai-stat-val">LangChain.js</span><span className="genai-stat-label">· LangGraph · LangSmith</span></div>
+            <div className="genai-stat"><span className="genai-stat-val">RAG + Agents</span><span className="genai-stat-label">tools · RAG · multi-agent</span></div>
+          </div>
+          <div className="genai-hero-actions">
+            <Link to="/day-001" className="btn btn-genai btn-lg">
+              Start Day 1 — Free
+            </Link>
+            <Link to="/genai" className="btn btn-outline-genai btn-lg">
+              Explore GenAI Track
+            </Link>
+            <a href={GENAI_META.langchainJs} target="_blank" rel="noopener noreferrer" className="btn btn-outline-genai btn-lg">
+              LangChain.js Docs
+            </a>
+            <a href="#syllabus" className="btn btn-outline-genai btn-lg">
+              View Syllabus
+            </a>
+            <a href={PAID_COURSE_URL} target="_blank" rel="noopener noreferrer" className="btn btn-paid btn-lg">
+              Full In-Depth Lectures
+            </a>
+            <Link to="/interview-questions" className="btn btn-interview btn-lg">
+              Interview Q&amp;A 💬
+            </Link>
+            <Link to="/react-interview-questions" className="btn btn-nextjs btn-lg">
+              React Q&amp;A ⚛️
+            </Link>
+            <Link to="/nextjs-interview-questions" className="btn btn-nextjs btn-lg">
+              Next.js Q&amp;A ▲
+            </Link>
+            <Link to="/java-interview-questions" className="btn btn-java btn-lg">
+              Java Q&amp;A ☕
+            </Link>
+            <Link to="/kafka-interview-questions" className="btn btn-devops btn-lg">
+              Kafka Q&amp;A 🔀
+            </Link>
+            <Link to="/java-streams-puzzles" className="btn btn-java btn-lg">
+              Java Streams Puzzles 🧩
+            </Link>
+            <Link to="/sql-query-puzzles" className="btn btn-python btn-lg">
+              Tricky SQL Queries 🗄️
+            </Link>
+            <Link to="/best-udemy-courses" className="btn btn-paid btn-lg">
+              Best Udemy Courses 🎓
+            </Link>
+            <Link to="/cheat-sheets" className="btn btn-interview btn-lg">
+              Cheat Sheets 📄
+            </Link>
+            <Link to="/about-founder" className="btn btn-outline-genai btn-lg">
+              About theAuthor 👤
+            </Link>
+          </div>
         </div>
       </section>
 

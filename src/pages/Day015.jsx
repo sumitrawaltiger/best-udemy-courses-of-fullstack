@@ -2,102 +2,79 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const MDN_PROMISE = 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise';
-const MDN_FETCH = 'https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture15';
+const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
 
 const LEARNT_TODAY = [
-  { title: 'Promise<T>', text: 'a Promise carries a value type — `Promise<User>` resolves to a User' },
-  { title: 'async returns a Promise', text: 'an async function always returns Promise<T>, even for a plain value' },
-  { title: 'await unwraps it', text: 'await a Promise<T> and you get a T — typed and ready to use' },
-  { title: 'Awaited<T>', text: 'the utility that unwraps (even nested) Promises to their value type' },
-  { title: 'Errors are unknown', text: 'in a catch block the error is unknown — narrow it before use' },
-  { title: 'Promise.all', text: 'runs promises in parallel; the result tuple is precisely typed' },
-  { title: 'res.json() is any', text: 'fetch’s .json() returns Promise<any> — a hole in type safety' },
-  { title: 'Generic fetch wrapper', text: 'a `getJSON<T>` helper returns Promise<T> so responses are typed' },
-  { title: 'Check res.ok', text: 'fetch only rejects on network errors — check response.ok for HTTP errors' },
-  { title: 'Type ≠ runtime check', text: 'annotations are erased — the server could still lie, so validate at the edge' },
+  { title: 'Garbage in, garbage out', text: 'a RAG answer is only as good as the chunks it retrieves — retrieval quality is everything' },
+  { title: 'Chunking matters', text: 'chunk size and overlap change what the model sees; too big adds noise, too small loses context' },
+  { title: 'Tune top-K', text: 'too few chunks miss the answer, too many add noise and cost — find the right K for your data' },
+  { title: 'Metadata filtering', text: 'attach source, section or date to each chunk and filter retrieval to narrow the search' },
+  { title: 'Re-ranking', text: 'over-fetch candidates, then re-score them for true relevance and keep only the best few' },
+  { title: 'Evaluate retrieval', text: 'check whether the retrieved chunks actually contain the answer, not just whether the reply sounds good' },
+  { title: 'RAG is iterative', text: 'better chunking, filtering and re-ranking compound into noticeably better, more trustworthy answers' },
 ];
 
-const PROMISES = [
+const QUALITY = [
   {
-    icon: '🔮', title: 'Promise<T>', titleClass: 'card-title-cyan', subtitle: 'A Future Value, Typed',
-    description: 'A Promise is generic over the value it will resolve to. Typing it means everything downstream — .then callbacks and await — is fully checked.',
-    code: 'const p: Promise<number> = Promise.resolve(42);\np.then((n) => n.toFixed(2)); // n is number',
+    icon: '⚖️', title: 'Retrieval Is Everything', titleClass: 'card-title-cyan', subtitle: 'Context = Answer',
+    description:
+      'The model can only answer from what you retrieve. If the right chunk never comes back, no prompt can save the answer — so most RAG quality work is really retrieval work.',
+    code: '// good chunks → grounded, correct answer\n// wrong chunks → confident, wrong answer\n// fix retrieval first',
   },
   {
-    icon: '⚡', title: 'async / await', titleClass: 'card-title-purple', subtitle: 'Unwrap Cleanly',
-    description: 'An async function always returns a Promise. await pauses until it resolves and hands you the typed value — no manual .then chains.',
-    code: 'async function getUser(): Promise<User> {\n  const res = await fetch("/api/me");\n  return res.json();\n}\nconst u = await getUser(); // u: User',
+    icon: '✂️', title: 'Chunking Strategy', titleClass: 'card-title-purple', subtitle: 'Size & Overlap',
+    description:
+      'Chunk size and overlap are the biggest levers. Large chunks add irrelevant text; tiny chunks fragment ideas. Tune them to your documents and re-index to compare.',
+    code: '// too big  → noise dilutes the relevant part\n// too small → an idea gets split across chunks\n// tune chunkSize / chunkOverlap, then measure',
   },
   {
-    icon: '🎣', title: 'catch is unknown', titleClass: 'card-title-amber', subtitle: 'Narrow Before Use',
-    description: 'Under strict settings the caught error is unknown, because anything can be thrown. Narrow with instanceof before reading a message.',
-    code: 'try { await getUser(); }\ncatch (e) {\n  if (e instanceof Error) console.log(e.message);\n}',
-  },
-];
-
-const COMBINE = [
-  {
-    icon: '🧵', title: 'Promise.all', titleClass: 'card-title-cyan', subtitle: 'Parallel, Typed Tuple',
-    description: 'Promise.all runs promises concurrently and resolves to a precisely typed tuple — position 0 is the first promise’s type, and so on.',
-    code: 'const [user, posts] = await Promise.all([\n  getUser(),   // Promise<User>\n  getPosts(),  // Promise<Post[]>\n]); // [User, Post[]]',
-  },
-  {
-    icon: '🧮', title: 'Promise.allSettled', titleClass: 'card-title-blue', subtitle: 'Never Rejects',
-    description: 'allSettled resolves with a status per promise. TypeScript types each result as fulfilled (with value) or rejected (with reason) — narrow on status.',
-    code: 'const r = await Promise.allSettled([getUser()]);\nif (r[0].status === "fulfilled") r[0].value;',
-  },
-  {
-    icon: '⏳', title: 'Awaited<T>', titleClass: 'card-title-amber', subtitle: 'Unwrap In Types',
-    description: 'The Awaited utility resolves a Promise’s value type at the type level, even through nesting — built with the conditionals and infer from Day 13.',
-    code: 'type R = Awaited<ReturnType<typeof getUser>>; // User',
-  },
-  {
-    icon: '⏱️', title: 'Typed Delays', titleClass: 'card-title-lime', subtitle: 'Promisify Timers',
-    description: 'Wrap setTimeout in a Promise<void> to get a clean, awaitable sleep — the typed building block for retries and polling.',
-    code: 'const sleep = (ms: number) =>\n  new Promise<void>((res) => setTimeout(res, ms));\nawait sleep(500);',
+    icon: '🔢', title: 'Top-K & Filters', titleClass: 'card-title-amber', subtitle: 'How Much To Fetch',
+    description:
+      'Retrieve enough to cover the answer but not so much that noise creeps in. Use metadata filters (source, section, date) to restrict retrieval to the relevant subset.',
+    code: '// query({ topK, vector, filter: { source: "docs" } })\n// smaller, cleaner candidate set = better answers',
   },
 ];
 
-const FETCH = [
+const IMPROVE = [
   {
-    icon: '🕳️', title: 'The any Hole', titleClass: 'card-title-cyan', subtitle: 'res.json()',
-    description: 'Fetch’s .json() resolves to any, so everything downstream loses checking. Left unfixed, one wrong field crashes at runtime — exactly what TS should prevent.',
-    code: 'const res = await fetch("/api/user");\nconst data = await res.json(); // any 😬',
+    icon: '🏅', title: 'Re-Ranking', titleClass: 'card-title-cyan', subtitle: 'Fetch More, Keep Best',
+    description:
+      'Vector similarity is a fast first pass, not a perfect one. Over-fetch (say top-20), then re-score those with a re-ranker and keep the few most relevant for the prompt.',
+    code: '// 1. vector search → top 20 candidates\n// 2. re-rank by relevance\n// 3. keep top 3–5 → augment the prompt',
   },
   {
-    icon: '🧰', title: 'Generic getJSON<T>', titleClass: 'card-title-purple', subtitle: 'Type The Result',
-    description: 'A tiny generic wrapper casts the parsed body to T and returns Promise<T>. Every caller now gets a typed response with autocomplete and checks.',
-    code: 'async function getJSON<T>(url: string): Promise<T> {\n  const res = await fetch(url);\n  if (!res.ok) throw new Error(`HTTP ${res.status}`);\n  return res.json() as Promise<T>;\n}\nconst user = await getJSON<User>("/api/user");',
+    icon: '🧪', title: 'Evaluate It', titleClass: 'card-title-purple', subtitle: 'Measure, Don’t Guess',
+    description:
+      'Judge the retrieval, not just the vibe of the reply: for a set of questions, did the retrieved chunks actually contain the answer? That tells you what to fix.',
+    code: '// for each test question:\n//   were the right chunks retrieved? (recall)\n//   was the answer grounded in them? (faithfulness)',
   },
   {
-    icon: '⚠️', title: 'Types Aren’t Checks', titleClass: 'card-title-amber', subtitle: 'The Server Can Lie',
-    description: 'getJSON<T> trusts the server. Annotations are erased at runtime, so a wrong payload passes silently. Validating untrusted data is tomorrow’s topic.',
-    code: '// Day 16: validate with a Zod schema\nconst user = UserSchema.parse(raw);',
-  },
-  {
-    icon: '🔜', title: 'Next: Runtime Validation', titleClass: 'card-title-lime', subtitle: 'Day 16 Preview',
-    description: 'Tomorrow: closing the trust gap with Zod — schemas that validate real data and infer the type from one source of truth.',
-    link: { href: '/day-016', label: 'Go to Day 16 →' },
+    icon: '🔁', title: 'Iterate', titleClass: 'card-title-amber', subtitle: 'Compounding Gains',
+    description:
+      'Better chunking, filtering, re-ranking and query rewriting each add a little. Together they turn a shaky demo into a RAG system you can trust in production.',
+    footer: 'chunk → filter → re-rank → evaluate → repeat',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Promise (MDN)', titleClass: 'card-title-cyan', subtitle: 'The Foundation',
-    description: 'The definitive reference for Promises — states, chaining, all/allSettled/race. TypeScript simply adds the value types on top.',
-    link: { href: MDN_PROMISE, label: 'Read Promise on MDN →', external: true },
+    icon: '💻', title: 'Lecture 15', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    description:
+      'The lecture folder and diagram in the STRIKE GenAI repo — improving retrieval quality for production RAG.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 15 →', external: true },
   },
   {
-    icon: '🌐', title: 'Fetch API (MDN)', titleClass: 'card-title-purple', subtitle: 'Requests & Responses',
-    description: 'How fetch, Response, and Request work — status, .ok, headers, and body parsing. TypeScript types layer neatly on top of these.',
-    link: { href: MDN_FETCH, label: 'Read the Fetch API →', external: true },
+    icon: '🧠', title: 'The GenAI Track', titleClass: 'card-title-purple', subtitle: 'Same Journey',
+    description:
+      'The site’s GenAI track covers RAG, agents and LangGraph as structured modules — a companion to these day-by-day notes.',
+    link: { href: '/genai', label: 'Open the GenAI track →' },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-amber', subtitle: 'Build getJSON',
-    description: 'Write the generic wrapper and call it with different interfaces to watch the return type change. The JSON boundary becomes tangible.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
+    description:
+      'The full Coder Army course code — next up: agents, LangGraph (Lecture 20) and the AI Dev Team projects.',
+    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
   },
 ];
 
@@ -133,6 +110,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day015() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -162,23 +140,23 @@ export default function Day015() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-014" className="day001-nav-btn day001-nav-prev">← Day 14</Link>
-          <p className="day001-datetime">TypeScript Day 15</p>
+          <p className="day001-datetime">Agentic AI Day 15</p>
           <Link to="/day-016" className="day001-nav-btn day001-nav-next">Day 16 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Async · APIs</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 15</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 15 <span aria-hidden="true">⚡</span></h1>
-              <p className="day001-day-theme">ASYNC TYPESCRIPT & TYPED fetch</p>
+              <h1 className="day001-day-num">DAY 15 <span aria-hidden="true">🏅</span></h1>
+              <p className="day001-day-theme">BETTER RAG — RETRIEVAL QUALITY</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · TYPESCRIPT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -186,14 +164,13 @@ export default function Day015() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '15%' }} /></div>
 
         <p className="day001-summary">
-          Day 15 types asynchronous code and the network. I worked with <code>Promise&lt;T&gt;</code>, saw that{' '}
-          <strong>async</strong> functions always return a Promise, and used <strong>await</strong> to unwrap the
-          typed value — handling errors where <code>catch</code> gives <code>unknown</code> and running work in
-          parallel with <strong>Promise.all</strong>. Then I closed the biggest hole in type safety: since{' '}
-          <code>res.json()</code> returns <code>any</code>, I built a generic{' '}
-          <strong>getJSON&lt;T&gt;</strong> wrapper that checks <code>res.ok</code> and returns{' '}
-          <code>Promise&lt;T&gt;</code>. The caveat: types are erased, so untrusted data still needs runtime
-          validation — tomorrow.
+          Lecture 15 — making RAG actually good. The answer is only as strong as the <strong>chunks it retrieves</strong>,
+          so retrieval quality is where the work is. I tuned <strong>chunking</strong> (size and overlap),{' '}
+          <strong>top-K</strong>, and <strong>metadata filters</strong> to narrow the search; added{' '}
+          <strong>re-ranking</strong> (over-fetch, re-score, keep the best); and learned to <strong>evaluate</strong>{' '}
+          retrieval — did the right chunks come back? — instead of trusting the vibe of the reply. These gains{' '}
+          <strong>compound</strong> into a RAG system you can trust.{' '}
+          <em>(Diagram-based lecture; content reflects the standard practices.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -208,13 +185,12 @@ export default function Day015() {
           </ul>
         </section>
 
-        <CardSection icon="🔮" title="PROMISES & await" cards={PROMISES} columns={3} />
-        <CardSection icon="🧵" title="COMBINATORS & UNWRAPPING" cards={COMBINE} columns={4} />
-        <CardSection icon="🌐" title="A TYPED fetch WRAPPER" cards={FETCH} columns={4} />
+        <CardSection icon="⚖️" title="RETRIEVAL IS EVERYTHING" cards={QUALITY} columns={3} />
+        <CardSection icon="🏅" title="RE-RANK & EVALUATE" cards={IMPROVE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Async</span><span>#APIs</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#CoderArmy</span><span>#Retrieval</span>
         </footer>
       </div>
     </div>
