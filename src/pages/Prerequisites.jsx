@@ -50,10 +50,9 @@ export default function Prerequisites() {
 
       <section className="prereq-note">
         <p>
-          The four-year plan starts at <strong>TypeScript on Day 1 (24 Jul 2026)</strong> because
-          HTML5, CSS3 and JavaScript are assumed knowledge. These 47 days are that assumption
-          written down — the JavaScript you should be comfortable with before the first TypeScript
-          line.
+          The plan starts on <strong>Day 1 (20 Jul 2026)</strong> with Agentic AI in JavaScript,
+          because HTML5, CSS3 and JavaScript are assumed knowledge. These 47 days are that assumption
+          written down — the JavaScript you should be comfortable with before the journey begins.
         </p>
       </section>
 

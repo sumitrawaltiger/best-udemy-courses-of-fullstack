@@ -83,14 +83,14 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: 24 Jul 2026 → 23 Jul 2030 = 1461 study days (4 years)
-// Day 1 of the journey = 24 Jul 2026; last day = 23 Jul 2030
-export const JOURNEY_START_LABEL = '24 Jul 2026';
+// Full journey: Day 1 = 20 Jul 2026 (Mon). User-facing framing: 1465 days / 3 phases.
+// (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
+//  chapterFactory.js = 20 Jul 2026, so module Day 1 also dates to 20 Jul 2026.)
+export const JOURNEY_START_LABEL = '20 Jul 2026';
 export const JOURNEY_END_LABEL = '23 Jul 2030';
-export const JOURNEY_YEARS = 4;
-export const JOURNEY_TOTAL_DAYS = 1461;
-// Factory calendar (Day 1 = 23 Jul 2026): journey day N ≈ factory day N+1; last factory day = 1462
-export const JOURNEY_END_FACTORY_DAY = 1462;
+export const JOURNEY_TOTAL_DAYS = 1465;
+// Factory calendar: Day 1 = 20 Jul 2026 (COURSE_START); factory day N = journey Day N.
+export const JOURNEY_END_FACTORY_DAY = 1461;
 
 // Explicit day-offsets for the re-sequenced 4-year plan (offset = phase start day − 1).
 // Year 1 (JS/TS): Days 1–365 · Year 2 (Python): 366–731 · Year 3 (Java): 732–1096 · Year 4 (DevOps): 1097–1461.
