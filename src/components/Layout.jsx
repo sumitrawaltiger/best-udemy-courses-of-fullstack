@@ -57,14 +57,13 @@ export default function Layout() {
       <footer className="footer">
         <p>
           Built with ❤️ by{' '}
-          <a href="https://github.com/sumitrawal" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.credly.com/users/sumit-rawal658/badges/credly" target="_blank" rel="noopener noreferrer">
             Sumit Rawal
           </a>{' '}
           — sharing my Full LifeCycle Engineering journey with the world.
         </p>
         <p className="footer-sub">
-          Thunder → Next.js → React Native → Python → Java → AWS → DevOps → Kubernetes → System Design → Data
-          Structures → Interview Prep
+          Agentic AI → TypeScript → Python → Java → DevOps
         </p>
         <p className="footer-community">
           <a href={discordCommunity} target="_blank" rel="noopener noreferrer">
