@@ -67,13 +67,13 @@ export default function InterviewHome() {
         </div>
 
         <section className="roadmap">
-          <h2>DSA &amp; System Design — Every Year</h2>
+          <h2>DSA &amp; System Design — Every Phase</h2>
           <p className="section-desc">
-            In the re-sequenced 4-year plan, <strong>DSA</strong> and <strong>System Design</strong> are practiced{' '}
-            <strong>every year in that year’s language</strong>:{' '}
-            <strong>JavaScript</strong> in Year 1 (DSA 24 Feb – 3 Jun 2027 · System Design 4 Jun – 23 Jul 2027),{' '}
-            <strong>Python</strong> in Year 2 (25 Feb – 23 Jul 2028), and <strong>Java</strong> in Year 3
-            (14 Feb – 23 Jul 2029). Total study: <strong>1461 days</strong> from 24 Jul 2026 to 23 Jul 2030.{' '}
+            Across the <strong>3-phase, 1465-day</strong> plan, <strong>DSA</strong> and{' '}
+            <strong>System Design</strong> are practiced <strong>in each stack’s language</strong> during the{' '}
+            <strong>1000 Days of Code</strong> build phase: <strong>TypeScript / JavaScript</strong>, then{' '}
+            <strong>Python</strong>, then <strong>Java</strong>. That’s{' '}
+            <strong>100 days Agentic AI → 1000 Days of Code → 365 days DevOps</strong>.{' '}
             {interviewChapters.length} modules on this track support these phases.
           </p>
           <div className="roadmap-grid roadmap-interview">
@@ -88,7 +88,7 @@ export default function InterviewHome() {
               <span className="legend-dot published legend-dot-interview" /> {interviewChapters.length} modules
             </span>
             <span>
-              <span className="legend-dot published" /> DSA & System Design each year: JS (Y1) · Python (Y2) · Java (Y3) → 23 Jul 2030 · 1461 total
+              <span className="legend-dot published" /> DSA & System Design in each language: TypeScript · Python · Java · 1465 days total
             </span>
           </div>
         </section>
