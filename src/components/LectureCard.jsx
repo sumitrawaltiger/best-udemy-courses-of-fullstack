@@ -107,8 +107,6 @@ export default function LectureCard({ chapter, basePath = '/learn', dayPrefix = 
         </h2>
         <p className="lecture-subtitle">{chapter.subtitle}</p>
         <div className="lecture-meta">
-          <span>Created on: {chapter.createdOn}</span>
-          <span className="meta-dot">·</span>
           <span>⏱ {chapter.duration}</span>
           <span className="meta-dot">·</span>
           <span>{chapter.topics.length} topics</span>
