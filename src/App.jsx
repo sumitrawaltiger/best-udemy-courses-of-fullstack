@@ -139,6 +139,7 @@ import Prerequisites from './pages/Prerequisites';
 import PrereqDay from './pages/PrereqDay';
 import TypescriptSeries from './pages/TypescriptSeries';
 import TypescriptDay from './pages/TypescriptDay';
+import JavaRoadmap from './pages/JavaRoadmap';
 
 export default function App() {
   return (
@@ -282,6 +283,7 @@ export default function App() {
           <Route path="python" element={<PythonHome />} />
           <Route path="python/learn/:slug" element={<Chapter track="python" />} />
           <Route path="java" element={<JavaHome />} />
+          <Route path="java/roadmap" element={<JavaRoadmap />} />
           <Route path="java/learn/:slug" element={<Chapter track="java" />} />
           <Route path="aws" element={<AwsHome />} />
           <Route path="aws/learn/:slug" element={<Chapter track="aws" />} />

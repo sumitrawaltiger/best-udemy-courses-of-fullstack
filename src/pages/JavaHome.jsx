@@ -37,6 +37,9 @@ export default function JavaHome() {
                 <Link to="/spring-boot-ecommerce-roadmap" className="btn btn-java btn-lg">
                   Full-Stack E-Commerce Roadmap 🛒
                 </Link>
+                <Link to="/java/roadmap" className="btn btn-java btn-lg">
+                  Java Engineering Roadmap 🗺️
+                </Link>
                 <Link to="/python" className="btn btn-outline-java btn-lg">
                   ← Python & Agentic AI
                 </Link>

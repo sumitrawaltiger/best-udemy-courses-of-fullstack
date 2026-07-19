@@ -1,0 +1,100 @@
+/* ── Java Engineering Roadmap — competency matrix ─────────────────────── */
+.jr-page {
+  --jr-col: 150px;
+  --jr-label: 168px;
+  --jr-flc: #2f7ed8;
+  --jr-ms: #0f9d8f;
+  --jr-sol: #7c5cd6;
+  --jr-core: #e8f2fc;
+  --jr-core-bd: #bcd9f5;
+  --jr-tga: #fdf6d6;
+  --jr-tga-bd: #ecdb8e;
+  --jr-tha: #e3f7f4;
+  --jr-mandatory: #eef1ec;
+  --jr-band: #f4f7fb;
+  --jr-ink: #1f2733;
+  --jr-muted: #5b6675;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+  color: var(--jr-ink);
+}
+
+/* hero */
+.jr-hero { text-align: center; margin-bottom: 22px; }
+.jr-eyebrow {
+  display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: 1.5px;
+  color: #fff; background: var(--jr-sol); padding: 5px 14px; border-radius: 999px;
+}
+.jr-title { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 900; margin: 12px 0 6px; }
+.jr-sub { color: var(--jr-muted); font-size: 1rem; margin: 0; }
+.jr-back { display: inline-block; margin-bottom: 6px; color: var(--jr-flc); text-decoration: none; font-weight: 700; font-size: 0.9rem; }
+.jr-back:hover { text-decoration: underline; }
+
+/* poster image */
+.jr-poster { margin: 20px 0 26px; }
+.jr-poster-btn { display: block; width: 100%; border: 1px solid #d8dee7; border-radius: 14px; overflow: hidden; background: #fff; cursor: zoom-in; padding: 0; }
+.jr-poster-btn img { width: 100%; height: auto; display: block; }
+.jr-poster-cap { text-align: center; color: var(--jr-muted); font-size: 0.85rem; margin-top: 8px; }
+
+.jr-scroll-hint { color: var(--jr-muted); font-size: 0.85rem; margin: 0 0 8px; font-style: italic; }
+
+/* the matrix scrolls horizontally inside its own container */
+.jr-matrix-wrap { overflow-x: auto; border: 1px solid #dbe2ea; border-radius: 14px; background: #fff; padding: 12px; -webkit-overflow-scrolling: touch; }
+.jr-matrix { min-width: calc(var(--jr-label) + var(--jr-col) * 16 + 32px); display: flex; flex-direction: column; gap: 6px; }
+
+.jr-row { display: grid; grid-template-columns: var(--jr-label) repeat(16, var(--jr-col)); gap: 6px; align-items: stretch; }
+.jr-rowlabel {
+  display: flex; align-items: center; font-size: 0.8rem; font-weight: 800; color: var(--jr-muted);
+  text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 8px;
+}
+
+/* phase headers */
+.jr-phase { color: #fff; font-weight: 900; font-size: 0.95rem; text-align: center; padding: 9px 8px; border-radius: 8px; }
+
+/* stage numbers */
+.jr-num { text-align: center; font-weight: 800; font-size: 0.85rem; color: var(--jr-muted); padding: 3px; }
+
+/* module headers */
+.jr-mod { color: #fff; font-weight: 800; font-size: 0.86rem; text-align: center; padding: 9px 6px; border-radius: 8px; line-height: 1.2; display: flex; align-items: center; justify-content: center; }
+
+/* topic stack per stage */
+.jr-topics { display: flex; flex-direction: column; gap: 5px; }
+.jr-topic {
+  font-size: 0.78rem; line-height: 1.25; padding: 7px 8px; border-radius: 7px;
+  background: var(--jr-core); border: 1px solid var(--jr-core-bd); color: var(--jr-ink);
+}
+.jr-topic.jr-tga { background: var(--jr-tga); border-color: var(--jr-tga-bd); }
+.jr-topic.jr-optional { background: #fde7d6; border-color: #f2b78a; }
+.jr-topic.jr-milestone { background: var(--jr-tha); border-color: #a7dfd7; font-weight: 700; }
+
+/* bands */
+.jr-band { font-size: 0.8rem; line-height: 1.3; padding: 9px 10px; border-radius: 8px; background: var(--jr-band); border: 1px solid #dbe6f2; color: var(--jr-ink); display: flex; align-items: center; }
+.jr-band.jr-band-role { background: #fdeee4; border-color: #f3cbac; font-weight: 700; }
+.jr-band.jr-band-milestones { background: #eef1ec; border-color: #cdd6c9; font-weight: 700; }
+
+/* legend */
+.jr-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 20px; padding: 14px 16px; border: 1px solid #dbe2ea; border-radius: 12px; background: #fff; }
+.jr-legend-title { width: 100%; font-weight: 800; font-size: 0.85rem; color: var(--jr-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.jr-legend-item { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--jr-ink); }
+.jr-swatch { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.15); }
+.jr-swatch.mandatory { background: var(--jr-mandatory); }
+.jr-swatch.core { background: var(--jr-core); border-color: var(--jr-core-bd); }
+.jr-swatch.tga { background: var(--jr-tga); border-color: var(--jr-tga-bd); }
+.jr-swatch.tha { background: var(--jr-tha); border-color: #a7dfd7; }
+
+.jr-tagline { text-align: center; font-size: 1rem; font-style: italic; color: var(--jr-muted); margin: 26px 0 0; }
+.jr-tagline strong { color: var(--jr-sol); font-style: normal; }
+
+/* lightbox */
+.jr-lightbox { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; padding: 20px; }
+.jr-lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; }
+.jr-lightbox-close { position: absolute; top: 18px; right: 22px; background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
+
+/* dark mode: keep the matrix on a light card (it mirrors a printed plan) but
+   soften the page chrome. */
+@media (prefers-color-scheme: dark) {
+  .jr-page { color: #e6edf3; }
+  .jr-title { color: #f4f7fb; }
+  .jr-sub, .jr-scroll-hint, .jr-poster-cap, .jr-tagline { color: #9aa7b4; }
+}
