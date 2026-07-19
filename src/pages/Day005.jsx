@@ -2,116 +2,101 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_OBJECTS = 'https://www.typescriptlang.org/docs/handbook/2/objects.html';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
-const EP_IMAGE = '/typescript-notes/ep05-data-types.jpeg';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture05';
+const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
+const GEMINI_FC = 'https://ai.google.dev/gemini-api/docs/function-calling';
 
 const LEARNT_TODAY = [
-  { title: 'Arrays', text: 'store multiple values of the same type: `let numbers: number[] = [1, 2, 3]`' },
-  { title: 'Array rules', text: 'use Type[] to define the array type — all elements must be the same type' },
-  { title: 'Array methods', text: 'push() add at end · pop() remove last · shift() remove first · unshift() add at first · length' },
-  { title: 'Tuples', text: 'an array with fixed length and known types: `[string, number, boolean]`' },
-  { title: 'Why tuples', text: 'when you know the exact number of elements and their specific order' },
-  { title: 'Objects', text: 'store key-value pairs — define the shape, all properties required by default' },
-  { title: 'Optional properties', text: 'use ? to make a property optional: `age?: number`' },
-  { title: 'readonly', text: 'makes data immutable — it cannot be changed after it is set' },
-  { title: 'Why readonly', text: 'prevent accidental changes, improve code safety, great for constants and configs' },
-  { title: 'as const', text: 'makes all properties readonly and literal — freezes an entire object' },
+  { title: 'Function calling', text: 'describe your tools to the model and it decides which to call and with what arguments — no manual routing' },
+  { title: 'Tool declaration', text: 'each tool is a name + description + parameters schema the model reads to understand what it does' },
+  { title: 'Typed parameters', text: 'the SDK’s Type.OBJECT and Type.STRING describe each argument, and required lists the mandatory ones' },
+  { title: 'Description is the prompt', text: 'the model picks a tool from its description, so clear names and descriptions matter a lot' },
+  { title: 'The model returns a call', text: 'instead of text you get a functionCall — a name plus args, e.g. cryptoCurrency({ coin: "bitcoin" })' },
+  { title: 'You execute it', text: 'run the real function with those args, get the live data back from the API' },
+  { title: 'Feed the result back', text: 'send the tool result to the model so it writes a natural-language answer for the user' },
+  { title: 'The agent loop', text: 'think → call a tool → observe the result → respond: this loop is the heart of every AI agent' },
 ];
 
-const ARRAYS = [
+const DECLARE = [
   {
-    icon: '📚', title: 'Arrays', titleClass: 'card-title-cyan', subtitle: 'Same Type, Many Values',
+    icon: '📋', title: 'Declare A Tool', titleClass: 'card-title-cyan', subtitle: 'Name · Description · Params',
     description:
-      'An array stores multiple values of the same type. Use Type[] to declare it — every element is checked, so a list of numbers can never hold a string.',
-    code: '// number array\nlet numbers: number[] = [1, 2, 3, 4, 5];\nnumbers.push(6);   // [1,2,3,4,5,6]\n\n// string array\nlet names: string[] = ["Faisal", "Ahmad"];\nnames.push("Developer");',
+      'A tool declaration tells the model what a function does and what inputs it needs. The description is how the model decides to use it, so write it clearly.',
+    code: 'import { Type } from "@google/genai";\n\nconst cryptoInfo = {\n  name: "cryptoCurrency",\n  description: "Get the live price/info of a coin like bitcoin or ethereum",\n  parameters: {\n    type: Type.OBJECT,\n    properties: {\n      coin: { type: Type.STRING, description: "e.g. bitcoin, ethereum" },\n    },\n    required: ["coin"],\n  },\n};',
   },
   {
-    icon: '🔧', title: 'Common Methods', titleClass: 'card-title-purple', subtitle: 'Typed Operations',
+    icon: '🧩', title: 'Typed Parameters', titleClass: 'card-title-purple', subtitle: 'Type.OBJECT',
     description:
-      'All the familiar array methods are fully typed — push adds at the end, pop removes the last, shift removes the first, unshift adds at the front, length gives the size.',
-    code: 'push()    → add at end\npop()     → remove last\nshift()   → remove first\nunshift() → add at first\nlength    → get size',
+      'The parameters schema mirrors JSON Schema: an object with typed properties and a list of required fields. This is how the model knows exactly what to pass.',
+    code: '// Type.OBJECT  → the arguments object\n// Type.STRING  → a text field\n// required: [] → which fields must be present',
   },
   {
-    icon: '📦', title: 'Tuples', titleClass: 'card-title-amber', subtitle: 'Fixed Length & Order',
+    icon: '🔗', title: 'Attach The Tools', titleClass: 'card-title-amber', subtitle: 'config.tools',
     description:
-      'A tuple is an array with a fixed length and a known type at each position — use it when you know the exact number of elements and their specific order.',
-    code: 'let user: [string, number, boolean] = ["Faisal", 21, true];\nconsole.log(user[0]);  // Faisal\nconsole.log(user[1]);  // 21\n// user.push("extra"); ❌ Tuple type of length 3\n\nlet rgb: [number, number, number] = [255, 0, 128];',
-  },
-];
-
-const OBJECTS = [
-  {
-    icon: '🧩', title: 'Objects', titleClass: 'card-title-cyan', subtitle: 'Key-Value Pairs',
-    description:
-      'Objects store key-value pairs. Define the shape of the object up front — all properties are required by default, so nothing can be silently missing.',
-    code: 'let user: {\n  name: string;\n  age: number;\n  isStudent: boolean;\n} = {\n  name: "Faisal",\n  age: 21,\n  isStudent: true,\n};',
-  },
-  {
-    icon: '❔', title: 'Optional Properties', titleClass: 'card-title-blue', subtitle: 'Use a ?',
-    description:
-      'Mark a property optional with ? so it can be omitted. Objects with or without it are both valid — but a wrong type still isn’t.',
-    code: 'type User = {\n  name: string;\n  age?: number;    // optional\n  email?: string;  // optional\n};\nconst user1: User = { name: "Faisal" };          // ✅\nconst user2: User = { name: "Faisal", age: 21 }; // ✅',
-  },
-  {
-    icon: '🌍', title: 'Model Real Entities', titleClass: 'card-title-amber', subtitle: 'Why It Matters',
-    description:
-      'Objects let you represent real-world entities cleanly — a user, a product, an API response. Define the shape once and every usage is checked against it.',
-    footer: '+ Objects help us represent real world entities cleanly.',
-  },
-  {
-    icon: '🔜', title: 'Next: Advanced Types', titleClass: 'card-title-lime', subtitle: 'Day 6 Preview',
-    description:
-      'Tomorrow (Episode 6): union types, literal types, type aliases and intersection types — modelling real-world scenarios more precisely.',
-    link: { href: '/day-006', label: 'Go to Day 6 →' },
+      'Pass your declarations in the request config. Now the model can answer normally or, when useful, ask to call one of your tools.',
+    code: 'const res = await ai.models.generateContent({\n  model: "gemini-2.5-flash",\n  contents: "What is the price of bitcoin?",\n  config: { tools: [{ functionDeclarations: [cryptoInfo, weatherInfo] }] },\n});',
   },
 ];
 
-const READONLY = [
+const LOOP = [
   {
-    icon: '🔒', title: 'readonly Types', titleClass: 'card-title-cyan', subtitle: 'Immutable Data',
+    icon: '📞', title: 'The Model Calls Back', titleClass: 'card-title-cyan', subtitle: 'functionCall',
     description:
-      'readonly makes data immutable — once set, it cannot be changed. Try to reassign or push and the compiler stops you.',
-    code: '// readonly array\nlet readonlyNumbers: readonly number[] = [1, 2, 3];\n// readonlyNumbers.push(4); ❌ Error\n\n// readonly tuple\nlet point: readonly [number, number] = [10, 20];\n// point[0] = 100; ❌ Error',
+      'When the model decides a tool is needed, it does not return text — it returns a functionCall with the tool name and the arguments it chose from your question.',
+    code: 'const call = res.functionCalls?.[0];\n// call.name === "cryptoCurrency"\n// call.args === { coin: "bitcoin" }',
   },
   {
-    icon: '🛡️', title: 'Why readonly?', titleClass: 'card-title-purple', subtitle: 'Safety By Default',
+    icon: '⚙️', title: 'Execute & Return', titleClass: 'card-title-purple', subtitle: 'Run The Function',
     description:
-      'Prevent accidental changes, improve code safety, and make intent obvious. It’s especially valuable for constants and configuration you must not mutate.',
-    footer: '+ Prevent accidental changes · Improve code safety · Great for constants and configs',
+      'You run the real function with the model’s arguments, get the live data, and send that result back to the model so it can turn raw JSON into a friendly answer.',
+    code: 'const data = await cryptoCurrency(call.args);\n// send `data` back to the model as the tool result →\n// it replies: "Bitcoin is trading at ₹… right now."',
   },
   {
-    icon: '🧊', title: 'as const', titleClass: 'card-title-amber', subtitle: 'Freeze Everything',
+    icon: '♻️', title: 'The Agent Loop', titleClass: 'card-title-amber', subtitle: 'Think · Act · Observe',
     description:
-      'Another way: as const makes all properties readonly and literal at once — the entire object becomes immutable and precisely typed.',
-    code: 'const config = {\n  apiUrl: "https://api.com",\n  timeout: 5000,\n} as const; // entire object is readonly',
+      'Put it together and you have the core agent loop: the model thinks, calls a tool, observes the result, and responds. Chain it and the AI can solve multi-step tasks on its own.',
+    code: '// 1. think   → decide a tool is needed\n// 2. act     → return a functionCall\n// 3. observe → you run it, feed data back\n// 4. respond → natural-language answer',
+  },
+];
+
+const WHY = [
+  {
+    icon: '🎯', title: 'No More Manual Routing', titleClass: 'card-title-cyan', subtitle: 'The Model Decides',
+    description:
+      'Yesterday’s brittle if/else routing is gone. The model reads the tool descriptions and picks the right one with the right arguments — even for messy, natural questions.',
   },
   {
-    icon: '🏆', title: 'Key Takeaway', titleClass: 'card-title-lime', subtitle: 'The Payoff',
+    icon: '🤖', title: 'This Is An Agent', titleClass: 'card-title-purple', subtitle: 'First 5 Lectures Done',
     description:
-      'Strongly typed data structures mean fewer bugs, better code, and happy developers. Arrays, tuples, objects, and readonly are the shapes real data lives in.',
-    footer: '+ Strongly typed data structures = Fewer bugs + Better code + Happy Developers!',
+      'From a single prompt (Day 2) to memory and personas (Day 3), real data (Day 4), and now tool-using function calls (Day 5) — the pieces of an autonomous agent are in place.',
+    footer: 'prompt → chat → tools → function calling → agents',
+  },
+  {
+    icon: '📚', title: 'The Full Course', titleClass: 'card-title-amber', subtitle: 'STRIKE GenAI',
+    description:
+      'Ahead in the course: RAG, multi-tool agents, LangGraph and full projects. Explore the site’s GenAI track for the same journey as structured modules.',
+    link: { href: '/genai', label: 'Open the GenAI track →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Object Types', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
+    icon: '💻', title: 'Lecture 05 Code', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The handbook chapter on object types — optional and readonly properties, index signatures, and how shapes are checked.',
-    link: { href: TS_OBJECTS, label: 'Read Object Types →', external: true },
+      'The tool declarations for crypto and weather and the function-calling flow from this lecture in the STRIKE GenAI repo.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 05 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Break It On Purpose',
+    icon: '📘', title: 'Function Calling Docs', titleClass: 'card-title-purple', subtitle: 'Gemini API',
     description:
-      'Build an array, a tuple, and a readonly object — then try to push to the tuple or reassign a readonly field and read the exact errors.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+      'Google’s official guide to function calling — declarations, the call/response cycle, and multi-tool patterns.',
+    link: { href: GEMINI_FC, label: 'Read the Gemini docs →', external: true },
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
     description:
-      'Arrays, tuples, and object shapes are how you model props, API data, and state — the vocabulary for everything ahead this year.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+      'The complete Coder Army course code — every lecture from here to LangGraph and the final projects.',
+    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
   },
 ];
 
@@ -172,86 +157,65 @@ export default function Day005() {
   }, []);
 
   return (
-    <>
-      <div className="day001-page">
-        <div className="day001-scale-wrap" ref={scaleRef}>
-          <header className="day001-topbar">
-            <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-            <Link to="/day-004" className="day001-nav-btn day001-nav-prev">← Day 4</Link>
-            <p className="day001-datetime">TypeScript Day 5</p>
-            <Link to="/day-006" className="day001-nav-btn day001-nav-next">Day 6 →</Link>
-          </header>
+    <div className="day001-page">
+      <div className="day001-scale-wrap" ref={scaleRef}>
+        <header className="day001-topbar">
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-004" className="day001-nav-btn day001-nav-prev">← Day 4</Link>
+          <p className="day001-datetime">Agentic AI Day 5</p>
+          <Link to="/day-006" className="day001-nav-btn day001-nav-next">Day 6 →</Link>
+        </header>
 
-          <div className="day001-hero">
-            <div className="day001-hero-left">
-              <div className="day001-tags"><span>TypeScript</span><span>Episode 5</span><span>Data Types</span></div>
-              <div className="day001-title-block">
-                <h1 className="day001-day-num">DAY 5 <span aria-hidden="true">📦</span></h1>
-                <p className="day001-day-theme">DATA TYPES — ARRAYS, TUPLES, OBJECTS & READONLY</p>
-              </div>
-            </div>
-            <div className="day001-profile">
-              <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
-              <div>
-                <p className="day001-profile-name">Sumit Rawal</p>
-                <p className="day001-profile-role">TS · TYPESCRIPT</p>
-              </div>
+        <div className="day001-hero">
+          <div className="day001-hero-left">
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 05</span></div>
+            <div className="day001-title-block">
+              <h1 className="day001-day-num">DAY 5 <span aria-hidden="true">🛠️</span></h1>
+              <p className="day001-day-theme">FUNCTION CALLING — THE AGENT LOOP BEGINS</p>
             </div>
           </div>
-
-          <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '5%' }} /></div>
-
-          <p className="day001-summary">
-            <strong>Episode 5</strong> — structuring real data. <strong>Arrays</strong> hold many values of the same
-            type (<code>Type[]</code>), <strong>tuples</strong> fix both the length and the type at each position,
-            and <strong>objects</strong> store key-value pairs with a defined shape (properties required by default,{' '}
-            <code>?</code> to make one optional). Then <strong>readonly</strong> makes data immutable — with{' '}
-            <code>as const</code> to freeze a whole object. TypeScript helps me structure data better and avoid bugs
-            early. <em>Strongly typed data structures = fewer bugs + better code.</em>
-          </p>
-
-          <section className="day001-learnt">
-            <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
-            <ul className="day001-learnt-list">
-              {LEARNT_TODAY.map((item) => (
-                <li key={item.title}>
-                  <span className="day001-check" aria-hidden="true">✓</span>
-                  <span><strong>{item.title}</strong> — {item.text}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <CardSection icon="📚" title="ARRAYS & TUPLES" cards={ARRAYS} columns={3} />
-          <CardSection icon="🧩" title="OBJECTS" cards={OBJECTS} columns={4} />
-          <CardSection icon="🔒" title="READONLY TYPES" cards={READONLY} columns={4} />
-          <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
-
-          <footer className="day001-hashtags">
-            <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Episode5</span><span>#DataTypes</span><span>#JSLearnHub</span>
-          </footer>
+          <div className="day001-profile">
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
+            <div>
+              <p className="day001-profile-name">Sumit Rawal</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <section style={{ background: '#0d1117', padding: '8px 16px 56px', display: 'flex', justifyContent: 'center' }}>
-        <figure style={{ maxWidth: '860px', width: '100%', margin: 0 }}>
-          <h2 style={{ color: '#e6edf3', fontSize: '1.05rem', fontWeight: 700, margin: '0 0 12px', textAlign: 'center' }}>
-            <span aria-hidden="true">📌</span> Episode 5 Notes — Data Types: Arrays, Tuples, Objects &amp; Readonly
-          </h2>
-          <a href={EP_IMAGE} target="_blank" rel="noopener noreferrer">
-            <img
-              src={EP_IMAGE}
-              alt="TypeScript Series Episode 5 — Data Types: arrays storing multiple values of the same type using Type[] with number and string array examples and common methods (push, pop, shift, unshift, length), tuples as arrays with fixed length and known types such as [string, number, boolean] and an rgb example, objects storing key-value pairs with a defined shape and optional properties using a question mark, and readonly types making data immutable including readonly arrays and tuples, why readonly prevents accidental changes and improves code safety, and using as const to make an entire object readonly and literal"
-              loading="lazy"
-              style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '14px', border: '1px solid #2a3441' }}
-            />
-          </a>
-          <figcaption style={{ color: '#8fb6c2', fontSize: '0.82rem', textAlign: 'center', marginTop: '10px' }}>
-            My handwritten Episode 5 notes — arrays &amp; methods, tuples, object shapes, and readonly / as const.
-            Click to open full size.
-          </figcaption>
-        </figure>
-      </section>
-    </>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '5%' }} /></div>
+
+        <p className="day001-summary">
+          Lecture 05 — <strong>function calling</strong>. Instead of routing by hand, I <strong>declare tools</strong>{' '}
+          to the model (a name, description, and a <code>Type.OBJECT</code> parameter schema), and the model{' '}
+          <strong>decides</strong> which to call. It returns a <code>functionCall</code> like{' '}
+          <code>cryptoCurrency({'{'} coin: "bitcoin" {'}'})</code>; I <strong>execute</strong> the real function,{' '}
+          <strong>feed the result back</strong>, and it answers in plain language. That is the{' '}
+          <strong>agent loop</strong> — think, act, observe, respond. With prompt, chat, tools and function calling
+          done, the pieces of a real agent are in place. <em>Five lectures in.</em>
+        </p>
+
+        <section className="day001-learnt">
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
+          <ul className="day001-learnt-list">
+            {LEARNT_TODAY.map((item) => (
+              <li key={item.title}>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <CardSection icon="📋" title="DECLARING TOOLS" cards={DECLARE} columns={3} />
+        <CardSection icon="♻️" title="THE FUNCTION-CALL LOOP" cards={LOOP} columns={3} />
+        <CardSection icon="🎯" title="WHY IT MATTERS" cards={WHY} columns={3} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
+
+        <footer className="day001-hashtags">
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#FunctionCalling</span><span>#CoderArmy</span><span>#JavaScript</span>
+        </footer>
+      </div>
+    </div>
   );
 }

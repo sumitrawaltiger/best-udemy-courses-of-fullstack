@@ -2,116 +2,94 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_FUNCTIONS = 'https://www.typescriptlang.org/docs/handbook/2/functions.html';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
-const EP_IMAGE = '/typescript-notes/ep04-functions-in-typescript.jpeg';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture04';
+const COINGECKO = 'https://www.coingecko.com/en/api';
 
 const LEARNT_TODAY = [
-  { title: 'Function types', text: 'specify the types of parameters and the return value of a function' },
-  { title: 'The syntax', text: '( ) → parameters · : type → parameter type · : returnType → return type' },
-  { title: 'First-class citizens', text: 'functions are values in TypeScript — they can be typed, passed, and returned' },
-  { title: 'Return types', text: 'explicitly define what a function gives back: `function greet(n: string): string`' },
-  { title: 'void', text: 'if a function returns nothing, its return type is void' },
-  { title: 'Optional parameters', text: 'add a ? after the parameter name — it may be omitted' },
-  { title: 'Check for undefined', text: 'an optional param may be undefined, so guard before using it' },
-  { title: 'Default parameters', text: 'provide a default value used when no argument is passed' },
-  { title: 'Rest parameters', text: 'use ... to accept multiple arguments as a typed array' },
-  { title: 'The payoff', text: 'strongly typed functions = fewer bugs + better tools + happy developers' },
+  { title: 'The knowledge gap', text: 'an LLM only knows its training data up to a cutoff — no live prices, weather, or today’s news' },
+  { title: 'Tools are just functions', text: 'to reach live data, write plain JavaScript functions that call real APIs and return the result' },
+  { title: 'fetch in Node', text: 'modern Node has fetch built in — hit any REST endpoint and parse the JSON response' },
+  { title: 'Crypto price tool', text: 'a getCryptoPrice(coin) function fetches live prices from the CoinGecko API' },
+  { title: 'Weather & news tools', text: 'the same pattern — one function per data source (weather API, news API)' },
+  { title: 'The routing problem', text: 'given a user question, which tool should run? A manual if/else chain is brittle and does not scale' },
+  { title: 'Why this matters', text: 'this sets up function calling — instead of routing by hand, let the model choose the tool (Day 5)' },
 ];
 
-const TYPES = [
+const GAP = [
   {
-    icon: '➕', title: 'Function Types', titleClass: 'card-title-cyan', subtitle: 'Type Both Ends',
+    icon: '🕳️', title: 'The Knowledge Cutoff', titleClass: 'card-title-cyan', subtitle: 'No Live Data',
     description:
-      'Specify the types of the parameters and the return value. Now the compiler guarantees callers pass the right arguments and use the result correctly.',
-    code: '// function with types\nfunction add(a: number, b: number): number {\n  return a + b;\n}',
+      'The model was trained up to a date and frozen. Ask for the Bitcoin price or today’s weather and it cannot know — it has no connection to the live world.',
+    code: '// "What is the price of Bitcoin right now?"\n// → the model has no idea — training data is frozen',
   },
   {
-    icon: '↩️', title: 'Return Types', titleClass: 'card-title-purple', subtitle: 'What It Gives Back',
+    icon: '🌉', title: 'Bridge To Reality', titleClass: 'card-title-purple', subtitle: 'Give It Tools',
     description:
-      'Explicitly define what a function returns. It documents intent and catches a wrong return value the moment you write it.',
-    code: '// returns a string\nfunction greet(name: string): string {\n  return "Hello, " + name;\n}',
-  },
-  {
-    icon: '🕳️', title: 'void', titleClass: 'card-title-amber', subtitle: 'Returns Nothing',
-    description:
-      'If a function doesn’t return anything, its return type is void — the type for loggers, handlers, and side-effect functions.',
-    code: 'function logMessage(msg: string): void {\n  console.log(msg);\n}',
+      'The fix is to fetch real data ourselves and hand it to the model. A "tool" is nothing magical — it is a normal function that calls an API and returns fresh information.',
+    code: '// tool = a function the AI can use to reach the real world\n// fetch live data → feed it back into the answer',
   },
 ];
 
-const PARAMS = [
+const TOOLS = [
   {
-    icon: '❔', title: 'Optional Parameters', titleClass: 'card-title-cyan', subtitle: 'Add a ?',
+    icon: '🪙', title: 'Crypto Price Tool', titleClass: 'card-title-cyan', subtitle: 'CoinGecko API',
     description:
-      'A ? after the parameter name makes it optional. Inside the function it may be undefined, so TypeScript makes you check before using it.',
-    code: 'function greet(name: string, age?: number): void {\n  if (age !== undefined) {\n    console.log(name + " is " + age + " years old.");\n  } else {\n    console.log(name + " (age not provided)");\n  }\n}',
+      'A function takes a coin id, calls the CoinGecko API, and returns the live price data. Node’s built-in fetch makes it a couple of lines.',
+    code: 'async function getCryptoPrice(coin) {\n  const res = await fetch(\n    `https://api.coingecko.com/api/v3/coins/markets` +\n    `?vs_currency=inr&ids=${coin}`\n  );\n  return await res.json();\n}\nawait getCryptoPrice("bitcoin");',
   },
   {
-    icon: '🎚️', title: 'Default Parameters', titleClass: 'card-title-blue', subtitle: 'Fallback Values',
+    icon: '🌦️', title: 'Weather & News', titleClass: 'card-title-purple', subtitle: 'Same Pattern',
     description:
-      'Provide a default value that’s used when no argument is passed. The type is inferred from the default — no annotation needed.',
-    code: 'function greet(name: string, message: string = "Hi!"): void {\n  console.log(message + " " + name);\n}',
+      'Every data source is one more function: a weather API by city, a news API by topic. Consistent shape — take an argument, fetch, return JSON.',
+    code: 'async function getWeather(city) {\n  const res = await fetch(`.../current.json?q=${city}`);\n  return await res.json();\n}\nasync function getNews(topic) { /* fetch news */ }',
   },
   {
-    icon: '📎', title: 'Rest Parameters', titleClass: 'card-title-amber', subtitle: 'Many Args, One Array',
+    icon: '🔌', title: 'fetch Is Built In', titleClass: 'card-title-amber', subtitle: 'No Extra Library',
     description:
-      'Use ... to accept any number of arguments as a typed array — perfect for sum, max, or logging helpers.',
-    code: 'function sum(...numbers: number[]): number {\n  let total = 0;\n  for (let n of numbers) total += n;\n  return total;\n}\nsum(1, 2, 3);   // 6\nsum(10, 20);    // 30',
-  },
-  {
-    icon: '📋', title: 'Quick Recap', titleClass: 'card-title-lime', subtitle: 'Why It Matters',
-    description:
-      'Function types give clarity. Return types make code predictable. Optional & default parameters make functions flexible. Rest parameters handle multiple inputs easily.',
-    footer: '+ Strongly typed functions = fewer bugs + better tools + happy developers!',
+      'Modern Node ships fetch, so calling REST APIs needs nothing extra. Await the response, parse the JSON, and you have real-world data inside your program.',
+    code: 'const res = await fetch(url);\nconst data = await res.json();\n// live data — ready to feed the model',
   },
 ];
 
-const APPLY = [
+const ROUTING = [
   {
-    icon: '🧩', title: 'Functions Are Values', titleClass: 'card-title-cyan', subtitle: 'First-Class Citizens',
+    icon: '🤔', title: 'Which Tool?', titleClass: 'card-title-cyan', subtitle: 'The Real Problem',
     description:
-      'Functions can be stored in variables, passed as arguments, and returned — and every one of those positions can be typed.',
-    code: 'const multiply: (a: number, b: number) => number =\n  (a, b) => a * b;',
+      'Now the hard part: for a given question, which function should run? "Delhi ki news bata" → news. "Bitcoin price?" → crypto. Deciding this in code is the whole challenge.',
+    code: '// question: "Bhai delhi ki news bata"\n// → should call getNews("delhi") ... but how does the code know?',
   },
   {
-    icon: '🔁', title: 'Typed Callbacks', titleClass: 'card-title-purple', subtitle: 'map / filter',
+    icon: '🧱', title: 'Manual Routing Breaks', titleClass: 'card-title-purple', subtitle: 'if / else Does Not Scale',
     description:
-      'Array methods take functions. TypeScript already knows the callback’s parameter types, so you get autocomplete and safety for free.',
-    code: 'const nums = [1, 2, 3];\nconst doubled = nums.map((n) => n * 2); // n is number',
+      'Hard-coding keyword checks (if the text has "price" call crypto…) is fragile and explodes as you add tools. Natural language is too varied for if/else.',
+    code: 'if (q.includes("price")) getCryptoPrice(...)\nelse if (q.includes("weather")) getWeather(...)\nelse if (q.includes("news")) getNews(...)\n// brittle, and worse with every new tool',
   },
   {
-    icon: '🛡️', title: 'Errors Caught Early', titleClass: 'card-title-amber', subtitle: 'The Real Win',
+    icon: '➡️', title: 'The Better Way', titleClass: 'card-title-amber', subtitle: 'Let The Model Decide',
     description:
-      'Pass a string where a number belongs and the compiler stops you in the editor — long before that code ever reaches a user.',
-    code: 'add(2, 3);    // ✅ 5\nadd("2", 3);  // ❌ string not assignable to number',
-  },
-  {
-    icon: '🔜', title: 'Next: Data Types', titleClass: 'card-title-lime', subtitle: 'Day 5 Preview',
-    description:
-      'Tomorrow is Episode 5 — data types: arrays, tuples, objects, and readonly types for structuring real data.',
-    link: { href: '/day-005', label: 'Go to Day 5 →' },
+      'Instead of routing by hand, describe the tools to the model and let it choose which one to call and with what arguments. That is function calling — tomorrow’s lecture.',
+    footer: 'Manual routing → function calling (Day 5)',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Functions', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
+    icon: '💻', title: 'Lecture 04 Code', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The handbook’s deep dive on function types — parameters, returns, rest args, overloads, and typing this.',
-    link: { href: TS_FUNCTIONS, label: 'Read the Functions chapter →', external: true },
+      'The crypto, weather and news functions and the routing experiment from this lecture in the STRIKE GenAI repo.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 04 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Experiment Live',
+    icon: '📈', title: 'CoinGecko API', titleClass: 'card-title-purple', subtitle: 'Free Crypto Data',
     description:
-      'Write a typed function, call it wrong, and watch the error appear instantly. Then try optional and rest params.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+      'The public API used for the crypto tool — live prices and market data, no key needed for basic endpoints.',
+    link: { href: COINGECKO, label: 'CoinGecko API docs →', external: true },
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    icon: '🔜', title: 'Next: Function Calling', titleClass: 'card-title-amber', subtitle: 'Day 5 Preview',
     description:
-      'Functions are where types earn their keep — every React component, hook, and handler this year is a typed function.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+      'Tomorrow is Lecture 05 — declare tools to the model with typed parameters so it decides which function to call. The first real step toward an agent.',
+    link: { href: '/day-005', label: 'Go to Day 5 →' },
   },
 ];
 
@@ -172,87 +150,64 @@ export default function Day004() {
   }, []);
 
   return (
-    <>
-      <div className="day001-page">
-        <div className="day001-scale-wrap" ref={scaleRef}>
-          <header className="day001-topbar">
-            <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-            <Link to="/day-003" className="day001-nav-btn day001-nav-prev">← Day 3</Link>
-            <p className="day001-datetime">TypeScript Day 4</p>
-            <Link to="/day-005" className="day001-nav-btn day001-nav-next">Day 5 →</Link>
-          </header>
+    <div className="day001-page">
+      <div className="day001-scale-wrap" ref={scaleRef}>
+        <header className="day001-topbar">
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-003" className="day001-nav-btn day001-nav-prev">← Day 3</Link>
+          <p className="day001-datetime">Agentic AI Day 4</p>
+          <Link to="/day-005" className="day001-nav-btn day001-nav-next">Day 5 →</Link>
+        </header>
 
-          <div className="day001-hero">
-            <div className="day001-hero-left">
-              <div className="day001-tags"><span>TypeScript</span><span>Episode 4</span><span>Functions</span></div>
-              <div className="day001-title-block">
-                <h1 className="day001-day-num">DAY 4 <span aria-hidden="true">⚙️</span></h1>
-                <p className="day001-day-theme">FUNCTIONS IN TYPESCRIPT</p>
-              </div>
-            </div>
-            <div className="day001-profile">
-              <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
-              <div>
-                <p className="day001-profile-name">Sumit Rawal</p>
-                <p className="day001-profile-role">TS · TYPESCRIPT</p>
-              </div>
+        <div className="day001-hero">
+          <div className="day001-hero-left">
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 04</span></div>
+            <div className="day001-title-block">
+              <h1 className="day001-day-num">DAY 4 <span aria-hidden="true">🌐</span></h1>
+              <p className="day001-day-theme">REACHING REAL-WORLD DATA WITH TOOLS</p>
             </div>
           </div>
-
-          <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '4%' }} /></div>
-
-          <p className="day001-summary">
-            <strong>Episode 4</strong> — functions. Functions are <strong>first-class citizens</strong> in
-            TypeScript, and I can type both ends: the <strong>parameters</strong> and the{' '}
-            <strong>return value</strong> (or <code>void</code> when it returns nothing). I made functions flexible
-            with <strong>optional</strong> parameters (<code>?</code>, then check for <code>undefined</code>),{' '}
-            <strong>default</strong> values, and <strong>rest</strong> parameters (<code>...</code>) that gather
-            arguments into a typed array.{' '}
-            <em>Strongly typed functions = fewer bugs + better tools + happy developers.</em>
-          </p>
-
-          <section className="day001-learnt">
-            <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
-            <ul className="day001-learnt-list">
-              {LEARNT_TODAY.map((item) => (
-                <li key={item.title}>
-                  <span className="day001-check" aria-hidden="true">✓</span>
-                  <span><strong>{item.title}</strong> — {item.text}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <CardSection icon="➕" title="FUNCTION & RETURN TYPES" cards={TYPES} columns={3} />
-          <CardSection icon="🎛️" title="PARAMETERS" cards={PARAMS} columns={4} />
-          <CardSection icon="🚀" title="IN PRACTICE" cards={APPLY} columns={4} />
-          <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
-
-          <footer className="day001-hashtags">
-            <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Episode4</span><span>#Functions</span><span>#JSLearnHub</span>
-          </footer>
+          <div className="day001-profile">
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
+            <div>
+              <p className="day001-profile-name">Sumit Rawal</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <section style={{ background: '#0d1117', padding: '8px 16px 56px', display: 'flex', justifyContent: 'center' }}>
-        <figure style={{ maxWidth: '860px', width: '100%', margin: 0 }}>
-          <h2 style={{ color: '#e6edf3', fontSize: '1.05rem', fontWeight: 700, margin: '0 0 12px', textAlign: 'center' }}>
-            <span aria-hidden="true">📌</span> Episode 4 Notes — Functions in TypeScript
-          </h2>
-          <a href={EP_IMAGE} target="_blank" rel="noopener noreferrer">
-            <img
-              src={EP_IMAGE}
-              alt="TypeScript Series Episode 4 — Functions in TypeScript: function types specifying parameter and return value types with the add example, the syntax of parameters and return types, functions as first-class citizens, return types with the greet example, void when a function returns nothing, optional parameters using a question mark and checking for undefined, default parameters providing fallback values, rest parameters using the spread to accept multiple arguments as an array with the sum example, and a quick recap that strongly typed functions mean fewer bugs, better tools and happy developers"
-              loading="lazy"
-              style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '14px', border: '1px solid #2a3441' }}
-            />
-          </a>
-          <figcaption style={{ color: '#8fb6c2', fontSize: '0.82rem', textAlign: 'center', marginTop: '10px' }}>
-            My handwritten Episode 4 notes — function &amp; return types, void, optional, default, and rest
-            parameters. Click to open full size.
-          </figcaption>
-        </figure>
-      </section>
-    </>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '4%' }} /></div>
+
+        <p className="day001-summary">
+          Lecture 04 — the model has a <strong>knowledge cutoff</strong> and no live data, so I built{' '}
+          <strong>tools</strong>: plain JavaScript functions that <code>fetch</code> real data from APIs —{' '}
+          crypto prices from <strong>CoinGecko</strong>, plus weather and news. The catch is <strong>routing</strong>:
+          for any given question, which tool should run? A manual <code>if/else</code> chain is brittle and does not
+          scale. That is exactly the problem <strong>function calling</strong> solves — letting the model choose the
+          tool itself. <em>Tomorrow, the AI starts deciding.</em>
+        </p>
+
+        <section className="day001-learnt">
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
+          <ul className="day001-learnt-list">
+            {LEARNT_TODAY.map((item) => (
+              <li key={item.title}>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <CardSection icon="🕳️" title="THE KNOWLEDGE GAP" cards={GAP} columns={2} />
+        <CardSection icon="🔧" title="BUILDING TOOLS" cards={TOOLS} columns={3} />
+        <CardSection icon="🧭" title="THE ROUTING PROBLEM" cards={ROUTING} columns={3} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
+
+        <footer className="day001-hashtags">
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Tools</span><span>#CoderArmy</span><span>#JavaScript</span>
+        </footer>
+      </div>
+    </div>
   );
 }

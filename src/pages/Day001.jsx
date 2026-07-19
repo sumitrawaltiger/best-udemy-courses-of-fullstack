@@ -2,109 +2,100 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_HANDBOOK = 'https://www.typescriptlang.org/docs/handbook/intro.html';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
-const EP_IMAGE = '/typescript-notes/ep01-introduction-to-typescript.jpeg';
+const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture01';
+const AI_STUDIO = 'https://aistudio.google.com/';
 
 const LEARNT_TODAY = [
-  { title: 'What TypeScript is', text: 'a superset of JavaScript that adds static typing — write better, safer, more maintainable code' },
-  { title: 'Static typing', text: 'types are checked before the code runs, so mistakes surface in the editor' },
-  { title: 'Better IDE support', text: 'autocompletion and IntelliSense come from the types you write' },
-  { title: 'Early error detection', text: 'catch errors at compile time, not at runtime in front of users' },
-  { title: 'Easier refactoring', text: 'rename and restructure with the compiler watching your back' },
-  { title: 'Works with existing JS', text: 'every valid JavaScript file is already valid TypeScript — adopt it gradually' },
-  { title: 'JS vs TS', text: 'JS: dynamic typing, runtime errors. TS: static typing, compile-time errors, scales better' },
-  { title: 'TS compiles to JS', text: '.ts → TypeScript Compiler (tsc) → .js that runs in any browser or Node' },
-  { title: 'Installing', text: 'npm install -g typescript, then tsc -v to confirm the compiler is ready' },
-  { title: 'First program', text: 'hello.ts → tsc hello.ts → node hello.js → "Hello, TypeScript!"' },
+  { title: 'New phase begins', text: 'Phase 1 of the plan is Agentic AI — I am learning it from Coder Army’s STRIKE GenAI (Rohit Negi), entirely in JavaScript' },
+  { title: 'What Generative AI is', text: 'models that generate new content — text, code, answers — instead of only classifying existing data' },
+  { title: 'LLMs predict tokens', text: 'a large language model does one thing: predict the most likely next token, over and over' },
+  { title: 'Prompt and completion', text: 'you send a prompt, the model completes it token by token — that loop is every LLM feature' },
+  { title: 'Why JavaScript', text: 'the whole course uses JS with Google’s Gemini SDK (@google/genai) — no Python required' },
+  { title: 'The ecosystem', text: 'OpenAI (GPT), Google (Gemini), Meta (Llama) — this course builds on Google Gemini' },
+  { title: 'Google AI Studio', text: 'create a free Gemini API key at aistudio.google.com to start building' },
+  { title: 'The road ahead', text: 'from the first API call to chat, tools, RAG, autonomous agents, LangGraph and full projects' },
 ];
 
-const WHAT_WHY = [
+const WHY = [
   {
-    icon: '🔷', title: 'What is TypeScript?', titleClass: 'card-title-cyan', subtitle: 'A Superset of JavaScript',
+    icon: '🚀', title: 'A New Phase', titleClass: 'card-title-cyan', subtitle: 'Agentic AI Starts',
     description:
-      'TypeScript is a superset of JavaScript that adds static typing. It helps us write better, safer, and more maintainable code — while still producing plain JavaScript underneath.',
-    footer: '+ Static typing · IDE support · Early errors · Modern JS features',
+      'After the HTML/CSS/JavaScript foundation, Phase 1 of the roadmap is Agentic AI. I am following Coder Army’s STRIKE GenAI by Rohit Negi — built end to end in JavaScript.',
+    footer: '100 days · JavaScript · Google Gemini · agents',
   },
   {
-    icon: '💡', title: 'Why TypeScript?', titleClass: 'card-title-purple', subtitle: 'Confidence, Not Restriction',
+    icon: '🧠', title: 'What is Generative AI?', titleClass: 'card-title-purple', subtitle: 'It Generates',
     description:
-      'Catch errors at compile time instead of runtime. Get real autocompletion and IntelliSense, refactor safely, and keep large projects sane. TypeScript doesn’t change JavaScript — it makes JavaScript awesome.',
-    code: 'let message: string = "Hello!";\nmessage = 42; // ❌ caught before it ever runs',
+      'Traditional ML classifies or predicts labels. Generative AI produces brand-new content — text, code, summaries, answers — from a prompt. LLMs are the engine behind it.',
   },
   {
-    icon: '🤝', title: 'Works With Existing JS', titleClass: 'card-title-amber', subtitle: 'Nothing Is Wasted',
+    icon: '🟨', title: 'Why JavaScript?', titleClass: 'card-title-amber', subtitle: 'No Python Needed',
     description:
-      'Every valid .js file is already valid TypeScript. You can adopt types file by file — HTML5, CSS3 and JavaScript are the prerequisites, and they all still apply.',
-    link: { href: TS_HANDBOOK, label: 'Read the TS Handbook →', external: true },
+      'Most GenAI tutorials are in Python. This course proves you can build the entire modern stack — chat, tools, RAG, agents — in JavaScript with Google’s @google/genai SDK.',
+    link: { href: GH_REPO, label: 'STRIKE GenAI on GitHub →', external: true },
   },
 ];
 
-const VS = [
+const HOW = [
   {
-    icon: '🟨', title: 'JavaScript (JS)', titleClass: 'card-title-amber', subtitle: 'Dynamic',
+    icon: '🔤', title: 'Token Prediction', titleClass: 'card-title-cyan', subtitle: 'The Core Truth',
     description:
-      'Dynamic typing, errors show up at runtime, limited IDE support, and harder to maintain as a project grows. Flexible, but it trusts you completely.',
-    code: 'let x = 5;\nx = "five"; // fine in JS — until it breaks',
+      'An LLM does not think or understand — it predicts the next token (a word or piece of a word). Given "The capital of France is", it predicts "Paris". Repeat that, and you get every answer.',
+    code: '"The capital of France is"  →  "Paris"\n// every LLM output is this loop, one token at a time',
   },
   {
-    icon: '🔷', title: 'TypeScript (TS)', titleClass: 'card-title-cyan', subtitle: 'Static',
+    icon: '💬', title: 'Prompt → Completion', titleClass: 'card-title-purple', subtitle: 'The Interaction',
     description:
-      'Static typing, errors at compile time, excellent IDE support, and far easier to maintain and scale. The compiler is a second pair of eyes on every line.',
-    code: 'let x: number = 5;\nx = "five"; // ❌ Type \'string\' is not assignable',
+      'You send a prompt; the model returns a completion built token by token. Everything — chat, tools, agents — is layered on top of this single request/response idea.',
+    code: '// prompt in, completion out\nprompt:      "Explain what a variable is"\ncompletion:  "A variable is a named container ..."',
   },
   {
-    icon: '🔁', title: 'The Pipeline', titleClass: 'card-title-blue', subtitle: '.ts → tsc → .js',
+    icon: '📅', title: 'Parametric Knowledge', titleClass: 'card-title-amber', subtitle: 'And Its Limits',
     description:
-      'You write TypeScript (.ts). The TypeScript Compiler checks the types and emits JavaScript (.js) that runs in any browser or on Node. Types are erased at runtime.',
-    code: 'hello.ts  →  tsc  →  hello.js  (runs anywhere)',
+      'A model only knows what it saw in training (its parametric knowledge), up to a cutoff date. It has no live data — which is exactly why later lectures add tools and RAG.',
+    code: '// no internet, no live prices, no today’s news\n// → we will give it tools (Day 4–5) and RAG (later)',
   },
 ];
 
-const FIRST = [
+const TOOLKIT = [
   {
-    icon: '📥', title: 'Install TypeScript', titleClass: 'card-title-green', subtitle: 'npm + tsc',
+    icon: '🔑', title: 'Google AI Studio', titleClass: 'card-title-cyan', subtitle: 'Free Gemini Key',
     description:
-      'Install the compiler globally with npm, then check the version to confirm tsc is on your PATH and ready to use.',
-    code: '# using npm\nnpm install -g typescript\n\n# check version\ntsc -v',
+      'Sign in to Google AI Studio, create an API key, and keep it safe. This key lets your JavaScript talk to the Gemini models used throughout the course.',
+    link: { href: AI_STUDIO, label: 'Open Google AI Studio →', external: true },
   },
   {
-    icon: '📄', title: 'Write hello.ts', titleClass: 'card-title-cyan', subtitle: 'Your First Types',
+    icon: '📦', title: 'The Gemini SDK', titleClass: 'card-title-purple', subtitle: '@google/genai',
     description:
-      'Create a .ts file and annotate a variable with a type. This is the whole idea of TypeScript in two lines — a value, and a promise about what it is.',
-    code: 'let message: string = "Hello, TypeScript!";\nconsole.log(message);',
+      'One npm package is the whole toolkit for now. Install it, load the key from a .env file, and you can send your first prompt from Node in a few lines — that is tomorrow.',
+    code: 'npm install @google/genai dotenv\n\n# .env\nGEMINI_API_KEY=your_key_here',
   },
   {
-    icon: '🔨', title: 'Compile It', titleClass: 'card-title-blue', subtitle: 'tsc hello.ts',
+    icon: '🗺️', title: 'The Road Ahead', titleClass: 'card-title-amber', subtitle: '100 Days',
     description:
-      'Run the compiler on the file. It type-checks your code and produces hello.js — plain JavaScript with the types stripped away.',
-    code: 'tsc hello.ts   # → hello.js',
-  },
-  {
-    icon: '▶️', title: 'Run The Output', titleClass: 'card-title-lime', subtitle: 'node hello.js',
-    description:
-      'Execute the emitted JavaScript with Node and see your first TypeScript program print. .ts is what you write; .js is what runs.',
-    code: 'node hello.js\n// → Hello, TypeScript! 🙂',
+      'First code and chat, then system instructions, tools and function calling, RAG, autonomous agents, LangGraph, and real projects. Today is the map; tomorrow we write code.',
+    footer: 'chat → tools → RAG → agents → LangGraph → projects',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'TypeScript Handbook', titleClass: 'card-title-cyan', subtitle: 'Official Docs',
+    icon: '💻', title: 'STRIKE GenAI Repo', titleClass: 'card-title-cyan', subtitle: 'Coder Army · GitHub',
     description:
-      'The canonical, free guide from the team that builds TypeScript. Start with "The Basics" — exactly what Episode 1 covers.',
-    link: { href: TS_HANDBOOK, label: 'Open the Handbook →', external: true },
+      'All lecture code for the course lives here — Lecture 01 onward. Clone it and follow along as each day builds on the last.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 01 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Try It In The Browser',
+    icon: '🔑', title: 'Get Your API Key', titleClass: 'card-title-purple', subtitle: 'Before Day 2',
     description:
-      'Write TypeScript and watch it compile to JavaScript live, with full error messages — no install needed. Perfect for today’s snippets.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+      'Create a Gemini API key in Google AI Studio and put it in a .env file. You will need it for your first program tomorrow.',
+    link: { href: AI_STUDIO, label: 'Google AI Studio →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Setting Up', titleClass: 'card-title-amber', subtitle: 'Day 2 Preview',
+    icon: '🔜', title: 'Next: First Code', titleClass: 'card-title-amber', subtitle: 'Day 2 Preview',
     description:
-      'Tomorrow is Episode 2 — setting up TypeScript properly: installing, tsconfig.json, the compiler options that matter, and compiling a real project.',
+      'Tomorrow is Lecture 02 — write our first code: the Gemini SDK, a single request, then a multi-turn chatbot with history, system instructions and thinking control.',
     link: { href: '/day-002', label: 'Go to Day 2 →' },
   },
 ];
@@ -166,86 +157,66 @@ export default function Day001() {
   }, []);
 
   return (
-    <>
-      <div className="day001-page">
-        <div className="day001-scale-wrap" ref={scaleRef}>
-          <header className="day001-topbar">
-            <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-            <Link to="/day-000" className="day001-nav-btn day001-nav-prev">← Day 0</Link>
-            <p className="day001-datetime">TypeScript Day 1</p>
-            <Link to="/day-002" className="day001-nav-btn day001-nav-next">Day 2 →</Link>
-          </header>
+    <div className="day001-page">
+      <div className="day001-scale-wrap" ref={scaleRef}>
+        <header className="day001-topbar">
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-000" className="day001-nav-btn day001-nav-prev">← Day 0</Link>
+          <p className="day001-datetime">Agentic AI Day 1</p>
+          <Link to="/day-002" className="day001-nav-btn day001-nav-next">Day 2 →</Link>
+        </header>
 
-          <div className="day001-hero">
-            <div className="day001-hero-left">
-              <div className="day001-tags"><span>TypeScript</span><span>Episode 1</span><span>Year 1</span></div>
-              <div className="day001-title-block">
-                <h1 className="day001-day-num">DAY 1 <span aria-hidden="true">🔷</span></h1>
-                <p className="day001-day-theme">INTRODUCTION TO TYPESCRIPT</p>
-              </div>
-            </div>
-            <div className="day001-profile">
-              <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
-              <div>
-                <p className="day001-profile-name">Sumit Rawal</p>
-                <p className="day001-profile-role">TS · TYPESCRIPT</p>
-              </div>
+        <div className="day001-hero">
+          <div className="day001-hero-left">
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 01</span></div>
+            <div className="day001-title-block">
+              <h1 className="day001-day-num">DAY 1 <span aria-hidden="true">🤖</span></h1>
+              <p className="day001-day-theme">INTRODUCTION TO GENERATIVE AI</p>
             </div>
           </div>
-
-          <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '1%' }} /></div>
-
-          <p className="day001-summary">
-            Day one of the 4-year journey — <strong>Episode 1</strong> of my TypeScript series. TypeScript is a{' '}
-            <strong>superset of JavaScript</strong> that adds <strong>static typing</strong>: catch errors at
-            compile time, get real autocompletion, refactor safely, and scale big projects. It works with all my
-            existing JavaScript (HTML5/CSS3/JS are the prerequisites). I compared <strong>JS vs TS</strong>, saw the{' '}
-            <code>.ts → tsc → .js</code> pipeline, installed the compiler, and ran my first program.{' '}
-            <em>If JavaScript lets you write code, TypeScript helps you write code with confidence.</em>
-          </p>
-
-          <section className="day001-learnt">
-            <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
-            <ul className="day001-learnt-list">
-              {LEARNT_TODAY.map((item) => (
-                <li key={item.title}>
-                  <span className="day001-check" aria-hidden="true">✓</span>
-                  <span><strong>{item.title}</strong> — {item.text}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <CardSection icon="🔷" title="WHAT & WHY" cards={WHAT_WHY} columns={3} />
-          <CardSection icon="⚖️" title="JAVASCRIPT vs TYPESCRIPT" cards={VS} columns={3} />
-          <CardSection icon="🛠️" title="INSTALL & FIRST PROGRAM" cards={FIRST} columns={4} />
-          <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
-
-          <footer className="day001-hashtags">
-            <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Episode1</span><span>#WebDev</span><span>#JSLearnHub</span>
-          </footer>
+          <div className="day001-profile">
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
+            <div>
+              <p className="day001-profile-name">Sumit Rawal</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <section style={{ background: '#0d1117', padding: '8px 16px 56px', display: 'flex', justifyContent: 'center' }}>
-        <figure style={{ maxWidth: '860px', width: '100%', margin: 0 }}>
-          <h2 style={{ color: '#e6edf3', fontSize: '1.05rem', fontWeight: 700, margin: '0 0 12px', textAlign: 'center' }}>
-            <span aria-hidden="true">📌</span> Episode 1 Notes — Introduction to TypeScript
-          </h2>
-          <a href={EP_IMAGE} target="_blank" rel="noopener noreferrer">
-            <img
-              src={EP_IMAGE}
-              alt="TypeScript Series Episode 1 — Introduction to TypeScript: what TypeScript is (a superset of JavaScript adding static typing), key points (static typing, better IDE support, early error detection, improved code quality, modern JavaScript features), why TypeScript (catch errors at compile time, better autocompletion and IntelliSense, easier refactoring, safer code for large projects, works with existing JavaScript), JavaScript vs TypeScript comparison table, the .ts to TypeScript Compiler to .js pipeline, installing TypeScript with npm install -g typescript and tsc -v, and a first program: hello.ts with a typed message, compiled with tsc hello.ts and run with node hello.js"
-              loading="lazy"
-              style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '14px', border: '1px solid #2a3441' }}
-            />
-          </a>
-          <figcaption style={{ color: '#8fb6c2', fontSize: '0.82rem', textAlign: 'center', marginTop: '10px' }}>
-            My handwritten Episode 1 notes — what &amp; why, JS vs TS, the compiler pipeline, and the first program.
-            Click to open full size.
-          </figcaption>
-        </figure>
-      </section>
-    </>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '1%' }} /></div>
+
+        <p className="day001-summary">
+          Day one of <strong>Phase 1 — Agentic AI</strong>, from Coder Army’s <strong>STRIKE GenAI</strong> by
+          Rohit Negi, all in <strong>JavaScript</strong>. <strong>Generative AI</strong> creates new content
+          instead of just classifying it, and an <strong>LLM</strong> does one thing —{' '}
+          <strong>predict the next token</strong> — turning a <code>prompt</code> into a <code>completion</code>.
+          A model only knows its training data (parametric knowledge) with a cutoff, so later days add{' '}
+          <strong>tools</strong> and <strong>RAG</strong>. The whole toolkit for now: <strong>Node</strong>, the{' '}
+          <code>@google/genai</code> SDK, and a free <strong>Google AI Studio</strong> key.{' '}
+          <em>Tomorrow we write our first code.</em>
+        </p>
+
+        <section className="day001-learnt">
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
+          <ul className="day001-learnt-list">
+            {LEARNT_TODAY.map((item) => (
+              <li key={item.title}>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <CardSection icon="🚀" title="WHY AGENTIC AI" cards={WHY} columns={3} />
+        <CardSection icon="🧠" title="HOW LLMs WORK" cards={HOW} columns={3} />
+        <CardSection icon="🧰" title="THE TOOLKIT" cards={TOOLKIT} columns={3} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
+
+        <footer className="day001-hashtags">
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AgenticAI</span><span>#CoderArmy</span><span>#JavaScript</span>
+        </footer>
+      </div>
+    </div>
   );
 }

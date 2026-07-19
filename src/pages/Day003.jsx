@@ -2,116 +2,80 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_EVERYDAY = 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
-const EP_IMAGE = '/typescript-notes/ep03-type-system-basics.jpeg';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture03';
+const GH_LECTURE_UI = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture03.1';
 
 const LEARNT_TODAY = [
-  { title: 'Type annotations', text: 'explicitly define the type of a variable, parameter, or value with a colon' },
-  { title: 'Common syntax', text: 'string → text, number → numbers, boolean → true/false, array[] → list, object {} → key:value' },
-  { title: 'Type inference', text: 'TypeScript automatically infers the type from the value — no annotation needed' },
-  { title: 'string', text: 'represents text: `let city: string = "Kashmir"`' },
-  { title: 'number', text: 'whole numbers or decimals — there is no separate int/float' },
-  { title: 'boolean', text: 'true or false, nothing else' },
-  { title: 'bigint', text: 'very large numbers, written with an n suffix: 99999999999n' },
-  { title: 'symbol', text: 'unique & immutable values: Symbol("id")' },
-  { title: 'any', text: 'turns off type checking — use carefully (it defeats the point)' },
-  { title: 'unknown & never', text: 'unknown = safer any (check first); never = values that never occur' },
+  { title: 'Chat session recap', text: 'ai.chats.create keeps the conversation history automatically across chat.sendMessage calls' },
+  { title: 'A tutor persona', text: 'a strict systemInstruction turns the model into a coding tutor that answers from first principles' },
+  { title: 'Guardrails', text: 'the instruction can force the AI to refuse anything off-topic — answer only coding questions' },
+  { title: 'Terminal chatbot', text: 'a readline-sync while-loop drives a back-and-forth chat until you type exit' },
+  { title: 'Into the browser', text: 'import @google/genai from a CDN (ESM) and the exact same chat runs in the browser' },
+  { title: 'A real chat UI', text: 'render user and AI messages into the DOM, format code blocks, and show a typing indicator' },
+  { title: 'Key exposure warning', text: 'putting the API key in front-end JavaScript is fine for learning but leaks it — never ship it that way' },
+  { title: 'One brain, two frontends', text: 'terminal and web share the identical chat session and systemInstruction — only the UI differs' },
 ];
 
-const ANNOTATE = [
+const TUTOR = [
   {
-    icon: '🏷️', title: 'Type Annotations', titleClass: 'card-title-cyan', subtitle: 'Be Explicit',
+    icon: '👨‍🏫', title: 'The Tutor Persona', titleClass: 'card-title-cyan', subtitle: 'systemInstruction',
     description:
-      'Add a type after a colon to explicitly define what a variable, parameter, or value holds. The compiler then enforces it everywhere.',
-    code: 'let name: string = "Faisal";\nlet age: number = 21;\nlet isActive: boolean = true;\nlet scores: number[] = [90, 85, 95];',
+      'A strict systemInstruction shapes the whole conversation: answer only coding questions, explain from first principles, and stay to the point. The persona is set once at chat creation.',
+    code: 'const chat = ai.chats.create({\n  model: "gemini-2.5-flash",\n  systemInstruction: `You are a programming tutor.\n  - Only answer coding questions\n  - Refuse anything unrelated to coding\n  - Explain using first principles, to the point`,\n});',
   },
   {
-    icon: '🔮', title: 'Type Inference', titleClass: 'card-title-purple', subtitle: 'TS Figures It Out',
+    icon: '🔁', title: 'The Chat Loop', titleClass: 'card-title-purple', subtitle: 'Memory + readline',
     description:
-      'If you don’t specify the type, TypeScript infers it from the value. You get full checking with none of the typing — literally.',
-    code: 'let username = "Fabulous";  // string (inferred)\nlet count = 100;            // number (inferred)\nlet isLoggedIn = false;     // boolean (inferred)',
+      'The chat session remembers every turn, so follow-up questions keep context. A readline-sync loop reads input until "exit" — a complete terminal tutor.',
+    code: 'while (true) {\n  const q = readlineSync.question("Ask me a question: ");\n  if (q === "exit") break;\n  const res = await chat.sendMessage({ message: q });\n  console.log("Response:", res.text);\n}',
   },
   {
-    icon: '🧭', title: 'When To Use What', titleClass: 'card-title-amber', subtitle: 'The Rule Of Thumb',
+    icon: '🛡️', title: 'Guardrails', titleClass: 'card-title-amber', subtitle: 'Stay On Topic',
     description:
-      'Use annotations when you want clarity; lean on inference when it’s obvious. Avoid any if possible, use unknown for safety, and never in special cases.',
-    footer: '+ Types are not restrictions, they are superpowers!',
-  },
-];
-
-const PRIMITIVES = [
-  {
-    icon: '🔤', title: 'string', titleClass: 'card-title-cyan', subtitle: 'Represents Text',
-    description:
-      'Any text value — single quotes, double quotes, or template literals. The most common type you’ll annotate.',
-    code: 'let city: string = "Kashmir";',
-  },
-  {
-    icon: '🔢', title: 'number', titleClass: 'card-title-blue', subtitle: 'Whole Or Decimal',
-    description:
-      'One type for all numbers — integers and decimals alike. TypeScript has no separate int or float.',
-    code: 'let pi: number = 3.14;',
-  },
-  {
-    icon: '✅', title: 'boolean', titleClass: 'card-title-lime', subtitle: 'True or False',
-    description:
-      'Exactly two values: true or false. Perfect for flags, toggles, and conditions.',
-    code: 'let isDone: boolean = false;',
-  },
-  {
-    icon: '🔣', title: 'bigint & symbol', titleClass: 'card-title-pink', subtitle: 'The Specialists',
-    description:
-      'bigint holds very large numbers beyond number’s safe range (note the n suffix). symbol creates unique, immutable keys.',
-    code: 'let big: bigint = 99999999999n;\nlet id: symbol = Symbol("id");',
+      'Because the rules live in the systemInstruction, the model politely refuses off-topic questions on its own — no extra code. That is prompt-level control over behaviour.',
+    code: '// User: "What is the weather?"\n// AI:   "I only answer coding questions." ✅',
   },
 ];
 
-const SPECIAL = [
+const BROWSER = [
   {
-    icon: '🌀', title: 'any', titleClass: 'card-title-pink', subtitle: 'Turns Off Checking',
+    icon: '🌐', title: 'SDK In The Browser', titleClass: 'card-title-cyan', subtitle: 'CDN ESM Import',
     description:
-      'any disables type checking for a value — anything is allowed. It’s an escape hatch that defeats the purpose of TypeScript, so use it carefully.',
-    code: 'let data: any = "Hello";\ndata = 25;    // allowed\ndata = true;  // also allowed ⚠️',
+      'No bundler needed — import the SDK straight from a CDN as an ES module in a plain HTML page, and create the same chat session client-side.',
+    code: 'import { GoogleGenAI } from\n  "https://cdn.jsdelivr.net/npm/@google/genai@1.32.0/+esm";\n\nconst ai = new GoogleGenAI({ apiKey: "YOUR_KEY" });\nconst chat = ai.chats.create({ model: "gemini-2.5-flash" });',
   },
   {
-    icon: '❓', title: 'unknown', titleClass: 'card-title-cyan', subtitle: 'Safer Alternative To any',
+    icon: '🎨', title: 'A Real Chat UI', titleClass: 'card-title-purple', subtitle: 'DOM + Formatting',
     description:
-      'unknown accepts anything but forces you to check the type before using it. All the flexibility of any, none of the danger.',
-    code: 'let value: unknown = "Hello";\n// value.toUpperCase(); ❌ Error\nif (typeof value === "string") {\n  console.log(value.toUpperCase()); // ✅\n}',
+      'Append each message as a styled bubble, convert markdown code fences to <pre><code>, and add a typing indicator while waiting — it starts to feel like a real product.',
+    code: 'function formatMessage(text) {\n  return text\n    .replace(/```([\\s\\S]*?)```/g, "<pre><code>$1</code></pre>")\n    .replace(/`([^`]+)`/g, "<code>$1</code>")\n    .replace(/\\n/g, "<br>");\n}',
   },
   {
-    icon: '🚫', title: 'never', titleClass: 'card-title-purple', subtitle: 'Values That Never Occur',
+    icon: '⚠️', title: 'The Key Problem', titleClass: 'card-title-amber', subtitle: 'Learning Only',
     description:
-      'never represents something that never happens — used for functions that always throw or never return, like an infinite loop.',
-    code: 'function throwError(msg: string): never {\n  throw new Error(msg);\n}\nfunction infiniteLoop(): never {\n  while (true) {}\n}',
-  },
-  {
-    icon: '🔜', title: 'Next: Functions', titleClass: 'card-title-lime', subtitle: 'Day 4 Preview',
-    description:
-      'Tomorrow is Episode 4 — functions in TypeScript: function types, return types, optional, default, and rest parameters.',
-    link: { href: '/day-004', label: 'Go to Day 4 →' },
+      'The browser version hardcodes the API key, which anyone can read in the source. Great for a demo, dangerous in production — the fix is a backend that holds the key, coming later.',
+    code: '// apiKey: "AIza..."  ← visible to everyone in dev tools\n// production → call your own server, keep the key there',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Everyday Types', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
+    icon: '💻', title: 'Lecture 03 Code', titleClass: 'card-title-cyan', subtitle: 'Terminal Tutor',
     description:
-      'The handbook chapter covering exactly today’s ground — annotations, inference, primitives, and the any/unknown distinction.',
-    link: { href: TS_EVERYDAY, label: 'Read Everyday Types →', external: true },
+      'The Node version — a chat session with the tutor systemInstruction driven by a readline-sync loop.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 03 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Hover The Types',
+    icon: '🖥️', title: 'Lecture 03.1 Code', titleClass: 'card-title-purple', subtitle: 'Browser Chat UI',
     description:
-      'Declare variables with and without annotations, then hover them to see what TypeScript inferred. Inference clicks fast this way.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+      'The web version — index.html, style.css and script.js that run the same tutor in the browser with a chat interface.',
+    link: { href: GH_LECTURE_UI, label: 'Open Lecture 03.1 →', external: true },
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
+    icon: '🔜', title: 'Next: Real-World Data', titleClass: 'card-title-amber', subtitle: 'Day 4 Preview',
     description:
-      'These primitives are the atoms every larger type is built from — arrays, objects, interfaces, and generics all rest on them.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+      'Tomorrow is Lecture 04 — the model has no live data, so we call real APIs (crypto, weather, news) and start routing a question to the right function.',
+    link: { href: '/day-004', label: 'Go to Day 4 →' },
   },
 ];
 
@@ -172,87 +136,64 @@ export default function Day003() {
   }, []);
 
   return (
-    <>
-      <div className="day001-page">
-        <div className="day001-scale-wrap" ref={scaleRef}>
-          <header className="day001-topbar">
-            <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-            <Link to="/day-002" className="day001-nav-btn day001-nav-prev">← Day 2</Link>
-            <p className="day001-datetime">TypeScript Day 3</p>
-            <Link to="/day-004" className="day001-nav-btn day001-nav-next">Day 4 →</Link>
-          </header>
+    <div className="day001-page">
+      <div className="day001-scale-wrap" ref={scaleRef}>
+        <header className="day001-topbar">
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-002" className="day001-nav-btn day001-nav-prev">← Day 2</Link>
+          <p className="day001-datetime">Agentic AI Day 3</p>
+          <Link to="/day-004" className="day001-nav-btn day001-nav-next">Day 4 →</Link>
+        </header>
 
-          <div className="day001-hero">
-            <div className="day001-hero-left">
-              <div className="day001-tags"><span>TypeScript</span><span>Episode 3</span><span>Types</span></div>
-              <div className="day001-title-block">
-                <h1 className="day001-day-num">DAY 3 <span aria-hidden="true">🏷️</span></h1>
-                <p className="day001-day-theme">TYPE SYSTEM BASICS</p>
-              </div>
-            </div>
-            <div className="day001-profile">
-              <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
-              <div>
-                <p className="day001-profile-name">Sumit Rawal</p>
-                <p className="day001-profile-role">TS · TYPESCRIPT</p>
-              </div>
+        <div className="day001-hero">
+          <div className="day001-hero-left">
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 03</span></div>
+            <div className="day001-title-block">
+              <h1 className="day001-day-num">DAY 3 <span aria-hidden="true">💬</span></h1>
+              <p className="day001-day-theme">CHAT WITH MEMORY, A PERSONA &amp; A WEB UI</p>
             </div>
           </div>
-
-          <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '3%' }} /></div>
-
-          <p className="day001-summary">
-            <strong>Episode 3</strong> — the type system itself. I used <strong>type annotations</strong> to
-            explicitly declare types, and saw <strong>type inference</strong> fill them in automatically when the
-            value makes it obvious. I went through the <strong>primitives</strong> — <code>string</code>,{' '}
-            <code>number</code>, <code>boolean</code>, <code>bigint</code>, <code>symbol</code> — then the special
-            ones: <code>any</code> (turns off checking, use carefully), <code>unknown</code> (the safe alternative
-            that forces a check first), and <code>never</code> (values that never occur).{' '}
-            <em>Types are not restrictions, they are superpowers.</em>
-          </p>
-
-          <section className="day001-learnt">
-            <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
-            <ul className="day001-learnt-list">
-              {LEARNT_TODAY.map((item) => (
-                <li key={item.title}>
-                  <span className="day001-check" aria-hidden="true">✓</span>
-                  <span><strong>{item.title}</strong> — {item.text}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <CardSection icon="🏷️" title="ANNOTATIONS & INFERENCE" cards={ANNOTATE} columns={3} />
-          <CardSection icon="🧱" title="PRIMITIVE TYPES" cards={PRIMITIVES} columns={4} />
-          <CardSection icon="🌀" title="any · unknown · never" cards={SPECIAL} columns={4} />
-          <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
-
-          <footer className="day001-hashtags">
-            <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Episode3</span><span>#TypeSafety</span><span>#JSLearnHub</span>
-          </footer>
+          <div className="day001-profile">
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
+            <div>
+              <p className="day001-profile-name">Sumit Rawal</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <section style={{ background: '#0d1117', padding: '8px 16px 56px', display: 'flex', justifyContent: 'center' }}>
-        <figure style={{ maxWidth: '860px', width: '100%', margin: 0 }}>
-          <h2 style={{ color: '#e6edf3', fontSize: '1.05rem', fontWeight: 700, margin: '0 0 12px', textAlign: 'center' }}>
-            <span aria-hidden="true">📌</span> Episode 3 Notes — Type System Basics
-          </h2>
-          <a href={EP_IMAGE} target="_blank" rel="noopener noreferrer">
-            <img
-              src={EP_IMAGE}
-              alt="TypeScript Series Episode 3 — Type System Basics: type annotations explicitly defining types with common syntax (string for text, number for numbers, boolean for true/false, array[] for list of values, object {} for key value pairs), type inference where TypeScript automatically infers the type from the value, primitive types in TypeScript (string, number, boolean, bigint, symbol) with examples, the any type which turns off type checking, the unknown type as a safer alternative that forces you to check the type first, the never type for values that never occur such as functions that throw errors or never return, and guidance on when to use each"
-              loading="lazy"
-              style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '14px', border: '1px solid #2a3441' }}
-            />
-          </a>
-          <figcaption style={{ color: '#8fb6c2', fontSize: '0.82rem', textAlign: 'center', marginTop: '10px' }}>
-            My handwritten Episode 3 notes — annotations, inference, primitives, and any / unknown / never.
-            Click to open full size.
-          </figcaption>
-        </figure>
-      </section>
-    </>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '3%' }} /></div>
+
+        <p className="day001-summary">
+          Lecture 03 — a real chatbot with a personality. A strict <strong>systemInstruction</strong> turns Gemini
+          into a <strong>coding tutor</strong> that answers only coding questions from first principles, and a{' '}
+          <strong>chat session</strong> keeps the memory across a <strong>readline</strong> loop. Then I took the
+          exact same brain into the <strong>browser</strong> — importing the SDK from a CDN, rendering a chat UI
+          with formatted code and a typing indicator. Lesson learned: a{' '}
+          <strong>front-end API key is exposed to everyone</strong>, so a backend comes later.{' '}
+          <em>One brain, two frontends.</em>
+        </p>
+
+        <section className="day001-learnt">
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
+          <ul className="day001-learnt-list">
+            {LEARNT_TODAY.map((item) => (
+              <li key={item.title}>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <CardSection icon="👨‍🏫" title="THE TUTOR CHATBOT" cards={TUTOR} columns={3} />
+        <CardSection icon="🌐" title="TAKING IT TO THE BROWSER" cards={BROWSER} columns={3} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
+
+        <footer className="day001-hashtags">
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Gemini</span><span>#CoderArmy</span><span>#JavaScript</span>
+        </footer>
+      </div>
+    </div>
   );
 }
