@@ -16,7 +16,7 @@ import { JAVA_META } from '../data/javaSyllabus';
 import { AWS_META } from '../data/awsSyllabus';
 import { DEVOPS_META } from '../data/devopsSyllabus';
 import { K8S_META } from '../data/k8sSyllabus';
-import { INTERVIEW_META, DSA_META, JOURNEY_META } from '../data/interviewSyllabus';
+import { INTERVIEW_META, DSA_META } from '../data/interviewSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
 import { thunderRepo, PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
 import { JS_INTERVIEW_QUESTIONS } from '../data/interviewQuestions';
@@ -33,47 +33,40 @@ import ThunderHero from '../components/ThunderHero';
 
 const BTECH_ROADMAP = [
   {
-    year: '1st Year',
-    theme: 'TypeScript Stack',
-    icon: '🎨',
+    year: 'Phase 1',
+    theme: 'Agentic AI · 100 Days',
+    icon: '🤖',
+    accent: 'y3',
+    topics: ['LLMs & Transformers', 'Embeddings & Vector DBs', 'LangChain.js', 'RAG', 'Autonomous Agents', 'LangGraph', 'Evaluation & Production'],
+    blurb: 'The journey opens with Agentic AI in JavaScript — from how LLMs actually work to building, evaluating and shipping autonomous agents with LangChain.js, LangGraph and LangSmith.',
+    links: [{ label: 'GenAI Track', to: '/genai' }],
+  },
+  {
+    year: 'Phase 2',
+    theme: '1000 Days of Code',
+    icon: '⌨️',
     accent: 'y1',
-    topics: ['TypeScript', 'React JS', 'Next.js', 'React Native', 'Express', 'Agentic AI in JavaScript', 'DSA in JavaScript', 'System Design in JavaScript'],
-    blurb: 'Starts with TypeScript — HTML5, CSS3 & JavaScript are assumed prerequisites — then React, Next.js, React Native, and Node/Express, plus Agentic AI, DSA & system design, all in JavaScript.',
+    topics: ['TypeScript', 'React JS', 'Next.js', 'React Native', 'Express / Node', 'Python', 'Django', 'Java', 'Spring Boot', 'Microservices'],
+    blurb: 'The core build phase — 1000 days across three stacks: the TypeScript stack (TypeScript, React, Next.js, React Native, Express), then Python & Django, then Java, Spring Boot & Microservices.',
     links: [
-      { label: 'JavaScript Track', to: '#syllabus' },
+      { label: 'JavaScript / TypeScript', to: '#syllabus' },
       { label: 'React / Next.js', to: '/nextjs' },
       { label: 'React Native', to: '/mobile' },
+      { label: 'Python', to: '/python' },
+      { label: 'Java & Spring', to: '/java' },
     ],
   },
   {
-    year: '2nd Year',
-    theme: 'Python Stack',
-    icon: '🐍',
-    accent: 'y2',
-    topics: ['Python', 'Django', 'Agentic AI in Python', 'DSA in Python', 'System Design in Python'],
-    blurb: 'The Python stack — core Python, Django web apps, and Agentic AI, with DSA & system design practiced in Python.',
-    links: [{ label: 'Python & Agentic AI', to: '/python' }],
-  },
-  {
-    year: '3rd Year',
-    theme: 'Java Stack',
-    icon: '☕',
-    accent: 'y3',
-    topics: ['Java', 'Spring Boot', 'Microservices', 'Agentic AI in Java', 'DSA in Java', 'System Design in Java', 'Java Design Patterns'],
-    blurb: 'The Java stack — Spring Boot, microservices, and design patterns, plus Agentic AI, with DSA & system design practiced in Java.',
-    links: [{ label: 'Java & Spring Track', to: '/java' }],
-  },
-  {
-    year: '4th Year',
-    theme: 'DevOps & Cloud',
+    year: 'Phase 3',
+    theme: 'DevOps · 365 Days',
     icon: '☁️',
     accent: 'y4',
-    topics: ['DevOps', 'AWS', 'Kubernetes', 'Docker', 'CI/CD'],
-    blurb: 'Dedicated to DevOps — AWS, Kubernetes, Docker, and CI/CD to ship and scale everything you built.',
+    topics: ['Linux & Shell', 'Docker', 'Kubernetes', 'CI/CD', 'AWS Cloud', 'Terraform / IaC', 'Monitoring'],
+    blurb: 'One full year of DevOps to ship and scale everything you built — Linux, Docker, Kubernetes, CI/CD, AWS, Terraform and observability.',
     links: [
       { label: 'DevOps', to: '/devops' },
-      { label: 'AWS Cloud', to: '/aws' },
       { label: 'Kubernetes', to: '/k8s' },
+      { label: 'AWS Cloud', to: '/aws' },
     ],
   },
 ];
@@ -159,26 +152,13 @@ export default function Home() {
       <div className="home">
       <section className="btech-roadmap" id="btech-roadmap">
         <div className="btech-inner">
-          <span className="btech-badge">For Students</span>
-          <h2 className="btech-title">B.Tech CS/IT — 4-Year Learning Path</h2>
+          <span className="btech-badge">The Roadmap</span>
+          <h2 className="btech-title">The 3-Phase Learning Path</h2>
           <p className="btech-sub">
-            A year-by-year roadmap to graduate job-ready as a full lifecycle engineer. Each year
-            builds on the last, maps directly to a track on this site, and carries <strong>DSA &amp;
-            System Design practiced in that year&apos;s language</strong>.
+            A structured path to a full lifecycle engineer, in three phases — <strong>Agentic AI</strong>,
+            the <strong>1000 Days of Code</strong> build phase, then <strong>DevOps</strong>. Each phase maps
+            to tracks on this site. HTML5, CSS3 &amp; JavaScript are the assumed prerequisites.
           </p>
-          <a
-            href="/full-lifecycle-journey-banner.svg"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btech-banner"
-            aria-label="Open the 4-year dev journey banner full size"
-          >
-            <img
-              src="/full-lifecycle-journey-banner.svg"
-              alt="Full LifeCycle Engineer — 4-Year Dev Journey: Full-Stack JavaScript, Python with Agentic AI, Java Microservices, AWS Cloud, DevOps & Kubernetes, and DSA & System Design"
-              loading="lazy"
-            />
-          </a>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
               <article className={`btech-card btech-card--${yr.accent}`} key={yr.year}>
@@ -250,12 +230,55 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="thunder-plus-section thunder-genai-section" id="thunder-genai">
+        <div className="thunder-plus-inner">
+          <span className="thunder-plus-badge thunder-plus-badge-genai">
+            Phase 1 · Agentic AI · 100 Days
+          </span>
+          <h2>Thunder+ — GenAI Engineering Bootcamp</h2>
+          <p className="section-desc">
+            The journey opens with <strong>Agentic AI in JavaScript</strong>: from how LLMs work and the Transformer
+            architecture to production-grade autonomous agents. {genaiChapters.length} modules across 3 parts — core
+            theory, building agents, then production — with the modern stack{' '}
+            <a href={GENAI_META.langchainJs} target="_blank" rel="noopener noreferrer">
+              LangChain.js
+            </a>
+            ,{' '}
+            <a href={GENAI_META.langgraphJs} target="_blank" rel="noopener noreferrer">
+              LangGraph
+            </a>{' '}
+            and{' '}
+            <a href={GENAI_META.langsmith} target="_blank" rel="noopener noreferrer">
+              LangSmith
+            </a>
+            . Graduate with a portfolio of intelligent agents and a full-stack capstone.
+          </p>
+          <div className="thunder-plus-highlights">
+            <span>🤖 Autonomous Agents</span>
+            <span>🔗 LangChain &amp; LangGraph</span>
+            <span>📚 RAG &amp; Vector DBs</span>
+            <span>🚀 Deploy &amp; Evaluate</span>
+          </div>
+          <div className="thunder-plus-actions">
+            <Link to="/genai" className="btn btn-genai btn-lg">
+              Explore GenAI Track
+            </Link>
+            <Link to="/genai/learn/the-new-age-of-ai-introduction-to-generative-ai" className="btn btn-outline-genai btn-lg">
+              Start GenAI Module 1
+            </Link>
+            <a href={GENAI_META.langchainJs} target="_blank" rel="noopener noreferrer" className="btn btn-outline-genai btn-lg">
+              LangChain.js Docs
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section className="thunder-plus-section thunder-nextjs-section" id="thunder-nextjs">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-nextjs">Year 1 · Days 101–150</span>
+          <span className="thunder-plus-badge thunder-plus-badge-nextjs">Phase 2 · TypeScript Stack</span>
           <h2>Thunder+ — React & Next.js</h2>
           <p className="section-desc">
-            After Thunder, spend the next phase on React &amp; Next.js, then React Native — Days <strong>101–190</strong>. Continue
+            Inside the TypeScript stack, React &amp; Next.js follow the core language, then React Native. Continue
             with the{' '}
             <a href={NEXTJS_META.udemyUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode Udemy course
@@ -290,7 +313,7 @@ export default function Home() {
 
       <section className="thunder-plus-section" id="thunder-plus">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge">Year 1 · Days 151–190</span>
+          <span className="thunder-plus-badge">Phase 2 · TypeScript Stack</span>
           <h2>Thunder++ — React Native</h2>
           <p className="section-desc">
             Finish the post-Thunder frontend stretch with the{' '}
@@ -298,7 +321,7 @@ export default function Home() {
               ChaiCode Mobile Development Cohort
             </a>
             . {mobileChapters.length} lessons covering Expo, navigation, APIs, notifications, auth, and real-world app
-            projects. Node/Express and JavaScript DSA &amp; System Design close out Year 1; the Python stack opens Year 2.
+            projects. Node/Express rounds out the TypeScript stack; the Python stack follows.
           </p>
           <div className="thunder-plus-highlights">
             <span>📱 React Native + Expo</span>
@@ -325,57 +348,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="thunder-plus-section thunder-genai-section" id="thunder-genai">
-        <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-genai">
-            Year 1 · Agentic AI in JavaScript
-          </span>
-          <h2>Thunder+ — GenAI Engineering Bootcamp</h2>
-          <p className="section-desc">
-            Year 1 also builds <strong>Agentic AI in JavaScript</strong>: from the Transformer architecture to
-            production-grade autonomous agents. {genaiChapters.length} modules across 3 parts — core theory,
-            building agents, then production — with the modern stack{' '}
-            <a href={GENAI_META.langchainJs} target="_blank" rel="noopener noreferrer">
-              LangChain.js
-            </a>
-            ,{' '}
-            <a href={GENAI_META.langgraphJs} target="_blank" rel="noopener noreferrer">
-              LangGraph
-            </a>{' '}
-            and{' '}
-            <a href={GENAI_META.langsmith} target="_blank" rel="noopener noreferrer">
-              LangSmith
-            </a>
-            . Graduate with a portfolio of intelligent agents and a full-stack capstone.
-          </p>
-          <div className="thunder-plus-highlights">
-            <span>🤖 Autonomous Agents</span>
-            <span>🔗 LangChain &amp; LangGraph</span>
-            <span>📚 RAG &amp; Vector DBs</span>
-            <span>🚀 Deploy &amp; Evaluate</span>
-          </div>
-          <div className="thunder-plus-actions">
-            <Link to="/genai" className="btn btn-genai btn-lg">
-              Explore GenAI Track
-            </Link>
-            <Link to="/genai/learn/the-new-age-of-ai-introduction-to-generative-ai" className="btn btn-outline-genai btn-lg">
-              Start GenAI Module 1
-            </Link>
-            <a href={GENAI_META.langchainJs} target="_blank" rel="noopener noreferrer" className="btn btn-outline-genai btn-lg">
-              LangChain.js Docs
-            </a>
-          </div>
-        </div>
-      </section>
-
       <section className="thunder-plus-section thunder-python-section" id="thunder-python">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-python">
-            Year 2 · Days 366–581
+            Phase 2 · Python Stack
           </span>
-          <h2>Thunder++ — Python & Agentic AI</h2>
+          <h2>Thunder++ — Python &amp; Django</h2>
           <p className="section-desc">
-            <strong>Year 2</strong> is the Python stack: Python
+            The <strong>Python stack</strong>: core Python
             study, Django, FastAPI, and Agentic AI at{' '}
             <a href={PYTHON_META.portalUrl} target="_blank" rel="noopener noreferrer">
               {PYTHON_META.institute}
@@ -411,11 +391,11 @@ export default function Home() {
       <section className="thunder-plus-section thunder-java-section" id="thunder-java">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-java">
-            Year 3 · Days 732–936
+            Phase 2 · Java Stack
           </span>
           <h2>Thunder++ — Java & Spring</h2>
           <p className="section-desc">
-            <strong>Year 3</strong> is the Java stack:{' '}
+            The <strong>Java stack</strong>:{' '}
             <strong>J2SE</strong>, <strong>J2EE</strong>, <strong>JPA</strong>, <strong>Spring Boot</strong>,{' '}
             <strong>Microservices</strong>, and <strong>Java Design Patterns</strong> — mapped from {JAVA_META.courses.length} Udemy courses into{' '}
             {javaChapters.length} modules on this site.
@@ -449,11 +429,11 @@ export default function Home() {
       <section className="thunder-plus-section thunder-aws-section" id="thunder-aws">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-aws">
-            Year 4 · Days 1097–1196
+            Phase 3 · DevOps
           </span>
           <h2>Thunder++ — 100 Days of AWS Cloud</h2>
           <p className="section-desc">
-            <strong>Year 4</strong> opens with AWS — <strong>100 days</strong> mastering AWS with{' '}
+            Within the DevOps phase, AWS gets <strong>100 days</strong> of focused mastery with{' '}
             <a href={AWS_META.kodekloudUrl} target="_blank" rel="noopener noreferrer">
               KodeKloud 100 Days of Cloud
             </a>{' '}
@@ -492,11 +472,11 @@ export default function Home() {
       <section className="thunder-plus-section thunder-devops-section" id="thunder-devops">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-devops">
-            Year 4 finale · Days 1337–1461
+            Phase 3 · DevOps · Finale
           </span>
           <h2>Thunder++ — DevOps &amp; CI/CD</h2>
           <p className="section-desc">
-            The journey closes with DevOps &amp; CI/CD — <strong>125 days</strong> mastering the DevOps stack with{' '}
+            The journey closes with DevOps &amp; CI/CD — the core of the <strong>365-day</strong> DevOps phase, with{' '}
             <a href={DEVOPS_META.kodekloudUrl} target="_blank" rel="noopener noreferrer">
               KodeKloud 100 Days of DevOps
             </a>{' '}
@@ -535,7 +515,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-k8s-section" id="thunder-k8s">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-k8s">
-            Year 4 · Days 1237–1336
+            Phase 3 · DevOps
           </span>
           <h2>Thunder++ — Kubernetes</h2>
           <p className="section-desc">
@@ -585,12 +565,12 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            Every year · first in JavaScript
+            Alongside · Interview Prep
           </span>
           <h2>Thunder++ — System Design</h2>
           <p className="section-desc">
-            <strong>System Design</strong> is practiced <strong>every year in that year’s language</strong> — first in
-            JavaScript, then Python (Year 2) and Java (Year 3): deep study with{' '}
+            <strong>System Design</strong> runs <strong>alongside the build phase</strong>, practiced in each stack’s
+            language as you learn it: deep study with{' '}
             <a href={INTERVIEW_META.gfgSystemDesignUrl} target="_blank" rel="noopener noreferrer">
               GeeksForGeeks System Design
             </a>{' '}
@@ -628,12 +608,12 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-dsa">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            Every year · first in JavaScript
+            Alongside · Interview Prep
           </span>
           <h2>Thunder++ — Data Structures</h2>
           <p className="section-desc">
-            <strong>DSA</strong> is practiced <strong>every year in that year’s language</strong> — first in JavaScript
-            (Elshad Karimov), then Python (Year 2) and Java (Year 3): deep <strong>Data Structures &amp; Algorithms</strong> study with{' '}
+            <strong>DSA</strong> runs <strong>alongside the build phase</strong>, practiced in each stack’s language —
+            starting in JavaScript (Elshad Karimov): deep <strong>Data Structures &amp; Algorithms</strong> study with{' '}
             <a href={DSA_META.gfgDsaUrl} target="_blank" rel="noopener noreferrer">
               GeeksForGeeks DSA Self Paced
             </a>{' '}
@@ -671,21 +651,19 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            4 years · 4 stacks · {JOURNEY_META.totalDays} days
+            3 phases · 1,465 days
           </span>
-          <h2>Thunder++ — The 4-Year Journey</h2>
+          <h2>Thunder++ — The 3-Phase Journey</h2>
           <p className="section-desc">
-            Four stack-years, back to back: <strong>Year 1 TypeScript</strong>, <strong>Year 2 Python</strong>,{' '}
-            <strong>Year 3 Java</strong>, and <strong>Year 4 DevOps</strong> — each carrying DSA &amp; System Design in
-            that year’s language. That closes the full journey:{' '}
-            <strong>{JOURNEY_META.totalDays} days</strong> of study ({JOURNEY_META.years} years) from{' '}
-            {JOURNEY_META.startLabel} to {JOURNEY_META.endLabel}, studying 5:00–8:00 AM daily.
+            Three phases, back to back: <strong>Agentic AI</strong> (100 days), the{' '}
+            <strong>1000 Days of Code</strong> build phase (TypeScript, Python, then Java), and{' '}
+            <strong>DevOps</strong> (365 days) — with <strong>DSA &amp; System Design</strong> practiced alongside in
+            each stack’s language. That’s <strong>1,465 days</strong> of focused study, 5:00–8:00 AM daily.
           </p>
           <div className="thunder-plus-highlights">
-            <span>🎨 Year 1 · TypeScript</span>
-            <span>🐍 Year 2 · Python</span>
-            <span>☕ Year 3 · Java</span>
-            <span>☁️ Year 4 · DevOps</span>
+            <span>🤖 Phase 1 · Agentic AI</span>
+            <span>⌨️ Phase 2 · 1000 Days of Code</span>
+            <span>☁️ Phase 3 · DevOps</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/interview" className="btn btn-interview-chaicode btn-lg">

@@ -1,68 +1,69 @@
-// Header/nav track list. The full 20-phase, 4-year plan lives in roadmapPhases.js (/roadmap).
-// Each year is one stack; DSA & System Design are practiced in that year's language.
+// Header/nav track list, ordered to the 3-phase roadmap:
+// Phase 1 Agentic AI · Phase 2 "1000 Days of Code" (TypeScript → Python → Java) · Phase 3 DevOps.
+// Descriptions are dateless — personal calendar dates live only in the user's private schedule.
 export const LEARNING_PATH = [
-  { id: 'thunder', label: 'Thunder', short: 'JS', desc: 'Year 1 · 100 Days of JavaScript (24 Jul – 31 Oct 2026)', path: '/' },
+  { id: 'thunder', label: 'Thunder', short: 'JS', desc: 'Foundation · 100 Days of JavaScript', path: '/' },
+  {
+    id: 'genai',
+    label: 'GenAI with JS',
+    short: 'GEN',
+    desc: 'Phase 1 · Agentic AI in JavaScript',
+    path: '/genai',
+  },
   {
     id: 'nextjs',
     label: 'React & Next.js',
     short: 'NX',
-    desc: 'Year 1 · 1 Nov – 20 Dec 2026',
+    desc: 'Phase 2 · TypeScript stack',
     path: '/nextjs',
   },
   {
     id: 'mobile',
     label: 'React Native',
     short: 'RN',
-    desc: 'Year 1 · 21 Dec 2026 – 29 Jan 2027',
+    desc: 'Phase 2 · TypeScript stack',
     path: '/mobile',
-  },
-  {
-    id: 'genai',
-    label: 'GenAI with JS',
-    short: 'GEN',
-    desc: 'Year 1 · Agentic AI in JavaScript · 13 modules',
-    path: '/genai',
   },
   {
     id: 'python',
     label: 'Python & AI',
     short: 'PY',
-    desc: 'Year 2 · Python stack (from 24 Jul 2027)',
+    desc: 'Phase 2 · Python stack',
     path: '/python',
   },
   {
     id: 'java',
     label: 'Java & Spring',
     short: 'JV',
-    desc: 'Year 3 · Java stack (from 24 Jul 2028)',
+    desc: 'Phase 2 · Java stack',
     path: '/java',
-  },
-  {
-    id: 'aws',
-    label: '100 Days of AWS',
-    short: 'AWS',
-    desc: 'Year 4 · 24 Jul – 31 Oct 2029 · 100 days',
-    path: '/aws',
-  },
-  {
-    id: 'k8s',
-    label: 'Kubernetes',
-    short: 'K8s',
-    desc: 'Year 4 · 11 Dec 2029 – 20 Mar 2030 · 100 days',
-    path: '/k8s',
   },
   {
     id: 'devops',
     label: 'DevOps & CI/CD',
     short: 'DO',
-    desc: 'Year 4 · 21 Mar – 23 Jul 2030 · 125 days',
+    desc: 'Phase 3 · DevOps',
     path: '/devops',
+  },
+  {
+    id: 'k8s',
+    label: 'Kubernetes',
+    short: 'K8s',
+    desc: 'Phase 3 · DevOps',
+    path: '/k8s',
+  },
+  {
+    id: 'aws',
+    label: '100 Days of AWS',
+    short: 'AWS',
+    desc: 'Phase 3 · DevOps',
+    path: '/aws',
   },
   {
     id: 'interview',
     label: 'DSA & System Design',
     short: 'SD',
-    desc: 'Practiced each year in that year’s language',
+    desc: 'Alongside · Interview prep',
     path: '/interview',
   },
 ];
