@@ -265,6 +265,13 @@ const chat = ai.chats.create({
     "You are a JavaScript tutor for beginners. Use simple analogies, always give code examples, and check understanding before continuing.",
 });
 
+// Senior code reviewer
+const reviewer = ai.chats.create({
+  model: "gemini-2.5-flash",
+  systemInstruction:
+    "You are a senior code reviewer. Point out bugs and security issues, suggest better approaches, and explain WHY something is wrong (not just what). Be constructive, not harsh.",
+});
+
 // Pirate bot (fun!)
 const pirate = ai.chats.create({
   model: "gemini-2.5-flash",
