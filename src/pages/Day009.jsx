@@ -2,101 +2,72 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_NARROWING = 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture09';
 
 const LEARNT_TODAY = [
-  { title: 'Numeric enums', text: '`enum Dir { Up, Down }` auto-numbers members 0, 1, 2… a named set of constants' },
-  { title: 'String enums', text: '`enum Status { Active = "ACTIVE" }` — readable values that survive in compiled JS' },
-  { title: 'const enums', text: '`const enum` is inlined at compile time — zero runtime cost' },
-  { title: 'Union of literals', text: 'often better than an enum: `type Status = "active" | "done"`' },
-  { title: 'Narrowing', text: 'TS shrinks a broad type to a precise one inside a check — no casting needed' },
-  { title: 'typeof guards', text: '`if (typeof x === "string")` narrows a union to just the string branch' },
-  { title: 'in operator', text: '`if ("wings" in animal)` narrows by which property exists' },
-  { title: 'instanceof', text: 'narrow class instances: `if (err instanceof TypeError)`' },
-  { title: 'Discriminated unions', text: 'a shared literal "tag" field lets TS pick the exact member' },
-  { title: 'Exhaustiveness', text: 'a `never` default in a switch guarantees you handled every case' },
+  { title: 'Keyword search breaks', text: 'matching exact words misses meaning — a search for "automobile" would skip a doc that says "car"' },
+  { title: 'Brute force is slow', text: 'scanning every document word by word does not scale as data grows' },
+  { title: 'Search by meaning', text: 'embed the query and the documents, then compare vectors instead of matching text' },
+  { title: 'Cosine similarity', text: 'measure the angle between two vectors — closer angle means more similar meaning' },
+  { title: 'Nearest neighbour', text: 'rank documents by similarity and take the top-K closest to the query' },
+  { title: 'This is retrieval', text: 'semantic search is the "R" in RAG — it fetches the most relevant chunks to feed the model' },
+  { title: 'Query and data share a space', text: 'because both are embedded by the same model, their vectors live in the same meaning space' },
 ];
 
-const ENUMS = [
+const PROBLEM = [
   {
-    icon: '🔢', title: 'Numeric Enums', titleClass: 'card-title-cyan', subtitle: 'Auto-Numbered Constants',
-    description: 'An enum names a group of related constants. Members auto-increment from 0 unless you set values — handy for directions, roles, and states.',
-    code: 'enum Direction { Up, Down, Left, Right }\nlet d: Direction = Direction.Up; // 0',
+    icon: '🔎', title: 'Keyword Search Fails', titleClass: 'card-title-cyan', subtitle: 'Exact Words Only',
+    description:
+      'Classic search matches literal words. Ask for "how to fix a login error" and it can miss a doc titled "resolving authentication issues" — same meaning, zero shared keywords.',
+    code: '// query:   "fix login error"\n// keyword: misses "resolve authentication problem"\n// → relevant answer never surfaces',
   },
   {
-    icon: '🔤', title: 'String Enums', titleClass: 'card-title-purple', subtitle: 'Readable Values',
-    description: 'String enums give each member an explicit string value, which stays meaningful in logs, storage, and the compiled JavaScript.',
-    code: 'enum Status {\n  Active = "ACTIVE",\n  Done = "DONE",\n}\nlet s = Status.Active; // "ACTIVE"',
-  },
-  {
-    icon: '🎯', title: 'Union of Literals', titleClass: 'card-title-amber', subtitle: 'Often A Better Enum',
-    description: 'A union of string literals gives the same "one of these" guarantee with no runtime object generated — many TS teams prefer it over enums.',
-    code: 'type Status = "active" | "paused" | "done";\nfunction set(s: Status) { /* ... */ }\nset("active"); set("x"); // ❌',
+    icon: '🐌', title: 'And It Does Not Scale', titleClass: 'card-title-purple', subtitle: 'Brute Force',
+    description:
+      'Scanning every document for matches gets slower as your data grows. We need a way to find the most relevant items by meaning, quickly.',
+    code: '// checking every document, one by one\n// fine for 10 docs, hopeless for 10 million',
   },
 ];
 
-const NARROW = [
+const SEMANTIC = [
   {
-    icon: '🔍', title: 'typeof Guards', titleClass: 'card-title-cyan', subtitle: 'Narrow A Union',
-    description: 'Inside a typeof check, TypeScript narrows a union to a single type — so you can call string methods only where the value is actually a string.',
-    code: 'function fmt(x: string | number) {\n  if (typeof x === "string") return x.trim();\n  return x.toFixed(2);\n}',
+    icon: '🧭', title: 'Embed Both Sides', titleClass: 'card-title-cyan', subtitle: 'Same Meaning Space',
+    description:
+      'Turn the documents into vectors ahead of time, and embed the user’s query the same way. Now finding relevant text is a geometry problem, not a text-matching one.',
+    code: '// once: embed every document → store the vectors\nconst docVecs = docs.map(embed);\n// per query: embed the question\nconst qVec = embed("fix login error");',
   },
   {
-    icon: '🏷️', title: 'in Operator', titleClass: 'card-title-blue', subtitle: 'Narrow By Property',
-    description: 'The in operator narrows by which property a value has — a lightweight way to tell two object shapes apart without a class.',
-    code: 'type Fish = { swim(): void };\ntype Bird = { fly(): void };\nfunction move(a: Fish | Bird) {\n  if ("swim" in a) a.swim(); else a.fly();\n}',
+    icon: '📐', title: 'Cosine Similarity', titleClass: 'card-title-purple', subtitle: 'How Close?',
+    description:
+      'Compare two vectors by the cosine of the angle between them: 1 means identical direction (very similar), 0 means unrelated. It is the standard similarity score for embeddings.',
+    code: 'function cosine(a, b) {\n  const dot = a.reduce((s, v, i) => s + v * b[i], 0);\n  const mag = v => Math.hypot(...v);\n  return dot / (mag(a) * mag(b)); // 1 = same, 0 = unrelated\n}',
   },
   {
-    icon: '🧬', title: 'instanceof', titleClass: 'card-title-amber', subtitle: 'Narrow Class Instances',
-    description: 'instanceof narrows to a specific class — invaluable in catch blocks and when handling values that could be one of several class types.',
-    code: 'try { risky(); }\ncatch (e) {\n  if (e instanceof TypeError) console.log(e.name);\n}',
-  },
-  {
-    icon: '🛡️', title: 'Type Predicates', titleClass: 'card-title-lime', subtitle: 'Custom Guards',
-    description: 'Write your own guard with a `x is T` return type. TypeScript then trusts it to narrow — reusable checks for complex shapes.',
-    code: 'function isString(x: unknown): x is string {\n  return typeof x === "string";\n}',
-  },
-];
-
-const UNIONS = [
-  {
-    icon: '🎫', title: 'Discriminated Unions', titleClass: 'card-title-cyan', subtitle: 'The Tag Pattern',
-    description: 'Give each union member a shared literal "kind" field. Switching on it narrows to the exact member — the go-to pattern for state machines and events.',
-    code: 'type Shape =\n  | { kind: "circle"; r: number }\n  | { kind: "square"; s: number };\nfunction area(sh: Shape) {\n  if (sh.kind === "circle") return Math.PI * sh.r ** 2;\n  return sh.s ** 2;\n}',
-  },
-  {
-    icon: '✅', title: 'Exhaustiveness', titleClass: 'card-title-purple', subtitle: 'never Catches Gaps',
-    description: 'Assign the leftover value to never in a switch default. If you later add a case and forget to handle it, the compiler errors immediately.',
-    code: 'default: {\n  const _exhaustive: never = sh;\n  return _exhaustive;\n}',
-  },
-  {
-    icon: '⚡', title: 'const enum', titleClass: 'card-title-amber', subtitle: 'Zero Runtime Cost',
-    description: 'A const enum is erased and its values inlined at compile time — the readability of an enum without shipping an object to the browser.',
-    code: 'const enum Log { Info, Warn, Error }\nconsole.log(Log.Warn); // compiles to 1',
-  },
-  {
-    icon: '🔜', title: 'Next: Utility Types', titleClass: 'card-title-lime', subtitle: 'Day 10 Preview',
-    description: 'Tomorrow: the built-in utility types — Partial, Required, Readonly, Pick, Omit, and Record — that transform types for you.',
-    link: { href: '/day-010', label: 'Go to Day 10 →' },
+    icon: '🏆', title: 'Top-K Retrieval', titleClass: 'card-title-amber', subtitle: 'The R In RAG',
+    description:
+      'Score the query against every document vector, sort by similarity, and take the best few. Those top-K chunks are exactly what a RAG system feeds back to the model.',
+    code: 'const ranked = docs\n  .map((d, i) => ({ d, score: cosine(qVec, docVecs[i]) }))\n  .sort((a, b) => b.score - a.score);\nconst topK = ranked.slice(0, 3); // most relevant chunks',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Narrowing', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
-    description: 'The handbook chapter on narrowing — typeof, in, instanceof, type predicates, and discriminated unions. The heart of today.',
-    link: { href: TS_NARROWING, label: 'Read Narrowing →', external: true },
+    icon: '💻', title: 'Lecture 09', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    description:
+      'The semantic search lecture and diagram in the STRIKE GenAI repo — embeddings put to work as retrieval.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 09 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Watch It Narrow',
-    description: 'Write a union, add a guard, and hover the variable inside the branch to see the type shrink. The clearest way to feel narrowing work.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '🧠', title: 'Why It Matters', titleClass: 'card-title-purple', subtitle: 'Retrieval',
+    description:
+      'Semantic search is the retrieval half of RAG. Get this right and the model can answer from your own documents, not just its training data.',
+    footer: 'query → embed → similarity → top-K chunks',
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Discriminated unions model reducer actions and API states — you’ll reach for them constantly in React & Next.js.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: Vector Databases', titleClass: 'card-title-amber', subtitle: 'Day 10 Preview',
+    description:
+      'Tomorrow scales this up — Lecture 10 on vector databases: store millions of embeddings and query the nearest neighbours fast, instead of looping in memory.',
+    link: { href: '/day-010', label: 'Go to Day 10 →' },
   },
 ];
 
@@ -132,6 +103,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day009() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +133,23 @@ export default function Day009() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-008" className="day001-nav-btn day001-nav-prev">← Day 8</Link>
-          <p className="day001-datetime">TypeScript Day 9</p>
+          <p className="day001-datetime">Agentic AI Day 9</p>
           <Link to="/day-010" className="day001-nav-btn day001-nav-next">Day 10 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Narrowing</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 09</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 9 <span aria-hidden="true">🎫</span></h1>
-              <p className="day001-day-theme">ENUMS & TYPE NARROWING</p>
+              <h1 className="day001-day-num">DAY 9 <span aria-hidden="true">🧭</span></h1>
+              <p className="day001-day-theme">SEMANTIC SEARCH — FINDING BY MEANING</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · TYPESCRIPT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,11 +157,12 @@ export default function Day009() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '9%' }} /></div>
 
         <p className="day001-summary">
-          Day 9 covers named constants and precise types. I learned numeric, string, and{' '}
-          <code>const</code> <strong>enums</strong> — and why a <strong>union of literals</strong> is often
-          better. Then <strong>narrowing</strong>: <code>typeof</code>, <code>in</code>, <code>instanceof</code>,
-          custom <strong>type predicates</strong>, and <strong>discriminated unions</strong> with{' '}
-          <code>never</code>-checked exhaustiveness. This is how TypeScript turns a broad type into an exact one.
+          Lecture 09 puts embeddings to work. <strong>Keyword search</strong> matches exact words, so it misses
+          meaning and does not scale. <strong>Semantic search</strong> fixes both: embed the <strong>query</strong>{' '}
+          and the <strong>documents</strong> with the same model, then compare vectors with{' '}
+          <strong>cosine similarity</strong> (1 = same meaning, 0 = unrelated). Rank every document by score and take
+          the <strong>top-K</strong> closest — those most-relevant chunks are the <strong>retrieval</strong> step,
+          the <strong>R in RAG</strong>. <em>Finding information becomes geometry.</em>
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +177,12 @@ export default function Day009() {
           </ul>
         </section>
 
-        <CardSection icon="🔢" title="ENUMS & LITERALS" cards={ENUMS} columns={3} />
-        <CardSection icon="🔍" title="NARROWING TECHNIQUES" cards={NARROW} columns={4} />
-        <CardSection icon="🎫" title="UNIONS & EXHAUSTIVENESS" cards={UNIONS} columns={4} />
+        <CardSection icon="🔎" title="WHY KEYWORD SEARCH BREAKS" cards={PROBLEM} columns={2} />
+        <CardSection icon="🧭" title="SEARCH BY MEANING" cards={SEMANTIC} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Narrowing</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#SemanticSearch</span><span>#CoderArmy</span><span>#RAG</span>
         </footer>
       </div>
     </div>

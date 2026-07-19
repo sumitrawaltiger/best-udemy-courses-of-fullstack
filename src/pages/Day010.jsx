@@ -2,101 +2,79 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_UTILITY = 'https://www.typescriptlang.org/docs/handbook/utility-types.html';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture10';
+const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
 
 const LEARNT_TODAY = [
-  { title: 'Utility types', text: 'built-in generics that transform a type into a new one — no manual retyping' },
-  { title: 'Partial<T>', text: 'makes every property optional — perfect for update/patch functions' },
-  { title: 'Required<T>', text: 'the opposite — makes every property required, stripping the ?' },
-  { title: 'Readonly<T>', text: 'freezes every property so it can’t be reassigned' },
-  { title: 'Pick<T, K>', text: 'keep only the listed keys — a smaller type from a bigger one' },
-  { title: 'Omit<T, K>', text: 'drop the listed keys — the inverse of Pick' },
-  { title: 'Record<K, V>', text: 'build a map type: `Record<string, number>` — keys of K, values of V' },
-  { title: 'Return/Parameters', text: 'ReturnType<F> and Parameters<F> read types straight out of a function' },
-  { title: 'NonNullable<T>', text: 'removes null and undefined from a type' },
-  { title: 'They compose', text: 'combine them: `Readonly<Partial<User>>` — powerful, declarative type maths' },
+  { title: 'Regular DBs fall short', text: 'SQL and NoSQL are built for exact matches and filters, not for "find the nearest vectors" at scale' },
+  { title: 'What a vector DB is', text: 'a database purpose-built to store embeddings and query them by similarity, fast' },
+  { title: 'Store vector + metadata', text: 'each record holds the embedding plus the original text and any metadata to return with it' },
+  { title: 'ANN indexes', text: 'Approximate Nearest Neighbour indexes make similarity search fast, trading a little accuracy for big speed' },
+  { title: 'The options', text: 'Pinecone, Qdrant, Chroma and PGVector are common choices in the JavaScript ecosystem' },
+  { title: 'The pipeline', text: 'embed your documents once, upsert them into the DB, then query with an embedded question for top-K matches' },
+  { title: 'This completes retrieval', text: 'a vector DB is the storage layer that makes production RAG possible — next comes RAG itself' },
 ];
 
-const SHAPE_MODS = [
+const WHY = [
   {
-    icon: '🧩', title: 'Partial<T>', titleClass: 'card-title-cyan', subtitle: 'All Optional',
-    description: 'Partial makes every field optional — exactly what an update function needs, so callers can pass only the fields they want to change.',
-    code: 'interface User { name: string; age: number }\nfunction update(id: number, patch: Partial<User>) {}\nupdate(1, { age: 27 }); // ✅ name omitted',
+    icon: '🗄️', title: 'Why Not A Normal DB?', titleClass: 'card-title-cyan', subtitle: 'Wrong Tool',
+    description:
+      'A normal database finds rows by exact value or range. It has no efficient way to answer "which of these million vectors point in a similar direction to this one?" — that is a different problem.',
+    code: '// SQL: WHERE city = "Delhi"        ✅ exact match\n// SQL: nearest vector to [0.2, ...]  ❌ not built for it',
   },
   {
-    icon: '❗', title: 'Required<T>', titleClass: 'card-title-purple', subtitle: 'All Required',
-    description: 'Required strips every ? and demands all properties — useful when you’ve finished building an object and want to guarantee it’s complete.',
-    code: 'interface Opts { a?: number; b?: number }\nconst full: Required<Opts> = { a: 1, b: 2 };',
+    icon: '📦', title: 'A Vector Database', titleClass: 'card-title-purple', subtitle: 'Built For Similarity',
+    description:
+      'A vector DB stores each embedding alongside its source text and metadata, and indexes the vectors so it can return the closest matches to a query vector in milliseconds.',
+    code: '// record = { vector: [...], text: "...", metadata: {...} }\n// query(vector, k) → the k most similar records',
   },
   {
-    icon: '🧊', title: 'Readonly<T>', titleClass: 'card-title-amber', subtitle: 'All Frozen',
-    description: 'Readonly makes every property immutable at the type level — the same idea as Episode 5’s readonly, applied to a whole type at once.',
-    code: 'const cfg: Readonly<{ url: string }> = { url: "/api" };\ncfg.url = "/x"; // ❌ read-only',
-  },
-];
-
-const SELECT = [
-  {
-    icon: '🎯', title: 'Pick<T, K>', titleClass: 'card-title-cyan', subtitle: 'Keep Some Keys',
-    description: 'Pick builds a new type with only the keys you name — carve a small, focused type (like component props) out of a larger model.',
-    code: 'interface User { id: number; name: string; email: string }\ntype Card = Pick<User, "id" | "name">;',
-  },
-  {
-    icon: '✂️', title: 'Omit<T, K>', titleClass: 'card-title-blue', subtitle: 'Drop Some Keys',
-    description: 'Omit is Pick’s inverse — remove the keys you don’t want. Ideal for a "create" type that excludes a server-generated id.',
-    code: 'type NewUser = Omit<User, "id">;\nfunction create(u: NewUser) {}',
-  },
-  {
-    icon: '🗺️', title: 'Record<K, V>', titleClass: 'card-title-amber', subtitle: 'Typed Maps',
-    description: 'Record constructs an object type with keys of K and values of V — the clean way to type dictionaries, lookups, and config maps.',
-    code: 'type Roles = Record<"admin" | "user", boolean>;\nconst r: Roles = { admin: true, user: false };',
-  },
-  {
-    icon: '🚫', title: 'NonNullable<T>', titleClass: 'card-title-lime', subtitle: 'Strip null | undefined',
-    description: 'NonNullable removes null and undefined from a union — pairs well with narrowing to represent "definitely present" values.',
-    code: 'type Maybe = string | null | undefined;\ntype Sure = NonNullable<Maybe>; // string',
+    icon: '⚡', title: 'ANN Indexes', titleClass: 'card-title-amber', subtitle: 'Fast At Scale',
+    description:
+      'Exact nearest-neighbour search over millions of vectors is slow. Approximate Nearest Neighbour indexes (like HNSW) give near-perfect results far faster — the trick behind real-time search.',
+    code: '// exact search: check every vector → slow\n// ANN (HNSW): smart index → fast, ~as accurate',
   },
 ];
 
-const FROM_FN = [
+const USE = [
   {
-    icon: '↩️', title: 'ReturnType<F>', titleClass: 'card-title-cyan', subtitle: 'Read A Return Type',
-    description: 'Extract the return type of a function type without running it — keep a derived type in sync with its source automatically.',
-    code: 'function makeUser() { return { id: 1, name: "S" }; }\ntype User = ReturnType<typeof makeUser>;',
+    icon: '🧰', title: 'The Options', titleClass: 'card-title-cyan', subtitle: 'JS Ecosystem',
+    description:
+      'Popular choices: Pinecone (managed), Qdrant and Chroma (open source), and PGVector (a Postgres extension). All expose the same idea — upsert vectors, then query by similarity.',
+    code: '// Pinecone · Qdrant · Chroma · PGVector\n// same mental model: upsert(vectors) → query(vector, topK)',
   },
   {
-    icon: '📥', title: 'Parameters<F>', titleClass: 'card-title-purple', subtitle: 'Read Argument Types',
-    description: 'Parameters gives a tuple of a function’s argument types — handy for wrappers, decorators, and forwarding calls type-safely.',
-    code: 'function log(msg: string, level: number) {}\ntype Args = Parameters<typeof log>; // [string, number]',
+    icon: '⬆️', title: 'Ingest & Query', titleClass: 'card-title-purple', subtitle: 'The Pipeline',
+    description:
+      'Embed each document once and upsert it. At query time, embed the question and ask the DB for the top-K nearest records — the retrieval you built by hand yesterday, now at scale.',
+    code: '// ingest (once)\nawait index.upsert(docs.map(d => ({ id: d.id, values: embed(d.text), metadata: { text: d.text } })));\n// query\nconst { matches } = await index.query({ vector: embed(question), topK: 3 });',
   },
   {
-    icon: '🔗', title: 'They Compose', titleClass: 'card-title-amber', subtitle: 'Stack Them Up',
-    description: 'Utility types are just generics, so they nest. Combine them to express precise intent declaratively instead of hand-writing variants.',
-    code: 'type DraftUser = Readonly<Partial<Omit<User, "id">>>;',
-  },
-  {
-    icon: '🔜', title: 'Next: Modules', titleClass: 'card-title-lime', subtitle: 'Day 11 Preview',
-    description: 'Tomorrow: ES modules in TypeScript — import/export, default vs named, type-only imports, and declaration files (.d.ts).',
-    link: { href: '/day-011', label: 'Go to Day 11 →' },
+    icon: '🔗', title: 'Retrieval, Solved', titleClass: 'card-title-amber', subtitle: 'Ready For RAG',
+    description:
+      'Embeddings, semantic search, and now a vector DB together form a complete retrieval system. The final piece is feeding those retrieved chunks to the model — that is RAG.',
+    footer: 'embed → store → retrieve → (next) generate = RAG',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Utility Types', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
-    description: 'The complete reference of built-in utility types — every one from today plus Exclude, Extract, and Awaited.',
-    link: { href: TS_UTILITY, label: 'Read Utility Types →', external: true },
+    icon: '💻', title: 'Lecture 10', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    description:
+      'The vector databases lecture and diagram in the STRIKE GenAI repo — the storage layer for retrieval.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 10 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Transform Types Live',
-    description: 'Apply Partial, Pick, and Omit to a type and hover the result to see the transformed shape. Utility types make sense instantly this way.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '🧠', title: 'RAG Comes Next', titleClass: 'card-title-purple', subtitle: 'Lecture 12',
+    description:
+      'With retrieval complete, the course builds a full RAG System (Lecture 12): retrieve relevant chunks, then have the model answer using them. Explore the site’s GenAI track for the same path.',
+    link: { href: '/genai', label: 'Open the GenAI track →' },
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Partial for form state, Pick/Omit for props and DTOs, Record for lookups — these appear on nearly every React/Next.js screen.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
+    description:
+      'The complete Coder Army course code — every lecture from here through RAG, multi-agent systems, LangGraph and the final projects.',
+    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
   },
 ];
 
@@ -132,6 +110,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day010() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +140,23 @@ export default function Day010() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-009" className="day001-nav-btn day001-nav-prev">← Day 9</Link>
-          <p className="day001-datetime">TypeScript Day 10</p>
+          <p className="day001-datetime">Agentic AI Day 10</p>
           <Link to="/day-011" className="day001-nav-btn day001-nav-next">Day 11 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Utility Types</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 10</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 10 <span aria-hidden="true">🧰</span></h1>
-              <p className="day001-day-theme">UTILITY TYPES — TRANSFORM TYPES</p>
+              <h1 className="day001-day-num">DAY 10 <span aria-hidden="true">🗄️</span></h1>
+              <p className="day001-day-theme">VECTOR DATABASES — RETRIEVAL AT SCALE</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · TYPESCRIPT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,11 +164,13 @@ export default function Day010() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '10%' }} /></div>
 
         <p className="day001-summary">
-          Day 10 is type maths with the built-in <strong>utility types</strong>. I reshaped types with{' '}
-          <code>Partial</code>, <code>Required</code>, and <code>Readonly</code>; selected keys with{' '}
-          <code>Pick</code> and <code>Omit</code>; built maps with <code>Record</code>; and read types straight
-          out of functions with <code>ReturnType</code> and <code>Parameters</code>. Because they’re generics,
-          they <strong>compose</strong> — declarative, reusable, and everywhere in real code.
+          Lecture 10 — <strong>vector databases</strong>. Regular SQL/NoSQL databases are built for exact matches,
+          not for "find the nearest vectors", so yesterday’s in-memory search does not scale. A{' '}
+          <strong>vector DB</strong> stores each <strong>embedding</strong> with its text and metadata and uses{' '}
+          <strong>ANN indexes</strong> (like HNSW) to return the closest matches in milliseconds. The workflow:{' '}
+          <strong>embed once, upsert, then query</strong> with an embedded question — using{' '}
+          <strong>Pinecone, Qdrant, Chroma</strong> or <strong>PGVector</strong>. That completes retrieval; the last
+          piece is generation. <em>Next stop: RAG.</em>
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +185,12 @@ export default function Day010() {
           </ul>
         </section>
 
-        <CardSection icon="🔧" title="RESHAPE PROPERTIES" cards={SHAPE_MODS} columns={3} />
-        <CardSection icon="🎯" title="SELECT & MAP KEYS" cards={SELECT} columns={4} />
-        <CardSection icon="🧠" title="FROM FUNCTIONS & COMPOSITION" cards={FROM_FN} columns={4} />
+        <CardSection icon="🗄️" title="WHY A VECTOR DATABASE" cards={WHY} columns={3} />
+        <CardSection icon="🔗" title="USING ONE" cards={USE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#UtilityTypes</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#VectorDB</span><span>#CoderArmy</span><span>#RAG</span>
         </footer>
       </div>
     </div>
