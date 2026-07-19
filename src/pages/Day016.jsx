@@ -2,101 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const ZOD = 'https://zod.dev';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture16';
+const NEO4J = 'https://neo4j.com/';
 
 const LEARNT_TODAY = [
-  { title: 'Types are compile-time', text: 'annotations vanish at runtime — they cannot check real data by themselves' },
-  { title: 'Runtime validation', text: 'a schema library checks actual values and throws or returns errors on bad data' },
-  { title: 'Zod schemas', text: '`z.object({...})` describes a shape you can both validate and infer a type from' },
-  { title: 'z.infer', text: 'derive the static TypeScript type straight from a schema — one source of truth' },
-  { title: 'parse vs safeParse', text: 'parse throws on failure; safeParse returns a typed success/error result' },
-  { title: 'Validate at the boundary', text: 'run schemas on API responses, form input, and env vars — the app’s edges' },
-  { title: 'Rich rules', text: 'min, max, email, url, regex, refine — validation and typing together' },
-  { title: 'Transforms', text: 'schemas can coerce and reshape data (string → Date) as they validate' },
-  { title: 'Composability', text: 'build big schemas from small ones, just like types' },
-  { title: 'Types + reality agree', text: 'validation guarantees the data actually matches the inferred type' },
+  { title: 'Vectors miss relationships', text: 'semantic search finds similar text, but cannot answer "which movies did Nolan direct?" precisely' },
+  { title: 'Knowledge graph', text: 'store entities as nodes and relationships as edges — Nolan -[DIRECTED]→ Inception' },
+  { title: 'Explicit, structured facts', text: 'graphs capture exact relationships that embeddings only approximate' },
+  { title: 'Neo4j', text: 'a graph database queried with Cypher — pattern matching over nodes and edges' },
+  { title: 'Graph RAG', text: 'combine a knowledge graph (facts and relationships) with vector RAG (semantic similarity)' },
+  { title: 'Two kinds of questions', text: 'factual/relational → the graph; "similar to" or "recommend" → the vectors' },
+  { title: 'Next: build it', text: 'the coming lectures build a Graph RAG over a movie dataset using Neo4j + Pinecone + Gemini' },
 ];
 
-const WHY = [
+const GAP = [
   {
-    icon: '⚠️', title: 'The Trust Gap', titleClass: 'card-title-cyan', subtitle: 'Types Don’t Run',
-    description: 'getJSON<User> tells the compiler what to expect, but the server could send anything. Since types are erased, bad data slips through until it crashes.',
-    code: 'const user = await getJSON<User>("/api/user");\n// if the server lies, user.name may be undefined',
+    icon: '🕸️', title: 'Where Vectors Fall Short', titleClass: 'card-title-cyan', subtitle: 'Relationships',
+    description:
+      'Vector RAG is great at "find text that means something similar". But it cannot reliably answer relationship questions — who directed what, who acted with whom, how many of a kind — because those are structured facts, not fuzzy similarity.',
+    code: '// "Movies directed by Nolan"  → needs exact relationships\n// "Movies like Inception"      → needs similarity\n// vectors handle the 2nd, struggle with the 1st',
   },
   {
-    icon: '🛡️', title: 'Runtime Validation', titleClass: 'card-title-purple', subtitle: 'Check Real Values',
-    description: 'A schema validates actual data at runtime and reports exactly what’s wrong. Pair it with types and your app never processes malformed input.',
-    code: 'const result = UserSchema.safeParse(raw);\nif (!result.success) handle(result.error);',
-  },
-  {
-    icon: '🔗', title: 'One Source Of Truth', titleClass: 'card-title-amber', subtitle: 'z.infer',
-    description: 'Define the schema once; derive the TypeScript type from it with z.infer. The static type and the runtime check can never drift apart.',
-    code: 'const UserSchema = z.object({ id: z.number(), name: z.string() });\ntype User = z.infer<typeof UserSchema>;',
+    icon: '🔗', title: 'Nodes & Edges', titleClass: 'card-title-purple', subtitle: 'A Knowledge Graph',
+    description:
+      'A knowledge graph stores each entity as a node and each relationship as an edge. The connections are first-class data, so relationship questions become precise graph traversals.',
+    code: '(Nolan:Director)-[:DIRECTED]->(Inception:Movie)\n(Zendaya:Actor)-[:ACTED_IN]->(Dune:Movie)\n// facts as nodes + typed relationships',
   },
 ];
 
-const ZOD_CARDS = [
+const GRAPH = [
   {
-    icon: '🧱', title: 'Define A Schema', titleClass: 'card-title-cyan', subtitle: 'z.object',
-    description: 'Describe a shape with z.object and field schemas. It reads like an interface but is a real value you can run against data.',
-    code: 'import { z } from "zod";\nconst Post = z.object({\n  id: z.number(),\n  title: z.string().min(1),\n});',
+    icon: '🗄️', title: 'Neo4j & Cypher', titleClass: 'card-title-cyan', subtitle: 'The Graph Database',
+    description:
+      'Neo4j stores the graph and is queried with Cypher, a pattern-matching language. You literally draw the pattern you want and Neo4j finds every match.',
+    code: '// Cypher: movies directed by Nolan\nMATCH (d:Director {name: "Christopher Nolan"})\n      -[:DIRECTED]->(m:Movie)\nRETURN m.title',
   },
   {
-    icon: '🎯', title: 'parse vs safeParse', titleClass: 'card-title-blue', subtitle: 'Throw or Return',
-    description: 'parse throws a detailed error on invalid data; safeParse returns { success, data | error }. Use safeParse to handle failures without try/catch.',
-    code: 'const ok = Post.parse(raw);          // throws if invalid\nconst r = Post.safeParse(raw);       // { success, data? }',
+    icon: '🧬', title: 'Graph RAG', titleClass: 'card-title-purple', subtitle: 'Graph + Vectors',
+    description:
+      'Graph RAG uses both worlds: the knowledge graph for exact, relational answers, and vector search for "find something similar". One system, two retrieval strengths.',
+    code: '// factual/relational → Neo4j graph\n// similarity/recommend → Pinecone vectors\n// route each question to the right one',
   },
   {
-    icon: '✨', title: 'Rich Rules', titleClass: 'card-title-amber', subtitle: 'email · min · regex',
-    description: 'Schemas carry validation rules — email, url, min/max, regex, refine — so a valid parse means the data is genuinely correct, not just the right type.',
-    code: 'const Signup = z.object({\n  email: z.string().email(),\n  age: z.number().min(18),\n});',
-  },
-  {
-    icon: '🔄', title: 'Transforms', titleClass: 'card-title-lime', subtitle: 'Validate + Reshape',
-    description: 'A schema can coerce and transform as it validates — turn an ISO string into a Date, trim whitespace, or map a DTO into your model in one step.',
-    code: 'const WithDate = z.object({\n  createdAt: z.string().transform((s) => new Date(s)),\n});',
-  },
-];
-
-const APPLY = [
-  {
-    icon: '🌐', title: 'Validate API Data', titleClass: 'card-title-cyan', subtitle: 'The Real Win',
-    description: 'Wrap getJSON to parse the response with a schema. Now the type isn’t a hopeful annotation — it’s guaranteed by a runtime check.',
-    code: 'async function get<T>(url: string, schema: z.ZodType<T>) {\n  const raw = await (await fetch(url)).json();\n  return schema.parse(raw);\n}',
-  },
-  {
-    icon: '📝', title: 'Validate Forms', titleClass: 'card-title-purple', subtitle: 'Input You Don’t Control',
-    description: 'Form input is untrusted too. The same schema validates it and gives field-level error messages — reused across client and server.',
-    code: 'const r = Signup.safeParse(formData);',
-  },
-  {
-    icon: '🧬', title: 'Compose Schemas', titleClass: 'card-title-amber', subtitle: 'Small → Big',
-    description: 'Extend and merge schemas just like types — .extend, .merge, .partial, .pick. Your validation stays as modular as your type definitions.',
-    code: 'const Admin = User.extend({ role: z.literal("admin") });',
-  },
-  {
-    icon: '🔜', title: 'Next: Error Handling', titleClass: 'card-title-lime', subtitle: 'Day 17 Preview',
-    description: 'Tomorrow: robust error handling in TypeScript — custom error classes, the unknown catch, and a typed Result pattern.',
-    link: { href: '/day-017', label: 'Go to Day 17 →' },
+    icon: '🎯', title: 'Why It Matters', titleClass: 'card-title-amber', subtitle: 'Fewer Wrong Answers',
+    description:
+      'Pure vector RAG can hallucinate relationships. Grounding factual questions in a real graph makes those answers exact and verifiable — a big step for trustworthy AI.',
+    footer: 'graph = precise facts · vectors = fuzzy meaning',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Zod Docs', titleClass: 'card-title-cyan', subtitle: 'Schema Validation',
-    description: 'The official Zod documentation — schemas, refinements, transforms, and the z.infer type helper. The de-facto standard for TS validation.',
-    link: { href: ZOD, label: 'Open zod.dev →', external: true },
+    icon: '💻', title: 'Lecture 16', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    description:
+      'The knowledge graphs lecture and diagram in the STRIKE GenAI repo — the concept behind the Graph RAG build ahead.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 16 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type ↔ Schema',
-    description: 'Model the same shape as an interface and a schema, then use z.infer to prove they match. Feel how a schema is both a type and a check.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '🗄️', title: 'Neo4j', titleClass: 'card-title-purple', subtitle: 'Graph Database',
+    description:
+      'The graph database used in the coming lectures — nodes, relationships and the Cypher query language.',
+    link: { href: NEO4J, label: 'Neo4j →', external: true },
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Validation guards the edges of every app — API, forms, env. You’ll pair Zod with typed fetch and React forms throughout the year.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: The Project', titleClass: 'card-title-amber', subtitle: 'Day 17 Preview',
+    description:
+      'Tomorrow kicks off a project — Lecture 17: designing a Graph RAG knowledge assistant over a document, combining Neo4j, Pinecone, Gemini and LangChain.js.',
+    link: { href: '/day-017', label: 'Go to Day 17 →' },
   },
 ];
 
@@ -132,6 +104,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day016() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +134,23 @@ export default function Day016() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-015" className="day001-nav-btn day001-nav-prev">← Day 15</Link>
-          <p className="day001-datetime">TypeScript Day 16</p>
+          <p className="day001-datetime">Agentic AI Day 16</p>
           <Link to="/day-017" className="day001-nav-btn day001-nav-next">Day 17 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Validation</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 16</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 16 <span aria-hidden="true">🛡️</span></h1>
-              <p className="day001-day-theme">RUNTIME VALIDATION WITH ZOD</p>
+              <h1 className="day001-day-num">DAY 16 <span aria-hidden="true">🕸️</span></h1>
+              <p className="day001-day-theme">KNOWLEDGE GRAPHS — BEYOND VECTOR RAG</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · TYPESCRIPT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,11 +158,13 @@ export default function Day016() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '16%' }} /></div>
 
         <p className="day001-summary">
-          Day 16 closes the trust gap. Because types are erased at runtime, I learned to <strong>validate</strong>{' '}
-          real data with <strong>Zod</strong> schemas — <code>z.object</code> to describe a shape,{' '}
-          <code>z.infer</code> to derive the type from it (one source of truth), and <code>parse</code>/
-          <code>safeParse</code> to check values. Validating at the app’s <strong>boundaries</strong> — APIs,
-          forms, env — means the inferred type and reality finally always agree.
+          Lecture 16 — <strong>knowledge graphs</strong>. Vector RAG finds similar text but can’t precisely answer
+          <strong> relationship questions</strong> like "which movies did Nolan direct?". A{' '}
+          <strong>knowledge graph</strong> stores entities as <strong>nodes</strong> and relationships as{' '}
+          <strong>edges</strong> (Nolan -[DIRECTED]→ Inception), queried with <strong>Cypher</strong> in{' '}
+          <strong>Neo4j</strong>. <strong>Graph RAG</strong> combines both — the graph for exact, relational facts
+          and vectors for similarity — routing each question to the right engine.{' '}
+          <em>Next, I build one. (Diagram-based lecture; standard concepts.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +179,12 @@ export default function Day016() {
           </ul>
         </section>
 
-        <CardSection icon="⚠️" title="WHY VALIDATE" cards={WHY} columns={3} />
-        <CardSection icon="🧱" title="ZOD SCHEMAS" cards={ZOD_CARDS} columns={4} />
-        <CardSection icon="🛠️" title="APPLYING IT" cards={APPLY} columns={4} />
+        <CardSection icon="🕸️" title="WHERE VECTORS FALL SHORT" cards={GAP} columns={2} />
+        <CardSection icon="🧬" title="KNOWLEDGE GRAPHS & GRAPH RAG" cards={GRAPH} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Zod</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GraphRAG</span><span>#Neo4j</span><span>#CoderArmy</span>
         </footer>
       </div>
     </div>

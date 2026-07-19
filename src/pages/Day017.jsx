@@ -2,101 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_HANDBOOK = 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture17';
+const NOTION = 'https://www.notion.so/Lecture-17-Project-2fea9af81c98800caa23eccb3fb108d0';
 
 const LEARNT_TODAY = [
-  { title: 'catch is unknown', text: 'anything can be thrown, so a caught value is unknown — narrow it before use' },
-  { title: 'instanceof Error', text: 'the standard first check: narrow to Error to read message and stack safely' },
-  { title: 'Custom error classes', text: 'extend Error for NotFoundError, ValidationError — typed, discriminable failures' },
-  { title: 'Discriminated errors', text: 'a `name`/`code` field lets you switch over error kinds exhaustively' },
-  { title: 'Result pattern', text: 'return { ok: true, value } | { ok: false, error } instead of throwing' },
-  { title: 'Errors as values', text: 'the Result approach makes failure part of the type — callers must handle it' },
-  { title: 'never for exhaustiveness', text: 'a never default guarantees every error case is handled' },
-  { title: 'Rethrow safely', text: 'narrow, add context, and rethrow — don’t swallow unknown errors' },
-  { title: 'Error cause', text: 'the `cause` option chains the original error for better diagnostics' },
-  { title: 'Boundaries catch', text: 'handle errors where you can act — logging, UI messages, retries' },
+  { title: 'Project time', text: 'apply everything so far to build a real knowledge assistant that answers questions about a document' },
+  { title: 'The dataset', text: 'a movies PDF becomes a queryable knowledge base — entities, relationships and descriptions' },
+  { title: 'Hybrid architecture', text: 'Neo4j (graph) + Pinecone (vectors) + Gemini (LLM) + LangChain.js, working together' },
+  { title: 'Two pipelines', text: 'indexing (build the graph + vectors once) and querying (classify, route, answer)' },
+  { title: 'Plan before code', text: 'decide the entities, relationships, and which questions go to the graph vs the vectors' },
+  { title: 'Three question types', text: 'factual (relationships), similarity (recommendations) and descriptive (about an entity)' },
+  { title: 'The payoff', text: 'one assistant that answers all three kinds of questions accurately — Graph RAG in practice' },
 ];
 
-const CATCHING = [
+const GOAL = [
   {
-    icon: '🎣', title: 'unknown In catch', titleClass: 'card-title-cyan', subtitle: 'Narrow First',
-    description: 'Under strict settings a caught value is unknown because JavaScript can throw anything. Check the type before reading properties.',
-    code: 'try { risky(); }\ncatch (e) {\n  if (e instanceof Error) console.log(e.message);\n  else console.log("unknown throw", e);\n}',
+    icon: '🎬', title: 'The Goal', titleClass: 'card-title-cyan', subtitle: 'A Movie Assistant',
+    description:
+      'Build an assistant over a movies document that can list "movies directed by Nolan", recommend "movies like Inception", and describe "what is The Godfather about" — all from your own data.',
+    code: '// factual:     "Movies directed by Nolan"\n// similarity:  "Movies like Inception"\n// descriptive: "Tell me about The Godfather"',
   },
   {
-    icon: '🏷️', title: 'Custom Error Classes', titleClass: 'card-title-purple', subtitle: 'Typed Failures',
-    description: 'Extend Error to model specific failures. Each class is a distinct type you can instanceof-check, carrying its own extra data.',
-    code: 'class NotFoundError extends Error {\n  constructor(public id: number) {\n    super(`Missing ${id}`);\n    this.name = "NotFoundError";\n  }\n}',
-  },
-  {
-    icon: '🔀', title: 'Discriminated Errors', titleClass: 'card-title-amber', subtitle: 'Switch On Kind',
-    description: 'Give errors a literal name or code and switch over them. TypeScript narrows to the exact error type in each branch — like discriminated unions.',
-    code: 'if (err instanceof NotFoundError) return 404;\nif (err instanceof ValidationError) return 400;',
+    icon: '🏗️', title: 'The Architecture', titleClass: 'card-title-purple', subtitle: 'Four Pieces',
+    description:
+      'Gemini extracts entities and answers; Neo4j stores the relationship graph; Pinecone stores the vectors; LangChain.js wires the steps. Each tool does the job it is best at.',
+    code: '// Gemini      → extract entities, generate answers\n// Neo4j       → relationships (the graph)\n// Pinecone    → similarity (the vectors)\n// LangChain.js → glue',
   },
 ];
 
-const RESULT = [
+const PLAN = [
   {
-    icon: '📦', title: 'The Result Type', titleClass: 'card-title-cyan', subtitle: 'Errors As Values',
-    description: 'Instead of throwing, return a Result — a union of success and failure. The type forces every caller to handle the error path explicitly.',
-    code: 'type Result<T, E = Error> =\n  | { ok: true; value: T }\n  | { ok: false; error: E };',
+    icon: '📥', title: 'Pipeline 1 — Indexing', titleClass: 'card-title-cyan', subtitle: 'Build The Base',
+    description:
+      'Run once: parse the PDF, have the LLM extract structured entities, build the Neo4j graph, and store embeddings in Pinecone. After this, the knowledge base is ready.',
+    code: '// PDF → extract entities → Neo4j graph\n//     → embed chunks   → Pinecone\n// (tomorrow: the full build)',
   },
   {
-    icon: '↩️', title: 'Return, Don’t Throw', titleClass: 'card-title-blue', subtitle: 'Explicit Failure',
-    description: 'A function that returns Result makes failure part of its signature. No hidden exceptions — the compiler reminds you to deal with error.',
-    code: 'function parseAge(s: string): Result<number> {\n  const n = Number(s);\n  return isNaN(n) ? { ok: false, error: new Error("NaN") }\n                  : { ok: true, value: n };\n}',
+    icon: '❓', title: 'Pipeline 2 — Querying', titleClass: 'card-title-purple', subtitle: 'Answer Anything',
+    description:
+      'Per question: classify its type, route it to the graph or the vectors, retrieve, and let Gemini write the answer. The routing is what makes it feel smart.',
+    code: '// question → classify → route → retrieve → answer\n// (Day 19: the query side)',
   },
   {
-    icon: '🧭', title: 'Consume A Result', titleClass: 'card-title-amber', subtitle: 'Narrow On ok',
-    description: 'Check result.ok and TypeScript narrows to the right branch — value on success, error on failure. Clean, exhaustive handling every time.',
-    code: 'const r = parseAge(input);\nif (r.ok) use(r.value);\nelse show(r.error.message);',
-  },
-  {
-    icon: '✅', title: 'Exhaustiveness', titleClass: 'card-title-lime', subtitle: 'never Catches Gaps',
-    description: 'When switching over error kinds, assign the leftover to never in the default. Add a new error later and forget to handle it — the compiler stops you.',
-    code: 'default: { const _: never = err; throw err; }',
-  },
-];
-
-const PRACTICE = [
-  {
-    icon: '🔗', title: 'Error cause', titleClass: 'card-title-cyan', subtitle: 'Chain Context',
-    description: 'The Error cause option preserves the original error while adding context — invaluable for tracing a failure through layers of your app.',
-    code: 'throw new Error("Load failed", { cause: err });',
-  },
-  {
-    icon: '🚧', title: 'Handle At Boundaries', titleClass: 'card-title-purple', subtitle: 'Where You Can Act',
-    description: 'Let errors bubble to a boundary that can respond — a route handler, a UI error boundary, a retry. Don’t bury them in the middle of logic.',
-    code: '// route:\ntry { return await handler(); }\ncatch (e) { return toHttpError(e); }',
-  },
-  {
-    icon: '🔁', title: 'Rethrow Safely', titleClass: 'card-title-amber', subtitle: 'Add, Don’t Swallow',
-    description: 'If you can’t handle an error, narrow it, add context, and rethrow. Swallowing an unknown error hides the very bug you need to see.',
-    code: 'catch (e) {\n  if (!(e instanceof Error)) throw e;\n  throw new AppError("step 2 failed", { cause: e });\n}',
-  },
-  {
-    icon: '🔜', title: 'Next: TypeScript + Node', titleClass: 'card-title-lime', subtitle: 'Day 18 Preview',
-    description: 'Tomorrow: TypeScript with Node.js — @types/node, typed scripts, reading env and files, and a small typed CLI.',
-    link: { href: '/day-018', label: 'Go to Day 18 →' },
+    icon: '🗺️', title: 'Design First', titleClass: 'card-title-amber', subtitle: 'Entities & Routes',
+    description:
+      'Before writing code, decide the entities (Movie, Director, Actor, Genre), the relationships (DIRECTED, ACTED_IN), and which question types go where. A clear plan makes the build straightforward.',
+    footer: 'entities · relationships · routing rules',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Narrowing', titleClass: 'card-title-cyan', subtitle: 'TS Handbook',
-    description: 'The narrowing chapter underpins error handling — instanceof, discriminated unions, and exhaustiveness with never all apply directly to errors.',
-    link: { href: TS_HANDBOOK, label: 'Read Narrowing →', external: true },
+    icon: '📝', title: 'Lecture 17 Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    description:
+      'Rohit’s project write-up — the goal, architecture and plan for the Graph RAG knowledge assistant.',
+    link: { href: NOTION, label: 'Open Lecture 17 notes →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Model A Result',
-    description: 'Write the Result type and a function that returns it, then consume it. See how failure becomes something the compiler makes you handle.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '💻', title: 'Lecture 17', titleClass: 'card-title-purple', subtitle: 'GitHub',
+    description:
+      'The lecture folder in the STRIKE GenAI repo — the kickoff for the graph-rag-movie project built across the next lectures.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 17 →', external: true },
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Solid error handling keeps React screens and Node services resilient. These patterns carry into Python and Java in later years too.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: Build The Graph', titleClass: 'card-title-amber', subtitle: 'Day 18 Preview',
+    description:
+      'Tomorrow is the build — Lecture 18: parse the PDF, extract entities with Gemini, and construct the Neo4j knowledge graph plus the Pinecone vectors.',
+    link: { href: '/day-018', label: 'Go to Day 18 →' },
   },
 ];
 
@@ -132,6 +104,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day017() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +134,23 @@ export default function Day017() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-016" className="day001-nav-btn day001-nav-prev">← Day 16</Link>
-          <p className="day001-datetime">TypeScript Day 17</p>
+          <p className="day001-datetime">Agentic AI Day 17</p>
           <Link to="/day-018" className="day001-nav-btn day001-nav-next">Day 18 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Errors</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 17</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 17 <span aria-hidden="true">🎣</span></h1>
-              <p className="day001-day-theme">ERROR HANDLING PATTERNS</p>
+              <h1 className="day001-day-num">DAY 17 <span aria-hidden="true">🛠️</span></h1>
+              <p className="day001-day-theme">PROJECT — A GRAPH RAG KNOWLEDGE ASSISTANT</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · TYPESCRIPT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,11 +158,14 @@ export default function Day017() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '17%' }} /></div>
 
         <p className="day001-summary">
-          Day 17 makes failure type-safe. Since a caught error is <code>unknown</code>, I narrowed with{' '}
-          <code>instanceof</code> and built <strong>custom error classes</strong> to model specific failures. Then
-          the <strong>Result pattern</strong> — returning <code>{'{ ok, value | error }'}</code> instead of
-          throwing — makes errors part of the type so callers must handle them. Plus <code>cause</code> for
-          context and <code>never</code> for exhaustive handling. Robust, predictable failure.
+          Lecture 17 — <strong>project time</strong>. The goal: a knowledge assistant over a{' '}
+          <strong>movies document</strong> that answers <strong>factual</strong> ("directed by Nolan"),{' '}
+          <strong>similarity</strong> ("like Inception") and <strong>descriptive</strong> ("about The Godfather")
+          questions. The architecture is <strong>hybrid</strong> — <strong>Neo4j</strong> for relationships,{' '}
+          <strong>Pinecone</strong> for similarity, <strong>Gemini</strong> for extraction and answers, wired with{' '}
+          <strong>LangChain.js</strong> — split into an <strong>indexing</strong> pipeline and a{' '}
+          <strong>querying</strong> pipeline. Today I plan the entities, relationships and routing.{' '}
+          <em>Tomorrow the build begins.</em>
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +180,12 @@ export default function Day017() {
           </ul>
         </section>
 
-        <CardSection icon="🎣" title="CATCHING & TYPING ERRORS" cards={CATCHING} columns={3} />
-        <CardSection icon="📦" title="THE RESULT PATTERN" cards={RESULT} columns={4} />
-        <CardSection icon="🧭" title="IN PRACTICE" cards={PRACTICE} columns={4} />
+        <CardSection icon="🎬" title="THE PROJECT" cards={GOAL} columns={2} />
+        <CardSection icon="🗺️" title="THE TWO PIPELINES" cards={PLAN} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#ErrorHandling</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GraphRAG</span><span>#Project</span><span>#CoderArmy</span>
         </footer>
       </div>
     </div>

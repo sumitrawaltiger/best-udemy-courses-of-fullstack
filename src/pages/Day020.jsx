@@ -2,101 +2,75 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
-const NODE_TS = 'https://nodejs.org/en/learn/typescript/run';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture20';
+const NOTION = 'https://www.notion.so/LangGraph-306a9af81c9880aaa2e3e37d1384063f';
+const LANGGRAPH_DOCS = 'https://langchain-ai.github.io/langgraphjs/';
 
 const LEARNT_TODAY = [
-  { title: 'A real project', text: 'built a typed CLI task manager end to end — the first capstone of the phase' },
-  { title: 'Model the domain', text: 'a Task interface + a discriminated Status union describe the data precisely' },
-  { title: 'Validate input', text: 'a Zod schema parses commands and file data at the boundaries' },
-  { title: 'Typed storage', text: 'read/write tasks.json with fs/promises, typed on the way in and out' },
-  { title: 'Result-based ops', text: 'add/complete/remove return Result so failures are explicit' },
-  { title: 'Generic repository', text: 'a Repository<T> pattern keeps storage reusable and testable' },
-  { title: 'Parse argv', text: 'turn process.argv into typed commands with exhaustive handling' },
-  { title: 'Errors handled', text: 'unknown catches narrowed, custom errors, friendly CLI messages' },
-  { title: 'strict throughout', text: 'no any, strictNullChecks on — the whole app is type-safe' },
-  { title: 'Everything connects', text: 'types, generics, unions, async, validation, errors, patterns — together' },
+  { title: 'Chains are too rigid', text: 'a chain runs steps in a fixed line — real agent workflows need branching, loops and control' },
+  { title: 'LangGraph', text: 'build agent workflows as a graph of nodes and edges, with a shared state flowing through it' },
+  { title: 'State', text: 'a single state object passes between nodes; each node reads it and returns updates to it' },
+  { title: 'Nodes', text: 'each node is a step — an LLM call, a tool, or a sub-agent — that transforms the state' },
+  { title: 'Edges', text: 'edges define the flow from node to node; the graph starts at an entry and ends at END' },
+  { title: 'Conditional edges', text: 'branch based on the state — send the flow one way or another depending on what happened' },
+  { title: 'Cycles', text: 'unlike a chain, a graph can loop — think → act → observe → think — the true agent loop' },
+  { title: 'Human-in-the-loop', text: 'pause the graph for approval before a critical action, then resume' },
+];
+
+const WHY = [
+  {
+    icon: '📏', title: 'Beyond Chains', titleClass: 'card-title-cyan', subtitle: 'Rigid & Linear',
+    description:
+      'A LangChain chain is a straight line: A → B → C. But agents need to decide, retry, branch and loop. Cramming that into a linear chain gets messy fast.',
+    code: '// chain: prompt → model → parser   (one direction)\n// agent: think → maybe call a tool → observe → repeat\n//        with branches and loops → needs a graph',
+  },
+  {
+    icon: '🕸️', title: 'A Graph Of Steps', titleClass: 'card-title-purple', subtitle: 'LangGraph',
+    description:
+      'LangGraph models the workflow as a graph. You declare a shared state, add nodes (steps), and connect them with edges — including conditional ones and cycles.',
+    code: "import { StateGraph, END } from '@langchain/langgraph';\n\nconst graph = new StateGraph({ channels: stateSchema })\n  .addNode('agent', callModel)\n  .addNode('tools', runTools);",
+  },
 ];
 
 const MODEL = [
   {
-    icon: '🧩', title: 'Domain Model', titleClass: 'card-title-cyan', subtitle: 'Task + Status',
-    description: 'Describe the data first. A Task interface plus a literal Status union make illegal states unrepresentable and drive the rest of the app.',
-    code: 'type Status = "todo" | "doing" | "done";\ninterface Task {\n  id: number;\n  title: string;\n  status: Status;\n}',
+    icon: '📦', title: 'State', titleClass: 'card-title-cyan', subtitle: 'The Shared Object',
+    description:
+      'One state object flows through the whole graph. Every node receives it and returns a partial update, which LangGraph merges — so each step builds on the last.',
+    code: '// state = { messages, question, context, answer }\n// each node returns e.g. { messages: [...newMsgs] }\n// LangGraph merges updates into the state',
   },
   {
-    icon: '🛡️', title: 'Validate At The Edge', titleClass: 'card-title-purple', subtitle: 'Zod Schema',
-    description: 'Parse both CLI input and the JSON file with a schema, so the Task[] your logic works with is guaranteed to match the type.',
-    code: 'const TaskSchema = z.object({\n  id: z.number(), title: z.string().min(1),\n  status: z.enum(["todo", "doing", "done"]),\n});',
+    icon: '🔗', title: 'Nodes & Edges', titleClass: 'card-title-purple', subtitle: 'Steps & Flow',
+    description:
+      'A node is a function that transforms the state. Edges wire nodes together, with an entry point and END. Conditional edges branch on the current state.',
+    code: "graph.addEdge('agent', 'tools');\ngraph.addConditionalEdges('agent', shouldContinue, {\n  continue: 'tools',   // needs a tool → run it\n  end: END,            // done → finish\n});",
   },
   {
-    icon: '🗄️', title: 'Generic Repository', titleClass: 'card-title-amber', subtitle: 'Reusable Storage',
-    description: 'A Repository<T> reads and writes typed data via fs/promises. Generics keep it reusable; injecting it makes the service layer testable.',
-    code: 'class JsonRepo<T> {\n  constructor(private file: string) {}\n  async all(): Promise<T[]> { /* read + parse */ }\n  async save(items: T[]) { /* write */ }\n}',
-  },
-];
-
-const LOGIC = [
-  {
-    icon: '📦', title: 'Result-Based Ops', titleClass: 'card-title-cyan', subtitle: 'Explicit Failure',
-    description: 'add, complete, and remove return a Result instead of throwing, so the CLI layer decides how to report success or a friendly error.',
-    code: 'function complete(tasks: Task[], id: number): Result<Task[]> {\n  const t = tasks.find((x) => x.id === id);\n  if (!t) return { ok: false, error: new Error("not found") };\n  t.status = "done";\n  return { ok: true, value: tasks };\n}',
-  },
-  {
-    icon: '⌨️', title: 'Parse Commands', titleClass: 'card-title-blue', subtitle: 'Typed argv',
-    description: 'Turn process.argv into a typed command and switch over it exhaustively — a never default guarantees no command is left unhandled.',
-    code: 'const [cmd, ...rest] = process.argv.slice(2);\nswitch (cmd) {\n  case "add": return add(rest.join(" "));\n  case "list": return list();\n}',
-  },
-  {
-    icon: '🎣', title: 'Handle Errors', titleClass: 'card-title-amber', subtitle: 'Friendly Output',
-    description: 'Wrap the entry point in a try/catch, narrow the unknown error, and print a clean message with a non-zero exit code — no raw stack traces.',
-    code: 'try { await main(); }\ncatch (e) {\n  console.error(e instanceof Error ? e.message : e);\n  process.exit(1);\n}',
-  },
-  {
-    icon: '🏗️', title: 'Wire It Together', titleClass: 'card-title-lime', subtitle: 'DI + Patterns',
-    description: 'A TaskService takes the repo via its constructor (dependency injection). Swap the repo for an in-memory one in tests — no code changes.',
-    code: 'const service = new TaskService(new JsonRepo<Task>("tasks.json"));',
-  },
-];
-
-const RECAP = [
-  {
-    icon: '🧠', title: 'Days 1–10 Applied', titleClass: 'card-title-cyan', subtitle: 'The Core',
-    description: 'Types, functions, interfaces, classes, generics, narrowing, utility types, modules, and tsconfig all show up in this single small program.',
-    code: '// interfaces + generics + unions + strict',
-  },
-  {
-    icon: '🚀', title: 'Days 11–19 Applied', titleClass: 'card-title-purple', subtitle: 'Advanced & Applied',
-    description: 'Advanced types, async/await, typed fetch shape, Zod validation, the Result error pattern, and the Repository/DI patterns — combined into one app.',
-    code: '// validation + Result + repository + DI',
-  },
-  {
-    icon: '🏁', title: '20 Days Down', titleClass: 'card-title-amber', subtitle: 'TypeScript, For Real',
-    description: 'You can now read and write serious TypeScript: model data, validate it, handle async and errors, and structure code with patterns. A strong foundation.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
-  },
-  {
-    icon: '🔜', title: 'Next: Day 21+', titleClass: 'card-title-lime', subtitle: 'Keep Going',
-    description: 'The TypeScript phase continues toward React & Next.js in TypeScript. Day 21 picks up the next topic in Year 1.',
-    link: { href: '/day-021', label: 'Go to Day 21 →' },
+    icon: '♻️', title: 'Cycles & Control', titleClass: 'card-title-amber', subtitle: 'Loops + Oversight',
+    description:
+      'Because it is a graph, the flow can loop back — call a tool, observe, and return to the model — the real agent loop. You can also pause for human approval mid-run.',
+    code: "graph.addEdge('tools', 'agent'); // loop back to think again\n// + interrupt before a critical node for\n//   human-in-the-loop approval",
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Run TS On Node', titleClass: 'card-title-cyan', subtitle: 'Build & Run',
-    description: 'Everything you need to run the capstone locally — tsx for dev, tsc for a build, and the module settings that make it work.',
-    link: { href: NODE_TS, label: 'Node + TypeScript guide →', external: true },
+    icon: '📝', title: 'LangGraph Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    description:
+      'Rohit’s LangGraph write-up — state, nodes, edges and building stateful agent workflows.',
+    link: { href: NOTION, label: 'Open the LangGraph notes →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Prototype The Types',
-    description: 'Model Task, Status, and the Result type in the Playground first, then bring them into a real Node project with fs and argv.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '📘', title: 'LangGraph.js Docs', titleClass: 'card-title-purple', subtitle: 'Official',
+    description:
+      'The LangGraph.js documentation — StateGraph, conditional edges, cycles, checkpoints and human-in-the-loop.',
+    link: { href: LANGGRAPH_DOCS, label: 'Read LangGraph.js docs →', external: true },
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'This mini-project mirrors how real apps are built — model, validate, store, handle errors. The same spine powers everything that follows.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🧠', title: 'The GenAI Track', titleClass: 'card-title-amber', subtitle: 'Keep Going',
+    description:
+      'The site’s GenAI track covers LangGraph, multi-agent systems and production as structured modules. Ahead in the course: multi-agent teams and the AI Dev Team project.',
+    link: { href: '/genai', label: 'Open the GenAI track →' },
   },
 ];
 
@@ -132,6 +106,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day020() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +136,23 @@ export default function Day020() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-019" className="day001-nav-btn day001-nav-prev">← Day 19</Link>
-          <p className="day001-datetime">TypeScript Day 20</p>
+          <p className="day001-datetime">Agentic AI Day 20</p>
           <Link to="/day-021" className="day001-nav-btn day001-nav-next">Day 21 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Capstone</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 20</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 20 <span aria-hidden="true">🏁</span></h1>
-              <p className="day001-day-theme">CAPSTONE — A TYPED CLI TASK MANAGER</p>
+              <h1 className="day001-day-num">DAY 20 <span aria-hidden="true">🕸️</span></h1>
+              <p className="day001-day-theme">LANGGRAPH — ORCHESTRATING AGENTS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · TYPESCRIPT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,16 +160,17 @@ export default function Day020() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '20%' }} /></div>
 
         <p className="day001-summary">
-          Day 20 ties the first three weeks together into one real project: a fully typed{' '}
-          <strong>CLI task manager</strong>. I modelled the domain with an interface and a discriminated{' '}
-          <strong>Status</strong> union, <strong>validated</strong> input and file data with Zod, stored tasks via a
-          generic <strong>Repository</strong>, made operations return <strong>Result</strong>, parsed{' '}
-          <code>argv</code> exhaustively, and handled errors cleanly — <code>strict</code> on, no <code>any</code>.
-          Every concept from Days 1–19, working together.
+          Lecture 20 — <strong>LangGraph</strong>. A linear <strong>chain</strong> can’t express a real agent that
+          decides, retries and loops, so LangGraph models the workflow as a <strong>graph</strong>. A shared{' '}
+          <strong>state</strong> flows through <strong>nodes</strong> (each an LLM call, tool or sub-agent) connected
+          by <strong>edges</strong> — including <strong>conditional edges</strong> that branch on the state and{' '}
+          <strong>cycles</strong> that loop back (think → act → observe → think). You can even{' '}
+          <strong>pause for human approval</strong> before a critical step. This is how you build controllable,
+          multi-step agents. <em>(Diagram + notes based; standard LangGraph.js API.)</em>
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I BUILT TODAY</h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
@@ -205,13 +181,12 @@ export default function Day020() {
           </ul>
         </section>
 
-        <CardSection icon="🧩" title="MODEL & STORAGE" cards={MODEL} columns={3} />
-        <CardSection icon="🛠️" title="LOGIC & CLI" cards={LOGIC} columns={4} />
-        <CardSection icon="🏁" title="20-DAY RECAP" cards={RECAP} columns={4} />
+        <CardSection icon="📏" title="WHY LANGGRAPH" cards={WHY} columns={2} />
+        <CardSection icon="🕸️" title="STATE · NODES · EDGES" cards={MODEL} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Capstone</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#LangGraph</span><span>#Agents</span><span>#CoderArmy</span>
         </footer>
       </div>
     </div>

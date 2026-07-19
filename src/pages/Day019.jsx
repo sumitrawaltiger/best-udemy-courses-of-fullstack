@@ -2,101 +2,72 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const REFACTORING_GURU = 'https://refactoring.guru/design-patterns/typescript';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture19';
 
 const LEARNT_TODAY = [
-  { title: 'Design patterns', text: 'reusable solutions to common design problems — clearer, more flexible code' },
-  { title: 'Program to interfaces', text: 'depend on abstractions, not concrete classes — the core OOP principle' },
-  { title: 'Factory', text: 'a function/class that creates objects, hiding which concrete type is built' },
-  { title: 'Strategy', text: 'swap interchangeable behaviours behind one interface at runtime' },
-  { title: 'Singleton', text: 'guarantee one shared instance — a typed module often does this better' },
-  { title: 'Observer', text: 'notify many subscribers when state changes — events, done type-safely' },
-  { title: 'Adapter', text: 'wrap a mismatched API to fit the interface your code expects' },
-  { title: 'Dependency injection', text: 'pass collaborators in via constructor — testable, decoupled classes' },
-  { title: 'Composition > inheritance', text: 'combine small typed pieces instead of deep class hierarchies' },
-  { title: 'Generics + patterns', text: 'generics make patterns reusable across any type safely' },
+  { title: 'Classify the query first', text: 'before retrieving, ask the LLM: is this factual, similarity, or descriptive?' },
+  { title: 'Factual → Neo4j', text: '"movies directed by Nolan" is a relationship question — answer it with a Cypher graph query' },
+  { title: 'Similarity → Pinecone', text: '"movies like Inception" is a vector question — answer it with semantic search' },
+  { title: 'Descriptive → Pinecone', text: '"tell me about Inception" retrieves the entity’s text and lets the model summarise it' },
+  { title: 'Route to a handler', text: 'each query type has its own handler; the runner classifies then dispatches' },
+  { title: 'Cypher templates', text: 'safe, parameterised graph queries turn a classified question into precise graph traversal' },
+  { title: 'Best of both worlds', text: 'exact relationships from the graph, fuzzy matches from the vectors — one hybrid assistant' },
 ];
 
-const CREATIONAL = [
+const CLASSIFY = [
   {
-    icon: '🏭', title: 'Factory', titleClass: 'card-title-cyan', subtitle: 'Hide Construction',
-    description: 'A factory decides which concrete type to create behind one return type. Callers get the interface and never depend on a specific class.',
-    code: 'interface Logger { log(m: string): void }\nfunction makeLogger(env: string): Logger {\n  return env === "prod" ? new FileLogger() : new ConsoleLogger();\n}',
+    icon: '🧠', title: 'Classify The Query', titleClass: 'card-title-cyan', subtitle: 'One LLM Call',
+    description:
+      'A classifier prompt asks the model to label the question as factual, similarity, or descriptive and return strict JSON. That label decides everything downstream.',
+    code: 'const CLASSIFIER_PROMPT = `Classify the query as:\n"factual"     — lists/counts/relationships (→ Neo4j)\n"similarity"  — recommendations / like X (→ Pinecone)\n"descriptive" — who/what/about an entity (→ Pinecone)\nRespond ONLY as JSON: {"type": ..., "reasoning": ...}`;',
   },
   {
-    icon: '1️⃣', title: 'Singleton', titleClass: 'card-title-purple', subtitle: 'One Shared Instance',
-    description: 'Ensure a single instance of something like a config or cache. In TypeScript a module-level constant is often the cleanest, typed singleton.',
-    code: '// db.ts — module singleton\nexport const db = new Database();\n// every import shares the same db',
-  },
-  {
-    icon: '🔌', title: 'Adapter', titleClass: 'card-title-amber', subtitle: 'Fit A Mismatched API',
-    description: 'Wrap a third-party or legacy API so it satisfies the interface your app expects — swap implementations without touching call sites.',
-    code: 'class StripeAdapter implements PaymentGateway {\n  pay(amount: number) { return stripe.charge(amount); }\n}',
+    icon: '🔀', title: 'Route It', titleClass: 'card-title-purple', subtitle: 'Dispatch To A Handler',
+    description:
+      'The runner reads the type and calls the matching handler — factual to the graph, similarity and descriptive to the vectors. Clean separation, one entry point.',
+    code: 'const { type } = await classifyQuery(query);\nif (type === "similarity")  answer = await handleSimilarity(query);\nelse if (type === "descriptive") answer = await handleDescriptive(query);\nelse answer = await handleFactual(query); // → Neo4j',
   },
 ];
 
-const BEHAVIOURAL = [
+const HANDLERS = [
   {
-    icon: '🎛️', title: 'Strategy', titleClass: 'card-title-cyan', subtitle: 'Swap Behaviour',
-    description: 'Define a family of interchangeable behaviours behind one interface and pick at runtime — sorting orders, pricing rules, or auth methods.',
-    code: 'interface Sort<T> { run(a: T[]): T[] }\nfunction sortWith<T>(data: T[], s: Sort<T>) {\n  return s.run(data);\n}',
+    icon: '🔒', title: 'Factual → Cypher', titleClass: 'card-title-cyan', subtitle: 'The Graph',
+    description:
+      'Factual questions become Cypher queries against Neo4j using safe templates. Relationships and counts come back exact — no guessing.',
+    code: '// "Movies directed by Nolan"\nMATCH (d:Director {name:$name})-[:DIRECTED]->(m:Movie)\nRETURN m.title\n// precise, verifiable answer',
   },
   {
-    icon: '📡', title: 'Observer', titleClass: 'card-title-blue', subtitle: 'Publish / Subscribe',
-    description: 'Let objects subscribe to changes and be notified when they happen — the pattern behind event emitters and reactive state, fully typed.',
-    code: 'type Listener<T> = (value: T) => void;\nclass Store<T> {\n  private ls: Listener<T>[] = [];\n  subscribe(l: Listener<T>) { this.ls.push(l); }\n}',
+    icon: '📐', title: 'Similarity → Vectors', titleClass: 'card-title-purple', subtitle: 'Pinecone',
+    description:
+      'Recommendation questions embed the query and search Pinecone for the nearest movies — the semantic RAG from earlier days, now one branch of the system.',
+    code: '// "Movies like Inception"\n// embed → Pinecone top-K → similar movies\n// (optionally enrich with graph facts)',
   },
   {
-    icon: '💉', title: 'Dependency Injection', titleClass: 'card-title-amber', subtitle: 'Pass Collaborators In',
-    description: 'Instead of a class creating its dependencies, accept them via the constructor typed as interfaces. Instantly testable — swap in mocks with no changes.',
-    code: 'class UserService {\n  constructor(private repo: UserRepo) {}\n  get(id: number) { return this.repo.find(id); }\n}',
-  },
-  {
-    icon: '🧬', title: 'Composition > Inheritance', titleClass: 'card-title-lime', subtitle: 'Combine Small Pieces',
-    description: 'Favour composing small typed capabilities (via intersections or injected collaborators) over deep class trees — more flexible and easier to change.',
-    code: 'type Service = Loggable & Cacheable & Timestamped;',
-  },
-];
-
-const PRINCIPLES = [
-  {
-    icon: '🎯', title: 'Program To Interfaces', titleClass: 'card-title-cyan', subtitle: 'Depend On Abstractions',
-    description: 'The thread through every pattern: code against interfaces, not concrete classes. TypeScript’s structural typing makes this natural and safe.',
-    code: 'function notify(ch: Channel) { ch.send("hi"); }\n// any Channel implementation works',
-  },
-  {
-    icon: '🧩', title: 'Generics Make Them Reusable', titleClass: 'card-title-purple', subtitle: 'One Pattern, Any Type',
-    description: 'Add a type parameter and a pattern works for every type — a generic Store<T>, Repository<T>, or Strategy<T> serves the whole app.',
-    code: 'interface Repository<T> {\n  find(id: number): Promise<T | null>;\n}',
-  },
-  {
-    icon: '⚖️', title: 'Use Them Sparingly', titleClass: 'card-title-amber', subtitle: 'Patterns Serve Code',
-    description: 'Patterns are tools, not goals. Reach for one when it removes real duplication or coupling — over-engineering hurts as much as no structure.',
-    code: '// simplest thing that works, then refactor to a pattern',
-  },
-  {
-    icon: '🔜', title: 'Next: Capstone Project', titleClass: 'card-title-lime', subtitle: 'Day 20 Preview',
-    description: 'Tomorrow ties Days 1–19 together: build a fully typed CLI task manager applying types, generics, validation, errors, and patterns.',
-    link: { href: '/day-020', label: 'Go to Day 20 →' },
+    icon: '📖', title: 'Descriptive → Retrieve', titleClass: 'card-title-amber', subtitle: 'Then Summarise',
+    description:
+      '"Tell me about X" retrieves the entity’s chunks from the vector store and has Gemini write a grounded summary — RAG applied to a single entity.',
+    code: '// "Tell me about The Godfather"\n// retrieve its text → Gemini summarises from it',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Patterns in TypeScript', titleClass: 'card-title-cyan', subtitle: 'Refactoring Guru',
-    description: 'Clear, illustrated explanations and TypeScript examples of every classic design pattern — the best reference to keep as you build.',
-    link: { href: REFACTORING_GURU, label: 'Browse the patterns →', external: true },
+    icon: '💻', title: 'Lecture 19', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    description:
+      'The query side — queryClassifier, graph and similarity handlers, entityResolver and runQuery — completing the Graph RAG assistant.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 19 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Prototype A Pattern',
-    description: 'Implement a Strategy or Factory with interfaces and generics, then swap the concrete class to feel the decoupling that patterns provide.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '🧬', title: 'Hybrid Retrieval', titleClass: 'card-title-purple', subtitle: 'Graph + Vectors',
+    description:
+      'The whole point of Graph RAG: route each question to the engine that answers it best — precise facts from the graph, similarity from the vectors.',
+    footer: 'classify → route → retrieve → answer',
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'These OOP ideas recur in Java (Year 3) and shape how you structure React hooks and services — learn them once, reuse them everywhere.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: LangGraph', titleClass: 'card-title-amber', subtitle: 'Day 20 Preview',
+    description:
+      'Tomorrow — Lecture 20: LangGraph, for orchestrating multi-step, stateful agent workflows as a graph of nodes and edges.',
+    link: { href: '/day-020', label: 'Go to Day 20 →' },
   },
 ];
 
@@ -132,6 +103,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day019() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +133,23 @@ export default function Day019() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-018" className="day001-nav-btn day001-nav-prev">← Day 18</Link>
-          <p className="day001-datetime">TypeScript Day 19</p>
+          <p className="day001-datetime">Agentic AI Day 19</p>
           <Link to="/day-020" className="day001-nav-btn day001-nav-next">Day 20 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Patterns</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 19</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 19 <span aria-hidden="true">🏗️</span></h1>
-              <p className="day001-day-theme">DESIGN PATTERNS IN TYPESCRIPT</p>
+              <h1 className="day001-day-num">DAY 19 <span aria-hidden="true">🔀</span></h1>
+              <p className="day001-day-theme">GRAPH RAG — HYBRID QUERYING</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · TYPESCRIPT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,12 +157,13 @@ export default function Day019() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '19%' }} /></div>
 
         <p className="day001-summary">
-          Day 19 structures code with classic <strong>design patterns</strong>, typed. I built a{' '}
-          <strong>Factory</strong> and <strong>Adapter</strong>, swapped behaviour with <strong>Strategy</strong>,
-          notified subscribers with <strong>Observer</strong>, and decoupled classes via{' '}
-          <strong>dependency injection</strong>. The thread through all of them: <em>program to interfaces</em>,
-          use <strong>generics</strong> to make patterns reusable, and prefer <strong>composition</strong> over deep
-          inheritance — applied only where they remove real coupling.
+          Lecture 19 finishes the assistant — the <strong>query</strong> side. Every question is first{' '}
+          <strong>classified</strong> as <strong>factual</strong>, <strong>similarity</strong>, or{' '}
+          <strong>descriptive</strong>, then <strong>routed</strong> to the right handler: factual questions run{' '}
+          <strong>Cypher</strong> over <strong>Neo4j</strong> for exact relationships, while similarity and
+          descriptive questions use <strong>Pinecone</strong> vector search. Precise facts from the graph, fuzzy
+          matches from the vectors — that hybrid is the whole point of <strong>Graph RAG</strong>.{' '}
+          <em>The project works end to end.</em>
         </p>
 
         <section className="day001-learnt">
@@ -205,13 +178,12 @@ export default function Day019() {
           </ul>
         </section>
 
-        <CardSection icon="🏭" title="CREATIONAL & STRUCTURAL" cards={CREATIONAL} columns={3} />
-        <CardSection icon="🎛️" title="BEHAVIOURAL & DECOUPLING" cards={BEHAVIOURAL} columns={4} />
-        <CardSection icon="🎯" title="PRINCIPLES" cards={PRINCIPLES} columns={4} />
+        <CardSection icon="🧠" title="CLASSIFY & ROUTE" cards={CLASSIFY} columns={2} />
+        <CardSection icon="🔀" title="THE THREE HANDLERS" cards={HANDLERS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#DesignPatterns</span><span>#WebDev</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GraphRAG</span><span>#Neo4j</span><span>#Pinecone</span>
         </footer>
       </div>
     </div>
