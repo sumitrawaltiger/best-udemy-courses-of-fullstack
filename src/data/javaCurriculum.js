@@ -179,6 +179,15 @@ const MICROSERVICES_DESIGN_SECTIONS = [
       "Direct client-to-service calls don't scale — clients shouldn't know every service.\n\n- **API Gateway** — a single entry point handling **routing**, **aggregation**, and **offloading** (auth, SSL, rate limiting, caching). One place for cross-cutting concerns.\n- **Backends for Frontends (BFF)** — a dedicated gateway per client type (web, mobile), each tailored to that client's UI needs.\n- **Service Aggregator** — combines results from several services into one composite response.\n- **Service Registry & Discovery** — services register themselves and are found by name in a dynamic environment.",
   },
   {
+    id: 'api-gateway-visual',
+    title: 'API Gateway — The Single Entry Point',
+    content:
+      "The single entry point for **all client requests** — a smart traffic controller that secures, manages, and optimizes API traffic while backend services focus on business logic.\n\n**Why an API Gateway?**\n- **Security** — centralized authentication, authorization, and protection.\n- **Performance** — caching, rate limiting, and request throttling.\n- **Observability** — centralized logging, monitoring, and analytics.\n- **Maintainability** — common logic in one place, less duplication.\n- **API Management** — versioning, transformation, and lifecycle management.\n\n**How it works:** clients (web, mobile, third-party) hit **one gateway**, which handles **authentication & authorization, request validation, rate limiting & throttling, caching, logging & monitoring, and request/response transformation** — then routes each call to the right microservice (User, Order, Payment, Inventory, Notification, Analytics), each owning its own database.\n\n**Without an API Gateway:** clients must know every service endpoint; security, logging and monitoring get re-implemented in every service; high complexity and duplicate code; harder to manage and scale.\n\n**With an API Gateway:** a single entry point for all clients; centralized security, monitoring and management; reduced complexity and code duplication; easier to maintain, secure and scale.\n\n**Final thought:** as your application grows, an API Gateway isn't just helpful — it's essential. It's the backbone of secure, scalable, and modern architectures.",
+    image: '/java-notes/api-gateway.jpg',
+    imageAlt:
+      'API Gateway — the single entry point for all client requests: why (security, performance, observability, maintainability, API management), how it works (clients → API Gateway handling authentication, request validation, rate limiting, caching, logging, request/response transformation → User/Order/Payment/Inventory/Notification/Analytics services, each with its own database), a without-vs-with comparison, and the takeaway that an API Gateway is the backbone of secure, scalable, modern architectures',
+  },
+  {
     id: 'async-eda',
     title: 'Asynchronous Communication & Event-Driven Architecture',
     content:
