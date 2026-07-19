@@ -892,6 +892,199 @@ const SPRING_DATA_JPA_SECTIONS = [
   },
 ];
 
+// MongoDB + Spring Boot — 6-page production cheat sheet (attached to Spring Data JPA as the NoSQL counterpart)
+const MONGODB_SPRING_BOOT_SECTIONS = [
+  {
+    id: 'mongodb-overview-setup',
+    title: 'MongoDB + Spring Boot — Overview & Setup',
+    content:
+      "Alongside relational JPA, **Spring Data MongoDB** brings the same repository model to a **document database**.\n\n**What MongoDB is good at** — a document database with a flexible schema; best when data is read together and can be stored together; great for catalogs, profiles, events, content, carts and rapidly evolving schemas. **Think in access patterns first, tables second.**\n\n**When to use it** — JSON-like documents fit the domain, high read/write scale and evolving schema, and aggregation pipelines / denormalized reads help. **Review carefully when** complex cross-document joins dominate, strict relational reporting is central, or unbounded arrays / oversized documents are likely.\n\n**Spring Boot setup** — add `spring-boot-starter-data-mongodb` (plus `web` and optionally `validation`), then configure the connection in `application.yml` (`spring.data.mongodb.uri`, `database`, `auto-index-creation`).\n\n**Minimal implementation flow:** `@Document` entity → Mongo repository → service → REST controller.\n\n**Golden rules** — model for the query, embed first (reference when needed), add indexes deliberately, measure before tuning, and keep examples production-minded.\n\nThe full 6-page cheat sheet is available as a [downloadable PDF](/java-notes/mongodb-spring-boot.pdf).",
+    code: `<!-- Maven dependencies -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-mongodb</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+
+# application.yml
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://user:***@cluster0.example.mongodb.net/shop?retryWrites=true&w=majority
+      database: shop
+      auto-index-creation: false
+
+// Entity + repository
+@Document("products")
+public class Product {
+    @Id
+    private String id;
+    private String name;
+    private BigDecimal price;
+    // getters and setters
+}
+
+public interface ProductRepository
+        extends MongoRepository<Product, String> {
+    // custom queries if needed
+}`,
+    image: '/java-notes/mongodb-spring-boot-p1.jpg',
+    imageAlt:
+      'MongoDB + Spring Boot overview and setup — what MongoDB is good at (flexible document schema, data read together, catalogs and evolving schemas), when to use vs review carefully, the Spring Boot Maven dependencies and application.yml connection config, the minimal flow (@Document entity, Mongo repository, service, REST controller) with entity and repository examples, and the golden rules (model for the query, embed first, index deliberately, measure before tuning)',
+  },
+  {
+    id: 'mongodb-annotations-repository',
+    title: 'Key Annotations, Repository vs MongoTemplate',
+    content:
+      "**Key annotations:**\n- `@Document` — marks a class as a MongoDB document and sets the collection name.\n- `@Id` — marks the primary-key field.\n- `@Indexed` — creates an index on a field.\n- `@CompoundIndex` — creates a compound index on multiple fields.\n- `@Version` — enables optimistic locking for the document.\n- `@CreatedDate` / `@LastModifiedDate` — auto-populate on creation and auto-update on every modification (enable with `@EnableMongoAuditing`).\n- `@DocumentReference(lazy = true)` — a lightweight reference to another document by id (no `DBRef` overhead); `DBRef` is the built-in reference type but adds extra round trips, so use it carefully.\n\n**Repository vs MongoTemplate** — `MongoRepository` (Spring Data) gives quick CRUD, derived query methods, paging and sorting with less boilerplate. `MongoTemplate` gives fine-grain control: dynamic queries and criteria, updates and bulk operations, aggregation pipelines.\n\n**Service flow:** validate input → map to document → repository / template call → return DTO / API response.\n\n**Auditing + concurrency** — enable `@EnableMongoAuditing` in a `@Configuration` class, use `@Version` for optimistic locking, keep updates focused, and prefer update operators (where possible) over full-document rewrites.\n\n**Implementation tips** — prefer projection for read APIs, avoid giant documents, define indexes intentionally, keep collections aligned with access patterns, and test with realistic data volumes.",
+    code: `@Document("orders")
+@CompoundIndex(def = "{ 'customerId': 1, 'status': 1 }", name = "idx_customer_status")
+public class Order {
+    @Id
+    private String id;
+
+    @Indexed
+    private String customerId;
+    private OrderStatus status;
+    private BigDecimal totalAmount;
+    private List<OrderItem> items;
+
+    @Version
+    private Long version;
+    @CreatedDate
+    private Instant createdAt;
+    @LastModifiedDate
+    private Instant updatedAt;
+}
+
+// MongoRepository — derived queries, paging
+public interface OrderRepository extends MongoRepository<Order, String> {
+    List<Order> findByCustomerIdAndStatus(String customerId, OrderStatus status);
+    Page<Order> findByStatus(String status, Pageable pageable);
+}
+
+// MongoTemplate — fine-grained control
+Query query = Query.query(Criteria.where("status").is("PAID"));
+List<Order> orders = mongoTemplate.find(query, Order.class);`,
+    image: '/java-notes/mongodb-spring-boot-p2.jpg',
+    imageAlt:
+      'MongoDB + Spring Boot key annotations and implementation — a table of annotations (@Document, @Id, @Indexed, @CompoundIndex, @Version, @CreatedDate, @LastModifiedDate, @DocumentReference lazy, DBRef), an Order entity example with a compound index and auditing fields, MongoRepository vs MongoTemplate comparison, the service flow (validate, map, call, return), auditing and concurrency notes with @EnableMongoAuditing and @Version, and implementation tips',
+  },
+  {
+    id: 'mongodb-design-patterns',
+    title: 'MongoDB Design Patterns',
+    content:
+      "**Modeling first principles** — model for query patterns, embed when data is read together, reference when cardinality is high or duplication is hard, keep documents bounded, and design indexes with the schema.\n\n**1. Embedded document pattern** — use when child data is read with the parent and updated together (e.g. an `Order` with `orderItems` and `shippingAddress` embedded). Watch out for document growth.\n\n**2. Reference / extended reference** — use when related data changes independently or cardinality is high (e.g. an `Order` stores `customerId` plus a few duplicated fields like `customerName`). Watch out for extra lookups and stale duplicated fields.\n\n**3. Attribute pattern** — use for variable attributes and searchable product specs (e.g. `attributes = [{k:\"color\", v:\"black\"}, {k:\"size\", v:\"XL\"}]`). Index only the fields you query.\n\n**4. Bucket pattern** — use for time-series or event streams grouped by time / user / device (e.g. page views or sensor readings per hour or day). Watch out for bucket size and write amplification.\n\n**5. Subset + outlier pattern** — keep hot data small and move large or rare fields elsewhere (e.g. a product summary in the main document, a long description or huge review list in another collection). Decide hot vs cold fields deliberately.\n\n**6. Computed / polymorphic pattern** — store and refresh computed values like `orderTotal` or `reviewCount` for read-heavy workloads; use a polymorphic collection (a single collection with a `type` field) for similar entities such as `cardPayment` and `upiPayment`.\n\n**Common anti-patterns** — unbounded arrays, too many joins / lookups, huge documents, indexing everything, and modeling like relational tables.",
+    image: '/java-notes/mongodb-spring-boot-p3.jpg',
+    imageAlt:
+      'MongoDB design patterns used in production — modeling first principles (model for query patterns, embed when read together, reference when cardinality high, keep documents bounded, design indexes with schema), six schema patterns (embedded document, reference / extended reference, attribute, bucket, subset + outlier, computed / polymorphic) each with when to use, an example and a watch-out, and common anti-patterns (unbounded arrays, too many lookups, huge documents, indexing everything, modeling like tables)',
+  },
+  {
+    id: 'mongodb-performance-indexing',
+    title: 'Performance, Indexing & Query Tuning',
+    content:
+      "**Index types** — single field (filter or sort on one field), compound (filter / sort / range on multiple fields; order matters, put the most selective fields first), multikey (index array fields; one multikey field per compound index), text (keyword search across fields; one text index per collection), TTL (auto-expire documents after a time; on a date field), and partial (index a subset of documents to reduce index size).\n\n**Index rules** — index the fields you filter and sort on; for compound indexes think **equality → sort → range**; too many indexes slow writes; review `explain()` plans for slow queries; auto-index creation is useful in dev but review carefully for prod.\n\n**Query tuning** — use projections to return only the fields you need, page with `Sort` + `Pageable` (or a cursor-based approach) for large feeds, avoid `skip`/`limit` for very deep pages, use aggregation pipelines for reporting and analytics, and keep `$lookup` limited and intentional.\n\n**Scaling notes** — read-heavy workloads scale out with replica sets and read preferences; write-heavy workloads optimize writes and keep indexes lean; the **shard key must match your access pattern**; choose a high-cardinality, stable shard key and avoid hotspot keys (e.g. sequential timestamps); keep document size and array growth under control.\n\n**Performance quick wins** — measure first (don't guess), index only what you need, project less data, aggregate smartly, and monitor slow queries.",
+    code: `// Unique index on email
+@Indexed(unique = true)
+private String email;
+
+// Compound index (equality -> sort -> range)
+@CompoundIndex(name = "cust_status_created_idx",
+               def = "{ 'customerId': 1, 'status': 1, 'createdAt': -1 }")
+
+// Text index
+@TextIndexed
+private String description;
+
+// TTL index — expire after 7 days (on a date field)
+@Indexed(expireAfter = "7d")
+private Instant expiresAt;
+
+// Projection interface — return only needed fields
+public interface UserView {
+    String getId();
+    String getName();
+    String getEmail();
+}
+List<UserView> findByStatus(String status);
+
+// MongoTemplate aggregation skeleton
+Aggregation agg = Aggregation.newAggregation(
+    match(Criteria.where("status").is("ACTIVE")),
+    group("customerId").sum("total").as("total"),
+    sort(Sort.by(Sort.Direction.DESC, "total"))
+);
+AggregationResults<ReportRow> results =
+    mongoTemplate.aggregate(agg, "orders", ReportRow.class);`,
+    image: '/java-notes/mongodb-spring-boot-p4.jpg',
+    imageAlt:
+      'MongoDB + Spring Boot performance, indexing and query tuning — index types table (single field, compound, multikey, text, TTL, partial) with use cases, index rules (index filtered/sorted fields, compound as equality then sort then range, review explain plans), annotation examples for unique/compound/text/TTL indexes, query tuning tips (projections, paging, aggregation, limited $lookup), Spring Data projection and aggregation examples, and scaling notes on replica sets, shard keys and document size',
+  },
+  {
+    id: 'mongodb-properties',
+    title: 'Spring Boot MongoDB Properties & URI Options',
+    content:
+      "**Spring Boot properties** (`spring.data.mongodb.*`):\n- `uri` — the full connection string (usually preferred over host/port); use it for Atlas and advanced options (pooling, timeouts, TLS, read preference).\n- `database` — the default database name.\n- `authentication-database` — the auth database when credentials live in a separate database (e.g. `admin`).\n- `auto-index-creation` — whether annotated indexes are auto-created; usually `false` in production (create and review indexes deliberately).\n- `uuid-representation` — how UUIDs are encoded (BSON representation); keep `standard` and consistent across services.\n- `field-naming-strategy`, `gridfs.bucket`, `repositories.type` — override only when you need a custom naming convention, a separate GridFS bucket, or a non-auto repository mode.\n\n**Common URI options** — `retryWrites=true` (retry idempotent writes on network errors), `w=majority` (write concern for durability), `appName=shop-service` (shown in Mongo logs for observability), `maxPoolSize` / `minPoolSize` (connection pool sizing), `connectTimeoutMS` / `socketTimeoutMS` / `serverSelectionTimeoutMS` (timeouts), `readPreference` (route reads to primary or primaryPreferred), `readConcernLevel` (read consistency), and `tls=true` (always enable in production).\n\n**Property rules** — prefer the `uri` property for flexibility, externalize secrets (env / secret manager, never commit passwords), tune pool and timeouts based on real load tests, keep write concern intentional (balance durability and latency), and document all non-default settings across environments.",
+    code: `# Sample application.yml
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://user:***@cluster0.example.mongodb.net/shop?retryWrites=true&w=majority&appName=shop-service
+      database: shop
+      auto-index-creation: false
+      uuid-representation: standard
+
+# Key connection URI options
+#   retryWrites=true            -> retry idempotent writes on network errors
+#   w=majority                  -> durable write concern
+#   appName=shop-service        -> shown in Mongo logs / monitoring
+#   maxPoolSize / minPoolSize   -> connection pool sizing
+#   connectTimeoutMS            -> time to establish a connection
+#   socketTimeoutMS             -> max idle time for a socket
+#   serverSelectionTimeoutMS    -> time to select a server
+#   readPreference=primary      -> route reads (primary / primaryPreferred)
+#   readConcernLevel=majority   -> read consistency level
+#   tls=true                    -> always enable in production`,
+    image: '/java-notes/mongodb-spring-boot-p5.jpg',
+    imageAlt:
+      'Spring Boot MongoDB properties explained — a sample application.yml, a table of spring.data.mongodb properties (uri, database, authentication-database, auto-index-creation, uuid-representation, field-naming-strategy, gridfs.bucket, repositories.type) with what each does and a production note, a table of common connection URI options (retryWrites, w=majority, appName, maxPoolSize, minPoolSize, timeouts, readPreference, readConcernLevel, tls) and property rules (prefer uri, externalize secrets, tune pool/timeouts, intentional write concern, document non-defaults)',
+  },
+  {
+    id: 'mongodb-production-readiness',
+    title: 'Production Readiness — Transactions, Security & Checklist',
+    content:
+      "**Consistency & transactions** — single-document writes are **atomic**; use multi-document transactions only when needed. Spring Data MongoDB supports transactions with `TransactionTemplate` / `TransactionalOperator`, they require the right cluster setup (a replica set), and you should design to keep transaction scope small.\n\n**Write / read settings** — **Write Concern** controls the acknowledgment level (use `majority` for durability); **Read Concern** defines the isolation level (use `majority` for consistent reads); **Read Preference** chooses primary, secondary, nearest or tag sets to balance load. Primary reads matter when you need the latest data (e.g. right after writes) or strict consistency.\n\n**Security** — use SCRAM or platform auth, enable TLS, use least-privilege users, never hardcode secrets, restrict network access, and rotate credentials.\n\n**Observability** — monitor the connection pool, command latency, slow queries, index usage, replication lag, disk and memory; use logs, metrics, tracing and MongoDB/Atlas monitoring; and review `explain` plans.\n\n**Backup & operations** — run regular backup and restore drills, define a TTL and archival strategy, review indexes and schema growth periodically, perform rolling upgrades, and plan capacity with alerts.\n\n**Spring Boot production checklist:**\n- Connection URI externalized (no secrets in code).\n- Indexes reviewed and in place; auto-index creation policy decided.\n- Projections used to limit data transfer.\n- Transactions used minimally and scoped.\n- Connection pool and timeouts tested.\n- Monitoring, metrics and alerts enabled.\n- Backup and restore tested.\n- Security hardened (auth, TLS, network).\n- Realistic load test completed.\n\n**Remember:** model for access patterns, keep documents bounded, embed intentionally, index deliberately, and measure before scaling.",
+    code: `// Multi-document transaction (requires a replica set)
+@Configuration
+@EnableMongoAuditing
+class MongoConfig {
+    @Bean
+    MongoTransactionManager transactionManager(MongoDatabaseFactory factory) {
+        return new MongoTransactionManager(factory);
+    }
+}
+
+@Service
+class TransferService {
+    private final TransactionTemplate tx;
+    private final AccountRepository accounts;
+
+    void transfer(String from, String to, BigDecimal amount) {
+        tx.executeWithoutResult(status -> {
+            accounts.debit(from, amount);
+            accounts.credit(to, amount);
+        });
+    }
+}`,
+    image: '/java-notes/mongodb-spring-boot-p6.jpg',
+    imageAlt:
+      'MongoDB + Spring Boot production readiness — consistency and transactions (single-document atomic writes, multi-document transactions only when needed with TransactionTemplate on a replica set, small scope), write/read settings (Write Concern majority, Read Concern majority, Read Preference), security (SCRAM auth, TLS, least-privilege users, no hardcoded secrets, network restriction, credential rotation), observability, backup and operations, a ten-item Spring Boot production checklist, and a remember panel (model for access patterns, bounded documents, intentional embedding and indexing, measure before scaling)',
+  },
+];
+
 // Module 34 — Spring Security Basics
 const SPRING_SECURITY_SECTIONS = [
   {
@@ -1170,7 +1363,7 @@ function buildLessons() {
         lesson.extraLinks = [embarkxLink];
       }
       if (title === 'Spring Data JPA') {
-        lesson.sections = SPRING_DATA_JPA_SECTIONS;
+        lesson.sections = [...SPRING_DATA_JPA_SECTIONS, ...MONGODB_SPRING_BOOT_SECTIONS];
         lesson.extraLinks = [embarkxLink];
       }
       if (title === 'Spring Security Basics') {
