@@ -2,101 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const REACT_CUSTOM_HOOKS = 'https://react.dev/learn/reusing-logic-with-custom-hooks';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture27and28';
 
 const LEARNT_TODAY = [
-  { title: 'Custom hooks', text: 'a function starting with "use" that reuses stateful logic across components' },
-  { title: 'They compose hooks', text: 'a custom hook calls useState/useEffect internally and returns useful values' },
-  { title: 'Typed returns', text: 'annotate the return so callers get precise types and autocomplete' },
-  { title: 'Tuple returns', text: 'return `[value, setValue] as const` to name them like useState' },
-  { title: 'Generic hooks', text: 'a `useLocalStorage<T>` works with any stored value type' },
-  { title: 'useToggle', text: 'a tiny hook returning [on, toggle] — reusable boolean state' },
-  { title: 'useLocalStorage', text: 'persist typed state to localStorage with a generic hook' },
-  { title: 'useFetch<T>', text: 'a data-loading hook returning typed { data, loading, error }' },
-  { title: 'Rules of hooks', text: 'only call hooks at the top level of components or other hooks' },
-  { title: 'Extract, then reuse', text: 'pull repeated logic into a hook once it appears twice' },
+  { title: 'Loss measures wrongness', text: 'compare the prediction to the true marks; mean squared error (MSE) turns that gap into one number' },
+  { title: 'The goal', text: 'find the weights (w1, w2, b) that make the loss as small as possible' },
+  { title: 'Gradient = the direction uphill', text: 'the gradient says which way the loss increases — so we step the opposite way' },
+  { title: 'Gradient descent', text: 'w = w − learningRate · gradient, repeated, walks the weights downhill toward low loss' },
+  { title: 'Learning rate', text: 'the step size — too big overshoots, too small crawls; a small value keeps it stable' },
+  { title: 'The training loop', text: 'over many epochs, nudge w1, w2 and b down the loss until predictions get accurate' },
+  { title: 'It converges', text: 'the weights settle (e.g. w1≈4.92, w2≈2.94) and the neuron now predicts marks well' },
+  { title: 'This is how all NNs learn', text: 'the same loop — predict, measure loss, descend — trains an LLM, just with billions of weights' },
 ];
 
-const BASICS = [
+const LOSS = [
   {
-    icon: '🪝', title: 'What Is A Custom Hook', titleClass: 'card-title-cyan', subtitle: 'Reusable Logic',
-    description: 'A custom hook is just a function named use* that calls other hooks. It bundles stateful behaviour so multiple components share it — without sharing state.',
-    code: 'function useToggle(init = false) {\n  const [on, setOn] = useState(init);\n  const toggle = () => setOn((v) => !v);\n  return [on, toggle] as const;\n}',
+    icon: '📉', title: 'Measure The Error', titleClass: 'card-title-cyan', subtitle: 'Loss (MSE)',
+    description:
+      'For each example, take the prediction minus the true value, square it, and average over the dataset. That mean squared error is a single number: how wrong the model is.',
+    code: '// error for one row\ndouble e = predict(study, sleep, w1, w2, b) - marks;\n// loss = average of e*e over all rows (MSE)',
   },
   {
-    icon: '📦', title: 'Tuple Returns', titleClass: 'card-title-purple', subtitle: 'as const',
-    description: 'Return a tuple with as const so TypeScript keeps the exact positions and types — callers destructure and name them just like useState.',
-    code: 'const [isOpen, toggle] = useToggle();\n// isOpen: boolean, toggle: () => void',
-  },
-  {
-    icon: '🧩', title: 'Object Returns', titleClass: 'card-title-amber', subtitle: 'When Many Values',
-    description: 'Return an object when a hook exposes several named values — clearer than a long tuple, and each field is typed.',
-    code: 'return { data, loading, error, refetch };',
+    icon: '🎯', title: 'The Objective', titleClass: 'card-title-purple', subtitle: 'Minimise Loss',
+    description:
+      'Training is an optimisation problem: adjust the weights so the loss drops. Lower loss means the neuron’s predictions are closer to the real marks.',
+    code: '// find w1, w2, b that minimise the loss\n// = the neuron that fits the data best',
   },
 ];
 
-const GENERIC = [
+const DESCENT = [
   {
-    icon: '🗃️', title: 'useLocalStorage<T>', titleClass: 'card-title-cyan', subtitle: 'Persist Typed State',
-    description: 'A generic hook reads and writes any typed value to localStorage, keeping React state and storage in sync — one reusable, type-safe utility.',
-    code: 'function useLocalStorage<T>(key: string, initial: T) {\n  const [v, setV] = useState<T>(() => read(key) ?? initial);\n  useEffect(() => write(key, v), [key, v]);\n  return [v, setV] as const;\n}',
+    icon: '🧭', title: 'The Gradient', titleClass: 'card-title-cyan', subtitle: 'Which Way To Move',
+    description:
+      'The gradient of the loss with respect to each weight points uphill — toward more error. We compute it from the data and then move the opposite way to reduce loss.',
+    code: '// gradient w.r.t. each weight, averaged over rows\n// grad_w1 = avg( 2 * e * study )\n// grad_w2 = avg( 2 * e * sleep )\n// grad_b  = avg( 2 * e )',
   },
   {
-    icon: '🌐', title: 'useFetch<T>', titleClass: 'card-title-blue', subtitle: 'Typed Loading State',
-    description: 'A data hook returns typed { data, loading, error }. The generic flows from the call site so components get exactly the shape they requested.',
-    code: 'function useFetch<T>(url: string) {\n  const [state, set] = useState<{ data?: T; loading: boolean; error?: string }>({ loading: true });\n  // ... fetch + set\n  return state;\n}',
+    icon: '⬇️', title: 'Gradient Descent', titleClass: 'card-title-purple', subtitle: 'Step Downhill',
+    description:
+      'Subtract a small fraction of the gradient from each weight. The learning rate controls the step size — small and steady beats big and unstable.',
+    code: 'w1 -= lr * grad_w1;\nw2 -= lr * grad_w2;\nb  -= lr * grad_b;\n// one step closer to the best weights',
   },
   {
-    icon: '🔮', title: 'Inference Flows', titleClass: 'card-title-amber', subtitle: 'Callers Stay Clean',
-    description: 'Because the type parameter propagates, calling useLocalStorage("theme", "dark") infers string — no explicit generic needed at the call site.',
-    code: 'const [theme, setTheme] = useLocalStorage("theme", "dark");',
-  },
-  {
-    icon: '🧪', title: 'Easy To Test', titleClass: 'card-title-lime', subtitle: 'Pure Logic',
-    description: 'Because a hook isolates logic behind a typed interface, it’s simple to test and swap — the same benefit as extracting a well-typed function.',
-    code: '// test the hook once, trust it everywhere',
-  },
-];
-
-const RULES = [
-  {
-    icon: '📏', title: 'Rules Of Hooks', titleClass: 'card-title-cyan', subtitle: 'Top Level Only',
-    description: 'Call hooks only at the top level of a component or another hook — never in conditions or loops. The lint plugin enforces this and TypeScript respects it.',
-    code: '// ✅ const [x] = useState(0);\n// ❌ if (cond) useState(0);',
-  },
-  {
-    icon: '🏷️', title: 'Name It use*', titleClass: 'card-title-purple', subtitle: 'Convention Matters',
-    description: 'The use prefix tells React (and the linter) this function uses hooks, so the rules-of-hooks checks apply. Always follow it.',
-    code: 'function usePrevious<T>(value: T) { /* ... */ }',
-  },
-  {
-    icon: '♻️', title: 'Extract When Repeated', titleClass: 'card-title-amber', subtitle: 'DRY Your Logic',
-    description: 'When the same stateful logic appears in two components, lift it into a hook. Types make the extraction safe — the shared behaviour stays consistent.',
-    code: '// same effect twice? → useOnlineStatus()',
-  },
-  {
-    icon: '🔜', title: 'Next: Data Fetching', titleClass: 'card-title-lime', subtitle: 'Day 29 Preview',
-    description: 'Tomorrow: data fetching in React TS — the loading/error/data pattern and typed queries with TanStack Query.',
-    link: { href: '/day-029', label: 'Go to Day 29 →' },
+    icon: '🔁', title: 'The Training Loop', titleClass: 'card-title-amber', subtitle: 'Epochs → Learned',
+    description:
+      'Repeat over many epochs and the weights converge. The trained neuron ends up with real values (around w1≈4.92, w2≈2.94) and predicts marks accurately.',
+    code: 'for (int epoch = 0; epoch < N; epoch++) {\n  // compute gradients over the dataset\n  // update w1, w2, b\n}\n// → learned: w1≈4.92, w2≈2.94',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Custom Hooks', titleClass: 'card-title-cyan', subtitle: 'react.dev',
-    description: 'React’s guide to reusing logic with custom hooks — when to extract one, and the rules that keep them correct.',
-    link: { href: REACT_CUSTOM_HOOKS, label: 'Read the custom hooks guide →', external: true },
+    icon: '💻', title: 'Lecture 27–28', titleClass: 'card-title-cyan', subtitle: 'C++ From Scratch',
+    description:
+      'The training code (first.cpp) and the trained model (trained.cpp) with the learned weights, in the STRIKE GenAI repo.',
+    link: { href: GH_LECTURE, label: 'Open the code →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type A Hook',
-    description: 'Write useToggle with a tuple return and useLocalStorage<T>, then call them to watch inference give clean, precise types.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '🌍', title: 'The Same Everywhere', titleClass: 'card-title-purple', subtitle: 'Scales Up',
+    description:
+      'Predict, measure loss, follow the gradient down — this exact loop trains everything from this neuron to GPT. Only the size changes.',
+    footer: 'predict → loss → gradient → step → repeat',
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Typed custom hooks are how you keep React apps DRY. You’ll build a small library of them across every project this year.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: Non-Linearity', titleClass: 'card-title-amber', subtitle: 'Day 29 Preview',
+    description:
+      'Tomorrow — Lecture 29: why stacking linear neurons stays a straight line, and how activation functions (ReLU) let a network learn curves.',
+    link: { href: '/day-029', label: 'Go to Day 29 →' },
   },
 ];
 
@@ -132,6 +104,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day028() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +134,23 @@ export default function Day028() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-027" className="day001-nav-btn day001-nav-prev">← Day 27</Link>
-          <p className="day001-datetime">TypeScript Day 28</p>
+          <p className="day001-datetime">Agentic AI Day 28</p>
           <Link to="/day-029" className="day001-nav-btn day001-nav-next">Day 29 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Custom Hooks</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 28</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 28 <span aria-hidden="true">🪝</span></h1>
-              <p className="day001-day-theme">CUSTOM HOOKS IN TYPESCRIPT</p>
+              <h1 className="day001-day-num">DAY 28 <span aria-hidden="true">📉</span></h1>
+              <p className="day001-day-theme">TRAINING FROM SCRATCH — GRADIENT DESCENT (C++)</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · REACT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,11 +158,13 @@ export default function Day028() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '28%' }} /></div>
 
         <p className="day001-summary">
-          Day 28 extracts reusable logic into <strong>custom hooks</strong>. A hook is a <code>use*</code> function
-          that composes other hooks and returns useful values — I typed <strong>tuple</strong> returns with{' '}
-          <code>as const</code>, wrote <strong>generic</strong> hooks like <code>useLocalStorage&lt;T&gt;</code> and{' '}
-          <code>useFetch&lt;T&gt;</code> where inference flows to the caller, and followed the{' '}
-          <strong>rules of hooks</strong>. Now shared behaviour is DRY, typed, and easy to test.
+          Lecture 28 — the neuron <strong>learns</strong>. A <strong>loss</strong> (mean squared error) measures how
+          wrong the predictions are, and the goal is to make it small. The <strong>gradient</strong> points toward
+          more error, so <strong>gradient descent</strong> steps the opposite way:{' '}
+          <code>w −= learningRate · gradient</code>, repeated over many <strong>epochs</strong>. The weights
+          <strong> converge</strong> (around <code>w1≈4.92, w2≈2.94</code>) and the neuron now predicts marks
+          accurately. This same loop — predict, measure, descend — is exactly how every neural network, up to an LLM,
+          learns. <em>Only the scale changes.</em>
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +179,12 @@ export default function Day028() {
           </ul>
         </section>
 
-        <CardSection icon="🪝" title="HOOK BASICS" cards={BASICS} columns={3} />
-        <CardSection icon="🧩" title="GENERIC HOOKS" cards={GENERIC} columns={4} />
-        <CardSection icon="📏" title="RULES & PRACTICE" cards={RULES} columns={4} />
+        <CardSection icon="📉" title="MEASURE THE ERROR" cards={LOSS} columns={2} />
+        <CardSection icon="⬇️" title="GRADIENT DESCENT" cards={DESCENT} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#CustomHooks</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GradientDescent</span><span>#Cpp</span><span>#FirstPrinciples</span>
         </footer>
       </div>
     </div>

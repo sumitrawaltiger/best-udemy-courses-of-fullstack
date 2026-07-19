@@ -2,101 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const REACT_TS = 'https://react.dev/learn/typescript';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture30';
+const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
 
 const LEARNT_TODAY = [
-  { title: 'A real React app', text: 'built a typed Notes app end to end — the React capstone of the phase' },
-  { title: 'Typed components', text: 'NoteList, NoteItem, NoteForm — each with a props interface' },
-  { title: 'Reducer + Context', text: 'app state via a typed reducer shared through a guarded context hook' },
-  { title: 'Controlled form', text: 'add/edit notes with typed events and Zod validation' },
-  { title: 'Custom hook', text: 'useLocalStorage<Note[]> persists the notes, typed generically' },
-  { title: 'Data fetching', text: 'seed notes with a typed useQuery from a mock endpoint' },
-  { title: 'Discriminated status', text: 'loading/error/ready UI states modelled as a union' },
-  { title: 'No any, strict on', text: 'the whole app compiles under strict with zero any' },
-  { title: 'It all connects', text: 'props, hooks, forms, context, and fetching working together' },
-  { title: '30 days of TypeScript', text: 'core → advanced → applied → React — a complete foundation' },
+  { title: 'One neuron, one bend', text: 'each ReLU neuron contributes a single kink at a point you choose with its weight and bias' },
+  { title: 'Combine bends', text: 'ReLU(x−10) − ReLU(x−30) makes a plateau — a ramp that turns on at 10 and levels off at 30' },
+  { title: 'Scale them', text: '3·ReLU(x−2) − 3·ReLU(x−3) controls the height and steepness of a piece' },
+  { title: 'Sum many neurons', text: 'stack shifted, scaled ReLUs and their bends add up into any shape you like' },
+  { title: 'Approximate y = x²', text: 'enough small ReLU pieces trace a smooth curve as closely as you want' },
+  { title: 'Universal approximation', text: 'a wide enough network of ReLU neurons can approximate ANY continuous function' },
+  { title: 'Why deep learning works', text: 'it’s not magic — millions of tiny bends, tuned by gradient descent, fit the data' },
 ];
 
-const STRUCTURE = [
+const BENDS = [
   {
-    icon: '🧩', title: 'Model The Domain', titleClass: 'card-title-cyan', subtitle: 'Note + Status',
-    description: 'Type the data first. A Note interface and a literal status union drive the components, the reducer, and the forms — one source of truth.',
-    code: 'interface Note { id: string; title: string; body: string; }\ntype Status = "idle" | "loading" | "ready" | "error";',
+    icon: '📐', title: 'One Neuron, One Bend', titleClass: 'card-title-cyan', subtitle: 'The Building Block',
+    description:
+      'Yesterday’s ReLU(w·x+b) makes exactly one kink. On its own it draws a hinge — flat, then a slope. The trick is what happens when you have many of them.',
+    code: '// ReLU(x - 10): flat, then rises at x = 10\n// each neuron = one hinge in the graph',
   },
   {
-    icon: '🧾', title: 'Typed Components', titleClass: 'card-title-purple', subtitle: 'Props Interfaces',
-    description: 'Break the UI into components — NoteList, NoteItem, NoteForm — each with a props interface. Callbacks and children are typed, so wiring is checked.',
-    code: 'interface NoteItemProps {\n  note: Note;\n  onDelete: (id: string) => void;\n}',
-  },
-  {
-    icon: '⚙️', title: 'Reducer + Context', titleClass: 'card-title-amber', subtitle: 'Typed Global State',
-    description: 'A discriminated action union drives a pure reducer; state and dispatch flow through a context read via a guarded custom hook — no library needed.',
-    code: 'type Action =\n  | { type: "add"; note: Note }\n  | { type: "delete"; id: string };',
+    icon: '🏗️', title: 'Combine Them', titleClass: 'card-title-purple', subtitle: 'Plateaus & Steps',
+    description:
+      'Subtract one ReLU from another and you get a plateau; scale them and you set the height. A couple of neurons already build a step, a ramp, or a bump.',
+    code: '// ReLU(x-10) - ReLU(x-30) → a ramp then plateau\n// 3·ReLU(x-2) - 3·ReLU(x-3) → a sharp step of height 3',
   },
 ];
 
-const FEATURES = [
+const APPROX = [
   {
-    icon: '📝', title: 'Controlled Form', titleClass: 'card-title-cyan', subtitle: 'Add & Edit',
-    description: 'A NoteForm with controlled inputs, typed onChange/onSubmit events, and Zod validation on submit — invalid notes never reach the reducer.',
-    code: 'const r = NoteSchema.safeParse(form);\nif (r.success) dispatch({ type: "add", note: r.data });',
+    icon: '🧩', title: 'Add Up The Pieces', titleClass: 'card-title-cyan', subtitle: 'Sum Of ReLUs',
+    description:
+      'A layer of ReLU neurons is just a sum of many scaled, shifted hinges. Line up their bends and the total output can follow almost any wiggly shape.',
+    code: '// output = Σ  wᵢ · ReLU(x - kᵢ)\n// many hinges → an arbitrary piecewise curve',
   },
   {
-    icon: '🗃️', title: 'Persist With A Hook', titleClass: 'card-title-blue', subtitle: 'useLocalStorage<Note[]>',
-    description: 'The generic useLocalStorage hook from Day 28 keeps notes in the browser, fully typed — refresh the page and the notes are still there.',
-    code: 'const [notes, setNotes] = useLocalStorage<Note[]>("notes", []);',
+    icon: '🌀', title: 'Approximate Anything', titleClass: 'card-title-purple', subtitle: 'Even y = x²',
+    description:
+      'Give it enough neurons and the sum of hinges hugs a smooth curve like y=x² — more neurons, closer fit. That is the universal approximation theorem in one picture.',
+    code: '// 1 → 1, 2 → 4, 3 → 9, ...  (y = x²)\n// enough ReLU hinges trace it as closely as you want',
   },
   {
-    icon: '🌐', title: 'Seed With useQuery', titleClass: 'card-title-amber', subtitle: 'Typed Data',
-    description: 'Fetch starter notes with a typed useQuery, validated by Zod. The status union renders a spinner, an error, or the list — exhaustively.',
-    code: 'const { data, isLoading } = useQuery<Note[]>({\n  queryKey: ["notes"], queryFn: getNotes,\n});',
-  },
-  {
-    icon: '🖼️', title: 'Render Every State', titleClass: 'card-title-lime', subtitle: 'Exhaustive UI',
-    description: 'Switch over the status union so loading, error, and ready each have a UI. TypeScript guarantees no state is left unhandled.',
-    code: 'if (status === "loading") return <Spinner />;\nif (status === "error") return <Err />;\nreturn <NoteList notes={notes} />;',
-  },
-];
-
-const RECAP = [
-  {
-    icon: '⚛️', title: 'Days 21–29 Applied', titleClass: 'card-title-cyan', subtitle: 'React In TS',
-    description: 'Setup, props, useState, effects & refs, events & forms, useReducer, context, custom hooks, and data fetching — all combined into one working app.',
-    code: '// components + hooks + context + query',
-  },
-  {
-    icon: '🧠', title: 'Days 1–20 Underneath', titleClass: 'card-title-purple', subtitle: 'The TS Core',
-    description: 'Interfaces, generics, unions, utility types, narrowing, and Zod validation power every piece — React didn’t add a new type system, just used this one.',
-    code: '// interfaces + generics + unions + Zod',
-  },
-  {
-    icon: '🏁', title: '30 Days Of TypeScript', titleClass: 'card-title-amber', subtitle: 'Foundation Set',
-    description: 'From the first annotation to a typed React app: core, advanced, applied, and React. You can now build real, type-safe front-ends.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
-  },
-  {
-    icon: '🔜', title: 'Next: Day 31+', titleClass: 'card-title-lime', subtitle: 'Keep Building',
-    description: 'Year 1 continues toward deeper React & Next.js in TypeScript. Day 31 picks up the next topic in the TypeScript stack.',
-    link: { href: '/day-031', label: 'Go to Day 31 →' },
+    icon: '💡', title: 'So That’s The Magic', titleClass: 'card-title-amber', subtitle: 'Demystified',
+    description:
+      'A neural network is a huge sum of bends whose positions and heights are learned by gradient descent. Not mysterious — just a very flexible function fit to data.',
+    footer: 'weighted sums + ReLU bends + training = any function',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'React + TypeScript', titleClass: 'card-title-cyan', subtitle: 'react.dev',
-    description: 'Return to React’s TypeScript guide to review any pattern used in the capstone — components, hooks, context, and events.',
-    link: { href: REACT_TS, label: 'Read the React TS guide →', external: true },
+    icon: '💻', title: 'Lecture 30', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    description:
+      'The universal-approximation notebook in the STRIKE GenAI repo — building curves from combinations of ReLU neurons.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 30 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Prototype The Types',
-    description: 'Model Note, the action union, and the status union in the Playground first, then build the components around those solid types.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '🧠', title: 'From Neuron To LLM', titleClass: 'card-title-purple', subtitle: 'It All Connects',
+    description:
+      'Weighted sums (Day 27), training (Day 28), non-linearity (Day 29), universal approximation (Day 30) — the foundations under every model, including the LLMs I build with.',
+    link: { href: '/genai', label: 'Open the GenAI track →' },
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'This app is a miniature of every React project ahead — the same spine of typed components, hooks, state, and data carries through the year.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
+    description:
+      'The full Coder Army course code — the journey continues past here toward more advanced GenAI topics.',
+    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
   },
 ];
 
@@ -132,6 +104,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day030() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +134,23 @@ export default function Day030() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-029" className="day001-nav-btn day001-nav-prev">← Day 29</Link>
-          <p className="day001-datetime">TypeScript Day 30</p>
+          <p className="day001-datetime">Agentic AI Day 30</p>
           <Link to="/day-031" className="day001-nav-btn day001-nav-next">Day 31 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Capstone</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 30</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 30 <span aria-hidden="true">🏁</span></h1>
-              <p className="day001-day-theme">CAPSTONE — A TYPED REACT NOTES APP</p>
+              <h1 className="day001-day-num">DAY 30 <span aria-hidden="true">🌀</span></h1>
+              <p className="day001-day-theme">UNIVERSAL APPROXIMATION — ANY CURVE FROM RELUs</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · REACT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,15 +158,17 @@ export default function Day030() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '30%' }} /></div>
 
         <p className="day001-summary">
-          Day 30 ties the React arc together into one fully typed <strong>Notes app</strong>. I built typed{' '}
-          <strong>components</strong> with props interfaces, managed state with a <strong>reducer + context</strong>{' '}
-          (guarded hook), added a <strong>controlled form</strong> validated by Zod, persisted with a generic{' '}
-          <code>useLocalStorage</code> hook, and seeded data with a typed <code>useQuery</code> — rendering every{' '}
-          status exhaustively. <code>strict</code> on, no <code>any</code>. Thirty days of TypeScript, applied.
+          Lecture 30 — the payoff. Each <strong>ReLU neuron</strong> is one <strong>bend</strong>; combine them and
+          magic happens. <code>ReLU(x−10) − ReLU(x−30)</code> makes a <strong>plateau</strong>, scaling sets the
+          height, and <strong>summing many</strong> shifted, scaled ReLUs builds any shape — even tracing{' '}
+          <code>y=x²</code> as closely as you want. That is the <strong>universal approximation theorem</strong>: a
+          wide enough network can approximate <strong>any</strong> continuous function. Deep learning isn’t magic —
+          it’s millions of tiny bends, tuned by gradient descent, fitting the data.{' '}
+          <em>Thirty days in — the foundations are solid. (From the lecture notebook.)</em>
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I BUILT TODAY</h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
@@ -204,13 +179,12 @@ export default function Day030() {
           </ul>
         </section>
 
-        <CardSection icon="🧩" title="STRUCTURE" cards={STRUCTURE} columns={3} />
-        <CardSection icon="✨" title="FEATURES" cards={FEATURES} columns={4} />
-        <CardSection icon="🏁" title="30-DAY RECAP" cards={RECAP} columns={4} />
+        <CardSection icon="📐" title="ONE NEURON, ONE BEND" cards={BENDS} columns={2} />
+        <CardSection icon="🌀" title="APPROXIMATE ANYTHING" cards={APPROX} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#Capstone</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#DeepLearning</span><span>#NeuralNetworks</span><span>#FirstPrinciples</span>
         </footer>
       </div>
     </div>

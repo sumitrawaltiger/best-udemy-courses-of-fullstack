@@ -2,101 +2,72 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const REACT_CONTEXT = 'https://react.dev/reference/react/useContext';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture27and28';
 
 const LEARNT_TODAY = [
-  { title: 'Context', text: 'share values across the tree without prop-drilling — themes, auth, settings' },
-  { title: 'createContext type', text: 'give the context a precise value type so consumers are checked' },
-  { title: 'The null default trap', text: 'a default of null forces every consumer to null-check — the guard hook fixes it' },
-  { title: 'Provider', text: 'a typed Provider passes the value down; children read it with useContext' },
-  { title: 'Custom hook guard', text: 'wrap useContext in a hook that throws if used outside the Provider' },
-  { title: 'Context + reducer', text: 'expose reducer state and dispatch through context for typed global state' },
-  { title: 'Split contexts', text: 'separate value and dispatch contexts to reduce re-renders' },
-  { title: 'Memo the value', text: 'useMemo the provider value so consumers don’t re-render needlessly' },
-  { title: 'Not a state manager', text: 'context shares state; it doesn’t optimize like Redux/Zustand' },
-  { title: 'Typed everywhere', text: 'from createContext to the hook, the value type flows end to end' },
+  { title: 'Under the hood', text: 'build a neural network by hand in C++ — no libraries, no magic — to see what an LLM really is' },
+  { title: 'The dataset', text: 'predict a student’s marks from study_hours and sleep_hours, loaded from a CSV' },
+  { title: 'A neuron is a weighted sum', text: 'output = w1·study + w2·sleep + b — that is the whole computation of one neuron' },
+  { title: 'Weights and bias', text: 'w1 and w2 scale each input by importance; b (bias) shifts the result up or down' },
+  { title: 'The forward pass', text: 'plug the inputs and current weights into the formula to get a prediction' },
+  { title: 'Random start is wrong', text: 'untrained weights give bad predictions — tomorrow’s training fixes that' },
+  { title: 'This IS an LLM neuron', text: 'the same weighted-sum idea, repeated billions of times, is what powers a large language model' },
 ];
 
-const CREATE = [
+const BUILD = [
   {
-    icon: '🌳', title: 'Why Context', titleClass: 'card-title-cyan', subtitle: 'No Prop-Drilling',
-    description: 'Context lets deeply nested components read shared values — theme, current user, settings — without threading props through every layer.',
-    code: 'interface Theme { mode: "light" | "dark"; toggle(): void }',
+    icon: '🧱', title: 'Build It By Hand', titleClass: 'card-title-cyan', subtitle: 'Plain C++',
+    description:
+      'No PyTorch, no TensorFlow. Writing it in raw C++ strips away the abstraction so every number is visible — the best way to truly understand a neural network.',
+    code: '// dataset.csv: study_hours, sleep_hours, marks\n// 9,2,55\n// 10,7,75\n// 1,1,12',
   },
   {
-    icon: '🏷️', title: 'createContext', titleClass: 'card-title-purple', subtitle: 'Type The Value',
-    description: 'Type the context by its value. Using undefined as the default (with strict checks) forces you to provide a real value — enforced by the guard hook.',
-    code: 'const ThemeContext = createContext<Theme | undefined>(undefined);',
-  },
-  {
-    icon: '📦', title: 'The Provider', titleClass: 'card-title-amber', subtitle: 'Pass It Down',
-    description: 'Wrap the tree in a Provider that supplies the typed value. Everything inside can read it — no matter how deep — with full type safety.',
-    code: 'function ThemeProvider({ children }: { children: React.ReactNode }) {\n  const value = useThemeState();\n  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;\n}',
+    icon: '📥', title: 'Load The Data', titleClass: 'card-title-purple', subtitle: 'Read The CSV',
+    description:
+      'Parse each row of the CSV into a struct — study, sleep and the true marks. This is the training data the neuron will eventually learn from.',
+    code: 'struct Example { double study, sleep, marks; };\n\n// read each line: study, sleep, marks\n// → vector<Example> data',
   },
 ];
 
-const CONSUME = [
+const NEURON = [
   {
-    icon: '🪝', title: 'The Guard Hook', titleClass: 'card-title-cyan', subtitle: 'Throw If Missing',
-    description: 'Wrap useContext in a custom hook that throws when the value is undefined. Consumers get a non-null type and a clear error if the Provider is missing.',
-    code: 'function useTheme() {\n  const ctx = useContext(ThemeContext);\n  if (!ctx) throw new Error("useTheme outside ThemeProvider");\n  return ctx; // Theme, never undefined\n}',
+    icon: '⚖️', title: 'The Weighted Sum', titleClass: 'card-title-cyan', subtitle: 'What A Neuron Does',
+    description:
+      'A neuron multiplies each input by a weight, adds them, and adds a bias. That single line — a weighted sum plus a bias — is the atom of every neural network.',
+    code: 'double predict(double study, double sleep,\n               double w1, double w2, double b) {\n  return w1 * study + w2 * sleep + b;\n}',
   },
   {
-    icon: '⚡', title: 'Clean Consumption', titleClass: 'card-title-blue', subtitle: 'No Null Checks',
-    description: 'Thanks to the guard hook, components call useTheme() and immediately use the value — no repeated null checks scattered around the codebase.',
-    code: 'function Button() {\n  const { mode, toggle } = useTheme();\n  return <button onClick={toggle}>{mode}</button>;\n}',
+    icon: '🎛️', title: 'Weights & Bias', titleClass: 'card-title-purple', subtitle: 'The Knobs',
+    description:
+      'Weights decide how much each input matters (maybe study matters more than sleep); the bias shifts the baseline. Learning a network = finding good values for these knobs.',
+    code: '// w1 big → study matters a lot\n// w2 small → sleep matters less\n// b → baseline marks with zero input',
   },
   {
-    icon: '🔗', title: 'Context + Reducer', titleClass: 'card-title-amber', subtitle: 'Typed Global State',
-    description: 'Put yesterday’s reducer state and dispatch into context to get app-wide, typed state without a library — Redux-like ergonomics, zero deps.',
-    code: 'const [state, dispatch] = useReducer(reducer, init);\n<Store.Provider value={{ state, dispatch }}>{children}</Store.Provider>',
-  },
-  {
-    icon: '✂️', title: 'Split Contexts', titleClass: 'card-title-lime', subtitle: 'Fewer Re-renders',
-    description: 'Separate the value context from the dispatch context so components that only dispatch don’t re-render when state changes. A common performance win.',
-    code: '<StateCtx.Provider value={state}>\n  <DispatchCtx.Provider value={dispatch}>...',
-  },
-];
-
-const PRACTICE = [
-  {
-    icon: '🧠', title: 'Memoize The Value', titleClass: 'card-title-cyan', subtitle: 'useMemo',
-    description: 'A new object literal as the provider value re-renders all consumers each render. Wrap it in useMemo so it only changes when its inputs do.',
-    code: 'const value = useMemo(() => ({ mode, toggle }), [mode]);',
-  },
-  {
-    icon: '⚖️', title: 'Not A State Manager', titleClass: 'card-title-purple', subtitle: 'Know The Limits',
-    description: 'Context distributes state; it doesn’t batch or select like Redux/Zustand. For large, frequently-updated state, reach for a dedicated library.',
-    code: '// heavy global state? → Zustand / Redux Toolkit',
-  },
-  {
-    icon: '🎯', title: 'One Concern Per Context', titleClass: 'card-title-amber', subtitle: 'Keep Them Focused',
-    description: 'Prefer several small, focused contexts (auth, theme, cart) over one giant one. Smaller contexts mean fewer re-renders and clearer types.',
-    code: 'AuthContext · ThemeContext · CartContext',
-  },
-  {
-    icon: '🔜', title: 'Next: Custom Hooks', titleClass: 'card-title-lime', subtitle: 'Day 28 Preview',
-    description: 'Tomorrow: building your own typed hooks — generic hooks, tuple returns, and a reusable useFetch<T>.',
-    link: { href: '/day-028', label: 'Go to Day 28 →' },
+    icon: '▶️', title: 'The Forward Pass', titleClass: 'card-title-amber', subtitle: 'Predict',
+    description:
+      'Feed inputs through the formula with the current weights and you get a prediction. With random weights it is wrong — but the machinery is exactly right.',
+    code: 'predict(9, 2, w1, w2, b); // guess for a 9h/2h student\n// random w1,w2,b → wrong number (for now)',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'useContext', titleClass: 'card-title-cyan', subtitle: 'react.dev',
-    description: 'The official reference for context and useContext — creating, providing, and reading context, with the patterns the types build on.',
-    link: { href: REACT_CONTEXT, label: 'Read the useContext docs →', external: true },
+    icon: '💻', title: 'Lecture 27–28', titleClass: 'card-title-cyan', subtitle: 'C++ From Scratch',
+    description:
+      'The first.cpp / trained.cpp neural network and dataset.csv in the STRIKE GenAI repo — the neuron and its training, in plain C++.',
+    link: { href: GH_LECTURE, label: 'Open the code →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type A Context',
-    description: 'Create a context with an undefined default, then write the guard hook and confirm it returns a non-undefined type. The pattern becomes clear.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '🧠', title: 'Why This Matters', titleClass: 'card-title-purple', subtitle: 'Demystified',
+    description:
+      'Every LLM is billions of these weighted sums. Building one by hand turns the "black box" into something you fully understand.',
+    footer: 'one neuron = w1·x1 + w2·x2 + b',
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Typed context + reducer is the "no-library" global state pattern you’ll use in most React & Next.js apps this year.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: Training', titleClass: 'card-title-amber', subtitle: 'Day 28 Preview',
+    description:
+      'Tomorrow the neuron learns — Lecture 28: measure the error, compute gradients, and use gradient descent to find the weights that make predictions accurate.',
+    link: { href: '/day-028', label: 'Go to Day 28 →' },
   },
 ];
 
@@ -132,6 +103,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day027() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +133,23 @@ export default function Day027() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-026" className="day001-nav-btn day001-nav-prev">← Day 26</Link>
-          <p className="day001-datetime">TypeScript Day 27</p>
+          <p className="day001-datetime">Agentic AI Day 27</p>
           <Link to="/day-028" className="day001-nav-btn day001-nav-next">Day 28 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Context</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 27</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 27 <span aria-hidden="true">🌳</span></h1>
-              <p className="day001-day-theme">CONTEXT API WITH TYPESCRIPT</p>
+              <h1 className="day001-day-num">DAY 27 <span aria-hidden="true">🧠</span></h1>
+              <p className="day001-day-theme">NEURAL NETS FROM SCRATCH (C++) — THE NEURON</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · REACT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,11 +157,13 @@ export default function Day027() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '27%' }} /></div>
 
         <p className="day001-summary">
-          Day 27 shares state without prop-drilling using <strong>Context</strong>. I typed{' '}
-          <code>createContext</code> by its value, avoided the null-default trap with a{' '}
-          <strong>custom guard hook</strong> that throws outside its Provider (returning a non-undefined type), and
-          combined <strong>context + reducer</strong> for typed global state with zero libraries. I also learned to{' '}
-          <strong>memoize</strong> the provider value and <strong>split</strong> contexts to keep re-renders down.
+          Lecture 27 — going to the metal. To truly understand what powers an LLM, I built a neural network{' '}
+          <strong>from scratch in C++</strong> — no libraries. The task: predict <strong>marks</strong> from{' '}
+          <strong>study_hours</strong> and <strong>sleep_hours</strong> in a CSV. A <strong>neuron</strong> is just a{' '}
+          <strong>weighted sum</strong>: <code>output = w1·study + w2·sleep + b</code>, where the{' '}
+          <strong>weights</strong> scale each input and the <strong>bias</strong> shifts the result. The{' '}
+          <strong>forward pass</strong> plugs inputs into that formula. With random weights it’s wrong — but this is
+          exactly the atom every LLM is built from. <em>Tomorrow it learns.</em>
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +178,12 @@ export default function Day027() {
           </ul>
         </section>
 
-        <CardSection icon="🌳" title="CREATE & PROVIDE" cards={CREATE} columns={3} />
-        <CardSection icon="🪝" title="CONSUME SAFELY" cards={CONSUME} columns={4} />
-        <CardSection icon="🧠" title="GOOD PRACTICE" cards={PRACTICE} columns={4} />
+        <CardSection icon="🧱" title="BUILD IT BY HAND" cards={BUILD} columns={2} />
+        <CardSection icon="⚖️" title="A NEURON" cards={NEURON} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#Context</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#NeuralNetworks</span><span>#Cpp</span><span>#FirstPrinciples</span>
         </footer>
       </div>
     </div>

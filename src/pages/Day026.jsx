@@ -2,101 +2,72 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const REACT_REDUCER = 'https://react.dev/reference/react/useReducer';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture26';
 
 const LEARNT_TODAY = [
-  { title: 'useReducer', text: 'manage complex state with a reducer function instead of many useState calls' },
-  { title: 'State type', text: 'model the whole state shape with an interface or type' },
-  { title: 'Action union', text: 'a discriminated union of actions — the safest way to type dispatch' },
-  { title: 'type discriminant', text: 'each action has a literal `type` field the reducer switches on' },
-  { title: 'Typed payloads', text: 'each action carries exactly the data its case needs' },
-  { title: 'Exhaustive switch', text: 'a never default guarantees every action is handled' },
-  { title: 'dispatch is typed', text: 'you can only dispatch valid actions — typos are compile errors' },
-  { title: 'Reducer is pure', text: 'no side effects — return new state, never mutate the old' },
-  { title: 'useReducer vs useState', text: 'reducer wins when updates are complex or interrelated' },
-  { title: 'Pairs with Context', text: 'reducer + context gives typed app-wide state without a library' },
+  { title: 'From CLI to web app', text: 'wrap the multi-agent LangGraph in a full-stack app so you can watch it work in a browser' },
+  { title: 'Real-time with WebSockets', text: 'the server streams graph-execution events to the client as they happen — no polling' },
+  { title: 'Server → client events', text: 'node_complete, human_input_needed, token_update and run_complete drive the live UI' },
+  { title: 'Client → server events', text: 'human_response and cancel let the user answer questions and stop a run from the UI' },
+  { title: 'The dashboard', text: 'a PipelineVisualizer, LogStream, HumanInputPanel, TokenBudgetBar and OutputPanel in React' },
+  { title: 'graphRunner service', text: 'the Express server runs the LangGraph and emits events; multiple tabs can watch one project' },
+  { title: 'It feels like a product', text: 'React (Vite) frontend + Express backend + WebSocket turn the agent team into a real tool' },
 ];
 
-const SETUP = [
+const STACK = [
   {
-    icon: '🧩', title: 'Model State', titleClass: 'card-title-cyan', subtitle: 'One Shape',
-    description: 'Start by typing the whole state. A single interface makes the reducer’s input and output explicit and keeps every field checked.',
-    code: 'interface State {\n  count: number;\n  status: "idle" | "busy";\n}',
+    icon: '🖥️', title: 'CLI → Full-Stack', titleClass: 'card-title-cyan', subtitle: 'Server + Dashboard',
+    description:
+      'The agent team ran in a terminal; now an Express server runs the graph and a React (Vite) dashboard shows it. A WebSocket ties the two together in real time.',
+    code: '// server → runs the LangGraph, emits events\n// dashboard → React UI, subscribes over WebSocket\n// ws://server/ws?projectId=xxx',
   },
   {
-    icon: '🎫', title: 'Action Union', titleClass: 'card-title-purple', subtitle: 'Discriminated',
-    description: 'Model actions as a discriminated union keyed by a literal type. This is the single most important pattern for a type-safe reducer.',
-    code: 'type Action =\n  | { type: "inc"; by: number }\n  | { type: "reset" };',
-  },
-  {
-    icon: '⚙️', title: 'The Reducer', titleClass: 'card-title-amber', subtitle: 'Pure & Typed',
-    description: 'The reducer takes (state, action) and returns new state. Switching on action.type narrows to the exact action, so payloads are fully typed.',
-    code: 'function reducer(s: State, a: Action): State {\n  switch (a.type) {\n    case "inc": return { ...s, count: s.count + a.by };\n    case "reset": return { ...s, count: 0 };\n  }\n}',
+    icon: '🔌', title: 'The WebSocket', titleClass: 'card-title-purple', subtitle: 'Live, Two-Way',
+    description:
+      'Each connection is tied to a project. The server pushes events as the graph runs; the client sends back the user’s answers. Multiple tabs can watch the same run.',
+    code: '// server → client\n{ type: "node_complete", node: "pmAgent", data }\n{ type: "human_input_needed", questions }\n{ type: "token_update", usage }\n{ type: "run_complete", finalState }',
   },
 ];
 
-const USE = [
+const UI = [
   {
-    icon: '📤', title: 'Dispatch Is Typed', titleClass: 'card-title-cyan', subtitle: 'Only Valid Actions',
-    description: 'useReducer returns [state, dispatch]. dispatch only accepts actions from your union — a misspelled type or a missing payload is a compile error.',
-    code: 'const [state, dispatch] = useReducer(reducer, initial);\ndispatch({ type: "inc", by: 2 }); // ✅\ndispatch({ type: "inc" });        // ❌ by missing',
+    icon: '🧭', title: 'See The Pipeline', titleClass: 'card-title-cyan', subtitle: 'PipelineVisualizer',
+    description:
+      'As each node finishes, the visualizer lights up the current agent — PM, Architect, Coder, Reviewer — so you can literally watch the team move through the build.',
+    code: '// node_complete → highlight that agent\n// the graph animates as work progresses',
   },
   {
-    icon: '✅', title: 'Exhaustiveness', titleClass: 'card-title-blue', subtitle: 'never Catches Gaps',
-    description: 'Add a default that assigns the action to never. Introduce a new action later and forget its case — the compiler stops the build.',
-    code: 'default: {\n  const _exhaustive: never = a;\n  return s;\n}',
+    icon: '💬', title: 'Answer & Control', titleClass: 'card-title-purple', subtitle: 'HumanInputPanel',
+    description:
+      'When the PM needs clarification or the team escalates, a panel pops up. Your reply is sent back over the socket and the graph resumes — human-in-the-loop, in a UI.',
+    code: '// client → server\n{ type: "human_response", inputType, data }\n{ type: "cancel" }',
   },
   {
-    icon: '🧊', title: 'Keep It Pure', titleClass: 'card-title-amber', subtitle: 'No Mutation',
-    description: 'A reducer must be pure: no fetch, no mutation. Return a new state object every time — spread the old one and change only what’s needed.',
-    code: 'return { ...s, count: s.count + a.by }; // new object',
-  },
-  {
-    icon: '⚖️', title: 'Reducer vs useState', titleClass: 'card-title-lime', subtitle: 'When To Reach For It',
-    description: 'Prefer useReducer when several pieces of state change together or transitions get complex — it centralizes the logic and types every path.',
-    code: '// many related updates? → reducer\n// one simple value?     → useState',
-  },
-];
-
-const APPLY = [
-  {
-    icon: '🌐', title: 'Loading State Machine', titleClass: 'card-title-cyan', subtitle: 'A Real Example',
-    description: 'A fetch flow is a natural reducer: idle → loading → success/error. The union of states and actions makes impossible combinations unrepresentable.',
-    code: 'type S =\n  | { status: "loading" }\n  | { status: "ok"; data: User }\n  | { status: "err"; msg: string };',
-  },
-  {
-    icon: '🔗', title: 'Pairs With Context', titleClass: 'card-title-purple', subtitle: 'App-Wide State',
-    description: 'Put a reducer’s state and dispatch into Context and you have typed global state without Redux — the topic of tomorrow’s lesson.',
-    code: '// tomorrow: useReducer + Context',
-  },
-  {
-    icon: '🧠', title: 'Actions As Events', titleClass: 'card-title-amber', subtitle: 'Describe Intent',
-    description: 'Name actions after what happened ("todo_added"), not how state changes. The reducer decides the "how" — clearer and easier to evolve.',
-    code: 'dispatch({ type: "todo_added", title });',
-  },
-  {
-    icon: '🔜', title: 'Next: Context API', titleClass: 'card-title-lime', subtitle: 'Day 27 Preview',
-    description: 'Tomorrow: the Context API in TypeScript — a typed context, provider, and a custom hook that guards against missing providers.',
-    link: { href: '/day-027', label: 'Go to Day 27 →' },
+    icon: '📊', title: 'Logs & Budget', titleClass: 'card-title-amber', subtitle: 'LogStream · TokenBudgetBar',
+    description:
+      'A live log stream shows what each agent is doing, and a token-budget bar tracks spend against the limit in real time — observability for an autonomous system.',
+    code: '// token_update → grow the budget bar\n// every log line streams into the UI',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'useReducer', titleClass: 'card-title-cyan', subtitle: 'react.dev',
-    description: 'The official reference for useReducer — the reducer contract, dispatch, and when it’s the better choice over useState.',
-    link: { href: REACT_REDUCER, label: 'Read the useReducer docs →', external: true },
+    icon: '💻', title: 'Lecture 26', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    description:
+      'The AIDevFinal project — the React dashboard, the Express server, the WebSocket handler and the graphRunner over the full agent team.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 26 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Type A Reducer',
-    description: 'Write a discriminated Action union and a reducer, then dispatch a bad action to watch the compiler reject it. The pattern clicks fast.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '👀', title: 'Observability', titleClass: 'card-title-purple', subtitle: 'Watch The Agents',
+    description:
+      'A live UI over an autonomous system is huge for trust and debugging — you can see exactly what each agent did, what it cost, and step in when needed.',
+    footer: 'pipeline · logs · human input · token budget',
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Typed reducers scale from a single component to app-wide state, and the same action-union idea reappears in Redux and beyond.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: Under The Hood', titleClass: 'card-title-amber', subtitle: 'Day 27 Preview',
+    description:
+      'Tomorrow goes to the metal — Lecture 27: build a neural network from scratch in C++ to see exactly how the "magic" underneath every LLM actually works.',
+    link: { href: '/day-027', label: 'Go to Day 27 →' },
   },
 ];
 
@@ -132,6 +103,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day026() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +133,23 @@ export default function Day026() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-025" className="day001-nav-btn day001-nav-prev">← Day 25</Link>
-          <p className="day001-datetime">TypeScript Day 26</p>
+          <p className="day001-datetime">Agentic AI Day 26</p>
           <Link to="/day-027" className="day001-nav-btn day001-nav-next">Day 27 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>useReducer</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 26</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 26 <span aria-hidden="true">⚙️</span></h1>
-              <p className="day001-day-theme">useReducer WITH TYPESCRIPT</p>
+              <h1 className="day001-day-num">DAY 26 <span aria-hidden="true">📊</span></h1>
+              <p className="day001-day-theme">AI DEV TEAM — THE LIVE DASHBOARD</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · REACT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,11 +157,13 @@ export default function Day026() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '26%' }} /></div>
 
         <p className="day001-summary">
-          Day 26 manages complex state with <code>useReducer</code>. I typed the <strong>state</strong> shape and
-          modelled actions as a <strong>discriminated union</strong> keyed by a literal <code>type</code>. Switching
-          on it inside a <strong>pure</strong> reducer narrows each action’s <strong>payload</strong>, and a{' '}
-          <code>never</code> default guarantees <strong>exhaustive</strong> handling. Because <code>dispatch</code>{' '}
-          only accepts valid actions, typos become compile errors — and it pairs perfectly with Context tomorrow.
+          Lecture 26 — a <strong>live dashboard</strong> over the AI Dev Team. An <strong>Express server</strong> runs
+          the LangGraph while a <strong>React</strong> dashboard watches it over a <strong>WebSocket</strong>. The
+          server streams events — <code>node_complete</code>, <code>human_input_needed</code>,{' '}
+          <code>token_update</code>, <code>run_complete</code> — and the client sends back{' '}
+          <code>human_response</code> and <code>cancel</code>. A <strong>PipelineVisualizer</strong> shows the current
+          agent, a <strong>LogStream</strong> shows the work, and a <strong>TokenBudgetBar</strong> tracks spend. The
+          autonomous team finally feels like a real product. <em>Next: how it all works underneath.</em>
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +178,12 @@ export default function Day026() {
           </ul>
         </section>
 
-        <CardSection icon="🧩" title="STATE, ACTIONS, REDUCER" cards={SETUP} columns={3} />
-        <CardSection icon="📤" title="USING IT SAFELY" cards={USE} columns={4} />
-        <CardSection icon="🌐" title="APPLYING IT" cards={APPLY} columns={4} />
+        <CardSection icon="🖥️" title="CLI → FULL-STACK APP" cards={STACK} columns={2} />
+        <CardSection icon="📊" title="THE DASHBOARD" cards={UI} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#Hooks</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AIDevTeam</span><span>#WebSocket</span><span>#React</span>
         </footer>
       </div>
     </div>

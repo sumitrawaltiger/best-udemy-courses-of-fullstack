@@ -2,101 +2,72 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TANSTACK = 'https://tanstack.com/query/latest/docs/framework/react/overview';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture29';
 
 const LEARNT_TODAY = [
-  { title: 'The loading pattern', text: 'model data, loading, and error as one typed state — a discriminated union' },
-  { title: 'Fetch in effect', text: 'load on mount with useEffect, guarding against unmount' },
-  { title: 'Typed responses', text: 'reuse getJSON<T> so fetched data is typed from the first line' },
-  { title: 'Validate at the edge', text: 'parse the response with a Zod schema before trusting it' },
-  { title: 'Race conditions', text: 'ignore stale responses when the request changes mid-flight' },
-  { title: 'TanStack Query', text: 'the standard data library — caching, refetch, and great TS support' },
-  { title: 'useQuery<T>', text: 'returns typed { data, isLoading, error } with caching built in' },
-  { title: 'Query keys', text: 'a typed array key identifies and caches each query' },
-  { title: 'Mutations', text: 'useMutation types the input and result of writes' },
-  { title: 'Less code, safer', text: 'a query library removes most manual state and bugs' },
+  { title: 'Linear stays linear', text: 'stacking linear neurons collapses to one line: w2·(w1·x+b1)+b2 = m·x + c — no matter how many layers' },
+  { title: 'Real data is curved', text: 'a straight line can’t fit y=x², a plateau, or most real relationships' },
+  { title: 'Activation function', text: 'a non-linear step placed on a neuron’s output — that is what breaks the "just a line" limit' },
+  { title: 'ReLU', text: 'ReLU(x) = max(0, x): output 0 when the input is negative, and the input itself when positive' },
+  { title: 'ReLU adds a bend', text: 'ReLU(x−3) stays flat until x=3, then rises — one clean kink in the graph' },
+  { title: 'The activated neuron', text: 'output = ReLU(w·x + b) — a weighted sum, then bent by the activation' },
+  { title: 'Non-linearity unlocks curves', text: 'with activations the network can bend, not just tilt — the reason deep learning works' },
 ];
 
-const MANUAL = [
+const LINEAR = [
   {
-    icon: '🎫', title: 'One State Union', titleClass: 'card-title-cyan', subtitle: 'No Impossible States',
-    description: 'Model the request as a discriminated union rather than separate booleans. loading, error, and data can’t contradict each other — the compiler ensures it.',
-    code: 'type Req<T> =\n  | { status: "loading" }\n  | { status: "error"; msg: string }\n  | { status: "success"; data: T };',
+    icon: '📏', title: 'Layers Collapse', titleClass: 'card-title-cyan', subtitle: 'Still A Line',
+    description:
+      'Feed one linear neuron into another and the algebra simplifies right back to a single line. Two, ten, a hundred linear layers — all still just y = m·x + c.',
+    code: '// layer 1: y = w1·x + b1\n// layer 2: out = w2·y + b2\n//        = w1·w2·x + (w2·b1 + b2)\n//        = m·x + c   ← still linear!',
   },
   {
-    icon: '🌀', title: 'Fetch In useEffect', titleClass: 'card-title-purple', subtitle: 'Load On Mount',
-    description: 'Kick off the request in an effect, updating the union as it resolves. Reuse the typed getJSON<T> wrapper so data is safe end to end.',
-    code: 'useEffect(() => {\n  getJSON<User>("/api/me")\n    .then((data) => set({ status: "success", data }))\n    .catch((e) => set({ status: "error", msg: String(e) }));\n}, []);',
-  },
-  {
-    icon: '🏁', title: 'Race Conditions', titleClass: 'card-title-amber', subtitle: 'Ignore Stale',
-    description: 'If the URL changes before a response arrives, an old result can overwrite a new one. A cleanup flag (or AbortController) discards stale responses.',
-    code: 'let active = true;\n// on resolve: if (active) set(...)\nreturn () => { active = false; };',
+    icon: '🌀', title: 'But Data Curves', titleClass: 'card-title-purple', subtitle: 'A Line Can’t Fit It',
+    description:
+      'Squares, plateaus, thresholds — real relationships bend. A purely linear model can never capture y=x² or "no effect until a threshold, then rising".',
+    code: '// y = x²  → a curve\n// "extra pay only after 3 hours" → a bend\n// a line cannot fit either',
   },
 ];
 
-const RENDER = [
+const RELU = [
   {
-    icon: '🖼️', title: 'Render Each State', titleClass: 'card-title-cyan', subtitle: 'Exhaustive UI',
-    description: 'Switch over the status union in render so every state has a UI — spinner, error, or data. TypeScript narrows data to be present only in success.',
-    code: 'if (req.status === "loading") return <Spinner />;\nif (req.status === "error") return <Err msg={req.msg} />;\nreturn <Profile user={req.data} />;',
+    icon: '⚡', title: 'ReLU', titleClass: 'card-title-cyan', subtitle: 'max(0, x)',
+    description:
+      'The rectified linear unit is dead simple: negatives become 0, positives pass through. That tiny kink at zero is the non-linearity everything else builds on.',
+    code: 'double relu(double x) {\n  return x < 0 ? 0 : x;   // max(0, x)\n}',
   },
   {
-    icon: '🛡️', title: 'Validate The Response', titleClass: 'card-title-blue', subtitle: 'Zod At The Edge',
-    description: 'Since the server can lie, parse the response with a schema before storing it. Now the success data is guaranteed to match the type.',
-    code: 'const data = UserSchema.parse(await res.json());',
+    icon: '📐', title: 'A Bend Anywhere', titleClass: 'card-title-purple', subtitle: 'ReLU(x − k)',
+    description:
+      'Shift the input and you move the kink. ReLU(x−3) is flat until x=3, then rises with slope 1 — a bend placed exactly where you want it.',
+    code: '// ReLU(x - 3): 0 for x ≤ 3, then (x - 3)\n// the "turn-on point" is a knob',
   },
   {
-    icon: '🧹', title: 'Manual Gets Tedious', titleClass: 'card-title-amber', subtitle: 'Why A Library',
-    description: 'Caching, refetching, retries, and dedup are a lot to hand-roll. That repetition is exactly what a data library solves — enter TanStack Query.',
-    code: '// caching + refetch + retry by hand = a lot',
-  },
-  {
-    icon: '⚡', title: 'useQuery<T>', titleClass: 'card-title-lime', subtitle: 'TanStack Query',
-    description: 'useQuery gives typed data plus isLoading and error, with caching and background refetch built in — the data hook from Day 28, done right.',
-    code: 'const { data, isLoading } = useQuery<User>({\n  queryKey: ["me"],\n  queryFn: () => getJSON<User>("/api/me"),\n});',
-  },
-];
-
-const QUERY = [
-  {
-    icon: '🔑', title: 'Query Keys', titleClass: 'card-title-cyan', subtitle: 'Identify & Cache',
-    description: 'A typed array key uniquely identifies a query for caching and invalidation — ["user", id] caches per user and refetches when id changes.',
-    code: 'useQuery({ queryKey: ["user", id], queryFn: () => getUser(id) });',
-  },
-  {
-    icon: '✍️', title: 'Mutations', titleClass: 'card-title-purple', subtitle: 'Typed Writes',
-    description: 'useMutation types both the variables you send and the result you get back, then invalidates related queries so the UI stays fresh.',
-    code: 'const m = useMutation({ mutationFn: (t: NewTask) => createTask(t) });\nm.mutate({ title: "Learn TS" });',
-  },
-  {
-    icon: '🎯', title: 'Less State, Fewer Bugs', titleClass: 'card-title-amber', subtitle: 'The Payoff',
-    description: 'A query library removes most manual loading/error state, handles caching and retries, and keeps everything typed — dramatically less code.',
-    code: '// no useEffect, no manual union — it’s handled',
-  },
-  {
-    icon: '🔜', title: 'Next: React TS Capstone', titleClass: 'card-title-lime', subtitle: 'Day 30 Preview',
-    description: 'Tomorrow ties Days 21–29 together into a small, fully typed React app — components, hooks, forms, context, and data fetching.',
-    link: { href: '/day-030', label: 'Go to Day 30 →' },
+    icon: '🔵', title: 'The Activated Neuron', titleClass: 'card-title-amber', subtitle: 'ReLU(w·x + b)',
+    description:
+      'Wrap the weighted sum in an activation and the neuron can now produce a bent output instead of a straight one. This is the neuron used in real networks.',
+    code: 'output = relu(w * x + b);\n// weighted sum → bent by ReLU\n// no longer just a line',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'TanStack Query', titleClass: 'card-title-cyan', subtitle: 'The Data Library',
-    description: 'The official docs for TanStack Query — queries, mutations, caching, and its excellent TypeScript support. The industry standard for data fetching.',
-    link: { href: TANSTACK, label: 'Read the TanStack docs →', external: true },
+    icon: '💻', title: 'Lecture 29', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    description:
+      'The activation-functions notebook in the STRIKE GenAI repo — why linear layers aren’t enough and how ReLU fixes it.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 29 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Model The Union',
-    description: 'Write the Req<T> union and a render switch, then confirm data only exists in the success branch. The pattern prevents a whole class of bugs.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+    icon: '🧠', title: 'The Key Insight', titleClass: 'card-title-purple', subtitle: 'Why It Matters',
+    description:
+      'Weights + bias give a line; the activation gives a bend. Non-linearity is the single ingredient that makes a "deep" network more than a linear one.',
+    footer: 'weighted sum + activation = a curve',
   },
   {
-    icon: '🗺️', title: 'Where This Fits', titleClass: 'card-title-amber', subtitle: 'Year 1 · TypeScript',
-    description: 'Typed data fetching powers nearly every screen. TanStack Query + Zod + typed fetch is the stack you’ll use through React & Next.js.',
-    link: { href: '/roadmap', label: 'See the full roadmap →' },
+    icon: '🔜', title: 'Next: Any Curve', titleClass: 'card-title-amber', subtitle: 'Day 30 Preview',
+    description:
+      'Tomorrow — Lecture 30: combine many ReLU neurons to approximate ANY function, and see why a wide enough network can model anything.',
+    link: { href: '/day-030', label: 'Go to Day 30 →' },
   },
 ];
 
@@ -132,6 +103,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function Day029() {
   const scaleRef = useRef(null);
+
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
@@ -161,23 +133,23 @@ export default function Day029() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-028" className="day001-nav-btn day001-nav-prev">← Day 28</Link>
-          <p className="day001-datetime">TypeScript Day 29</p>
+          <p className="day001-datetime">Agentic AI Day 29</p>
           <Link to="/day-030" className="day001-nav-btn day001-nav-next">Day 30 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Data Fetching</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 29</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 29 <span aria-hidden="true">🌐</span></h1>
-              <p className="day001-day-theme">DATA FETCHING IN REACT TS</p>
+              <h1 className="day001-day-num">DAY 29 <span aria-hidden="true">⚡</span></h1>
+              <p className="day001-day-theme">ACTIVATION FUNCTIONS — WHY NON-LINEARITY</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TS · REACT</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
@@ -185,11 +157,13 @@ export default function Day029() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '29%' }} /></div>
 
         <p className="day001-summary">
-          Day 29 loads data safely. I modelled requests as a <strong>discriminated union</strong> of{' '}
-          loading/error/success (no impossible states), fetched with a typed <code>getJSON&lt;T&gt;</code> in an
-          effect, <strong>validated</strong> with Zod, and handled <strong>race conditions</strong>. Then I moved
-          to <strong>TanStack Query</strong> — <code>useQuery&lt;T&gt;</code> for typed, cached data,{' '}
-          <strong>query keys</strong>, and typed <strong>mutations</strong> — far less code and far fewer bugs.
+          Lecture 29 — the missing ingredient. Stacking <strong>linear</strong> neurons collapses to a single line
+          (<code>w2·(w1·x+b1)+b2 = m·x+c</code>), so no matter how deep, it can never fit a curve like{' '}
+          <code>y=x²</code>. The fix is an <strong>activation function</strong> — a non-linear step on the neuron’s
+          output. <strong>ReLU</strong> (<code>max(0, x)</code>) is the simplest: it zeroes negatives and passes
+          positives, adding a clean <strong>bend</strong>, and <code>ReLU(x−k)</code> places that bend wherever you
+          want. The real neuron is <code>ReLU(w·x + b)</code> — a weighted sum, then bent.{' '}
+          <em>Non-linearity is why deep learning works. (From the lecture notebook.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -204,13 +178,12 @@ export default function Day029() {
           </ul>
         </section>
 
-        <CardSection icon="🎫" title="THE MANUAL PATTERN" cards={MANUAL} columns={3} />
-        <CardSection icon="🖼️" title="RENDER & SCALE UP" cards={RENDER} columns={4} />
-        <CardSection icon="⚡" title="TANSTACK QUERY" cards={QUERY} columns={4} />
+        <CardSection icon="📏" title="WHY LINEAR ISN’T ENOUGH" cards={LINEAR} columns={2} />
+        <CardSection icon="⚡" title="RELU — THE BEND" cards={RELU} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#React</span><span>#DataFetching</span><span>#JSLearnHub</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#ReLU</span><span>#NeuralNetworks</span><span>#FirstPrinciples</span>
         </footer>
       </div>
     </div>
