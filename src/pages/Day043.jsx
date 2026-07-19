@@ -2,152 +2,80 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const PRIMER_URL =
-  'https://github.com/donnemartin/system-design-primer#message-queues';
-const DOCS_URL = 'https://www.rabbitmq.com/tutorials';
+const LANGCHAIN_JS = 'https://js.langchain.com/docs/introduction/';
 
 const LEARNT_TODAY = [
+  { title: 'A new track begins', text: 'Days 1–42 built AI from first principles; now Phase 1 pivots to building real agents in TypeScript' },
+  { title: 'What this course is', text: 'a hands-on, project-driven path to a reusable “agent platform” — not toy scripts or copy-paste demos' },
+  { title: 'What it isn’t', text: 'not a prompt-engineering listicle and not tied to one vendor — the skills transfer across models' },
+  { title: 'Model choice is a decision', text: 'pick OpenAI / Gemini / Groq / local per task, trading cost vs speed vs reliability — not brand loyalty' },
+  { title: 'Cost & latency mindset', text: 'cheap+fast models for routing and drafts; stronger models only where quality really pays' },
+  { title: 'One provider factory', text: 'every project talks to models through a single swappable factory, so switching providers is one line' },
+  { title: 'Everything compounds', text: 'each project (search, RAG, LangGraph) plugs into the same platform you keep extending' },
+  { title: 'How to follow', text: 'build along in TS/Node, keep the repo, and treat each day as a lego brick for the next' },
+];
+
+const COURSE = [
   {
-    title: 'Sync vs async',
-    text: 'don’t make the user wait for slow background work',
+    icon: '🧭', title: 'What It Is / Isn’t', titleClass: 'card-title-cyan', subtitle: 'Build A Platform',
+    description:
+      'A practical journey to production-style agents in TypeScript. Every lesson ships a small, real backend primitive — the goal is a reusable agent platform you can extend, not disposable demos.',
+    footer: 'projects → a platform you own, not scattered scripts',
   },
   {
-    title: 'Message queue',
-    text: 'a buffer that sits between producer and consumer',
-  },
-  {
-    title: 'Producer / consumer',
-    text: 'one puts messages in, another takes them out',
-  },
-  {
-    title: 'Pub / Sub',
-    text: 'one event fans out to many subscribers',
-  },
-  {
-    title: 'Decoupling',
-    text: 'services talk through the queue, not directly',
-  },
-  {
-    title: 'Acknowledgements',
-    text: 'a message is redelivered until it is ack’d',
-  },
-  {
-    title: 'Dead-letter queue',
-    text: 'messages that keep failing go to a DLQ',
-  },
-  {
-    title: 'Kafka',
-    text: 'a high-throughput, durable event log/stream',
-  },
-  {
-    title: 'RabbitMQ',
-    text: 'flexible routing with per-message acknowledgement',
-  },
-  {
-    title: 'Event-driven',
-    text: 'services react to events instead of calling each other',
+    icon: '🧠', title: 'How To Follow', titleClass: 'card-title-purple', subtitle: 'Build Along',
+    description:
+      'Set up once, then build every day in the same repo. Each project is a lego brick: the provider factory, JSON contracts, tools, RAG and LangGraph all snap together as you go.',
+    footer: 'keep the repo · extend, don’t restart',
   },
 ];
 
-const QUEUES = [
+const MODELS = [
   {
-    icon: '⏱️',
-    title: 'Sync vs Async',
-    titleClass: 'card-title-cyan',
-    subtitle: 'don’t block',
-    description: 'Return fast; push slow work (emails, thumbnails) to a queue.',
-    code: '// sync: user waits 4s for the email to send\n// async: enqueue, respond now, send later',
+    icon: '⚖️', title: 'Choose Models Smartly', titleClass: 'card-title-cyan', subtitle: 'Cost · Speed · Reliability',
+    description:
+      'Models are a per-task decision, not brand loyalty. Use cheap, fast models (Groq, small OpenAI/Gemini) for routing and drafts; reserve stronger models for the steps where quality actually pays off.',
+    code: '// pick by job, not by hype\n// route/classify → fast + cheap\n// final answer → stronger model\n// offline/private → local model',
   },
   {
-    icon: '📥',
-    title: 'Producer / Consumer',
-    titleClass: 'card-title-green',
-    subtitle: 'the buffer',
-    description: 'Producers enqueue; consumers process at their own pace.',
-    code: 'queue.send("email", { to, body });   // producer\nqueue.consume("email", handler);     // consumer',
+    icon: '🏭', title: 'One Provider Factory', titleClass: 'card-title-purple', subtitle: 'Swap In One Line',
+    description:
+      'Every project reaches models through a single factory. OpenAI, Gemini, Groq and local models all sit behind one interface, so switching providers never touches your agent logic.',
+    code: '// getModel("fast") | getModel("smart")\n// factory hides OpenAI/Gemini/Groq/local\n// swap provider → change one config',
   },
   {
-    icon: '📡',
-    title: 'Pub / Sub',
-    titleClass: 'card-title-amber',
-    subtitle: 'fan-out',
-    description: 'One event, many independent subscribers react to it.',
-    code: 'emit("order.placed")\n  → email service\n  → inventory service\n  → analytics service',
-  },
-];
-
-const PRACTICE = [
-  {
-    icon: '🔗',
-    title: 'Decoupling',
-    titleClass: 'card-title-cyan',
-    subtitle: 'loose coupling',
-    description: 'A slow or down consumer never blocks the producer.',
-    code: '// Orders emits an event and moves on\n// Email can be down; it catches up later',
-  },
-  {
-    icon: '🔁',
-    title: 'Reliability',
-    titleClass: 'card-title-green',
-    subtitle: 'ack + DLQ',
-    description: 'Retry until acknowledged; park poison messages in a DLQ.',
-    code: 'process(msg) -> ack()   // success\nprocess(msg) -> nack()  // retry / DLQ',
-  },
-  {
-    icon: '🌊',
-    title: 'Kafka vs RabbitMQ',
-    titleClass: 'card-title-amber',
-    subtitle: 'pick a tool',
-    description: 'Kafka streams high-volume logs; RabbitMQ routes messages.',
-    code: 'Kafka   : durable log, replay, huge throughput\nRabbitMQ: flexible routing, per-message ack',
-  },
-  {
-    icon: '⚡',
-    title: 'Event-Driven',
-    titleClass: 'card-title-pink',
-    subtitle: 'react, don’t call',
-    description: 'Services publish and subscribe to events, not each other.',
-    code: '// no direct service-to-service calls\n// everyone listens to the event stream',
+    icon: '🧩', title: 'It All Connects', titleClass: 'card-title-amber', subtitle: 'A Reusable Platform',
+    description:
+      'Search, Light RAG, LangGraph orchestration, observability — each project extends the same platform. By the end you have a toolkit, not a folder of unrelated experiments.',
+    footer: 'search → RAG → tools → graphs → one platform',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘',
-    title: 'System Design Primer',
-    titleClass: 'card-title-purple',
-    subtitle: 'GitHub reference',
-    description: 'The message-queues & async-processing sections of system-design-primer.',
-    link: { href: PRIMER_URL, label: 'Open on GitHub →', external: true },
+    icon: '📘', title: 'LangChain.js', titleClass: 'card-title-cyan', subtitle: 'The Docs',
+    description:
+      'The framework this phase builds on. Skim the intro now — we’ll go deep into models, prompts, output parsers, tools and LCEL over the coming days.',
+    link: { href: LANGCHAIN_JS, label: 'Open LangChain.js docs →', external: true },
   },
   {
-    icon: '📗',
-    title: 'RabbitMQ Tutorials',
-    titleClass: 'card-title-green',
-    subtitle: 'Official docs',
-    description: 'RabbitMQ’s hands-on tutorials — queues, pub/sub, routing, and acks.',
-    link: { href: DOCS_URL, label: 'Open the docs →', external: true },
+    icon: '🤖', title: 'Phase 1 · Agentic AI', titleClass: 'card-title-purple', subtitle: 'The Track',
+    description:
+      'This is the first module of the 100-day Agentic AI phase, now in TypeScript. Explore the wider GenAI track for the bigger picture.',
+    link: { href: '/genai', label: 'Explore the GenAI track →' },
   },
   {
-    icon: '▶️',
-    title: 'Kafka vs RabbitMQ',
-    titleClass: 'card-title-amber',
-    subtitle: 'Free YouTube',
-    description: 'Kafka vs RabbitMQ — the best message queue explained — The Coding Gopher.',
-    link: {
-      href: 'https://www.youtube.com/watch?v=PQHf_IzmUXE',
-      label: 'Watch on YouTube →',
-      external: true,
-    },
+    icon: '🔜', title: 'Next: Foundations', titleClass: 'card-title-amber', subtitle: 'Day 44 Preview',
+    description:
+      'Tomorrow — the mental model: modern AI app architecture, chains vs agents, and where LangChain.js and LangGraph.js each fit.',
+    link: { href: '/day-044', label: 'Go to Day 44 →' },
   },
 ];
 
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
-      <span className="day001-card-icon" aria-hidden="true">
-        {card.icon}
-      </span>
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
       <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
       <p className="day001-card-subtitle">{card.subtitle}</p>
       <p className="day001-card-desc">{card.description}</p>
@@ -155,18 +83,9 @@ function TopicCard({ card }) {
       {card.footer && <p className="day001-card-footer">{card.footer}</p>}
       {card.link &&
         (card.link.external ? (
-          <a
-            href={card.link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="day001-card-link"
-          >
-            {card.link.label}
-          </a>
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
         ) : (
-          <Link to={card.link.href} className="day001-card-link">
-            {card.link.label}
-          </Link>
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
         ))}
     </article>
   );
@@ -175,13 +94,9 @@ function TopicCard({ card }) {
 function CardSection({ icon, title, cards, columns = 3 }) {
   return (
     <section className="day001-section">
-      <h2 className="day001-section-title">
-        <span aria-hidden="true">{icon}</span> {title}
-      </h2>
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
       <div className={`day001-card-row day001-card-row--${columns}`}>
-        {cards.map((card) => (
-          <TopicCard key={card.title} card={card} />
-        ))}
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
       </div>
     </section>
   );
@@ -193,129 +108,83 @@ export default function Day043() {
   useEffect(() => {
     const wrap = scaleRef.current;
     if (!wrap) return;
-
     const page = wrap.parentElement;
-
     const fitToScreen = () => {
       wrap.style.transform = 'none';
       wrap.style.width = '100%';
       if (page) page.style.height = '';
-
       const pad = 12;
-      const scale = Math.min(
-        (window.innerHeight - pad) / wrap.scrollHeight,
-        (window.innerWidth - pad) / wrap.scrollWidth,
-      );
-
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
       wrap.style.transform = `scale(${scale})`;
       wrap.style.transformOrigin = 'top center';
       if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
     };
-
     fitToScreen();
     window.addEventListener('resize', fitToScreen);
     const observer = new ResizeObserver(fitToScreen);
     observer.observe(wrap);
-
     const avatar = wrap.querySelector('.day001-avatar');
-    if (avatar && !avatar.complete) {
-      avatar.addEventListener('load', fitToScreen);
-    }
-
-    return () => {
-      window.removeEventListener('resize', fitToScreen);
-      observer.disconnect();
-    };
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
   }, []);
 
   return (
     <div className="day001-page">
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
-          <Link to="/day-042" className="day001-nav-btn day001-nav-home">
-            ← Day 42
-          </Link>
-          <p className="day001-datetime">Thunder Day 43</p>
-          <Link to="/day-044" className="day001-nav-btn day001-nav-next">
-            Day 44 →
-          </Link>
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-042" className="day001-nav-btn day001-nav-prev">← Day 42</Link>
+          <p className="day001-datetime">Agentic AI Day 43</p>
+          <Link to="/day-044" className="day001-nav-btn day001-nav-next">Day 44 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags">
-              <span>System Design</span>
-              <span>Async</span>
-              <span>100 Days</span>
-            </div>
+            <div className="day001-tags"><span>Agentic AI</span><span>TypeScript</span><span>Mindset</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">
-                DAY 43 <span aria-hidden="true">⚡</span>
-              </h1>
-              <p className="day001-day-theme">MESSAGE QUEUES & EVENT-DRIVEN</p>
+              <h1 className="day001-day-num">DAY 43 <span aria-hidden="true">🧭</span></h1>
+              <p className="day001-day-theme">AGENTIC AI — INTRO &amp; MINDSET</p>
             </div>
           </div>
           <div className="day001-profile">
-            <img
-              src="/sumit-profile.png"
-              alt="Sumit Rawal"
-              className="day001-avatar"
-              width={48}
-              height={48}
-            />
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">SYSTEM DESIGN</p>
+              <p className="day001-profile-role">GEN · AGENTIC AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '43%' }} />
-        </div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '43%' }} /></div>
 
         <p className="day001-summary">
-          Day forty-three — not every task should block the response. A <strong>message queue</strong>{' '}
-          buffers work between a <strong>producer</strong> and a <strong>consumer</strong>, so slow
-          jobs run later and a down service never stalls the request. <strong>Pub/Sub</strong> fans
-          one event out to many subscribers, <strong>acks</strong> and <strong>dead-letter
-          queues</strong> make it reliable, and <strong>Kafka</strong>/<strong>RabbitMQ</strong> power{' '}
-          <strong>event-driven</strong> systems where services react instead of calling. Reference:{' '}
-          <a href={PRIMER_URL} target="_blank" rel="noopener noreferrer" className="day001-inline-link">
-            system-design-primer
-          </a>
-          .
+          A new chapter of Phase 1. The first 42 days built AI from first principles; now the focus turns to{' '}
+          <strong>building real agents in TypeScript</strong>. This course is <strong>project-driven</strong> —
+          every lesson ships a small backend primitive that snaps into a <strong>reusable “agent platform.”</strong>{' '}
+          The core mindset: <strong>choose models smartly</strong> (OpenAI / Gemini / Groq / local) by trading{' '}
+          <strong>cost vs speed vs reliability</strong>, and reach every one of them through a single{' '}
+          <strong>provider factory</strong> so switching is a one-line change. Nothing here is a toy script —
+          each project (search, RAG, LangGraph) <em>extends the same platform you keep building.</em>
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title">
-            <span className="day001-learnt-line" aria-hidden="true" />
-            WHAT I LEARNED TODAY
-          </h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
-                <span className="day001-check" aria-hidden="true">
-                  ✓
-                </span>
-                <span>
-                  <strong>{item.title}</strong> — {item.text}
-                </span>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        <CardSection icon="📨" title="QUEUES" cards={QUEUES} columns={3} />
-        <CardSection icon="🛠️" title="IN PRACTICE" cards={PRACTICE} columns={4} />
-        <CardSection icon="📚" title="SYSTEM DESIGN RESOURCES" cards={RESOURCES} columns={3} />
+        <CardSection icon="🧭" title="THE COURSE" cards={COURSE} columns={2} />
+        <CardSection icon="⚖️" title="MODELS & PLATFORM" cards={MODELS} columns={3} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span>
-          <span>#SystemDesign</span>
-          <span>#MessageQueues</span>
-          <span>#Kafka</span>
-          <span>#Thunder</span>
+          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#TypeScript</span><span>#LangChain</span><span>#GenAI</span>
         </footer>
       </div>
     </div>
