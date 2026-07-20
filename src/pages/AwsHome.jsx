@@ -60,6 +60,15 @@ export default function AwsHome() {
                 >
                   📄 Developer Associate (PDF)
                 </a>
+                <a
+                  href="/aws-certified-cloudops-associate.pdf"
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-aws btn-lg"
+                >
+                  📄 CloudOps Associate (PDF)
+                </a>
                 <Link to="/java" className="btn btn-outline-aws btn-lg">
                   ← Java & Spring
                 </Link>
