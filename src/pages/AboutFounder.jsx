@@ -71,6 +71,11 @@ export default function AboutFounder() {
         </div>
 
         <div className="gt-block">
+          <p className="gt-label">Location</p>
+          <p className="gt-value">🇮🇳 India · Indian Standard Time (IST, UTC+5:30)</p>
+        </div>
+
+        <div className="gt-block">
           <p className="gt-label">Skills</p>
           <div className="gt-skills">
             {SKILLS.map((skill) => (

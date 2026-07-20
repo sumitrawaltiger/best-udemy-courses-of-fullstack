@@ -42,7 +42,7 @@ const HOW = [
     icon: '🔍', title: 'Type Inference', titleClass: 'card-title-purple', subtitle: 'It Guesses For You',
     description:
       'You don’t annotate everything. When you initialise a variable, TS infers its type automatically — annotate only where the intent isn’t obvious from the value.',
-    code: 'let city = "Bangkok";\n// inferred as string — no annotation\ncity = 42; // ❌ error',
+    code: 'let city = "Mumbai";\n// inferred as string — no annotation\ncity = 42; // ❌ error',
   },
   {
     icon: '💡', title: 'Why Teams Use It', titleClass: 'card-title-amber', subtitle: 'The Payoff',

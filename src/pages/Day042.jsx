@@ -21,7 +21,7 @@ const PRIMITIVES = [
     icon: '🔤', title: 'string · number · boolean', titleClass: 'card-title-cyan', subtitle: 'The Primitives',
     description:
       'The three everyday types, always lowercase. Annotate with a colon, or let TypeScript infer them from the initial value — the result is identical either way.',
-    code: 'let name: string = "Sumit";\nlet age: number = 27;\nlet active: boolean = true;\n\nlet city = "Bangkok"; // inferred: string',
+    code: 'let name: string = "Sumit";\nlet age: number = 27;\nlet active: boolean = true;\n\nlet city = "Mumbai"; // inferred: string',
   },
   {
     icon: '📚', title: 'Arrays', titleClass: 'card-title-purple', subtitle: 'Same-Type Lists',
