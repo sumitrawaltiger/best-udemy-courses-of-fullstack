@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 // ── The 1500-day roadmap ───────────────────────────────────────────────────
-// Day 1 = Thu 23 Jul 2026. 39 days of Gen AI with JavaScript, then a 4-year
+// Day 1 = Fri 24 Jul 2026. 39 days of Gen AI with JavaScript, then a 4-year
 // coding journey (TypeScript → Python → Java → DevOps, one year each), landing
 // on 31 Aug 2030 = 1500 study days. Dates are the plan's explicit windows.
 
@@ -13,7 +13,7 @@ const PHASES = [
     label: 'Gen AI with JavaScript',
     tagline: 'Phase 1',
     duration: '39 days',
-    dates: '23 Jul → 31 Aug 2026',
+    dates: '24 Jul → 31 Aug 2026',
     blurb:
       'The journey opens with 39 days of Generative & Agentic AI in JavaScript — from how LLMs actually work to building, evaluating and shipping autonomous agents with the Gemini SDK, LangChain.js and LangGraph.',
     items: [
@@ -21,7 +21,7 @@ const PHASES = [
         icon: '🧠',
         title: 'GenAI & Agentic AI',
         detail: 'LLMs · token prediction · RAG · tools · LangChain.js · LangGraph',
-        dates: '23 Jul → 31 Aug 2026',
+        dates: '24 Jul → 31 Aug 2026',
         source: 'Coder Army · STRIKE GenAI + TypeScript agent course',
         to: '/genai',
       },
@@ -136,12 +136,12 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 23 Jul 2026 → 31 Aug 2030 · 1500 days</span>
+        <span className="roadmap-hero-badge">📍 24 Jul 2026 → 31 Aug 2030 · 1500 days</span>
         <h1 className="roadmap-hero-title">The 1500-Day Roadmap</h1>
         <p className="roadmap-hero-sub">
           <strong>39 days</strong> of Gen AI with JavaScript, then a <strong>4-year coding journey</strong> —{' '}
           <strong>TypeScript → Python → Java → DevOps</strong>, one year each. One morning at a time,{' '}
-          <strong>5:00–8:00 AM</strong> (Bangkok, UTC+7). Day 1 is <strong>23 Jul 2026</strong> and day 1500 lands
+          <strong>5:00–8:00 AM</strong> (Bangkok, UTC+7). Day 1 is <strong>24 Jul 2026</strong> and day 1500 lands
           on <strong>31 Aug 2030</strong>.
         </p>
         <div className="roadmap-stats">
@@ -210,7 +210,7 @@ export default function RoadmapHome() {
           Gen AI with JavaScript (39 days) → then a 4-year coding journey: Year 1 TypeScript stack (TypeScript,
           React, React Native, Next.js, Express/Node) → Year 2 Python stack (Python, Django, FastAPI) → Year 3
           Java stack (Java, Spring Boot, Microservices) → Year 4 DevOps stack (Linux, Docker, Kubernetes, CI/CD,
-          AWS). 1500 days, 23 Jul 2026 → 31 Aug 2030.
+          AWS). 1500 days, 24 Jul 2026 → 31 Aug 2030.
         </p>
         <div className="roadmap-flow-actions">
           <Link to="/day-001" className="btn btn-lg roadmap-btn-primary">

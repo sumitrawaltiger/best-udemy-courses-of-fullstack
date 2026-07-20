@@ -20,7 +20,7 @@ export function slugify(text) {
     .replace(/^-|-$/g, '');
 }
 
-const COURSE_START = new Date(2026, 6, 20); // 20 Jul 2026 — Day 1 (Mon)
+const COURSE_START = new Date(2026, 6, 24); // 24 Jul 2026 — Day 1 (Fri)
 
 function formatDate(calendarDay) {
   const d = new Date(COURSE_START);

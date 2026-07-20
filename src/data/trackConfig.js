@@ -1,4 +1,4 @@
-// Learning path calendar offsets (Day 1 = 23 Jul 2026)
+// Learning path calendar offsets (Day 1 = 24 Jul 2026)
 export const THUNDER_DAYS = 100;
 
 // After Thunder: React & Next.js + React Native through 23 Jan 2027

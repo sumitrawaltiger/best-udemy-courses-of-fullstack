@@ -288,7 +288,7 @@ export default function Day000() {
             GitHub
           </a>{' '}
           and Netlify accounts, and locking the routine (wake 4 AM, study 5:00–8:00 AM). No lectures yet —
-          just clearing every obstacle so <strong>Day 1 (20 Jul 2026)</strong> starts with zero friction. Sharpen the
+          just clearing every obstacle so <strong>Day 1 (24 Jul 2026)</strong> starts with zero friction. Sharpen the
           axe before the first swing.
         </p>
 
