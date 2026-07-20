@@ -23,8 +23,8 @@ export default function TypescriptSeries() {
           <Link to="/typescript/day/1" className="prereq-btn prereq-btn-primary">
             Start at Episode 1 →
           </Link>
-          <Link to="/typescript/day/8" className="prereq-btn prereq-btn-ghost">
-            Jump to Enums & Assertions →
+          <Link to="/typescript/day/9" className="prereq-btn prereq-btn-ghost">
+            Jump to Classes →
           </Link>
         </div>
         <div className="prereq-stats">

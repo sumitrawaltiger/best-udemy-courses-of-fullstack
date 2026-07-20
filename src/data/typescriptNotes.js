@@ -4,16 +4,17 @@
 
 export const TS_META = {
   title: 'The TypeScript Series',
-  subtitle: '8 Episodes · JavaScript, Now With Types',
+  subtitle: '9 Episodes · JavaScript, Now With Types',
   blurb:
-    'JavaScript with a type system bolted on — catching bugs before they run. Eight illustrated episodes, from installing the compiler to enums, interfaces and type assertions, each paired with the full written notes and every code snippet.',
-  totalDays: 8,
+    'JavaScript with a type system bolted on — catching bugs before they run. Nine illustrated episodes, from installing the compiler to enums, interfaces, type assertions and classes, each paired with the full written notes and every code snippet.',
+  totalDays: 9,
 };
 
 export const TS_GROUPS = [
   { id: 'foundations', label: 'Getting Started', icon: '🚀', desc: 'What TypeScript is and how to set it up.' },
   { id: 'types', label: 'The Type System', icon: '🧩', desc: 'The types you reach for every single day.' },
   { id: 'structures', label: 'Structuring Types', icon: '🏗️', desc: 'Interfaces, enums, and asserting what you know.' },
+  { id: 'oop', label: 'Object-Oriented', icon: '🏛️', desc: 'Classes — blueprints for objects.' },
 ];
 
 export const TS_DAYS = [
@@ -344,6 +345,67 @@ export const TS_DAYS = [
         label: 'Type assertions',
         code: 'let value: unknown = "Faisal";\n\n// 1) "as" syntax (preferred)\nlet name1 = value as string;\nconsole.log(name1.toUpperCase()); // "FAISAL"\n\n// 2) angle-bracket syntax (clashes with JSX)\nlet name2 = <string>value;\nconsole.log(name2.length); // 6',
         note: 'Assertions do NO runtime checks — you are responsible for being 100% sure.',
+      },
+    ],
+  },
+  {
+    day: 9,
+    group: 'oop',
+    title: 'Classes',
+    tagline: 'Blueprints for objects — properties, constructors & methods.',
+    image: '/typescript-notes/ep09-classes.jpeg',
+    tags: ['class', 'constructor', 'Methods', 'OOP'],
+    notes: [
+      { k: 'What & why', v: 'A **class is a blueprint** for creating objects (instances). It bundles **properties (data)** and **methods (functions)** — OOP structure and reusability.' },
+      { k: 'class keyword', v: 'Declare a class with the `class` keyword; create an instance with `new` (`new Person("Faisal", 21)`).' },
+      { k: 'Properties', v: 'Properties hold the object’s **data**, and are typed like variables (`name: string`, `age: number`).' },
+      { k: 'Methods', v: 'Methods are **functions inside a class** — they define the object’s **behaviour** (`greet(): void`).' },
+      { k: 'Constructor', v: 'The `constructor()` runs **automatically, once**, when an object is created — used to **initialize properties**.' },
+      { k: 'this', v: 'Inside a class, `this` refers to the **current instance**, so `this.name = name` sets that object’s own property.' },
+      { k: 'new & memory', v: '`new` allocates memory and returns a **real object** that follows the class structure (the class itself allocates none).' },
+      { k: 'Independent objects', v: 'Every instance has its **own copy of properties** — `p1` and `p2` don’t share state.' },
+    ],
+    theory: [
+      {
+        h: 'What is a class?',
+        p: 'A **class is a blueprint for creating objects (instances)**. It can contain **properties (data)** and **methods (functions)**, bringing structure and reusability to your code using **OOP principles**.\n\n**Class vs object:** a **class** is the blueprint — it *defines the structure* and has **no memory allocated**. An **object (instance)** is a **real entity** that *follows the class structure* and **has memory allocated**. Real-world analogy: the **class is “Car”** (the blueprint); an **object is “my car”** — an actual car with a plate number, colour, and so on.',
+      },
+      {
+        h: 'The constructor',
+        p: 'The **`constructor()` method is called automatically when an object is created**. Its job is to **initialize the object’s properties** from the arguments passed to `new`.\n\nThree things to remember: the method name is **always `constructor`**; it is called **only once**, at the time of object creation; and it is **used to initialize object properties**. Inside it, `this` points at the brand-new instance, so `this.title = title` stores that object’s own data.',
+      },
+      {
+        h: 'Creating multiple objects',
+        p: 'From a single class you can create **many independent objects**. `const p1 = new Person("Ali", 20)` and `const p2 = new Person("Sara", 22)` are separate instances — calling `p1.greet()` prints *“Hello, I’m Ali!”* and `p2.greet()` prints *“Hello, I’m Sara!”*, because **each object has its own copy of the properties**.',
+      },
+      {
+        h: 'Methods — behaviour inside the class',
+        p: '**Methods are functions defined inside a class.** They read and update the instance’s properties through `this`, and can declare a **return type** (`area(): number`) or return nothing (`describe(): void`).\n\nIn the `Rectangle` example, `area()` returns `width * height` (so `r.area()` is `50`) and `describe()` logs `"Rectangle 5x10"`. The object `r` exposes both as behaviours — one returns a number, the other logs a description.',
+      },
+      {
+        h: 'Quick recap',
+        p: '- **Class** = blueprint.\n- **Constructor()** = initializes the object.\n- **Properties** = data.\n- **Methods** = behavior.\n- **Objects** = real-world instances.\n\nClasses help us write **organized, reusable and scalable code** — think in objects, code with power.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'A class with properties, a constructor and a method',
+        code: 'class Person {\n  name: string;   // property\n  age: number;    // property\n\n  constructor(name: string, age: number) {\n    this.name = name;   // initialize properties\n    this.age = age;\n  }\n\n  greet(): void {        // method\n    console.log(`Hello, I\'m ${this.name}!`);\n  }\n}\n\nconst p = new Person("Faisal", 21);\np.greet();   // Hello, I\'m Faisal!',
+      },
+      {
+        label: 'The constructor initializes properties',
+        code: 'class Book {\n  title: string;\n  author: string;\n\n  constructor(title: string, author: string) {\n    this.title = title;\n    this.author = author;\n  }\n}\n\nconst book1 = new Book("Atomic Habits", "James Clear");\nconsole.log(book1.title);   // Atomic Habits',
+        note: 'The constructor runs automatically, only once, when the object is created.',
+      },
+      {
+        label: 'Multiple independent objects',
+        code: 'const p1 = new Person("Ali", 20);\nconst p2 = new Person("Sara", 22);\n\np1.greet();   // Hello, I\'m Ali!\np2.greet();   // Hello, I\'m Sara!',
+        note: 'Each object has its own copy of the properties — they don’t share state.',
+      },
+      {
+        label: 'Methods with return types',
+        code: 'class Rectangle {\n  width: number;\n  height: number;\n\n  constructor(w: number, h: number) {\n    this.width = w;\n    this.height = h;\n  }\n\n  area(): number {\n    return this.width * this.height;\n  }\n\n  describe(): void {\n    console.log(`Rectangle ${this.width}x${this.height}`);\n  }\n}\n\nconst r = new Rectangle(5, 10);\nconsole.log(r.area());   // 50\nr.describe();            // Rectangle 5x10',
+        note: '`area(): number` returns a value; `describe(): void` returns nothing.',
       },
     ],
   },
