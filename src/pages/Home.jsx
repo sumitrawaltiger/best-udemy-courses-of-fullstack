@@ -33,35 +33,51 @@ import Syllabus from '../components/Syllabus';
 const BTECH_ROADMAP = [
   {
     year: 'Phase 1',
-    theme: 'Agentic AI · 100 Days',
+    theme: 'Gen AI · JavaScript · 39 Days',
     icon: '🤖',
     accent: 'y3',
-    topics: ['LLMs & Transformers', 'Embeddings & Vector DBs', 'LangChain.js', 'RAG', 'Autonomous Agents', 'LangGraph', 'Evaluation & Production'],
-    blurb: 'The journey opens with Agentic AI in JavaScript — from how LLMs actually work to building, evaluating and shipping autonomous agents with LangChain.js, LangGraph and LangSmith.',
+    topics: ['LLMs & Token Prediction', 'Embeddings & Vector DBs', 'RAG', 'Tools & Agents', 'LangChain.js', 'LangGraph', 'Ship & Evaluate'],
+    blurb: 'The journey opens with 39 days of Generative & Agentic AI in JavaScript — from how LLMs actually work to building, evaluating and shipping autonomous agents with the Gemini SDK, LangChain.js and LangGraph.',
     links: [{ label: 'GenAI Track', to: '/genai' }],
   },
   {
-    year: 'Phase 2',
-    theme: '1000 Days of Code',
-    icon: '⌨️',
+    year: 'Year 1',
+    theme: 'TypeScript Stack',
+    icon: '🔷',
     accent: 'y1',
-    topics: ['TypeScript', 'React JS', 'Next.js', 'React Native', 'Express / Node', 'Python', 'Django', 'Java', 'Spring Boot', 'Microservices'],
-    blurb: 'The core build phase — 1000 days across three stacks: the TypeScript stack (TypeScript, React, Next.js, React Native, Express), then Python & Django, then Java, Spring Boot & Microservices.',
+    topics: ['TypeScript', 'React JS', 'Next.js', 'React Native', 'Express / Node'],
+    blurb: 'Year one of the 4-year coding journey — the TypeScript stack end to end: TypeScript, React, Next.js, React Native and Express / Node.js.',
     links: [
       { label: 'JavaScript / TypeScript', to: '#syllabus' },
       { label: 'React / Next.js', to: '/nextjs' },
       { label: 'React Native', to: '/mobile' },
-      { label: 'Python', to: '/python' },
-      { label: 'Java & Spring', to: '/java' },
     ],
   },
   {
-    year: 'Phase 3',
-    theme: 'DevOps · 365 Days',
+    year: 'Year 2',
+    theme: 'Python Stack',
+    icon: '🐍',
+    accent: 'y2',
+    topics: ['Python', 'Django', 'FastAPI'],
+    blurb: 'Year two — a full year of Python: the language, Django, and modern APIs with FastAPI.',
+    links: [{ label: 'Python & Agentic AI', to: '/python' }],
+  },
+  {
+    year: 'Year 3',
+    theme: 'Java Stack',
+    icon: '☕',
+    accent: 'y3',
+    topics: ['Java', 'Spring Boot', 'Microservices'],
+    blurb: 'Year three — enterprise Java: Spring Boot and microservices at production scale.',
+    links: [{ label: 'Java & Spring', to: '/java' }],
+  },
+  {
+    year: 'Year 4',
+    theme: 'DevOps Stack',
     icon: '☁️',
     accent: 'y4',
     topics: ['Linux & Shell', 'Docker', 'Kubernetes', 'CI/CD', 'AWS Cloud', 'Terraform / IaC', 'Monitoring'],
-    blurb: 'One full year of DevOps to ship and scale everything you built — Linux, Docker, Kubernetes, CI/CD, AWS, Terraform and observability.',
+    blurb: 'The final year of the coding journey — ship and scale everything: Linux, Docker, Kubernetes, CI/CD, AWS and observability.',
     links: [
       { label: 'DevOps', to: '/devops' },
       { label: 'Kubernetes', to: '/k8s' },
@@ -79,7 +95,7 @@ export default function Home() {
     <>
       <section className="genai-hero">
         <div className="genai-hero-inner">
-          <span className="genai-badge">Phase 1 · Agentic AI in JavaScript</span>
+          <span className="genai-badge">Phase 1 · Gen AI in JavaScript</span>
           <h1 className="genai-title">GenAI Engineering with JavaScript</h1>
           <p className="genai-tagline">
             The journey opens with <strong>Agentic AI</strong> — from how LLMs work and the Gemini SDK to tools,
@@ -88,7 +104,7 @@ export default function Home() {
             <a href={strikeCourse} target="_blank" rel="noopener noreferrer">STRIKE GenAI</a> by Rohit Negi (Coder Army).
           </p>
           <div className="genai-stats">
-            <div className="genai-stat"><span className="genai-stat-val">100</span><span className="genai-stat-label">days · Phase 1</span></div>
+            <div className="genai-stat"><span className="genai-stat-val">39</span><span className="genai-stat-label">days · Phase 1</span></div>
             <div className="genai-stat"><span className="genai-stat-val">JS</span><span className="genai-stat-label">JavaScript · Gemini</span></div>
             <div className="genai-stat"><span className="genai-stat-val">LangChain.js</span><span className="genai-stat-label">· LangGraph · LangSmith</span></div>
             <div className="genai-stat"><span className="genai-stat-val">RAG + Agents</span><span className="genai-stat-label">tools · RAG · multi-agent</span></div>
@@ -147,11 +163,12 @@ export default function Home() {
       <section className="btech-roadmap" id="btech-roadmap">
         <div className="btech-inner">
           <span className="btech-badge">The Roadmap</span>
-          <h2 className="btech-title">The 3-Phase Learning Path</h2>
+          <h2 className="btech-title">The 1500-Day Learning Path</h2>
           <p className="btech-sub">
-            A structured path to a full lifecycle engineer, in three phases — <strong>Agentic AI</strong>,
-            the <strong>1000 Days of Code</strong> build phase, then <strong>DevOps</strong>. Each phase maps
-            to tracks on this site. HTML5, CSS3 &amp; JavaScript are the assumed prerequisites.
+            A structured path to a full lifecycle engineer — <strong>39 days of Gen AI</strong> in JavaScript,
+            then a <strong>4-year coding journey</strong>: <strong>TypeScript → Python → Java → DevOps</strong>,
+            one year each. Each block maps to tracks on this site. HTML5, CSS3 &amp; JavaScript are the assumed
+            prerequisites.
           </p>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
@@ -227,7 +244,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-genai-section" id="thunder-genai">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-genai">
-            Phase 1 · Agentic AI · 100 Days
+            Phase 1 · Gen AI · 39 Days
           </span>
           <h2>Thunder+ — GenAI Engineering Bootcamp</h2>
           <p className="section-desc">
@@ -269,7 +286,7 @@ export default function Home() {
 
       <section className="thunder-plus-section thunder-nextjs-section" id="thunder-nextjs">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-nextjs">Phase 2 · TypeScript Stack</span>
+          <span className="thunder-plus-badge thunder-plus-badge-nextjs">Year 1 · TypeScript Stack</span>
           <h2>Thunder+ — React & Next.js</h2>
           <p className="section-desc">
             Inside the TypeScript stack, React &amp; Next.js follow the core language, then React Native. Continue
@@ -307,7 +324,7 @@ export default function Home() {
 
       <section className="thunder-plus-section" id="thunder-plus">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge">Phase 2 · TypeScript Stack</span>
+          <span className="thunder-plus-badge">Year 1 · TypeScript Stack</span>
           <h2>Thunder++ — React Native</h2>
           <p className="section-desc">
             Finish the post-Thunder frontend stretch with the{' '}
@@ -345,7 +362,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-python-section" id="thunder-python">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-python">
-            Phase 2 · Python Stack
+            Year 2 · Python Stack
           </span>
           <h2>Thunder++ — Python &amp; Django</h2>
           <p className="section-desc">
@@ -385,7 +402,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-java-section" id="thunder-java">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-java">
-            Phase 2 · Java Stack
+            Year 3 · Java Stack
           </span>
           <h2>Thunder++ — Java & Spring</h2>
           <p className="section-desc">
@@ -423,7 +440,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-aws-section" id="thunder-aws">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-aws">
-            Phase 3 · DevOps
+            Year 4 · DevOps
           </span>
           <h2>Thunder++ — 100 Days of AWS Cloud</h2>
           <p className="section-desc">
@@ -466,7 +483,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-devops-section" id="thunder-devops">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-devops">
-            Phase 3 · DevOps · Finale
+            Year 4 · DevOps · Finale
           </span>
           <h2>Thunder++ — DevOps &amp; CI/CD</h2>
           <p className="section-desc">
@@ -509,7 +526,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-k8s-section" id="thunder-k8s">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-k8s">
-            Phase 3 · DevOps
+            Year 4 · DevOps
           </span>
           <h2>Thunder++ — Kubernetes</h2>
           <p className="section-desc">
@@ -645,19 +662,19 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            3 phases · 1,465 days
+            1,500 days · 39 days GenAI + 4 years
           </span>
-          <h2>Thunder++ — The 3-Phase Journey</h2>
+          <h2>Thunder++ — The 1500-Day Journey</h2>
           <p className="section-desc">
-            Three phases, back to back: <strong>Agentic AI</strong> (100 days), the{' '}
-            <strong>1000 Days of Code</strong> build phase (TypeScript, Python, then Java), and{' '}
-            <strong>DevOps</strong> (365 days) — with <strong>DSA &amp; System Design</strong> practiced alongside in
-            each stack’s language. That’s <strong>1,465 days</strong> of focused study, 5:00–8:00 AM daily.
+            <strong>39 days</strong> of Gen AI with JavaScript, then a <strong>4-year coding journey</strong> —{' '}
+            <strong>Year 1 TypeScript</strong>, <strong>Year 2 Python</strong>, <strong>Year 3 Java</strong>, and{' '}
+            <strong>Year 4 DevOps</strong> — with <strong>DSA &amp; System Design</strong> practiced alongside in
+            each stack’s language. That’s <strong>1,500 days</strong> of focused study, 5:00–8:00 AM daily.
           </p>
           <div className="thunder-plus-highlights">
-            <span>🤖 Phase 1 · Agentic AI</span>
-            <span>⌨️ Phase 2 · 1000 Days of Code</span>
-            <span>☁️ Phase 3 · DevOps</span>
+            <span>🤖 Phase 1 · Gen AI (39 days)</span>
+            <span>⌨️ 4-Year Coding Journey</span>
+            <span>☁️ TypeScript → Python → Java → DevOps</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/interview" className="btn btn-interview-chaicode btn-lg">

@@ -69,11 +69,11 @@ export default function InterviewHome() {
         <section className="roadmap">
           <h2>DSA &amp; System Design — Every Phase</h2>
           <p className="section-desc">
-            Across the <strong>3-phase, 1465-day</strong> plan, <strong>DSA</strong> and{' '}
-            <strong>System Design</strong> are practiced <strong>in each stack’s language</strong> during the{' '}
-            <strong>1000 Days of Code</strong> build phase: <strong>TypeScript / JavaScript</strong>, then{' '}
+            Across the <strong>1500-day</strong> plan, <strong>DSA</strong> and{' '}
+            <strong>System Design</strong> are practiced <strong>in each stack’s language</strong> through the{' '}
+            <strong>4-year coding journey</strong>: <strong>TypeScript / JavaScript</strong>, then{' '}
             <strong>Python</strong>, then <strong>Java</strong>. That’s{' '}
-            <strong>100 days Agentic AI → 1000 Days of Code → 365 days DevOps</strong>.{' '}
+            <strong>39 days of Gen AI → TypeScript → Python → Java → DevOps</strong>.{' '}
             {interviewChapters.length} modules on this track support these phases.
           </p>
           <div className="roadmap-grid roadmap-interview">
@@ -88,7 +88,7 @@ export default function InterviewHome() {
               <span className="legend-dot published legend-dot-interview" /> {interviewChapters.length} modules
             </span>
             <span>
-              <span className="legend-dot published" /> DSA & System Design in each language: TypeScript · Python · Java · 1465 days total
+              <span className="legend-dot published" /> DSA & System Design in each language: TypeScript · Python · Java · 1500 days total
             </span>
           </div>
         </section>

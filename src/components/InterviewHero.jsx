@@ -6,7 +6,7 @@ export default function InterviewHero({ children, actions }) {
     <div className="interview-hero-block">
       <span className="interview-level-badge">
         <span className="interview-level-icon" aria-hidden="true">🎯</span>
-        1465 days · 3 phases · DSA & System Design practiced in each phase’s language
+        1500 days · 39 days GenAI + 4-year coding journey · DSA & System Design in each stack’s language
       </span>
 
       <h1 className="interview-title">

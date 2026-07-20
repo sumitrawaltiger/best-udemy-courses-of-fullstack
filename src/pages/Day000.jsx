@@ -9,7 +9,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Git & GitHub',
-    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 1465 days of code',
+    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 1500 days of code',
   },
   {
     title: 'VS Code',
@@ -33,11 +33,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 3-phase, 1465-day plan — 100 days Agentic AI, 1000 Days of Code (TypeScript, Python, Java), 365 days DevOps',
+    text: 'reviewed the full 1500-day plan — 39 days of Gen AI (JavaScript), then a 4-year coding journey: TypeScript, Python, Java, then DevOps',
   },
   {
     title: 'Prerequisites confirmed',
-    text: 'HTML5, CSS3 & JavaScript are already known — they’re the prerequisites, so Day 1 starts straight into Agentic AI (built in JavaScript)',
+    text: 'HTML5, CSS3 & JavaScript are already known — they’re the prerequisites, so Day 1 starts straight into Gen AI (built in JavaScript)',
   },
   {
     title: 'Accounts ready',
@@ -65,7 +65,7 @@ const CORE_TOOLS = [
     titleClass: 'card-title-amber',
     subtitle: 'Version Control',
     description:
-      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 1465 days is signed to you.',
+      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 1500 days is signed to you.',
     code: 'git --version\ngit config --global user.name "Sumit Rawal"\ngit config --global user.email "you@email.com"',
   },
   {
@@ -125,25 +125,25 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-amber',
     subtitle: '4 AM Wake · 5–8 AM Study',
     description:
-      'Wake at 4:00 AM, then study 5:00–8:00 AM Bangkok time — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1465 days.',
+      'Wake at 4:00 AM, then study 5:00–8:00 AM Bangkok time — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1500 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
     icon: '🗺️',
-    title: 'The 3-Phase Roadmap',
+    title: 'The 1500-Day Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '3 Phases · 1465 Days',
+    subtitle: '39 days GenAI + 4 years',
     description:
-      '100 days Agentic AI (in JavaScript), then 1000 Days of Code (TypeScript, Python, Java), then 365 days DevOps — with DSA & System Design practiced in each stack’s language. Know the whole map before step one.',
+      '39 days of Gen AI (in JavaScript), then a 4-year coding journey — Year 1 TypeScript, Year 2 Python, Year 3 Java, Year 4 DevOps — with DSA & System Design practiced in each stack’s language. Know the whole map before step one.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
     icon: '🤖',
     title: 'Day 1 Starts Tomorrow',
     titleClass: 'card-title-lime',
-    subtitle: 'Phase 1 · Agentic AI',
+    subtitle: 'Phase 1 · Gen AI',
     description:
-      'Tomorrow is Day 1: Agentic AI — the first phase, built in JavaScript. From how LLMs actually work to building and shipping autonomous agents with LangChain.js and LangGraph. Environment is ready, accounts are live, routine is locked. Time to build.',
+      'Tomorrow is Day 1: Gen AI — the first phase, built in JavaScript. From how LLMs actually work to building and shipping autonomous agents with LangChain.js and LangGraph. Environment is ready, accounts are live, routine is locked. Time to build.',
     link: { href: '/day-001', label: 'Preview Day 1 →' },
   },
 ];
@@ -281,7 +281,7 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          Day zero — the day before the 1465-day journey begins. Today is all about{' '}
+          Day zero — the day before the 1500-day journey begins. Today is all about{' '}
           <strong>environment setup</strong>: installing <code>Node.js</code>, <code>Git</code>, and{' '}
           <code>VS Code</code>, wiring up the terminal and Chrome DevTools, creating my{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
@@ -319,7 +319,7 @@ export default function Day000() {
           <span>#Day0</span>
           <span>#100DaysOfCode</span>
           <span>#DevSetup</span>
-          <span>#1465Days</span>
+          <span>#1500Days</span>
           <span>#JSLearnHub</span>
         </footer>
       </div>
