@@ -2,72 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const LANGCHAIN_JS = 'https://js.langchain.com/docs/introduction/';
+const TS_FUNCTIONS = 'https://www.typescriptlang.org/docs/handbook/2/functions.html';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
-  { title: 'A new track begins', text: 'Days 1–42 built AI from first principles; now Phase 1 pivots to building real agents in TypeScript' },
-  { title: 'What this course is', text: 'a hands-on, project-driven path to a reusable “agent platform” — not toy scripts or copy-paste demos' },
-  { title: 'What it isn’t', text: 'not a prompt-engineering listicle and not tied to one vendor — the skills transfer across models' },
-  { title: 'Model choice is a decision', text: 'pick OpenAI / Gemini / Groq / local per task, trading cost vs speed vs reliability — not brand loyalty' },
-  { title: 'Cost & latency mindset', text: 'cheap+fast models for routing and drafts; stronger models only where quality really pays' },
-  { title: 'One provider factory', text: 'every project talks to models through a single swappable factory, so switching providers is one line' },
-  { title: 'Everything compounds', text: 'each project (search, RAG, LangGraph) plugs into the same platform you keep extending' },
-  { title: 'How to follow', text: 'build along in TS/Node, keep the repo, and treat each day as a lego brick for the next' },
+  { title: 'Type the parameters', text: 'each parameter gets its own annotation: (name: string, age: number)' },
+  { title: 'Type the return value', text: 'a colon after the parens declares what comes back: (): number' },
+  { title: 'Return inference', text: 'TS usually infers the return type — annotate it to lock the contract on purpose' },
+  { title: 'void', text: 'a function that returns nothing has return type void — like a console.log wrapper' },
+  { title: 'Optional params', text: 'a ? makes a parameter optional; it becomes type | undefined inside the body' },
+  { title: 'Default params', text: 'a default value both fills in a missing argument and lets TS infer its type' },
+  { title: 'Typed arrow functions', text: 'const add = (a: number, b: number): number => a + b — same rules, shorter syntax' },
+  { title: 'Function type signatures', text: 'you can describe a callback’s shape: (n: number) => string' },
 ];
 
-const COURSE = [
+const BASICS = [
   {
-    icon: '🧭', title: 'What It Is / Isn’t', titleClass: 'card-title-cyan', subtitle: 'Build A Platform',
+    icon: '🎯', title: 'Params & Return', titleClass: 'card-title-cyan', subtitle: 'Both Ends Typed',
     description:
-      'A practical journey to production-style agents in TypeScript. Every lesson ships a small, real backend primitive — the goal is a reusable agent platform you can extend, not disposable demos.',
-    footer: 'projects → a platform you own, not scattered scripts',
+      'Annotate every parameter, and optionally the return type. If you leave the return off, TypeScript infers it — but writing it makes the function’s contract explicit and self-checking.',
+    code: 'function greet(name: string): string {\n  return `Hi ${name}`;\n}\n\ngreet(42); // ❌ number not assignable to string',
   },
   {
-    icon: '🧠', title: 'How To Follow', titleClass: 'card-title-purple', subtitle: 'Build Along',
+    icon: '🕳️', title: 'void', titleClass: 'card-title-purple', subtitle: 'Returns Nothing',
     description:
-      'Set up once, then build every day in the same repo. Each project is a lego brick: the provider factory, JSON contracts, tools, RAG and LangGraph all snap together as you go.',
-    footer: 'keep the repo · extend, don’t restart',
+      'When a function does its work through side effects and returns nothing meaningful, its return type is void. TypeScript infers it, and stops you from using a non-existent result.',
+    code: 'function log(msg: string): void {\n  console.log(msg);\n}\nconst x = log("hi"); // x is void',
   },
 ];
 
-const MODELS = [
+const PARAMS = [
   {
-    icon: '⚖️', title: 'Choose Models Smartly', titleClass: 'card-title-cyan', subtitle: 'Cost · Speed · Reliability',
+    icon: '❓', title: 'Optional Params', titleClass: 'card-title-cyan', subtitle: 'name?: type',
     description:
-      'Models are a per-task decision, not brand loyalty. Use cheap, fast models (Groq, small OpenAI/Gemini) for routing and drafts; reserve stronger models for the steps where quality actually pays off.',
-    code: '// pick by job, not by hype\n// route/classify → fast + cheap\n// final answer → stronger model\n// offline/private → local model',
+      'A trailing ? marks a parameter optional. Inside the body its type is T | undefined, so TypeScript makes you handle the missing case before you use it.',
+    code: 'function hi(name?: string) {\n  return `Hi ${name ?? "there"}`;\n}\nhi();        // ✓ ok\nhi("Sumit"); // ✓ ok',
   },
   {
-    icon: '🏭', title: 'One Provider Factory', titleClass: 'card-title-purple', subtitle: 'Swap In One Line',
+    icon: '⚙️', title: 'Default Params', titleClass: 'card-title-purple', subtitle: 'Fallback Values',
     description:
-      'Every project reaches models through a single factory. OpenAI, Gemini, Groq and local models all sit behind one interface, so switching providers never touches your agent logic.',
-    code: '// getModel("fast") | getModel("smart")\n// factory hides OpenAI/Gemini/Groq/local\n// swap provider → change one config',
+      'Give a parameter a default and it’s used whenever the argument is missing. The default also lets TypeScript infer the parameter’s type without an annotation.',
+    code: 'function pow(base: number, exp = 2) {\n  return base ** exp;\n}\npow(5);    // 25\npow(5, 3); // 125',
   },
   {
-    icon: '🧩', title: 'It All Connects', titleClass: 'card-title-amber', subtitle: 'A Reusable Platform',
+    icon: '🏹', title: 'Typed Arrows', titleClass: 'card-title-amber', subtitle: 'Shorter Syntax',
     description:
-      'Search, Light RAG, LangGraph orchestration, observability — each project extends the same platform. By the end you have a toolkit, not a folder of unrelated experiments.',
-    footer: 'search → RAG → tools → graphs → one platform',
+      'Arrow functions follow the same typing rules. You can also write a function type signature to describe a callback’s exact shape — great for props and event handlers.',
+    code: 'const add = (a: number, b: number): number => a + b;\n\ntype Fmt = (n: number) => string;\nconst money: Fmt = (n) => `$${n}`;',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'LangChain.js', titleClass: 'card-title-cyan', subtitle: 'The Docs',
+    icon: '📘', title: 'Functions Chapter', titleClass: 'card-title-cyan', subtitle: 'Handbook',
     description:
-      'The framework this phase builds on. Skim the intro now — we’ll go deep into models, prompts, output parsers, tools and LCEL over the coming days.',
-    link: { href: LANGCHAIN_JS, label: 'Open LangChain.js docs →', external: true },
+      'The handbook’s deep dive on function types — parameters, returns, optional/rest params, overloads and call signatures — with runnable examples.',
+    link: { href: TS_FUNCTIONS, label: 'Open the Functions docs →', external: true },
   },
   {
-    icon: '🤖', title: 'Phase 1 · Agentic AI', titleClass: 'card-title-purple', subtitle: 'The Track',
+    icon: '🎮', title: 'Try Each Snippet', titleClass: 'card-title-purple', subtitle: 'Playground',
     description:
-      'This is the first module of the 100-day Agentic AI phase, now in TypeScript. Explore the wider GenAI track for the bigger picture.',
-    link: { href: '/genai', label: 'Explore the GenAI track →' },
+      'Drop the examples into the Playground, then remove a type or pass a wrong argument to watch the compiler catch it — the fastest way to build the reflex.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Foundations', titleClass: 'card-title-amber', subtitle: 'Day 44 Preview',
+    icon: '🔜', title: 'Next: Data Types', titleClass: 'card-title-amber', subtitle: 'Day 44 Preview',
     description:
-      'Tomorrow — the mental model: modern AI app architecture, chains vs agents, and where LangChain.js and LangGraph.js each fit.',
+      'Tomorrow — objects, tuples, enums and type aliases: how to describe structured data so whole records are checked, not just single values.',
     link: { href: '/day-044', label: 'Go to Day 44 →' },
   },
 ];
@@ -134,23 +135,23 @@ export default function Day043() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-042" className="day001-nav-btn day001-nav-prev">← Day 42</Link>
-          <p className="day001-datetime">Agentic AI Day 43</p>
+          <p className="day001-datetime">TypeScript Day 43</p>
           <Link to="/day-044" className="day001-nav-btn day001-nav-next">Day 44 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>TypeScript</span><span>Mindset</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Functions</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 43 <span aria-hidden="true">🧭</span></h1>
-              <p className="day001-day-theme">AGENTIC AI — INTRO &amp; MINDSET</p>
+              <h1 className="day001-day-num">DAY 43 <span aria-hidden="true">🎯</span></h1>
+              <p className="day001-day-theme">TYPING FUNCTIONS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -158,13 +159,13 @@ export default function Day043() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '43%' }} /></div>
 
         <p className="day001-summary">
-          A new chapter of Phase 1. The first 42 days built AI from first principles; now the focus turns to{' '}
-          <strong>building real agents in TypeScript</strong>. This course is <strong>project-driven</strong> —
-          every lesson ships a small backend primitive that snaps into a <strong>reusable “agent platform.”</strong>{' '}
-          The core mindset: <strong>choose models smartly</strong> (OpenAI / Gemini / Groq / local) by trading{' '}
-          <strong>cost vs speed vs reliability</strong>, and reach every one of them through a single{' '}
-          <strong>provider factory</strong> so switching is a one-line change. Nothing here is a toy script —
-          each project (search, RAG, LangGraph) <em>extends the same platform you keep building.</em>
+          Functions are where types pay off most. Annotate each <strong>parameter</strong>
+          (<code>name: string</code>) and, optionally, the <strong>return type</strong> after the parens — TS infers
+          the return, but writing it locks the contract. A function returning nothing is <code>void</code>. A{' '}
+          <strong>?</strong> makes a parameter <strong>optional</strong> (<code>T | undefined</code> inside), while a{' '}
+          <strong>default value</strong> fills a missing argument and infers its type. <strong>Arrow functions</strong>{' '}
+          follow the same rules — <code>const add = (a: number, b: number): number =&gt; a + b</code> — and a function
+          type like <code>(n: number) =&gt; string</code> describes a callback’s shape. <em>Next: structured data.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +180,12 @@ export default function Day043() {
           </ul>
         </section>
 
-        <CardSection icon="🧭" title="THE COURSE" cards={COURSE} columns={2} />
-        <CardSection icon="⚖️" title="MODELS & PLATFORM" cards={MODELS} columns={3} />
+        <CardSection icon="🎯" title="PARAMS, RETURN & VOID" cards={BASICS} columns={2} />
+        <CardSection icon="⚙️" title="OPTIONAL · DEFAULT · ARROWS" cards={PARAMS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#TypeScript</span><span>#LangChain</span><span>#GenAI</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Functions</span><span>#WebDev</span>
         </footer>
       </div>
     </div>

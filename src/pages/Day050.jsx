@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const RAG = 'https://js.langchain.com/docs/concepts/rag/';
-const EMBEDDINGS = 'https://js.langchain.com/docs/concepts/embedding_models/';
+const MDN_PROMISE = 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise';
+const TS_UNKNOWN_CATCH = 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-4.html#defaulting-to-the-unknown-type-in-catch-variables---useunknownincatchvariables';
 
 const LEARNT_TODAY = [
-  { title: 'RAG, no buzzwords', text: 'retrieve relevant text, then let the model answer using it — grounding replies in your data, not its memory' },
-  { title: 'Why RAG', text: 'it fixes stale knowledge and hallucination by giving the model the exact context at answer time' },
-  { title: 'Two phases', text: 'ingestion (prepare & store your docs once) and query (fetch + answer per question) — keep them separate' },
-  { title: 'Chunking', text: 'split docs into passages small enough to embed and retrieve precisely, with a little overlap' },
-  { title: 'Embeddings', text: 'turn each chunk into a vector so similar meanings sit close together in space' },
-  { title: 'Similarity search', text: 'embed the question, find the nearest chunks by cosine similarity — that’s retrieval' },
-  { title: 'Metadata & top-k', text: 'attach source/section metadata; return the top-k closest chunks to build the context' },
-  { title: 'Light vs heavy RAG', text: 'a small in-memory store is plenty to learn; reach for a real vector DB when scale or persistence demands it' },
+  { title: 'Promise<T>', text: 'an async value carries a type — Promise<User> resolves to a User' },
+  { title: 'async / await', text: 'an async function always returns a Promise; await unwraps it to the value' },
+  { title: 'Typed fetch', text: 'fetch returns any JSON — annotate or validate the parsed result to regain safety' },
+  { title: 'Errors are unknown', text: 'in a catch, the error is unknown — narrow it before reading .message' },
+  { title: 'Parallel with Promise.all', text: 'run independent async calls together and get a typed tuple back' },
+  { title: 'Result vs throw', text: 'return a typed result object, or throw — pick one convention and keep it' },
+  { title: 'Await in loops', text: 'sequential await is slow; map to promises and Promise.all when order doesn’t matter' },
+  { title: 'Never lose the type', text: 'validate external data (Zod) so async boundaries stay type-safe end to end' },
 ];
 
-const WHAT = [
+const ASYNC = [
   {
-    icon: '📚', title: 'What RAG Is', titleClass: 'card-title-cyan', subtitle: 'Retrieve → Answer',
+    icon: '⏳', title: 'Promise<T> & async', titleClass: 'card-title-cyan', subtitle: 'Typed Async',
     description:
-      'Retrieval-Augmented Generation: find the most relevant passages from your own documents, hand them to the model, and let it answer grounded in that context — instead of guessing from training memory.',
-    code: '// question → retrieve top chunks\n// → model answers USING those chunks\n// → grounded, cite-able reply',
+      'A Promise carries the type it resolves to. An async function’s return is wrapped in a Promise automatically, and await unwraps it — the types line up on both sides.',
+    code: 'async function getUser(id: number): Promise<User> {\n  const res = await fetch(`/users/${id}`);\n  return res.json();\n}\nconst u: User = await getUser(1);',
   },
   {
-    icon: '🔁', title: 'Two Phases', titleClass: 'card-title-purple', subtitle: 'Ingest vs Query',
+    icon: '🌐', title: 'Typing fetch', titleClass: 'card-title-purple', subtitle: 'JSON Is any',
     description:
-      'Ingestion runs once: load, chunk, embed and store. Query runs per question: embed the question, retrieve nearby chunks, answer. Keeping them separate keeps the system clear and cheap.',
-    code: '// INGEST (once): load → chunk → embed → store\n// QUERY (each ask): embed q → search → answer',
+      'res.json() returns any, quietly re-opening a hole. Annotate the result, or better, validate it with a schema so bad API data is caught at the boundary, not deep in your code.',
+    code: 'const data = await res.json() as User; // trusts blindly\n// safer:\nconst data = UserSchema.parse(await res.json());',
   },
 ];
 
-const HOW = [
+const CONTROL = [
   {
-    icon: '✂️', title: 'Chunking', titleClass: 'card-title-cyan', subtitle: 'Right-Sized Passages',
+    icon: '⚠️', title: 'Errors Are unknown', titleClass: 'card-title-cyan', subtitle: 'Narrow Before Use',
     description:
-      'Big documents don’t retrieve precisely. Split them into passages with a little overlap so each chunk is self-contained and a query matches the right one.',
-    code: '// split ~500–1000 chars, overlap ~100\n// too big → noisy matches\n// too small → lost context',
+      'With modern settings, a caught error is typed unknown — because anything can be thrown. Check it’s an Error before reading .message, keeping error handling honest.',
+    code: 'try { await risky(); }\ncatch (e) {\n  if (e instanceof Error) console.log(e.message);\n  else console.log("unknown error");\n}',
   },
   {
-    icon: '🧭', title: 'Embeddings', titleClass: 'card-title-purple', subtitle: 'Meaning As Vectors',
+    icon: '🔀', title: 'Run In Parallel', titleClass: 'card-title-purple', subtitle: 'Promise.all',
     description:
-      'An embedding model maps each chunk to a vector. Similar meanings land near each other, so “refund policy” and “getting money back” sit close — the basis of semantic retrieval.',
-    code: 'const emb = await embeddings.embedQuery(text);\n// [0.02, -0.41, ...] — one vector per chunk\n// similar meaning → small distance',
+      'When async calls don’t depend on each other, fire them together with Promise.all and get a fully typed tuple back — far faster than awaiting one at a time.',
+    code: 'const [user, posts] = await Promise.all([\n  getUser(1),\n  getPosts(1),\n]); // types preserved per position',
   },
   {
-    icon: '🎯', title: 'Search · Metadata · top-k', titleClass: 'card-title-amber', subtitle: 'Retrieve The Best',
+    icon: '📦', title: 'Result Or Throw', titleClass: 'card-title-amber', subtitle: 'One Convention',
     description:
-      'Embed the question, rank chunks by cosine similarity, and return the top-k. Metadata (source, section) lets you filter and cite. That set becomes the model’s context.',
-    code: '// score = cosine(q_vec, chunk_vec)\n// keep top-k (e.g. 4) + their metadata\n// → context for the answer + citations',
+      'Either throw on failure and catch upstream, or return a typed result union ({ ok } | { error }). Both are fine — the key is picking one and applying it consistently.',
+    code: 'type Result<T> =\n  | { ok: true; value: T }\n  | { ok: false; error: string };',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'RAG Concepts', titleClass: 'card-title-cyan', subtitle: 'LangChain.js',
+    icon: '📗', title: 'Promises (MDN)', titleClass: 'card-title-cyan', subtitle: 'The Model',
     description:
-      'The retrieve-then-generate pattern in LangChain.js — loaders, splitters, vector stores and retrievers.',
-    link: { href: RAG, label: 'Open the RAG guide →', external: true },
+      'The core Promise semantics TypeScript types — then/catch, chaining, Promise.all/allSettled and how async/await maps onto them.',
+    link: { href: MDN_PROMISE, label: 'Open MDN Promise →', external: true },
   },
   {
-    icon: '🧭', title: 'Embedding Models', titleClass: 'card-title-purple', subtitle: 'Vectors',
+    icon: '⚠️', title: 'unknown In catch', titleClass: 'card-title-purple', subtitle: 'Handbook',
     description:
-      'How embeddings work in LangChain.js and how to plug in OpenAI or Gemini embeddings behind one interface.',
-    link: { href: EMBEDDINGS, label: 'Open the embeddings guide →', external: true },
+      'Why catch variables default to unknown and how useUnknownInCatchVariables makes error handling safer — the exact rationale.',
+    link: { href: TS_UNKNOWN_CATCH, label: 'Open the release note →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Light RAG', titleClass: 'card-title-amber', subtitle: 'Day 51 Preview',
+    icon: '🔜', title: 'Next: React + TS', titleClass: 'card-title-amber', subtitle: 'Day 51 Preview',
     description:
-      'Tomorrow — build a small RAG system in JS: a character chunker, an in-memory vector store, /kb APIs, and cited answers with confidence.',
+      'Tomorrow — TypeScript meets React: a Vite + React + TS project, .tsx files, JSX, and typing your very first component.',
     link: { href: '/day-051', label: 'Go to Day 51 →' },
   },
 ];
@@ -135,23 +135,23 @@ export default function Day050() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-049" className="day001-nav-btn day001-nav-prev">← Day 49</Link>
-          <p className="day001-datetime">Agentic AI Day 50</p>
+          <p className="day001-datetime">TypeScript Day 50</p>
           <Link to="/day-051" className="day001-nav-btn day001-nav-next">Day 51 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>RAG</span><span>Embeddings</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Async</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 50 <span aria-hidden="true">📚</span></h1>
-              <p className="day001-day-theme">RAG FUNDAMENTALS</p>
+              <h1 className="day001-day-num">DAY 50 <span aria-hidden="true">⏳</span></h1>
+              <p className="day001-day-theme">ASYNC TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -159,14 +159,13 @@ export default function Day050() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '50%' }} /></div>
 
         <p className="day001-summary">
-          Halfway. <strong>RAG</strong>, plainly: <strong>retrieve</strong> the relevant passages from your own docs,
-          then let the model <strong>answer using them</strong> — grounding replies in your data and killing
-          hallucination. It splits into two phases: <strong>ingestion</strong> (load → chunk → embed → store, once)
-          and <strong>query</strong> (embed the question → similarity search → answer). The pieces:{' '}
-          <strong>chunking</strong> for right-sized passages, <strong>embeddings</strong> that place meaning as
-          vectors, and <strong>similarity search</strong> returning the <strong>top-k</strong> chunks plus their
-          metadata for citations. <strong>Light RAG</strong> (in-memory) is enough to learn; heavy infra is for scale.{' '}
-          <em>Next: build one.</em>
+          Halfway. Async code stays typed: a <strong>Promise&lt;T&gt;</strong> carries the value it resolves to, an{' '}
+          <strong>async</strong> function always returns one, and <strong>await</strong> unwraps it. Watch the
+          boundaries — <code>res.json()</code> returns <code>any</code>, so annotate or <strong>validate</strong> it;
+          and a caught error is <strong>unknown</strong>, so narrow with <code>instanceof Error</code> before reading{' '}
+          <code>.message</code>. Run independent calls together with <strong>Promise.all</strong> for a typed tuple,
+          and pick one failure convention — <em>throw</em> or a typed <em>result</em> union. <em>Next: React with
+          TypeScript.</em>
         </p>
 
         <section className="day001-learnt">
@@ -181,12 +180,12 @@ export default function Day050() {
           </ul>
         </section>
 
-        <CardSection icon="📚" title="WHAT RAG IS" cards={WHAT} columns={2} />
-        <CardSection icon="🧭" title="THE MOVING PARTS" cards={HOW} columns={3} />
+        <CardSection icon="⏳" title="PROMISES & FETCH" cards={ASYNC} columns={2} />
+        <CardSection icon="🔀" title="ERRORS & PARALLELISM" cards={CONTROL} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#RAG</span><span>#Embeddings</span><span>#GenAI</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#async</span><span>#Promises</span>
         </footer>
       </div>
     </div>

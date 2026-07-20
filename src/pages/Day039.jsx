@@ -65,10 +65,10 @@ const RESOURCES = [
     footer: 'Q·K → softmax → weighted Values → context',
   },
   {
-    icon: '🔜', title: 'Next: CNNs', titleClass: 'card-title-amber', subtitle: 'Day 40 Preview',
+    icon: '🏁', title: 'Gen AI Phase Complete', titleClass: 'card-title-amber', subtitle: '39 Days · Day 40 → TypeScript',
     description:
-      'Tomorrow — Lecture 42: convolutional neural networks. Why dense layers fail on images, and how filters and pooling see patterns instead of raw pixels.',
-    link: { href: '/day-040', label: 'Go to Day 40 →' },
+      'Day 39 closes the 39-day Generative & Agentic AI phase — from token prediction and LLMs to embeddings, RAG, LangChain/LangGraph agents, neural nets and the Transformer. From Day 40 the 4-year coding journey begins with the TypeScript stack.',
+    link: { href: '/day-040', label: 'Start TypeScript → Day 40' },
   },
 ];
 

@@ -2,72 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const LANGCHAIN_JS = 'https://js.langchain.com/docs/introduction/';
+const TS_INTERFACES = 'https://www.typescriptlang.org/docs/handbook/2/objects.html';
+const TS_ALIASES = 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces';
 
 const LEARNT_TODAY = [
-  { title: 'Project setup', text: 'a clean TS/Node project — tsconfig, scripts, and a tidy folder layout for src, tools and config' },
-  { title: 'Env patterns', text: 'centralize secrets in .env, load once, validate keys at startup so a missing key fails loudly, not silently' },
-  { title: 'A single provider factory', text: 'one getModel() that returns OpenAI, Gemini or Groq behind the same interface' },
-  { title: 'Swap providers freely', text: 'because agent code calls the factory, changing model or vendor is a config change, not a rewrite' },
-  { title: 'Hello Agent', text: 'the first callable: input → model → typed output, wrapped as a real function' },
-  { title: 'Backend primitive, not a script', text: 'no console spaghetti — a clean async function you could expose over HTTP tomorrow' },
-  { title: 'Typed all the way', text: 'TypeScript types on the input and the return value so callers get autocomplete and safety' },
-  { title: 'Foundation for everything', text: 'search, RAG and LangGraph will all import this same factory and pattern' },
+  { title: 'interface', text: 'a named contract for an object’s shape: interface User { name: string }' },
+  { title: 'extends', text: 'one interface can build on another — Admin extends User adds fields on top' },
+  { title: 'Declaration merging', text: 'two interfaces with the same name merge into one — unique to interfaces' },
+  { title: 'interface vs type', text: 'both describe shapes; interfaces excel at objects/classes, type aliases at unions & primitives' },
+  { title: 'implements', text: 'a class can promise to satisfy an interface, and TS checks it does' },
+  { title: 'Optional & readonly', text: 'the same ? and readonly modifiers work inside interfaces' },
+  { title: 'Method signatures', text: 'interfaces can describe methods and call signatures, not just data fields' },
+  { title: 'React props', text: 'component props are almost always typed with an interface or a type alias' },
 ];
 
-const SETUP = [
+const INTERFACE = [
   {
-    icon: '🛠️', title: 'TS/Node Project', titleClass: 'card-title-cyan', subtitle: 'tsconfig · scripts',
+    icon: '📄', title: 'interface', titleClass: 'card-title-cyan', subtitle: 'A Named Contract',
     description:
-      'Start with a strict TypeScript setup and clean scripts. A predictable layout (src, tools, config) keeps every future project consistent and importable.',
-    code: '// package.json scripts\n"dev": "tsx watch src/index.ts",\n"start": "node dist/index.js"\n// tsconfig: strict true, moduleResolution "bundler"',
+      'An interface names the shape an object must have. Anything assigned to it is checked field-by-field — the go-to way to describe records, props and API responses.',
+    code: 'interface User {\n  readonly id: number;\n  name: string;\n  email?: string;\n}\nconst u: User = { id: 1, name: "Sumit" };',
   },
   {
-    icon: '🔐', title: 'Env Patterns', titleClass: 'card-title-purple', subtitle: 'Fail Loudly',
+    icon: '🧬', title: 'extends & implements', titleClass: 'card-title-purple', subtitle: 'Compose Shapes',
     description:
-      'Keep keys in .env and load them once through a small config module. Validate required keys at boot so a missing OPENAI/GEMINI/GROQ key errors immediately instead of mid-request.',
-    code: '// config/env.ts\nimport "dotenv/config";\nfunction need(k){ const v=process.env[k];\n  if(!v) throw new Error(`Missing ${k}`); return v; }\nexport const env = { OPENAI: need("OPENAI_API_KEY") };',
+      'Interfaces compose: extend one to add fields, and have a class implement one to guarantee it matches. This is how larger type hierarchies stay DRY.',
+    code: 'interface Admin extends User {\n  role: "admin";\n}\nclass Account implements User {\n  id = 1; name = "Sumit";\n}',
   },
 ];
 
-const AGENT = [
+const VERSUS = [
   {
-    icon: '🏭', title: 'Provider Factory', titleClass: 'card-title-cyan', subtitle: 'One Interface',
+    icon: '⚖️', title: 'interface vs type', titleClass: 'card-title-cyan', subtitle: 'Which To Reach For',
     description:
-      'A single factory returns a model for a role ("fast" vs "smart") and hides the vendor. Agent code never imports OpenAI or Gemini directly — it just asks the factory.',
-    code: '// llm/factory.ts\nexport function getModel(kind: "fast" | "smart") {\n  if (kind === "fast") return new ChatGroq({ model: "llama-3.1-8b-instant" });\n  return new ChatOpenAI({ model: "gpt-4o-mini" });\n}',
+      'Both describe shapes. Interfaces shine for objects and classes and can be reopened; type aliases can also express unions, intersections, tuples and primitives. Pick per job.',
+    code: '// object shape → interface\ninterface Point { x: number; y: number }\n// union / primitive → type\ntype Id = string | number;',
   },
   {
-    icon: '👋', title: 'Hello Agent', titleClass: 'card-title-purple', subtitle: 'A Clean Primitive',
+    icon: '➕', title: 'Declaration Merging', titleClass: 'card-title-purple', subtitle: 'Interfaces Only',
     description:
-      'The first callable: a typed async function that takes a prompt, runs it through the factory model, and returns a typed result. It reads like a backend primitive, ready to expose over HTTP.',
-    code: 'export async function helloAgent(input: string): Promise<string> {\n  const model = getModel("fast");\n  const res = await model.invoke(input);\n  return String(res.content);\n}',
+      'Declare an interface twice and TypeScript merges the members — handy for augmenting library types. Type aliases can’t do this; a duplicate name is an error.',
+    code: 'interface Win { title: string }\ninterface Win { width: number }\n// merged → { title; width }',
   },
   {
-    icon: '🧱', title: 'Why This Matters', titleClass: 'card-title-amber', subtitle: 'Not A Toy Script',
+    icon: '⚛️', title: 'Typing Props', titleClass: 'card-title-amber', subtitle: 'The React Payoff',
     description:
-      'Because it’s a typed function behind a factory, every later project — search, RAG, LangGraph — reuses it. You’re laying platform foundations, not writing a throwaway demo.',
-    footer: 'factory + typed function → reuse everywhere',
+      'Interfaces (or type aliases) describe a component’s props, so JSX usage is checked and autocompleted. This is where Year-1 TypeScript starts paying off in React.',
+    code: 'interface ButtonProps {\n  label: string;\n  onClick: () => void;\n}\nfunction Button({ label, onClick }: ButtonProps) {}',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'LangChain.js Models', titleClass: 'card-title-cyan', subtitle: 'Chat Models',
+    icon: '📘', title: 'Interfaces', titleClass: 'card-title-cyan', subtitle: 'Handbook',
     description:
-      'ChatOpenAI, ChatGoogleGenerativeAI and ChatGroq all share the same invoke interface — exactly what makes a single factory possible.',
-    link: { href: LANGCHAIN_JS, label: 'Open LangChain.js docs →', external: true },
+      'Object types & interfaces — extending, optional and readonly members, method signatures and index signatures, with runnable examples.',
+    link: { href: TS_INTERFACES, label: 'Open the Interfaces docs →', external: true },
   },
   {
-    icon: '🤖', title: 'The Agent Platform', titleClass: 'card-title-purple', subtitle: 'Building Up',
+    icon: '🔬', title: 'interface vs type', titleClass: 'card-title-purple', subtitle: 'The Difference',
     description:
-      'Today’s factory + Hello Agent are brick one. Everything from here plugs into them, per the mindset set on Day 43.',
-    footer: 'env → factory → helloAgent → the platform',
+      'The handbook’s side-by-side on when to use an interface and when a type alias — the exact trade-offs, so you can choose with confidence.',
+    link: { href: TS_ALIASES, label: 'Open the comparison →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: LLM Fundamentals', titleClass: 'card-title-amber', subtitle: 'Day 46 Preview',
+    icon: '🔜', title: 'Next: Advanced Types', titleClass: 'card-title-amber', subtitle: 'Day 46 Preview',
     description:
-      'Tomorrow — tokens, context windows and cost; temperature / top_p / max_tokens; and the JSON-first approach with Zod schemas as response contracts.',
+      'Tomorrow — unions & intersections, literal narrowing, type guards, and the utility types (Partial, Pick, Record) that reshape existing types.',
     link: { href: '/day-046', label: 'Go to Day 46 →' },
   },
 ];
@@ -134,23 +135,23 @@ export default function Day045() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-044" className="day001-nav-btn day001-nav-prev">← Day 44</Link>
-          <p className="day001-datetime">Agentic AI Day 45</p>
+          <p className="day001-datetime">TypeScript Day 45</p>
           <Link to="/day-046" className="day001-nav-btn day001-nav-next">Day 46 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>TypeScript</span><span>Project</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Interfaces</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 45 <span aria-hidden="true">👋</span></h1>
-              <p className="day001-day-theme">ORIENTATION &amp; “HELLO AGENT” PROJECT</p>
+              <h1 className="day001-day-num">DAY 45 <span aria-hidden="true">📄</span></h1>
+              <p className="day001-day-theme">INTERFACES &amp; TYPE ALIASES</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -158,13 +159,13 @@ export default function Day045() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '45%' }} /></div>
 
         <p className="day001-summary">
-          First code. Set up a strict <strong>TS/Node</strong> project — tsconfig, scripts, and clean{' '}
-          <strong>env patterns</strong> that validate keys at startup so a missing key <strong>fails loudly</strong>.
-          The centrepiece is a <strong>single provider factory</strong>: one <code>getModel()</code> that returns
-          OpenAI, Gemini or Groq behind the same interface, so switching providers is a config change. Then the first{' '}
-          <strong>“Hello Agent”</strong> — a typed async function, <code>input → model → typed output</code>, that
-          reads like a <strong>backend primitive</strong> you could expose over HTTP, not a throwaway console script.{' '}
-          <em>This factory + function is brick one of the platform.</em>
+          An <strong>interface</strong> is a named contract for an object’s shape — the go-to for records, API
+          responses and, above all, <strong>React props</strong>. Interfaces <strong>compose</strong>:{' '}
+          <code>extends</code> builds one on another, a class can <code>implements</code> one, and two interfaces of
+          the same name <strong>merge</strong> (something type aliases can’t do). So when do you use{' '}
+          <strong>interface vs type</strong>? Reach for an <em>interface</em> for object and class shapes; reach for a{' '}
+          <em>type alias</em> when you also need unions, intersections, tuples or primitives. Both check field-by-field
+          — pick the one that fits the shape. <em>Next: advanced types.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +180,12 @@ export default function Day045() {
           </ul>
         </section>
 
-        <CardSection icon="🛠️" title="PROJECT & ENV" cards={SETUP} columns={2} />
-        <CardSection icon="👋" title="THE HELLO AGENT" cards={AGENT} columns={3} />
+        <CardSection icon="📄" title="INTERFACES" cards={INTERFACE} columns={2} />
+        <CardSection icon="⚖️" title="INTERFACE vs TYPE" cards={VERSUS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#TypeScript</span><span>#NodeJS</span><span>#LangChain</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Interfaces</span><span>#React</span>
         </footer>
       </div>
     </div>

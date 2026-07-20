@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const LCEL = 'https://js.langchain.com/docs/concepts/lcel/';
-const PROMPTS = 'https://js.langchain.com/docs/concepts/prompt_templates/';
+const TS_CLASSES = 'https://www.typescriptlang.org/docs/handbook/2/classes.html';
+const MDN_CLASSES = 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes';
 
 const LEARNT_TODAY = [
-  { title: 'Why LangChain.js, not raw SDKs', text: 'it standardises models, prompts, parsers and tools so you swap pieces without rewriting glue code' },
-  { title: 'Prompt templates', text: 'parameterised prompts with typed variables — no more string concatenation for every call' },
-  { title: 'Models are interchangeable', text: 'ChatOpenAI, ChatGoogleGenerativeAI, ChatGroq share one invoke interface (the factory pays off)' },
-  { title: 'Output parsers', text: 'turn a raw reply into a usable value — string, JSON, or a Zod-validated object' },
-  { title: 'Runnables', text: 'every piece (prompt, model, parser) is a Runnable — a unit you can invoke, batch and stream' },
-  { title: 'LCEL', text: 'the LangChain Expression Language pipes Runnables together with .pipe() into one composable chain' },
-  { title: 'RunnableSequence & RunnableMap', text: 'sequence runs steps in order; map runs several in parallel and merges their outputs' },
-  { title: 'Deterministic tool-calling', text: 'bind Zod-typed tools and keep temperature at 0 so the model picks tools predictably' },
+  { title: 'class & constructor', text: 'a blueprint for objects; the constructor sets up each instance’s fields' },
+  { title: 'Typed fields', text: 'class properties are annotated just like variables — the compiler checks every assignment' },
+  { title: 'Access modifiers', text: 'public (default), private and protected control who can touch a member' },
+  { title: 'Parameter properties', text: 'a modifier in the constructor args declares and assigns a field in one line' },
+  { title: 'readonly fields', text: 'set once in the constructor, never reassigned — great for ids and config' },
+  { title: 'Inheritance', text: 'extends reuses a base class; super() calls the parent constructor' },
+  { title: 'abstract classes', text: 'define a shape with some methods unimplemented — subclasses must fill them in' },
+  { title: 'implements an interface', text: 'a class can promise to satisfy an interface, and TS verifies it does' },
 ];
 
-const WHY = [
+const CLASSES = [
   {
-    icon: '🧩', title: 'Why Not Raw SDKs', titleClass: 'card-title-cyan', subtitle: 'One Vocabulary',
+    icon: '🏛️', title: 'class & constructor', titleClass: 'card-title-cyan', subtitle: 'Blueprints',
     description:
-      'Raw SDKs differ per vendor and force you to write glue for prompts, parsing and tools. LangChain.js gives one vocabulary — models, prompts, parsers, tools — so components snap together and swap freely.',
-    footer: 'less glue · swap models, prompts & parsers freely',
+      'A class bundles data and behaviour. Fields are typed like variables and the constructor initialises each instance. TypeScript checks every field is set and used correctly.',
+    code: 'class Point {\n  x: number;\n  y: number;\n  constructor(x: number, y: number) {\n    this.x = x; this.y = y;\n  }\n}',
   },
   {
-    icon: '📝', title: 'Prompt Templates', titleClass: 'card-title-purple', subtitle: 'Typed Variables',
+    icon: '🔐', title: 'Access Modifiers', titleClass: 'card-title-purple', subtitle: 'public · private · protected',
     description:
-      'Templates parameterise prompts with named variables and a clean system/human structure — reusable, testable, and far safer than hand-built strings.',
-    code: 'const prompt = ChatPromptTemplate.fromMessages([\n  ["system", "You are a concise assistant."],\n  ["human", "{question}"],\n]);\n// prompt.invoke({ question })',
+      'Modifiers control visibility. private hides a member from outside, protected shares it with subclasses, readonly locks it. Put them in the constructor args to declare and assign at once.',
+    code: 'class User {\n  constructor(\n    public readonly id: number,\n    private token: string,\n  ) {}\n}\n// id/token declared + assigned in one line',
   },
 ];
 
-const LCEL_CARDS = [
+const OOP = [
   {
-    icon: '🔌', title: 'Runnables', titleClass: 'card-title-cyan', subtitle: 'The Common Unit',
+    icon: '🧬', title: 'Inheritance', titleClass: 'card-title-cyan', subtitle: 'extends & super',
     description:
-      'Prompts, models and parsers are all Runnables — each supports invoke, batch and stream. Because they share one interface, they compose like lego.',
-    code: '// every piece is a Runnable:\n// prompt.invoke(...) · model.invoke(...)\n// parser.invoke(...) · .batch([...]) · .stream(...)',
+      'A subclass extends a base class, reusing its fields and methods and calling super() to run the parent constructor. Override methods to specialise behaviour while keeping the shared parts.',
+    code: 'class Animal { move() { return "..."; } }\nclass Dog extends Animal {\n  move() { return "run"; } // override\n}',
   },
   {
-    icon: '⛓️', title: 'LCEL Pipelines', titleClass: 'card-title-purple', subtitle: '.pipe() It Together',
+    icon: '🧩', title: 'abstract Classes', titleClass: 'card-title-purple', subtitle: 'Enforce A Contract',
     description:
-      'The LangChain Expression Language wires Runnables into a chain. Data flows prompt → model → parser as one callable you can invoke or stream.',
-    code: 'const chain = prompt\n  .pipe(getModel("smart"))\n  .pipe(new StringOutputParser());\nconst answer = await chain.invoke({ question });',
+      'An abstract class can’t be instantiated directly — it defines shared logic plus abstract methods every subclass must implement. It’s a base with a promise attached.',
+    code: 'abstract class Shape {\n  abstract area(): number;    // must implement\n  describe() { return `area=${this.area()}`; }\n}',
   },
   {
-    icon: '🗺️', title: 'Sequence & Map', titleClass: 'card-title-amber', subtitle: 'Order Or Parallel',
+    icon: '📜', title: 'implements', titleClass: 'card-title-amber', subtitle: 'Satisfy An Interface',
     description:
-      'RunnableSequence runs steps in order; RunnableMap runs several Runnables in parallel and merges the results into one object — great for gathering multiple signals at once.',
-    code: 'RunnableMap.from({\n  summary: summaryChain,\n  keywords: keywordChain,\n}); // both run in parallel → { summary, keywords }',
+      'A class can implement one or more interfaces, and the compiler checks it provides every required member. This links the interface world (Day 45) to real runtime classes.',
+    code: 'interface Logger { log(m: string): void }\nclass ConsoleLogger implements Logger {\n  log(m: string) { console.log(m); }\n}',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'LCEL', titleClass: 'card-title-cyan', subtitle: 'Expression Language',
+    icon: '📘', title: 'Classes', titleClass: 'card-title-cyan', subtitle: 'Handbook',
     description:
-      'The composition model behind every chain in this phase — Runnables, .pipe(), sequences and maps.',
-    link: { href: LCEL, label: 'Open the LCEL guide →', external: true },
+      'The TypeScript classes chapter — fields, methods, access modifiers, parameter properties, inheritance, abstract classes and implements, all with examples.',
+    link: { href: TS_CLASSES, label: 'Open the Classes docs →', external: true },
   },
   {
-    icon: '📝', title: 'Prompt Templates', titleClass: 'card-title-purple', subtitle: 'LangChain.js',
+    icon: '📗', title: 'JS Classes (MDN)', titleClass: 'card-title-purple', subtitle: 'Foundation',
     description:
-      'ChatPromptTemplate and friends — parameterised, reusable prompts with a clean message structure.',
-    link: { href: PROMPTS, label: 'Open the prompts guide →', external: true },
+      'The underlying JavaScript class semantics TypeScript builds on — the runtime behaviour behind the types.',
+    link: { href: MDN_CLASSES, label: 'Open MDN Classes →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Search Agent', titleClass: 'card-title-amber', subtitle: 'Day 49 Preview',
+    icon: '🔜', title: 'Next: Modules & Tooling', titleClass: 'card-title-amber', subtitle: 'Day 49 Preview',
     description:
-      'Tomorrow — Tool-Calling 101: build a Search v1 agent with LCEL that routes direct-answer vs web search, and exposes a /search endpoint.',
+      'Tomorrow — ES modules and type-only imports, plus the everyday tooling: ESLint, Prettier and running TS with tsx.',
     link: { href: '/day-049', label: 'Go to Day 49 →' },
   },
 ];
@@ -135,23 +135,23 @@ export default function Day048() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-047" className="day001-nav-btn day001-nav-prev">← Day 47</Link>
-          <p className="day001-datetime">Agentic AI Day 48</p>
+          <p className="day001-datetime">TypeScript Day 48</p>
           <Link to="/day-049" className="day001-nav-btn day001-nav-next">Day 49 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>LangChain.js</span><span>LCEL</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Classes &amp; OOP</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 48 <span aria-hidden="true">⛓️</span></h1>
-              <p className="day001-day-theme">LANGCHAIN.JS FUNDAMENTALS</p>
+              <h1 className="day001-day-num">DAY 48 <span aria-hidden="true">🏛️</span></h1>
+              <p className="day001-day-theme">CLASSES &amp; OBJECT-ORIENTED TS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -159,14 +159,14 @@ export default function Day048() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '48%' }} /></div>
 
         <p className="day001-summary">
-          Why reach for <strong>LangChain.js</strong> over raw SDKs? One vocabulary for{' '}
-          <strong>prompts, models, parsers and tools</strong>, so pieces swap without rewriting glue.{' '}
-          <strong>Prompt templates</strong> parameterise prompts with typed variables; <strong>output parsers</strong>{' '}
-          turn replies into strings or validated objects. The core mental model is <strong>Runnables + LCEL</strong>:
-          every piece is a Runnable, and <code>.pipe()</code> composes them into a chain —{' '}
-          <strong>RunnableSequence</strong> for order, <strong>RunnableMap</strong> for parallel. Bind{' '}
-          <strong>Zod-typed tools</strong> and keep temperature at 0 for deterministic tool-calling.{' '}
-          <em>Next: put it to work in a search agent.</em>
+          TypeScript makes JavaScript classes safe and expressive. A <strong>class</strong> bundles typed fields with a{' '}
+          <strong>constructor</strong>, and <strong>access modifiers</strong> — <code>public</code>,{' '}
+          <code>private</code>, <code>protected</code>, <code>readonly</code> — control visibility (drop them into the
+          constructor args as <strong>parameter properties</strong> to declare and assign in one line).{' '}
+          <strong>Inheritance</strong> with <code>extends</code>/<code>super</code> reuses a base class,{' '}
+          <strong>abstract</strong> classes force subclasses to implement required methods, and{' '}
+          <code>implements</code> ties a class to an <em>interface</em> the compiler verifies. <em>Next: modules &amp;
+          tooling.</em>
         </p>
 
         <section className="day001-learnt">
@@ -181,12 +181,12 @@ export default function Day048() {
           </ul>
         </section>
 
-        <CardSection icon="🧩" title="THE BUILDING BLOCKS" cards={WHY} columns={2} />
-        <CardSection icon="⛓️" title="RUNNABLES & LCEL" cards={LCEL_CARDS} columns={3} />
+        <CardSection icon="🏛️" title="CLASSES" cards={CLASSES} columns={2} />
+        <CardSection icon="🧬" title="INHERITANCE & ABSTRACTION" cards={OOP} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#LangChain</span><span>#LCEL</span><span>#TypeScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#OOP</span><span>#Classes</span>
         </footer>
       </div>
     </div>

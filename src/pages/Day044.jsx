@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const LANGCHAIN_JS = 'https://js.langchain.com/docs/introduction/';
-const LANGGRAPH_JS = 'https://langchain-ai.github.io/langgraphjs/';
+const TS_OBJECTS = 'https://www.typescriptlang.org/docs/handbook/2/objects.html';
+const TS_ENUMS = 'https://www.typescriptlang.org/docs/handbook/enums.html';
 
 const LEARNT_TODAY = [
-  { title: 'The architecture', text: 'a modern AI app is a pipeline: UI → orchestration → models → tools → storage' },
-  { title: 'What an agent really is', text: 'a loop that decides the next step using an LLM and can call tools — not magic, just control flow + reasoning' },
-  { title: 'Real use cases', text: 'support bots, research assistants, internal copilots, data pipelines — anywhere decisions branch on context' },
-  { title: 'Chains vs agents', text: 'a chain is a fixed sequence; an agent chooses its own steps — use the simplest one that solves the job' },
-  { title: 'When a chain is enough', text: 'if the steps never change (prompt → model → parse), a chain is cheaper, faster and easier to debug' },
-  { title: 'When an agent is worth it', text: 'when the path is unknown at design time — routing, tool selection, retries, multi-step planning' },
-  { title: 'LangChain.js vs LangGraph.js', text: 'LangChain gives the pieces (models, prompts, tools, LCEL); LangGraph gives stateful control flow' },
-  { title: 'JSON-first teaser', text: 'free-text output “lies” — schemas turn model replies into typed, validatable data you can trust' },
+  { title: 'Object types', text: 'describe a record inline: { name: string; age: number } checks every field' },
+  { title: 'Optional properties', text: 'a ? after a key marks it optional — the object is valid with or without it' },
+  { title: 'type aliases', text: 'name a shape once with type User = { … } and reuse it everywhere' },
+  { title: 'readonly', text: 'a readonly field can be set at creation but never reassigned afterward' },
+  { title: 'Tuples', text: 'a fixed-length array where each position has its own type: [string, number]' },
+  { title: 'Enums', text: 'a named set of related constants — Direction.Up reads better than a magic number' },
+  { title: 'Union of literals', text: 'often a "up" | "down" union is lighter than an enum for the same job' },
+  { title: 'Nested shapes', text: 'object types compose — a field can itself be another object or an array of them' },
 ];
 
-const ARCH = [
+const OBJECTS = [
   {
-    icon: '🏗️', title: 'The Pipeline', titleClass: 'card-title-cyan', subtitle: 'UI → … → Storage',
+    icon: '🧱', title: 'Object Types', titleClass: 'card-title-cyan', subtitle: 'Shape Of A Record',
     description:
-      'Every AI app is the same shape: a UI sends a request, an orchestration layer decides what to do, models reason, tools act on the world, and storage keeps state. Agents live in the orchestration layer.',
-    code: '// UI  →  orchestration  →  models\n//                ↘  tools  ↘  storage\n// agents = the orchestration brain',
+      'Describe an object’s fields and their types inline. TypeScript then checks every property — a missing field, a wrong type, or an unexpected key all become compile errors.',
+    code: 'let user: { name: string; age: number } = {\n  name: "Sumit",\n  age: 27,\n};\n// missing/extra/wrong field → error',
   },
   {
-    icon: '🤔', title: 'What Is An Agent', titleClass: 'card-title-purple', subtitle: 'Decide → Act → Repeat',
+    icon: '🏷️', title: 'type Aliases', titleClass: 'card-title-purple', subtitle: 'Name It Once',
     description:
-      'An honest definition: an agent is a loop where an LLM looks at the current state, decides the next action (answer, or call a tool), acts, and repeats until done. No buzzwords — just reasoning plus control flow.',
-    code: '// while not done:\n//   step = llm.decide(state)\n//   state = act(step)   // tool or answer\n// → autonomous, but inspectable',
+      'Give a shape a name with type, then reuse it across variables, params and returns. Add ? for optional fields and readonly for values that must never change after creation.',
+    code: 'type User = {\n  readonly id: number;\n  name: string;\n  email?: string;  // optional\n};',
   },
 ];
 
-const CHOICE = [
+const STRUCTURED = [
   {
-    icon: '⛓️', title: 'Chain', titleClass: 'card-title-cyan', subtitle: 'Fixed Sequence',
+    icon: '📐', title: 'Tuples', titleClass: 'card-title-cyan', subtitle: 'Fixed-Position Types',
     description:
-      'A chain runs the same steps every time — prompt → model → output parser. Deterministic, cheap and easy to reason about. If the flow never branches, you don’t need an agent.',
-    code: '// prompt → model → parser\n// same path every run\n// cheapest + most predictable',
+      'A tuple is an array of fixed length where each slot has its own type. Perfect for pairs like coordinates or the [value, setter] returned by React’s useState.',
+    code: 'let point: [number, number] = [10, 20];\nlet entry: [string, number] = ["age", 27];\npoint[0] = "x"; // ❌ must be number',
   },
   {
-    icon: '🕹️', title: 'Agent', titleClass: 'card-title-purple', subtitle: 'Chooses Its Path',
+    icon: '🎚️', title: 'Enums', titleClass: 'card-title-purple', subtitle: 'Named Constants',
     description:
-      'An agent decides at runtime: answer directly, search the web, call a tool, retry. Powerful when the path is unknown up front — but more moving parts, so only reach for it when a chain isn’t enough.',
-    code: '// runtime decisions:\n// direct answer? search? tool? retry?\n// use when the path varies per input',
+      'An enum groups related constants under readable names, replacing magic numbers or loose strings. Direction.Up is self-documenting and autocompletes.',
+    code: 'enum Direction { Up, Down, Left, Right }\nlet d: Direction = Direction.Up;\n// d = 0 under the hood, "Up" in code',
   },
   {
-    icon: '🧰', title: 'LangChain + LangGraph', titleClass: 'card-title-amber', subtitle: 'Pieces + Control',
+    icon: '⚖️', title: 'Enum vs Union', titleClass: 'card-title-amber', subtitle: 'Pick The Lighter One',
     description:
-      'LangChain.js provides the building blocks — models, prompt templates, output parsers, tools, and LCEL to compose them. LangGraph.js adds stateful graphs: nodes, edges, retries and human-in-the-loop.',
-    code: '// LangChain.js → models, prompts, tools, LCEL\n// LangGraph.js → state, nodes, edges, loops\n// together → real, controllable agents',
+      'For many cases a union of string literals does the enum’s job with zero runtime cost and simpler output. Reach for an enum when you want a named, iterable set.',
+    code: 'type Dir = "up" | "down" | "left" | "right";\nlet d: Dir = "up"; // lighter than an enum\n// enum → when you need a real object',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'LangChain.js', titleClass: 'card-title-cyan', subtitle: 'Building Blocks',
+    icon: '📘', title: 'Object Types', titleClass: 'card-title-cyan', subtitle: 'Handbook',
     description:
-      'Models, prompts, output parsers and tools composed with LCEL — the toolbox for the next few days of projects.',
-    link: { href: LANGCHAIN_JS, label: 'Open LangChain.js docs →', external: true },
+      'The handbook chapter on object types, optional & readonly properties, index signatures and type aliases — the backbone of describing real data.',
+    link: { href: TS_OBJECTS, label: 'Open Object Types →', external: true },
   },
   {
-    icon: '🕸️', title: 'LangGraph.js', titleClass: 'card-title-purple', subtitle: 'Stateful Control',
+    icon: '🎚️', title: 'Enums Guide', titleClass: 'card-title-purple', subtitle: 'Handbook',
     description:
-      'When a chain isn’t enough: state, nodes, edges, branching, retries and human approvals. We’ll build a real graph later this phase.',
-    link: { href: LANGGRAPH_JS, label: 'Open LangGraph.js docs →', external: true },
+      'When enums help, how numeric vs string enums differ, and why a literal union is often the better tool — with the trade-offs spelled out.',
+    link: { href: TS_ENUMS, label: 'Open the Enums docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Hello Agent', titleClass: 'card-title-amber', subtitle: 'Day 45 Preview',
+    icon: '🔜', title: 'Next: Interfaces', titleClass: 'card-title-amber', subtitle: 'Day 45 Preview',
     description:
-      'Tomorrow — set up the TS/Node project, a multi-provider factory (OpenAI, Gemini, Groq), and a first “Hello Agent” that runs like a clean backend primitive.',
+      'Tomorrow — interfaces vs type aliases, extending and composing shapes, and how to model the props and data structures React components rely on.',
     link: { href: '/day-045', label: 'Go to Day 45 →' },
   },
 ];
@@ -135,23 +135,23 @@ export default function Day044() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-043" className="day001-nav-btn day001-nav-prev">← Day 43</Link>
-          <p className="day001-datetime">Agentic AI Day 44</p>
+          <p className="day001-datetime">TypeScript Day 44</p>
           <Link to="/day-045" className="day001-nav-btn day001-nav-next">Day 45 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>LangChain.js</span><span>Foundations</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Data Types</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 44 <span aria-hidden="true">🏗️</span></h1>
-              <p className="day001-day-theme">FOUNDATIONS — LANGCHAIN, AGENTS &amp; FLOW</p>
+              <h1 className="day001-day-num">DAY 44 <span aria-hidden="true">🧱</span></h1>
+              <p className="day001-day-theme">OBJECTS, TUPLES &amp; ENUMS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -159,14 +159,14 @@ export default function Day044() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '44%' }} /></div>
 
         <p className="day001-summary">
-          The mental model. Every AI app is one pipeline: <strong>UI → orchestration → models → tools → storage</strong>,
-          and agents live in the orchestration layer. An <strong>agent</strong> is just a loop — an LLM decides the
-          next step, acts (answer or tool call), and repeats. The key judgement call is{' '}
-          <strong>chains vs agents</strong>: a <strong>chain</strong> is a fixed sequence (cheap, predictable), an{' '}
-          <strong>agent</strong> chooses its own path (powerful, more moving parts) — use the simplest one that works.{' '}
-          <strong>LangChain.js</strong> supplies the pieces (models, prompts, parsers, tools, LCEL);{' '}
-          <strong>LangGraph.js</strong> supplies stateful control flow. And the recurring theme:{' '}
-          <strong>JSON-first</strong> — strings lie, <em>schemas save you.</em>
+          Describing real data. An <strong>object type</strong> — <code>{'{ name: string; age: number }'}</code> —
+          checks every field of a record; a <strong>?</strong> marks a property optional and{' '}
+          <strong>readonly</strong> locks it after creation. Name a shape once with a{' '}
+          <strong>type alias</strong> (<code>type User = {'{ … }'}</code>) and reuse it everywhere. A{' '}
+          <strong>tuple</strong> like <code>[string, number]</code> is a fixed-length array with a type per position
+          (think React’s <code>useState</code>). <strong>Enums</strong> name a set of related constants —
+          <code>Direction.Up</code> beats a magic number — though a <strong>literal union</strong> (
+          <code>"up" | "down"</code>) is often the lighter choice. <em>Next: interfaces.</em>
         </p>
 
         <section className="day001-learnt">
@@ -181,12 +181,12 @@ export default function Day044() {
           </ul>
         </section>
 
-        <CardSection icon="🏗️" title="ARCHITECTURE & AGENTS" cards={ARCH} columns={2} />
-        <CardSection icon="⛓️" title="CHAINS vs AGENTS" cards={CHOICE} columns={3} />
+        <CardSection icon="🧱" title="OBJECTS & ALIASES" cards={OBJECTS} columns={2} />
+        <CardSection icon="📐" title="TUPLES & ENUMS" cards={STRUCTURED} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#LangChain</span><span>#LangGraph</span><span>#GenAI</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Enums</span><span>#Tuples</span>
         </footer>
       </div>
     </div>

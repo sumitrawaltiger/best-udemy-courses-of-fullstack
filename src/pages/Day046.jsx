@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const ZOD = 'https://zod.dev/';
-const LANGCHAIN_STRUCT = 'https://js.langchain.com/docs/concepts/structured_outputs/';
+const TS_NARROWING = 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html';
+const TS_UTILITY = 'https://www.typescriptlang.org/docs/handbook/utility-types.html';
 
 const LEARNT_TODAY = [
-  { title: 'Tokens & context windows', text: 'models read/write tokens (~¾ of a word); the context window is the max tokens they can see at once' },
-  { title: 'Cost-aware thinking', text: 'you pay per token in and out — trim prompts, cap outputs, and pick the cheapest model that’s good enough' },
-  { title: 'Temperature', text: 'higher = more random/creative, lower = more focused/deterministic; agents usually want it low' },
-  { title: 'top_p', text: 'nucleus sampling — keep only the most-likely tokens summing to p; another knob for randomness' },
-  { title: 'max_tokens', text: 'a hard cap on the reply length — protects cost and latency, and forces concise output' },
-  { title: 'Chat vs tools', text: 'plain chat returns prose; tool/structured calls return typed data — agents need the second kind' },
-  { title: 'Zod as a contract', text: 'define the exact shape you expect; the model must fill it, and you validate before trusting it' },
-  { title: 'Validate → repair → fallback', text: 'if output fails the schema, ask the model to fix it; if it still fails, fall back safely — never crash' },
+  { title: 'Union types', text: 'A | B means a value is one of several types — the workhorse of flexible APIs' },
+  { title: 'Intersection types', text: 'A & B combines shapes — the value must satisfy both at once' },
+  { title: 'Narrowing', text: 'typeof, instanceof and truthiness checks let TS refine a union down to one type' },
+  { title: 'Type guards', text: 'a function returning "x is Type" teaches the compiler to narrow custom shapes' },
+  { title: 'Discriminated unions', text: 'a shared literal field (kind) lets a switch narrow each case cleanly' },
+  { title: 'Utility types', text: 'Partial, Required, Pick, Omit, Record reshape existing types without rewriting them' },
+  { title: 'keyof & typeof', text: 'derive types from data — keyof gets a type’s keys, typeof lifts a value into a type' },
+  { title: 'Never & exhaustiveness', text: 'the never type catches an unhandled case in a switch at compile time' },
 ];
 
-const BASICS = [
+const COMBINE = [
   {
-    icon: '🎟️', title: 'Tokens & Windows', titleClass: 'card-title-cyan', subtitle: 'The Unit Of Cost',
+    icon: '➕', title: 'Unions & Intersections', titleClass: 'card-title-cyan', subtitle: 'OR & AND',
     description:
-      'Everything is tokens — input and output. The context window bounds how much the model can see. Long histories cost money and can overflow, so budget tokens like a resource.',
-    code: '// ~1 token ≈ 0.75 words\n// cost = (in_tokens + out_tokens) × price\n// trim history, cap output, summarise old turns',
+      'A union (|) says "one of these types"; an intersection (&) says "all of these at once". Together they model flexible inputs and merged shapes without duplication.',
+    code: 'type Id = string | number;        // union\ntype Staff = User & { role: string }; // intersection\nlet id: Id = 7; id = "007";',
   },
   {
-    icon: '🎛️', title: 'Sampling Knobs', titleClass: 'card-title-purple', subtitle: 'temp · top_p · max',
+    icon: '🔎', title: 'Narrowing', titleClass: 'card-title-purple', subtitle: 'Refine A Union',
     description:
-      'Temperature and top_p control randomness; max_tokens caps length. For reliable agents, keep temperature low and cap output — you want predictable, parseable answers, not creative surprises.',
-    code: 'getModel("smart").invoke(msg, {\n  temperature: 0,      // deterministic\n  topP: 1,\n  maxTokens: 512,      // bound cost + latency\n});',
+      'Inside a branch, TypeScript narrows a union to the exact type using typeof, instanceof or truthiness — so you safely access members that only one variant has.',
+    code: 'function len(x: string | string[]) {\n  if (typeof x === "string") return x.length;\n  return x.length; // x is string[] here\n}',
   },
 ];
 
-const JSONFIRST = [
+const ADVANCED = [
   {
-    icon: '🚫', title: 'Why Strings Lie', titleClass: 'card-title-cyan', subtitle: 'Prose ≠ Data',
+    icon: '🛂', title: 'Type Guards', titleClass: 'card-title-cyan', subtitle: 'Custom Narrowing',
     description:
-      'Free-text replies look fine until you parse them: missing fields, extra prose, wrong format. Ad-hoc string parsing breaks in production. Structured outputs make the model return real data.',
-    code: '// ❌ "Sure! The answer is 42 (probably)."\n// → regex hell, brittle, silent failures\n// ✅ { "answer": 42, "confidence": 0.9 }',
+      'A predicate function typed as "x is Cat" teaches the compiler to narrow your own shapes. Combined with a discriminant field, a switch handles each variant safely.',
+    code: 'type Shape =\n  | { kind: "circle"; r: number }\n  | { kind: "square"; s: number };\n// switch (shape.kind) narrows each case',
   },
   {
-    icon: '📐', title: 'Zod Schemas', titleClass: 'card-title-purple', subtitle: 'Contracts For Output',
+    icon: '🧰', title: 'Utility Types', titleClass: 'card-title-purple', subtitle: 'Reshape Types',
     description:
-      'Define the exact shape you want with Zod. Bind it to the model so every reply is typed and validated. The schema is a contract the model must satisfy — and TypeScript infers the type for free.',
-    code: 'const Answer = z.object({\n  answer: z.string(),\n  confidence: z.number().min(0).max(1),\n});\nconst model = getModel("smart").withStructuredOutput(Answer);',
+      'Built-in helpers transform existing types: Partial makes fields optional, Pick/Omit select fields, Record builds a map. You describe change, not a whole new type.',
+    code: 'type User = { id: number; name: string; email: string };\ntype Draft = Partial<User>;      // all optional\ntype Public = Omit<User, "email">;',
   },
   {
-    icon: '🛡️', title: 'Validate → Repair → Fallback', titleClass: 'card-title-amber', subtitle: 'Stay Stable',
+    icon: '🔑', title: 'keyof & never', titleClass: 'card-title-amber', subtitle: 'Derive & Guard',
     description:
-      'Never trust output blindly. Validate against the schema; if it fails, ask the model to repair it; if it still fails, return a safe fallback. This three-step guard keeps agents from crashing.',
-    code: '// 1. parse = Answer.safeParse(raw)\n// 2. if !parse.success → re-ask "fix to schema"\n// 3. still bad → fallback { answer:"", confidence:0 }',
+      'keyof lifts a type’s keys into a union, typeof lifts a value into a type, and assigning to never in a switch’s default makes missed cases a compile error.',
+    code: 'type Keys = keyof User; // "id" | "name" | "email"\n// default: const _x: never = shape;\n// → error if a case is unhandled',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📗', title: 'Zod', titleClass: 'card-title-cyan', subtitle: 'Schema Validation',
+    icon: '📘', title: 'Narrowing', titleClass: 'card-title-cyan', subtitle: 'Handbook',
     description:
-      'TypeScript-first schema library — the backbone of the JSON-first approach. Define once, validate everywhere, infer types automatically.',
-    link: { href: ZOD, label: 'Open Zod docs →', external: true },
+      'How TypeScript narrows unions — typeof, instanceof, truthiness, equality, custom type guards and discriminated unions, all with examples.',
+    link: { href: TS_NARROWING, label: 'Open the Narrowing docs →', external: true },
   },
   {
-    icon: '📘', title: 'Structured Outputs', titleClass: 'card-title-purple', subtitle: 'LangChain.js',
+    icon: '🧰', title: 'Utility Types', titleClass: 'card-title-purple', subtitle: 'Reference',
     description:
-      'withStructuredOutput binds a Zod schema to a model so replies come back typed and validated — no manual JSON parsing.',
-    link: { href: LANGCHAIN_STRUCT, label: 'Open the guide →', external: true },
+      'The full list of built-in utility types — Partial, Required, Readonly, Pick, Omit, Record, ReturnType and more — with what each one does.',
+    link: { href: TS_UTILITY, label: 'Open Utility Types →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Mini Project', titleClass: 'card-title-amber', subtitle: 'Day 47 Preview',
+    icon: '🔜', title: 'Next: Generics', titleClass: 'card-title-amber', subtitle: 'Day 47 Preview',
     description:
-      'Tomorrow — build a strict Q&A pipeline in TypeScript: centralized env, a reusable LLM wrapper, and a CLI that returns guaranteed JSON for any frontend.',
+      'Tomorrow — generics and type assertions: reusable typed functions and containers, plus as, satisfies and the non-null assertion.',
     link: { href: '/day-047', label: 'Go to Day 47 →' },
   },
 ];
@@ -135,23 +135,23 @@ export default function Day046() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-045" className="day001-nav-btn day001-nav-prev">← Day 45</Link>
-          <p className="day001-datetime">Agentic AI Day 46</p>
+          <p className="day001-datetime">TypeScript Day 46</p>
           <Link to="/day-047" className="day001-nav-btn day001-nav-next">Day 47 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>TypeScript</span><span>JSON-First</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Advanced Types</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 46 <span aria-hidden="true">📐</span></h1>
-              <p className="day001-day-theme">LLM FUNDAMENTALS — JSON-FIRST APPROACH</p>
+              <h1 className="day001-day-num">DAY 46 <span aria-hidden="true">🔎</span></h1>
+              <p className="day001-day-theme">ADVANCED TYPES &amp; NARROWING</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -159,13 +159,14 @@ export default function Day046() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '46%' }} /></div>
 
         <p className="day001-summary">
-          The fundamentals that keep agents cheap and stable. Everything is <strong>tokens</strong>, bounded by the{' '}
-          <strong>context window</strong>, and you pay per token — so trim prompts and cap output. The sampling knobs{' '}
-          <strong>temperature</strong>, <strong>top_p</strong> and <strong>max_tokens</strong> trade creativity for
-          control; agents keep temperature <strong>low</strong>. The big idea is <strong>JSON-first</strong>: plain
-          strings lie (missing fields, stray prose), so bind a <strong>Zod schema</strong> as a contract and get typed,
-          validated data back. And always guard with <strong>validate → repair → fallback</strong> so a bad reply is
-          fixed or safely handled — <em>never a crash.</em>
+          Where TypeScript gets expressive. A <strong>union</strong> (<code>A | B</code>) is "one of these"; an{' '}
+          <strong>intersection</strong> (<code>A &amp; B</code>) is "all at once". <strong>Narrowing</strong> —{' '}
+          <code>typeof</code>, <code>instanceof</code>, truthiness — refines a union inside a branch, and a{' '}
+          <strong>type guard</strong> (<code>x is Cat</code>) or a <strong>discriminated union</strong> (a shared{' '}
+          <code>kind</code> field) narrows your own shapes in a <code>switch</code>. The <strong>utility types</strong>{' '}
+          — <code>Partial</code>, <code>Pick</code>, <code>Omit</code>, <code>Record</code> — reshape existing types
+          instead of rewriting them, while <code>keyof</code> and <code>never</code> let you derive types and catch
+          unhandled cases. <em>Next: generics.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +181,12 @@ export default function Day046() {
           </ul>
         </section>
 
-        <CardSection icon="🎛️" title="LLM BASICS" cards={BASICS} columns={2} />
-        <CardSection icon="📐" title="JSON-FIRST" cards={JSONFIRST} columns={3} />
+        <CardSection icon="➕" title="UNIONS & NARROWING" cards={COMBINE} columns={2} />
+        <CardSection icon="🧰" title="GUARDS & UTILITIES" cards={ADVANCED} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#JSONFirst</span><span>#Zod</span><span>#TypeScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Narrowing</span><span>#UtilityTypes</span>
         </footer>
       </div>
     </div>

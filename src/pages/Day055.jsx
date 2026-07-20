@@ -2,74 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const AGENTS = 'https://js.langchain.com/docs/how_to/#agents';
-const VECTORSTORES = 'https://js.langchain.com/docs/concepts/vectorstores/';
+const TS_HANDBOOK = 'https://www.typescriptlang.org/docs/handbook/intro.html';
 
 const LEARNT_TODAY = [
-  { title: 'RAG + tools = an agent', text: 'combine retrieval with tools and policies to make a production-ish agent, not just a Q&A box' },
-  { title: 'Real vector store', text: 'graduate from in-memory to a persistent DB (MongoDB Atlas / Supabase pgvector style)' },
-  { title: 'Ingestion at scale', text: 'chunk → embed → upsert into the vector store, with metadata for filtering and citations' },
-  { title: 'Retrieve → summarize', text: 'pull top-k relevant chunks, then answer with citations and a confidence score' },
-  { title: 'Give it tools', text: 'add a calculator, a date planner and a summarizer so the agent can do more than recall' },
-  { title: 'createAgent + policies', text: 'wire tools into an agent with strict policies — cite-if-used, and no hallucinated sources' },
-  { title: 'Grounded & honest', text: 'if a claim isn’t in the retrieved context, the agent must say so instead of inventing one' },
-  { title: 'Ship it in a UI', text: 'a Next.js app turns it into a support bot, internal copilot, or SaaS feature' },
+  { title: 'Foundation complete', text: 'Days 40–55 covered TypeScript end to end — from types to React, Next.js and tooling' },
+  { title: 'The language', text: 'types, functions, interfaces, generics, narrowing, classes, modules and async — all owned' },
+  { title: 'The framework', text: 'React with TS: typed props, state, events and hooks, then full-stack with Next.js' },
+  { title: 'Why it compounds', text: 'every later Year-1 track — React Native, Express — is just TypeScript in a new context' },
+  { title: 'Next up: React Native', text: 'the same typed React skills, now building native mobile apps' },
+  { title: 'Then: Express / Node', text: 'typed backends and REST/GraphQL APIs to pair with the frontend' },
+  { title: 'DSA & System Design', text: 'practised in TypeScript alongside, so the language stays sharp' },
+  { title: 'One stack, one year', text: 'Year 1 is the TypeScript stack — a coherent, typed full-stack skillset' },
 ];
 
-const STORE = [
+const RECAP = [
   {
-    icon: '🗄️', title: 'Real Vector DB', titleClass: 'card-title-cyan', subtitle: 'Persistent At Scale',
+    icon: '🔷', title: 'The Language', titleClass: 'card-title-cyan', subtitle: 'Days 40–50',
     description:
-      'Swap the in-memory store for a managed vector database — MongoDB Atlas Vector Search or Supabase pgvector. Same interface, now durable, filterable and production-ready.',
-    code: '// chunk → embed → upsert\nawait store.addDocuments(chunks, { ids });\n// metadata: { source, section } for filters + citations',
+      'Introduction and setup, the type system, functions, objects and enums, interfaces, advanced types and narrowing, generics and assertions, classes and OOP, modules, tooling and async — the complete TypeScript language.',
+    footer: 'types · interfaces · generics · classes · async',
   },
   {
-    icon: '🔎', title: 'Retrieve → Summarize', titleClass: 'card-title-purple', subtitle: 'Cited + Confident',
+    icon: '⚛️', title: 'The Framework', titleClass: 'card-title-purple', subtitle: 'Days 51–54',
     description:
-      'On a question, embed it, pull the top-k chunks (optionally filtered by metadata), and summarise into an answer that carries its sources and a confidence score.',
-    code: '// retrieve top-k (+ metadata filter)\n// → answer strictly from chunks\n// → { answer, sources[], confidence }',
+      'React with TypeScript — typed components, props, state, events and hooks — then Next.js for full-stack: the App Router, server vs client components, typed route handlers and metadata.',
+    footer: 'React · hooks · Next.js · full-stack types',
   },
 ];
 
-const AGENTIC = [
+const AHEAD = [
   {
-    icon: '🧰', title: 'Give It Tools', titleClass: 'card-title-cyan', subtitle: 'Beyond Recall',
+    icon: '📱', title: 'React Native', titleClass: 'card-title-cyan', subtitle: 'Mobile, Typed',
     description:
-      'Retrieval alone only remembers. Add tools — a calculator, a date planner, a summarizer — so the agent can compute, schedule and transform, not just look things up.',
-    code: 'const tools = [retrieveKb, calculator, datePlanner, summarize];\n// each a Zod-typed LangChain tool\n// the agent picks the right one per step',
+      'The same React + TypeScript skills, now building native iOS and Android apps. Typed components and hooks transfer directly — you already know most of it.',
+    link: { href: '/mobile', label: 'Explore the React Native track →' },
   },
   {
-    icon: '🛡️', title: 'createAgent + Policies', titleClass: 'card-title-purple', subtitle: 'Cite-If-Used',
+    icon: '🚂', title: 'Express / Node', titleClass: 'card-title-purple', subtitle: 'Typed Backends',
     description:
-      'Build the agent with strict policies: cite any source it uses, and never invent sources. Grounding rules turn a clever demo into something you can actually trust.',
-    code: '// policy: cite-if-used, no hallucinated sources\n// if answer not in context → say "not found"\n// createAgent({ model, tools, policy })',
+      'Round out the stack with typed Node.js backends — Express routes, middleware and APIs — sharing types with the frontend for end-to-end safety.',
+    footer: 'typed routes · middleware · shared API types',
   },
   {
-    icon: '🚀', title: 'Ship In A UI', titleClass: 'card-title-amber', subtitle: 'Real Products',
+    icon: '📐', title: 'DSA & System Design', titleClass: 'card-title-amber', subtitle: 'Alongside, In TS',
     description:
-      'Wire it into a Next.js UI and it becomes a real feature — a support bot over your docs, an internal copilot, or a SaaS capability. The platform, finally applied.',
-    footer: 'support bots · internal copilots · SaaS features',
+      'Data structures, algorithms and system design practised in TypeScript throughout the year — keeping the language sharp while building interview strength.',
+    link: { href: '/interview', label: 'Explore the Interview track →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '🤖', title: 'LangChain Agents', titleClass: 'card-title-cyan', subtitle: 'createAgent',
+    icon: '📘', title: 'TypeScript Handbook', titleClass: 'card-title-cyan', subtitle: 'Keep It Close',
     description:
-      'How to build tool-using agents in LangChain.js — the createAgent patterns behind this production-ish RAG agent.',
-    link: { href: AGENTS, label: 'Open the agents guide →', external: true },
+      'The reference to return to all year — every concept from Days 40–55 lives here, always current with the latest compiler.',
+    link: { href: TS_HANDBOOK, label: 'Open the Handbook →', external: true },
   },
   {
-    icon: '🗄️', title: 'Vector Stores', titleClass: 'card-title-purple', subtitle: 'Mongo / Supabase',
+    icon: '🗺️', title: 'The 1500-Day Roadmap', titleClass: 'card-title-purple', subtitle: 'Where This Fits',
     description:
-      'Pluggable vector stores in LangChain.js — MongoDB Atlas, Supabase pgvector and more, all behind one retriever interface.',
-    link: { href: VECTORSTORES, label: 'Open the vector-store guide →', external: true },
+      'Year 1 is the TypeScript stack in the full journey — Gen AI (Days 1–39) then four years of code. See the whole plan and its dated windows.',
+    link: { href: '/roadmap', label: 'Open the roadmap →' },
   },
   {
-    icon: '🎓', title: 'Phase 1 Milestone', titleClass: 'card-title-amber', subtitle: 'The Platform, Applied',
+    icon: '🔜', title: 'The Journey Continues', titleClass: 'card-title-amber', subtitle: 'Day 56 →',
     description:
-      'That completes this TypeScript agent course — factory, JSON-first, LangChain, tools, RAG, LangGraph, deploy, and Agentic RAG. Explore it all in the GenAI track.',
-    link: { href: '/genai', label: 'Explore the GenAI track →' },
+      'The daily journal continues from here — keep building, keep shipping, and keep the TypeScript foundation sharp through everything ahead.',
+    link: { href: '/day-056', label: 'Go to Day 56 →' },
   },
 ];
 
@@ -135,23 +134,23 @@ export default function Day055() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-054" className="day001-nav-btn day001-nav-prev">← Day 54</Link>
-          <p className="day001-datetime">Agentic AI Day 55</p>
+          <p className="day001-datetime">TypeScript Day 55</p>
           <Link to="/day-056" className="day001-nav-btn day001-nav-next">Day 56 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Agentic RAG</span><span>Vector DB</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Milestone</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 55 <span aria-hidden="true">🚀</span></h1>
-              <p className="day001-day-theme">AGENTIC RAG WITH A VECTOR DB</p>
+              <h1 className="day001-day-num">DAY 55 <span aria-hidden="true">🏁</span></h1>
+              <p className="day001-day-theme">TYPESCRIPT FOUNDATION — YEAR 1 ROADMAP</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -159,14 +158,13 @@ export default function Day055() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '55%' }} /></div>
 
         <p className="day001-summary">
-          The finale — turn RAG + tools into a <strong>production-ish agent</strong>. Graduate from the in-memory store
-          to a <strong>real vector DB</strong> (MongoDB Atlas / Supabase pgvector): <strong>chunk → embed → upsert</strong>{' '}
-          with metadata. On a question, <strong>retrieve → summarize</strong> with <strong>citations and confidence</strong>.
-          Then make it <strong>agentic</strong>: add tools (calculator, date planner, summarize) and build it with{' '}
-          <strong>createAgent</strong> under strict <strong>policies</strong> — <strong>cite-if-used</strong>, no
-          hallucinated sources, say “not found” when the answer isn’t in context. Wire it into a{' '}
-          <strong>Next.js UI</strong> and it becomes a <strong>support bot, internal copilot, or SaaS feature</strong>.{' '}
-          <em>The agent platform, finally applied. 🎓</em>
+          A milestone. <strong>Days 40–55</strong> built the whole TypeScript foundation — the{' '}
+          <strong>language</strong> (types, functions, interfaces, generics, narrowing, classes, modules, async) and
+          the <strong>framework</strong> (React with typed props, state, events and hooks, then <strong>Next.js</strong>{' '}
+          full-stack). From here <strong>Year 1</strong> compounds on it: <strong>React Native</strong> reuses your
+          React skills for mobile, <strong>Express/Node</strong> adds typed backends, and <strong>DSA &amp; System
+          Design</strong> are practised in TypeScript alongside. One stack, one year — a coherent, typed full-stack
+          skillset. <em>The journal continues from Day 56.</em>
         </p>
 
         <section className="day001-learnt">
@@ -181,12 +179,12 @@ export default function Day055() {
           </ul>
         </section>
 
-        <CardSection icon="🗄️" title="VECTOR DB RAG" cards={STORE} columns={2} />
-        <CardSection icon="🛡️" title="MAKE IT AGENTIC" cards={AGENTIC} columns={3} />
+        <CardSection icon="🔁" title="WHAT THE FOUNDATION COVERED" cards={RECAP} columns={2} />
+        <CardSection icon="🧭" title="THE REST OF YEAR 1" cards={AHEAD} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#AgenticRAG</span><span>#VectorDB</span><span>#TypeScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#React</span><span>#NextJS</span>
         </footer>
       </div>
     </div>

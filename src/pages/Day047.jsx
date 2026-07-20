@@ -2,72 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const ZOD = 'https://zod.dev/';
+const TS_GENERICS = 'https://www.typescriptlang.org/docs/handbook/2/generics.html';
+const TS_ASSERTIONS = 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions';
 
 const LEARNT_TODAY = [
-  { title: 'First real project', text: 'a strict Q&A pipeline in TypeScript that always returns guaranteed, typed JSON' },
-  { title: 'Centralized env', text: 'one config module loads and validates keys, so the whole pipeline shares a single source of truth' },
-  { title: 'Reusable LLM wrapper', text: 'a thin ask() around the provider factory + Zod schema — call it once, reuse everywhere' },
-  { title: 'Schema-bound answers', text: 'the wrapper returns { answer, confidence } validated by Zod — no manual JSON parsing' },
-  { title: 'CLI entrypoint', text: 'run it from the terminal: pass a question, get back clean JSON on stdout' },
-  { title: 'Frontend-ready', text: 'because the output is guaranteed JSON, any UI (Next.js, mobile) can consume it directly' },
-  { title: 'Repair on failure', text: 'if the model’s reply misses the schema, re-ask to fix it before giving up' },
-  { title: 'Composable', text: 'this wrapper becomes the building block the search and RAG projects call next' },
+  { title: 'Generics = type parameters', text: 'a function or type takes a type as an argument: function first<T>(a: T[]): T' },
+  { title: 'Reusable & safe', text: 'one generic replaces many copies while keeping full type safety — no any needed' },
+  { title: 'Inference', text: 'you rarely pass the type explicitly; TS infers T from the arguments you call with' },
+  { title: 'Constraints', text: '<T extends { id: number }> limits T so you can safely use its known members' },
+  { title: 'Generic interfaces', text: 'containers like Box<T> or an API Result<T> reuse one shape for any payload' },
+  { title: 'as — type assertion', text: 'tell the compiler "trust me, this is T" when you know more than it does' },
+  { title: 'satisfies', text: 'checks a value against a type without widening it — the modern, safer alternative to as' },
+  { title: 'Non-null !', text: 'value! asserts something isn’t null/undefined — use sparingly and only when certain' },
 ];
 
-const BUILD = [
+const GENERICS = [
   {
-    icon: '🔐', title: 'Centralized Env', titleClass: 'card-title-cyan', subtitle: 'One Source Of Truth',
+    icon: '🧩', title: 'Generic Functions', titleClass: 'card-title-cyan', subtitle: 'Type Parameters',
     description:
-      'A single config module loads .env and validates every required key at startup. The rest of the pipeline imports typed values — no scattered process.env reads.',
-    code: '// config/env.ts\nimport "dotenv/config";\nexport const env = {\n  OPENAI_API_KEY: must("OPENAI_API_KEY"),\n};',
+      'A generic captures the caller’s type in a parameter T and threads it through. One function works for any type while staying fully checked — the alternative to sprinkling any.',
+    code: 'function first<T>(arr: T[]): T {\n  return arr[0];\n}\nfirst([1, 2, 3]);   // T = number\nfirst(["a", "b"]);  // T = string',
   },
   {
-    icon: '🧰', title: 'Reusable LLM Wrapper', titleClass: 'card-title-purple', subtitle: 'ask() Once',
+    icon: '🔒', title: 'Constraints', titleClass: 'card-title-purple', subtitle: 'extends',
     description:
-      'A thin wrapper binds the provider factory to a Zod schema and returns validated data. Every future project calls this same ask() instead of touching the model directly.',
-    code: 'const QA = z.object({ answer: z.string(),\n  confidence: z.number().min(0).max(1) });\nexport async function ask(q: string) {\n  const m = getModel("smart").withStructuredOutput(QA);\n  return m.invoke(q);   // → typed { answer, confidence }\n}',
+      'Constrain a type parameter with extends so you can rely on certain members. And generic interfaces (Box<T>, Result<T>) reuse one shape for any payload type.',
+    code: 'function byId<T extends { id: number }>(x: T) {\n  return x.id;         // .id is guaranteed\n}\ninterface Box<T> { value: T }',
   },
 ];
 
-const PIPELINE = [
+const ASSERT = [
   {
-    icon: '⌨️', title: 'CLI Entrypoint', titleClass: 'card-title-cyan', subtitle: 'Question In, JSON Out',
+    icon: '👉', title: 'as — Assertions', titleClass: 'card-title-cyan', subtitle: 'Trust Me',
     description:
-      'A tiny CLI reads a question from the args, calls ask(), and prints guaranteed JSON to stdout. It runs like any backend command — scriptable, testable, and pipe-friendly.',
-    code: '// src/index.ts\nconst q = process.argv.slice(2).join(" ");\nconst out = await ask(q);\nconsole.log(JSON.stringify(out, null, 2));',
+      'A type assertion overrides the compiler when you know a value’s type better than it does — e.g. a DOM lookup. It changes nothing at runtime; it only silences the checker, so use it carefully.',
+    code: 'const el = document.getElementById("app") as HTMLDivElement;\nconst n = "42" as unknown as number; // double-assert: a code smell',
   },
   {
-    icon: '📤', title: 'Guaranteed JSON', titleClass: 'card-title-purple', subtitle: 'Ready For Any UI',
+    icon: '✅', title: 'satisfies', titleClass: 'card-title-purple', subtitle: 'Check, Don’t Widen',
     description:
-      'Because the schema is enforced, the output is always the same shape. A Next.js page, a mobile app or another service can consume it with zero defensive parsing.',
-    code: '// stdout:\n{ "answer": "TypeScript is a typed superset of JS.",\n  "confidence": 0.94 }\n// any frontend can trust this shape',
+      'satisfies verifies a value matches a type while keeping its precise inferred type. It catches mistakes as, and gives you the exact type as doesn’t — the modern default.',
+    code: 'const routes = {\n  home: "/", about: "/about",\n} satisfies Record<string, string>;\n// routes.home is "/" — not just string',
   },
   {
-    icon: '🔁', title: 'Validate & Repair', titleClass: 'card-title-amber', subtitle: 'Never Crash',
+    icon: '❗', title: 'Non-null !', titleClass: 'card-title-amber', subtitle: 'Not Null Here',
     description:
-      'If the model returns something off-schema, re-ask it to fix the output before falling back. The pipeline stays stable even when a model misbehaves.',
-    code: '// safeParse → if fail, re-ask "return valid JSON"\n// still failing → safe fallback object\n// caller always gets a valid QA result',
+      'The postfix ! asserts a value isn’t null or undefined, letting you skip a check. Powerful but risky — if you’re wrong it crashes at runtime, so prefer real narrowing where you can.',
+    code: 'const input = document.querySelector("input")!;\ninput.value = "hi"; // ! says: not null\n// better: if (input) input.value = "hi";',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📗', title: 'Zod', titleClass: 'card-title-cyan', subtitle: 'The Contract',
+    icon: '📘', title: 'Generics', titleClass: 'card-title-cyan', subtitle: 'Handbook',
     description:
-      'The schema library enforcing the Q&A shape end to end. One definition gives you validation plus the TypeScript type.',
-    link: { href: ZOD, label: 'Open Zod docs →', external: true },
+      'The full generics chapter — generic functions, interfaces and classes, constraints, default type parameters and using type parameters in constraints.',
+    link: { href: TS_GENERICS, label: 'Open the Generics docs →', external: true },
   },
   {
-    icon: '🧱', title: 'A Real Building Block', titleClass: 'card-title-purple', subtitle: 'Reused Next',
+    icon: '👉', title: 'Type Assertions', titleClass: 'card-title-purple', subtitle: 'Handbook',
     description:
-      'This env + wrapper + CLI pattern is the template for every project ahead. Search, Light RAG and LangGraph all build on exactly this.',
-    footer: 'env → ask() → CLI → guaranteed JSON',
+      'When and how to assert types safely with as, plus the modern satisfies operator and the non-null assertion — and when not to reach for them.',
+    link: { href: TS_ASSERTIONS, label: 'Open the Assertions docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: LangChain.js', titleClass: 'card-title-amber', subtitle: 'Day 48 Preview',
+    icon: '🔜', title: 'Next: Classes & OOP', titleClass: 'card-title-amber', subtitle: 'Day 48 Preview',
     description:
-      'Coming up — LangChain.js fundamentals: prompt templates, output parsers, and Runnables & LCEL as the mental model for composing everything.',
+      'The TypeScript stack continues — classes, access modifiers and OOP, then on toward tooling and the React/Next.js chapter of Year 1.',
     link: { href: '/day-048', label: 'Go to Day 48 →' },
   },
 ];
@@ -134,23 +135,23 @@ export default function Day047() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-046" className="day001-nav-btn day001-nav-prev">← Day 46</Link>
-          <p className="day001-datetime">Agentic AI Day 47</p>
+          <p className="day001-datetime">TypeScript Day 47</p>
           <Link to="/day-048" className="day001-nav-btn day001-nav-next">Day 48 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>TypeScript</span><span>Mini Project</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Generics</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 47 <span aria-hidden="true">📤</span></h1>
-              <p className="day001-day-theme">JSON-FIRST MINI PROJECT — STRICT Q&amp;A</p>
+              <h1 className="day001-day-num">DAY 47 <span aria-hidden="true">🧩</span></h1>
+              <p className="day001-day-theme">GENERICS &amp; TYPE ASSERTIONS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -158,13 +159,14 @@ export default function Day047() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '47%' }} /></div>
 
         <p className="day001-summary">
-          The first real build: a <strong>strict Q&amp;A pipeline</strong> in TypeScript that always returns{' '}
-          <strong>guaranteed JSON</strong>. It has three clean parts — <strong>centralized env</strong> (one config
-          module, keys validated at boot), a <strong>reusable LLM wrapper</strong> (<code>ask()</code> around the
-          provider factory + a Zod schema), and a <strong>CLI entrypoint</strong> that takes a question and prints{' '}
-          <code>{'{ answer, confidence }'}</code> to stdout. Because the output shape is enforced, any frontend —
-          Next.js, mobile, another service — can consume it with <strong>zero defensive parsing</strong>. Off-schema
-          replies are <strong>repaired</strong> before any fallback. <em>This is the template every later project reuses.</em>
+          The reuse tools. <strong>Generics</strong> let a function or type take a <em>type parameter</em> —{' '}
+          <code>function first&lt;T&gt;(a: T[]): T</code> works for any array while staying fully typed, and TS{' '}
+          <strong>infers</strong> T from the call. <strong>Constraints</strong> (<code>T extends {'{ id: number }'}</code>)
+          let you rely on known members, and generic interfaces like <code>Box&lt;T&gt;</code> reuse one shape for any
+          payload. On the escape-hatch side, <strong>as</strong> asserts a type when you know more than the compiler,{' '}
+          <strong>satisfies</strong> checks a value without widening it (the safer modern default), and the non-null{' '}
+          <code>!</code> says "not null here" — powerful, but use it sparingly. <em>That completes the TypeScript
+          foundations.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +181,12 @@ export default function Day047() {
           </ul>
         </section>
 
-        <CardSection icon="🧰" title="ENV & WRAPPER" cards={BUILD} columns={2} />
-        <CardSection icon="📤" title="THE PIPELINE" cards={PIPELINE} columns={3} />
+        <CardSection icon="🧩" title="GENERICS" cards={GENERICS} columns={2} />
+        <CardSection icon="👉" title="ASSERTIONS" cards={ASSERT} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#JSONFirst</span><span>#TypeScript</span><span>#Zod</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Generics</span><span>#satisfies</span>
         </footer>
       </div>
     </div>

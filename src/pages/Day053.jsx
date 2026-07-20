@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const LANGGRAPH_JS = 'https://langchain-ai.github.io/langgraphjs/';
-const TOOLS = 'https://js.langchain.com/docs/concepts/tools/';
+const REACT_HOOKS_TS = 'https://react.dev/learn/typescript#typing-hooks';
+const REACT_CUSTOM_HOOKS = 'https://react.dev/learn/reusing-logic-with-custom-hooks';
 
 const LEARNT_TODAY = [
-  { title: 'A real graph, end to end', text: 'turn yesterday’s theory into a running LangGraph.js graph with typed state and five nodes' },
-  { title: 'Typed state in types.ts', text: 'one interface defines the whole run — input, plan, approval, result — so every node is type-safe' },
-  { title: 'validate node', text: 'check and normalise the input first; a bad request routes straight to finalize' },
-  { title: 'plan node', text: 'the model drafts a plan of what to do before doing anything' },
-  { title: 'approve node', text: 'a human-in-the-loop gate — pause until a person approves the plan' },
-  { title: 'execute node', text: 'run the approved plan, calling LangChain tools that plug in cleanly as node steps' },
-  { title: 'finalize node', text: 'assemble the result into strict JSON, whether the run succeeded, was denied, or failed' },
-  { title: 'HTTP + inspector', text: 'an HTTP route runs the graph; a Next.js UI inspects each node’s state and outcome' },
+  { title: 'useEffect', text: 'no type needed on the effect itself — but type what it touches, and clean up correctly' },
+  { title: 'useRef<T>', text: 'useRef<HTMLInputElement>(null) types a DOM ref; ref.current may be null until mounted' },
+  { title: 'Mutable refs', text: 'useRef<number>(0) holds a value that survives renders without causing one' },
+  { title: 'useContext', text: 'createContext<T>() plus a typed provider gives fully-typed shared state' },
+  { title: 'useReducer', text: 'a typed state and a discriminated-union action make reducers exhaustively checked' },
+  { title: 'Custom hooks', text: 'a function starting with use that returns typed values — reuse logic, keep the types' },
+  { title: 'Return tuples', text: 'return [value, setValue] as const so the tuple types stay precise' },
+  { title: 'Rules of hooks', text: 'call hooks at the top level only — TypeScript won’t save you from breaking that' },
 ];
 
-const GRAPH = [
+const CORE = [
   {
-    icon: '📄', title: 'Typed State', titleClass: 'card-title-cyan', subtitle: 'types.ts',
+    icon: '🎯', title: 'useRef<T>', titleClass: 'card-title-cyan', subtitle: 'DOM & Mutable',
     description:
-      'A single interface is the contract for the entire run. Every node receives it and returns a partial update — no loose objects, full autocomplete, and a clear picture of what each step changes.',
-    code: '// types.ts\ninterface State {\n  input: string; plan?: string;\n  approved?: boolean; result?: string;\n  error?: string;\n}',
+      'Type a DOM ref with the element type and start it at null — current is null until React attaches it. useRef also stores a mutable value that persists across renders without triggering one.',
+    code: 'const input = useRef<HTMLInputElement>(null);\nuseEffect(() => input.current?.focus(), []);\n\nconst renders = useRef(0); // survives renders',
   },
   {
-    icon: '🔧', title: 'Tools As Node Steps', titleClass: 'card-title-purple', subtitle: 'Clean Plug-In',
+    icon: '🔄', title: 'useEffect', titleClass: 'card-title-purple', subtitle: 'Sync & Clean Up',
     description:
-      'LangChain tools drop straight into the execute node. The node calls a tool the same way an agent would, but inside the graph’s controlled, inspectable flow.',
-    code: '// inside execute node\nconst out = await searchTool.invoke({ query });\nreturn { result: summarise(out) };\n// tools = reusable node capabilities',
+      'The effect callback needs no type, but type the values it reads and always return a cleanup for subscriptions. A correct dependency array keeps it honest.',
+    code: 'useEffect(() => {\n  const id = setInterval(tick, 1000);\n  return () => clearInterval(id); // cleanup\n}, [tick]);',
   },
 ];
 
-const NODES = [
+const SHARE = [
   {
-    icon: '🧱', title: 'The Five Nodes', titleClass: 'card-title-cyan', subtitle: 'Validate → Finalize',
+    icon: '🌍', title: 'useContext', titleClass: 'card-title-cyan', subtitle: 'Typed Shared State',
     description:
-      'validate → plan → approve → execute → finalize. Each is a small function of state. Conditional edges route around them — bad input skips to finalize, a denied plan cancels.',
-    code: 'graph.addNode("validate", validate)\n     .addNode("plan", plan)\n     .addNode("approve", approve)\n     .addNode("execute", execute)\n     .addNode("finalize", finalize);',
+      'createContext<T>() types the context, a provider supplies the value, and useContext reads it fully typed. A small helper hook can assert the provider is present.',
+    code: 'const Theme = createContext<"light" | "dark">("light");\nfunction useTheme() { return useContext(Theme); }\n// useTheme() → "light" | "dark"',
   },
   {
-    icon: '🧑‍⚖️', title: 'Approve Gate (HITL)', titleClass: 'card-title-purple', subtitle: 'Pause For A Human',
+    icon: '🪝', title: 'Custom Hooks', titleClass: 'card-title-purple', subtitle: 'Reuse Typed Logic',
     description:
-      'The approve node interrupts the run and waits. A human sees the plan and says yes or no; only then does execute run. Safe autonomy for anything with real-world side effects.',
-    code: '// interrupt before execute\n// human reviews state.plan\n// approved ? → execute : → finalize (cancelled)',
+      'A custom hook is a function named use* that calls other hooks and returns typed values. Use as const on a returned tuple so its element types stay exact.',
+    code: 'function useToggle(init = false) {\n  const [on, setOn] = useState(init);\n  return [on, () => setOn(o => !o)] as const;\n}',
   },
   {
-    icon: '🖥️', title: 'HTTP + Inspector', titleClass: 'card-title-amber', subtitle: 'Run & Observe',
+    icon: '🎛️', title: 'useReducer', titleClass: 'card-title-amber', subtitle: 'Discriminated Actions',
     description:
-      'An HTTP route kicks off the graph and streams progress. A Next.js inspector shows each node’s state transition and the final JSON outcome — you can watch the agent think.',
-    code: '// POST /graph/run { input }\n// → streams node updates\n// Next.js UI: per-node state + final result',
+      'Type the state and model actions as a discriminated union. The switch in the reducer is then exhaustively checked — a missed action becomes a compile error.',
+    code: 'type Action =\n  | { type: "inc" }\n  | { type: "set"; value: number };\n// reducer(state, action): switch on action.type',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '🕸️', title: 'LangGraph.js', titleClass: 'card-title-cyan', subtitle: 'Build The Graph',
+    icon: '📘', title: 'Typing Hooks', titleClass: 'card-title-cyan', subtitle: 'react.dev',
     description:
-      'StateGraph, nodes, conditional edges, interrupts and streaming — everything this project is built from.',
-    link: { href: LANGGRAPH_JS, label: 'Open LangGraph.js docs →', external: true },
+      'The official guide to typing useState, useReducer, useContext, useRef and useMemo/useCallback — with the exact generic signatures.',
+    link: { href: REACT_HOOKS_TS, label: 'Open the Hooks + TS docs →', external: true },
   },
   {
-    icon: '🔧', title: 'LangChain Tools', titleClass: 'card-title-purple', subtitle: 'Node Capabilities',
+    icon: '🪝', title: 'Custom Hooks', titleClass: 'card-title-purple', subtitle: 'react.dev',
     description:
-      'The tools that plug into the execute node — defined once with Zod schemas, reused across chains and graphs.',
-    link: { href: TOOLS, label: 'Open the tools guide →', external: true },
+      'How to extract reusable logic into custom hooks — the patterns you’ll type and reuse across the whole Year-1 app.',
+    link: { href: REACT_CUSTOM_HOOKS, label: 'Open the custom-hooks guide →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Deploy & Observe', titleClass: 'card-title-amber', subtitle: 'Day 54 Preview',
+    icon: '🔜', title: 'Next: Next.js + TS', titleClass: 'card-title-amber', subtitle: 'Day 54 Preview',
     description:
-      'Tomorrow — tracing with LangSmith, deploying the graph to LangGraph Cloud, and testing via API + human approve/deny flows.',
+      'Tomorrow — Next.js with TypeScript: the App Router, typed pages and layouts, server vs client components, and typed route handlers.',
     link: { href: '/day-054', label: 'Go to Day 54 →' },
   },
 ];
@@ -135,23 +135,23 @@ export default function Day053() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-052" className="day001-nav-btn day001-nav-prev">← Day 52</Link>
-          <p className="day001-datetime">Agentic AI Day 53</p>
+          <p className="day001-datetime">TypeScript Day 53</p>
           <Link to="/day-054" className="day001-nav-btn day001-nav-next">Day 54 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>LangGraph.js</span><span>Project</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Hooks</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 53 <span aria-hidden="true">🕸️</span></h1>
-              <p className="day001-day-theme">LANGGRAPH ORCHESTRATION PROJECT</p>
+              <h1 className="day001-day-num">DAY 53 <span aria-hidden="true">🪝</span></h1>
+              <p className="day001-day-theme">HOOKS WITH TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -159,14 +159,13 @@ export default function Day053() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '53%' }} /></div>
 
         <p className="day001-summary">
-          Theory into a running graph. A single <strong>typed state</strong> in <code>types.ts</code> is the contract
-          for the whole run, and five <strong>nodes</strong> move it along:{' '}
-          <strong>validate → plan → approve → execute → finalize</strong>. The <strong>approve</strong> node is a{' '}
-          <strong>human-in-the-loop</strong> gate — the run pauses until a person okays the plan — and{' '}
-          <strong>LangChain tools</strong> plug straight into <strong>execute</strong> as node capabilities.{' '}
-          <strong>finalize</strong> always returns strict JSON, whether the run succeeded, was denied, or errored. An{' '}
-          <strong>HTTP route</strong> runs it and a <strong>Next.js inspector</strong> shows each node’s state — you can
-          watch the agent think. <em>Next: ship it and trace it.</em>
+          Typing the rest of the hooks. <strong>useRef&lt;HTMLInputElement&gt;(null)</strong> types a DOM ref
+          (<code>current</code> may be null until mounted), and <code>useRef(0)</code> stores a mutable value that
+          survives renders. <strong>useEffect</strong> needs no type itself — just type what it reads and always
+          return a <strong>cleanup</strong>. <strong>useContext</strong> with <code>createContext&lt;T&gt;()</code>{' '}
+          gives typed shared state, and <strong>useReducer</strong> with a <em>discriminated-union</em> action gets an
+          exhaustively-checked switch. Bundle logic into <strong>custom hooks</strong> that return{' '}
+          <code>[value, setValue] as const</code> to keep tuple types precise. <em>Next: Next.js.</em>
         </p>
 
         <section className="day001-learnt">
@@ -181,12 +180,12 @@ export default function Day053() {
           </ul>
         </section>
 
-        <CardSection icon="📄" title="STATE & TOOLS" cards={GRAPH} columns={2} />
-        <CardSection icon="🧱" title="NODES · HITL · UI" cards={NODES} columns={3} />
+        <CardSection icon="🎯" title="useRef & useEffect" cards={CORE} columns={2} />
+        <CardSection icon="🌍" title="CONTEXT · CUSTOM · REDUCER" cards={SHARE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#LangGraph</span><span>#HITL</span><span>#TypeScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#React</span><span>#Hooks</span>
         </footer>
       </div>
     </div>

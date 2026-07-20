@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const LANGSMITH = 'https://docs.smith.langchain.com/';
-const LANGGRAPH_CLOUD = 'https://langchain-ai.github.io/langgraphjs/cloud/';
+const NEXT_TS = 'https://nextjs.org/docs/app/api-reference/config/typescript';
+const NEXT_APP_ROUTER = 'https://nextjs.org/docs/app/building-your-application/routing';
 
 const LEARNT_TODAY = [
-  { title: 'Observability is mandatory', text: 'in production you can’t debug what you can’t see — tracing is not optional for agents' },
-  { title: 'What LangSmith captures', text: 'every run as spans: prompts, model calls, tool inputs/outputs, latency, tokens and errors' },
-  { title: 'Wire it in with env', text: 'a couple of env vars turn tracing on for your JS agents — no code rewrite needed' },
-  { title: 'Debug real failures', text: 'replay a failed run, see exactly which node and prompt broke, and fix the actual cause' },
-  { title: 'Cost & latency visibility', text: 'per-run token and time metrics show where the money and the slowness actually go' },
-  { title: 'Deploy to LangGraph Cloud', text: 'push a LangGraph graph to managed infra so it runs as a real service, not a laptop script' },
-  { title: 'Test via API', text: 'hit the deployed graph over HTTP; kick off runs and read results programmatically' },
-  { title: 'HITL in production', text: 'the approve/deny gate works over the API too — pause, notify a human, resume on approval' },
+  { title: 'Next.js is TS-first', text: 'create-next-app scaffolds a typed project; .tsx pages and layouts out of the box' },
+  { title: 'App Router', text: 'folders are routes; page.tsx renders, layout.tsx wraps, all typed' },
+  { title: 'Server vs client', text: 'components are Server by default; add "use client" only where you need hooks/interactivity' },
+  { title: 'Typed page props', text: 'params and searchParams arrive as typed props to a page' },
+  { title: 'Route handlers', text: 'app/api/*/route.ts gives typed Request/Response API endpoints' },
+  { title: 'Data fetching', text: 'async Server Components can await data directly — no useEffect for initial load' },
+  { title: 'Metadata', text: 'export a typed Metadata object for SEO per route' },
+  { title: 'End-to-end types', text: 'share types between server and client — one source of truth across the app' },
 ];
 
-const OBSERVE = [
+const ROUTER = [
   {
-    icon: '🔭', title: 'Why Tracing', titleClass: 'card-title-cyan', subtitle: 'See Every Step',
+    icon: '🗂️', title: 'The App Router', titleClass: 'card-title-cyan', subtitle: 'Folders = Routes',
     description:
-      'Agents are multi-step and non-deterministic — when one fails, logs aren’t enough. Tracing records the whole run so you can see exactly what happened and why.',
-    footer: 'no observability → no real debugging in prod',
+      'Each folder under app/ is a route. page.tsx is the view, layout.tsx wraps its children, and loading/error files handle those states — all in TypeScript with typed props.',
+    code: '// app/blog/[slug]/page.tsx\nexport default function Post(\n  { params }: { params: { slug: string } },\n) { return <h1>{params.slug}</h1>; }',
   },
   {
-    icon: '🧵', title: 'LangSmith', titleClass: 'card-title-purple', subtitle: 'Spans & Prompts',
+    icon: '🖥️', title: 'Server vs Client', titleClass: 'card-title-purple', subtitle: '"use client"',
     description:
-      'Connect your JS agents to LangSmith and every run becomes a trace of spans: prompts, model calls, tool I/O, tokens, latency and errors — searchable and replayable.',
-    code: '// .env\nLANGCHAIN_TRACING_V2=true\nLANGCHAIN_API_KEY=ls_...\nLANGCHAIN_PROJECT="agent-platform"\n// runs now show up as traces automatically',
+      'Components render on the server by default — great for data and SEO. Add "use client" only when you need state, effects or event handlers, keeping bundles lean.',
+    code: '// server component (default): can await data\n// client component:\n"use client";\nimport { useState } from "react";',
   },
 ];
 
-const DEPLOY = [
+const FEATURES = [
   {
-    icon: '☁️', title: 'LangGraph Cloud', titleClass: 'card-title-cyan', subtitle: 'Managed Runtime',
+    icon: '🔌', title: 'Route Handlers', titleClass: 'card-title-cyan', subtitle: 'Typed APIs',
     description:
-      'Deploy your LangGraph graph to managed infrastructure. It runs as a durable service with persistence and checkpointing, not a process that dies when your laptop sleeps.',
-    code: '// define graph → deploy to LangGraph Cloud\n// get a hosted endpoint + persistence\n// checkpoints & replay come built in',
+      'app/api/.../route.ts exports typed GET/POST handlers with the Web Request/Response API. Your backend and frontend can share the same TypeScript types.',
+    code: '// app/api/hello/route.ts\nexport async function GET(req: Request) {\n  return Response.json({ ok: true });\n}',
   },
   {
-    icon: '🔌', title: 'Test Via API', titleClass: 'card-title-purple', subtitle: 'HTTP Runs',
+    icon: '📥', title: 'Data In Server Components', titleClass: 'card-title-purple', subtitle: 'await Directly',
     description:
-      'The deployed graph is reachable over HTTP. Start runs, poll or stream results, and inspect state — the same graph you built locally, now callable from anywhere.',
-    code: '// POST /runs { input }\n// → runId; stream / poll for output\n// same typed state, now hosted',
+      'An async Server Component awaits data before rendering — no client-side useEffect for the initial load. Type the fetched data and pass it down as typed props.',
+    code: 'export default async function Page() {\n  const posts: Post[] = await getPosts();\n  return <List posts={posts} />;\n}',
   },
   {
-    icon: '🧑‍⚖️', title: 'HITL Over The API', titleClass: 'card-title-amber', subtitle: 'Approve / Deny',
+    icon: '🏷️', title: 'Typed Metadata', titleClass: 'card-title-amber', subtitle: 'SEO Per Route',
     description:
-      'Human-in-the-loop survives deployment: the graph interrupts at the approve node, your app notifies a human, and the run resumes on approve or cancels on deny.',
-    code: '// run interrupts at "approve"\n// app surfaces the plan → human decides\n// POST /runs/:id/resume { approved }',
+      'Export a typed Metadata object (or generateMetadata) from a route for title, description and Open Graph tags — checked by TypeScript, no stray keys.',
+    code: 'import type { Metadata } from "next";\nexport const metadata: Metadata = {\n  title: "TypeScript Journey",\n};',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '🧵', title: 'LangSmith', titleClass: 'card-title-cyan', subtitle: 'Tracing',
+    icon: '📘', title: 'Next.js + TypeScript', titleClass: 'card-title-cyan', subtitle: 'Official',
     description:
-      'Observability for LLM apps — traces, prompts, token/latency metrics, datasets and evals. The debugging surface for every agent you ship.',
-    link: { href: LANGSMITH, label: 'Open LangSmith docs →', external: true },
+      'How Next.js uses TypeScript — the plugin, typed routes, config, and end-to-end type safety across server and client.',
+    link: { href: NEXT_TS, label: 'Open the Next.js TS docs →', external: true },
   },
   {
-    icon: '☁️', title: 'LangGraph Cloud', titleClass: 'card-title-purple', subtitle: 'Deploy',
+    icon: '🗂️', title: 'App Router', titleClass: 'card-title-purple', subtitle: 'Routing',
     description:
-      'Managed hosting for LangGraph graphs — persistence, checkpointing, streaming and HITL over an API.',
-    link: { href: LANGGRAPH_CLOUD, label: 'Open the deploy guide →', external: true },
+      'The routing model — pages, layouts, server/client components, route handlers and data fetching — the backbone of a Year-1 Next.js app.',
+    link: { href: NEXT_APP_ROUTER, label: 'Open the routing docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Agentic RAG', titleClass: 'card-title-amber', subtitle: 'Day 55 Preview',
+    icon: '🔜', title: 'Next: Year-1 Roadmap', titleClass: 'card-title-amber', subtitle: 'Day 55 Preview',
     description:
-      'Tomorrow — the finale: production-ish Agentic RAG with a real vector DB, tools, cite-if-used policies, and a Next.js UI.',
+      'Tomorrow — wrap the TypeScript foundation and map the rest of Year 1: React Native, Express/Node, and where each track lives on the site.',
     link: { href: '/day-055', label: 'Go to Day 55 →' },
   },
 ];
@@ -135,23 +135,23 @@ export default function Day054() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-053" className="day001-nav-btn day001-nav-prev">← Day 53</Link>
-          <p className="day001-datetime">Agentic AI Day 54</p>
+          <p className="day001-datetime">TypeScript Day 54</p>
           <Link to="/day-055" className="day001-nav-btn day001-nav-next">Day 55 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>LangSmith</span><span>Deploy</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Next.js</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 54 <span aria-hidden="true">🔭</span></h1>
-              <p className="day001-day-theme">DEPLOYING &amp; OBSERVING AGENTS</p>
+              <h1 className="day001-day-num">DAY 54 <span aria-hidden="true">▲</span></h1>
+              <p className="day001-day-theme">NEXT.JS WITH TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -159,14 +159,13 @@ export default function Day054() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '54%' }} /></div>
 
         <p className="day001-summary">
-          Ship it and see inside it. <strong>Observability is mandatory</strong> — agents are multi-step and
-          non-deterministic, so you can’t debug what you can’t trace. <strong>LangSmith</strong> turns every run into{' '}
-          <strong>spans</strong>: prompts, model calls, tool I/O, tokens, latency and errors — switched on with a
-          couple of <strong>env vars</strong>, no rewrite. Then <strong>deploy</strong> the LangGraph graph to{' '}
-          <strong>LangGraph Cloud</strong> so it runs as a durable service with persistence and checkpointing.{' '}
-          <strong>Test via API</strong>, and keep <strong>human-in-the-loop</strong> alive in production — the graph
-          pauses at approve, notifies a human, and resumes on <code>{'{ approved }'}</code>.{' '}
-          <em>Next: the Agentic RAG finale.</em>
+          React, but full-stack. <strong>Next.js is TypeScript-first</strong> — <code>create-next-app</code> scaffolds
+          a typed project. The <strong>App Router</strong> maps folders to routes: <code>page.tsx</code> renders,{' '}
+          <code>layout.tsx</code> wraps, and <strong>params/searchParams</strong> arrive typed. Components are{' '}
+          <strong>Server by default</strong> (await data directly, great for SEO); add <code>"use client"</code> only
+          for interactivity. <strong>Route handlers</strong> (<code>route.ts</code>) give typed API endpoints, and a
+          typed <strong>Metadata</strong> export handles SEO per route. Best of all — <strong>share types</strong>{' '}
+          across server and client for one source of truth. <em>Next: wrap Year 1’s foundation.</em>
         </p>
 
         <section className="day001-learnt">
@@ -181,12 +180,12 @@ export default function Day054() {
           </ul>
         </section>
 
-        <CardSection icon="🔭" title="OBSERVABILITY" cards={OBSERVE} columns={2} />
-        <CardSection icon="☁️" title="DEPLOY & TEST" cards={DEPLOY} columns={3} />
+        <CardSection icon="🗂️" title="APP ROUTER" cards={ROUTER} columns={2} />
+        <CardSection icon="🔌" title="APIS · DATA · SEO" cards={FEATURES} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#LangSmith</span><span>#LangGraph</span><span>#Observability</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#NextJS</span><span>#React</span>
         </footer>
       </div>
     </div>

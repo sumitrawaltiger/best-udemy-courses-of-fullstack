@@ -2,72 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture42';
+const TS_DOCS = 'https://www.typescriptlang.org/docs/';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
-  { title: 'Images break dense networks', text: 'a 28×28 digit flattened into 784 neurons already needs 100K+ weights in the first layer' },
-  { title: 'Flattening destroys structure', text: 'row-by-row flattening throws away which pixels are neighbours — all spatial information is lost' },
-  { title: 'It doesn’t scale', text: 'a real 224×224 image = 50,176 inputs; the first dense layer alone would be ~6.4M weights' },
-  { title: 'Convolution', text: 'slide a small filter (e.g. 3×3) across the image; at each spot it measures how well its pattern matches' },
-  { title: 'Feature maps', text: 'each filter produces a map showing where its pattern (edges, corners…) appears — 32 filters → 32 maps' },
-  { title: 'Shared weights', text: 'the same tiny filter is reused everywhere, so a few numbers replace millions — and neighbours stay neighbours' },
-  { title: 'Pooling', text: 'nearby values are redundant, so shrink each map (e.g. max-pool) — smaller, but the pattern survives' },
-  { title: 'Then classify', text: 'stacked conv + pool layers feed a small dense head + softmax → the digit (the "7" fires at 0.89)' },
+  { title: 'TypeScript = JavaScript + types', text: 'a superset of JS — every valid .js file is already valid TypeScript' },
+  { title: 'Static typing', text: 'you declare what a value is, and the compiler checks it before the code ever runs' },
+  { title: 'Catches bugs early', text: 'typos, wrong arguments and null mistakes are caught at compile time, not in production' },
+  { title: 'Compiles to plain JS', text: 'the browser never runs TypeScript — tsc strips the types and emits ordinary JavaScript' },
+  { title: 'Type inference', text: 'TS often figures out the type for you, so you don’t annotate everything by hand' },
+  { title: 'World-class tooling', text: 'autocomplete, refactors and inline errors in the editor — the biggest day-to-day win' },
+  { title: 'Year 1 starts here', text: 'TypeScript is the foundation of the whole Year-1 stack: React, Next.js, React Native, Express' },
+  { title: 'Prereq: JavaScript', text: 'you already know JS — TypeScript just adds a safety layer on top of it' },
 ];
 
-const PROBLEM = [
+const WHAT = [
   {
-    icon: '💥', title: 'Dense Layers Explode', titleClass: 'card-title-cyan', subtitle: 'Too Many Weights',
+    icon: '🔷', title: 'A Typed Superset', titleClass: 'card-title-cyan', subtitle: 'JS + Types',
     description:
-      'Flatten a 28×28 image to 784 inputs and connect it to 128 hidden neurons — that’s 100,352 weights in one layer. Scale to a 224×224 photo and it’s millions. Dense nets don’t fit images.',
-    code: '// 28×28  → 784 inputs × 128 = 100,352 weights\n// 224×224 → 50,176 × 128  ≈ 6.4M weights\n// ... in the FIRST layer alone',
+      'TypeScript is JavaScript with a type system bolted on. Everything you know about JS still works — TS only adds optional annotations that describe the shape of your data.',
+    code: '// plain JS — valid TypeScript too\nlet name = "Sumit";\n\n// TS adds a type annotation\nlet age: number = 27;',
   },
   {
-    icon: '🧩', title: 'Structure Is Lost', titleClass: 'card-title-purple', subtitle: 'Neighbours Forgotten',
+    icon: '🛡️', title: 'Errors Before Runtime', titleClass: 'card-title-purple', subtitle: 'Compile-Time Safety',
     description:
-      'Flattening reads pixels row by row into one long column, so the network no longer knows which pixels sat next to each other. For images, that adjacency is exactly the signal.',
-    code: '// flatten: [row0][row1][row2]...\n// pixel (10,10) and (11,10) now far apart\n// spatial meaning destroyed',
+      'The compiler reads your types and flags mistakes as you type. Passing a string where a number belongs is caught in the editor — long before the code ever ships.',
+    code: 'let age: number = 27;\nage = "twenty-seven";\n// ❌ Type \'string\' is not\n//    assignable to type \'number\'',
   },
 ];
 
-const CNN = [
+const HOW = [
   {
-    icon: '🔍', title: 'Convolution', titleClass: 'card-title-cyan', subtitle: 'Slide A Filter',
+    icon: '⚙️', title: 'tsc — The Compiler', titleClass: 'card-title-cyan', subtitle: '.ts → .js',
     description:
-      'A small filter (e.g. 3×3) slides across the image. At each position it measures how strongly its pattern matches — producing a feature map that highlights edges, corners, or textures.',
-    code: '// 3×3 filter slides over 28×28\n// → 26×26 feature map\n// 32 filters → 32 feature maps',
+      'The TypeScript compiler (tsc) transpiles your .ts files into plain .js that the browser or Node can run. Types are erased in the output — they exist only to check your code.',
+    code: '// hello.ts\nconst greet = (n: string) => `Hi ${n}`;\n\n// $ tsc hello.ts  →  hello.js\n// const greet = (n) => `Hi ${n}`;',
   },
   {
-    icon: '♻️', title: 'Shared Weights', titleClass: 'card-title-purple', subtitle: 'A Few Numbers',
+    icon: '🔍', title: 'Type Inference', titleClass: 'card-title-purple', subtitle: 'It Guesses For You',
     description:
-      'The same filter is reused at every location, so nine numbers detect an edge anywhere in the image. Far fewer weights than a dense layer — and neighbouring pixels stay neighbours.',
-    code: '// one 3×3 filter = 9 weights\n// reused across the whole image\n// vs. millions in a dense layer',
+      'You don’t annotate everything. When you initialise a variable, TS infers its type automatically — annotate only where the intent isn’t obvious from the value.',
+    code: 'let city = "Bangkok";\n// inferred as string — no annotation\ncity = 42; // ❌ error',
   },
   {
-    icon: '🗜️', title: 'Pooling', titleClass: 'card-title-amber', subtitle: 'Shrink, Keep Meaning',
+    icon: '💡', title: 'Why Teams Use It', titleClass: 'card-title-amber', subtitle: 'The Payoff',
     description:
-      'Nearby feature-map values are redundant (an edge at (10,10) and (10,11) is the same edge). Pooling downsamples each map — smaller grids, less compute, the pattern preserved.',
-    code: '// 2×2 max-pool: keep the strongest\n// 26×26 → 13×13\n// then conv → pool → ... → dense + softmax',
+      'Self-documenting code, fearless refactors, autocomplete that actually knows your data, and far fewer "undefined is not a function" crashes. It scales to large codebases.',
+    footer: 'safer refactors · better autocomplete · fewer runtime bugs',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 42', titleClass: 'card-title-cyan', subtitle: 'CNNs',
+    icon: '📘', title: 'TypeScript Handbook', titleClass: 'card-title-cyan', subtitle: 'Official Docs',
     description:
-      'The convolutional-neural-network material in the STRIKE GenAI repo — why dense fails on images, plus convolution and pooling.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 42 →', external: true },
+      'The canonical reference — start with "The Basics" and "Everyday Types". Clear, example-driven, and always current with the latest compiler.',
+    link: { href: TS_DOCS, label: 'Open the Handbook →', external: true },
   },
   {
-    icon: '🧠', title: 'Same Foundations', titleClass: 'card-title-purple', subtitle: 'Different Data',
+    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Try In-Browser',
     description:
-      'Still weights, ReLU, softmax and gradient descent from the earlier days — reshaped for images. Convolution is the trick that made deep learning practical for vision.',
-    footer: 'image → conv → pool → ... → dense → softmax',
+      'Write TypeScript and watch the compiled JavaScript appear live beside it — no setup. The fastest way to build intuition for what the types actually do.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Lecture 43', titleClass: 'card-title-amber', subtitle: 'Day 41 Preview',
+    icon: '🔜', title: 'Next: Setup', titleClass: 'card-title-amber', subtitle: 'Day 41 Preview',
     description:
-      'The neural-net + LLM foundations continue in the STRIKE GenAI course — tokens, embeddings, attention and vision building toward the full picture.',
+      'Tomorrow — install TypeScript, initialise tsconfig.json, and run the compiler in watch mode so your project rebuilds on every save.',
     link: { href: '/day-041', label: 'Go to Day 41 →' },
   },
 ];
@@ -134,23 +135,23 @@ export default function Day040() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-039" className="day001-nav-btn day001-nav-prev">← Day 39</Link>
-          <p className="day001-datetime">Agentic AI Day 40</p>
+          <p className="day001-datetime">TypeScript Day 40</p>
           <Link to="/day-041" className="day001-nav-btn day001-nav-next">Day 41 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 42</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Introduction</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 40 <span aria-hidden="true">🔍</span></h1>
-              <p className="day001-day-theme">CONVOLUTIONAL NEURAL NETWORKS</p>
+              <h1 className="day001-day-num">DAY 40 <span aria-hidden="true">🔷</span></h1>
+              <p className="day001-day-theme">TYPESCRIPT — WHY &amp; WHAT</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -158,14 +159,12 @@ export default function Day040() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '40%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 42 — images break dense networks. A tiny <strong>28×28</strong> digit flattened to{' '}
-          <strong>784 inputs</strong> already needs <strong>100K+ weights</strong> in the first layer, and flattening{' '}
-          <strong>destroys which pixels are neighbours</strong>. Scale to 224×224 and it’s millions of weights.{' '}
-          <strong>Convolution</strong> fixes both: slide a small <strong>3×3 filter</strong> across the image to build{' '}
-          <strong>feature maps</strong> of edges and corners, <strong>reusing</strong> the same few weights everywhere
-          while keeping neighbours together. <strong>Pooling</strong> then shrinks each map without losing the pattern.
-          Stack conv + pool, finish with a small dense head + <strong>softmax</strong>, and the <code>"7"</code> neuron
-          fires at 0.89. <em>Same foundations — reshaped for vision.</em>
+          Year 1 begins. <strong>TypeScript</strong> is a <strong>typed superset of JavaScript</strong> — every valid
+          JS file is already valid TS, and you add <em>type annotations</em> on top. The compiler <code>tsc</code>{' '}
+          checks those types and catches bugs <strong>at compile time</strong>, then strips them and emits plain
+          JavaScript the browser runs. Thanks to <strong>type inference</strong> you don’t annotate everything — TS
+          figures out most types itself. The real payoff is <strong>tooling</strong>: autocomplete, safe refactors and
+          inline errors. This is the foundation for <em>React, Next.js, React Native and Express</em> all year.
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +179,12 @@ export default function Day040() {
           </ul>
         </section>
 
-        <CardSection icon="💥" title="WHY DENSE FAILS" cards={PROBLEM} columns={2} />
-        <CardSection icon="🔍" title="THE CNN IDEA" cards={CNN} columns={3} />
+        <CardSection icon="🔷" title="WHAT IS TYPESCRIPT" cards={WHAT} columns={2} />
+        <CardSection icon="⚙️" title="HOW IT WORKS" cards={HOW} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#CNN</span><span>#DeepLearning</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#WebDev</span><span>#JavaScript</span>
         </footer>
       </div>
     </div>

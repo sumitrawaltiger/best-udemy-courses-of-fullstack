@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const LANGGRAPH_JS = 'https://langchain-ai.github.io/langgraphjs/';
-const HITL = 'https://langchain-ai.github.io/langgraphjs/concepts/human_in_the_loop/';
+const USESTATE_TS = 'https://react.dev/learn/typescript#typing-usestate';
+const REACT_STATE = 'https://react.dev/learn/state-a-components-memory';
 
 const LEARNT_TODAY = [
-  { title: 'Where LCEL stops', text: 'a linear .pipe() chain can’t easily loop, branch, retry or pause — complex agents need real control flow' },
-  { title: 'State', text: 'a typed object that flows through the graph; each node reads it and returns updates to merge in' },
-  { title: 'Nodes', text: 'functions that do one step — validate, plan, act, finalize — taking state and returning a partial update' },
-  { title: 'Edges', text: 'connect nodes; conditional edges route to different nodes based on the current state' },
-  { title: 'Linear flow', text: 'the simplest graph: validate → plan → act → finalize, one node after another' },
-  { title: 'Branching & retries', text: 'loop back on failure, cap iterations with a max, and add error boundaries so agents don’t spin forever' },
-  { title: 'Checkpointing & replay', text: 'save state at each step so a run can resume, be inspected, or replayed after a crash' },
-  { title: 'Human-in-the-loop', text: 'pause at an approve node, wait for a human yes/no, then continue — safe for risky actions' },
+  { title: 'useState<T>', text: 'state is typed — const [n, setN] = useState<number>(0), or inferred from the initial value' },
+  { title: 'Inference', text: 'useState(0) infers number; pass the generic only when the initial value is null or ambiguous' },
+  { title: 'Union state', text: 'useState<User | null>(null) models "loading then loaded" safely' },
+  { title: 'Updater functions', text: 'setN(prev => prev + 1) keeps the previous-value type intact' },
+  { title: 'Controlled inputs', text: 'value + onChange with a typed ChangeEvent keeps form state and UI in sync' },
+  { title: 'Lifting state up', text: 'move shared state to a parent and pass typed props down — one source of truth' },
+  { title: 'Object & array state', text: 'type the shape once, then update immutably with spreads' },
+  { title: 'setState is stable', text: 'the setter identity never changes, so it’s safe in effect dependency arrays' },
 ];
 
-const WHY = [
+const STATE = [
   {
-    icon: '🚧', title: 'Why LCEL Isn’t Enough', titleClass: 'card-title-cyan', subtitle: 'Beyond A Line',
+    icon: '🔢', title: 'useState<T>', titleClass: 'card-title-cyan', subtitle: 'Typed State',
     description:
-      'LCEL pipes data straight through — perfect for fixed chains. But real agents loop, branch on results, retry failures and pause for approval. That needs a graph, not a line.',
-    code: '// LCEL: prompt → model → parser (one line)\n// agents need: loop, branch, retry, pause\n// → LangGraph state machine',
+      'useState infers its type from the initial value, so useState(0) is number. Pass the generic explicitly only when the initial value doesn’t reveal the type — like null.',
+    code: 'const [count, setCount] = useState(0);        // number\nconst [user, setUser] = useState<User | null>(null);\nsetCount(prev => prev + 1); // typed updater',
   },
   {
-    icon: '📦', title: 'State', titleClass: 'card-title-purple', subtitle: 'The Shared Object',
+    icon: '⌨️', title: 'Controlled Inputs', titleClass: 'card-title-purple', subtitle: 'value + onChange',
     description:
-      'A typed state object flows through the graph. Each node receives it and returns a partial update that LangGraph merges — a single source of truth for the whole run.',
-    code: '// types.ts\ninterface State {\n  input: string; plan?: string;\n  result?: string; approved?: boolean;\n}\n// nodes return Partial<State> to merge',
+      'A controlled input binds value to state and updates it through a typed onChange. State is the single source of truth, and the ChangeEvent gives you a correctly-typed target.',
+    code: 'const [name, setName] = useState("");\n<input value={name}\n  onChange={e => setName(e.target.value)} />',
   },
 ];
 
-const FLOW = [
+const PATTERNS = [
   {
-    icon: '➡️', title: 'Nodes & Edges', titleClass: 'card-title-cyan', subtitle: 'Steps + Routing',
+    icon: '⬆️', title: 'Lifting State Up', titleClass: 'card-title-cyan', subtitle: 'One Source Of Truth',
     description:
-      'Nodes are single-step functions (validate, plan, act, finalize). Edges connect them; conditional edges pick the next node from the current state — the graph’s decision points.',
-    code: 'graph.addNode("plan", planNode)\n     .addNode("act", actNode)\n     .addConditionalEdges("validate",\n        s => s.ok ? "plan" : "finalize");',
+      'When two components need the same data, move it to their nearest parent and pass it down as typed props with a typed setter. The types make the data-flow contract explicit.',
+    code: 'function Parent() {\n  const [q, setQ] = useState("");\n  return <Child q={q} onChange={setQ} />;\n}\n// Child props: { q: string; onChange: (v: string) => void }',
   },
   {
-    icon: '🔁', title: 'Branch · Retry · Bound', titleClass: 'card-title-purple', subtitle: 'Robust Loops',
+    icon: '🧩', title: 'Object & Array State', titleClass: 'card-title-purple', subtitle: 'Shape It Once',
     description:
-      'Loop back to retry a failed step, cap attempts with a max-iterations guard, and wrap nodes in error boundaries so a single failure degrades gracefully instead of hanging.',
-    code: '// on error → route back to "act" (retry)\n// track state.attempts, stop at MAX\n// error boundary → route to "finalize"',
+      'Type the state’s shape, then update it immutably with spreads so React detects the change. The type guards against forgetting a field or setting the wrong one.',
+    code: 'const [form, setForm] = useState({ name: "", age: 0 });\nsetForm(f => ({ ...f, age: 27 })); // typed, immutable',
   },
   {
-    icon: '⏸️', title: 'Checkpoint & HITL', titleClass: 'card-title-amber', subtitle: 'Resume · Approve',
+    icon: '🔗', title: 'Stable Setters', titleClass: 'card-title-amber', subtitle: 'Safe In Deps',
     description:
-      'Checkpointing saves state at each step so runs resume or replay after a crash. Human-in-the-loop pauses at an approve node until a person confirms — essential before risky actions.',
-    code: '// checkpointer saves state per step → replay\n// interrupt before "execute" → await human\n// approved? continue : cancel',
+      'React guarantees the setter from useState keeps the same identity across renders, so it’s safe to list in an effect’s dependency array without causing loops.',
+    code: 'useEffect(() => {\n  setUser(fetchedUser);\n}, [setUser]); // setUser never changes',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '🕸️', title: 'LangGraph.js', titleClass: 'card-title-cyan', subtitle: 'State Machines',
+    icon: '📘', title: 'Typing useState', titleClass: 'card-title-cyan', subtitle: 'react.dev',
     description:
-      'The graph framework for stateful, controllable agents — nodes, edges, checkpointing and streaming.',
-    link: { href: LANGGRAPH_JS, label: 'Open LangGraph.js docs →', external: true },
+      'The official note on typing state — inference, explicit generics, and union types for loading/loaded states.',
+    link: { href: USESTATE_TS, label: 'Open the useState guide →', external: true },
   },
   {
-    icon: '🧑‍⚖️', title: 'Human-in-the-Loop', titleClass: 'card-title-purple', subtitle: 'Approvals',
+    icon: '🧠', title: 'State: A Memory', titleClass: 'card-title-purple', subtitle: 'react.dev',
     description:
-      'Interrupt a graph, wait for human approval, then resume — the pattern that makes autonomous agents safe.',
-    link: { href: HITL, label: 'Open the HITL guide →', external: true },
+      'React’s mental model for state — why it triggers re-renders, and how to structure it — the concepts behind the types.',
+    link: { href: REACT_STATE, label: 'Open the State guide →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Orchestration', titleClass: 'card-title-amber', subtitle: 'Day 53 Preview',
+    icon: '🔜', title: 'Next: Hooks', titleClass: 'card-title-amber', subtitle: 'Day 53 Preview',
     description:
-      'Tomorrow — build a real LangGraph.js graph: typed state, nodes (validate → plan → approve → execute → finalize), an HTTP route, and a Next.js inspector.',
+      'Tomorrow — typing the other hooks: useEffect, useRef<T>, useContext and building your own typed custom hooks.',
     link: { href: '/day-053', label: 'Go to Day 53 →' },
   },
 ];
@@ -135,23 +135,23 @@ export default function Day052() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-051" className="day001-nav-btn day001-nav-prev">← Day 51</Link>
-          <p className="day001-datetime">Agentic AI Day 52</p>
+          <p className="day001-datetime">TypeScript Day 52</p>
           <Link to="/day-053" className="day001-nav-btn day001-nav-next">Day 53 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>LangGraph.js</span><span>State Machines</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>React State</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 52 <span aria-hidden="true">🕸️</span></h1>
-              <p className="day001-day-theme">LANGGRAPH FUNDAMENTALS</p>
+              <h1 className="day001-day-num">DAY 52 <span aria-hidden="true">🔢</span></h1>
+              <p className="day001-day-theme">TYPED STATE &amp; CONTROLLED INPUTS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -159,13 +159,13 @@ export default function Day052() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '52%' }} /></div>
 
         <p className="day001-summary">
-          When a linear <strong>LCEL</strong> chain isn’t enough. Complex agents need to <strong>loop, branch, retry
-          and pause</strong> — that’s a <strong>graph</strong>, not a line. The mental model is simple:{' '}
-          <strong>state</strong> (a typed object that flows through), <strong>nodes</strong> (single steps like
-          validate → plan → act → finalize), and <strong>edges</strong> (with conditional routing on the state). Add{' '}
-          <strong>branching, retries and max-iterations</strong> with error boundaries so agents stay robust, then{' '}
-          <strong>checkpointing</strong> for resume/replay and <strong>human-in-the-loop</strong> approvals before
-          risky actions. <em>Next: build a real graph end to end.</em>
+          State, fully typed. <strong>useState</strong> infers its type from the initial value — <code>useState(0)</code>{' '}
+          is <code>number</code> — and you pass a generic (<code>useState&lt;User | null&gt;(null)</code>) only when
+          the value is ambiguous, which neatly models <em>loading → loaded</em>. Updater functions{' '}
+          (<code>setN(p =&gt; p + 1)</code>) keep the previous-value type. <strong>Controlled inputs</strong> bind{' '}
+          <code>value</code> + a typed <code>onChange</code>, and <strong>lifting state up</strong> passes typed props
+          to a shared parent. Update objects and arrays <strong>immutably</strong> with spreads — the types stop you
+          dropping a field. <em>Next: the rest of the hooks.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +180,12 @@ export default function Day052() {
           </ul>
         </section>
 
-        <CardSection icon="🚧" title="WHY A GRAPH" cards={WHY} columns={2} />
-        <CardSection icon="🕸️" title="NODES · EDGES · STATE" cards={FLOW} columns={3} />
+        <CardSection icon="🔢" title="useState & INPUTS" cards={STATE} columns={2} />
+        <CardSection icon="⬆️" title="STATE PATTERNS" cards={PATTERNS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#LangGraph</span><span>#StateMachine</span><span>#TypeScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#React</span><span>#useState</span>
         </footer>
       </div>
     </div>

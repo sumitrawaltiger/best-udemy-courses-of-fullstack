@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TOOLS = 'https://js.langchain.com/docs/concepts/tools/';
-const TAVILY = 'https://docs.tavily.com/';
+const TS_MODULES = 'https://www.typescriptlang.org/docs/handbook/2/modules.html';
+const TYPESCRIPT_ESLINT = 'https://typescript-eslint.io/';
 
 const LEARNT_TODAY = [
-  { title: 'First tool-using agent', text: 'a Search v1 that decides: answer directly, or go to the web — then returns strict JSON' },
-  { title: 'The routing decision', text: 'a cheap classifier step chooses "direct" vs "search" so we only pay for the web when needed' },
-  { title: 'Typed tool schemas', text: 'Zod schemas for search results, open-url and summaries — tools have contracts, not loose args' },
-  { title: 'Tavily integration', text: 'wrap a web-search API (Tavily or similar) as a LangChain tool the agent can call' },
-  { title: 'The LCEL pipeline', text: 'route → fetch → summarize → validate → return, composed with .pipe() as one chain' },
-  { title: 'Summaries, not dumps', text: 'the agent condenses fetched pages into a grounded answer, not a wall of raw text' },
-  { title: 'Strict JSON out', text: 'every response is schema-validated — { answer, sources, usedSearch } for any UI' },
-  { title: 'HTTP + UI', text: 'expose it as a /search endpoint and wire a simple Next.js page to call it' },
+  { title: 'ES modules', text: 'each file is a module; export what others need, import what you use' },
+  { title: 'Named vs default exports', text: 'named exports for many symbols, a single default for the main one — prefer named for refactors' },
+  { title: 'Type-only imports', text: 'import type { User } makes it explicit that an import is erased at compile time' },
+  { title: 'Path aliases', text: 'tsconfig paths turn ../../utils into @/utils for clean, stable imports' },
+  { title: '.d.ts declaration files', text: 'ambient type files describe JS libraries so TypeScript understands them' },
+  { title: 'ESLint', text: 'typescript-eslint catches bug-prone patterns beyond what the compiler checks' },
+  { title: 'Prettier', text: 'an opinionated formatter — stop arguing about style, format on save' },
+  { title: 'tsx / ts-node', text: 'run .ts files directly in dev without a separate build step' },
 ];
 
-const ROUTE = [
+const MODULES = [
   {
-    icon: '🔀', title: 'Route First', titleClass: 'card-title-cyan', subtitle: 'Direct vs Search',
+    icon: '📦', title: 'import / export', titleClass: 'card-title-cyan', subtitle: 'ES Modules',
     description:
-      'A quick, cheap classifier decides whether the question needs live web data or can be answered directly. Routing keeps the agent fast and avoids paying for search on trivial queries.',
-    code: '// classify(question) → "direct" | "search"\n// direct → answer from the model\n// search → run the web tool, then summarise',
+      'Every file is a module. Export the symbols others need and import the ones you use. Prefer named exports — they rename safely and autocomplete better than a default.',
+    code: '// math.ts\nexport const add = (a: number, b: number) => a + b;\nexport default class Calc {}\n\n// app.ts\nimport Calc, { add } from "./math";',
   },
   {
-    icon: '📐', title: 'Typed Tool Schemas', titleClass: 'card-title-purple', subtitle: 'Contracts, Not Args',
+    icon: '🏷️', title: 'Type-Only Imports', titleClass: 'card-title-purple', subtitle: 'Erased At Build',
     description:
-      'Each tool declares a Zod schema — search results, open-url, summary. The model must fill the schema to call a tool, so inputs and outputs stay validated end to end.',
-    code: 'const SearchResult = z.object({\n  title: z.string(), url: z.string().url(),\n  snippet: z.string(),\n});\n// tools carry schemas → predictable calls',
+      'import type makes it explicit that you’re importing only a type — it’s stripped from the output and never causes a runtime dependency. Path aliases keep imports short and stable.',
+    code: 'import type { User } from "./types";\nimport { getUser } from "@/lib/user"; // path alias\n// "@/*" mapped in tsconfig "paths"',
   },
 ];
 
-const PIPE = [
+const TOOLING = [
   {
-    icon: '🌐', title: 'Tavily As A Tool', titleClass: 'card-title-cyan', subtitle: 'Web Search',
+    icon: '🧹', title: 'ESLint', titleClass: 'card-title-cyan', subtitle: 'Catch Bad Patterns',
     description:
-      'Wrap a search API (Tavily works well for agents) as a LangChain tool. The agent calls it like any other tool and gets back typed results to reason over.',
-    code: 'const search = tool(async ({ query }) => tavily(query), {\n  name: "web_search",\n  schema: z.object({ query: z.string() }),\n});',
+      'typescript-eslint adds type-aware lint rules on top of the compiler — no-floating-promises, no-explicit-any and more. It flags mistakes tsc alone won’t.',
+    code: '# setup\nnpm i -D eslint typescript-eslint\n// eslint.config.js → recommended rules\n// then: npx eslint src',
   },
   {
-    icon: '⛓️', title: 'The LCEL Pipeline', titleClass: 'card-title-purple', subtitle: 'Route → Fetch → Sum',
+    icon: '💅', title: 'Prettier', titleClass: 'card-title-purple', subtitle: 'Format On Save',
     description:
-      'One LCEL chain ties it together: route the query, fetch results if needed, summarise into a grounded answer, then validate against the schema before returning.',
-    code: '// route → (search? fetch results) → summarise\n// → StructuredOutput({ answer, sources, usedSearch })\n// all composed with .pipe()',
+      'Prettier reformats code to one consistent style automatically. Wire it to format on save and code reviews stop being about spacing and quotes.',
+    code: '# setup\nnpm i -D prettier\n// .prettierrc → { "singleQuote": true }\n// format on save in your editor',
   },
   {
-    icon: '🖥️', title: '/search + Next.js', titleClass: 'card-title-amber', subtitle: 'Endpoint & UI',
+    icon: '⚡', title: 'Run With tsx', titleClass: 'card-title-amber', subtitle: 'No Build Step',
     description:
-      'Expose the chain as a POST /search endpoint returning strict JSON, and wire a minimal Next.js page: type a query, see the answer and its sources.',
-    code: '// POST /search { question }\n// → { answer, sources[], usedSearch }\n// Next.js page renders answer + source links',
+      'In development, tsx (or ts-node) executes TypeScript directly, so you skip a manual compile while iterating. Build to JS with tsc for production.',
+    code: '# dev — run TS directly\nnpx tsx watch src/index.ts\n\n# prod — compile then run\nnpx tsc && node dist/index.js',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'LangChain Tools', titleClass: 'card-title-cyan', subtitle: 'tool() + schemas',
+    icon: '📘', title: 'Modules', titleClass: 'card-title-cyan', subtitle: 'Handbook',
     description:
-      'How to define tools with Zod schemas and let a model call them — the backbone of every agent from here on.',
-    link: { href: TOOLS, label: 'Open the tools guide →', external: true },
+      'The TypeScript modules chapter — export/import forms, type-only imports, module resolution and declaration files, with examples.',
+    link: { href: TS_MODULES, label: 'Open the Modules docs →', external: true },
   },
   {
-    icon: '🔎', title: 'Tavily', titleClass: 'card-title-purple', subtitle: 'Search API',
+    icon: '🧹', title: 'typescript-eslint', titleClass: 'card-title-purple', subtitle: 'Linting',
     description:
-      'A search API built for LLM agents — clean, rankable results that summarise well. Swap in any equivalent.',
-    link: { href: TAVILY, label: 'Open Tavily docs →', external: true },
+      'The official ESLint tooling for TypeScript — setup, recommended configs, and the type-aware rules that catch real bugs.',
+    link: { href: TYPESCRIPT_ESLINT, label: 'Open typescript-eslint →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: RAG Fundamentals', titleClass: 'card-title-amber', subtitle: 'Day 50 Preview',
+    icon: '🔜', title: 'Next: Async TypeScript', titleClass: 'card-title-amber', subtitle: 'Day 50 Preview',
     description:
-      'Tomorrow — a no-buzzword explanation of RAG: ingestion vs query, chunking & embeddings, and vector-store concepts.',
+      'Tomorrow — typing asynchronous code: Promise<T>, async/await, typed fetch and handling errors safely with unknown in catch.',
     link: { href: '/day-050', label: 'Go to Day 50 →' },
   },
 ];
@@ -135,23 +135,23 @@ export default function Day049() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-048" className="day001-nav-btn day001-nav-prev">← Day 48</Link>
-          <p className="day001-datetime">Agentic AI Day 49</p>
+          <p className="day001-datetime">TypeScript Day 49</p>
           <Link to="/day-050" className="day001-nav-btn day001-nav-next">Day 50 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>LangChain.js</span><span>Tool-Calling</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Modules &amp; Tooling</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 49 <span aria-hidden="true">🔎</span></h1>
-              <p className="day001-day-theme">TOOL-CALLING 101 — SEARCH v1 (LCEL)</p>
+              <h1 className="day001-day-num">DAY 49 <span aria-hidden="true">📦</span></h1>
+              <p className="day001-day-theme">MODULES &amp; TOOLING</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -159,13 +159,12 @@ export default function Day049() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '49%' }} /></div>
 
         <p className="day001-summary">
-          The first tool-using agent. <strong>Search v1</strong> decides whether to{' '}
-          <strong>answer directly or search the web</strong> — a cheap routing step so we only pay for search when
-          it’s needed. Tools carry <strong>typed Zod schemas</strong> (search results, open-url, summaries), and{' '}
-          <strong>Tavily</strong> is wrapped as a LangChain tool. One <strong>LCEL pipeline</strong> routes, fetches,{' '}
-          <strong>summarises</strong> into a grounded answer, and validates to strict JSON —{' '}
-          <code>{'{ answer, sources, usedSearch }'}</code>. Finally, expose it as a <strong>/search</strong> endpoint
-          and call it from a simple <strong>Next.js</strong> UI. <em>Next: RAG from first principles.</em>
+          Real projects need structure and tooling. Every file is an <strong>ES module</strong>: prefer{' '}
+          <strong>named exports</strong> (they refactor cleanly), use <code>import type</code> for types that should be{' '}
+          <strong>erased</strong> at build, and set <strong>path aliases</strong> (<code>@/utils</code>) in tsconfig.
+          On the tooling side, <strong>ESLint</strong> (typescript-eslint) catches bug-prone patterns the compiler
+          misses, <strong>Prettier</strong> formats on save so reviews aren’t about spacing, and <strong>tsx</strong>{' '}
+          runs <code>.ts</code> directly in dev while <code>tsc</code> builds for production. <em>Next: async code.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +179,12 @@ export default function Day049() {
           </ul>
         </section>
 
-        <CardSection icon="🔀" title="ROUTE & SCHEMAS" cards={ROUTE} columns={2} />
-        <CardSection icon="⛓️" title="THE SEARCH PIPELINE" cards={PIPE} columns={3} />
+        <CardSection icon="📦" title="ES MODULES" cards={MODULES} columns={2} />
+        <CardSection icon="🧹" title="LINT · FORMAT · RUN" cards={TOOLING} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#ToolCalling</span><span>#LCEL</span><span>#LangChain</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#ESLint</span><span>#Prettier</span>
         </footer>
       </div>
     </div>

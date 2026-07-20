@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const RAG = 'https://js.langchain.com/docs/tutorials/rag/';
-const EMBEDDINGS = 'https://js.langchain.com/docs/concepts/embedding_models/';
+const REACT_TS = 'https://react.dev/learn/typescript';
+const VITE_TS = 'https://vite.dev/guide/';
 
 const LEARNT_TODAY = [
-  { title: 'A real (small) RAG system', text: 'build the whole loop in JS with no heavy infra — a docs helper you can actually run' },
-  { title: 'Character chunker', text: 'split pasted docs into overlapping character windows — simple, predictable, good enough' },
-  { title: 'In-memory vector store', text: 'keep chunk vectors in an array; search by cosine similarity — no database to learn RAG' },
-  { title: 'Pluggable embeddings', text: 'the store takes any embedder (OpenAI or Gemini) behind one interface, swappable by config' },
-  { title: '/kb/ingest', text: 'accept documents, chunk, embed and store them — the ingestion endpoint' },
-  { title: '/kb/ask', text: 'embed the question, retrieve top-k, answer grounded in those chunks with citations' },
-  { title: '/kb/reset', text: 'clear the store to start a fresh knowledge base' },
-  { title: 'Cited answers + confidence', text: 'return the sources used and a confidence score, then show them in a Next.js tab' },
+  { title: 'React + TS project', text: 'npm create vite@latest with the react-ts template gives typed React in seconds' },
+  { title: '.tsx files', text: 'components live in .tsx — TypeScript files that can contain JSX' },
+  { title: 'JSX is typed', text: 'attributes, children and event handlers are all type-checked against the DOM' },
+  { title: 'Function components', text: 'a component is just a function returning JSX — annotate its props, that’s it' },
+  { title: 'JSX.Element / ReactNode', text: 'return types and children have real types you rarely need to write by hand' },
+  { title: 'Typed events', text: 'onClick gets React.MouseEvent, onChange gets React.ChangeEvent — autocompleted' },
+  { title: 'No PropTypes needed', text: 'TypeScript replaces runtime PropTypes with compile-time checks' },
+  { title: 'Editor superpowers', text: 'autocomplete on props and hooks is where React + TS really pays off' },
 ];
 
-const STORE = [
+const SETUP = [
   {
-    icon: '✂️', title: 'Character Chunker', titleClass: 'card-title-cyan', subtitle: 'Overlapping Windows',
+    icon: '⚡', title: 'Vite react-ts', titleClass: 'card-title-cyan', subtitle: 'Zero-Config Start',
     description:
-      'A tiny splitter walks the text in fixed-size windows with a small overlap so no idea is cut in half. No dependencies — just enough to retrieve precisely.',
-    code: 'function chunk(text, size = 800, overlap = 100) {\n  const out = [];\n  for (let i = 0; i < text.length; i += size - overlap)\n    out.push(text.slice(i, i + size));\n  return out;\n}',
+      'Scaffold a typed React app in one command. Vite wires up TypeScript, JSX and fast HMR, so you write .tsx components immediately with full type-checking.',
+    code: 'npm create vite@latest my-app -- \\\n  --template react-ts\ncd my-app && npm i && npm run dev',
   },
   {
-    icon: '🗃️', title: 'In-Memory Vector Store', titleClass: 'card-title-purple', subtitle: 'Cosine Search',
+    icon: '🧱', title: 'A Typed Component', titleClass: 'card-title-purple', subtitle: '.tsx + JSX',
     description:
-      'Store each chunk with its vector and metadata in an array. To retrieve, embed the query and rank by cosine similarity. Pluggable embeddings mean OpenAI or Gemini, swapped by config.',
-    code: '// store: [{ text, vec, meta }]\n// search(q): rank by cosine(qVec, vec)\n// embeddings = getEmbedder("openai" | "gemini")',
+      'A component is a function returning JSX. In a .tsx file, JSX attributes and children are type-checked — a typo in a prop or a wrong element becomes a compile error.',
+    code: 'function Hello() {\n  return <h1>Hello, TypeScript!</h1>;\n}\n// JSX attributes are checked against the DOM',
   },
 ];
 
-const API = [
+const TYPING = [
   {
-    icon: '📥', title: '/kb/ingest', titleClass: 'card-title-cyan', subtitle: 'Add Documents',
+    icon: '📨', title: 'Typing Props', titleClass: 'card-title-cyan', subtitle: 'interface Props',
     description:
-      'POST documents; the endpoint chunks, embeds and stores them. Paste a policy, a README, a spec — it becomes searchable knowledge.',
-    code: '// POST /kb/ingest { text, source }\n// → chunk → embed → push to store\n// → { added: n }',
+      'Describe a component’s inputs with an interface (or type) and destructure them in the signature. JSX usage is then checked and autocompleted at every call site.',
+    code: 'interface GreetProps { name: string; excited?: boolean }\nfunction Greet({ name, excited }: GreetProps) {\n  return <p>Hi {name}{excited ? "!" : ""}</p>;\n}',
   },
   {
-    icon: '❓', title: '/kb/ask', titleClass: 'card-title-purple', subtitle: 'Grounded Answers',
+    icon: '🖱️', title: 'Typed Events', titleClass: 'card-title-purple', subtitle: 'React.*Event',
     description:
-      'Embed the question, pull the top-k chunks, and answer strictly from them. Return the answer, the sources cited, and a confidence score — all schema-validated.',
-    code: '// POST /kb/ask { question }\n// → retrieve top-k → answer from chunks\n// → { answer, sources[], confidence }',
+      'Event handlers receive typed events — React.MouseEvent for clicks, React.ChangeEvent for inputs — so e.target and its value autocomplete correctly.',
+    code: 'function onChange(e: React.ChangeEvent<HTMLInputElement>) {\n  console.log(e.target.value);\n}\n<input onChange={onChange} />',
   },
   {
-    icon: '🧹', title: '/kb/reset + UI', titleClass: 'card-title-amber', subtitle: 'Fresh Start · Next.js',
+    icon: '👶', title: 'children & ReactNode', titleClass: 'card-title-amber', subtitle: 'Composition',
     description:
-      '/kb/reset clears the store for a new knowledge base. A Next.js tab ties it together: paste docs, ask questions, and see grounded answers with their sources.',
-    code: '// POST /kb/reset → store = []\n// Next.js tab: paste → ingest → ask\n// → answer + source chips + confidence',
+      'When a component wraps others, type its children as React.ReactNode — the catch-all for anything renderable, from strings to elements to arrays.',
+    code: 'interface CardProps { children: React.ReactNode }\nfunction Card({ children }: CardProps) {\n  return <div className="card">{children}</div>;\n}',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'RAG Tutorial', titleClass: 'card-title-cyan', subtitle: 'LangChain.js',
+    icon: '📘', title: 'React + TypeScript', titleClass: 'card-title-cyan', subtitle: 'react.dev',
     description:
-      'The end-to-end RAG walkthrough — loaders, splitters, vector stores and retrievers you can graduate to after this light build.',
-    link: { href: RAG, label: 'Open the RAG tutorial →', external: true },
+      'The official React guide to using TypeScript — typing props, hooks, events and children, straight from the React team.',
+    link: { href: REACT_TS, label: 'Open React + TS docs →', external: true },
   },
   {
-    icon: '🧭', title: 'Embeddings', titleClass: 'card-title-purple', subtitle: 'Pluggable',
+    icon: '⚡', title: 'Vite Guide', titleClass: 'card-title-purple', subtitle: 'Tooling',
     description:
-      'Swap OpenAI and Gemini embedders behind one interface — the same idea that makes the store provider-agnostic.',
-    link: { href: EMBEDDINGS, label: 'Open the embeddings guide →', external: true },
+      'How Vite scaffolds and serves a React + TypeScript app — templates, HMR and the build pipeline for Year-1 projects.',
+    link: { href: VITE_TS, label: 'Open the Vite guide →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: LangGraph', titleClass: 'card-title-amber', subtitle: 'Day 52 Preview',
+    icon: '🔜', title: 'Next: Props & State', titleClass: 'card-title-amber', subtitle: 'Day 52 Preview',
     description:
-      'Tomorrow — LangGraph fundamentals: why LCEL alone isn’t enough, and state / nodes / edges as a mental model for complex agents.',
+      'Tomorrow — typed state with useState<T>, lifting state up, and controlled inputs with fully-typed change handlers.',
     link: { href: '/day-052', label: 'Go to Day 52 →' },
   },
 ];
@@ -135,23 +135,23 @@ export default function Day051() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-050" className="day001-nav-btn day001-nav-prev">← Day 50</Link>
-          <p className="day001-datetime">Agentic AI Day 51</p>
+          <p className="day001-datetime">TypeScript Day 51</p>
           <Link to="/day-052" className="day001-nav-btn day001-nav-next">Day 52 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>RAG</span><span>Project</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>React</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 51 <span aria-hidden="true">🗃️</span></h1>
-              <p className="day001-day-theme">LIGHT RAG — DOCS HELPER PROJECT</p>
+              <h1 className="day001-day-num">DAY 51 <span aria-hidden="true">⚛️</span></h1>
+              <p className="day001-day-theme">REACT WITH TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -159,13 +159,13 @@ export default function Day051() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '51%' }} /></div>
 
         <p className="day001-summary">
-          Build a real RAG system — small, in JS, no heavy infra. A <strong>character chunker</strong> splits pasted
-          docs into overlapping windows; an <strong>in-memory vector store</strong> keeps the chunk vectors and
-          searches by <strong>cosine similarity</strong>, with <strong>pluggable embeddings</strong> (OpenAI/Gemini).
-          Three endpoints run it: <strong>/kb/ingest</strong> (chunk → embed → store),{' '}
-          <strong>/kb/ask</strong> (retrieve top-k → grounded answer with <strong>citations + confidence</strong>),
-          and <strong>/kb/reset</strong>. A <strong>Next.js</strong> tab wires it up: paste docs, ask, and see
-          answers with their sources. <em>Next: LangGraph for real control flow.</em>
+          TypeScript meets React — the heart of Year 1. Scaffold with <strong>Vite’s react-ts</strong> template and
+          write components in <strong>.tsx</strong> files, where <strong>JSX is type-checked</strong>: attributes,
+          children and handlers all validated against the DOM. A component is just a function returning JSX; you{' '}
+          <strong>type its props</strong> with an <code>interface</code> and destructure them. Events come typed
+          (<code>React.ChangeEvent</code>, <code>React.MouseEvent</code>), and <code>children</code> use{' '}
+          <strong>React.ReactNode</strong>. No more runtime PropTypes — the compiler and editor autocomplete every prop
+          and hook. <em>Next: typed state.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +180,12 @@ export default function Day051() {
           </ul>
         </section>
 
-        <CardSection icon="🗃️" title="CHUNKER & STORE" cards={STORE} columns={2} />
-        <CardSection icon="🔌" title="THE /kb APIs" cards={API} columns={3} />
+        <CardSection icon="⚡" title="PROJECT & COMPONENTS" cards={SETUP} columns={2} />
+        <CardSection icon="📨" title="TYPING PROPS & EVENTS" cards={TYPING} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#AgenticAI</span><span>#RAG</span><span>#VectorStore</span><span>#TypeScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#React</span><span>#Vite</span>
         </footer>
       </div>
     </div>
