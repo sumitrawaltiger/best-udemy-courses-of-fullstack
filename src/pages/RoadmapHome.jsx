@@ -159,7 +159,7 @@ export default function RoadmapHome() {
         style={{ margin: '0 auto 4px', textAlign: 'center', maxWidth: '780px' }}
       >
         <img
-          src="/roadmap-notes/1500-day-roadmap.jpg"
+          src="/roadmap-notes/1500-day-roadmap-v2.jpg"
           alt="The 1500-Day Roadmap to Full-Stack & DevOps — 39 days of Gen AI with JavaScript plus a 4-year coding journey (TypeScript, Python, Java, DevOps)"
           loading="lazy"
           style={{
