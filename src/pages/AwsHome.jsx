@@ -51,6 +51,15 @@ export default function AwsHome() {
                 >
                   📄 CCP Exam Slides (PDF)
                 </a>
+                <a
+                  href="/aws-certified-developer-associate.pdf"
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-aws btn-lg"
+                >
+                  📄 Developer Associate (PDF)
+                </a>
                 <Link to="/java" className="btn btn-outline-aws btn-lg">
                   ← Java & Spring
                 </Link>
