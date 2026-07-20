@@ -6210,3 +6210,23 @@ a:hover {
   color: #c4b5fd;
   border-bottom: 1px solid #2a2140;
 }
+
+/* ── DSA Handwritten Notes banner (Interview home) ─────────────── */
+.dsa-notes-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 18px 0 6px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  background:
+    radial-gradient(600px 200px at 90% 0%, rgba(167, 139, 250, 0.12), transparent 60%),
+    rgba(34, 211, 238, 0.07);
+}
+.dsa-notes-banner-text { display: flex; flex-direction: column; gap: 4px; max-width: 620px; }
+.dsa-notes-banner-text strong { font-size: 1.05rem; }
+.dsa-notes-banner-text span { color: var(--text-muted, #93a3b8); font-size: 0.9rem; line-height: 1.5; }
+.dsa-notes-banner-actions { display: flex; flex-wrap: wrap; gap: 10px; }

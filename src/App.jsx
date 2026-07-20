@@ -140,6 +140,7 @@ import PrereqDay from './pages/PrereqDay';
 import TypescriptSeries from './pages/TypescriptSeries';
 import TypescriptDay from './pages/TypescriptDay';
 import JavaRoadmap from './pages/JavaRoadmap';
+import DsaNotes from './pages/DsaNotes';
 
 export default function App() {
   return (
@@ -292,6 +293,7 @@ export default function App() {
           <Route path="k8s" element={<K8sHome />} />
           <Route path="k8s/learn/:slug" element={<Chapter track="k8s" />} />
           <Route path="interview" element={<InterviewHome />} />
+          <Route path="interview/dsa-notes" element={<DsaNotes />} />
           <Route path="interview/learn/:slug" element={<Chapter track="interview" />} />
           <Route path="mobile" element={<MobileHome />} />
           <Route path="mobile/learn/:slug" element={<Chapter track="mobile" />} />

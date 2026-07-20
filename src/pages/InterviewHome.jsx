@@ -23,6 +23,9 @@ export default function InterviewHome() {
                 >
                   Start IP Module 1
                 </Link>
+                <Link to="/interview/dsa-notes" className="btn btn-interview btn-lg">
+                  📝 DSA Handwritten Notes
+                </Link>
                 <a
                   href={INTERVIEW_META.chaicodeUrl}
                   target="_blank"
@@ -76,6 +79,24 @@ export default function InterviewHome() {
             <strong>39 days of Gen AI → TypeScript → Python → Java → DevOps</strong>.{' '}
             {interviewChapters.length} modules on this track support these phases.
           </p>
+
+          <div className="dsa-notes-banner">
+            <div className="dsa-notes-banner-text">
+              <strong>📝 DSA Handwritten Notes</strong>
+              <span>
+                9 pages of quick-revision notes — complexity, arrays, linked lists, trees, graphs, DP,
+                sorting, interview patterns &amp; advanced trees.
+              </span>
+            </div>
+            <div className="dsa-notes-banner-actions">
+              <Link to="/interview/dsa-notes" className="btn btn-interview">
+                Read the notes
+              </Link>
+              <a href="/dsa-notes/dsa-handwritten-notes.pdf" download className="btn btn-outline-interview">
+                📥 Download PDF
+              </a>
+            </div>
+          </div>
           <div className="roadmap-grid roadmap-interview">
             {interviewChapters.map((ch) => (
               <div key={ch.slug} className="roadmap-day published" title={ch.title}>
