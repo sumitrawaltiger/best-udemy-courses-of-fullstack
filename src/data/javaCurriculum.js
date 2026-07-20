@@ -1383,6 +1383,8 @@ function buildLessons() {
       if (title === 'Spring Data JPA') {
         lesson.sections = [...SPRING_DATA_JPA_SECTIONS, ...MONGODB_SPRING_BOOT_SECTIONS];
         lesson.extraLinks = [embarkxLink];
+        lesson.pdfUrl = '/java-notes/mongodb-spring-boot.pdf';
+        lesson.pdfLabel = 'MongoDB + Spring Boot (PDF)';
       }
       if (title === 'Spring Security Basics') {
         lesson.sections = SPRING_SECURITY_SECTIONS;
