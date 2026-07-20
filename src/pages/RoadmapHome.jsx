@@ -141,8 +141,8 @@ export default function RoadmapHome() {
         <p className="roadmap-hero-sub">
           <strong>39 days</strong> of Gen AI with JavaScript, then a <strong>4-year coding journey</strong> —{' '}
           <strong>TypeScript → Python → Java → DevOps</strong>, one year each. One morning at a time,{' '}
-          <strong>5:00–8:00 AM</strong> (Bangkok, UTC+7). Day 1 is <strong>24 Jul 2026</strong> and day 1500 lands
-          on <strong>31 Aug 2030</strong>.
+          <strong>5:00–8:00 AM</strong> (Indian Standard Time, UTC+5:30). Day 1 is <strong>24 Jul 2026</strong> and day
+          1500 lands on <strong>31 Aug 2030</strong>.
         </p>
         <div className="roadmap-stats">
           {STATS.map((s) => (
@@ -153,6 +153,31 @@ export default function RoadmapHome() {
           ))}
         </div>
       </section>
+
+      <figure
+        className="roadmap-poster"
+        style={{ margin: '0 auto 4px', textAlign: 'center', maxWidth: '780px' }}
+      >
+        <img
+          src="/roadmap-notes/1500-day-roadmap.jpg"
+          alt="The 1500-Day Roadmap to Full-Stack & DevOps — 39 days of Gen AI with JavaScript plus a 4-year coding journey (TypeScript, Python, Java, DevOps)"
+          loading="lazy"
+          style={{
+            width: '100%',
+            height: 'auto',
+            borderRadius: '16px',
+            border: '1px solid rgba(255,255,255,0.12)',
+            boxShadow: '0 14px 44px rgba(0,0,0,0.45)',
+          }}
+          onError={(e) => {
+            const fig = e.currentTarget.closest('.roadmap-poster');
+            if (fig) fig.style.display = 'none';
+          }}
+        />
+        <figcaption style={{ marginTop: '10px', fontSize: '0.8rem', opacity: 0.6 }}>
+          The full journey at a glance
+        </figcaption>
+      </figure>
 
       <div className="roadmap-timeline">
         {PHASES.map((phase) => (

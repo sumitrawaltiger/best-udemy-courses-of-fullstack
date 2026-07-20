@@ -29,7 +29,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Study routine',
-    text: 'locked the routine: wake 4:00 AM, study 5:00–8:00 AM Bangkok time (3 hrs/day), every single day',
+    text: 'locked the routine: wake 4:00 AM, study 5:00–8:00 AM IST (UTC+5:30, 3 hrs/day), every single day',
   },
   {
     title: 'The roadmap',
@@ -125,7 +125,7 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-amber',
     subtitle: '4 AM Wake · 5–8 AM Study',
     description:
-      'Wake at 4:00 AM, then study 5:00–8:00 AM Bangkok time — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1500 days.',
+      'Wake at 4:00 AM, then study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1500 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
