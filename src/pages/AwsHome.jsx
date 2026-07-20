@@ -69,6 +69,15 @@ export default function AwsHome() {
                 >
                   📄 CloudOps Associate (PDF)
                 </a>
+                <a
+                  href="/aws-basics.pdf"
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-aws btn-lg"
+                >
+                  📄 AWS Basics (PDF)
+                </a>
                 <Link to="/java" className="btn btn-outline-aws btn-lg">
                   ← Java & Spring
                 </Link>
