@@ -29,6 +29,45 @@ import Day014 from './pages/Day014';
 import Day015 from './pages/Day015';
 import Day016 from './pages/Day016';
 import Day017 from './pages/Day017';
+import GenaiDay01 from './pages/GenaiDay01';
+import GenaiDay02 from './pages/GenaiDay02';
+import GenaiDay03 from './pages/GenaiDay03';
+import GenaiDay04 from './pages/GenaiDay04';
+import GenaiDay05 from './pages/GenaiDay05';
+import GenaiDay06 from './pages/GenaiDay06';
+import GenaiDay07 from './pages/GenaiDay07';
+import GenaiDay08 from './pages/GenaiDay08';
+import GenaiDay09 from './pages/GenaiDay09';
+import GenaiDay10 from './pages/GenaiDay10';
+import GenaiDay11 from './pages/GenaiDay11';
+import GenaiDay12 from './pages/GenaiDay12';
+import GenaiDay13 from './pages/GenaiDay13';
+import GenaiDay14 from './pages/GenaiDay14';
+import GenaiDay15 from './pages/GenaiDay15';
+import GenaiDay16 from './pages/GenaiDay16';
+import GenaiDay17 from './pages/GenaiDay17';
+import GenaiDay18 from './pages/GenaiDay18';
+import GenaiDay19 from './pages/GenaiDay19';
+import GenaiDay20 from './pages/GenaiDay20';
+import GenaiDay21 from './pages/GenaiDay21';
+import GenaiDay22 from './pages/GenaiDay22';
+import GenaiDay23 from './pages/GenaiDay23';
+import GenaiDay24 from './pages/GenaiDay24';
+import GenaiDay25 from './pages/GenaiDay25';
+import GenaiDay26 from './pages/GenaiDay26';
+import GenaiDay27 from './pages/GenaiDay27';
+import GenaiDay28 from './pages/GenaiDay28';
+import GenaiDay29 from './pages/GenaiDay29';
+import GenaiDay30 from './pages/GenaiDay30';
+import GenaiDay31 from './pages/GenaiDay31';
+import GenaiDay32 from './pages/GenaiDay32';
+import GenaiDay33 from './pages/GenaiDay33';
+import GenaiDay34 from './pages/GenaiDay34';
+import GenaiDay35 from './pages/GenaiDay35';
+import GenaiDay36 from './pages/GenaiDay36';
+import GenaiDay37 from './pages/GenaiDay37';
+import GenaiDay38 from './pages/GenaiDay38';
+import GenaiDay39 from './pages/GenaiDay39';
 import Day018 from './pages/Day018';
 import Day019 from './pages/Day019';
 import Day020 from './pages/Day020';
@@ -282,6 +321,45 @@ export default function App() {
           <Route path="nextjs" element={<NextjsHome />} />
           <Route path="nextjs/learn/:slug" element={<Chapter track="nextjs" />} />
           <Route path="genai" element={<GenAIHome />} />
+          <Route path="genai-day-1" element={<GenaiDay01 />} />
+          <Route path="genai-day-2" element={<GenaiDay02 />} />
+          <Route path="genai-day-3" element={<GenaiDay03 />} />
+          <Route path="genai-day-4" element={<GenaiDay04 />} />
+          <Route path="genai-day-5" element={<GenaiDay05 />} />
+          <Route path="genai-day-6" element={<GenaiDay06 />} />
+          <Route path="genai-day-7" element={<GenaiDay07 />} />
+          <Route path="genai-day-8" element={<GenaiDay08 />} />
+          <Route path="genai-day-9" element={<GenaiDay09 />} />
+          <Route path="genai-day-10" element={<GenaiDay10 />} />
+          <Route path="genai-day-11" element={<GenaiDay11 />} />
+          <Route path="genai-day-12" element={<GenaiDay12 />} />
+          <Route path="genai-day-13" element={<GenaiDay13 />} />
+          <Route path="genai-day-14" element={<GenaiDay14 />} />
+          <Route path="genai-day-15" element={<GenaiDay15 />} />
+          <Route path="genai-day-16" element={<GenaiDay16 />} />
+          <Route path="genai-day-17" element={<GenaiDay17 />} />
+          <Route path="genai-day-18" element={<GenaiDay18 />} />
+          <Route path="genai-day-19" element={<GenaiDay19 />} />
+          <Route path="genai-day-20" element={<GenaiDay20 />} />
+          <Route path="genai-day-21" element={<GenaiDay21 />} />
+          <Route path="genai-day-22" element={<GenaiDay22 />} />
+          <Route path="genai-day-23" element={<GenaiDay23 />} />
+          <Route path="genai-day-24" element={<GenaiDay24 />} />
+          <Route path="genai-day-25" element={<GenaiDay25 />} />
+          <Route path="genai-day-26" element={<GenaiDay26 />} />
+          <Route path="genai-day-27" element={<GenaiDay27 />} />
+          <Route path="genai-day-28" element={<GenaiDay28 />} />
+          <Route path="genai-day-29" element={<GenaiDay29 />} />
+          <Route path="genai-day-30" element={<GenaiDay30 />} />
+          <Route path="genai-day-31" element={<GenaiDay31 />} />
+          <Route path="genai-day-32" element={<GenaiDay32 />} />
+          <Route path="genai-day-33" element={<GenaiDay33 />} />
+          <Route path="genai-day-34" element={<GenaiDay34 />} />
+          <Route path="genai-day-35" element={<GenaiDay35 />} />
+          <Route path="genai-day-36" element={<GenaiDay36 />} />
+          <Route path="genai-day-37" element={<GenaiDay37 />} />
+          <Route path="genai-day-38" element={<GenaiDay38 />} />
+          <Route path="genai-day-39" element={<GenaiDay39 />} />
           <Route path="genai/learn/:slug" element={<Chapter track="genai" />} />
           <Route path="python" element={<PythonHome />} />
           <Route path="python/learn/:slug" element={<Chapter track="python" />} />

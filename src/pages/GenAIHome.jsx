@@ -26,6 +26,9 @@ export default function GenAIHome() {
             <Link to={`/genai/learn/${genaiChapters[0].slug}`} className="btn btn-genai btn-lg">
               Start Module 1
             </Link>
+            <Link to="/genai-day-1" className="btn btn-genai btn-lg">
+              📓 39-Day Gen AI Journal
+            </Link>
             <a href={GENAI_META.langchainJs} target="_blank" rel="noopener noreferrer" className="btn btn-outline-genai btn-lg">
               LangChain.js Docs
             </a>
