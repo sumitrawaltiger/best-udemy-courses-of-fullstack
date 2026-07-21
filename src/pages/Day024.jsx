@@ -2,79 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture08';
-const EMBED_DOCS = 'https://ai.google.dev/gemini-api/docs/embeddings';
+const FETCH_DOCS = 'https://nextjs.org/docs/app/building-your-application/data-fetching/fetching';
+const ACTIONS_DOCS = 'https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations';
 
 const LEARNT_TODAY = [
-  { title: 'The RAG foundation begins', text: 'to make the AI answer from your own data, it first needs to understand meaning — that starts with embeddings' },
-  { title: 'What an embedding is', text: 'a piece of text turned into a vector — a long list of numbers that captures its meaning' },
-  { title: 'Meaning becomes geometry', text: 'text with similar meaning maps to vectors that sit close together in space' },
-  { title: 'Dimensions', text: 'each vector has hundreds of dimensions, each encoding some semantic feature of the text' },
-  { title: 'Not keywords', text: 'embeddings capture meaning, so "car" and "automobile" land near each other even with no shared letters' },
-  { title: 'Generate with Gemini', text: 'the SDK turns any text into an embedding with a single call — ai.models.embedContent' },
-  { title: 'The building block', text: 'search, clustering, recommendations and RAG are all built on top of embeddings' },
+  { title: 'Fetch in the component', text: 'a Server Component just awaits data — no useEffect, no loading flag' },
+  { title: 'Extended fetch', text: 'Next augments fetch with caching + revalidation options right on the call' },
+  { title: 'Server Actions', text: 'async functions marked "use server" that run on the server — mutations without an API route' },
+  { title: 'Progressive forms', text: 'a form action={} calls a Server Action; works even before JS loads' },
+  { title: 'revalidatePath / Tag', text: 'after a mutation, tell Next which cached data to refresh' },
+  { title: 'redirect()', text: 'navigate from a Server Action after a successful write' },
+  { title: 'Parallel data', text: 'kick off fetches together and await them to avoid request waterfalls' },
+  { title: 'Type the boundary', text: 'validate action inputs (Zod) — they come from the client and are untrusted' },
 ];
 
-const WHY = [
+const FETCHING = [
   {
-    icon: '🧩', title: 'The Meaning Problem', titleClass: 'card-title-cyan', subtitle: 'Computers See Text',
+    icon: '📥', title: 'Await Data', titleClass: 'card-title-cyan', subtitle: 'In Server Components',
     description:
-      'A computer only sees characters, not meaning. To let the AI find information related to a question, we need a way to represent what text means as something a machine can compare.',
-    code: '// "How do I reset my password?"\n// vs "I forgot my login" → same meaning, different words\n// computers need to see that they are close',
+      'No data-fetching library needed for reads: an async Server Component awaits the data before it renders. Next extends fetch with caching and revalidation controls on the call itself.',
+    code: 'async function Page() {\n  const res = await fetch("https://api/posts", {\n    next: { revalidate: 60 },   // ISR: refresh every 60s\n  });\n  const posts = await res.json();\n  return <List posts={posts} />;\n}',
   },
   {
-    icon: '🔢', title: 'Text → Vector', titleClass: 'card-title-purple', subtitle: 'The Embedding',
+    icon: '🔀', title: 'Avoid Waterfalls', titleClass: 'card-title-purple', subtitle: 'Parallel Fetching',
     description:
-      'An embedding model converts a string into a vector — a fixed-length list of numbers. That vector is a coordinate in a high-dimensional "meaning space".',
-    code: '"hello world"  →  [0.021, -0.44, 0.13, 0.88, ...]\n// hundreds of numbers = one point in meaning space',
-  },
-  {
-    icon: '📍', title: 'Close = Similar', titleClass: 'card-title-amber', subtitle: 'Meaning As Geometry',
-    description:
-      'The key property: texts that mean similar things get vectors that are near each other. Distance between vectors becomes a measure of semantic similarity.',
-    code: '// vec("king")  ≈ near vec("queen")\n// vec("car")   ≈ near vec("automobile")\n// vec("banana") ≈ far from vec("database")',
+      'Sequential awaits create waterfalls. Start independent fetches together, then await both — the requests overlap and the page is ready sooner.',
+    code: 'const postsP = getPosts();\nconst userP  = getUser();\nconst [posts, user] = await Promise.all([postsP, userP]);',
   },
 ];
 
-const HOW = [
+const ACTIONS = [
   {
-    icon: '⚡', title: 'Generate An Embedding', titleClass: 'card-title-cyan', subtitle: 'ai.models.embedContent',
+    icon: '⚡', title: 'Server Actions', titleClass: 'card-title-cyan', subtitle: '"use server"',
     description:
-      'The Gemini SDK produces an embedding for any text in one call. Store the returned vector and you can compare it against others later.',
-    code: 'const res = await ai.models.embedContent({\n  model: "text-embedding-004",\n  contents: "How do I reset my password?",\n});\nconst vector = res.embeddings[0].values; // number[]',
+      'A Server Action is an async function that runs on the server — call it from a form’s action or a client handler to mutate data with no separate API route. It’s type-safe end to end.',
+    code: 'async function createPost(formData: FormData) {\n  "use server";\n  const title = String(formData.get("title"));\n  await db.post.create({ data: { title } });\n  revalidatePath("/posts");\n}\n<form action={createPost}> … </form>',
   },
   {
-    icon: '📐', title: 'Fixed Length', titleClass: 'card-title-purple', subtitle: 'Same Size Always',
+    icon: '♻️', title: 'Revalidate', titleClass: 'card-title-purple', subtitle: 'Refresh The Cache',
     description:
-      'Every embedding from a given model has the same number of dimensions, no matter the input length. That uniform shape is what makes vectors comparable.',
-    code: '// a word, a sentence, a paragraph →\n// all become a vector of the SAME length\n// e.g. 768 numbers each',
+      'After a write, call revalidatePath or revalidateTag so Next refetches the affected data. Or redirect() to send the user onward once the mutation succeeds.',
+    code: 'revalidatePath("/posts");        // refresh a route\nrevalidateTag("posts");          // or a cache tag\nredirect("/posts");              // then navigate',
   },
   {
-    icon: '🧱', title: 'Everything Builds On This', titleClass: 'card-title-amber', subtitle: 'The Base Layer',
+    icon: '🛡️', title: 'Validate Inputs', titleClass: 'card-title-amber', subtitle: 'They’re Untrusted',
     description:
-      'Once text is a vector, you can search by meaning, group similar items, recommend, and — the goal of this stretch — do RAG. Embeddings are the base layer for all of it.',
-    footer: 'embeddings → search → vector DB → RAG',
+      'Action arguments come from the client, so treat them as untrusted — parse with Zod before touching the database, and return typed errors for the form to show.',
+    code: 'const parsed = PostSchema.safeParse({ title });\nif (!parsed.success) return { error: "Invalid title" };',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 08', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'Data Fetching', titleClass: 'card-title-cyan', subtitle: 'Next.js Docs',
     description:
-      'The embeddings lecture and its diagram in the STRIKE GenAI repo — the conceptual foundation for the RAG lectures ahead.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 08 →', external: true },
+      'Fetching in Server Components, the extended fetch API, caching, streaming with Suspense, and avoiding waterfalls.',
+    link: { href: FETCH_DOCS, label: 'Open the docs →', external: true },
   },
   {
-    icon: '📘', title: 'Gemini Embeddings', titleClass: 'card-title-purple', subtitle: 'Docs',
+    icon: '⚡', title: 'Server Actions', titleClass: 'card-title-purple', subtitle: 'Mutations',
     description:
-      'Google’s embeddings guide — models, dimensions, task types, and how to generate vectors from the API.',
-    link: { href: EMBED_DOCS, label: 'Read embeddings docs →', external: true },
+      'How Server Actions work — forms, progressive enhancement, revalidation, redirects and security considerations.',
+    link: { href: ACTIONS_DOCS, label: 'Open the docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Semantic Search', titleClass: 'card-title-amber', subtitle: 'Prereq 9 Preview',
+    icon: '🔜', title: 'Next: Rendering & Cache', titleClass: 'card-title-amber', subtitle: 'Day 25 Preview',
     description:
-      'Tomorrow uses these vectors — Lecture 09 on semantic search: embed a query and your documents, then find the closest matches by meaning.',
-    link: { href: '/day-025', label: 'Go to Prereq 9 →' },
+      'Tomorrow — SSR vs SSG vs ISR, static vs dynamic rendering, and how Next.js caching (the full route cache and data cache) actually works.',
+    link: { href: '/day-025', label: 'Go to Day 25 →' },
   },
 ];
 
@@ -139,38 +134,39 @@ export default function Day024() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-023" className="day001-nav-btn day001-nav-prev">← Prereq 7</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 8</p>
-          <Link to="/day-025" className="day001-nav-btn day001-nav-next">Prereq 9 →</Link>
+          <Link to="/day-023" className="day001-nav-btn day001-nav-prev">← Day 23</Link>
+          <p className="day001-datetime">TypeScript Day 24</p>
+          <Link to="/day-025" className="day001-nav-btn day001-nav-next">Day 25 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 08</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Next.js</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 8 <span aria-hidden="true">🔢</span></h1>
-              <p className="day001-day-theme">EMBEDDINGS — MEANING AS NUMBERS</p>
+              <h1 className="day001-day-num">DAY 24 <span aria-hidden="true">📥</span></h1>
+              <p className="day001-day-theme">NEXT.JS — DATA FETCHING &amp; SERVER ACTIONS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '8%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '24%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 08 starts the <strong>RAG foundation</strong>. An <strong>embedding</strong> turns text into a{' '}
-          <strong>vector</strong> — a long list of numbers that captures its <strong>meaning</strong>. The magic
-          property: text that means similar things maps to vectors that sit <strong>close together</strong>, so{' '}
-          <code>vec("car")</code> lands near <code>vec("automobile")</code> even with no shared letters. Every
-          embedding from a model has the same fixed length, which is what makes them comparable, and{' '}
-          <code>ai.models.embedContent</code> generates one in a single call. <em>This is the base layer for
-          search, vector DBs and RAG.</em>
+          Reads and writes, the App Router way. For <strong>reads</strong>, an async Server Component just{' '}
+          <code>await</code>s the data — no <code>useEffect</code>, no loading flag — and Next’s extended{' '}
+          <strong>fetch</strong> adds caching/revalidation right on the call. Fire independent fetches with{' '}
+          <code>Promise.all</code> to avoid <strong>waterfalls</strong>. For <strong>writes</strong>,{' '}
+          <strong>Server Actions</strong> (<code>"use server"</code>) mutate data with <strong>no API route</strong> —
+          call them from a <code>form action</code> (works before JS loads), then <strong>revalidatePath</strong> or{' '}
+          <code>redirect()</code>. Inputs are untrusted, so <strong>validate with Zod</strong> first.{' '}
+          <em>Next: rendering &amp; caching.</em>
         </p>
 
         <section className="day001-learnt">
@@ -185,12 +181,12 @@ export default function Day024() {
           </ul>
         </section>
 
-        <CardSection icon="🧩" title="WHY EMBEDDINGS" cards={WHY} columns={3} />
-        <CardSection icon="⚡" title="GENERATING & USING THEM" cards={HOW} columns={3} />
+        <CardSection icon="📥" title="FETCHING DATA" cards={FETCHING} columns={2} />
+        <CardSection icon="⚡" title="SERVER ACTIONS" cards={ACTIONS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Embeddings</span><span>#CoderArmy</span><span>#RAG</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#NextJS</span><span>#ServerActions</span>
         </footer>
       </div>
     </div>

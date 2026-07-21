@@ -2,79 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture10';
-const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
+const HANDLERS_DOCS = 'https://nextjs.org/docs/app/building-your-application/routing/route-handlers';
+const DEPLOY_DOCS = 'https://nextjs.org/docs/app/building-your-application/deploying';
 
 const LEARNT_TODAY = [
-  { title: 'Regular DBs fall short', text: 'SQL and NoSQL are built for exact matches and filters, not for "find the nearest vectors" at scale' },
-  { title: 'What a vector DB is', text: 'a database purpose-built to store embeddings and query them by similarity, fast' },
-  { title: 'Store vector + metadata', text: 'each record holds the embedding plus the original text and any metadata to return with it' },
-  { title: 'ANN indexes', text: 'Approximate Nearest Neighbour indexes make similarity search fast, trading a little accuracy for big speed' },
-  { title: 'The options', text: 'Pinecone, Qdrant, Chroma and PGVector are common choices in the JavaScript ecosystem' },
-  { title: 'The pipeline', text: 'embed your documents once, upsert them into the DB, then query with an embedded question for top-K matches' },
-  { title: 'This completes retrieval', text: 'a vector DB is the storage layer that makes production RAG possible — next comes RAG itself' },
+  { title: 'Route Handlers', text: 'route.ts exports GET/POST/… — typed HTTP endpoints inside the app/ tree' },
+  { title: 'Web Request/Response', text: 'handlers use the standard Request and Response (and NextResponse) APIs' },
+  { title: 'Middleware', text: 'middleware.ts runs before a request completes — auth checks, redirects, headers' },
+  { title: 'matcher', text: 'config.matcher limits which paths the middleware runs on' },
+  { title: 'Env vars', text: 'server secrets stay server-only; NEXT_PUBLIC_ prefixes expose to the browser' },
+  { title: 'Metadata & SEO', text: 'export metadata or generateMetadata per route for titles and Open Graph' },
+  { title: 'Build & deploy', text: 'next build then deploy to Vercel (or any Node host / container)' },
+  { title: 'When to use a handler', text: 'webhooks, third-party APIs, non-form mutations — otherwise prefer Server Actions' },
 ];
 
-const WHY = [
+const HANDLERS = [
   {
-    icon: '🗄️', title: 'Why Not A Normal DB?', titleClass: 'card-title-cyan', subtitle: 'Wrong Tool',
+    icon: '🔌', title: 'Route Handlers', titleClass: 'card-title-cyan', subtitle: 'app/api/…/route.ts',
     description:
-      'A normal database finds rows by exact value or range. It has no efficient way to answer "which of these million vectors point in a similar direction to this one?" — that is a different problem.',
-    code: '// SQL: WHERE city = "Delhi"        ✅ exact match\n// SQL: nearest vector to [0.2, ...]  ❌ not built for it',
+      'Export functions named for HTTP methods to create typed endpoints. They use the Web Request/Response API — great for webhooks, third-party integrations, and clients that aren’t forms.',
+    code: '// app/api/posts/route.ts\nexport async function GET() {\n  const posts = await db.post.findMany();\n  return Response.json(posts);\n}\nexport async function POST(req: Request) {\n  const body = await req.json();\n  /* … */\n}',
   },
   {
-    icon: '📦', title: 'A Vector Database', titleClass: 'card-title-purple', subtitle: 'Built For Similarity',
+    icon: '🛡️', title: 'Middleware', titleClass: 'card-title-purple', subtitle: 'Before The Request',
     description:
-      'A vector DB stores each embedding alongside its source text and metadata, and indexes the vectors so it can return the closest matches to a query vector in milliseconds.',
-    code: '// record = { vector: [...], text: "...", metadata: {...} }\n// query(vector, k) → the k most similar records',
-  },
-  {
-    icon: '⚡', title: 'ANN Indexes', titleClass: 'card-title-amber', subtitle: 'Fast At Scale',
-    description:
-      'Exact nearest-neighbour search over millions of vectors is slow. Approximate Nearest Neighbour indexes (like HNSW) give near-perfect results far faster — the trick behind real-time search.',
-    code: '// exact search: check every vector → slow\n// ANN (HNSW): smart index → fast, ~as accurate',
+      'middleware.ts runs at the edge before a route resolves — perfect for auth gating, redirects, locale detection or adding headers. A matcher scopes it to the paths you choose.',
+    code: '// middleware.ts\nexport function middleware(req: NextRequest) {\n  if (!req.cookies.get("session"))\n    return NextResponse.redirect(new URL("/login", req.url));\n}\nexport const config = { matcher: ["/dashboard/:path*"] };',
   },
 ];
 
-const USE = [
+const SHIP = [
   {
-    icon: '🧰', title: 'The Options', titleClass: 'card-title-cyan', subtitle: 'JS Ecosystem',
+    icon: '🔑', title: 'Env & Config', titleClass: 'card-title-cyan', subtitle: 'Secrets vs Public',
     description:
-      'Popular choices: Pinecone (managed), Qdrant and Chroma (open source), and PGVector (a Postgres extension). All expose the same idea — upsert vectors, then query by similarity.',
-    code: '// Pinecone · Qdrant · Chroma · PGVector\n// same mental model: upsert(vectors) → query(vector, topK)',
+      'Environment variables are server-only by default — keep API keys and DB URLs there. Only values prefixed NEXT_PUBLIC_ are inlined into the client bundle.',
+    code: '# .env.local\nDATABASE_URL=...            # server only\nNEXT_PUBLIC_SITE_URL=...     # sent to the browser',
   },
   {
-    icon: '⬆️', title: 'Ingest & Query', titleClass: 'card-title-purple', subtitle: 'The Pipeline',
+    icon: '🏷️', title: 'Metadata & SEO', titleClass: 'card-title-purple', subtitle: 'Per Route',
     description:
-      'Embed each document once and upsert it. At query time, embed the question and ask the DB for the top-K nearest records — the retrieval you built by hand yesterday, now at scale.',
-    code: '// ingest (once)\nawait index.upsert(docs.map(d => ({ id: d.id, values: embed(d.text), metadata: { text: d.text } })));\n// query\nconst { matches } = await index.query({ vector: embed(question), topK: 3 });',
+      'Export a typed metadata object (or generateMetadata for dynamic routes) so each page gets the right title, description and Open Graph tags — checked by TypeScript.',
+    code: 'import type { Metadata } from "next";\nexport const metadata: Metadata = {\n  title: "My App", description: "Built with Next.js",\n};',
   },
   {
-    icon: '🔗', title: 'Retrieval, Solved', titleClass: 'card-title-amber', subtitle: 'Ready For RAG',
+    icon: '🚀', title: 'Build & Deploy', titleClass: 'card-title-amber', subtitle: 'To Production',
     description:
-      'Embeddings, semantic search, and now a vector DB together form a complete retrieval system. The final piece is feeding those retrieved chunks to the model — that is RAG.',
-    footer: 'embed → store → retrieve → (next) generate = RAG',
+      'next build produces an optimised output; deploy to Vercel for zero-config hosting (its home platform), or run the Node server anywhere — a container, a VM, your own infra.',
+    code: 'next build && next start   # self-host\n# or: push to Vercel → automatic build & deploy',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 10', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'Route Handlers', titleClass: 'card-title-cyan', subtitle: 'Next.js Docs',
     description:
-      'The vector databases lecture and diagram in the STRIKE GenAI repo — the storage layer for retrieval.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 10 →', external: true },
+      'Defining GET/POST/PUT/DELETE handlers, reading the request, streaming responses, CORS and caching for API routes.',
+    link: { href: HANDLERS_DOCS, label: 'Open the docs →', external: true },
   },
   {
-    icon: '🧠', title: 'RAG Comes Next', titleClass: 'card-title-purple', subtitle: 'Lecture 12',
+    icon: '🚀', title: 'Deploying', titleClass: 'card-title-purple', subtitle: 'Next.js Docs',
     description:
-      'With retrieval complete, the course builds a full RAG System (Lecture 12): retrieve relevant chunks, then have the model answer using them. Explore the site’s GenAI track for the same path.',
-    link: { href: '/genai', label: 'Open the GenAI track →' },
+      'Production builds, environment configuration, and deploy targets — Vercel, Node servers, Docker and static exports.',
+    link: { href: DEPLOY_DOCS, label: 'Open the docs →', external: true },
   },
   {
-    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
+    icon: '🔜', title: 'Next: React Native', titleClass: 'card-title-amber', subtitle: 'Day 27 Preview',
     description:
-      'The complete Coder Army course code — every lecture from here through RAG, multi-agent systems, LangGraph and the final projects.',
-    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
+      'Tomorrow — the same React skills go mobile. React Native with Expo: set up a project, run it on a device, and understand how it maps to native.',
+    link: { href: '/day-027', label: 'Go to Day 27 →' },
   },
 ];
 
@@ -139,38 +134,39 @@ export default function Day026() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-025" className="day001-nav-btn day001-nav-prev">← Prereq 9</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 10</p>
-          <Link to="/day-027" className="day001-nav-btn day001-nav-next">Prereq 11 →</Link>
+          <Link to="/day-025" className="day001-nav-btn day001-nav-prev">← Day 25</Link>
+          <p className="day001-datetime">TypeScript Day 26</p>
+          <Link to="/day-027" className="day001-nav-btn day001-nav-next">Day 27 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 10</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Next.js</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 10 <span aria-hidden="true">🗄️</span></h1>
-              <p className="day001-day-theme">VECTOR DATABASES — RETRIEVAL AT SCALE</p>
+              <h1 className="day001-day-num">DAY 26 <span aria-hidden="true">🔌</span></h1>
+              <p className="day001-day-theme">NEXT.JS — HANDLERS, MIDDLEWARE &amp; DEPLOY</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '10%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '26%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 10 — <strong>vector databases</strong>. Regular SQL/NoSQL databases are built for exact matches,
-          not for "find the nearest vectors", so yesterday’s in-memory search does not scale. A{' '}
-          <strong>vector DB</strong> stores each <strong>embedding</strong> with its text and metadata and uses{' '}
-          <strong>ANN indexes</strong> (like HNSW) to return the closest matches in milliseconds. The workflow:{' '}
-          <strong>embed once, upsert, then query</strong> with an embedded question — using{' '}
-          <strong>Pinecone, Qdrant, Chroma</strong> or <strong>PGVector</strong>. That completes retrieval; the last
-          piece is generation. <em>Next stop: RAG.</em>
+          Finishing Next.js — the backend bits and shipping. <strong>Route Handlers</strong>{' '}
+          (<code>route.ts</code> exporting <code>GET</code>/<code>POST</code>/…) are typed HTTP endpoints using the
+          standard Web <strong>Request/Response</strong> API — use them for webhooks and third-party clients (prefer{' '}
+          <em>Server Actions</em> for form mutations). <strong>middleware.ts</strong> runs before a request resolves —
+          auth gating, redirects, headers — scoped by a <code>matcher</code>. Keep secrets in server-only{' '}
+          <strong>env vars</strong> (only <code>NEXT_PUBLIC_</code> reaches the browser), export typed{' '}
+          <strong>metadata</strong> for SEO, then <code>next build</code> and deploy to <strong>Vercel</strong> or any
+          Node host. <em>Next: React Native — React goes mobile.</em>
         </p>
 
         <section className="day001-learnt">
@@ -185,12 +181,12 @@ export default function Day026() {
           </ul>
         </section>
 
-        <CardSection icon="🗄️" title="WHY A VECTOR DATABASE" cards={WHY} columns={3} />
-        <CardSection icon="🔗" title="USING ONE" cards={USE} columns={3} />
+        <CardSection icon="🔌" title="HANDLERS & MIDDLEWARE" cards={HANDLERS} columns={2} />
+        <CardSection icon="🚀" title="CONFIG & SHIP" cards={SHIP} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#VectorDB</span><span>#CoderArmy</span><span>#RAG</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#NextJS</span><span>#Deploy</span>
         </footer>
       </div>
     </div>

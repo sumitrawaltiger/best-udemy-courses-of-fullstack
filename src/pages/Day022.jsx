@@ -2,79 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture06';
+const NEXT_ROUTING = 'https://nextjs.org/docs/app/building-your-application/routing';
+const NEXT_LAYOUTS = 'https://nextjs.org/docs/app/building-your-application/routing/layouts-and-templates';
 
 const LEARNT_TODAY = [
-  { title: 'From answering to acting', text: 'give the agent a tool that runs real terminal commands and it can change your machine, not just talk' },
-  { title: 'The executeCommand tool', text: 'child_process exec runs any shell command and returns stdout or stderr back to the model' },
-  { title: 'OS-aware prompting', text: 'pass os.platform() into the systemInstruction so the AI gives commands that fit your operating system' },
-  { title: 'The build loop', text: 'the AI issues one command, the tool runs it, the result feeds back, and it repeats until done' },
-  { title: 'functionCall + functionResponse', text: 'push both into the history so the model sees exactly what happened after each command' },
-  { title: 'It builds real apps', text: 'file by file the agent scaffolds a calculator and a leetcode-style UI with mkdir, touch and writes' },
-  { title: 'Power and danger', text: 'an AI running shell commands is powerful and risky — sandbox it and review what it runs' },
-  { title: 'A true agent', text: 'perceive the goal, plan a command, act, observe the output, loop — this is real agentic behaviour' },
+  { title: 'File-system routing', text: 'a folder under app/ is a route; the URL mirrors the folder tree' },
+  { title: 'page.tsx', text: 'the special file that makes a folder a publicly routable page' },
+  { title: 'layout.tsx', text: 'wraps a segment and its children; persists across navigations, keeps state' },
+  { title: 'Nested layouts', text: 'each segment can have its own layout — they nest, not replace' },
+  { title: 'Dynamic segments', text: 'a [slug] folder captures a URL param, typed via the page props' },
+  { title: 'loading.tsx & error.tsx', text: 'per-segment loading (Suspense) and error boundaries, for free' },
+  { title: 'Route groups', text: '(marketing) folders organise routes without adding to the URL' },
+  { title: 'Special files', text: 'template, not-found, default — conventions do the wiring, not config' },
 ];
 
-const ACTION = [
+const ROUTING = [
   {
-    icon: '🖐️', title: 'Give The AI Hands', titleClass: 'card-title-cyan', subtitle: 'From Words To Actions',
+    icon: '🗂️', title: 'Folders = Routes', titleClass: 'card-title-cyan', subtitle: 'app/ Directory',
     description:
-      'So far the model only produced text. Now we hand it a tool that runs terminal commands — so it can create folders, write files, and actually build software on your machine.',
-    code: '// yesterday: the model returned a functionCall\n// today: that call runs a real shell command\n//        → the AI can act on the world',
+      'The App Router maps the app/ folder to URLs. A page.tsx makes a folder routable; nested folders become nested paths. No route config — the file system is the router.',
+    code: '// app/blog/[slug]/page.tsx  →  /blog/:slug\nexport default function Post(\n  { params }: { params: { slug: string } },\n) {\n  return <h1>{params.slug}</h1>;\n}',
   },
   {
-    icon: '⚡', title: 'The Command Tool', titleClass: 'card-title-purple', subtitle: 'child_process exec',
+    icon: '🧱', title: 'Layouts', titleClass: 'card-title-purple', subtitle: 'Shared, Persistent UI',
     description:
-      'One function runs any shell command and returns the result. exec is promisified so the agent can await it and read stdout or stderr.',
-    code: 'import { exec } from "child_process";\nimport util from "util";\nconst run = util.promisify(exec);\n\nasync function executeCommand({ command }) {\n  try {\n    const { stdout, stderr } = await run(command);\n    return stderr ? `Error: ${stderr}` : `Success: ${stdout}`;\n  } catch (err) { return `Error: ${err}`; }\n}',
-  },
-  {
-    icon: '💻', title: 'OS-Aware Prompt', titleClass: 'card-title-amber', subtitle: 'os.platform()',
-    description:
-      'Commands differ across Windows, macOS and Linux. Inject os.platform() into the systemInstruction so the model issues commands that actually work on your system.',
-    code: 'import os from "os";\nconst systemInstruction = `You build websites using shell commands,\none at a time. Current OS: ${os.platform()} — match it.`;',
+      'A layout.tsx wraps a segment and everything below it, rendering children through {children}. It persists across navigations (state kept) and nests — one per segment.',
+    code: '// app/layout.tsx (root)\nexport default function RootLayout(\n  { children }: { children: React.ReactNode },\n) {\n  return <html><body><Nav />{children}</body></html>;\n}',
   },
 ];
 
-const TOOL = [
+const CONVENTIONS = [
   {
-    icon: '📋', title: 'Declare The Tool', titleClass: 'card-title-cyan', subtitle: 'Any Command',
+    icon: '⏳', title: 'loading & error', titleClass: 'card-title-cyan', subtitle: 'Per-Segment States',
     description:
-      'The declaration tells the model it can run any terminal command to create, read, write, update or delete files and folders — one primitive, endless power.',
-    code: 'const commandExecuter = {\n  name: "executeCommand",\n  description: "Run any shell command to create/read/write/delete files & folders",\n  parameters: {\n    type: Type.OBJECT,\n    properties: {\n      command: { type: Type.STRING, description: "e.g. mkdir calculator" },\n    },\n    required: ["command"],\n  },\n};',
+      'Drop a loading.tsx and Next wraps the segment in Suspense automatically. An error.tsx becomes that segment’s error boundary — instant loading and error UX with zero wiring.',
+    code: '// app/blog/loading.tsx → shown while blog loads\nexport default () => <Spinner />;\n\n// app/blog/error.tsx → "use client"; catches errors',
   },
   {
-    icon: '♻️', title: 'The Agent Loop', titleClass: 'card-title-purple', subtitle: 'Act → Observe → Repeat',
+    icon: '📁', title: 'Route Groups', titleClass: 'card-title-purple', subtitle: '(folder) — No URL',
     description:
-      'The model returns a command; you run it and push both the functionCall and its functionResponse into history. When there is no more call, the task is done.',
-    code: 'while (true) {\n  const res = await ai.models.generateContent({ model, contents: History,\n    config: { systemInstruction, tools: [{ functionDeclarations: [commandExecuter] }] } });\n  const call = res.functionCalls?.[0];\n  if (!call) break;\n  const result = await executeCommand(call.args);\n  History.push({ role: "model", parts: [{ functionCall: call }] });\n  History.push({ role: "user", parts: [{ functionResponse: { name: call.name, response: { result } } }] });\n}',
+      'Wrap folders in parentheses to group routes (e.g. (marketing), (shop)) or give them different layouts, without those names appearing in the URL.',
+    code: '// app/(marketing)/about/page.tsx  →  /about\n// app/(shop)/cart/page.tsx        →  /cart\n// each group can have its own layout.tsx',
   },
   {
-    icon: '🏗️', title: 'It Builds The App', titleClass: 'card-title-amber', subtitle: 'One Command At A Time',
+    icon: '🧭', title: 'Nested Layouts', titleClass: 'card-title-amber', subtitle: 'They Compose',
     description:
-      'Given "build a calculator", the agent runs mkdir, touch, then writes HTML, CSS and JS, fixing errors as it goes — a working app scaffolded entirely by the model.',
-    code: '// mkdir calculator\n// touch calculator/index.html\n// write HTML → write CSS → write JS\n// → a working calculator, built by the agent',
+      'Layouts nest instead of replacing: a root layout, then a dashboard layout, then a settings layout all wrap the page. Shared chrome stays mounted as you navigate within.',
+    code: '// app/layout.tsx\n//   app/dashboard/layout.tsx\n//     app/dashboard/settings/page.tsx\n// → all three layouts wrap the page',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 06 Code', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'App Router — Routing', titleClass: 'card-title-cyan', subtitle: 'Next.js Docs',
     description:
-      'The command-running agent plus the calculator and leetcode-platform apps it builds, in the STRIKE GenAI repo.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 06 →', external: true },
+      'The routing fundamentals — pages, layouts, dynamic & catch-all segments, route groups and the special files that drive everything.',
+    link: { href: NEXT_ROUTING, label: 'Open the routing docs →', external: true },
   },
   {
-    icon: '⚠️', title: 'Run It Safely', titleClass: 'card-title-purple', subtitle: 'Sandbox First',
+    icon: '🧱', title: 'Layouts & Templates', titleClass: 'card-title-purple', subtitle: 'Deep Dive',
     description:
-      'An agent that executes shell commands can delete files or worse. Try it in a throwaway folder, and print each command before running it.',
-    footer: 'review commands · use a sandbox · version control',
+      'How layouts persist, when to use a template instead, and how nesting composes shared UI across a whole segment tree.',
+    link: { href: NEXT_LAYOUTS, label: 'Open the layouts docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Code Reviewer', titleClass: 'card-title-amber', subtitle: 'Prereq 7 Preview',
+    icon: '🔜', title: 'Next: Server vs Client', titleClass: 'card-title-amber', subtitle: 'Day 23 Preview',
     description:
-      'Tomorrow is Lecture 07 — build a Code Reviewer agent with list_files, read_file and write_file tools that scans a project and fixes real issues.',
-    link: { href: '/day-023', label: 'Go to Prereq 7 →' },
+      'Tomorrow — the biggest App Router idea: Server Components by default, "use client" for interactivity, and where the boundary should sit.',
+    link: { href: '/day-023', label: 'Go to Day 23 →' },
   },
 ];
 
@@ -140,37 +135,38 @@ export default function Day022() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-021" className="day001-nav-btn day001-nav-prev">← Day 21</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 6</p>
-          <Link to="/day-023" className="day001-nav-btn day001-nav-next">Prereq 7 →</Link>
+          <p className="day001-datetime">TypeScript Day 22</p>
+          <Link to="/day-023" className="day001-nav-btn day001-nav-next">Day 23 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 06</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Next.js</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 6 <span aria-hidden="true">🏗️</span></h1>
-              <p className="day001-day-theme">THE COMMAND AGENT — AI THAT BUILDS APPS</p>
+              <h1 className="day001-day-num">DAY 22 <span aria-hidden="true">▲</span></h1>
+              <p className="day001-day-theme">NEXT.JS — APP ROUTER &amp; LAYOUTS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '6%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '22%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 06 — the agent gets <strong>hands</strong>. I gave it an <code>executeCommand</code> tool backed by{' '}
-          <strong>child_process exec</strong>, so the model can run real <strong>shell commands</strong> — create
-          folders, write files, build software. The <strong>systemInstruction</strong> is <strong>OS-aware</strong>{' '}
-          via <code>os.platform()</code>, and the <strong>agent loop</strong> pushes each <code>functionCall</code>{' '}
-          and <code>functionResponse</code> into history until the job is done. Given a goal, it scaffolds a{' '}
-          <strong>calculator</strong> and a <strong>leetcode-style UI</strong> one command at a time. Powerful — and
-          worth sandboxing. <em>Perceive, plan, act, observe.</em>
+          Going deep on Next.js. The <strong>App Router</strong> is <strong>file-system routing</strong> — a folder
+          under <code>app/</code> is a route, and <code>page.tsx</code> makes it public. A <code>layout.tsx</code>{' '}
+          wraps a segment and its children (rendered via <code>{'{children}'}</code>), <strong>persists</strong> across
+          navigations and <strong>nests</strong> — root → dashboard → settings all wrap the page. Dynamic{' '}
+          <code>[slug]</code> segments arrive as typed <code>params</code>. Conventions do the wiring:{' '}
+          <strong>loading.tsx</strong> (auto Suspense), <strong>error.tsx</strong> (error boundary), and{' '}
+          <strong>(route groups)</strong> that organise without touching the URL. <em>Next: Server vs Client
+          Components.</em>
         </p>
 
         <section className="day001-learnt">
@@ -185,12 +181,12 @@ export default function Day022() {
           </ul>
         </section>
 
-        <CardSection icon="🖐️" title="FROM CHAT TO ACTION" cards={ACTION} columns={3} />
-        <CardSection icon="🏗️" title="THE AGENT BUILD LOOP" cards={TOOL} columns={3} />
+        <CardSection icon="🗂️" title="ROUTES & LAYOUTS" cards={ROUTING} columns={2} />
+        <CardSection icon="⚙️" title="FILE CONVENTIONS" cards={CONVENTIONS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Agents</span><span>#CoderArmy</span><span>#JavaScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#NextJS</span><span>#AppRouter</span>
         </footer>
       </div>
     </div>

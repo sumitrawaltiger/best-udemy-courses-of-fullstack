@@ -133,7 +133,7 @@ export default function Day032() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-031" className="day001-nav-btn day001-nav-prev">← Prereq 15</Link>
+          <Link to="/day-031" className="day001-nav-btn day001-nav-prev">← Day 31</Link>
           <p className="day001-datetime">Prerequisite · Gen AI 16</p>
           <Link to="/day-033" className="day001-nav-btn day001-nav-next">Prereq 17 →</Link>
         </header>

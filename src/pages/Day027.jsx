@@ -2,78 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture11';
+const RN_DOCS = 'https://reactnative.dev/';
+const EXPO_DOCS = 'https://docs.expo.dev/';
 
 const LEARNT_TODAY = [
-  { title: 'The knowledge problem', text: 'the model does not know your private documents, and its training data has a cutoff date' },
-  { title: 'Fine-tuning is costly', text: 'retraining the model for every new document or update is slow, expensive and impractical' },
-  { title: 'RAG', text: 'Retrieval-Augmented Generation — retrieve relevant chunks, add them to the prompt, then generate the answer' },
-  { title: 'Two phases', text: 'indexing (prepare your documents once) and querying (answer questions using retrieved context)' },
-  { title: 'Retrieve → Augment → Generate', text: 'find the relevant text, inject it into the prompt, and let the model answer from it' },
-  { title: 'Why RAG wins', text: 'cheaper than fine-tuning, always up to date, can cite sources, and hallucinates far less' },
-  { title: 'Built on the last 3 days', text: 'embeddings, semantic search and vector DBs were the foundation — RAG is where they pay off' },
+  { title: 'Same React, native output', text: 'React Native renders real native UI — not a webview — from the React you already know' },
+  { title: 'Expo', text: 'the batteries-included way to start: tooling, native APIs and builds without Xcode/Android Studio setup' },
+  { title: 'create-expo-app', text: 'scaffold a typed RN app in one command; run it on a real phone via the Expo Go app' },
+  { title: 'Fast Refresh', text: 'save a file and the app updates instantly on the device — same DX as web' },
+  { title: 'Components, not HTML', text: '<View>, <Text>, <Image> replace <div>, <span>, <img>' },
+  { title: 'Everything is Flexbox', text: 'layout is Flexbox by default, with flexDirection column instead of row' },
+  { title: 'TypeScript first', text: 'the Expo template is TypeScript, so props and navigation are typed' },
+  { title: 'Runs everywhere', text: 'one codebase targets iOS, Android and the web' },
 ];
 
-const WHY = [
+const START = [
   {
-    icon: '📚', title: 'The Model Does Not Know', titleClass: 'card-title-cyan', subtitle: 'Your Data',
+    icon: '📱', title: 'What React Native Is', titleClass: 'card-title-cyan', subtitle: 'Real Native UI',
     description:
-      'An LLM only knows its training data up to a cutoff. It has never seen your company docs, your PDF, or yesterday’s update — so it cannot answer questions about them.',
-    code: '// "What does OUR internal handbook say about leave?"\n// → the model has no idea — it never saw your handbook',
+      'You write React; React Native maps it to actual native views (UIView on iOS, View on Android). It’s not a webview — the UI is genuinely native, driven by your components.',
+    code: '// the React mental model is unchanged\nfunction App() {\n  return <Text>Hello, native!</Text>;\n}',
   },
   {
-    icon: '💸', title: 'Fine-Tuning Is Expensive', titleClass: 'card-title-purple', subtitle: 'Not For Knowledge',
+    icon: '⚡', title: 'Start With Expo', titleClass: 'card-title-purple', subtitle: 'create-expo-app',
     description:
-      'You could retrain the model on your data, but fine-tuning is costly and slow, and you would redo it every time a document changes. Wrong tool for keeping knowledge fresh.',
-    code: '// fine-tune on every doc change? → too slow, too costly\n// knowledge changes daily; retraining cannot keep up',
-  },
-  {
-    icon: '🎯', title: 'RAG Instead', titleClass: 'card-title-amber', subtitle: 'Retrieve, Then Answer',
-    description:
-      'Retrieval-Augmented Generation keeps the model as-is and simply fetches the relevant text at question time, adding it to the prompt so the model answers from your data.',
-    code: '// keep the model frozen\n// fetch relevant chunks → add to prompt → answer\n// update docs anytime, no retraining',
+      'Expo removes the native-setup pain. Scaffold, start the dev server, scan the QR code with Expo Go, and your app is running on your phone with Fast Refresh.',
+    code: 'npx create-expo-app@latest my-app -t\ncd my-app && npx expo start\n# scan the QR code with the Expo Go app',
   },
 ];
 
-const PIPELINE = [
+const BASICS = [
   {
-    icon: '🗂️', title: 'Phase 1 — Indexing', titleClass: 'card-title-cyan', subtitle: 'Prepare Once',
+    icon: '🧱', title: 'Core Components', titleClass: 'card-title-cyan', subtitle: 'View · Text · Image',
     description:
-      'Load your documents, split them into chunks, embed each chunk into a vector, and store them in a vector database. This runs once (or whenever the docs change).',
-    code: '// documents → chunks → embeddings → vector DB\n// a one-time preparation step',
+      'There’s no HTML. Use <View> for containers, <Text> for all text (text must be inside <Text>), <Image> for images, and <ScrollView> / <Pressable> for scrolling and taps.',
+    code: 'import { View, Text, Image } from "react-native";\n<View>\n  <Text>Sumit Rawal</Text>\n  <Image source={{ uri }} style={{ width: 48, height: 48 }} />\n</View>',
   },
   {
-    icon: '❓', title: 'Phase 2 — Querying', titleClass: 'card-title-purple', subtitle: 'Every Question',
+    icon: '📐', title: 'Layout Is Flexbox', titleClass: 'card-title-purple', subtitle: 'Column By Default',
     description:
-      'When a user asks something, embed the question, retrieve the most similar chunks, add them to the prompt as context, and let the model generate a grounded answer.',
-    code: '// question → embed → retrieve top-K\n// → augment prompt with context → generate answer',
+      'Every View is a flex container. The default flexDirection is column (not row like web). Style with a StyleSheet object of camelCased properties — no CSS files.',
+    code: 'const s = StyleSheet.create({\n  row: { flexDirection: "row", gap: 8, alignItems: "center" },\n});\n<View style={s.row}> … </View>',
   },
   {
-    icon: '🔁', title: 'Retrieve · Augment · Generate', titleClass: 'card-title-amber', subtitle: 'The Three Steps',
+    icon: '🖱️', title: 'Handle Touches', titleClass: 'card-title-amber', subtitle: 'Pressable',
     description:
-      'That is the whole idea in three words. Retrieval finds the right information, augmentation puts it in front of the model, and generation produces the final answer.',
-    footer: 'R — retrieve · A — augment · G — generate',
+      'There’s no onClick — use <Pressable> (or Touchable*) with onPress. It gives you pressed state for feedback, the mobile equivalent of a button.',
+    code: '<Pressable onPress={() => setCount(c => c + 1)}>\n  <Text>Tapped {count} times</Text>\n</Pressable>',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 11', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'React Native Docs', titleClass: 'card-title-cyan', subtitle: 'Official',
     description:
-      'The RAG concept lecture and diagram in the STRIKE GenAI repo — the "why" before tomorrow’s hands-on build.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 11 →', external: true },
+      'The core components and APIs, the "for React devs" intro, and platform-specific guidance — the reference for the mobile stack.',
+    link: { href: RN_DOCS, label: 'Open React Native →', external: true },
   },
   {
-    icon: '🧠', title: 'RAG vs Fine-Tuning', titleClass: 'card-title-purple', subtitle: 'Rule Of Thumb',
+    icon: '⚡', title: 'Expo Docs', titleClass: 'card-title-purple', subtitle: 'Tooling & APIs',
     description:
-      'Use RAG to give the model knowledge (facts, docs, up-to-date data). Use fine-tuning to change behaviour or style — not to teach it new facts.',
-    footer: 'RAG → knowledge · fine-tuning → behaviour',
+      'Getting started, the SDK of native modules (camera, location, notifications), Expo Router and EAS builds — the fastest path to shipping.',
+    link: { href: EXPO_DOCS, label: 'Open Expo docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Build It', titleClass: 'card-title-amber', subtitle: 'Prereq 12 Preview',
+    icon: '🔜', title: 'Next: Components & Style', titleClass: 'card-title-amber', subtitle: 'Day 28 Preview',
     description:
-      'Tomorrow is Lecture 12 — the RAG indexing pipeline with LangChain.js and Pinecone: load a PDF, chunk it, embed it, and store it in a vector database.',
-    link: { href: '/day-028', label: 'Go to Prereq 12 →' },
+      'Tomorrow — go deeper on the core components and styling: StyleSheet, Flexbox layout, responsive units, safe areas and platform-specific styles.',
+    link: { href: '/day-028', label: 'Go to Day 28 →' },
   },
 ];
 
@@ -138,38 +134,39 @@ export default function Day027() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-026" className="day001-nav-btn day001-nav-prev">← Prereq 10</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 11</p>
-          <Link to="/day-028" className="day001-nav-btn day001-nav-next">Prereq 12 →</Link>
+          <Link to="/day-026" className="day001-nav-btn day001-nav-prev">← Day 26</Link>
+          <p className="day001-datetime">TypeScript Day 27</p>
+          <Link to="/day-028" className="day001-nav-btn day001-nav-next">Day 28 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 11</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>React Native</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 11 <span aria-hidden="true">📚</span></h1>
-              <p className="day001-day-theme">RAG — GIVING THE AI YOUR OWN KNOWLEDGE</p>
+              <h1 className="day001-day-num">DAY 27 <span aria-hidden="true">📱</span></h1>
+              <p className="day001-day-theme">REACT NATIVE — GETTING STARTED (EXPO)</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '11%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '27%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 11 — <strong>RAG</strong>. The model does not know my private documents and has a training cutoff,
-          and <strong>fine-tuning</strong> is far too costly to keep knowledge fresh. <strong>Retrieval-Augmented
-          Generation</strong> solves it: <strong>retrieve</strong> the relevant chunks, <strong>augment</strong> the
-          prompt with them, and <strong>generate</strong> a grounded answer. It runs in two phases —{' '}
-          <strong>indexing</strong> (prepare the docs once) and <strong>querying</strong> (answer each question). It’s
-          cheaper than fine-tuning, always up to date, and hallucinates less — and it’s built on the last three days
-          of embeddings and vector DBs. <em>Tomorrow I build it.</em>
+          The same React skills go mobile. <strong>React Native</strong> renders <strong>real native UI</strong> (not a
+          webview) from the React you already know. <strong>Expo</strong> is the batteries-included way to start —{' '}
+          <code>create-expo-app</code>, <code>expo start</code>, scan the QR with <strong>Expo Go</strong>, and it runs
+          on your phone with <strong>Fast Refresh</strong>. There’s no HTML: <code>&lt;View&gt;</code>,{' '}
+          <code>&lt;Text&gt;</code>, <code>&lt;Image&gt;</code> replace the DOM tags, layout is{' '}
+          <strong>Flexbox</strong> (column by default) via a <strong>StyleSheet</strong>, and taps use{' '}
+          <code>&lt;Pressable onPress&gt;</code>. One typed codebase targets iOS, Android and web.{' '}
+          <em>Next: components &amp; styling.</em>
         </p>
 
         <section className="day001-learnt">
@@ -184,12 +181,12 @@ export default function Day027() {
           </ul>
         </section>
 
-        <CardSection icon="📚" title="WHY RAG" cards={WHY} columns={3} />
-        <CardSection icon="🔁" title="THE RAG PIPELINE" cards={PIPELINE} columns={3} />
+        <CardSection icon="📱" title="WHAT & HOW TO START" cards={START} columns={2} />
+        <CardSection icon="🧱" title="THE BASICS" cards={BASICS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#CoderArmy</span><span>#JavaScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#ReactNative</span><span>#Expo</span>
         </footer>
       </div>
     </div>

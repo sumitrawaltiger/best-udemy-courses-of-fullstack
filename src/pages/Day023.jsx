@@ -2,80 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture07';
-const NOTION = 'https://www.notion.so/Lecture-07-Build-Code-Reviewer-2d3a9af81c988071b829e3163129b078';
+const RSC_DOCS = 'https://nextjs.org/docs/app/building-your-application/rendering/server-components';
+const CC_DOCS = 'https://nextjs.org/docs/app/building-your-application/rendering/client-components';
 
 const LEARNT_TODAY = [
-  { title: 'A multi-tool agent', text: 'the code reviewer gets three tools — list_files, read_file and write_file — to work on a real project' },
-  { title: 'list_files', text: 'recursively scan a directory for code (.js, .ts, .html, .css), skipping node_modules, dist and build' },
-  { title: 'read_file & write_file', text: 'read a file’s content, then write the corrected version back to disk' },
-  { title: 'The review loop', text: 'list all files, read each one, analyse it, and write fixes — driven entirely by the model' },
-  { title: 'A detailed job spec', text: 'the systemInstruction lists exactly what to check: bugs, security, accessibility, code quality' },
-  { title: 'Batch function calls', text: 'the model can return several functionCalls at once; execute them all, then feed results back' },
-  { title: 'It edits real code', text: 'the agent actually fixes files and ends with a summary report — not just a list of problems' },
-  { title: 'Safety with power', text: 'it writes to disk, so run it on a copy or under version control and review the diff' },
+  { title: 'Server by default', text: 'in the App Router every component is a Server Component unless you opt out' },
+  { title: 'Server Components', text: 'run on the server, can be async, fetch data directly, and ship zero JS to the client' },
+  { title: '"use client"', text: 'a directive at the top of a file marks it (and its imports) as a Client Component' },
+  { title: 'Client Components', text: 'needed for state, effects, event handlers and browser APIs — hooks live here' },
+  { title: 'Keep client leaves small', text: 'push "use client" down to the interactive leaf, not the whole tree' },
+  { title: 'Server → Client props', text: 'a Server Component can render a Client one and pass serialisable props' },
+  { title: 'No secrets on the client', text: 'API keys and DB calls stay in Server Components — they never reach the browser' },
+  { title: 'children pattern', text: 'pass Server Components as children into Client Components to keep them on the server' },
 ];
 
-const TOOLS = [
+const SERVER = [
   {
-    icon: '🗂️', title: 'list_files', titleClass: 'card-title-cyan', subtitle: 'Discover The Code',
+    icon: '🖥️', title: 'Server Components', titleClass: 'card-title-cyan', subtitle: 'Default · Zero JS',
     description:
-      'A recursive scan collects every code file in a directory and skips build artefacts and dependencies. The agent starts here to learn what it is reviewing.',
-    code: 'function scan(dir) {\n  for (const item of fs.readdirSync(dir)) {\n    const full = path.join(dir, item);\n    if (/node_modules|dist|build/.test(full)) continue;\n    if (fs.statSync(full).isDirectory()) scan(full);\n    else if ([".js",".ts",".html",".css"].includes(path.extname(item)))\n      files.push(full);\n  }\n}',
+      'They render on the server, can be async, and fetch data directly — a database call or fetch right in the component. They send HTML, not JavaScript, so bundles stay tiny and secrets stay server-side.',
+    code: '// app/page.tsx — a Server Component\nexport default async function Page() {\n  const posts = await db.post.findMany(); // safe on server\n  return <List posts={posts} />;\n}',
   },
   {
-    icon: '📖', title: 'read_file & write_file', titleClass: 'card-title-purple', subtitle: 'Read, Then Fix',
+    icon: '🔒', title: 'What Stays Server-Only', titleClass: 'card-title-purple', subtitle: 'Secrets & Data',
     description:
-      'Two more tools let the agent read any file and write a corrected version back. Together with list_files, that is everything it needs to review and repair a codebase.',
-    code: 'async function readFile({ file_path }) {\n  return { content: fs.readFileSync(file_path, "utf-8") };\n}\nasync function writeFile({ file_path, content }) {\n  fs.writeFileSync(file_path, content, "utf-8");\n  return { success: true };\n}',
-  },
-  {
-    icon: '🧾', title: 'Typed Declarations', titleClass: 'card-title-amber', subtitle: 'The Model’s Menu',
-    description:
-      'Each tool is declared with typed parameters so the model knows how to call it — a path to read, a path plus content to write.',
-    code: 'const writeFileTool = {\n  name: "write_file",\n  description: "Write fixed content back to a file",\n  parameters: {\n    type: Type.OBJECT,\n    properties: {\n      file_path: { type: Type.STRING },\n      content:   { type: Type.STRING, description: "The corrected content" },\n    },\n    required: ["file_path", "content"],\n  },\n};',
+      'Database queries, API keys, heavy dependencies — all live in Server Components and never ship to the browser. Great for security and for keeping the client bundle small.',
+    code: '// ✅ server: process.env.DB_URL, await db.query(...)\n// ❌ never expose these in a client component',
   },
 ];
 
-const LOOP = [
+const CLIENT = [
   {
-    icon: '📝', title: 'The Job Spec', titleClass: 'card-title-cyan', subtitle: 'A Precise Persona',
+    icon: '🖱️', title: '"use client"', titleClass: 'card-title-cyan', subtitle: 'Opt Into Interactivity',
     description:
-      'The systemInstruction is a full reviewer brief: check HTML (semantics, a11y), CSS (validity, duplicates), and JS (bugs, security, quality) — then actually fix the code, not just report it.',
-    code: '// systemInstruction (excerpt):\n// 1. list_files → 2. read_file each\n// 3. analyse: bugs, security (secrets, eval, XSS), quality\n// 4. write_file the fixes\n// 5. end with a summary report',
+      'Add "use client" at the top of a file when you need state, effects, event handlers or browser APIs. That file and everything it imports become Client Components.',
+    code: '"use client";\nimport { useState } from "react";\nexport function Counter() {\n  const [n, setN] = useState(0);\n  return <button onClick={() => setN(n + 1)}>{n}</button>;\n}',
   },
   {
-    icon: '⚙️', title: 'Execute Every Call', titleClass: 'card-title-purple', subtitle: 'Batch Tools',
+    icon: '🍃', title: 'Push It Down', titleClass: 'card-title-purple', subtitle: 'Small Client Leaves',
     description:
-      'The model may request several tools in one turn. Loop over every functionCall, run the matching function from a registry, and send all the results back.',
-    code: 'if (result.functionCalls?.length) {\n  for (const call of result.functionCalls) {\n    const { name, args } = call;\n    const output = await tools[name](args); // dispatch\n    // push functionResponse back into history\n  }\n}',
+      'Don’t mark a whole page "use client". Keep the interactive bit — a button, a form — as a small leaf, and keep the rest on the server. Less JS, faster pages.',
+    code: '// page.tsx (server) renders:\n//   <Article />        ← server\n//   <LikeButton />     ← "use client" leaf',
   },
   {
-    icon: '📊', title: 'Fix + Report', titleClass: 'card-title-amber', subtitle: 'Real Output',
+    icon: '🧩', title: 'Compose Them', titleClass: 'card-title-amber', subtitle: 'children Pattern',
     description:
-      'The agent writes corrected files and finishes with a categorised report — security fixes, bug fixes, quality improvements — with file and line references.',
-    code: '// 📊 CODE REVIEW COMPLETE\n// 🔴 SECURITY: removed hardcoded API key\n// 🟠 BUGS: added null check for user\n// 🟡 QUALITY: removed console.logs',
+      'A Server Component can render a Client Component and pass serialisable props. To keep a Server Component inside a Client one, pass it as children — it still renders on the server.',
+    code: '// Client wrapper keeps children on the server\n<ClientTabs>\n  <ServerHeavyChart />   {/* stays server */}\n</ClientTabs>',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📝', title: 'Lecture 07 Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    icon: '📘', title: 'Server Components', titleClass: 'card-title-cyan', subtitle: 'Next.js Docs',
     description:
-      'Rohit’s write-up for the Build Code Reviewer lecture — the tools, the reviewer prompt, and the full agent flow.',
-    link: { href: NOTION, label: 'Open Lecture 07 notes →', external: true },
+      'What runs on the server, how async data fetching works, streaming, and why the default keeps client JavaScript minimal.',
+    link: { href: RSC_DOCS, label: 'Open the docs →', external: true },
   },
   {
-    icon: '💻', title: 'Lecture 07 Code', titleClass: 'card-title-purple', subtitle: 'agent.js',
+    icon: '🖱️', title: 'Client Components', titleClass: 'card-title-purple', subtitle: 'Next.js Docs',
     description:
-      'The runnable code reviewer agent — list/read/write tools, the reviewer systemInstruction, and the tool-dispatch loop.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 07 →', external: true },
+      'When and how to use "use client", the boundary rules, and patterns for interleaving server and client trees.',
+    link: { href: CC_DOCS, label: 'Open the docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Embeddings', titleClass: 'card-title-amber', subtitle: 'Prereq 8 Preview',
+    icon: '🔜', title: 'Next: Data & Actions', titleClass: 'card-title-amber', subtitle: 'Day 24 Preview',
     description:
-      'Tomorrow the RAG foundation begins — Lecture 08 on embeddings: turning text into vectors so the model can compare meaning, not just words.',
-    link: { href: '/day-024', label: 'Go to Prereq 8 →' },
+      'Tomorrow — fetching in Server Components, mutating with Server Actions (no API route needed), and revalidating cached data.',
+    link: { href: '/day-024', label: 'Go to Day 24 →' },
   },
 ];
 
@@ -140,38 +134,38 @@ export default function Day023() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-022" className="day001-nav-btn day001-nav-prev">← Prereq 6</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 7</p>
-          <Link to="/day-024" className="day001-nav-btn day001-nav-next">Prereq 8 →</Link>
+          <Link to="/day-022" className="day001-nav-btn day001-nav-prev">← Day 22</Link>
+          <p className="day001-datetime">TypeScript Day 23</p>
+          <Link to="/day-024" className="day001-nav-btn day001-nav-next">Day 24 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 07</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Next.js</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 7 <span aria-hidden="true">🔍</span></h1>
-              <p className="day001-day-theme">BUILD A CODE REVIEWER AGENT</p>
+              <h1 className="day001-day-num">DAY 23 <span aria-hidden="true">🖥️</span></h1>
+              <p className="day001-day-theme">NEXT.JS — SERVER vs CLIENT COMPONENTS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '7%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '23%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 07 — a real <strong>Code Reviewer agent</strong>. I gave it three file-system tools —{' '}
-          <code>list_files</code>, <code>read_file</code> and <code>write_file</code> — and a detailed reviewer{' '}
-          <strong>systemInstruction</strong> covering bugs, security, accessibility and code quality. The agent{' '}
-          <strong>lists</strong> a project, <strong>reads</strong> each file, and <strong>writes fixes</strong> back,
-          handling several <code>functionCalls</code> per turn via a tool registry, and ends with a categorised{' '}
-          <strong>summary report</strong>. It genuinely edits your code — so run it on a copy.{' '}
-          <em>An agent that improves a whole codebase.</em>
+          The defining App Router idea. Every component is a <strong>Server Component by default</strong> — it runs on
+          the server, can be <code>async</code>, fetches data directly (even a DB call), and ships{' '}
+          <strong>zero JavaScript</strong>, keeping secrets server-side. Add <strong>"use client"</strong> to opt a
+          file (and its imports) into a <strong>Client Component</strong> — required for <em>state, effects, event
+          handlers and browser APIs</em>. The skill is drawing the boundary well: keep client components as{' '}
+          <strong>small interactive leaves</strong>, pass server components as <code>children</code> into client ones,
+          and let the server do the heavy lifting. <em>Next: data fetching &amp; Server Actions.</em>
         </p>
 
         <section className="day001-learnt">
@@ -186,12 +180,12 @@ export default function Day023() {
           </ul>
         </section>
 
-        <CardSection icon="🧰" title="THE FILE-SYSTEM TOOLS" cards={TOOLS} columns={3} />
-        <CardSection icon="♻️" title="THE REVIEW LOOP" cards={LOOP} columns={3} />
+        <CardSection icon="🖥️" title="SERVER COMPONENTS" cards={SERVER} columns={2} />
+        <CardSection icon="🖱️" title="CLIENT COMPONENTS" cards={CLIENT} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Agents</span><span>#CoderArmy</span><span>#JavaScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#NextJS</span><span>#RSC</span>
         </footer>
       </div>
     </div>

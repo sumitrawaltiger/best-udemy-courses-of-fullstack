@@ -2,74 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture12and13';
-const NOTION = 'https://www.notion.so/RAG-System-2e8a9af81c9881eab86dfe8bf32fcfb4';
-const LANGCHAIN = 'https://js.langchain.com/docs/introduction/';
+const STYLE_DOCS = 'https://reactnative.dev/docs/style';
+const FLEX_DOCS = 'https://reactnative.dev/docs/flexbox';
 
 const LEARNT_TODAY = [
-  { title: 'Meet LangChain.js', text: 'a framework that wires the RAG steps — loaders, splitters, embeddings, vector stores — together cleanly' },
-  { title: 'Load documents', text: 'PDFLoader reads a PDF file into an array of document objects to process' },
-  { title: 'Chunk the text', text: 'RecursiveCharacterTextSplitter breaks documents into pieces (chunkSize 1000, chunkOverlap 200)' },
-  { title: 'Why overlap', text: 'overlapping chunks keep context from spilling across boundaries so no idea is cut in half' },
-  { title: 'Embed each chunk', text: 'GoogleGenerativeAIEmbeddings (text-embedding-004) turns every chunk into a vector' },
-  { title: 'Store in Pinecone', text: 'PineconeStore.fromDocuments embeds and upserts all chunks into a Pinecone index in one step' },
-  { title: 'Runs once', text: 'indexing is a one-time prep — do it when documents are added or changed, not per question' },
+  { title: 'StyleSheet.create', text: 'define styles as objects with camelCased props — no CSS, no units (numbers = dp)' },
+  { title: 'Flexbox everywhere', text: 'layout is Flexbox; flexDirection defaults to column, flex: 1 fills space' },
+  { title: 'No cascade', text: 'styles don’t inherit (except some text props) — apply them explicitly per component' },
+  { title: 'Style arrays', text: 'pass an array to merge base + conditional styles, later wins' },
+  { title: 'Text must nest', text: 'all text lives inside <Text>; nested <Text> inherits font styles' },
+  { title: 'SafeAreaView', text: 'keep content clear of the notch and home indicator' },
+  { title: 'Platform styles', text: 'Platform.select / Platform.OS branch iOS vs Android styling' },
+  { title: 'Responsive', text: 'useWindowDimensions and percentages adapt to any screen size' },
 ];
 
-const LANGCHAIN_CARD = [
+const STYLING = [
   {
-    icon: '🔗', title: 'Enter LangChain.js', titleClass: 'card-title-cyan', subtitle: 'The RAG Framework',
+    icon: '🎨', title: 'StyleSheet', titleClass: 'card-title-cyan', subtitle: 'Objects, Not CSS',
     description:
-      'Instead of hand-writing every step, LangChain.js gives ready-made pieces — document loaders, text splitters, embedding wrappers and vector-store adapters — that snap together.',
-    code: "import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';\nimport { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';\nimport { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';\nimport { PineconeStore } from '@langchain/pinecone';",
+      'Styles are plain objects created with StyleSheet.create — camelCased keys, numbers as density-independent pixels, no units or selectors. Merge with an array; the later entry wins.',
+    code: 'const s = StyleSheet.create({\n  card: { padding: 16, borderRadius: 12, backgroundColor: "#111" },\n  active: { borderColor: "#22d3ee", borderWidth: 1 },\n});\n<View style={[s.card, isActive && s.active]} />',
   },
   {
-    icon: '📄', title: 'Load The PDF', titleClass: 'card-title-purple', subtitle: 'PDFLoader',
+    icon: '📐', title: 'Flexbox Layout', titleClass: 'card-title-purple', subtitle: 'Column By Default',
     description:
-      'Point a loader at a file and it returns document objects with the text and metadata. LangChain has loaders for PDFs, web pages, Notion, and more.',
-    code: "const pdfLoader = new PDFLoader('./Node.pdf');\nconst rawDocs = await pdfLoader.load();\n// rawDocs = [{ pageContent, metadata }, ...]",
+      'Every View is a flex container. flexDirection is column (vertical) by default; flip to row for horizontal. flex: 1 grows to fill, and justify/align work as on web.',
+    code: '<View style={{ flex: 1, flexDirection: "row",\n  justifyContent: "space-between", alignItems: "center" }}>\n  <Text>Left</Text><Text>Right</Text>\n</View>',
   },
 ];
 
-const CHUNK = [
+const ADAPT = [
   {
-    icon: '✂️', title: 'Chunk It', titleClass: 'card-title-cyan', subtitle: 'Size + Overlap',
+    icon: '📲', title: 'Safe Areas', titleClass: 'card-title-cyan', subtitle: 'Notch & Home Bar',
     description:
-      'A whole document is too big to embed usefully. Split it into ~1000-character chunks with 200 characters of overlap so context carries across the cuts.',
-    code: "const splitter = new RecursiveCharacterTextSplitter({\n  chunkSize: 1000,\n  chunkOverlap: 200,\n});\nconst chunks = await splitter.splitDocuments(rawDocs);\n// e.g. 266 chunks → 266 vectors",
+      'Phones have notches and home indicators. Wrap screens in SafeAreaView (or useSafeAreaInsets) so content isn’t hidden behind system UI.',
+    code: 'import { SafeAreaView } from "react-native-safe-area-context";\n<SafeAreaView style={{ flex: 1 }}> … </SafeAreaView>',
   },
   {
-    icon: '🔢', title: 'Embed Each Chunk', titleClass: 'card-title-purple', subtitle: 'text-embedding-004',
+    icon: '🤖', title: 'Platform Differences', titleClass: 'card-title-purple', subtitle: 'iOS vs Android',
     description:
-      'Configure the Gemini embedding model. Every chunk becomes a vector that captures its meaning — the same embeddings idea from Day 8, now applied to your documents.',
-    code: "const embeddings = new GoogleGenerativeAIEmbeddings({\n  apiKey: process.env.GEMINI_API_KEY,\n  model: 'text-embedding-004',\n});",
+      'Sometimes a style or value should differ per platform. Platform.select and Platform.OS let you branch cleanly — shadows on iOS, elevation on Android, for example.',
+    code: 'const shadow = Platform.select({\n  ios: { shadowOpacity: 0.2, shadowRadius: 6 },\n  android: { elevation: 4 },\n});',
   },
   {
-    icon: '📦', title: 'Store In Pinecone', titleClass: 'card-title-amber', subtitle: 'One Step',
+    icon: '📏', title: 'Responsive', titleClass: 'card-title-amber', subtitle: 'Any Screen Size',
     description:
-      'PineconeStore.fromDocuments does the whole thing — embed every chunk and upsert it into your Pinecone index. After this, your PDF is a searchable knowledge base.',
-    code: "const pinecone = new Pinecone();\nconst index = pinecone.Index(process.env.PINECONE_INDEX_NAME);\n\nawait PineconeStore.fromDocuments(chunks, embeddings, {\n  pineconeIndex: index,\n  maxConcurrency: 5,\n});",
+      'Screens vary. useWindowDimensions gives live width/height, and percentage widths adapt automatically — the mobile version of a responsive layout.',
+    code: 'const { width } = useWindowDimensions();\nconst cols = width > 600 ? 2 : 1;\n<View style={{ width: "50%" }} />',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📝', title: 'RAG System Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    icon: '📘', title: 'Styling', titleClass: 'card-title-cyan', subtitle: 'React Native Docs',
     description:
-      'Rohit’s RAG System write-up — the full indexing and querying pipeline with LangChain.js and Pinecone.',
-    link: { href: NOTION, label: 'Open the RAG notes →', external: true },
+      'The full styling reference — StyleSheet, supported properties, style arrays, and how text styling inherits.',
+    link: { href: STYLE_DOCS, label: 'Open the styling docs →', external: true },
   },
   {
-    icon: '💻', title: 'Lecture 12–13 Code', titleClass: 'card-title-purple', subtitle: 'indexing.js',
+    icon: '📐', title: 'Flexbox', titleClass: 'card-title-purple', subtitle: 'Layout',
     description:
-      'The runnable indexing.js (and query.js for tomorrow) in the STRIKE GenAI repo — the complete document RAG build.',
-    link: { href: GH_LECTURE, label: 'Open the code →', external: true },
+      'How Flexbox works in React Native, the column default, and every justify/align option with visual examples.',
+    link: { href: FLEX_DOCS, label: 'Open the Flexbox docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Querying', titleClass: 'card-title-amber', subtitle: 'Prereq 13 Preview',
+    icon: '🔜', title: 'Next: Navigation', titleClass: 'card-title-amber', subtitle: 'Day 29 Preview',
     description:
-      'Tomorrow is the other half — Lecture 13: embed the question, retrieve the top chunks from Pinecone, and generate a grounded answer with a LangChain chain.',
-    link: { href: '/day-029', label: 'Go to Prereq 13 →' },
+      'Tomorrow — moving between screens with Expo Router (file-based) and React Navigation: stacks, tabs, params and typed routes.',
+    link: { href: '/day-029', label: 'Go to Day 29 →' },
   },
 ];
 
@@ -134,38 +134,38 @@ export default function Day028() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-027" className="day001-nav-btn day001-nav-prev">← Prereq 11</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 12</p>
-          <Link to="/day-029" className="day001-nav-btn day001-nav-next">Prereq 13 →</Link>
+          <Link to="/day-027" className="day001-nav-btn day001-nav-prev">← Day 27</Link>
+          <p className="day001-datetime">TypeScript Day 28</p>
+          <Link to="/day-029" className="day001-nav-btn day001-nav-next">Day 29 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 12</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>React Native</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 12 <span aria-hidden="true">🗂️</span></h1>
-              <p className="day001-day-theme">RAG PART 1 — INDEXING YOUR DOCUMENTS</p>
+              <h1 className="day001-day-num">DAY 28 <span aria-hidden="true">🎨</span></h1>
+              <p className="day001-day-theme">REACT NATIVE — COMPONENTS &amp; STYLING</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '12%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '28%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 12 — the RAG <strong>indexing</strong> pipeline, and my first taste of{' '}
-          <strong>LangChain.js</strong>. I <strong>load</strong> a PDF with <code>PDFLoader</code>,{' '}
-          <strong>chunk</strong> it with <code>RecursiveCharacterTextSplitter</code> (size 1000, overlap 200 so
-          context survives the cuts), <strong>embed</strong> each chunk with{' '}
-          <code>GoogleGenerativeAIEmbeddings</code>, and <strong>store</strong> them all in{' '}
-          <strong>Pinecone</strong> via <code>PineconeStore.fromDocuments</code>. One run turns a document into a
-          searchable knowledge base. <em>Tomorrow I query it.</em>
+          Styling the native way. Styles are plain objects via <strong>StyleSheet.create</strong> — camelCased,
+          unitless numbers (density-independent pixels), no cascade, and merged with an <strong>array</strong> (later
+          wins). Layout is <strong>Flexbox</strong> with <code>flexDirection: "column"</code> by default and{' '}
+          <code>flex: 1</code> to fill. All text lives in <code>&lt;Text&gt;</code> (nested text inherits font). Keep
+          content clear of the notch with <strong>SafeAreaView</strong>, branch iOS/Android with{' '}
+          <strong>Platform.select</strong>, and adapt to any screen with <strong>useWindowDimensions</strong> and
+          percentage widths. <em>Next: navigation between screens.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +180,12 @@ export default function Day028() {
           </ul>
         </section>
 
-        <CardSection icon="🔗" title="MEET LANGCHAIN.js" cards={LANGCHAIN_CARD} columns={2} />
-        <CardSection icon="✂️" title="CHUNK · EMBED · STORE" cards={CHUNK} columns={3} />
+        <CardSection icon="🎨" title="STYLE & LAYOUT" cards={STYLING} columns={2} />
+        <CardSection icon="📲" title="ADAPT TO DEVICES" cards={ADAPT} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#LangChain</span><span>#Pinecone</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#ReactNative</span><span>#Styling</span>
         </footer>
       </div>
     </div>

@@ -2,73 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture12and13';
-const NOTION = 'https://www.notion.so/RAG-System-2e8a9af81c9881eab86dfe8bf32fcfb4';
+const EXPO_ROUTER = 'https://docs.expo.dev/router/introduction/';
+const REACT_NAV = 'https://reactnavigation.org/';
 
 const LEARNT_TODAY = [
-  { title: 'Embed the question', text: 'the query is embedded with the same model used for the documents, so they share a meaning space' },
-  { title: 'Retrieve top-K', text: 'query Pinecone for the 10 most similar chunks, with includeMetadata to get the original text back' },
-  { title: 'Build the context', text: 'join the retrieved chunk texts into one context block to hand to the model' },
-  { title: 'Augment with a template', text: 'a PromptTemplate injects the context and question and tells the model to answer only from the context' },
-  { title: 'Ground the answer', text: 'instruct it to say "I don’t have enough information" when the context does not contain the answer' },
-  { title: 'Generate', text: 'ChatGoogleGenerativeAI (gemini-2.5-flash, temperature 0.3) writes the final answer' },
-  { title: 'LangChain chains', text: 'RunnableSequence pipes promptTemplate → model → StringOutputParser into one clean chain' },
+  { title: 'Expo Router', text: 'file-based routing for RN — the app/ folder maps to screens, like Next.js' },
+  { title: 'React Navigation', text: 'the underlying library — stacks, tabs and drawers; Expo Router sits on top' },
+  { title: 'Stack navigator', text: 'push/pop screens like a stack of cards — the default for drill-in flows' },
+  { title: 'Tab navigator', text: 'a bottom tab bar switching between top-level sections' },
+  { title: 'Dynamic routes', text: 'a [id].tsx screen reads params with useLocalSearchParams' },
+  { title: 'Link & router', text: '<Link href> for declarative nav, router.push() for programmatic' },
+  { title: 'Typed routes', text: 'Expo Router can generate types so hrefs and params are checked' },
+  { title: 'Headers & options', text: 'set titles, buttons and gestures per screen via Stack.Screen options' },
 ];
 
-const RETRIEVE = [
+const ROUTERS = [
   {
-    icon: '🎯', title: 'Embed & Retrieve', titleClass: 'card-title-cyan', subtitle: 'Top-K From Pinecone',
+    icon: '🗂️', title: 'Expo Router', titleClass: 'card-title-cyan', subtitle: 'File-Based Screens',
     description:
-      'Embed the user’s question, then ask Pinecone for the most similar chunks. includeMetadata brings back the original text so we can feed it to the model.',
-    code: "const queryVector = await embeddings.embedQuery(question);\n\nconst results = await pineconeIndex.query({\n  topK: 10,\n  vector: queryVector,\n  includeMetadata: true,\n});",
+      'If you learned the Next.js App Router, this is instant: files under app/ become screens. app/index.tsx is home, app/profile.tsx is /profile, and _layout.tsx defines the navigator.',
+    code: '// app/_layout.tsx\nexport default function Layout() {\n  return <Stack />;   // or <Tabs />\n}\n// app/index.tsx  → home screen\n// app/settings.tsx → /settings',
   },
   {
-    icon: '🧱', title: 'Build The Context', titleClass: 'card-title-purple', subtitle: 'Join The Chunks',
+    icon: '🃏', title: 'Stacks & Tabs', titleClass: 'card-title-purple', subtitle: 'The Two Workhorses',
     description:
-      'Pull the text out of each match and join them into a single context string. This is the retrieved knowledge the model will answer from.',
-    code: "const context = results.matches\n  .map(m => m.metadata.text)\n  .join('\\n\\n---\\n\\n');",
+      'A Stack pushes screens on top of each other with a back gesture (drill-in flows). Tabs render a bottom bar to switch top-level sections. Most apps nest tabs, each holding a stack.',
+    code: '// app/(tabs)/_layout.tsx\n<Tabs>\n  <Tabs.Screen name="index" options={{ title: "Home" }} />\n  <Tabs.Screen name="profile" options={{ title: "Profile" }} />\n</Tabs>',
   },
 ];
 
-const GENERATE = [
+const NAV = [
   {
-    icon: '📝', title: 'The Prompt Template', titleClass: 'card-title-cyan', subtitle: 'Augment',
+    icon: '🔗', title: 'Navigate', titleClass: 'card-title-cyan', subtitle: 'Link & router',
     description:
-      'A PromptTemplate slots the context and question into a fixed instruction: answer using only the context, admit when it is not there, be concise, and reuse code examples.',
-    code: "const promptTemplate = PromptTemplate.fromTemplate(`\nAnswer using ONLY the context below.\nIf the answer is not in it, say you don't have enough information.\n\nContext:\n{context}\n\nQuestion: {question}\nAnswer:`);",
+      'Use <Link href="/profile"> for declarative navigation and router.push() / router.back() from code after an action — the mobile equivalents of web Link and useNavigate.',
+    code: 'import { Link, router } from "expo-router";\n<Link href="/users/7">Open</Link>\n// or:\nrouter.push("/users/7");',
   },
   {
-    icon: '🤖', title: 'The Model', titleClass: 'card-title-purple', subtitle: 'Low Temperature',
+    icon: '🆔', title: 'Route Params', titleClass: 'card-title-purple', subtitle: 'Typed',
     description:
-      'ChatGoogleGenerativeAI runs gemini-2.5-flash at a low temperature (0.3) so answers stay factual and grounded rather than creative.',
-    code: "const model = new ChatGoogleGenerativeAI({\n  apiKey: process.env.GEMINI_API_KEY,\n  model: 'gemini-2.5-flash',\n  temperature: 0.3,\n});",
+      'A dynamic screen [id].tsx reads its param with useLocalSearchParams. Enable typed routes and both the href and the params are TypeScript-checked.',
+    code: '// app/users/[id].tsx\nconst { id } = useLocalSearchParams<{ id: string }>();\nreturn <Text>User #{id}</Text>;',
   },
   {
-    icon: '⛓️', title: 'The Chain', titleClass: 'card-title-amber', subtitle: 'RunnableSequence',
+    icon: '⚙️', title: 'Screen Options', titleClass: 'card-title-amber', subtitle: 'Headers & Gestures',
     description:
-      'LangChain pipes the steps together: template → model → output parser. Invoke it with the context and question and it returns the finished answer string.',
-    code: "const chain = RunnableSequence.from([\n  promptTemplate,\n  model,\n  new StringOutputParser(),\n]);\n\nconst answer = await chain.invoke({ context, question });",
+      'Configure each screen’s header title, buttons, presentation (modal), and back gesture through options — declaratively per screen, no manual header code.',
+    code: '<Stack.Screen name="edit"\n  options={{ title: "Edit", presentation: "modal" }} />',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📝', title: 'RAG System Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    icon: '📘', title: 'Expo Router', titleClass: 'card-title-cyan', subtitle: 'Docs',
     description:
-      'The RAG System write-up covering both indexing (yesterday) and this querying pipeline end to end.',
-    link: { href: NOTION, label: 'Open the RAG notes →', external: true },
+      'File-based routing for React Native — layouts, stacks, tabs, dynamic routes, typed routes and deep linking.',
+    link: { href: EXPO_ROUTER, label: 'Open Expo Router →', external: true },
   },
   {
-    icon: '💻', title: 'query.js', titleClass: 'card-title-purple', subtitle: 'GitHub',
+    icon: '🧭', title: 'React Navigation', titleClass: 'card-title-purple', subtitle: 'The Foundation',
     description:
-      'The runnable query.js — retrieve from Pinecone and answer with a LangChain chain — in the STRIKE GenAI repo.',
-    link: { href: GH_LECTURE, label: 'Open the code →', external: true },
+      'The navigation library underneath — navigators, params, nesting and the imperative API, when you need lower-level control.',
+    link: { href: REACT_NAV, label: 'Open React Navigation →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Better RAG', titleClass: 'card-title-amber', subtitle: 'Prereq 14 Preview',
+    icon: '🔜', title: 'Next: Data & APIs', titleClass: 'card-title-amber', subtitle: 'Day 30 Preview',
     description:
-      'Tomorrow improves the system — Lecture 14: making RAG conversational by rewriting a follow-up question into a standalone query before retrieving.',
-    link: { href: '/day-030', label: 'Go to Prereq 14 →' },
+      'Tomorrow — lists at scale with FlatList, fetching data (TanStack Query works here too), local storage, and using native device APIs via Expo.',
+    link: { href: '/day-030', label: 'Go to Day 30 →' },
   },
 ];
 
@@ -133,38 +134,38 @@ export default function Day029() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-028" className="day001-nav-btn day001-nav-prev">← Prereq 12</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 13</p>
-          <Link to="/day-030" className="day001-nav-btn day001-nav-next">Prereq 14 →</Link>
+          <Link to="/day-028" className="day001-nav-btn day001-nav-prev">← Day 28</Link>
+          <p className="day001-datetime">TypeScript Day 29</p>
+          <Link to="/day-030" className="day001-nav-btn day001-nav-next">Day 30 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 13</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>React Native</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 13 <span aria-hidden="true">💡</span></h1>
-              <p className="day001-day-theme">RAG PART 2 — RETRIEVE, AUGMENT &amp; ANSWER</p>
+              <h1 className="day001-day-num">DAY 29 <span aria-hidden="true">🧭</span></h1>
+              <p className="day001-day-theme">REACT NATIVE — NAVIGATION</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '13%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '29%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 13 completes the RAG system — the <strong>querying</strong> half. I <strong>embed</strong> the
-          question, <strong>retrieve</strong> the top-10 chunks from <strong>Pinecone</strong> (with metadata),{' '}
-          <strong>build a context</strong> from them, and <strong>augment</strong> a <code>PromptTemplate</code> that
-          tells the model to answer <strong>only from the context</strong> and admit when it can’t. A low-temperature{' '}
-          <code>ChatGoogleGenerativeAI</code> generates the answer, all wired as a{' '}
-          <strong>LangChain RunnableSequence</strong>. That’s a working <strong>chat-with-your-documents</strong>{' '}
-          app. <em>Retrieve, augment, generate — done.</em>
+          Moving between screens. <strong>Expo Router</strong> brings <strong>file-based routing</strong> to mobile —
+          files in <code>app/</code> are screens and <code>_layout.tsx</code> defines the navigator, exactly like the
+          Next.js App Router. It’s built on <strong>React Navigation</strong>: a <strong>Stack</strong> pushes/pops
+          screens (drill-in + back gesture), <strong>Tabs</strong> give a bottom bar, and most apps nest tabs each
+          holding a stack. Navigate with <code>&lt;Link href&gt;</code> or <code>router.push()</code>, read typed
+          params via <strong>useLocalSearchParams</strong>, and configure headers/modals through per-screen{' '}
+          <strong>options</strong>. <em>Next: lists, data &amp; native APIs.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +180,12 @@ export default function Day029() {
           </ul>
         </section>
 
-        <CardSection icon="🎯" title="RETRIEVE" cards={RETRIEVE} columns={2} />
-        <CardSection icon="⛓️" title="AUGMENT & GENERATE" cards={GENERATE} columns={3} />
+        <CardSection icon="🗂️" title="ROUTERS & NAVIGATORS" cards={ROUTERS} columns={2} />
+        <CardSection icon="🔗" title="NAVIGATING" cards={NAV} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#LangChain</span><span>#Pinecone</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#ReactNative</span><span>#Navigation</span>
         </footer>
       </div>
     </div>

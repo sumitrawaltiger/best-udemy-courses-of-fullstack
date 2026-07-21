@@ -2,73 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture14';
-const NOTION = 'https://www.notion.so/2f1a9af81c98803fb2a9ce500e13ce71';
+const FLATLIST_DOCS = 'https://reactnative.dev/docs/flatlist';
+const EXPO_SDK = 'https://docs.expo.dev/versions/latest/';
 
 const LEARNT_TODAY = [
-  { title: 'Follow-ups break retrieval', text: 'a question like "and its price?" has no meaning on its own, so it retrieves the wrong chunks' },
-  { title: 'The missing context', text: 'the meaning of a follow-up lives in the previous turns, not in the words the user just typed' },
-  { title: 'Query rewriting', text: 'before retrieving, an LLM rewrites the follow-up into a standalone, self-contained question' },
-  { title: 'Intent, then search', text: 'the model uses the chat history to resolve pronouns and references into an explicit query' },
-  { title: 'Then RAG as usual', text: 'the rewritten question embeds and retrieves correctly, then answers from the retrieved context' },
-  { title: 'RAG + memory', text: 'query rewriting plus conversation history turns basic RAG into a real document chatbot' },
-  { title: 'Small step, big gain', text: 'one extra LLM call fixes a whole class of broken multi-turn retrievals' },
+  { title: 'FlatList, not map', text: 'render long lists with FlatList — it virtualises rows so only visible ones mount' },
+  { title: 'keyExtractor', text: 'give each row a stable key; renderItem draws one item' },
+  { title: 'Pull to refresh', text: 'onRefresh + refreshing add the native pull-to-refresh gesture' },
+  { title: 'Infinite scroll', text: 'onEndReached loads the next page as the user nears the bottom' },
+  { title: 'Data fetching', text: 'fetch works the same; TanStack Query (Day 18) works in RN too' },
+  { title: 'AsyncStorage', text: 'persist small key-value data locally on the device' },
+  { title: 'Native APIs via Expo', text: 'camera, location, notifications, haptics — installed and typed' },
+  { title: 'Permissions', text: 'request device permissions at runtime before using a sensor' },
 ];
 
-const PROBLEM = [
+const LISTS = [
   {
-    icon: '🧩', title: 'The Follow-Up Problem', titleClass: 'card-title-cyan', subtitle: 'Context-Less Queries',
+    icon: '📜', title: 'FlatList', titleClass: 'card-title-cyan', subtitle: 'Virtualised Lists',
     description:
-      'Yesterday’s RAG answered one-shot questions well. But real chats have follow-ups — "what about that?", "and its price?" — whose meaning depends entirely on the earlier turns.',
-    code: '// User: "Tell me about the useEffect hook"\n// User: "when does it run?"  ← run WHAT?\n// embedding "when does it run?" retrieves nothing useful',
+      'Never .map() a big array of Views — it mounts everything. FlatList renders only the rows on screen and recycles them, so a 10,000-item list scrolls smoothly.',
+    code: '<FlatList\n  data={users}\n  keyExtractor={(u) => u.id}\n  renderItem={({ item }) => <UserRow user={item} />}\n/>',
   },
   {
-    icon: '🕰️', title: 'Meaning Lives In History', titleClass: 'card-title-purple', subtitle: 'Not In The Words',
+    icon: '🔄', title: 'Refresh & Paginate', titleClass: 'card-title-purple', subtitle: 'Native Gestures',
     description:
-      'The vector search only sees the latest message. Without the conversation, "it" and "that" are meaningless, so the retrieved chunks are wrong and the answer is bad.',
-    code: '// retrieval sees only: "when does it run?"\n// it needs: "when does the useEffect hook run?"',
+      'Add pull-to-refresh with onRefresh + refreshing, and infinite scroll with onEndReached to load the next page. These are built into FlatList — no extra library.',
+    code: '<FlatList data={items}\n  refreshing={isRefetching} onRefresh={refetch}\n  onEndReached={loadMore} onEndReachedThreshold={0.5}\n/>',
   },
 ];
 
-const FIX = [
+const NATIVE = [
   {
-    icon: '✍️', title: 'Rewrite The Query', titleClass: 'card-title-cyan', subtitle: 'Standalone Question',
+    icon: '💾', title: 'Local Storage', titleClass: 'card-title-cyan', subtitle: 'AsyncStorage',
     description:
-      'Add a step before retrieval: give the model the chat history and the new message, and ask it to produce a single, self-contained question with all references resolved.',
-    code: '// LLM prompt: "Given the chat history and the follow-up,\n// rewrite it as a standalone question."\n// "when does it run?" → "When does the useEffect hook run?"',
+      'For small persisted data (a token, settings), AsyncStorage is an async key-value store. For server data, TanStack Query’s cache works in React Native just like on web.',
+    code: "import AsyncStorage from '@react-native-async-storage/async-storage';\nawait AsyncStorage.setItem('token', jwt);\nconst t = await AsyncStorage.getItem('token');",
   },
   {
-    icon: '🔎', title: 'Then Retrieve', titleClass: 'card-title-purple', subtitle: 'Correct Chunks',
+    icon: '📷', title: 'Device APIs', titleClass: 'card-title-purple', subtitle: 'Expo Modules',
     description:
-      'Embed the rewritten, explicit question and run the normal RAG retrieval. Now the vector search finds the right chunks because the query actually contains the topic.',
-    code: '// standalone question → embed → Pinecone top-K\n// → the RIGHT chunks come back',
+      'Expo ships typed modules for the camera, location, notifications, haptics, image picker and more. Install one and import it — no native code to write.',
+    code: "import * as Location from 'expo-location';\nconst pos = await Location.getCurrentPositionAsync();\n// { coords: { latitude, longitude } }",
   },
   {
-    icon: '💬', title: 'Conversational RAG', titleClass: 'card-title-amber', subtitle: 'RAG + Memory',
+    icon: '🔐', title: 'Permissions', titleClass: 'card-title-amber', subtitle: 'Ask At Runtime',
     description:
-      'Combine query rewriting with the running conversation and you get a document assistant that holds a real, multi-turn discussion grounded in your data.',
-    code: '// history + follow-up → rewrite → retrieve\n// → augment → answer → append to history → repeat',
+      'Sensors need consent. Request permission at runtime and handle the denied case gracefully — the same pattern for camera, location and notifications.',
+    code: 'const { status } = await Location.requestForegroundPermissionsAsync();\nif (status !== "granted") return; // handle denial',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📝', title: 'Lecture 14 Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    icon: '📘', title: 'FlatList', titleClass: 'card-title-cyan', subtitle: 'React Native Docs',
     description:
-      'Rohit’s notes for this lecture on improving the RAG system for real, multi-turn conversations.',
-    link: { href: NOTION, label: 'Open Lecture 14 notes →', external: true },
+      'The performant list component — props, virtualisation, headers/footers, separators, and SectionList for grouped data.',
+    link: { href: FLATLIST_DOCS, label: 'Open the FlatList docs →', external: true },
   },
   {
-    icon: '💻', title: 'Lecture 14', titleClass: 'card-title-purple', subtitle: 'GitHub',
+    icon: '📦', title: 'Expo SDK', titleClass: 'card-title-purple', subtitle: 'Native Modules',
     description:
-      'The lecture folder and diagram in the STRIKE GenAI repo — improving retrieval for conversational RAG.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 14 →', external: true },
+      'The catalogue of Expo APIs — camera, location, notifications, sensors, secure store and more, each installable and typed.',
+    link: { href: EXPO_SDK, label: 'Browse the Expo SDK →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Retrieval Quality', titleClass: 'card-title-amber', subtitle: 'Prereq 15 Preview',
+    icon: '🔜', title: 'Next: Build & Publish', titleClass: 'card-title-amber', subtitle: 'Day 31 Preview',
     description:
-      'Tomorrow — Lecture 15: making retrieval genuinely good with smart chunking, top-K tuning, metadata filters and re-ranking.',
-    link: { href: '/day-031', label: 'Go to Prereq 15 →' },
+      'Tomorrow — from dev to the stores: EAS Build, app icons & splash, over-the-air updates, and submitting to the App Store and Google Play.',
+    link: { href: '/day-031', label: 'Go to Day 31 →' },
   },
 ];
 
@@ -133,38 +134,38 @@ export default function Day030() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-029" className="day001-nav-btn day001-nav-prev">← Prereq 13</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 14</p>
-          <Link to="/day-031" className="day001-nav-btn day001-nav-next">Prereq 15 →</Link>
+          <Link to="/day-029" className="day001-nav-btn day001-nav-prev">← Day 29</Link>
+          <p className="day001-datetime">TypeScript Day 30</p>
+          <Link to="/day-031" className="day001-nav-btn day001-nav-next">Day 31 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 14</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>React Native</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 14 <span aria-hidden="true">💬</span></h1>
-              <p className="day001-day-theme">CONVERSATIONAL RAG — QUERY REWRITING</p>
+              <h1 className="day001-day-num">DAY 30 <span aria-hidden="true">📜</span></h1>
+              <p className="day001-day-theme">REACT NATIVE — LISTS, DATA &amp; NATIVE APIs</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '14%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '30%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 14 makes RAG <strong>conversational</strong>. Basic RAG breaks on <strong>follow-up questions</strong>{' '}
-          — "and its price?" or "when does it run?" mean nothing on their own, so retrieval fails. The fix is{' '}
-          <strong>query rewriting</strong>: before searching, an LLM uses the <strong>chat history</strong> to turn
-          the follow-up into a <strong>standalone question</strong> with every reference resolved. That explicit
-          query then embeds and retrieves the right chunks, and RAG proceeds as normal. One small extra step —{' '}
-          <strong>RAG + memory</strong> — and it becomes a real document chatbot.{' '}
-          <em>(This lecture is diagram-based; content reflects the standard technique.)</em>
+          Real app data on mobile. Render long lists with <strong>FlatList</strong>, not <code>.map()</code> — it{' '}
+          <strong>virtualises</strong> rows so only visible ones mount, and gives <strong>pull-to-refresh</strong>{' '}
+          (<code>onRefresh</code>) and <strong>infinite scroll</strong> (<code>onEndReached</code>) for free. Fetching
+          works the same as web, and <strong>TanStack Query</strong> (Day 18) runs in RN too. Persist small data with{' '}
+          <strong>AsyncStorage</strong>, and reach device features — camera, location, notifications — through typed{' '}
+          <strong>Expo modules</strong>, always <strong>requesting permission at runtime</strong> first.{' '}
+          <em>Next: build &amp; publish to the stores.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +180,12 @@ export default function Day030() {
           </ul>
         </section>
 
-        <CardSection icon="🧩" title="THE FOLLOW-UP PROBLEM" cards={PROBLEM} columns={2} />
-        <CardSection icon="✍️" title="QUERY REWRITING" cards={FIX} columns={3} />
+        <CardSection icon="📜" title="LISTS & DATA" cards={LISTS} columns={2} />
+        <CardSection icon="📷" title="STORAGE & DEVICE APIs" cards={NATIVE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#CoderArmy</span><span>#LangChain</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#ReactNative</span><span>#Expo</span>
         </footer>
       </div>
     </div>

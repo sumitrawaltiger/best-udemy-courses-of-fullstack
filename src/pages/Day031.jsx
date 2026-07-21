@@ -2,79 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture15';
-const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
+const EAS_DOCS = 'https://docs.expo.dev/build/introduction/';
+const OTA_DOCS = 'https://docs.expo.dev/eas-update/introduction/';
 
 const LEARNT_TODAY = [
-  { title: 'Garbage in, garbage out', text: 'a RAG answer is only as good as the chunks it retrieves — retrieval quality is everything' },
-  { title: 'Chunking matters', text: 'chunk size and overlap change what the model sees; too big adds noise, too small loses context' },
-  { title: 'Tune top-K', text: 'too few chunks miss the answer, too many add noise and cost — find the right K for your data' },
-  { title: 'Metadata filtering', text: 'attach source, section or date to each chunk and filter retrieval to narrow the search' },
-  { title: 'Re-ranking', text: 'over-fetch candidates, then re-score them for true relevance and keep only the best few' },
-  { title: 'Evaluate retrieval', text: 'check whether the retrieved chunks actually contain the answer, not just whether the reply sounds good' },
-  { title: 'RAG is iterative', text: 'better chunking, filtering and re-ranking compound into noticeably better, more trustworthy answers' },
+  { title: 'EAS Build', text: 'Expo Application Services builds native iOS/Android binaries in the cloud — no Mac needed for iOS' },
+  { title: 'app config', text: 'app.json / app.config.ts sets the name, icon, splash, bundle id and permissions' },
+  { title: 'Dev vs preview vs prod', text: 'build profiles in eas.json for internal testing and store releases' },
+  { title: 'OTA updates', text: 'EAS Update ships JS/asset changes over the air — no store review for many fixes' },
+  { title: 'EAS Submit', text: 'upload builds straight to App Store Connect and Google Play' },
+  { title: 'Store requirements', text: 'icons, screenshots, privacy details and review guidelines to pass' },
+  { title: 'Versioning', text: 'bump version + build number each release; OTA updates target a runtime version' },
+  { title: 'Year-1 mobile: done', text: 'the React skills now ship to iOS and Android from one TypeScript codebase' },
 ];
 
-const QUALITY = [
+const BUILD = [
   {
-    icon: '⚖️', title: 'Retrieval Is Everything', titleClass: 'card-title-cyan', subtitle: 'Context = Answer',
+    icon: '🏗️', title: 'EAS Build', titleClass: 'card-title-cyan', subtitle: 'Cloud Native Builds',
     description:
-      'The model can only answer from what you retrieve. If the right chunk never comes back, no prompt can save the answer — so most RAG quality work is really retrieval work.',
-    code: '// good chunks → grounded, correct answer\n// wrong chunks → confident, wrong answer\n// fix retrieval first',
+      'EAS builds real iOS and Android binaries in the cloud from your Expo project — you don’t need Xcode or a Mac. Profiles in eas.json define dev, preview and production builds.',
+    code: 'npm i -g eas-cli && eas login\neas build:configure\neas build --platform ios --profile production\neas build --platform android --profile production',
   },
   {
-    icon: '✂️', title: 'Chunking Strategy', titleClass: 'card-title-purple', subtitle: 'Size & Overlap',
+    icon: '⚙️', title: 'App Config', titleClass: 'card-title-purple', subtitle: 'Icon, Splash, IDs',
     description:
-      'Chunk size and overlap are the biggest levers. Large chunks add irrelevant text; tiny chunks fragment ideas. Tune them to your documents and re-index to compare.',
-    code: '// too big  → noise dilutes the relevant part\n// too small → an idea gets split across chunks\n// tune chunkSize / chunkOverlap, then measure',
-  },
-  {
-    icon: '🔢', title: 'Top-K & Filters', titleClass: 'card-title-amber', subtitle: 'How Much To Fetch',
-    description:
-      'Retrieve enough to cover the answer but not so much that noise creeps in. Use metadata filters (source, section, date) to restrict retrieval to the relevant subset.',
-    code: '// query({ topK, vector, filter: { source: "docs" } })\n// smaller, cleaner candidate set = better answers',
+      'app.json (or app.config.ts) declares the app name, icon, splash screen, bundle identifier and required permissions — the metadata the stores and OS need.',
+    code: '// app.json\n{\n  "expo": {\n    "name": "My App", "slug": "my-app",\n    "ios": { "bundleIdentifier": "com.sumit.myapp" },\n    "android": { "package": "com.sumit.myapp" }\n  }\n}',
   },
 ];
 
-const IMPROVE = [
+const SHIP = [
   {
-    icon: '🏅', title: 'Re-Ranking', titleClass: 'card-title-cyan', subtitle: 'Fetch More, Keep Best',
+    icon: '📡', title: 'OTA Updates', titleClass: 'card-title-cyan', subtitle: 'EAS Update',
     description:
-      'Vector similarity is a fast first pass, not a perfect one. Over-fetch (say top-20), then re-score those with a re-ranker and keep the few most relevant for the prompt.',
-    code: '// 1. vector search → top 20 candidates\n// 2. re-rank by relevance\n// 3. keep top 3–5 → augment the prompt',
+      'Ship JavaScript and asset changes directly to installed apps with EAS Update — many bug fixes and tweaks go out without waiting for store review.',
+    code: 'eas update --branch production --message "Fix crash"\n// users get it on next launch (same runtime version)',
   },
   {
-    icon: '🧪', title: 'Evaluate It', titleClass: 'card-title-purple', subtitle: 'Measure, Don’t Guess',
+    icon: '🚀', title: 'Submit To Stores', titleClass: 'card-title-purple', subtitle: 'EAS Submit',
     description:
-      'Judge the retrieval, not just the vibe of the reply: for a set of questions, did the retrieved chunks actually contain the answer? That tells you what to fix.',
-    code: '// for each test question:\n//   were the right chunks retrieved? (recall)\n//   was the answer grounded in them? (faithfulness)',
+      'eas submit uploads a finished build to App Store Connect and Google Play. Then add screenshots, descriptions and privacy details, and send it for review.',
+    code: 'eas submit --platform ios\neas submit --platform android',
   },
   {
-    icon: '🔁', title: 'Iterate', titleClass: 'card-title-amber', subtitle: 'Compounding Gains',
+    icon: '🔢', title: 'Versioning', titleClass: 'card-title-amber', subtitle: 'Every Release',
     description:
-      'Better chunking, filtering, re-ranking and query rewriting each add a little. Together they turn a shaky demo into a RAG system you can trust in production.',
-    footer: 'chunk → filter → re-rank → evaluate → repeat',
+      'Bump the app version and build number for each store release. OTA updates target a runtime version, so native changes still require a new build.',
+    footer: 'store release → new build · JS-only fix → OTA update',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 15', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'EAS Build', titleClass: 'card-title-cyan', subtitle: 'Expo Docs',
     description:
-      'The lecture folder and diagram in the STRIKE GenAI repo — improving retrieval quality for production RAG.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 15 →', external: true },
+      'Configuring builds, credentials, profiles, and producing store-ready iOS and Android binaries from the cloud.',
+    link: { href: EAS_DOCS, label: 'Open EAS Build →', external: true },
   },
   {
-    icon: '🧠', title: 'The GenAI Track', titleClass: 'card-title-purple', subtitle: 'Same Journey',
+    icon: '📡', title: 'EAS Update', titleClass: 'card-title-purple', subtitle: 'OTA',
     description:
-      'The site’s GenAI track covers RAG, agents and LangGraph as structured modules — a companion to these day-by-day notes.',
-    link: { href: '/genai', label: 'Open the GenAI track →' },
+      'How over-the-air updates work — branches, channels, runtime versions and rollout strategy for fast, safe releases.',
+    link: { href: OTA_DOCS, label: 'Open EAS Update →', external: true },
   },
   {
-    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
+    icon: '🔜', title: 'Next: Express / Node', titleClass: 'card-title-amber', subtitle: 'Day 32 Preview',
     description:
-      'The full Coder Army course code — next up: agents, LangGraph (Lecture 20) and the AI Dev Team projects.',
-    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
+      'The frontend is covered — next the Year-1 backend: Express JS on Node. Setting up a typed server, routing and middleware, then building a real REST API.',
+    link: { href: '/day-032', label: 'Go to Day 32 →' },
   },
 ];
 
@@ -139,38 +134,38 @@ export default function Day031() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-030" className="day001-nav-btn day001-nav-prev">← Prereq 14</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 15</p>
-          <Link to="/day-032" className="day001-nav-btn day001-nav-next">Prereq 16 →</Link>
+          <Link to="/day-030" className="day001-nav-btn day001-nav-prev">← Day 30</Link>
+          <p className="day001-datetime">TypeScript Day 31</p>
+          <Link to="/day-032" className="day001-nav-btn day001-nav-next">Day 32 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 15</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>React Native</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 15 <span aria-hidden="true">🏅</span></h1>
-              <p className="day001-day-theme">BETTER RAG — RETRIEVAL QUALITY</p>
+              <h1 className="day001-day-num">DAY 31 <span aria-hidden="true">🚀</span></h1>
+              <p className="day001-day-theme">REACT NATIVE — BUILD &amp; PUBLISH</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '15%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '31%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 15 — making RAG actually good. The answer is only as strong as the <strong>chunks it retrieves</strong>,
-          so retrieval quality is where the work is. I tuned <strong>chunking</strong> (size and overlap),{' '}
-          <strong>top-K</strong>, and <strong>metadata filters</strong> to narrow the search; added{' '}
-          <strong>re-ranking</strong> (over-fetch, re-score, keep the best); and learned to <strong>evaluate</strong>{' '}
-          retrieval — did the right chunks come back? — instead of trusting the vibe of the reply. These gains{' '}
-          <strong>compound</strong> into a RAG system you can trust.{' '}
-          <em>(Diagram-based lecture; content reflects the standard practices.)</em>
+          From dev to the stores. <strong>EAS Build</strong> compiles real iOS and Android binaries in the cloud — no
+          Mac needed for iOS — using build profiles in <code>eas.json</code>. <strong>app.json</strong> sets the name,
+          icon, splash, bundle id and permissions. Ship JS-only changes instantly with <strong>OTA updates</strong>{' '}
+          (EAS Update, no store review), and push store releases with <strong>EAS Submit</strong> to App Store Connect
+          and Google Play — plus icons, screenshots and privacy details for review. Bump the version each release; OTA
+          targets a runtime version, native changes need a new build. <em>The Year-1 frontend is done — next: the
+          Express backend.</em>
         </p>
 
         <section className="day001-learnt">
@@ -185,12 +180,12 @@ export default function Day031() {
           </ul>
         </section>
 
-        <CardSection icon="⚖️" title="RETRIEVAL IS EVERYTHING" cards={QUALITY} columns={3} />
-        <CardSection icon="🏅" title="RE-RANK & EVALUATE" cards={IMPROVE} columns={3} />
+        <CardSection icon="🏗️" title="BUILD & CONFIG" cards={BUILD} columns={2} />
+        <CardSection icon="🚀" title="SHIP IT" cards={SHIP} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#CoderArmy</span><span>#Retrieval</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#ReactNative</span><span>#EAS</span>
         </footer>
       </div>
     </div>
