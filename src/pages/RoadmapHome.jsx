@@ -139,6 +139,31 @@ export default function RoadmapHome() {
         </div>
       </section>
 
+      <figure
+        className="roadmap-poster"
+        style={{ margin: '8px auto 4px', textAlign: 'center', maxWidth: '620px' }}
+      >
+        <img
+          src="/roadmap-notes/four-year-roadmap-no-dates.jpg"
+          alt="The 4-Year Roadmap to a Full Lifecycle Engineer — a glowing vertical timeline: prerequisites (Gen AI & Agentic AI, JavaScript), then Year 1 TypeScript stack, Year 2 Python stack, Year 3 Java stack and Year 4 DevOps stack, finishing at Full Lifecycle Engineer (4 years · 1,461 days · Web · App · Cloud)."
+          loading="lazy"
+          style={{
+            width: '100%',
+            height: 'auto',
+            borderRadius: '16px',
+            border: '1px solid rgba(255,255,255,0.12)',
+            boxShadow: '0 14px 44px rgba(0,0,0,0.45)',
+          }}
+          onError={(e) => {
+            const fig = e.currentTarget.closest('.roadmap-poster');
+            if (fig) fig.style.display = 'none';
+          }}
+        />
+        <figcaption style={{ marginTop: '10px', fontSize: '0.8rem', opacity: 0.6 }}>
+          The full journey at a glance
+        </figcaption>
+      </figure>
+
       <section
         className="roadmap-prereq"
         style={{ maxWidth: '780px', margin: '4px auto 8px' }}
