@@ -5,6 +5,21 @@ import LectureCard from '../components/LectureCard';
 import K8sSyllabus from '../components/K8sSyllabus';
 import K8sHero, { K8sHeroStats } from '../components/K8sHero';
 
+// Core components covered by the "Kubernetes Core Components" visual guide
+// (public/k8s-notes/kubernetes-core-components.pdf).
+const K8S_CORE_COMPONENTS = [
+  ['📦', 'Pods'],
+  ['🖥️', 'Nodes'],
+  ['🚀', 'Deployments'],
+  ['🔀', 'Services'],
+  ['🌐', 'Ingress'],
+  ['📄', 'ConfigMaps'],
+  ['🔐', 'Secrets'],
+  ['💾', 'Storage'],
+  ['🕸️', 'Networking'],
+  ['📅', 'Scheduling'],
+];
+
 // Essential kubectl commands — transcribed from the "All Kubernetes Commands"
 // cheat sheet (public/k8s-notes/kubernetes-commands-cheatsheet.jpg).
 const KUBECTL_GROUPS = [
@@ -203,6 +218,40 @@ export default function K8sHome() {
               />
             </a>
             <figcaption>The original one-page cheat sheet — click to open full size ↗</figcaption>
+          </figure>
+        </section>
+
+        <section className="kubectl-cheat" id="k8s-core-components">
+          <div className="section-header">
+            <h2>Kubernetes Core Components — Visual Guide</h2>
+            <a href="/k8s-notes/kubernetes-core-components.pdf" download className="btn btn-k8s">
+              📥 Download PDF
+            </a>
+          </div>
+          <p className="section-desc">
+            A beautifully illustrated <strong>12-page guide</strong> to everything you need to build, run and scale
+            modern applications on Kubernetes — each core component explained on its own page with architecture
+            diagrams, lifecycles and use cases.
+          </p>
+
+          <div className="k8s-core-chips">
+            {K8S_CORE_COMPONENTS.map(([icon, name]) => (
+              <span key={name} className="k8s-core-chip">
+                <span aria-hidden="true">{icon}</span> {name}
+              </span>
+            ))}
+          </div>
+
+          <figure className="kubectl-figure">
+            <a href="/k8s-notes/kubernetes-core-components.pdf" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/k8s-notes/kubernetes-core-components-cover.jpg"
+                alt="Kubernetes Core Components — a 12-page visual guide covering Pods, Nodes, Deployments, Services, Ingress, ConfigMaps, Secrets, Storage, Networking and Scheduling, with architecture diagrams and a cheat sheet."
+                loading="lazy"
+                onError={(e) => { const f = e.currentTarget.closest('.kubectl-figure'); if (f) f.style.display = 'none'; }}
+              />
+            </a>
+            <figcaption>Cover of the guide — click to open the full 12-page PDF ↗</figcaption>
           </figure>
         </section>
 

@@ -6326,3 +6326,24 @@ a:hover {
   box-shadow: 0 10px 34px rgba(0, 0, 0, 0.35);
 }
 .kubectl-figure figcaption { color: var(--text-muted, #9aa7b4); font-size: 0.82rem; margin-top: 8px; }
+
+/* Kubernetes Core Components — visual guide chips */
+.k8s-core-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 4px 0 22px;
+}
+.k8s-core-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--card, #161b22);
+  border: 1px solid var(--border, #2a3441);
+  color: var(--text, #e7ebf2);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.k8s-core-chip span { font-size: 1.05rem; line-height: 1; }
