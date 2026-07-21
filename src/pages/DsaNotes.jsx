@@ -134,7 +134,7 @@ export default function DsaNotes() {
       <footer className="dsa-footer">
         <p>
           Keep these notes handy through the whole <strong>DSA &amp; System Design</strong> track —
-          practised in TypeScript, Python and Java across the 1500-day journey.
+          practised in TypeScript, Python and Java across the 4-year journey.
         </p>
         <div className="dsa-hero-actions">
           <a href={DSA_PDF} download className="dsa-btn dsa-btn-primary">

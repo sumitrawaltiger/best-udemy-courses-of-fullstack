@@ -32,21 +32,21 @@ import Syllabus from '../components/Syllabus';
 
 const BTECH_ROADMAP = [
   {
-    year: 'Phase 1',
-    theme: 'Gen AI · JavaScript · 39 Days',
-    icon: '🤖',
+    year: 'Prerequisites',
+    theme: 'Gen AI · JavaScript',
+    icon: '🎒',
     accent: 'y3',
-    topics: ['LLMs & Token Prediction', 'Embeddings & Vector DBs', 'RAG', 'Tools & Agents', 'LangChain.js', 'LangGraph', 'Ship & Evaluate'],
-    blurb: 'The journey opens with 39 days of Generative & Agentic AI in JavaScript — from how LLMs actually work to building, evaluating and shipping autonomous agents with the Gemini SDK, LangChain.js and LangGraph.',
-    links: [{ label: 'GenAI Track', to: '/genai' }],
+    topics: ['JavaScript (ES6+)', 'HTML5 & CSS3', 'Gen AI & Agentic AI', 'LLMs & RAG', 'LangChain.js', 'LangGraph'],
+    blurb: 'Completed before Day 1 — JavaScript (with HTML5 & CSS3) and Generative & Agentic AI in JavaScript. The 4-year journey assumes you already know these.',
+    links: [{ label: 'GenAI Track', to: '/genai' }, { label: 'JS Prerequisites', to: '/prerequisites' }],
   },
   {
     year: 'Year 1',
     theme: 'TypeScript Stack',
     icon: '🔷',
     accent: 'y1',
-    topics: ['TypeScript', 'React JS', 'Next.js', 'React Native', 'Express / Node'],
-    blurb: 'Year one of the 4-year coding journey — the TypeScript stack end to end: TypeScript, React, Next.js, React Native and Express / Node.js.',
+    topics: ['TypeScript', 'React JS', 'Next.js', 'React Native', 'Express JS'],
+    blurb: 'Year one of the 4-year coding journey — the TypeScript stack end to end: TypeScript, React, Next.js, React Native and Express JS.',
     links: [
       { label: 'JavaScript / TypeScript', to: '#syllabus' },
       { label: 'React / Next.js', to: '/nextjs' },
@@ -95,16 +95,16 @@ export default function Home() {
     <>
       <section className="genai-hero">
         <div className="genai-hero-inner">
-          <span className="genai-badge">Phase 1 · Gen AI in JavaScript</span>
+          <span className="genai-badge">Prerequisite · Gen AI in JavaScript</span>
           <h1 className="genai-title">GenAI Engineering with JavaScript</h1>
           <p className="genai-tagline">
-            The journey opens with <strong>Agentic AI</strong> — from how LLMs work and the Gemini SDK to tools,
-            RAG, and multi-agent systems, all in <strong>JavaScript</strong> with{' '}
+            A <strong>prerequisite before the 4-year journey</strong> — <strong>Agentic AI</strong> from how LLMs
+            work and the Gemini SDK to tools, RAG, and multi-agent systems, all in <strong>JavaScript</strong> with{' '}
             <strong>LangChain.js, LangGraph &amp; LangSmith</strong>. Following{' '}
             <a href={strikeCourse} target="_blank" rel="noopener noreferrer">STRIKE GenAI</a> by Rohit Negi (Coder Army).
           </p>
           <div className="genai-stats">
-            <div className="genai-stat"><span className="genai-stat-val">39</span><span className="genai-stat-label">days · Phase 1</span></div>
+            <div className="genai-stat"><span className="genai-stat-val">39</span><span className="genai-stat-label">days · Prerequisite</span></div>
             <div className="genai-stat"><span className="genai-stat-val">JS</span><span className="genai-stat-label">JavaScript · Gemini</span></div>
             <div className="genai-stat"><span className="genai-stat-val">LangChain.js</span><span className="genai-stat-label">· LangGraph · LangSmith</span></div>
             <div className="genai-stat"><span className="genai-stat-val">RAG + Agents</span><span className="genai-stat-label">tools · RAG · multi-agent</span></div>
@@ -163,12 +163,12 @@ export default function Home() {
       <section className="btech-roadmap" id="btech-roadmap">
         <div className="btech-inner">
           <span className="btech-badge">The Roadmap</span>
-          <h2 className="btech-title">The 1500-Day Learning Path</h2>
+          <h2 className="btech-title">The 4-Year Learning Path</h2>
           <p className="btech-sub">
-            A structured path to a full lifecycle engineer — <strong>39 days of Gen AI</strong> in JavaScript,
-            then a <strong>4-year coding journey</strong>: <strong>TypeScript → Python → Java → DevOps</strong>,
-            one year each. Each block maps to tracks on this site. HTML5, CSS3 &amp; JavaScript are the assumed
-            prerequisites.
+            A structured path to a full lifecycle engineer — a <strong>4-year coding journey</strong>:{' '}
+            <strong>TypeScript → Python → Java → DevOps</strong>, one year each (<strong>1,461 days</strong>,
+            1 Sep 2026 → 31 Aug 2030). Each block maps to tracks on this site.{' '}
+            <strong>Gen AI &amp; JavaScript</strong> (with HTML5 &amp; CSS3) are the prerequisites, done before Day 1.
           </p>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
@@ -662,17 +662,18 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            1,500 days · 39 days GenAI + 4 years
+            1,461 days · 4 years of code
           </span>
-          <h2>Thunder++ — The 1500-Day Journey</h2>
+          <h2>Thunder++ — The 4-Year Journey</h2>
           <p className="section-desc">
-            <strong>39 days</strong> of Gen AI with JavaScript, then a <strong>4-year coding journey</strong> —{' '}
-            <strong>Year 1 TypeScript</strong>, <strong>Year 2 Python</strong>, <strong>Year 3 Java</strong>, and{' '}
-            <strong>Year 4 DevOps</strong> — with <strong>DSA &amp; System Design</strong> practiced alongside in
-            each stack’s language. That’s <strong>1,500 days</strong> of focused study, 5:00–8:00 AM daily.
+            A <strong>4-year coding journey</strong> — <strong>Year 1 TypeScript</strong>,{' '}
+            <strong>Year 2 Python</strong>, <strong>Year 3 Java</strong>, and <strong>Year 4 DevOps</strong> —
+            with <strong>DSA &amp; System Design</strong> practiced alongside in each stack’s language. That’s{' '}
+            <strong>1,461 days</strong> of focused study, 5:00–8:00 AM daily.{' '}
+            <strong>Gen AI &amp; JavaScript</strong> are prerequisites, done before Day 1.
           </p>
           <div className="thunder-plus-highlights">
-            <span>🤖 Phase 1 · Gen AI (39 days)</span>
+            <span>🎒 Prerequisites · Gen AI &amp; JavaScript</span>
             <span>⌨️ 4-Year Coding Journey</span>
             <span>☁️ TypeScript → Python → Java → DevOps</span>
           </div>

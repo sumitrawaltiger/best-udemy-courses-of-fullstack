@@ -1,47 +1,41 @@
 import { Link } from 'react-router-dom';
 
-// ── The 1500-day roadmap ───────────────────────────────────────────────────
-// Day 1 = Mon 20 Jul 2026. 39 days of Gen AI with JavaScript, then a 4-year
-// coding journey (TypeScript → Python → Java → DevOps, one year each), landing
-// on 27 Aug 2030 = 1500 study days. Dates are the plan's explicit windows.
+// ── The 4-year roadmap ──────────────────────────────────────────────────────
+// Day 1 = 1 Sep 2026. A 4-year coding journey (TypeScript → Python → Java →
+// DevOps, one year each), landing on 31 Aug 2030 = 1461 study days.
+// Gen AI and JavaScript are PREREQUISITES, completed before Day 1.
+
+const PREREQS = [
+  {
+    icon: '🤖',
+    title: 'Gen AI & Agentic AI',
+    detail: 'LLMs · token prediction · RAG · tools · LangChain.js · LangGraph',
+    to: '/genai',
+  },
+  {
+    icon: '🟨',
+    title: 'JavaScript',
+    detail: 'ES6+, the DOM, async — with HTML5 & CSS3 fundamentals',
+    to: '/prerequisites',
+  },
+];
 
 const PHASES = [
-  {
-    id: 'p1',
-    arcClass: 'y3',
-    icon: '🤖',
-    label: 'Gen AI with JavaScript',
-    tagline: 'Phase 1',
-    duration: '39 days',
-    dates: '20 Jul → 27 Aug 2026',
-    blurb:
-      'The journey opens with 39 days of Generative & Agentic AI in JavaScript — from how LLMs actually work to building, evaluating and shipping autonomous agents with the Gemini SDK, LangChain.js and LangGraph.',
-    items: [
-      {
-        icon: '🧠',
-        title: 'GenAI & Agentic AI',
-        detail: 'LLMs · token prediction · RAG · tools · LangChain.js · LangGraph',
-        dates: '20 Jul → 27 Aug 2026',
-        source: 'Coder Army · STRIKE GenAI + TypeScript agent course',
-        to: '/genai',
-      },
-    ],
-  },
   {
     id: 'y1',
     arcClass: 'y1',
     icon: '🔷',
     label: 'Year 1 · TypeScript Stack',
-    tagline: '4-Year Coding Journey',
+    tagline: 'Year 1',
     duration: '1 year',
-    dates: '28 Aug 2026 → 27 Aug 2027',
+    dates: '1 Sep 2026 → 31 Aug 2027',
     blurb: 'The first year of code — the TypeScript stack, front to back.',
     items: [
       {
         icon: '🔷',
         title: 'TypeScript Stack',
-        detail: 'TypeScript · React · React Native · Next.js · Express / Node.js',
-        dates: '28 Aug 2026 → 27 Aug 2027',
+        detail: 'TypeScript · React · Next.js · React Native · Express JS',
+        dates: '1 Sep 2026 → 31 Aug 2027',
         source: 'Thunder++, Udemy & ChaiCode',
         to: '/nextjs',
       },
@@ -52,16 +46,16 @@ const PHASES = [
     arcClass: 'y2',
     icon: '🐍',
     label: 'Year 2 · Python Stack',
-    tagline: '4-Year Coding Journey',
+    tagline: 'Year 2',
     duration: '1 year',
-    dates: '28 Aug 2027 → 27 Aug 2028',
+    dates: '1 Sep 2027 → 31 Aug 2028',
     blurb: 'A full year of Python — the language, the web framework, and modern APIs.',
     items: [
       {
         icon: '🐍',
         title: 'Python Stack',
         detail: 'Python · Django · FastAPI',
-        dates: '28 Aug 2027 → 27 Aug 2028',
+        dates: '1 Sep 2027 → 31 Aug 2028',
         source: 'Ashok IT',
         to: '/python',
       },
@@ -72,16 +66,16 @@ const PHASES = [
     arcClass: 'y3',
     icon: '☕',
     label: 'Year 3 · Java Stack',
-    tagline: '4-Year Coding Journey',
+    tagline: 'Year 3',
     duration: '1 year',
-    dates: '28 Aug 2028 → 27 Aug 2029',
+    dates: '1 Sep 2028 → 31 Aug 2029',
     blurb: 'A year of enterprise Java — Spring Boot and microservices at production scale.',
     items: [
       {
         icon: '☕',
         title: 'Java Stack',
         detail: 'Java · Spring Boot · Microservices',
-        dates: '28 Aug 2028 → 27 Aug 2029',
+        dates: '1 Sep 2028 → 31 Aug 2029',
         source: 'Udemy',
         to: '/java',
       },
@@ -92,16 +86,16 @@ const PHASES = [
     arcClass: 'y4',
     icon: '☁️',
     label: 'Year 4 · DevOps Stack',
-    tagline: '4-Year Coding Journey',
+    tagline: 'Year 4',
     duration: '1 year',
-    dates: '28 Aug 2029 → 27 Aug 2030',
+    dates: '1 Sep 2029 → 31 Aug 2030',
     blurb: 'The final year — ship and scale everything: Linux, Docker, Kubernetes, CI/CD and AWS Cloud.',
     items: [
       {
         icon: '🚀',
         title: 'DevOps Stack',
         detail: 'Linux · Docker · Kubernetes · CI/CD · AWS',
-        dates: '28 Aug 2029 → 27 Aug 2030',
+        dates: '1 Sep 2029 → 31 Aug 2030',
         source: 'CloudFolksHub / KodeKloud',
         to: '/devops',
         final: true,
@@ -111,10 +105,10 @@ const PHASES = [
 ];
 
 const STATS = [
-  { value: '1,500', label: 'study days' },
-  { value: '≈4,500', label: 'study hours' },
+  { value: '1,461', label: 'study days' },
+  { value: '≈4,400', label: 'study hours' },
   { value: '3 hrs', label: 'daily · 5:00–8:00 AM' },
-  { value: '39 + 4 yr', label: 'GenAI + 4-year code' },
+  { value: '4 years', label: 'TS · Python · Java · DevOps' },
 ];
 
 function ItemLink({ item, children }) {
@@ -136,13 +130,13 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 20 Jul 2026 → 27 Aug 2030 · 1500 days</span>
-        <h1 className="roadmap-hero-title">The 1500-Day Roadmap</h1>
+        <span className="roadmap-hero-badge">📍 1 Sep 2026 → 31 Aug 2030 · 1461 days</span>
+        <h1 className="roadmap-hero-title">The 4-Year Roadmap</h1>
         <p className="roadmap-hero-sub">
-          <strong>39 days</strong> of Gen AI with JavaScript, then a <strong>4-year coding journey</strong> —{' '}
-          <strong>TypeScript → Python → Java → DevOps</strong>, one year each. One morning at a time,{' '}
-          <strong>5:00–8:00 AM</strong> (Indian Standard Time, UTC+5:30). Day 1 is <strong>20 Jul 2026</strong> and day
-          1500 lands on <strong>27 Aug 2030</strong>.
+          A <strong>4-year coding journey</strong> — <strong>TypeScript → Python → Java → DevOps</strong>,
+          one year each. One morning at a time, <strong>5:00–8:00 AM</strong> (Indian Standard Time, UTC+5:30).
+          Day 1 is <strong>1 Sep 2026</strong> and day 1461 lands on <strong>31 Aug 2030</strong>.{' '}
+          <strong>Gen AI</strong> and <strong>JavaScript</strong> are prerequisites, completed before Day 1.
         </p>
         <div className="roadmap-stats">
           {STATS.map((s) => (
@@ -159,8 +153,8 @@ export default function RoadmapHome() {
         style={{ margin: '0 auto 4px', textAlign: 'center', maxWidth: '780px' }}
       >
         <img
-          src="/roadmap-notes/1500-day-roadmap-v2.jpg"
-          alt="The 1500-Day Roadmap to Full-Stack & DevOps — 39 days of Gen AI with JavaScript plus a 4-year coding journey (TypeScript, Python, Java, DevOps)"
+          src="/roadmap-notes/four-year-roadmap.jpg"
+          alt="The 4-Year Roadmap to Full-Stack & DevOps — TypeScript, Python, Java and DevOps, one year each, with Gen AI and JavaScript as prerequisites."
           loading="lazy"
           style={{
             width: '100%',
@@ -178,6 +172,41 @@ export default function RoadmapHome() {
           The full journey at a glance
         </figcaption>
       </figure>
+
+      <section
+        className="roadmap-prereq"
+        style={{ maxWidth: '780px', margin: '4px auto 8px' }}
+      >
+        <h2 style={{ fontSize: '1.05rem', fontWeight: 800, margin: '0 0 4px', textAlign: 'center' }}>
+          🎒 Prerequisites — before Day 1
+        </h2>
+        <p style={{ textAlign: 'center', opacity: 0.7, fontSize: '0.9rem', margin: '0 0 14px' }}>
+          Complete these first — the 4-year journey assumes you already know them.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
+          {PREREQS.map((p) => (
+            <Link
+              key={p.title}
+              to={p.to}
+              style={{
+                display: 'block',
+                padding: '14px 16px',
+                borderRadius: '14px',
+                border: '1px dashed rgba(255,255,255,0.22)',
+                background: 'rgba(255,255,255,0.03)',
+                textDecoration: 'none',
+                color: 'inherit',
+              }}
+            >
+              <div style={{ fontWeight: 800, fontSize: '1rem' }}>
+                <span aria-hidden="true">{p.icon}</span> {p.title}
+                <span style={{ opacity: 0.55, fontWeight: 600, fontSize: '0.75rem' }}> · prerequisite</span>
+              </div>
+              <div style={{ opacity: 0.7, fontSize: '0.85rem', marginTop: '4px' }}>{p.detail}</div>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <div className="roadmap-timeline">
         {PHASES.map((phase) => (
@@ -224,7 +253,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">27 Aug 2030 · 1,500 days complete</p>
+            <p className="roadmap-finish-date">31 Aug 2030 · 1,461 days complete</p>
           </div>
         </div>
       </div>
@@ -232,17 +261,17 @@ export default function RoadmapHome() {
       <section className="roadmap-flow">
         <h2 className="roadmap-flow-title">The flow, end to end</h2>
         <p className="roadmap-flow-text">
-          Gen AI with JavaScript (39 days) → then a 4-year coding journey: Year 1 TypeScript stack (TypeScript,
-          React, React Native, Next.js, Express/Node) → Year 2 Python stack (Python, Django, FastAPI) → Year 3
-          Java stack (Java, Spring Boot, Microservices) → Year 4 DevOps stack (Linux, Docker, Kubernetes, CI/CD,
-          AWS). 1500 days, 20 Jul 2026 → 27 Aug 2030.
+          Prerequisites (Gen AI &amp; JavaScript) → then a 4-year coding journey: Year 1 TypeScript stack
+          (TypeScript, React, Next.js, React Native, Express JS) → Year 2 Python stack (Python, Django, FastAPI) →
+          Year 3 Java stack (Java, Spring Boot, Microservices) → Year 4 DevOps stack (Linux, Docker, Kubernetes,
+          CI/CD, AWS). 1461 days, 1 Sep 2026 → 31 Aug 2030.
         </p>
         <div className="roadmap-flow-actions">
-          <Link to="/day-001" className="btn btn-lg roadmap-btn-primary">
-            Start at Day 1
+          <Link to="/nextjs" className="btn btn-lg roadmap-btn-primary">
+            Start Year 1 · TypeScript
           </Link>
           <Link to="/genai" className="btn btn-lg roadmap-btn-outline">
-            Phase 1 · GenAI track
+            Prerequisite · GenAI
           </Link>
           <Link to="/best-udemy-courses" className="btn btn-lg roadmap-btn-outline">
             All course picks
