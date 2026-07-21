@@ -204,7 +204,7 @@ export default function Header({ onSearch }) {
           >
             {logoIcon === 'JS' ? (
               <img
-                src="/lifecycle-logo.png"
+                src="/fle-logo.png"
                 alt="Full Lifecycle Engineer"
                 className="logo-img"
               />
