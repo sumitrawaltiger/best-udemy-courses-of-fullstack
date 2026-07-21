@@ -2,78 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture08';
-const EMBED_DOCS = 'https://ai.google.dev/gemini-api/docs/embeddings';
+const TS_GENERICS = 'https://www.typescriptlang.org/docs/handbook/2/generics.html';
+const TS_ASSERTIONS = 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions';
 
 const LEARNT_TODAY = [
-  { title: 'The RAG foundation begins', text: 'to make the AI answer from your own data, it first needs to understand meaning — that starts with embeddings' },
-  { title: 'What an embedding is', text: 'a piece of text turned into a vector — a long list of numbers that captures its meaning' },
-  { title: 'Meaning becomes geometry', text: 'text with similar meaning maps to vectors that sit close together in space' },
-  { title: 'Dimensions', text: 'each vector has hundreds of dimensions, each encoding some semantic feature of the text' },
-  { title: 'Not keywords', text: 'embeddings capture meaning, so "car" and "automobile" land near each other even with no shared letters' },
-  { title: 'Generate with Gemini', text: 'the SDK turns any text into an embedding with a single call — ai.models.embedContent' },
-  { title: 'The building block', text: 'search, clustering, recommendations and RAG are all built on top of embeddings' },
+  { title: 'Generics = type parameters', text: 'a function or type takes a type as an argument: function first<T>(a: T[]): T' },
+  { title: 'Reusable & safe', text: 'one generic replaces many copies while keeping full type safety — no any needed' },
+  { title: 'Inference', text: 'you rarely pass the type explicitly; TS infers T from the arguments you call with' },
+  { title: 'Constraints', text: '<T extends { id: number }> limits T so you can safely use its known members' },
+  { title: 'Generic interfaces', text: 'containers like Box<T> or an API Result<T> reuse one shape for any payload' },
+  { title: 'as — type assertion', text: 'tell the compiler "trust me, this is T" when you know more than it does' },
+  { title: 'satisfies', text: 'checks a value against a type without widening it — the modern, safer alternative to as' },
+  { title: 'Non-null !', text: 'value! asserts something isn’t null/undefined — use sparingly and only when certain' },
 ];
 
-const WHY = [
+const GENERICS = [
   {
-    icon: '🧩', title: 'The Meaning Problem', titleClass: 'card-title-cyan', subtitle: 'Computers See Text',
+    icon: '🧩', title: 'Generic Functions', titleClass: 'card-title-cyan', subtitle: 'Type Parameters',
     description:
-      'A computer only sees characters, not meaning. To let the AI find information related to a question, we need a way to represent what text means as something a machine can compare.',
-    code: '// "How do I reset my password?"\n// vs "I forgot my login" → same meaning, different words\n// computers need to see that they are close',
+      'A generic captures the caller’s type in a parameter T and threads it through. One function works for any type while staying fully checked — the alternative to sprinkling any.',
+    code: 'function first<T>(arr: T[]): T {\n  return arr[0];\n}\nfirst([1, 2, 3]);   // T = number\nfirst(["a", "b"]);  // T = string',
   },
   {
-    icon: '🔢', title: 'Text → Vector', titleClass: 'card-title-purple', subtitle: 'The Embedding',
+    icon: '🔒', title: 'Constraints', titleClass: 'card-title-purple', subtitle: 'extends',
     description:
-      'An embedding model converts a string into a vector — a fixed-length list of numbers. That vector is a coordinate in a high-dimensional "meaning space".',
-    code: '"hello world"  →  [0.021, -0.44, 0.13, 0.88, ...]\n// hundreds of numbers = one point in meaning space',
-  },
-  {
-    icon: '📍', title: 'Close = Similar', titleClass: 'card-title-amber', subtitle: 'Meaning As Geometry',
-    description:
-      'The key property: texts that mean similar things get vectors that are near each other. Distance between vectors becomes a measure of semantic similarity.',
-    code: '// vec("king")  ≈ near vec("queen")\n// vec("car")   ≈ near vec("automobile")\n// vec("banana") ≈ far from vec("database")',
+      'Constrain a type parameter with extends so you can rely on certain members. And generic interfaces (Box<T>, Result<T>) reuse one shape for any payload type.',
+    code: 'function byId<T extends { id: number }>(x: T) {\n  return x.id;         // .id is guaranteed\n}\ninterface Box<T> { value: T }',
   },
 ];
 
-const HOW = [
+const ASSERT = [
   {
-    icon: '⚡', title: 'Generate An Embedding', titleClass: 'card-title-cyan', subtitle: 'ai.models.embedContent',
+    icon: '👉', title: 'as — Assertions', titleClass: 'card-title-cyan', subtitle: 'Trust Me',
     description:
-      'The Gemini SDK produces an embedding for any text in one call. Store the returned vector and you can compare it against others later.',
-    code: 'const res = await ai.models.embedContent({\n  model: "text-embedding-004",\n  contents: "How do I reset my password?",\n});\nconst vector = res.embeddings[0].values; // number[]',
+      'A type assertion overrides the compiler when you know a value’s type better than it does — e.g. a DOM lookup. It changes nothing at runtime; it only silences the checker, so use it carefully.',
+    code: 'const el = document.getElementById("app") as HTMLDivElement;\nconst n = "42" as unknown as number; // double-assert: a code smell',
   },
   {
-    icon: '📐', title: 'Fixed Length', titleClass: 'card-title-purple', subtitle: 'Same Size Always',
+    icon: '✅', title: 'satisfies', titleClass: 'card-title-purple', subtitle: 'Check, Don’t Widen',
     description:
-      'Every embedding from a given model has the same number of dimensions, no matter the input length. That uniform shape is what makes vectors comparable.',
-    code: '// a word, a sentence, a paragraph →\n// all become a vector of the SAME length\n// e.g. 768 numbers each',
+      'satisfies verifies a value matches a type while keeping its precise inferred type. It catches mistakes as, and gives you the exact type as doesn’t — the modern default.',
+    code: 'const routes = {\n  home: "/", about: "/about",\n} satisfies Record<string, string>;\n// routes.home is "/" — not just string',
   },
   {
-    icon: '🧱', title: 'Everything Builds On This', titleClass: 'card-title-amber', subtitle: 'The Base Layer',
+    icon: '❗', title: 'Non-null !', titleClass: 'card-title-amber', subtitle: 'Not Null Here',
     description:
-      'Once text is a vector, you can search by meaning, group similar items, recommend, and — the goal of this stretch — do RAG. Embeddings are the base layer for all of it.',
-    footer: 'embeddings → search → vector DB → RAG',
+      'The postfix ! asserts a value isn’t null or undefined, letting you skip a check. Powerful but risky — if you’re wrong it crashes at runtime, so prefer real narrowing where you can.',
+    code: 'const input = document.querySelector("input")!;\ninput.value = "hi"; // ! says: not null\n// better: if (input) input.value = "hi";',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 08', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'Generics', titleClass: 'card-title-cyan', subtitle: 'Handbook',
     description:
-      'The embeddings lecture and its diagram in the STRIKE GenAI repo — the conceptual foundation for the RAG lectures ahead.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 08 →', external: true },
+      'The full generics chapter — generic functions, interfaces and classes, constraints, default type parameters and using type parameters in constraints.',
+    link: { href: TS_GENERICS, label: 'Open the Generics docs →', external: true },
   },
   {
-    icon: '📘', title: 'Gemini Embeddings', titleClass: 'card-title-purple', subtitle: 'Docs',
+    icon: '👉', title: 'Type Assertions', titleClass: 'card-title-purple', subtitle: 'Handbook',
     description:
-      'Google’s embeddings guide — models, dimensions, task types, and how to generate vectors from the API.',
-    link: { href: EMBED_DOCS, label: 'Read embeddings docs →', external: true },
+      'When and how to assert types safely with as, plus the modern satisfies operator and the non-null assertion — and when not to reach for them.',
+    link: { href: TS_ASSERTIONS, label: 'Open the Assertions docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Semantic Search', titleClass: 'card-title-amber', subtitle: 'Day 9 Preview',
+    icon: '🔜', title: 'Next: Classes & OOP', titleClass: 'card-title-amber', subtitle: 'Day 9 Preview',
     description:
-      'Tomorrow uses these vectors — Lecture 09 on semantic search: embed a query and your documents, then find the closest matches by meaning.',
+      'The TypeScript stack continues — classes, access modifiers and OOP, then on toward tooling and the React/Next.js chapter of Year 1.',
     link: { href: '/day-009', label: 'Go to Day 9 →' },
   },
 ];
@@ -140,23 +135,23 @@ export default function Day008() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-007" className="day001-nav-btn day001-nav-prev">← Day 7</Link>
-          <p className="day001-datetime">Agentic AI Day 8</p>
+          <p className="day001-datetime">TypeScript Day 8</p>
           <Link to="/day-009" className="day001-nav-btn day001-nav-next">Day 9 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 08</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Generics</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 8 <span aria-hidden="true">🔢</span></h1>
-              <p className="day001-day-theme">EMBEDDINGS — MEANING AS NUMBERS</p>
+              <h1 className="day001-day-num">DAY 8 <span aria-hidden="true">🧩</span></h1>
+              <p className="day001-day-theme">GENERICS &amp; TYPE ASSERTIONS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -164,13 +159,14 @@ export default function Day008() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '8%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 08 starts the <strong>RAG foundation</strong>. An <strong>embedding</strong> turns text into a{' '}
-          <strong>vector</strong> — a long list of numbers that captures its <strong>meaning</strong>. The magic
-          property: text that means similar things maps to vectors that sit <strong>close together</strong>, so{' '}
-          <code>vec("car")</code> lands near <code>vec("automobile")</code> even with no shared letters. Every
-          embedding from a model has the same fixed length, which is what makes them comparable, and{' '}
-          <code>ai.models.embedContent</code> generates one in a single call. <em>This is the base layer for
-          search, vector DBs and RAG.</em>
+          The reuse tools. <strong>Generics</strong> let a function or type take a <em>type parameter</em> —{' '}
+          <code>function first&lt;T&gt;(a: T[]): T</code> works for any array while staying fully typed, and TS{' '}
+          <strong>infers</strong> T from the call. <strong>Constraints</strong> (<code>T extends {'{ id: number }'}</code>)
+          let you rely on known members, and generic interfaces like <code>Box&lt;T&gt;</code> reuse one shape for any
+          payload. On the escape-hatch side, <strong>as</strong> asserts a type when you know more than the compiler,{' '}
+          <strong>satisfies</strong> checks a value without widening it (the safer modern default), and the non-null{' '}
+          <code>!</code> says "not null here" — powerful, but use it sparingly. <em>That completes the TypeScript
+          foundations.</em>
         </p>
 
         <section className="day001-learnt">
@@ -185,12 +181,12 @@ export default function Day008() {
           </ul>
         </section>
 
-        <CardSection icon="🧩" title="WHY EMBEDDINGS" cards={WHY} columns={3} />
-        <CardSection icon="⚡" title="GENERATING & USING THEM" cards={HOW} columns={3} />
+        <CardSection icon="🧩" title="GENERICS" cards={GENERICS} columns={2} />
+        <CardSection icon="👉" title="ASSERTIONS" cards={ASSERT} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Embeddings</span><span>#CoderArmy</span><span>#RAG</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Generics</span><span>#satisfies</span>
         </footer>
       </div>
     </div>

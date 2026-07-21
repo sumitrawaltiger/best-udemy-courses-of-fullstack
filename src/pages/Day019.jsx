@@ -2,72 +2,80 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture19';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture03';
+const GH_LECTURE_UI = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture03.1';
 
 const LEARNT_TODAY = [
-  { title: 'Classify the query first', text: 'before retrieving, ask the LLM: is this factual, similarity, or descriptive?' },
-  { title: 'Factual → Neo4j', text: '"movies directed by Nolan" is a relationship question — answer it with a Cypher graph query' },
-  { title: 'Similarity → Pinecone', text: '"movies like Inception" is a vector question — answer it with semantic search' },
-  { title: 'Descriptive → Pinecone', text: '"tell me about Inception" retrieves the entity’s text and lets the model summarise it' },
-  { title: 'Route to a handler', text: 'each query type has its own handler; the runner classifies then dispatches' },
-  { title: 'Cypher templates', text: 'safe, parameterised graph queries turn a classified question into precise graph traversal' },
-  { title: 'Best of both worlds', text: 'exact relationships from the graph, fuzzy matches from the vectors — one hybrid assistant' },
+  { title: 'Chat session recap', text: 'ai.chats.create keeps the conversation history automatically across chat.sendMessage calls' },
+  { title: 'A tutor persona', text: 'a strict systemInstruction turns the model into a coding tutor that answers from first principles' },
+  { title: 'Guardrails', text: 'the instruction can force the AI to refuse anything off-topic — answer only coding questions' },
+  { title: 'Terminal chatbot', text: 'a readline-sync while-loop drives a back-and-forth chat until you type exit' },
+  { title: 'Into the browser', text: 'import @google/genai from a CDN (ESM) and the exact same chat runs in the browser' },
+  { title: 'A real chat UI', text: 'render user and AI messages into the DOM, format code blocks, and show a typing indicator' },
+  { title: 'Key exposure warning', text: 'putting the API key in front-end JavaScript is fine for learning but leaks it — never ship it that way' },
+  { title: 'One brain, two frontends', text: 'terminal and web share the identical chat session and systemInstruction — only the UI differs' },
 ];
 
-const CLASSIFY = [
+const TUTOR = [
   {
-    icon: '🧠', title: 'Classify The Query', titleClass: 'card-title-cyan', subtitle: 'One LLM Call',
+    icon: '👨‍🏫', title: 'The Tutor Persona', titleClass: 'card-title-cyan', subtitle: 'systemInstruction',
     description:
-      'A classifier prompt asks the model to label the question as factual, similarity, or descriptive and return strict JSON. That label decides everything downstream.',
-    code: 'const CLASSIFIER_PROMPT = `Classify the query as:\n"factual"     — lists/counts/relationships (→ Neo4j)\n"similarity"  — recommendations / like X (→ Pinecone)\n"descriptive" — who/what/about an entity (→ Pinecone)\nRespond ONLY as JSON: {"type": ..., "reasoning": ...}`;',
+      'A strict systemInstruction shapes the whole conversation: answer only coding questions, explain from first principles, and stay to the point. The persona is set once at chat creation.',
+    code: 'const chat = ai.chats.create({\n  model: "gemini-2.5-flash",\n  systemInstruction: `You are a programming tutor.\n  - Only answer coding questions\n  - Refuse anything unrelated to coding\n  - Explain using first principles, to the point`,\n});',
   },
   {
-    icon: '🔀', title: 'Route It', titleClass: 'card-title-purple', subtitle: 'Dispatch To A Handler',
+    icon: '🔁', title: 'The Chat Loop', titleClass: 'card-title-purple', subtitle: 'Memory + readline',
     description:
-      'The runner reads the type and calls the matching handler — factual to the graph, similarity and descriptive to the vectors. Clean separation, one entry point.',
-    code: 'const { type } = await classifyQuery(query);\nif (type === "similarity")  answer = await handleSimilarity(query);\nelse if (type === "descriptive") answer = await handleDescriptive(query);\nelse answer = await handleFactual(query); // → Neo4j',
+      'The chat session remembers every turn, so follow-up questions keep context. A readline-sync loop reads input until "exit" — a complete terminal tutor.',
+    code: 'while (true) {\n  const q = readlineSync.question("Ask me a question: ");\n  if (q === "exit") break;\n  const res = await chat.sendMessage({ message: q });\n  console.log("Response:", res.text);\n}',
+  },
+  {
+    icon: '🛡️', title: 'Guardrails', titleClass: 'card-title-amber', subtitle: 'Stay On Topic',
+    description:
+      'Because the rules live in the systemInstruction, the model politely refuses off-topic questions on its own — no extra code. That is prompt-level control over behaviour.',
+    code: '// User: "What is the weather?"\n// AI:   "I only answer coding questions." ✅',
   },
 ];
 
-const HANDLERS = [
+const BROWSER = [
   {
-    icon: '🔒', title: 'Factual → Cypher', titleClass: 'card-title-cyan', subtitle: 'The Graph',
+    icon: '🌐', title: 'SDK In The Browser', titleClass: 'card-title-cyan', subtitle: 'CDN ESM Import',
     description:
-      'Factual questions become Cypher queries against Neo4j using safe templates. Relationships and counts come back exact — no guessing.',
-    code: '// "Movies directed by Nolan"\nMATCH (d:Director {name:$name})-[:DIRECTED]->(m:Movie)\nRETURN m.title\n// precise, verifiable answer',
+      'No bundler needed — import the SDK straight from a CDN as an ES module in a plain HTML page, and create the same chat session client-side.',
+    code: 'import { GoogleGenAI } from\n  "https://cdn.jsdelivr.net/npm/@google/genai@1.32.0/+esm";\n\nconst ai = new GoogleGenAI({ apiKey: "YOUR_KEY" });\nconst chat = ai.chats.create({ model: "gemini-2.5-flash" });',
   },
   {
-    icon: '📐', title: 'Similarity → Vectors', titleClass: 'card-title-purple', subtitle: 'Pinecone',
+    icon: '🎨', title: 'A Real Chat UI', titleClass: 'card-title-purple', subtitle: 'DOM + Formatting',
     description:
-      'Recommendation questions embed the query and search Pinecone for the nearest movies — the semantic RAG from earlier days, now one branch of the system.',
-    code: '// "Movies like Inception"\n// embed → Pinecone top-K → similar movies\n// (optionally enrich with graph facts)',
+      'Append each message as a styled bubble, convert markdown code fences to <pre><code>, and add a typing indicator while waiting — it starts to feel like a real product.',
+    code: 'function formatMessage(text) {\n  return text\n    .replace(/```([\\s\\S]*?)```/g, "<pre><code>$1</code></pre>")\n    .replace(/`([^`]+)`/g, "<code>$1</code>")\n    .replace(/\\n/g, "<br>");\n}',
   },
   {
-    icon: '📖', title: 'Descriptive → Retrieve', titleClass: 'card-title-amber', subtitle: 'Then Summarise',
+    icon: '⚠️', title: 'The Key Problem', titleClass: 'card-title-amber', subtitle: 'Learning Only',
     description:
-      '"Tell me about X" retrieves the entity’s chunks from the vector store and has Gemini write a grounded summary — RAG applied to a single entity.',
-    code: '// "Tell me about The Godfather"\n// retrieve its text → Gemini summarises from it',
+      'The browser version hardcodes the API key, which anyone can read in the source. Great for a demo, dangerous in production — the fix is a backend that holds the key, coming later.',
+    code: '// apiKey: "AIza..."  ← visible to everyone in dev tools\n// production → call your own server, keep the key there',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 19', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '💻', title: 'Lecture 03 Code', titleClass: 'card-title-cyan', subtitle: 'Terminal Tutor',
     description:
-      'The query side — queryClassifier, graph and similarity handlers, entityResolver and runQuery — completing the Graph RAG assistant.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 19 →', external: true },
+      'The Node version — a chat session with the tutor systemInstruction driven by a readline-sync loop.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 03 →', external: true },
   },
   {
-    icon: '🧬', title: 'Hybrid Retrieval', titleClass: 'card-title-purple', subtitle: 'Graph + Vectors',
+    icon: '🖥️', title: 'Lecture 03.1 Code', titleClass: 'card-title-purple', subtitle: 'Browser Chat UI',
     description:
-      'The whole point of Graph RAG: route each question to the engine that answers it best — precise facts from the graph, similarity from the vectors.',
-    footer: 'classify → route → retrieve → answer',
+      'The web version — index.html, style.css and script.js that run the same tutor in the browser with a chat interface.',
+    link: { href: GH_LECTURE_UI, label: 'Open Lecture 03.1 →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: LangGraph', titleClass: 'card-title-amber', subtitle: 'Day 20 Preview',
+    icon: '🔜', title: 'Next: Real-World Data', titleClass: 'card-title-amber', subtitle: 'Prereq 4 Preview',
     description:
-      'Tomorrow — Lecture 20: LangGraph, for orchestrating multi-step, stateful agent workflows as a graph of nodes and edges.',
-    link: { href: '/day-020', label: 'Go to Day 20 →' },
+      'Tomorrow is Lecture 04 — the model has no live data, so we call real APIs (crypto, weather, news) and start routing a question to the right function.',
+    link: { href: '/day-020', label: 'Go to Prereq 4 →' },
   },
 ];
 
@@ -132,38 +140,38 @@ export default function Day019() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-018" className="day001-nav-btn day001-nav-prev">← Day 18</Link>
-          <p className="day001-datetime">Agentic AI Day 19</p>
-          <Link to="/day-020" className="day001-nav-btn day001-nav-next">Day 20 →</Link>
+          <Link to="/day-018" className="day001-nav-btn day001-nav-prev">← Prereq 2</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 3</p>
+          <Link to="/day-020" className="day001-nav-btn day001-nav-next">Prereq 4 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 19</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 03</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 19 <span aria-hidden="true">🔀</span></h1>
-              <p className="day001-day-theme">GRAPH RAG — HYBRID QUERYING</p>
+              <h1 className="day001-day-num">PREREQ 3 <span aria-hidden="true">💬</span></h1>
+              <p className="day001-day-theme">CHAT WITH MEMORY, A PERSONA &amp; A WEB UI</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '19%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '3%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 19 finishes the assistant — the <strong>query</strong> side. Every question is first{' '}
-          <strong>classified</strong> as <strong>factual</strong>, <strong>similarity</strong>, or{' '}
-          <strong>descriptive</strong>, then <strong>routed</strong> to the right handler: factual questions run{' '}
-          <strong>Cypher</strong> over <strong>Neo4j</strong> for exact relationships, while similarity and
-          descriptive questions use <strong>Pinecone</strong> vector search. Precise facts from the graph, fuzzy
-          matches from the vectors — that hybrid is the whole point of <strong>Graph RAG</strong>.{' '}
-          <em>The project works end to end.</em>
+          Lecture 03 — a real chatbot with a personality. A strict <strong>systemInstruction</strong> turns Gemini
+          into a <strong>coding tutor</strong> that answers only coding questions from first principles, and a{' '}
+          <strong>chat session</strong> keeps the memory across a <strong>readline</strong> loop. Then I took the
+          exact same brain into the <strong>browser</strong> — importing the SDK from a CDN, rendering a chat UI
+          with formatted code and a typing indicator. Lesson learned: a{' '}
+          <strong>front-end API key is exposed to everyone</strong>, so a backend comes later.{' '}
+          <em>One brain, two frontends.</em>
         </p>
 
         <section className="day001-learnt">
@@ -178,12 +186,12 @@ export default function Day019() {
           </ul>
         </section>
 
-        <CardSection icon="🧠" title="CLASSIFY & ROUTE" cards={CLASSIFY} columns={2} />
-        <CardSection icon="🔀" title="THE THREE HANDLERS" cards={HANDLERS} columns={3} />
+        <CardSection icon="👨‍🏫" title="THE TUTOR CHATBOT" cards={TUTOR} columns={3} />
+        <CardSection icon="🌐" title="TAKING IT TO THE BROWSER" cards={BROWSER} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GraphRAG</span><span>#Neo4j</span><span>#Pinecone</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Gemini</span><span>#CoderArmy</span><span>#JavaScript</span>
         </footer>
       </div>
     </div>

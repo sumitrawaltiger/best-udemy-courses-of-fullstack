@@ -2,74 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_CLASSES = 'https://www.typescriptlang.org/docs/handbook/2/classes.html';
-const MDN_CLASSES = 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture32';
 
 const LEARNT_TODAY = [
-  { title: 'class & constructor', text: 'a blueprint for objects; the constructor sets up each instance’s fields' },
-  { title: 'Typed fields', text: 'class properties are annotated just like variables — the compiler checks every assignment' },
-  { title: 'Access modifiers', text: 'public (default), private and protected control who can touch a member' },
-  { title: 'Parameter properties', text: 'a modifier in the constructor args declares and assigns a field in one line' },
-  { title: 'readonly fields', text: 'set once in the constructor, never reassigned — great for ids and config' },
-  { title: 'Inheritance', text: 'extends reuses a base class; super() calls the parent constructor' },
-  { title: 'abstract classes', text: 'define a shape with some methods unimplemented — subclasses must fill them in' },
-  { title: 'implements an interface', text: 'a class can promise to satisfy an interface, and TS verifies it does' },
+  { title: 'Sigmoid', text: 'σ(z) = 1 / (1 + e^-z) squashes any number into the range (0, 1) — a clean probability' },
+  { title: 'Its shape', text: 'big positive z → near 1, big negative z → near 0, and z = 0 → exactly 0.5' },
+  { title: 'The neuron outputs a probability', text: 'p = σ(w·x + b) — the weighted sum, then squashed to a "chance of yes"' },
+  { title: 'Cross-entropy (log) loss', text: 'the right loss for classification — it punishes confident wrong answers hard' },
+  { title: 'The two cases', text: 'if the truth is 1: loss = −log(p); if the truth is 0: loss = −log(1 − p)' },
+  { title: 'Combined into one formula', text: 'loss = −( y·log(p) + (1 − y)·log(1 − p) ), which picks the right case automatically' },
+  { title: 'Why log', text: 'log(0.1) ≈ −2.3 — a confident wrong prediction gets a huge penalty, so the model learns fast' },
+  { title: 'The weight update', text: 'w = w_old + learningRate · (y − p) · x, where the error is simply actual minus predicted' },
 ];
 
-const CLASSES = [
+const SIGMOID = [
   {
-    icon: '🏛️', title: 'class & constructor', titleClass: 'card-title-cyan', subtitle: 'Blueprints',
+    icon: '🅢', title: 'The Sigmoid', titleClass: 'card-title-cyan', subtitle: '1 / (1 + e^-z)',
     description:
-      'A class bundles data and behaviour. Fields are typed like variables and the constructor initialises each instance. TypeScript checks every field is set and used correctly.',
-    code: 'class Point {\n  x: number;\n  y: number;\n  constructor(x: number, y: number) {\n    this.x = x; this.y = y;\n  }\n}',
+      'Feed the raw score into the sigmoid and it comes out between 0 and 1 — smoothly, with no hard cutoff. That number is now a probability.',
+    code: 'double sigmoid(double z) {\n  return 1.0 / (1.0 + exp(-z));\n}\n// z = -∞ → 0 · z = 0 → 0.5 · z = +∞ → 1',
   },
   {
-    icon: '🔐', title: 'Access Modifiers', titleClass: 'card-title-purple', subtitle: 'public · private · protected',
+    icon: '🎲', title: 'A Real Probability', titleClass: 'card-title-purple', subtitle: 'p = σ(w·x + b)',
     description:
-      'Modifiers control visibility. private hides a member from outside, protected shares it with subclasses, readonly locks it. Put them in the constructor args to declare and assign at once.',
-    code: 'class User {\n  constructor(\n    public readonly id: number,\n    private token: string,\n  ) {}\n}\n// id/token declared + assigned in one line',
+      'The neuron’s output becomes p = σ(weighted sum). p = 0.7 means "70% chance placed". Above 0.5 we call it a yes, below 0.5 a no.',
+    code: 'double p = sigmoid(w1*x1 + w2*x2 + b);\n// p = 0.7 → 70% likely → predict 1\n// p = 0.2 → 20% likely → predict 0',
   },
 ];
 
-const OOP = [
+const LOSS = [
   {
-    icon: '🧬', title: 'Inheritance', titleClass: 'card-title-cyan', subtitle: 'extends & super',
+    icon: '📏', title: 'Cross-Entropy Loss', titleClass: 'card-title-cyan', subtitle: 'Two Cases',
     description:
-      'A subclass extends a base class, reusing its fields and methods and calling super() to run the parent constructor. Override methods to specialise behaviour while keeping the shared parts.',
-    code: 'class Animal { move() { return "..."; } }\nclass Dog extends Animal {\n  move() { return "run"; } // override\n}',
+      'MSE is wrong for probabilities. Cross-entropy uses the log: if the truth is 1 we want p high, so the loss is −log(p); if the truth is 0 we want p low, so it is −log(1 − p).',
+    code: '// actual = 1 → loss = -log(p)\n// actual = 0 → loss = -log(1 - p)\n// combined:  -( y·log(p) + (1-y)·log(1-p) )',
   },
   {
-    icon: '🧩', title: 'abstract Classes', titleClass: 'card-title-purple', subtitle: 'Enforce A Contract',
+    icon: '🔥', title: 'Why The Log', titleClass: 'card-title-purple', subtitle: 'Punish Confidence',
     description:
-      'An abstract class can’t be instantiated directly — it defines shared logic plus abstract methods every subclass must implement. It’s a base with a promise attached.',
-    code: 'abstract class Shape {\n  abstract area(): number;    // must implement\n  describe() { return `area=${this.area()}`; }\n}',
+      'A confident-but-wrong prediction is expensive: if the truth is 1 and you said 0.1, −log(0.1) ≈ 2.3 — a big loss that pushes the weights hard in the right direction.',
+    code: '// truth 1, predicted 0.9 → -log(0.9) ≈ 0.1 (small)\n// truth 1, predicted 0.1 → -log(0.1) ≈ 2.3 (huge)',
   },
   {
-    icon: '📜', title: 'implements', titleClass: 'card-title-amber', subtitle: 'Satisfy An Interface',
+    icon: '⬇️', title: 'The Update', titleClass: 'card-title-amber', subtitle: 'error = y − p',
     description:
-      'A class can implement one or more interfaces, and the compiler checks it provides every required member. This links the interface world (Day 45) to real runtime classes.',
-    code: 'interface Logger { log(m: string): void }\nclass ConsoleLogger implements Logger {\n  log(m: string) { console.log(m); }\n}',
+      'Beautifully, the gradient simplifies: the error is just actual minus predicted. Update each weight the usual way and the classifier learns.',
+    code: 'double error = y - p;   // actual - predicted\nw1 += lr * error * x1;\nw2 += lr * error * x2;\nb  += lr * error;',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Classes', titleClass: 'card-title-cyan', subtitle: 'Handbook',
+    icon: '💻', title: 'Lecture 32', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The TypeScript classes chapter — fields, methods, access modifiers, parameter properties, inheritance, abstract classes and implements, all with examples.',
-    link: { href: TS_CLASSES, label: 'Open the Classes docs →', external: true },
+      'The sigmoid and cross-entropy notebook in the STRIKE GenAI repo — the two pieces that turn a neuron into a classifier.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 32 →', external: true },
   },
   {
-    icon: '📗', title: 'JS Classes (MDN)', titleClass: 'card-title-purple', subtitle: 'Foundation',
+    icon: '🧠', title: 'Logistic Regression', titleClass: 'card-title-purple', subtitle: 'You Just Built It',
     description:
-      'The underlying JavaScript class semantics TypeScript builds on — the runtime behaviour behind the types.',
-    link: { href: MDN_CLASSES, label: 'Open MDN Classes →', external: true },
+      'A weighted sum + sigmoid + cross-entropy loss is exactly logistic regression — the workhorse classifier, and the last layer idea inside an LLM.',
+    footer: 'weighted sum → sigmoid → cross-entropy',
   },
   {
-    icon: '🔜', title: 'Next: Modules & Tooling', titleClass: 'card-title-amber', subtitle: 'Day 49 Preview',
+    icon: '🔜', title: 'Next: In C++', titleClass: 'card-title-amber', subtitle: 'Prereq 33 Preview',
     description:
-      'Tomorrow — ES modules and type-only imports, plus the everyday tooling: ESLint, Prettier and running TS with tsx.',
-    link: { href: '/day-049', label: 'Go to Day 49 →' },
+      'Tomorrow — Lecture 33: put it together in C++ to predict student placement from real features, with normalization, sigmoid and a threshold.',
+    link: { href: '/day-049', label: 'Go to Prereq 33 →' },
   },
 ];
 
@@ -134,39 +133,38 @@ export default function Day048() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-047" className="day001-nav-btn day001-nav-prev">← Day 47</Link>
-          <p className="day001-datetime">TypeScript Day 48</p>
-          <Link to="/day-049" className="day001-nav-btn day001-nav-next">Day 49 →</Link>
+          <Link to="/day-047" className="day001-nav-btn day001-nav-prev">← Prereq 31</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 32</p>
+          <Link to="/day-049" className="day001-nav-btn day001-nav-next">Prereq 33 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Classes &amp; OOP</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 32</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 48 <span aria-hidden="true">🏛️</span></h1>
-              <p className="day001-day-theme">CLASSES &amp; OBJECT-ORIENTED TS</p>
+              <h1 className="day001-day-num">PREREQ 32 <span aria-hidden="true">🅢</span></h1>
+              <p className="day001-day-theme">SIGMOID &amp; CROSS-ENTROPY LOSS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '48%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '32%' }} /></div>
 
         <p className="day001-summary">
-          TypeScript makes JavaScript classes safe and expressive. A <strong>class</strong> bundles typed fields with a{' '}
-          <strong>constructor</strong>, and <strong>access modifiers</strong> — <code>public</code>,{' '}
-          <code>private</code>, <code>protected</code>, <code>readonly</code> — control visibility (drop them into the
-          constructor args as <strong>parameter properties</strong> to declare and assign in one line).{' '}
-          <strong>Inheritance</strong> with <code>extends</code>/<code>super</code> reuses a base class,{' '}
-          <strong>abstract</strong> classes force subclasses to implement required methods, and{' '}
-          <code>implements</code> ties a class to an <em>interface</em> the compiler verifies. <em>Next: modules &amp;
-          tooling.</em>
+          Lecture 32 — the two missing pieces. The <strong>sigmoid</strong>, <code>σ(z) = 1/(1+e^-z)</code>, squashes
+          any score into <strong>(0, 1)</strong>, so the neuron finally outputs a real probability{' '}
+          <code>p = σ(w·x + b)</code>. For the loss, MSE is wrong here — <strong>cross-entropy</strong> uses the log:{' '}
+          <code>−log(p)</code> when the truth is 1, <code>−log(1−p)</code> when it’s 0, combined into{' '}
+          <code>−(y·log(p) + (1−y)·log(1−p))</code>. The <strong>log</strong> punishes confident wrong answers hard,
+          and the gradient simplifies to a lovely <strong>error = actual − predicted</strong>. Weighted sum + sigmoid
+          + cross-entropy = <strong>logistic regression</strong>. <em>Next: build it in C++.</em>
         </p>
 
         <section className="day001-learnt">
@@ -181,12 +179,12 @@ export default function Day048() {
           </ul>
         </section>
 
-        <CardSection icon="🏛️" title="CLASSES" cards={CLASSES} columns={2} />
-        <CardSection icon="🧬" title="INHERITANCE & ABSTRACTION" cards={OOP} columns={3} />
+        <CardSection icon="🅢" title="THE SIGMOID" cards={SIGMOID} columns={2} />
+        <CardSection icon="📏" title="CROSS-ENTROPY LOSS" cards={LOSS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#OOP</span><span>#Classes</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Sigmoid</span><span>#CrossEntropy</span><span>#FirstPrinciples</span>
         </footer>
       </div>
     </div>

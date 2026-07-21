@@ -2,73 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture27and28';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture12and13';
+const NOTION = 'https://www.notion.so/RAG-System-2e8a9af81c9881eab86dfe8bf32fcfb4';
+const LANGCHAIN = 'https://js.langchain.com/docs/introduction/';
 
 const LEARNT_TODAY = [
-  { title: 'Loss measures wrongness', text: 'compare the prediction to the true marks; mean squared error (MSE) turns that gap into one number' },
-  { title: 'The goal', text: 'find the weights (w1, w2, b) that make the loss as small as possible' },
-  { title: 'Gradient = the direction uphill', text: 'the gradient says which way the loss increases — so we step the opposite way' },
-  { title: 'Gradient descent', text: 'w = w − learningRate · gradient, repeated, walks the weights downhill toward low loss' },
-  { title: 'Learning rate', text: 'the step size — too big overshoots, too small crawls; a small value keeps it stable' },
-  { title: 'The training loop', text: 'over many epochs, nudge w1, w2 and b down the loss until predictions get accurate' },
-  { title: 'It converges', text: 'the weights settle (e.g. w1≈4.92, w2≈2.94) and the neuron now predicts marks well' },
-  { title: 'This is how all NNs learn', text: 'the same loop — predict, measure loss, descend — trains an LLM, just with billions of weights' },
+  { title: 'Meet LangChain.js', text: 'a framework that wires the RAG steps — loaders, splitters, embeddings, vector stores — together cleanly' },
+  { title: 'Load documents', text: 'PDFLoader reads a PDF file into an array of document objects to process' },
+  { title: 'Chunk the text', text: 'RecursiveCharacterTextSplitter breaks documents into pieces (chunkSize 1000, chunkOverlap 200)' },
+  { title: 'Why overlap', text: 'overlapping chunks keep context from spilling across boundaries so no idea is cut in half' },
+  { title: 'Embed each chunk', text: 'GoogleGenerativeAIEmbeddings (text-embedding-004) turns every chunk into a vector' },
+  { title: 'Store in Pinecone', text: 'PineconeStore.fromDocuments embeds and upserts all chunks into a Pinecone index in one step' },
+  { title: 'Runs once', text: 'indexing is a one-time prep — do it when documents are added or changed, not per question' },
 ];
 
-const LOSS = [
+const LANGCHAIN_CARD = [
   {
-    icon: '📉', title: 'Measure The Error', titleClass: 'card-title-cyan', subtitle: 'Loss (MSE)',
+    icon: '🔗', title: 'Enter LangChain.js', titleClass: 'card-title-cyan', subtitle: 'The RAG Framework',
     description:
-      'For each example, take the prediction minus the true value, square it, and average over the dataset. That mean squared error is a single number: how wrong the model is.',
-    code: '// error for one row\ndouble e = predict(study, sleep, w1, w2, b) - marks;\n// loss = average of e*e over all rows (MSE)',
+      'Instead of hand-writing every step, LangChain.js gives ready-made pieces — document loaders, text splitters, embedding wrappers and vector-store adapters — that snap together.',
+    code: "import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';\nimport { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';\nimport { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';\nimport { PineconeStore } from '@langchain/pinecone';",
   },
   {
-    icon: '🎯', title: 'The Objective', titleClass: 'card-title-purple', subtitle: 'Minimise Loss',
+    icon: '📄', title: 'Load The PDF', titleClass: 'card-title-purple', subtitle: 'PDFLoader',
     description:
-      'Training is an optimisation problem: adjust the weights so the loss drops. Lower loss means the neuron’s predictions are closer to the real marks.',
-    code: '// find w1, w2, b that minimise the loss\n// = the neuron that fits the data best',
+      'Point a loader at a file and it returns document objects with the text and metadata. LangChain has loaders for PDFs, web pages, Notion, and more.',
+    code: "const pdfLoader = new PDFLoader('./Node.pdf');\nconst rawDocs = await pdfLoader.load();\n// rawDocs = [{ pageContent, metadata }, ...]",
   },
 ];
 
-const DESCENT = [
+const CHUNK = [
   {
-    icon: '🧭', title: 'The Gradient', titleClass: 'card-title-cyan', subtitle: 'Which Way To Move',
+    icon: '✂️', title: 'Chunk It', titleClass: 'card-title-cyan', subtitle: 'Size + Overlap',
     description:
-      'The gradient of the loss with respect to each weight points uphill — toward more error. We compute it from the data and then move the opposite way to reduce loss.',
-    code: '// gradient w.r.t. each weight, averaged over rows\n// grad_w1 = avg( 2 * e * study )\n// grad_w2 = avg( 2 * e * sleep )\n// grad_b  = avg( 2 * e )',
+      'A whole document is too big to embed usefully. Split it into ~1000-character chunks with 200 characters of overlap so context carries across the cuts.',
+    code: "const splitter = new RecursiveCharacterTextSplitter({\n  chunkSize: 1000,\n  chunkOverlap: 200,\n});\nconst chunks = await splitter.splitDocuments(rawDocs);\n// e.g. 266 chunks → 266 vectors",
   },
   {
-    icon: '⬇️', title: 'Gradient Descent', titleClass: 'card-title-purple', subtitle: 'Step Downhill',
+    icon: '🔢', title: 'Embed Each Chunk', titleClass: 'card-title-purple', subtitle: 'text-embedding-004',
     description:
-      'Subtract a small fraction of the gradient from each weight. The learning rate controls the step size — small and steady beats big and unstable.',
-    code: 'w1 -= lr * grad_w1;\nw2 -= lr * grad_w2;\nb  -= lr * grad_b;\n// one step closer to the best weights',
+      'Configure the Gemini embedding model. Every chunk becomes a vector that captures its meaning — the same embeddings idea from Day 8, now applied to your documents.',
+    code: "const embeddings = new GoogleGenerativeAIEmbeddings({\n  apiKey: process.env.GEMINI_API_KEY,\n  model: 'text-embedding-004',\n});",
   },
   {
-    icon: '🔁', title: 'The Training Loop', titleClass: 'card-title-amber', subtitle: 'Epochs → Learned',
+    icon: '📦', title: 'Store In Pinecone', titleClass: 'card-title-amber', subtitle: 'One Step',
     description:
-      'Repeat over many epochs and the weights converge. The trained neuron ends up with real values (around w1≈4.92, w2≈2.94) and predicts marks accurately.',
-    code: 'for (int epoch = 0; epoch < N; epoch++) {\n  // compute gradients over the dataset\n  // update w1, w2, b\n}\n// → learned: w1≈4.92, w2≈2.94',
+      'PineconeStore.fromDocuments does the whole thing — embed every chunk and upsert it into your Pinecone index. After this, your PDF is a searchable knowledge base.',
+    code: "const pinecone = new Pinecone();\nconst index = pinecone.Index(process.env.PINECONE_INDEX_NAME);\n\nawait PineconeStore.fromDocuments(chunks, embeddings, {\n  pineconeIndex: index,\n  maxConcurrency: 5,\n});",
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 27–28', titleClass: 'card-title-cyan', subtitle: 'C++ From Scratch',
+    icon: '📝', title: 'RAG System Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
     description:
-      'The training code (first.cpp) and the trained model (trained.cpp) with the learned weights, in the STRIKE GenAI repo.',
+      'Rohit’s RAG System write-up — the full indexing and querying pipeline with LangChain.js and Pinecone.',
+    link: { href: NOTION, label: 'Open the RAG notes →', external: true },
+  },
+  {
+    icon: '💻', title: 'Lecture 12–13 Code', titleClass: 'card-title-purple', subtitle: 'indexing.js',
+    description:
+      'The runnable indexing.js (and query.js for tomorrow) in the STRIKE GenAI repo — the complete document RAG build.',
     link: { href: GH_LECTURE, label: 'Open the code →', external: true },
   },
   {
-    icon: '🌍', title: 'The Same Everywhere', titleClass: 'card-title-purple', subtitle: 'Scales Up',
+    icon: '🔜', title: 'Next: Querying', titleClass: 'card-title-amber', subtitle: 'Prereq 13 Preview',
     description:
-      'Predict, measure loss, follow the gradient down — this exact loop trains everything from this neuron to GPT. Only the size changes.',
-    footer: 'predict → loss → gradient → step → repeat',
-  },
-  {
-    icon: '🔜', title: 'Next: Non-Linearity', titleClass: 'card-title-amber', subtitle: 'Day 29 Preview',
-    description:
-      'Tomorrow — Lecture 29: why stacking linear neurons stays a straight line, and how activation functions (ReLU) let a network learn curves.',
-    link: { href: '/day-029', label: 'Go to Day 29 →' },
+      'Tomorrow is the other half — Lecture 13: embed the question, retrieve the top chunks from Pinecone, and generate a grounded answer with a LangChain chain.',
+    link: { href: '/day-029', label: 'Go to Prereq 13 →' },
   },
 ];
 
@@ -133,38 +134,38 @@ export default function Day028() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-027" className="day001-nav-btn day001-nav-prev">← Day 27</Link>
-          <p className="day001-datetime">Agentic AI Day 28</p>
-          <Link to="/day-029" className="day001-nav-btn day001-nav-next">Day 29 →</Link>
+          <Link to="/day-027" className="day001-nav-btn day001-nav-prev">← Prereq 11</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 12</p>
+          <Link to="/day-029" className="day001-nav-btn day001-nav-next">Prereq 13 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 28</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 12</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 28 <span aria-hidden="true">📉</span></h1>
-              <p className="day001-day-theme">TRAINING FROM SCRATCH — GRADIENT DESCENT (C++)</p>
+              <h1 className="day001-day-num">PREREQ 12 <span aria-hidden="true">🗂️</span></h1>
+              <p className="day001-day-theme">RAG PART 1 — INDEXING YOUR DOCUMENTS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '28%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '12%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 28 — the neuron <strong>learns</strong>. A <strong>loss</strong> (mean squared error) measures how
-          wrong the predictions are, and the goal is to make it small. The <strong>gradient</strong> points toward
-          more error, so <strong>gradient descent</strong> steps the opposite way:{' '}
-          <code>w −= learningRate · gradient</code>, repeated over many <strong>epochs</strong>. The weights
-          <strong> converge</strong> (around <code>w1≈4.92, w2≈2.94</code>) and the neuron now predicts marks
-          accurately. This same loop — predict, measure, descend — is exactly how every neural network, up to an LLM,
-          learns. <em>Only the scale changes.</em>
+          Lecture 12 — the RAG <strong>indexing</strong> pipeline, and my first taste of{' '}
+          <strong>LangChain.js</strong>. I <strong>load</strong> a PDF with <code>PDFLoader</code>,{' '}
+          <strong>chunk</strong> it with <code>RecursiveCharacterTextSplitter</code> (size 1000, overlap 200 so
+          context survives the cuts), <strong>embed</strong> each chunk with{' '}
+          <code>GoogleGenerativeAIEmbeddings</code>, and <strong>store</strong> them all in{' '}
+          <strong>Pinecone</strong> via <code>PineconeStore.fromDocuments</code>. One run turns a document into a
+          searchable knowledge base. <em>Tomorrow I query it.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +180,12 @@ export default function Day028() {
           </ul>
         </section>
 
-        <CardSection icon="📉" title="MEASURE THE ERROR" cards={LOSS} columns={2} />
-        <CardSection icon="⬇️" title="GRADIENT DESCENT" cards={DESCENT} columns={3} />
+        <CardSection icon="🔗" title="MEET LANGCHAIN.js" cards={LANGCHAIN_CARD} columns={2} />
+        <CardSection icon="✂️" title="CHUNK · EMBED · STORE" cards={CHUNK} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GradientDescent</span><span>#Cpp</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#LangChain</span><span>#Pinecone</span>
         </footer>
       </div>
     </div>

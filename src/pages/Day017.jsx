@@ -2,73 +2,101 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture17';
-const NOTION = 'https://www.notion.so/Lecture-17-Project-2fea9af81c98800caa23eccb3fb108d0';
+const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture01';
+const AI_STUDIO = 'https://aistudio.google.com/';
 
 const LEARNT_TODAY = [
-  { title: 'Project time', text: 'apply everything so far to build a real knowledge assistant that answers questions about a document' },
-  { title: 'The dataset', text: 'a movies PDF becomes a queryable knowledge base — entities, relationships and descriptions' },
-  { title: 'Hybrid architecture', text: 'Neo4j (graph) + Pinecone (vectors) + Gemini (LLM) + LangChain.js, working together' },
-  { title: 'Two pipelines', text: 'indexing (build the graph + vectors once) and querying (classify, route, answer)' },
-  { title: 'Plan before code', text: 'decide the entities, relationships, and which questions go to the graph vs the vectors' },
-  { title: 'Three question types', text: 'factual (relationships), similarity (recommendations) and descriptive (about an entity)' },
-  { title: 'The payoff', text: 'one assistant that answers all three kinds of questions accurately — Graph RAG in practice' },
+  { title: 'New phase begins', text: 'Phase 1 of the plan is Agentic AI — I am learning it from Coder Army’s STRIKE GenAI (Rohit Negi), entirely in JavaScript' },
+  { title: 'What Generative AI is', text: 'models that generate new content — text, code, answers — instead of only classifying existing data' },
+  { title: 'LLMs predict tokens', text: 'a large language model does one thing: predict the most likely next token, over and over' },
+  { title: 'Prompt and completion', text: 'you send a prompt, the model completes it token by token — that loop is every LLM feature' },
+  { title: 'Why JavaScript', text: 'the whole course uses JS with Google’s Gemini SDK (@google/genai) — no Python required' },
+  { title: 'The ecosystem', text: 'OpenAI (GPT), Google (Gemini), Meta (Llama) — this course builds on Google Gemini' },
+  { title: 'Google AI Studio', text: 'create a free Gemini API key at aistudio.google.com to start building' },
+  { title: 'The road ahead', text: 'from the first API call to chat, tools, RAG, autonomous agents, LangGraph and full projects' },
 ];
 
-const GOAL = [
+const WHY = [
   {
-    icon: '🎬', title: 'The Goal', titleClass: 'card-title-cyan', subtitle: 'A Movie Assistant',
+    icon: '🚀', title: 'A New Phase', titleClass: 'card-title-cyan', subtitle: 'Agentic AI Starts',
     description:
-      'Build an assistant over a movies document that can list "movies directed by Nolan", recommend "movies like Inception", and describe "what is The Godfather about" — all from your own data.',
-    code: '// factual:     "Movies directed by Nolan"\n// similarity:  "Movies like Inception"\n// descriptive: "Tell me about The Godfather"',
+      'After the HTML/CSS/JavaScript foundation, Phase 1 of the roadmap is Agentic AI. I am following Coder Army’s STRIKE GenAI by Rohit Negi — built end to end in JavaScript.',
+    footer: '100 days · JavaScript · Google Gemini · agents',
   },
   {
-    icon: '🏗️', title: 'The Architecture', titleClass: 'card-title-purple', subtitle: 'Four Pieces',
+    icon: '🧠', title: 'What is Generative AI?', titleClass: 'card-title-purple', subtitle: 'It Generates',
     description:
-      'Gemini extracts entities and answers; Neo4j stores the relationship graph; Pinecone stores the vectors; LangChain.js wires the steps. Each tool does the job it is best at.',
-    code: '// Gemini      → extract entities, generate answers\n// Neo4j       → relationships (the graph)\n// Pinecone    → similarity (the vectors)\n// LangChain.js → glue',
+      'Traditional ML classifies or predicts labels. Generative AI produces brand-new content — text, code, summaries, answers — from a prompt. LLMs are the engine behind it.',
+  },
+  {
+    icon: '🟨', title: 'Why JavaScript?', titleClass: 'card-title-amber', subtitle: 'No Python Needed',
+    description:
+      'Most GenAI tutorials are in Python. This course proves you can build the entire modern stack — chat, tools, RAG, agents — in JavaScript with Google’s @google/genai SDK.',
+    link: { href: GH_REPO, label: 'STRIKE GenAI on GitHub →', external: true },
   },
 ];
 
-const PLAN = [
+const HOW = [
   {
-    icon: '📥', title: 'Pipeline 1 — Indexing', titleClass: 'card-title-cyan', subtitle: 'Build The Base',
+    icon: '🔤', title: 'Token Prediction', titleClass: 'card-title-cyan', subtitle: 'The Core Truth',
     description:
-      'Run once: parse the PDF, have the LLM extract structured entities, build the Neo4j graph, and store embeddings in Pinecone. After this, the knowledge base is ready.',
-    code: '// PDF → extract entities → Neo4j graph\n//     → embed chunks   → Pinecone\n// (tomorrow: the full build)',
+      'An LLM does not think or understand — it predicts the next token (a word or piece of a word). Given "The capital of France is", it predicts "Paris". Repeat that, and you get every answer.',
+    code: '"The capital of France is"  →  "Paris"\n// every LLM output is this loop, one token at a time',
   },
   {
-    icon: '❓', title: 'Pipeline 2 — Querying', titleClass: 'card-title-purple', subtitle: 'Answer Anything',
+    icon: '💬', title: 'Prompt → Completion', titleClass: 'card-title-purple', subtitle: 'The Interaction',
     description:
-      'Per question: classify its type, route it to the graph or the vectors, retrieve, and let Gemini write the answer. The routing is what makes it feel smart.',
-    code: '// question → classify → route → retrieve → answer\n// (Day 19: the query side)',
+      'You send a prompt; the model returns a completion built token by token. Everything — chat, tools, agents — is layered on top of this single request/response idea.',
+    code: '// prompt in, completion out\nprompt:      "Explain what a variable is"\ncompletion:  "A variable is a named container ..."',
   },
   {
-    icon: '🗺️', title: 'Design First', titleClass: 'card-title-amber', subtitle: 'Entities & Routes',
+    icon: '📅', title: 'Parametric Knowledge', titleClass: 'card-title-amber', subtitle: 'And Its Limits',
     description:
-      'Before writing code, decide the entities (Movie, Director, Actor, Genre), the relationships (DIRECTED, ACTED_IN), and which question types go where. A clear plan makes the build straightforward.',
-    footer: 'entities · relationships · routing rules',
+      'A model only knows what it saw in training (its parametric knowledge), up to a cutoff date. It has no live data — which is exactly why later lectures add tools and RAG.',
+    code: '// no internet, no live prices, no today’s news\n// → we will give it tools (Day 4–5) and RAG (later)',
+  },
+];
+
+const TOOLKIT = [
+  {
+    icon: '🔑', title: 'Google AI Studio', titleClass: 'card-title-cyan', subtitle: 'Free Gemini Key',
+    description:
+      'Sign in to Google AI Studio, create an API key, and keep it safe. This key lets your JavaScript talk to the Gemini models used throughout the course.',
+    link: { href: AI_STUDIO, label: 'Open Google AI Studio →', external: true },
+  },
+  {
+    icon: '📦', title: 'The Gemini SDK', titleClass: 'card-title-purple', subtitle: '@google/genai',
+    description:
+      'One npm package is the whole toolkit for now. Install it, load the key from a .env file, and you can send your first prompt from Node in a few lines — that is tomorrow.',
+    code: 'npm install @google/genai dotenv\n\n# .env\nGEMINI_API_KEY=your_key_here',
+  },
+  {
+    icon: '🗺️', title: 'The Road Ahead', titleClass: 'card-title-amber', subtitle: '100 Days',
+    description:
+      'First code and chat, then system instructions, tools and function calling, RAG, autonomous agents, LangGraph, and real projects. Today is the map; tomorrow we write code.',
+    footer: 'chat → tools → RAG → agents → LangGraph → projects',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📝', title: 'Lecture 17 Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    icon: '💻', title: 'STRIKE GenAI Repo', titleClass: 'card-title-cyan', subtitle: 'Coder Army · GitHub',
     description:
-      'Rohit’s project write-up — the goal, architecture and plan for the Graph RAG knowledge assistant.',
-    link: { href: NOTION, label: 'Open Lecture 17 notes →', external: true },
+      'All lecture code for the course lives here — Lecture 01 onward. Clone it and follow along as each day builds on the last.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 01 →', external: true },
   },
   {
-    icon: '💻', title: 'Lecture 17', titleClass: 'card-title-purple', subtitle: 'GitHub',
+    icon: '🔑', title: 'Get Your API Key', titleClass: 'card-title-purple', subtitle: 'Before Day 2',
     description:
-      'The lecture folder in the STRIKE GenAI repo — the kickoff for the graph-rag-movie project built across the next lectures.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 17 →', external: true },
+      'Create a Gemini API key in Google AI Studio and put it in a .env file. You will need it for your first program tomorrow.',
+    link: { href: AI_STUDIO, label: 'Google AI Studio →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Build The Graph', titleClass: 'card-title-amber', subtitle: 'Day 18 Preview',
+    icon: '🔜', title: 'Next: First Code', titleClass: 'card-title-amber', subtitle: 'Prereq 2 Preview',
     description:
-      'Tomorrow is the build — Lecture 18: parse the PDF, extract entities with Gemini, and construct the Neo4j knowledge graph plus the Pinecone vectors.',
-    link: { href: '/day-018', label: 'Go to Day 18 →' },
+      'Tomorrow is Lecture 02 — write our first code: the Gemini SDK, a single request, then a multi-turn chatbot with history, system instructions and thinking control.',
+    link: { href: '/day-018', label: 'Go to Prereq 2 →' },
   },
 ];
 
@@ -133,39 +161,39 @@ export default function Day017() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-016" className="day001-nav-btn day001-nav-prev">← Day 16</Link>
-          <p className="day001-datetime">Agentic AI Day 17</p>
-          <Link to="/day-018" className="day001-nav-btn day001-nav-next">Day 18 →</Link>
+          <Link to="/day-000" className="day001-nav-btn day001-nav-prev">← Setup</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 1</p>
+          <Link to="/day-018" className="day001-nav-btn day001-nav-next">Prereq 2 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 17</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 01</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 17 <span aria-hidden="true">🛠️</span></h1>
-              <p className="day001-day-theme">PROJECT — A GRAPH RAG KNOWLEDGE ASSISTANT</p>
+              <h1 className="day001-day-num">PREREQ 1 <span aria-hidden="true">🤖</span></h1>
+              <p className="day001-day-theme">INTRODUCTION TO GENERATIVE AI</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '17%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '1%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 17 — <strong>project time</strong>. The goal: a knowledge assistant over a{' '}
-          <strong>movies document</strong> that answers <strong>factual</strong> ("directed by Nolan"),{' '}
-          <strong>similarity</strong> ("like Inception") and <strong>descriptive</strong> ("about The Godfather")
-          questions. The architecture is <strong>hybrid</strong> — <strong>Neo4j</strong> for relationships,{' '}
-          <strong>Pinecone</strong> for similarity, <strong>Gemini</strong> for extraction and answers, wired with{' '}
-          <strong>LangChain.js</strong> — split into an <strong>indexing</strong> pipeline and a{' '}
-          <strong>querying</strong> pipeline. Today I plan the entities, relationships and routing.{' '}
-          <em>Tomorrow the build begins.</em>
+          Day one of <strong>Phase 1 — Agentic AI</strong>, from Coder Army’s <strong>STRIKE GenAI</strong> by
+          Rohit Negi, all in <strong>JavaScript</strong>. <strong>Generative AI</strong> creates new content
+          instead of just classifying it, and an <strong>LLM</strong> does one thing —{' '}
+          <strong>predict the next token</strong> — turning a <code>prompt</code> into a <code>completion</code>.
+          A model only knows its training data (parametric knowledge) with a cutoff, so later days add{' '}
+          <strong>tools</strong> and <strong>RAG</strong>. The whole toolkit for now: <strong>Node</strong>, the{' '}
+          <code>@google/genai</code> SDK, and a free <strong>Google AI Studio</strong> key.{' '}
+          <em>Tomorrow we write our first code.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +208,13 @@ export default function Day017() {
           </ul>
         </section>
 
-        <CardSection icon="🎬" title="THE PROJECT" cards={GOAL} columns={2} />
-        <CardSection icon="🗺️" title="THE TWO PIPELINES" cards={PLAN} columns={3} />
+        <CardSection icon="🚀" title="WHY AGENTIC AI" cards={WHY} columns={3} />
+        <CardSection icon="🧠" title="HOW LLMs WORK" cards={HOW} columns={3} />
+        <CardSection icon="🧰" title="THE TOOLKIT" cards={TOOLKIT} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GraphRAG</span><span>#Project</span><span>#CoderArmy</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AgenticAI</span><span>#CoderArmy</span><span>#JavaScript</span>
         </footer>
       </div>
     </div>

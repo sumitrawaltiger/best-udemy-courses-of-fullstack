@@ -2,73 +2,79 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture24';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture08';
+const EMBED_DOCS = 'https://ai.google.dev/gemini-api/docs/embeddings';
 
 const LEARNT_TODAY = [
-  { title: 'State is the whole contract', text: 'in LangGraph, nodes communicate ONLY through a shared state — Node A writes, Node B reads' },
-  { title: 'Annotation.Root', text: 'the AgentState defines every field up front so checkpoints stay compatible as the graph grows' },
-  { title: 'Reducers', text: 'simple fields use last-write-wins; accumulating arrays use a merge reducer to combine old + new' },
-  { title: 'PM Agent', text: 'turns a raw requirement into a clear spec, asking clarifying questions via a humanInput node' },
-  { title: 'Architect in 5 steps', text: 'entities → DB schema → API endpoints → frontend pages → folder structure' },
-  { title: 'blueprintValidator', text: 'cross-checks the whole blueprint before planning — a router sends it back if it fails' },
-  { title: 'Sandbox + health check', text: 'spin up a Docker sandbox, then verify DB, node_modules and ports before building' },
-  { title: 'Checkpoint everything', text: 'MemorySaver persists state after each node, so a crash resumes instead of restarting' },
+  { title: 'The RAG foundation begins', text: 'to make the AI answer from your own data, it first needs to understand meaning — that starts with embeddings' },
+  { title: 'What an embedding is', text: 'a piece of text turned into a vector — a long list of numbers that captures its meaning' },
+  { title: 'Meaning becomes geometry', text: 'text with similar meaning maps to vectors that sit close together in space' },
+  { title: 'Dimensions', text: 'each vector has hundreds of dimensions, each encoding some semantic feature of the text' },
+  { title: 'Not keywords', text: 'embeddings capture meaning, so "car" and "automobile" land near each other even with no shared letters' },
+  { title: 'Generate with Gemini', text: 'the SDK turns any text into an embedding with a single call — ai.models.embedContent' },
+  { title: 'The building block', text: 'search, clustering, recommendations and RAG are all built on top of embeddings' },
 ];
 
-const STATE = [
+const WHY = [
   {
-    icon: '📦', title: 'The Shared State', titleClass: 'card-title-cyan', subtitle: 'Annotation.Root',
+    icon: '🧩', title: 'The Meaning Problem', titleClass: 'card-title-cyan', subtitle: 'Computers See Text',
     description:
-      'Define the full state shape once with Annotation.Root. Each field notes which node owns it. Nodes never call each other — they only read and write this object.',
-    code: 'import { Annotation } from "@langchain/langgraph";\n\nexport const AgentState = Annotation.Root({\n  userRequirement: Annotation({ reducer: (_, y) => y ?? "", default: () => "" }),\n  spec: Annotation({ reducer: (_, y) => y, default: () => null }),\n  // ...all 30 nodes’ fields\n});',
+      'A computer only sees characters, not meaning. To let the AI find information related to a question, we need a way to represent what text means as something a machine can compare.',
+    code: '// "How do I reset my password?"\n// vs "I forgot my login" → same meaning, different words\n// computers need to see that they are close',
   },
   {
-    icon: '➕', title: 'Reducers', titleClass: 'card-title-purple', subtitle: 'How Updates Merge',
+    icon: '🔢', title: 'Text → Vector', titleClass: 'card-title-purple', subtitle: 'The Embedding',
     description:
-      'A reducer decides how a node’s output updates the state. Simple values overwrite (last write wins); lists that grow use a merge reducer so nothing is lost.',
-    code: '// simple field:  reducer: (_, y) => y        (overwrite)\n// growing list:  reducer: (x, y) => [...x, ...y] (merge)',
+      'An embedding model converts a string into a vector — a fixed-length list of numbers. That vector is a coordinate in a high-dimensional "meaning space".',
+    code: '"hello world"  →  [0.021, -0.44, 0.13, 0.88, ...]\n// hundreds of numbers = one point in meaning space',
+  },
+  {
+    icon: '📍', title: 'Close = Similar', titleClass: 'card-title-amber', subtitle: 'Meaning As Geometry',
+    description:
+      'The key property: texts that mean similar things get vectors that are near each other. Distance between vectors becomes a measure of semantic similarity.',
+    code: '// vec("king")  ≈ near vec("queen")\n// vec("car")   ≈ near vec("automobile")\n// vec("banana") ≈ far from vec("database")',
   },
 ];
 
-const PLAN = [
+const HOW = [
   {
-    icon: '📋', title: 'PM → Architect → Planner', titleClass: 'card-title-cyan', subtitle: 'Design The Work',
+    icon: '⚡', title: 'Generate An Embedding', titleClass: 'card-title-cyan', subtitle: 'ai.models.embedContent',
     description:
-      'The PM clarifies the requirement into a spec (looping through humanInput for answers). The Architect designs the blueprint in five steps. The Planner turns it into an ordered task list.',
-    code: '// pmAgent → spec (needs_clarification → humanInput)\n// architectStep1..5 → blueprint\n// plannerAgent → phased, dependency-ordered tasks',
+      'The Gemini SDK produces an embedding for any text in one call. Store the returned vector and you can compare it against others later.',
+    code: 'const res = await ai.models.embedContent({\n  model: "text-embedding-004",\n  contents: "How do I reset my password?",\n});\nconst vector = res.embeddings[0].values; // number[]',
   },
   {
-    icon: '✅', title: 'Validate, Then Proceed', titleClass: 'card-title-purple', subtitle: 'A Router',
+    icon: '📐', title: 'Fixed Length', titleClass: 'card-title-purple', subtitle: 'Same Size Always',
     description:
-      'blueprintValidator checks the design and a router decides the next edge — proceed to planning if valid, or loop back to the Architect to fix it. Conditional edges in action.',
-    code: 'graph.addConditionalEdges("blueprintValidator", blueprintValidatorRouter, {\n  valid: "plannerAgent",\n  invalid: "architectStep1", // redesign\n});',
+      'Every embedding from a given model has the same number of dimensions, no matter the input length. That uniform shape is what makes vectors comparable.',
+    code: '// a word, a sentence, a paragraph →\n// all become a vector of the SAME length\n// e.g. 768 numbers each',
   },
   {
-    icon: '🐳', title: 'Sandbox & Health Check', titleClass: 'card-title-amber', subtitle: 'Ready To Build',
+    icon: '🧱', title: 'Everything Builds On This', titleClass: 'card-title-amber', subtitle: 'The Base Layer',
     description:
-      'setupSandbox creates a Docker environment; sandboxHealthCheck then verifies the database, node_modules and ports are actually up before any code is written into it.',
-    code: '// setupSandbox → Docker sandbox\n// sandboxHealthCheck → verify DB, deps, ports\n// (router: healthy → build · unhealthy → retry)',
+      'Once text is a vector, you can search by meaning, group similar items, recommend, and — the goal of this stretch — do RAG. Embeddings are the base layer for all of it.',
+    footer: 'embeddings → search → vector DB → RAG',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 24', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '💻', title: 'Lecture 08', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The ai-dev-team phase-3 project — the state, graph, PM/Architect/Planner agents, blueprint validator and sandbox nodes.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 24 →', external: true },
+      'The embeddings lecture and its diagram in the STRIKE GenAI repo — the conceptual foundation for the RAG lectures ahead.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 08 →', external: true },
   },
   {
-    icon: '🧩', title: 'It’s A LangGraph', titleClass: 'card-title-purple', subtitle: 'Everything Applies',
+    icon: '📘', title: 'Gemini Embeddings', titleClass: 'card-title-purple', subtitle: 'Docs',
     description:
-      'This uses Day 20’s LangGraph directly — state, nodes, conditional edges, routers and MemorySaver checkpoints — now for a real multi-agent build.',
-    footer: 'state · nodes · routers · checkpoints',
+      'Google’s embeddings guide — models, dimensions, task types, and how to generate vectors from the API.',
+    link: { href: EMBED_DOCS, label: 'Read embeddings docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: The Full Team', titleClass: 'card-title-amber', subtitle: 'Day 25 Preview',
+    icon: '🔜', title: 'Next: Semantic Search', titleClass: 'card-title-amber', subtitle: 'Prereq 9 Preview',
     description:
-      'Tomorrow completes it — Lecture 25: the Coder, Reviewer, Executor and Debugger agents, the dev loop, snapshots/rollback and escalation.',
-    link: { href: '/day-025', label: 'Go to Day 25 →' },
+      'Tomorrow uses these vectors — Lecture 09 on semantic search: embed a query and your documents, then find the closest matches by meaning.',
+    link: { href: '/day-025', label: 'Go to Prereq 9 →' },
   },
 ];
 
@@ -133,39 +139,38 @@ export default function Day024() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-023" className="day001-nav-btn day001-nav-prev">← Day 23</Link>
-          <p className="day001-datetime">Agentic AI Day 24</p>
-          <Link to="/day-025" className="day001-nav-btn day001-nav-next">Day 25 →</Link>
+          <Link to="/day-023" className="day001-nav-btn day001-nav-prev">← Prereq 7</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 8</p>
+          <Link to="/day-025" className="day001-nav-btn day001-nav-next">Prereq 9 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 24</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 08</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 24 <span aria-hidden="true">🏗️</span></h1>
-              <p className="day001-day-theme">AI DEV TEAM — PLANNING AGENTS &amp; SANDBOX</p>
+              <h1 className="day001-day-num">PREREQ 8 <span aria-hidden="true">🔢</span></h1>
+              <p className="day001-day-theme">EMBEDDINGS — MEANING AS NUMBERS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '24%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '8%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 24 — the build begins. The heart of it is the <strong>LangGraph state</strong>: defined once with{' '}
-          <code>Annotation.Root</code>, it is the <strong>only</strong> way nodes talk, with{' '}
-          <strong>reducers</strong> that overwrite simple fields and merge growing lists. The{' '}
-          <strong>planning agents</strong> run — <strong>PM</strong> (spec, via humanInput),{' '}
-          <strong>Architect</strong> (5-step blueprint), <strong>blueprintValidator</strong> (with a router), and{' '}
-          <strong>Planner</strong> — then a <strong>Docker sandbox</strong> is set up and{' '}
-          <strong>health-checked</strong>. Every node <strong>checkpoints</strong> so a crash resumes.{' '}
-          <em>Next: the coding agents.</em>
+          Lecture 08 starts the <strong>RAG foundation</strong>. An <strong>embedding</strong> turns text into a{' '}
+          <strong>vector</strong> — a long list of numbers that captures its <strong>meaning</strong>. The magic
+          property: text that means similar things maps to vectors that sit <strong>close together</strong>, so{' '}
+          <code>vec("car")</code> lands near <code>vec("automobile")</code> even with no shared letters. Every
+          embedding from a model has the same fixed length, which is what makes them comparable, and{' '}
+          <code>ai.models.embedContent</code> generates one in a single call. <em>This is the base layer for
+          search, vector DBs and RAG.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +185,12 @@ export default function Day024() {
           </ul>
         </section>
 
-        <CardSection icon="📦" title="THE LANGGRAPH STATE" cards={STATE} columns={2} />
-        <CardSection icon="📋" title="PLANNING & SANDBOX" cards={PLAN} columns={3} />
+        <CardSection icon="🧩" title="WHY EMBEDDINGS" cards={WHY} columns={3} />
+        <CardSection icon="⚡" title="GENERATING & USING THEM" cards={HOW} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AIDevTeam</span><span>#LangGraph</span><span>#CoderArmy</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Embeddings</span><span>#CoderArmy</span><span>#RAG</span>
         </footer>
       </div>
     </div>

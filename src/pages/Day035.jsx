@@ -2,80 +2,72 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture35and36';
-const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture19';
 
 const LEARNT_TODAY = [
-  { title: 'An LLM is next-token prediction', text: 'given the text so far, predict the single most likely next token — then repeat, one token at a time' },
-  { title: 'It’s a giant classifier', text: 'the final layer is softmax over the whole vocabulary (~50,000 tokens) — exactly Day 34, at huge scale' },
-  { title: 'Tokenization', text: 'text is split into tokens (words / sub-words) and each maps to an id in a fixed vocabulary' },
-  { title: 'Embeddings', text: 'every token id becomes a dense vector (e.g. 768 numbers) — meaning captured as geometry' },
-  { title: 'Meaning from context', text: 'the model adjusts each token’s vector using the surrounding words, so "bank" differs by sentence' },
-  { title: 'Attention', text: '“Attention Is All You Need” — the Transformer lets every token look at every other token' },
-  { title: 'Training = predict the next word', text: 'run over massive text; each miss updates weights via the same gradient descent from Days 28–34' },
-  { title: 'Generation loops', text: 'predict a token, append it, feed it back, predict again — that stream of tokens is the answer' },
+  { title: 'Classify the query first', text: 'before retrieving, ask the LLM: is this factual, similarity, or descriptive?' },
+  { title: 'Factual → Neo4j', text: '"movies directed by Nolan" is a relationship question — answer it with a Cypher graph query' },
+  { title: 'Similarity → Pinecone', text: '"movies like Inception" is a vector question — answer it with semantic search' },
+  { title: 'Descriptive → Pinecone', text: '"tell me about Inception" retrieves the entity’s text and lets the model summarise it' },
+  { title: 'Route to a handler', text: 'each query type has its own handler; the runner classifies then dispatches' },
+  { title: 'Cypher templates', text: 'safe, parameterised graph queries turn a classified question into precise graph traversal' },
+  { title: 'Best of both worlds', text: 'exact relationships from the graph, fuzzy matches from the vectors — one hybrid assistant' },
 ];
 
-const CORE = [
+const CLASSIFY = [
   {
-    icon: '🔮', title: 'Next-Token Prediction', titleClass: 'card-title-cyan', subtitle: 'The Whole Idea',
+    icon: '🧠', title: 'Classify The Query', titleClass: 'card-title-cyan', subtitle: 'One LLM Call',
     description:
-      'An LLM does one thing: read the tokens so far and predict the next one. Loop that and you get sentences, code, essays — all from repeatedly guessing the next token.',
-    code: '// "The cat sat on the" → ?\n// output over vocab: {mat: 0.61, floor: 0.12, ...}\n// pick "mat", append, predict again',
+      'A classifier prompt asks the model to label the question as factual, similarity, or descriptive and return strict JSON. That label decides everything downstream.',
+    code: 'const CLASSIFIER_PROMPT = `Classify the query as:\n"factual"     — lists/counts/relationships (→ Neo4j)\n"similarity"  — recommendations / like X (→ Pinecone)\n"descriptive" — who/what/about an entity (→ Pinecone)\nRespond ONLY as JSON: {"type": ..., "reasoning": ...}`;',
   },
   {
-    icon: '🏷️', title: 'Tokenization', titleClass: 'card-title-purple', subtitle: 'Text → Ids',
+    icon: '🔀', title: 'Route It', titleClass: 'card-title-purple', subtitle: 'Dispatch To A Handler',
     description:
-      'Text is broken into tokens — whole words or sub-word pieces — and each maps to an id in a fixed vocabulary of ~50,000 entries. Tokens, not letters, are the model’s unit.',
-    code: '// "learning" → ["learn", "ing"] → [4821, 213]\n// vocabulary size ≈ 50,000 tokens',
-  },
-  {
-    icon: '🧭', title: 'Embeddings', titleClass: 'card-title-amber', subtitle: 'Id → Vector',
-    description:
-      'Each token id becomes a dense vector of numbers (e.g. 768 dims). Similar meanings sit close together — the same "meaning as geometry" idea from the embeddings lecture.',
-    code: '// 4821 → [0.12, -0.94, 0.33, ... 768 numbers]\n// king - man + woman ≈ queen',
+      'The runner reads the type and calls the matching handler — factual to the graph, similarity and descriptive to the vectors. Clean separation, one entry point.',
+    code: 'const { type } = await classifyQuery(query);\nif (type === "similarity")  answer = await handleSimilarity(query);\nelse if (type === "descriptive") answer = await handleDescriptive(query);\nelse answer = await handleFactual(query); // → Neo4j',
   },
 ];
 
-const HOW = [
+const HANDLERS = [
   {
-    icon: '👀', title: 'Attention', titleClass: 'card-title-cyan', subtitle: 'The Transformer',
+    icon: '🔒', title: 'Factual → Cypher', titleClass: 'card-title-cyan', subtitle: 'The Graph',
     description:
-      '"Attention Is All You Need" (2017). Attention lets every token look at every other token and pull in context, so a word’s vector reflects the whole sentence around it.',
-    code: '// "river bank" vs "money bank"\n// attention reshapes "bank" using its neighbours\n// → the right meaning in context',
+      'Factual questions become Cypher queries against Neo4j using safe templates. Relationships and counts come back exact — no guessing.',
+    code: '// "Movies directed by Nolan"\nMATCH (d:Director {name:$name})-[:DIRECTED]->(m:Movie)\nRETURN m.title\n// precise, verifiable answer',
   },
   {
-    icon: '🎯', title: 'The Output Layer', titleClass: 'card-title-purple', subtitle: '50K-Way Softmax',
+    icon: '📐', title: 'Similarity → Vectors', titleClass: 'card-title-purple', subtitle: 'Pinecone',
     description:
-      'The top of the network is a neuron per vocabulary token. Softmax turns those scores into a probability for every possible next token — Day 34’s softmax, just 50,000-wide.',
-    code: '// final scores over 50,000 tokens\n// softmax → probability distribution\n// argmax (or sample) → next token',
+      'Recommendation questions embed the query and search Pinecone for the nearest movies — the semantic RAG from earlier days, now one branch of the system.',
+    code: '// "Movies like Inception"\n// embed → Pinecone top-K → similar movies\n// (optionally enrich with graph facts)',
   },
   {
-    icon: '🏋️', title: 'Training', titleClass: 'card-title-amber', subtitle: 'Predict, Then Correct',
+    icon: '📖', title: 'Descriptive → Retrieve', titleClass: 'card-title-amber', subtitle: 'Then Summarise',
     description:
-      'Feed it oceans of text with the next word hidden. Wrong guesses create cross-entropy loss and gradient descent nudges billions of weights — the exact loop from Days 28–34, scaled up.',
-    code: '// hide next word, predict it\n// loss = cross-entropy(pred, actual)\n// backprop → update weights → repeat',
+      '"Tell me about X" retrieves the entity’s chunks from the vector store and has Gemini write a grounded summary — RAG applied to a single entity.',
+    code: '// "Tell me about The Godfather"\n// retrieve its text → Gemini summarises from it',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 35 & 36', titleClass: 'card-title-cyan', subtitle: 'How To Build An LLM',
+    icon: '💻', title: 'Lecture 19', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The combined Lecture35and36 material in the STRIKE GenAI repo — tokens, embeddings, attention and next-token prediction tied together.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 35 & 36 →', external: true },
+      'The query side — queryClassifier, graph and similarity handlers, entityResolver and runQuery — completing the Graph RAG assistant.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 19 →', external: true },
   },
   {
-    icon: '📦', title: 'STRIKE GenAI Repo', titleClass: 'card-title-purple', subtitle: 'All Lectures',
+    icon: '🧬', title: 'Hybrid Retrieval', titleClass: 'card-title-purple', subtitle: 'Graph + Vectors',
     description:
-      'The full Coder Army STRIKE GenAI course code — from the first Gemini call to agents, RAG, the AI Dev Team, and neural nets from scratch.',
-    link: { href: GH_REPO, label: 'Open the repo →', external: true },
+      'The whole point of Graph RAG: route each question to the engine that answers it best — precise facts from the graph, similarity from the vectors.',
+    footer: 'classify → route → retrieve → answer',
   },
   {
-    icon: '🧵', title: 'It All Connects', titleClass: 'card-title-amber', subtitle: 'Where This Leads',
+    icon: '🔜', title: 'Next: LangGraph', titleClass: 'card-title-amber', subtitle: 'Prereq 20 Preview',
     description:
-      'Neuron → gradient descent → ReLU → classification → softmax → LLM. The from-scratch detour explains what powers every agent from the earlier lectures.',
-    link: { href: '/genai', label: 'Explore the GenAI track →' },
+      'Tomorrow — Lecture 20: LangGraph, for orchestrating multi-step, stateful agent workflows as a graph of nodes and edges.',
+    link: { href: '/day-036', label: 'Go to Prereq 20 →' },
   },
 ];
 
@@ -140,39 +132,38 @@ export default function Day035() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-034" className="day001-nav-btn day001-nav-prev">← Day 34</Link>
-          <p className="day001-datetime">Agentic AI Day 35</p>
-          <Link to="/day-036" className="day001-nav-btn day001-nav-next">Day 36 →</Link>
+          <Link to="/day-034" className="day001-nav-btn day001-nav-prev">← Prereq 18</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 19</p>
+          <Link to="/day-036" className="day001-nav-btn day001-nav-next">Prereq 20 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 35 &amp; 36</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 19</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 35 <span aria-hidden="true">🔮</span></h1>
-              <p className="day001-day-theme">HOW TO BUILD AN LLM — TOKENS, EMBEDDINGS &amp; NEXT-TOKEN</p>
+              <h1 className="day001-day-num">PREREQ 19 <span aria-hidden="true">🔀</span></h1>
+              <p className="day001-day-theme">GRAPH RAG — HYBRID QUERYING</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '35%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '19%' }} /></div>
 
         <p className="day001-summary">
-          Lectures 35 &amp; 36 — it all comes together. An <strong>LLM is next-token prediction</strong>: read the
-          text so far, predict the single most likely next token, append it, and repeat. Under the hood it’s a giant{' '}
-          <strong>classifier</strong> — a <strong>50,000-way softmax</strong> over the vocabulary (exactly Day 34, at
-          scale). Text is <strong>tokenized</strong> into ids, each id becomes an <strong>embedding</strong> vector
-          (~768 numbers = meaning as geometry), and <strong>attention</strong> ("Attention Is All You Need") reshapes
-          each token using its context. <strong>Training</strong> is just hiding the next word and correcting the guess
-          with <code>cross-entropy</code> + gradient descent — the same loop from Days 28–34.{' '}
-          <em>Neuron → gradient descent → ReLU → classification → softmax → LLM. (From the lecture material.)</em>
+          Lecture 19 finishes the assistant — the <strong>query</strong> side. Every question is first{' '}
+          <strong>classified</strong> as <strong>factual</strong>, <strong>similarity</strong>, or{' '}
+          <strong>descriptive</strong>, then <strong>routed</strong> to the right handler: factual questions run{' '}
+          <strong>Cypher</strong> over <strong>Neo4j</strong> for exact relationships, while similarity and
+          descriptive questions use <strong>Pinecone</strong> vector search. Precise facts from the graph, fuzzy
+          matches from the vectors — that hybrid is the whole point of <strong>Graph RAG</strong>.{' '}
+          <em>The project works end to end.</em>
         </p>
 
         <section className="day001-learnt">
@@ -187,12 +178,12 @@ export default function Day035() {
           </ul>
         </section>
 
-        <CardSection icon="🔮" title="THE CORE IDEA" cards={CORE} columns={3} />
-        <CardSection icon="⚙️" title="HOW IT WORKS" cards={HOW} columns={3} />
+        <CardSection icon="🧠" title="CLASSIFY & ROUTE" cards={CLASSIFY} columns={2} />
+        <CardSection icon="🔀" title="THE THREE HANDLERS" cards={HANDLERS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#LLM</span><span>#Transformer</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GraphRAG</span><span>#Neo4j</span><span>#Pinecone</span>
         </footer>
       </div>
     </div>

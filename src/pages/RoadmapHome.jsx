@@ -267,11 +267,11 @@ export default function RoadmapHome() {
           CI/CD, AWS). 1461 days, 1 Sep 2026 → 31 Aug 2030.
         </p>
         <div className="roadmap-flow-actions">
-          <Link to="/nextjs" className="btn btn-lg roadmap-btn-primary">
-            Start Year 1 · TypeScript
+          <Link to="/day-001" className="btn btn-lg roadmap-btn-primary">
+            Start Day 1 · TypeScript
           </Link>
-          <Link to="/genai" className="btn btn-lg roadmap-btn-outline">
-            Prerequisite · GenAI
+          <Link to="/day-017" className="btn btn-lg roadmap-btn-outline">
+            Prerequisites · Gen AI
           </Link>
           <Link to="/best-udemy-courses" className="btn btn-lg roadmap-btn-outline">
             All course picks

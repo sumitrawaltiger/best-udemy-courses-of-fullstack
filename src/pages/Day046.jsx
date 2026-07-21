@@ -2,74 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_NARROWING = 'https://www.typescriptlang.org/docs/handbook/2/narrowing.html';
-const TS_UTILITY = 'https://www.typescriptlang.org/docs/handbook/utility-types.html';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture30';
+const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
 
 const LEARNT_TODAY = [
-  { title: 'Union types', text: 'A | B means a value is one of several types — the workhorse of flexible APIs' },
-  { title: 'Intersection types', text: 'A & B combines shapes — the value must satisfy both at once' },
-  { title: 'Narrowing', text: 'typeof, instanceof and truthiness checks let TS refine a union down to one type' },
-  { title: 'Type guards', text: 'a function returning "x is Type" teaches the compiler to narrow custom shapes' },
-  { title: 'Discriminated unions', text: 'a shared literal field (kind) lets a switch narrow each case cleanly' },
-  { title: 'Utility types', text: 'Partial, Required, Pick, Omit, Record reshape existing types without rewriting them' },
-  { title: 'keyof & typeof', text: 'derive types from data — keyof gets a type’s keys, typeof lifts a value into a type' },
-  { title: 'Never & exhaustiveness', text: 'the never type catches an unhandled case in a switch at compile time' },
+  { title: 'One neuron, one bend', text: 'each ReLU neuron contributes a single kink at a point you choose with its weight and bias' },
+  { title: 'Combine bends', text: 'ReLU(x−10) − ReLU(x−30) makes a plateau — a ramp that turns on at 10 and levels off at 30' },
+  { title: 'Scale them', text: '3·ReLU(x−2) − 3·ReLU(x−3) controls the height and steepness of a piece' },
+  { title: 'Sum many neurons', text: 'stack shifted, scaled ReLUs and their bends add up into any shape you like' },
+  { title: 'Approximate y = x²', text: 'enough small ReLU pieces trace a smooth curve as closely as you want' },
+  { title: 'Universal approximation', text: 'a wide enough network of ReLU neurons can approximate ANY continuous function' },
+  { title: 'Why deep learning works', text: 'it’s not magic — millions of tiny bends, tuned by gradient descent, fit the data' },
 ];
 
-const COMBINE = [
+const BENDS = [
   {
-    icon: '➕', title: 'Unions & Intersections', titleClass: 'card-title-cyan', subtitle: 'OR & AND',
+    icon: '📐', title: 'One Neuron, One Bend', titleClass: 'card-title-cyan', subtitle: 'The Building Block',
     description:
-      'A union (|) says "one of these types"; an intersection (&) says "all of these at once". Together they model flexible inputs and merged shapes without duplication.',
-    code: 'type Id = string | number;        // union\ntype Staff = User & { role: string }; // intersection\nlet id: Id = 7; id = "007";',
+      'Yesterday’s ReLU(w·x+b) makes exactly one kink. On its own it draws a hinge — flat, then a slope. The trick is what happens when you have many of them.',
+    code: '// ReLU(x - 10): flat, then rises at x = 10\n// each neuron = one hinge in the graph',
   },
   {
-    icon: '🔎', title: 'Narrowing', titleClass: 'card-title-purple', subtitle: 'Refine A Union',
+    icon: '🏗️', title: 'Combine Them', titleClass: 'card-title-purple', subtitle: 'Plateaus & Steps',
     description:
-      'Inside a branch, TypeScript narrows a union to the exact type using typeof, instanceof or truthiness — so you safely access members that only one variant has.',
-    code: 'function len(x: string | string[]) {\n  if (typeof x === "string") return x.length;\n  return x.length; // x is string[] here\n}',
+      'Subtract one ReLU from another and you get a plateau; scale them and you set the height. A couple of neurons already build a step, a ramp, or a bump.',
+    code: '// ReLU(x-10) - ReLU(x-30) → a ramp then plateau\n// 3·ReLU(x-2) - 3·ReLU(x-3) → a sharp step of height 3',
   },
 ];
 
-const ADVANCED = [
+const APPROX = [
   {
-    icon: '🛂', title: 'Type Guards', titleClass: 'card-title-cyan', subtitle: 'Custom Narrowing',
+    icon: '🧩', title: 'Add Up The Pieces', titleClass: 'card-title-cyan', subtitle: 'Sum Of ReLUs',
     description:
-      'A predicate function typed as "x is Cat" teaches the compiler to narrow your own shapes. Combined with a discriminant field, a switch handles each variant safely.',
-    code: 'type Shape =\n  | { kind: "circle"; r: number }\n  | { kind: "square"; s: number };\n// switch (shape.kind) narrows each case',
+      'A layer of ReLU neurons is just a sum of many scaled, shifted hinges. Line up their bends and the total output can follow almost any wiggly shape.',
+    code: '// output = Σ  wᵢ · ReLU(x - kᵢ)\n// many hinges → an arbitrary piecewise curve',
   },
   {
-    icon: '🧰', title: 'Utility Types', titleClass: 'card-title-purple', subtitle: 'Reshape Types',
+    icon: '🌀', title: 'Approximate Anything', titleClass: 'card-title-purple', subtitle: 'Even y = x²',
     description:
-      'Built-in helpers transform existing types: Partial makes fields optional, Pick/Omit select fields, Record builds a map. You describe change, not a whole new type.',
-    code: 'type User = { id: number; name: string; email: string };\ntype Draft = Partial<User>;      // all optional\ntype Public = Omit<User, "email">;',
+      'Give it enough neurons and the sum of hinges hugs a smooth curve like y=x² — more neurons, closer fit. That is the universal approximation theorem in one picture.',
+    code: '// 1 → 1, 2 → 4, 3 → 9, ...  (y = x²)\n// enough ReLU hinges trace it as closely as you want',
   },
   {
-    icon: '🔑', title: 'keyof & never', titleClass: 'card-title-amber', subtitle: 'Derive & Guard',
+    icon: '💡', title: 'So That’s The Magic', titleClass: 'card-title-amber', subtitle: 'Demystified',
     description:
-      'keyof lifts a type’s keys into a union, typeof lifts a value into a type, and assigning to never in a switch’s default makes missed cases a compile error.',
-    code: 'type Keys = keyof User; // "id" | "name" | "email"\n// default: const _x: never = shape;\n// → error if a case is unhandled',
+      'A neural network is a huge sum of bends whose positions and heights are learned by gradient descent. Not mysterious — just a very flexible function fit to data.',
+    footer: 'weighted sums + ReLU bends + training = any function',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Narrowing', titleClass: 'card-title-cyan', subtitle: 'Handbook',
+    icon: '💻', title: 'Lecture 30', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'How TypeScript narrows unions — typeof, instanceof, truthiness, equality, custom type guards and discriminated unions, all with examples.',
-    link: { href: TS_NARROWING, label: 'Open the Narrowing docs →', external: true },
+      'The universal-approximation notebook in the STRIKE GenAI repo — building curves from combinations of ReLU neurons.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 30 →', external: true },
   },
   {
-    icon: '🧰', title: 'Utility Types', titleClass: 'card-title-purple', subtitle: 'Reference',
+    icon: '🧠', title: 'From Neuron To LLM', titleClass: 'card-title-purple', subtitle: 'It All Connects',
     description:
-      'The full list of built-in utility types — Partial, Required, Readonly, Pick, Omit, Record, ReturnType and more — with what each one does.',
-    link: { href: TS_UTILITY, label: 'Open Utility Types →', external: true },
+      'Weighted sums (Day 27), training (Day 28), non-linearity (Day 29), universal approximation (Day 30) — the foundations under every model, including the LLMs I build with.',
+    link: { href: '/genai', label: 'Open the GenAI track →' },
   },
   {
-    icon: '🔜', title: 'Next: Generics', titleClass: 'card-title-amber', subtitle: 'Day 47 Preview',
+    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
     description:
-      'Tomorrow — generics and type assertions: reusable typed functions and containers, plus as, satisfies and the non-null assertion.',
-    link: { href: '/day-047', label: 'Go to Day 47 →' },
+      'The full Coder Army course code — the journey continues past here toward more advanced GenAI topics.',
+    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
   },
 ];
 
@@ -134,39 +133,38 @@ export default function Day046() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-045" className="day001-nav-btn day001-nav-prev">← Day 45</Link>
-          <p className="day001-datetime">TypeScript Day 46</p>
-          <Link to="/day-047" className="day001-nav-btn day001-nav-next">Day 47 →</Link>
+          <Link to="/day-045" className="day001-nav-btn day001-nav-prev">← Prereq 29</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 30</p>
+          <Link to="/day-047" className="day001-nav-btn day001-nav-next">Prereq 31 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Advanced Types</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 30</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 46 <span aria-hidden="true">🔎</span></h1>
-              <p className="day001-day-theme">ADVANCED TYPES &amp; NARROWING</p>
+              <h1 className="day001-day-num">PREREQ 30 <span aria-hidden="true">🌀</span></h1>
+              <p className="day001-day-theme">UNIVERSAL APPROXIMATION — ANY CURVE FROM RELUs</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '46%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '30%' }} /></div>
 
         <p className="day001-summary">
-          Where TypeScript gets expressive. A <strong>union</strong> (<code>A | B</code>) is "one of these"; an{' '}
-          <strong>intersection</strong> (<code>A &amp; B</code>) is "all at once". <strong>Narrowing</strong> —{' '}
-          <code>typeof</code>, <code>instanceof</code>, truthiness — refines a union inside a branch, and a{' '}
-          <strong>type guard</strong> (<code>x is Cat</code>) or a <strong>discriminated union</strong> (a shared{' '}
-          <code>kind</code> field) narrows your own shapes in a <code>switch</code>. The <strong>utility types</strong>{' '}
-          — <code>Partial</code>, <code>Pick</code>, <code>Omit</code>, <code>Record</code> — reshape existing types
-          instead of rewriting them, while <code>keyof</code> and <code>never</code> let you derive types and catch
-          unhandled cases. <em>Next: generics.</em>
+          Lecture 30 — the payoff. Each <strong>ReLU neuron</strong> is one <strong>bend</strong>; combine them and
+          magic happens. <code>ReLU(x−10) − ReLU(x−30)</code> makes a <strong>plateau</strong>, scaling sets the
+          height, and <strong>summing many</strong> shifted, scaled ReLUs builds any shape — even tracing{' '}
+          <code>y=x²</code> as closely as you want. That is the <strong>universal approximation theorem</strong>: a
+          wide enough network can approximate <strong>any</strong> continuous function. Deep learning isn’t magic —
+          it’s millions of tiny bends, tuned by gradient descent, fitting the data.{' '}
+          <em>Thirty days in — the foundations are solid. (From the lecture notebook.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -181,12 +179,12 @@ export default function Day046() {
           </ul>
         </section>
 
-        <CardSection icon="➕" title="UNIONS & NARROWING" cards={COMBINE} columns={2} />
-        <CardSection icon="🧰" title="GUARDS & UTILITIES" cards={ADVANCED} columns={3} />
+        <CardSection icon="📐" title="ONE NEURON, ONE BEND" cards={BENDS} columns={2} />
+        <CardSection icon="🌀" title="APPROXIMATE ANYTHING" cards={APPROX} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Narrowing</span><span>#UtilityTypes</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#DeepLearning</span><span>#NeuralNetworks</span><span>#FirstPrinciples</span>
         </footer>
       </div>
     </div>

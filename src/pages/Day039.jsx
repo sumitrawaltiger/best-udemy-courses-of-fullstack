@@ -2,73 +2,94 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture41';
+const GH_DESIGN = 'https://github.com/Rohitnegi9/STRIKEGenAI/blob/main/Lecture23/ai-dev-team-design-v2.md';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture23';
 
 const LEARNT_TODAY = [
-  { title: 'Static embeddings aren’t enough', text: '"bank" has one fixed vector, but "river bank" and "money bank" mean different things' },
-  { title: 'Attention adds context', text: 'each token looks at the others and pulls in meaning, so its vector becomes context-aware' },
-  { title: 'Query, Key, Value', text: 'from each token’s embedding we make three vectors — a Query, a Key and a Value' },
-  { title: 'The library analogy', text: 'Query = what I’m looking for, Key = a book’s title/index, Value = the book’s actual content' },
-  { title: 'Score = Query · Key', text: 'a token’s Query dot-products with every Key to score how relevant each other token is' },
-  { title: 'Softmax the scores', text: 'turn the scores into attention weights that sum to 1 — how much to listen to each token' },
-  { title: 'Blend the Values', text: 'the new vector is the weighted sum of Values — mostly the tokens that scored high' },
-  { title: 'This is the Transformer', text: '“Attention Is All You Need” — self-attention is the core of every modern LLM' },
+  { title: 'Design before code', text: 'a full V2 design document lays out the whole system — 8 agents and a 30-node LangGraph flow' },
+  { title: 'The tech stack', text: 'LangGraph (JS) + Gemini + Pinecone (memory) + Docker (sandbox) + Redis (checkpoints) + Git (rollback)' },
+  { title: 'Fixed app stack', text: 'every project is React + Express + PostgreSQL/MongoDB, which keeps agent prompts focused' },
+  { title: 'Architect in 5 steps', text: 'entities → DB schema → API endpoints → frontend pages → folder structure & package.json' },
+  { title: 'Blueprint validation', text: 'a blueprintValidator cross-checks the design before any code is written — no orphan APIs or bad FKs' },
+  { title: 'V2 fixes 10 loopholes', text: 'state persistence, rollback, pattern consistency, token budgets, scope-drift limits, sandbox health, and more' },
+  { title: 'State is the contract', text: 'the whole 30-node flow communicates through one carefully designed shared state' },
 ];
 
-const PROBLEM = [
+const SYSTEM = [
   {
-    icon: '🏦', title: 'The "Bank" Problem', titleClass: 'card-title-cyan', subtitle: 'One Word, Many Meanings',
+    icon: '📐', title: 'The System', titleClass: 'card-title-cyan', subtitle: '8 Agents · 30 Nodes',
     description:
-      'A plain embedding gives "bank" a single vector. But "withdraw money from the bank" and "sat on the river bank" need different meanings. Context has to reshape the vector.',
-    code: '// "withdraw money from the bank" → finance\n// "sat on the river bank"        → nature\n// same token, different meaning',
+      'An autonomous team that understands a requirement, plans it, writes and debugs code, tests it, takes feedback, iterates and deploys — modelled as a 30-node LangGraph flow.',
+    code: '// 8 agents: PM, Architect, Planner, Coder,\n//           Reviewer, Executor, Debugger, Deploy\n// orchestrated as a 30-node LangGraph',
   },
   {
-    icon: '👀', title: 'Look At The Neighbours', titleClass: 'card-title-purple', subtitle: 'Context-Aware',
+    icon: '🧰', title: 'The Tech Stack', titleClass: 'card-title-purple', subtitle: 'Production Pieces',
     description:
-      'Self-attention lets each token scan the whole sentence and absorb the relevant words. "bank" pulls from "money" or "river" and its vector shifts toward the right sense.',
-    code: '// "bank" attends to "money" → finance sense\n// "bank" attends to "river" → nature sense\n// vector updated in context',
+      'LangGraph orchestrates; Gemini is the LLM; Pinecone is long-term memory; Docker sandboxes code execution; Redis checkpoints state; Git enables rollback.',
+    code: '// LangGraph · Gemini · Pinecone\n// Docker (sandbox) · Redis (checkpoints) · Git (rollback)\n// app: React + Express + PostgreSQL/MongoDB',
   },
 ];
 
-const QKV = [
+const FLOW = [
   {
-    icon: '📚', title: 'Query · Key · Value', titleClass: 'card-title-cyan', subtitle: 'The Library',
+    icon: '📋', title: 'PM → Spec', titleClass: 'card-title-cyan', subtitle: 'Remove Ambiguity',
     description:
-      'From each embedding we derive three vectors. Query = what this token is looking for; Key = what each token advertises; Value = the content it contributes. Like searching a library.',
-    code: '// Query = "I need finance context"\n// Key   = "I am about money"   (title)\n// Value = the actual content to blend in',
+      'The flow starts with the PM agent: it reads the requirement, asks clarifying questions (via humanInput), and produces a precise spec everything else builds on.',
+    code: '// pmAgent → { status: "needs_clarification", questions }\n//         or { status: "spec_ready", spec }',
   },
   {
-    icon: '🎯', title: 'Score, Then Softmax', titleClass: 'card-title-purple', subtitle: 'Q · Kᵀ → weights',
+    icon: '🏛️', title: 'Architect · 5 Steps', titleClass: 'card-title-purple', subtitle: 'Blueprint',
     description:
-      'Dot-product a token’s Query with every Key to score relevance, then softmax those scores into attention weights that sum to 1 — how much attention to pay to each token.',
-    code: '// score_j = Query · Key_j\n// weights = softmax(scores)  (sum to 1)\n// high score = pay more attention',
+      'The Architect designs in five passes — entities and relationships, DB schema, API endpoints, frontend pages, then the folder structure and pinned dependencies.',
+    code: '// step1 entities → step2 DB schema → step3 APIs\n// → step4 pages → step5 folders + package.json\n// = one complete blueprint',
   },
   {
-    icon: '🧪', title: 'Blend The Values', titleClass: 'card-title-amber', subtitle: 'Weighted Sum',
+    icon: '✅', title: 'Validate The Blueprint', titleClass: 'card-title-amber', subtitle: 'Before Any Code',
     description:
-      'The token’s new vector is the weighted sum of all Values, dominated by the tokens it scored highest. That’s a fresh, context-aware embedding — repeated across every token and layer.',
-    code: '// new_vector = Σ weight_j · Value_j\n// mostly the high-attention tokens\n// → contextual embedding',
+      'blueprintValidator cross-checks the design: every API maps to a DB path, every page calls a real API, every foreign key references a real table, every spec entity is covered.',
+    code: '// no orphan endpoints · valid foreign keys\n// every page → real API · full spec coverage\n// catch design bugs before writing code',
+  },
+];
+
+const V2 = [
+  {
+    icon: '💾', title: 'Survives Crashes', titleClass: 'card-title-cyan', subtitle: 'Checkpointing',
+    description:
+      'Every node checkpoints its state to Redis, so a crash resumes instead of losing everything. Combined with Git auto-commits, the team can also roll back bad code.',
+    code: '// checkpoint after every node → resume on crash\n// git commit after every task → rollback on failure',
+  },
+  {
+    icon: '🧮', title: 'Token Budgets', titleClass: 'card-title-purple', subtitle: 'No Token Bombs',
+    description:
+      'State selectors per agent and a registry compactor stop the shared state (and the token bill) from growing without bound. A token tracker enforces budget limits.',
+    code: '// per-agent state selectors · stateCompactor\n// tokenTracker with budget limits',
+  },
+  {
+    icon: '🛟', title: 'Scope & Safety', titleClass: 'card-title-amber', subtitle: '10 Loopholes Fixed',
+    description:
+      'V2 adds iteration limits with scope-drift detection, sandbox health checks, parallel independent tasks, and escalation instead of blindly force-approving rejected code.',
+    footer: '22 → 30 nodes · robustness over cleverness',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 41', titleClass: 'card-title-cyan', subtitle: 'Self-Attention',
+    icon: '📄', title: 'The Design Doc', titleClass: 'card-title-cyan', subtitle: 'V2 Markdown',
     description:
-      'The self-attention material in the STRIKE GenAI repo — Query/Key/Value, scoring, softmax and blending values into context-aware vectors.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 41 →', external: true },
+      'The complete system design (V2) — agents, the 30-node flow, the state shape, and every loophole fix — read it in full in the repo.',
+    link: { href: GH_DESIGN, label: 'Open the design doc →', external: true },
   },
   {
-    icon: '🧠', title: 'Attention Is All You Need', titleClass: 'card-title-purple', subtitle: 'The Transformer',
+    icon: '💻', title: 'Lecture 23', titleClass: 'card-title-purple', subtitle: 'GitHub',
     description:
-      'This mechanism, stacked many times, is the Transformer — the architecture behind GPT and every modern LLM. It’s how models understand context at all.',
-    footer: 'Q·K → softmax → weighted Values → context',
+      'The design lecture folder in the STRIKE GenAI repo — the plan for the AI Dev Team built over the next lectures.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 23 →', external: true },
   },
   {
-    icon: '🏁', title: 'Gen AI Phase Complete', titleClass: 'card-title-amber', subtitle: '39 Days · Day 40 → TypeScript',
+    icon: '🔜', title: 'Next: Build The Planners', titleClass: 'card-title-amber', subtitle: 'Prereq 24 Preview',
     description:
-      'Day 39 closes the 39-day Generative & Agentic AI phase — from token prediction and LLMs to embeddings, RAG, LangChain/LangGraph agents, neural nets and the Transformer. From Day 40 the 4-year coding journey begins with the TypeScript stack.',
-    link: { href: '/day-040', label: 'Start TypeScript → Day 40' },
+      'Tomorrow the build starts — Lecture 24: the LangGraph state, the PM/Architect/Planner agents, the blueprint validator, and the Docker sandbox.',
+    link: { href: '/day-040', label: 'Go to Prereq 24 →' },
   },
 ];
 
@@ -133,39 +154,38 @@ export default function Day039() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-038" className="day001-nav-btn day001-nav-prev">← Day 38</Link>
-          <p className="day001-datetime">Agentic AI Day 39</p>
-          <Link to="/day-040" className="day001-nav-btn day001-nav-next">Day 40 →</Link>
+          <Link to="/day-038" className="day001-nav-btn day001-nav-prev">← Prereq 22</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 23</p>
+          <Link to="/day-040" className="day001-nav-btn day001-nav-next">Prereq 24 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 41</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 23</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 39 <span aria-hidden="true">👀</span></h1>
-              <p className="day001-day-theme">SELF-ATTENTION — QUERY, KEY &amp; VALUE</p>
+              <h1 className="day001-day-num">PREREQ 23 <span aria-hidden="true">📐</span></h1>
+              <p className="day001-day-theme">AI DEV TEAM — SYSTEM DESIGN</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '39%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '23%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 41 — a plain embedding gives <strong>"bank"</strong> one fixed vector, but{' '}
-          <em>river bank</em> and <em>money bank</em> differ. <strong>Self-attention</strong> lets each token look at
-          the others and become <strong>context-aware</strong>. From every embedding we build three vectors —{' '}
-          <strong>Query, Key, Value</strong> (like a library: Query = what I want, Key = the title, Value = the
-          content). A token’s <strong>Query · Key</strong> scores every other token; <strong>softmax</strong> turns
-          those into attention weights that sum to 1; the new vector is the <strong>weighted sum of Values</strong>.
-          Stack this many times and you have the <strong>Transformer</strong>.{' '}
-          <em>“Attention Is All You Need.”</em>
+          Lecture 23 — the <strong>system design</strong> (V2). Before a line of code, the whole thing is designed:{' '}
+          <strong>8 agents</strong> orchestrated as a <strong>30-node LangGraph</strong> flow, on a stack of{' '}
+          <strong>Gemini + Pinecone + Docker + Redis + Git</strong>, always building{' '}
+          <strong>React + Express + PostgreSQL/MongoDB</strong>. The <strong>Architect</strong> designs in five steps,
+          a <strong>blueprintValidator</strong> cross-checks it, and <strong>V2 fixes 10 loopholes</strong> —
+          checkpointing, rollback, pattern consistency, token budgets, scope-drift limits and more.{' '}
+          <em>Robustness first. (Design-doc lecture — read it in the repo.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +200,13 @@ export default function Day039() {
           </ul>
         </section>
 
-        <CardSection icon="🏦" title="THE CONTEXT PROBLEM" cards={PROBLEM} columns={2} />
-        <CardSection icon="📚" title="QUERY · KEY · VALUE" cards={QKV} columns={3} />
+        <CardSection icon="📐" title="THE SYSTEM & STACK" cards={SYSTEM} columns={2} />
+        <CardSection icon="📋" title="THE PLANNING FLOW" cards={FLOW} columns={3} />
+        <CardSection icon="🛟" title="V2 — BUILT TO SURVIVE" cards={V2} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Attention</span><span>#Transformer</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AIDevTeam</span><span>#LangGraph</span><span>#SystemDesign</span>
         </footer>
       </div>
     </div>

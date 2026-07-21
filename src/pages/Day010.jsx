@@ -2,79 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture10';
-const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
+const TS_MODULES = 'https://www.typescriptlang.org/docs/handbook/2/modules.html';
+const TYPESCRIPT_ESLINT = 'https://typescript-eslint.io/';
 
 const LEARNT_TODAY = [
-  { title: 'Regular DBs fall short', text: 'SQL and NoSQL are built for exact matches and filters, not for "find the nearest vectors" at scale' },
-  { title: 'What a vector DB is', text: 'a database purpose-built to store embeddings and query them by similarity, fast' },
-  { title: 'Store vector + metadata', text: 'each record holds the embedding plus the original text and any metadata to return with it' },
-  { title: 'ANN indexes', text: 'Approximate Nearest Neighbour indexes make similarity search fast, trading a little accuracy for big speed' },
-  { title: 'The options', text: 'Pinecone, Qdrant, Chroma and PGVector are common choices in the JavaScript ecosystem' },
-  { title: 'The pipeline', text: 'embed your documents once, upsert them into the DB, then query with an embedded question for top-K matches' },
-  { title: 'This completes retrieval', text: 'a vector DB is the storage layer that makes production RAG possible — next comes RAG itself' },
+  { title: 'ES modules', text: 'each file is a module; export what others need, import what you use' },
+  { title: 'Named vs default exports', text: 'named exports for many symbols, a single default for the main one — prefer named for refactors' },
+  { title: 'Type-only imports', text: 'import type { User } makes it explicit that an import is erased at compile time' },
+  { title: 'Path aliases', text: 'tsconfig paths turn ../../utils into @/utils for clean, stable imports' },
+  { title: '.d.ts declaration files', text: 'ambient type files describe JS libraries so TypeScript understands them' },
+  { title: 'ESLint', text: 'typescript-eslint catches bug-prone patterns beyond what the compiler checks' },
+  { title: 'Prettier', text: 'an opinionated formatter — stop arguing about style, format on save' },
+  { title: 'tsx / ts-node', text: 'run .ts files directly in dev without a separate build step' },
 ];
 
-const WHY = [
+const MODULES = [
   {
-    icon: '🗄️', title: 'Why Not A Normal DB?', titleClass: 'card-title-cyan', subtitle: 'Wrong Tool',
+    icon: '📦', title: 'import / export', titleClass: 'card-title-cyan', subtitle: 'ES Modules',
     description:
-      'A normal database finds rows by exact value or range. It has no efficient way to answer "which of these million vectors point in a similar direction to this one?" — that is a different problem.',
-    code: '// SQL: WHERE city = "Delhi"        ✅ exact match\n// SQL: nearest vector to [0.2, ...]  ❌ not built for it',
+      'Every file is a module. Export the symbols others need and import the ones you use. Prefer named exports — they rename safely and autocomplete better than a default.',
+    code: '// math.ts\nexport const add = (a: number, b: number) => a + b;\nexport default class Calc {}\n\n// app.ts\nimport Calc, { add } from "./math";',
   },
   {
-    icon: '📦', title: 'A Vector Database', titleClass: 'card-title-purple', subtitle: 'Built For Similarity',
+    icon: '🏷️', title: 'Type-Only Imports', titleClass: 'card-title-purple', subtitle: 'Erased At Build',
     description:
-      'A vector DB stores each embedding alongside its source text and metadata, and indexes the vectors so it can return the closest matches to a query vector in milliseconds.',
-    code: '// record = { vector: [...], text: "...", metadata: {...} }\n// query(vector, k) → the k most similar records',
-  },
-  {
-    icon: '⚡', title: 'ANN Indexes', titleClass: 'card-title-amber', subtitle: 'Fast At Scale',
-    description:
-      'Exact nearest-neighbour search over millions of vectors is slow. Approximate Nearest Neighbour indexes (like HNSW) give near-perfect results far faster — the trick behind real-time search.',
-    code: '// exact search: check every vector → slow\n// ANN (HNSW): smart index → fast, ~as accurate',
+      'import type makes it explicit that you’re importing only a type — it’s stripped from the output and never causes a runtime dependency. Path aliases keep imports short and stable.',
+    code: 'import type { User } from "./types";\nimport { getUser } from "@/lib/user"; // path alias\n// "@/*" mapped in tsconfig "paths"',
   },
 ];
 
-const USE = [
+const TOOLING = [
   {
-    icon: '🧰', title: 'The Options', titleClass: 'card-title-cyan', subtitle: 'JS Ecosystem',
+    icon: '🧹', title: 'ESLint', titleClass: 'card-title-cyan', subtitle: 'Catch Bad Patterns',
     description:
-      'Popular choices: Pinecone (managed), Qdrant and Chroma (open source), and PGVector (a Postgres extension). All expose the same idea — upsert vectors, then query by similarity.',
-    code: '// Pinecone · Qdrant · Chroma · PGVector\n// same mental model: upsert(vectors) → query(vector, topK)',
+      'typescript-eslint adds type-aware lint rules on top of the compiler — no-floating-promises, no-explicit-any and more. It flags mistakes tsc alone won’t.',
+    code: '# setup\nnpm i -D eslint typescript-eslint\n// eslint.config.js → recommended rules\n// then: npx eslint src',
   },
   {
-    icon: '⬆️', title: 'Ingest & Query', titleClass: 'card-title-purple', subtitle: 'The Pipeline',
+    icon: '💅', title: 'Prettier', titleClass: 'card-title-purple', subtitle: 'Format On Save',
     description:
-      'Embed each document once and upsert it. At query time, embed the question and ask the DB for the top-K nearest records — the retrieval you built by hand yesterday, now at scale.',
-    code: '// ingest (once)\nawait index.upsert(docs.map(d => ({ id: d.id, values: embed(d.text), metadata: { text: d.text } })));\n// query\nconst { matches } = await index.query({ vector: embed(question), topK: 3 });',
+      'Prettier reformats code to one consistent style automatically. Wire it to format on save and code reviews stop being about spacing and quotes.',
+    code: '# setup\nnpm i -D prettier\n// .prettierrc → { "singleQuote": true }\n// format on save in your editor',
   },
   {
-    icon: '🔗', title: 'Retrieval, Solved', titleClass: 'card-title-amber', subtitle: 'Ready For RAG',
+    icon: '⚡', title: 'Run With tsx', titleClass: 'card-title-amber', subtitle: 'No Build Step',
     description:
-      'Embeddings, semantic search, and now a vector DB together form a complete retrieval system. The final piece is feeding those retrieved chunks to the model — that is RAG.',
-    footer: 'embed → store → retrieve → (next) generate = RAG',
+      'In development, tsx (or ts-node) executes TypeScript directly, so you skip a manual compile while iterating. Build to JS with tsc for production.',
+    code: '# dev — run TS directly\nnpx tsx watch src/index.ts\n\n# prod — compile then run\nnpx tsc && node dist/index.js',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 10', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'Modules', titleClass: 'card-title-cyan', subtitle: 'Handbook',
     description:
-      'The vector databases lecture and diagram in the STRIKE GenAI repo — the storage layer for retrieval.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 10 →', external: true },
+      'The TypeScript modules chapter — export/import forms, type-only imports, module resolution and declaration files, with examples.',
+    link: { href: TS_MODULES, label: 'Open the Modules docs →', external: true },
   },
   {
-    icon: '🧠', title: 'RAG Comes Next', titleClass: 'card-title-purple', subtitle: 'Lecture 12',
+    icon: '🧹', title: 'typescript-eslint', titleClass: 'card-title-purple', subtitle: 'Linting',
     description:
-      'With retrieval complete, the course builds a full RAG System (Lecture 12): retrieve relevant chunks, then have the model answer using them. Explore the site’s GenAI track for the same path.',
-    link: { href: '/genai', label: 'Open the GenAI track →' },
+      'The official ESLint tooling for TypeScript — setup, recommended configs, and the type-aware rules that catch real bugs.',
+    link: { href: TYPESCRIPT_ESLINT, label: 'Open typescript-eslint →', external: true },
   },
   {
-    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
+    icon: '🔜', title: 'Next: Async TypeScript', titleClass: 'card-title-amber', subtitle: 'Day 11 Preview',
     description:
-      'The complete Coder Army course code — every lecture from here through RAG, multi-agent systems, LangGraph and the final projects.',
-    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
+      'Tomorrow — typing asynchronous code: Promise<T>, async/await, typed fetch and handling errors safely with unknown in catch.',
+    link: { href: '/day-011', label: 'Go to Day 11 →' },
   },
 ];
 
@@ -140,23 +135,23 @@ export default function Day010() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-009" className="day001-nav-btn day001-nav-prev">← Day 9</Link>
-          <p className="day001-datetime">Agentic AI Day 10</p>
+          <p className="day001-datetime">TypeScript Day 10</p>
           <Link to="/day-011" className="day001-nav-btn day001-nav-next">Day 11 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 10</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Modules &amp; Tooling</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 10 <span aria-hidden="true">🗄️</span></h1>
-              <p className="day001-day-theme">VECTOR DATABASES — RETRIEVAL AT SCALE</p>
+              <h1 className="day001-day-num">DAY 10 <span aria-hidden="true">📦</span></h1>
+              <p className="day001-day-theme">MODULES &amp; TOOLING</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -164,13 +159,12 @@ export default function Day010() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '10%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 10 — <strong>vector databases</strong>. Regular SQL/NoSQL databases are built for exact matches,
-          not for "find the nearest vectors", so yesterday’s in-memory search does not scale. A{' '}
-          <strong>vector DB</strong> stores each <strong>embedding</strong> with its text and metadata and uses{' '}
-          <strong>ANN indexes</strong> (like HNSW) to return the closest matches in milliseconds. The workflow:{' '}
-          <strong>embed once, upsert, then query</strong> with an embedded question — using{' '}
-          <strong>Pinecone, Qdrant, Chroma</strong> or <strong>PGVector</strong>. That completes retrieval; the last
-          piece is generation. <em>Next stop: RAG.</em>
+          Real projects need structure and tooling. Every file is an <strong>ES module</strong>: prefer{' '}
+          <strong>named exports</strong> (they refactor cleanly), use <code>import type</code> for types that should be{' '}
+          <strong>erased</strong> at build, and set <strong>path aliases</strong> (<code>@/utils</code>) in tsconfig.
+          On the tooling side, <strong>ESLint</strong> (typescript-eslint) catches bug-prone patterns the compiler
+          misses, <strong>Prettier</strong> formats on save so reviews aren’t about spacing, and <strong>tsx</strong>{' '}
+          runs <code>.ts</code> directly in dev while <code>tsc</code> builds for production. <em>Next: async code.</em>
         </p>
 
         <section className="day001-learnt">
@@ -185,12 +179,12 @@ export default function Day010() {
           </ul>
         </section>
 
-        <CardSection icon="🗄️" title="WHY A VECTOR DATABASE" cards={WHY} columns={3} />
-        <CardSection icon="🔗" title="USING ONE" cards={USE} columns={3} />
+        <CardSection icon="📦" title="ES MODULES" cards={MODULES} columns={2} />
+        <CardSection icon="🧹" title="LINT · FORMAT · RUN" cards={TOOLING} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#VectorDB</span><span>#CoderArmy</span><span>#RAG</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#ESLint</span><span>#Prettier</span>
         </footer>
       </div>
     </div>

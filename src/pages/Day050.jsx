@@ -2,74 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const MDN_PROMISE = 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise';
-const TS_UNKNOWN_CATCH = 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-4.html#defaulting-to-the-unknown-type-in-catch-variables---useunknownincatchvariables';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture34';
 
 const LEARNT_TODAY = [
-  { title: 'Promise<T>', text: 'an async value carries a type — Promise<User> resolves to a User' },
-  { title: 'async / await', text: 'an async function always returns a Promise; await unwraps it to the value' },
-  { title: 'Typed fetch', text: 'fetch returns any JSON — annotate or validate the parsed result to regain safety' },
-  { title: 'Errors are unknown', text: 'in a catch, the error is unknown — narrow it before reading .message' },
-  { title: 'Parallel with Promise.all', text: 'run independent async calls together and get a typed tuple back' },
-  { title: 'Result vs throw', text: 'return a typed result object, or throw — pick one convention and keep it' },
-  { title: 'Await in loops', text: 'sequential await is slow; map to promises and Promise.all when order doesn’t matter' },
-  { title: 'Never lose the type', text: 'validate external data (Zod) so async boundaries stay type-safe end to end' },
+  { title: 'Beyond yes/no', text: 'predict which of many classes — Amazon, Google, TCS, Microsoft — a student is placed in' },
+  { title: 'One score per class', text: 'instead of a single output, the network produces a raw score for every possible class' },
+  { title: 'Scores aren’t probabilities', text: 'raw scores can be negative or huge; we need to turn them into a proper distribution' },
+  { title: 'Softmax', text: 'softmax(zᵢ) = e^zᵢ / Σ e^zⱼ — converts the scores into probabilities that sum to 1' },
+  { title: 'Why exp', text: 'e^z makes every value positive and amplifies differences; dividing by the sum normalises to 1' },
+  { title: 'Read the result', text: 'a vector like [0.2, 0.3, 0.1, …] → "30% chance Microsoft"; the highest wins' },
+  { title: 'Handles extremes', text: 'even scores like [-100000, 10, 1000] come out as a clean [0, 0.49, 0.51]' },
+  { title: 'This is the LLM output', text: 'an LLM softmaxes over ~50,000 tokens to pick the next word — same idea, bigger scale' },
 ];
 
-const ASYNC = [
+const MANY = [
   {
-    icon: '⏳', title: 'Promise<T> & async', titleClass: 'card-title-cyan', subtitle: 'Typed Async',
+    icon: '🏢', title: 'Many Classes', titleClass: 'card-title-cyan', subtitle: 'One Output Each',
     description:
-      'A Promise carries the type it resolves to. An async function’s return is wrapped in a Promise automatically, and await unwraps it — the types line up on both sides.',
-    code: 'async function getUser(id: number): Promise<User> {\n  const res = await fetch(`/users/${id}`);\n  return res.json();\n}\nconst u: User = await getUser(1);',
+      'For a multi-way choice, the network ends in one neuron per class. Each produces a raw score saying how strongly the input matches that class.',
+    code: '// classes: Amazon, Google, TCS, Microsoft, ...\n// scores:  [ 2.0, 3.0, 1.0, 0.15, ... ]\n// higher score = stronger match (but not a probability yet)',
   },
   {
-    icon: '🌐', title: 'Typing fetch', titleClass: 'card-title-purple', subtitle: 'JSON Is any',
+    icon: '⚠️', title: 'Scores ≠ Probabilities', titleClass: 'card-title-purple', subtitle: 'Need Normalising',
     description:
-      'res.json() returns any, quietly re-opening a hole. Annotate the result, or better, validate it with a schema so bad API data is caught at the boundary, not deep in your code.',
-    code: 'const data = await res.json() as User; // trusts blindly\n// safer:\nconst data = UserSchema.parse(await res.json());',
+      'Raw scores can be negative or enormous and don’t add up to anything meaningful. To say "30% chance Microsoft" they must become a distribution that sums to 1.',
+    code: '// [ -7, 4, 2, 3 ]  ← raw, not usable as probabilities\n// want → [ 0.0, 0.55, 0.15, 0.30 ]  (sums to 1)',
   },
 ];
 
-const CONTROL = [
+const SOFTMAX = [
   {
-    icon: '⚠️', title: 'Errors Are unknown', titleClass: 'card-title-cyan', subtitle: 'Narrow Before Use',
+    icon: '🔢', title: 'Softmax', titleClass: 'card-title-cyan', subtitle: 'e^z / Σ e^z',
     description:
-      'With modern settings, a caught error is typed unknown — because anything can be thrown. Check it’s an Error before reading .message, keeping error handling honest.',
-    code: 'try { await risky(); }\ncatch (e) {\n  if (e instanceof Error) console.log(e.message);\n  else console.log("unknown error");\n}',
+      'Exponentiate every score, then divide by the total. The exponent makes everything positive and stretches the gaps; the division normalises to a clean probability distribution.',
+    code: '// for each class i:\n// p_i = e^(z_i) / Σ_j e^(z_j)\n// result: all positive, all sum to 1',
   },
   {
-    icon: '🔀', title: 'Run In Parallel', titleClass: 'card-title-purple', subtitle: 'Promise.all',
+    icon: '🏆', title: 'Read The Winner', titleClass: 'card-title-purple', subtitle: 'Highest Probability',
     description:
-      'When async calls don’t depend on each other, fire them together with Promise.all and get a fully typed tuple back — far faster than awaiting one at a time.',
-    code: 'const [user, posts] = await Promise.all([\n  getUser(1),\n  getPosts(1),\n]); // types preserved per position',
+      'The output is a probability per class. The largest is the prediction — and you also get the model’s confidence in every alternative.',
+    code: '// softmax → [0.2, 0.3, 0.1, 0.15, 0.05, 0.20]\n// max is 0.30 → "30% chance Microsoft"',
   },
   {
-    icon: '📦', title: 'Result Or Throw', titleClass: 'card-title-amber', subtitle: 'One Convention',
+    icon: '🛡️', title: 'Stable On Extremes', titleClass: 'card-title-amber', subtitle: 'Big Or Tiny',
     description:
-      'Either throw on failure and catch upstream, or return a typed result union ({ ok } | { error }). Both are fine — the key is picking one and applying it consistently.',
-    code: 'type Result<T> =\n  | { ok: true; value: T }\n  | { ok: false; error: string };',
+      'Softmax gracefully handles wildly different scores. A huge gap becomes near-certainty, and even crazy inputs normalise into a sensible split.',
+    code: '// [ -100000, 10, 1000 ]  →  [ 0.0, 0.49, 0.51 ]\n// the tiny score is squeezed out, not broken',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📗', title: 'Promises (MDN)', titleClass: 'card-title-cyan', subtitle: 'The Model',
+    icon: '💻', title: 'Lecture 34', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The core Promise semantics TypeScript types — then/catch, chaining, Promise.all/allSettled and how async/await maps onto them.',
-    link: { href: MDN_PROMISE, label: 'Open MDN Promise →', external: true },
+      'The multi-class / softmax notebook in the STRIKE GenAI repo — turning many scores into a probability distribution.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 34 →', external: true },
   },
   {
-    icon: '⚠️', title: 'unknown In catch', titleClass: 'card-title-purple', subtitle: 'Handbook',
+    icon: '🧠', title: 'Softmax Is Everywhere', titleClass: 'card-title-purple', subtitle: 'The Final Layer',
     description:
-      'Why catch variables default to unknown and how useUnknownInCatchVariables makes error handling safer — the exact rationale.',
-    link: { href: TS_UNKNOWN_CATCH, label: 'Open the release note →', external: true },
+      'Every classifier that picks one of many options ends in softmax — including an LLM choosing the next token out of a huge vocabulary.',
+    footer: 'scores → e^z → normalise → distribution',
   },
   {
-    icon: '🔜', title: 'Next: React + TS', titleClass: 'card-title-amber', subtitle: 'Day 51 Preview',
+    icon: '🔜', title: 'Next: Build An LLM', titleClass: 'card-title-amber', subtitle: 'Prereq 35 Preview',
     description:
-      'Tomorrow — TypeScript meets React: a Vite + React + TS project, .tsx files, JSX, and typing your very first component.',
-    link: { href: '/day-051', label: 'Go to Day 51 →' },
+      'Tomorrow it all connects — Lecture 35: how to build an LLM. Next-token prediction, tokenization, a 50K-way softmax, and embeddings.',
+    link: { href: '/day-051', label: 'Go to Prereq 35 →' },
   },
 ];
 
@@ -134,38 +133,38 @@ export default function Day050() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-049" className="day001-nav-btn day001-nav-prev">← Day 49</Link>
-          <p className="day001-datetime">TypeScript Day 50</p>
-          <Link to="/day-051" className="day001-nav-btn day001-nav-next">Day 51 →</Link>
+          <Link to="/day-049" className="day001-nav-btn day001-nav-prev">← Prereq 33</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 34</p>
+          <Link to="/day-051" className="day001-nav-btn day001-nav-next">Prereq 35 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Async</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 34</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 50 <span aria-hidden="true">⏳</span></h1>
-              <p className="day001-day-theme">ASYNC TYPESCRIPT</p>
+              <h1 className="day001-day-num">PREREQ 34 <span aria-hidden="true">🔢</span></h1>
+              <p className="day001-day-theme">MULTI-CLASS CLASSIFICATION &amp; SOFTMAX</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '50%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '34%' }} /></div>
 
         <p className="day001-summary">
-          Halfway. Async code stays typed: a <strong>Promise&lt;T&gt;</strong> carries the value it resolves to, an{' '}
-          <strong>async</strong> function always returns one, and <strong>await</strong> unwraps it. Watch the
-          boundaries — <code>res.json()</code> returns <code>any</code>, so annotate or <strong>validate</strong> it;
-          and a caught error is <strong>unknown</strong>, so narrow with <code>instanceof Error</code> before reading{' '}
-          <code>.message</code>. Run independent calls together with <strong>Promise.all</strong> for a typed tuple,
-          and pick one failure convention — <em>throw</em> or a typed <em>result</em> union. <em>Next: React with
-          TypeScript.</em>
+          Lecture 34 — from yes/no to <strong>many classes</strong>: which company (Amazon, Google, TCS, Microsoft…)
+          will a student join? The network gives <strong>one raw score per class</strong>, but scores aren’t
+          probabilities. <strong>Softmax</strong> fixes that: <code>e^zᵢ / Σ e^zⱼ</code> makes every value positive,
+          amplifies the gaps, and normalises them to <strong>sum to 1</strong> — so <code>[0.2, 0.3, 0.1, …]</code>{' '}
+          reads as "30% chance Microsoft". It even tames extremes like <code>[-100000, 10, 1000] → [0, 0.49, 0.51]</code>.
+          This is exactly the <strong>output layer of an LLM</strong>, picking the next token from a huge vocabulary.{' '}
+          <em>Tomorrow it all comes together. (From the lecture notebook.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +179,12 @@ export default function Day050() {
           </ul>
         </section>
 
-        <CardSection icon="⏳" title="PROMISES & FETCH" cards={ASYNC} columns={2} />
-        <CardSection icon="🔀" title="ERRORS & PARALLELISM" cards={CONTROL} columns={3} />
+        <CardSection icon="🏢" title="MANY CLASSES" cards={MANY} columns={2} />
+        <CardSection icon="🔢" title="SOFTMAX" cards={SOFTMAX} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#async</span><span>#Promises</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Softmax</span><span>#Classification</span><span>#FirstPrinciples</span>
         </footer>
       </div>
     </div>

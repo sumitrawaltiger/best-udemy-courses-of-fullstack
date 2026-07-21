@@ -2,72 +2,79 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture22';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture06';
 
 const LEARNT_TODAY = [
-  { title: 'The vision', text: 'an autonomous AI software team (like Devin) that builds an app from a single requirement' },
-  { title: 'Eight specialized agents', text: 'PM, Architect, Planner, Coder, Reviewer, Executor, Debugger and Deploy — each owns one job' },
-  { title: 'The pipeline', text: 'understand → plan → code → review → run → debug → deploy, mostly on its own' },
-  { title: 'PM removes ambiguity', text: 'the PM agent clarifies the requirement into a precise spec before any design starts' },
-  { title: 'Architect designs', text: 'the Architect turns the spec into a blueprint — database, APIs, pages and folder structure' },
-  { title: 'Real execution', text: 'the Executor runs code in a Docker sandbox, and real errors feed the Debugger' },
-  { title: 'Human-in-the-loop', text: 'the team pauses for clarifying answers and approvals at key checkpoints' },
+  { title: 'From answering to acting', text: 'give the agent a tool that runs real terminal commands and it can change your machine, not just talk' },
+  { title: 'The executeCommand tool', text: 'child_process exec runs any shell command and returns stdout or stderr back to the model' },
+  { title: 'OS-aware prompting', text: 'pass os.platform() into the systemInstruction so the AI gives commands that fit your operating system' },
+  { title: 'The build loop', text: 'the AI issues one command, the tool runs it, the result feeds back, and it repeats until done' },
+  { title: 'functionCall + functionResponse', text: 'push both into the history so the model sees exactly what happened after each command' },
+  { title: 'It builds real apps', text: 'file by file the agent scaffolds a calculator and a leetcode-style UI with mkdir, touch and writes' },
+  { title: 'Power and danger', text: 'an AI running shell commands is powerful and risky — sandbox it and review what it runs' },
+  { title: 'A true agent', text: 'perceive the goal, plan a command, act, observe the output, loop — this is real agentic behaviour' },
 ];
 
-const VISION = [
+const ACTION = [
   {
-    icon: '🤖', title: 'Like Devin', titleClass: 'card-title-cyan', subtitle: 'Autonomous Dev Team',
+    icon: '🖐️', title: 'Give The AI Hands', titleClass: 'card-title-cyan', subtitle: 'From Words To Actions',
     description:
-      'The goal: hand the system a requirement and it plans, writes, reviews, runs, debugs and deploys the app — a full software team made of cooperating agents, with minimal human help.',
-    code: '// input:  "Build a task-manager app with auth"\n// output: a working, deployed app\n// in between: an AI team does the work',
+      'So far the model only produced text. Now we hand it a tool that runs terminal commands — so it can create folders, write files, and actually build software on your machine.',
+    code: '// yesterday: the model returned a functionCall\n// today: that call runs a real shell command\n//        → the AI can act on the world',
   },
   {
-    icon: '🎯', title: 'One Role Per Agent', titleClass: 'card-title-purple', subtitle: 'Focused Experts',
+    icon: '⚡', title: 'The Command Tool', titleClass: 'card-title-purple', subtitle: 'child_process exec',
     description:
-      'Each agent has a single responsibility and a tight prompt, mirroring a real dev team. That focus is what keeps the code quality high across a big project.',
-    code: '// PM · Architect · Planner · Coder\n// Reviewer · Executor · Debugger · Deploy',
+      'One function runs any shell command and returns the result. exec is promisified so the agent can await it and read stdout or stderr.',
+    code: 'import { exec } from "child_process";\nimport util from "util";\nconst run = util.promisify(exec);\n\nasync function executeCommand({ command }) {\n  try {\n    const { stdout, stderr } = await run(command);\n    return stderr ? `Error: ${stderr}` : `Success: ${stdout}`;\n  } catch (err) { return `Error: ${err}`; }\n}',
+  },
+  {
+    icon: '💻', title: 'OS-Aware Prompt', titleClass: 'card-title-amber', subtitle: 'os.platform()',
+    description:
+      'Commands differ across Windows, macOS and Linux. Inject os.platform() into the systemInstruction so the model issues commands that actually work on your system.',
+    code: 'import os from "os";\nconst systemInstruction = `You build websites using shell commands,\none at a time. Current OS: ${os.platform()} — match it.`;',
   },
 ];
 
-const AGENTS = [
+const TOOL = [
   {
-    icon: '📋', title: 'Plan The Work', titleClass: 'card-title-cyan', subtitle: 'PM → Architect → Planner',
+    icon: '📋', title: 'Declare The Tool', titleClass: 'card-title-cyan', subtitle: 'Any Command',
     description:
-      'The PM turns the requirement into a clear spec (asking questions if needed). The Architect designs the blueprint. The Planner breaks it into a phased, dependency-ordered task list.',
-    code: '// PM        → clarify → spec\n// Architect → DB, APIs, pages, folders\n// Planner   → ordered task plan',
+      'The declaration tells the model it can run any terminal command to create, read, write, update or delete files and folders — one primitive, endless power.',
+    code: 'const commandExecuter = {\n  name: "executeCommand",\n  description: "Run any shell command to create/read/write/delete files & folders",\n  parameters: {\n    type: Type.OBJECT,\n    properties: {\n      command: { type: Type.STRING, description: "e.g. mkdir calculator" },\n    },\n    required: ["command"],\n  },\n};',
   },
   {
-    icon: '⌨️', title: 'Build & Verify', titleClass: 'card-title-purple', subtitle: 'Coder → Reviewer → Executor',
+    icon: '♻️', title: 'The Agent Loop', titleClass: 'card-title-purple', subtitle: 'Act → Observe → Repeat',
     description:
-      'The Coder writes one task at a time, the Reviewer checks it for bugs and security, and the Executor actually runs it in a Docker sandbox to capture real output.',
-    code: '// Coder    → write one task\n// Reviewer → bugs, security, integration\n// Executor → run it for real (Docker)',
+      'The model returns a command; you run it and push both the functionCall and its functionResponse into history. When there is no more call, the task is done.',
+    code: 'while (true) {\n  const res = await ai.models.generateContent({ model, contents: History,\n    config: { systemInstruction, tools: [{ functionDeclarations: [commandExecuter] }] } });\n  const call = res.functionCalls?.[0];\n  if (!call) break;\n  const result = await executeCommand(call.args);\n  History.push({ role: "model", parts: [{ functionCall: call }] });\n  History.push({ role: "user", parts: [{ functionResponse: { name: call.name, response: { result } } }] });\n}',
   },
   {
-    icon: '🐞', title: 'Fix & Ship', titleClass: 'card-title-amber', subtitle: 'Debugger → Deploy',
+    icon: '🏗️', title: 'It Builds The App', titleClass: 'card-title-amber', subtitle: 'One Command At A Time',
     description:
-      'When execution fails, the Debugger reads the real error, finds the root cause and proposes a fix. Once everything passes, the Deploy agent generates the deployment configs.',
-    code: '// Debugger → real error → root cause → fix\n// Deploy   → deployment configs & steps',
+      'Given "build a calculator", the agent runs mkdir, touch, then writes HTML, CSS and JS, fixing errors as it goes — a working app scaffolded entirely by the model.',
+    code: '// mkdir calculator\n// touch calculator/index.html\n// write HTML → write CSS → write JS\n// → a working calculator, built by the agent',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 22', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '💻', title: 'Lecture 06 Code', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The AI Dev Team vision lecture and diagram in the STRIKE GenAI repo — the roles before the design and build.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 22 →', external: true },
+      'The command-running agent plus the calculator and leetcode-platform apps it builds, in the STRIKE GenAI repo.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 06 →', external: true },
   },
   {
-    icon: '🧭', title: 'Why It’s The Capstone', titleClass: 'card-title-purple', subtitle: 'Everything Combined',
+    icon: '⚠️', title: 'Run It Safely', titleClass: 'card-title-purple', subtitle: 'Sandbox First',
     description:
-      'This project uses it all — prompts, tools, RAG, memory, LangGraph and multi-agent orchestration — to build real software autonomously.',
-    footer: 'prompts + tools + RAG + agents + LangGraph',
+      'An agent that executes shell commands can delete files or worse. Try it in a throwaway folder, and print each command before running it.',
+    footer: 'review commands · use a sandbox · version control',
   },
   {
-    icon: '🔜', title: 'Next: The Design', titleClass: 'card-title-amber', subtitle: 'Day 23 Preview',
+    icon: '🔜', title: 'Next: Code Reviewer', titleClass: 'card-title-amber', subtitle: 'Prereq 7 Preview',
     description:
-      'Tomorrow — Lecture 23: the complete system design — the tech stack, the 30-node LangGraph flow, and the V2 fixes that make it robust.',
-    link: { href: '/day-023', label: 'Go to Day 23 →' },
+      'Tomorrow is Lecture 07 — build a Code Reviewer agent with list_files, read_file and write_file tools that scans a project and fixes real issues.',
+    link: { href: '/day-023', label: 'Go to Prereq 7 →' },
   },
 ];
 
@@ -132,38 +139,38 @@ export default function Day022() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-021" className="day001-nav-btn day001-nav-prev">← Day 21</Link>
-          <p className="day001-datetime">Agentic AI Day 22</p>
-          <Link to="/day-023" className="day001-nav-btn day001-nav-next">Day 23 →</Link>
+          <Link to="/day-021" className="day001-nav-btn day001-nav-prev">← Prereq 5</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 6</p>
+          <Link to="/day-023" className="day001-nav-btn day001-nav-next">Prereq 7 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 22</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 06</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 22 <span aria-hidden="true">🤖</span></h1>
-              <p className="day001-day-theme">THE AI DEV TEAM — AN AUTONOMOUS SOFTWARE TEAM</p>
+              <h1 className="day001-day-num">PREREQ 6 <span aria-hidden="true">🏗️</span></h1>
+              <p className="day001-day-theme">THE COMMAND AGENT — AI THAT BUILDS APPS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '22%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '6%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 22 — the big one: an <strong>autonomous AI software team</strong>, like <strong>Devin</strong>, that
-          takes a single requirement and builds the app. <strong>Eight specialized agents</strong> —{' '}
-          <strong>PM, Architect, Planner, Coder, Reviewer, Executor, Debugger, Deploy</strong> — each own one job and
-          hand work down the pipeline: <strong>understand → plan → code → review → run → debug → deploy</strong>.
-          Code runs for real in a <strong>Docker sandbox</strong>, real errors drive the Debugger, and a{' '}
-          <strong>human stays in the loop</strong> for clarifications and approvals.{' '}
-          <em>Tomorrow: the full design. (Diagram-based lecture.)</em>
+          Lecture 06 — the agent gets <strong>hands</strong>. I gave it an <code>executeCommand</code> tool backed by{' '}
+          <strong>child_process exec</strong>, so the model can run real <strong>shell commands</strong> — create
+          folders, write files, build software. The <strong>systemInstruction</strong> is <strong>OS-aware</strong>{' '}
+          via <code>os.platform()</code>, and the <strong>agent loop</strong> pushes each <code>functionCall</code>{' '}
+          and <code>functionResponse</code> into history until the job is done. Given a goal, it scaffolds a{' '}
+          <strong>calculator</strong> and a <strong>leetcode-style UI</strong> one command at a time. Powerful — and
+          worth sandboxing. <em>Perceive, plan, act, observe.</em>
         </p>
 
         <section className="day001-learnt">
@@ -178,12 +185,12 @@ export default function Day022() {
           </ul>
         </section>
 
-        <CardSection icon="🤖" title="THE VISION" cards={VISION} columns={2} />
-        <CardSection icon="👥" title="THE EIGHT AGENTS" cards={AGENTS} columns={3} />
+        <CardSection icon="🖐️" title="FROM CHAT TO ACTION" cards={ACTION} columns={3} />
+        <CardSection icon="🏗️" title="THE AGENT BUILD LOOP" cards={TOOL} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#MultiAgent</span><span>#AIDevTeam</span><span>#CoderArmy</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Agents</span><span>#CoderArmy</span><span>#JavaScript</span>
         </footer>
       </div>
     </div>

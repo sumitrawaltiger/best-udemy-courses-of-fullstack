@@ -2,74 +2,72 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_GENERICS = 'https://www.typescriptlang.org/docs/handbook/2/generics.html';
-const TS_ASSERTIONS = 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture31';
 
 const LEARNT_TODAY = [
-  { title: 'Generics = type parameters', text: 'a function or type takes a type as an argument: function first<T>(a: T[]): T' },
-  { title: 'Reusable & safe', text: 'one generic replaces many copies while keeping full type safety — no any needed' },
-  { title: 'Inference', text: 'you rarely pass the type explicitly; TS infers T from the arguments you call with' },
-  { title: 'Constraints', text: '<T extends { id: number }> limits T so you can safely use its known members' },
-  { title: 'Generic interfaces', text: 'containers like Box<T> or an API Result<T> reuse one shape for any payload' },
-  { title: 'as — type assertion', text: 'tell the compiler "trust me, this is T" when you know more than it does' },
-  { title: 'satisfies', text: 'checks a value against a type without widening it — the modern, safer alternative to as' },
-  { title: 'Non-null !', text: 'value! asserts something isn’t null/undefined — use sparingly and only when certain' },
+  { title: 'Regression vs classification', text: 'regression predicts a number (marks); classification predicts a category (placed or not)' },
+  { title: 'The output is 0 or 1', text: 'will this student get placed? yes (1) or no (0) — a yes/no decision, not a quantity' },
+  { title: 'Raw weighted sum won’t do', text: 'w1·x + … can be 80 or 16 lakh, but a "will it happen?" answer needs to live between 0 and 1' },
+  { title: 'We need a probability', text: 'turn the raw score into "70% chance placed" (0.7) — a squashing step is missing' },
+  { title: 'Loss compares to the truth', text: 'if the real answer is 1 and we predicted 0.7, the error is 0.3 — how wrong we were' },
+  { title: 'Same gradient descent', text: 'update each weight with w = w_old + learningRate · error · input' },
+  { title: 'Sets up the sigmoid', text: 'tomorrow adds the function that squashes any score into a clean probability' },
 ];
 
-const GENERICS = [
+const KINDS = [
   {
-    icon: '🧩', title: 'Generic Functions', titleClass: 'card-title-cyan', subtitle: 'Type Parameters',
+    icon: '📈', title: 'Regression', titleClass: 'card-title-cyan', subtitle: 'Predict A Number',
     description:
-      'A generic captures the caller’s type in a parameter T and threads it through. One function works for any type while staying fully checked — the alternative to sprinkling any.',
-    code: 'function first<T>(arr: T[]): T {\n  return arr[0];\n}\nfirst([1, 2, 3]);   // T = number\nfirst(["a", "b"]);  // T = string',
+      'Days 27–30 predicted a quantity — marks from study and sleep. The output could be any number, and a straight line (or curve) fit the data.',
+    code: '// regression: output = a number\n// "how many marks?" → 74.3',
   },
   {
-    icon: '🔒', title: 'Constraints', titleClass: 'card-title-purple', subtitle: 'extends',
+    icon: '✅', title: 'Classification', titleClass: 'card-title-purple', subtitle: 'Predict A Category',
     description:
-      'Constrain a type parameter with extends so you can rely on certain members. And generic interfaces (Box<T>, Result<T>) reuse one shape for any payload type.',
-    code: 'function byId<T extends { id: number }>(x: T) {\n  return x.id;         // .id is guaranteed\n}\ninterface Box<T> { value: T }',
+      'Now the question is different: will a student get placed — yes or no? The output must be a decision (0 or 1), expressed as a probability of the "yes".',
+    code: '// classification: output = a category\n// "placed?" → 1 (yes) or 0 (no)\n// features: dsa, projects, iq, attendance',
   },
 ];
 
-const ASSERT = [
+const PROB = [
   {
-    icon: '👉', title: 'as — Assertions', titleClass: 'card-title-cyan', subtitle: 'Trust Me',
+    icon: '🔢', title: 'The Raw Score Problem', titleClass: 'card-title-cyan', subtitle: 'Too Big',
     description:
-      'A type assertion overrides the compiler when you know a value’s type better than it does — e.g. a DOM lookup. It changes nothing at runtime; it only silences the checker, so use it carefully.',
-    code: 'const el = document.getElementById("app") as HTMLDivElement;\nconst n = "42" as unknown as number; // double-assert: a code smell',
+      'The same weighted sum as before can produce anything — 80, or 1,600,000. That is meaningless as a "chance of being placed". We need it bounded between 0 and 1.',
+    code: '// z = w1·dsa + w2·projects + w3·iq + w4·att + b\n// z could be 80 ... or 16 lakh\n// but a probability must be in [0, 1]',
   },
   {
-    icon: '✅', title: 'satisfies', titleClass: 'card-title-purple', subtitle: 'Check, Don’t Widen',
+    icon: '🎯', title: 'Want A Probability', titleClass: 'card-title-purple', subtitle: '0 to 1',
     description:
-      'satisfies verifies a value matches a type while keeping its precise inferred type. It catches mistakes as, and gives you the exact type as doesn’t — the modern default.',
-    code: 'const routes = {\n  home: "/", about: "/about",\n} satisfies Record<string, string>;\n// routes.home is "/" — not just string',
+      'We want the output to read like "70% chance placed" — 0.7. A squashing function will map any raw score into that range; that is tomorrow’s sigmoid.',
+    code: '// raw score  →  [squash]  →  0.7  = 70% chance\n// closer to 1 → more likely placed',
   },
   {
-    icon: '❗', title: 'Non-null !', titleClass: 'card-title-amber', subtitle: 'Not Null Here',
+    icon: '📉', title: 'Loss & Update', titleClass: 'card-title-amber', subtitle: 'Learn From Error',
     description:
-      'The postfix ! asserts a value isn’t null or undefined, letting you skip a check. Powerful but risky — if you’re wrong it crashes at runtime, so prefer real narrowing where you can.',
-    code: 'const input = document.querySelector("input")!;\ninput.value = "hi"; // ! says: not null\n// better: if (input) input.value = "hi";',
+      'Compare the predicted probability to the true label to get an error, then nudge the weights with the same gradient-descent step from Day 28.',
+    code: '// actual = 1, predicted = 0.7 → error = 0.3\n// w = w_old + learningRate · error · input',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Generics', titleClass: 'card-title-cyan', subtitle: 'Handbook',
+    icon: '💻', title: 'Lecture 31', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The full generics chapter — generic functions, interfaces and classes, constraints, default type parameters and using type parameters in constraints.',
-    link: { href: TS_GENERICS, label: 'Open the Generics docs →', external: true },
+      'The binary classification notebook in the STRIKE GenAI repo — moving from predicting numbers to predicting yes/no with a probability.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 31 →', external: true },
   },
   {
-    icon: '👉', title: 'Type Assertions', titleClass: 'card-title-purple', subtitle: 'Handbook',
+    icon: '🧠', title: 'Why It Matters', titleClass: 'card-title-purple', subtitle: 'Toward LLMs',
     description:
-      'When and how to assert types safely with as, plus the modern satisfies operator and the non-null assertion — and when not to reach for them.',
-    link: { href: TS_ASSERTIONS, label: 'Open the Assertions docs →', external: true },
+      'LLMs are classifiers too — they pick the next token from a set. Understanding classification from scratch leads straight to how an LLM chooses words.',
+    footer: 'regression → classification → next-token prediction',
   },
   {
-    icon: '🔜', title: 'Next: Classes & OOP', titleClass: 'card-title-amber', subtitle: 'Day 48 Preview',
+    icon: '🔜', title: 'Next: Sigmoid', titleClass: 'card-title-amber', subtitle: 'Prereq 32 Preview',
     description:
-      'The TypeScript stack continues — classes, access modifiers and OOP, then on toward tooling and the React/Next.js chapter of Year 1.',
-    link: { href: '/day-048', label: 'Go to Day 48 →' },
+      'Tomorrow — Lecture 32: the sigmoid function that squashes a score to a probability, and cross-entropy (log) loss for measuring classification error.',
+    link: { href: '/day-048', label: 'Go to Prereq 32 →' },
   },
 ];
 
@@ -134,39 +132,38 @@ export default function Day047() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-046" className="day001-nav-btn day001-nav-prev">← Day 46</Link>
-          <p className="day001-datetime">TypeScript Day 47</p>
-          <Link to="/day-048" className="day001-nav-btn day001-nav-next">Day 48 →</Link>
+          <Link to="/day-046" className="day001-nav-btn day001-nav-prev">← Prereq 30</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 31</p>
+          <Link to="/day-048" className="day001-nav-btn day001-nav-next">Prereq 32 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Generics</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 31</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 47 <span aria-hidden="true">🧩</span></h1>
-              <p className="day001-day-theme">GENERICS &amp; TYPE ASSERTIONS</p>
+              <h1 className="day001-day-num">PREREQ 31 <span aria-hidden="true">✅</span></h1>
+              <p className="day001-day-theme">BINARY CLASSIFICATION — NUMBERS TO PROBABILITIES</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '47%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '31%' }} /></div>
 
         <p className="day001-summary">
-          The reuse tools. <strong>Generics</strong> let a function or type take a <em>type parameter</em> —{' '}
-          <code>function first&lt;T&gt;(a: T[]): T</code> works for any array while staying fully typed, and TS{' '}
-          <strong>infers</strong> T from the call. <strong>Constraints</strong> (<code>T extends {'{ id: number }'}</code>)
-          let you rely on known members, and generic interfaces like <code>Box&lt;T&gt;</code> reuse one shape for any
-          payload. On the escape-hatch side, <strong>as</strong> asserts a type when you know more than the compiler,{' '}
-          <strong>satisfies</strong> checks a value without widening it (the safer modern default), and the non-null{' '}
-          <code>!</code> says "not null here" — powerful, but use it sparingly. <em>That completes the TypeScript
-          foundations.</em>
+          Lecture 31 — from <strong>regression</strong> to <strong>classification</strong>. Instead of predicting a
+          number (marks), the question becomes a category: will a student get <strong>placed — 1 or 0?</strong> The
+          same weighted sum still runs, but its <strong>raw score</strong> can be 80 or 16 lakh, so it needs to be
+          squashed into a <strong>probability between 0 and 1</strong> ("70% chance"). The <strong>loss</strong>
+          compares that probability to the true label (actual 1, predicted 0.7 → error 0.3), and the weights update
+          with the familiar <code>w = w_old + lr · error · input</code>.{' '}
+          <em>Tomorrow: the sigmoid. (From the lecture notebook.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -181,12 +178,12 @@ export default function Day047() {
           </ul>
         </section>
 
-        <CardSection icon="🧩" title="GENERICS" cards={GENERICS} columns={2} />
-        <CardSection icon="👉" title="ASSERTIONS" cards={ASSERT} columns={3} />
+        <CardSection icon="⚖️" title="REGRESSION vs CLASSIFICATION" cards={KINDS} columns={2} />
+        <CardSection icon="🎯" title="WE NEED A PROBABILITY" cards={PROB} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Generics</span><span>#satisfies</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Classification</span><span>#NeuralNetworks</span><span>#FirstPrinciples</span>
         </footer>
       </div>
     </div>

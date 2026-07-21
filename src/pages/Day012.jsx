@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture12and13';
-const NOTION = 'https://www.notion.so/RAG-System-2e8a9af81c9881eab86dfe8bf32fcfb4';
-const LANGCHAIN = 'https://js.langchain.com/docs/introduction/';
+const REACT_TS = 'https://react.dev/learn/typescript';
+const VITE_TS = 'https://vite.dev/guide/';
 
 const LEARNT_TODAY = [
-  { title: 'Meet LangChain.js', text: 'a framework that wires the RAG steps — loaders, splitters, embeddings, vector stores — together cleanly' },
-  { title: 'Load documents', text: 'PDFLoader reads a PDF file into an array of document objects to process' },
-  { title: 'Chunk the text', text: 'RecursiveCharacterTextSplitter breaks documents into pieces (chunkSize 1000, chunkOverlap 200)' },
-  { title: 'Why overlap', text: 'overlapping chunks keep context from spilling across boundaries so no idea is cut in half' },
-  { title: 'Embed each chunk', text: 'GoogleGenerativeAIEmbeddings (text-embedding-004) turns every chunk into a vector' },
-  { title: 'Store in Pinecone', text: 'PineconeStore.fromDocuments embeds and upserts all chunks into a Pinecone index in one step' },
-  { title: 'Runs once', text: 'indexing is a one-time prep — do it when documents are added or changed, not per question' },
+  { title: 'React + TS project', text: 'npm create vite@latest with the react-ts template gives typed React in seconds' },
+  { title: '.tsx files', text: 'components live in .tsx — TypeScript files that can contain JSX' },
+  { title: 'JSX is typed', text: 'attributes, children and event handlers are all type-checked against the DOM' },
+  { title: 'Function components', text: 'a component is just a function returning JSX — annotate its props, that’s it' },
+  { title: 'JSX.Element / ReactNode', text: 'return types and children have real types you rarely need to write by hand' },
+  { title: 'Typed events', text: 'onClick gets React.MouseEvent, onChange gets React.ChangeEvent — autocompleted' },
+  { title: 'No PropTypes needed', text: 'TypeScript replaces runtime PropTypes with compile-time checks' },
+  { title: 'Editor superpowers', text: 'autocomplete on props and hooks is where React + TS really pays off' },
 ];
 
-const LANGCHAIN_CARD = [
+const SETUP = [
   {
-    icon: '🔗', title: 'Enter LangChain.js', titleClass: 'card-title-cyan', subtitle: 'The RAG Framework',
+    icon: '⚡', title: 'Vite react-ts', titleClass: 'card-title-cyan', subtitle: 'Zero-Config Start',
     description:
-      'Instead of hand-writing every step, LangChain.js gives ready-made pieces — document loaders, text splitters, embedding wrappers and vector-store adapters — that snap together.',
-    code: "import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';\nimport { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';\nimport { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';\nimport { PineconeStore } from '@langchain/pinecone';",
+      'Scaffold a typed React app in one command. Vite wires up TypeScript, JSX and fast HMR, so you write .tsx components immediately with full type-checking.',
+    code: 'npm create vite@latest my-app -- \\\n  --template react-ts\ncd my-app && npm i && npm run dev',
   },
   {
-    icon: '📄', title: 'Load The PDF', titleClass: 'card-title-purple', subtitle: 'PDFLoader',
+    icon: '🧱', title: 'A Typed Component', titleClass: 'card-title-purple', subtitle: '.tsx + JSX',
     description:
-      'Point a loader at a file and it returns document objects with the text and metadata. LangChain has loaders for PDFs, web pages, Notion, and more.',
-    code: "const pdfLoader = new PDFLoader('./Node.pdf');\nconst rawDocs = await pdfLoader.load();\n// rawDocs = [{ pageContent, metadata }, ...]",
+      'A component is a function returning JSX. In a .tsx file, JSX attributes and children are type-checked — a typo in a prop or a wrong element becomes a compile error.',
+    code: 'function Hello() {\n  return <h1>Hello, TypeScript!</h1>;\n}\n// JSX attributes are checked against the DOM',
   },
 ];
 
-const CHUNK = [
+const TYPING = [
   {
-    icon: '✂️', title: 'Chunk It', titleClass: 'card-title-cyan', subtitle: 'Size + Overlap',
+    icon: '📨', title: 'Typing Props', titleClass: 'card-title-cyan', subtitle: 'interface Props',
     description:
-      'A whole document is too big to embed usefully. Split it into ~1000-character chunks with 200 characters of overlap so context carries across the cuts.',
-    code: "const splitter = new RecursiveCharacterTextSplitter({\n  chunkSize: 1000,\n  chunkOverlap: 200,\n});\nconst chunks = await splitter.splitDocuments(rawDocs);\n// e.g. 266 chunks → 266 vectors",
+      'Describe a component’s inputs with an interface (or type) and destructure them in the signature. JSX usage is then checked and autocompleted at every call site.',
+    code: 'interface GreetProps { name: string; excited?: boolean }\nfunction Greet({ name, excited }: GreetProps) {\n  return <p>Hi {name}{excited ? "!" : ""}</p>;\n}',
   },
   {
-    icon: '🔢', title: 'Embed Each Chunk', titleClass: 'card-title-purple', subtitle: 'text-embedding-004',
+    icon: '🖱️', title: 'Typed Events', titleClass: 'card-title-purple', subtitle: 'React.*Event',
     description:
-      'Configure the Gemini embedding model. Every chunk becomes a vector that captures its meaning — the same embeddings idea from Day 8, now applied to your documents.',
-    code: "const embeddings = new GoogleGenerativeAIEmbeddings({\n  apiKey: process.env.GEMINI_API_KEY,\n  model: 'text-embedding-004',\n});",
+      'Event handlers receive typed events — React.MouseEvent for clicks, React.ChangeEvent for inputs — so e.target and its value autocomplete correctly.',
+    code: 'function onChange(e: React.ChangeEvent<HTMLInputElement>) {\n  console.log(e.target.value);\n}\n<input onChange={onChange} />',
   },
   {
-    icon: '📦', title: 'Store In Pinecone', titleClass: 'card-title-amber', subtitle: 'One Step',
+    icon: '👶', title: 'children & ReactNode', titleClass: 'card-title-amber', subtitle: 'Composition',
     description:
-      'PineconeStore.fromDocuments does the whole thing — embed every chunk and upsert it into your Pinecone index. After this, your PDF is a searchable knowledge base.',
-    code: "const pinecone = new Pinecone();\nconst index = pinecone.Index(process.env.PINECONE_INDEX_NAME);\n\nawait PineconeStore.fromDocuments(chunks, embeddings, {\n  pineconeIndex: index,\n  maxConcurrency: 5,\n});",
+      'When a component wraps others, type its children as React.ReactNode — the catch-all for anything renderable, from strings to elements to arrays.',
+    code: 'interface CardProps { children: React.ReactNode }\nfunction Card({ children }: CardProps) {\n  return <div className="card">{children}</div>;\n}',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📝', title: 'RAG System Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    icon: '📘', title: 'React + TypeScript', titleClass: 'card-title-cyan', subtitle: 'react.dev',
     description:
-      'Rohit’s RAG System write-up — the full indexing and querying pipeline with LangChain.js and Pinecone.',
-    link: { href: NOTION, label: 'Open the RAG notes →', external: true },
+      'The official React guide to using TypeScript — typing props, hooks, events and children, straight from the React team.',
+    link: { href: REACT_TS, label: 'Open React + TS docs →', external: true },
   },
   {
-    icon: '💻', title: 'Lecture 12–13 Code', titleClass: 'card-title-purple', subtitle: 'indexing.js',
+    icon: '⚡', title: 'Vite Guide', titleClass: 'card-title-purple', subtitle: 'Tooling',
     description:
-      'The runnable indexing.js (and query.js for tomorrow) in the STRIKE GenAI repo — the complete document RAG build.',
-    link: { href: GH_LECTURE, label: 'Open the code →', external: true },
+      'How Vite scaffolds and serves a React + TypeScript app — templates, HMR and the build pipeline for Year-1 projects.',
+    link: { href: VITE_TS, label: 'Open the Vite guide →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Querying', titleClass: 'card-title-amber', subtitle: 'Day 13 Preview',
+    icon: '🔜', title: 'Next: Props & State', titleClass: 'card-title-amber', subtitle: 'Day 13 Preview',
     description:
-      'Tomorrow is the other half — Lecture 13: embed the question, retrieve the top chunks from Pinecone, and generate a grounded answer with a LangChain chain.',
+      'Tomorrow — typed state with useState<T>, lifting state up, and controlled inputs with fully-typed change handlers.',
     link: { href: '/day-013', label: 'Go to Day 13 →' },
   },
 ];
@@ -135,23 +135,23 @@ export default function Day012() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-011" className="day001-nav-btn day001-nav-prev">← Day 11</Link>
-          <p className="day001-datetime">Agentic AI Day 12</p>
+          <p className="day001-datetime">TypeScript Day 12</p>
           <Link to="/day-013" className="day001-nav-btn day001-nav-next">Day 13 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 12</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>React</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 12 <span aria-hidden="true">🗂️</span></h1>
-              <p className="day001-day-theme">RAG PART 1 — INDEXING YOUR DOCUMENTS</p>
+              <h1 className="day001-day-num">DAY 12 <span aria-hidden="true">⚛️</span></h1>
+              <p className="day001-day-theme">REACT WITH TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -159,13 +159,13 @@ export default function Day012() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '12%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 12 — the RAG <strong>indexing</strong> pipeline, and my first taste of{' '}
-          <strong>LangChain.js</strong>. I <strong>load</strong> a PDF with <code>PDFLoader</code>,{' '}
-          <strong>chunk</strong> it with <code>RecursiveCharacterTextSplitter</code> (size 1000, overlap 200 so
-          context survives the cuts), <strong>embed</strong> each chunk with{' '}
-          <code>GoogleGenerativeAIEmbeddings</code>, and <strong>store</strong> them all in{' '}
-          <strong>Pinecone</strong> via <code>PineconeStore.fromDocuments</code>. One run turns a document into a
-          searchable knowledge base. <em>Tomorrow I query it.</em>
+          TypeScript meets React — the heart of Year 1. Scaffold with <strong>Vite’s react-ts</strong> template and
+          write components in <strong>.tsx</strong> files, where <strong>JSX is type-checked</strong>: attributes,
+          children and handlers all validated against the DOM. A component is just a function returning JSX; you{' '}
+          <strong>type its props</strong> with an <code>interface</code> and destructure them. Events come typed
+          (<code>React.ChangeEvent</code>, <code>React.MouseEvent</code>), and <code>children</code> use{' '}
+          <strong>React.ReactNode</strong>. No more runtime PropTypes — the compiler and editor autocomplete every prop
+          and hook. <em>Next: typed state.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +180,12 @@ export default function Day012() {
           </ul>
         </section>
 
-        <CardSection icon="🔗" title="MEET LANGCHAIN.js" cards={LANGCHAIN_CARD} columns={2} />
-        <CardSection icon="✂️" title="CHUNK · EMBED · STORE" cards={CHUNK} columns={3} />
+        <CardSection icon="⚡" title="PROJECT & COMPONENTS" cards={SETUP} columns={2} />
+        <CardSection icon="📨" title="TYPING PROPS & EVENTS" cards={TYPING} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#LangChain</span><span>#Pinecone</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#React</span><span>#Vite</span>
         </footer>
       </div>
     </div>

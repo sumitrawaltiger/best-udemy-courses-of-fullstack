@@ -2,74 +2,72 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_EVERYDAY = 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture26';
 
 const LEARNT_TODAY = [
-  { title: 'Primitive types', text: 'string, number and boolean are the three you reach for constantly — all lowercase' },
-  { title: 'Annotation syntax', text: 'a colon after the name declares the type: let done: boolean = false' },
-  { title: 'Inference vs annotation', text: 'let it infer for initialised values; annotate function params and empty declarations' },
-  { title: 'Arrays', text: 'number[] or Array<number> — a list where every element must be the same type' },
-  { title: 'any turns checking off', text: 'any accepts anything and disables safety — an escape hatch to use sparingly' },
-  { title: 'unknown is the safe any', text: 'holds anything but forces you to narrow the type before you can use it' },
-  { title: 'null & undefined', text: 'with strictNullChecks they are their own types — you must handle the empty case' },
-  { title: 'literal & union types', text: '"left" | "right" restricts a value to an exact set — tiny types, big safety' },
+  { title: 'From CLI to web app', text: 'wrap the multi-agent LangGraph in a full-stack app so you can watch it work in a browser' },
+  { title: 'Real-time with WebSockets', text: 'the server streams graph-execution events to the client as they happen — no polling' },
+  { title: 'Server → client events', text: 'node_complete, human_input_needed, token_update and run_complete drive the live UI' },
+  { title: 'Client → server events', text: 'human_response and cancel let the user answer questions and stop a run from the UI' },
+  { title: 'The dashboard', text: 'a PipelineVisualizer, LogStream, HumanInputPanel, TokenBudgetBar and OutputPanel in React' },
+  { title: 'graphRunner service', text: 'the Express server runs the LangGraph and emits events; multiple tabs can watch one project' },
+  { title: 'It feels like a product', text: 'React (Vite) frontend + Express backend + WebSocket turn the agent team into a real tool' },
 ];
 
-const PRIMITIVES = [
+const STACK = [
   {
-    icon: '🔤', title: 'string · number · boolean', titleClass: 'card-title-cyan', subtitle: 'The Primitives',
+    icon: '🖥️', title: 'CLI → Full-Stack', titleClass: 'card-title-cyan', subtitle: 'Server + Dashboard',
     description:
-      'The three everyday types, always lowercase. Annotate with a colon, or let TypeScript infer them from the initial value — the result is identical either way.',
-    code: 'let name: string = "Sumit";\nlet age: number = 27;\nlet active: boolean = true;\n\nlet city = "Mumbai"; // inferred: string',
+      'The agent team ran in a terminal; now an Express server runs the graph and a React (Vite) dashboard shows it. A WebSocket ties the two together in real time.',
+    code: '// server → runs the LangGraph, emits events\n// dashboard → React UI, subscribes over WebSocket\n// ws://server/ws?projectId=xxx',
   },
   {
-    icon: '📚', title: 'Arrays', titleClass: 'card-title-purple', subtitle: 'Same-Type Lists',
+    icon: '🔌', title: 'The WebSocket', titleClass: 'card-title-purple', subtitle: 'Live, Two-Way',
     description:
-      'Type[] means an array of that type — every element must match. Two equivalent syntaxes; Type[] is the common one. Mixed lists need a union or a tuple.',
-    code: 'let scores: number[] = [90, 85, 88];\nlet tags: Array<string> = ["ts", "js"];\n\nscores.push("x"); // ❌ not a number',
+      'Each connection is tied to a project. The server pushes events as the graph runs; the client sends back the user’s answers. Multiple tabs can watch the same run.',
+    code: '// server → client\n{ type: "node_complete", node: "pmAgent", data }\n{ type: "human_input_needed", questions }\n{ type: "token_update", usage }\n{ type: "run_complete", finalState }',
   },
 ];
 
-const SPECIAL = [
+const UI = [
   {
-    icon: '⚠️', title: 'any', titleClass: 'card-title-cyan', subtitle: 'Checking Off',
+    icon: '🧭', title: 'See The Pipeline', titleClass: 'card-title-cyan', subtitle: 'PipelineVisualizer',
     description:
-      'any accepts every value and silences the compiler — it opts a variable out of the type system entirely. Useful in a pinch, but every any is a hole in your safety net.',
-    code: 'let data: any = 4;\ndata = "now a string"; // no error\ndata.foo.bar();       // no error either 😬',
+      'As each node finishes, the visualizer lights up the current agent — PM, Architect, Coder, Reviewer — so you can literally watch the team move through the build.',
+    code: '// node_complete → highlight that agent\n// the graph animates as work progresses',
   },
   {
-    icon: '🛡️', title: 'unknown', titleClass: 'card-title-purple', subtitle: 'The Safe any',
+    icon: '💬', title: 'Answer & Control', titleClass: 'card-title-purple', subtitle: 'HumanInputPanel',
     description:
-      'unknown also holds anything, but you can’t use it until you narrow it with a check. It’s the type-safe way to accept values whose shape you don’t yet know.',
-    code: 'let val: unknown = fetchIt();\n// val.trim();  ❌ must narrow first\nif (typeof val === "string") val.trim(); // ✓',
+      'When the PM needs clarification or the team escalates, a panel pops up. Your reply is sent back over the socket and the graph resumes — human-in-the-loop, in a UI.',
+    code: '// client → server\n{ type: "human_response", inputType, data }\n{ type: "cancel" }',
   },
   {
-    icon: '🎯', title: 'Literal & Union', titleClass: 'card-title-amber', subtitle: 'Exact Values',
+    icon: '📊', title: 'Logs & Budget', titleClass: 'card-title-amber', subtitle: 'LogStream · TokenBudgetBar',
     description:
-      'A literal type is one exact value; a union joins several with |. Together they restrict a variable to a fixed set — invalid options become compile errors.',
-    code: 'let dir: "left" | "right";\ndir = "left";  // ✓\ndir = "up";    // ❌ not in the set',
+      'A live log stream shows what each agent is doing, and a token-budget bar tracks spend against the limit in real time — observability for an autonomous system.',
+    code: '// token_update → grow the budget bar\n// every log line streams into the UI',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Everyday Types', titleClass: 'card-title-cyan', subtitle: 'Handbook',
+    icon: '💻', title: 'Lecture 26', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The handbook chapter covering primitives, arrays, any, unions and literals — the exact ground this day walks through, with runnable examples.',
-    link: { href: TS_EVERYDAY, label: 'Open Everyday Types →', external: true },
+      'The AIDevFinal project — the React dashboard, the Express server, the WebSocket handler and the graphRunner over the full agent team.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 26 →', external: true },
   },
   {
-    icon: '🎮', title: 'Practice It', titleClass: 'card-title-purple', subtitle: 'Playground',
+    icon: '👀', title: 'Observability', titleClass: 'card-title-purple', subtitle: 'Watch The Agents',
     description:
-      'Paste each snippet into the Playground and hover the variables — the editor shows the inferred type and flags the deliberate errors instantly.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+      'A live UI over an autonomous system is huge for trust and debugging — you can see exactly what each agent did, what it cost, and step in when needed.',
+    footer: 'pipeline · logs · human input · token budget',
   },
   {
-    icon: '🔜', title: 'Next: Functions', titleClass: 'card-title-amber', subtitle: 'Day 43 Preview',
+    icon: '🔜', title: 'Next: Under The Hood', titleClass: 'card-title-amber', subtitle: 'Prereq 27 Preview',
     description:
-      'Tomorrow — typing functions: parameter and return types, optional and default params, the void type, and typed arrow functions.',
-    link: { href: '/day-043', label: 'Go to Day 43 →' },
+      'Tomorrow goes to the metal — Lecture 27: build a neural network from scratch in C++ to see exactly how the "magic" underneath every LLM actually works.',
+    link: { href: '/day-043', label: 'Go to Prereq 27 →' },
   },
 ];
 
@@ -134,39 +132,38 @@ export default function Day042() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-041" className="day001-nav-btn day001-nav-prev">← Day 41</Link>
-          <p className="day001-datetime">TypeScript Day 42</p>
-          <Link to="/day-043" className="day001-nav-btn day001-nav-next">Day 43 →</Link>
+          <Link to="/day-041" className="day001-nav-btn day001-nav-prev">← Prereq 25</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 26</p>
+          <Link to="/day-043" className="day001-nav-btn day001-nav-next">Prereq 27 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Type System</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 26</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 42 <span aria-hidden="true">🔤</span></h1>
-              <p className="day001-day-theme">TYPE SYSTEM BASICS</p>
+              <h1 className="day001-day-num">PREREQ 26 <span aria-hidden="true">📊</span></h1>
+              <p className="day001-day-theme">AI DEV TEAM — THE LIVE DASHBOARD</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '42%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '26%' }} /></div>
 
         <p className="day001-summary">
-          The core types. The three primitives — <code>string</code>, <code>number</code>, <code>boolean</code> — are
-          annotated with a colon (<code>let done: boolean = false</code>) or simply <strong>inferred</strong> from the
-          value. Lists are <code>number[]</code> where every element shares a type. <code>any</code> turns checking{' '}
-          <strong>off</strong> and should be rare; <code>unknown</code> is the <strong>safe</strong> version — it holds
-          anything but forces you to <em>narrow</em> before use. With <code>strictNullChecks</code>, <code>null</code>{' '}
-          and <code>undefined</code> are real types you must handle. And <strong>literal + union</strong> types
-          (<code>"left" | "right"</code>) pin a value to an exact set — small types that catch big mistakes.{' '}
-          <em>Next: functions.</em>
+          Lecture 26 — a <strong>live dashboard</strong> over the AI Dev Team. An <strong>Express server</strong> runs
+          the LangGraph while a <strong>React</strong> dashboard watches it over a <strong>WebSocket</strong>. The
+          server streams events — <code>node_complete</code>, <code>human_input_needed</code>,{' '}
+          <code>token_update</code>, <code>run_complete</code> — and the client sends back{' '}
+          <code>human_response</code> and <code>cancel</code>. A <strong>PipelineVisualizer</strong> shows the current
+          agent, a <strong>LogStream</strong> shows the work, and a <strong>TokenBudgetBar</strong> tracks spend. The
+          autonomous team finally feels like a real product. <em>Next: how it all works underneath.</em>
         </p>
 
         <section className="day001-learnt">
@@ -181,12 +178,12 @@ export default function Day042() {
           </ul>
         </section>
 
-        <CardSection icon="🔤" title="PRIMITIVES & ARRAYS" cards={PRIMITIVES} columns={2} />
-        <CardSection icon="🧩" title="any · unknown · UNIONS" cards={SPECIAL} columns={3} />
+        <CardSection icon="🖥️" title="CLI → FULL-STACK APP" cards={STACK} columns={2} />
+        <CardSection icon="📊" title="THE DASHBOARD" cards={UI} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Types</span><span>#StaticTyping</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AIDevTeam</span><span>#WebSocket</span><span>#React</span>
         </footer>
       </div>
     </div>

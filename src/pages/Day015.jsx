@@ -2,79 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture15';
-const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
+const NEXT_TS = 'https://nextjs.org/docs/app/api-reference/config/typescript';
+const NEXT_APP_ROUTER = 'https://nextjs.org/docs/app/building-your-application/routing';
 
 const LEARNT_TODAY = [
-  { title: 'Garbage in, garbage out', text: 'a RAG answer is only as good as the chunks it retrieves — retrieval quality is everything' },
-  { title: 'Chunking matters', text: 'chunk size and overlap change what the model sees; too big adds noise, too small loses context' },
-  { title: 'Tune top-K', text: 'too few chunks miss the answer, too many add noise and cost — find the right K for your data' },
-  { title: 'Metadata filtering', text: 'attach source, section or date to each chunk and filter retrieval to narrow the search' },
-  { title: 'Re-ranking', text: 'over-fetch candidates, then re-score them for true relevance and keep only the best few' },
-  { title: 'Evaluate retrieval', text: 'check whether the retrieved chunks actually contain the answer, not just whether the reply sounds good' },
-  { title: 'RAG is iterative', text: 'better chunking, filtering and re-ranking compound into noticeably better, more trustworthy answers' },
+  { title: 'Next.js is TS-first', text: 'create-next-app scaffolds a typed project; .tsx pages and layouts out of the box' },
+  { title: 'App Router', text: 'folders are routes; page.tsx renders, layout.tsx wraps, all typed' },
+  { title: 'Server vs client', text: 'components are Server by default; add "use client" only where you need hooks/interactivity' },
+  { title: 'Typed page props', text: 'params and searchParams arrive as typed props to a page' },
+  { title: 'Route handlers', text: 'app/api/*/route.ts gives typed Request/Response API endpoints' },
+  { title: 'Data fetching', text: 'async Server Components can await data directly — no useEffect for initial load' },
+  { title: 'Metadata', text: 'export a typed Metadata object for SEO per route' },
+  { title: 'End-to-end types', text: 'share types between server and client — one source of truth across the app' },
 ];
 
-const QUALITY = [
+const ROUTER = [
   {
-    icon: '⚖️', title: 'Retrieval Is Everything', titleClass: 'card-title-cyan', subtitle: 'Context = Answer',
+    icon: '🗂️', title: 'The App Router', titleClass: 'card-title-cyan', subtitle: 'Folders = Routes',
     description:
-      'The model can only answer from what you retrieve. If the right chunk never comes back, no prompt can save the answer — so most RAG quality work is really retrieval work.',
-    code: '// good chunks → grounded, correct answer\n// wrong chunks → confident, wrong answer\n// fix retrieval first',
+      'Each folder under app/ is a route. page.tsx is the view, layout.tsx wraps its children, and loading/error files handle those states — all in TypeScript with typed props.',
+    code: '// app/blog/[slug]/page.tsx\nexport default function Post(\n  { params }: { params: { slug: string } },\n) { return <h1>{params.slug}</h1>; }',
   },
   {
-    icon: '✂️', title: 'Chunking Strategy', titleClass: 'card-title-purple', subtitle: 'Size & Overlap',
+    icon: '🖥️', title: 'Server vs Client', titleClass: 'card-title-purple', subtitle: '"use client"',
     description:
-      'Chunk size and overlap are the biggest levers. Large chunks add irrelevant text; tiny chunks fragment ideas. Tune them to your documents and re-index to compare.',
-    code: '// too big  → noise dilutes the relevant part\n// too small → an idea gets split across chunks\n// tune chunkSize / chunkOverlap, then measure',
-  },
-  {
-    icon: '🔢', title: 'Top-K & Filters', titleClass: 'card-title-amber', subtitle: 'How Much To Fetch',
-    description:
-      'Retrieve enough to cover the answer but not so much that noise creeps in. Use metadata filters (source, section, date) to restrict retrieval to the relevant subset.',
-    code: '// query({ topK, vector, filter: { source: "docs" } })\n// smaller, cleaner candidate set = better answers',
+      'Components render on the server by default — great for data and SEO. Add "use client" only when you need state, effects or event handlers, keeping bundles lean.',
+    code: '// server component (default): can await data\n// client component:\n"use client";\nimport { useState } from "react";',
   },
 ];
 
-const IMPROVE = [
+const FEATURES = [
   {
-    icon: '🏅', title: 'Re-Ranking', titleClass: 'card-title-cyan', subtitle: 'Fetch More, Keep Best',
+    icon: '🔌', title: 'Route Handlers', titleClass: 'card-title-cyan', subtitle: 'Typed APIs',
     description:
-      'Vector similarity is a fast first pass, not a perfect one. Over-fetch (say top-20), then re-score those with a re-ranker and keep the few most relevant for the prompt.',
-    code: '// 1. vector search → top 20 candidates\n// 2. re-rank by relevance\n// 3. keep top 3–5 → augment the prompt',
+      'app/api/.../route.ts exports typed GET/POST handlers with the Web Request/Response API. Your backend and frontend can share the same TypeScript types.',
+    code: '// app/api/hello/route.ts\nexport async function GET(req: Request) {\n  return Response.json({ ok: true });\n}',
   },
   {
-    icon: '🧪', title: 'Evaluate It', titleClass: 'card-title-purple', subtitle: 'Measure, Don’t Guess',
+    icon: '📥', title: 'Data In Server Components', titleClass: 'card-title-purple', subtitle: 'await Directly',
     description:
-      'Judge the retrieval, not just the vibe of the reply: for a set of questions, did the retrieved chunks actually contain the answer? That tells you what to fix.',
-    code: '// for each test question:\n//   were the right chunks retrieved? (recall)\n//   was the answer grounded in them? (faithfulness)',
+      'An async Server Component awaits data before rendering — no client-side useEffect for the initial load. Type the fetched data and pass it down as typed props.',
+    code: 'export default async function Page() {\n  const posts: Post[] = await getPosts();\n  return <List posts={posts} />;\n}',
   },
   {
-    icon: '🔁', title: 'Iterate', titleClass: 'card-title-amber', subtitle: 'Compounding Gains',
+    icon: '🏷️', title: 'Typed Metadata', titleClass: 'card-title-amber', subtitle: 'SEO Per Route',
     description:
-      'Better chunking, filtering, re-ranking and query rewriting each add a little. Together they turn a shaky demo into a RAG system you can trust in production.',
-    footer: 'chunk → filter → re-rank → evaluate → repeat',
+      'Export a typed Metadata object (or generateMetadata) from a route for title, description and Open Graph tags — checked by TypeScript, no stray keys.',
+    code: 'import type { Metadata } from "next";\nexport const metadata: Metadata = {\n  title: "TypeScript Journey",\n};',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 15', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'Next.js + TypeScript', titleClass: 'card-title-cyan', subtitle: 'Official',
     description:
-      'The lecture folder and diagram in the STRIKE GenAI repo — improving retrieval quality for production RAG.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 15 →', external: true },
+      'How Next.js uses TypeScript — the plugin, typed routes, config, and end-to-end type safety across server and client.',
+    link: { href: NEXT_TS, label: 'Open the Next.js TS docs →', external: true },
   },
   {
-    icon: '🧠', title: 'The GenAI Track', titleClass: 'card-title-purple', subtitle: 'Same Journey',
+    icon: '🗂️', title: 'App Router', titleClass: 'card-title-purple', subtitle: 'Routing',
     description:
-      'The site’s GenAI track covers RAG, agents and LangGraph as structured modules — a companion to these day-by-day notes.',
-    link: { href: '/genai', label: 'Open the GenAI track →' },
+      'The routing model — pages, layouts, server/client components, route handlers and data fetching — the backbone of a Year-1 Next.js app.',
+    link: { href: NEXT_APP_ROUTER, label: 'Open the routing docs →', external: true },
   },
   {
-    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
+    icon: '🔜', title: 'Next: Year-1 Roadmap', titleClass: 'card-title-amber', subtitle: 'Day 16 Preview',
     description:
-      'The full Coder Army course code — next up: agents, LangGraph (Lecture 20) and the AI Dev Team projects.',
-    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
+      'Tomorrow — wrap the TypeScript foundation and map the rest of Year 1: React Native, Express/Node, and where each track lives on the site.',
+    link: { href: '/day-016', label: 'Go to Day 16 →' },
   },
 ];
 
@@ -140,23 +135,23 @@ export default function Day015() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-014" className="day001-nav-btn day001-nav-prev">← Day 14</Link>
-          <p className="day001-datetime">Agentic AI Day 15</p>
+          <p className="day001-datetime">TypeScript Day 15</p>
           <Link to="/day-016" className="day001-nav-btn day001-nav-next">Day 16 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 15</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Next.js</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 15 <span aria-hidden="true">🏅</span></h1>
-              <p className="day001-day-theme">BETTER RAG — RETRIEVAL QUALITY</p>
+              <h1 className="day001-day-num">DAY 15 <span aria-hidden="true">▲</span></h1>
+              <p className="day001-day-theme">NEXT.JS WITH TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -164,13 +159,13 @@ export default function Day015() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '15%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 15 — making RAG actually good. The answer is only as strong as the <strong>chunks it retrieves</strong>,
-          so retrieval quality is where the work is. I tuned <strong>chunking</strong> (size and overlap),{' '}
-          <strong>top-K</strong>, and <strong>metadata filters</strong> to narrow the search; added{' '}
-          <strong>re-ranking</strong> (over-fetch, re-score, keep the best); and learned to <strong>evaluate</strong>{' '}
-          retrieval — did the right chunks come back? — instead of trusting the vibe of the reply. These gains{' '}
-          <strong>compound</strong> into a RAG system you can trust.{' '}
-          <em>(Diagram-based lecture; content reflects the standard practices.)</em>
+          React, but full-stack. <strong>Next.js is TypeScript-first</strong> — <code>create-next-app</code> scaffolds
+          a typed project. The <strong>App Router</strong> maps folders to routes: <code>page.tsx</code> renders,{' '}
+          <code>layout.tsx</code> wraps, and <strong>params/searchParams</strong> arrive typed. Components are{' '}
+          <strong>Server by default</strong> (await data directly, great for SEO); add <code>"use client"</code> only
+          for interactivity. <strong>Route handlers</strong> (<code>route.ts</code>) give typed API endpoints, and a
+          typed <strong>Metadata</strong> export handles SEO per route. Best of all — <strong>share types</strong>{' '}
+          across server and client for one source of truth. <em>Next: wrap Year 1’s foundation.</em>
         </p>
 
         <section className="day001-learnt">
@@ -185,12 +180,12 @@ export default function Day015() {
           </ul>
         </section>
 
-        <CardSection icon="⚖️" title="RETRIEVAL IS EVERYTHING" cards={QUALITY} columns={3} />
-        <CardSection icon="🏅" title="RE-RANK & EVALUATE" cards={IMPROVE} columns={3} />
+        <CardSection icon="🗂️" title="APP ROUTER" cards={ROUTER} columns={2} />
+        <CardSection icon="🔌" title="APIS · DATA · SEO" cards={FEATURES} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#CoderArmy</span><span>#Retrieval</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#NextJS</span><span>#React</span>
         </footer>
       </div>
     </div>

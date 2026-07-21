@@ -2,73 +2,72 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture34';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture18';
 
 const LEARNT_TODAY = [
-  { title: 'Beyond yes/no', text: 'predict which of many classes — Amazon, Google, TCS, Microsoft — a student is placed in' },
-  { title: 'One score per class', text: 'instead of a single output, the network produces a raw score for every possible class' },
-  { title: 'Scores aren’t probabilities', text: 'raw scores can be negative or huge; we need to turn them into a proper distribution' },
-  { title: 'Softmax', text: 'softmax(zᵢ) = e^zᵢ / Σ e^zⱼ — converts the scores into probabilities that sum to 1' },
-  { title: 'Why exp', text: 'e^z makes every value positive and amplifies differences; dividing by the sum normalises to 1' },
-  { title: 'Read the result', text: 'a vector like [0.2, 0.3, 0.1, …] → "30% chance Microsoft"; the highest wins' },
-  { title: 'Handles extremes', text: 'even scores like [-100000, 10, 1000] come out as a clean [0, 0.49, 0.51]' },
-  { title: 'This is the LLM output', text: 'an LLM softmaxes over ~50,000 tokens to pick the next word — same idea, bigger scale' },
+  { title: 'Parse the PDF', text: 'upload the document to Gemini (1M-token context) and extract from it directly, or use pdf-parse' },
+  { title: 'LLM entity extraction', text: 'prompt Gemini to output structured JSON — movie, director, actors, genres, themes — per record' },
+  { title: 'Batch + retry', text: 'process in batches (e.g. 50 movies per request) with retries on rate limits and errors' },
+  { title: 'Build the Neo4j graph', text: 'turn each entity into a node and each connection into a typed relationship' },
+  { title: 'MERGE not CREATE', text: 'MERGE finds-or-creates, so "Zendaya" is one shared node instead of a duplicate per movie' },
+  { title: 'Index for speed', text: 'index node keys so MERGE uses a lookup instead of scanning every node' },
+  { title: 'Also store vectors', text: 'embed the content and upsert into Pinecone for the similarity side of Graph RAG' },
 ];
 
-const MANY = [
+const EXTRACT = [
   {
-    icon: '🏢', title: 'Many Classes', titleClass: 'card-title-cyan', subtitle: 'One Output Each',
+    icon: '📄', title: 'PDF → Structured JSON', titleClass: 'card-title-cyan', subtitle: 'Gemini Extraction',
     description:
-      'For a multi-way choice, the network ends in one neuron per class. Each produces a raw score saying how strongly the input matches that class.',
-    code: '// classes: Amazon, Google, TCS, Microsoft, ...\n// scores:  [ 2.0, 3.0, 1.0, 0.15, ... ]\n// higher score = stronger match (but not a probability yet)',
+      'Upload the PDF once and ask Gemini to extract entities in a strict JSON shape. Its large context window reads the whole document, so a handful of batched calls covers thousands of records.',
+    code: 'const EXTRACTION_PROMPT = `From the attached PDF, extract movies\n{START}–{END}. For EACH, output EXACT JSON:\n{ "movie": {"title","year"}, "director": {"name"},\n  "actors": [...], "genres": [...], "themes": [...] }`;',
   },
   {
-    icon: '⚠️', title: 'Scores ≠ Probabilities', titleClass: 'card-title-purple', subtitle: 'Need Normalising',
+    icon: '🔁', title: 'Batch & Retry', titleClass: 'card-title-purple', subtitle: 'Reliable Ingestion',
     description:
-      'Raw scores can be negative or enormous and don’t add up to anything meaningful. To say "30% chance Microsoft" they must become a distribution that sums to 1.',
-    code: '// [ -7, 4, 2, 3 ]  ← raw, not usable as probabilities\n// want → [ 0.0, 0.55, 0.15, 0.30 ]  (sums to 1)',
+      'Extract in batches (50 at a time) and give each batch retries — wait longer on 429 rate limits, shorter on parse/network errors — then retry any failed batches once more.',
+    code: '// 1000 movies ÷ 50 = 20 calls\n// 429 → wait 30s/60s/90s · other → 10s/20s/30s\n// final pass retries whatever failed',
   },
 ];
 
-const SOFTMAX = [
+const GRAPH = [
   {
-    icon: '🔢', title: 'Softmax', titleClass: 'card-title-cyan', subtitle: 'e^z / Σ e^z',
+    icon: '🔗', title: 'Entities → Neo4j', titleClass: 'card-title-cyan', subtitle: 'Nodes & Relationships',
     description:
-      'Exponentiate every score, then divide by the total. The exponent makes everything positive and stretches the gaps; the division normalises to a clean probability distribution.',
-    code: '// for each class i:\n// p_i = e^(z_i) / Σ_j e^(z_j)\n// result: all positive, all sum to 1',
+      'Each entity becomes a node and each connection a typed relationship, inserted inside a transaction so it is all-or-nothing.',
+    code: 'await session.executeWrite(async (tx) => {\n  // MERGE (m:Movie {title})\n  // MERGE (d:Director {name})\n  // MERGE (d)-[:DIRECTED]->(m)\n});',
   },
   {
-    icon: '🏆', title: 'Read The Winner', titleClass: 'card-title-purple', subtitle: 'Highest Probability',
+    icon: '🧲', title: 'MERGE vs CREATE', titleClass: 'card-title-purple', subtitle: 'No Duplicates',
     description:
-      'The output is a probability per class. The largest is the prediction — and you also get the model’s confidence in every alternative.',
-    code: '// softmax → [0.2, 0.3, 0.1, 0.15, 0.05, 0.20]\n// max is 0.30 → "30% chance Microsoft"',
+      'CREATE always makes a new node, so "Zendaya" would appear once per movie. MERGE checks first and reuses the existing node — one Zendaya, connected to everything.',
+    code: '// CREATE (:Actor {name:"Zendaya"}) ×2 → two nodes ❌\n// MERGE  (:Actor {name:"Zendaya"}) ×2 → one node  ✅\n// + create an index so MERGE stays fast',
   },
   {
-    icon: '🛡️', title: 'Stable On Extremes', titleClass: 'card-title-amber', subtitle: 'Big Or Tiny',
+    icon: '📦', title: '+ Pinecone Vectors', titleClass: 'card-title-amber', subtitle: 'The Similarity Side',
     description:
-      'Softmax gracefully handles wildly different scores. A huge gap becomes near-certainty, and even crazy inputs normalise into a sensible split.',
-    code: '// [ -100000, 10, 1000 ]  →  [ 0.0, 0.49, 0.51 ]\n// the tiny score is squeezed out, not broken',
+      'The graph handles relationships; for "similar to" questions we also embed the content and upsert it into Pinecone. Indexing builds both stores in one run.',
+    code: '// graph  → Neo4j (relationships)\n// vectors → Pinecone (similarity)\n// npm run index → build both, once',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 34', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '💻', title: 'Lecture 18', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The multi-class / softmax notebook in the STRIKE GenAI repo — turning many scores into a probability distribution.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 34 →', external: true },
+      'The full indexing pipeline — pdfParser, entityExtractor, graphBuilder, vectorStore and runIndexing — in the graph-rag-movie project.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 18 →', external: true },
   },
   {
-    icon: '🧠', title: 'Softmax Is Everywhere', titleClass: 'card-title-purple', subtitle: 'The Final Layer',
+    icon: '🧰', title: 'The Stack', titleClass: 'card-title-purple', subtitle: 'Graph RAG',
     description:
-      'Every classifier that picks one of many options ends in softmax — including an LLM choosing the next token out of a huge vocabulary.',
-    footer: 'scores → e^z → normalise → distribution',
+      'Neo4j (neo4j-driver) + Pinecone + Gemini (@google/genai) + LangChain.js — the toolset that powers the indexing step.',
+    footer: 'Neo4j · Pinecone · Gemini · LangChain.js',
   },
   {
-    icon: '🔜', title: 'Next: Build An LLM', titleClass: 'card-title-amber', subtitle: 'Day 35 Preview',
+    icon: '🔜', title: 'Next: Querying', titleClass: 'card-title-amber', subtitle: 'Prereq 19 Preview',
     description:
-      'Tomorrow it all connects — Lecture 35: how to build an LLM. Next-token prediction, tokenization, a 50K-way softmax, and embeddings.',
-    link: { href: '/day-035', label: 'Go to Day 35 →' },
+      'Tomorrow is the query side — Lecture 19: classify each question and route it to the graph or the vectors for a hybrid answer.',
+    link: { href: '/day-035', label: 'Go to Prereq 19 →' },
   },
 ];
 
@@ -133,38 +132,38 @@ export default function Day034() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-033" className="day001-nav-btn day001-nav-prev">← Day 33</Link>
-          <p className="day001-datetime">Agentic AI Day 34</p>
-          <Link to="/day-035" className="day001-nav-btn day001-nav-next">Day 35 →</Link>
+          <Link to="/day-033" className="day001-nav-btn day001-nav-prev">← Prereq 17</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 18</p>
+          <Link to="/day-035" className="day001-nav-btn day001-nav-next">Prereq 19 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 34</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 18</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 34 <span aria-hidden="true">🔢</span></h1>
-              <p className="day001-day-theme">MULTI-CLASS CLASSIFICATION &amp; SOFTMAX</p>
+              <h1 className="day001-day-num">PREREQ 18 <span aria-hidden="true">🔗</span></h1>
+              <p className="day001-day-theme">GRAPH RAG — BUILDING THE KNOWLEDGE GRAPH</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '34%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '18%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 34 — from yes/no to <strong>many classes</strong>: which company (Amazon, Google, TCS, Microsoft…)
-          will a student join? The network gives <strong>one raw score per class</strong>, but scores aren’t
-          probabilities. <strong>Softmax</strong> fixes that: <code>e^zᵢ / Σ e^zⱼ</code> makes every value positive,
-          amplifies the gaps, and normalises them to <strong>sum to 1</strong> — so <code>[0.2, 0.3, 0.1, …]</code>{' '}
-          reads as "30% chance Microsoft". It even tames extremes like <code>[-100000, 10, 1000] → [0, 0.49, 0.51]</code>.
-          This is exactly the <strong>output layer of an LLM</strong>, picking the next token from a huge vocabulary.{' '}
-          <em>Tomorrow it all comes together. (From the lecture notebook.)</em>
+          Lecture 18 — the <strong>indexing</strong> pipeline. I parse the PDF and have <strong>Gemini</strong>{' '}
+          extract <strong>structured JSON entities</strong> (movie, director, actors, genres) in{' '}
+          <strong>batches</strong> with retries. Each entity becomes a <strong>Neo4j node</strong> and each
+          connection a typed <strong>relationship</strong>, built with <strong>MERGE</strong> (not CREATE) so there
+          are no duplicate nodes, plus an <strong>index</strong> to keep MERGE fast. The same content is embedded
+          into <strong>Pinecone</strong> for similarity. One <code>npm run index</code> builds the whole knowledge
+          base. <em>Tomorrow I query it.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +178,12 @@ export default function Day034() {
           </ul>
         </section>
 
-        <CardSection icon="🏢" title="MANY CLASSES" cards={MANY} columns={2} />
-        <CardSection icon="🔢" title="SOFTMAX" cards={SOFTMAX} columns={3} />
+        <CardSection icon="📄" title="PDF → ENTITIES" cards={EXTRACT} columns={2} />
+        <CardSection icon="🔗" title="ENTITIES → GRAPH + VECTORS" cards={GRAPH} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Softmax</span><span>#Classification</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GraphRAG</span><span>#Neo4j</span><span>#Pinecone</span>
         </footer>
       </div>
     </div>

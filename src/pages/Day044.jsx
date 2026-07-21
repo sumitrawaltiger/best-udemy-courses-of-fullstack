@@ -2,74 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_OBJECTS = 'https://www.typescriptlang.org/docs/handbook/2/objects.html';
-const TS_ENUMS = 'https://www.typescriptlang.org/docs/handbook/enums.html';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture27and28';
 
 const LEARNT_TODAY = [
-  { title: 'Object types', text: 'describe a record inline: { name: string; age: number } checks every field' },
-  { title: 'Optional properties', text: 'a ? after a key marks it optional — the object is valid with or without it' },
-  { title: 'type aliases', text: 'name a shape once with type User = { … } and reuse it everywhere' },
-  { title: 'readonly', text: 'a readonly field can be set at creation but never reassigned afterward' },
-  { title: 'Tuples', text: 'a fixed-length array where each position has its own type: [string, number]' },
-  { title: 'Enums', text: 'a named set of related constants — Direction.Up reads better than a magic number' },
-  { title: 'Union of literals', text: 'often a "up" | "down" union is lighter than an enum for the same job' },
-  { title: 'Nested shapes', text: 'object types compose — a field can itself be another object or an array of them' },
+  { title: 'Loss measures wrongness', text: 'compare the prediction to the true marks; mean squared error (MSE) turns that gap into one number' },
+  { title: 'The goal', text: 'find the weights (w1, w2, b) that make the loss as small as possible' },
+  { title: 'Gradient = the direction uphill', text: 'the gradient says which way the loss increases — so we step the opposite way' },
+  { title: 'Gradient descent', text: 'w = w − learningRate · gradient, repeated, walks the weights downhill toward low loss' },
+  { title: 'Learning rate', text: 'the step size — too big overshoots, too small crawls; a small value keeps it stable' },
+  { title: 'The training loop', text: 'over many epochs, nudge w1, w2 and b down the loss until predictions get accurate' },
+  { title: 'It converges', text: 'the weights settle (e.g. w1≈4.92, w2≈2.94) and the neuron now predicts marks well' },
+  { title: 'This is how all NNs learn', text: 'the same loop — predict, measure loss, descend — trains an LLM, just with billions of weights' },
 ];
 
-const OBJECTS = [
+const LOSS = [
   {
-    icon: '🧱', title: 'Object Types', titleClass: 'card-title-cyan', subtitle: 'Shape Of A Record',
+    icon: '📉', title: 'Measure The Error', titleClass: 'card-title-cyan', subtitle: 'Loss (MSE)',
     description:
-      'Describe an object’s fields and their types inline. TypeScript then checks every property — a missing field, a wrong type, or an unexpected key all become compile errors.',
-    code: 'let user: { name: string; age: number } = {\n  name: "Sumit",\n  age: 27,\n};\n// missing/extra/wrong field → error',
+      'For each example, take the prediction minus the true value, square it, and average over the dataset. That mean squared error is a single number: how wrong the model is.',
+    code: '// error for one row\ndouble e = predict(study, sleep, w1, w2, b) - marks;\n// loss = average of e*e over all rows (MSE)',
   },
   {
-    icon: '🏷️', title: 'type Aliases', titleClass: 'card-title-purple', subtitle: 'Name It Once',
+    icon: '🎯', title: 'The Objective', titleClass: 'card-title-purple', subtitle: 'Minimise Loss',
     description:
-      'Give a shape a name with type, then reuse it across variables, params and returns. Add ? for optional fields and readonly for values that must never change after creation.',
-    code: 'type User = {\n  readonly id: number;\n  name: string;\n  email?: string;  // optional\n};',
+      'Training is an optimisation problem: adjust the weights so the loss drops. Lower loss means the neuron’s predictions are closer to the real marks.',
+    code: '// find w1, w2, b that minimise the loss\n// = the neuron that fits the data best',
   },
 ];
 
-const STRUCTURED = [
+const DESCENT = [
   {
-    icon: '📐', title: 'Tuples', titleClass: 'card-title-cyan', subtitle: 'Fixed-Position Types',
+    icon: '🧭', title: 'The Gradient', titleClass: 'card-title-cyan', subtitle: 'Which Way To Move',
     description:
-      'A tuple is an array of fixed length where each slot has its own type. Perfect for pairs like coordinates or the [value, setter] returned by React’s useState.',
-    code: 'let point: [number, number] = [10, 20];\nlet entry: [string, number] = ["age", 27];\npoint[0] = "x"; // ❌ must be number',
+      'The gradient of the loss with respect to each weight points uphill — toward more error. We compute it from the data and then move the opposite way to reduce loss.',
+    code: '// gradient w.r.t. each weight, averaged over rows\n// grad_w1 = avg( 2 * e * study )\n// grad_w2 = avg( 2 * e * sleep )\n// grad_b  = avg( 2 * e )',
   },
   {
-    icon: '🎚️', title: 'Enums', titleClass: 'card-title-purple', subtitle: 'Named Constants',
+    icon: '⬇️', title: 'Gradient Descent', titleClass: 'card-title-purple', subtitle: 'Step Downhill',
     description:
-      'An enum groups related constants under readable names, replacing magic numbers or loose strings. Direction.Up is self-documenting and autocompletes.',
-    code: 'enum Direction { Up, Down, Left, Right }\nlet d: Direction = Direction.Up;\n// d = 0 under the hood, "Up" in code',
+      'Subtract a small fraction of the gradient from each weight. The learning rate controls the step size — small and steady beats big and unstable.',
+    code: 'w1 -= lr * grad_w1;\nw2 -= lr * grad_w2;\nb  -= lr * grad_b;\n// one step closer to the best weights',
   },
   {
-    icon: '⚖️', title: 'Enum vs Union', titleClass: 'card-title-amber', subtitle: 'Pick The Lighter One',
+    icon: '🔁', title: 'The Training Loop', titleClass: 'card-title-amber', subtitle: 'Epochs → Learned',
     description:
-      'For many cases a union of string literals does the enum’s job with zero runtime cost and simpler output. Reach for an enum when you want a named, iterable set.',
-    code: 'type Dir = "up" | "down" | "left" | "right";\nlet d: Dir = "up"; // lighter than an enum\n// enum → when you need a real object',
+      'Repeat over many epochs and the weights converge. The trained neuron ends up with real values (around w1≈4.92, w2≈2.94) and predicts marks accurately.',
+    code: 'for (int epoch = 0; epoch < N; epoch++) {\n  // compute gradients over the dataset\n  // update w1, w2, b\n}\n// → learned: w1≈4.92, w2≈2.94',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Object Types', titleClass: 'card-title-cyan', subtitle: 'Handbook',
+    icon: '💻', title: 'Lecture 27–28', titleClass: 'card-title-cyan', subtitle: 'C++ From Scratch',
     description:
-      'The handbook chapter on object types, optional & readonly properties, index signatures and type aliases — the backbone of describing real data.',
-    link: { href: TS_OBJECTS, label: 'Open Object Types →', external: true },
+      'The training code (first.cpp) and the trained model (trained.cpp) with the learned weights, in the STRIKE GenAI repo.',
+    link: { href: GH_LECTURE, label: 'Open the code →', external: true },
   },
   {
-    icon: '🎚️', title: 'Enums Guide', titleClass: 'card-title-purple', subtitle: 'Handbook',
+    icon: '🌍', title: 'The Same Everywhere', titleClass: 'card-title-purple', subtitle: 'Scales Up',
     description:
-      'When enums help, how numeric vs string enums differ, and why a literal union is often the better tool — with the trade-offs spelled out.',
-    link: { href: TS_ENUMS, label: 'Open the Enums docs →', external: true },
+      'Predict, measure loss, follow the gradient down — this exact loop trains everything from this neuron to GPT. Only the size changes.',
+    footer: 'predict → loss → gradient → step → repeat',
   },
   {
-    icon: '🔜', title: 'Next: Interfaces', titleClass: 'card-title-amber', subtitle: 'Day 45 Preview',
+    icon: '🔜', title: 'Next: Non-Linearity', titleClass: 'card-title-amber', subtitle: 'Prereq 29 Preview',
     description:
-      'Tomorrow — interfaces vs type aliases, extending and composing shapes, and how to model the props and data structures React components rely on.',
-    link: { href: '/day-045', label: 'Go to Day 45 →' },
+      'Tomorrow — Lecture 29: why stacking linear neurons stays a straight line, and how activation functions (ReLU) let a network learn curves.',
+    link: { href: '/day-045', label: 'Go to Prereq 29 →' },
   },
 ];
 
@@ -134,39 +133,38 @@ export default function Day044() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-043" className="day001-nav-btn day001-nav-prev">← Day 43</Link>
-          <p className="day001-datetime">TypeScript Day 44</p>
-          <Link to="/day-045" className="day001-nav-btn day001-nav-next">Day 45 →</Link>
+          <Link to="/day-043" className="day001-nav-btn day001-nav-prev">← Prereq 27</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 28</p>
+          <Link to="/day-045" className="day001-nav-btn day001-nav-next">Prereq 29 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Data Types</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 28</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 44 <span aria-hidden="true">🧱</span></h1>
-              <p className="day001-day-theme">OBJECTS, TUPLES &amp; ENUMS</p>
+              <h1 className="day001-day-num">PREREQ 28 <span aria-hidden="true">📉</span></h1>
+              <p className="day001-day-theme">TRAINING FROM SCRATCH — GRADIENT DESCENT (C++)</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '44%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '28%' }} /></div>
 
         <p className="day001-summary">
-          Describing real data. An <strong>object type</strong> — <code>{'{ name: string; age: number }'}</code> —
-          checks every field of a record; a <strong>?</strong> marks a property optional and{' '}
-          <strong>readonly</strong> locks it after creation. Name a shape once with a{' '}
-          <strong>type alias</strong> (<code>type User = {'{ … }'}</code>) and reuse it everywhere. A{' '}
-          <strong>tuple</strong> like <code>[string, number]</code> is a fixed-length array with a type per position
-          (think React’s <code>useState</code>). <strong>Enums</strong> name a set of related constants —
-          <code>Direction.Up</code> beats a magic number — though a <strong>literal union</strong> (
-          <code>"up" | "down"</code>) is often the lighter choice. <em>Next: interfaces.</em>
+          Lecture 28 — the neuron <strong>learns</strong>. A <strong>loss</strong> (mean squared error) measures how
+          wrong the predictions are, and the goal is to make it small. The <strong>gradient</strong> points toward
+          more error, so <strong>gradient descent</strong> steps the opposite way:{' '}
+          <code>w −= learningRate · gradient</code>, repeated over many <strong>epochs</strong>. The weights
+          <strong> converge</strong> (around <code>w1≈4.92, w2≈2.94</code>) and the neuron now predicts marks
+          accurately. This same loop — predict, measure, descend — is exactly how every neural network, up to an LLM,
+          learns. <em>Only the scale changes.</em>
         </p>
 
         <section className="day001-learnt">
@@ -181,12 +179,12 @@ export default function Day044() {
           </ul>
         </section>
 
-        <CardSection icon="🧱" title="OBJECTS & ALIASES" cards={OBJECTS} columns={2} />
-        <CardSection icon="📐" title="TUPLES & ENUMS" cards={STRUCTURED} columns={3} />
+        <CardSection icon="📉" title="MEASURE THE ERROR" cards={LOSS} columns={2} />
+        <CardSection icon="⬇️" title="GRADIENT DESCENT" cards={DESCENT} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Enums</span><span>#Tuples</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GradientDescent</span><span>#Cpp</span><span>#FirstPrinciples</span>
         </footer>
       </div>
     </div>

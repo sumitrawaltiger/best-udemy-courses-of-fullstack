@@ -2,78 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture06';
+const TS_INTERFACES = 'https://www.typescriptlang.org/docs/handbook/2/objects.html';
+const TS_ALIASES = 'https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces';
 
 const LEARNT_TODAY = [
-  { title: 'From answering to acting', text: 'give the agent a tool that runs real terminal commands and it can change your machine, not just talk' },
-  { title: 'The executeCommand tool', text: 'child_process exec runs any shell command and returns stdout or stderr back to the model' },
-  { title: 'OS-aware prompting', text: 'pass os.platform() into the systemInstruction so the AI gives commands that fit your operating system' },
-  { title: 'The build loop', text: 'the AI issues one command, the tool runs it, the result feeds back, and it repeats until done' },
-  { title: 'functionCall + functionResponse', text: 'push both into the history so the model sees exactly what happened after each command' },
-  { title: 'It builds real apps', text: 'file by file the agent scaffolds a calculator and a leetcode-style UI with mkdir, touch and writes' },
-  { title: 'Power and danger', text: 'an AI running shell commands is powerful and risky — sandbox it and review what it runs' },
-  { title: 'A true agent', text: 'perceive the goal, plan a command, act, observe the output, loop — this is real agentic behaviour' },
+  { title: 'interface', text: 'a named contract for an object’s shape: interface User { name: string }' },
+  { title: 'extends', text: 'one interface can build on another — Admin extends User adds fields on top' },
+  { title: 'Declaration merging', text: 'two interfaces with the same name merge into one — unique to interfaces' },
+  { title: 'interface vs type', text: 'both describe shapes; interfaces excel at objects/classes, type aliases at unions & primitives' },
+  { title: 'implements', text: 'a class can promise to satisfy an interface, and TS checks it does' },
+  { title: 'Optional & readonly', text: 'the same ? and readonly modifiers work inside interfaces' },
+  { title: 'Method signatures', text: 'interfaces can describe methods and call signatures, not just data fields' },
+  { title: 'React props', text: 'component props are almost always typed with an interface or a type alias' },
 ];
 
-const ACTION = [
+const INTERFACE = [
   {
-    icon: '🖐️', title: 'Give The AI Hands', titleClass: 'card-title-cyan', subtitle: 'From Words To Actions',
+    icon: '📄', title: 'interface', titleClass: 'card-title-cyan', subtitle: 'A Named Contract',
     description:
-      'So far the model only produced text. Now we hand it a tool that runs terminal commands — so it can create folders, write files, and actually build software on your machine.',
-    code: '// yesterday: the model returned a functionCall\n// today: that call runs a real shell command\n//        → the AI can act on the world',
+      'An interface names the shape an object must have. Anything assigned to it is checked field-by-field — the go-to way to describe records, props and API responses.',
+    code: 'interface User {\n  readonly id: number;\n  name: string;\n  email?: string;\n}\nconst u: User = { id: 1, name: "Sumit" };',
   },
   {
-    icon: '⚡', title: 'The Command Tool', titleClass: 'card-title-purple', subtitle: 'child_process exec',
+    icon: '🧬', title: 'extends & implements', titleClass: 'card-title-purple', subtitle: 'Compose Shapes',
     description:
-      'One function runs any shell command and returns the result. exec is promisified so the agent can await it and read stdout or stderr.',
-    code: 'import { exec } from "child_process";\nimport util from "util";\nconst run = util.promisify(exec);\n\nasync function executeCommand({ command }) {\n  try {\n    const { stdout, stderr } = await run(command);\n    return stderr ? `Error: ${stderr}` : `Success: ${stdout}`;\n  } catch (err) { return `Error: ${err}`; }\n}',
-  },
-  {
-    icon: '💻', title: 'OS-Aware Prompt', titleClass: 'card-title-amber', subtitle: 'os.platform()',
-    description:
-      'Commands differ across Windows, macOS and Linux. Inject os.platform() into the systemInstruction so the model issues commands that actually work on your system.',
-    code: 'import os from "os";\nconst systemInstruction = `You build websites using shell commands,\none at a time. Current OS: ${os.platform()} — match it.`;',
+      'Interfaces compose: extend one to add fields, and have a class implement one to guarantee it matches. This is how larger type hierarchies stay DRY.',
+    code: 'interface Admin extends User {\n  role: "admin";\n}\nclass Account implements User {\n  id = 1; name = "Sumit";\n}',
   },
 ];
 
-const TOOL = [
+const VERSUS = [
   {
-    icon: '📋', title: 'Declare The Tool', titleClass: 'card-title-cyan', subtitle: 'Any Command',
+    icon: '⚖️', title: 'interface vs type', titleClass: 'card-title-cyan', subtitle: 'Which To Reach For',
     description:
-      'The declaration tells the model it can run any terminal command to create, read, write, update or delete files and folders — one primitive, endless power.',
-    code: 'const commandExecuter = {\n  name: "executeCommand",\n  description: "Run any shell command to create/read/write/delete files & folders",\n  parameters: {\n    type: Type.OBJECT,\n    properties: {\n      command: { type: Type.STRING, description: "e.g. mkdir calculator" },\n    },\n    required: ["command"],\n  },\n};',
+      'Both describe shapes. Interfaces shine for objects and classes and can be reopened; type aliases can also express unions, intersections, tuples and primitives. Pick per job.',
+    code: '// object shape → interface\ninterface Point { x: number; y: number }\n// union / primitive → type\ntype Id = string | number;',
   },
   {
-    icon: '♻️', title: 'The Agent Loop', titleClass: 'card-title-purple', subtitle: 'Act → Observe → Repeat',
+    icon: '➕', title: 'Declaration Merging', titleClass: 'card-title-purple', subtitle: 'Interfaces Only',
     description:
-      'The model returns a command; you run it and push both the functionCall and its functionResponse into history. When there is no more call, the task is done.',
-    code: 'while (true) {\n  const res = await ai.models.generateContent({ model, contents: History,\n    config: { systemInstruction, tools: [{ functionDeclarations: [commandExecuter] }] } });\n  const call = res.functionCalls?.[0];\n  if (!call) break;\n  const result = await executeCommand(call.args);\n  History.push({ role: "model", parts: [{ functionCall: call }] });\n  History.push({ role: "user", parts: [{ functionResponse: { name: call.name, response: { result } } }] });\n}',
+      'Declare an interface twice and TypeScript merges the members — handy for augmenting library types. Type aliases can’t do this; a duplicate name is an error.',
+    code: 'interface Win { title: string }\ninterface Win { width: number }\n// merged → { title; width }',
   },
   {
-    icon: '🏗️', title: 'It Builds The App', titleClass: 'card-title-amber', subtitle: 'One Command At A Time',
+    icon: '⚛️', title: 'Typing Props', titleClass: 'card-title-amber', subtitle: 'The React Payoff',
     description:
-      'Given "build a calculator", the agent runs mkdir, touch, then writes HTML, CSS and JS, fixing errors as it goes — a working app scaffolded entirely by the model.',
-    code: '// mkdir calculator\n// touch calculator/index.html\n// write HTML → write CSS → write JS\n// → a working calculator, built by the agent',
+      'Interfaces (or type aliases) describe a component’s props, so JSX usage is checked and autocompleted. This is where Year-1 TypeScript starts paying off in React.',
+    code: 'interface ButtonProps {\n  label: string;\n  onClick: () => void;\n}\nfunction Button({ label, onClick }: ButtonProps) {}',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 06 Code', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'Interfaces', titleClass: 'card-title-cyan', subtitle: 'Handbook',
     description:
-      'The command-running agent plus the calculator and leetcode-platform apps it builds, in the STRIKE GenAI repo.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 06 →', external: true },
+      'Object types & interfaces — extending, optional and readonly members, method signatures and index signatures, with runnable examples.',
+    link: { href: TS_INTERFACES, label: 'Open the Interfaces docs →', external: true },
   },
   {
-    icon: '⚠️', title: 'Run It Safely', titleClass: 'card-title-purple', subtitle: 'Sandbox First',
+    icon: '🔬', title: 'interface vs type', titleClass: 'card-title-purple', subtitle: 'The Difference',
     description:
-      'An agent that executes shell commands can delete files or worse. Try it in a throwaway folder, and print each command before running it.',
-    footer: 'review commands · use a sandbox · version control',
+      'The handbook’s side-by-side on when to use an interface and when a type alias — the exact trade-offs, so you can choose with confidence.',
+    link: { href: TS_ALIASES, label: 'Open the comparison →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Code Reviewer', titleClass: 'card-title-amber', subtitle: 'Day 7 Preview',
+    icon: '🔜', title: 'Next: Advanced Types', titleClass: 'card-title-amber', subtitle: 'Day 7 Preview',
     description:
-      'Tomorrow is Lecture 07 — build a Code Reviewer agent with list_files, read_file and write_file tools that scans a project and fixes real issues.',
+      'Tomorrow — unions & intersections, literal narrowing, type guards, and the utility types (Partial, Pick, Record) that reshape existing types.',
     link: { href: '/day-007', label: 'Go to Day 7 →' },
   },
 ];
@@ -140,23 +135,23 @@ export default function Day006() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-005" className="day001-nav-btn day001-nav-prev">← Day 5</Link>
-          <p className="day001-datetime">Agentic AI Day 6</p>
+          <p className="day001-datetime">TypeScript Day 6</p>
           <Link to="/day-007" className="day001-nav-btn day001-nav-next">Day 7 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 06</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Interfaces</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 6 <span aria-hidden="true">🏗️</span></h1>
-              <p className="day001-day-theme">THE COMMAND AGENT — AI THAT BUILDS APPS</p>
+              <h1 className="day001-day-num">DAY 6 <span aria-hidden="true">📄</span></h1>
+              <p className="day001-day-theme">INTERFACES &amp; TYPE ALIASES</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -164,13 +159,13 @@ export default function Day006() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '6%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 06 — the agent gets <strong>hands</strong>. I gave it an <code>executeCommand</code> tool backed by{' '}
-          <strong>child_process exec</strong>, so the model can run real <strong>shell commands</strong> — create
-          folders, write files, build software. The <strong>systemInstruction</strong> is <strong>OS-aware</strong>{' '}
-          via <code>os.platform()</code>, and the <strong>agent loop</strong> pushes each <code>functionCall</code>{' '}
-          and <code>functionResponse</code> into history until the job is done. Given a goal, it scaffolds a{' '}
-          <strong>calculator</strong> and a <strong>leetcode-style UI</strong> one command at a time. Powerful — and
-          worth sandboxing. <em>Perceive, plan, act, observe.</em>
+          An <strong>interface</strong> is a named contract for an object’s shape — the go-to for records, API
+          responses and, above all, <strong>React props</strong>. Interfaces <strong>compose</strong>:{' '}
+          <code>extends</code> builds one on another, a class can <code>implements</code> one, and two interfaces of
+          the same name <strong>merge</strong> (something type aliases can’t do). So when do you use{' '}
+          <strong>interface vs type</strong>? Reach for an <em>interface</em> for object and class shapes; reach for a{' '}
+          <em>type alias</em> when you also need unions, intersections, tuples or primitives. Both check field-by-field
+          — pick the one that fits the shape. <em>Next: advanced types.</em>
         </p>
 
         <section className="day001-learnt">
@@ -185,12 +180,12 @@ export default function Day006() {
           </ul>
         </section>
 
-        <CardSection icon="🖐️" title="FROM CHAT TO ACTION" cards={ACTION} columns={3} />
-        <CardSection icon="🏗️" title="THE AGENT BUILD LOOP" cards={TOOL} columns={3} />
+        <CardSection icon="📄" title="INTERFACES" cards={INTERFACE} columns={2} />
+        <CardSection icon="⚖️" title="INTERFACE vs TYPE" cards={VERSUS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Agents</span><span>#CoderArmy</span><span>#JavaScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Interfaces</span><span>#React</span>
         </footer>
       </div>
     </div>

@@ -2,74 +2,80 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_INSTALL = 'https://www.typescriptlang.org/download';
-const TSCONFIG_DOCS = 'https://www.typescriptlang.org/tsconfig';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture25';
+const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
 
 const LEARNT_TODAY = [
-  { title: 'Install TypeScript', text: 'npm i -D typescript adds the compiler to a project; -g installs it globally for quick scripts' },
-  { title: 'tsc --version', text: 'confirms the compiler is on your PATH and shows which version you are running' },
-  { title: 'tsc --init', text: 'generates a tsconfig.json — the single file that configures how your whole project compiles' },
-  { title: 'tsconfig.json', text: 'sets the target JS version, module system, output folder and how strict the checks are' },
-  { title: 'strict mode', text: 'the most valuable flag — turns on all the safety checks; keep it "true" from day one' },
-  { title: 'Watch mode', text: 'tsc --watch recompiles automatically on every save, so you see errors instantly' },
-  { title: 'ts-node', text: 'runs .ts files directly without a separate build step — handy for scripts and experiments' },
-  { title: 'Editor is the compiler', text: 'VS Code uses the same tsc engine, so red squiggles appear before you ever run a build' },
+  { title: 'The build agents', text: 'Coder writes a task, Reviewer checks it, Executor runs it in Docker, Debugger fixes real errors' },
+  { title: 'The dev loop', text: 'selectNextTask → contextBuilder → Coder → Reviewer → Executor → snapshot, then repeat' },
+  { title: 'The review gate', text: 'approved → execute; rejected ≤2 → re-code; rejected >2 → simplify the task instead of forcing it' },
+  { title: 'Real execution', text: 'the Executor runs code in the Docker sandbox and captures actual output, not a guess' },
+  { title: 'Debug or escalate', text: 'on failure the Debugger diagnoses and re-codes; if it can’t, it escalates to a human' },
+  { title: 'Snapshots & rollback', text: 'Git commits after each task give a safe point; a failed debug rolls back to it' },
+  { title: 'Token control', text: 'stateCompactor and a token tracker keep the growing state and cost under budget' },
+  { title: 'Checkpointed & resumable', text: 'MemorySaver persists state so the whole team survives a crash and resumes mid-build' },
 ];
 
-const INSTALL = [
+const LOOP = [
   {
-    icon: '📦', title: 'Add The Compiler', titleClass: 'card-title-cyan', subtitle: 'npm i -D typescript',
+    icon: '🔁', title: 'The Dev Loop', titleClass: 'card-title-cyan', subtitle: 'One Task At A Time',
     description:
-      'Install TypeScript as a dev dependency so the version is pinned per project. Then invoke it through npx, an npm script, or globally for one-off files.',
-    code: '# per project (recommended)\nnpm i -D typescript\nnpx tsc --version\n\n# or global\nnpm i -g typescript',
+      'selectNextTask picks the next task, contextBuilder gathers what the Coder needs, the Coder writes it, the Reviewer checks it, and the Executor runs it — then loop to the next task.',
+    code: '// selectNextTask → contextBuilder → coderAgent\n// → reviewerAgent → executorAgent → snapshot\n// → back to selectNextTask',
   },
   {
-    icon: '🚀', title: 'Compile & Run', titleClass: 'card-title-purple', subtitle: '.ts → .js → Node',
+    icon: '🚦', title: 'The Review Gate', titleClass: 'card-title-purple', subtitle: 'Approve Or Retry',
     description:
-      'Run tsc to emit JavaScript, or use ts-node to execute a .ts file directly. Watch mode rebuilds on every save so feedback is instant.',
-    code: '# compile once\nnpx tsc index.ts && node index.js\n\n# run directly\nnpx ts-node index.ts\n\n# rebuild on save\nnpx tsc --watch',
+      'The Reviewer’s verdict routes the flow: approved code goes to the Executor; rejected code (up to twice) goes back to the Coder; a third rejection triggers task simplification.',
+    code: '// approved      → executorAgent\n// rejected (≤2)  → coderAgent (retry)\n// rejected (>2)  → simplifyTask',
+  },
+  {
+    icon: '🧪', title: 'Run It For Real', titleClass: 'card-title-amber', subtitle: 'Executor + Snapshot',
+    description:
+      'The Executor runs the code in the Docker sandbox. On pass, a Git snapshot commits the progress. On fail, the flow hands off to the Debugger.',
+    code: '// executor pass → snapshot (git commit)\n// executor fail → debuggerAgent',
   },
 ];
 
-const CONFIG = [
+const RESILIENCE = [
   {
-    icon: '🛠️', title: 'tsc --init', titleClass: 'card-title-cyan', subtitle: 'Create tsconfig',
+    icon: '🐞', title: 'Debug Or Escalate', titleClass: 'card-title-cyan', subtitle: 'When Code Fails',
     description:
-      'One command scaffolds a fully commented tsconfig.json. It becomes the source of truth: run tsc with no file args and it compiles the whole project by these rules.',
-    code: '$ npx tsc --init\n// → creates tsconfig.json\n// then just: npx tsc',
+      'The Debugger reads the real error, finds the root cause, and sends a fix back to the Coder. If it still can’t fix it, humanEscalation asks a person to skip or guide.',
+    code: '// debugger fix     → coderAgent (try again)\n// debugger stuck   → humanEscalation → skip/guide',
   },
   {
-    icon: '⚙️', title: 'Key Options', titleClass: 'card-title-purple', subtitle: 'The Essentials',
+    icon: '↩️', title: 'Snapshots & Rollback', titleClass: 'card-title-purple', subtitle: 'Undo Bad Code',
     description:
-      'target sets the JS version you emit, module the import style, outDir/rootDir keep source and build separate, and strict switches on every safety check.',
-    code: '{\n  "target": "ES2022",\n  "module": "ESNext",\n  "rootDir": "src",\n  "outDir": "dist",\n  "strict": true\n}',
+      'Because every task is committed to Git in the sandbox, a broken change can be rolled back to the last good snapshot — the team never digs itself into a hole.',
+    code: '// good task → git commit (snapshot)\n// debug failure → rollback to last snapshot',
   },
   {
-    icon: '🔒', title: 'Turn On strict', titleClass: 'card-title-amber', subtitle: 'Non-Negotiable',
+    icon: '🧮', title: 'Budget & Verify', titleClass: 'card-title-amber', subtitle: 'Stay In Control',
     description:
-      'strict bundles noImplicitAny, strictNullChecks and more. It’s where TypeScript earns its keep — leave it on from the start so bad habits never form.',
-    footer: 'strict = noImplicitAny + strictNullChecks + …',
+      'phaseVerification confirms each phase is done, patternExtractor keeps code consistent, stateCompactor and the token tracker cap cost — then presentToUser and END.',
+    footer: 'verify · compact · budget · present → END',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '⬇️', title: 'Install Guide', titleClass: 'card-title-cyan', subtitle: 'Official',
+    icon: '💻', title: 'Lecture 25', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The official download & setup page — npm, per-project vs global, and editor integration for VS Code and others.',
-    link: { href: TS_INSTALL, label: 'Open install guide →', external: true },
+      'The complete ai-dev-team-final project — all 8 agents, the full dev-loop graph, snapshots, escalation and token control.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 25 →', external: true },
   },
   {
-    icon: '📄', title: 'tsconfig Reference', titleClass: 'card-title-purple', subtitle: 'Every Flag',
+    icon: '🏆', title: 'An Autonomous Team', titleClass: 'card-title-purple', subtitle: 'It All Comes Together',
     description:
-      'The complete tsconfig reference — every compiler option explained with examples. Bookmark it; you’ll come back to tune strictness and paths.',
-    link: { href: TSCONFIG_DOCS, label: 'Open tsconfig docs →', external: true },
+      'Prompts, tools, RAG, memory, LangGraph and multi-agent orchestration — combined into a system that plans, codes, tests, debugs and iterates on real software.',
+    link: { href: '/genai', label: 'Open the GenAI track →' },
   },
   {
-    icon: '🔜', title: 'Next: Type Basics', titleClass: 'card-title-amber', subtitle: 'Day 42 Preview',
+    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
     description:
-      'Tomorrow — the core type system: string, number, boolean, arrays, any vs unknown, and how annotations and inference work together.',
-    link: { href: '/day-042', label: 'Go to Day 42 →' },
+      'The full Coder Army course code — next up, Lecture 26 adds a live React dashboard (WebSocket) over the AI Dev Team.',
+    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
   },
 ];
 
@@ -134,38 +140,38 @@ export default function Day041() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-040" className="day001-nav-btn day001-nav-prev">← Day 40</Link>
-          <p className="day001-datetime">TypeScript Day 41</p>
-          <Link to="/day-042" className="day001-nav-btn day001-nav-next">Day 42 →</Link>
+          <Link to="/day-040" className="day001-nav-btn day001-nav-prev">← Prereq 24</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 25</p>
+          <Link to="/day-042" className="day001-nav-btn day001-nav-next">Prereq 26 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Setup</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 25</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 41 <span aria-hidden="true">🛠️</span></h1>
-              <p className="day001-day-theme">SETTING UP TYPESCRIPT</p>
+              <h1 className="day001-day-num">PREREQ 25 <span aria-hidden="true">🏆</span></h1>
+              <p className="day001-day-theme">AI DEV TEAM — THE FULL DEV LOOP</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '41%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '25%' }} /></div>
 
         <p className="day001-summary">
-          Getting a project running. Install the compiler with <code>npm i -D typescript</code>, then either{' '}
-          <code>tsc</code> to emit JavaScript or <code>ts-node</code> to run a <code>.ts</code> file directly.{' '}
-          <code>tsc --init</code> scaffolds a <strong>tsconfig.json</strong> — the one file that configures the whole
-          project: <code>target</code> (JS version), <code>module</code>, <code>rootDir</code>/<code>outDir</code>, and
-          the all-important <strong>strict</strong> flag. Turn <code>strict</code> on from day one — it bundles{' '}
-          <code>noImplicitAny</code>, <code>strictNullChecks</code> and more. Run <code>tsc --watch</code> and your
-          editor shows errors the instant you save. <em>Next: the core types.</em>
+          Lecture 25 completes the team. The <strong>build agents</strong> join in a <strong>dev loop</strong>:{' '}
+          <strong>selectNextTask → Coder → Reviewer → Executor</strong>, then snapshot and repeat. The Reviewer is a{' '}
+          <strong>gate</strong> — approve, re-code (≤2), or <strong>simplify</strong> a stubborn task. The Executor
+          runs code <strong>for real in Docker</strong>; failures go to the <strong>Debugger</strong>, which fixes or{' '}
+          <strong>escalates to a human</strong>. Git <strong>snapshots</strong> allow rollback, and{' '}
+          <strong>checkpoints</strong> + a <strong>token budget</strong> keep it resilient and affordable. An{' '}
+          autonomous team that actually ships. <em>25 lectures in.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +186,12 @@ export default function Day041() {
           </ul>
         </section>
 
-        <CardSection icon="📦" title="INSTALL & RUN" cards={INSTALL} columns={2} />
-        <CardSection icon="🛠️" title="TSCONFIG.JSON" cards={CONFIG} columns={3} />
+        <CardSection icon="🔁" title="THE DEV LOOP" cards={LOOP} columns={3} />
+        <CardSection icon="🛟" title="WHEN THINGS FAIL" cards={RESILIENCE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#tsconfig</span><span>#DevTools</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AIDevTeam</span><span>#LangGraph</span><span>#Agents</span>
         </footer>
       </div>
     </div>

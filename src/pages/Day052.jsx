@@ -2,74 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const USESTATE_TS = 'https://react.dev/learn/typescript#typing-usestate';
-const REACT_STATE = 'https://react.dev/learn/state-a-components-memory';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture37%20and%2038';
+const NOTION = 'https://www.notion.so/Multi-class-classification-345a9af81c9880dd9f8cd3b7dca8fa25';
 
 const LEARNT_TODAY = [
-  { title: 'useState<T>', text: 'state is typed — const [n, setN] = useState<number>(0), or inferred from the initial value' },
-  { title: 'Inference', text: 'useState(0) infers number; pass the generic only when the initial value is null or ambiguous' },
-  { title: 'Union state', text: 'useState<User | null>(null) models "loading then loaded" safely' },
-  { title: 'Updater functions', text: 'setN(prev => prev + 1) keeps the previous-value type intact' },
-  { title: 'Controlled inputs', text: 'value + onChange with a typed ChangeEvent keeps form state and UI in sync' },
-  { title: 'Lifting state up', text: 'move shared state to a parent and pass typed props down — one source of truth' },
-  { title: 'Object & array state', text: 'type the shape once, then update immutably with spreads' },
-  { title: 'setState is stable', text: 'the setter identity never changes, so it’s safe in effect dependency arrays' },
+  { title: 'A real neural network', text: 'not one neuron — a 5 → 16 → 10 network: 5 features, a hidden layer of 16, and 10 output classes' },
+  { title: 'Predict the company', text: 'from dsa, projects, iq, cgpa, attendance → which of 10 companies places the student' },
+  { title: 'Why a hidden layer', text: 'one layer only draws straight boundaries; the hidden layer learns feature interactions like "high CGPA AND high projects"' },
+  { title: 'ReLU adds non-linearity', text: 'ReLU(x) = max(0, x) kills negative signals — a switch that lets useful patterns through and blocks the rest' },
+  { title: 'Softmax output', text: 'the 10 output neurons go through softmax → a probability per company that sums to 1' },
+  { title: 'Standardize features', text: 'z-score each feature (mean 0, std 1) so iq (~120) doesn’t dominate cgpa (~8) by scale alone' },
+  { title: 'He initialization', text: 'random weights with std = √(2 / fanIn) keep signals stable through ReLU layers' },
+  { title: 'Train it', text: 'cross-entropy loss + mini-batch gradient descent over 500 epochs, on an 80/20 train/test split' },
 ];
 
-const STATE = [
+const NET = [
   {
-    icon: '🔢', title: 'useState<T>', titleClass: 'card-title-cyan', subtitle: 'Typed State',
+    icon: '🕸️', title: 'The Architecture', titleClass: 'card-title-cyan', subtitle: '5 → 16 → 10',
     description:
-      'useState infers its type from the initial value, so useState(0) is number. Pass the generic explicitly only when the initial value doesn’t reveal the type — like null.',
-    code: 'const [count, setCount] = useState(0);        // number\nconst [user, setUser] = useState<User | null>(null);\nsetCount(prev => prev + 1); // typed updater',
+      'Five input features feed a hidden layer of 16 neurons, which feeds 10 output neurons — one per company. Two layers of weights, learned from scratch in pure C++.',
+    code: '// Input : 5  (dsa, projects, iq, cgpa, attendance)\n// Hidden: 16 + ReLU\n// Output: 10 + Softmax   (10 companies)\n// Loss  : cross-entropy',
   },
   {
-    icon: '⌨️', title: 'Controlled Inputs', titleClass: 'card-title-purple', subtitle: 'value + onChange',
+    icon: '🔀', title: 'Why A Hidden Layer', titleClass: 'card-title-purple', subtitle: 'Learn Interactions',
     description:
-      'A controlled input binds value to state and updates it through a typed onChange. State is the single source of truth, and the ChangeEvent gives you a correctly-typed target.',
-    code: 'const [name, setName] = useState("");\n<input value={name}\n  onChange={e => setName(e.target.value)} />',
+      'A single layer can only split data with straight lines. Placement is non-linear: "high CGPA + low projects" leads somewhere different than "high CGPA + high projects". The hidden layer captures that.',
+    code: '// no hidden layer → straight boundary only\n// hidden layer → learns feature combinations\n// ReLU makes the combinations non-linear',
   },
 ];
 
-const PATTERNS = [
+const PIECES = [
   {
-    icon: '⬆️', title: 'Lifting State Up', titleClass: 'card-title-cyan', subtitle: 'One Source Of Truth',
+    icon: '⚡', title: 'ReLU', titleClass: 'card-title-cyan', subtitle: 'max(0, x)',
     description:
-      'When two components need the same data, move it to their nearest parent and pass it down as typed props with a typed setter. The types make the data-flow contract explicit.',
-    code: 'function Parent() {\n  const [q, setQ] = useState("");\n  return <Child q={q} onChange={setQ} />;\n}\n// Child props: { q: string; onChange: (v: string) => void }',
+      'The hidden layer’s activation. It zeroes out negative values, acting like a switch — useful signals pass, noise is blocked. That bend is what lets the network model curves.',
+    code: 'double relu(double x) {\n  return x > 0 ? x : 0.0;\n}\n// negative → 0, positive → unchanged',
   },
   {
-    icon: '🧩', title: 'Object & Array State', titleClass: 'card-title-purple', subtitle: 'Shape It Once',
+    icon: '📊', title: 'Standardize', titleClass: 'card-title-purple', subtitle: 'Z-Score',
     description:
-      'Type the state’s shape, then update it immutably with spreads so React detects the change. The type guards against forgetting a field or setting the wrong one.',
-    code: 'const [form, setForm] = useState({ name: "", age: 0 });\nsetForm(f => ({ ...f, age: 27 })); // typed, immutable',
+      'Rescale every feature to mean 0, std 1. Without it iq (~120) would swamp cgpa (~8) purely by magnitude. Now the network learns from pattern, not scale.',
+    code: '// per feature j:\n// x = (x - mean[j]) / std[j]\n// → every feature centred, comparable',
   },
   {
-    icon: '🔗', title: 'Stable Setters', titleClass: 'card-title-amber', subtitle: 'Safe In Deps',
+    icon: '🎲', title: 'He Init + Softmax', titleClass: 'card-title-amber', subtitle: 'Stable Start, Clean Output',
     description:
-      'React guarantees the setter from useState keeps the same identity across renders, so it’s safe to list in an effect’s dependency array without causing loops.',
-    code: 'useEffect(() => {\n  setUser(fetchedUser);\n}, [setUser]); // setUser never changes',
+      'Weights start random with std = √(2/fanIn) (He init) so signals don’t vanish or explode through ReLU. The 10 outputs pass through softmax to a probability per company.',
+    code: '// weight ~ Normal(0, sqrt(2/fanIn))\n// output → softmax → [p0..p9], Σ = 1\n// argmax = predicted company',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Typing useState', titleClass: 'card-title-cyan', subtitle: 'react.dev',
+    icon: '💻', title: 'Lectures 37 & 38', titleClass: 'card-title-cyan', subtitle: 'C++ Neural Net',
     description:
-      'The official note on typing state — inference, explicit generics, and union types for loading/loaded states.',
-    link: { href: USESTATE_TS, label: 'Open the useState guide →', external: true },
+      'placement_nn.cpp, placement_data.csv and predict.cpp in the STRIKE GenAI repo — a full multi-class network built by hand.',
+    link: { href: GH_LECTURE, label: 'Open Lectures 37 & 38 →', external: true },
   },
   {
-    icon: '🧠', title: 'State: A Memory', titleClass: 'card-title-purple', subtitle: 'react.dev',
+    icon: '📝', title: 'Multi-Class Notes', titleClass: 'card-title-purple', subtitle: 'Notion',
     description:
-      'React’s mental model for state — why it triggers re-renders, and how to structure it — the concepts behind the types.',
-    link: { href: REACT_STATE, label: 'Open the State guide →', external: true },
+      'Rohit’s notes on multi-class classification — the hidden layer, ReLU, softmax and cross-entropy tied together.',
+    link: { href: NOTION, label: 'Open the notes →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Hooks', titleClass: 'card-title-amber', subtitle: 'Day 53 Preview',
+    icon: '🔜', title: 'Next: Tokenizer', titleClass: 'card-title-amber', subtitle: 'Prereq 37 Preview',
     description:
-      'Tomorrow — typing the other hooks: useEffect, useRef<T>, useContext and building your own typed custom hooks.',
-    link: { href: '/day-053', label: 'Go to Day 53 →' },
+      'Tomorrow — Lecture 39: build a Byte-Pair-Encoding tokenizer from scratch, the first real step of turning text into an LLM’s input.',
+    link: { href: '/day-053', label: 'Go to Prereq 37 →' },
   },
 ];
 
@@ -134,38 +134,39 @@ export default function Day052() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-051" className="day001-nav-btn day001-nav-prev">← Day 51</Link>
-          <p className="day001-datetime">TypeScript Day 52</p>
-          <Link to="/day-053" className="day001-nav-btn day001-nav-next">Day 53 →</Link>
+          <Link to="/day-051" className="day001-nav-btn day001-nav-prev">← Prereq 35</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 36</p>
+          <Link to="/day-053" className="day001-nav-btn day001-nav-next">Prereq 37 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>React State</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 37 &amp; 38</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 52 <span aria-hidden="true">🔢</span></h1>
-              <p className="day001-day-theme">TYPED STATE &amp; CONTROLLED INPUTS</p>
+              <h1 className="day001-day-num">PREREQ 36 <span aria-hidden="true">🕸️</span></h1>
+              <p className="day001-day-theme">MULTI-CLASS NEURAL NETWORK IN C++</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '52%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '36%' }} /></div>
 
         <p className="day001-summary">
-          State, fully typed. <strong>useState</strong> infers its type from the initial value — <code>useState(0)</code>{' '}
-          is <code>number</code> — and you pass a generic (<code>useState&lt;User | null&gt;(null)</code>) only when
-          the value is ambiguous, which neatly models <em>loading → loaded</em>. Updater functions{' '}
-          (<code>setN(p =&gt; p + 1)</code>) keep the previous-value type. <strong>Controlled inputs</strong> bind{' '}
-          <code>value</code> + a typed <code>onChange</code>, and <strong>lifting state up</strong> passes typed props
-          to a shared parent. Update objects and arrays <strong>immutably</strong> with spreads — the types stop you
-          dropping a field. <em>Next: the rest of the hooks.</em>
+          Lectures 37 &amp; 38 — a real <strong>neural network</strong>, built in C++. The task: predict which of{' '}
+          <strong>10 companies</strong> places a student from <strong>dsa, projects, iq, cgpa, attendance</strong>. The
+          shape is <strong>5 → 16 → 10</strong>: five inputs, a <strong>hidden layer of 16</strong> with{' '}
+          <strong>ReLU</strong>, then 10 outputs through <strong>softmax</strong>. The hidden layer is the point — it
+          learns feature <strong>interactions</strong> a single layer can’t. Features are{' '}
+          <strong>z-score standardized</strong>, weights start with <strong>He init</strong>{' '}
+          <code>√(2/fanIn)</code>, and it trains with <strong>cross-entropy + mini-batch gradient descent</strong>.{' '}
+          <em>Next: tokenization.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +181,12 @@ export default function Day052() {
           </ul>
         </section>
 
-        <CardSection icon="🔢" title="useState & INPUTS" cards={STATE} columns={2} />
-        <CardSection icon="⬆️" title="STATE PATTERNS" cards={PATTERNS} columns={3} />
+        <CardSection icon="🕸️" title="THE NETWORK" cards={NET} columns={2} />
+        <CardSection icon="🧩" title="THE PIECES" cards={PIECES} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#React</span><span>#useState</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#NeuralNetworks</span><span>#Cpp</span><span>#FirstPrinciples</span>
         </footer>
       </div>
     </div>

@@ -2,75 +2,94 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture20';
-const NOTION = 'https://www.notion.so/LangGraph-306a9af81c9880aaa2e3e37d1384063f';
-const LANGGRAPH_DOCS = 'https://langchain-ai.github.io/langgraphjs/';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture04';
+const COINGECKO = 'https://www.coingecko.com/en/api';
 
 const LEARNT_TODAY = [
-  { title: 'Chains are too rigid', text: 'a chain runs steps in a fixed line — real agent workflows need branching, loops and control' },
-  { title: 'LangGraph', text: 'build agent workflows as a graph of nodes and edges, with a shared state flowing through it' },
-  { title: 'State', text: 'a single state object passes between nodes; each node reads it and returns updates to it' },
-  { title: 'Nodes', text: 'each node is a step — an LLM call, a tool, or a sub-agent — that transforms the state' },
-  { title: 'Edges', text: 'edges define the flow from node to node; the graph starts at an entry and ends at END' },
-  { title: 'Conditional edges', text: 'branch based on the state — send the flow one way or another depending on what happened' },
-  { title: 'Cycles', text: 'unlike a chain, a graph can loop — think → act → observe → think — the true agent loop' },
-  { title: 'Human-in-the-loop', text: 'pause the graph for approval before a critical action, then resume' },
+  { title: 'The knowledge gap', text: 'an LLM only knows its training data up to a cutoff — no live prices, weather, or today’s news' },
+  { title: 'Tools are just functions', text: 'to reach live data, write plain JavaScript functions that call real APIs and return the result' },
+  { title: 'fetch in Node', text: 'modern Node has fetch built in — hit any REST endpoint and parse the JSON response' },
+  { title: 'Crypto price tool', text: 'a getCryptoPrice(coin) function fetches live prices from the CoinGecko API' },
+  { title: 'Weather & news tools', text: 'the same pattern — one function per data source (weather API, news API)' },
+  { title: 'The routing problem', text: 'given a user question, which tool should run? A manual if/else chain is brittle and does not scale' },
+  { title: 'Why this matters', text: 'this sets up function calling — instead of routing by hand, let the model choose the tool (Day 5)' },
 ];
 
-const WHY = [
+const GAP = [
   {
-    icon: '📏', title: 'Beyond Chains', titleClass: 'card-title-cyan', subtitle: 'Rigid & Linear',
+    icon: '🕳️', title: 'The Knowledge Cutoff', titleClass: 'card-title-cyan', subtitle: 'No Live Data',
     description:
-      'A LangChain chain is a straight line: A → B → C. But agents need to decide, retry, branch and loop. Cramming that into a linear chain gets messy fast.',
-    code: '// chain: prompt → model → parser   (one direction)\n// agent: think → maybe call a tool → observe → repeat\n//        with branches and loops → needs a graph',
+      'The model was trained up to a date and frozen. Ask for the Bitcoin price or today’s weather and it cannot know — it has no connection to the live world.',
+    code: '// "What is the price of Bitcoin right now?"\n// → the model has no idea — training data is frozen',
   },
   {
-    icon: '🕸️', title: 'A Graph Of Steps', titleClass: 'card-title-purple', subtitle: 'LangGraph',
+    icon: '🌉', title: 'Bridge To Reality', titleClass: 'card-title-purple', subtitle: 'Give It Tools',
     description:
-      'LangGraph models the workflow as a graph. You declare a shared state, add nodes (steps), and connect them with edges — including conditional ones and cycles.',
-    code: "import { StateGraph, END } from '@langchain/langgraph';\n\nconst graph = new StateGraph({ channels: stateSchema })\n  .addNode('agent', callModel)\n  .addNode('tools', runTools);",
+      'The fix is to fetch real data ourselves and hand it to the model. A "tool" is nothing magical — it is a normal function that calls an API and returns fresh information.',
+    code: '// tool = a function the AI can use to reach the real world\n// fetch live data → feed it back into the answer',
   },
 ];
 
-const MODEL = [
+const TOOLS = [
   {
-    icon: '📦', title: 'State', titleClass: 'card-title-cyan', subtitle: 'The Shared Object',
+    icon: '🪙', title: 'Crypto Price Tool', titleClass: 'card-title-cyan', subtitle: 'CoinGecko API',
     description:
-      'One state object flows through the whole graph. Every node receives it and returns a partial update, which LangGraph merges — so each step builds on the last.',
-    code: '// state = { messages, question, context, answer }\n// each node returns e.g. { messages: [...newMsgs] }\n// LangGraph merges updates into the state',
+      'A function takes a coin id, calls the CoinGecko API, and returns the live price data. Node’s built-in fetch makes it a couple of lines.',
+    code: 'async function getCryptoPrice(coin) {\n  const res = await fetch(\n    `https://api.coingecko.com/api/v3/coins/markets` +\n    `?vs_currency=inr&ids=${coin}`\n  );\n  return await res.json();\n}\nawait getCryptoPrice("bitcoin");',
   },
   {
-    icon: '🔗', title: 'Nodes & Edges', titleClass: 'card-title-purple', subtitle: 'Steps & Flow',
+    icon: '🌦️', title: 'Weather & News', titleClass: 'card-title-purple', subtitle: 'Same Pattern',
     description:
-      'A node is a function that transforms the state. Edges wire nodes together, with an entry point and END. Conditional edges branch on the current state.',
-    code: "graph.addEdge('agent', 'tools');\ngraph.addConditionalEdges('agent', shouldContinue, {\n  continue: 'tools',   // needs a tool → run it\n  end: END,            // done → finish\n});",
+      'Every data source is one more function: a weather API by city, a news API by topic. Consistent shape — take an argument, fetch, return JSON.',
+    code: 'async function getWeather(city) {\n  const res = await fetch(`.../current.json?q=${city}`);\n  return await res.json();\n}\nasync function getNews(topic) { /* fetch news */ }',
   },
   {
-    icon: '♻️', title: 'Cycles & Control', titleClass: 'card-title-amber', subtitle: 'Loops + Oversight',
+    icon: '🔌', title: 'fetch Is Built In', titleClass: 'card-title-amber', subtitle: 'No Extra Library',
     description:
-      'Because it is a graph, the flow can loop back — call a tool, observe, and return to the model — the real agent loop. You can also pause for human approval mid-run.',
-    code: "graph.addEdge('tools', 'agent'); // loop back to think again\n// + interrupt before a critical node for\n//   human-in-the-loop approval",
+      'Modern Node ships fetch, so calling REST APIs needs nothing extra. Await the response, parse the JSON, and you have real-world data inside your program.',
+    code: 'const res = await fetch(url);\nconst data = await res.json();\n// live data — ready to feed the model',
+  },
+];
+
+const ROUTING = [
+  {
+    icon: '🤔', title: 'Which Tool?', titleClass: 'card-title-cyan', subtitle: 'The Real Problem',
+    description:
+      'Now the hard part: for a given question, which function should run? "Delhi ki news bata" → news. "Bitcoin price?" → crypto. Deciding this in code is the whole challenge.',
+    code: '// question: "Bhai delhi ki news bata"\n// → should call getNews("delhi") ... but how does the code know?',
+  },
+  {
+    icon: '🧱', title: 'Manual Routing Breaks', titleClass: 'card-title-purple', subtitle: 'if / else Does Not Scale',
+    description:
+      'Hard-coding keyword checks (if the text has "price" call crypto…) is fragile and explodes as you add tools. Natural language is too varied for if/else.',
+    code: 'if (q.includes("price")) getCryptoPrice(...)\nelse if (q.includes("weather")) getWeather(...)\nelse if (q.includes("news")) getNews(...)\n// brittle, and worse with every new tool',
+  },
+  {
+    icon: '➡️', title: 'The Better Way', titleClass: 'card-title-amber', subtitle: 'Let The Model Decide',
+    description:
+      'Instead of routing by hand, describe the tools to the model and let it choose which one to call and with what arguments. That is function calling — tomorrow’s lecture.',
+    footer: 'Manual routing → function calling (Day 5)',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📝', title: 'LangGraph Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    icon: '💻', title: 'Lecture 04 Code', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'Rohit’s LangGraph write-up — state, nodes, edges and building stateful agent workflows.',
-    link: { href: NOTION, label: 'Open the LangGraph notes →', external: true },
+      'The crypto, weather and news functions and the routing experiment from this lecture in the STRIKE GenAI repo.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 04 →', external: true },
   },
   {
-    icon: '📘', title: 'LangGraph.js Docs', titleClass: 'card-title-purple', subtitle: 'Official',
+    icon: '📈', title: 'CoinGecko API', titleClass: 'card-title-purple', subtitle: 'Free Crypto Data',
     description:
-      'The LangGraph.js documentation — StateGraph, conditional edges, cycles, checkpoints and human-in-the-loop.',
-    link: { href: LANGGRAPH_DOCS, label: 'Read LangGraph.js docs →', external: true },
+      'The public API used for the crypto tool — live prices and market data, no key needed for basic endpoints.',
+    link: { href: COINGECKO, label: 'CoinGecko API docs →', external: true },
   },
   {
-    icon: '🧠', title: 'The GenAI Track', titleClass: 'card-title-amber', subtitle: 'Keep Going',
+    icon: '🔜', title: 'Next: Function Calling', titleClass: 'card-title-amber', subtitle: 'Prereq 5 Preview',
     description:
-      'The site’s GenAI track covers LangGraph, multi-agent systems and production as structured modules. Ahead in the course: multi-agent teams and the AI Dev Team project.',
-    link: { href: '/genai', label: 'Open the GenAI track →' },
+      'Tomorrow is Lecture 05 — declare tools to the model with typed parameters so it decides which function to call. The first real step toward an agent.',
+    link: { href: '/day-021', label: 'Go to Prereq 5 →' },
   },
 ];
 
@@ -135,38 +154,37 @@ export default function Day020() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-019" className="day001-nav-btn day001-nav-prev">← Day 19</Link>
-          <p className="day001-datetime">Agentic AI Day 20</p>
-          <Link to="/day-021" className="day001-nav-btn day001-nav-next">Day 21 →</Link>
+          <Link to="/day-019" className="day001-nav-btn day001-nav-prev">← Prereq 3</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 4</p>
+          <Link to="/day-021" className="day001-nav-btn day001-nav-next">Prereq 5 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 20</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 04</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 20 <span aria-hidden="true">🕸️</span></h1>
-              <p className="day001-day-theme">LANGGRAPH — ORCHESTRATING AGENTS</p>
+              <h1 className="day001-day-num">PREREQ 4 <span aria-hidden="true">🌐</span></h1>
+              <p className="day001-day-theme">REACHING REAL-WORLD DATA WITH TOOLS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '20%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '4%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 20 — <strong>LangGraph</strong>. A linear <strong>chain</strong> can’t express a real agent that
-          decides, retries and loops, so LangGraph models the workflow as a <strong>graph</strong>. A shared{' '}
-          <strong>state</strong> flows through <strong>nodes</strong> (each an LLM call, tool or sub-agent) connected
-          by <strong>edges</strong> — including <strong>conditional edges</strong> that branch on the state and{' '}
-          <strong>cycles</strong> that loop back (think → act → observe → think). You can even{' '}
-          <strong>pause for human approval</strong> before a critical step. This is how you build controllable,
-          multi-step agents. <em>(Diagram + notes based; standard LangGraph.js API.)</em>
+          Lecture 04 — the model has a <strong>knowledge cutoff</strong> and no live data, so I built{' '}
+          <strong>tools</strong>: plain JavaScript functions that <code>fetch</code> real data from APIs —{' '}
+          crypto prices from <strong>CoinGecko</strong>, plus weather and news. The catch is <strong>routing</strong>:
+          for any given question, which tool should run? A manual <code>if/else</code> chain is brittle and does not
+          scale. That is exactly the problem <strong>function calling</strong> solves — letting the model choose the
+          tool itself. <em>Tomorrow, the AI starts deciding.</em>
         </p>
 
         <section className="day001-learnt">
@@ -181,12 +199,13 @@ export default function Day020() {
           </ul>
         </section>
 
-        <CardSection icon="📏" title="WHY LANGGRAPH" cards={WHY} columns={2} />
-        <CardSection icon="🕸️" title="STATE · NODES · EDGES" cards={MODEL} columns={3} />
+        <CardSection icon="🕳️" title="THE KNOWLEDGE GAP" cards={GAP} columns={2} />
+        <CardSection icon="🔧" title="BUILDING TOOLS" cards={TOOLS} columns={3} />
+        <CardSection icon="🧭" title="THE ROUTING PROBLEM" cards={ROUTING} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#LangGraph</span><span>#Agents</span><span>#CoderArmy</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Tools</span><span>#CoderArmy</span><span>#JavaScript</span>
         </footer>
       </div>
     </div>

@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture33';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture17';
+const NOTION = 'https://www.notion.so/Lecture-17-Project-2fea9af81c98800caa23eccb3fb108d0';
 
 const LEARNT_TODAY = [
-  { title: 'The task', text: 'predict student placement (1 or 0) from dsa, projects, iq and attendance, read from students.csv' },
-  { title: 'Normalize the features', text: 'scale each feature with (value − min) / (max − min) so they all sit in 0–1' },
-  { title: 'Why normalize', text: 'iq spans ~0–200 while projects span ~0–10 — without scaling, big-range features would dominate' },
-  { title: 'One weight per feature', text: 'w_dsa, w_projects, w_iq, w_attendance and a bias — the model’s parameters' },
-  { title: 'The weighted sum', text: 'z = w_dsa·dsa + w_projects·projects + w_iq·iq + w_attendance·attendance + bias' },
-  { title: 'Sigmoid → probability', text: 'probability = sigmoid(z) = 1 / (1 + e^-z) — the chance of being placed' },
-  { title: 'Threshold at 0.5', text: 'p ≥ 0.5 → predict placed (1), otherwise not placed (0)' },
-  { title: 'Train with gradient descent', text: 'cross-entropy loss and error = actual − predicted nudge the weights until it classifies well' },
+  { title: 'Project time', text: 'apply everything so far to build a real knowledge assistant that answers questions about a document' },
+  { title: 'The dataset', text: 'a movies PDF becomes a queryable knowledge base — entities, relationships and descriptions' },
+  { title: 'Hybrid architecture', text: 'Neo4j (graph) + Pinecone (vectors) + Gemini (LLM) + LangChain.js, working together' },
+  { title: 'Two pipelines', text: 'indexing (build the graph + vectors once) and querying (classify, route, answer)' },
+  { title: 'Plan before code', text: 'decide the entities, relationships, and which questions go to the graph vs the vectors' },
+  { title: 'Three question types', text: 'factual (relationships), similarity (recommendations) and descriptive (about an entity)' },
+  { title: 'The payoff', text: 'one assistant that answers all three kinds of questions accurately — Graph RAG in practice' },
 ];
 
-const DATA = [
+const GOAL = [
   {
-    icon: '📊', title: 'The Dataset', titleClass: 'card-title-cyan', subtitle: 'Features → Label',
+    icon: '🎬', title: 'The Goal', titleClass: 'card-title-cyan', subtitle: 'A Movie Assistant',
     description:
-      'Each student has four features and a label: 1 if placed, 0 if not. The model learns which feature combinations lead to a placement.',
-    code: '// students.csv\n// name, dsa, projects, iq, attendance, placed\n// Isha1, 52, 10, 129, 41, 1\n// Priya2, 15, 1, 87, 59, 0',
+      'Build an assistant over a movies document that can list "movies directed by Nolan", recommend "movies like Inception", and describe "what is The Godfather about" — all from your own data.',
+    code: '// factual:     "Movies directed by Nolan"\n// similarity:  "Movies like Inception"\n// descriptive: "Tell me about The Godfather"',
   },
   {
-    icon: '📐', title: 'Normalize First', titleClass: 'card-title-purple', subtitle: 'Same Scale',
+    icon: '🏗️', title: 'The Architecture', titleClass: 'card-title-purple', subtitle: 'Four Pieces',
     description:
-      'Features live on different scales, so scale each to 0–1 with min-max normalization. Now a change in projects matters as much as a change in iq.',
-    code: 'double normalize(double v, double min, double max) {\n  return (v - min) / (max - min);\n}\n// iq 129 in [15,200] → ~0.61',
+      'Gemini extracts entities and answers; Neo4j stores the relationship graph; Pinecone stores the vectors; LangChain.js wires the steps. Each tool does the job it is best at.',
+    code: '// Gemini      → extract entities, generate answers\n// Neo4j       → relationships (the graph)\n// Pinecone    → similarity (the vectors)\n// LangChain.js → glue',
   },
 ];
 
-const MODEL = [
+const PLAN = [
   {
-    icon: '🧮', title: 'The Model', titleClass: 'card-title-cyan', subtitle: 'Weights + Bias',
+    icon: '📥', title: 'Pipeline 1 — Indexing', titleClass: 'card-title-cyan', subtitle: 'Build The Base',
     description:
-      'One weight per feature plus a bias. These start at 0 and are learned. Together they form the neuron that decides placed vs not.',
-    code: 'struct Model {\n  double w_dsa, w_projects, w_iq, w_attendance;\n  double bias;\n};',
+      'Run once: parse the PDF, have the LLM extract structured entities, build the Neo4j graph, and store embeddings in Pinecone. After this, the knowledge base is ready.',
+    code: '// PDF → extract entities → Neo4j graph\n//     → embed chunks   → Pinecone\n// (tomorrow: the full build)',
   },
   {
-    icon: '⚡', title: 'Predict', titleClass: 'card-title-purple', subtitle: 'Weighted Sum → Sigmoid',
+    icon: '❓', title: 'Pipeline 2 — Querying', titleClass: 'card-title-purple', subtitle: 'Answer Anything',
     description:
-      'Normalize the features, take the weighted sum plus bias, and pass it through the sigmoid to get the probability of placement.',
-    code: 'double z = m.w_dsa*n_dsa + m.w_projects*n_projects\n        + m.w_iq*n_iq + m.w_attendance*n_att + m.bias;\ndouble p = sigmoid(z);   // chance placed\nreturn p >= 0.5 ? 1 : 0;  // decision',
+      'Per question: classify its type, route it to the graph or the vectors, retrieve, and let Gemini write the answer. The routing is what makes it feel smart.',
+    code: '// question → classify → route → retrieve → answer\n// (Day 19: the query side)',
   },
   {
-    icon: '🔁', title: 'Train It', titleClass: 'card-title-amber', subtitle: 'Gradient Descent',
+    icon: '🗺️', title: 'Design First', titleClass: 'card-title-amber', subtitle: 'Entities & Routes',
     description:
-      'Loop over the students, compute error = actual − predicted, and nudge every weight and the bias with cross-entropy gradient descent until it classifies well.',
-    code: 'double error = student.label - p;\nm.w_dsa        += lr * error * n_dsa;\nm.w_projects   += lr * error * n_projects;\n// ... and the rest, over many epochs',
+      'Before writing code, decide the entities (Movie, Director, Actor, Genre), the relationships (DIRECTED, ACTED_IN), and which question types go where. A clear plan makes the build straightforward.',
+    footer: 'entities · relationships · routing rules',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 33', titleClass: 'card-title-cyan', subtitle: 'C++ Classifier',
+    icon: '📝', title: 'Lecture 17 Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
     description:
-      'placement_model.cpp, prediction.cpp and students.csv in the STRIKE GenAI repo — logistic regression by hand.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 33 →', external: true },
+      'Rohit’s project write-up — the goal, architecture and plan for the Graph RAG knowledge assistant.',
+    link: { href: NOTION, label: 'Open Lecture 17 notes →', external: true },
   },
   {
-    icon: '🧠', title: 'A Full Classifier', titleClass: 'card-title-purple', subtitle: 'End To End',
+    icon: '💻', title: 'Lecture 17', titleClass: 'card-title-purple', subtitle: 'GitHub',
     description:
-      'Load data, normalize, predict with sigmoid, train with gradient descent, threshold the output — the complete classification pipeline in plain C++.',
-    footer: 'normalize → weighted sum → sigmoid → threshold',
+      'The lecture folder in the STRIKE GenAI repo — the kickoff for the graph-rag-movie project built across the next lectures.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 17 →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Many Classes', titleClass: 'card-title-amber', subtitle: 'Day 34 Preview',
+    icon: '🔜', title: 'Next: Build The Graph', titleClass: 'card-title-amber', subtitle: 'Prereq 18 Preview',
     description:
-      'Tomorrow — Lecture 34: multi-class classification with softmax, choosing between many options instead of a single yes/no.',
-    link: { href: '/day-034', label: 'Go to Day 34 →' },
+      'Tomorrow is the build — Lecture 18: parse the PDF, extract entities with Gemini, and construct the Neo4j knowledge graph plus the Pinecone vectors.',
+    link: { href: '/day-034', label: 'Go to Prereq 18 →' },
   },
 ];
 
@@ -133,38 +133,39 @@ export default function Day033() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-032" className="day001-nav-btn day001-nav-prev">← Day 32</Link>
-          <p className="day001-datetime">Agentic AI Day 33</p>
-          <Link to="/day-034" className="day001-nav-btn day001-nav-next">Day 34 →</Link>
+          <Link to="/day-032" className="day001-nav-btn day001-nav-prev">← Prereq 16</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 17</p>
+          <Link to="/day-034" className="day001-nav-btn day001-nav-next">Prereq 18 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 33</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 17</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 33 <span aria-hidden="true">🎓</span></h1>
-              <p className="day001-day-theme">CLASSIFICATION IN C++ — LOGISTIC REGRESSION</p>
+              <h1 className="day001-day-num">PREREQ 17 <span aria-hidden="true">🛠️</span></h1>
+              <p className="day001-day-theme">PROJECT — A GRAPH RAG KNOWLEDGE ASSISTANT</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '33%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '17%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 33 — classification in <strong>C++</strong>. The task: predict student <strong>placement (1/0)</strong>{' '}
-          from <strong>dsa, projects, iq, attendance</strong> in a CSV. First <strong>normalize</strong> each feature
-          with <code>(v − min)/(max − min)</code> so different scales don’t dominate. The model is one{' '}
-          <strong>weight per feature + bias</strong>; the <strong>weighted sum</strong> goes through{' '}
-          <strong>sigmoid</strong> to a probability, thresholded at <strong>0.5</strong>. It <strong>trains</strong>{' '}
-          with gradient descent using <code>error = actual − predicted</code>. That’s a complete logistic-regression
-          classifier, by hand. <em>Next: many classes with softmax.</em>
+          Lecture 17 — <strong>project time</strong>. The goal: a knowledge assistant over a{' '}
+          <strong>movies document</strong> that answers <strong>factual</strong> ("directed by Nolan"),{' '}
+          <strong>similarity</strong> ("like Inception") and <strong>descriptive</strong> ("about The Godfather")
+          questions. The architecture is <strong>hybrid</strong> — <strong>Neo4j</strong> for relationships,{' '}
+          <strong>Pinecone</strong> for similarity, <strong>Gemini</strong> for extraction and answers, wired with{' '}
+          <strong>LangChain.js</strong> — split into an <strong>indexing</strong> pipeline and a{' '}
+          <strong>querying</strong> pipeline. Today I plan the entities, relationships and routing.{' '}
+          <em>Tomorrow the build begins.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +180,12 @@ export default function Day033() {
           </ul>
         </section>
 
-        <CardSection icon="📊" title="THE DATA" cards={DATA} columns={2} />
-        <CardSection icon="🧮" title="MODEL · PREDICT · TRAIN" cards={MODEL} columns={3} />
+        <CardSection icon="🎬" title="THE PROJECT" cards={GOAL} columns={2} />
+        <CardSection icon="🗺️" title="THE TWO PIPELINES" cards={PLAN} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#LogisticRegression</span><span>#Cpp</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GraphRAG</span><span>#Project</span><span>#CoderArmy</span>
         </footer>
       </div>
     </div>

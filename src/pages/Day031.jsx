@@ -2,72 +2,79 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture31';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture15';
+const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
 
 const LEARNT_TODAY = [
-  { title: 'Regression vs classification', text: 'regression predicts a number (marks); classification predicts a category (placed or not)' },
-  { title: 'The output is 0 or 1', text: 'will this student get placed? yes (1) or no (0) — a yes/no decision, not a quantity' },
-  { title: 'Raw weighted sum won’t do', text: 'w1·x + … can be 80 or 16 lakh, but a "will it happen?" answer needs to live between 0 and 1' },
-  { title: 'We need a probability', text: 'turn the raw score into "70% chance placed" (0.7) — a squashing step is missing' },
-  { title: 'Loss compares to the truth', text: 'if the real answer is 1 and we predicted 0.7, the error is 0.3 — how wrong we were' },
-  { title: 'Same gradient descent', text: 'update each weight with w = w_old + learningRate · error · input' },
-  { title: 'Sets up the sigmoid', text: 'tomorrow adds the function that squashes any score into a clean probability' },
+  { title: 'Garbage in, garbage out', text: 'a RAG answer is only as good as the chunks it retrieves — retrieval quality is everything' },
+  { title: 'Chunking matters', text: 'chunk size and overlap change what the model sees; too big adds noise, too small loses context' },
+  { title: 'Tune top-K', text: 'too few chunks miss the answer, too many add noise and cost — find the right K for your data' },
+  { title: 'Metadata filtering', text: 'attach source, section or date to each chunk and filter retrieval to narrow the search' },
+  { title: 'Re-ranking', text: 'over-fetch candidates, then re-score them for true relevance and keep only the best few' },
+  { title: 'Evaluate retrieval', text: 'check whether the retrieved chunks actually contain the answer, not just whether the reply sounds good' },
+  { title: 'RAG is iterative', text: 'better chunking, filtering and re-ranking compound into noticeably better, more trustworthy answers' },
 ];
 
-const KINDS = [
+const QUALITY = [
   {
-    icon: '📈', title: 'Regression', titleClass: 'card-title-cyan', subtitle: 'Predict A Number',
+    icon: '⚖️', title: 'Retrieval Is Everything', titleClass: 'card-title-cyan', subtitle: 'Context = Answer',
     description:
-      'Days 27–30 predicted a quantity — marks from study and sleep. The output could be any number, and a straight line (or curve) fit the data.',
-    code: '// regression: output = a number\n// "how many marks?" → 74.3',
+      'The model can only answer from what you retrieve. If the right chunk never comes back, no prompt can save the answer — so most RAG quality work is really retrieval work.',
+    code: '// good chunks → grounded, correct answer\n// wrong chunks → confident, wrong answer\n// fix retrieval first',
   },
   {
-    icon: '✅', title: 'Classification', titleClass: 'card-title-purple', subtitle: 'Predict A Category',
+    icon: '✂️', title: 'Chunking Strategy', titleClass: 'card-title-purple', subtitle: 'Size & Overlap',
     description:
-      'Now the question is different: will a student get placed — yes or no? The output must be a decision (0 or 1), expressed as a probability of the "yes".',
-    code: '// classification: output = a category\n// "placed?" → 1 (yes) or 0 (no)\n// features: dsa, projects, iq, attendance',
+      'Chunk size and overlap are the biggest levers. Large chunks add irrelevant text; tiny chunks fragment ideas. Tune them to your documents and re-index to compare.',
+    code: '// too big  → noise dilutes the relevant part\n// too small → an idea gets split across chunks\n// tune chunkSize / chunkOverlap, then measure',
+  },
+  {
+    icon: '🔢', title: 'Top-K & Filters', titleClass: 'card-title-amber', subtitle: 'How Much To Fetch',
+    description:
+      'Retrieve enough to cover the answer but not so much that noise creeps in. Use metadata filters (source, section, date) to restrict retrieval to the relevant subset.',
+    code: '// query({ topK, vector, filter: { source: "docs" } })\n// smaller, cleaner candidate set = better answers',
   },
 ];
 
-const PROB = [
+const IMPROVE = [
   {
-    icon: '🔢', title: 'The Raw Score Problem', titleClass: 'card-title-cyan', subtitle: 'Too Big',
+    icon: '🏅', title: 'Re-Ranking', titleClass: 'card-title-cyan', subtitle: 'Fetch More, Keep Best',
     description:
-      'The same weighted sum as before can produce anything — 80, or 1,600,000. That is meaningless as a "chance of being placed". We need it bounded between 0 and 1.',
-    code: '// z = w1·dsa + w2·projects + w3·iq + w4·att + b\n// z could be 80 ... or 16 lakh\n// but a probability must be in [0, 1]',
+      'Vector similarity is a fast first pass, not a perfect one. Over-fetch (say top-20), then re-score those with a re-ranker and keep the few most relevant for the prompt.',
+    code: '// 1. vector search → top 20 candidates\n// 2. re-rank by relevance\n// 3. keep top 3–5 → augment the prompt',
   },
   {
-    icon: '🎯', title: 'Want A Probability', titleClass: 'card-title-purple', subtitle: '0 to 1',
+    icon: '🧪', title: 'Evaluate It', titleClass: 'card-title-purple', subtitle: 'Measure, Don’t Guess',
     description:
-      'We want the output to read like "70% chance placed" — 0.7. A squashing function will map any raw score into that range; that is tomorrow’s sigmoid.',
-    code: '// raw score  →  [squash]  →  0.7  = 70% chance\n// closer to 1 → more likely placed',
+      'Judge the retrieval, not just the vibe of the reply: for a set of questions, did the retrieved chunks actually contain the answer? That tells you what to fix.',
+    code: '// for each test question:\n//   were the right chunks retrieved? (recall)\n//   was the answer grounded in them? (faithfulness)',
   },
   {
-    icon: '📉', title: 'Loss & Update', titleClass: 'card-title-amber', subtitle: 'Learn From Error',
+    icon: '🔁', title: 'Iterate', titleClass: 'card-title-amber', subtitle: 'Compounding Gains',
     description:
-      'Compare the predicted probability to the true label to get an error, then nudge the weights with the same gradient-descent step from Day 28.',
-    code: '// actual = 1, predicted = 0.7 → error = 0.3\n// w = w_old + learningRate · error · input',
+      'Better chunking, filtering, re-ranking and query rewriting each add a little. Together they turn a shaky demo into a RAG system you can trust in production.',
+    footer: 'chunk → filter → re-rank → evaluate → repeat',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 31', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '💻', title: 'Lecture 15', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The binary classification notebook in the STRIKE GenAI repo — moving from predicting numbers to predicting yes/no with a probability.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 31 →', external: true },
+      'The lecture folder and diagram in the STRIKE GenAI repo — improving retrieval quality for production RAG.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 15 →', external: true },
   },
   {
-    icon: '🧠', title: 'Why It Matters', titleClass: 'card-title-purple', subtitle: 'Toward LLMs',
+    icon: '🧠', title: 'The GenAI Track', titleClass: 'card-title-purple', subtitle: 'Same Journey',
     description:
-      'LLMs are classifiers too — they pick the next token from a set. Understanding classification from scratch leads straight to how an LLM chooses words.',
-    footer: 'regression → classification → next-token prediction',
+      'The site’s GenAI track covers RAG, agents and LangGraph as structured modules — a companion to these day-by-day notes.',
+    link: { href: '/genai', label: 'Open the GenAI track →' },
   },
   {
-    icon: '🔜', title: 'Next: Sigmoid', titleClass: 'card-title-amber', subtitle: 'Day 32 Preview',
+    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
     description:
-      'Tomorrow — Lecture 32: the sigmoid function that squashes a score to a probability, and cross-entropy (log) loss for measuring classification error.',
-    link: { href: '/day-032', label: 'Go to Day 32 →' },
+      'The full Coder Army course code — next up: agents, LangGraph (Lecture 20) and the AI Dev Team projects.',
+    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
   },
 ];
 
@@ -132,38 +139,38 @@ export default function Day031() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-030" className="day001-nav-btn day001-nav-prev">← Day 30</Link>
-          <p className="day001-datetime">Agentic AI Day 31</p>
-          <Link to="/day-032" className="day001-nav-btn day001-nav-next">Day 32 →</Link>
+          <Link to="/day-030" className="day001-nav-btn day001-nav-prev">← Prereq 14</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 15</p>
+          <Link to="/day-032" className="day001-nav-btn day001-nav-next">Prereq 16 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 31</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 15</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 31 <span aria-hidden="true">✅</span></h1>
-              <p className="day001-day-theme">BINARY CLASSIFICATION — NUMBERS TO PROBABILITIES</p>
+              <h1 className="day001-day-num">PREREQ 15 <span aria-hidden="true">🏅</span></h1>
+              <p className="day001-day-theme">BETTER RAG — RETRIEVAL QUALITY</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '31%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '15%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 31 — from <strong>regression</strong> to <strong>classification</strong>. Instead of predicting a
-          number (marks), the question becomes a category: will a student get <strong>placed — 1 or 0?</strong> The
-          same weighted sum still runs, but its <strong>raw score</strong> can be 80 or 16 lakh, so it needs to be
-          squashed into a <strong>probability between 0 and 1</strong> ("70% chance"). The <strong>loss</strong>
-          compares that probability to the true label (actual 1, predicted 0.7 → error 0.3), and the weights update
-          with the familiar <code>w = w_old + lr · error · input</code>.{' '}
-          <em>Tomorrow: the sigmoid. (From the lecture notebook.)</em>
+          Lecture 15 — making RAG actually good. The answer is only as strong as the <strong>chunks it retrieves</strong>,
+          so retrieval quality is where the work is. I tuned <strong>chunking</strong> (size and overlap),{' '}
+          <strong>top-K</strong>, and <strong>metadata filters</strong> to narrow the search; added{' '}
+          <strong>re-ranking</strong> (over-fetch, re-score, keep the best); and learned to <strong>evaluate</strong>{' '}
+          retrieval — did the right chunks come back? — instead of trusting the vibe of the reply. These gains{' '}
+          <strong>compound</strong> into a RAG system you can trust.{' '}
+          <em>(Diagram-based lecture; content reflects the standard practices.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -178,12 +185,12 @@ export default function Day031() {
           </ul>
         </section>
 
-        <CardSection icon="⚖️" title="REGRESSION vs CLASSIFICATION" cards={KINDS} columns={2} />
-        <CardSection icon="🎯" title="WE NEED A PROBABILITY" cards={PROB} columns={3} />
+        <CardSection icon="⚖️" title="RETRIEVAL IS EVERYTHING" cards={QUALITY} columns={3} />
+        <CardSection icon="🏅" title="RE-RANK & EVALUATE" cards={IMPROVE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Classification</span><span>#NeuralNetworks</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#CoderArmy</span><span>#Retrieval</span>
         </footer>
       </div>
     </div>

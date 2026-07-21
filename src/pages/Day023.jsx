@@ -2,94 +2,80 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_DESIGN = 'https://github.com/Rohitnegi9/STRIKEGenAI/blob/main/Lecture23/ai-dev-team-design-v2.md';
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture23';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture07';
+const NOTION = 'https://www.notion.so/Lecture-07-Build-Code-Reviewer-2d3a9af81c988071b829e3163129b078';
 
 const LEARNT_TODAY = [
-  { title: 'Design before code', text: 'a full V2 design document lays out the whole system — 8 agents and a 30-node LangGraph flow' },
-  { title: 'The tech stack', text: 'LangGraph (JS) + Gemini + Pinecone (memory) + Docker (sandbox) + Redis (checkpoints) + Git (rollback)' },
-  { title: 'Fixed app stack', text: 'every project is React + Express + PostgreSQL/MongoDB, which keeps agent prompts focused' },
-  { title: 'Architect in 5 steps', text: 'entities → DB schema → API endpoints → frontend pages → folder structure & package.json' },
-  { title: 'Blueprint validation', text: 'a blueprintValidator cross-checks the design before any code is written — no orphan APIs or bad FKs' },
-  { title: 'V2 fixes 10 loopholes', text: 'state persistence, rollback, pattern consistency, token budgets, scope-drift limits, sandbox health, and more' },
-  { title: 'State is the contract', text: 'the whole 30-node flow communicates through one carefully designed shared state' },
+  { title: 'A multi-tool agent', text: 'the code reviewer gets three tools — list_files, read_file and write_file — to work on a real project' },
+  { title: 'list_files', text: 'recursively scan a directory for code (.js, .ts, .html, .css), skipping node_modules, dist and build' },
+  { title: 'read_file & write_file', text: 'read a file’s content, then write the corrected version back to disk' },
+  { title: 'The review loop', text: 'list all files, read each one, analyse it, and write fixes — driven entirely by the model' },
+  { title: 'A detailed job spec', text: 'the systemInstruction lists exactly what to check: bugs, security, accessibility, code quality' },
+  { title: 'Batch function calls', text: 'the model can return several functionCalls at once; execute them all, then feed results back' },
+  { title: 'It edits real code', text: 'the agent actually fixes files and ends with a summary report — not just a list of problems' },
+  { title: 'Safety with power', text: 'it writes to disk, so run it on a copy or under version control and review the diff' },
 ];
 
-const SYSTEM = [
+const TOOLS = [
   {
-    icon: '📐', title: 'The System', titleClass: 'card-title-cyan', subtitle: '8 Agents · 30 Nodes',
+    icon: '🗂️', title: 'list_files', titleClass: 'card-title-cyan', subtitle: 'Discover The Code',
     description:
-      'An autonomous team that understands a requirement, plans it, writes and debugs code, tests it, takes feedback, iterates and deploys — modelled as a 30-node LangGraph flow.',
-    code: '// 8 agents: PM, Architect, Planner, Coder,\n//           Reviewer, Executor, Debugger, Deploy\n// orchestrated as a 30-node LangGraph',
+      'A recursive scan collects every code file in a directory and skips build artefacts and dependencies. The agent starts here to learn what it is reviewing.',
+    code: 'function scan(dir) {\n  for (const item of fs.readdirSync(dir)) {\n    const full = path.join(dir, item);\n    if (/node_modules|dist|build/.test(full)) continue;\n    if (fs.statSync(full).isDirectory()) scan(full);\n    else if ([".js",".ts",".html",".css"].includes(path.extname(item)))\n      files.push(full);\n  }\n}',
   },
   {
-    icon: '🧰', title: 'The Tech Stack', titleClass: 'card-title-purple', subtitle: 'Production Pieces',
+    icon: '📖', title: 'read_file & write_file', titleClass: 'card-title-purple', subtitle: 'Read, Then Fix',
     description:
-      'LangGraph orchestrates; Gemini is the LLM; Pinecone is long-term memory; Docker sandboxes code execution; Redis checkpoints state; Git enables rollback.',
-    code: '// LangGraph · Gemini · Pinecone\n// Docker (sandbox) · Redis (checkpoints) · Git (rollback)\n// app: React + Express + PostgreSQL/MongoDB',
-  },
-];
-
-const FLOW = [
-  {
-    icon: '📋', title: 'PM → Spec', titleClass: 'card-title-cyan', subtitle: 'Remove Ambiguity',
-    description:
-      'The flow starts with the PM agent: it reads the requirement, asks clarifying questions (via humanInput), and produces a precise spec everything else builds on.',
-    code: '// pmAgent → { status: "needs_clarification", questions }\n//         or { status: "spec_ready", spec }',
+      'Two more tools let the agent read any file and write a corrected version back. Together with list_files, that is everything it needs to review and repair a codebase.',
+    code: 'async function readFile({ file_path }) {\n  return { content: fs.readFileSync(file_path, "utf-8") };\n}\nasync function writeFile({ file_path, content }) {\n  fs.writeFileSync(file_path, content, "utf-8");\n  return { success: true };\n}',
   },
   {
-    icon: '🏛️', title: 'Architect · 5 Steps', titleClass: 'card-title-purple', subtitle: 'Blueprint',
+    icon: '🧾', title: 'Typed Declarations', titleClass: 'card-title-amber', subtitle: 'The Model’s Menu',
     description:
-      'The Architect designs in five passes — entities and relationships, DB schema, API endpoints, frontend pages, then the folder structure and pinned dependencies.',
-    code: '// step1 entities → step2 DB schema → step3 APIs\n// → step4 pages → step5 folders + package.json\n// = one complete blueprint',
-  },
-  {
-    icon: '✅', title: 'Validate The Blueprint', titleClass: 'card-title-amber', subtitle: 'Before Any Code',
-    description:
-      'blueprintValidator cross-checks the design: every API maps to a DB path, every page calls a real API, every foreign key references a real table, every spec entity is covered.',
-    code: '// no orphan endpoints · valid foreign keys\n// every page → real API · full spec coverage\n// catch design bugs before writing code',
+      'Each tool is declared with typed parameters so the model knows how to call it — a path to read, a path plus content to write.',
+    code: 'const writeFileTool = {\n  name: "write_file",\n  description: "Write fixed content back to a file",\n  parameters: {\n    type: Type.OBJECT,\n    properties: {\n      file_path: { type: Type.STRING },\n      content:   { type: Type.STRING, description: "The corrected content" },\n    },\n    required: ["file_path", "content"],\n  },\n};',
   },
 ];
 
-const V2 = [
+const LOOP = [
   {
-    icon: '💾', title: 'Survives Crashes', titleClass: 'card-title-cyan', subtitle: 'Checkpointing',
+    icon: '📝', title: 'The Job Spec', titleClass: 'card-title-cyan', subtitle: 'A Precise Persona',
     description:
-      'Every node checkpoints its state to Redis, so a crash resumes instead of losing everything. Combined with Git auto-commits, the team can also roll back bad code.',
-    code: '// checkpoint after every node → resume on crash\n// git commit after every task → rollback on failure',
+      'The systemInstruction is a full reviewer brief: check HTML (semantics, a11y), CSS (validity, duplicates), and JS (bugs, security, quality) — then actually fix the code, not just report it.',
+    code: '// systemInstruction (excerpt):\n// 1. list_files → 2. read_file each\n// 3. analyse: bugs, security (secrets, eval, XSS), quality\n// 4. write_file the fixes\n// 5. end with a summary report',
   },
   {
-    icon: '🧮', title: 'Token Budgets', titleClass: 'card-title-purple', subtitle: 'No Token Bombs',
+    icon: '⚙️', title: 'Execute Every Call', titleClass: 'card-title-purple', subtitle: 'Batch Tools',
     description:
-      'State selectors per agent and a registry compactor stop the shared state (and the token bill) from growing without bound. A token tracker enforces budget limits.',
-    code: '// per-agent state selectors · stateCompactor\n// tokenTracker with budget limits',
+      'The model may request several tools in one turn. Loop over every functionCall, run the matching function from a registry, and send all the results back.',
+    code: 'if (result.functionCalls?.length) {\n  for (const call of result.functionCalls) {\n    const { name, args } = call;\n    const output = await tools[name](args); // dispatch\n    // push functionResponse back into history\n  }\n}',
   },
   {
-    icon: '🛟', title: 'Scope & Safety', titleClass: 'card-title-amber', subtitle: '10 Loopholes Fixed',
+    icon: '📊', title: 'Fix + Report', titleClass: 'card-title-amber', subtitle: 'Real Output',
     description:
-      'V2 adds iteration limits with scope-drift detection, sandbox health checks, parallel independent tasks, and escalation instead of blindly force-approving rejected code.',
-    footer: '22 → 30 nodes · robustness over cleverness',
+      'The agent writes corrected files and finishes with a categorised report — security fixes, bug fixes, quality improvements — with file and line references.',
+    code: '// 📊 CODE REVIEW COMPLETE\n// 🔴 SECURITY: removed hardcoded API key\n// 🟠 BUGS: added null check for user\n// 🟡 QUALITY: removed console.logs',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📄', title: 'The Design Doc', titleClass: 'card-title-cyan', subtitle: 'V2 Markdown',
+    icon: '📝', title: 'Lecture 07 Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
     description:
-      'The complete system design (V2) — agents, the 30-node flow, the state shape, and every loophole fix — read it in full in the repo.',
-    link: { href: GH_DESIGN, label: 'Open the design doc →', external: true },
+      'Rohit’s write-up for the Build Code Reviewer lecture — the tools, the reviewer prompt, and the full agent flow.',
+    link: { href: NOTION, label: 'Open Lecture 07 notes →', external: true },
   },
   {
-    icon: '💻', title: 'Lecture 23', titleClass: 'card-title-purple', subtitle: 'GitHub',
+    icon: '💻', title: 'Lecture 07 Code', titleClass: 'card-title-purple', subtitle: 'agent.js',
     description:
-      'The design lecture folder in the STRIKE GenAI repo — the plan for the AI Dev Team built over the next lectures.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 23 →', external: true },
+      'The runnable code reviewer agent — list/read/write tools, the reviewer systemInstruction, and the tool-dispatch loop.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 07 →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Build The Planners', titleClass: 'card-title-amber', subtitle: 'Day 24 Preview',
+    icon: '🔜', title: 'Next: Embeddings', titleClass: 'card-title-amber', subtitle: 'Prereq 8 Preview',
     description:
-      'Tomorrow the build starts — Lecture 24: the LangGraph state, the PM/Architect/Planner agents, the blueprint validator, and the Docker sandbox.',
-    link: { href: '/day-024', label: 'Go to Day 24 →' },
+      'Tomorrow the RAG foundation begins — Lecture 08 on embeddings: turning text into vectors so the model can compare meaning, not just words.',
+    link: { href: '/day-024', label: 'Go to Prereq 8 →' },
   },
 ];
 
@@ -154,38 +140,38 @@ export default function Day023() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-022" className="day001-nav-btn day001-nav-prev">← Day 22</Link>
-          <p className="day001-datetime">Agentic AI Day 23</p>
-          <Link to="/day-024" className="day001-nav-btn day001-nav-next">Day 24 →</Link>
+          <Link to="/day-022" className="day001-nav-btn day001-nav-prev">← Prereq 6</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 7</p>
+          <Link to="/day-024" className="day001-nav-btn day001-nav-next">Prereq 8 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 23</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 07</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 23 <span aria-hidden="true">📐</span></h1>
-              <p className="day001-day-theme">AI DEV TEAM — SYSTEM DESIGN</p>
+              <h1 className="day001-day-num">PREREQ 7 <span aria-hidden="true">🔍</span></h1>
+              <p className="day001-day-theme">BUILD A CODE REVIEWER AGENT</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '23%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '7%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 23 — the <strong>system design</strong> (V2). Before a line of code, the whole thing is designed:{' '}
-          <strong>8 agents</strong> orchestrated as a <strong>30-node LangGraph</strong> flow, on a stack of{' '}
-          <strong>Gemini + Pinecone + Docker + Redis + Git</strong>, always building{' '}
-          <strong>React + Express + PostgreSQL/MongoDB</strong>. The <strong>Architect</strong> designs in five steps,
-          a <strong>blueprintValidator</strong> cross-checks it, and <strong>V2 fixes 10 loopholes</strong> —
-          checkpointing, rollback, pattern consistency, token budgets, scope-drift limits and more.{' '}
-          <em>Robustness first. (Design-doc lecture — read it in the repo.)</em>
+          Lecture 07 — a real <strong>Code Reviewer agent</strong>. I gave it three file-system tools —{' '}
+          <code>list_files</code>, <code>read_file</code> and <code>write_file</code> — and a detailed reviewer{' '}
+          <strong>systemInstruction</strong> covering bugs, security, accessibility and code quality. The agent{' '}
+          <strong>lists</strong> a project, <strong>reads</strong> each file, and <strong>writes fixes</strong> back,
+          handling several <code>functionCalls</code> per turn via a tool registry, and ends with a categorised{' '}
+          <strong>summary report</strong>. It genuinely edits your code — so run it on a copy.{' '}
+          <em>An agent that improves a whole codebase.</em>
         </p>
 
         <section className="day001-learnt">
@@ -200,13 +186,12 @@ export default function Day023() {
           </ul>
         </section>
 
-        <CardSection icon="📐" title="THE SYSTEM & STACK" cards={SYSTEM} columns={2} />
-        <CardSection icon="📋" title="THE PLANNING FLOW" cards={FLOW} columns={3} />
-        <CardSection icon="🛟" title="V2 — BUILT TO SURVIVE" cards={V2} columns={3} />
+        <CardSection icon="🧰" title="THE FILE-SYSTEM TOOLS" cards={TOOLS} columns={3} />
+        <CardSection icon="♻️" title="THE REVIEW LOOP" cards={LOOP} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AIDevTeam</span><span>#LangGraph</span><span>#SystemDesign</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Agents</span><span>#CoderArmy</span><span>#JavaScript</span>
         </footer>
       </div>
     </div>

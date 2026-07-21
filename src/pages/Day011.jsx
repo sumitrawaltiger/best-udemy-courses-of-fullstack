@@ -2,77 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture11';
+const MDN_PROMISE = 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise';
+const TS_UNKNOWN_CATCH = 'https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-4.html#defaulting-to-the-unknown-type-in-catch-variables---useunknownincatchvariables';
 
 const LEARNT_TODAY = [
-  { title: 'The knowledge problem', text: 'the model does not know your private documents, and its training data has a cutoff date' },
-  { title: 'Fine-tuning is costly', text: 'retraining the model for every new document or update is slow, expensive and impractical' },
-  { title: 'RAG', text: 'Retrieval-Augmented Generation — retrieve relevant chunks, add them to the prompt, then generate the answer' },
-  { title: 'Two phases', text: 'indexing (prepare your documents once) and querying (answer questions using retrieved context)' },
-  { title: 'Retrieve → Augment → Generate', text: 'find the relevant text, inject it into the prompt, and let the model answer from it' },
-  { title: 'Why RAG wins', text: 'cheaper than fine-tuning, always up to date, can cite sources, and hallucinates far less' },
-  { title: 'Built on the last 3 days', text: 'embeddings, semantic search and vector DBs were the foundation — RAG is where they pay off' },
+  { title: 'Promise<T>', text: 'an async value carries a type — Promise<User> resolves to a User' },
+  { title: 'async / await', text: 'an async function always returns a Promise; await unwraps it to the value' },
+  { title: 'Typed fetch', text: 'fetch returns any JSON — annotate or validate the parsed result to regain safety' },
+  { title: 'Errors are unknown', text: 'in a catch, the error is unknown — narrow it before reading .message' },
+  { title: 'Parallel with Promise.all', text: 'run independent async calls together and get a typed tuple back' },
+  { title: 'Result vs throw', text: 'return a typed result object, or throw — pick one convention and keep it' },
+  { title: 'Await in loops', text: 'sequential await is slow; map to promises and Promise.all when order doesn’t matter' },
+  { title: 'Never lose the type', text: 'validate external data (Zod) so async boundaries stay type-safe end to end' },
 ];
 
-const WHY = [
+const ASYNC = [
   {
-    icon: '📚', title: 'The Model Does Not Know', titleClass: 'card-title-cyan', subtitle: 'Your Data',
+    icon: '⏳', title: 'Promise<T> & async', titleClass: 'card-title-cyan', subtitle: 'Typed Async',
     description:
-      'An LLM only knows its training data up to a cutoff. It has never seen your company docs, your PDF, or yesterday’s update — so it cannot answer questions about them.',
-    code: '// "What does OUR internal handbook say about leave?"\n// → the model has no idea — it never saw your handbook',
+      'A Promise carries the type it resolves to. An async function’s return is wrapped in a Promise automatically, and await unwraps it — the types line up on both sides.',
+    code: 'async function getUser(id: number): Promise<User> {\n  const res = await fetch(`/users/${id}`);\n  return res.json();\n}\nconst u: User = await getUser(1);',
   },
   {
-    icon: '💸', title: 'Fine-Tuning Is Expensive', titleClass: 'card-title-purple', subtitle: 'Not For Knowledge',
+    icon: '🌐', title: 'Typing fetch', titleClass: 'card-title-purple', subtitle: 'JSON Is any',
     description:
-      'You could retrain the model on your data, but fine-tuning is costly and slow, and you would redo it every time a document changes. Wrong tool for keeping knowledge fresh.',
-    code: '// fine-tune on every doc change? → too slow, too costly\n// knowledge changes daily; retraining cannot keep up',
-  },
-  {
-    icon: '🎯', title: 'RAG Instead', titleClass: 'card-title-amber', subtitle: 'Retrieve, Then Answer',
-    description:
-      'Retrieval-Augmented Generation keeps the model as-is and simply fetches the relevant text at question time, adding it to the prompt so the model answers from your data.',
-    code: '// keep the model frozen\n// fetch relevant chunks → add to prompt → answer\n// update docs anytime, no retraining',
+      'res.json() returns any, quietly re-opening a hole. Annotate the result, or better, validate it with a schema so bad API data is caught at the boundary, not deep in your code.',
+    code: 'const data = await res.json() as User; // trusts blindly\n// safer:\nconst data = UserSchema.parse(await res.json());',
   },
 ];
 
-const PIPELINE = [
+const CONTROL = [
   {
-    icon: '🗂️', title: 'Phase 1 — Indexing', titleClass: 'card-title-cyan', subtitle: 'Prepare Once',
+    icon: '⚠️', title: 'Errors Are unknown', titleClass: 'card-title-cyan', subtitle: 'Narrow Before Use',
     description:
-      'Load your documents, split them into chunks, embed each chunk into a vector, and store them in a vector database. This runs once (or whenever the docs change).',
-    code: '// documents → chunks → embeddings → vector DB\n// a one-time preparation step',
+      'With modern settings, a caught error is typed unknown — because anything can be thrown. Check it’s an Error before reading .message, keeping error handling honest.',
+    code: 'try { await risky(); }\ncatch (e) {\n  if (e instanceof Error) console.log(e.message);\n  else console.log("unknown error");\n}',
   },
   {
-    icon: '❓', title: 'Phase 2 — Querying', titleClass: 'card-title-purple', subtitle: 'Every Question',
+    icon: '🔀', title: 'Run In Parallel', titleClass: 'card-title-purple', subtitle: 'Promise.all',
     description:
-      'When a user asks something, embed the question, retrieve the most similar chunks, add them to the prompt as context, and let the model generate a grounded answer.',
-    code: '// question → embed → retrieve top-K\n// → augment prompt with context → generate answer',
+      'When async calls don’t depend on each other, fire them together with Promise.all and get a fully typed tuple back — far faster than awaiting one at a time.',
+    code: 'const [user, posts] = await Promise.all([\n  getUser(1),\n  getPosts(1),\n]); // types preserved per position',
   },
   {
-    icon: '🔁', title: 'Retrieve · Augment · Generate', titleClass: 'card-title-amber', subtitle: 'The Three Steps',
+    icon: '📦', title: 'Result Or Throw', titleClass: 'card-title-amber', subtitle: 'One Convention',
     description:
-      'That is the whole idea in three words. Retrieval finds the right information, augmentation puts it in front of the model, and generation produces the final answer.',
-    footer: 'R — retrieve · A — augment · G — generate',
+      'Either throw on failure and catch upstream, or return a typed result union ({ ok } | { error }). Both are fine — the key is picking one and applying it consistently.',
+    code: 'type Result<T> =\n  | { ok: true; value: T }\n  | { ok: false; error: string };',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 11', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📗', title: 'Promises (MDN)', titleClass: 'card-title-cyan', subtitle: 'The Model',
     description:
-      'The RAG concept lecture and diagram in the STRIKE GenAI repo — the "why" before tomorrow’s hands-on build.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 11 →', external: true },
+      'The core Promise semantics TypeScript types — then/catch, chaining, Promise.all/allSettled and how async/await maps onto them.',
+    link: { href: MDN_PROMISE, label: 'Open MDN Promise →', external: true },
   },
   {
-    icon: '🧠', title: 'RAG vs Fine-Tuning', titleClass: 'card-title-purple', subtitle: 'Rule Of Thumb',
+    icon: '⚠️', title: 'unknown In catch', titleClass: 'card-title-purple', subtitle: 'Handbook',
     description:
-      'Use RAG to give the model knowledge (facts, docs, up-to-date data). Use fine-tuning to change behaviour or style — not to teach it new facts.',
-    footer: 'RAG → knowledge · fine-tuning → behaviour',
+      'Why catch variables default to unknown and how useUnknownInCatchVariables makes error handling safer — the exact rationale.',
+    link: { href: TS_UNKNOWN_CATCH, label: 'Open the release note →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Build It', titleClass: 'card-title-amber', subtitle: 'Day 12 Preview',
+    icon: '🔜', title: 'Next: React + TS', titleClass: 'card-title-amber', subtitle: 'Day 12 Preview',
     description:
-      'Tomorrow is Lecture 12 — the RAG indexing pipeline with LangChain.js and Pinecone: load a PDF, chunk it, embed it, and store it in a vector database.',
+      'Tomorrow — TypeScript meets React: a Vite + React + TS project, .tsx files, JSX, and typing your very first component.',
     link: { href: '/day-012', label: 'Go to Day 12 →' },
   },
 ];
@@ -139,23 +135,23 @@ export default function Day011() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-010" className="day001-nav-btn day001-nav-prev">← Day 10</Link>
-          <p className="day001-datetime">Agentic AI Day 11</p>
+          <p className="day001-datetime">TypeScript Day 11</p>
           <Link to="/day-012" className="day001-nav-btn day001-nav-next">Day 12 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 11</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Async</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 11 <span aria-hidden="true">📚</span></h1>
-              <p className="day001-day-theme">RAG — GIVING THE AI YOUR OWN KNOWLEDGE</p>
+              <h1 className="day001-day-num">DAY 11 <span aria-hidden="true">⏳</span></h1>
+              <p className="day001-day-theme">ASYNC TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -163,13 +159,13 @@ export default function Day011() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '11%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 11 — <strong>RAG</strong>. The model does not know my private documents and has a training cutoff,
-          and <strong>fine-tuning</strong> is far too costly to keep knowledge fresh. <strong>Retrieval-Augmented
-          Generation</strong> solves it: <strong>retrieve</strong> the relevant chunks, <strong>augment</strong> the
-          prompt with them, and <strong>generate</strong> a grounded answer. It runs in two phases —{' '}
-          <strong>indexing</strong> (prepare the docs once) and <strong>querying</strong> (answer each question). It’s
-          cheaper than fine-tuning, always up to date, and hallucinates less — and it’s built on the last three days
-          of embeddings and vector DBs. <em>Tomorrow I build it.</em>
+          Halfway. Async code stays typed: a <strong>Promise&lt;T&gt;</strong> carries the value it resolves to, an{' '}
+          <strong>async</strong> function always returns one, and <strong>await</strong> unwraps it. Watch the
+          boundaries — <code>res.json()</code> returns <code>any</code>, so annotate or <strong>validate</strong> it;
+          and a caught error is <strong>unknown</strong>, so narrow with <code>instanceof Error</code> before reading{' '}
+          <code>.message</code>. Run independent calls together with <strong>Promise.all</strong> for a typed tuple,
+          and pick one failure convention — <em>throw</em> or a typed <em>result</em> union. <em>Next: React with
+          TypeScript.</em>
         </p>
 
         <section className="day001-learnt">
@@ -184,12 +180,12 @@ export default function Day011() {
           </ul>
         </section>
 
-        <CardSection icon="📚" title="WHY RAG" cards={WHY} columns={3} />
-        <CardSection icon="🔁" title="THE RAG PIPELINE" cards={PIPELINE} columns={3} />
+        <CardSection icon="⏳" title="PROMISES & FETCH" cards={ASYNC} columns={2} />
+        <CardSection icon="🔀" title="ERRORS & PARALLELISM" cards={CONTROL} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#CoderArmy</span><span>#JavaScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#async</span><span>#Promises</span>
         </footer>
       </div>
     </div>

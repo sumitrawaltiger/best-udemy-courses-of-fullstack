@@ -2,74 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const NEXT_TS = 'https://nextjs.org/docs/app/api-reference/config/typescript';
-const NEXT_APP_ROUTER = 'https://nextjs.org/docs/app/building-your-application/routing';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture40';
 
 const LEARNT_TODAY = [
-  { title: 'Next.js is TS-first', text: 'create-next-app scaffolds a typed project; .tsx pages and layouts out of the box' },
-  { title: 'App Router', text: 'folders are routes; page.tsx renders, layout.tsx wraps, all typed' },
-  { title: 'Server vs client', text: 'components are Server by default; add "use client" only where you need hooks/interactivity' },
-  { title: 'Typed page props', text: 'params and searchParams arrive as typed props to a page' },
-  { title: 'Route handlers', text: 'app/api/*/route.ts gives typed Request/Response API endpoints' },
-  { title: 'Data fetching', text: 'async Server Components can await data directly — no useEffect for initial load' },
-  { title: 'Metadata', text: 'export a typed Metadata object for SEO per route' },
-  { title: 'End-to-end types', text: 'share types between server and client — one source of truth across the app' },
+  { title: 'Ids aren’t meaning', text: 'a token id like 4821 is just a label — the number itself carries no information about the word' },
+  { title: 'The embedding layer', text: 'a big lookup table: every token id maps to a learned vector of numbers (e.g. 768 dimensions)' },
+  { title: 'Meaning as geometry', text: 'the vector is the word’s meaning — similar words end up close together in that 768-D space' },
+  { title: 'It’s just weights', text: 'the table is vocab_size × 768 numbers, all learned by gradient descent like every other weight' },
+  { title: 'The scale is huge', text: 'a 10K vocab × 768 dims is ~7.7M numbers in the embedding table alone — and real vocabs are bigger' },
+  { title: 'One row per token', text: 'the sentence "The chai was too hot" becomes a stack of 768-length vectors, one per token' },
+  { title: 'Learned, not fixed', text: 'embeddings start random and are shaped by training so that geometry reflects real usage' },
+  { title: 'Input to the network', text: 'these vectors are what attention and the deeper layers actually operate on' },
 ];
 
-const ROUTER = [
+const IDEA = [
   {
-    icon: '🗂️', title: 'The App Router', titleClass: 'card-title-cyan', subtitle: 'Folders = Routes',
+    icon: '🧭', title: 'Id → Vector', titleClass: 'card-title-cyan', subtitle: 'The Lookup Table',
     description:
-      'Each folder under app/ is a route. page.tsx is the view, layout.tsx wraps its children, and loading/error files handle those states — all in TypeScript with typed props.',
-    code: '// app/blog/[slug]/page.tsx\nexport default function Post(\n  { params }: { params: { slug: string } },\n) { return <h1>{params.slug}</h1>; }',
+      'The embedding layer is a table with one row per token in the vocabulary. Feed it an id and it returns that row — a dense vector of (say) 768 numbers. That vector is the token’s representation.',
+    code: '// vocab_size rows × 768 columns\n// id 4821 → row 4821 → [0.12, -0.94, ... 768]\n// "The chai" → two 768-length vectors',
   },
   {
-    icon: '🖥️', title: 'Server vs Client', titleClass: 'card-title-purple', subtitle: '"use client"',
+    icon: '📐', title: 'Meaning As Geometry', titleClass: 'card-title-purple', subtitle: 'Close = Similar',
     description:
-      'Components render on the server by default — great for data and SEO. Add "use client" only when you need state, effects or event handlers, keeping bundles lean.',
-    code: '// server component (default): can await data\n// client component:\n"use client";\nimport { useState } from "react";',
+      'Because the vectors are learned, words used alike land near each other. Distance and direction encode relationships — the "king − man + woman ≈ queen" idea, at 768 dimensions.',
+    code: '// similar meaning → small distance\n// king - man + woman ≈ queen\n// 768 dims = 768 subtle features',
   },
 ];
 
-const FEATURES = [
+const SCALE = [
   {
-    icon: '🔌', title: 'Route Handlers', titleClass: 'card-title-cyan', subtitle: 'Typed APIs',
+    icon: '🔢', title: 'It’s All Weights', titleClass: 'card-title-cyan', subtitle: 'Learned By Training',
     description:
-      'app/api/.../route.ts exports typed GET/POST handlers with the Web Request/Response API. Your backend and frontend can share the same TypeScript types.',
-    code: '// app/api/hello/route.ts\nexport async function GET(req: Request) {\n  return Response.json({ ok: true });\n}',
+      'The embedding table isn’t hand-made. It starts as random numbers and gradient descent nudges every value so the geometry lines up with how words actually behave.',
+    code: '// embedding[id] starts random\n// training reshapes each row\n// → geometry reflects real usage',
   },
   {
-    icon: '📥', title: 'Data In Server Components', titleClass: 'card-title-purple', subtitle: 'await Directly',
+    icon: '📈', title: 'The Numbers Add Up', titleClass: 'card-title-purple', subtitle: 'Millions Of Values',
     description:
-      'An async Server Component awaits data before rendering — no client-side useEffect for the initial load. Type the fetched data and pass it down as typed props.',
-    code: 'export default async function Page() {\n  const posts: Post[] = await getPosts();\n  return <List posts={posts} />;\n}',
+      'Even a modest 10,000-token vocabulary at 768 dims is 10,000 × 768 ≈ 7.7 million numbers — just for embeddings. Real models use far larger vocabularies and dimensions.',
+    code: '// 10,000 × 768 ≈ 7.7M numbers\n// (embedding table only!)\n// bigger vocab / dims → billions',
   },
   {
-    icon: '🏷️', title: 'Typed Metadata', titleClass: 'card-title-amber', subtitle: 'SEO Per Route',
+    icon: '📥', title: 'The Model’s Real Input', titleClass: 'card-title-amber', subtitle: 'Vectors, Not Text',
     description:
-      'Export a typed Metadata object (or generateMetadata) from a route for title, description and Open Graph tags — checked by TypeScript, no stray keys.',
-    code: 'import type { Metadata } from "next";\nexport const metadata: Metadata = {\n  title: "TypeScript Journey",\n};',
+      'After embedding, the sentence is a stack of vectors — one row per token. Everything downstream (attention, the deeper layers) works on these numbers, never on the letters.',
+    code: '// "The chai was too hot"\n// → [v_the, v_chai, v_was, v_too, v_hot]\n// each v is 768 numbers → into attention',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Next.js + TypeScript', titleClass: 'card-title-cyan', subtitle: 'Official',
+    icon: '💻', title: 'Lecture 40', titleClass: 'card-title-cyan', subtitle: 'Embeddings',
     description:
-      'How Next.js uses TypeScript — the plugin, typed routes, config, and end-to-end type safety across server and client.',
-    link: { href: NEXT_TS, label: 'Open the Next.js TS docs →', external: true },
+      'The embedding-layer material in the STRIKE GenAI repo — token ids to 768-dimension vectors, and the weight counts behind them.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 40 →', external: true },
   },
   {
-    icon: '🗂️', title: 'App Router', titleClass: 'card-title-purple', subtitle: 'Routing',
+    icon: '🧠', title: 'Ties Back To Day 8', titleClass: 'card-title-purple', subtitle: 'Meaning As Geometry',
     description:
-      'The routing model — pages, layouts, server/client components, route handlers and data fetching — the backbone of a Year-1 Next.js app.',
-    link: { href: NEXT_APP_ROUTER, label: 'Open the routing docs →', external: true },
+      'This is the same "embeddings" idea from the RAG foundation — now placed as the first learned layer inside the LLM itself.',
+    footer: 'token id → lookup → 768-D vector → attention',
   },
   {
-    icon: '🔜', title: 'Next: Year-1 Roadmap', titleClass: 'card-title-amber', subtitle: 'Day 55 Preview',
+    icon: '🔜', title: 'Next: Attention', titleClass: 'card-title-amber', subtitle: 'Prereq 39 Preview',
     description:
-      'Tomorrow — wrap the TypeScript foundation and map the rest of Year 1: React Native, Express/Node, and where each track lives on the site.',
-    link: { href: '/day-055', label: 'Go to Day 55 →' },
+      'Tomorrow — Lecture 41: self-attention. Query, Key and Value let every token look at the others so "bank" means the right thing in context.',
+    link: { href: '/day-055', label: 'Go to Prereq 39 →' },
   },
 ];
 
@@ -134,38 +133,38 @@ export default function Day054() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-053" className="day001-nav-btn day001-nav-prev">← Day 53</Link>
-          <p className="day001-datetime">TypeScript Day 54</p>
-          <Link to="/day-055" className="day001-nav-btn day001-nav-next">Day 55 →</Link>
+          <Link to="/day-053" className="day001-nav-btn day001-nav-prev">← Prereq 37</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 38</p>
+          <Link to="/day-055" className="day001-nav-btn day001-nav-next">Prereq 39 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Next.js</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 40</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 54 <span aria-hidden="true">▲</span></h1>
-              <p className="day001-day-theme">NEXT.JS WITH TYPESCRIPT</p>
+              <h1 className="day001-day-num">PREREQ 38 <span aria-hidden="true">🧭</span></h1>
+              <p className="day001-day-theme">EMBEDDINGS — TOKEN IDS TO MEANING VECTORS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '54%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '38%' }} /></div>
 
         <p className="day001-summary">
-          React, but full-stack. <strong>Next.js is TypeScript-first</strong> — <code>create-next-app</code> scaffolds
-          a typed project. The <strong>App Router</strong> maps folders to routes: <code>page.tsx</code> renders,{' '}
-          <code>layout.tsx</code> wraps, and <strong>params/searchParams</strong> arrive typed. Components are{' '}
-          <strong>Server by default</strong> (await data directly, great for SEO); add <code>"use client"</code> only
-          for interactivity. <strong>Route handlers</strong> (<code>route.ts</code>) give typed API endpoints, and a
-          typed <strong>Metadata</strong> export handles SEO per route. Best of all — <strong>share types</strong>{' '}
-          across server and client for one source of truth. <em>Next: wrap Year 1’s foundation.</em>
+          Lecture 40 — a token id like <code>4821</code> is just a label; it carries no meaning. The{' '}
+          <strong>embedding layer</strong> fixes that: a big lookup table maps every id to a learned{' '}
+          <strong>vector of ~768 numbers</strong>. That vector <em>is</em> the word’s meaning —{' '}
+          <strong>similar words sit close together</strong> in the space. It’s just weights, learned by gradient
+          descent, and the <strong>scale is huge</strong>: even a 10K vocab × 768 dims is ~7.7M numbers in the table
+          alone. A sentence becomes a <strong>stack of vectors</strong>, one row per token — and that stack, not the
+          text, is what the rest of the network operates on. <em>Next: attention.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +179,12 @@ export default function Day054() {
           </ul>
         </section>
 
-        <CardSection icon="🗂️" title="APP ROUTER" cards={ROUTER} columns={2} />
-        <CardSection icon="🔌" title="APIS · DATA · SEO" cards={FEATURES} columns={3} />
+        <CardSection icon="🧭" title="THE EMBEDDING IDEA" cards={IDEA} columns={2} />
+        <CardSection icon="📈" title="WEIGHTS & SCALE" cards={SCALE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#NextJS</span><span>#React</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Embeddings</span><span>#LLM</span><span>#FirstPrinciples</span>
         </footer>
       </div>
     </div>

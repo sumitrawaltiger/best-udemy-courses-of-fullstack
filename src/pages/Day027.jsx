@@ -2,72 +2,78 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture27and28';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture11';
 
 const LEARNT_TODAY = [
-  { title: 'Under the hood', text: 'build a neural network by hand in C++ — no libraries, no magic — to see what an LLM really is' },
-  { title: 'The dataset', text: 'predict a student’s marks from study_hours and sleep_hours, loaded from a CSV' },
-  { title: 'A neuron is a weighted sum', text: 'output = w1·study + w2·sleep + b — that is the whole computation of one neuron' },
-  { title: 'Weights and bias', text: 'w1 and w2 scale each input by importance; b (bias) shifts the result up or down' },
-  { title: 'The forward pass', text: 'plug the inputs and current weights into the formula to get a prediction' },
-  { title: 'Random start is wrong', text: 'untrained weights give bad predictions — tomorrow’s training fixes that' },
-  { title: 'This IS an LLM neuron', text: 'the same weighted-sum idea, repeated billions of times, is what powers a large language model' },
+  { title: 'The knowledge problem', text: 'the model does not know your private documents, and its training data has a cutoff date' },
+  { title: 'Fine-tuning is costly', text: 'retraining the model for every new document or update is slow, expensive and impractical' },
+  { title: 'RAG', text: 'Retrieval-Augmented Generation — retrieve relevant chunks, add them to the prompt, then generate the answer' },
+  { title: 'Two phases', text: 'indexing (prepare your documents once) and querying (answer questions using retrieved context)' },
+  { title: 'Retrieve → Augment → Generate', text: 'find the relevant text, inject it into the prompt, and let the model answer from it' },
+  { title: 'Why RAG wins', text: 'cheaper than fine-tuning, always up to date, can cite sources, and hallucinates far less' },
+  { title: 'Built on the last 3 days', text: 'embeddings, semantic search and vector DBs were the foundation — RAG is where they pay off' },
 ];
 
-const BUILD = [
+const WHY = [
   {
-    icon: '🧱', title: 'Build It By Hand', titleClass: 'card-title-cyan', subtitle: 'Plain C++',
+    icon: '📚', title: 'The Model Does Not Know', titleClass: 'card-title-cyan', subtitle: 'Your Data',
     description:
-      'No PyTorch, no TensorFlow. Writing it in raw C++ strips away the abstraction so every number is visible — the best way to truly understand a neural network.',
-    code: '// dataset.csv: study_hours, sleep_hours, marks\n// 9,2,55\n// 10,7,75\n// 1,1,12',
+      'An LLM only knows its training data up to a cutoff. It has never seen your company docs, your PDF, or yesterday’s update — so it cannot answer questions about them.',
+    code: '// "What does OUR internal handbook say about leave?"\n// → the model has no idea — it never saw your handbook',
   },
   {
-    icon: '📥', title: 'Load The Data', titleClass: 'card-title-purple', subtitle: 'Read The CSV',
+    icon: '💸', title: 'Fine-Tuning Is Expensive', titleClass: 'card-title-purple', subtitle: 'Not For Knowledge',
     description:
-      'Parse each row of the CSV into a struct — study, sleep and the true marks. This is the training data the neuron will eventually learn from.',
-    code: 'struct Example { double study, sleep, marks; };\n\n// read each line: study, sleep, marks\n// → vector<Example> data',
+      'You could retrain the model on your data, but fine-tuning is costly and slow, and you would redo it every time a document changes. Wrong tool for keeping knowledge fresh.',
+    code: '// fine-tune on every doc change? → too slow, too costly\n// knowledge changes daily; retraining cannot keep up',
+  },
+  {
+    icon: '🎯', title: 'RAG Instead', titleClass: 'card-title-amber', subtitle: 'Retrieve, Then Answer',
+    description:
+      'Retrieval-Augmented Generation keeps the model as-is and simply fetches the relevant text at question time, adding it to the prompt so the model answers from your data.',
+    code: '// keep the model frozen\n// fetch relevant chunks → add to prompt → answer\n// update docs anytime, no retraining',
   },
 ];
 
-const NEURON = [
+const PIPELINE = [
   {
-    icon: '⚖️', title: 'The Weighted Sum', titleClass: 'card-title-cyan', subtitle: 'What A Neuron Does',
+    icon: '🗂️', title: 'Phase 1 — Indexing', titleClass: 'card-title-cyan', subtitle: 'Prepare Once',
     description:
-      'A neuron multiplies each input by a weight, adds them, and adds a bias. That single line — a weighted sum plus a bias — is the atom of every neural network.',
-    code: 'double predict(double study, double sleep,\n               double w1, double w2, double b) {\n  return w1 * study + w2 * sleep + b;\n}',
+      'Load your documents, split them into chunks, embed each chunk into a vector, and store them in a vector database. This runs once (or whenever the docs change).',
+    code: '// documents → chunks → embeddings → vector DB\n// a one-time preparation step',
   },
   {
-    icon: '🎛️', title: 'Weights & Bias', titleClass: 'card-title-purple', subtitle: 'The Knobs',
+    icon: '❓', title: 'Phase 2 — Querying', titleClass: 'card-title-purple', subtitle: 'Every Question',
     description:
-      'Weights decide how much each input matters (maybe study matters more than sleep); the bias shifts the baseline. Learning a network = finding good values for these knobs.',
-    code: '// w1 big → study matters a lot\n// w2 small → sleep matters less\n// b → baseline marks with zero input',
+      'When a user asks something, embed the question, retrieve the most similar chunks, add them to the prompt as context, and let the model generate a grounded answer.',
+    code: '// question → embed → retrieve top-K\n// → augment prompt with context → generate answer',
   },
   {
-    icon: '▶️', title: 'The Forward Pass', titleClass: 'card-title-amber', subtitle: 'Predict',
+    icon: '🔁', title: 'Retrieve · Augment · Generate', titleClass: 'card-title-amber', subtitle: 'The Three Steps',
     description:
-      'Feed inputs through the formula with the current weights and you get a prediction. With random weights it is wrong — but the machinery is exactly right.',
-    code: 'predict(9, 2, w1, w2, b); // guess for a 9h/2h student\n// random w1,w2,b → wrong number (for now)',
+      'That is the whole idea in three words. Retrieval finds the right information, augmentation puts it in front of the model, and generation produces the final answer.',
+    footer: 'R — retrieve · A — augment · G — generate',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 27–28', titleClass: 'card-title-cyan', subtitle: 'C++ From Scratch',
+    icon: '💻', title: 'Lecture 11', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The first.cpp / trained.cpp neural network and dataset.csv in the STRIKE GenAI repo — the neuron and its training, in plain C++.',
-    link: { href: GH_LECTURE, label: 'Open the code →', external: true },
+      'The RAG concept lecture and diagram in the STRIKE GenAI repo — the "why" before tomorrow’s hands-on build.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 11 →', external: true },
   },
   {
-    icon: '🧠', title: 'Why This Matters', titleClass: 'card-title-purple', subtitle: 'Demystified',
+    icon: '🧠', title: 'RAG vs Fine-Tuning', titleClass: 'card-title-purple', subtitle: 'Rule Of Thumb',
     description:
-      'Every LLM is billions of these weighted sums. Building one by hand turns the "black box" into something you fully understand.',
-    footer: 'one neuron = w1·x1 + w2·x2 + b',
+      'Use RAG to give the model knowledge (facts, docs, up-to-date data). Use fine-tuning to change behaviour or style — not to teach it new facts.',
+    footer: 'RAG → knowledge · fine-tuning → behaviour',
   },
   {
-    icon: '🔜', title: 'Next: Training', titleClass: 'card-title-amber', subtitle: 'Day 28 Preview',
+    icon: '🔜', title: 'Next: Build It', titleClass: 'card-title-amber', subtitle: 'Prereq 12 Preview',
     description:
-      'Tomorrow the neuron learns — Lecture 28: measure the error, compute gradients, and use gradient descent to find the weights that make predictions accurate.',
-    link: { href: '/day-028', label: 'Go to Day 28 →' },
+      'Tomorrow is Lecture 12 — the RAG indexing pipeline with LangChain.js and Pinecone: load a PDF, chunk it, embed it, and store it in a vector database.',
+    link: { href: '/day-028', label: 'Go to Prereq 12 →' },
   },
 ];
 
@@ -132,38 +138,38 @@ export default function Day027() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-026" className="day001-nav-btn day001-nav-prev">← Day 26</Link>
-          <p className="day001-datetime">Agentic AI Day 27</p>
-          <Link to="/day-028" className="day001-nav-btn day001-nav-next">Day 28 →</Link>
+          <Link to="/day-026" className="day001-nav-btn day001-nav-prev">← Prereq 10</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 11</p>
+          <Link to="/day-028" className="day001-nav-btn day001-nav-next">Prereq 12 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 27</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 11</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 27 <span aria-hidden="true">🧠</span></h1>
-              <p className="day001-day-theme">NEURAL NETS FROM SCRATCH (C++) — THE NEURON</p>
+              <h1 className="day001-day-num">PREREQ 11 <span aria-hidden="true">📚</span></h1>
+              <p className="day001-day-theme">RAG — GIVING THE AI YOUR OWN KNOWLEDGE</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '27%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '11%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 27 — going to the metal. To truly understand what powers an LLM, I built a neural network{' '}
-          <strong>from scratch in C++</strong> — no libraries. The task: predict <strong>marks</strong> from{' '}
-          <strong>study_hours</strong> and <strong>sleep_hours</strong> in a CSV. A <strong>neuron</strong> is just a{' '}
-          <strong>weighted sum</strong>: <code>output = w1·study + w2·sleep + b</code>, where the{' '}
-          <strong>weights</strong> scale each input and the <strong>bias</strong> shifts the result. The{' '}
-          <strong>forward pass</strong> plugs inputs into that formula. With random weights it’s wrong — but this is
-          exactly the atom every LLM is built from. <em>Tomorrow it learns.</em>
+          Lecture 11 — <strong>RAG</strong>. The model does not know my private documents and has a training cutoff,
+          and <strong>fine-tuning</strong> is far too costly to keep knowledge fresh. <strong>Retrieval-Augmented
+          Generation</strong> solves it: <strong>retrieve</strong> the relevant chunks, <strong>augment</strong> the
+          prompt with them, and <strong>generate</strong> a grounded answer. It runs in two phases —{' '}
+          <strong>indexing</strong> (prepare the docs once) and <strong>querying</strong> (answer each question). It’s
+          cheaper than fine-tuning, always up to date, and hallucinates less — and it’s built on the last three days
+          of embeddings and vector DBs. <em>Tomorrow I build it.</em>
         </p>
 
         <section className="day001-learnt">
@@ -178,12 +184,12 @@ export default function Day027() {
           </ul>
         </section>
 
-        <CardSection icon="🧱" title="BUILD IT BY HAND" cards={BUILD} columns={2} />
-        <CardSection icon="⚖️" title="A NEURON" cards={NEURON} columns={3} />
+        <CardSection icon="📚" title="WHY RAG" cards={WHY} columns={3} />
+        <CardSection icon="🔁" title="THE RAG PIPELINE" cards={PIPELINE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#NeuralNetworks</span><span>#Cpp</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#CoderArmy</span><span>#JavaScript</span>
         </footer>
       </div>
     </div>

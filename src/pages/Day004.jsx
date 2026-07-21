@@ -2,93 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture04';
-const COINGECKO = 'https://www.coingecko.com/en/api';
+const TS_FUNCTIONS = 'https://www.typescriptlang.org/docs/handbook/2/functions.html';
+const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
 
 const LEARNT_TODAY = [
-  { title: 'The knowledge gap', text: 'an LLM only knows its training data up to a cutoff — no live prices, weather, or today’s news' },
-  { title: 'Tools are just functions', text: 'to reach live data, write plain JavaScript functions that call real APIs and return the result' },
-  { title: 'fetch in Node', text: 'modern Node has fetch built in — hit any REST endpoint and parse the JSON response' },
-  { title: 'Crypto price tool', text: 'a getCryptoPrice(coin) function fetches live prices from the CoinGecko API' },
-  { title: 'Weather & news tools', text: 'the same pattern — one function per data source (weather API, news API)' },
-  { title: 'The routing problem', text: 'given a user question, which tool should run? A manual if/else chain is brittle and does not scale' },
-  { title: 'Why this matters', text: 'this sets up function calling — instead of routing by hand, let the model choose the tool (Day 5)' },
+  { title: 'Type the parameters', text: 'each parameter gets its own annotation: (name: string, age: number)' },
+  { title: 'Type the return value', text: 'a colon after the parens declares what comes back: (): number' },
+  { title: 'Return inference', text: 'TS usually infers the return type — annotate it to lock the contract on purpose' },
+  { title: 'void', text: 'a function that returns nothing has return type void — like a console.log wrapper' },
+  { title: 'Optional params', text: 'a ? makes a parameter optional; it becomes type | undefined inside the body' },
+  { title: 'Default params', text: 'a default value both fills in a missing argument and lets TS infer its type' },
+  { title: 'Typed arrow functions', text: 'const add = (a: number, b: number): number => a + b — same rules, shorter syntax' },
+  { title: 'Function type signatures', text: 'you can describe a callback’s shape: (n: number) => string' },
 ];
 
-const GAP = [
+const BASICS = [
   {
-    icon: '🕳️', title: 'The Knowledge Cutoff', titleClass: 'card-title-cyan', subtitle: 'No Live Data',
+    icon: '🎯', title: 'Params & Return', titleClass: 'card-title-cyan', subtitle: 'Both Ends Typed',
     description:
-      'The model was trained up to a date and frozen. Ask for the Bitcoin price or today’s weather and it cannot know — it has no connection to the live world.',
-    code: '// "What is the price of Bitcoin right now?"\n// → the model has no idea — training data is frozen',
+      'Annotate every parameter, and optionally the return type. If you leave the return off, TypeScript infers it — but writing it makes the function’s contract explicit and self-checking.',
+    code: 'function greet(name: string): string {\n  return `Hi ${name}`;\n}\n\ngreet(42); // ❌ number not assignable to string',
   },
   {
-    icon: '🌉', title: 'Bridge To Reality', titleClass: 'card-title-purple', subtitle: 'Give It Tools',
+    icon: '🕳️', title: 'void', titleClass: 'card-title-purple', subtitle: 'Returns Nothing',
     description:
-      'The fix is to fetch real data ourselves and hand it to the model. A "tool" is nothing magical — it is a normal function that calls an API and returns fresh information.',
-    code: '// tool = a function the AI can use to reach the real world\n// fetch live data → feed it back into the answer',
-  },
-];
-
-const TOOLS = [
-  {
-    icon: '🪙', title: 'Crypto Price Tool', titleClass: 'card-title-cyan', subtitle: 'CoinGecko API',
-    description:
-      'A function takes a coin id, calls the CoinGecko API, and returns the live price data. Node’s built-in fetch makes it a couple of lines.',
-    code: 'async function getCryptoPrice(coin) {\n  const res = await fetch(\n    `https://api.coingecko.com/api/v3/coins/markets` +\n    `?vs_currency=inr&ids=${coin}`\n  );\n  return await res.json();\n}\nawait getCryptoPrice("bitcoin");',
-  },
-  {
-    icon: '🌦️', title: 'Weather & News', titleClass: 'card-title-purple', subtitle: 'Same Pattern',
-    description:
-      'Every data source is one more function: a weather API by city, a news API by topic. Consistent shape — take an argument, fetch, return JSON.',
-    code: 'async function getWeather(city) {\n  const res = await fetch(`.../current.json?q=${city}`);\n  return await res.json();\n}\nasync function getNews(topic) { /* fetch news */ }',
-  },
-  {
-    icon: '🔌', title: 'fetch Is Built In', titleClass: 'card-title-amber', subtitle: 'No Extra Library',
-    description:
-      'Modern Node ships fetch, so calling REST APIs needs nothing extra. Await the response, parse the JSON, and you have real-world data inside your program.',
-    code: 'const res = await fetch(url);\nconst data = await res.json();\n// live data — ready to feed the model',
+      'When a function does its work through side effects and returns nothing meaningful, its return type is void. TypeScript infers it, and stops you from using a non-existent result.',
+    code: 'function log(msg: string): void {\n  console.log(msg);\n}\nconst x = log("hi"); // x is void',
   },
 ];
 
-const ROUTING = [
+const PARAMS = [
   {
-    icon: '🤔', title: 'Which Tool?', titleClass: 'card-title-cyan', subtitle: 'The Real Problem',
+    icon: '❓', title: 'Optional Params', titleClass: 'card-title-cyan', subtitle: 'name?: type',
     description:
-      'Now the hard part: for a given question, which function should run? "Delhi ki news bata" → news. "Bitcoin price?" → crypto. Deciding this in code is the whole challenge.',
-    code: '// question: "Bhai delhi ki news bata"\n// → should call getNews("delhi") ... but how does the code know?',
+      'A trailing ? marks a parameter optional. Inside the body its type is T | undefined, so TypeScript makes you handle the missing case before you use it.',
+    code: 'function hi(name?: string) {\n  return `Hi ${name ?? "there"}`;\n}\nhi();        // ✓ ok\nhi("Sumit"); // ✓ ok',
   },
   {
-    icon: '🧱', title: 'Manual Routing Breaks', titleClass: 'card-title-purple', subtitle: 'if / else Does Not Scale',
+    icon: '⚙️', title: 'Default Params', titleClass: 'card-title-purple', subtitle: 'Fallback Values',
     description:
-      'Hard-coding keyword checks (if the text has "price" call crypto…) is fragile and explodes as you add tools. Natural language is too varied for if/else.',
-    code: 'if (q.includes("price")) getCryptoPrice(...)\nelse if (q.includes("weather")) getWeather(...)\nelse if (q.includes("news")) getNews(...)\n// brittle, and worse with every new tool',
+      'Give a parameter a default and it’s used whenever the argument is missing. The default also lets TypeScript infer the parameter’s type without an annotation.',
+    code: 'function pow(base: number, exp = 2) {\n  return base ** exp;\n}\npow(5);    // 25\npow(5, 3); // 125',
   },
   {
-    icon: '➡️', title: 'The Better Way', titleClass: 'card-title-amber', subtitle: 'Let The Model Decide',
+    icon: '🏹', title: 'Typed Arrows', titleClass: 'card-title-amber', subtitle: 'Shorter Syntax',
     description:
-      'Instead of routing by hand, describe the tools to the model and let it choose which one to call and with what arguments. That is function calling — tomorrow’s lecture.',
-    footer: 'Manual routing → function calling (Day 5)',
+      'Arrow functions follow the same typing rules. You can also write a function type signature to describe a callback’s exact shape — great for props and event handlers.',
+    code: 'const add = (a: number, b: number): number => a + b;\n\ntype Fmt = (n: number) => string;\nconst money: Fmt = (n) => `$${n}`;',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 04 Code', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'Functions Chapter', titleClass: 'card-title-cyan', subtitle: 'Handbook',
     description:
-      'The crypto, weather and news functions and the routing experiment from this lecture in the STRIKE GenAI repo.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 04 →', external: true },
+      'The handbook’s deep dive on function types — parameters, returns, optional/rest params, overloads and call signatures — with runnable examples.',
+    link: { href: TS_FUNCTIONS, label: 'Open the Functions docs →', external: true },
   },
   {
-    icon: '📈', title: 'CoinGecko API', titleClass: 'card-title-purple', subtitle: 'Free Crypto Data',
+    icon: '🎮', title: 'Try Each Snippet', titleClass: 'card-title-purple', subtitle: 'Playground',
     description:
-      'The public API used for the crypto tool — live prices and market data, no key needed for basic endpoints.',
-    link: { href: COINGECKO, label: 'CoinGecko API docs →', external: true },
+      'Drop the examples into the Playground, then remove a type or pass a wrong argument to watch the compiler catch it — the fastest way to build the reflex.',
+    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Function Calling', titleClass: 'card-title-amber', subtitle: 'Day 5 Preview',
+    icon: '🔜', title: 'Next: Data Types', titleClass: 'card-title-amber', subtitle: 'Day 5 Preview',
     description:
-      'Tomorrow is Lecture 05 — declare tools to the model with typed parameters so it decides which function to call. The first real step toward an agent.',
+      'Tomorrow — objects, tuples, enums and type aliases: how to describe structured data so whole records are checked, not just single values.',
     link: { href: '/day-005', label: 'Go to Day 5 →' },
   },
 ];
@@ -155,23 +135,23 @@ export default function Day004() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-003" className="day001-nav-btn day001-nav-prev">← Day 3</Link>
-          <p className="day001-datetime">Agentic AI Day 4</p>
+          <p className="day001-datetime">TypeScript Day 4</p>
           <Link to="/day-005" className="day001-nav-btn day001-nav-next">Day 5 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 04</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Functions</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 4 <span aria-hidden="true">🌐</span></h1>
-              <p className="day001-day-theme">REACHING REAL-WORLD DATA WITH TOOLS</p>
+              <h1 className="day001-day-num">DAY 4 <span aria-hidden="true">🎯</span></h1>
+              <p className="day001-day-theme">TYPING FUNCTIONS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -179,12 +159,13 @@ export default function Day004() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '4%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 04 — the model has a <strong>knowledge cutoff</strong> and no live data, so I built{' '}
-          <strong>tools</strong>: plain JavaScript functions that <code>fetch</code> real data from APIs —{' '}
-          crypto prices from <strong>CoinGecko</strong>, plus weather and news. The catch is <strong>routing</strong>:
-          for any given question, which tool should run? A manual <code>if/else</code> chain is brittle and does not
-          scale. That is exactly the problem <strong>function calling</strong> solves — letting the model choose the
-          tool itself. <em>Tomorrow, the AI starts deciding.</em>
+          Functions are where types pay off most. Annotate each <strong>parameter</strong>
+          (<code>name: string</code>) and, optionally, the <strong>return type</strong> after the parens — TS infers
+          the return, but writing it locks the contract. A function returning nothing is <code>void</code>. A{' '}
+          <strong>?</strong> makes a parameter <strong>optional</strong> (<code>T | undefined</code> inside), while a{' '}
+          <strong>default value</strong> fills a missing argument and infers its type. <strong>Arrow functions</strong>{' '}
+          follow the same rules — <code>const add = (a: number, b: number): number =&gt; a + b</code> — and a function
+          type like <code>(n: number) =&gt; string</code> describes a callback’s shape. <em>Next: structured data.</em>
         </p>
 
         <section className="day001-learnt">
@@ -199,13 +180,12 @@ export default function Day004() {
           </ul>
         </section>
 
-        <CardSection icon="🕳️" title="THE KNOWLEDGE GAP" cards={GAP} columns={2} />
-        <CardSection icon="🔧" title="BUILDING TOOLS" cards={TOOLS} columns={3} />
-        <CardSection icon="🧭" title="THE ROUTING PROBLEM" cards={ROUTING} columns={3} />
+        <CardSection icon="🎯" title="PARAMS, RETURN & VOID" cards={BASICS} columns={2} />
+        <CardSection icon="⚙️" title="OPTIONAL · DEFAULT · ARROWS" cards={PARAMS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Tools</span><span>#CoderArmy</span><span>#JavaScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Functions</span><span>#WebDev</span>
         </footer>
       </div>
     </div>

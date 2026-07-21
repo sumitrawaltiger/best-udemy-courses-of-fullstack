@@ -2,80 +2,72 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture25';
-const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture09';
 
 const LEARNT_TODAY = [
-  { title: 'The build agents', text: 'Coder writes a task, Reviewer checks it, Executor runs it in Docker, Debugger fixes real errors' },
-  { title: 'The dev loop', text: 'selectNextTask → contextBuilder → Coder → Reviewer → Executor → snapshot, then repeat' },
-  { title: 'The review gate', text: 'approved → execute; rejected ≤2 → re-code; rejected >2 → simplify the task instead of forcing it' },
-  { title: 'Real execution', text: 'the Executor runs code in the Docker sandbox and captures actual output, not a guess' },
-  { title: 'Debug or escalate', text: 'on failure the Debugger diagnoses and re-codes; if it can’t, it escalates to a human' },
-  { title: 'Snapshots & rollback', text: 'Git commits after each task give a safe point; a failed debug rolls back to it' },
-  { title: 'Token control', text: 'stateCompactor and a token tracker keep the growing state and cost under budget' },
-  { title: 'Checkpointed & resumable', text: 'MemorySaver persists state so the whole team survives a crash and resumes mid-build' },
+  { title: 'Keyword search breaks', text: 'matching exact words misses meaning — a search for "automobile" would skip a doc that says "car"' },
+  { title: 'Brute force is slow', text: 'scanning every document word by word does not scale as data grows' },
+  { title: 'Search by meaning', text: 'embed the query and the documents, then compare vectors instead of matching text' },
+  { title: 'Cosine similarity', text: 'measure the angle between two vectors — closer angle means more similar meaning' },
+  { title: 'Nearest neighbour', text: 'rank documents by similarity and take the top-K closest to the query' },
+  { title: 'This is retrieval', text: 'semantic search is the "R" in RAG — it fetches the most relevant chunks to feed the model' },
+  { title: 'Query and data share a space', text: 'because both are embedded by the same model, their vectors live in the same meaning space' },
 ];
 
-const LOOP = [
+const PROBLEM = [
   {
-    icon: '🔁', title: 'The Dev Loop', titleClass: 'card-title-cyan', subtitle: 'One Task At A Time',
+    icon: '🔎', title: 'Keyword Search Fails', titleClass: 'card-title-cyan', subtitle: 'Exact Words Only',
     description:
-      'selectNextTask picks the next task, contextBuilder gathers what the Coder needs, the Coder writes it, the Reviewer checks it, and the Executor runs it — then loop to the next task.',
-    code: '// selectNextTask → contextBuilder → coderAgent\n// → reviewerAgent → executorAgent → snapshot\n// → back to selectNextTask',
+      'Classic search matches literal words. Ask for "how to fix a login error" and it can miss a doc titled "resolving authentication issues" — same meaning, zero shared keywords.',
+    code: '// query:   "fix login error"\n// keyword: misses "resolve authentication problem"\n// → relevant answer never surfaces',
   },
   {
-    icon: '🚦', title: 'The Review Gate', titleClass: 'card-title-purple', subtitle: 'Approve Or Retry',
+    icon: '🐌', title: 'And It Does Not Scale', titleClass: 'card-title-purple', subtitle: 'Brute Force',
     description:
-      'The Reviewer’s verdict routes the flow: approved code goes to the Executor; rejected code (up to twice) goes back to the Coder; a third rejection triggers task simplification.',
-    code: '// approved      → executorAgent\n// rejected (≤2)  → coderAgent (retry)\n// rejected (>2)  → simplifyTask',
-  },
-  {
-    icon: '🧪', title: 'Run It For Real', titleClass: 'card-title-amber', subtitle: 'Executor + Snapshot',
-    description:
-      'The Executor runs the code in the Docker sandbox. On pass, a Git snapshot commits the progress. On fail, the flow hands off to the Debugger.',
-    code: '// executor pass → snapshot (git commit)\n// executor fail → debuggerAgent',
+      'Scanning every document for matches gets slower as your data grows. We need a way to find the most relevant items by meaning, quickly.',
+    code: '// checking every document, one by one\n// fine for 10 docs, hopeless for 10 million',
   },
 ];
 
-const RESILIENCE = [
+const SEMANTIC = [
   {
-    icon: '🐞', title: 'Debug Or Escalate', titleClass: 'card-title-cyan', subtitle: 'When Code Fails',
+    icon: '🧭', title: 'Embed Both Sides', titleClass: 'card-title-cyan', subtitle: 'Same Meaning Space',
     description:
-      'The Debugger reads the real error, finds the root cause, and sends a fix back to the Coder. If it still can’t fix it, humanEscalation asks a person to skip or guide.',
-    code: '// debugger fix     → coderAgent (try again)\n// debugger stuck   → humanEscalation → skip/guide',
+      'Turn the documents into vectors ahead of time, and embed the user’s query the same way. Now finding relevant text is a geometry problem, not a text-matching one.',
+    code: '// once: embed every document → store the vectors\nconst docVecs = docs.map(embed);\n// per query: embed the question\nconst qVec = embed("fix login error");',
   },
   {
-    icon: '↩️', title: 'Snapshots & Rollback', titleClass: 'card-title-purple', subtitle: 'Undo Bad Code',
+    icon: '📐', title: 'Cosine Similarity', titleClass: 'card-title-purple', subtitle: 'How Close?',
     description:
-      'Because every task is committed to Git in the sandbox, a broken change can be rolled back to the last good snapshot — the team never digs itself into a hole.',
-    code: '// good task → git commit (snapshot)\n// debug failure → rollback to last snapshot',
+      'Compare two vectors by the cosine of the angle between them: 1 means identical direction (very similar), 0 means unrelated. It is the standard similarity score for embeddings.',
+    code: 'function cosine(a, b) {\n  const dot = a.reduce((s, v, i) => s + v * b[i], 0);\n  const mag = v => Math.hypot(...v);\n  return dot / (mag(a) * mag(b)); // 1 = same, 0 = unrelated\n}',
   },
   {
-    icon: '🧮', title: 'Budget & Verify', titleClass: 'card-title-amber', subtitle: 'Stay In Control',
+    icon: '🏆', title: 'Top-K Retrieval', titleClass: 'card-title-amber', subtitle: 'The R In RAG',
     description:
-      'phaseVerification confirms each phase is done, patternExtractor keeps code consistent, stateCompactor and the token tracker cap cost — then presentToUser and END.',
-    footer: 'verify · compact · budget · present → END',
+      'Score the query against every document vector, sort by similarity, and take the best few. Those top-K chunks are exactly what a RAG system feeds back to the model.',
+    code: 'const ranked = docs\n  .map((d, i) => ({ d, score: cosine(qVec, docVecs[i]) }))\n  .sort((a, b) => b.score - a.score);\nconst topK = ranked.slice(0, 3); // most relevant chunks',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 25', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '💻', title: 'Lecture 09', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The complete ai-dev-team-final project — all 8 agents, the full dev-loop graph, snapshots, escalation and token control.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 25 →', external: true },
+      'The semantic search lecture and diagram in the STRIKE GenAI repo — embeddings put to work as retrieval.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 09 →', external: true },
   },
   {
-    icon: '🏆', title: 'An Autonomous Team', titleClass: 'card-title-purple', subtitle: 'It All Comes Together',
+    icon: '🧠', title: 'Why It Matters', titleClass: 'card-title-purple', subtitle: 'Retrieval',
     description:
-      'Prompts, tools, RAG, memory, LangGraph and multi-agent orchestration — combined into a system that plans, codes, tests, debugs and iterates on real software.',
-    link: { href: '/genai', label: 'Open the GenAI track →' },
+      'Semantic search is the retrieval half of RAG. Get this right and the model can answer from your own documents, not just its training data.',
+    footer: 'query → embed → similarity → top-K chunks',
   },
   {
-    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
+    icon: '🔜', title: 'Next: Vector Databases', titleClass: 'card-title-amber', subtitle: 'Prereq 10 Preview',
     description:
-      'The full Coder Army course code — next up, Lecture 26 adds a live React dashboard (WebSocket) over the AI Dev Team.',
-    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
+      'Tomorrow scales this up — Lecture 10 on vector databases: store millions of embeddings and query the nearest neighbours fast, instead of looping in memory.',
+    link: { href: '/day-026', label: 'Go to Prereq 10 →' },
   },
 ];
 
@@ -140,38 +132,37 @@ export default function Day025() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-024" className="day001-nav-btn day001-nav-prev">← Day 24</Link>
-          <p className="day001-datetime">Agentic AI Day 25</p>
-          <Link to="/day-026" className="day001-nav-btn day001-nav-next">Day 26 →</Link>
+          <Link to="/day-024" className="day001-nav-btn day001-nav-prev">← Prereq 8</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 9</p>
+          <Link to="/day-026" className="day001-nav-btn day001-nav-next">Prereq 10 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 25</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 09</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 25 <span aria-hidden="true">🏆</span></h1>
-              <p className="day001-day-theme">AI DEV TEAM — THE FULL DEV LOOP</p>
+              <h1 className="day001-day-num">PREREQ 9 <span aria-hidden="true">🧭</span></h1>
+              <p className="day001-day-theme">SEMANTIC SEARCH — FINDING BY MEANING</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '25%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '9%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 25 completes the team. The <strong>build agents</strong> join in a <strong>dev loop</strong>:{' '}
-          <strong>selectNextTask → Coder → Reviewer → Executor</strong>, then snapshot and repeat. The Reviewer is a{' '}
-          <strong>gate</strong> — approve, re-code (≤2), or <strong>simplify</strong> a stubborn task. The Executor
-          runs code <strong>for real in Docker</strong>; failures go to the <strong>Debugger</strong>, which fixes or{' '}
-          <strong>escalates to a human</strong>. Git <strong>snapshots</strong> allow rollback, and{' '}
-          <strong>checkpoints</strong> + a <strong>token budget</strong> keep it resilient and affordable. An{' '}
-          autonomous team that actually ships. <em>25 lectures in.</em>
+          Lecture 09 puts embeddings to work. <strong>Keyword search</strong> matches exact words, so it misses
+          meaning and does not scale. <strong>Semantic search</strong> fixes both: embed the <strong>query</strong>{' '}
+          and the <strong>documents</strong> with the same model, then compare vectors with{' '}
+          <strong>cosine similarity</strong> (1 = same meaning, 0 = unrelated). Rank every document by score and take
+          the <strong>top-K</strong> closest — those most-relevant chunks are the <strong>retrieval</strong> step,
+          the <strong>R in RAG</strong>. <em>Finding information becomes geometry.</em>
         </p>
 
         <section className="day001-learnt">
@@ -186,12 +177,12 @@ export default function Day025() {
           </ul>
         </section>
 
-        <CardSection icon="🔁" title="THE DEV LOOP" cards={LOOP} columns={3} />
-        <CardSection icon="🛟" title="WHEN THINGS FAIL" cards={RESILIENCE} columns={3} />
+        <CardSection icon="🔎" title="WHY KEYWORD SEARCH BREAKS" cards={PROBLEM} columns={2} />
+        <CardSection icon="🧭" title="SEARCH BY MEANING" cards={SEMANTIC} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AIDevTeam</span><span>#LangGraph</span><span>#Agents</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#SemanticSearch</span><span>#CoderArmy</span><span>#RAG</span>
         </footer>
       </div>
     </div>

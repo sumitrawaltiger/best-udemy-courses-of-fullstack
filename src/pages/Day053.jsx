@@ -2,74 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const REACT_HOOKS_TS = 'https://react.dev/learn/typescript#typing-hooks';
-const REACT_CUSTOM_HOOKS = 'https://react.dev/learn/reusing-logic-with-custom-hooks';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/lecture39';
 
 const LEARNT_TODAY = [
-  { title: 'useEffect', text: 'no type needed on the effect itself — but type what it touches, and clean up correctly' },
-  { title: 'useRef<T>', text: 'useRef<HTMLInputElement>(null) types a DOM ref; ref.current may be null until mounted' },
-  { title: 'Mutable refs', text: 'useRef<number>(0) holds a value that survives renders without causing one' },
-  { title: 'useContext', text: 'createContext<T>() plus a typed provider gives fully-typed shared state' },
-  { title: 'useReducer', text: 'a typed state and a discriminated-union action make reducers exhaustively checked' },
-  { title: 'Custom hooks', text: 'a function starting with use that returns typed values — reuse logic, keep the types' },
-  { title: 'Return tuples', text: 'return [value, setValue] as const so the tuple types stay precise' },
-  { title: 'Rules of hooks', text: 'call hooks at the top level only — TypeScript won’t save you from breaking that' },
+  { title: 'Text must become numbers', text: 'an LLM can’t read letters — first the text is split into tokens, each mapped to an integer id' },
+  { title: 'Byte-Pair Encoding (BPE)', text: 'the tokenizer GPT uses — start from characters and repeatedly merge the most frequent pair' },
+  { title: 'Start from characters', text: 'each word becomes a list of single characters plus an end-of-word marker </w>' },
+  { title: 'Count pairs', text: 'across all words, count every adjacent pair of tokens — "e r", "l o", "t h" …' },
+  { title: 'Merge the top pair', text: 'the most frequent pair is fused into one new token and added to the vocabulary' },
+  { title: 'Repeat N times', text: 'do it for num_merges rounds — common chunks like "ing", "tion", "the" become single tokens' },
+  { title: 'Balance of two extremes', text: 'characters = tiny vocab but long sequences; whole words = huge vocab; BPE sits in between' },
+  { title: 'Encode & decode', text: 'text → apply the learned merges → token ids; ids → look up strings → back to text' },
 ];
 
-const CORE = [
+const WHY = [
   {
-    icon: '🎯', title: 'useRef<T>', titleClass: 'card-title-cyan', subtitle: 'DOM & Mutable',
+    icon: '🔤', title: 'Text → Tokens → Ids', titleClass: 'card-title-cyan', subtitle: 'The First Step',
     description:
-      'Type a DOM ref with the element type and start it at null — current is null until React attaches it. useRef also stores a mutable value that persists across renders without triggering one.',
-    code: 'const input = useRef<HTMLInputElement>(null);\nuseEffect(() => input.current?.focus(), []);\n\nconst renders = useRef(0); // survives renders',
+      'A model works on numbers. The tokenizer splits text into tokens and assigns each a fixed integer id from its vocabulary. Every prompt starts life as a list of ids.',
+    code: '// "learning" → ["learn", "ing"] → [4821, 213]\n// ids are what the network actually sees',
   },
   {
-    icon: '🔄', title: 'useEffect', titleClass: 'card-title-purple', subtitle: 'Sync & Clean Up',
+    icon: '⚖️', title: 'Why Not Words Or Letters', titleClass: 'card-title-purple', subtitle: 'The Middle Ground',
     description:
-      'The effect callback needs no type, but type the values it reads and always return a cleanup for subscriptions. A correct dependency array keeps it honest.',
-    code: 'useEffect(() => {\n  const id = setInterval(tick, 1000);\n  return () => clearInterval(id); // cleanup\n}, [tick]);',
+      'Split by characters and the vocabulary is tiny but sequences get very long. Split by whole words and the vocabulary explodes and can’t handle new words. BPE balances both.',
+    code: '// characters: vocab ~256, sequences long\n// words: vocab huge, unknowns break\n// BPE: sub-words → best of both',
   },
 ];
 
-const SHARE = [
+const BPE = [
   {
-    icon: '🌍', title: 'useContext', titleClass: 'card-title-cyan', subtitle: 'Typed Shared State',
+    icon: '🧱', title: 'Start From Characters', titleClass: 'card-title-cyan', subtitle: 'Split + </w>',
     description:
-      'createContext<T>() types the context, a provider supplies the value, and useContext reads it fully typed. A small helper hook can assert the provider is present.',
-    code: 'const Theme = createContext<"light" | "dark">("light");\nfunction useTheme() { return useContext(Theme); }\n// useTheme() → "light" | "dark"',
+      'Break each word into single characters and add an end-of-word marker. Count how often each unique word appears so duplicates aren’t reprocessed.',
+    code: '// "low" → ["l","o","w","</w>"]\n// build word_freq: {["l","o","w","</w>"]: 5, ...}',
   },
   {
-    icon: '🪝', title: 'Custom Hooks', titleClass: 'card-title-purple', subtitle: 'Reuse Typed Logic',
+    icon: '🔢', title: 'Count The Pairs', titleClass: 'card-title-purple', subtitle: 'Most Frequent Wins',
     description:
-      'A custom hook is a function named use* that calls other hooks and returns typed values. Use as const on a returned tuple so its element types stay exact.',
-    code: 'function useToggle(init = false) {\n  const [on, setOn] = useState(init);\n  return [on, () => setOn(o => !o)] as const;\n}',
+      'Scan every word and tally each adjacent token pair. The pair that appears most across the whole corpus is the one worth merging first.',
+    code: '// count adjacent pairs:\n// ("l","o"):12  ("o","w"):9  ("w","</w>"):7\n// winner → ("l","o")',
   },
   {
-    icon: '🎛️', title: 'useReducer', titleClass: 'card-title-amber', subtitle: 'Discriminated Actions',
+    icon: '🔗', title: 'Merge & Repeat', titleClass: 'card-title-amber', subtitle: 'Grow The Vocab',
     description:
-      'Type the state and model actions as a discriminated union. The switch in the reducer is then exhaustively checked — a missed action becomes a compile error.',
-    code: 'type Action =\n  | { type: "inc" }\n  | { type: "set"; value: number };\n// reducer(state, action): switch on action.type',
+      'Fuse the winning pair into one new token, add it to the vocabulary, and record the merge. Repeat for num_merges rounds — frequent chunks like "ing" become single tokens.',
+    code: '// merge ("l","o") → "lo"\n// vocab["lo"] = next_id++\n// repeat N times → sub-word vocabulary',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'Typing Hooks', titleClass: 'card-title-cyan', subtitle: 'react.dev',
+    icon: '💻', title: 'Lecture 39', titleClass: 'card-title-cyan', subtitle: 'C++ BPE Tokenizer',
     description:
-      'The official guide to typing useState, useReducer, useContext, useRef and useMemo/useCallback — with the exact generic signatures.',
-    link: { href: REACT_HOOKS_TS, label: 'Open the Hooks + TS docs →', external: true },
+      'tokenizer.cpp in the STRIKE GenAI repo — a Byte-Pair-Encoding tokenizer built from scratch, train / encode / decode.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 39 →', external: true },
   },
   {
-    icon: '🪝', title: 'Custom Hooks', titleClass: 'card-title-purple', subtitle: 'react.dev',
+    icon: '🧠', title: 'This Is Real GPT', titleClass: 'card-title-purple', subtitle: 'Same Idea',
     description:
-      'How to extract reusable logic into custom hooks — the patterns you’ll type and reuse across the whole Year-1 app.',
-    link: { href: REACT_CUSTOM_HOOKS, label: 'Open the custom-hooks guide →', external: true },
+      'GPT models use BPE (tiktoken) exactly like this. Understanding the merge loop demystifies why token counts — and bills — look the way they do.',
+    footer: 'characters → count pairs → merge → sub-word tokens',
   },
   {
-    icon: '🔜', title: 'Next: Next.js + TS', titleClass: 'card-title-amber', subtitle: 'Day 54 Preview',
+    icon: '🔜', title: 'Next: Embeddings', titleClass: 'card-title-amber', subtitle: 'Prereq 38 Preview',
     description:
-      'Tomorrow — Next.js with TypeScript: the App Router, typed pages and layouts, server vs client components, and typed route handlers.',
-    link: { href: '/day-054', label: 'Go to Day 54 →' },
+      'Tomorrow — Lecture 40: the embedding layer. Each token id becomes a 768-number vector, and we see just how many weights that takes.',
+    link: { href: '/day-054', label: 'Go to Prereq 38 →' },
   },
 ];
 
@@ -134,38 +133,39 @@ export default function Day053() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-052" className="day001-nav-btn day001-nav-prev">← Day 52</Link>
-          <p className="day001-datetime">TypeScript Day 53</p>
-          <Link to="/day-054" className="day001-nav-btn day001-nav-next">Day 54 →</Link>
+          <Link to="/day-052" className="day001-nav-btn day001-nav-prev">← Prereq 36</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 37</p>
+          <Link to="/day-054" className="day001-nav-btn day001-nav-next">Prereq 38 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Hooks</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 39</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 53 <span aria-hidden="true">🪝</span></h1>
-              <p className="day001-day-theme">HOOKS WITH TYPESCRIPT</p>
+              <h1 className="day001-day-num">PREREQ 37 <span aria-hidden="true">🔤</span></h1>
+              <p className="day001-day-theme">TOKENIZATION — A BPE TOKENIZER FROM SCRATCH</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '53%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '37%' }} /></div>
 
         <p className="day001-summary">
-          Typing the rest of the hooks. <strong>useRef&lt;HTMLInputElement&gt;(null)</strong> types a DOM ref
-          (<code>current</code> may be null until mounted), and <code>useRef(0)</code> stores a mutable value that
-          survives renders. <strong>useEffect</strong> needs no type itself — just type what it reads and always
-          return a <strong>cleanup</strong>. <strong>useContext</strong> with <code>createContext&lt;T&gt;()</code>{' '}
-          gives typed shared state, and <strong>useReducer</strong> with a <em>discriminated-union</em> action gets an
-          exhaustively-checked switch. Bundle logic into <strong>custom hooks</strong> that return{' '}
-          <code>[value, setValue] as const</code> to keep tuple types precise. <em>Next: Next.js.</em>
+          Lecture 39 — before a model can learn, text must become <strong>numbers</strong>. The tokenizer splits text
+          into <strong>tokens</strong> and maps each to an integer id. Today’s build is{' '}
+          <strong>Byte-Pair Encoding (BPE)</strong> — the same family GPT uses. Start from{' '}
+          <strong>characters</strong> (plus an <code>&lt;/w&gt;</code> marker), <strong>count</strong> every adjacent
+          pair, <strong>merge</strong> the most frequent one into a new token, and <strong>repeat</strong>. Frequent
+          chunks like <code>ing</code> or <code>the</code> become single tokens — a sub-word vocabulary that avoids both
+          the huge word-vocab and the long character-sequence extremes.{' '}
+          <em>Next: turning these ids into embedding vectors.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +180,12 @@ export default function Day053() {
           </ul>
         </section>
 
-        <CardSection icon="🎯" title="useRef & useEffect" cards={CORE} columns={2} />
-        <CardSection icon="🌍" title="CONTEXT · CUSTOM · REDUCER" cards={SHARE} columns={3} />
+        <CardSection icon="⚖️" title="WHY TOKENIZE" cards={WHY} columns={2} />
+        <CardSection icon="🔗" title="THE BPE ALGORITHM" cards={BPE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#React</span><span>#Hooks</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Tokenizer</span><span>#BPE</span><span>#FirstPrinciples</span>
         </footer>
       </div>
     </div>

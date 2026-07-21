@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture30';
-const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture14';
+const NOTION = 'https://www.notion.so/2f1a9af81c98803fb2a9ce500e13ce71';
 
 const LEARNT_TODAY = [
-  { title: 'One neuron, one bend', text: 'each ReLU neuron contributes a single kink at a point you choose with its weight and bias' },
-  { title: 'Combine bends', text: 'ReLU(x−10) − ReLU(x−30) makes a plateau — a ramp that turns on at 10 and levels off at 30' },
-  { title: 'Scale them', text: '3·ReLU(x−2) − 3·ReLU(x−3) controls the height and steepness of a piece' },
-  { title: 'Sum many neurons', text: 'stack shifted, scaled ReLUs and their bends add up into any shape you like' },
-  { title: 'Approximate y = x²', text: 'enough small ReLU pieces trace a smooth curve as closely as you want' },
-  { title: 'Universal approximation', text: 'a wide enough network of ReLU neurons can approximate ANY continuous function' },
-  { title: 'Why deep learning works', text: 'it’s not magic — millions of tiny bends, tuned by gradient descent, fit the data' },
+  { title: 'Follow-ups break retrieval', text: 'a question like "and its price?" has no meaning on its own, so it retrieves the wrong chunks' },
+  { title: 'The missing context', text: 'the meaning of a follow-up lives in the previous turns, not in the words the user just typed' },
+  { title: 'Query rewriting', text: 'before retrieving, an LLM rewrites the follow-up into a standalone, self-contained question' },
+  { title: 'Intent, then search', text: 'the model uses the chat history to resolve pronouns and references into an explicit query' },
+  { title: 'Then RAG as usual', text: 'the rewritten question embeds and retrieves correctly, then answers from the retrieved context' },
+  { title: 'RAG + memory', text: 'query rewriting plus conversation history turns basic RAG into a real document chatbot' },
+  { title: 'Small step, big gain', text: 'one extra LLM call fixes a whole class of broken multi-turn retrievals' },
 ];
 
-const BENDS = [
+const PROBLEM = [
   {
-    icon: '📐', title: 'One Neuron, One Bend', titleClass: 'card-title-cyan', subtitle: 'The Building Block',
+    icon: '🧩', title: 'The Follow-Up Problem', titleClass: 'card-title-cyan', subtitle: 'Context-Less Queries',
     description:
-      'Yesterday’s ReLU(w·x+b) makes exactly one kink. On its own it draws a hinge — flat, then a slope. The trick is what happens when you have many of them.',
-    code: '// ReLU(x - 10): flat, then rises at x = 10\n// each neuron = one hinge in the graph',
+      'Yesterday’s RAG answered one-shot questions well. But real chats have follow-ups — "what about that?", "and its price?" — whose meaning depends entirely on the earlier turns.',
+    code: '// User: "Tell me about the useEffect hook"\n// User: "when does it run?"  ← run WHAT?\n// embedding "when does it run?" retrieves nothing useful',
   },
   {
-    icon: '🏗️', title: 'Combine Them', titleClass: 'card-title-purple', subtitle: 'Plateaus & Steps',
+    icon: '🕰️', title: 'Meaning Lives In History', titleClass: 'card-title-purple', subtitle: 'Not In The Words',
     description:
-      'Subtract one ReLU from another and you get a plateau; scale them and you set the height. A couple of neurons already build a step, a ramp, or a bump.',
-    code: '// ReLU(x-10) - ReLU(x-30) → a ramp then plateau\n// 3·ReLU(x-2) - 3·ReLU(x-3) → a sharp step of height 3',
+      'The vector search only sees the latest message. Without the conversation, "it" and "that" are meaningless, so the retrieved chunks are wrong and the answer is bad.',
+    code: '// retrieval sees only: "when does it run?"\n// it needs: "when does the useEffect hook run?"',
   },
 ];
 
-const APPROX = [
+const FIX = [
   {
-    icon: '🧩', title: 'Add Up The Pieces', titleClass: 'card-title-cyan', subtitle: 'Sum Of ReLUs',
+    icon: '✍️', title: 'Rewrite The Query', titleClass: 'card-title-cyan', subtitle: 'Standalone Question',
     description:
-      'A layer of ReLU neurons is just a sum of many scaled, shifted hinges. Line up their bends and the total output can follow almost any wiggly shape.',
-    code: '// output = Σ  wᵢ · ReLU(x - kᵢ)\n// many hinges → an arbitrary piecewise curve',
+      'Add a step before retrieval: give the model the chat history and the new message, and ask it to produce a single, self-contained question with all references resolved.',
+    code: '// LLM prompt: "Given the chat history and the follow-up,\n// rewrite it as a standalone question."\n// "when does it run?" → "When does the useEffect hook run?"',
   },
   {
-    icon: '🌀', title: 'Approximate Anything', titleClass: 'card-title-purple', subtitle: 'Even y = x²',
+    icon: '🔎', title: 'Then Retrieve', titleClass: 'card-title-purple', subtitle: 'Correct Chunks',
     description:
-      'Give it enough neurons and the sum of hinges hugs a smooth curve like y=x² — more neurons, closer fit. That is the universal approximation theorem in one picture.',
-    code: '// 1 → 1, 2 → 4, 3 → 9, ...  (y = x²)\n// enough ReLU hinges trace it as closely as you want',
+      'Embed the rewritten, explicit question and run the normal RAG retrieval. Now the vector search finds the right chunks because the query actually contains the topic.',
+    code: '// standalone question → embed → Pinecone top-K\n// → the RIGHT chunks come back',
   },
   {
-    icon: '💡', title: 'So That’s The Magic', titleClass: 'card-title-amber', subtitle: 'Demystified',
+    icon: '💬', title: 'Conversational RAG', titleClass: 'card-title-amber', subtitle: 'RAG + Memory',
     description:
-      'A neural network is a huge sum of bends whose positions and heights are learned by gradient descent. Not mysterious — just a very flexible function fit to data.',
-    footer: 'weighted sums + ReLU bends + training = any function',
+      'Combine query rewriting with the running conversation and you get a document assistant that holds a real, multi-turn discussion grounded in your data.',
+    code: '// history + follow-up → rewrite → retrieve\n// → augment → answer → append to history → repeat',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 30', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📝', title: 'Lecture 14 Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
     description:
-      'The universal-approximation notebook in the STRIKE GenAI repo — building curves from combinations of ReLU neurons.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 30 →', external: true },
+      'Rohit’s notes for this lecture on improving the RAG system for real, multi-turn conversations.',
+    link: { href: NOTION, label: 'Open Lecture 14 notes →', external: true },
   },
   {
-    icon: '🧠', title: 'From Neuron To LLM', titleClass: 'card-title-purple', subtitle: 'It All Connects',
+    icon: '💻', title: 'Lecture 14', titleClass: 'card-title-purple', subtitle: 'GitHub',
     description:
-      'Weighted sums (Day 27), training (Day 28), non-linearity (Day 29), universal approximation (Day 30) — the foundations under every model, including the LLMs I build with.',
-    link: { href: '/genai', label: 'Open the GenAI track →' },
+      'The lecture folder and diagram in the STRIKE GenAI repo — improving retrieval for conversational RAG.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 14 →', external: true },
   },
   {
-    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
+    icon: '🔜', title: 'Next: Retrieval Quality', titleClass: 'card-title-amber', subtitle: 'Prereq 15 Preview',
     description:
-      'The full Coder Army course code — the journey continues past here toward more advanced GenAI topics.',
-    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
+      'Tomorrow — Lecture 15: making retrieval genuinely good with smart chunking, top-K tuning, metadata filters and re-ranking.',
+    link: { href: '/day-031', label: 'Go to Prereq 15 →' },
   },
 ];
 
@@ -133,38 +133,38 @@ export default function Day030() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-029" className="day001-nav-btn day001-nav-prev">← Day 29</Link>
-          <p className="day001-datetime">Agentic AI Day 30</p>
-          <Link to="/day-031" className="day001-nav-btn day001-nav-next">Day 31 →</Link>
+          <Link to="/day-029" className="day001-nav-btn day001-nav-prev">← Prereq 13</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 14</p>
+          <Link to="/day-031" className="day001-nav-btn day001-nav-next">Prereq 15 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 30</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 14</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 30 <span aria-hidden="true">🌀</span></h1>
-              <p className="day001-day-theme">UNIVERSAL APPROXIMATION — ANY CURVE FROM RELUs</p>
+              <h1 className="day001-day-num">PREREQ 14 <span aria-hidden="true">💬</span></h1>
+              <p className="day001-day-theme">CONVERSATIONAL RAG — QUERY REWRITING</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '30%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '14%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 30 — the payoff. Each <strong>ReLU neuron</strong> is one <strong>bend</strong>; combine them and
-          magic happens. <code>ReLU(x−10) − ReLU(x−30)</code> makes a <strong>plateau</strong>, scaling sets the
-          height, and <strong>summing many</strong> shifted, scaled ReLUs builds any shape — even tracing{' '}
-          <code>y=x²</code> as closely as you want. That is the <strong>universal approximation theorem</strong>: a
-          wide enough network can approximate <strong>any</strong> continuous function. Deep learning isn’t magic —
-          it’s millions of tiny bends, tuned by gradient descent, fitting the data.{' '}
-          <em>Thirty days in — the foundations are solid. (From the lecture notebook.)</em>
+          Lecture 14 makes RAG <strong>conversational</strong>. Basic RAG breaks on <strong>follow-up questions</strong>{' '}
+          — "and its price?" or "when does it run?" mean nothing on their own, so retrieval fails. The fix is{' '}
+          <strong>query rewriting</strong>: before searching, an LLM uses the <strong>chat history</strong> to turn
+          the follow-up into a <strong>standalone question</strong> with every reference resolved. That explicit
+          query then embeds and retrieves the right chunks, and RAG proceeds as normal. One small extra step —{' '}
+          <strong>RAG + memory</strong> — and it becomes a real document chatbot.{' '}
+          <em>(This lecture is diagram-based; content reflects the standard technique.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +179,12 @@ export default function Day030() {
           </ul>
         </section>
 
-        <CardSection icon="📐" title="ONE NEURON, ONE BEND" cards={BENDS} columns={2} />
-        <CardSection icon="🌀" title="APPROXIMATE ANYTHING" cards={APPROX} columns={3} />
+        <CardSection icon="🧩" title="THE FOLLOW-UP PROBLEM" cards={PROBLEM} columns={2} />
+        <CardSection icon="✍️" title="QUERY REWRITING" cards={FIX} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#DeepLearning</span><span>#NeuralNetworks</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#CoderArmy</span><span>#LangChain</span>
         </footer>
       </div>
     </div>

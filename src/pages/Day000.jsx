@@ -138,13 +138,13 @@ const STUDY_SYSTEM = [
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
-    icon: '🤖',
-    title: 'Day 1 Starts Tomorrow',
+    icon: '🎒',
+    title: 'Prerequisites First, Then Day 1',
     titleClass: 'card-title-lime',
-    subtitle: 'Phase 1 · Gen AI',
+    subtitle: 'Gen AI & JavaScript → Day 1 TypeScript',
     description:
-      'Tomorrow is Day 1: Gen AI — the first phase, built in JavaScript. From how LLMs actually work to building and shipping autonomous agents with LangChain.js and LangGraph. Environment is ready, accounts are live, routine is locked. Time to build.',
-    link: { href: '/day-001', label: 'Preview Day 1 →' },
+      'Before Day 1 come the prerequisites — Gen AI & Agentic AI in JavaScript (LLMs, RAG, LangChain.js, LangGraph) plus JavaScript. With those done, Day 1 of the 4-year journey begins with the TypeScript stack. Environment is ready, accounts are live, routine is locked.',
+    link: { href: '/day-017', label: 'Start prerequisites →' },
   },
 ];
 
@@ -242,8 +242,8 @@ export default function Day000() {
             Home
           </Link>
           <p className="day001-datetime">Study Day 0</p>
-          <Link to="/day-001" className="day001-nav-btn day001-nav-next">
-            Day 1 →
+          <Link to="/day-017" className="day001-nav-btn day001-nav-next">
+            Prerequisites →
           </Link>
         </header>
 

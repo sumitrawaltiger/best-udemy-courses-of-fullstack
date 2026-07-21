@@ -110,8 +110,8 @@ export default function Home() {
             <div className="genai-stat"><span className="genai-stat-val">RAG + Agents</span><span className="genai-stat-label">tools · RAG · multi-agent</span></div>
           </div>
           <div className="genai-hero-actions">
-            <Link to="/day-001" className="btn btn-genai btn-lg">
-              Start Day 1 — Free
+            <Link to="/day-017" className="btn btn-genai btn-lg">
+              Start Gen AI (Prerequisite) — Free
             </Link>
             <Link to="/genai" className="btn btn-outline-genai btn-lg">
               Explore GenAI Track

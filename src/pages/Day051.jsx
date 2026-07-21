@@ -2,74 +2,80 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const REACT_TS = 'https://react.dev/learn/typescript';
-const VITE_TS = 'https://vite.dev/guide/';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture35and36';
+const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
 
 const LEARNT_TODAY = [
-  { title: 'React + TS project', text: 'npm create vite@latest with the react-ts template gives typed React in seconds' },
-  { title: '.tsx files', text: 'components live in .tsx — TypeScript files that can contain JSX' },
-  { title: 'JSX is typed', text: 'attributes, children and event handlers are all type-checked against the DOM' },
-  { title: 'Function components', text: 'a component is just a function returning JSX — annotate its props, that’s it' },
-  { title: 'JSX.Element / ReactNode', text: 'return types and children have real types you rarely need to write by hand' },
-  { title: 'Typed events', text: 'onClick gets React.MouseEvent, onChange gets React.ChangeEvent — autocompleted' },
-  { title: 'No PropTypes needed', text: 'TypeScript replaces runtime PropTypes with compile-time checks' },
-  { title: 'Editor superpowers', text: 'autocomplete on props and hooks is where React + TS really pays off' },
+  { title: 'An LLM is next-token prediction', text: 'given the text so far, predict the single most likely next token — then repeat, one token at a time' },
+  { title: 'It’s a giant classifier', text: 'the final layer is softmax over the whole vocabulary (~50,000 tokens) — exactly Day 34, at huge scale' },
+  { title: 'Tokenization', text: 'text is split into tokens (words / sub-words) and each maps to an id in a fixed vocabulary' },
+  { title: 'Embeddings', text: 'every token id becomes a dense vector (e.g. 768 numbers) — meaning captured as geometry' },
+  { title: 'Meaning from context', text: 'the model adjusts each token’s vector using the surrounding words, so "bank" differs by sentence' },
+  { title: 'Attention', text: '“Attention Is All You Need” — the Transformer lets every token look at every other token' },
+  { title: 'Training = predict the next word', text: 'run over massive text; each miss updates weights via the same gradient descent from Days 28–34' },
+  { title: 'Generation loops', text: 'predict a token, append it, feed it back, predict again — that stream of tokens is the answer' },
 ];
 
-const SETUP = [
+const CORE = [
   {
-    icon: '⚡', title: 'Vite react-ts', titleClass: 'card-title-cyan', subtitle: 'Zero-Config Start',
+    icon: '🔮', title: 'Next-Token Prediction', titleClass: 'card-title-cyan', subtitle: 'The Whole Idea',
     description:
-      'Scaffold a typed React app in one command. Vite wires up TypeScript, JSX and fast HMR, so you write .tsx components immediately with full type-checking.',
-    code: 'npm create vite@latest my-app -- \\\n  --template react-ts\ncd my-app && npm i && npm run dev',
+      'An LLM does one thing: read the tokens so far and predict the next one. Loop that and you get sentences, code, essays — all from repeatedly guessing the next token.',
+    code: '// "The cat sat on the" → ?\n// output over vocab: {mat: 0.61, floor: 0.12, ...}\n// pick "mat", append, predict again',
   },
   {
-    icon: '🧱', title: 'A Typed Component', titleClass: 'card-title-purple', subtitle: '.tsx + JSX',
+    icon: '🏷️', title: 'Tokenization', titleClass: 'card-title-purple', subtitle: 'Text → Ids',
     description:
-      'A component is a function returning JSX. In a .tsx file, JSX attributes and children are type-checked — a typo in a prop or a wrong element becomes a compile error.',
-    code: 'function Hello() {\n  return <h1>Hello, TypeScript!</h1>;\n}\n// JSX attributes are checked against the DOM',
+      'Text is broken into tokens — whole words or sub-word pieces — and each maps to an id in a fixed vocabulary of ~50,000 entries. Tokens, not letters, are the model’s unit.',
+    code: '// "learning" → ["learn", "ing"] → [4821, 213]\n// vocabulary size ≈ 50,000 tokens',
+  },
+  {
+    icon: '🧭', title: 'Embeddings', titleClass: 'card-title-amber', subtitle: 'Id → Vector',
+    description:
+      'Each token id becomes a dense vector of numbers (e.g. 768 dims). Similar meanings sit close together — the same "meaning as geometry" idea from the embeddings lecture.',
+    code: '// 4821 → [0.12, -0.94, 0.33, ... 768 numbers]\n// king - man + woman ≈ queen',
   },
 ];
 
-const TYPING = [
+const HOW = [
   {
-    icon: '📨', title: 'Typing Props', titleClass: 'card-title-cyan', subtitle: 'interface Props',
+    icon: '👀', title: 'Attention', titleClass: 'card-title-cyan', subtitle: 'The Transformer',
     description:
-      'Describe a component’s inputs with an interface (or type) and destructure them in the signature. JSX usage is then checked and autocompleted at every call site.',
-    code: 'interface GreetProps { name: string; excited?: boolean }\nfunction Greet({ name, excited }: GreetProps) {\n  return <p>Hi {name}{excited ? "!" : ""}</p>;\n}',
+      '"Attention Is All You Need" (2017). Attention lets every token look at every other token and pull in context, so a word’s vector reflects the whole sentence around it.',
+    code: '// "river bank" vs "money bank"\n// attention reshapes "bank" using its neighbours\n// → the right meaning in context',
   },
   {
-    icon: '🖱️', title: 'Typed Events', titleClass: 'card-title-purple', subtitle: 'React.*Event',
+    icon: '🎯', title: 'The Output Layer', titleClass: 'card-title-purple', subtitle: '50K-Way Softmax',
     description:
-      'Event handlers receive typed events — React.MouseEvent for clicks, React.ChangeEvent for inputs — so e.target and its value autocomplete correctly.',
-    code: 'function onChange(e: React.ChangeEvent<HTMLInputElement>) {\n  console.log(e.target.value);\n}\n<input onChange={onChange} />',
+      'The top of the network is a neuron per vocabulary token. Softmax turns those scores into a probability for every possible next token — Day 34’s softmax, just 50,000-wide.',
+    code: '// final scores over 50,000 tokens\n// softmax → probability distribution\n// argmax (or sample) → next token',
   },
   {
-    icon: '👶', title: 'children & ReactNode', titleClass: 'card-title-amber', subtitle: 'Composition',
+    icon: '🏋️', title: 'Training', titleClass: 'card-title-amber', subtitle: 'Predict, Then Correct',
     description:
-      'When a component wraps others, type its children as React.ReactNode — the catch-all for anything renderable, from strings to elements to arrays.',
-    code: 'interface CardProps { children: React.ReactNode }\nfunction Card({ children }: CardProps) {\n  return <div className="card">{children}</div>;\n}',
+      'Feed it oceans of text with the next word hidden. Wrong guesses create cross-entropy loss and gradient descent nudges billions of weights — the exact loop from Days 28–34, scaled up.',
+    code: '// hide next word, predict it\n// loss = cross-entropy(pred, actual)\n// backprop → update weights → repeat',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'React + TypeScript', titleClass: 'card-title-cyan', subtitle: 'react.dev',
+    icon: '💻', title: 'Lecture 35 & 36', titleClass: 'card-title-cyan', subtitle: 'How To Build An LLM',
     description:
-      'The official React guide to using TypeScript — typing props, hooks, events and children, straight from the React team.',
-    link: { href: REACT_TS, label: 'Open React + TS docs →', external: true },
+      'The combined Lecture35and36 material in the STRIKE GenAI repo — tokens, embeddings, attention and next-token prediction tied together.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 35 & 36 →', external: true },
   },
   {
-    icon: '⚡', title: 'Vite Guide', titleClass: 'card-title-purple', subtitle: 'Tooling',
+    icon: '📦', title: 'STRIKE GenAI Repo', titleClass: 'card-title-purple', subtitle: 'All Lectures',
     description:
-      'How Vite scaffolds and serves a React + TypeScript app — templates, HMR and the build pipeline for Year-1 projects.',
-    link: { href: VITE_TS, label: 'Open the Vite guide →', external: true },
+      'The full Coder Army STRIKE GenAI course code — from the first Gemini call to agents, RAG, the AI Dev Team, and neural nets from scratch.',
+    link: { href: GH_REPO, label: 'Open the repo →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Props & State', titleClass: 'card-title-amber', subtitle: 'Day 52 Preview',
+    icon: '🧵', title: 'It All Connects', titleClass: 'card-title-amber', subtitle: 'Where This Leads',
     description:
-      'Tomorrow — typed state with useState<T>, lifting state up, and controlled inputs with fully-typed change handlers.',
-    link: { href: '/day-052', label: 'Go to Day 52 →' },
+      'Neuron → gradient descent → ReLU → classification → softmax → LLM. The from-scratch detour explains what powers every agent from the earlier lectures.',
+    link: { href: '/genai', label: 'Explore the GenAI track →' },
   },
 ];
 
@@ -134,38 +140,39 @@ export default function Day051() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-050" className="day001-nav-btn day001-nav-prev">← Day 50</Link>
-          <p className="day001-datetime">TypeScript Day 51</p>
-          <Link to="/day-052" className="day001-nav-btn day001-nav-next">Day 52 →</Link>
+          <Link to="/day-050" className="day001-nav-btn day001-nav-prev">← Prereq 34</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 35</p>
+          <Link to="/day-052" className="day001-nav-btn day001-nav-next">Prereq 36 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>React</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 35 &amp; 36</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 51 <span aria-hidden="true">⚛️</span></h1>
-              <p className="day001-day-theme">REACT WITH TYPESCRIPT</p>
+              <h1 className="day001-day-num">PREREQ 35 <span aria-hidden="true">🔮</span></h1>
+              <p className="day001-day-theme">HOW TO BUILD AN LLM — TOKENS, EMBEDDINGS &amp; NEXT-TOKEN</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '51%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '35%' }} /></div>
 
         <p className="day001-summary">
-          TypeScript meets React — the heart of Year 1. Scaffold with <strong>Vite’s react-ts</strong> template and
-          write components in <strong>.tsx</strong> files, where <strong>JSX is type-checked</strong>: attributes,
-          children and handlers all validated against the DOM. A component is just a function returning JSX; you{' '}
-          <strong>type its props</strong> with an <code>interface</code> and destructure them. Events come typed
-          (<code>React.ChangeEvent</code>, <code>React.MouseEvent</code>), and <code>children</code> use{' '}
-          <strong>React.ReactNode</strong>. No more runtime PropTypes — the compiler and editor autocomplete every prop
-          and hook. <em>Next: typed state.</em>
+          Lectures 35 &amp; 36 — it all comes together. An <strong>LLM is next-token prediction</strong>: read the
+          text so far, predict the single most likely next token, append it, and repeat. Under the hood it’s a giant{' '}
+          <strong>classifier</strong> — a <strong>50,000-way softmax</strong> over the vocabulary (exactly Day 34, at
+          scale). Text is <strong>tokenized</strong> into ids, each id becomes an <strong>embedding</strong> vector
+          (~768 numbers = meaning as geometry), and <strong>attention</strong> ("Attention Is All You Need") reshapes
+          each token using its context. <strong>Training</strong> is just hiding the next word and correcting the guess
+          with <code>cross-entropy</code> + gradient descent — the same loop from Days 28–34.{' '}
+          <em>Neuron → gradient descent → ReLU → classification → softmax → LLM. (From the lecture material.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +187,12 @@ export default function Day051() {
           </ul>
         </section>
 
-        <CardSection icon="⚡" title="PROJECT & COMPONENTS" cards={SETUP} columns={2} />
-        <CardSection icon="📨" title="TYPING PROPS & EVENTS" cards={TYPING} columns={3} />
+        <CardSection icon="🔮" title="THE CORE IDEA" cards={CORE} columns={3} />
+        <CardSection icon="⚙️" title="HOW IT WORKS" cards={HOW} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#React</span><span>#Vite</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#LLM</span><span>#Transformer</span><span>#FirstPrinciples</span>
         </footer>
       </div>
     </div>

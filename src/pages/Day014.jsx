@@ -2,72 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture14';
-const NOTION = 'https://www.notion.so/2f1a9af81c98803fb2a9ce500e13ce71';
+const REACT_HOOKS_TS = 'https://react.dev/learn/typescript#typing-hooks';
+const REACT_CUSTOM_HOOKS = 'https://react.dev/learn/reusing-logic-with-custom-hooks';
 
 const LEARNT_TODAY = [
-  { title: 'Follow-ups break retrieval', text: 'a question like "and its price?" has no meaning on its own, so it retrieves the wrong chunks' },
-  { title: 'The missing context', text: 'the meaning of a follow-up lives in the previous turns, not in the words the user just typed' },
-  { title: 'Query rewriting', text: 'before retrieving, an LLM rewrites the follow-up into a standalone, self-contained question' },
-  { title: 'Intent, then search', text: 'the model uses the chat history to resolve pronouns and references into an explicit query' },
-  { title: 'Then RAG as usual', text: 'the rewritten question embeds and retrieves correctly, then answers from the retrieved context' },
-  { title: 'RAG + memory', text: 'query rewriting plus conversation history turns basic RAG into a real document chatbot' },
-  { title: 'Small step, big gain', text: 'one extra LLM call fixes a whole class of broken multi-turn retrievals' },
+  { title: 'useEffect', text: 'no type needed on the effect itself — but type what it touches, and clean up correctly' },
+  { title: 'useRef<T>', text: 'useRef<HTMLInputElement>(null) types a DOM ref; ref.current may be null until mounted' },
+  { title: 'Mutable refs', text: 'useRef<number>(0) holds a value that survives renders without causing one' },
+  { title: 'useContext', text: 'createContext<T>() plus a typed provider gives fully-typed shared state' },
+  { title: 'useReducer', text: 'a typed state and a discriminated-union action make reducers exhaustively checked' },
+  { title: 'Custom hooks', text: 'a function starting with use that returns typed values — reuse logic, keep the types' },
+  { title: 'Return tuples', text: 'return [value, setValue] as const so the tuple types stay precise' },
+  { title: 'Rules of hooks', text: 'call hooks at the top level only — TypeScript won’t save you from breaking that' },
 ];
 
-const PROBLEM = [
+const CORE = [
   {
-    icon: '🧩', title: 'The Follow-Up Problem', titleClass: 'card-title-cyan', subtitle: 'Context-Less Queries',
+    icon: '🎯', title: 'useRef<T>', titleClass: 'card-title-cyan', subtitle: 'DOM & Mutable',
     description:
-      'Yesterday’s RAG answered one-shot questions well. But real chats have follow-ups — "what about that?", "and its price?" — whose meaning depends entirely on the earlier turns.',
-    code: '// User: "Tell me about the useEffect hook"\n// User: "when does it run?"  ← run WHAT?\n// embedding "when does it run?" retrieves nothing useful',
+      'Type a DOM ref with the element type and start it at null — current is null until React attaches it. useRef also stores a mutable value that persists across renders without triggering one.',
+    code: 'const input = useRef<HTMLInputElement>(null);\nuseEffect(() => input.current?.focus(), []);\n\nconst renders = useRef(0); // survives renders',
   },
   {
-    icon: '🕰️', title: 'Meaning Lives In History', titleClass: 'card-title-purple', subtitle: 'Not In The Words',
+    icon: '🔄', title: 'useEffect', titleClass: 'card-title-purple', subtitle: 'Sync & Clean Up',
     description:
-      'The vector search only sees the latest message. Without the conversation, "it" and "that" are meaningless, so the retrieved chunks are wrong and the answer is bad.',
-    code: '// retrieval sees only: "when does it run?"\n// it needs: "when does the useEffect hook run?"',
+      'The effect callback needs no type, but type the values it reads and always return a cleanup for subscriptions. A correct dependency array keeps it honest.',
+    code: 'useEffect(() => {\n  const id = setInterval(tick, 1000);\n  return () => clearInterval(id); // cleanup\n}, [tick]);',
   },
 ];
 
-const FIX = [
+const SHARE = [
   {
-    icon: '✍️', title: 'Rewrite The Query', titleClass: 'card-title-cyan', subtitle: 'Standalone Question',
+    icon: '🌍', title: 'useContext', titleClass: 'card-title-cyan', subtitle: 'Typed Shared State',
     description:
-      'Add a step before retrieval: give the model the chat history and the new message, and ask it to produce a single, self-contained question with all references resolved.',
-    code: '// LLM prompt: "Given the chat history and the follow-up,\n// rewrite it as a standalone question."\n// "when does it run?" → "When does the useEffect hook run?"',
+      'createContext<T>() types the context, a provider supplies the value, and useContext reads it fully typed. A small helper hook can assert the provider is present.',
+    code: 'const Theme = createContext<"light" | "dark">("light");\nfunction useTheme() { return useContext(Theme); }\n// useTheme() → "light" | "dark"',
   },
   {
-    icon: '🔎', title: 'Then Retrieve', titleClass: 'card-title-purple', subtitle: 'Correct Chunks',
+    icon: '🪝', title: 'Custom Hooks', titleClass: 'card-title-purple', subtitle: 'Reuse Typed Logic',
     description:
-      'Embed the rewritten, explicit question and run the normal RAG retrieval. Now the vector search finds the right chunks because the query actually contains the topic.',
-    code: '// standalone question → embed → Pinecone top-K\n// → the RIGHT chunks come back',
+      'A custom hook is a function named use* that calls other hooks and returns typed values. Use as const on a returned tuple so its element types stay exact.',
+    code: 'function useToggle(init = false) {\n  const [on, setOn] = useState(init);\n  return [on, () => setOn(o => !o)] as const;\n}',
   },
   {
-    icon: '💬', title: 'Conversational RAG', titleClass: 'card-title-amber', subtitle: 'RAG + Memory',
+    icon: '🎛️', title: 'useReducer', titleClass: 'card-title-amber', subtitle: 'Discriminated Actions',
     description:
-      'Combine query rewriting with the running conversation and you get a document assistant that holds a real, multi-turn discussion grounded in your data.',
-    code: '// history + follow-up → rewrite → retrieve\n// → augment → answer → append to history → repeat',
+      'Type the state and model actions as a discriminated union. The switch in the reducer is then exhaustively checked — a missed action becomes a compile error.',
+    code: 'type Action =\n  | { type: "inc" }\n  | { type: "set"; value: number };\n// reducer(state, action): switch on action.type',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📝', title: 'Lecture 14 Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    icon: '📘', title: 'Typing Hooks', titleClass: 'card-title-cyan', subtitle: 'react.dev',
     description:
-      'Rohit’s notes for this lecture on improving the RAG system for real, multi-turn conversations.',
-    link: { href: NOTION, label: 'Open Lecture 14 notes →', external: true },
+      'The official guide to typing useState, useReducer, useContext, useRef and useMemo/useCallback — with the exact generic signatures.',
+    link: { href: REACT_HOOKS_TS, label: 'Open the Hooks + TS docs →', external: true },
   },
   {
-    icon: '💻', title: 'Lecture 14', titleClass: 'card-title-purple', subtitle: 'GitHub',
+    icon: '🪝', title: 'Custom Hooks', titleClass: 'card-title-purple', subtitle: 'react.dev',
     description:
-      'The lecture folder and diagram in the STRIKE GenAI repo — improving retrieval for conversational RAG.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 14 →', external: true },
+      'How to extract reusable logic into custom hooks — the patterns you’ll type and reuse across the whole Year-1 app.',
+    link: { href: REACT_CUSTOM_HOOKS, label: 'Open the custom-hooks guide →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Retrieval Quality', titleClass: 'card-title-amber', subtitle: 'Day 15 Preview',
+    icon: '🔜', title: 'Next: Next.js + TS', titleClass: 'card-title-amber', subtitle: 'Day 15 Preview',
     description:
-      'Tomorrow — Lecture 15: making retrieval genuinely good with smart chunking, top-K tuning, metadata filters and re-ranking.',
+      'Tomorrow — Next.js with TypeScript: the App Router, typed pages and layouts, server vs client components, and typed route handlers.',
     link: { href: '/day-015', label: 'Go to Day 15 →' },
   },
 ];
@@ -134,23 +135,23 @@ export default function Day014() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-013" className="day001-nav-btn day001-nav-prev">← Day 13</Link>
-          <p className="day001-datetime">Agentic AI Day 14</p>
+          <p className="day001-datetime">TypeScript Day 14</p>
           <Link to="/day-015" className="day001-nav-btn day001-nav-next">Day 15 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 14</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Hooks</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 14 <span aria-hidden="true">💬</span></h1>
-              <p className="day001-day-theme">CONVERSATIONAL RAG — QUERY REWRITING</p>
+              <h1 className="day001-day-num">DAY 14 <span aria-hidden="true">🪝</span></h1>
+              <p className="day001-day-theme">HOOKS WITH TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -158,13 +159,13 @@ export default function Day014() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '14%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 14 makes RAG <strong>conversational</strong>. Basic RAG breaks on <strong>follow-up questions</strong>{' '}
-          — "and its price?" or "when does it run?" mean nothing on their own, so retrieval fails. The fix is{' '}
-          <strong>query rewriting</strong>: before searching, an LLM uses the <strong>chat history</strong> to turn
-          the follow-up into a <strong>standalone question</strong> with every reference resolved. That explicit
-          query then embeds and retrieves the right chunks, and RAG proceeds as normal. One small extra step —{' '}
-          <strong>RAG + memory</strong> — and it becomes a real document chatbot.{' '}
-          <em>(This lecture is diagram-based; content reflects the standard technique.)</em>
+          Typing the rest of the hooks. <strong>useRef&lt;HTMLInputElement&gt;(null)</strong> types a DOM ref
+          (<code>current</code> may be null until mounted), and <code>useRef(0)</code> stores a mutable value that
+          survives renders. <strong>useEffect</strong> needs no type itself — just type what it reads and always
+          return a <strong>cleanup</strong>. <strong>useContext</strong> with <code>createContext&lt;T&gt;()</code>{' '}
+          gives typed shared state, and <strong>useReducer</strong> with a <em>discriminated-union</em> action gets an
+          exhaustively-checked switch. Bundle logic into <strong>custom hooks</strong> that return{' '}
+          <code>[value, setValue] as const</code> to keep tuple types precise. <em>Next: Next.js.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +180,12 @@ export default function Day014() {
           </ul>
         </section>
 
-        <CardSection icon="🧩" title="THE FOLLOW-UP PROBLEM" cards={PROBLEM} columns={2} />
-        <CardSection icon="✍️" title="QUERY REWRITING" cards={FIX} columns={3} />
+        <CardSection icon="🎯" title="useRef & useEffect" cards={CORE} columns={2} />
+        <CardSection icon="🌍" title="CONTEXT · CUSTOM · REDUCER" cards={SHARE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#RAG</span><span>#CoderArmy</span><span>#LangChain</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#React</span><span>#Hooks</span>
         </footer>
       </div>
     </div>

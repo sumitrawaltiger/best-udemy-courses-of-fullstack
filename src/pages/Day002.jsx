@@ -2,94 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture02';
-const NOTION = 'https://www.notion.so/Lecture-02-Write-our-first-code-2c0a9af81c9880fe854debfe340a9b79';
+const TS_INSTALL = 'https://www.typescriptlang.org/download';
+const TSCONFIG_DOCS = 'https://www.typescriptlang.org/tsconfig';
 
 const LEARNT_TODAY = [
-  { title: 'First API call', text: 'ai.models.generateContent sends one message and returns response.text — my first Gemini program' },
-  { title: 'LLMs have no memory', text: 'every API call is completely independent — the model forgets everything after it responds' },
-  { title: 'Send the history', text: 'to get memory, resend the entire conversation array (user + model turns) with each new message' },
-  { title: 'Chat sessions', text: 'ai.chats.create() manages history automatically — call chat.sendMessage and skip the manual array' },
-  { title: 'Interactive loop', text: 'readline-sync reads terminal input in a while loop for a real back-and-forth chatbot' },
-  { title: 'System instructions', text: 'systemInstruction sets the AI persona and rules for the whole conversation — tutor, reviewer, pirate' },
-  { title: 'Thinking is more tokens', text: 'thinkingBudget 0 = direct answer; higher lets it generate reasoning first — use only for hard problems' },
-  { title: 'Tokens and cost', text: 'systemInstruction + full history + message are billed every request, so keep the instruction short' },
+  { title: 'Install TypeScript', text: 'npm i -D typescript adds the compiler to a project; -g installs it globally for quick scripts' },
+  { title: 'tsc --version', text: 'confirms the compiler is on your PATH and shows which version you are running' },
+  { title: 'tsc --init', text: 'generates a tsconfig.json — the single file that configures how your whole project compiles' },
+  { title: 'tsconfig.json', text: 'sets the target JS version, module system, output folder and how strict the checks are' },
+  { title: 'strict mode', text: 'the most valuable flag — turns on all the safety checks; keep it "true" from day one' },
+  { title: 'Watch mode', text: 'tsc --watch recompiles automatically on every save, so you see errors instantly' },
+  { title: 'ts-node', text: 'runs .ts files directly without a separate build step — handy for scripts and experiments' },
+  { title: 'Editor is the compiler', text: 'VS Code uses the same tsc engine, so red squiggles appear before you ever run a build' },
 ];
 
-const FIRST = [
+const INSTALL = [
   {
-    icon: '⚡', title: 'Your First Call', titleClass: 'card-title-cyan', subtitle: 'generateContent',
+    icon: '📦', title: 'Add The Compiler', titleClass: 'card-title-cyan', subtitle: 'npm i -D typescript',
     description:
-      'Load the key from .env, create the client, and send one message. response.text is the model’s answer. This single request is the seed of everything that follows.',
-    code: "import 'dotenv/config';\nimport { GoogleGenAI } from \"@google/genai\";\n\nconst ai = new GoogleGenAI({});\n\nconst res = await ai.models.generateContent({\n  model: \"gemini-2.5-flash\",\n  contents: \"Explain what a variable is\",\n});\nconsole.log(res.text);",
+      'Install TypeScript as a dev dependency so the version is pinned per project. Then invoke it through npx, an npm script, or globally for one-off files.',
+    code: '# per project (recommended)\nnpm i -D typescript\nnpx tsc --version\n\n# or global\nnpm i -g typescript',
   },
   {
-    icon: '🧠', title: 'No Memory', titleClass: 'card-title-purple', subtitle: 'Each Call Is Independent',
+    icon: '🚀', title: 'Compile & Run', titleClass: 'card-title-purple', subtitle: '.ts → .js → Node',
     description:
-      'Tell it "My name is Rohit", then ask "What is my name?" in a new call — it will not know. Every request starts from a blank slate. That is the problem the next section solves.',
-    code: '// call 1: "My name is Rohit"   → "Nice to meet you!"\n// call 2: "What is my name?"    → "I don’t know" ❌',
-  },
-];
-
-const MEMORY = [
-  {
-    icon: '📜', title: 'Send The History', titleClass: 'card-title-cyan', subtitle: 'Manual Memory',
-    description:
-      'Keep an array of every turn and resend the whole thing each time. The model re-reads the conversation on every call, so it appears to remember.',
-    code: 'const history = [];\nhistory.push({ role: "user", parts: [{ text: "My name is Rohit" }] });\nlet res = await ai.models.generateContent({\n  model: "gemini-2.5-flash",\n  contents: history,\n});\nhistory.push({ role: "model", parts: [{ text: res.text }] });\n// ask again — history now carries the context',
-  },
-  {
-    icon: '💬', title: 'Chat Sessions', titleClass: 'card-title-purple', subtitle: 'The Easy Way',
-    description:
-      'ai.chats.create() tracks the history for you. Just call chat.sendMessage — no manual array. Cleaner code for the same result.',
-    code: 'const chat = ai.chats.create({ model: "gemini-2.5-flash" });\n\nconst res = await chat.sendMessage({ message: userInput });\nconsole.log(res.text); // history is managed automatically',
-  },
-  {
-    icon: '⌨️', title: 'Interactive Chatbot', titleClass: 'card-title-amber', subtitle: 'readline-sync',
-    description:
-      'Wrap the chat session in a loop that reads terminal input until you type "exit". That is a working command-line assistant in a dozen lines.',
-    code: 'import readlineSync from "readline-sync";\nconst chat = ai.chats.create({ model: "gemini-2.5-flash" });\nwhile (true) {\n  const q = readlineSync.question("You: ");\n  if (q === "exit") break;\n  const res = await chat.sendMessage({ message: q });\n  console.log("AI:", res.text);\n}',
+      'Run tsc to emit JavaScript, or use ts-node to execute a .ts file directly. Watch mode rebuilds on every save so feedback is instant.',
+    code: '# compile once\nnpx tsc index.ts && node index.js\n\n# run directly\nnpx ts-node index.ts\n\n# rebuild on save\nnpx tsc --watch',
   },
 ];
 
-const CONTROL = [
+const CONFIG = [
   {
-    icon: '🎭', title: 'System Instructions', titleClass: 'card-title-cyan', subtitle: 'Give It A Persona',
+    icon: '🛠️', title: 'tsc --init', titleClass: 'card-title-cyan', subtitle: 'Create tsconfig',
     description:
-      'A systemInstruction tells the AI how to behave for the entire chat — its rules and personality. A coding tutor, a strict reviewer, or a pirate that only talks like a pirate.',
-    code: 'const chat = ai.chats.create({\n  model: "gemini-2.5-flash",\n  systemInstruction:\n    "You are a coding tutor. Answer only coding questions, use first principles, keep it concise.",\n});',
+      'One command scaffolds a fully commented tsconfig.json. It becomes the source of truth: run tsc with no file args and it compiles the whole project by these rules.',
+    code: '$ npx tsc --init\n// → creates tsconfig.json\n// then just: npx tsc',
   },
   {
-    icon: '🤔', title: 'Thinking Config', titleClass: 'card-title-purple', subtitle: 'thinkingBudget',
+    icon: '⚙️', title: 'Key Options', titleClass: 'card-title-purple', subtitle: 'The Essentials',
     description:
-      '"Thinking" is just extra tokens generated before the answer. thinkingBudget 0 gives a direct reply; a higher budget helps hard, multi-step problems — but costs more, so use it deliberately.',
-    code: 'const res = await ai.models.generateContent({\n  model: "gemini-2.5-flash",\n  contents: "What is 547 + 832?",\n  config: { thinkingConfig: { thinkingBudget: 0 } }, // 0 = direct\n});',
+      'target sets the JS version you emit, module the import style, outDir/rootDir keep source and build separate, and strict switches on every safety check.',
+    code: '{\n  "target": "ES2022",\n  "module": "ESNext",\n  "rootDir": "src",\n  "outDir": "dist",\n  "strict": true\n}',
   },
   {
-    icon: '💰', title: 'Tokens & Cost', titleClass: 'card-title-amber', subtitle: 'Keep It Short',
+    icon: '🔒', title: 'Turn On strict', titleClass: 'card-title-amber', subtitle: 'Non-Negotiable',
     description:
-      'Every request is billed for the systemInstruction, the full history (which grows each turn), the new message, and the reply. Keep instructions short and trim old history to control cost.',
-    code: '// charged EVERY call:\n//   systemInstruction  (sent again each time!)\n// + full history      (grows each turn)\n// + new message\n// + model response',
+      'strict bundles noImplicitAny, strictNullChecks and more. It’s where TypeScript earns its keep — leave it on from the start so bad habits never form.',
+    footer: 'strict = noImplicitAny + strictNullChecks + …',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📝', title: 'Lecture 02 Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    icon: '⬇️', title: 'Install Guide', titleClass: 'card-title-cyan', subtitle: 'Official',
     description:
-      'Rohit’s full write-up for "Write our first code" — token prediction, the SDK, chat, history, system instructions, thinking and cost, with every code sample.',
-    link: { href: NOTION, label: 'Open Lecture 02 notes →', external: true },
+      'The official download & setup page — npm, per-project vs global, and editor integration for VS Code and others.',
+    link: { href: TS_INSTALL, label: 'Open install guide →', external: true },
   },
   {
-    icon: '💻', title: 'Lecture 02 Code', titleClass: 'card-title-purple', subtitle: 'GitHub',
+    icon: '📄', title: 'tsconfig Reference', titleClass: 'card-title-purple', subtitle: 'Every Flag',
     description:
-      'The runnable index.js and package.json for this lecture in the STRIKE GenAI repo. Clone, add your key, and run it.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 02 code →', external: true },
+      'The complete tsconfig reference — every compiler option explained with examples. Bookmark it; you’ll come back to tune strictness and paths.',
+    link: { href: TSCONFIG_DOCS, label: 'Open tsconfig docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Chat & Persona', titleClass: 'card-title-amber', subtitle: 'Day 3 Preview',
+    icon: '🔜', title: 'Next: Type Basics', titleClass: 'card-title-amber', subtitle: 'Day 3 Preview',
     description:
-      'Tomorrow is Lecture 03 — a chat with memory and a tutor persona via systemInstruction, then the same assistant wired into a browser chat UI.',
+      'Tomorrow — the core type system: string, number, boolean, arrays, any vs unknown, and how annotations and inference work together.',
     link: { href: '/day-003', label: 'Go to Day 3 →' },
   },
 ];
@@ -156,23 +135,23 @@ export default function Day002() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-001" className="day001-nav-btn day001-nav-prev">← Day 1</Link>
-          <p className="day001-datetime">Agentic AI Day 2</p>
+          <p className="day001-datetime">TypeScript Day 2</p>
           <Link to="/day-003" className="day001-nav-btn day001-nav-next">Day 3 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 02</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Setup</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 2 <span aria-hidden="true">⚡</span></h1>
-              <p className="day001-day-theme">WRITE OUR FIRST CODE — THE GEMINI SDK</p>
+              <h1 className="day001-day-num">DAY 2 <span aria-hidden="true">🛠️</span></h1>
+              <p className="day001-day-theme">SETTING UP TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -180,13 +159,13 @@ export default function Day002() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '2%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 02 — my <strong>first Gemini code</strong>. A single <code>generateContent</code> call returns{' '}
-          <code>response.text</code>, but every call is <strong>independent</strong> — the model has{' '}
-          <strong>no memory</strong>. To fix that I <strong>send the history</strong> each turn, or let{' '}
-          <code>ai.chats.create()</code> manage it and wrap it in a <strong>readline-sync</strong> loop for an
-          interactive chatbot. A <strong>systemInstruction</strong> gives it a persona, <code>thinkingBudget</code>{' '}
-          trades tokens for reasoning, and the instruction + growing history is{' '}
-          <strong>billed on every request</strong>. <em>Keep it short.</em>
+          Getting a project running. Install the compiler with <code>npm i -D typescript</code>, then either{' '}
+          <code>tsc</code> to emit JavaScript or <code>ts-node</code> to run a <code>.ts</code> file directly.{' '}
+          <code>tsc --init</code> scaffolds a <strong>tsconfig.json</strong> — the one file that configures the whole
+          project: <code>target</code> (JS version), <code>module</code>, <code>rootDir</code>/<code>outDir</code>, and
+          the all-important <strong>strict</strong> flag. Turn <code>strict</code> on from day one — it bundles{' '}
+          <code>noImplicitAny</code>, <code>strictNullChecks</code> and more. Run <code>tsc --watch</code> and your
+          editor shows errors the instant you save. <em>Next: the core types.</em>
         </p>
 
         <section className="day001-learnt">
@@ -201,13 +180,12 @@ export default function Day002() {
           </ul>
         </section>
 
-        <CardSection icon="⚡" title="FIRST CALLS" cards={FIRST} columns={2} />
-        <CardSection icon="🧠" title="GIVING IT MEMORY" cards={MEMORY} columns={3} />
-        <CardSection icon="🎛️" title="CONTROL & COST" cards={CONTROL} columns={3} />
+        <CardSection icon="📦" title="INSTALL & RUN" cards={INSTALL} columns={2} />
+        <CardSection icon="🛠️" title="TSCONFIG.JSON" cards={CONFIG} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Gemini</span><span>#CoderArmy</span><span>#JavaScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#tsconfig</span><span>#DevTools</span>
         </footer>
       </div>
     </div>

@@ -2,74 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TS_DOCS = 'https://www.typescriptlang.org/docs/';
-const TS_PLAYGROUND = 'https://www.typescriptlang.org/play';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture24';
 
 const LEARNT_TODAY = [
-  { title: 'TypeScript = JavaScript + types', text: 'a superset of JS — every valid .js file is already valid TypeScript' },
-  { title: 'Static typing', text: 'you declare what a value is, and the compiler checks it before the code ever runs' },
-  { title: 'Catches bugs early', text: 'typos, wrong arguments and null mistakes are caught at compile time, not in production' },
-  { title: 'Compiles to plain JS', text: 'the browser never runs TypeScript — tsc strips the types and emits ordinary JavaScript' },
-  { title: 'Type inference', text: 'TS often figures out the type for you, so you don’t annotate everything by hand' },
-  { title: 'World-class tooling', text: 'autocomplete, refactors and inline errors in the editor — the biggest day-to-day win' },
-  { title: 'Year 1 starts here', text: 'TypeScript is the foundation of the whole Year-1 stack: React, Next.js, React Native, Express' },
-  { title: 'Prereq: JavaScript', text: 'you already know JS — TypeScript just adds a safety layer on top of it' },
+  { title: 'State is the whole contract', text: 'in LangGraph, nodes communicate ONLY through a shared state — Node A writes, Node B reads' },
+  { title: 'Annotation.Root', text: 'the AgentState defines every field up front so checkpoints stay compatible as the graph grows' },
+  { title: 'Reducers', text: 'simple fields use last-write-wins; accumulating arrays use a merge reducer to combine old + new' },
+  { title: 'PM Agent', text: 'turns a raw requirement into a clear spec, asking clarifying questions via a humanInput node' },
+  { title: 'Architect in 5 steps', text: 'entities → DB schema → API endpoints → frontend pages → folder structure' },
+  { title: 'blueprintValidator', text: 'cross-checks the whole blueprint before planning — a router sends it back if it fails' },
+  { title: 'Sandbox + health check', text: 'spin up a Docker sandbox, then verify DB, node_modules and ports before building' },
+  { title: 'Checkpoint everything', text: 'MemorySaver persists state after each node, so a crash resumes instead of restarting' },
 ];
 
-const WHAT = [
+const STATE = [
   {
-    icon: '🔷', title: 'A Typed Superset', titleClass: 'card-title-cyan', subtitle: 'JS + Types',
+    icon: '📦', title: 'The Shared State', titleClass: 'card-title-cyan', subtitle: 'Annotation.Root',
     description:
-      'TypeScript is JavaScript with a type system bolted on. Everything you know about JS still works — TS only adds optional annotations that describe the shape of your data.',
-    code: '// plain JS — valid TypeScript too\nlet name = "Sumit";\n\n// TS adds a type annotation\nlet age: number = 27;',
+      'Define the full state shape once with Annotation.Root. Each field notes which node owns it. Nodes never call each other — they only read and write this object.',
+    code: 'import { Annotation } from "@langchain/langgraph";\n\nexport const AgentState = Annotation.Root({\n  userRequirement: Annotation({ reducer: (_, y) => y ?? "", default: () => "" }),\n  spec: Annotation({ reducer: (_, y) => y, default: () => null }),\n  // ...all 30 nodes’ fields\n});',
   },
   {
-    icon: '🛡️', title: 'Errors Before Runtime', titleClass: 'card-title-purple', subtitle: 'Compile-Time Safety',
+    icon: '➕', title: 'Reducers', titleClass: 'card-title-purple', subtitle: 'How Updates Merge',
     description:
-      'The compiler reads your types and flags mistakes as you type. Passing a string where a number belongs is caught in the editor — long before the code ever ships.',
-    code: 'let age: number = 27;\nage = "twenty-seven";\n// ❌ Type \'string\' is not\n//    assignable to type \'number\'',
+      'A reducer decides how a node’s output updates the state. Simple values overwrite (last write wins); lists that grow use a merge reducer so nothing is lost.',
+    code: '// simple field:  reducer: (_, y) => y        (overwrite)\n// growing list:  reducer: (x, y) => [...x, ...y] (merge)',
   },
 ];
 
-const HOW = [
+const PLAN = [
   {
-    icon: '⚙️', title: 'tsc — The Compiler', titleClass: 'card-title-cyan', subtitle: '.ts → .js',
+    icon: '📋', title: 'PM → Architect → Planner', titleClass: 'card-title-cyan', subtitle: 'Design The Work',
     description:
-      'The TypeScript compiler (tsc) transpiles your .ts files into plain .js that the browser or Node can run. Types are erased in the output — they exist only to check your code.',
-    code: '// hello.ts\nconst greet = (n: string) => `Hi ${n}`;\n\n// $ tsc hello.ts  →  hello.js\n// const greet = (n) => `Hi ${n}`;',
+      'The PM clarifies the requirement into a spec (looping through humanInput for answers). The Architect designs the blueprint in five steps. The Planner turns it into an ordered task list.',
+    code: '// pmAgent → spec (needs_clarification → humanInput)\n// architectStep1..5 → blueprint\n// plannerAgent → phased, dependency-ordered tasks',
   },
   {
-    icon: '🔍', title: 'Type Inference', titleClass: 'card-title-purple', subtitle: 'It Guesses For You',
+    icon: '✅', title: 'Validate, Then Proceed', titleClass: 'card-title-purple', subtitle: 'A Router',
     description:
-      'You don’t annotate everything. When you initialise a variable, TS infers its type automatically — annotate only where the intent isn’t obvious from the value.',
-    code: 'let city = "Mumbai";\n// inferred as string — no annotation\ncity = 42; // ❌ error',
+      'blueprintValidator checks the design and a router decides the next edge — proceed to planning if valid, or loop back to the Architect to fix it. Conditional edges in action.',
+    code: 'graph.addConditionalEdges("blueprintValidator", blueprintValidatorRouter, {\n  valid: "plannerAgent",\n  invalid: "architectStep1", // redesign\n});',
   },
   {
-    icon: '💡', title: 'Why Teams Use It', titleClass: 'card-title-amber', subtitle: 'The Payoff',
+    icon: '🐳', title: 'Sandbox & Health Check', titleClass: 'card-title-amber', subtitle: 'Ready To Build',
     description:
-      'Self-documenting code, fearless refactors, autocomplete that actually knows your data, and far fewer "undefined is not a function" crashes. It scales to large codebases.',
-    footer: 'safer refactors · better autocomplete · fewer runtime bugs',
+      'setupSandbox creates a Docker environment; sandboxHealthCheck then verifies the database, node_modules and ports are actually up before any code is written into it.',
+    code: '// setupSandbox → Docker sandbox\n// sandboxHealthCheck → verify DB, deps, ports\n// (router: healthy → build · unhealthy → retry)',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📘', title: 'TypeScript Handbook', titleClass: 'card-title-cyan', subtitle: 'Official Docs',
+    icon: '💻', title: 'Lecture 24', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'The canonical reference — start with "The Basics" and "Everyday Types". Clear, example-driven, and always current with the latest compiler.',
-    link: { href: TS_DOCS, label: 'Open the Handbook →', external: true },
+      'The ai-dev-team phase-3 project — the state, graph, PM/Architect/Planner agents, blueprint validator and sandbox nodes.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 24 →', external: true },
   },
   {
-    icon: '🎮', title: 'TS Playground', titleClass: 'card-title-purple', subtitle: 'Try In-Browser',
+    icon: '🧩', title: 'It’s A LangGraph', titleClass: 'card-title-purple', subtitle: 'Everything Applies',
     description:
-      'Write TypeScript and watch the compiled JavaScript appear live beside it — no setup. The fastest way to build intuition for what the types actually do.',
-    link: { href: TS_PLAYGROUND, label: 'Open the Playground →', external: true },
+      'This uses Day 20’s LangGraph directly — state, nodes, conditional edges, routers and MemorySaver checkpoints — now for a real multi-agent build.',
+    footer: 'state · nodes · routers · checkpoints',
   },
   {
-    icon: '🔜', title: 'Next: Setup', titleClass: 'card-title-amber', subtitle: 'Day 41 Preview',
+    icon: '🔜', title: 'Next: The Full Team', titleClass: 'card-title-amber', subtitle: 'Prereq 25 Preview',
     description:
-      'Tomorrow — install TypeScript, initialise tsconfig.json, and run the compiler in watch mode so your project rebuilds on every save.',
-    link: { href: '/day-041', label: 'Go to Day 41 →' },
+      'Tomorrow completes it — Lecture 25: the Coder, Reviewer, Executor and Debugger agents, the dev loop, snapshots/rollback and escalation.',
+    link: { href: '/day-041', label: 'Go to Prereq 25 →' },
   },
 ];
 
@@ -134,37 +133,39 @@ export default function Day040() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-039" className="day001-nav-btn day001-nav-prev">← Day 39</Link>
-          <p className="day001-datetime">TypeScript Day 40</p>
-          <Link to="/day-041" className="day001-nav-btn day001-nav-next">Day 41 →</Link>
+          <Link to="/day-039" className="day001-nav-btn day001-nav-prev">← Prereq 23</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 24</p>
+          <Link to="/day-041" className="day001-nav-btn day001-nav-next">Prereq 25 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Introduction</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 24</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 40 <span aria-hidden="true">🔷</span></h1>
-              <p className="day001-day-theme">TYPESCRIPT — WHY &amp; WHAT</p>
+              <h1 className="day001-day-num">PREREQ 24 <span aria-hidden="true">🏗️</span></h1>
+              <p className="day001-day-theme">AI DEV TEAM — PLANNING AGENTS &amp; SANDBOX</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '40%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '24%' }} /></div>
 
         <p className="day001-summary">
-          Year 1 begins. <strong>TypeScript</strong> is a <strong>typed superset of JavaScript</strong> — every valid
-          JS file is already valid TS, and you add <em>type annotations</em> on top. The compiler <code>tsc</code>{' '}
-          checks those types and catches bugs <strong>at compile time</strong>, then strips them and emits plain
-          JavaScript the browser runs. Thanks to <strong>type inference</strong> you don’t annotate everything — TS
-          figures out most types itself. The real payoff is <strong>tooling</strong>: autocomplete, safe refactors and
-          inline errors. This is the foundation for <em>React, Next.js, React Native and Express</em> all year.
+          Lecture 24 — the build begins. The heart of it is the <strong>LangGraph state</strong>: defined once with{' '}
+          <code>Annotation.Root</code>, it is the <strong>only</strong> way nodes talk, with{' '}
+          <strong>reducers</strong> that overwrite simple fields and merge growing lists. The{' '}
+          <strong>planning agents</strong> run — <strong>PM</strong> (spec, via humanInput),{' '}
+          <strong>Architect</strong> (5-step blueprint), <strong>blueprintValidator</strong> (with a router), and{' '}
+          <strong>Planner</strong> — then a <strong>Docker sandbox</strong> is set up and{' '}
+          <strong>health-checked</strong>. Every node <strong>checkpoints</strong> so a crash resumes.{' '}
+          <em>Next: the coding agents.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +180,12 @@ export default function Day040() {
           </ul>
         </section>
 
-        <CardSection icon="🔷" title="WHAT IS TYPESCRIPT" cards={WHAT} columns={2} />
-        <CardSection icon="⚙️" title="HOW IT WORKS" cards={HOW} columns={3} />
+        <CardSection icon="📦" title="THE LANGGRAPH STATE" cards={STATE} columns={2} />
+        <CardSection icon="📋" title="PLANNING & SANDBOX" cards={PLAN} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#WebDev</span><span>#JavaScript</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AIDevTeam</span><span>#LangGraph</span><span>#CoderArmy</span>
         </footer>
       </div>
     </div>

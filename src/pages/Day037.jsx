@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/lecture39';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture21';
+const LANGGRAPH_DOCS = 'https://langchain-ai.github.io/langgraphjs/';
 
 const LEARNT_TODAY = [
-  { title: 'Text must become numbers', text: 'an LLM can’t read letters — first the text is split into tokens, each mapped to an integer id' },
-  { title: 'Byte-Pair Encoding (BPE)', text: 'the tokenizer GPT uses — start from characters and repeatedly merge the most frequent pair' },
-  { title: 'Start from characters', text: 'each word becomes a list of single characters plus an end-of-word marker </w>' },
-  { title: 'Count pairs', text: 'across all words, count every adjacent pair of tokens — "e r", "l o", "t h" …' },
-  { title: 'Merge the top pair', text: 'the most frequent pair is fused into one new token and added to the vocabulary' },
-  { title: 'Repeat N times', text: 'do it for num_merges rounds — common chunks like "ing", "tion", "the" become single tokens' },
-  { title: 'Balance of two extremes', text: 'characters = tiny vocab but long sequences; whole words = huge vocab; BPE sits in between' },
-  { title: 'Encode & decode', text: 'text → apply the learned merges → token ids; ids → look up strings → back to text' },
+  { title: 'One agent hits limits', text: 'a single generalist agent struggles with large, multi-step tasks and long, unfocused prompts' },
+  { title: 'Divide and specialize', text: 'give each agent one narrow role with a focused prompt — it does that job far better' },
+  { title: 'Agents collaborate', text: 'one agent’s output becomes the next one’s input, forming a pipeline or a team' },
+  { title: 'Communicate via state', text: 'in LangGraph, agents do not call each other — they read and write a shared state object' },
+  { title: 'Specialization = quality', text: 'focused prompts and roles produce more reliable, higher-quality output than one do-everything prompt' },
+  { title: 'Common patterns', text: 'a planner delegating to workers, or a role-based pipeline (PM → architect → coder → reviewer)' },
+  { title: 'Next: a real team', text: 'the coming lectures build an autonomous software development team of specialized agents' },
 ];
 
 const WHY = [
   {
-    icon: '🔤', title: 'Text → Tokens → Ids', titleClass: 'card-title-cyan', subtitle: 'The First Step',
+    icon: '🧠', title: 'Why One Agent Struggles', titleClass: 'card-title-cyan', subtitle: 'Too Much At Once',
     description:
-      'A model works on numbers. The tokenizer splits text into tokens and assigns each a fixed integer id from its vocabulary. Every prompt starts life as a list of ids.',
-    code: '// "learning" → ["learn", "ing"] → [4821, 213]\n// ids are what the network actually sees',
+      'Ask a single agent to plan, code, review, test and deploy and its prompt becomes a tangle. It loses focus, forgets constraints, and quality drops as the task grows.',
+    code: '// one giant prompt: "plan + code + review + test + deploy"\n// → unfocused, error-prone, hard to control',
   },
   {
-    icon: '⚖️', title: 'Why Not Words Or Letters', titleClass: 'card-title-purple', subtitle: 'The Middle Ground',
+    icon: '👥', title: 'A Team Of Specialists', titleClass: 'card-title-purple', subtitle: 'Divide The Work',
     description:
-      'Split by characters and the vocabulary is tiny but sequences get very long. Split by whole words and the vocabulary explodes and can’t handle new words. BPE balances both.',
-    code: '// characters: vocab ~256, sequences long\n// words: vocab huge, unknowns break\n// BPE: sub-words → best of both',
+      'Split the job across agents, each with a single responsibility and a tight prompt — a planner, a coder, a reviewer. Each becomes an expert at its one thing.',
+    code: '// planner  → break the task down\n// coder    → write one piece\n// reviewer → check it\n// each prompt stays short and focused',
   },
 ];
 
-const BPE = [
+const HOW = [
   {
-    icon: '🧱', title: 'Start From Characters', titleClass: 'card-title-cyan', subtitle: 'Split + </w>',
+    icon: '🔗', title: 'They Collaborate', titleClass: 'card-title-cyan', subtitle: 'Output → Input',
     description:
-      'Break each word into single characters and add an end-of-word marker. Count how often each unique word appears so duplicates aren’t reprocessed.',
-    code: '// "low" → ["l","o","w","</w>"]\n// build word_freq: {["l","o","w","</w>"]: 5, ...}',
+      'Agents form a workflow: the planner’s plan feeds the coder, the coder’s code feeds the reviewer. Structured hand-offs replace one overloaded model.',
+    code: '// plan  →  code  →  review  →  test\n// each stage consumes the previous stage’s output',
   },
   {
-    icon: '🔢', title: 'Count The Pairs', titleClass: 'card-title-purple', subtitle: 'Most Frequent Wins',
+    icon: '📦', title: 'Shared State', titleClass: 'card-title-purple', subtitle: 'Not Direct Calls',
     description:
-      'Scan every word and tally each adjacent token pair. The pair that appears most across the whole corpus is the one worth merging first.',
-    code: '// count adjacent pairs:\n// ("l","o"):12  ("o","w"):9  ("w","</w>"):7\n// winner → ("l","o")',
+      'In LangGraph, agents never call each other directly. They read from and write to a shared state object — the single source of truth the whole team works on.',
+    code: '// Node A writes to state → Node B reads from state\n// state is the ONLY channel between agents',
   },
   {
-    icon: '🔗', title: 'Merge & Repeat', titleClass: 'card-title-amber', subtitle: 'Grow The Vocab',
+    icon: '🎼', title: 'Orchestration', titleClass: 'card-title-amber', subtitle: 'LangGraph',
     description:
-      'Fuse the winning pair into one new token, add it to the vocabulary, and record the merge. Repeat for num_merges rounds — frequent chunks like "ing" become single tokens.',
-    code: '// merge ("l","o") → "lo"\n// vocab["lo"] = next_id++\n// repeat N times → sub-word vocabulary',
+      'A graph (from Day 20) orchestrates the team — deciding which agent runs next, when to loop, and when to stop. Multi-agent systems are LangGraph’s reason to exist.',
+    footer: 'specialized agents + shared state + a graph = a team',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 39', titleClass: 'card-title-cyan', subtitle: 'C++ BPE Tokenizer',
+    icon: '💻', title: 'Lecture 21', titleClass: 'card-title-cyan', subtitle: 'GitHub',
     description:
-      'tokenizer.cpp in the STRIKE GenAI repo — a Byte-Pair-Encoding tokenizer built from scratch, train / encode / decode.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 39 →', external: true },
+      'The multi-agent systems lecture and diagram in the STRIKE GenAI repo — the concept behind the AI Dev Team ahead.',
+    link: { href: GH_LECTURE, label: 'Open Lecture 21 →', external: true },
   },
   {
-    icon: '🧠', title: 'This Is Real GPT', titleClass: 'card-title-purple', subtitle: 'Same Idea',
+    icon: '📘', title: 'LangGraph.js', titleClass: 'card-title-purple', subtitle: 'Orchestration',
     description:
-      'GPT models use BPE (tiktoken) exactly like this. Understanding the merge loop demystifies why token counts — and bills — look the way they do.',
-    footer: 'characters → count pairs → merge → sub-word tokens',
+      'The framework that runs multi-agent workflows — state, nodes, conditional edges and cycles that coordinate a team of agents.',
+    link: { href: LANGGRAPH_DOCS, label: 'LangGraph.js docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Embeddings', titleClass: 'card-title-amber', subtitle: 'Day 38 Preview',
+    icon: '🔜', title: 'Next: The AI Dev Team', titleClass: 'card-title-amber', subtitle: 'Prereq 22 Preview',
     description:
-      'Tomorrow — Lecture 40: the embedding layer. Each token id becomes a 768-number vector, and we see just how many weights that takes.',
-    link: { href: '/day-038', label: 'Go to Day 38 →' },
+      'Tomorrow — Lecture 22: the vision of an autonomous software development team (like Devin) — the roles and the requirement-to-deploy pipeline.',
+    link: { href: '/day-038', label: 'Go to Prereq 22 →' },
   },
 ];
 
@@ -133,39 +133,37 @@ export default function Day037() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-036" className="day001-nav-btn day001-nav-prev">← Day 36</Link>
-          <p className="day001-datetime">Agentic AI Day 37</p>
-          <Link to="/day-038" className="day001-nav-btn day001-nav-next">Day 38 →</Link>
+          <Link to="/day-036" className="day001-nav-btn day001-nav-prev">← Prereq 20</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 21</p>
+          <Link to="/day-038" className="day001-nav-btn day001-nav-next">Prereq 22 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 39</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 21</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 37 <span aria-hidden="true">🔤</span></h1>
-              <p className="day001-day-theme">TOKENIZATION — A BPE TOKENIZER FROM SCRATCH</p>
+              <h1 className="day001-day-num">PREREQ 21 <span aria-hidden="true">👥</span></h1>
+              <p className="day001-day-theme">MULTI-AGENT SYSTEMS — A TEAM OF AGENTS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '37%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '21%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 39 — before a model can learn, text must become <strong>numbers</strong>. The tokenizer splits text
-          into <strong>tokens</strong> and maps each to an integer id. Today’s build is{' '}
-          <strong>Byte-Pair Encoding (BPE)</strong> — the same family GPT uses. Start from{' '}
-          <strong>characters</strong> (plus an <code>&lt;/w&gt;</code> marker), <strong>count</strong> every adjacent
-          pair, <strong>merge</strong> the most frequent one into a new token, and <strong>repeat</strong>. Frequent
-          chunks like <code>ing</code> or <code>the</code> become single tokens — a sub-word vocabulary that avoids both
-          the huge word-vocab and the long character-sequence extremes.{' '}
-          <em>Next: turning these ids into embedding vectors.</em>
+          Lecture 21 — <strong>multi-agent systems</strong>. One generalist agent buckles under large, multi-step
+          work, so we <strong>divide and specialize</strong>: each agent gets a single role and a focused prompt and
+          becomes an expert at it. The agents <strong>collaborate</strong> — one’s output is the next one’s input —
+          but they never call each other directly; they read and write a <strong>shared state</strong>, coordinated
+          by a <strong>LangGraph</strong> graph. Specialization plus orchestration is what makes a real{' '}
+          <strong>AI team</strong> possible. <em>Next, we build one. (Diagram-based lecture; standard concepts.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +178,12 @@ export default function Day037() {
           </ul>
         </section>
 
-        <CardSection icon="⚖️" title="WHY TOKENIZE" cards={WHY} columns={2} />
-        <CardSection icon="🔗" title="THE BPE ALGORITHM" cards={BPE} columns={3} />
+        <CardSection icon="🧠" title="WHY ONE AGENT ISN’T ENOUGH" cards={WHY} columns={2} />
+        <CardSection icon="🎼" title="A TEAM, ORCHESTRATED" cards={HOW} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Tokenizer</span><span>#BPE</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#MultiAgent</span><span>#LangGraph</span><span>#CoderArmy</span>
         </footer>
       </div>
     </div>

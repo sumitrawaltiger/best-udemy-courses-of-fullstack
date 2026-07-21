@@ -2,74 +2,75 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture37%20and%2038';
-const NOTION = 'https://www.notion.so/Multi-class-classification-345a9af81c9880dd9f8cd3b7dca8fa25';
+const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture20';
+const NOTION = 'https://www.notion.so/LangGraph-306a9af81c9880aaa2e3e37d1384063f';
+const LANGGRAPH_DOCS = 'https://langchain-ai.github.io/langgraphjs/';
 
 const LEARNT_TODAY = [
-  { title: 'A real neural network', text: 'not one neuron — a 5 → 16 → 10 network: 5 features, a hidden layer of 16, and 10 output classes' },
-  { title: 'Predict the company', text: 'from dsa, projects, iq, cgpa, attendance → which of 10 companies places the student' },
-  { title: 'Why a hidden layer', text: 'one layer only draws straight boundaries; the hidden layer learns feature interactions like "high CGPA AND high projects"' },
-  { title: 'ReLU adds non-linearity', text: 'ReLU(x) = max(0, x) kills negative signals — a switch that lets useful patterns through and blocks the rest' },
-  { title: 'Softmax output', text: 'the 10 output neurons go through softmax → a probability per company that sums to 1' },
-  { title: 'Standardize features', text: 'z-score each feature (mean 0, std 1) so iq (~120) doesn’t dominate cgpa (~8) by scale alone' },
-  { title: 'He initialization', text: 'random weights with std = √(2 / fanIn) keep signals stable through ReLU layers' },
-  { title: 'Train it', text: 'cross-entropy loss + mini-batch gradient descent over 500 epochs, on an 80/20 train/test split' },
+  { title: 'Chains are too rigid', text: 'a chain runs steps in a fixed line — real agent workflows need branching, loops and control' },
+  { title: 'LangGraph', text: 'build agent workflows as a graph of nodes and edges, with a shared state flowing through it' },
+  { title: 'State', text: 'a single state object passes between nodes; each node reads it and returns updates to it' },
+  { title: 'Nodes', text: 'each node is a step — an LLM call, a tool, or a sub-agent — that transforms the state' },
+  { title: 'Edges', text: 'edges define the flow from node to node; the graph starts at an entry and ends at END' },
+  { title: 'Conditional edges', text: 'branch based on the state — send the flow one way or another depending on what happened' },
+  { title: 'Cycles', text: 'unlike a chain, a graph can loop — think → act → observe → think — the true agent loop' },
+  { title: 'Human-in-the-loop', text: 'pause the graph for approval before a critical action, then resume' },
 ];
 
-const NET = [
+const WHY = [
   {
-    icon: '🕸️', title: 'The Architecture', titleClass: 'card-title-cyan', subtitle: '5 → 16 → 10',
+    icon: '📏', title: 'Beyond Chains', titleClass: 'card-title-cyan', subtitle: 'Rigid & Linear',
     description:
-      'Five input features feed a hidden layer of 16 neurons, which feeds 10 output neurons — one per company. Two layers of weights, learned from scratch in pure C++.',
-    code: '// Input : 5  (dsa, projects, iq, cgpa, attendance)\n// Hidden: 16 + ReLU\n// Output: 10 + Softmax   (10 companies)\n// Loss  : cross-entropy',
+      'A LangChain chain is a straight line: A → B → C. But agents need to decide, retry, branch and loop. Cramming that into a linear chain gets messy fast.',
+    code: '// chain: prompt → model → parser   (one direction)\n// agent: think → maybe call a tool → observe → repeat\n//        with branches and loops → needs a graph',
   },
   {
-    icon: '🔀', title: 'Why A Hidden Layer', titleClass: 'card-title-purple', subtitle: 'Learn Interactions',
+    icon: '🕸️', title: 'A Graph Of Steps', titleClass: 'card-title-purple', subtitle: 'LangGraph',
     description:
-      'A single layer can only split data with straight lines. Placement is non-linear: "high CGPA + low projects" leads somewhere different than "high CGPA + high projects". The hidden layer captures that.',
-    code: '// no hidden layer → straight boundary only\n// hidden layer → learns feature combinations\n// ReLU makes the combinations non-linear',
+      'LangGraph models the workflow as a graph. You declare a shared state, add nodes (steps), and connect them with edges — including conditional ones and cycles.',
+    code: "import { StateGraph, END } from '@langchain/langgraph';\n\nconst graph = new StateGraph({ channels: stateSchema })\n  .addNode('agent', callModel)\n  .addNode('tools', runTools);",
   },
 ];
 
-const PIECES = [
+const MODEL = [
   {
-    icon: '⚡', title: 'ReLU', titleClass: 'card-title-cyan', subtitle: 'max(0, x)',
+    icon: '📦', title: 'State', titleClass: 'card-title-cyan', subtitle: 'The Shared Object',
     description:
-      'The hidden layer’s activation. It zeroes out negative values, acting like a switch — useful signals pass, noise is blocked. That bend is what lets the network model curves.',
-    code: 'double relu(double x) {\n  return x > 0 ? x : 0.0;\n}\n// negative → 0, positive → unchanged',
+      'One state object flows through the whole graph. Every node receives it and returns a partial update, which LangGraph merges — so each step builds on the last.',
+    code: '// state = { messages, question, context, answer }\n// each node returns e.g. { messages: [...newMsgs] }\n// LangGraph merges updates into the state',
   },
   {
-    icon: '📊', title: 'Standardize', titleClass: 'card-title-purple', subtitle: 'Z-Score',
+    icon: '🔗', title: 'Nodes & Edges', titleClass: 'card-title-purple', subtitle: 'Steps & Flow',
     description:
-      'Rescale every feature to mean 0, std 1. Without it iq (~120) would swamp cgpa (~8) purely by magnitude. Now the network learns from pattern, not scale.',
-    code: '// per feature j:\n// x = (x - mean[j]) / std[j]\n// → every feature centred, comparable',
+      'A node is a function that transforms the state. Edges wire nodes together, with an entry point and END. Conditional edges branch on the current state.',
+    code: "graph.addEdge('agent', 'tools');\ngraph.addConditionalEdges('agent', shouldContinue, {\n  continue: 'tools',   // needs a tool → run it\n  end: END,            // done → finish\n});",
   },
   {
-    icon: '🎲', title: 'He Init + Softmax', titleClass: 'card-title-amber', subtitle: 'Stable Start, Clean Output',
+    icon: '♻️', title: 'Cycles & Control', titleClass: 'card-title-amber', subtitle: 'Loops + Oversight',
     description:
-      'Weights start random with std = √(2/fanIn) (He init) so signals don’t vanish or explode through ReLU. The 10 outputs pass through softmax to a probability per company.',
-    code: '// weight ~ Normal(0, sqrt(2/fanIn))\n// output → softmax → [p0..p9], Σ = 1\n// argmax = predicted company',
+      'Because it is a graph, the flow can loop back — call a tool, observe, and return to the model — the real agent loop. You can also pause for human approval mid-run.',
+    code: "graph.addEdge('tools', 'agent'); // loop back to think again\n// + interrupt before a critical node for\n//   human-in-the-loop approval",
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lectures 37 & 38', titleClass: 'card-title-cyan', subtitle: 'C++ Neural Net',
+    icon: '📝', title: 'LangGraph Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
     description:
-      'placement_nn.cpp, placement_data.csv and predict.cpp in the STRIKE GenAI repo — a full multi-class network built by hand.',
-    link: { href: GH_LECTURE, label: 'Open Lectures 37 & 38 →', external: true },
+      'Rohit’s LangGraph write-up — state, nodes, edges and building stateful agent workflows.',
+    link: { href: NOTION, label: 'Open the LangGraph notes →', external: true },
   },
   {
-    icon: '📝', title: 'Multi-Class Notes', titleClass: 'card-title-purple', subtitle: 'Notion',
+    icon: '📘', title: 'LangGraph.js Docs', titleClass: 'card-title-purple', subtitle: 'Official',
     description:
-      'Rohit’s notes on multi-class classification — the hidden layer, ReLU, softmax and cross-entropy tied together.',
-    link: { href: NOTION, label: 'Open the notes →', external: true },
+      'The LangGraph.js documentation — StateGraph, conditional edges, cycles, checkpoints and human-in-the-loop.',
+    link: { href: LANGGRAPH_DOCS, label: 'Read LangGraph.js docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Tokenizer', titleClass: 'card-title-amber', subtitle: 'Day 37 Preview',
+    icon: '🧠', title: 'The GenAI Track', titleClass: 'card-title-amber', subtitle: 'Keep Going',
     description:
-      'Tomorrow — Lecture 39: build a Byte-Pair-Encoding tokenizer from scratch, the first real step of turning text into an LLM’s input.',
-    link: { href: '/day-037', label: 'Go to Day 37 →' },
+      'The site’s GenAI track covers LangGraph, multi-agent systems and production as structured modules. Ahead in the course: multi-agent teams and the AI Dev Team project.',
+    link: { href: '/genai', label: 'Open the GenAI track →' },
   },
 ];
 
@@ -134,39 +135,38 @@ export default function Day036() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-035" className="day001-nav-btn day001-nav-prev">← Day 35</Link>
-          <p className="day001-datetime">Agentic AI Day 36</p>
-          <Link to="/day-037" className="day001-nav-btn day001-nav-next">Day 37 →</Link>
+          <Link to="/day-035" className="day001-nav-btn day001-nav-prev">← Prereq 19</Link>
+          <p className="day001-datetime">Prerequisite · Gen AI 20</p>
+          <Link to="/day-037" className="day001-nav-btn day001-nav-next">Prereq 21 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 37 &amp; 38</span></div>
+            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 20</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 36 <span aria-hidden="true">🕸️</span></h1>
-              <p className="day001-day-theme">MULTI-CLASS NEURAL NETWORK IN C++</p>
+              <h1 className="day001-day-num">PREREQ 20 <span aria-hidden="true">🕸️</span></h1>
+              <p className="day001-day-theme">LANGGRAPH — ORCHESTRATING AGENTS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '36%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '20%' }} /></div>
 
         <p className="day001-summary">
-          Lectures 37 &amp; 38 — a real <strong>neural network</strong>, built in C++. The task: predict which of{' '}
-          <strong>10 companies</strong> places a student from <strong>dsa, projects, iq, cgpa, attendance</strong>. The
-          shape is <strong>5 → 16 → 10</strong>: five inputs, a <strong>hidden layer of 16</strong> with{' '}
-          <strong>ReLU</strong>, then 10 outputs through <strong>softmax</strong>. The hidden layer is the point — it
-          learns feature <strong>interactions</strong> a single layer can’t. Features are{' '}
-          <strong>z-score standardized</strong>, weights start with <strong>He init</strong>{' '}
-          <code>√(2/fanIn)</code>, and it trains with <strong>cross-entropy + mini-batch gradient descent</strong>.{' '}
-          <em>Next: tokenization.</em>
+          Lecture 20 — <strong>LangGraph</strong>. A linear <strong>chain</strong> can’t express a real agent that
+          decides, retries and loops, so LangGraph models the workflow as a <strong>graph</strong>. A shared{' '}
+          <strong>state</strong> flows through <strong>nodes</strong> (each an LLM call, tool or sub-agent) connected
+          by <strong>edges</strong> — including <strong>conditional edges</strong> that branch on the state and{' '}
+          <strong>cycles</strong> that loop back (think → act → observe → think). You can even{' '}
+          <strong>pause for human approval</strong> before a critical step. This is how you build controllable,
+          multi-step agents. <em>(Diagram + notes based; standard LangGraph.js API.)</em>
         </p>
 
         <section className="day001-learnt">
@@ -181,12 +181,12 @@ export default function Day036() {
           </ul>
         </section>
 
-        <CardSection icon="🕸️" title="THE NETWORK" cards={NET} columns={2} />
-        <CardSection icon="🧩" title="THE PIECES" cards={PIECES} columns={3} />
+        <CardSection icon="📏" title="WHY LANGGRAPH" cards={WHY} columns={2} />
+        <CardSection icon="🕸️" title="STATE · NODES · EDGES" cards={MODEL} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#NeuralNetworks</span><span>#Cpp</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#GenAI</span><span>#LangGraph</span><span>#Agents</span><span>#CoderArmy</span>
         </footer>
       </div>
     </div>

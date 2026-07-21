@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture16';
-const NEO4J = 'https://neo4j.com/';
+const TS_HANDBOOK = 'https://www.typescriptlang.org/docs/handbook/intro.html';
 
 const LEARNT_TODAY = [
-  { title: 'Vectors miss relationships', text: 'semantic search finds similar text, but cannot answer "which movies did Nolan direct?" precisely' },
-  { title: 'Knowledge graph', text: 'store entities as nodes and relationships as edges — Nolan -[DIRECTED]→ Inception' },
-  { title: 'Explicit, structured facts', text: 'graphs capture exact relationships that embeddings only approximate' },
-  { title: 'Neo4j', text: 'a graph database queried with Cypher — pattern matching over nodes and edges' },
-  { title: 'Graph RAG', text: 'combine a knowledge graph (facts and relationships) with vector RAG (semantic similarity)' },
-  { title: 'Two kinds of questions', text: 'factual/relational → the graph; "similar to" or "recommend" → the vectors' },
-  { title: 'Next: build it', text: 'the coming lectures build a Graph RAG over a movie dataset using Neo4j + Pinecone + Gemini' },
+  { title: 'Foundation complete', text: 'Days 1–16 covered TypeScript end to end — from types to React, Next.js and tooling' },
+  { title: 'The language', text: 'types, functions, interfaces, generics, narrowing, classes, modules and async — all owned' },
+  { title: 'The framework', text: 'React with TS: typed props, state, events and hooks, then full-stack with Next.js' },
+  { title: 'Why it compounds', text: 'every later Year-1 track — React Native, Express — is just TypeScript in a new context' },
+  { title: 'Next up: React Native', text: 'the same typed React skills, now building native mobile apps' },
+  { title: 'Then: Express / Node', text: 'typed backends and REST/GraphQL APIs to pair with the frontend' },
+  { title: 'DSA & System Design', text: 'practised in TypeScript alongside, so the language stays sharp' },
+  { title: 'One stack, one year', text: 'Year 1 is the TypeScript stack — a coherent, typed full-stack skillset' },
 ];
 
-const GAP = [
+const RECAP = [
   {
-    icon: '🕸️', title: 'Where Vectors Fall Short', titleClass: 'card-title-cyan', subtitle: 'Relationships',
+    icon: '🔷', title: 'The Language', titleClass: 'card-title-cyan', subtitle: 'Days 1–11',
     description:
-      'Vector RAG is great at "find text that means something similar". But it cannot reliably answer relationship questions — who directed what, who acted with whom, how many of a kind — because those are structured facts, not fuzzy similarity.',
-    code: '// "Movies directed by Nolan"  → needs exact relationships\n// "Movies like Inception"      → needs similarity\n// vectors handle the 2nd, struggle with the 1st',
+      'Introduction and setup, the type system, functions, objects and enums, interfaces, advanced types and narrowing, generics and assertions, classes and OOP, modules, tooling and async — the complete TypeScript language.',
+    footer: 'types · interfaces · generics · classes · async',
   },
   {
-    icon: '🔗', title: 'Nodes & Edges', titleClass: 'card-title-purple', subtitle: 'A Knowledge Graph',
+    icon: '⚛️', title: 'The Framework', titleClass: 'card-title-purple', subtitle: 'Days 12–15',
     description:
-      'A knowledge graph stores each entity as a node and each relationship as an edge. The connections are first-class data, so relationship questions become precise graph traversals.',
-    code: '(Nolan:Director)-[:DIRECTED]->(Inception:Movie)\n(Zendaya:Actor)-[:ACTED_IN]->(Dune:Movie)\n// facts as nodes + typed relationships',
+      'React with TypeScript — typed components, props, state, events and hooks — then Next.js for full-stack: the App Router, server vs client components, typed route handlers and metadata.',
+    footer: 'React · hooks · Next.js · full-stack types',
   },
 ];
 
-const GRAPH = [
+const AHEAD = [
   {
-    icon: '🗄️', title: 'Neo4j & Cypher', titleClass: 'card-title-cyan', subtitle: 'The Graph Database',
+    icon: '📱', title: 'React Native', titleClass: 'card-title-cyan', subtitle: 'Mobile, Typed',
     description:
-      'Neo4j stores the graph and is queried with Cypher, a pattern-matching language. You literally draw the pattern you want and Neo4j finds every match.',
-    code: '// Cypher: movies directed by Nolan\nMATCH (d:Director {name: "Christopher Nolan"})\n      -[:DIRECTED]->(m:Movie)\nRETURN m.title',
+      'The same React + TypeScript skills, now building native iOS and Android apps. Typed components and hooks transfer directly — you already know most of it.',
+    link: { href: '/mobile', label: 'Explore the React Native track →' },
   },
   {
-    icon: '🧬', title: 'Graph RAG', titleClass: 'card-title-purple', subtitle: 'Graph + Vectors',
+    icon: '🚂', title: 'Express / Node', titleClass: 'card-title-purple', subtitle: 'Typed Backends',
     description:
-      'Graph RAG uses both worlds: the knowledge graph for exact, relational answers, and vector search for "find something similar". One system, two retrieval strengths.',
-    code: '// factual/relational → Neo4j graph\n// similarity/recommend → Pinecone vectors\n// route each question to the right one',
+      'Round out the stack with typed Node.js backends — Express routes, middleware and APIs — sharing types with the frontend for end-to-end safety.',
+    footer: 'typed routes · middleware · shared API types',
   },
   {
-    icon: '🎯', title: 'Why It Matters', titleClass: 'card-title-amber', subtitle: 'Fewer Wrong Answers',
+    icon: '📐', title: 'DSA & System Design', titleClass: 'card-title-amber', subtitle: 'Alongside, In TS',
     description:
-      'Pure vector RAG can hallucinate relationships. Grounding factual questions in a real graph makes those answers exact and verifiable — a big step for trustworthy AI.',
-    footer: 'graph = precise facts · vectors = fuzzy meaning',
+      'Data structures, algorithms and system design practised in TypeScript throughout the year — keeping the language sharp while building interview strength.',
+    link: { href: '/interview', label: 'Explore the Interview track →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 16', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'TypeScript Handbook', titleClass: 'card-title-cyan', subtitle: 'Keep It Close',
     description:
-      'The knowledge graphs lecture and diagram in the STRIKE GenAI repo — the concept behind the Graph RAG build ahead.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 16 →', external: true },
+      'The reference to return to all year — every concept from Days 1–16 lives here, always current with the latest compiler.',
+    link: { href: TS_HANDBOOK, label: 'Open the Handbook →', external: true },
   },
   {
-    icon: '🗄️', title: 'Neo4j', titleClass: 'card-title-purple', subtitle: 'Graph Database',
+    icon: '🗺️', title: 'The 1500-Day Roadmap', titleClass: 'card-title-purple', subtitle: 'Where This Fits',
     description:
-      'The graph database used in the coming lectures — nodes, relationships and the Cypher query language.',
-    link: { href: NEO4J, label: 'Neo4j →', external: true },
+      'Year 1 is the TypeScript stack in the full journey — Gen AI (Days 1–39) then four years of code. See the whole plan and its dated windows.',
+    link: { href: '/roadmap', label: 'Open the roadmap →' },
   },
   {
-    icon: '🔜', title: 'Next: The Project', titleClass: 'card-title-amber', subtitle: 'Day 17 Preview',
+    icon: '🔜', title: 'The Journey Continues', titleClass: 'card-title-amber', subtitle: 'Day 56 →',
     description:
-      'Tomorrow kicks off a project — Lecture 17: designing a Graph RAG knowledge assistant over a document, combining Neo4j, Pinecone, Gemini and LangChain.js.',
-    link: { href: '/day-017', label: 'Go to Day 17 →' },
+      'The daily journal continues from here — keep building, keep shipping, and keep the TypeScript foundation sharp through everything ahead.',
+    link: { href: '/day-056', label: 'Go to Day 56 →' },
   },
 ];
 
@@ -134,23 +134,23 @@ export default function Day016() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-015" className="day001-nav-btn day001-nav-prev">← Day 15</Link>
-          <p className="day001-datetime">Agentic AI Day 16</p>
-          <Link to="/day-017" className="day001-nav-btn day001-nav-next">Day 17 →</Link>
+          <p className="day001-datetime">TypeScript Day 16</p>
+          <Link to="/day-056" className="day001-nav-btn day001-nav-next">Day 56 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Coder Army</span><span>Lecture 16</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Milestone</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 16 <span aria-hidden="true">🕸️</span></h1>
-              <p className="day001-day-theme">KNOWLEDGE GRAPHS — BEYOND VECTOR RAG</p>
+              <h1 className="day001-day-num">DAY 16 <span aria-hidden="true">🏁</span></h1>
+              <p className="day001-day-theme">TYPESCRIPT FOUNDATION — YEAR 1 ROADMAP</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">GEN · AGENTIC AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
@@ -158,13 +158,13 @@ export default function Day016() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '16%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 16 — <strong>knowledge graphs</strong>. Vector RAG finds similar text but can’t precisely answer
-          <strong> relationship questions</strong> like "which movies did Nolan direct?". A{' '}
-          <strong>knowledge graph</strong> stores entities as <strong>nodes</strong> and relationships as{' '}
-          <strong>edges</strong> (Nolan -[DIRECTED]→ Inception), queried with <strong>Cypher</strong> in{' '}
-          <strong>Neo4j</strong>. <strong>Graph RAG</strong> combines both — the graph for exact, relational facts
-          and vectors for similarity — routing each question to the right engine.{' '}
-          <em>Next, I build one. (Diagram-based lecture; standard concepts.)</em>
+          A milestone. <strong>Days 1–16</strong> built the whole TypeScript foundation — the{' '}
+          <strong>language</strong> (types, functions, interfaces, generics, narrowing, classes, modules, async) and
+          the <strong>framework</strong> (React with typed props, state, events and hooks, then <strong>Next.js</strong>{' '}
+          full-stack). From here <strong>Year 1</strong> compounds on it: <strong>React Native</strong> reuses your
+          React skills for mobile, <strong>Express/Node</strong> adds typed backends, and <strong>DSA &amp; System
+          Design</strong> are practised in TypeScript alongside. One stack, one year — a coherent, typed full-stack
+          skillset. <em>The journal continues from Day 56.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +179,12 @@ export default function Day016() {
           </ul>
         </section>
 
-        <CardSection icon="🕸️" title="WHERE VECTORS FALL SHORT" cards={GAP} columns={2} />
-        <CardSection icon="🧬" title="KNOWLEDGE GRAPHS & GRAPH RAG" cards={GRAPH} columns={3} />
+        <CardSection icon="🔁" title="WHAT THE FOUNDATION COVERED" cards={RECAP} columns={2} />
+        <CardSection icon="🧭" title="THE REST OF YEAR 1" cards={AHEAD} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GraphRAG</span><span>#Neo4j</span><span>#CoderArmy</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#React</span><span>#NextJS</span>
         </footer>
       </div>
     </div>
