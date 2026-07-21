@@ -4,6 +4,23 @@
 
 export const DSA_PDF = '/dsa-notes/dsa-handwritten-notes.pdf';
 
+// LeetCode Solutions in Python — a 227-page problem book grouped by data
+// structure (public/dsa-notes/leetcode-solutions-python.pdf), credit: LeetCode.
+export const LEETCODE_PDF = '/dsa-notes/leetcode-solutions-python.pdf';
+export const LEETCODE_COVER = '/dsa-notes/leetcode-solutions-python-cover.jpg';
+export const LEETCODE_GROUPS = [
+  ['🔗', 'Linked List'],
+  ['🌳', 'Trees'],
+  ['🕸️', 'Graphs'],
+  ['⛰️', 'Heaps'],
+  ['🔢', 'Arrays'],
+  ['🔤', 'Strings'],
+  ['🔧', 'Bit Manipulation'],
+  ['➗', 'Maths'],
+  ['🟦', 'Matrix'],
+  ['🏗️', 'Design'],
+];
+
 export const DSA_TOPICS = [
   {
     n: '01',

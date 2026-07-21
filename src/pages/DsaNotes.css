@@ -250,3 +250,76 @@
   .dsa-title { background: linear-gradient(90deg, #0b3b46, #0891b2 55%, #7c3aed); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .dsa-code { color: #0b3b46; }
 }
+
+/* ── LeetCode Solutions (Python) section ─────────────────────── */
+.dsa-leetcode {
+  max-width: 1120px;
+  margin: 28px auto 0;
+  padding: 0 20px;
+}
+.dsa-leetcode-inner {
+  display: grid;
+  grid-template-columns: 1fr minmax(200px, 300px);
+  gap: 32px;
+  align-items: center;
+  background:
+    radial-gradient(120% 120% at 100% 0%, rgba(167, 139, 250, 0.10), transparent 55%),
+    var(--dsa-panel);
+  border: 1px solid var(--dsa-border);
+  border-radius: 18px;
+  padding: 28px 30px;
+}
+.dsa-leetcode-title {
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 800;
+  margin: 6px 0 10px;
+  color: var(--dsa-text);
+}
+.dsa-leetcode-sub {
+  color: var(--dsa-muted);
+  max-width: 60ch;
+  margin: 0 0 18px;
+  line-height: 1.6;
+}
+.dsa-leetcode-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.dsa-leetcode-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--dsa-border);
+  color: var(--dsa-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.dsa-leetcode-credit {
+  color: var(--dsa-muted);
+  font-size: 0.8rem;
+  margin: 14px 0 0;
+}
+.dsa-leetcode-figure { margin: 0; text-align: center; }
+.dsa-leetcode-figure img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--dsa-border);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+}
+.dsa-leetcode-figure figcaption {
+  color: var(--dsa-muted);
+  font-size: 0.78rem;
+  margin-top: 8px;
+}
+@media (max-width: 760px) {
+  .dsa-leetcode-inner { grid-template-columns: 1fr; }
+  .dsa-leetcode-figure { order: -1; }
+  .dsa-leetcode-figure img { max-width: 240px; }
+}

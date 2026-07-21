@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { DSA_TOPICS, DSA_PDF } from '../data/dsaNotes';
+import { DSA_TOPICS, DSA_PDF, LEETCODE_PDF, LEETCODE_COVER, LEETCODE_GROUPS } from '../data/dsaNotes';
 import './DsaNotes.css';
 
 function Block({ block }) {
@@ -96,6 +96,50 @@ export default function DsaNotes() {
           </nav>
         </div>
       </header>
+
+      <section className="dsa-leetcode" id="leetcode-solutions">
+        <div className="dsa-leetcode-inner">
+          <div className="dsa-leetcode-text">
+            <p className="dsa-eyebrow">Practice · Python</p>
+            <h2 className="dsa-leetcode-title">
+              <span aria-hidden="true">🐍</span> LeetCode Solutions in Python
+            </h2>
+            <p className="dsa-leetcode-sub">
+              A 227-page problem book with <strong>clean Python solutions to 150+ LeetCode problems</strong>,
+              grouped by data structure — the perfect companion for turning these notes into interview-ready
+              practice. Work through a group at a time.
+            </p>
+            <div className="dsa-leetcode-chips">
+              {LEETCODE_GROUPS.map(([icon, name]) => (
+                <span key={name} className="dsa-leetcode-chip">
+                  <span aria-hidden="true">{icon}</span> {name}
+                </span>
+              ))}
+            </div>
+            <div className="dsa-hero-actions">
+              <a href={LEETCODE_PDF} download className="dsa-btn dsa-btn-primary">
+                📥 Download Solutions (Python)
+              </a>
+              <a href={LEETCODE_PDF} target="_blank" rel="noopener noreferrer" className="dsa-btn dsa-btn-outline">
+                Open in new tab ↗
+              </a>
+            </div>
+            <p className="dsa-leetcode-credit">Credit: LeetCode &amp; the community.</p>
+          </div>
+
+          <figure className="dsa-leetcode-figure">
+            <a href={LEETCODE_PDF} target="_blank" rel="noopener noreferrer">
+              <img
+                src={LEETCODE_COVER}
+                alt="LeetCode Solutions in Python — cover of a 227-page problem book grouped by data structure (Linked List, Trees, Graphs, Heaps, Arrays, Strings, Bit Manipulation, Maths, Matrix, Design)."
+                loading="lazy"
+                onError={(e) => { const f = e.currentTarget.closest('.dsa-leetcode-figure'); if (f) f.style.display = 'none'; }}
+              />
+            </a>
+            <figcaption>Cover — click to open the full PDF ↗</figcaption>
+          </figure>
+        </div>
+      </section>
 
       <div className="dsa-topics">
         {DSA_TOPICS.map((topic) => (
