@@ -2,72 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture22';
+const MDN_MAP = 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map';
+const MDN_SET = 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set';
 
 const LEARNT_TODAY = [
-  { title: 'The vision', text: 'an autonomous AI software team (like Devin) that builds an app from a single requirement' },
-  { title: 'Eight specialized agents', text: 'PM, Architect, Planner, Coder, Reviewer, Executor, Debugger and Deploy — each owns one job' },
-  { title: 'The pipeline', text: 'understand → plan → code → review → run → debug → deploy, mostly on its own' },
-  { title: 'PM removes ambiguity', text: 'the PM agent clarifies the requirement into a precise spec before any design starts' },
-  { title: 'Architect designs', text: 'the Architect turns the spec into a blueprint — database, APIs, pages and folder structure' },
-  { title: 'Real execution', text: 'the Executor runs code in a Docker sandbox, and real errors feed the Debugger' },
-  { title: 'Human-in-the-loop', text: 'the team pauses for clarifying answers and approvals at key checkpoints' },
+  { title: 'Map & Set', text: 'O(1) average insert, lookup and delete — the workhorses of DSA' },
+  { title: 'Use real Map/Set', text: 'not plain objects — Map keeps any key type and insertion order' },
+  { title: 'Frequency counting', text: 'count occurrences in one pass to solve anagrams, majority, top-K' },
+  { title: 'Seen-set trick', text: 'detect duplicates or complements in O(n) with a Set' },
+  { title: 'Two Sum in O(n)', text: 'store complements in a Map instead of a nested loop' },
+  { title: 'Sliding window', text: 'a moving range over an array/string for subarray problems' },
+  { title: 'Fixed vs variable window', text: 'fixed size (sum of k) or grow/shrink to satisfy a condition' },
+  { title: 'Space for time', text: 'a little extra memory turns O(n²) into O(n)' },
 ];
 
-const VISION = [
+const HASHING = [
   {
-    icon: '🤖', title: 'Like Devin', titleClass: 'card-title-cyan', subtitle: 'Autonomous Dev Team',
+    icon: '🗺️', title: 'Map & Set', titleClass: 'card-title-cyan', subtitle: 'O(1) Average',
     description:
-      'The goal: hand the system a requirement and it plans, writes, reviews, runs, debugs and deploys the app — a full software team made of cooperating agents, with minimal human help.',
-    code: '// input:  "Build a task-manager app with auth"\n// output: a working, deployed app\n// in between: an AI team does the work',
+      'Map and Set give constant-average insert, lookup and delete. Prefer them over plain objects — Map allows any key type and preserves insertion order, Set stores unique values.',
+    code: 'const freq = new Map<string, number>();\nfor (const c of s) freq.set(c, (freq.get(c) ?? 0) + 1);\n\nconst seen = new Set<number>();\nseen.has(x); seen.add(x);',
   },
   {
-    icon: '🎯', title: 'One Role Per Agent', titleClass: 'card-title-purple', subtitle: 'Focused Experts',
+    icon: '🎯', title: 'Two Sum', titleClass: 'card-title-purple', subtitle: 'Complements In A Map',
     description:
-      'Each agent has a single responsibility and a tight prompt, mirroring a real dev team. That focus is what keeps the code quality high across a big project.',
-    code: '// PM · Architect · Planner · Coder\n// Reviewer · Executor · Debugger · Deploy',
+      'The canonical hashing win: instead of checking every pair (O(n²)), store each number’s complement in a Map and look it up — one O(n) pass.',
+    code: 'function twoSum(a: number[], t: number) {\n  const seen = new Map<number, number>();\n  for (let i = 0; i < a.length; i++) {\n    if (seen.has(t - a[i])) return [seen.get(t - a[i])!, i];\n    seen.set(a[i], i);\n  }\n}',
   },
 ];
 
-const AGENTS = [
+const WINDOW = [
   {
-    icon: '📋', title: 'Plan The Work', titleClass: 'card-title-cyan', subtitle: 'PM → Architect → Planner',
+    icon: '🪟', title: 'Fixed Window', titleClass: 'card-title-cyan', subtitle: 'Size k',
     description:
-      'The PM turns the requirement into a clear spec (asking questions if needed). The Architect designs the blueprint. The Planner breaks it into a phased, dependency-ordered task list.',
-    code: '// PM        → clarify → spec\n// Architect → DB, APIs, pages, folders\n// Planner   → ordered task plan',
+      'For "best over every window of size k", slide the window: add the entering element, remove the leaving one, and track the answer — O(n) instead of recomputing each window.',
+    code: 'function maxSumK(a: number[], k: number) {\n  let sum = 0; for (let i = 0; i < k; i++) sum += a[i];\n  let best = sum;\n  for (let i = k; i < a.length; i++) {\n    sum += a[i] - a[i - k];\n    best = Math.max(best, sum);\n  }\n  return best;\n}',
   },
   {
-    icon: '⌨️', title: 'Build & Verify', titleClass: 'card-title-purple', subtitle: 'Coder → Reviewer → Executor',
+    icon: '↔️', title: 'Variable Window', titleClass: 'card-title-purple', subtitle: 'Grow & Shrink',
     description:
-      'The Coder writes one task at a time, the Reviewer checks it for bugs and security, and the Executor actually runs it in a Docker sandbox to capture real output.',
-    code: '// Coder    → write one task\n// Reviewer → bugs, security, integration\n// Executor → run it for real (Docker)',
+      'Expand the right edge, and shrink the left while a condition is violated. Perfect for "longest substring without repeats" or "smallest subarray with sum ≥ target".',
+    code: '// longest substring without repeating chars\nlet l = 0, best = 0; const seen = new Set<string>();\nfor (let r = 0; r < s.length; r++) {\n  while (seen.has(s[r])) seen.delete(s[l++]);\n  seen.add(s[r]); best = Math.max(best, r - l + 1);\n}',
   },
   {
-    icon: '🐞', title: 'Fix & Ship', titleClass: 'card-title-amber', subtitle: 'Debugger → Deploy',
+    icon: '⚖️', title: 'Space For Time', titleClass: 'card-title-amber', subtitle: 'The Trade',
     description:
-      'When execution fails, the Debugger reads the real error, finds the root cause and proposes a fix. Once everything passes, the Deploy agent generates the deployment configs.',
-    code: '// Debugger → real error → root cause → fix\n// Deploy   → deployment configs & steps',
+      'Hashing and windows spend a little memory (a Map or Set) to skip repeated work. Recognising when a nested loop hides an O(n) hashing solution is a core interview skill.',
+    footer: 'nested loop? → look for a Map/Set solution',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 22', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '🗺️', title: 'Map (MDN)', titleClass: 'card-title-cyan', subtitle: 'Reference',
     description:
-      'The AI Dev Team vision lecture and diagram in the STRIKE GenAI repo — the roles before the design and build.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 22 →', external: true },
+      'The Map API and why it beats plain objects for keyed data — any key type, size, ordered iteration and O(1) operations.',
+    link: { href: MDN_MAP, label: 'Open MDN Map →', external: true },
   },
   {
-    icon: '🧭', title: 'Why It’s The Capstone', titleClass: 'card-title-purple', subtitle: 'Everything Combined',
+    icon: '🎯', title: 'Set (MDN)', titleClass: 'card-title-purple', subtitle: 'Unique Values',
     description:
-      'This project uses it all — prompts, tools, RAG, memory, LangGraph and multi-agent orchestration — to build real software autonomously.',
-    footer: 'prompts + tools + RAG + agents + LangGraph',
+      'Set for membership tests and de-duplication — has/add/delete in O(1) average, the basis of the "seen" pattern.',
+    link: { href: MDN_SET, label: 'Open MDN Set →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: The Design', titleClass: 'card-title-amber', subtitle: 'Prereq 23 Preview',
+    icon: '🔜', title: 'Next: Stacks & Lists', titleClass: 'card-title-amber', subtitle: 'Day 39 Preview',
     description:
-      'Tomorrow — Lecture 23: the complete system design — the tech stack, the 30-node LangGraph flow, and the V2 fixes that make it robust.',
-    link: { href: '/day-039', label: 'Go to Prereq 23 →' },
+      'Tomorrow — stacks (LIFO), queues (FIFO) and linked lists in TypeScript, with the classic patterns each unlocks (valid parentheses, BFS, reversal).',
+    link: { href: '/day-039', label: 'Go to Day 39 →' },
   },
 ];
 
@@ -132,38 +134,38 @@ export default function Day038() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-037" className="day001-nav-btn day001-nav-prev">← Prereq 21</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 22</p>
-          <Link to="/day-039" className="day001-nav-btn day001-nav-next">Prereq 23 →</Link>
+          <Link to="/day-037" className="day001-nav-btn day001-nav-prev">← Day 37</Link>
+          <p className="day001-datetime">TypeScript Day 38</p>
+          <Link to="/day-039" className="day001-nav-btn day001-nav-next">Day 39 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 22</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>DSA</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 22 <span aria-hidden="true">🤖</span></h1>
-              <p className="day001-day-theme">THE AI DEV TEAM — AN AUTONOMOUS SOFTWARE TEAM</p>
+              <h1 className="day001-day-num">DAY 38 <span aria-hidden="true">🗺️</span></h1>
+              <p className="day001-day-theme">DSA — HASHING &amp; SLIDING WINDOW</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '22%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '38%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 22 — the big one: an <strong>autonomous AI software team</strong>, like <strong>Devin</strong>, that
-          takes a single requirement and builds the app. <strong>Eight specialized agents</strong> —{' '}
-          <strong>PM, Architect, Planner, Coder, Reviewer, Executor, Debugger, Deploy</strong> — each own one job and
-          hand work down the pipeline: <strong>understand → plan → code → review → run → debug → deploy</strong>.
-          Code runs for real in a <strong>Docker sandbox</strong>, real errors drive the Debugger, and a{' '}
-          <strong>human stays in the loop</strong> for clarifications and approvals.{' '}
-          <em>Tomorrow: the full design. (Diagram-based lecture.)</em>
+          Trade a little space for a lot of speed. <strong>Map</strong> and <strong>Set</strong> give O(1)-average
+          lookups — use the real ones, not plain objects. <strong>Frequency counting</strong> and the{' '}
+          <strong>seen-set</strong> trick crack anagrams, duplicates and Two Sum (store complements in a Map → one
+          O(n) pass instead of O(n²)). The <strong>sliding window</strong> handles subarray/substring problems:{' '}
+          <strong>fixed size</strong> (best sum of k by adding the entering and removing the leaving element) or{' '}
+          <strong>variable</strong> (grow the right edge, shrink the left while a condition breaks — longest substring
+          without repeats). <em>Next: stacks, queues &amp; linked lists.</em>
         </p>
 
         <section className="day001-learnt">
@@ -178,12 +180,12 @@ export default function Day038() {
           </ul>
         </section>
 
-        <CardSection icon="🤖" title="THE VISION" cards={VISION} columns={2} />
-        <CardSection icon="👥" title="THE EIGHT AGENTS" cards={AGENTS} columns={3} />
+        <CardSection icon="🗺️" title="HASHING" cards={HASHING} columns={2} />
+        <CardSection icon="🪟" title="SLIDING WINDOW" cards={WINDOW} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#MultiAgent</span><span>#AIDevTeam</span><span>#CoderArmy</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#DSA</span><span>#Hashing</span>
         </footer>
       </div>
     </div>

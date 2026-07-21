@@ -2,73 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture17';
-const NOTION = 'https://www.notion.so/Lecture-17-Project-2fea9af81c98800caa23eccb3fb108d0';
+const ROUTING_DOCS = 'https://expressjs.com/en/guide/routing.html';
+const MW_DOCS = 'https://expressjs.com/en/guide/using-middleware.html';
 
 const LEARNT_TODAY = [
-  { title: 'Project time', text: 'apply everything so far to build a real knowledge assistant that answers questions about a document' },
-  { title: 'The dataset', text: 'a movies PDF becomes a queryable knowledge base — entities, relationships and descriptions' },
-  { title: 'Hybrid architecture', text: 'Neo4j (graph) + Pinecone (vectors) + Gemini (LLM) + LangChain.js, working together' },
-  { title: 'Two pipelines', text: 'indexing (build the graph + vectors once) and querying (classify, route, answer)' },
-  { title: 'Plan before code', text: 'decide the entities, relationships, and which questions go to the graph vs the vectors' },
-  { title: 'Three question types', text: 'factual (relationships), similarity (recommendations) and descriptive (about an entity)' },
-  { title: 'The payoff', text: 'one assistant that answers all three kinds of questions accurately — Graph RAG in practice' },
+  { title: 'HTTP verbs → handlers', text: 'app.get / post / put / patch / delete map a method + path to a function' },
+  { title: 'express.Router', text: 'group related routes in a module and mount them under a base path' },
+  { title: 'Middleware is a pipeline', text: 'functions run in order; each calls next() or ends the response' },
+  { title: 'app.use', text: 'register middleware globally, per-path, or per-router' },
+  { title: 'Built-in parsers', text: 'express.json() parses JSON bodies into req.body' },
+  { title: 'Third-party middleware', text: 'cors, morgan, helmet — cross-origin, logging, security headers' },
+  { title: 'Custom middleware', text: 'write your own — auth checks, request timing, request IDs' },
+  { title: 'Error middleware', text: 'a 4-arg (err, req, res, next) handler catches thrown errors last' },
 ];
 
-const GOAL = [
+const ROUTING = [
   {
-    icon: '🎬', title: 'The Goal', titleClass: 'card-title-cyan', subtitle: 'A Movie Assistant',
+    icon: '🛣️', title: 'Routes', titleClass: 'card-title-cyan', subtitle: 'Method + Path',
     description:
-      'Build an assistant over a movies document that can list "movies directed by Nolan", recommend "movies like Inception", and describe "what is The Godfather about" — all from your own data.',
-    code: '// factual:     "Movies directed by Nolan"\n// similarity:  "Movies like Inception"\n// descriptive: "Tell me about The Godfather"',
+      'Each route pairs an HTTP method and a path with a handler. Path params (:id) and the query string are read from req. Keep handlers thin and delegate the logic.',
+    code: 'app.get("/users", listUsers);\napp.post("/users", createUser);\napp.get("/users/:id", getUser);\napp.delete("/users/:id", deleteUser);',
   },
   {
-    icon: '🏗️', title: 'The Architecture', titleClass: 'card-title-purple', subtitle: 'Four Pieces',
+    icon: '🗂️', title: 'express.Router', titleClass: 'card-title-purple', subtitle: 'Modular Routes',
     description:
-      'Gemini extracts entities and answers; Neo4j stores the relationship graph; Pinecone stores the vectors; LangChain.js wires the steps. Each tool does the job it is best at.',
-    code: '// Gemini      → extract entities, generate answers\n// Neo4j       → relationships (the graph)\n// Pinecone    → similarity (the vectors)\n// LangChain.js → glue',
+      'Split routes into modules with Router, then mount each under a base path. The app stays organised as it grows — a router per resource.',
+    code: '// routes/users.ts\nconst router = Router();\nrouter.get("/", listUsers);\nrouter.get("/:id", getUser);\nexport default router;\n\n// index.ts\napp.use("/users", usersRouter);',
   },
 ];
 
-const PLAN = [
+const MIDDLEWARE = [
   {
-    icon: '📥', title: 'Pipeline 1 — Indexing', titleClass: 'card-title-cyan', subtitle: 'Build The Base',
+    icon: '🔗', title: 'The Pipeline', titleClass: 'card-title-cyan', subtitle: 'next() or Respond',
     description:
-      'Run once: parse the PDF, have the LLM extract structured entities, build the Neo4j graph, and store embeddings in Pinecone. After this, the knowledge base is ready.',
-    code: '// PDF → extract entities → Neo4j graph\n//     → embed chunks   → Pinecone\n// (tomorrow: the full build)',
+      'Middleware runs in registration order. Each function either ends the response or calls next() to pass control on. app.use(express.json()) parses bodies before your handlers run.',
+    code: 'app.use(express.json());          // parse JSON bodies\napp.use((req, _res, next) => {     // custom: log every request\n  console.log(req.method, req.url);\n  next();\n});',
   },
   {
-    icon: '❓', title: 'Pipeline 2 — Querying', titleClass: 'card-title-purple', subtitle: 'Answer Anything',
+    icon: '📦', title: 'Third-Party', titleClass: 'card-title-purple', subtitle: 'cors · morgan · helmet',
     description:
-      'Per question: classify its type, route it to the graph or the vectors, retrieve, and let Gemini write the answer. The routing is what makes it feel smart.',
-    code: '// question → classify → route → retrieve → answer\n// (Day 19: the query side)',
+      'The ecosystem covers common needs: cors for cross-origin requests, morgan for request logging, helmet for security headers. Register them once with app.use.',
+    code: 'import cors from "cors";\nimport morgan from "morgan";\napp.use(cors());\napp.use(morgan("dev"));',
   },
   {
-    icon: '🗺️', title: 'Design First', titleClass: 'card-title-amber', subtitle: 'Entities & Routes',
+    icon: '🚨', title: 'Error Handling', titleClass: 'card-title-amber', subtitle: '(err, req, res, next)',
     description:
-      'Before writing code, decide the entities (Movie, Director, Actor, Genre), the relationships (DIRECTED, ACTED_IN), and which question types go where. A clear plan makes the build straightforward.',
-    footer: 'entities · relationships · routing rules',
+      'A middleware with four arguments is the error handler. Register it last; anything thrown (or passed to next(err)) lands here, so you format errors in one place.',
+    code: 'app.use((err, _req, res, _next) => {\n  console.error(err);\n  res.status(500).json({ error: "Server error" });\n});',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📝', title: 'Lecture 17 Notes', titleClass: 'card-title-cyan', subtitle: 'Notion',
+    icon: '📘', title: 'Routing', titleClass: 'card-title-cyan', subtitle: 'Express Docs',
     description:
-      'Rohit’s project write-up — the goal, architecture and plan for the Graph RAG knowledge assistant.',
-    link: { href: NOTION, label: 'Open Lecture 17 notes →', external: true },
+      'Route methods, paths, parameters, chaining and express.Router — the full routing reference.',
+    link: { href: ROUTING_DOCS, label: 'Open the routing docs →', external: true },
   },
   {
-    icon: '💻', title: 'Lecture 17', titleClass: 'card-title-purple', subtitle: 'GitHub',
+    icon: '🔗', title: 'Middleware', titleClass: 'card-title-purple', subtitle: 'Express Docs',
     description:
-      'The lecture folder in the STRIKE GenAI repo — the kickoff for the graph-rag-movie project built across the next lectures.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 17 →', external: true },
+      'Application, router, built-in, third-party and error-handling middleware — how the pipeline is composed.',
+    link: { href: MW_DOCS, label: 'Open the middleware docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Build The Graph', titleClass: 'card-title-amber', subtitle: 'Prereq 18 Preview',
+    icon: '🔜', title: 'Next: REST API', titleClass: 'card-title-amber', subtitle: 'Day 34 Preview',
     description:
-      'Tomorrow is the build — Lecture 18: parse the PDF, extract entities with Gemini, and construct the Neo4j knowledge graph plus the Pinecone vectors.',
-    link: { href: '/day-034', label: 'Go to Prereq 18 →' },
+      'Tomorrow — design a real REST API: resource routes, status codes, CRUD handlers, Zod validation, and a clean controller/service structure.',
+    link: { href: '/day-034', label: 'Go to Day 34 →' },
   },
 ];
 
@@ -133,39 +134,38 @@ export default function Day033() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-032" className="day001-nav-btn day001-nav-prev">← Prereq 16</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 17</p>
-          <Link to="/day-034" className="day001-nav-btn day001-nav-next">Prereq 18 →</Link>
+          <Link to="/day-032" className="day001-nav-btn day001-nav-prev">← Day 32</Link>
+          <p className="day001-datetime">TypeScript Day 33</p>
+          <Link to="/day-034" className="day001-nav-btn day001-nav-next">Day 34 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 17</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Express / Node</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 17 <span aria-hidden="true">🛠️</span></h1>
-              <p className="day001-day-theme">PROJECT — A GRAPH RAG KNOWLEDGE ASSISTANT</p>
+              <h1 className="day001-day-num">DAY 33 <span aria-hidden="true">🔗</span></h1>
+              <p className="day001-day-theme">EXPRESS — ROUTING &amp; MIDDLEWARE</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '17%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '33%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 17 — <strong>project time</strong>. The goal: a knowledge assistant over a{' '}
-          <strong>movies document</strong> that answers <strong>factual</strong> ("directed by Nolan"),{' '}
-          <strong>similarity</strong> ("like Inception") and <strong>descriptive</strong> ("about The Godfather")
-          questions. The architecture is <strong>hybrid</strong> — <strong>Neo4j</strong> for relationships,{' '}
-          <strong>Pinecone</strong> for similarity, <strong>Gemini</strong> for extraction and answers, wired with{' '}
-          <strong>LangChain.js</strong> — split into an <strong>indexing</strong> pipeline and a{' '}
-          <strong>querying</strong> pipeline. Today I plan the entities, relationships and routing.{' '}
-          <em>Tomorrow the build begins.</em>
+          Structure and the pipeline. Routes pair an <strong>HTTP verb + path</strong> with a handler
+          (<code>app.get/post/put/delete</code>), and <strong>express.Router</strong> groups them per resource, mounted
+          under a base path. <strong>Middleware</strong> is an ordered pipeline: each function ends the response or
+          calls <code>next()</code>. <code>express.json()</code> parses bodies; third-party{' '}
+          <strong>cors / morgan / helmet</strong> add cross-origin, logging and security; and custom middleware does
+          auth or timing. A four-argument <strong>(err, req, res, next)</strong> handler, registered last, catches
+          everything thrown so errors are formatted in one place. <em>Next: a real REST API.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +180,12 @@ export default function Day033() {
           </ul>
         </section>
 
-        <CardSection icon="🎬" title="THE PROJECT" cards={GOAL} columns={2} />
-        <CardSection icon="🗺️" title="THE TWO PIPELINES" cards={PLAN} columns={3} />
+        <CardSection icon="🛣️" title="ROUTING" cards={ROUTING} columns={2} />
+        <CardSection icon="🔗" title="MIDDLEWARE" cards={MIDDLEWARE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GraphRAG</span><span>#Project</span><span>#CoderArmy</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Express</span><span>#Middleware</span>
         </footer>
       </div>
     </div>

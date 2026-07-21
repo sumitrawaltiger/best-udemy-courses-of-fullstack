@@ -2,72 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture18';
+const REST_MDN = 'https://developer.mozilla.org/en-US/docs/Glossary/REST';
+const STATUS_MDN = 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Status';
 
 const LEARNT_TODAY = [
-  { title: 'Parse the PDF', text: 'upload the document to Gemini (1M-token context) and extract from it directly, or use pdf-parse' },
-  { title: 'LLM entity extraction', text: 'prompt Gemini to output structured JSON — movie, director, actors, genres, themes — per record' },
-  { title: 'Batch + retry', text: 'process in batches (e.g. 50 movies per request) with retries on rate limits and errors' },
-  { title: 'Build the Neo4j graph', text: 'turn each entity into a node and each connection into a typed relationship' },
-  { title: 'MERGE not CREATE', text: 'MERGE finds-or-creates, so "Zendaya" is one shared node instead of a duplicate per movie' },
-  { title: 'Index for speed', text: 'index node keys so MERGE uses a lookup instead of scanning every node' },
-  { title: 'Also store vectors', text: 'embed the content and upsert into Pinecone for the similarity side of Graph RAG' },
+  { title: 'REST = resources + verbs', text: 'model nouns (/users), act with HTTP methods (GET/POST/PUT/DELETE)' },
+  { title: 'The CRUD mapping', text: 'GET=read, POST=create, PUT/PATCH=update, DELETE=remove' },
+  { title: 'Status codes matter', text: '200 ok, 201 created, 204 no content, 400 bad, 404 not found, 500 error' },
+  { title: 'Validate input', text: 'parse req.body with Zod before trusting it — clients send anything' },
+  { title: 'Layered structure', text: 'route → controller → service → data, so logic isn’t stuck in handlers' },
+  { title: 'Consistent shapes', text: 'return predictable JSON and error shapes the frontend can rely on' },
+  { title: 'Async handlers', text: 'wrap async work so rejected promises reach the error middleware' },
+  { title: 'Stateless', text: 'each request carries what it needs; the server keeps no session in memory' },
 ];
 
-const EXTRACT = [
+const REST = [
   {
-    icon: '📄', title: 'PDF → Structured JSON', titleClass: 'card-title-cyan', subtitle: 'Gemini Extraction',
+    icon: '🧩', title: 'Resources & Verbs', titleClass: 'card-title-cyan', subtitle: 'The CRUD Routes',
     description:
-      'Upload the PDF once and ask Gemini to extract entities in a strict JSON shape. Its large context window reads the whole document, so a handful of batched calls covers thousands of records.',
-    code: 'const EXTRACTION_PROMPT = `From the attached PDF, extract movies\n{START}–{END}. For EACH, output EXACT JSON:\n{ "movie": {"title","year"}, "director": {"name"},\n  "actors": [...], "genres": [...], "themes": [...] }`;',
+      'A REST API models resources as URLs and acts on them with HTTP methods. One resource, five routes — list, read, create, update, delete — a predictable shape across the whole API.',
+    code: 'GET    /tasks        // list\nGET    /tasks/:id    // read one\nPOST   /tasks        // create\nPUT    /tasks/:id    // update\nDELETE /tasks/:id    // remove',
   },
   {
-    icon: '🔁', title: 'Batch & Retry', titleClass: 'card-title-purple', subtitle: 'Reliable Ingestion',
+    icon: '🔢', title: 'Status Codes', titleClass: 'card-title-purple', subtitle: 'Say What Happened',
     description:
-      'Extract in batches (50 at a time) and give each batch retries — wait longer on 429 rate limits, shorter on parse/network errors — then retry any failed batches once more.',
-    code: '// 1000 movies ÷ 50 = 20 calls\n// 429 → wait 30s/60s/90s · other → 10s/20s/30s\n// final pass retries whatever failed',
+      'The response code is part of the contract: 200 OK, 201 Created (with the new resource), 204 No Content on delete, 400 for bad input, 404 when missing, 500 on server error.',
+    code: 'res.status(201).json(created);   // POST success\nres.status(404).json({ error: "Not found" });\nres.status(204).send();          // DELETE success',
   },
 ];
 
-const GRAPH = [
+const BUILD = [
   {
-    icon: '🔗', title: 'Entities → Neo4j', titleClass: 'card-title-cyan', subtitle: 'Nodes & Relationships',
+    icon: '🛡️', title: 'Validate With Zod', titleClass: 'card-title-cyan', subtitle: 'Trust Nothing',
     description:
-      'Each entity becomes a node and each connection a typed relationship, inserted inside a transaction so it is all-or-nothing.',
-    code: 'await session.executeWrite(async (tx) => {\n  // MERGE (m:Movie {title})\n  // MERGE (d:Director {name})\n  // MERGE (d)-[:DIRECTED]->(m)\n});',
+      'The body is untrusted. Parse it with a Zod schema; on failure return 400 with the issues. On success you have typed, safe data to hand to the service.',
+    code: 'const TaskInput = z.object({ title: z.string().min(1) });\nconst parsed = TaskInput.safeParse(req.body);\nif (!parsed.success)\n  return res.status(400).json({ errors: parsed.error.issues });',
   },
   {
-    icon: '🧲', title: 'MERGE vs CREATE', titleClass: 'card-title-purple', subtitle: 'No Duplicates',
+    icon: '🏗️', title: 'Layer The Code', titleClass: 'card-title-purple', subtitle: 'Route → Service',
     description:
-      'CREATE always makes a new node, so "Zendaya" would appear once per movie. MERGE checks first and reuses the existing node — one Zendaya, connected to everything.',
-    code: '// CREATE (:Actor {name:"Zendaya"}) ×2 → two nodes ❌\n// MERGE  (:Actor {name:"Zendaya"}) ×2 → one node  ✅\n// + create an index so MERGE stays fast',
+      'Keep handlers thin: the route calls a controller, which calls a service that holds the business logic and talks to the database. Testable, reusable, easy to change.',
+    code: '// controller\nexport async function createTask(req, res) {\n  const task = await taskService.create(parsed.data);\n  res.status(201).json(task);\n}',
   },
   {
-    icon: '📦', title: '+ Pinecone Vectors', titleClass: 'card-title-amber', subtitle: 'The Similarity Side',
+    icon: '⚡', title: 'Async Safely', titleClass: 'card-title-amber', subtitle: 'Errors Reach The Handler',
     description:
-      'The graph handles relationships; for "similar to" questions we also embed the content and upsert it into Pinecone. Indexing builds both stores in one run.',
-    code: '// graph  → Neo4j (relationships)\n// vectors → Pinecone (similarity)\n// npm run index → build both, once',
+      'Async handlers can reject. Wrap them (or use try/catch + next(err)) so failures flow to the error middleware instead of crashing the process.',
+    code: 'const wrap = (fn) => (req, res, next) =>\n  Promise.resolve(fn(req, res, next)).catch(next);\napp.get("/tasks/:id", wrap(getTask));',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 18', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'REST', titleClass: 'card-title-cyan', subtitle: 'MDN',
     description:
-      'The full indexing pipeline — pdfParser, entityExtractor, graphBuilder, vectorStore and runIndexing — in the graph-rag-movie project.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 18 →', external: true },
+      'What REST means — resources, statelessness, uniform interface — the principles behind well-designed HTTP APIs.',
+    link: { href: REST_MDN, label: 'Open the REST glossary →', external: true },
   },
   {
-    icon: '🧰', title: 'The Stack', titleClass: 'card-title-purple', subtitle: 'Graph RAG',
+    icon: '🔢', title: 'HTTP Status Codes', titleClass: 'card-title-purple', subtitle: 'MDN',
     description:
-      'Neo4j (neo4j-driver) + Pinecone + Gemini (@google/genai) + LangChain.js — the toolset that powers the indexing step.',
-    footer: 'Neo4j · Pinecone · Gemini · LangChain.js',
+      'The full list of status codes with meanings — the vocabulary your API uses to tell clients what happened.',
+    link: { href: STATUS_MDN, label: 'Open the status codes →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Querying', titleClass: 'card-title-amber', subtitle: 'Prereq 19 Preview',
+    icon: '🔜', title: 'Next: Databases', titleClass: 'card-title-amber', subtitle: 'Day 35 Preview',
     description:
-      'Tomorrow is the query side — Lecture 19: classify each question and route it to the graph or the vectors for a hybrid answer.',
-    link: { href: '/day-035', label: 'Go to Prereq 19 →' },
+      'Tomorrow — persist data with Prisma: a typed schema, migrations, a fully-typed client, and CRUD queries against a real Postgres database.',
+    link: { href: '/day-035', label: 'Go to Day 35 →' },
   },
 ];
 
@@ -132,38 +134,38 @@ export default function Day034() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-033" className="day001-nav-btn day001-nav-prev">← Prereq 17</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 18</p>
-          <Link to="/day-035" className="day001-nav-btn day001-nav-next">Prereq 19 →</Link>
+          <Link to="/day-033" className="day001-nav-btn day001-nav-prev">← Day 33</Link>
+          <p className="day001-datetime">TypeScript Day 34</p>
+          <Link to="/day-035" className="day001-nav-btn day001-nav-next">Day 35 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 18</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>REST API</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 18 <span aria-hidden="true">🔗</span></h1>
-              <p className="day001-day-theme">GRAPH RAG — BUILDING THE KNOWLEDGE GRAPH</p>
+              <h1 className="day001-day-num">DAY 34 <span aria-hidden="true">🧩</span></h1>
+              <p className="day001-day-theme">EXPRESS — BUILDING A REST API</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '18%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '34%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 18 — the <strong>indexing</strong> pipeline. I parse the PDF and have <strong>Gemini</strong>{' '}
-          extract <strong>structured JSON entities</strong> (movie, director, actors, genres) in{' '}
-          <strong>batches</strong> with retries. Each entity becomes a <strong>Neo4j node</strong> and each
-          connection a typed <strong>relationship</strong>, built with <strong>MERGE</strong> (not CREATE) so there
-          are no duplicate nodes, plus an <strong>index</strong> to keep MERGE fast. The same content is embedded
-          into <strong>Pinecone</strong> for similarity. One <code>npm run index</code> builds the whole knowledge
-          base. <em>Tomorrow I query it.</em>
+          Designing a real API. <strong>REST</strong> models <strong>resources</strong> as URLs and acts with HTTP
+          verbs — one resource, five <strong>CRUD</strong> routes (list, read, create, update, delete). The{' '}
+          <strong>status code</strong> is part of the contract: 201 Created, 204 No Content, 400 Bad, 404 Not Found,
+          500 Error. Always <strong>validate the body with Zod</strong> (return 400 on failure), and{' '}
+          <strong>layer the code</strong> — route → controller → service → data — so logic isn’t trapped in handlers.
+          Wrap async handlers so rejected promises reach the error middleware, and return{' '}
+          <strong>consistent JSON shapes</strong> the frontend can trust. <em>Next: databases with Prisma.</em>
         </p>
 
         <section className="day001-learnt">
@@ -178,12 +180,12 @@ export default function Day034() {
           </ul>
         </section>
 
-        <CardSection icon="📄" title="PDF → ENTITIES" cards={EXTRACT} columns={2} />
-        <CardSection icon="🔗" title="ENTITIES → GRAPH + VECTORS" cards={GRAPH} columns={3} />
+        <CardSection icon="🧩" title="REST DESIGN" cards={REST} columns={2} />
+        <CardSection icon="🏗️" title="BUILD IT WELL" cards={BUILD} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GraphRAG</span><span>#Neo4j</span><span>#Pinecone</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#REST</span><span>#Express</span>
         </footer>
       </div>
     </div>

@@ -2,94 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_DESIGN = 'https://github.com/Rohitnegi9/STRIKEGenAI/blob/main/Lecture23/ai-dev-team-design-v2.md';
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture23';
+const MDN_STACK = 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push';
+const VISUALGO = 'https://visualgo.net/en/list';
 
 const LEARNT_TODAY = [
-  { title: 'Design before code', text: 'a full V2 design document lays out the whole system — 8 agents and a 30-node LangGraph flow' },
-  { title: 'The tech stack', text: 'LangGraph (JS) + Gemini + Pinecone (memory) + Docker (sandbox) + Redis (checkpoints) + Git (rollback)' },
-  { title: 'Fixed app stack', text: 'every project is React + Express + PostgreSQL/MongoDB, which keeps agent prompts focused' },
-  { title: 'Architect in 5 steps', text: 'entities → DB schema → API endpoints → frontend pages → folder structure & package.json' },
-  { title: 'Blueprint validation', text: 'a blueprintValidator cross-checks the design before any code is written — no orphan APIs or bad FKs' },
-  { title: 'V2 fixes 10 loopholes', text: 'state persistence, rollback, pattern consistency, token budgets, scope-drift limits, sandbox health, and more' },
-  { title: 'State is the contract', text: 'the whole 30-node flow communicates through one carefully designed shared state' },
+  { title: 'Stack = LIFO', text: 'last in, first out — an array with push and pop is a stack' },
+  { title: 'Queue = FIFO', text: 'first in, first out — enqueue at the back, dequeue at the front' },
+  { title: 'Array as queue is slow', text: 'shift() is O(n); use two pointers or a deque for O(1)' },
+  { title: 'Valid parentheses', text: 'a stack matches opening/closing brackets in O(n)' },
+  { title: 'Monotonic stack', text: 'keep increasing/decreasing order to find next-greater elements' },
+  { title: 'Linked list', text: 'nodes with a value and a next pointer — O(1) insert/delete given the node' },
+  { title: 'Reverse a list', text: 'walk once, flipping each next pointer — the iterative classic' },
+  { title: 'Fast & slow pointers', text: 'find the middle or detect a cycle in one pass' },
 ];
 
-const SYSTEM = [
+const STACKQ = [
   {
-    icon: '📐', title: 'The System', titleClass: 'card-title-cyan', subtitle: '8 Agents · 30 Nodes',
+    icon: '🥞', title: 'Stack (LIFO)', titleClass: 'card-title-cyan', subtitle: 'push / pop',
     description:
-      'An autonomous team that understands a requirement, plans it, writes and debugs code, tests it, takes feedback, iterates and deploys — modelled as a 30-node LangGraph flow.',
-    code: '// 8 agents: PM, Architect, Planner, Coder,\n//           Reviewer, Executor, Debugger, Deploy\n// orchestrated as a 30-node LangGraph',
+      'A stack adds and removes from the same end. An array’s push/pop are O(1). It powers parenthesis matching, undo, DFS, and expression evaluation.',
+    code: '// valid parentheses\nfunction valid(s: string) {\n  const st: string[] = [], pair = { ")": "(", "]": "[", "}": "{" };\n  for (const c of s) {\n    if (c in pair) { if (st.pop() !== pair[c]) return false; }\n    else st.push(c);\n  }\n  return st.length === 0;\n}',
   },
   {
-    icon: '🧰', title: 'The Tech Stack', titleClass: 'card-title-purple', subtitle: 'Production Pieces',
+    icon: '🎟️', title: 'Queue (FIFO)', titleClass: 'card-title-purple', subtitle: 'enqueue / dequeue',
     description:
-      'LangGraph orchestrates; Gemini is the LLM; Pinecone is long-term memory; Docker sandboxes code execution; Redis checkpoints state; Git enables rollback.',
-    code: '// LangGraph · Gemini · Pinecone\n// Docker (sandbox) · Redis (checkpoints) · Git (rollback)\n// app: React + Express + PostgreSQL/MongoDB',
-  },
-];
-
-const FLOW = [
-  {
-    icon: '📋', title: 'PM → Spec', titleClass: 'card-title-cyan', subtitle: 'Remove Ambiguity',
-    description:
-      'The flow starts with the PM agent: it reads the requirement, asks clarifying questions (via humanInput), and produces a precise spec everything else builds on.',
-    code: '// pmAgent → { status: "needs_clarification", questions }\n//         or { status: "spec_ready", spec }',
-  },
-  {
-    icon: '🏛️', title: 'Architect · 5 Steps', titleClass: 'card-title-purple', subtitle: 'Blueprint',
-    description:
-      'The Architect designs in five passes — entities and relationships, DB schema, API endpoints, frontend pages, then the folder structure and pinned dependencies.',
-    code: '// step1 entities → step2 DB schema → step3 APIs\n// → step4 pages → step5 folders + package.json\n// = one complete blueprint',
-  },
-  {
-    icon: '✅', title: 'Validate The Blueprint', titleClass: 'card-title-amber', subtitle: 'Before Any Code',
-    description:
-      'blueprintValidator cross-checks the design: every API maps to a DB path, every page calls a real API, every foreign key references a real table, every spec entity is covered.',
-    code: '// no orphan endpoints · valid foreign keys\n// every page → real API · full spec coverage\n// catch design bugs before writing code',
+      'A queue removes from the opposite end it adds to. Avoid array.shift() (O(n)) — use a head index or a deque. Queues drive BFS and scheduling.',
+    code: '// O(1) dequeue with a moving head index\nconst q: number[] = []; let head = 0;\nq.push(x);              // enqueue\nconst first = q[head++]; // dequeue',
   },
 ];
 
-const V2 = [
+const LISTS = [
   {
-    icon: '💾', title: 'Survives Crashes', titleClass: 'card-title-cyan', subtitle: 'Checkpointing',
+    icon: '🔗', title: 'Linked List', titleClass: 'card-title-cyan', subtitle: 'Node → Node',
     description:
-      'Every node checkpoints its state to Redis, so a crash resumes instead of losing everything. Combined with Git auto-commits, the team can also roll back bad code.',
-    code: '// checkpoint after every node → resume on crash\n// git commit after every task → rollback on failure',
+      'Each node holds a value and a pointer to the next. Insert/delete is O(1) given the node, but access is O(n). No contiguous memory — great when you splice a lot.',
+    code: 'class Node<T> {\n  constructor(public val: T, public next: Node<T> | null = null) {}\n}\n// head → 10 → 20 → 30 → null',
   },
   {
-    icon: '🧮', title: 'Token Budgets', titleClass: 'card-title-purple', subtitle: 'No Token Bombs',
+    icon: '🔄', title: 'Reverse It', titleClass: 'card-title-purple', subtitle: 'Flip The Pointers',
     description:
-      'State selectors per agent and a registry compactor stop the shared state (and the token bill) from growing without bound. A token tracker enforces budget limits.',
-    code: '// per-agent state selectors · stateCompactor\n// tokenTracker with budget limits',
+      'Walk the list once, pointing each node back at the previous one. Three variables, O(n) time, O(1) space — the interview classic.',
+    code: 'let prev: Node<T> | null = null, cur = head;\nwhile (cur) {\n  const next = cur.next;\n  cur.next = prev; prev = cur; cur = next;\n}\nreturn prev; // new head',
   },
   {
-    icon: '🛟', title: 'Scope & Safety', titleClass: 'card-title-amber', subtitle: '10 Loopholes Fixed',
+    icon: '🐢', title: 'Fast & Slow', titleClass: 'card-title-amber', subtitle: 'Cycle & Middle',
     description:
-      'V2 adds iteration limits with scope-drift detection, sandbox health checks, parallel independent tasks, and escalation instead of blindly force-approving rejected code.',
-    footer: '22 → 30 nodes · robustness over cleverness',
+      'Move one pointer one step and another two. They meet if there’s a cycle; when fast reaches the end, slow is at the middle. One pass, O(1) extra space.',
+    code: 'let slow = head, fast = head;\nwhile (fast && fast.next) {\n  slow = slow!.next; fast = fast.next.next;\n  if (slow === fast) return true; // cycle\n}',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '📄', title: 'The Design Doc', titleClass: 'card-title-cyan', subtitle: 'V2 Markdown',
+    icon: '📘', title: 'Array push/pop (MDN)', titleClass: 'card-title-cyan', subtitle: 'Stack Ops',
     description:
-      'The complete system design (V2) — agents, the 30-node flow, the state shape, and every loophole fix — read it in full in the repo.',
-    link: { href: GH_DESIGN, label: 'Open the design doc →', external: true },
+      'The O(1) operations that make an array a stack — push, pop — plus why shift/unshift are O(n) at the front.',
+    link: { href: MDN_STACK, label: 'Open MDN →', external: true },
   },
   {
-    icon: '💻', title: 'Lecture 23', titleClass: 'card-title-purple', subtitle: 'GitHub',
+    icon: '🧭', title: 'VisuAlgo — Lists', titleClass: 'card-title-purple', subtitle: 'Visualise',
     description:
-      'The design lecture folder in the STRIKE GenAI repo — the plan for the AI Dev Team built over the next lectures.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 23 →', external: true },
+      'Interactive visualisations of linked lists, stacks and queues — watch insertions, deletions and reversals step by step.',
+    link: { href: VISUALGO, label: 'Open VisuAlgo →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Build The Planners', titleClass: 'card-title-amber', subtitle: 'Prereq 24 Preview',
+    icon: '🔜', title: 'Next: Trees & Search', titleClass: 'card-title-amber', subtitle: 'Day 40 Preview',
     description:
-      'Tomorrow the build starts — Lecture 24: the LangGraph state, the PM/Architect/Planner agents, the blueprint validator, and the Docker sandbox.',
-    link: { href: '/day-040', label: 'Go to Prereq 24 →' },
+      'Tomorrow — binary trees & BSTs, the traversals (pre/in/post/level order), binary search, and a first look at heaps.',
+    link: { href: '/day-040', label: 'Go to Day 40 →' },
   },
 ];
 
@@ -154,38 +134,38 @@ export default function Day039() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-038" className="day001-nav-btn day001-nav-prev">← Prereq 22</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 23</p>
-          <Link to="/day-040" className="day001-nav-btn day001-nav-next">Prereq 24 →</Link>
+          <Link to="/day-038" className="day001-nav-btn day001-nav-prev">← Day 38</Link>
+          <p className="day001-datetime">TypeScript Day 39</p>
+          <Link to="/day-040" className="day001-nav-btn day001-nav-next">Day 40 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 23</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>DSA</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 23 <span aria-hidden="true">📐</span></h1>
-              <p className="day001-day-theme">AI DEV TEAM — SYSTEM DESIGN</p>
+              <h1 className="day001-day-num">DAY 39 <span aria-hidden="true">🥞</span></h1>
+              <p className="day001-day-theme">DSA — STACKS, QUEUES &amp; LINKED LISTS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '23%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '39%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 23 — the <strong>system design</strong> (V2). Before a line of code, the whole thing is designed:{' '}
-          <strong>8 agents</strong> orchestrated as a <strong>30-node LangGraph</strong> flow, on a stack of{' '}
-          <strong>Gemini + Pinecone + Docker + Redis + Git</strong>, always building{' '}
-          <strong>React + Express + PostgreSQL/MongoDB</strong>. The <strong>Architect</strong> designs in five steps,
-          a <strong>blueprintValidator</strong> cross-checks it, and <strong>V2 fixes 10 loopholes</strong> —
-          checkpointing, rollback, pattern consistency, token budgets, scope-drift limits and more.{' '}
-          <em>Robustness first. (Design-doc lecture — read it in the repo.)</em>
+          Linear structures and their patterns. A <strong>stack</strong> (LIFO) is an array with push/pop — it solves{' '}
+          <strong>valid parentheses</strong>, undo, DFS, and <strong>monotonic-stack</strong> next-greater problems. A{' '}
+          <strong>queue</strong> (FIFO) drives BFS — but avoid <code>array.shift()</code> (O(n)); use a head index for
+          O(1). A <strong>linked list</strong> is nodes with a <code>next</code> pointer — O(1) splice, O(n) access —
+          and its classics are <strong>reversing</strong> (flip pointers in one pass) and{' '}
+          <strong>fast &amp; slow pointers</strong> (find the middle / detect a cycle in one pass, O(1) space).{' '}
+          <em>Next: trees &amp; binary search.</em>
         </p>
 
         <section className="day001-learnt">
@@ -200,13 +180,12 @@ export default function Day039() {
           </ul>
         </section>
 
-        <CardSection icon="📐" title="THE SYSTEM & STACK" cards={SYSTEM} columns={2} />
-        <CardSection icon="📋" title="THE PLANNING FLOW" cards={FLOW} columns={3} />
-        <CardSection icon="🛟" title="V2 — BUILT TO SURVIVE" cards={V2} columns={3} />
+        <CardSection icon="🥞" title="STACKS & QUEUES" cards={STACKQ} columns={2} />
+        <CardSection icon="🔗" title="LINKED LISTS" cards={LISTS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AIDevTeam</span><span>#LangGraph</span><span>#SystemDesign</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#DSA</span><span>#LinkedList</span>
         </footer>
       </div>
     </div>

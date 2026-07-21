@@ -2,73 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture21';
-const LANGGRAPH_DOCS = 'https://langchain-ai.github.io/langgraphjs/';
+const BIGO = 'https://www.bigocheatsheet.com/';
+const MDN_ARRAY = 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array';
 
 const LEARNT_TODAY = [
-  { title: 'One agent hits limits', text: 'a single generalist agent struggles with large, multi-step tasks and long, unfocused prompts' },
-  { title: 'Divide and specialize', text: 'give each agent one narrow role with a focused prompt — it does that job far better' },
-  { title: 'Agents collaborate', text: 'one agent’s output becomes the next one’s input, forming a pipeline or a team' },
-  { title: 'Communicate via state', text: 'in LangGraph, agents do not call each other — they read and write a shared state object' },
-  { title: 'Specialization = quality', text: 'focused prompts and roles produce more reliable, higher-quality output than one do-everything prompt' },
-  { title: 'Common patterns', text: 'a planner delegating to workers, or a role-based pipeline (PM → architect → coder → reviewer)' },
-  { title: 'Next: a real team', text: 'the coming lectures build an autonomous software development team of specialized agents' },
+  { title: 'DSA, in TypeScript', text: 'practise data structures & algorithms in the Year-1 language — TypeScript' },
+  { title: 'Big-O', text: 'how runtime/space grows with input size n — the interview vocabulary' },
+  { title: 'Common classes', text: 'O(1) < O(log n) < O(n) < O(n log n) < O(n²)' },
+  { title: 'Arrays', text: 'contiguous, O(1) index access, O(n) search/insert-in-middle' },
+  { title: 'Strings are arrays of chars', text: 'immutable in JS/TS — building strings costs, use an array + join' },
+  { title: 'Two pointers', text: 'scan from both ends (or slow/fast) to solve in O(n)' },
+  { title: 'Prefix sums', text: 'precompute running totals for O(1) range-sum queries' },
+  { title: 'Kadane’s algorithm', text: 'maximum contiguous subarray sum in O(n)' },
 ];
 
-const WHY = [
+const COMPLEXITY = [
   {
-    icon: '🧠', title: 'Why One Agent Struggles', titleClass: 'card-title-cyan', subtitle: 'Too Much At Once',
+    icon: '📈', title: 'Big-O Notation', titleClass: 'card-title-cyan', subtitle: 'Growth, Not Seconds',
     description:
-      'Ask a single agent to plan, code, review, test and deploy and its prompt becomes a tangle. It loses focus, forgets constraints, and quality drops as the task grows.',
-    code: '// one giant prompt: "plan + code + review + test + deploy"\n// → unfocused, error-prone, hard to control',
+      'Big-O describes how work grows with input size n — the worst case. It ignores constants and small terms, so O(n) beats O(n²) as n gets large regardless of machine speed.',
+    code: '// O(1) index         arr[i]\n// O(n) single loop    for (const x of arr)\n// O(n²) nested loops   pairs of elements\n// O(log n) halving     binary search',
   },
   {
-    icon: '👥', title: 'A Team Of Specialists', titleClass: 'card-title-purple', subtitle: 'Divide The Work',
+    icon: '🔤', title: 'Arrays & Strings', titleClass: 'card-title-purple', subtitle: 'The Foundations',
     description:
-      'Split the job across agents, each with a single responsibility and a tight prompt — a planner, a coder, a reviewer. Each becomes an expert at its one thing.',
-    code: '// planner  → break the task down\n// coder    → write one piece\n// reviewer → check it\n// each prompt stays short and focused',
+      'Arrays give O(1) access by index but O(n) search and middle-insert. Strings are immutable in JS/TS — repeated concatenation is costly, so build with an array and join.',
+    code: 'const parts: string[] = [];\nfor (const w of words) parts.push(w.toUpperCase());\nconst out = parts.join(" ");   // cheap, one allocation',
   },
 ];
 
-const HOW = [
+const PATTERNS = [
   {
-    icon: '🔗', title: 'They Collaborate', titleClass: 'card-title-cyan', subtitle: 'Output → Input',
+    icon: '↔️', title: 'Two Pointers', titleClass: 'card-title-cyan', subtitle: 'O(n) Scans',
     description:
-      'Agents form a workflow: the planner’s plan feeds the coder, the coder’s code feeds the reviewer. Structured hand-offs replace one overloaded model.',
-    code: '// plan  →  code  →  review  →  test\n// each stage consumes the previous stage’s output',
+      'Move two indices toward each other (or at different speeds) to avoid a nested loop. Classic for pair-sum in a sorted array, reversing, and removing duplicates in place.',
+    code: 'function pairSum(a: number[], t: number) {\n  let l = 0, r = a.length - 1;\n  while (l < r) {\n    const s = a[l] + a[r];\n    if (s === t) return [l, r];\n    s < t ? l++ : r--;\n  }\n}',
   },
   {
-    icon: '📦', title: 'Shared State', titleClass: 'card-title-purple', subtitle: 'Not Direct Calls',
+    icon: '📊', title: 'Prefix Sums', titleClass: 'card-title-purple', subtitle: 'O(1) Range Queries',
     description:
-      'In LangGraph, agents never call each other directly. They read from and write to a shared state object — the single source of truth the whole team works on.',
-    code: '// Node A writes to state → Node B reads from state\n// state is the ONLY channel between agents',
+      'Precompute a running total once; then any range sum is a subtraction. Turns repeated O(n) sums into O(1) lookups after an O(n) preprocess.',
+    code: 'const p = [0];\nfor (const x of arr) p.push(p.at(-1)! + x);\n// sum of arr[i..j] = p[j + 1] - p[i]',
   },
   {
-    icon: '🎼', title: 'Orchestration', titleClass: 'card-title-amber', subtitle: 'LangGraph',
+    icon: '🏆', title: "Kadane's Algorithm", titleClass: 'card-title-amber', subtitle: 'Max Subarray',
     description:
-      'A graph (from Day 20) orchestrates the team — deciding which agent runs next, when to loop, and when to stop. Multi-agent systems are LangGraph’s reason to exist.',
-    footer: 'specialized agents + shared state + a graph = a team',
+      'Track the best sum ending here and the best overall, resetting when the running sum drops below zero. Maximum contiguous subarray sum in a single O(n) pass.',
+    code: 'let best = -Infinity, cur = 0;\nfor (const x of arr) {\n  cur = Math.max(x, cur + x);\n  best = Math.max(best, cur);\n}',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 21', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'Big-O Cheat Sheet', titleClass: 'card-title-cyan', subtitle: 'Reference',
     description:
-      'The multi-agent systems lecture and diagram in the STRIKE GenAI repo — the concept behind the AI Dev Team ahead.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 21 →', external: true },
+      'Time and space complexity of common data structures and algorithms at a glance — a handy reference while practising.',
+    link: { href: BIGO, label: 'Open the cheat sheet →', external: true },
   },
   {
-    icon: '📘', title: 'LangGraph.js', titleClass: 'card-title-purple', subtitle: 'Orchestration',
+    icon: '🔤', title: 'Array (MDN)', titleClass: 'card-title-purple', subtitle: 'The Methods',
     description:
-      'The framework that runs multi-agent workflows — state, nodes, conditional edges and cycles that coordinate a team of agents.',
-    link: { href: LANGGRAPH_DOCS, label: 'LangGraph.js docs →', external: true },
+      'Every array method with complexity intuition — map, filter, reduce, slice, splice — the toolbox for array problems.',
+    link: { href: MDN_ARRAY, label: 'Open MDN Array →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: The AI Dev Team', titleClass: 'card-title-amber', subtitle: 'Prereq 22 Preview',
+    icon: '🔜', title: 'Next: Hashing & Windows', titleClass: 'card-title-amber', subtitle: 'Day 38 Preview',
     description:
-      'Tomorrow — Lecture 22: the vision of an autonomous software development team (like Devin) — the roles and the requirement-to-deploy pipeline.',
-    link: { href: '/day-038', label: 'Go to Prereq 22 →' },
+      'Tomorrow — hash maps & sets for O(1) lookups, frequency counting, and the sliding-window pattern for subarray/substring problems.',
+    link: { href: '/day-038', label: 'Go to Day 38 →' },
   },
 ];
 
@@ -133,37 +134,38 @@ export default function Day037() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-036" className="day001-nav-btn day001-nav-prev">← Prereq 20</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 21</p>
-          <Link to="/day-038" className="day001-nav-btn day001-nav-next">Prereq 22 →</Link>
+          <Link to="/day-036" className="day001-nav-btn day001-nav-prev">← Day 36</Link>
+          <p className="day001-datetime">TypeScript Day 37</p>
+          <Link to="/day-038" className="day001-nav-btn day001-nav-next">Day 38 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 21</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>DSA</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 21 <span aria-hidden="true">👥</span></h1>
-              <p className="day001-day-theme">MULTI-AGENT SYSTEMS — A TEAM OF AGENTS</p>
+              <h1 className="day001-day-num">DAY 37 <span aria-hidden="true">📈</span></h1>
+              <p className="day001-day-theme">DSA — COMPLEXITY, ARRAYS &amp; STRINGS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '21%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '37%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 21 — <strong>multi-agent systems</strong>. One generalist agent buckles under large, multi-step
-          work, so we <strong>divide and specialize</strong>: each agent gets a single role and a focused prompt and
-          becomes an expert at it. The agents <strong>collaborate</strong> — one’s output is the next one’s input —
-          but they never call each other directly; they read and write a <strong>shared state</strong>, coordinated
-          by a <strong>LangGraph</strong> graph. Specialization plus orchestration is what makes a real{' '}
-          <strong>AI team</strong> possible. <em>Next, we build one. (Diagram-based lecture; standard concepts.)</em>
+          DSA, practised in TypeScript alongside Year 1. <strong>Big-O</strong> describes how work grows with input
+          size — <code>O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²)</code>. <strong>Arrays</strong> give
+          O(1) index access but O(n) search; <strong>strings</strong> are immutable, so build with an array + join.
+          Three array patterns carry a huge share of problems: <strong>two pointers</strong> (O(n) scans instead of
+          nested loops), <strong>prefix sums</strong> (O(1) range queries after an O(n) preprocess), and{' '}
+          <strong>Kadane’s algorithm</strong> (max contiguous subarray in one pass).{' '}
+          <em>Next: hashing &amp; sliding window.</em>
         </p>
 
         <section className="day001-learnt">
@@ -178,12 +180,12 @@ export default function Day037() {
           </ul>
         </section>
 
-        <CardSection icon="🧠" title="WHY ONE AGENT ISN’T ENOUGH" cards={WHY} columns={2} />
-        <CardSection icon="🎼" title="A TEAM, ORCHESTRATED" cards={HOW} columns={3} />
+        <CardSection icon="📈" title="COMPLEXITY & DATA" cards={COMPLEXITY} columns={2} />
+        <CardSection icon="↔️" title="ARRAY PATTERNS" cards={PATTERNS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#MultiAgent</span><span>#LangGraph</span><span>#CoderArmy</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#DSA</span><span>#BigO</span>
         </footer>
       </div>
     </div>

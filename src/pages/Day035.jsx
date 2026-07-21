@@ -2,72 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture19';
+const PRISMA_DOCS = 'https://www.prisma.io/docs';
+const PRISMA_START = 'https://www.prisma.io/docs/getting-started';
 
 const LEARNT_TODAY = [
-  { title: 'Classify the query first', text: 'before retrieving, ask the LLM: is this factual, similarity, or descriptive?' },
-  { title: 'Factual → Neo4j', text: '"movies directed by Nolan" is a relationship question — answer it with a Cypher graph query' },
-  { title: 'Similarity → Pinecone', text: '"movies like Inception" is a vector question — answer it with semantic search' },
-  { title: 'Descriptive → Pinecone', text: '"tell me about Inception" retrieves the entity’s text and lets the model summarise it' },
-  { title: 'Route to a handler', text: 'each query type has its own handler; the runner classifies then dispatches' },
-  { title: 'Cypher templates', text: 'safe, parameterised graph queries turn a classified question into precise graph traversal' },
-  { title: 'Best of both worlds', text: 'exact relationships from the graph, fuzzy matches from the vectors — one hybrid assistant' },
+  { title: 'Prisma is a typed ORM', text: 'define a schema, and get a fully-typed client for your database' },
+  { title: 'schema.prisma', text: 'one file describes models, fields, relations and the datasource' },
+  { title: 'Migrations', text: 'prisma migrate turns schema changes into versioned SQL' },
+  { title: 'Generated client', text: 'prisma generate produces a client typed to your exact models' },
+  { title: 'Typed queries', text: 'findMany, create, update, delete — all autocompleted and checked' },
+  { title: 'Relations', text: 'model relations once; include or select related data in a query' },
+  { title: 'One client instance', text: 'reuse a single PrismaClient across the app (avoid many connections)' },
+  { title: 'Any SQL database', text: 'Postgres, MySQL, SQLite — swap the datasource, keep the code' },
 ];
 
-const CLASSIFY = [
+const SCHEMA = [
   {
-    icon: '🧠', title: 'Classify The Query', titleClass: 'card-title-cyan', subtitle: 'One LLM Call',
+    icon: '📄', title: 'The Schema', titleClass: 'card-title-cyan', subtitle: 'schema.prisma',
     description:
-      'A classifier prompt asks the model to label the question as factual, similarity, or descriptive and return strict JSON. That label decides everything downstream.',
-    code: 'const CLASSIFIER_PROMPT = `Classify the query as:\n"factual"     — lists/counts/relationships (→ Neo4j)\n"similarity"  — recommendations / like X (→ Pinecone)\n"descriptive" — who/what/about an entity (→ Pinecone)\nRespond ONLY as JSON: {"type": ..., "reasoning": ...}`;',
+      'Describe your data once — models, fields, types and relations, plus the datasource. Prisma reads this file to generate the client and to build migrations.',
+    code: 'model User {\n  id    Int    @id @default(autoincrement())\n  email String @unique\n  posts Post[]\n}\nmodel Post {\n  id       Int  @id @default(autoincrement())\n  title    String\n  author   User @relation(fields: [authorId], references: [id])\n  authorId Int\n}',
   },
   {
-    icon: '🔀', title: 'Route It', titleClass: 'card-title-purple', subtitle: 'Dispatch To A Handler',
+    icon: '🔁', title: 'Migrate & Generate', titleClass: 'card-title-purple', subtitle: 'Schema → DB',
     description:
-      'The runner reads the type and calls the matching handler — factual to the graph, similarity and descriptive to the vectors. Clean separation, one entry point.',
-    code: 'const { type } = await classifyQuery(query);\nif (type === "similarity")  answer = await handleSimilarity(query);\nelse if (type === "descriptive") answer = await handleDescriptive(query);\nelse answer = await handleFactual(query); // → Neo4j',
+      'prisma migrate dev turns schema edits into versioned SQL and applies them; prisma generate builds a client typed to those exact models. Change the schema, re-run, done.',
+    code: 'npx prisma migrate dev --name init\nnpx prisma generate\n// datasource in .env: DATABASE_URL="postgresql://…"',
   },
 ];
 
-const HANDLERS = [
+const QUERIES = [
   {
-    icon: '🔒', title: 'Factual → Cypher', titleClass: 'card-title-cyan', subtitle: 'The Graph',
+    icon: '🔍', title: 'Typed Queries', titleClass: 'card-title-cyan', subtitle: 'CRUD, Autocompleted',
     description:
-      'Factual questions become Cypher queries against Neo4j using safe templates. Relationships and counts come back exact — no guessing.',
-    code: '// "Movies directed by Nolan"\nMATCH (d:Director {name:$name})-[:DIRECTED]->(m:Movie)\nRETURN m.title\n// precise, verifiable answer',
+      'The client mirrors your schema. Every query — findMany, findUnique, create, update, delete — is typed, so wrong fields are compile errors and results have the right shape.',
+    code: 'const users = await prisma.user.findMany();\nconst user = await prisma.user.create({\n  data: { email: "a@b.com" },\n});',
   },
   {
-    icon: '📐', title: 'Similarity → Vectors', titleClass: 'card-title-purple', subtitle: 'Pinecone',
+    icon: '🔗', title: 'Relations', titleClass: 'card-title-purple', subtitle: 'include / select',
     description:
-      'Recommendation questions embed the query and search Pinecone for the nearest movies — the semantic RAG from earlier days, now one branch of the system.',
-    code: '// "Movies like Inception"\n// embed → Pinecone top-K → similar movies\n// (optionally enrich with graph facts)',
+      'Fetch related records with include, or pick fields with select — the return type updates to match. No JOIN SQL by hand; the query describes the shape you want.',
+    code: 'const withPosts = await prisma.user.findUnique({\n  where: { id },\n  include: { posts: true },\n});',
   },
   {
-    icon: '📖', title: 'Descriptive → Retrieve', titleClass: 'card-title-amber', subtitle: 'Then Summarise',
+    icon: '♻️', title: 'One Client', titleClass: 'card-title-amber', subtitle: 'Reuse The Instance',
     description:
-      '"Tell me about X" retrieves the entity’s chunks from the vector store and has Gemini write a grounded summary — RAG applied to a single entity.',
-    code: '// "Tell me about The Godfather"\n// retrieve its text → Gemini summarises from it',
+      'Create a single PrismaClient and import it everywhere. Spawning a new client per request exhausts the database connection pool — a classic production bug.',
+    code: '// db.ts\nimport { PrismaClient } from "@prisma/client";\nexport const prisma = new PrismaClient();',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 19', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'Prisma Docs', titleClass: 'card-title-cyan', subtitle: 'Reference',
     description:
-      'The query side — queryClassifier, graph and similarity handlers, entityResolver and runQuery — completing the Graph RAG assistant.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 19 →', external: true },
+      'The schema language, the client API, migrations, relations, transactions and connection management — the full ORM reference.',
+    link: { href: PRISMA_DOCS, label: 'Open Prisma docs →', external: true },
   },
   {
-    icon: '🧬', title: 'Hybrid Retrieval', titleClass: 'card-title-purple', subtitle: 'Graph + Vectors',
+    icon: '🚀', title: 'Getting Started', titleClass: 'card-title-purple', subtitle: 'Hands-On',
     description:
-      'The whole point of Graph RAG: route each question to the engine that answers it best — precise facts from the graph, similarity from the vectors.',
-    footer: 'classify → route → retrieve → answer',
+      'Set up Prisma with your database, model your first schema, run a migration and query — end to end in one guide.',
+    link: { href: PRISMA_START, label: 'Open the guide →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: LangGraph', titleClass: 'card-title-amber', subtitle: 'Prereq 20 Preview',
+    icon: '🔜', title: 'Next: Auth & Deploy', titleClass: 'card-title-amber', subtitle: 'Day 36 Preview',
     description:
-      'Tomorrow — Lecture 20: LangGraph, for orchestrating multi-step, stateful agent workflows as a graph of nodes and edges.',
-    link: { href: '/day-036', label: 'Go to Prereq 20 →' },
+      'Tomorrow — finish the backend: hash passwords (bcrypt), sign & verify JWTs, protect routes with auth middleware, and deploy the API to production.',
+    link: { href: '/day-036', label: 'Go to Day 36 →' },
   },
 ];
 
@@ -132,38 +134,39 @@ export default function Day035() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-034" className="day001-nav-btn day001-nav-prev">← Prereq 18</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 19</p>
-          <Link to="/day-036" className="day001-nav-btn day001-nav-next">Prereq 20 →</Link>
+          <Link to="/day-034" className="day001-nav-btn day001-nav-prev">← Day 34</Link>
+          <p className="day001-datetime">TypeScript Day 35</p>
+          <Link to="/day-036" className="day001-nav-btn day001-nav-next">Day 36 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 19</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Prisma</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 19 <span aria-hidden="true">🔀</span></h1>
-              <p className="day001-day-theme">GRAPH RAG — HYBRID QUERYING</p>
+              <h1 className="day001-day-num">DAY 35 <span aria-hidden="true">🗃️</span></h1>
+              <p className="day001-day-theme">EXPRESS — DATABASES WITH PRISMA</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '19%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '35%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 19 finishes the assistant — the <strong>query</strong> side. Every question is first{' '}
-          <strong>classified</strong> as <strong>factual</strong>, <strong>similarity</strong>, or{' '}
-          <strong>descriptive</strong>, then <strong>routed</strong> to the right handler: factual questions run{' '}
-          <strong>Cypher</strong> over <strong>Neo4j</strong> for exact relationships, while similarity and
-          descriptive questions use <strong>Pinecone</strong> vector search. Precise facts from the graph, fuzzy
-          matches from the vectors — that hybrid is the whole point of <strong>Graph RAG</strong>.{' '}
-          <em>The project works end to end.</em>
+          Persisting data, type-safely. <strong>Prisma</strong> is a typed ORM: describe your data once in{' '}
+          <strong>schema.prisma</strong> (models, fields, relations, datasource), then{' '}
+          <code>prisma migrate</code> turns changes into versioned SQL and <code>prisma generate</code> builds a{' '}
+          <strong>client typed to your exact models</strong>. Every query — <code>findMany</code>, <code>create</code>,{' '}
+          <code>update</code> — is autocompleted and checked, and relations are fetched with <code>include</code>/
+          <code>select</code> (the return type follows). Reuse a <strong>single PrismaClient</strong> to protect the
+          connection pool, and swap Postgres / MySQL / SQLite by changing only the datasource.{' '}
+          <em>Next: auth &amp; deploy.</em>
         </p>
 
         <section className="day001-learnt">
@@ -178,12 +181,12 @@ export default function Day035() {
           </ul>
         </section>
 
-        <CardSection icon="🧠" title="CLASSIFY & ROUTE" cards={CLASSIFY} columns={2} />
-        <CardSection icon="🔀" title="THE THREE HANDLERS" cards={HANDLERS} columns={3} />
+        <CardSection icon="📄" title="SCHEMA & MIGRATIONS" cards={SCHEMA} columns={2} />
+        <CardSection icon="🔍" title="QUERYING DATA" cards={QUERIES} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GraphRAG</span><span>#Neo4j</span><span>#Pinecone</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Prisma</span><span>#Database</span>
         </footer>
       </div>
     </div>

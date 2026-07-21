@@ -2,80 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture25';
-const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
+const VISUALGO_SORT = 'https://visualgo.net/en/sorting';
+const DP_GUIDE = 'https://developer.mozilla.org/en-US/docs/Glossary/Recursion';
 
 const LEARNT_TODAY = [
-  { title: 'The build agents', text: 'Coder writes a task, Reviewer checks it, Executor runs it in Docker, Debugger fixes real errors' },
-  { title: 'The dev loop', text: 'selectNextTask → contextBuilder → Coder → Reviewer → Executor → snapshot, then repeat' },
-  { title: 'The review gate', text: 'approved → execute; rejected ≤2 → re-code; rejected >2 → simplify the task instead of forcing it' },
-  { title: 'Real execution', text: 'the Executor runs code in the Docker sandbox and captures actual output, not a guess' },
-  { title: 'Debug or escalate', text: 'on failure the Debugger diagnoses and re-codes; if it can’t, it escalates to a human' },
-  { title: 'Snapshots & rollback', text: 'Git commits after each task give a safe point; a failed debug rolls back to it' },
-  { title: 'Token control', text: 'stateCompactor and a token tracker keep the growing state and cost under budget' },
-  { title: 'Checkpointed & resumable', text: 'MemorySaver persists state so the whole team survives a crash and resumes mid-build' },
+  { title: 'Recursion', text: 'a function that calls itself, with a base case to stop' },
+  { title: 'Backtracking', text: 'build a solution step by step, undoing choices that fail' },
+  { title: 'Merge sort', text: 'divide, sort halves, merge — stable, O(n log n)' },
+  { title: 'Quick sort', text: 'partition around a pivot, recurse — avg O(n log n), worst O(n²)' },
+  { title: 'Built-in sort', text: 'array.sort with a comparator; pass (a,b)=>a-b for numbers' },
+  { title: 'DP = overlapping subproblems', text: 'cache results to avoid recomputing (memoisation)' },
+  { title: 'Top-down vs bottom-up', text: 'memoised recursion, or fill a table iteratively (tabulation)' },
+  { title: 'Recognise the trigger', text: 'optimal substructure + overlapping subproblems → DP' },
 ];
 
-const LOOP = [
+const RECURSION = [
   {
-    icon: '🔁', title: 'The Dev Loop', titleClass: 'card-title-cyan', subtitle: 'One Task At A Time',
+    icon: '🔁', title: 'Recursion & Backtracking', titleClass: 'card-title-cyan', subtitle: 'Base + Recurse',
     description:
-      'selectNextTask picks the next task, contextBuilder gathers what the Coder needs, the Coder writes it, the Reviewer checks it, and the Executor runs it — then loop to the next task.',
-    code: '// selectNextTask → contextBuilder → coderAgent\n// → reviewerAgent → executorAgent → snapshot\n// → back to selectNextTask',
+      'Break a problem into a smaller version of itself, with a base case to stop. Backtracking extends it: try a choice, recurse, and undo it if it doesn’t lead to a solution.',
+    code: '// subsets via backtracking\nfunction subsets(nums: number[]) {\n  const res: number[][] = [], cur: number[] = [];\n  const go = (i: number) => {\n    if (i === nums.length) { res.push([...cur]); return; }\n    go(i + 1);                     // skip\n    cur.push(nums[i]); go(i + 1); cur.pop(); // take, then undo\n  };\n  go(0); return res;\n}',
   },
   {
-    icon: '🚦', title: 'The Review Gate', titleClass: 'card-title-purple', subtitle: 'Approve Or Retry',
+    icon: '🔀', title: 'Sorting', titleClass: 'card-title-purple', subtitle: 'Merge & Quick',
     description:
-      'The Reviewer’s verdict routes the flow: approved code goes to the Executor; rejected code (up to twice) goes back to the Coder; a third rejection triggers task simplification.',
-    code: '// approved      → executorAgent\n// rejected (≤2)  → coderAgent (retry)\n// rejected (>2)  → simplifyTask',
-  },
-  {
-    icon: '🧪', title: 'Run It For Real', titleClass: 'card-title-amber', subtitle: 'Executor + Snapshot',
-    description:
-      'The Executor runs the code in the Docker sandbox. On pass, a Git snapshot commits the progress. On fail, the flow hands off to the Debugger.',
-    code: '// executor pass → snapshot (git commit)\n// executor fail → debuggerAgent',
+      'Merge sort divides then merges — stable, always O(n log n). Quick sort partitions around a pivot — fast in practice but O(n²) worst case. For everyday use, the built-in sort (with a comparator) is fine.',
+    code: '[3, 1, 2].sort((a, b) => a - b);    // numeric ascending\n// merge sort: split → sort each half → merge two sorted arrays',
   },
 ];
 
-const RESILIENCE = [
+const DP = [
   {
-    icon: '🐞', title: 'Debug Or Escalate', titleClass: 'card-title-cyan', subtitle: 'When Code Fails',
+    icon: '🧠', title: 'Memoisation', titleClass: 'card-title-cyan', subtitle: 'Top-Down',
     description:
-      'The Debugger reads the real error, finds the root cause, and sends a fix back to the Coder. If it still can’t fix it, humanEscalation asks a person to skip or guide.',
-    code: '// debugger fix     → coderAgent (try again)\n// debugger stuck   → humanEscalation → skip/guide',
+      'When recursion recomputes the same subproblem, cache the result. Fibonacci drops from O(2ⁿ) to O(n) just by remembering answers in a map.',
+    code: 'const memo = new Map<number, number>();\nfunction fib(n: number): number {\n  if (n < 2) return n;\n  if (memo.has(n)) return memo.get(n)!;\n  const r = fib(n - 1) + fib(n - 2);\n  memo.set(n, r); return r;\n}',
   },
   {
-    icon: '↩️', title: 'Snapshots & Rollback', titleClass: 'card-title-purple', subtitle: 'Undo Bad Code',
+    icon: '📋', title: 'Tabulation', titleClass: 'card-title-purple', subtitle: 'Bottom-Up',
     description:
-      'Because every task is committed to Git in the sandbox, a broken change can be rolled back to the last good snapshot — the team never digs itself into a hole.',
-    code: '// good task → git commit (snapshot)\n// debug failure → rollback to last snapshot',
+      'Solve the smallest subproblems first and fill a table up to the answer — no recursion, no stack. Same complexity, often clearer and faster.',
+    code: 'const dp = [0, 1];\nfor (let i = 2; i <= n; i++) dp[i] = dp[i - 1] + dp[i - 2];\nreturn dp[n];',
   },
   {
-    icon: '🧮', title: 'Budget & Verify', titleClass: 'card-title-amber', subtitle: 'Stay In Control',
+    icon: '🎯', title: 'When It’s DP', titleClass: 'card-title-amber', subtitle: 'The Signals',
     description:
-      'phaseVerification confirms each phase is done, patternExtractor keeps code consistent, stateCompactor and the token tracker cap cost — then presentToUser and END.',
-    footer: 'verify · compact · budget · present → END',
+      'Reach for DP when a problem has optimal substructure (the answer is built from sub-answers) and overlapping subproblems (the same sub-answers recur). Classics: knapsack, LCS, edit distance.',
+    footer: 'optimal substructure + overlap → DP',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 25', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '🔀', title: 'VisuAlgo — Sorting', titleClass: 'card-title-cyan', subtitle: 'Visualise',
     description:
-      'The complete ai-dev-team-final project — all 8 agents, the full dev-loop graph, snapshots, escalation and token control.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 25 →', external: true },
+      'Watch merge, quick, heap and insertion sort run step by step, and compare their behaviour on different inputs.',
+    link: { href: VISUALGO_SORT, label: 'Open VisuAlgo →', external: true },
   },
   {
-    icon: '🏆', title: 'An Autonomous Team', titleClass: 'card-title-purple', subtitle: 'It All Comes Together',
+    icon: '🔁', title: 'Recursion (MDN)', titleClass: 'card-title-purple', subtitle: 'Foundation',
     description:
-      'Prompts, tools, RAG, memory, LangGraph and multi-agent orchestration — combined into a system that plans, codes, tests, debugs and iterates on real software.',
-    link: { href: '/genai', label: 'Open the GenAI track →' },
+      'The recursion refresher — base case, recursive case and the call stack — the foundation of backtracking and top-down DP.',
+    link: { href: DP_GUIDE, label: 'Open the glossary →', external: true },
   },
   {
-    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
+    icon: '🔜', title: 'Year 1 Continues', titleClass: 'card-title-amber', subtitle: 'Day 42 Preview',
     description:
-      'The full Coder Army course code — next up, Lecture 26 adds a live React dashboard (WebSocket) over the AI Dev Team.',
-    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
+      'The DSA core is covered — next up alongside Year 1: graphs (BFS/DFS, shortest paths) and System Design in TypeScript. The journal keeps building.',
+    link: { href: '/day-042', label: 'Go to Day 42 →' },
   },
 ];
 
@@ -140,38 +134,38 @@ export default function Day041() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-040" className="day001-nav-btn day001-nav-prev">← Prereq 24</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 25</p>
-          <Link to="/day-042" className="day001-nav-btn day001-nav-next">Prereq 26 →</Link>
+          <Link to="/day-040" className="day001-nav-btn day001-nav-prev">← Day 40</Link>
+          <p className="day001-datetime">TypeScript Day 41</p>
+          <Link to="/day-042" className="day001-nav-btn day001-nav-next">Day 42 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 25</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>DSA</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 25 <span aria-hidden="true">🏆</span></h1>
-              <p className="day001-day-theme">AI DEV TEAM — THE FULL DEV LOOP</p>
+              <h1 className="day001-day-num">DAY 41 <span aria-hidden="true">🔁</span></h1>
+              <p className="day001-day-theme">DSA — RECURSION, SORTING &amp; DP</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '25%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '41%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 25 completes the team. The <strong>build agents</strong> join in a <strong>dev loop</strong>:{' '}
-          <strong>selectNextTask → Coder → Reviewer → Executor</strong>, then snapshot and repeat. The Reviewer is a{' '}
-          <strong>gate</strong> — approve, re-code (≤2), or <strong>simplify</strong> a stubborn task. The Executor
-          runs code <strong>for real in Docker</strong>; failures go to the <strong>Debugger</strong>, which fixes or{' '}
-          <strong>escalates to a human</strong>. Git <strong>snapshots</strong> allow rollback, and{' '}
-          <strong>checkpoints</strong> + a <strong>token budget</strong> keep it resilient and affordable. An{' '}
-          autonomous team that actually ships. <em>25 lectures in.</em>
+          The algorithmic core. <strong>Recursion</strong> solves a problem via a smaller version of itself (base case
+          to stop), and <strong>backtracking</strong> builds solutions step by step, undoing failed choices (subsets,
+          permutations, N-Queens). <strong>Merge sort</strong> is stable O(n log n); <strong>quick sort</strong> is
+          fast but O(n²) worst — day to day, the built-in <code>sort((a,b)=&gt;a-b)</code> is enough. Finally,{' '}
+          <strong>dynamic programming</strong> caches overlapping subproblems — <strong>memoisation</strong>{' '}
+          (top-down) or <strong>tabulation</strong> (bottom-up) — turning exponential recursion into linear. Reach for
+          it on <em>optimal substructure + overlapping subproblems</em>. <em>Next: graphs &amp; System Design.</em>
         </p>
 
         <section className="day001-learnt">
@@ -186,12 +180,12 @@ export default function Day041() {
           </ul>
         </section>
 
-        <CardSection icon="🔁" title="THE DEV LOOP" cards={LOOP} columns={3} />
-        <CardSection icon="🛟" title="WHEN THINGS FAIL" cards={RESILIENCE} columns={3} />
+        <CardSection icon="🔁" title="RECURSION & SORTING" cards={RECURSION} columns={2} />
+        <CardSection icon="🧠" title="DYNAMIC PROGRAMMING" cards={DP} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AIDevTeam</span><span>#LangGraph</span><span>#Agents</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#DSA</span><span>#DP</span>
         </footer>
       </div>
     </div>

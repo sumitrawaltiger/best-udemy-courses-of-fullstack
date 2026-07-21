@@ -2,73 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture24';
+const VISUALGO_BST = 'https://visualgo.net/en/bst';
+const MDN_RECURSION = 'https://developer.mozilla.org/en-US/docs/Glossary/Recursion';
 
 const LEARNT_TODAY = [
-  { title: 'State is the whole contract', text: 'in LangGraph, nodes communicate ONLY through a shared state — Node A writes, Node B reads' },
-  { title: 'Annotation.Root', text: 'the AgentState defines every field up front so checkpoints stay compatible as the graph grows' },
-  { title: 'Reducers', text: 'simple fields use last-write-wins; accumulating arrays use a merge reducer to combine old + new' },
-  { title: 'PM Agent', text: 'turns a raw requirement into a clear spec, asking clarifying questions via a humanInput node' },
-  { title: 'Architect in 5 steps', text: 'entities → DB schema → API endpoints → frontend pages → folder structure' },
-  { title: 'blueprintValidator', text: 'cross-checks the whole blueprint before planning — a router sends it back if it fails' },
-  { title: 'Sandbox + health check', text: 'spin up a Docker sandbox, then verify DB, node_modules and ports before building' },
-  { title: 'Checkpoint everything', text: 'MemorySaver persists state after each node, so a crash resumes instead of restarting' },
+  { title: 'Binary tree', text: 'each node has up to two children — left and right' },
+  { title: 'BST property', text: 'left subtree < node < right subtree, enabling O(log n) search when balanced' },
+  { title: 'DFS traversals', text: 'preorder, inorder, postorder — recursion visits in different orders' },
+  { title: 'Inorder of a BST', text: 'visits keys in sorted order — a useful invariant' },
+  { title: 'BFS / level order', text: 'a queue visits the tree level by level' },
+  { title: 'Height & balance', text: 'operations are O(log n) balanced, O(n) if skewed' },
+  { title: 'Binary search', text: 'halve a sorted range each step — O(log n)' },
+  { title: 'Heaps', text: 'a complete tree with parent ≤/≥ children — the priority-queue engine' },
 ];
 
-const STATE = [
+const TREES = [
   {
-    icon: '📦', title: 'The Shared State', titleClass: 'card-title-cyan', subtitle: 'Annotation.Root',
+    icon: '🌳', title: 'Trees & BSTs', titleClass: 'card-title-cyan', subtitle: 'Left < Node < Right',
     description:
-      'Define the full state shape once with Annotation.Root. Each field notes which node owns it. Nodes never call each other — they only read and write this object.',
-    code: 'import { Annotation } from "@langchain/langgraph";\n\nexport const AgentState = Annotation.Root({\n  userRequirement: Annotation({ reducer: (_, y) => y ?? "", default: () => "" }),\n  spec: Annotation({ reducer: (_, y) => y, default: () => null }),\n  // ...all 30 nodes’ fields\n});',
+      'A binary tree’s nodes have left/right children. A Binary Search Tree keeps left < node < right, so search, insert and delete are O(log n) when balanced (O(n) if it degrades to a chain).',
+    code: 'class TreeNode {\n  constructor(public val: number,\n    public left: TreeNode | null = null,\n    public right: TreeNode | null = null) {}\n}',
   },
   {
-    icon: '➕', title: 'Reducers', titleClass: 'card-title-purple', subtitle: 'How Updates Merge',
+    icon: '🧭', title: 'Traversals', titleClass: 'card-title-purple', subtitle: 'DFS & BFS',
     description:
-      'A reducer decides how a node’s output updates the state. Simple values overwrite (last write wins); lists that grow use a merge reducer so nothing is lost.',
-    code: '// simple field:  reducer: (_, y) => y        (overwrite)\n// growing list:  reducer: (x, y) => [...x, ...y] (merge)',
+      'Depth-first recursion visits nodes preorder (root first), inorder (left-root-right — sorted for a BST) or postorder (root last). Breadth-first uses a queue for level order.',
+    code: 'function inorder(n: TreeNode | null, out: number[] = []) {\n  if (!n) return out;\n  inorder(n.left, out);\n  out.push(n.val);\n  inorder(n.right, out);\n  return out; // sorted for a BST\n}',
   },
 ];
 
-const PLAN = [
+const SEARCH = [
   {
-    icon: '📋', title: 'PM → Architect → Planner', titleClass: 'card-title-cyan', subtitle: 'Design The Work',
+    icon: '🎯', title: 'Binary Search', titleClass: 'card-title-cyan', subtitle: 'O(log n)',
     description:
-      'The PM clarifies the requirement into a spec (looping through humanInput for answers). The Architect designs the blueprint in five steps. The Planner turns it into an ordered task list.',
-    code: '// pmAgent → spec (needs_clarification → humanInput)\n// architectStep1..5 → blueprint\n// plannerAgent → phased, dependency-ordered tasks',
+      'On a sorted array, compare the middle and discard half each step. Watch the classic bug: compute mid as low + (high - low) / 2 and be careful with the boundaries.',
+    code: 'function bsearch(a: number[], t: number) {\n  let lo = 0, hi = a.length - 1;\n  while (lo <= hi) {\n    const mid = lo + ((hi - lo) >> 1);\n    if (a[mid] === t) return mid;\n    a[mid] < t ? (lo = mid + 1) : (hi = mid - 1);\n  }\n  return -1;\n}',
   },
   {
-    icon: '✅', title: 'Validate, Then Proceed', titleClass: 'card-title-purple', subtitle: 'A Router',
+    icon: '⛰️', title: 'Heaps', titleClass: 'card-title-purple', subtitle: 'Priority Queue',
     description:
-      'blueprintValidator checks the design and a router decides the next edge — proceed to planning if valid, or loop back to the Architect to fix it. Conditional edges in action.',
-    code: 'graph.addConditionalEdges("blueprintValidator", blueprintValidatorRouter, {\n  valid: "plannerAgent",\n  invalid: "architectStep1", // redesign\n});',
+      'A binary heap is a complete tree where a parent is ≤ (min-heap) or ≥ (max-heap) its children. Push/pop are O(log n) — the engine behind priority queues, top-K and Dijkstra.',
+    code: '// min-heap idea (array-backed)\n// parent(i) = (i-1)>>1, children = 2i+1, 2i+2\n// push → bubble up · pop → swap root, bubble down',
   },
   {
-    icon: '🐳', title: 'Sandbox & Health Check', titleClass: 'card-title-amber', subtitle: 'Ready To Build',
+    icon: '📏', title: 'Balance Matters', titleClass: 'card-title-amber', subtitle: 'log n vs n',
     description:
-      'setupSandbox creates a Docker environment; sandboxHealthCheck then verifies the database, node_modules and ports are actually up before any code is written into it.',
-    code: '// setupSandbox → Docker sandbox\n// sandboxHealthCheck → verify DB, deps, ports\n// (router: healthy → build · unhealthy → retry)',
+      'A BST’s speed depends on its height. Balanced → O(log n); inserted in sorted order it becomes a linked list → O(n). Self-balancing trees (AVL, red-black) guarantee log n.',
+    footer: 'balanced BST → O(log n) · skewed → O(n)',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 24', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '🌳', title: 'VisuAlgo — BST', titleClass: 'card-title-cyan', subtitle: 'Visualise',
     description:
-      'The ai-dev-team phase-3 project — the state, graph, PM/Architect/Planner agents, blueprint validator and sandbox nodes.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 24 →', external: true },
+      'Interactive BST and traversal visualisations — insert, delete and search, and watch how balance affects height.',
+    link: { href: VISUALGO_BST, label: 'Open VisuAlgo →', external: true },
   },
   {
-    icon: '🧩', title: 'It’s A LangGraph', titleClass: 'card-title-purple', subtitle: 'Everything Applies',
+    icon: '🔁', title: 'Recursion (MDN)', titleClass: 'card-title-purple', subtitle: 'Concept',
     description:
-      'This uses Day 20’s LangGraph directly — state, nodes, conditional edges, routers and MemorySaver checkpoints — now for a real multi-agent build.',
-    footer: 'state · nodes · routers · checkpoints',
+      'The recursion primer — base case, recursive case, and the call stack — the mechanism behind every tree traversal.',
+    link: { href: MDN_RECURSION, label: 'Open the glossary →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: The Full Team', titleClass: 'card-title-amber', subtitle: 'Prereq 25 Preview',
+    icon: '🔜', title: 'Next: Recursion & Sorting', titleClass: 'card-title-amber', subtitle: 'Day 41 Preview',
     description:
-      'Tomorrow completes it — Lecture 25: the Coder, Reviewer, Executor and Debugger agents, the dev loop, snapshots/rollback and escalation.',
-    link: { href: '/day-041', label: 'Go to Prereq 25 →' },
+      'Tomorrow — recursion & backtracking, the sorting algorithms (merge, quick), searching, and a first taste of dynamic programming.',
+    link: { href: '/day-041', label: 'Go to Day 41 →' },
   },
 ];
 
@@ -133,39 +134,38 @@ export default function Day040() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-039" className="day001-nav-btn day001-nav-prev">← Prereq 23</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 24</p>
-          <Link to="/day-041" className="day001-nav-btn day001-nav-next">Prereq 25 →</Link>
+          <Link to="/day-039" className="day001-nav-btn day001-nav-prev">← Day 39</Link>
+          <p className="day001-datetime">TypeScript Day 40</p>
+          <Link to="/day-041" className="day001-nav-btn day001-nav-next">Day 41 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 24</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>DSA</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 24 <span aria-hidden="true">🏗️</span></h1>
-              <p className="day001-day-theme">AI DEV TEAM — PLANNING AGENTS &amp; SANDBOX</p>
+              <h1 className="day001-day-num">DAY 40 <span aria-hidden="true">🌳</span></h1>
+              <p className="day001-day-theme">DSA — TREES &amp; BINARY SEARCH</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '24%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '40%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 24 — the build begins. The heart of it is the <strong>LangGraph state</strong>: defined once with{' '}
-          <code>Annotation.Root</code>, it is the <strong>only</strong> way nodes talk, with{' '}
-          <strong>reducers</strong> that overwrite simple fields and merge growing lists. The{' '}
-          <strong>planning agents</strong> run — <strong>PM</strong> (spec, via humanInput),{' '}
-          <strong>Architect</strong> (5-step blueprint), <strong>blueprintValidator</strong> (with a router), and{' '}
-          <strong>Planner</strong> — then a <strong>Docker sandbox</strong> is set up and{' '}
-          <strong>health-checked</strong>. Every node <strong>checkpoints</strong> so a crash resumes.{' '}
-          <em>Next: the coding agents.</em>
+          Hierarchical data and logarithmic search. A <strong>binary tree</strong> has up to two children per node; a{' '}
+          <strong>BST</strong> keeps <code>left &lt; node &lt; right</code>, giving O(log n) operations when balanced.{' '}
+          <strong>Traversals</strong> are recursion — preorder, <strong>inorder</strong> (sorted for a BST), postorder
+          — while <strong>level order</strong> uses a queue (BFS). <strong>Binary search</strong> halves a sorted range
+          each step (O(log n); mind the <code>mid</code> and boundaries). A <strong>heap</strong> — a complete tree
+          with parent ≤/≥ children — powers priority queues in O(log n). Remember: a skewed BST degrades to O(n).{' '}
+          <em>Next: recursion, sorting &amp; DP.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +180,12 @@ export default function Day040() {
           </ul>
         </section>
 
-        <CardSection icon="📦" title="THE LANGGRAPH STATE" cards={STATE} columns={2} />
-        <CardSection icon="📋" title="PLANNING & SANDBOX" cards={PLAN} columns={3} />
+        <CardSection icon="🌳" title="TREES & TRAVERSALS" cards={TREES} columns={2} />
+        <CardSection icon="🎯" title="SEARCH & HEAPS" cards={SEARCH} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#AIDevTeam</span><span>#LangGraph</span><span>#CoderArmy</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#DSA</span><span>#Trees</span>
         </footer>
       </div>
     </div>
