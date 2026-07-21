@@ -9,6 +9,7 @@ export const CHEATSHEET_CATEGORIES = [
   { id: 'javascript', label: 'JavaScript', icon: '🟨' },
   { id: 'python', label: 'Python', icon: '🐍' },
   { id: 'devops-cloud', label: 'DevOps & Cloud', icon: '☁️' },
+  { id: 'git', label: 'Git & GitHub', icon: '🐙' },
   { id: 'kubernetes', label: 'Kubernetes', icon: '☸️' },
   { id: 'java', label: 'Java', icon: '☕' },
   { id: 'react', label: 'React', icon: '⚛️' },
@@ -124,6 +125,15 @@ export const CHEAT_SHEETS = [
     category: 'devops-cloud',
     image: '/cheatsheets/linux-essential-commands.jpg',
     tags: ['Linux', 'CLI', 'Shell'],
+  },
+  {
+    id: 'git-github',
+    title: 'Git & GitHub Cheat Sheet',
+    description:
+      'A 14-page Git & GitHub datasheet — an introduction (what & why Git, its features, and GitHub), configuring Git for the first time, general features (init, staging, committing, status & log), git help, branching (create, list, switch, delete, merge), working with GitHub (push/pull repos and branches), and undoing changes (revert, reset, amend).',
+    category: 'git',
+    pdf: '/cheatsheets/git-github-cheat-sheet.pdf',
+    tags: ['Git', 'GitHub', 'Branching', 'Version Control'],
   },
   {
     id: 'devops',
