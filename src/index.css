@@ -5,10 +5,10 @@
 }
 
 :root {
-  --green: #04aa6d;
-  --green-dark: #038a5a;
+  --green: #ff8c1a;
+  --green-dark: #e0620f;
   --green-light: #e7f6ef;
-  --green-hover: #059862;
+  --green-hover: #e0620f;
   --navy: #282a35;
   --navy-light: #3a3d4a;
   --text: #1a1a2e;
@@ -63,7 +63,7 @@ a:hover {
 
 /* ── Header ── */
 .header {
-  background: linear-gradient(180deg, #05b877 0%, var(--green) 55%, var(--green-dark) 100%);
+  background: linear-gradient(180deg, #ff8c1a 0%, var(--green) 55%, var(--green-dark) 100%);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -291,14 +291,14 @@ a:hover {
 }
 
 .track-thunder .header-track-dot { background: var(--green); }
-.track-nextjs .header-track-dot { background: var(--nextjs-purple, #a435f0); }
+.track-nextjs .header-track-dot { background: var(--nextjs-purple, #ff8c1a); }
 .track-mobile .header-track-dot { background: var(--mobile-orange, #f97316); }
-.track-python .header-track-dot { background: var(--python-blue, #3776ab); }
+.track-python .header-track-dot { background: var(--python-blue, #ff8c1a); }
 .track-java .header-track-dot { background: var(--java-orange, #f89820); }
 .track-aws .header-track-dot { background: var(--aws-orange, #ff9900); }
-.track-devops .header-track-dot { background: var(--kodekloud-cyan, #00b4d8); }
-.track-k8s .header-track-dot { background: #326ce5; }
-.track-interview .header-track-dot { background: #7c3aed; }
+.track-devops .header-track-dot { background: var(--kodekloud-cyan, #ff8c1a); }
+.track-k8s .header-track-dot { background: #ff8c1a; }
+.track-interview .header-track-dot { background: #ff8c1a; }
 
 .header-track-text {
   display: flex;
@@ -408,7 +408,7 @@ a:hover {
 }
 
 .header-track-featured {
-  border: 1px solid rgba(124, 58, 237, 0.35);
+  border: 1px solid rgba(255, 140, 26, 0.35);
 }
 
 .header-track-featured .header-track-name {
@@ -475,13 +475,13 @@ a:hover {
 
 .learning-path-chip.track-interview {
   border-color: rgba(196, 181, 253, 0.6);
-  background: rgba(124, 58, 237, 0.35);
+  background: rgba(255, 140, 26, 0.35);
 }
 
 .learning-path-chip.track-interview.active {
   background: #ede9fe;
   color: #5b21b6;
-  border-color: #c4b5fd;
+  border-color: #ffd9b8;
 }
 
 .learning-path-chip-short {
@@ -497,12 +497,12 @@ a:hover {
 }
 
 .learning-path-chip.active .learning-path-chip-short {
-  background: rgba(4, 170, 109, 0.15);
+  background: rgba(255, 140, 26, 0.15);
   color: var(--green-dark);
 }
 
 .learning-path-chip.track-interview.active .learning-path-chip-short {
-  background: rgba(124, 58, 237, 0.15);
+  background: rgba(255, 140, 26, 0.15);
   color: #5b21b6;
 }
 
@@ -649,7 +649,7 @@ a:hover {
 }
 
 .sidebar-link.active {
-  background: rgba(4, 170, 109, 0.2);
+  background: rgba(255, 140, 26, 0.2);
   border-left-color: var(--green);
   color: #fff;
 }
@@ -1089,9 +1089,9 @@ a:hover {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #04aa6d;
-  background: rgba(4, 170, 109, 0.12);
-  border: 1px solid rgba(4, 170, 109, 0.4);
+  color: #ff8c1a;
+  background: rgba(255, 140, 26, 0.12);
+  border: 1px solid rgba(255, 140, 26, 0.4);
   border-radius: 999px;
   padding: 4px 12px;
   margin-bottom: 14px;
@@ -1138,7 +1138,7 @@ a:hover {
   position: relative;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid #24382c;
-  border-top: 3px solid var(--yr-accent, #04aa6d);
+  border-top: 3px solid var(--yr-accent, #ff8c1a);
   border-radius: 14px;
   padding: 18px 18px 20px;
   display: flex;
@@ -1150,16 +1150,16 @@ a:hover {
   transform: translateY(-3px);
 }
 .btech-card--y1 {
-  --yr-accent: #38bdf8;
+  --yr-accent: #ffb877;
 }
 .btech-card--y2 {
   --yr-accent: #f0a132;
 }
 .btech-card--y3 {
-  --yr-accent: #a78bfa;
+  --yr-accent: #ffb877;
 }
 .btech-card--y4 {
-  --yr-accent: #04aa6d;
+  --yr-accent: #ff8c1a;
 }
 .btech-card-head {
   display: flex;
@@ -1176,7 +1176,7 @@ a:hover {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--yr-accent, #04aa6d);
+  color: var(--yr-accent, #ff8c1a);
 }
 .btech-card-theme {
   margin: 2px 0 0;
@@ -1221,7 +1221,7 @@ a:hover {
   font-size: 0.8rem;
   font-weight: 600;
   color: #08130a;
-  background: var(--yr-accent, #04aa6d);
+  background: var(--yr-accent, #ff8c1a);
   border-radius: 8px;
   padding: 6px 11px;
   text-decoration: none;
@@ -1541,7 +1541,7 @@ a:hover {
 }
 
 .chapter-link-btn.paid {
-  background: #7c3aed;
+  background: #ff8c1a;
 }
 
 .chapter-link-btn.paid:hover {
@@ -1557,7 +1557,7 @@ a:hover {
   flex-wrap: wrap;
   padding: 16px 20px;
   background: linear-gradient(135deg, #f5f3ff, #ede9fe);
-  border: 2px solid #c4b5fd;
+  border: 2px solid #ffd9b8;
   border-radius: 12px;
 }
 
@@ -1578,7 +1578,7 @@ a:hover {
 }
 
 .btn-paid {
-  background: #7c3aed;
+  background: #ff8c1a;
   color: #fff;
   padding: 10px 20px;
   font-size: 14px;
@@ -1591,7 +1591,7 @@ a:hover {
 }
 
 .btn-paid-sm {
-  background: #7c3aed;
+  background: #ff8c1a;
   color: #fff;
   padding: 8px 18px;
   font-size: 13px;
@@ -1997,7 +1997,7 @@ a:hover {
 }
 
 .module-row.published .module-num {
-  background: rgba(4, 170, 109, 0.2);
+  background: rgba(255, 140, 26, 0.2);
   color: var(--green);
 }
 
@@ -2533,7 +2533,7 @@ a:hover {
 
   .header-track-featured {
     background: #f5f3ff;
-    border-color: rgba(124, 58, 237, 0.45);
+    border-color: rgba(255, 140, 26, 0.45);
   }
 
   .header-nav-tracks {
@@ -2731,7 +2731,7 @@ a:hover {
 
   .thunder-interview-section {
     border-width: 2px;
-    border-color: rgba(47, 141, 70, 0.35);
+    border-color: rgba(255, 140, 26, 0.35);
   }
 
   .module-row {
@@ -2801,7 +2801,7 @@ a:hover {
 
   .sidebar-link.active {
     border-left-color: var(--green);
-    background: rgba(4, 170, 109, 0.2);
+    background: rgba(255, 140, 26, 0.2);
   }
 
   .sidebar-title {
@@ -2876,7 +2876,7 @@ a:hover {
   }
 
   .sidebar-link.active {
-    background: rgba(4, 170, 109, 0.35);
+    background: rgba(255, 140, 26, 0.35);
     border-left-color: transparent;
   }
 
@@ -2926,8 +2926,8 @@ a:hover {
   }
 
   .sidebar-interview .sidebar-phase-jump {
-    border-color: rgba(124, 58, 237, 0.45);
-    background: rgba(124, 58, 237, 0.25);
+    border-color: rgba(255, 140, 26, 0.45);
+    background: rgba(255, 140, 26, 0.25);
   }
 
   .chapter-nav {
@@ -3272,20 +3272,20 @@ a:hover {
   background: var(--python-blue);
   color: #fff;
   border-color: var(--python-blue);
-  box-shadow: 0 4px 14px rgba(55, 118, 171, 0.35);
+  box-shadow: 0 4px 14px rgba(255, 140, 26, 0.35);
   transform: translateY(-1px);
 }
 
 .thunder-plus-actions .btn-java-udemy-outline {
-  color: #8710d8;
-  border-color: #a435f0;
+  color: #e0620f;
+  border-color: #ff8c1a;
 }
 
 .thunder-plus-actions .btn-java-udemy-outline:hover {
-  background: #a435f0;
+  background: #ff8c1a;
   color: #fff;
-  border-color: #a435f0;
-  box-shadow: 0 4px 14px rgba(164, 53, 240, 0.35);
+  border-color: #ff8c1a;
+  box-shadow: 0 4px 14px rgba(255, 140, 26, 0.35);
   transform: translateY(-1px);
 }
 
@@ -3377,9 +3377,9 @@ a:hover {
 
 /* ─── Thunder+ React & Next.js (ChaiCode Udemy) ─── */
 :root {
-  --nextjs-purple: #a435f0;
-  --nextjs-purple-dark: #8710d8;
-  --nextjs-purple-light: #c471ed;
+  --nextjs-purple: #ff8c1a;
+  --nextjs-purple-dark: #e0620f;
+  --nextjs-purple-light: #ffb877;
 }
 
 .nextjs-hero {
@@ -3408,7 +3408,7 @@ a:hover {
   align-items: center;
   gap: 8px;
   padding: 6px 14px;
-  border: 1px solid rgba(164, 53, 240, 0.5);
+  border: 1px solid rgba(255, 140, 26, 0.5);
   border-radius: 999px;
   font-size: 13px;
   font-weight: 500;
@@ -3454,7 +3454,7 @@ a:hover {
   padding: 8px 14px;
   border: 1px solid #3a1a5c;
   border-radius: 8px;
-  background: rgba(164, 53, 240, 0.1);
+  background: rgba(255, 140, 26, 0.1);
   font-size: 13px;
   color: rgba(255, 255, 255, 0.85);
 }
@@ -3504,7 +3504,7 @@ a:hover {
 }
 
 .btn-nextjs-udemy-sm {
-  background: rgba(164, 53, 240, 0.15);
+  background: rgba(255, 140, 26, 0.15);
   color: var(--nextjs-purple-dark);
   border: 1px solid var(--nextjs-purple);
   font-size: 13px;
@@ -3519,11 +3519,11 @@ a:hover {
 .btn-outline-nextjs {
   background: transparent;
   color: #fff;
-  border: 2px solid rgba(164, 53, 240, 0.6);
+  border: 2px solid rgba(255, 140, 26, 0.6);
 }
 
 .btn-outline-nextjs:hover {
-  background: rgba(164, 53, 240, 0.15);
+  background: rgba(255, 140, 26, 0.15);
   border-color: var(--nextjs-purple);
 }
 
@@ -3574,7 +3574,7 @@ a:hover {
 
 .thunder-nextjs-section {
   background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-  border-color: rgba(164, 53, 240, 0.25);
+  border-color: rgba(255, 140, 26, 0.25);
 }
 
 .thunder-plus-badge-nextjs {
@@ -3593,7 +3593,7 @@ a:hover {
 .sidebar-nextjs .sidebar-link.active,
 .sidebar-nextjs .sidebar-link-nextjs.active {
   border-left-color: var(--nextjs-purple);
-  background: rgba(164, 53, 240, 0.15);
+  background: rgba(255, 140, 26, 0.15);
 }
 
 .progress-fill-nextjs {
@@ -3601,9 +3601,9 @@ a:hover {
 }
 
 .chapter-badge-nextjs {
-  background: rgba(164, 53, 240, 0.12);
+  background: rgba(255, 140, 26, 0.12);
   color: var(--nextjs-purple-dark);
-  border: 1px solid rgba(164, 53, 240, 0.35);
+  border: 1px solid rgba(255, 140, 26, 0.35);
 }
 
 .chapter-intro-nextjs {
@@ -3615,7 +3615,7 @@ a:hover {
 }
 
 .paid-lecture-banner-nextjs {
-  border-color: rgba(164, 53, 240, 0.35);
+  border-color: rgba(255, 140, 26, 0.35);
   background: #faf5ff;
 }
 
@@ -3646,9 +3646,9 @@ a:hover {
 
 /* ─── Thunder++ Python & Agentic AI (Ashok IT) ─── */
 :root {
-  --python-blue: #3776ab;
-  --python-blue-dark: #2a5f8f;
-  --python-yellow: #ffd343;
+  --python-blue: #ff8c1a;
+  --python-blue-dark: #e0620f;
+  --python-yellow: #ff512f;
   --python-red: #c41e3a;
 }
 
@@ -3724,7 +3724,7 @@ a:hover {
   padding: 8px 14px;
   border: 1px solid #1a3a5c;
   border-radius: 8px;
-  background: rgba(55, 118, 171, 0.15);
+  background: rgba(255, 140, 26, 0.15);
   font-size: 13px;
   color: rgba(255, 255, 255, 0.85);
 }
@@ -3773,7 +3773,7 @@ a:hover {
 }
 
 .btn-python-portal-sm {
-  background: rgba(55, 118, 171, 0.15);
+  background: rgba(255, 140, 26, 0.15);
   color: var(--python-blue-dark);
   border: 1px solid var(--python-blue);
   font-size: 13px;
@@ -3843,7 +3843,7 @@ a:hover {
 
 .thunder-python-section {
   background: linear-gradient(135deg, #f0f7ff 0%, #e8f4e8 100%);
-  border-color: rgba(55, 118, 171, 0.25);
+  border-color: rgba(255, 140, 26, 0.25);
 }
 
 .thunder-plus-badge-python {
@@ -3863,7 +3863,7 @@ a:hover {
 .sidebar-python .sidebar-link.active,
 .sidebar-python .sidebar-link-python.active {
   border-left-color: var(--python-blue);
-  background: rgba(55, 118, 171, 0.15);
+  background: rgba(255, 140, 26, 0.15);
 }
 
 .progress-fill-python {
@@ -3871,9 +3871,9 @@ a:hover {
 }
 
 .chapter-badge-python {
-  background: rgba(55, 118, 171, 0.12);
+  background: rgba(255, 140, 26, 0.12);
   color: var(--python-blue-dark);
-  border: 1px solid rgba(55, 118, 171, 0.35);
+  border: 1px solid rgba(255, 140, 26, 0.35);
 }
 
 .chapter-intro-python {
@@ -3885,7 +3885,7 @@ a:hover {
 }
 
 .paid-lecture-banner-python {
-  border-color: rgba(55, 118, 171, 0.35);
+  border-color: rgba(255, 140, 26, 0.35);
   background: #f0f7ff;
 }
 
@@ -4033,27 +4033,27 @@ a:hover {
 }
 
 .btn-java-udemy {
-  background: #a435f0;
+  background: #ff8c1a;
   color: #fff;
-  border: 2px solid #a435f0;
+  border: 2px solid #ff8c1a;
   font-weight: 700;
 }
 
 .btn-java-udemy:hover {
-  background: #8710d8;
-  border-color: #8710d8;
+  background: #e0620f;
+  border-color: #e0620f;
 }
 
 .btn-java-udemy-sm {
-  background: rgba(164, 53, 240, 0.12);
-  color: #8710d8;
-  border: 1px solid #a435f0;
+  background: rgba(255, 140, 26, 0.12);
+  color: #e0620f;
+  border: 1px solid #ff8c1a;
   font-size: 13px;
   padding: 6px 12px;
 }
 
 .btn-java-udemy-sm:hover {
-  background: #a435f0;
+  background: #ff8c1a;
   color: #fff;
 }
 
@@ -4072,15 +4072,15 @@ a:hover {
   display: inline-block;
   padding: 12px 24px;
   background: transparent;
-  color: #8710d8;
-  border: 2px solid #a435f0;
+  color: #e0620f;
+  border: 2px solid #ff8c1a;
   border-radius: 8px;
   font-weight: 600;
   text-decoration: none;
 }
 
 .btn-java-udemy-outline:hover {
-  background: #a435f0;
+  background: #ff8c1a;
   color: #fff;
 }
 
@@ -4171,8 +4171,8 @@ a:hover {
 }
 
 .module-row-udemy {
-  background: rgba(164, 53, 240, 0.06);
-  border-top: 1px dashed rgba(164, 53, 240, 0.3);
+  background: rgba(255, 140, 26, 0.06);
+  border-top: 1px dashed rgba(255, 140, 26, 0.3);
   text-decoration: none;
   color: inherit;
 }
@@ -4281,7 +4281,7 @@ a:hover {
   --aws-orange: #ff9900;
   --aws-orange-dark: #ec7211;
   --aws-dark: #232f3e;
-  --kodekloud-cyan: #00b4d8;
+  --kodekloud-cyan: #ff8c1a;
 }
 
 .aws-hero {
@@ -4402,8 +4402,8 @@ a:hover {
 }
 
 .btn-aws-kodekloud:hover {
-  background: #0096c7;
-  border-color: #0096c7;
+  background: #e0620f;
+  border-color: #e0620f;
   color: #fff;
 }
 
@@ -4419,7 +4419,7 @@ a:hover {
 }
 
 .btn-aws-kodekloud-sm {
-  background: rgba(0, 180, 216, 0.15);
+  background: rgba(255, 140, 26, 0.15);
   color: #0077b6;
   border: 1px solid var(--kodekloud-cyan);
   font-size: 13px;
@@ -4555,10 +4555,10 @@ a:hover {
 
 /* ─── Thunder++ 100 Days of DevOps (KodeKloud + CloudFolks) ─── */
 :root {
-  --devops-blue: #00b4d8;
-  --devops-blue-dark: #0096c7;
+  --devops-blue: #ff8c1a;
+  --devops-blue-dark: #e0620f;
   --devops-navy: #0a1628;
-  --devops-purple: #7b2cbf;
+  --devops-purple: #ff512f;
 }
 
 .devops-hero {
@@ -4587,7 +4587,7 @@ a:hover {
   align-items: center;
   gap: 8px;
   padding: 6px 14px;
-  border: 1px solid rgba(0, 180, 216, 0.5);
+  border: 1px solid rgba(255, 140, 26, 0.5);
   border-radius: 999px;
   font-size: 13px;
   font-weight: 500;
@@ -4633,7 +4633,7 @@ a:hover {
   padding: 8px 14px;
   border: 1px solid #3d4f63;
   border-radius: 8px;
-  background: rgba(0, 180, 216, 0.1);
+  background: rgba(255, 140, 26, 0.1);
   font-size: 13px;
   color: rgba(255, 255, 255, 0.85);
 }
@@ -4695,7 +4695,7 @@ a:hover {
 }
 
 .btn-devops-kodekloud-sm {
-  background: rgba(0, 180, 216, 0.15);
+  background: rgba(255, 140, 26, 0.15);
   color: #0077b6;
   border: 1px solid var(--devops-blue);
   font-size: 13px;
@@ -4710,11 +4710,11 @@ a:hover {
 .btn-outline-devops {
   background: transparent;
   color: #fff;
-  border: 2px solid rgba(0, 180, 216, 0.6);
+  border: 2px solid rgba(255, 140, 26, 0.6);
 }
 
 .btn-outline-devops:hover {
-  background: rgba(0, 180, 216, 0.12);
+  background: rgba(255, 140, 26, 0.12);
   border-color: var(--devops-blue);
 }
 
@@ -4760,7 +4760,7 @@ a:hover {
 
 .thunder-devops-section {
   background: linear-gradient(135deg, #f0f9fc 0%, #e0f4fa 100%);
-  border-color: rgba(0, 180, 216, 0.3);
+  border-color: rgba(255, 140, 26, 0.3);
 }
 
 .thunder-plus-badge-devops {
@@ -4781,7 +4781,7 @@ a:hover {
 .sidebar-devops .sidebar-link.active,
 .sidebar-devops .sidebar-link-devops.active {
   border-left-color: var(--devops-blue);
-  background: rgba(0, 180, 216, 0.12);
+  background: rgba(255, 140, 26, 0.12);
 }
 
 .progress-fill-devops {
@@ -4789,9 +4789,9 @@ a:hover {
 }
 
 .chapter-badge-devops {
-  background: rgba(0, 180, 216, 0.12);
+  background: rgba(255, 140, 26, 0.12);
   color: var(--devops-blue-dark);
-  border: 1px solid rgba(0, 180, 216, 0.35);
+  border: 1px solid rgba(255, 140, 26, 0.35);
 }
 
 .chapter-intro-devops {
@@ -4803,7 +4803,7 @@ a:hover {
 }
 
 .paid-lecture-banner-devops {
-  border-color: rgba(0, 180, 216, 0.35);
+  border-color: rgba(255, 140, 26, 0.35);
   background: #f0f9fc;
 }
 
@@ -4835,10 +4835,10 @@ a:hover {
 
 /* ─── Thunder++ Kubernetes (KodeKloud) ─── */
 :root {
-  --k8s-blue: #326ce5;
-  --k8s-blue-dark: #1a4fb5;
+  --k8s-blue: #ff8c1a;
+  --k8s-blue-dark: #e0620f;
   --k8s-navy: #0a1628;
-  --k8s-cyan: #00d4ff;
+  --k8s-cyan: #ff512f;
 }
 
 .k8s-hero {
@@ -4867,7 +4867,7 @@ a:hover {
   align-items: center;
   gap: 8px;
   padding: 6px 14px;
-  border: 1px solid rgba(50, 108, 229, 0.5);
+  border: 1px solid rgba(255, 140, 26, 0.5);
   border-radius: 999px;
   font-size: 13px;
   font-weight: 500;
@@ -4913,7 +4913,7 @@ a:hover {
   padding: 8px 14px;
   border: 1px solid #3d4f63;
   border-radius: 8px;
-  background: rgba(50, 108, 229, 0.12);
+  background: rgba(255, 140, 26, 0.12);
   font-size: 13px;
   color: rgba(255, 255, 255, 0.85);
 }
@@ -4976,7 +4976,7 @@ a:hover {
 }
 
 .btn-k8s-kodekloud-sm {
-  background: rgba(50, 108, 229, 0.15);
+  background: rgba(255, 140, 26, 0.15);
   color: var(--k8s-blue);
   border: 1px solid var(--k8s-blue);
   font-size: 13px;
@@ -4991,11 +4991,11 @@ a:hover {
 .btn-outline-k8s {
   background: transparent;
   color: #fff;
-  border: 2px solid rgba(50, 108, 229, 0.6);
+  border: 2px solid rgba(255, 140, 26, 0.6);
 }
 
 .btn-outline-k8s:hover {
-  background: rgba(50, 108, 229, 0.12);
+  background: rgba(255, 140, 26, 0.12);
   border-color: var(--k8s-blue);
 }
 
@@ -5034,7 +5034,7 @@ a:hover {
   display: block;
   padding: 10px 14px;
   background: #fff;
-  border: 1px solid rgba(50, 108, 229, 0.25);
+  border: 1px solid rgba(255, 140, 26, 0.25);
   border-radius: 8px;
   color: #1a1a2e;
   font-size: 14px;
@@ -5064,7 +5064,7 @@ a:hover {
 
 .thunder-k8s-section {
   background: linear-gradient(135deg, #f0f4ff 0%, #e0eaff 100%);
-  border-color: rgba(50, 108, 229, 0.3);
+  border-color: rgba(255, 140, 26, 0.3);
 }
 
 .thunder-plus-badge-k8s {
@@ -5085,7 +5085,7 @@ a:hover {
 .sidebar-k8s .sidebar-link.active,
 .sidebar-k8s .sidebar-link-k8s.active {
   border-left-color: var(--k8s-blue);
-  background: rgba(50, 108, 229, 0.12);
+  background: rgba(255, 140, 26, 0.12);
 }
 
 .progress-fill-k8s {
@@ -5093,9 +5093,9 @@ a:hover {
 }
 
 .chapter-badge-k8s {
-  background: rgba(50, 108, 229, 0.12);
+  background: rgba(255, 140, 26, 0.12);
   color: var(--k8s-blue-dark);
-  border: 1px solid rgba(50, 108, 229, 0.35);
+  border: 1px solid rgba(255, 140, 26, 0.35);
 }
 
 .chapter-intro-k8s {
@@ -5107,7 +5107,7 @@ a:hover {
 }
 
 .paid-lecture-banner-k8s {
-  border-color: rgba(50, 108, 229, 0.35);
+  border-color: rgba(255, 140, 26, 0.35);
   background: #f0f4ff;
 }
 
@@ -5139,9 +5139,9 @@ a:hover {
 
 /* ─── Thunder++ Interview Preparation (ChaiCode + GeeksForGeeks) ─── */
 :root {
-  --interview-green: #2f8d46;
-  --interview-green-dark: #1e6b32;
-  --interview-gold: #f4c430;
+  --interview-green: #ff8c1a;
+  --interview-green-dark: #e0620f;
+  --interview-gold: #ff512f;
   --interview-navy: #1a1a2e;
 }
 
@@ -5171,11 +5171,11 @@ a:hover {
   align-items: center;
   gap: 8px;
   padding: 6px 14px;
-  border: 1px solid rgba(47, 141, 70, 0.5);
+  border: 1px solid rgba(255, 140, 26, 0.5);
   border-radius: 999px;
   font-size: 13px;
   font-weight: 500;
-  color: #7ddf9a;
+  color: #ffb877;
   margin-bottom: 28px;
 }
 
@@ -5217,7 +5217,7 @@ a:hover {
   padding: 8px 14px;
   border: 1px solid #3d4f63;
   border-radius: 8px;
-  background: rgba(47, 141, 70, 0.12);
+  background: rgba(255, 140, 26, 0.12);
   font-size: 13px;
   color: rgba(255, 255, 255, 0.85);
 }
@@ -5231,7 +5231,7 @@ a:hover {
 }
 
 .interview-hero-desc a {
-  color: #7ddf9a;
+  color: #ffb877;
   font-weight: 600;
 }
 
@@ -5255,9 +5255,9 @@ a:hover {
 }
 
 .btn-interview-chaicode {
-  background: #7c3aed;
+  background: #ff8c1a;
   color: #fff;
-  border: 2px solid #7c3aed;
+  border: 2px solid #ff8c1a;
   font-weight: 700;
 }
 
@@ -5279,26 +5279,26 @@ a:hover {
 }
 
 .btn-interview-chaicode-sm {
-  background: rgba(124, 58, 237, 0.12);
+  background: rgba(255, 140, 26, 0.12);
   color: #6d28d9;
-  border: 1px solid #7c3aed;
+  border: 1px solid #ff8c1a;
   font-size: 13px;
   padding: 6px 12px;
 }
 
 .btn-interview-chaicode-sm:hover {
-  background: #7c3aed;
+  background: #ff8c1a;
   color: #fff;
 }
 
 .btn-outline-interview {
   background: transparent;
   color: #fff;
-  border: 2px solid rgba(47, 141, 70, 0.6);
+  border: 2px solid rgba(255, 140, 26, 0.6);
 }
 
 .btn-outline-interview:hover {
-  background: rgba(47, 141, 70, 0.12);
+  background: rgba(255, 140, 26, 0.12);
   border-color: var(--interview-green);
 }
 
@@ -5307,14 +5307,14 @@ a:hover {
   padding: 12px 24px;
   background: transparent;
   color: #6d28d9;
-  border: 2px solid #7c3aed;
+  border: 2px solid #ff8c1a;
   border-radius: 8px;
   font-weight: 600;
   text-decoration: none;
 }
 
 .btn-interview-chaicode-outline:hover {
-  background: #7c3aed;
+  background: #ff8c1a;
   color: #fff;
 }
 
@@ -5337,7 +5337,7 @@ a:hover {
   display: block;
   padding: 10px 14px;
   background: #fff;
-  border: 1px solid rgba(47, 141, 70, 0.25);
+  border: 1px solid rgba(255, 140, 26, 0.25);
   border-radius: 8px;
   color: #1a1a2e;
   font-size: 14px;
@@ -5350,8 +5350,8 @@ a:hover {
 }
 
 .module-row-course {
-  background: rgba(47, 141, 70, 0.06);
-  border-top: 1px dashed rgba(47, 141, 70, 0.3);
+  background: rgba(255, 140, 26, 0.06);
+  border-top: 1px dashed rgba(255, 140, 26, 0.3);
   text-decoration: none;
   color: inherit;
 }
@@ -5374,7 +5374,7 @@ a:hover {
 
 .thunder-interview-section {
   background: linear-gradient(135deg, #f4faf5 0%, #e8f5e9 100%);
-  border-color: rgba(47, 141, 70, 0.3);
+  border-color: rgba(255, 140, 26, 0.3);
 }
 
 .thunder-plus-badge-interview {
@@ -5395,7 +5395,7 @@ a:hover {
 .sidebar-interview .sidebar-link.active,
 .sidebar-interview .sidebar-link-interview.active {
   border-left-color: var(--interview-green);
-  background: rgba(47, 141, 70, 0.12);
+  background: rgba(255, 140, 26, 0.12);
 }
 
 .progress-fill-interview {
@@ -5403,9 +5403,9 @@ a:hover {
 }
 
 .chapter-badge-interview {
-  background: rgba(47, 141, 70, 0.12);
+  background: rgba(255, 140, 26, 0.12);
   color: var(--interview-green-dark);
-  border: 1px solid rgba(47, 141, 70, 0.35);
+  border: 1px solid rgba(255, 140, 26, 0.35);
 }
 
 .chapter-intro-interview {
@@ -5417,7 +5417,7 @@ a:hover {
 }
 
 .paid-lecture-banner-interview {
-  border-color: rgba(47, 141, 70, 0.35);
+  border-color: rgba(255, 140, 26, 0.35);
   background: #f4faf5;
 }
 
@@ -5688,10 +5688,10 @@ a:hover {
    Roadmap timeline page (/roadmap)
    ============================================================ */
 .roadmap-page {
-  --rm-y1: #2563eb;
-  --rm-y2: #d97706;
-  --rm-y3: #7c3aed;
-  --rm-y4: #0d9488;
+  --rm-y1: #ff8c1a;
+  --rm-y2: #ff512f;
+  --rm-y3: #ff8c1a;
+  --rm-y4: #e0620f;
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem 1.25rem 4rem;
@@ -5955,7 +5955,7 @@ a:hover {
 }
 .roadmap-finish-flag { font-size: 1.8rem; }
 .roadmap-finish-title { margin: 0; font-size: 1.1rem; font-weight: 800; }
-.roadmap-finish-date { margin: 0.1rem 0 0; font-size: 0.85rem; color: #a7f3d0; }
+.roadmap-finish-date { margin: 0.1rem 0 0; font-size: 0.85rem; color: #ffb877; }
 
 /* Flow footer */
 .roadmap-flow {
@@ -6089,12 +6089,12 @@ a:hover {
   border-color: rgba(139, 92, 246, 0.28);
 }
 .thunder-plus-badge-genai {
-  background: #7c3aed;
+  background: #ff8c1a;
 }
 .btn-genai {
-  background: #7c3aed;
+  background: #ff8c1a;
   color: #fff;
-  border: 2px solid #7c3aed;
+  border: 2px solid #ff8c1a;
 }
 .btn-genai:hover {
   background: #6d28d9;
@@ -6102,11 +6102,11 @@ a:hover {
 }
 .btn-outline-genai {
   background: transparent;
-  color: #7c3aed;
-  border: 2px solid #7c3aed;
+  color: #ff8c1a;
+  border: 2px solid #ff8c1a;
 }
 .btn-outline-genai:hover {
-  background: #7c3aed;
+  background: #ff8c1a;
   color: #fff;
 }
 
@@ -6123,13 +6123,13 @@ a:hover {
 .chapter-genai .chapter-breadcrumb a,
 .chapter-genai .chapter-meta,
 .chapter-genai .chapter-subtitle { color: #a9b4c2; }
-.chapter-genai .chapter-breadcrumb a:hover { color: #c4b5fd; }
+.chapter-genai .chapter-breadcrumb a:hover { color: #ffd9b8; }
 .chapter-genai h1,
 .chapter-genai h2,
 .chapter-genai h3 { color: #f5f3ff; }
 .chapter-genai .chapter-badge {
   background: rgba(139, 92, 246, 0.16);
-  color: #c4b5fd;
+  color: #ffd9b8;
   border: 1px solid rgba(139, 92, 246, 0.4);
 }
 
@@ -6139,7 +6139,7 @@ a:hover {
 .chapter-genai .chapter-section h3 { color: #ede9fe; }
 .chapter-genai .section-content { color: #cbd5e1; }
 .chapter-genai .section-content strong { color: #f5f3ff; }
-.chapter-genai .section-content a { color: #a78bfa; }
+.chapter-genai .section-content a { color: #ffb877; }
 .chapter-genai .section-num { background: #8b5cf6; color: #fff; }
 
 /* Inline code chips */
@@ -6174,7 +6174,7 @@ a:hover {
 .chapter-genai .quiz-title,
 .chapter-genai .quiz-q-text,
 .chapter-genai .quiz-question { color: #f5f3ff; }
-.chapter-genai .quiz-num { color: #a78bfa; }
+.chapter-genai .quiz-num { color: #ffb877; }
 .chapter-genai .quiz-option {
   background: #0f0d19;
   border: 1px solid #2a2140;
@@ -6207,7 +6207,7 @@ a:hover {
 .chapter-genai .code-block code { color: #e6edf3; }
 .chapter-genai .code-block-header {
   background: #1b1530;
-  color: #c4b5fd;
+  color: #ffd9b8;
   border-bottom: 1px solid #2a2140;
 }
 
@@ -6356,14 +6356,14 @@ a:hover {
   gap: 32px;
   align-items: center;
   background:
-    radial-gradient(120% 120% at 100% 0%, rgba(55, 118, 171, 0.12), transparent 55%),
+    radial-gradient(120% 120% at 100% 0%, rgba(255, 140, 26, 0.12), transparent 55%),
     var(--panel, rgba(127, 127, 127, 0.05));
   border: 1px solid var(--border, #2a3441);
   border-radius: 18px;
   padding: 28px 30px;
 }
 .py-exam .section-eyebrow {
-  color: var(--python-blue, #3776ab);
+  color: var(--python-blue, #ff8c1a);
   font-weight: 800;
   font-size: 0.8rem;
   letter-spacing: 0.08em;
@@ -6399,7 +6399,7 @@ a:hover {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: var(--python-blue, #3776ab);
+  background: var(--python-blue, #ff8c1a);
   color: #fff;
   font-size: 0.72rem;
   font-weight: 800;
