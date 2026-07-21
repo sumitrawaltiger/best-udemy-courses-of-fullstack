@@ -2,80 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture03';
-const GH_LECTURE_UI = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture03.1';
+const RHF_DOCS = 'https://react-hook-form.com/';
+const ZOD_DOCS = 'https://zod.dev/';
 
 const LEARNT_TODAY = [
-  { title: 'Chat session recap', text: 'ai.chats.create keeps the conversation history automatically across chat.sendMessage calls' },
-  { title: 'A tutor persona', text: 'a strict systemInstruction turns the model into a coding tutor that answers from first principles' },
-  { title: 'Guardrails', text: 'the instruction can force the AI to refuse anything off-topic — answer only coding questions' },
-  { title: 'Terminal chatbot', text: 'a readline-sync while-loop drives a back-and-forth chat until you type exit' },
-  { title: 'Into the browser', text: 'import @google/genai from a CDN (ESM) and the exact same chat runs in the browser' },
-  { title: 'A real chat UI', text: 'render user and AI messages into the DOM, format code blocks, and show a typing indicator' },
-  { title: 'Key exposure warning', text: 'putting the API key in front-end JavaScript is fine for learning but leaks it — never ship it that way' },
-  { title: 'One brain, two frontends', text: 'terminal and web share the identical chat session and systemInstruction — only the UI differs' },
+  { title: 'Controlled inputs get slow', text: 'a useState per field re-renders the whole form on every keystroke' },
+  { title: 'React Hook Form', text: 'uses uncontrolled inputs + refs, so typing re-renders almost nothing — fast forms' },
+  { title: 'register', text: 'spread register("email") onto an input to wire it into the form with no state' },
+  { title: 'handleSubmit', text: 'validates, then calls your typed onSubmit only when the data is valid' },
+  { title: 'Zod schema', text: 'declare the shape and rules once; z.infer gives you the TypeScript type for free' },
+  { title: 'zodResolver', text: 'bridges Zod to React Hook Form so validation errors appear per field' },
+  { title: 'Typed errors', text: 'formState.errors is typed to your schema — show messages inline' },
+  { title: 'One source of truth', text: 'the Zod schema defines both validation and the form’s type — they never drift' },
 ];
 
-const TUTOR = [
+const RHF = [
   {
-    icon: '👨‍🏫', title: 'The Tutor Persona', titleClass: 'card-title-cyan', subtitle: 'systemInstruction',
+    icon: '⚡', title: 'Why React Hook Form', titleClass: 'card-title-cyan', subtitle: 'Fast, Less Code',
     description:
-      'A strict systemInstruction shapes the whole conversation: answer only coding questions, explain from first principles, and stay to the point. The persona is set once at chat creation.',
-    code: 'const chat = ai.chats.create({\n  model: "gemini-2.5-flash",\n  systemInstruction: `You are a programming tutor.\n  - Only answer coding questions\n  - Refuse anything unrelated to coding\n  - Explain using first principles, to the point`,\n});',
+      'Controlled forms re-render on every keystroke. React Hook Form keeps inputs uncontrolled via refs, so it’s fast and needs no per-field useState. register() wires each input in.',
+    code: 'const { register, handleSubmit } = useForm<FormData>();\n\n<input {...register("email")} />\n<input type="password" {...register("password")} />\n<button>Sign in</button>',
   },
   {
-    icon: '🔁', title: 'The Chat Loop', titleClass: 'card-title-purple', subtitle: 'Memory + readline',
+    icon: '✅', title: 'handleSubmit', titleClass: 'card-title-purple', subtitle: 'Validate, Then Run',
     description:
-      'The chat session remembers every turn, so follow-up questions keep context. A readline-sync loop reads input until "exit" — a complete terminal tutor.',
-    code: 'while (true) {\n  const q = readlineSync.question("Ask me a question: ");\n  if (q === "exit") break;\n  const res = await chat.sendMessage({ message: q });\n  console.log("Response:", res.text);\n}',
-  },
-  {
-    icon: '🛡️', title: 'Guardrails', titleClass: 'card-title-amber', subtitle: 'Stay On Topic',
-    description:
-      'Because the rules live in the systemInstruction, the model politely refuses off-topic questions on its own — no extra code. That is prompt-level control over behaviour.',
-    code: '// User: "What is the weather?"\n// AI:   "I only answer coding questions." ✅',
+      'Wrap your submit handler in handleSubmit. It validates first and only calls onSubmit with fully-typed, valid data — no manual checks scattered through the component.',
+    code: 'const onSubmit = (data: FormData) => save(data);\n<form onSubmit={handleSubmit(onSubmit)}> … </form>',
   },
 ];
 
-const BROWSER = [
+const ZOD = [
   {
-    icon: '🌐', title: 'SDK In The Browser', titleClass: 'card-title-cyan', subtitle: 'CDN ESM Import',
+    icon: '📐', title: 'A Zod Schema', titleClass: 'card-title-cyan', subtitle: 'Rules + Type',
     description:
-      'No bundler needed — import the SDK straight from a CDN as an ES module in a plain HTML page, and create the same chat session client-side.',
-    code: 'import { GoogleGenAI } from\n  "https://cdn.jsdelivr.net/npm/@google/genai@1.32.0/+esm";\n\nconst ai = new GoogleGenAI({ apiKey: "YOUR_KEY" });\nconst chat = ai.chats.create({ model: "gemini-2.5-flash" });',
+      'Describe the form once with Zod — types and rules together. z.infer turns the schema into a TypeScript type, so the form data and validation never drift apart.',
+    code: 'const Schema = z.object({\n  email: z.string().email(),\n  password: z.string().min(8, "Min 8 chars"),\n});\ntype FormData = z.infer<typeof Schema>;',
   },
   {
-    icon: '🎨', title: 'A Real Chat UI', titleClass: 'card-title-purple', subtitle: 'DOM + Formatting',
+    icon: '🔗', title: 'zodResolver', titleClass: 'card-title-purple', subtitle: 'Wire Them Together',
     description:
-      'Append each message as a styled bubble, convert markdown code fences to <pre><code>, and add a typing indicator while waiting — it starts to feel like a real product.',
-    code: 'function formatMessage(text) {\n  return text\n    .replace(/```([\\s\\S]*?)```/g, "<pre><code>$1</code></pre>")\n    .replace(/`([^`]+)`/g, "<code>$1</code>")\n    .replace(/\\n/g, "<br>");\n}',
+      'Pass zodResolver(Schema) to useForm and every field is validated against Zod. Failed rules populate a typed errors object you render inline.',
+    code: 'const { register, handleSubmit, formState: { errors } } =\n  useForm<FormData>({ resolver: zodResolver(Schema) });',
   },
   {
-    icon: '⚠️', title: 'The Key Problem', titleClass: 'card-title-amber', subtitle: 'Learning Only',
+    icon: '⚠️', title: 'Show Errors', titleClass: 'card-title-amber', subtitle: 'Typed & Inline',
     description:
-      'The browser version hardcodes the API key, which anyone can read in the source. Great for a demo, dangerous in production — the fix is a backend that holds the key, coming later.',
-    code: '// apiKey: "AIza..."  ← visible to everyone in dev tools\n// production → call your own server, keep the key there',
+      'errors is typed to your schema, so errors.email?.message is safe. Render it under the field — clear, per-input feedback with zero guesswork.',
+    code: '<input {...register("email")} />\n{errors.email && <p className="err">{errors.email.message}</p>}',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 03 Code', titleClass: 'card-title-cyan', subtitle: 'Terminal Tutor',
+    icon: '📘', title: 'React Hook Form', titleClass: 'card-title-cyan', subtitle: 'Official Docs',
     description:
-      'The Node version — a chat session with the tutor systemInstruction driven by a readline-sync loop.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 03 →', external: true },
+      'The performant forms library — register, handleSubmit, useController, field arrays and resolvers, all TypeScript-friendly.',
+    link: { href: RHF_DOCS, label: 'Open React Hook Form →', external: true },
   },
   {
-    icon: '🖥️', title: 'Lecture 03.1 Code', titleClass: 'card-title-purple', subtitle: 'Browser Chat UI',
+    icon: '📗', title: 'Zod', titleClass: 'card-title-purple', subtitle: 'Schema Validation',
     description:
-      'The web version — index.html, style.css and script.js that run the same tutor in the browser with a chat interface.',
-    link: { href: GH_LECTURE_UI, label: 'Open Lecture 03.1 →', external: true },
+      'TypeScript-first schema validation — define once, validate everywhere, and infer the type. The same Zod you met in the TS foundation.',
+    link: { href: ZOD_DOCS, label: 'Open Zod docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Real-World Data', titleClass: 'card-title-amber', subtitle: 'Prereq 4 Preview',
+    icon: '🔜', title: 'Next: Global State', titleClass: 'card-title-amber', subtitle: 'Day 20 Preview',
     description:
-      'Tomorrow is Lecture 04 — the model has no live data, so we call real APIs (crypto, weather, news) and start routing a question to the right function.',
-    link: { href: '/day-020', label: 'Go to Prereq 4 →' },
+      'Tomorrow — lightweight global state with Zustand: a typed store outside React, no boilerplate, no context wrapping, and selective re-renders.',
+    link: { href: '/day-020', label: 'Go to Day 20 →' },
   },
 ];
 
@@ -140,38 +134,38 @@ export default function Day019() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-018" className="day001-nav-btn day001-nav-prev">← Prereq 2</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 3</p>
-          <Link to="/day-020" className="day001-nav-btn day001-nav-next">Prereq 4 →</Link>
+          <Link to="/day-018" className="day001-nav-btn day001-nav-prev">← Day 18</Link>
+          <p className="day001-datetime">TypeScript Day 19</p>
+          <Link to="/day-020" className="day001-nav-btn day001-nav-next">Day 20 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 03</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Forms</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 3 <span aria-hidden="true">💬</span></h1>
-              <p className="day001-day-theme">CHAT WITH MEMORY, A PERSONA &amp; A WEB UI</p>
+              <h1 className="day001-day-num">DAY 19 <span aria-hidden="true">📝</span></h1>
+              <p className="day001-day-theme">FORMS — REACT HOOK FORM + ZOD</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '3%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '19%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 03 — a real chatbot with a personality. A strict <strong>systemInstruction</strong> turns Gemini
-          into a <strong>coding tutor</strong> that answers only coding questions from first principles, and a{' '}
-          <strong>chat session</strong> keeps the memory across a <strong>readline</strong> loop. Then I took the
-          exact same brain into the <strong>browser</strong> — importing the SDK from a CDN, rendering a chat UI
-          with formatted code and a typing indicator. Lesson learned: a{' '}
-          <strong>front-end API key is exposed to everyone</strong>, so a backend comes later.{' '}
-          <em>One brain, two frontends.</em>
+          Real forms, done right. A <code>useState</code> per field re-renders the whole form on every keystroke;{' '}
+          <strong>React Hook Form</strong> keeps inputs <strong>uncontrolled</strong> (refs), so typing costs almost
+          nothing. Spread <code>register("email")</code> onto an input and wrap your handler in{' '}
+          <strong>handleSubmit</strong> — it validates, then calls your <em>typed</em> <code>onSubmit</code> only with
+          valid data. Validation comes from a <strong>Zod schema</strong> (rules once; <code>z.infer</code> gives the
+          type), wired in with <strong>zodResolver</strong>, and <code>formState.errors</code> is typed to your schema
+          for inline messages. One schema = validation <em>and</em> type. <em>Next: global state with Zustand.</em>
         </p>
 
         <section className="day001-learnt">
@@ -186,12 +180,12 @@ export default function Day019() {
           </ul>
         </section>
 
-        <CardSection icon="👨‍🏫" title="THE TUTOR CHATBOT" cards={TUTOR} columns={3} />
-        <CardSection icon="🌐" title="TAKING IT TO THE BROWSER" cards={BROWSER} columns={3} />
+        <CardSection icon="⚡" title="REACT HOOK FORM" cards={RHF} columns={2} />
+        <CardSection icon="📐" title="ZOD VALIDATION" cards={ZOD} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Gemini</span><span>#CoderArmy</span><span>#JavaScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#ReactHookForm</span><span>#Zod</span>
         </footer>
       </div>
     </div>

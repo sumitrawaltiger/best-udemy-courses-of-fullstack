@@ -2,101 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture05';
-const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
-const GEMINI_FC = 'https://ai.google.dev/gemini-api/docs/function-calling';
+const VITEST_DOCS = 'https://vitest.dev/';
+const RTL_DOCS = 'https://testing-library.com/docs/react-testing-library/intro/';
 
 const LEARNT_TODAY = [
-  { title: 'Function calling', text: 'describe your tools to the model and it decides which to call and with what arguments — no manual routing' },
-  { title: 'Tool declaration', text: 'each tool is a name + description + parameters schema the model reads to understand what it does' },
-  { title: 'Typed parameters', text: 'the SDK’s Type.OBJECT and Type.STRING describe each argument, and required lists the mandatory ones' },
-  { title: 'Description is the prompt', text: 'the model picks a tool from its description, so clear names and descriptions matter a lot' },
-  { title: 'The model returns a call', text: 'instead of text you get a functionCall — a name plus args, e.g. cryptoCurrency({ coin: "bitcoin" })' },
-  { title: 'You execute it', text: 'run the real function with those args, get the live data back from the API' },
-  { title: 'Feed the result back', text: 'send the tool result to the model so it writes a natural-language answer for the user' },
-  { title: 'The agent loop', text: 'think → call a tool → observe the result → respond: this loop is the heart of every AI agent' },
+  { title: 'Vitest', text: 'a fast, Vite-native test runner with a Jest-compatible API — describe, it, expect' },
+  { title: 'React Testing Library', text: 'render components and test them the way a user actually uses them' },
+  { title: 'Query by role', text: 'getByRole / getByLabelText find elements accessibly — not by brittle CSS classes' },
+  { title: 'user-event', text: 'simulate real interactions — click, type, tab — closer to a real user than fireEvent' },
+  { title: 'Assert behaviour', text: 'test what the user sees and does, not internal state or implementation details' },
+  { title: 'findBy for async', text: 'await findByText waits for elements that appear after a fetch or state update' },
+  { title: 'Mock the network', text: 'MSW intercepts requests so tests are fast and deterministic' },
+  { title: 'Confidence to refactor', text: 'behaviour tests keep passing when you change internals — safe to improve code' },
 ];
 
-const DECLARE = [
+const TOOLS = [
   {
-    icon: '📋', title: 'Declare A Tool', titleClass: 'card-title-cyan', subtitle: 'Name · Description · Params',
+    icon: '⚡', title: 'Vitest', titleClass: 'card-title-cyan', subtitle: 'The Runner',
     description:
-      'A tool declaration tells the model what a function does and what inputs it needs. The description is how the model decides to use it, so write it clearly.',
-    code: 'import { Type } from "@google/genai";\n\nconst cryptoInfo = {\n  name: "cryptoCurrency",\n  description: "Get the live price/info of a coin like bitcoin or ethereum",\n  parameters: {\n    type: Type.OBJECT,\n    properties: {\n      coin: { type: Type.STRING, description: "e.g. bitcoin, ethereum" },\n    },\n    required: ["coin"],\n  },\n};',
+      'Vitest runs on your existing Vite config — instant, watch-mode, TypeScript out of the box. The API is Jest-compatible, so describe / it / expect all feel familiar.',
+    code: 'import { describe, it, expect } from "vitest";\n\ndescribe("add", () => {\n  it("sums two numbers", () => {\n    expect(add(2, 3)).toBe(5);\n  });\n});',
   },
   {
-    icon: '🧩', title: 'Typed Parameters', titleClass: 'card-title-purple', subtitle: 'Type.OBJECT',
+    icon: '🧑‍💻', title: 'Render & Query', titleClass: 'card-title-purple', subtitle: 'Like A User',
     description:
-      'The parameters schema mirrors JSON Schema: an object with typed properties and a list of required fields. This is how the model knows exactly what to pass.',
-    code: '// Type.OBJECT  → the arguments object\n// Type.STRING  → a text field\n// required: [] → which fields must be present',
-  },
-  {
-    icon: '🔗', title: 'Attach The Tools', titleClass: 'card-title-amber', subtitle: 'config.tools',
-    description:
-      'Pass your declarations in the request config. Now the model can answer normally or, when useful, ask to call one of your tools.',
-    code: 'const res = await ai.models.generateContent({\n  model: "gemini-2.5-flash",\n  contents: "What is the price of bitcoin?",\n  config: { tools: [{ functionDeclarations: [cryptoInfo, weatherInfo] }] },\n});',
+      'React Testing Library renders a component and queries it by accessible role or label — the way a person (or screen reader) finds things — instead of by fragile classes.',
+    code: 'render(<LoginForm />);\nconst email = screen.getByLabelText("Email");\nconst button = screen.getByRole("button", { name: "Sign in" });',
   },
 ];
 
-const LOOP = [
+const PRACTICE = [
   {
-    icon: '📞', title: 'The Model Calls Back', titleClass: 'card-title-cyan', subtitle: 'functionCall',
+    icon: '🖱️', title: 'Simulate The User', titleClass: 'card-title-cyan', subtitle: 'user-event',
     description:
-      'When the model decides a tool is needed, it does not return text — it returns a functionCall with the tool name and the arguments it chose from your question.',
-    code: 'const call = res.functionCalls?.[0];\n// call.name === "cryptoCurrency"\n// call.args === { coin: "bitcoin" }',
+      'userEvent types, clicks and tabs like a real person, firing the same event sequence the browser would. Prefer it over fireEvent for realistic tests.',
+    code: 'const user = userEvent.setup();\nawait user.type(email, "a@b.com");\nawait user.click(button);',
   },
   {
-    icon: '⚙️', title: 'Execute & Return', titleClass: 'card-title-purple', subtitle: 'Run The Function',
+    icon: '⏳', title: 'Async & Assertions', titleClass: 'card-title-purple', subtitle: 'findBy + expect',
     description:
-      'You run the real function with the model’s arguments, get the live data, and send that result back to the model so it can turn raw JSON into a friendly answer.',
-    code: 'const data = await cryptoCurrency(call.args);\n// send `data` back to the model as the tool result →\n// it replies: "Bitcoin is trading at ₹… right now."',
+      'After an action, await findByText to wait for the UI to update, then assert what the user sees. Test outcomes, not implementation.',
+    code: 'await user.click(button);\nexpect(await screen.findByText("Welcome!")).toBeInTheDocument();',
   },
   {
-    icon: '♻️', title: 'The Agent Loop', titleClass: 'card-title-amber', subtitle: 'Think · Act · Observe',
+    icon: '🎭', title: 'Mock The Network', titleClass: 'card-title-amber', subtitle: 'MSW',
     description:
-      'Put it together and you have the core agent loop: the model thinks, calls a tool, observes the result, and responds. Chain it and the AI can solve multi-step tasks on its own.',
-    code: '// 1. think   → decide a tool is needed\n// 2. act     → return a functionCall\n// 3. observe → you run it, feed data back\n// 4. respond → natural-language answer',
-  },
-];
-
-const WHY = [
-  {
-    icon: '🎯', title: 'No More Manual Routing', titleClass: 'card-title-cyan', subtitle: 'The Model Decides',
-    description:
-      'Yesterday’s brittle if/else routing is gone. The model reads the tool descriptions and picks the right one with the right arguments — even for messy, natural questions.',
-  },
-  {
-    icon: '🤖', title: 'This Is An Agent', titleClass: 'card-title-purple', subtitle: 'First 5 Lectures Done',
-    description:
-      'From a single prompt (Day 2) to memory and personas (Day 3), real data (Day 4), and now tool-using function calls (Day 5) — the pieces of an autonomous agent are in place.',
-    footer: 'prompt → chat → tools → function calling → agents',
-  },
-  {
-    icon: '📚', title: 'The Full Course', titleClass: 'card-title-amber', subtitle: 'STRIKE GenAI',
-    description:
-      'Ahead in the course: RAG, multi-tool agents, LangGraph and full projects. Explore the site’s GenAI track for the same journey as structured modules.',
-    link: { href: '/genai', label: 'Open the GenAI track →' },
+      'Mock Service Worker intercepts fetch/XHR at the network layer, so components run their real code against fake responses — fast, deterministic, no real API.',
+    code: '// handlers.ts\nhttp.get("/api/user", () => HttpResponse.json({ name: "Sumit" }))',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 05 Code', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '⚡', title: 'Vitest', titleClass: 'card-title-cyan', subtitle: 'Official Docs',
     description:
-      'The tool declarations for crypto and weather and the function-calling flow from this lecture in the STRIKE GenAI repo.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 05 →', external: true },
+      'Config, watch mode, coverage, mocking and snapshot testing — the fast, Vite-native runner for the whole Year-1 stack.',
+    link: { href: VITEST_DOCS, label: 'Open Vitest →', external: true },
   },
   {
-    icon: '📘', title: 'Function Calling Docs', titleClass: 'card-title-purple', subtitle: 'Gemini API',
+    icon: '🧩', title: 'Testing Library', titleClass: 'card-title-purple', subtitle: 'React',
     description:
-      'Google’s official guide to function calling — declarations, the call/response cycle, and multi-tool patterns.',
-    link: { href: GEMINI_FC, label: 'Read the Gemini docs →', external: true },
+      'The guiding principle — "the more your tests resemble the way your software is used, the more confidence they give you" — plus queries and best practices.',
+    link: { href: RTL_DOCS, label: 'Open Testing Library →', external: true },
   },
   {
-    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
+    icon: '🔜', title: 'Year 1 Continues', titleClass: 'card-title-amber', subtitle: 'Day 22 Preview',
     description:
-      'The complete Coder Army course code — every lecture from here to LangGraph and the final projects.',
-    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
+      'The Year-1 TypeScript stack continues — React Native, Express JS and DSA / System Design in TypeScript are next. The journal keeps building day by day.',
+    link: { href: '/day-022', label: 'Go to Day 22 →' },
   },
 ];
 
@@ -161,38 +134,39 @@ export default function Day021() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-020" className="day001-nav-btn day001-nav-prev">← Prereq 4</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 5</p>
-          <Link to="/day-022" className="day001-nav-btn day001-nav-next">Prereq 6 →</Link>
+          <Link to="/day-020" className="day001-nav-btn day001-nav-prev">← Day 20</Link>
+          <p className="day001-datetime">TypeScript Day 21</p>
+          <Link to="/day-022" className="day001-nav-btn day001-nav-next">Day 22 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 05</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Testing</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 5 <span aria-hidden="true">🛠️</span></h1>
-              <p className="day001-day-theme">FUNCTION CALLING — THE AGENT LOOP BEGINS</p>
+              <h1 className="day001-day-num">DAY 21 <span aria-hidden="true">🧪</span></h1>
+              <p className="day001-day-theme">TESTING — VITEST + TESTING LIBRARY</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '5%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '21%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 05 — <strong>function calling</strong>. Instead of routing by hand, I <strong>declare tools</strong>{' '}
-          to the model (a name, description, and a <code>Type.OBJECT</code> parameter schema), and the model{' '}
-          <strong>decides</strong> which to call. It returns a <code>functionCall</code> like{' '}
-          <code>cryptoCurrency({'{'} coin: "bitcoin" {'}'})</code>; I <strong>execute</strong> the real function,{' '}
-          <strong>feed the result back</strong>, and it answers in plain language. That is the{' '}
-          <strong>agent loop</strong> — think, act, observe, respond. With prompt, chat, tools and function calling
-          done, the pieces of a real agent are in place. <em>Five lectures in.</em>
+          Ship with confidence. <strong>Vitest</strong> is a fast, Vite-native runner with a Jest-compatible API
+          (<code>describe</code>/<code>it</code>/<code>expect</code>) and TypeScript built in.{' '}
+          <strong>React Testing Library</strong> renders components and queries them the way a <em>user</em> does —{' '}
+          <code>getByRole</code>, <code>getByLabelText</code> — not by brittle classes. Drive interactions with{' '}
+          <strong>user-event</strong> (real click/type), wait for async UI with <code>findBy</code>, and assert{' '}
+          <strong>behaviour, not implementation</strong>. Mock the network with <strong>MSW</strong> for fast,
+          deterministic tests. The payoff: refactor internals freely and the tests still pass.{' '}
+          <em>Year 1 continues — React Native, Express &amp; more.</em>
         </p>
 
         <section className="day001-learnt">
@@ -207,13 +181,12 @@ export default function Day021() {
           </ul>
         </section>
 
-        <CardSection icon="📋" title="DECLARING TOOLS" cards={DECLARE} columns={3} />
-        <CardSection icon="♻️" title="THE FUNCTION-CALL LOOP" cards={LOOP} columns={3} />
-        <CardSection icon="🎯" title="WHY IT MATTERS" cards={WHY} columns={3} />
+        <CardSection icon="⚡" title="THE TOOLS" cards={TOOLS} columns={2} />
+        <CardSection icon="🖱️" title="WRITING TESTS" cards={PRACTICE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#FunctionCalling</span><span>#CoderArmy</span><span>#JavaScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Vitest</span><span>#Testing</span>
         </footer>
       </div>
     </div>

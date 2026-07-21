@@ -2,94 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture04';
-const COINGECKO = 'https://www.coingecko.com/en/api';
+const ZUSTAND_DOCS = 'https://zustand.docs.pmnd.rs/';
+const ZUSTAND_TS = 'https://zustand.docs.pmnd.rs/guides/typescript';
 
 const LEARNT_TODAY = [
-  { title: 'The knowledge gap', text: 'an LLM only knows its training data up to a cutoff — no live prices, weather, or today’s news' },
-  { title: 'Tools are just functions', text: 'to reach live data, write plain JavaScript functions that call real APIs and return the result' },
-  { title: 'fetch in Node', text: 'modern Node has fetch built in — hit any REST endpoint and parse the JSON response' },
-  { title: 'Crypto price tool', text: 'a getCryptoPrice(coin) function fetches live prices from the CoinGecko API' },
-  { title: 'Weather & news tools', text: 'the same pattern — one function per data source (weather API, news API)' },
-  { title: 'The routing problem', text: 'given a user question, which tool should run? A manual if/else chain is brittle and does not scale' },
-  { title: 'Why this matters', text: 'this sets up function calling — instead of routing by hand, let the model choose the tool (Day 5)' },
+  { title: 'When you need global state', text: 'auth, theme, cart — data many components share without prop-drilling' },
+  { title: 'Context can be heavy', text: 'a single context re-renders every consumer on any change; Zustand is selective' },
+  { title: 'create a store', text: 'a hook holding state + actions, living outside the React tree' },
+  { title: 'Typed store', text: 'create<StoreType>() types state and actions end to end' },
+  { title: 'Selectors', text: 'subscribe to one slice — useStore(s => s.count) — so only that changes re-render' },
+  { title: 'Actions in the store', text: 'set() updates state; keep the logic in the store, not the components' },
+  { title: 'No provider needed', text: 'unlike Context/Redux, no wrapper — just import and use the hook anywhere' },
+  { title: 'Middleware', text: 'persist to localStorage or add devtools with one wrapper' },
 ];
 
-const GAP = [
+const STORE = [
   {
-    icon: '🕳️', title: 'The Knowledge Cutoff', titleClass: 'card-title-cyan', subtitle: 'No Live Data',
+    icon: '🐻', title: 'Create A Store', titleClass: 'card-title-cyan', subtitle: 'State + Actions',
     description:
-      'The model was trained up to a date and frozen. Ask for the Bitcoin price or today’s weather and it cannot know — it has no connection to the live world.',
-    code: '// "What is the price of Bitcoin right now?"\n// → the model has no idea — training data is frozen',
+      'A Zustand store is a hook that holds state and the actions that change it, living outside React. No provider to wrap the app — import the hook and use it.',
+    code: 'interface CounterState {\n  count: number;\n  inc: () => void;\n}\nconst useCounter = create<CounterState>()((set) => ({\n  count: 0,\n  inc: () => set((s) => ({ count: s.count + 1 })),\n}));',
   },
   {
-    icon: '🌉', title: 'Bridge To Reality', titleClass: 'card-title-purple', subtitle: 'Give It Tools',
+    icon: '🎯', title: 'Selectors', titleClass: 'card-title-purple', subtitle: 'Re-render Only What Changed',
     description:
-      'The fix is to fetch real data ourselves and hand it to the model. A "tool" is nothing magical — it is a normal function that calls an API and returns fresh information.',
-    code: '// tool = a function the AI can use to reach the real world\n// fetch live data → feed it back into the answer',
-  },
-];
-
-const TOOLS = [
-  {
-    icon: '🪙', title: 'Crypto Price Tool', titleClass: 'card-title-cyan', subtitle: 'CoinGecko API',
-    description:
-      'A function takes a coin id, calls the CoinGecko API, and returns the live price data. Node’s built-in fetch makes it a couple of lines.',
-    code: 'async function getCryptoPrice(coin) {\n  const res = await fetch(\n    `https://api.coingecko.com/api/v3/coins/markets` +\n    `?vs_currency=inr&ids=${coin}`\n  );\n  return await res.json();\n}\nawait getCryptoPrice("bitcoin");',
-  },
-  {
-    icon: '🌦️', title: 'Weather & News', titleClass: 'card-title-purple', subtitle: 'Same Pattern',
-    description:
-      'Every data source is one more function: a weather API by city, a news API by topic. Consistent shape — take an argument, fetch, return JSON.',
-    code: 'async function getWeather(city) {\n  const res = await fetch(`.../current.json?q=${city}`);\n  return await res.json();\n}\nasync function getNews(topic) { /* fetch news */ }',
-  },
-  {
-    icon: '🔌', title: 'fetch Is Built In', titleClass: 'card-title-amber', subtitle: 'No Extra Library',
-    description:
-      'Modern Node ships fetch, so calling REST APIs needs nothing extra. Await the response, parse the JSON, and you have real-world data inside your program.',
-    code: 'const res = await fetch(url);\nconst data = await res.json();\n// live data — ready to feed the model',
+      'Read a single slice with a selector. A component that selects count re-renders only when count changes — not when unrelated state does. That’s the win over one big context.',
+    code: 'const count = useCounter((s) => s.count);\nconst inc   = useCounter((s) => s.inc);\n<button onClick={inc}>{count}</button>',
   },
 ];
 
-const ROUTING = [
+const WHY = [
   {
-    icon: '🤔', title: 'Which Tool?', titleClass: 'card-title-cyan', subtitle: 'The Real Problem',
+    icon: '🧵', title: 'Context vs Zustand', titleClass: 'card-title-cyan', subtitle: 'Selective Updates',
     description:
-      'Now the hard part: for a given question, which function should run? "Delhi ki news bata" → news. "Bitcoin price?" → crypto. Deciding this in code is the whole challenge.',
-    code: '// question: "Bhai delhi ki news bata"\n// → should call getNews("delhi") ... but how does the code know?',
+      'Context is great for low-frequency values (theme, current user). But a single context re-renders every consumer on any change. Zustand subscribes per slice, so updates stay cheap.',
+    code: '// Context: any change → all consumers re-render\n// Zustand: change count → only count subscribers',
   },
   {
-    icon: '🧱', title: 'Manual Routing Breaks', titleClass: 'card-title-purple', subtitle: 'if / else Does Not Scale',
+    icon: '💾', title: 'persist Middleware', titleClass: 'card-title-purple', subtitle: 'Save To Storage',
     description:
-      'Hard-coding keyword checks (if the text has "price" call crypto…) is fragile and explodes as you add tools. Natural language is too varied for if/else.',
-    code: 'if (q.includes("price")) getCryptoPrice(...)\nelse if (q.includes("weather")) getWeather(...)\nelse if (q.includes("news")) getNews(...)\n// brittle, and worse with every new tool',
+      'Wrap the store in persist to sync it to localStorage automatically — a cart or theme survives a refresh with no extra code.',
+    code: 'const useCart = create(persist<CartState>(\n  (set) => ({ items: [], /* ... */ }),\n  { name: "cart" },   // localStorage key\n));',
   },
   {
-    icon: '➡️', title: 'The Better Way', titleClass: 'card-title-amber', subtitle: 'Let The Model Decide',
+    icon: '⚖️', title: 'When To Reach For It', titleClass: 'card-title-amber', subtitle: 'Right Tool',
     description:
-      'Instead of routing by hand, describe the tools to the model and let it choose which one to call and with what arguments. That is function calling — tomorrow’s lecture.',
-    footer: 'Manual routing → function calling (Day 5)',
+      'Server data → TanStack Query (Day 18). Form state → React Hook Form (Day 19). Truly-shared client state (auth, cart, UI) → Zustand. Don’t globalise what a component can own.',
+    footer: 'server → Query · forms → RHF · shared client → Zustand',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 04 Code', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📗', title: 'Zustand Docs', titleClass: 'card-title-cyan', subtitle: 'Official',
     description:
-      'The crypto, weather and news functions and the routing experiment from this lecture in the STRIKE GenAI repo.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 04 →', external: true },
+      'A tiny, unopinionated state manager — stores, selectors, middleware (persist, devtools, immer) and slices, all a few KB.',
+    link: { href: ZUSTAND_DOCS, label: 'Open Zustand docs →', external: true },
   },
   {
-    icon: '📈', title: 'CoinGecko API', titleClass: 'card-title-purple', subtitle: 'Free Crypto Data',
+    icon: '🔷', title: 'Zustand + TypeScript', titleClass: 'card-title-purple', subtitle: 'Typed Stores',
     description:
-      'The public API used for the crypto tool — live prices and market data, no key needed for basic endpoints.',
-    link: { href: COINGECKO, label: 'CoinGecko API docs →', external: true },
+      'The recommended TypeScript patterns — the create<T>()(...) curried form, typed middleware and typed selectors.',
+    link: { href: ZUSTAND_TS, label: 'Read the TS guide →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Function Calling', titleClass: 'card-title-amber', subtitle: 'Prereq 5 Preview',
+    icon: '🔜', title: 'Next: Testing', titleClass: 'card-title-amber', subtitle: 'Day 21 Preview',
     description:
-      'Tomorrow is Lecture 05 — declare tools to the model with typed parameters so it decides which function to call. The first real step toward an agent.',
-    link: { href: '/day-021', label: 'Go to Prereq 5 →' },
+      'Tomorrow — testing React with Vitest and React Testing Library: render components, query by role, simulate user events, and assert behaviour, not implementation.',
+    link: { href: '/day-021', label: 'Go to Day 21 →' },
   },
 ];
 
@@ -154,37 +134,38 @@ export default function Day020() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-019" className="day001-nav-btn day001-nav-prev">← Prereq 3</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 4</p>
-          <Link to="/day-021" className="day001-nav-btn day001-nav-next">Prereq 5 →</Link>
+          <Link to="/day-019" className="day001-nav-btn day001-nav-prev">← Day 19</Link>
+          <p className="day001-datetime">TypeScript Day 20</p>
+          <Link to="/day-021" className="day001-nav-btn day001-nav-next">Day 21 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 04</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Zustand</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 4 <span aria-hidden="true">🌐</span></h1>
-              <p className="day001-day-theme">REACHING REAL-WORLD DATA WITH TOOLS</p>
+              <h1 className="day001-day-num">DAY 20 <span aria-hidden="true">🐻</span></h1>
+              <p className="day001-day-theme">GLOBAL STATE — ZUSTAND</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '4%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '20%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 04 — the model has a <strong>knowledge cutoff</strong> and no live data, so I built{' '}
-          <strong>tools</strong>: plain JavaScript functions that <code>fetch</code> real data from APIs —{' '}
-          crypto prices from <strong>CoinGecko</strong>, plus weather and news. The catch is <strong>routing</strong>:
-          for any given question, which tool should run? A manual <code>if/else</code> chain is brittle and does not
-          scale. That is exactly the problem <strong>function calling</strong> solves — letting the model choose the
-          tool itself. <em>Tomorrow, the AI starts deciding.</em>
+          Some state is truly shared — auth, theme, a cart. <strong>Zustand</strong> holds it in a{' '}
+          <strong>store</strong> (a hook outside React) with <strong>no provider</strong> to wrap the app.{' '}
+          <code>create&lt;StoreType&gt;()</code> types state and actions end to end. The key idea is{' '}
+          <strong>selectors</strong>: <code>useStore(s =&gt; s.count)</code> subscribes to one slice, so only that
+          re-renders — unlike a single Context that re-renders every consumer. Keep logic in the store via{' '}
+          <code>set()</code>, and add <strong>persist</strong> to save to localStorage. Right tool per job: server →
+          Query, forms → RHF, shared client state → Zustand. <em>Next: testing.</em>
         </p>
 
         <section className="day001-learnt">
@@ -199,13 +180,12 @@ export default function Day020() {
           </ul>
         </section>
 
-        <CardSection icon="🕳️" title="THE KNOWLEDGE GAP" cards={GAP} columns={2} />
-        <CardSection icon="🔧" title="BUILDING TOOLS" cards={TOOLS} columns={3} />
-        <CardSection icon="🧭" title="THE ROUTING PROBLEM" cards={ROUTING} columns={3} />
+        <CardSection icon="🐻" title="THE STORE" cards={STORE} columns={2} />
+        <CardSection icon="⚖️" title="WHY & WHEN" cards={WHY} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Tools</span><span>#CoderArmy</span><span>#JavaScript</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#Zustand</span><span>#State</span>
         </footer>
       </div>
     </div>
