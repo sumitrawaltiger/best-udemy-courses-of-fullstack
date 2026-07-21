@@ -6423,3 +6423,12 @@ a:hover {
   .py-exam-figure { order: -1; }
   .py-exam-figure img { max-width: 220px; }
 }
+
+/* ── Roadmap timeline sits on the black .no-sidebar .content bg ──────────────
+   The arc headings/blurbs and prereq text use the light-theme (dark) tokens,
+   which are invisible on black. Force readable light text (cards stay white). */
+.roadmap-arc-title { color: #f1f5f9; }
+.roadmap-arc-tagline { color: #9aa7bd; }
+.roadmap-arc-blurb { color: #cbd5e1; }
+.roadmap-prereq { color: #cbd5e1; }
+.roadmap-prereq h2 { color: #f1f5f9; }
