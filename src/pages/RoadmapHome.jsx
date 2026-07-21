@@ -97,8 +97,8 @@ const PHASES = [
 ];
 
 const STATS = [
-  { value: '4 years', label: 'TS · Python · Java · DevOps' },
-  { value: '1,461', label: 'days of practice' },
+  { value: '4 years', label: '+ 39 prereq days' },
+  { value: '1,500', label: 'days of practice' },
   { value: '4', label: 'stacks, front to back' },
   { value: '30+', label: 'technologies' },
 ];
@@ -122,12 +122,12 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 A 4-year journey · 1,461 days</span>
+        <span className="roadmap-hero-badge">📍 4 years (+39 days) · 1,500 days of practice</span>
         <h1 className="roadmap-hero-title">The 4-Year Roadmap</h1>
         <p className="roadmap-hero-sub">
           A <strong>4-year coding journey</strong> — <strong>TypeScript → Python → Java → DevOps</strong>,
-          one year each — <strong>1,461 days</strong> of focused, daily practice.{' '}
-          <strong>Gen AI</strong> and <strong>JavaScript</strong> are prerequisites, completed before Year 1.
+          one year each (<strong>1,461 days</strong>) — plus a <strong>39-day Agentic AI &amp; JavaScript</strong>{' '}
+          prerequisite, for <strong>1,500 days</strong> of focused, daily practice in total.
         </p>
         <div className="roadmap-stats">
           {STATS.map((s) => (
