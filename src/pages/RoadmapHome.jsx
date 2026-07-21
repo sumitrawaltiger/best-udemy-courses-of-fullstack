@@ -259,7 +259,7 @@ export default function RoadmapHome() {
           <Link to="/day-001" className="btn btn-lg roadmap-btn-primary">
             Start Day 1 · TypeScript
           </Link>
-          <Link to="/day-017" className="btn btn-lg roadmap-btn-outline">
+          <Link to="/genai" className="btn btn-lg roadmap-btn-outline">
             Prerequisites · Gen AI
           </Link>
           <Link to="/best-udemy-courses" className="btn btn-lg roadmap-btn-outline">

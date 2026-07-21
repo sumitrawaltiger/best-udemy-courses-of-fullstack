@@ -144,7 +144,7 @@ const STUDY_SYSTEM = [
     subtitle: 'Gen AI & JavaScript → Day 1 TypeScript',
     description:
       'Before Day 1 come the prerequisites — Gen AI & Agentic AI in JavaScript (LLMs, RAG, LangChain.js, LangGraph) plus JavaScript. With those done, Day 1 of the 4-year journey begins with the TypeScript stack. Environment is ready, accounts are live, routine is locked.',
-    link: { href: '/day-017', label: 'Start prerequisites →' },
+    link: { href: '/genai', label: 'Start prerequisites →' },
   },
 ];
 
@@ -242,7 +242,7 @@ export default function Day000() {
             Home
           </Link>
           <p className="day001-datetime">Study Day 0</p>
-          <Link to="/day-017" className="day001-nav-btn day001-nav-next">
+          <Link to="/genai" className="day001-nav-btn day001-nav-next">
             Prerequisites →
           </Link>
         </header>
