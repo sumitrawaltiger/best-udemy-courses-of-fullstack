@@ -5,6 +5,28 @@ import LectureCard from '../components/LectureCard';
 import AwsSyllabus from '../components/AwsSyllabus';
 import AwsHero, { AwsHeroStats } from '../components/AwsHero';
 
+// AWS vs Azure vs GCP service mappings — transcribed from the cloud-comparison
+// cheat sheet (public/aws-notes/aws-vs-azure-vs-gcp.jpg).
+const CLOUD_COMPARISON = [
+  ['Virtual Machine', 'EC2', 'Virtual Machine (VM)', 'Compute Engine'],
+  ['Storage (Object)', 'S3', 'Blob Storage', 'Cloud Storage'],
+  ['Block Storage', 'EBS', 'Managed Disks', 'Persistent Disk'],
+  ['File Storage', 'EFS', 'Azure Files', 'Filestore'],
+  ['Database (SQL)', 'RDS', 'Azure SQL Database', 'Cloud SQL'],
+  ['NoSQL Database', 'DynamoDB', 'Cosmos DB', 'Firestore / Bigtable'],
+  ['Load Balancer', 'Elastic Load Balancer (ELB)', 'Azure Load Balancer', 'Cloud Load Balancing'],
+  ['DNS', 'Route 53', 'Azure DNS', 'Cloud DNS'],
+  ['VPC / Network', 'VPC', 'Virtual Network (VNet)', 'VPC Network'],
+  ['Kubernetes', 'EKS', 'AKS', 'GKE'],
+  ['Container Registry', 'ECR', 'ACR', 'Artifact Registry'],
+  ['Serverless', 'Lambda', 'Azure Functions', 'Cloud Functions'],
+  ['Monitoring', 'CloudWatch', 'Azure Monitor', 'Cloud Monitoring'],
+  ['Logging', 'CloudWatch Logs', 'Log Analytics', 'Cloud Logging'],
+  ['IAM (User Access)', 'IAM', 'Azure AD / Entra ID', 'Cloud IAM'],
+  ['CI / CD', 'CodePipeline', 'Azure DevOps', 'Cloud Build'],
+  ['Secrets Management', 'Secrets Manager', 'Key Vault', 'Secret Manager'],
+];
+
 export default function AwsHome() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
@@ -93,6 +115,49 @@ export default function AwsHome() {
       </section>
 
       <div className="home aws-home">
+        <section className="cloud-compare" id="cloud-comparison">
+          <div className="section-header">
+            <h2>Cloud Services Comparison — AWS vs Azure vs GCP</h2>
+            <a href="/aws-notes/aws-vs-azure-vs-gcp.jpg" download className="btn btn-aws">
+              📥 Download
+            </a>
+          </div>
+          <p className="section-desc">
+            The most common service mappings asked in <strong>DevOps, Cloud &amp; interview</strong> rounds —
+            the same job, named differently across the three big clouds.
+          </p>
+
+          <div className="cloud-compare-table-wrap">
+            <table className="cloud-compare-table">
+              <thead>
+                <tr><th>Purpose</th><th>AWS</th><th>Azure</th><th>GCP</th></tr>
+              </thead>
+              <tbody>
+                {CLOUD_COMPARISON.map((r) => (
+                  <tr key={r[0]}>
+                    <th scope="row">{r[0]}</th>
+                    <td>{r[1]}</td>
+                    <td>{r[2]}</td>
+                    <td>{r[3]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <figure className="cloud-compare-figure">
+            <a href="/aws-notes/aws-vs-azure-vs-gcp.jpg" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/aws-notes/aws-vs-azure-vs-gcp.jpg"
+                alt="Cloud Services Comparison — AWS vs Azure vs GCP: service mappings for compute, storage, databases, networking, Kubernetes, serverless, monitoring, IAM, CI/CD and secrets, plus interview notes and a quick memory trick."
+                loading="lazy"
+                onError={(e) => { const f = e.currentTarget.closest('.cloud-compare-figure'); if (f) f.style.display = 'none'; }}
+              />
+            </a>
+            <figcaption>The original one-page cheat sheet — click to open full size ↗</figcaption>
+          </figure>
+        </section>
+
         <div id="aws-syllabus">
           <AwsSyllabus />
         </div>

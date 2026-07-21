@@ -6230,3 +6230,57 @@ a:hover {
 .dsa-notes-banner-text strong { font-size: 1.05rem; }
 .dsa-notes-banner-text span { color: var(--text-muted, #93a3b8); font-size: 0.9rem; line-height: 1.5; }
 .dsa-notes-banner-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* ── Cloud Services Comparison (AWS home) ──────────────────────── */
+.cloud-compare { margin-bottom: 8px; }
+.cloud-compare-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border, #2a3441);
+  border-radius: 12px;
+  margin: 14px 0 18px;
+}
+.cloud-compare-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 640px;
+  font-size: 0.92rem;
+}
+.cloud-compare-table thead th {
+  background: #ff9900;
+  color: #1a1200;
+  text-align: left;
+  padding: 11px 14px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.cloud-compare-table thead th:nth-child(3) { background: #0089d6; color: #fff; }
+.cloud-compare-table thead th:nth-child(4) { background: #34a853; color: #fff; }
+.cloud-compare-table tbody th {
+  text-align: left;
+  padding: 10px 14px;
+  font-weight: 700;
+  color: var(--text, #e6edf3);
+  border-top: 1px solid var(--border, #2a3441);
+  white-space: nowrap;
+}
+.cloud-compare-table tbody td {
+  padding: 10px 14px;
+  border-top: 1px solid var(--border, #2a3441);
+  color: var(--text-muted, #9aa7b4);
+}
+.cloud-compare-table tbody tr:hover th,
+.cloud-compare-table tbody tr:hover td { background: rgba(255, 153, 0, 0.06); }
+.cloud-compare-figure { margin: 0; text-align: center; }
+.cloud-compare-figure img {
+  max-width: 560px;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border, #2a3441);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.35);
+}
+.cloud-compare-figure figcaption {
+  color: var(--text-muted, #9aa7b4);
+  font-size: 0.82rem;
+  margin-top: 8px;
+}
