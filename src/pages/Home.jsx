@@ -36,8 +36,8 @@ const BTECH_ROADMAP = [
     theme: 'Gen AI · JavaScript',
     icon: '🎒',
     accent: 'y3',
-    topics: ['JavaScript (ES6+)', 'HTML5 & CSS3', 'Gen AI & Agentic AI', 'LLMs & RAG', 'LangChain.js', 'LangGraph'],
-    blurb: 'Completed before Day 1 — JavaScript (with HTML5 & CSS3) and Generative & Agentic AI in JavaScript. The 4-year journey assumes you already know these.',
+    topics: ['39 Days', 'JavaScript (ES6+)', 'HTML5 & CSS3', 'Gen AI & Agentic AI', 'LLMs & RAG', 'LangChain.js', 'LangGraph'],
+    blurb: 'A 39-day prerequisite, completed before Day 1 — JavaScript (with HTML5 & CSS3) and Generative & Agentic AI in JavaScript. The 4-year journey assumes you already know these.',
     links: [{ label: 'GenAI Track', to: '/genai' }, { label: 'JS Prerequisites', to: '/prerequisites' }],
   },
   {
@@ -169,9 +169,9 @@ export default function Home() {
           <h2 className="btech-title">The 4-Year Learning Path</h2>
           <p className="btech-sub">
             A structured path to a full lifecycle engineer — a <strong>4-year coding journey</strong>:{' '}
-            <strong>TypeScript → Python → Java → DevOps</strong>, one year each (<strong>1,461 days</strong>{' '}
-            across 4 years). Each block maps to tracks on this site.{' '}
-            <strong>Gen AI &amp; JavaScript</strong> (with HTML5 &amp; CSS3) are the prerequisites, done before Year 1.
+            <strong>TypeScript → Python → Java → DevOps</strong>, one year each (<strong>1,461 days</strong>), plus a{' '}
+            <strong>39-day Gen AI &amp; JavaScript</strong> prerequisite — <strong>4 years (+39 days) = 1,500 days</strong>{' '}
+            total. Each block maps to tracks on this site. Gen AI &amp; JavaScript (with HTML5 &amp; CSS3) come before Year 1.
           </p>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
