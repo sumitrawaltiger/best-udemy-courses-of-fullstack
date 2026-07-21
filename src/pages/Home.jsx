@@ -18,7 +18,7 @@ import { DEVOPS_META } from '../data/devopsSyllabus';
 import { K8S_META } from '../data/k8sSyllabus';
 import { INTERVIEW_META, DSA_META } from '../data/interviewSyllabus';
 import { MOBILE_META } from '../data/mobileSyllabus';
-import { PAID_COURSE_URL, strikeCourse } from '../data/syllabus';
+import { PAID_COURSE_URL } from '../data/syllabus';
 import { JS_INTERVIEW_QUESTIONS } from '../data/interviewQuestions';
 import { REACT_INTERVIEW_QUESTIONS } from '../data/reactInterviewQuestions';
 import { NEXTJS_INTERVIEW_QUESTIONS } from '../data/nextjsInterviewQuestions';
@@ -93,71 +93,60 @@ export default function Home() {
 
   return (
     <>
-      <section className="genai-hero">
-        <div className="genai-hero-inner">
-          <span className="genai-badge">Prerequisite · Gen AI in JavaScript</span>
-          <h1 className="genai-title">GenAI Engineering with JavaScript</h1>
-          <p className="genai-tagline">
-            A <strong>prerequisite before the 4-year journey</strong> — <strong>Agentic AI</strong> from how LLMs
-            work and the Gemini SDK to tools, RAG, and multi-agent systems, all in <strong>JavaScript</strong> with{' '}
-            <strong>LangChain.js, LangGraph &amp; LangSmith</strong>. Following{' '}
-            <a href={strikeCourse} target="_blank" rel="noopener noreferrer">STRIKE GenAI</a> by Rohit Negi (Coder Army).
-          </p>
-          <div className="genai-stats">
-            <div className="genai-stat"><span className="genai-stat-val">Gen AI &amp; Agentic AI</span><span className="genai-stat-label">prerequisite · in JavaScript</span></div>
-            <div className="genai-stat"><span className="genai-stat-val">JS</span><span className="genai-stat-label">JavaScript · Gemini</span></div>
-            <div className="genai-stat"><span className="genai-stat-val">LangChain.js</span><span className="genai-stat-label">· LangGraph · LangSmith</span></div>
-            <div className="genai-stat"><span className="genai-stat-val">RAG + Agents</span><span className="genai-stat-label">tools · RAG · multi-agent</span></div>
+      <section className="fle-hero">
+        <div className="fle-hero-grid" aria-hidden="true" />
+        <span className="fle-orb fle-orb-1" aria-hidden="true" />
+        <span className="fle-orb fle-orb-2" aria-hidden="true" />
+        <span className="fle-orb fle-orb-3" aria-hidden="true" />
+
+        <div className="fle-hero-inner">
+          <div className="fle-hero-left">
+            <span className="fle-badge"><span aria-hidden="true">⚡</span> Road to Full Lifecycle Engineer</span>
+            <h1 className="fle-title">
+              Master <span className="fle-hl">Gen AI</span>, the <span className="fle-hl">Full Stack</span> &amp;{' '}
+              <span className="fle-hl">DevOps</span>
+            </h1>
+            <p className="fle-sub">
+              A structured <strong>1,500-day journey</strong> — Generative &amp; Agentic AI, then TypeScript, Python,
+              Java and DevOps. Learn by building, front to back, one day at a time.
+            </p>
+
+            <div className="fle-pills">
+              <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,500 Days of Code</span>
+              <span className="fle-pill"><span aria-hidden="true">🧠</span> Gen AI &amp; Agentic AI</span>
+              <span className="fle-pill"><span aria-hidden="true">🚀</span> Full Stack → DevOps</span>
+            </div>
+
+            <div className="fle-cta-row">
+              <Link to={`/genai/learn/${genaiChapters[0].slug}`} className="fle-btn-primary">
+                Start the Journey →
+              </Link>
+              <Link to="/roadmap" className="fle-btn-ghost">
+                View the Roadmap
+              </Link>
+            </div>
+
+            <div className="fle-quicklinks">
+              <Link to="/genai" className="fle-chip">🤖 Gen AI Track</Link>
+              <a href={PAID_COURSE_URL} target="_blank" rel="noopener noreferrer" className="fle-chip">🎬 Full Lectures</a>
+              <Link to="/interview-questions" className="fle-chip">💬 Interview Q&amp;A</Link>
+              <Link to="/best-udemy-courses" className="fle-chip">🎓 Best Udemy Courses</Link>
+              <Link to="/cheat-sheets" className="fle-chip">📄 Cheat Sheets</Link>
+              <Link to="/about-founder" className="fle-chip">👤 About the Author</Link>
+            </div>
           </div>
-          <div className="genai-hero-actions">
-            <Link to={`/genai/learn/${genaiChapters[0].slug}`} className="btn btn-genai btn-lg">
-              Start Gen AI (Prerequisite) — Free
-            </Link>
-            <Link to="/genai" className="btn btn-outline-genai btn-lg">
-              Explore GenAI Track
-            </Link>
-            <a href={GENAI_META.langchainJs} target="_blank" rel="noopener noreferrer" className="btn btn-outline-genai btn-lg">
-              LangChain.js Docs
-            </a>
-            <a href="#syllabus" className="btn btn-outline-genai btn-lg">
-              View Syllabus
-            </a>
-            <a href={PAID_COURSE_URL} target="_blank" rel="noopener noreferrer" className="btn btn-paid btn-lg">
-              Full In-Depth Lectures
-            </a>
-            <Link to="/interview-questions" className="btn btn-interview btn-lg">
-              Interview Q&amp;A 💬
-            </Link>
-            <Link to="/react-interview-questions" className="btn btn-nextjs btn-lg">
-              React Q&amp;A ⚛️
-            </Link>
-            <Link to="/nextjs-interview-questions" className="btn btn-nextjs btn-lg">
-              Next.js Q&amp;A ▲
-            </Link>
-            <Link to="/nodejs-interview-questions" className="btn btn-genai btn-lg">
-              Node.js Q&amp;A 🟢
-            </Link>
-            <Link to="/java-interview-questions" className="btn btn-java btn-lg">
-              Java Q&amp;A ☕
-            </Link>
-            <Link to="/kafka-interview-questions" className="btn btn-devops btn-lg">
-              Kafka Q&amp;A 🔀
-            </Link>
-            <Link to="/java-streams-puzzles" className="btn btn-java btn-lg">
-              Java Streams Puzzles 🧩
-            </Link>
-            <Link to="/sql-query-puzzles" className="btn btn-python btn-lg">
-              Tricky SQL Queries 🗄️
-            </Link>
-            <Link to="/best-udemy-courses" className="btn btn-paid btn-lg">
-              Best Udemy Courses 🎓
-            </Link>
-            <Link to="/cheat-sheets" className="btn btn-interview btn-lg">
-              Cheat Sheets 📄
-            </Link>
-            <Link to="/about-founder" className="btn btn-outline-genai btn-lg">
-              About theAuthor 👤
-            </Link>
+
+          <div className="fle-hero-right" aria-hidden="true">
+            <div className="fle-cube-scene">
+              <div className="fle-cube">
+                <span className="fle-face fle-face-front">GEN AI</span>
+                <span className="fle-face fle-face-back">DEVOPS</span>
+                <span className="fle-face fle-face-right">TS</span>
+                <span className="fle-face fle-face-left">PYTHON</span>
+                <span className="fle-face fle-face-top">JAVA</span>
+                <span className="fle-face fle-face-bottom">&lt;/&gt;</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
