@@ -4,17 +4,17 @@
 
 export const TS_META = {
   title: 'The TypeScript Series',
-  subtitle: '9 Episodes · JavaScript, Now With Types',
+  subtitle: '10 Episodes · JavaScript, Now With Types',
   blurb:
-    'JavaScript with a type system bolted on — catching bugs before they run. Nine illustrated episodes, from installing the compiler to enums, interfaces, type assertions and classes, each paired with the full written notes and every code snippet.',
-  totalDays: 9,
+    'JavaScript with a type system bolted on — catching bugs before they run. Ten illustrated episodes, from installing the compiler to enums, interfaces, type assertions, classes, inheritance and access modifiers, each paired with the full written notes and every code snippet.',
+  totalDays: 10,
 };
 
 export const TS_GROUPS = [
   { id: 'foundations', label: 'Getting Started', icon: '🚀', desc: 'What TypeScript is and how to set it up.' },
   { id: 'types', label: 'The Type System', icon: '🧩', desc: 'The types you reach for every single day.' },
   { id: 'structures', label: 'Structuring Types', icon: '🏗️', desc: 'Interfaces, enums, and asserting what you know.' },
-  { id: 'oop', label: 'Object-Oriented', icon: '🏛️', desc: 'Classes — blueprints for objects.' },
+  { id: 'oop', label: 'Object-Oriented', icon: '🏛️', desc: 'Classes, inheritance and access modifiers.' },
 ];
 
 export const TS_DAYS = [
@@ -406,6 +406,63 @@ export const TS_DAYS = [
         label: 'Methods with return types',
         code: 'class Rectangle {\n  width: number;\n  height: number;\n\n  constructor(w: number, h: number) {\n    this.width = w;\n    this.height = h;\n  }\n\n  area(): number {\n    return this.width * this.height;\n  }\n\n  describe(): void {\n    console.log(`Rectangle ${this.width}x${this.height}`);\n  }\n}\n\nconst r = new Rectangle(5, 10);\nconsole.log(r.area());   // 50\nr.describe();            // Rectangle 5x10',
         note: '`area(): number` returns a value; `describe(): void` returns nothing.',
+      },
+    ],
+  },
+  {
+    day: 10,
+    group: 'oop',
+    title: 'Inheritance & Access Modifiers',
+    tagline: 'Re-use and extend code, and control who can see what.',
+    image: '/typescript-notes/ep10-inheritance-and-access-modifiers.jpeg',
+    tags: ['Inheritance', 'extends', 'super', 'public/private/protected'],
+    notes: [
+      { k: 'Inheritance', v: 'Inheritance lets a class (**child**) acquire the properties and methods of another class (**parent**) with `extends` — so you **re-use and extend** code instead of repeating it.' },
+      { k: 'extends', v: '`class Dog extends Animal` makes `Dog` inherit everything `Animal` has, then add its own members on top.' },
+      { k: 'super()', v: '`super(...)` calls the **parent constructor**, and `super.method()` calls a parent method. It **must run before you use `this`** in the child constructor.' },
+      { k: 'Method override', v: 'A child can **redefine** an inherited method (same name) to change behaviour — `Dog.speak()` overrides `Animal.speak()`.' },
+      { k: 'public', v: 'The **default** modifier — visible **everywhere** (inside the class, outside it, and in subclasses). Like an *open hall*.' },
+      { k: 'private', v: 'Visible **only inside the class** where it is declared — not even subclasses can touch it. Like a *locked room*; use it for sensitive data.' },
+      { k: 'protected', v: 'Visible in the class **and its subclasses**, but not from outside. Like a *family room*.' },
+      { k: 'Getters & setters', v: 'Methods that **control how private properties are read or updated** — expose `getBalance()` / `deposit()` instead of a public `balance`, so you can validate every change.' },
+    ],
+    theory: [
+      {
+        h: 'What is inheritance?',
+        p: 'Inheritance allows a **class (child) to acquire properties and methods from another class (parent)**. You declare it with `extends`: `class Dog extends Animal`. The child gets everything the parent defines — an **inheritance chain** where `Animal (Parent)` holds `name` and `speak()`, and `Dog (Child)` adds `breed` and *overrides* `speak()`.\n\n**Why inheritance?** Code reusability, extensibility, better organization and easier maintenance. Real-world analogy: a **child inherits genes and traits from parents** but can also have their own unique characteristics.',
+      },
+      {
+        h: 'The super keyword',
+        p: '`super` connects the child to its parent. It **calls the constructor of the parent class** (`super(name)`), and it can **access parent-class methods** (`super.speak()`). One firm rule: in a child constructor, **`super(...)` must be called before you use `this`** — the parent has to initialise its part of the object first.',
+      },
+      {
+        h: 'Access modifiers — controlling visibility',
+        p: 'Access modifiers control the **visibility of class members**.\n\n- **`public`** — the default; visible **anywhere** (inside the class, outside it, and in subclasses). *e.g. `public name: string`.*\n- **`private`** — visible **only within the class** where it is declared. *e.g. `private age: number`.*\n- **`protected`** — visible in the **class and its subclasses**, but not outside. *e.g. `protected id: number`.*\n\nMental model: **private is a locked room**, **protected is a family room**, and **public is an open hall**. In the `Person`/`Employee` example, a subclass can read `this.id` (protected) but **not** `this.age` (private).',
+      },
+      {
+        h: 'Getters & setters (bonus)',
+        p: 'When data is `private`, you expose **controlled methods** to read or update it. A `BankAccount` keeps `balance` private, offers `getBalance()` to read it and `deposit(amount)` that only adds when `amount > 0`. Calling `acc.balance` directly is an **error** — every change goes through a method you can validate, protecting invariants.',
+      },
+      {
+        h: 'Quick recap',
+        p: '- **Inheritance** helps us **re-use and extend** code.\n- The **`super`** keyword accesses parent-class features.\n- **Access modifiers** — `public`, `private`, `protected` — control **visibility**.\n- **Getters & setters** help manage and **validate data safely**.\n\nGood practice: prefer **`protected` over `public`** for class internals, use **`private`** for sensitive data, and remember — **inheritance + modifiers = powerful OOP**. Great code is not just working, it’s well-structured and future-proof.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Inheritance with extends, super and an override',
+        code: 'class Animal {\n  name: string;\n  constructor(name: string) {\n    this.name = name;\n  }\n  speak(): void {\n    console.log(`${this.name} makes a sound.`);\n  }\n}\n\nclass Dog extends Animal {\n  breed: string;\n  constructor(name: string, breed: string) {\n    super(name);        // call parent constructor\n    this.breed = breed;\n  }\n  speak(): void {\n    console.log(`${this.name} barks.`);  // override\n  }\n}\n\nconst d = new Dog("Buddy", "Labrador");\nd.speak();   // Buddy barks.',
+        note: 'super(name) must be called before using this in the child constructor.',
+      },
+      {
+        label: 'public / private / protected',
+        code: 'class Person {\n  public name: string;\n  private age: number;\n  protected id: number;\n\n  constructor(name: string, age: number, id: number) {\n    this.name = name;\n    this.age = age;   // only inside Person\n    this.id = id;     // accessible in subclasses\n  }\n}\n\nclass Employee extends Person {\n  showId() {\n    console.log(this.id);    // ✅ OK (protected)\n    // console.log(this.age); // ❌ Error (private)\n  }\n}',
+        note: 'protected is readable by subclasses; private is not.',
+      },
+      {
+        label: 'Getters & setters guard a private field',
+        code: 'class BankAccount {\n  private balance: number = 0;\n\n  getBalance(): number {\n    return this.balance;\n  }\n\n  deposit(amount: number) {\n    if (amount > 0) this.balance += amount;\n  }\n}\n\nconst acc = new BankAccount();\nacc.deposit(1000);\nconsole.log(acc.getBalance()); // 1000\n// acc.balance;                // ❌ Error! private',
+        note: 'Every change to balance goes through deposit(), so it can be validated.',
       },
     ],
   },

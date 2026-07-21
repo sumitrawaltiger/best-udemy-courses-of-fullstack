@@ -141,7 +141,12 @@ export default function TypescriptDay() {
             onClick={() => setZoom(true)}
             aria-label={`Zoom episode ${entry.day}: ${entry.title}`}
           >
-            <img src={entry.image} alt={`Episode ${entry.day} — ${entry.title}`} loading="lazy" />
+            <img
+              src={entry.image}
+              alt={`Episode ${entry.day} — ${entry.title}`}
+              loading="lazy"
+              onError={(e) => { const f = e.currentTarget.closest('.prereq-figure'); if (f) f.style.display = 'none'; }}
+            />
             <span className="prereq-figure-zoom">🔍 Click to zoom</span>
           </button>
           <figcaption>
