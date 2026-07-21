@@ -5,6 +5,94 @@ import LectureCard from '../components/LectureCard';
 import K8sSyllabus from '../components/K8sSyllabus';
 import K8sHero, { K8sHeroStats } from '../components/K8sHero';
 
+// Essential kubectl commands — transcribed from the "All Kubernetes Commands"
+// cheat sheet (public/k8s-notes/kubernetes-commands-cheatsheet.jpg).
+const KUBECTL_GROUPS = [
+  {
+    icon: '🖥️', title: 'Cluster Info', desc: 'Get information about the cluster.',
+    cmds: [
+      ['kubectl cluster-info', 'Displays the cluster master and services information.'],
+      ['kubectl get nodes', 'Lists all the nodes in the cluster.'],
+    ],
+  },
+  {
+    icon: '🚩', title: 'Namespaces', desc: 'Organize resources with namespaces.',
+    cmds: [
+      ['kubectl get namespaces', 'Lists all namespaces.'],
+      ['kubectl create namespace <name>', 'Creates a new namespace.'],
+    ],
+  },
+  {
+    icon: '📦', title: 'Pods', desc: 'Create, view and manage Pods.',
+    cmds: [
+      ['kubectl get pods', 'Lists all pods in the current namespace.'],
+      ['kubectl describe pod <pod-name>', 'Shows detailed information about a pod.'],
+      ['kubectl logs <pod-name>', 'Displays logs from a pod.'],
+      ['kubectl exec -it <pod-name> -- /bin/sh', 'Opens a shell session inside the pod.'],
+      ['kubectl delete pod <pod-name>', 'Deletes a specific pod.'],
+    ],
+  },
+  {
+    icon: '🔄', title: 'Deployments', desc: 'Manage Deployments and application updates.',
+    cmds: [
+      ['kubectl get deployments', 'Lists all deployments.'],
+      ['kubectl describe deployment <name>', 'Shows details of a deployment.'],
+      ['kubectl scale deployment <name> --replicas=3', 'Scales the deployment to the desired replicas.'],
+      ['kubectl rollout status deployment <name>', 'Checks the rollout status of a deployment.'],
+      ['kubectl rollout undo deployment <name>', 'Rolls back to the previous deployment.'],
+    ],
+  },
+  {
+    icon: '🔗', title: 'Services', desc: 'Expose applications within or outside the cluster.',
+    cmds: [
+      ['kubectl get services', 'Lists all services.'],
+      ['kubectl describe service <name>', 'Shows details of a service.'],
+      ['kubectl expose deployment <name> --type=ClusterIP --port=80', 'Exposes a deployment as a service.'],
+    ],
+  },
+  {
+    icon: '🔒', title: 'Config & Secrets', desc: 'Manage ConfigMaps and Secrets.',
+    cmds: [
+      ['kubectl get configmaps', 'Lists all ConfigMaps.'],
+      ['kubectl get secrets', 'Lists all Secrets.'],
+      ['kubectl describe configmap <name>', 'Shows details of a ConfigMap.'],
+    ],
+  },
+  {
+    icon: '💾', title: 'Storage', desc: 'Work with Persistent Volumes and Claims.',
+    cmds: [
+      ['kubectl get pv', 'Lists all Persistent Volumes.'],
+      ['kubectl get pvc', 'Lists all Persistent Volume Claims.'],
+      ['kubectl describe pvc <name>', 'Shows details of a Persistent Volume Claim.'],
+    ],
+  },
+  {
+    icon: '🔍', title: 'Logs & Debugging', desc: 'Troubleshoot and debug applications.',
+    cmds: [
+      ['kubectl get events --sort-by=.metadata.creationTimestamp', 'Shows recent events in the cluster.'],
+      ['kubectl logs <pod-name> -f', 'Streams live logs from a pod.'],
+      ['kubectl describe pod <pod-name>', 'Shows detailed info and events of a pod.'],
+    ],
+  },
+  {
+    icon: '🗑️', title: 'Apply & Delete', desc: 'Apply configuration and delete resources.',
+    cmds: [
+      ['kubectl apply -f <file.yaml>', 'Creates or updates resources from a YAML file.'],
+      ['kubectl delete -f <file.yaml>', 'Deletes resources defined in a YAML file.'],
+      ['kubectl delete <resource> <name>', 'Deletes a specific resource (e.g. pod, svc).'],
+    ],
+  },
+  {
+    icon: '🧭', title: 'Context & Other', desc: 'Manage context and other useful info.',
+    cmds: [
+      ['kubectl config get-contexts', 'Lists all contexts.'],
+      ['kubectl config use-context <context-name>', 'Switches to the specified context.'],
+      ['kubectl top nodes', 'Shows CPU and memory usage of nodes.'],
+      ['kubectl top pods', 'Shows CPU and memory usage of pods.'],
+    ],
+  },
+];
+
 export default function K8sHome() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
@@ -74,6 +162,50 @@ export default function K8sHome() {
       </section>
 
       <div className="home k8s-home">
+        <section className="kubectl-cheat" id="kubectl-commands">
+          <div className="section-header">
+            <h2>All Kubernetes Commands — kubectl Cheat Sheet</h2>
+            <a href="/k8s-notes/kubernetes-commands-cheatsheet.jpg" download className="btn btn-k8s">
+              📥 Download
+            </a>
+          </div>
+          <p className="section-desc">
+            The essential <strong>kubectl</strong> commands every DevOps engineer should know — grouped by task,
+            with a one-line explanation for each. Practise them, and understand the output each one gives.
+          </p>
+
+          <div className="kubectl-grid">
+            {KUBECTL_GROUPS.map((g) => (
+              <article key={g.title} className="kubectl-card">
+                <h3 className="kubectl-card-title">
+                  <span aria-hidden="true">{g.icon}</span> {g.title}
+                </h3>
+                <p className="kubectl-card-desc">{g.desc}</p>
+                <ul className="kubectl-cmds">
+                  {g.cmds.map(([cmd, desc]) => (
+                    <li key={cmd}>
+                      <code className="kubectl-cmd">{cmd}</code>
+                      <span className="kubectl-cmd-desc">{desc}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+
+          <figure className="kubectl-figure">
+            <a href="/k8s-notes/kubernetes-commands-cheatsheet.jpg" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/k8s-notes/kubernetes-commands-cheatsheet.jpg"
+                alt="All Kubernetes Commands with Explanations — a kubectl cheat sheet covering cluster info, namespaces, pods, deployments, services, config & secrets, storage, logs & debugging, apply & delete, and context."
+                loading="lazy"
+                onError={(e) => { const f = e.currentTarget.closest('.kubectl-figure'); if (f) f.style.display = 'none'; }}
+              />
+            </a>
+            <figcaption>The original one-page cheat sheet — click to open full size ↗</figcaption>
+          </figure>
+        </section>
+
         <div id="k8s-syllabus">
           <K8sSyllabus />
         </div>

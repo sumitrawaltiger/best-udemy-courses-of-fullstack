@@ -6284,3 +6284,45 @@ a:hover {
   font-size: 0.82rem;
   margin-top: 8px;
 }
+
+/* ── kubectl Cheat Sheet (Kubernetes home) ─────────────────────── */
+.kubectl-cheat { margin-bottom: 8px; }
+.kubectl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+  margin: 16px 0 20px;
+}
+.kubectl-card {
+  border: 1px solid var(--border, #2a3441);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: var(--panel, #141b26);
+}
+.kubectl-card-title { font-size: 1.02rem; font-weight: 800; margin: 0 0 2px; }
+.kubectl-card-desc { color: var(--text-muted, #9aa7b4); font-size: 0.85rem; margin: 0 0 10px; }
+.kubectl-cmds { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+.kubectl-cmds li { display: flex; flex-direction: column; gap: 3px; }
+.kubectl-cmd {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  color: #7ee787;
+  background: #0d1117;
+  border: 1px solid var(--border, #2a3441);
+  border-radius: 7px;
+  padding: 6px 9px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.kubectl-cmd-desc { color: var(--text-muted, #9aa7b4); font-size: 0.83rem; line-height: 1.4; }
+.kubectl-figure { margin: 0; text-align: center; }
+.kubectl-figure img {
+  max-width: 560px;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border, #2a3441);
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.35);
+}
+.kubectl-figure figcaption { color: var(--text-muted, #9aa7b4); font-size: 0.82rem; margin-top: 8px; }
