@@ -166,9 +166,9 @@ export default function Home() {
           <h2 className="btech-title">The 4-Year Learning Path</h2>
           <p className="btech-sub">
             A structured path to a full lifecycle engineer — a <strong>4-year coding journey</strong>:{' '}
-            <strong>TypeScript → Python → Java → DevOps</strong>, one year each (<strong>1,461 days</strong>,
-            1 Sep 2026 → 31 Aug 2030). Each block maps to tracks on this site.{' '}
-            <strong>Gen AI &amp; JavaScript</strong> (with HTML5 &amp; CSS3) are the prerequisites, done before Day 1.
+            <strong>TypeScript → Python → Java → DevOps</strong>, one year each (<strong>1,461 days</strong>{' '}
+            across 4 years). Each block maps to tracks on this site.{' '}
+            <strong>Gen AI &amp; JavaScript</strong> (with HTML5 &amp; CSS3) are the prerequisites, done before Year 1.
           </p>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
