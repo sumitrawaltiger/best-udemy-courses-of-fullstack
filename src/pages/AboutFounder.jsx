@@ -19,14 +19,6 @@ const MARQUEE = [
   'Tailwind', 'Prisma', 'Zustand', 'Vitest', 'HTML5', 'CSS3',
 ];
 
-const STATS = [
-  { value: '4', label: 'Year Journey' },
-  { value: '1,461', label: 'Study Days' },
-  { value: '4', label: 'Stacks Mastered' },
-  { value: '30+', label: 'Technologies' },
-  { value: '3 hrs', label: 'Daily · 5–8 AM IST' },
-];
-
 const SKILLS = [
   { label: 'Languages', items: 'JavaScript, TypeScript, Python, Java' },
   { label: 'Front-End', items: 'React, Next.js, React Native, HTML5, CSS3, Tailwind' },
@@ -134,7 +126,7 @@ export default function AboutFounder() {
             <em className="a-kw">Python/Django</em> and <em className="a-kw">Java/Spring Boot</em>, to shipping and scaling
             with <em className="a-kw">Docker</em>, <em className="a-kw">Kubernetes</em>, <em className="a-kw">CI/CD</em> and{' '}
             <em className="a-kw">AWS</em> — grounded in <em className="a-kw">Gen AI</em>, <em className="a-kw">DSA</em> and{' '}
-            <em className="a-kw">System Design</em>. One morning at a time, 5–8 AM.<span className="a-tag">&lt;/p&gt;</span>
+            <em className="a-kw">System Design</em>.<span className="a-tag">&lt;/p&gt;</span>
           </p>
 
           <div className="a-hero-actions">
@@ -157,16 +149,6 @@ export default function AboutFounder() {
           ))}
         </div>
       </div>
-
-      {/* ── Stats ────────────────────────────────────────── */}
-      <section className="a-stats">
-        {STATS.map((s) => (
-          <div key={s.label} className="a-stat">
-            <span className="a-stat-val">{s.value}</span>
-            <span className="a-stat-lbl">{s.label}</span>
-          </div>
-        ))}
-      </section>
 
       {/* ── Skills ───────────────────────────────────────── */}
       <section className="a-section">
@@ -202,7 +184,7 @@ export default function AboutFounder() {
         <p className="a-eyebrow"><span className="a-dot" /> Get in touch</p>
         <h2 className="a-h2">Let&rsquo;s connect</h2>
         <p className="a-contact-sub">
-          Follow the journey, verify the badges, or reach out — I&rsquo;m documenting all {STATS[1].value} days of it.
+          Open to new opportunities — connect on LinkedIn, verify my credentials, or explore my work.
         </p>
         <div className="a-links">
           <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="a-link-card">
