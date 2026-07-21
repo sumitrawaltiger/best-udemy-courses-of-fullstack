@@ -50,8 +50,8 @@ export default function Prerequisites() {
 
       <section className="prereq-note">
         <p>
-          The plan starts on <strong>Day 1 (20 Jul 2026)</strong> with Agentic AI in JavaScript,
-          because HTML5, CSS3 and JavaScript are assumed knowledge. These 47 days are that assumption
+          The plan starts on <strong>Day 1</strong> with Agentic AI in JavaScript,
+          because HTML5, CSS3 and JavaScript are assumed knowledge. These 47 episodes are that assumption
           written down — the JavaScript you should be comfortable with before the journey begins.
         </p>
       </section>

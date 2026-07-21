@@ -25,7 +25,7 @@ export const K8S_META = {
   title: 'Thunder++ — Kubernetes',
   subtitle: 'KodeKloud Kubernetes Learning Path — from basics to CKA',
   description:
-    'Master Kubernetes with hands-on labs, playgrounds, challenges, and CKA certification prep on KodeKloud — 22 Apr to 30 Jul 2028.',
+    'Master Kubernetes with hands-on labs, playgrounds, challenges, and CKA certification prep on KodeKloud.',
   pathUrl: KODEKLOUD_K8S_PATH_URL,
   beginnersUrl: KODEKLOUD_K8S_BEGINNERS_URL,
   ckaUrl: KODEKLOUD_CKA_URL,
