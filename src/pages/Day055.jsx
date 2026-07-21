@@ -2,73 +2,73 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture41';
+const TS_HANDBOOK = 'https://www.typescriptlang.org/docs/handbook/intro.html';
 
 const LEARNT_TODAY = [
-  { title: 'Static embeddings aren’t enough', text: '"bank" has one fixed vector, but "river bank" and "money bank" mean different things' },
-  { title: 'Attention adds context', text: 'each token looks at the others and pulls in meaning, so its vector becomes context-aware' },
-  { title: 'Query, Key, Value', text: 'from each token’s embedding we make three vectors — a Query, a Key and a Value' },
-  { title: 'The library analogy', text: 'Query = what I’m looking for, Key = a book’s title/index, Value = the book’s actual content' },
-  { title: 'Score = Query · Key', text: 'a token’s Query dot-products with every Key to score how relevant each other token is' },
-  { title: 'Softmax the scores', text: 'turn the scores into attention weights that sum to 1 — how much to listen to each token' },
-  { title: 'Blend the Values', text: 'the new vector is the weighted sum of Values — mostly the tokens that scored high' },
-  { title: 'This is the Transformer', text: '“Attention Is All You Need” — self-attention is the core of every modern LLM' },
+  { title: 'Year 1 milestone', text: 'Days 1–55 built the whole TypeScript stack, front to back' },
+  { title: 'The language', text: 'types, generics, narrowing, classes, modules, async — all owned' },
+  { title: 'The frontend', text: 'React + the ecosystem (router, query, forms, state, testing)' },
+  { title: 'Full-stack web', text: 'Next.js — App Router, server components, actions, rendering' },
+  { title: 'Mobile', text: 'React Native with Expo — one codebase to iOS & Android' },
+  { title: 'The backend', text: 'Express, Prisma and JWT auth — a typed REST API, deployed' },
+  { title: 'DSA & System Design', text: 'practised in TypeScript alongside the whole year' },
+  { title: 'Next: Python', text: 'Year 2 begins the Python stack — Python, Django, FastAPI' },
 ];
 
-const PROBLEM = [
+const STACK = [
   {
-    icon: '🏦', title: 'The "Bank" Problem', titleClass: 'card-title-cyan', subtitle: 'One Word, Many Meanings',
+    icon: '🔷', title: 'Language & Frontend', titleClass: 'card-title-cyan', subtitle: 'Days 1–21',
     description:
-      'A plain embedding gives "bank" a single vector. But "withdraw money from the bank" and "sat on the river bank" need different meanings. Context has to reshape the vector.',
-    code: '// "withdraw money from the bank" → finance\n// "sat on the river bank"        → nature\n// same token, different meaning',
+      'The TypeScript language (types, generics, narrowing, classes, modules, async), typed React, then the ecosystem that builds real apps — React Router, TanStack Query, React Hook Form + Zod, Zustand and testing with Vitest.',
+    footer: 'TypeScript · React · Router · Query · Forms · State · Tests',
   },
   {
-    icon: '👀', title: 'Look At The Neighbours', titleClass: 'card-title-purple', subtitle: 'Context-Aware',
+    icon: '📱', title: 'Web & Mobile', titleClass: 'card-title-purple', subtitle: 'Days 22–31',
     description:
-      'Self-attention lets each token scan the whole sentence and absorb the relevant words. "bank" pulls from "money" or "river" and its vector shifts toward the right sense.',
-    code: '// "bank" attends to "money" → finance sense\n// "bank" attends to "river" → nature sense\n// vector updated in context',
+      'Full-stack web with Next.js (App Router, server vs client components, data fetching & server actions, rendering & caching, route handlers) and native mobile with React Native + Expo — from one TypeScript codebase to iOS, Android and web.',
+    footer: 'Next.js · React Native · Expo · one codebase',
   },
 ];
 
-const QKV = [
+const REST = [
   {
-    icon: '📚', title: 'Query · Key · Value', titleClass: 'card-title-cyan', subtitle: 'The Library',
+    icon: '🟢', title: 'The Backend', titleClass: 'card-title-cyan', subtitle: 'Days 32–36',
     description:
-      'From each embedding we derive three vectors. Query = what this token is looking for; Key = what each token advertises; Value = the content it contributes. Like searching a library.',
-    code: '// Query = "I need finance context"\n// Key   = "I am about money"   (title)\n// Value = the actual content to blend in',
+      'Node + Express: routing and middleware, a validated REST API, a typed database with Prisma, and JWT auth — deployed to production. The server that powers the frontend and mobile apps.',
+    footer: 'Express · Prisma · JWT · deployed API',
   },
   {
-    icon: '🎯', title: 'Score, Then Softmax', titleClass: 'card-title-purple', subtitle: 'Q · Kᵀ → weights',
+    icon: '🧠', title: 'DSA & System Design', titleClass: 'card-title-purple', subtitle: 'Days 37–54',
     description:
-      'Dot-product a token’s Query with every Key to score relevance, then softmax those scores into attention weights that sum to 1 — how much attention to pay to each token.',
-    code: '// score_j = Query · Key_j\n// weights = softmax(scores)  (sum to 1)\n// high score = pay more attention',
+      'Practised in TypeScript all year: complexity, arrays/strings, hashing, stacks/queues/lists, trees, graphs, recursion & DP, interview patterns — and system design from fundamentals to microservices, CAP, security and observability.',
+    footer: 'DSA · patterns · scalable system design',
   },
   {
-    icon: '🧪', title: 'Blend The Values', titleClass: 'card-title-amber', subtitle: 'Weighted Sum',
+    icon: '🐍', title: 'Next: Year 2 · Python', titleClass: 'card-title-amber', subtitle: 'The Journey Continues',
     description:
-      'The token’s new vector is the weighted sum of all Values, dominated by the tokens it scored highest. That’s a fresh, context-aware embedding — repeated across every token and layer.',
-    code: '// new_vector = Σ weight_j · Value_j\n// mostly the high-attention tokens\n// → contextual embedding',
+      'A full-stack, mobile and backend TypeScript engineer in one year. Year 2 begins the Python stack — Python, Django and FastAPI — with DSA & System Design continuing in Python.',
+    link: { href: '/python', label: 'Preview the Python track →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 41', titleClass: 'card-title-cyan', subtitle: 'Self-Attention',
+    icon: '📘', title: 'TypeScript Handbook', titleClass: 'card-title-cyan', subtitle: 'Keep It Close',
     description:
-      'The self-attention material in the STRIKE GenAI repo — Query/Key/Value, scoring, softmax and blending values into context-aware vectors.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 41 →', external: true },
+      'The reference to return to — every concept from the year lives here, always current with the latest compiler.',
+    link: { href: TS_HANDBOOK, label: 'Open the Handbook →', external: true },
   },
   {
-    icon: '🧠', title: 'Attention Is All You Need', titleClass: 'card-title-purple', subtitle: 'The Transformer',
+    icon: '🗺️', title: 'The 4-Year Roadmap', titleClass: 'card-title-purple', subtitle: 'Where This Fits',
     description:
-      'This mechanism, stacked many times, is the Transformer — the architecture behind GPT and every modern LLM. It’s how models understand context at all.',
-    footer: 'Q·K → softmax → weighted Values → context',
+      'Year 1 (TypeScript) done — three years of code remain: Python, then Java, then DevOps. See the whole dated plan.',
+    link: { href: '/roadmap', label: 'Open the roadmap →' },
   },
   {
-    icon: '🏁', title: 'Prerequisites Complete', titleClass: 'card-title-amber', subtitle: 'Gen AI done → Day 1 · TypeScript',
+    icon: '➡️', title: 'The Journal Continues', titleClass: 'card-title-amber', subtitle: 'Day 56 →',
     description:
-      'This closes the Generative & Agentic AI prerequisite — from token prediction and LLMs to embeddings, RAG, LangChain/LangGraph agents, neural nets and the Transformer. With Gen AI & JavaScript done, Day 1 of the 4-year journey begins with the TypeScript stack.',
-    link: { href: '/day-001', label: 'Start Day 1 · TypeScript →' },
+      'The daily journal keeps building from here — deeper system design and the road into Year 2. Keep the TypeScript foundation sharp through everything ahead.',
+    link: { href: '/day-056', label: 'Go to Day 56 →' },
   },
 ];
 
@@ -133,43 +133,42 @@ export default function Day055() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-054" className="day001-nav-btn day001-nav-prev">← Prereq 38</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 39</p>
-          <Link to="/day-001" className="day001-nav-btn day001-nav-next">Start · Day 1 →</Link>
+          <Link to="/day-054" className="day001-nav-btn day001-nav-prev">← Day 54</Link>
+          <p className="day001-datetime">TypeScript Day 55</p>
+          <Link to="/day-056" className="day001-nav-btn day001-nav-next">Day 56 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 41</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Milestone</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 39 <span aria-hidden="true">👀</span></h1>
-              <p className="day001-day-theme">SELF-ATTENTION — QUERY, KEY &amp; VALUE</p>
+              <h1 className="day001-day-num">DAY 55 <span aria-hidden="true">🏁</span></h1>
+              <p className="day001-day-theme">YEAR 1 COMPLETE — THE TYPESCRIPT STACK</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '39%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '55%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 41 — a plain embedding gives <strong>"bank"</strong> one fixed vector, but{' '}
-          <em>river bank</em> and <em>money bank</em> differ. <strong>Self-attention</strong> lets each token look at
-          the others and become <strong>context-aware</strong>. From every embedding we build three vectors —{' '}
-          <strong>Query, Key, Value</strong> (like a library: Query = what I want, Key = the title, Value = the
-          content). A token’s <strong>Query · Key</strong> scores every other token; <strong>softmax</strong> turns
-          those into attention weights that sum to 1; the new vector is the <strong>weighted sum of Values</strong>.
-          Stack this many times and you have the <strong>Transformer</strong>.{' '}
-          <em>“Attention Is All You Need.”</em>
+          A milestone. <strong>Days 1–55</strong> built the entire <strong>TypeScript stack</strong> — the{' '}
+          <strong>language</strong> (types → generics → classes → async), the <strong>frontend</strong> (React + its
+          ecosystem), <strong>full-stack web</strong> (Next.js), <strong>mobile</strong> (React Native + Expo), and the{' '}
+          <strong>backend</strong> (Express, Prisma, JWT — deployed) — with <strong>DSA &amp; System Design</strong>{' '}
+          practised in TypeScript throughout. That’s a full-stack, mobile and backend engineer in one language. Keep
+          the <a href={TS_HANDBOOK} target="_blank" rel="noopener noreferrer">Handbook</a> close, and next up is{' '}
+          <strong>Year 2 — the Python stack</strong> (Python, Django, FastAPI). <em>One stack down, three to go. 🎓</em>
         </p>
 
         <section className="day001-learnt">
-          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED THIS YEAR</h2>
           <ul className="day001-learnt-list">
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
@@ -180,12 +179,12 @@ export default function Day055() {
           </ul>
         </section>
 
-        <CardSection icon="🏦" title="THE CONTEXT PROBLEM" cards={PROBLEM} columns={2} />
-        <CardSection icon="📚" title="QUERY · KEY · VALUE" cards={QKV} columns={3} />
+        <CardSection icon="🔷" title="LANGUAGE, FRONTEND, WEB & MOBILE" cards={STACK} columns={2} />
+        <CardSection icon="🟢" title="BACKEND · DSA · WHAT'S NEXT" cards={REST} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Attention</span><span>#Transformer</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#FullStack</span><span>#Milestone</span>
         </footer>
       </div>
     </div>

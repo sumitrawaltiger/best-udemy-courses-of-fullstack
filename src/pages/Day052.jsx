@@ -2,74 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture37%20and%2038';
-const NOTION = 'https://www.notion.so/Multi-class-classification-345a9af81c9880dd9f8cd3b7dca8fa25';
+const MICRO_FOWLER = 'https://martinfowler.com/articles/microservices.html';
+const SAGA = 'https://microservices.io/patterns/data/saga.html';
 
 const LEARNT_TODAY = [
-  { title: 'A real neural network', text: 'not one neuron — a 5 → 16 → 10 network: 5 features, a hidden layer of 16, and 10 output classes' },
-  { title: 'Predict the company', text: 'from dsa, projects, iq, cgpa, attendance → which of 10 companies places the student' },
-  { title: 'Why a hidden layer', text: 'one layer only draws straight boundaries; the hidden layer learns feature interactions like "high CGPA AND high projects"' },
-  { title: 'ReLU adds non-linearity', text: 'ReLU(x) = max(0, x) kills negative signals — a switch that lets useful patterns through and blocks the rest' },
-  { title: 'Softmax output', text: 'the 10 output neurons go through softmax → a probability per company that sums to 1' },
-  { title: 'Standardize features', text: 'z-score each feature (mean 0, std 1) so iq (~120) doesn’t dominate cgpa (~8) by scale alone' },
-  { title: 'He initialization', text: 'random weights with std = √(2 / fanIn) keep signals stable through ReLU layers' },
-  { title: 'Train it', text: 'cross-entropy loss + mini-batch gradient descent over 500 epochs, on an 80/20 train/test split' },
+  { title: 'Monolith vs microservices', text: 'one deployable vs many independent services' },
+  { title: 'Start with a monolith', text: 'split only when scaling or team boundaries demand it' },
+  { title: 'API gateway', text: 'one entry point: routing, auth, rate limiting, aggregation' },
+  { title: 'Service discovery', text: 'services find each other dynamically as instances change' },
+  { title: 'Own your data', text: 'each service has its own database — no shared tables' },
+  { title: 'Saga pattern', text: 'coordinate a transaction across services with compensation' },
+  { title: 'Circuit breaker', text: 'stop calling a failing service to prevent cascades' },
+  { title: 'Complexity is the cost', text: 'network calls, distributed debugging, eventual consistency' },
 ];
 
-const NET = [
+const SPLIT = [
   {
-    icon: '🕸️', title: 'The Architecture', titleClass: 'card-title-cyan', subtitle: '5 → 16 → 10',
+    icon: '🧱', title: 'Monolith vs Microservices', titleClass: 'card-title-cyan', subtitle: 'One vs Many',
     description:
-      'Five input features feed a hidden layer of 16 neurons, which feeds 10 output neurons — one per company. Two layers of weights, learned from scratch in pure C++.',
-    code: '// Input : 5  (dsa, projects, iq, cgpa, attendance)\n// Hidden: 16 + ReLU\n// Output: 10 + Softmax   (10 companies)\n// Loss  : cross-entropy',
+      'A monolith is one codebase and deployable — simple to build, test and run early on. Microservices split it into independently deployable services owned by different teams — flexible at scale, but distributed and complex. Start monolith; split when you must.',
+    code: '// monolith: one app, one DB, one deploy\n// microservices: users-svc, orders-svc, payments-svc\n//   — each own repo, DB, deploy, scaling',
   },
   {
-    icon: '🔀', title: 'Why A Hidden Layer', titleClass: 'card-title-purple', subtitle: 'Learn Interactions',
+    icon: '🚪', title: 'API Gateway', titleClass: 'card-title-purple', subtitle: 'One Front Door',
     description:
-      'A single layer can only split data with straight lines. Placement is non-linear: "high CGPA + low projects" leads somewhere different than "high CGPA + high projects". The hidden layer captures that.',
-    code: '// no hidden layer → straight boundary only\n// hidden layer → learns feature combinations\n// ReLU makes the combinations non-linear',
+      'Clients hit a single API gateway, not each service. It handles cross-cutting concerns — routing, auth, rate limiting, request aggregation — so services stay focused and clients see one API.',
+    code: '// client → gateway → { users, orders, payments }\n// gateway does: auth · rate-limit · route · aggregate',
   },
 ];
 
-const PIECES = [
+const PATTERNS = [
   {
-    icon: '⚡', title: 'ReLU', titleClass: 'card-title-cyan', subtitle: 'max(0, x)',
+    icon: '🔎', title: 'Service Discovery', titleClass: 'card-title-cyan', subtitle: 'Find Each Other',
     description:
-      'The hidden layer’s activation. It zeroes out negative values, acting like a switch — useful signals pass, noise is blocked. That bend is what lets the network model curves.',
-    code: 'double relu(double x) {\n  return x > 0 ? x : 0.0;\n}\n// negative → 0, positive → unchanged',
+      'Instances come and go with auto-scaling, so services can’t hardcode addresses. A registry (or the platform, e.g. Kubernetes DNS) lets a service look up healthy instances of another by name.',
+    code: '// call by logical name, not IP:\nfetch("http://orders-service/api/orders")\n// discovery resolves to a healthy instance',
   },
   {
-    icon: '📊', title: 'Standardize', titleClass: 'card-title-purple', subtitle: 'Z-Score',
+    icon: '🔄', title: 'Saga', titleClass: 'card-title-purple', subtitle: 'Distributed Transactions',
     description:
-      'Rescale every feature to mean 0, std 1. Without it iq (~120) would swamp cgpa (~8) purely by magnitude. Now the network learns from pattern, not scale.',
-    code: '// per feature j:\n// x = (x - mean[j]) / std[j]\n// → every feature centred, comparable',
+      'You can’t run one ACID transaction across services. A saga chains local transactions; if a later step fails, earlier steps run compensating actions to undo — eventual consistency with a rollback story.',
+    code: '// order → reserve stock → charge card\n// charge fails → compensate: release stock, cancel order',
   },
   {
-    icon: '🎲', title: 'He Init + Softmax', titleClass: 'card-title-amber', subtitle: 'Stable Start, Clean Output',
+    icon: '🔌', title: 'Circuit Breaker', titleClass: 'card-title-amber', subtitle: 'Stop Cascades',
     description:
-      'Weights start random with std = √(2/fanIn) (He init) so signals don’t vanish or explode through ReLU. The 10 outputs pass through softmax to a probability per company.',
-    code: '// weight ~ Normal(0, sqrt(2/fanIn))\n// output → softmax → [p0..p9], Σ = 1\n// argmax = predicted company',
+      'When a downstream service is failing, keep calling it and the failure cascades. A circuit breaker "trips" after repeated errors — failing fast (or returning a fallback) until the service recovers.',
+    footer: 'errors spike → open the circuit → fail fast / fallback',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lectures 37 & 38', titleClass: 'card-title-cyan', subtitle: 'C++ Neural Net',
+    icon: '📘', title: 'Microservices (Fowler)', titleClass: 'card-title-cyan', subtitle: 'The Definition',
     description:
-      'placement_nn.cpp, placement_data.csv and predict.cpp in the STRIKE GenAI repo — a full multi-class network built by hand.',
-    link: { href: GH_LECTURE, label: 'Open Lectures 37 & 38 →', external: true },
+      'Martin Fowler’s foundational article — what microservices are, their characteristics, and when the trade-off is worth it.',
+    link: { href: MICRO_FOWLER, label: 'Read the article →', external: true },
   },
   {
-    icon: '📝', title: 'Multi-Class Notes', titleClass: 'card-title-purple', subtitle: 'Notion',
+    icon: '🔄', title: 'Saga Pattern', titleClass: 'card-title-purple', subtitle: 'microservices.io',
     description:
-      'Rohit’s notes on multi-class classification — the hidden layer, ReLU, softmax and cross-entropy tied together.',
-    link: { href: NOTION, label: 'Open the notes →', external: true },
+      'Choreography vs orchestration sagas, compensating transactions, and how to keep data consistent across services.',
+    link: { href: SAGA, label: 'Open the pattern →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Tokenizer', titleClass: 'card-title-amber', subtitle: 'Prereq 37 Preview',
+    icon: '🔜', title: 'Next: Security & Rate Limits', titleClass: 'card-title-amber', subtitle: 'Day 53 Preview',
     description:
-      'Tomorrow — Lecture 39: build a Byte-Pair-Encoding tokenizer from scratch, the first real step of turning text into an LLM’s input.',
-    link: { href: '/day-053', label: 'Go to Prereq 37 →' },
+      'Tomorrow — securing systems: authN vs authZ, OAuth/JWT at scale, rate limiting algorithms, and defending against common attacks.',
+    link: { href: '/day-053', label: 'Go to Day 53 →' },
   },
 ];
 
@@ -134,39 +134,39 @@ export default function Day052() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-051" className="day001-nav-btn day001-nav-prev">← Prereq 35</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 36</p>
-          <Link to="/day-053" className="day001-nav-btn day001-nav-next">Prereq 37 →</Link>
+          <Link to="/day-051" className="day001-nav-btn day001-nav-prev">← Day 51</Link>
+          <p className="day001-datetime">TypeScript Day 52</p>
+          <Link to="/day-053" className="day001-nav-btn day001-nav-next">Day 53 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 37 &amp; 38</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>System Design</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 36 <span aria-hidden="true">🕸️</span></h1>
-              <p className="day001-day-theme">MULTI-CLASS NEURAL NETWORK IN C++</p>
+              <h1 className="day001-day-num">DAY 52 <span aria-hidden="true">🧱</span></h1>
+              <p className="day001-day-theme">SYSTEM DESIGN — MICROSERVICES &amp; GATEWAY</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '36%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '52%' }} /></div>
 
         <p className="day001-summary">
-          Lectures 37 &amp; 38 — a real <strong>neural network</strong>, built in C++. The task: predict which of{' '}
-          <strong>10 companies</strong> places a student from <strong>dsa, projects, iq, cgpa, attendance</strong>. The
-          shape is <strong>5 → 16 → 10</strong>: five inputs, a <strong>hidden layer of 16</strong> with{' '}
-          <strong>ReLU</strong>, then 10 outputs through <strong>softmax</strong>. The hidden layer is the point — it
-          learns feature <strong>interactions</strong> a single layer can’t. Features are{' '}
-          <strong>z-score standardized</strong>, weights start with <strong>He init</strong>{' '}
-          <code>√(2/fanIn)</code>, and it trains with <strong>cross-entropy + mini-batch gradient descent</strong>.{' '}
-          <em>Next: tokenization.</em>
+          Splitting a system. A <strong>monolith</strong> (one deployable) is simplest early on;{' '}
+          <strong>microservices</strong> split it into independently deployable, team-owned services — flexible at
+          scale but distributed and complex, so <strong>start monolith, split when you must</strong>. Clients hit one{' '}
+          <strong>API gateway</strong> (routing, auth, rate limiting, aggregation), and services find each other via{' '}
+          <strong>service discovery</strong>. Each service <strong>owns its data</strong>. Cross-service transactions
+          use the <strong>saga</strong> pattern (compensating actions on failure), and a{' '}
+          <strong>circuit breaker</strong> stops a failing dependency from cascading. The cost of it all is{' '}
+          <strong>complexity</strong>. <em>Next: security &amp; rate limiting.</em>
         </p>
 
         <section className="day001-learnt">
@@ -181,12 +181,12 @@ export default function Day052() {
           </ul>
         </section>
 
-        <CardSection icon="🕸️" title="THE NETWORK" cards={NET} columns={2} />
-        <CardSection icon="🧩" title="THE PIECES" cards={PIECES} columns={3} />
+        <CardSection icon="🧱" title="ARCHITECTURE" cards={SPLIT} columns={2} />
+        <CardSection icon="🔄" title="DISTRIBUTED PATTERNS" cards={PATTERNS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#NeuralNetworks</span><span>#Cpp</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#SystemDesign</span><span>#Microservices</span>
         </footer>
       </div>
     </div>

@@ -2,73 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture30';
-const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
+const GRAPHQL = 'https://graphql.org/learn/';
+const GRPC = 'https://grpc.io/docs/what-is-grpc/introduction/';
 
 const LEARNT_TODAY = [
-  { title: 'One neuron, one bend', text: 'each ReLU neuron contributes a single kink at a point you choose with its weight and bias' },
-  { title: 'Combine bends', text: 'ReLU(x−10) − ReLU(x−30) makes a plateau — a ramp that turns on at 10 and levels off at 30' },
-  { title: 'Scale them', text: '3·ReLU(x−2) − 3·ReLU(x−3) controls the height and steepness of a piece' },
-  { title: 'Sum many neurons', text: 'stack shifted, scaled ReLUs and their bends add up into any shape you like' },
-  { title: 'Approximate y = x²', text: 'enough small ReLU pieces trace a smooth curve as closely as you want' },
-  { title: 'Universal approximation', text: 'a wide enough network of ReLU neurons can approximate ANY continuous function' },
-  { title: 'Why deep learning works', text: 'it’s not magic — millions of tiny bends, tuned by gradient descent, fit the data' },
+  { title: 'REST', text: 'resources + HTTP verbs; simple, cacheable, universal' },
+  { title: 'GraphQL', text: 'one endpoint, client picks exactly the fields it needs' },
+  { title: 'gRPC', text: 'binary Protobuf over HTTP/2 — fast service-to-service calls' },
+  { title: 'WebSockets', text: 'a persistent two-way channel for real-time updates' },
+  { title: 'Idempotency', text: 'safe retries — the same request applied twice has one effect' },
+  { title: 'Pagination', text: 'cursor-based scales better than offset for large lists' },
+  { title: 'Versioning', text: 'evolve APIs without breaking clients (/v1, headers)' },
+  { title: 'Pick per need', text: 'public API → REST/GraphQL; internal → gRPC; live → WebSockets' },
 ];
 
-const BENDS = [
+const STYLES = [
   {
-    icon: '📐', title: 'One Neuron, One Bend', titleClass: 'card-title-cyan', subtitle: 'The Building Block',
+    icon: '🔌', title: 'REST vs GraphQL', titleClass: 'card-title-cyan', subtitle: 'Two Public APIs',
     description:
-      'Yesterday’s ReLU(w·x+b) makes exactly one kink. On its own it draws a hinge — flat, then a slope. The trick is what happens when you have many of them.',
-    code: '// ReLU(x - 10): flat, then rises at x = 10\n// each neuron = one hinge in the graph',
+      'REST is resources + verbs — simple, cacheable, everywhere, but can over- or under-fetch. GraphQL exposes one endpoint where the client requests exactly the fields it needs, at the cost of caching and complexity.',
+    code: '// REST: GET /users/7  → the whole user\n// GraphQL: query { user(id:7){ name posts{ title } } }\n//          → exactly those fields, one round trip',
   },
   {
-    icon: '🏗️', title: 'Combine Them', titleClass: 'card-title-purple', subtitle: 'Plateaus & Steps',
+    icon: '⚡', title: 'gRPC & WebSockets', titleClass: 'card-title-purple', subtitle: 'Internal & Real-Time',
     description:
-      'Subtract one ReLU from another and you get a plateau; scale them and you set the height. A couple of neurons already build a step, a ramp, or a bump.',
-    code: '// ReLU(x-10) - ReLU(x-30) → a ramp then plateau\n// 3·ReLU(x-2) - 3·ReLU(x-3) → a sharp step of height 3',
+      'gRPC uses binary Protobuf over HTTP/2 — compact and fast for service-to-service calls with generated typed clients. WebSockets hold a persistent two-way connection for chat, notifications and live feeds.',
+    code: '// gRPC: define .proto → generate typed client/server\n// WebSocket: ws.send / ws.onmessage — push both ways',
   },
 ];
 
-const APPROX = [
+const CONTRACT = [
   {
-    icon: '🧩', title: 'Add Up The Pieces', titleClass: 'card-title-cyan', subtitle: 'Sum Of ReLUs',
+    icon: '♻️', title: 'Idempotency', titleClass: 'card-title-cyan', subtitle: 'Safe Retries',
     description:
-      'A layer of ReLU neurons is just a sum of many scaled, shifted hinges. Line up their bends and the total output can follow almost any wiggly shape.',
-    code: '// output = Σ  wᵢ · ReLU(x - kᵢ)\n// many hinges → an arbitrary piecewise curve',
+      'Networks fail and clients retry. GET/PUT/DELETE are naturally idempotent; make POST idempotent with an idempotency key, so a double-submit charges the card once, not twice.',
+    code: 'POST /payments\nIdempotency-Key: 7f3c...        // server dedupes\n// same key → return the first result, don’t re-run',
   },
   {
-    icon: '🌀', title: 'Approximate Anything', titleClass: 'card-title-purple', subtitle: 'Even y = x²',
+    icon: '📄', title: 'Pagination', titleClass: 'card-title-purple', subtitle: 'Cursor > Offset',
     description:
-      'Give it enough neurons and the sum of hinges hugs a smooth curve like y=x² — more neurons, closer fit. That is the universal approximation theorem in one picture.',
-    code: '// 1 → 1, 2 → 4, 3 → 9, ...  (y = x²)\n// enough ReLU hinges trace it as closely as you want',
+      'Offset pagination (LIMIT/OFFSET) gets slow and skips/repeats rows as data shifts. Cursor pagination ("after this id") is stable and fast at scale.',
+    code: '// cursor: GET /feed?after=eyJpZCI6MTAwfQ&limit=20\n// stable ordering, O(1)-ish page fetch',
   },
   {
-    icon: '💡', title: 'So That’s The Magic', titleClass: 'card-title-amber', subtitle: 'Demystified',
+    icon: '🏷️', title: 'Versioning', titleClass: 'card-title-amber', subtitle: 'Don’t Break Clients',
     description:
-      'A neural network is a huge sum of bends whose positions and heights are learned by gradient descent. Not mysterious — just a very flexible function fit to data.',
-    footer: 'weighted sums + ReLU bends + training = any function',
+      'APIs evolve. Version them (/v1, /v2 or a header) and add fields rather than removing them, so old clients keep working while new ones adopt changes.',
+    footer: 'add, don’t remove · version breaking changes',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 30', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'GraphQL', titleClass: 'card-title-cyan', subtitle: 'Learn',
     description:
-      'The universal-approximation notebook in the STRIKE GenAI repo — building curves from combinations of ReLU neurons.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 30 →', external: true },
+      'Schemas, queries, mutations, resolvers and the trade-offs vs REST — when a flexible query language pays off.',
+    link: { href: GRAPHQL, label: 'Open GraphQL →', external: true },
   },
   {
-    icon: '🧠', title: 'From Neuron To LLM', titleClass: 'card-title-purple', subtitle: 'It All Connects',
+    icon: '⚡', title: 'gRPC', titleClass: 'card-title-purple', subtitle: 'Intro',
     description:
-      'Weighted sums (Day 27), training (Day 28), non-linearity (Day 29), universal approximation (Day 30) — the foundations under every model, including the LLMs I build with.',
-    link: { href: '/genai', label: 'Open the GenAI track →' },
+      'What gRPC is, Protobuf, streaming, and why it’s the default for high-performance internal microservice calls.',
+    link: { href: GRPC, label: 'Open gRPC →', external: true },
   },
   {
-    icon: '💾', title: 'STRIKE GenAI Repo', titleClass: 'card-title-amber', subtitle: 'All Lectures',
+    icon: '🔜', title: 'Next: Databases', titleClass: 'card-title-amber', subtitle: 'Day 47 Preview',
     description:
-      'The full Coder Army course code — the journey continues past here toward more advanced GenAI topics.',
-    link: { href: GH_REPO, label: 'Open the full repo →', external: true },
+      'Tomorrow — data at scale: SQL vs NoSQL, indexing, sharding & partitioning, and read replicas for the storage layer.',
+    link: { href: '/day-047', label: 'Go to Day 47 →' },
   },
 ];
 
@@ -133,38 +134,38 @@ export default function Day046() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-045" className="day001-nav-btn day001-nav-prev">← Prereq 29</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 30</p>
-          <Link to="/day-047" className="day001-nav-btn day001-nav-next">Prereq 31 →</Link>
+          <Link to="/day-045" className="day001-nav-btn day001-nav-prev">← Day 45</Link>
+          <p className="day001-datetime">TypeScript Day 46</p>
+          <Link to="/day-047" className="day001-nav-btn day001-nav-next">Day 47 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 30</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>System Design</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 30 <span aria-hidden="true">🌀</span></h1>
-              <p className="day001-day-theme">UNIVERSAL APPROXIMATION — ANY CURVE FROM RELUs</p>
+              <h1 className="day001-day-num">DAY 46 <span aria-hidden="true">🔌</span></h1>
+              <p className="day001-day-theme">SYSTEM DESIGN — APIs &amp; COMMUNICATION</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '30%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '46%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 30 — the payoff. Each <strong>ReLU neuron</strong> is one <strong>bend</strong>; combine them and
-          magic happens. <code>ReLU(x−10) − ReLU(x−30)</code> makes a <strong>plateau</strong>, scaling sets the
-          height, and <strong>summing many</strong> shifted, scaled ReLUs builds any shape — even tracing{' '}
-          <code>y=x²</code> as closely as you want. That is the <strong>universal approximation theorem</strong>: a
-          wide enough network can approximate <strong>any</strong> continuous function. Deep learning isn’t magic —
-          it’s millions of tiny bends, tuned by gradient descent, fitting the data.{' '}
-          <em>Thirty days in — the foundations are solid. (From the lecture notebook.)</em>
+          How systems talk. <strong>REST</strong> (resources + verbs) is simple and cacheable but can over/under-fetch;{' '}
+          <strong>GraphQL</strong> lets the client request exactly the fields it needs; <strong>gRPC</strong> (binary
+          Protobuf over HTTP/2) is fast for internal service calls; <strong>WebSockets</strong> hold a two-way channel
+          for real-time. Beyond the style, the contract details decide reliability: make writes{' '}
+          <strong>idempotent</strong> (safe retries via an idempotency key), prefer <strong>cursor pagination</strong>{' '}
+          over offset at scale, and <strong>version</strong> APIs (add, don’t remove) so clients don’t break. Pick per
+          need — public → REST/GraphQL, internal → gRPC, live → WebSockets. <em>Next: databases &amp; storage.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +180,12 @@ export default function Day046() {
           </ul>
         </section>
 
-        <CardSection icon="📐" title="ONE NEURON, ONE BEND" cards={BENDS} columns={2} />
-        <CardSection icon="🌀" title="APPROXIMATE ANYTHING" cards={APPROX} columns={3} />
+        <CardSection icon="🔌" title="API STYLES" cards={STYLES} columns={2} />
+        <CardSection icon="📄" title="THE CONTRACT" cards={CONTRACT} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#DeepLearning</span><span>#NeuralNetworks</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#SystemDesign</span><span>#APIs</span>
         </footer>
       </div>
     </div>

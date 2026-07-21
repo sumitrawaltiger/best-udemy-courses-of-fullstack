@@ -2,72 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture31';
+const INDEX_USE = 'https://use-the-index-luke.com/';
+const SHARD_DOCS = 'https://www.mongodb.com/docs/manual/sharding/';
 
 const LEARNT_TODAY = [
-  { title: 'Regression vs classification', text: 'regression predicts a number (marks); classification predicts a category (placed or not)' },
-  { title: 'The output is 0 or 1', text: 'will this student get placed? yes (1) or no (0) — a yes/no decision, not a quantity' },
-  { title: 'Raw weighted sum won’t do', text: 'w1·x + … can be 80 or 16 lakh, but a "will it happen?" answer needs to live between 0 and 1' },
-  { title: 'We need a probability', text: 'turn the raw score into "70% chance placed" (0.7) — a squashing step is missing' },
-  { title: 'Loss compares to the truth', text: 'if the real answer is 1 and we predicted 0.7, the error is 0.3 — how wrong we were' },
-  { title: 'Same gradient descent', text: 'update each weight with w = w_old + learningRate · error · input' },
-  { title: 'Sets up the sigmoid', text: 'tomorrow adds the function that squashes any score into a clean probability' },
+  { title: 'SQL vs NoSQL', text: 'relational + ACID vs flexible schema + horizontal scale' },
+  { title: 'Indexes', text: 'a B-tree that turns O(n) scans into O(log n) lookups' },
+  { title: 'Indexes cost writes', text: 'every index is extra work on insert/update — add deliberately' },
+  { title: 'Replication', text: 'copy data to replicas for read scale and failover' },
+  { title: 'Sharding', text: 'split data across nodes by a shard key for write scale' },
+  { title: 'Shard key matters', text: 'a bad key creates hotspots and cross-shard queries' },
+  { title: 'Denormalise for reads', text: 'NoSQL often duplicates data to avoid joins' },
+  { title: 'Pick by access pattern', text: 'model the queries first, then choose the store' },
 ];
 
-const KINDS = [
+const STORES = [
   {
-    icon: '📈', title: 'Regression', titleClass: 'card-title-cyan', subtitle: 'Predict A Number',
+    icon: '🗄️', title: 'SQL vs NoSQL', titleClass: 'card-title-cyan', subtitle: 'Structure vs Scale',
     description:
-      'Days 27–30 predicted a quantity — marks from study and sleep. The output could be any number, and a straight line (or curve) fit the data.',
-    code: '// regression: output = a number\n// "how many marks?" → 74.3',
+      'Relational databases give a fixed schema, joins and ACID transactions — ideal for structured, consistent data. NoSQL (document, key-value, wide-column) trades joins/strict schema for flexible models and easy horizontal scale.',
+    code: '// SQL (Postgres): joins, transactions, strong schema\n// NoSQL (Mongo/DynamoDB): flexible docs, denormalised,\n//   scales out — model around your access patterns',
   },
   {
-    icon: '✅', title: 'Classification', titleClass: 'card-title-purple', subtitle: 'Predict A Category',
+    icon: '🔎', title: 'Indexes', titleClass: 'card-title-purple', subtitle: 'Fast Lookups',
     description:
-      'Now the question is different: will a student get placed — yes or no? The output must be a decision (0 or 1), expressed as a probability of the "yes".',
-    code: '// classification: output = a category\n// "placed?" → 1 (yes) or 0 (no)\n// features: dsa, projects, iq, attendance',
+      'An index (usually a B-tree) makes lookups on a column O(log n) instead of a full scan. But each index slows writes and uses space — index the columns you filter/sort on, not everything.',
+    code: '-- index the columns queries filter on\nCREATE INDEX idx_user_email ON users(email);\n-- composite for multi-column filters\nCREATE INDEX idx_orders_user_date ON orders(user_id, created_at);',
   },
 ];
 
-const PROB = [
+const SCALE = [
   {
-    icon: '🔢', title: 'The Raw Score Problem', titleClass: 'card-title-cyan', subtitle: 'Too Big',
+    icon: '📑', title: 'Replication', titleClass: 'card-title-cyan', subtitle: 'Read Scale + Failover',
     description:
-      'The same weighted sum as before can produce anything — 80, or 1,600,000. That is meaningless as a "chance of being placed". We need it bounded between 0 and 1.',
-    code: '// z = w1·dsa + w2·projects + w3·iq + w4·att + b\n// z could be 80 ... or 16 lakh\n// but a probability must be in [0, 1]',
+      'Keep copies of the data. A primary takes writes and streams to read replicas that serve read traffic; if the primary fails, a replica is promoted. Reads may be slightly stale (replication lag).',
+    code: '// writes → primary\n// reads  → replicas (may lag by ms)\n// primary down → promote a replica (failover)',
   },
   {
-    icon: '🎯', title: 'Want A Probability', titleClass: 'card-title-purple', subtitle: '0 to 1',
+    icon: '🧩', title: 'Sharding', titleClass: 'card-title-purple', subtitle: 'Write Scale',
     description:
-      'We want the output to read like "70% chance placed" — 0.7. A squashing function will map any raw score into that range; that is tomorrow’s sigmoid.',
-    code: '// raw score  →  [squash]  →  0.7  = 70% chance\n// closer to 1 → more likely placed',
+      'When one node can’t hold the data or writes, split it across shards by a shard key (e.g. user_id). Each shard owns a slice. The key is critical — a poor one causes hotspots and cross-shard queries.',
+    code: '// shard by user_id → user data co-located per shard\n// avoid keys that concentrate load (e.g. "country")\n// cross-shard joins are expensive — design them out',
   },
   {
-    icon: '📉', title: 'Loss & Update', titleClass: 'card-title-amber', subtitle: 'Learn From Error',
+    icon: '🧭', title: 'Model The Queries', titleClass: 'card-title-amber', subtitle: 'Access-Pattern First',
     description:
-      'Compare the predicted probability to the true label to get an error, then nudge the weights with the same gradient-descent step from Day 28.',
-    code: '// actual = 1, predicted = 0.7 → error = 0.3\n// w = w_old + learningRate · error · input',
+      'Choose the store and schema from how you read/write, not the other way round. SQL for relations and transactions; NoSQL when you need scale and denormalised, query-shaped data.',
+    footer: 'reads/writes first → then schema → then engine',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 31', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '🔎', title: 'Use The Index, Luke', titleClass: 'card-title-cyan', subtitle: 'Indexing',
     description:
-      'The binary classification notebook in the STRIKE GenAI repo — moving from predicting numbers to predicting yes/no with a probability.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 31 →', external: true },
+      'A practical guide to SQL indexing and performance — how B-trees work, composite indexes, and reading query plans.',
+    link: { href: INDEX_USE, label: 'Open the guide →', external: true },
   },
   {
-    icon: '🧠', title: 'Why It Matters', titleClass: 'card-title-purple', subtitle: 'Toward LLMs',
+    icon: '🧩', title: 'Sharding', titleClass: 'card-title-purple', subtitle: 'MongoDB Docs',
     description:
-      'LLMs are classifiers too — they pick the next token from a set. Understanding classification from scratch leads straight to how an LLM chooses words.',
-    footer: 'regression → classification → next-token prediction',
+      'How horizontal partitioning works in practice — shard keys, chunk balancing, and the trade-offs of distributing data.',
+    link: { href: SHARD_DOCS, label: 'Open the sharding docs →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Sigmoid', titleClass: 'card-title-amber', subtitle: 'Prereq 32 Preview',
+    icon: '🔜', title: 'Next: Caching & CDN', titleClass: 'card-title-amber', subtitle: 'Day 48 Preview',
     description:
-      'Tomorrow — Lecture 32: the sigmoid function that squashes a score to a probability, and cross-entropy (log) loss for measuring classification error.',
-    link: { href: '/day-048', label: 'Go to Prereq 32 →' },
+      'Tomorrow — take load off the database: caching strategies (cache-aside, write-through), Redis, eviction, and CDNs for static assets.',
+    link: { href: '/day-048', label: 'Go to Day 48 →' },
   },
 ];
 
@@ -132,38 +134,38 @@ export default function Day047() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-046" className="day001-nav-btn day001-nav-prev">← Prereq 30</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 31</p>
-          <Link to="/day-048" className="day001-nav-btn day001-nav-next">Prereq 32 →</Link>
+          <Link to="/day-046" className="day001-nav-btn day001-nav-prev">← Day 46</Link>
+          <p className="day001-datetime">TypeScript Day 47</p>
+          <Link to="/day-048" className="day001-nav-btn day001-nav-next">Day 48 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 31</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>System Design</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 31 <span aria-hidden="true">✅</span></h1>
-              <p className="day001-day-theme">BINARY CLASSIFICATION — NUMBERS TO PROBABILITIES</p>
+              <h1 className="day001-day-num">DAY 47 <span aria-hidden="true">🗄️</span></h1>
+              <p className="day001-day-theme">SYSTEM DESIGN — DATABASES &amp; STORAGE</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '31%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '47%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 31 — from <strong>regression</strong> to <strong>classification</strong>. Instead of predicting a
-          number (marks), the question becomes a category: will a student get <strong>placed — 1 or 0?</strong> The
-          same weighted sum still runs, but its <strong>raw score</strong> can be 80 or 16 lakh, so it needs to be
-          squashed into a <strong>probability between 0 and 1</strong> ("70% chance"). The <strong>loss</strong>
-          compares that probability to the true label (actual 1, predicted 0.7 → error 0.3), and the weights update
-          with the familiar <code>w = w_old + lr · error · input</code>.{' '}
-          <em>Tomorrow: the sigmoid. (From the lecture notebook.)</em>
+          The storage layer. <strong>SQL</strong> gives schema, joins and ACID; <strong>NoSQL</strong> trades those for
+          flexible models and horizontal scale — choose by <strong>access pattern</strong>. <strong>Indexes</strong>{' '}
+          (B-trees) turn scans into O(log n) lookups but slow writes, so index only what you filter/sort on. Scale
+          reads and survive failure with <strong>replication</strong> (primary → read replicas, promote on failure,
+          mind the lag); scale writes with <strong>sharding</strong> (split by a well-chosen <strong>shard key</strong>{' '}
+          to avoid hotspots and cross-shard joins). NoSQL often <strong>denormalises</strong> to dodge joins. Model the
+          queries first, then pick the engine. <em>Next: caching &amp; CDNs.</em>
         </p>
 
         <section className="day001-learnt">
@@ -178,12 +180,12 @@ export default function Day047() {
           </ul>
         </section>
 
-        <CardSection icon="⚖️" title="REGRESSION vs CLASSIFICATION" cards={KINDS} columns={2} />
-        <CardSection icon="🎯" title="WE NEED A PROBABILITY" cards={PROB} columns={3} />
+        <CardSection icon="🗄️" title="STORES & INDEXES" cards={STORES} columns={2} />
+        <CardSection icon="📑" title="REPLICATION & SHARDING" cards={SCALE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Classification</span><span>#NeuralNetworks</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#SystemDesign</span><span>#Databases</span>
         </footer>
       </div>
     </div>

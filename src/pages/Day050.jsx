@@ -2,73 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture34';
+const KAFKA_DOCS = 'https://kafka.apache.org/documentation/';
+const RABBIT_DOCS = 'https://www.rabbitmq.com/tutorials';
 
 const LEARNT_TODAY = [
-  { title: 'Beyond yes/no', text: 'predict which of many classes — Amazon, Google, TCS, Microsoft — a student is placed in' },
-  { title: 'One score per class', text: 'instead of a single output, the network produces a raw score for every possible class' },
-  { title: 'Scores aren’t probabilities', text: 'raw scores can be negative or huge; we need to turn them into a proper distribution' },
-  { title: 'Softmax', text: 'softmax(zᵢ) = e^zᵢ / Σ e^zⱼ — converts the scores into probabilities that sum to 1' },
-  { title: 'Why exp', text: 'e^z makes every value positive and amplifies differences; dividing by the sum normalises to 1' },
-  { title: 'Read the result', text: 'a vector like [0.2, 0.3, 0.1, …] → "30% chance Microsoft"; the highest wins' },
-  { title: 'Handles extremes', text: 'even scores like [-100000, 10, 1000] come out as a clean [0, 0.49, 0.51]' },
-  { title: 'This is the LLM output', text: 'an LLM softmaxes over ~50,000 tokens to pick the next word — same idea, bigger scale' },
+  { title: 'Queues decouple', text: 'producers and consumers work independently, at their own pace' },
+  { title: 'Async work', text: 'return fast, do the slow job (email, resize, report) in the background' },
+  { title: 'Absorb spikes', text: 'the queue buffers bursts so consumers aren’t overwhelmed' },
+  { title: 'Kafka vs RabbitMQ', text: 'streaming log with replay vs traditional task broker' },
+  { title: 'At-least-once', text: 'messages may repeat, so consumers must be idempotent' },
+  { title: 'Dead-letter queue', text: 'park messages that keep failing for inspection' },
+  { title: 'Event-driven', text: 'services react to events instead of calling each other directly' },
+  { title: 'Backpressure', text: 'let the queue grow, then scale consumers to catch up' },
 ];
 
-const MANY = [
+const QUEUES = [
   {
-    icon: '🏢', title: 'Many Classes', titleClass: 'card-title-cyan', subtitle: 'One Output Each',
+    icon: '📮', title: 'Decouple With A Queue', titleClass: 'card-title-cyan', subtitle: 'Producer → Queue → Consumer',
     description:
-      'For a multi-way choice, the network ends in one neuron per class. Each produces a raw score saying how strongly the input matches that class.',
-    code: '// classes: Amazon, Google, TCS, Microsoft, ...\n// scores:  [ 2.0, 3.0, 1.0, 0.15, ... ]\n// higher score = stronger match (but not a probability yet)',
+      'Instead of doing slow work in the request, drop a message on a queue and return immediately. A separate worker consumes it later — the API stays fast and the two sides scale independently.',
+    code: '// API (producer)\nawait queue.publish("email.send", { to, template });\nres.status(202).json({ status: "queued" });\n\n// worker (consumer) processes it in the background',
   },
   {
-    icon: '⚠️', title: 'Scores ≠ Probabilities', titleClass: 'card-title-purple', subtitle: 'Need Normalising',
+    icon: '🌊', title: 'Absorb Spikes', titleClass: 'card-title-purple', subtitle: 'Buffer & Backpressure',
     description:
-      'Raw scores can be negative or enormous and don’t add up to anything meaningful. To say "30% chance Microsoft" they must become a distribution that sums to 1.',
-    code: '// [ -7, 4, 2, 3 ]  ← raw, not usable as probabilities\n// want → [ 0.0, 0.55, 0.15, 0.30 ]  (sums to 1)',
+      'When traffic spikes, the queue buffers the excess rather than crashing consumers. Consumers process at a steady rate and you add more of them (backpressure) until the backlog drains.',
+    code: '// burst of 100k jobs → queue holds them\n// scale workers on queue depth → drain the backlog',
   },
 ];
 
-const SOFTMAX = [
+const BROKERS = [
   {
-    icon: '🔢', title: 'Softmax', titleClass: 'card-title-cyan', subtitle: 'e^z / Σ e^z',
+    icon: '🗂️', title: 'Kafka vs RabbitMQ', titleClass: 'card-title-cyan', subtitle: 'Log vs Broker',
     description:
-      'Exponentiate every score, then divide by the total. The exponent makes everything positive and stretches the gaps; the division normalises to a clean probability distribution.',
-    code: '// for each class i:\n// p_i = e^(z_i) / Σ_j e^(z_j)\n// result: all positive, all sum to 1',
+      'Kafka is a distributed, replayable log — great for event streaming, analytics and multiple consumers reading the same events. RabbitMQ is a classic message broker — great for task/work queues and routing.',
+    code: '// Kafka: append-only topics, consumer offsets, replay\n// RabbitMQ: exchanges + queues, ack/nack, routing keys',
   },
   {
-    icon: '🏆', title: 'Read The Winner', titleClass: 'card-title-purple', subtitle: 'Highest Probability',
+    icon: '♻️', title: 'Idempotent Consumers', titleClass: 'card-title-purple', subtitle: 'At-Least-Once',
     description:
-      'The output is a probability per class. The largest is the prediction — and you also get the model’s confidence in every alternative.',
-    code: '// softmax → [0.2, 0.3, 0.1, 0.15, 0.05, 0.20]\n// max is 0.30 → "30% chance Microsoft"',
+      'Most queues deliver at-least-once, so a message can arrive twice (a retry, a redeploy). Make handlers idempotent — dedupe by message id — so processing twice is harmless.',
+    code: '// track processed ids; skip duplicates\nif (await seen.has(msg.id)) return ack();\nawait handle(msg); await seen.add(msg.id);',
   },
   {
-    icon: '🛡️', title: 'Stable On Extremes', titleClass: 'card-title-amber', subtitle: 'Big Or Tiny',
+    icon: '☠️', title: 'Dead-Letter Queue', titleClass: 'card-title-amber', subtitle: 'Handle Failures',
     description:
-      'Softmax gracefully handles wildly different scores. A huge gap becomes near-certainty, and even crazy inputs normalise into a sensible split.',
-    code: '// [ -100000, 10, 1000 ]  →  [ 0.0, 0.49, 0.51 ]\n// the tiny score is squeezed out, not broken',
+      'A message that keeps failing shouldn’t block the queue. After N retries, route it to a dead-letter queue for inspection and reprocessing — failures are isolated, not lost.',
+    footer: 'retry N times → dead-letter queue → investigate',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 34', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '🗂️', title: 'Kafka', titleClass: 'card-title-cyan', subtitle: 'Docs',
     description:
-      'The multi-class / softmax notebook in the STRIKE GenAI repo — turning many scores into a probability distribution.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 34 →', external: true },
+      'Topics, partitions, consumer groups, offsets and replication — the distributed streaming platform in depth.',
+    link: { href: KAFKA_DOCS, label: 'Open Kafka docs →', external: true },
   },
   {
-    icon: '🧠', title: 'Softmax Is Everywhere', titleClass: 'card-title-purple', subtitle: 'The Final Layer',
+    icon: '🐰', title: 'RabbitMQ', titleClass: 'card-title-purple', subtitle: 'Tutorials',
     description:
-      'Every classifier that picks one of many options ends in softmax — including an LLM choosing the next token out of a huge vocabulary.',
-    footer: 'scores → e^z → normalise → distribution',
+      'Work queues, publish/subscribe, routing and acknowledgements — hands-on tutorials for the classic broker.',
+    link: { href: RABBIT_DOCS, label: 'Open RabbitMQ tutorials →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Build An LLM', titleClass: 'card-title-amber', subtitle: 'Prereq 35 Preview',
+    icon: '🔜', title: 'Next: CAP & Consistency', titleClass: 'card-title-amber', subtitle: 'Day 51 Preview',
     description:
-      'Tomorrow it all connects — Lecture 35: how to build an LLM. Next-token prediction, tokenization, a 50K-way softmax, and embeddings.',
-    link: { href: '/day-051', label: 'Go to Prereq 35 →' },
+      'Tomorrow — distributed data trade-offs: the CAP theorem, strong vs eventual consistency, and replication strategies.',
+    link: { href: '/day-051', label: 'Go to Day 51 →' },
   },
 ];
 
@@ -133,38 +134,39 @@ export default function Day050() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-049" className="day001-nav-btn day001-nav-prev">← Prereq 33</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 34</p>
-          <Link to="/day-051" className="day001-nav-btn day001-nav-next">Prereq 35 →</Link>
+          <Link to="/day-049" className="day001-nav-btn day001-nav-prev">← Day 49</Link>
+          <p className="day001-datetime">TypeScript Day 50</p>
+          <Link to="/day-051" className="day001-nav-btn day001-nav-next">Day 51 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 34</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>System Design</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 34 <span aria-hidden="true">🔢</span></h1>
-              <p className="day001-day-theme">MULTI-CLASS CLASSIFICATION &amp; SOFTMAX</p>
+              <h1 className="day001-day-num">DAY 50 <span aria-hidden="true">📮</span></h1>
+              <p className="day001-day-theme">SYSTEM DESIGN — QUEUES &amp; ASYNC</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '34%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '50%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 34 — from yes/no to <strong>many classes</strong>: which company (Amazon, Google, TCS, Microsoft…)
-          will a student join? The network gives <strong>one raw score per class</strong>, but scores aren’t
-          probabilities. <strong>Softmax</strong> fixes that: <code>e^zᵢ / Σ e^zⱼ</code> makes every value positive,
-          amplifies the gaps, and normalises them to <strong>sum to 1</strong> — so <code>[0.2, 0.3, 0.1, …]</code>{' '}
-          reads as "30% chance Microsoft". It even tames extremes like <code>[-100000, 10, 1000] → [0, 0.49, 0.51]</code>.
-          This is exactly the <strong>output layer of an LLM</strong>, picking the next token from a huge vocabulary.{' '}
-          <em>Tomorrow it all comes together. (From the lecture notebook.)</em>
+          Halfway through the System Design stretch. <strong>Message queues</strong> decouple producers from consumers
+          — drop a job (email, image resize, report) on a queue and return fast while a <strong>worker</strong>{' '}
+          handles it. The queue <strong>absorbs spikes</strong> (buffer + backpressure; scale consumers on depth).{' '}
+          <strong>Kafka</strong> is a replayable streaming log for events/analytics; <strong>RabbitMQ</strong> is a
+          classic task broker. Since delivery is usually <strong>at-least-once</strong>, make consumers{' '}
+          <strong>idempotent</strong> (dedupe by id), and route repeatedly-failing messages to a{' '}
+          <strong>dead-letter queue</strong>. This is the heart of <strong>event-driven</strong> systems.{' '}
+          <em>Next: CAP &amp; consistency.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +181,12 @@ export default function Day050() {
           </ul>
         </section>
 
-        <CardSection icon="🏢" title="MANY CLASSES" cards={MANY} columns={2} />
-        <CardSection icon="🔢" title="SOFTMAX" cards={SOFTMAX} columns={3} />
+        <CardSection icon="📮" title="WHY QUEUES" cards={QUEUES} columns={2} />
+        <CardSection icon="🗂️" title="BROKERS & DELIVERY" cards={BROKERS} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Softmax</span><span>#Classification</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#SystemDesign</span><span>#Kafka</span>
         </footer>
       </div>
     </div>

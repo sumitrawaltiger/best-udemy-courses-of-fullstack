@@ -2,73 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/lecture39';
+const OWASP = 'https://owasp.org/www-project-top-ten/';
+const OAUTH = 'https://oauth.net/2/';
 
 const LEARNT_TODAY = [
-  { title: 'Text must become numbers', text: 'an LLM can’t read letters — first the text is split into tokens, each mapped to an integer id' },
-  { title: 'Byte-Pair Encoding (BPE)', text: 'the tokenizer GPT uses — start from characters and repeatedly merge the most frequent pair' },
-  { title: 'Start from characters', text: 'each word becomes a list of single characters plus an end-of-word marker </w>' },
-  { title: 'Count pairs', text: 'across all words, count every adjacent pair of tokens — "e r", "l o", "t h" …' },
-  { title: 'Merge the top pair', text: 'the most frequent pair is fused into one new token and added to the vocabulary' },
-  { title: 'Repeat N times', text: 'do it for num_merges rounds — common chunks like "ing", "tion", "the" become single tokens' },
-  { title: 'Balance of two extremes', text: 'characters = tiny vocab but long sequences; whole words = huge vocab; BPE sits in between' },
-  { title: 'Encode & decode', text: 'text → apply the learned merges → token ids; ids → look up strings → back to text' },
+  { title: 'AuthN vs AuthZ', text: 'authentication = who you are; authorization = what you can do' },
+  { title: 'OAuth 2.0 / OIDC', text: 'delegated access and login without sharing passwords' },
+  { title: 'Tokens at scale', text: 'stateless JWTs vs revocable sessions — trade-offs' },
+  { title: 'Rate limiting', text: 'cap requests to protect from abuse and overload' },
+  { title: 'Token bucket', text: 'the common algorithm — refill tokens over time' },
+  { title: 'HTTPS everywhere', text: 'TLS in transit; encrypt sensitive data at rest' },
+  { title: 'OWASP Top 10', text: 'injection, broken auth, XSS — the risks to design against' },
+  { title: 'Least privilege', text: 'grant the minimum access needed, nothing more' },
 ];
 
-const WHY = [
+const AUTH = [
   {
-    icon: '🔤', title: 'Text → Tokens → Ids', titleClass: 'card-title-cyan', subtitle: 'The First Step',
+    icon: '🪪', title: 'AuthN vs AuthZ', titleClass: 'card-title-cyan', subtitle: 'Who vs What',
     description:
-      'A model works on numbers. The tokenizer splits text into tokens and assigns each a fixed integer id from its vocabulary. Every prompt starts life as a list of ids.',
-    code: '// "learning" → ["learn", "ing"] → [4821, 213]\n// ids are what the network actually sees',
+      'Authentication proves identity (login); authorization decides permissions (roles, scopes). OAuth 2.0 / OpenID Connect handle delegated access and third-party login without ever sharing a password.',
+    code: '// authN: verify the user (password, OAuth, passkey)\n// authZ: check permission for the action\nif (!user.roles.includes("admin")) return res.status(403);',
   },
   {
-    icon: '⚖️', title: 'Why Not Words Or Letters', titleClass: 'card-title-purple', subtitle: 'The Middle Ground',
+    icon: '🎫', title: 'Tokens At Scale', titleClass: 'card-title-purple', subtitle: 'JWT vs Session',
     description:
-      'Split by characters and the vocabulary is tiny but sequences get very long. Split by whole words and the vocabulary explodes and can’t handle new words. BPE balances both.',
-    code: '// characters: vocab ~256, sequences long\n// words: vocab huge, unknowns break\n// BPE: sub-words → best of both',
+      'Stateless JWTs scale well (no server lookup) but are hard to revoke before expiry — keep them short-lived with refresh tokens. Server sessions are easy to revoke but need shared storage (Redis). Pick per requirement.',
+    code: '// JWT: short access token + refresh token\n// session: id in a cookie, state in Redis (revocable)',
   },
 ];
 
-const BPE = [
+const PROTECT = [
   {
-    icon: '🧱', title: 'Start From Characters', titleClass: 'card-title-cyan', subtitle: 'Split + </w>',
+    icon: '🚦', title: 'Rate Limiting', titleClass: 'card-title-cyan', subtitle: 'Token Bucket',
     description:
-      'Break each word into single characters and add an end-of-word marker. Count how often each unique word appears so duplicates aren’t reprocessed.',
-    code: '// "low" → ["l","o","w","</w>"]\n// build word_freq: {["l","o","w","</w>"]: 5, ...}',
+      'Cap how many requests a client can make to prevent abuse and overload. The token-bucket algorithm refills tokens at a steady rate; each request spends one, and empties reject with 429.',
+    code: '// per client: bucket of N tokens, refill r/sec\n// request → if tokens > 0: spend one, else 429\n// often implemented in Redis at the gateway',
   },
   {
-    icon: '🔢', title: 'Count The Pairs', titleClass: 'card-title-purple', subtitle: 'Most Frequent Wins',
+    icon: '🔐', title: 'Encrypt & Harden', titleClass: 'card-title-purple', subtitle: 'In Transit & At Rest',
     description:
-      'Scan every word and tally each adjacent token pair. The pair that appears most across the whole corpus is the one worth merging first.',
-    code: '// count adjacent pairs:\n// ("l","o"):12  ("o","w"):9  ("w","</w>"):7\n// winner → ("l","o")',
+      'Use TLS/HTTPS for everything in transit and encrypt sensitive data at rest. Add security headers, validate all input, and never trust the client — the server enforces every rule.',
+    code: '// HTTPS everywhere · encrypt PII at rest\n// validate input (Zod) · parameterised queries (no SQLi)',
   },
   {
-    icon: '🔗', title: 'Merge & Repeat', titleClass: 'card-title-amber', subtitle: 'Grow The Vocab',
+    icon: '🛡️', title: 'OWASP & Least Privilege', titleClass: 'card-title-amber', subtitle: 'Design Against Risk',
     description:
-      'Fuse the winning pair into one new token, add it to the vocabulary, and record the merge. Repeat for num_merges rounds — frequent chunks like "ing" become single tokens.',
-    code: '// merge ("l","o") → "lo"\n// vocab["lo"] = next_id++\n// repeat N times → sub-word vocabulary',
+      'Design against the OWASP Top 10 — injection, broken auth, XSS, misconfiguration. Grant least privilege: every user, service and token gets the minimum access it needs, reducing blast radius.',
+    footer: 'validate input · least privilege · defence in depth',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 39', titleClass: 'card-title-cyan', subtitle: 'C++ BPE Tokenizer',
+    icon: '🛡️', title: 'OWASP Top 10', titleClass: 'card-title-cyan', subtitle: 'The Risks',
     description:
-      'tokenizer.cpp in the STRIKE GenAI repo — a Byte-Pair-Encoding tokenizer built from scratch, train / encode / decode.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 39 →', external: true },
+      'The ten most critical web application security risks — what they are, how they happen, and how to prevent each.',
+    link: { href: OWASP, label: 'Open the OWASP Top 10 →', external: true },
   },
   {
-    icon: '🧠', title: 'This Is Real GPT', titleClass: 'card-title-purple', subtitle: 'Same Idea',
+    icon: '🔑', title: 'OAuth 2.0', titleClass: 'card-title-purple', subtitle: 'Delegated Access',
     description:
-      'GPT models use BPE (tiktoken) exactly like this. Understanding the merge loop demystifies why token counts — and bills — look the way they do.',
-    footer: 'characters → count pairs → merge → sub-word tokens',
+      'The authorization framework behind "sign in with…" — grant types, tokens, scopes and the flows for web, mobile and machine.',
+    link: { href: OAUTH, label: 'Open OAuth 2.0 →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Embeddings', titleClass: 'card-title-amber', subtitle: 'Prereq 38 Preview',
+    icon: '🔜', title: 'Next: Observability', titleClass: 'card-title-amber', subtitle: 'Day 54 Preview',
     description:
-      'Tomorrow — Lecture 40: the embedding layer. Each token id becomes a 768-number vector, and we see just how many weights that takes.',
-    link: { href: '/day-054', label: 'Go to Prereq 38 →' },
+      'Tomorrow — keeping systems healthy: logging, metrics and tracing, SLIs/SLOs, alerting, and designing for reliability.',
+    link: { href: '/day-054', label: 'Go to Day 54 →' },
   },
 ];
 
@@ -133,39 +134,39 @@ export default function Day053() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-052" className="day001-nav-btn day001-nav-prev">← Prereq 36</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 37</p>
-          <Link to="/day-054" className="day001-nav-btn day001-nav-next">Prereq 38 →</Link>
+          <Link to="/day-052" className="day001-nav-btn day001-nav-prev">← Day 52</Link>
+          <p className="day001-datetime">TypeScript Day 53</p>
+          <Link to="/day-054" className="day001-nav-btn day001-nav-next">Day 54 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 39</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>System Design</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 37 <span aria-hidden="true">🔤</span></h1>
-              <p className="day001-day-theme">TOKENIZATION — A BPE TOKENIZER FROM SCRATCH</p>
+              <h1 className="day001-day-num">DAY 53 <span aria-hidden="true">🛡️</span></h1>
+              <p className="day001-day-theme">SYSTEM DESIGN — SECURITY &amp; RATE LIMITS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '37%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '53%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 39 — before a model can learn, text must become <strong>numbers</strong>. The tokenizer splits text
-          into <strong>tokens</strong> and maps each to an integer id. Today’s build is{' '}
-          <strong>Byte-Pair Encoding (BPE)</strong> — the same family GPT uses. Start from{' '}
-          <strong>characters</strong> (plus an <code>&lt;/w&gt;</code> marker), <strong>count</strong> every adjacent
-          pair, <strong>merge</strong> the most frequent one into a new token, and <strong>repeat</strong>. Frequent
-          chunks like <code>ing</code> or <code>the</code> become single tokens — a sub-word vocabulary that avoids both
-          the huge word-vocab and the long character-sequence extremes.{' '}
-          <em>Next: turning these ids into embedding vectors.</em>
+          Securing the system. Separate <strong>authentication</strong> (who you are) from{' '}
+          <strong>authorization</strong> (what you can do); use <strong>OAuth 2.0 / OIDC</strong> for delegated access
+          and third-party login. At scale, weigh <strong>stateless JWTs</strong> (short-lived + refresh) against{' '}
+          <strong>revocable sessions</strong> (Redis). <strong>Rate limit</strong> with a <strong>token bucket</strong>{' '}
+          (429 when empty), enforce <strong>HTTPS everywhere</strong> and encryption at rest, validate all input, and
+          design against the <strong>OWASP Top 10</strong>. The guiding rule is <strong>least privilege</strong> —
+          grant the minimum access, so a breach’s blast radius stays small. <em>Next: observability &amp;
+          reliability.</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +181,12 @@ export default function Day053() {
           </ul>
         </section>
 
-        <CardSection icon="⚖️" title="WHY TOKENIZE" cards={WHY} columns={2} />
-        <CardSection icon="🔗" title="THE BPE ALGORITHM" cards={BPE} columns={3} />
+        <CardSection icon="🪪" title="AUTH & TOKENS" cards={AUTH} columns={2} />
+        <CardSection icon="🚦" title="LIMIT & HARDEN" cards={PROTECT} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Tokenizer</span><span>#BPE</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#SystemDesign</span><span>#Security</span>
         </footer>
       </div>
     </div>

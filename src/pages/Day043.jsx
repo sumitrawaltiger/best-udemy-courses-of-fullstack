@@ -2,72 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture27and28';
+const DIJKSTRA = 'https://visualgo.net/en/sssp';
+const TOPO = 'https://en.wikipedia.org/wiki/Topological_sorting';
 
 const LEARNT_TODAY = [
-  { title: 'Under the hood', text: 'build a neural network by hand in C++ — no libraries, no magic — to see what an LLM really is' },
-  { title: 'The dataset', text: 'predict a student’s marks from study_hours and sleep_hours, loaded from a CSV' },
-  { title: 'A neuron is a weighted sum', text: 'output = w1·study + w2·sleep + b — that is the whole computation of one neuron' },
-  { title: 'Weights and bias', text: 'w1 and w2 scale each input by importance; b (bias) shifts the result up or down' },
-  { title: 'The forward pass', text: 'plug the inputs and current weights into the formula to get a prediction' },
-  { title: 'Random start is wrong', text: 'untrained weights give bad predictions — tomorrow’s training fixes that' },
-  { title: 'This IS an LLM neuron', text: 'the same weighted-sum idea, repeated billions of times, is what powers a large language model' },
+  { title: 'Weighted shortest path', text: 'BFS only works unweighted; weights need Dijkstra' },
+  { title: 'Dijkstra', text: 'greedy + a min-heap (priority queue); non-negative weights only' },
+  { title: 'Priority queue', text: 'always expand the closest unsettled node next' },
+  { title: 'Topological sort', text: 'order a DAG so every edge points forward' },
+  { title: "Kahn's algorithm", text: 'repeatedly remove nodes with in-degree 0' },
+  { title: 'Cycle detection', text: 'if a topo sort can’t finish, the graph has a cycle' },
+  { title: 'Union-Find (DSU)', text: 'near-O(1) connectivity queries and cycle detection' },
+  { title: 'Path compression + rank', text: 'the two optimisations that make DSU fast' },
 ];
 
-const BUILD = [
+const PATHS = [
   {
-    icon: '🧱', title: 'Build It By Hand', titleClass: 'card-title-cyan', subtitle: 'Plain C++',
+    icon: '🛰️', title: "Dijkstra's Algorithm", titleClass: 'card-title-cyan', subtitle: 'Weighted Shortest Path',
     description:
-      'No PyTorch, no TensorFlow. Writing it in raw C++ strips away the abstraction so every number is visible — the best way to truly understand a neural network.',
-    code: '// dataset.csv: study_hours, sleep_hours, marks\n// 9,2,55\n// 10,7,75\n// 1,1,12',
+      'BFS finds shortest paths only when every edge costs the same. With weights, Dijkstra expands the closest unsettled node (via a min-heap), relaxing its neighbours. Non-negative weights only.',
+    code: '// dist[start] = 0, others ∞; min-heap of [dist, node]\n// pop the closest; for each edge (n → m, w):\n//   if dist[n] + w < dist[m]: update + push\n// O((V + E) log V)',
   },
   {
-    icon: '📥', title: 'Load The Data', titleClass: 'card-title-purple', subtitle: 'Read The CSV',
+    icon: '🔗', title: 'Union-Find (DSU)', titleClass: 'card-title-purple', subtitle: 'Connectivity',
     description:
-      'Parse each row of the CSV into a struct — study, sleep and the true marks. This is the training data the neuron will eventually learn from.',
-    code: 'struct Example { double study, sleep, marks; };\n\n// read each line: study, sleep, marks\n// → vector<Example> data',
+      'Disjoint Set Union tracks which nodes are connected. find returns a set’s representative; union merges two sets. With path compression + union by rank, both are effectively O(1).',
+    code: 'function find(x: number): number {\n  if (parent[x] !== x) parent[x] = find(parent[x]); // compress\n  return parent[x];\n}\nconst union = (a, b) => { parent[find(a)] = find(b); };',
   },
 ];
 
-const NEURON = [
+const ORDER = [
   {
-    icon: '⚖️', title: 'The Weighted Sum', titleClass: 'card-title-cyan', subtitle: 'What A Neuron Does',
+    icon: '📅', title: 'Topological Sort', titleClass: 'card-title-cyan', subtitle: 'Order A DAG',
     description:
-      'A neuron multiplies each input by a weight, adds them, and adds a bias. That single line — a weighted sum plus a bias — is the atom of every neural network.',
-    code: 'double predict(double study, double sleep,\n               double w1, double w2, double b) {\n  return w1 * study + w2 * sleep + b;\n}',
+      'On a directed acyclic graph, a topological order lists nodes so every edge goes forward — perfect for build systems, task scheduling and course prerequisites.',
+    code: "// Kahn's algorithm\n// 1. compute in-degree of every node\n// 2. queue all with in-degree 0\n// 3. pop → append to order → decrement neighbours' in-degree\n// 4. any hitting 0 → enqueue",
   },
   {
-    icon: '🎛️', title: 'Weights & Bias', titleClass: 'card-title-purple', subtitle: 'The Knobs',
+    icon: '🔁', title: 'Detect Cycles', titleClass: 'card-title-purple', subtitle: 'Can It Finish?',
     description:
-      'Weights decide how much each input matters (maybe study matters more than sleep); the bias shifts the baseline. Learning a network = finding good values for these knobs.',
-    code: '// w1 big → study matters a lot\n// w2 small → sleep matters less\n// b → baseline marks with zero input',
+      'If Kahn’s algorithm can’t place every node (some never reach in-degree 0), the graph has a cycle — which is exactly how you detect deadlocks in a dependency graph.',
+    code: '// processed < V after Kahn → a cycle exists\n// (e.g. course schedule is impossible)',
   },
   {
-    icon: '▶️', title: 'The Forward Pass', titleClass: 'card-title-amber', subtitle: 'Predict',
+    icon: '🧭', title: 'Pick The Right Tool', titleClass: 'card-title-amber', subtitle: 'By Problem',
     description:
-      'Feed inputs through the formula with the current weights and you get a prediction. With random weights it is wrong — but the machinery is exactly right.',
-    code: 'predict(9, 2, w1, w2, b); // guess for a 9h/2h student\n// random w1,w2,b → wrong number (for now)',
+      'Unweighted shortest path → BFS. Weighted (non-negative) → Dijkstra. Dependency order → topological sort. Connectivity / cycle in undirected → Union-Find. Match the pattern to the ask.',
+    footer: 'unweighted→BFS · weighted→Dijkstra · order→topo · connect→DSU',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 27–28', titleClass: 'card-title-cyan', subtitle: 'C++ From Scratch',
+    icon: '🛰️', title: 'Dijkstra (VisuAlgo)', titleClass: 'card-title-cyan', subtitle: 'Visualise',
     description:
-      'The first.cpp / trained.cpp neural network and dataset.csv in the STRIKE GenAI repo — the neuron and its training, in plain C++.',
-    link: { href: GH_LECTURE, label: 'Open the code →', external: true },
+      'Single-source shortest-path visualisations — watch Dijkstra settle nodes one by one, and compare with BFS.',
+    link: { href: DIJKSTRA, label: 'Open VisuAlgo →', external: true },
   },
   {
-    icon: '🧠', title: 'Why This Matters', titleClass: 'card-title-purple', subtitle: 'Demystified',
+    icon: '📅', title: 'Topological Sort', titleClass: 'card-title-purple', subtitle: 'Reference',
     description:
-      'Every LLM is billions of these weighted sums. Building one by hand turns the "black box" into something you fully understand.',
-    footer: 'one neuron = w1·x1 + w2·x2 + b',
+      'The definition and algorithms (Kahn’s and DFS-based), with the DAG properties that make it possible.',
+    link: { href: TOPO, label: 'Read the reference →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Training', titleClass: 'card-title-amber', subtitle: 'Prereq 28 Preview',
+    icon: '🔜', title: 'Next: DSA Patterns', titleClass: 'card-title-amber', subtitle: 'Day 44 Preview',
     description:
-      'Tomorrow the neuron learns — Lecture 28: measure the error, compute gradients, and use gradient descent to find the weights that make predictions accurate.',
-    link: { href: '/day-044', label: 'Go to Prereq 28 →' },
+      'Tomorrow — a recap of the interview patterns (windows, pointers, monotonic stack, binary-search-on-answer, backtracking) and how to recognise which to reach for.',
+    link: { href: '/day-044', label: 'Go to Day 44 →' },
   },
 ];
 
@@ -132,38 +134,38 @@ export default function Day043() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-042" className="day001-nav-btn day001-nav-prev">← Prereq 26</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 27</p>
-          <Link to="/day-044" className="day001-nav-btn day001-nav-next">Prereq 28 →</Link>
+          <Link to="/day-042" className="day001-nav-btn day001-nav-prev">← Day 42</Link>
+          <p className="day001-datetime">TypeScript Day 43</p>
+          <Link to="/day-044" className="day001-nav-btn day001-nav-next">Day 44 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 27</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>DSA · Graphs</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 27 <span aria-hidden="true">🧠</span></h1>
-              <p className="day001-day-theme">NEURAL NETS FROM SCRATCH (C++) — THE NEURON</p>
+              <h1 className="day001-day-num">DAY 43 <span aria-hidden="true">🛰️</span></h1>
+              <p className="day001-day-theme">DSA — SHORTEST PATHS &amp; ORDERING</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '27%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '43%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 27 — going to the metal. To truly understand what powers an LLM, I built a neural network{' '}
-          <strong>from scratch in C++</strong> — no libraries. The task: predict <strong>marks</strong> from{' '}
-          <strong>study_hours</strong> and <strong>sleep_hours</strong> in a CSV. A <strong>neuron</strong> is just a{' '}
-          <strong>weighted sum</strong>: <code>output = w1·study + w2·sleep + b</code>, where the{' '}
-          <strong>weights</strong> scale each input and the <strong>bias</strong> shifts the result. The{' '}
-          <strong>forward pass</strong> plugs inputs into that formula. With random weights it’s wrong — but this is
-          exactly the atom every LLM is built from. <em>Tomorrow it learns.</em>
+          Weighted graphs and structure. BFS is shortest-path only when edges cost the same; with weights use{' '}
+          <strong>Dijkstra</strong> — greedily expand the closest unsettled node via a <strong>min-heap</strong>,
+          relaxing neighbours (non-negative weights, O((V+E) log V)). <strong>Topological sort</strong> orders a DAG so
+          every edge points forward (build systems, prerequisites) via <strong>Kahn’s</strong> in-degree algorithm —
+          which also <strong>detects cycles</strong> when it can’t finish. <strong>Union-Find (DSU)</strong> answers
+          connectivity and cycle questions in near-O(1) with <strong>path compression + union by rank</strong>. Match
+          the tool to the ask. <em>Next: the interview patterns.</em>
         </p>
 
         <section className="day001-learnt">
@@ -178,12 +180,12 @@ export default function Day043() {
           </ul>
         </section>
 
-        <CardSection icon="🧱" title="BUILD IT BY HAND" cards={BUILD} columns={2} />
-        <CardSection icon="⚖️" title="A NEURON" cards={NEURON} columns={3} />
+        <CardSection icon="🛰️" title="PATHS & CONNECTIVITY" cards={PATHS} columns={2} />
+        <CardSection icon="📅" title="ORDERING & CYCLES" cards={ORDER} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#NeuralNetworks</span><span>#Cpp</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#DSA</span><span>#Dijkstra</span>
         </footer>
       </div>
     </div>

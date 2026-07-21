@@ -2,72 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture29';
+const SD_PRIMER = 'https://github.com/donnemartin/system-design-primer';
+const LATENCY = 'https://gist.github.com/jboner/2841832';
 
 const LEARNT_TODAY = [
-  { title: 'Linear stays linear', text: 'stacking linear neurons collapses to one line: w2·(w1·x+b1)+b2 = m·x + c — no matter how many layers' },
-  { title: 'Real data is curved', text: 'a straight line can’t fit y=x², a plateau, or most real relationships' },
-  { title: 'Activation function', text: 'a non-linear step placed on a neuron’s output — that is what breaks the "just a line" limit' },
-  { title: 'ReLU', text: 'ReLU(x) = max(0, x): output 0 when the input is negative, and the input itself when positive' },
-  { title: 'ReLU adds a bend', text: 'ReLU(x−3) stays flat until x=3, then rises — one clean kink in the graph' },
-  { title: 'The activated neuron', text: 'output = ReLU(w·x + b) — a weighted sum, then bent by the activation' },
-  { title: 'Non-linearity unlocks curves', text: 'with activations the network can bend, not just tilt — the reason deep learning works' },
+  { title: 'System design in TS', text: 'reason about scale for the TypeScript/Node stack you just built' },
+  { title: 'Scalability', text: 'vertical (bigger box) vs horizontal (more boxes) — favour horizontal' },
+  { title: 'Latency vs throughput', text: 'time per request vs requests per second — optimise the one that hurts' },
+  { title: 'Availability', text: 'uptime as “nines”; redundancy removes single points of failure' },
+  { title: 'The napkin math', text: 'estimate QPS, storage and bandwidth before designing' },
+  { title: 'Bottlenecks move', text: 'fix one (CPU) and the next appears (DB, network) — measure' },
+  { title: 'Trade-offs, not answers', text: 'every choice costs something; state the trade-off out loud' },
+  { title: 'A method', text: 'requirements → estimate → high-level → deep-dive → bottlenecks' },
 ];
 
-const LINEAR = [
+const CORE = [
   {
-    icon: '📏', title: 'Layers Collapse', titleClass: 'card-title-cyan', subtitle: 'Still A Line',
+    icon: '📈', title: 'Scale Up vs Out', titleClass: 'card-title-cyan', subtitle: 'Vertical vs Horizontal',
     description:
-      'Feed one linear neuron into another and the algebra simplifies right back to a single line. Two, ten, a hundred linear layers — all still just y = m·x + c.',
-    code: '// layer 1: y = w1·x + b1\n// layer 2: out = w2·y + b2\n//        = w1·w2·x + (w2·b1 + b2)\n//        = m·x + c   ← still linear!',
+      'Vertical scaling buys a bigger machine — simple but capped and a single point of failure. Horizontal scaling adds machines behind a load balancer — the path to real scale, but you must go stateless.',
+    code: '// vertical: 4 → 16 CPUs (limited, SPOF)\n// horizontal: 1 → N stateless servers + a load balancer\n// prefer horizontal for availability + scale',
   },
   {
-    icon: '🌀', title: 'But Data Curves', titleClass: 'card-title-purple', subtitle: 'A Line Can’t Fit It',
+    icon: '⏱️', title: 'Latency & Throughput', titleClass: 'card-title-purple', subtitle: 'Two Different Goals',
     description:
-      'Squares, plateaus, thresholds — real relationships bend. A purely linear model can never capture y=x² or "no effect until a threshold, then rising".',
-    code: '// y = x²  → a curve\n// "extra pay only after 3 hours" → a bend\n// a line cannot fit either',
+      'Latency is how long one request takes; throughput is how many per second. They’re distinct — batching can raise throughput while hurting latency. Know your key metric (p99 latency, peak QPS).',
+    code: '// track p50 / p95 / p99 latency, not just the average\n// a slow p99 = a bad experience for 1 in 100 users',
   },
 ];
 
-const RELU = [
+const METHOD = [
   {
-    icon: '⚡', title: 'ReLU', titleClass: 'card-title-cyan', subtitle: 'max(0, x)',
+    icon: '🟢', title: 'Availability', titleClass: 'card-title-cyan', subtitle: 'Nines & Redundancy',
     description:
-      'The rectified linear unit is dead simple: negatives become 0, positives pass through. That tiny kink at zero is the non-linearity everything else builds on.',
-    code: 'double relu(double x) {\n  return x < 0 ? 0 : x;   // max(0, x)\n}',
+      'Availability is uptime — 99.9% (“three nines”) is ~8.8h/year down. You buy it with redundancy: no single point of failure, multiple instances, and failover across zones.',
+    code: '// 99%   → ~3.65 days/year down\n// 99.9% → ~8.8 hours/year\n// 99.99% → ~52 minutes/year',
   },
   {
-    icon: '📐', title: 'A Bend Anywhere', titleClass: 'card-title-purple', subtitle: 'ReLU(x − k)',
+    icon: '🧮', title: 'Back-of-Envelope', titleClass: 'card-title-purple', subtitle: 'Estimate First',
     description:
-      'Shift the input and you move the kink. ReLU(x−3) is flat until x=3, then rises with slope 1 — a bend placed exactly where you want it.',
-    code: '// ReLU(x - 3): 0 for x ≤ 3, then (x - 3)\n// the "turn-on point" is a knob',
+      'Before drawing boxes, estimate scale: users → QPS, data per record → storage, response size → bandwidth. Rough numbers tell you whether one server or a fleet is needed.',
+    code: '// 10M daily users, 10 req each → ~1.1k QPS avg,\n// ~5k peak → decide LB, caching, DB scale from there',
   },
   {
-    icon: '🔵', title: 'The Activated Neuron', titleClass: 'card-title-amber', subtitle: 'ReLU(w·x + b)',
+    icon: '🧭', title: 'A Repeatable Method', titleClass: 'card-title-amber', subtitle: 'The Framework',
     description:
-      'Wrap the weighted sum in an activation and the neuron can now produce a bent output instead of a straight one. This is the neuron used in real networks.',
-    code: 'output = relu(w * x + b);\n// weighted sum → bent by ReLU\n// no longer just a line',
+      'Clarify requirements (functional + non-functional) → estimate scale → sketch the high-level design → deep-dive the hard parts → find and address bottlenecks. State every trade-off.',
+    footer: 'requirements → estimate → high-level → deep-dive → bottlenecks',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 29', titleClass: 'card-title-cyan', subtitle: 'GitHub',
+    icon: '📘', title: 'System Design Primer', titleClass: 'card-title-cyan', subtitle: 'The Canonical Guide',
     description:
-      'The activation-functions notebook in the STRIKE GenAI repo — why linear layers aren’t enough and how ReLU fixes it.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 29 →', external: true },
+      'The most-referenced free resource — concepts, trade-offs, and worked designs for common systems. Bookmark it for the whole System Design stretch.',
+    link: { href: SD_PRIMER, label: 'Open the primer →', external: true },
   },
   {
-    icon: '🧠', title: 'The Key Insight', titleClass: 'card-title-purple', subtitle: 'Why It Matters',
+    icon: '⏱️', title: 'Latency Numbers', titleClass: 'card-title-purple', subtitle: 'Every Dev Should Know',
     description:
-      'Weights + bias give a line; the activation gives a bend. Non-linearity is the single ingredient that makes a "deep" network more than a linear one.',
-    footer: 'weighted sum + activation = a curve',
+      'The classic table — memory vs SSD vs network vs cross-region — that grounds every "is this fast enough?" decision.',
+    link: { href: LATENCY, label: 'Open the numbers →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Any Curve', titleClass: 'card-title-amber', subtitle: 'Prereq 30 Preview',
+    icon: '🔜', title: 'Next: APIs', titleClass: 'card-title-amber', subtitle: 'Day 46 Preview',
     description:
-      'Tomorrow — Lecture 30: combine many ReLU neurons to approximate ANY function, and see why a wide enough network can model anything.',
-    link: { href: '/day-046', label: 'Go to Prereq 30 →' },
+      'Tomorrow — how services talk: REST vs GraphQL vs gRPC, WebSockets for real-time, versioning, pagination and idempotency.',
+    link: { href: '/day-046', label: 'Go to Day 46 →' },
   },
 ];
 
@@ -132,38 +134,39 @@ export default function Day045() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-044" className="day001-nav-btn day001-nav-prev">← Prereq 28</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 29</p>
-          <Link to="/day-046" className="day001-nav-btn day001-nav-next">Prereq 30 →</Link>
+          <Link to="/day-044" className="day001-nav-btn day001-nav-prev">← Day 44</Link>
+          <p className="day001-datetime">TypeScript Day 45</p>
+          <Link to="/day-046" className="day001-nav-btn day001-nav-next">Day 46 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 29</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>System Design</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 29 <span aria-hidden="true">⚡</span></h1>
-              <p className="day001-day-theme">ACTIVATION FUNCTIONS — WHY NON-LINEARITY</p>
+              <h1 className="day001-day-num">DAY 45 <span aria-hidden="true">🏛️</span></h1>
+              <p className="day001-day-theme">SYSTEM DESIGN — FUNDAMENTALS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '29%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '45%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 29 — the missing ingredient. Stacking <strong>linear</strong> neurons collapses to a single line
-          (<code>w2·(w1·x+b1)+b2 = m·x+c</code>), so no matter how deep, it can never fit a curve like{' '}
-          <code>y=x²</code>. The fix is an <strong>activation function</strong> — a non-linear step on the neuron’s
-          output. <strong>ReLU</strong> (<code>max(0, x)</code>) is the simplest: it zeroes negatives and passes
-          positives, adding a clean <strong>bend</strong>, and <code>ReLU(x−k)</code> places that bend wherever you
-          want. The real neuron is <code>ReLU(w·x + b)</code> — a weighted sum, then bent.{' '}
-          <em>Non-linearity is why deep learning works. (From the lecture notebook.)</em>
+          Designing for scale, on the stack you built. <strong>Scalability</strong> is vertical (bigger box, capped +
+          SPOF) vs <strong>horizontal</strong> (more boxes behind a load balancer — the real answer, requires going
+          stateless). Separate <strong>latency</strong> (time per request; track p95/p99) from{' '}
+          <strong>throughput</strong> (requests/sec). <strong>Availability</strong> is uptime in “nines”, bought with
+          redundancy and no single point of failure. Start every design with <strong>back-of-envelope</strong> math
+          (users → QPS → storage → bandwidth), then follow a method:{' '}
+          <em>requirements → estimate → high-level → deep-dive → bottlenecks</em> — and name the trade-offs.{' '}
+          <em>Next: APIs &amp; communication.</em>
         </p>
 
         <section className="day001-learnt">
@@ -178,12 +181,12 @@ export default function Day045() {
           </ul>
         </section>
 
-        <CardSection icon="📏" title="WHY LINEAR ISN’T ENOUGH" cards={LINEAR} columns={2} />
-        <CardSection icon="⚡" title="RELU — THE BEND" cards={RELU} columns={3} />
+        <CardSection icon="📈" title="THE CORE METRICS" cards={CORE} columns={2} />
+        <CardSection icon="🧭" title="AVAILABILITY & METHOD" cards={METHOD} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#ReLU</span><span>#NeuralNetworks</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#SystemDesign</span><span>#Scalability</span>
         </footer>
       </div>
     </div>

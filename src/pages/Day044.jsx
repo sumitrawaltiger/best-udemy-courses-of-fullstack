@@ -2,73 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture27and28';
+const NEETCODE = 'https://neetcode.io/roadmap';
+const LEETCODE = 'https://leetcode.com/';
 
 const LEARNT_TODAY = [
-  { title: 'Loss measures wrongness', text: 'compare the prediction to the true marks; mean squared error (MSE) turns that gap into one number' },
-  { title: 'The goal', text: 'find the weights (w1, w2, b) that make the loss as small as possible' },
-  { title: 'Gradient = the direction uphill', text: 'the gradient says which way the loss increases — so we step the opposite way' },
-  { title: 'Gradient descent', text: 'w = w − learningRate · gradient, repeated, walks the weights downhill toward low loss' },
-  { title: 'Learning rate', text: 'the step size — too big overshoots, too small crawls; a small value keeps it stable' },
-  { title: 'The training loop', text: 'over many epochs, nudge w1, w2 and b down the loss until predictions get accurate' },
-  { title: 'It converges', text: 'the weights settle (e.g. w1≈4.92, w2≈2.94) and the neuron now predicts marks well' },
-  { title: 'This is how all NNs learn', text: 'the same loop — predict, measure loss, descend — trains an LLM, just with billions of weights' },
+  { title: 'Patterns beat memorising', text: 'recognise the shape of a problem, then apply the matching template' },
+  { title: 'Sliding window', text: 'contiguous subarray/substring under a constraint' },
+  { title: 'Two / fast-slow pointers', text: 'sorted-array pairs, cycle detection, middle of a list' },
+  { title: 'Binary search on answer', text: 'monotonic predicate → search the answer space, not just arrays' },
+  { title: 'Monotonic stack', text: 'next greater/smaller element in one pass' },
+  { title: 'Backtracking', text: 'subsets, permutations, combinations, N-Queens' },
+  { title: 'BFS/DFS + Union-Find', text: 'graph & grid connectivity and shortest paths' },
+  { title: 'Top-K with a heap', text: 'k largest/smallest, merge k lists, streaming medians' },
 ];
 
-const LOSS = [
+const PATTERNS_A = [
   {
-    icon: '📉', title: 'Measure The Error', titleClass: 'card-title-cyan', subtitle: 'Loss (MSE)',
+    icon: '🪟', title: 'Windows & Pointers', titleClass: 'card-title-cyan', subtitle: 'Linear Scans',
     description:
-      'For each example, take the prediction minus the true value, square it, and average over the dataset. That mean squared error is a single number: how wrong the model is.',
-    code: '// error for one row\ndouble e = predict(study, sleep, w1, w2, b) - marks;\n// loss = average of e*e over all rows (MSE)',
+      'Sliding window for contiguous ranges under a constraint; two pointers for sorted-array pairs and in-place work; fast/slow for cycles and middles. Most array/string problems fit one of these.',
+    code: '// clues: "subarray/substring", "sorted", "in place",\n// "pair that sums to", "cycle", "middle of list"',
   },
   {
-    icon: '🎯', title: 'The Objective', titleClass: 'card-title-purple', subtitle: 'Minimise Loss',
+    icon: '🔍', title: 'Binary Search on Answer', titleClass: 'card-title-purple', subtitle: 'Search The Space',
     description:
-      'Training is an optimisation problem: adjust the weights so the loss drops. Lower loss means the neuron’s predictions are closer to the real marks.',
-    code: '// find w1, w2, b that minimise the loss\n// = the neuron that fits the data best',
+      'If a candidate answer has a monotonic yes/no test (feasible up to some value, then not), binary-search the answer range. "Minimum capacity", "max distance", "smallest k" all fit.',
+    code: 'let lo = min, hi = max;\nwhile (lo < hi) {\n  const mid = lo + ((hi - lo) >> 1);\n  feasible(mid) ? (hi = mid) : (lo = mid + 1);\n}\n// lo is the smallest feasible answer',
   },
 ];
 
-const DESCENT = [
+const PATTERNS_B = [
   {
-    icon: '🧭', title: 'The Gradient', titleClass: 'card-title-cyan', subtitle: 'Which Way To Move',
+    icon: '📈', title: 'Monotonic Stack', titleClass: 'card-title-cyan', subtitle: 'Next Greater/Smaller',
     description:
-      'The gradient of the loss with respect to each weight points uphill — toward more error. We compute it from the data and then move the opposite way to reduce loss.',
-    code: '// gradient w.r.t. each weight, averaged over rows\n// grad_w1 = avg( 2 * e * study )\n// grad_w2 = avg( 2 * e * sleep )\n// grad_b  = avg( 2 * e )',
+      'Keep a stack in increasing or decreasing order; pop while the incoming element breaks the order. Solves next-greater-element, daily temperatures and largest-rectangle in O(n).',
+    code: '// clue: "next greater", "next smaller", "span"\nfor (const x of arr) {\n  while (st.length && arr[st.at(-1)!] < x) st.pop();\n  st.push(i);\n}',
   },
   {
-    icon: '⬇️', title: 'Gradient Descent', titleClass: 'card-title-purple', subtitle: 'Step Downhill',
+    icon: '🌲', title: 'Backtracking & Graphs', titleClass: 'card-title-purple', subtitle: 'Explore All',
     description:
-      'Subtract a small fraction of the gradient from each weight. The learning rate controls the step size — small and steady beats big and unstable.',
-    code: 'w1 -= lr * grad_w1;\nw2 -= lr * grad_w2;\nb  -= lr * grad_b;\n// one step closer to the best weights',
+      'Backtracking enumerates subsets/permutations/combinations by choosing, recursing and undoing. BFS/DFS and Union-Find cover grid and graph connectivity, shortest paths and cycles.',
+    code: '// clue: "all combinations", "generate", "N-Queens" → backtracking\n// clue: "islands", "connected", "shortest path" → BFS/DFS/DSU',
   },
   {
-    icon: '🔁', title: 'The Training Loop', titleClass: 'card-title-amber', subtitle: 'Epochs → Learned',
+    icon: '⛰️', title: 'Heap / Top-K', titleClass: 'card-title-amber', subtitle: 'k Best',
     description:
-      'Repeat over many epochs and the weights converge. The trained neuron ends up with real values (around w1≈4.92, w2≈2.94) and predicts marks accurately.',
-    code: 'for (int epoch = 0; epoch < N; epoch++) {\n  // compute gradients over the dataset\n  // update w1, w2, b\n}\n// → learned: w1≈4.92, w2≈2.94',
+      'A heap keeps the k best seen so far in O(log k) per element — k largest, merge k sorted lists, running median. Reach for it whenever "k" and "largest/smallest/closest" appear together.',
+    footer: 'clue: "k largest/closest", "merge k", "median of a stream"',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 27–28', titleClass: 'card-title-cyan', subtitle: 'C++ From Scratch',
+    icon: '🗺️', title: 'NeetCode Roadmap', titleClass: 'card-title-cyan', subtitle: 'Pattern-First',
     description:
-      'The training code (first.cpp) and the trained model (trained.cpp) with the learned weights, in the STRIKE GenAI repo.',
-    link: { href: GH_LECTURE, label: 'Open the code →', external: true },
+      'A curated path through the core patterns with the best-known problems for each — the most efficient way to practise.',
+    link: { href: NEETCODE, label: 'Open the roadmap →', external: true },
   },
   {
-    icon: '🌍', title: 'The Same Everywhere', titleClass: 'card-title-purple', subtitle: 'Scales Up',
+    icon: '💻', title: 'LeetCode', titleClass: 'card-title-purple', subtitle: 'Practice',
     description:
-      'Predict, measure loss, follow the gradient down — this exact loop trains everything from this neuron to GPT. Only the size changes.',
-    footer: 'predict → loss → gradient → step → repeat',
+      'Solve in TypeScript, group by tag (sliding window, graph, DP), and review editorials to internalise each template.',
+    link: { href: LEETCODE, label: 'Open LeetCode →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Non-Linearity', titleClass: 'card-title-amber', subtitle: 'Prereq 29 Preview',
+    icon: '🔜', title: 'Next: System Design', titleClass: 'card-title-amber', subtitle: 'Day 45 Preview',
     description:
-      'Tomorrow — Lecture 29: why stacking linear neurons stays a straight line, and how activation functions (ReLU) let a network learn curves.',
-    link: { href: '/day-045', label: 'Go to Prereq 29 →' },
+      'The DSA core is covered. Next, practised alongside Year 1: System Design in TypeScript — starting with the fundamentals of scalability, latency and availability.',
+    link: { href: '/day-045', label: 'Go to Day 45 →' },
   },
 ];
 
@@ -133,38 +134,38 @@ export default function Day044() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-043" className="day001-nav-btn day001-nav-prev">← Prereq 27</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 28</p>
-          <Link to="/day-045" className="day001-nav-btn day001-nav-next">Prereq 29 →</Link>
+          <Link to="/day-043" className="day001-nav-btn day001-nav-prev">← Day 43</Link>
+          <p className="day001-datetime">TypeScript Day 44</p>
+          <Link to="/day-045" className="day001-nav-btn day001-nav-next">Day 45 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 28</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>DSA · Patterns</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 28 <span aria-hidden="true">📉</span></h1>
-              <p className="day001-day-theme">TRAINING FROM SCRATCH — GRADIENT DESCENT (C++)</p>
+              <h1 className="day001-day-num">DAY 44 <span aria-hidden="true">🧩</span></h1>
+              <p className="day001-day-theme">DSA — INTERVIEW PATTERNS</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '28%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '44%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 28 — the neuron <strong>learns</strong>. A <strong>loss</strong> (mean squared error) measures how
-          wrong the predictions are, and the goal is to make it small. The <strong>gradient</strong> points toward
-          more error, so <strong>gradient descent</strong> steps the opposite way:{' '}
-          <code>w −= learningRate · gradient</code>, repeated over many <strong>epochs</strong>. The weights
-          <strong> converge</strong> (around <code>w1≈4.92, w2≈2.94</code>) and the neuron now predicts marks
-          accurately. This same loop — predict, measure, descend — is exactly how every neural network, up to an LLM,
-          learns. <em>Only the scale changes.</em>
+          Interviews reward <strong>pattern recognition</strong>, not memorisation. The high-frequency templates:{' '}
+          <strong>sliding window</strong> (contiguous ranges), <strong>two / fast-slow pointers</strong> (sorted
+          pairs, cycles, middles), <strong>binary search on the answer</strong> (monotonic feasibility),{' '}
+          <strong>monotonic stack</strong> (next greater/smaller), <strong>backtracking</strong> (subsets,
+          permutations, N-Queens), <strong>BFS/DFS + Union-Find</strong> (graphs &amp; grids), and{' '}
+          <strong>heap / top-K</strong> (k largest, merge k, streaming median). Learn the <em>clue words</em> that
+          point to each, and practise in TypeScript until the mapping is instant. <em>Next: System Design.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +180,12 @@ export default function Day044() {
           </ul>
         </section>
 
-        <CardSection icon="📉" title="MEASURE THE ERROR" cards={LOSS} columns={2} />
-        <CardSection icon="⬇️" title="GRADIENT DESCENT" cards={DESCENT} columns={3} />
+        <CardSection icon="🪟" title="SCAN & SEARCH PATTERNS" cards={PATTERNS_A} columns={2} />
+        <CardSection icon="🌲" title="STACK · BACKTRACK · HEAP" cards={PATTERNS_B} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#GradientDescent</span><span>#Cpp</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#DSA</span><span>#Patterns</span>
         </footer>
       </div>
     </div>

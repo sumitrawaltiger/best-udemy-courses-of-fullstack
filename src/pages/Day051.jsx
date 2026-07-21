@@ -2,80 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture35and36';
-const GH_REPO = 'https://github.com/Rohitnegi9/STRIKEGenAI';
+const CAP_WIKI = 'https://en.wikipedia.org/wiki/CAP_theorem';
+const CONSISTENCY = 'https://jepsen.io/consistency';
 
 const LEARNT_TODAY = [
-  { title: 'An LLM is next-token prediction', text: 'given the text so far, predict the single most likely next token — then repeat, one token at a time' },
-  { title: 'It’s a giant classifier', text: 'the final layer is softmax over the whole vocabulary (~50,000 tokens) — exactly Day 34, at huge scale' },
-  { title: 'Tokenization', text: 'text is split into tokens (words / sub-words) and each maps to an id in a fixed vocabulary' },
-  { title: 'Embeddings', text: 'every token id becomes a dense vector (e.g. 768 numbers) — meaning captured as geometry' },
-  { title: 'Meaning from context', text: 'the model adjusts each token’s vector using the surrounding words, so "bank" differs by sentence' },
-  { title: 'Attention', text: '“Attention Is All You Need” — the Transformer lets every token look at every other token' },
-  { title: 'Training = predict the next word', text: 'run over massive text; each miss updates weights via the same gradient descent from Days 28–34' },
-  { title: 'Generation loops', text: 'predict a token, append it, feed it back, predict again — that stream of tokens is the answer' },
+  { title: 'CAP theorem', text: 'under a network partition, choose consistency OR availability' },
+  { title: 'Partitions happen', text: 'networks fail, so the real choice is CP vs AP' },
+  { title: 'Strong consistency', text: 'every read sees the latest write — costs latency/availability' },
+  { title: 'Eventual consistency', text: 'replicas converge over time — fast and available, briefly stale' },
+  { title: 'Read-your-writes', text: 'a useful middle ground: you see your own updates immediately' },
+  { title: 'Replication lag', text: 'the window where a replica is behind the primary' },
+  { title: 'Quorums', text: 'require R + W > N reads/writes to overlap for consistency' },
+  { title: 'Pick per feature', text: 'a bank balance ≠ a like count — match the guarantee to the need' },
 ];
 
-const CORE = [
+const CAP = [
   {
-    icon: '🔮', title: 'Next-Token Prediction', titleClass: 'card-title-cyan', subtitle: 'The Whole Idea',
+    icon: '⚖️', title: 'The CAP Theorem', titleClass: 'card-title-cyan', subtitle: 'Pick 2 of 3',
     description:
-      'An LLM does one thing: read the tokens so far and predict the next one. Loop that and you get sentences, code, essays — all from repeatedly guessing the next token.',
-    code: '// "The cat sat on the" → ?\n// output over vocab: {mat: 0.61, floor: 0.12, ...}\n// pick "mat", append, predict again',
+      'Consistency, Availability, Partition-tolerance — you can’t have all three at once. Since partitions are unavoidable in a distributed system, the real decision is CP (stay consistent, reject some requests) vs AP (stay available, allow stale reads).',
+    code: '// during a network partition:\n// CP → refuse writes/reads to stay consistent (banks)\n// AP → keep serving, reconcile later (feeds, carts)',
   },
   {
-    icon: '🏷️', title: 'Tokenization', titleClass: 'card-title-purple', subtitle: 'Text → Ids',
+    icon: '🎯', title: 'Strong vs Eventual', titleClass: 'card-title-purple', subtitle: 'The Spectrum',
     description:
-      'Text is broken into tokens — whole words or sub-word pieces — and each maps to an id in a fixed vocabulary of ~50,000 entries. Tokens, not letters, are the model’s unit.',
-    code: '// "learning" → ["learn", "ing"] → [4821, 213]\n// vocabulary size ≈ 50,000 tokens',
-  },
-  {
-    icon: '🧭', title: 'Embeddings', titleClass: 'card-title-amber', subtitle: 'Id → Vector',
-    description:
-      'Each token id becomes a dense vector of numbers (e.g. 768 dims). Similar meanings sit close together — the same "meaning as geometry" idea from the embeddings lecture.',
-    code: '// 4821 → [0.12, -0.94, 0.33, ... 768 numbers]\n// king - man + woman ≈ queen',
+      'Strong consistency means every read returns the latest write — simple to reason about but slower and less available. Eventual consistency lets replicas converge over time — fast and available, briefly stale.',
+    code: '// strong:   read always = last write (single-leader, quorum)\n// eventual: replicas converge (Dynamo-style, high availability)',
   },
 ];
 
-const HOW = [
+const PRACTICE = [
   {
-    icon: '👀', title: 'Attention', titleClass: 'card-title-cyan', subtitle: 'The Transformer',
+    icon: '👤', title: 'Read-Your-Writes', titleClass: 'card-title-cyan', subtitle: 'A Practical Middle',
     description:
-      '"Attention Is All You Need" (2017). Attention lets every token look at every other token and pull in context, so a word’s vector reflects the whole sentence around it.',
-    code: '// "river bank" vs "money bank"\n// attention reshapes "bank" using its neighbours\n// → the right meaning in context',
+      'A common compromise: the system may be eventually consistent globally, but a user always sees their own latest changes (route their reads to the primary or their own session). It feels correct without full strong consistency.',
+    code: '// after a user updates their profile:\n// route THEIR next read to the primary → they see it\n// others may see it a moment later',
   },
   {
-    icon: '🎯', title: 'The Output Layer', titleClass: 'card-title-purple', subtitle: '50K-Way Softmax',
+    icon: '🗳️', title: 'Quorums', titleClass: 'card-title-purple', subtitle: 'R + W > N',
     description:
-      'The top of the network is a neuron per vocabulary token. Softmax turns those scores into a probability for every possible next token — Day 34’s softmax, just 50,000-wide.',
-    code: '// final scores over 50,000 tokens\n// softmax → probability distribution\n// argmax (or sample) → next token',
+      'With N replicas, require W acks to write and R responses to read. If R + W > N, the read and write sets overlap, guaranteeing you read the latest write — tune R/W to trade latency for consistency.',
+    code: '// N=3 replicas; W=2, R=2 → R+W=4 > 3 → consistent\n// lower R/W → faster but weaker guarantees',
   },
   {
-    icon: '🏋️', title: 'Training', titleClass: 'card-title-amber', subtitle: 'Predict, Then Correct',
+    icon: '🧭', title: 'Match The Guarantee', titleClass: 'card-title-amber', subtitle: 'Per Feature',
     description:
-      'Feed it oceans of text with the next word hidden. Wrong guesses create cross-entropy loss and gradient descent nudges billions of weights — the exact loop from Days 28–34, scaled up.',
-    code: '// hide next word, predict it\n// loss = cross-entropy(pred, actual)\n// backprop → update weights → repeat',
+      'Consistency isn’t one setting. A bank balance or inventory count needs strong consistency; a like count, view total or feed can be eventual. Choose the weakest guarantee that’s still correct for each feature.',
+    footer: 'money/inventory → strong · likes/feeds → eventual',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 35 & 36', titleClass: 'card-title-cyan', subtitle: 'How To Build An LLM',
+    icon: '⚖️', title: 'CAP Theorem', titleClass: 'card-title-cyan', subtitle: 'Reference',
     description:
-      'The combined Lecture35and36 material in the STRIKE GenAI repo — tokens, embeddings, attention and next-token prediction tied together.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 35 & 36 →', external: true },
+      'The theorem, its precise statement, and why "pick 2 of 3" is really "CP vs AP under a partition".',
+    link: { href: CAP_WIKI, label: 'Open the reference →', external: true },
   },
   {
-    icon: '📦', title: 'STRIKE GenAI Repo', titleClass: 'card-title-purple', subtitle: 'All Lectures',
+    icon: '🔬', title: 'Consistency Models', titleClass: 'card-title-purple', subtitle: 'Jepsen',
     description:
-      'The full Coder Army STRIKE GenAI course code — from the first Gemini call to agents, RAG, the AI Dev Team, and neural nets from scratch.',
-    link: { href: GH_REPO, label: 'Open the repo →', external: true },
+      'A rigorous map of consistency guarantees — linearizable, sequential, causal, eventual — and how they relate.',
+    link: { href: CONSISTENCY, label: 'Open the map →', external: true },
   },
   {
-    icon: '🧵', title: 'It All Connects', titleClass: 'card-title-amber', subtitle: 'Where This Leads',
+    icon: '🔜', title: 'Next: Microservices', titleClass: 'card-title-amber', subtitle: 'Day 52 Preview',
     description:
-      'Neuron → gradient descent → ReLU → classification → softmax → LLM. The from-scratch detour explains what powers every agent from the earlier lectures.',
-    link: { href: '/genai', label: 'Explore the GenAI track →' },
+      'Tomorrow — monolith vs microservices, the API gateway, service discovery, and the patterns (saga, circuit breaker) that keep distributed systems sane.',
+    link: { href: '/day-052', label: 'Go to Day 52 →' },
   },
 ];
 
@@ -140,39 +134,39 @@ export default function Day051() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-050" className="day001-nav-btn day001-nav-prev">← Prereq 34</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 35</p>
-          <Link to="/day-052" className="day001-nav-btn day001-nav-next">Prereq 36 →</Link>
+          <Link to="/day-050" className="day001-nav-btn day001-nav-prev">← Day 50</Link>
+          <p className="day001-datetime">TypeScript Day 51</p>
+          <Link to="/day-052" className="day001-nav-btn day001-nav-next">Day 52 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 35 &amp; 36</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>System Design</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 35 <span aria-hidden="true">🔮</span></h1>
-              <p className="day001-day-theme">HOW TO BUILD AN LLM — TOKENS, EMBEDDINGS &amp; NEXT-TOKEN</p>
+              <h1 className="day001-day-num">DAY 51 <span aria-hidden="true">⚖️</span></h1>
+              <p className="day001-day-theme">SYSTEM DESIGN — CAP &amp; CONSISTENCY</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '35%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '51%' }} /></div>
 
         <p className="day001-summary">
-          Lectures 35 &amp; 36 — it all comes together. An <strong>LLM is next-token prediction</strong>: read the
-          text so far, predict the single most likely next token, append it, and repeat. Under the hood it’s a giant{' '}
-          <strong>classifier</strong> — a <strong>50,000-way softmax</strong> over the vocabulary (exactly Day 34, at
-          scale). Text is <strong>tokenized</strong> into ids, each id becomes an <strong>embedding</strong> vector
-          (~768 numbers = meaning as geometry), and <strong>attention</strong> ("Attention Is All You Need") reshapes
-          each token using its context. <strong>Training</strong> is just hiding the next word and correcting the guess
-          with <code>cross-entropy</code> + gradient descent — the same loop from Days 28–34.{' '}
-          <em>Neuron → gradient descent → ReLU → classification → softmax → LLM. (From the lecture material.)</em>
+          The distributed-data trade-off. The <strong>CAP theorem</strong> says that under a network{' '}
+          <strong>partition</strong> (which will happen), you choose <strong>consistency</strong> or{' '}
+          <strong>availability</strong> — CP (stay correct, reject some requests) vs AP (stay up, allow stale reads).{' '}
+          <strong>Strong consistency</strong> means every read sees the latest write (slower); <strong>eventual
+          consistency</strong> lets replicas converge (fast, briefly stale). Useful middles:{' '}
+          <strong>read-your-writes</strong> and <strong>quorums</strong> (<code>R + W &gt; N</code> guarantees
+          overlap). Match the guarantee to the feature — a <strong>bank balance</strong> needs strong, a{' '}
+          <strong>like count</strong> can be eventual. <em>Next: microservices.</em>
         </p>
 
         <section className="day001-learnt">
@@ -187,12 +181,12 @@ export default function Day051() {
           </ul>
         </section>
 
-        <CardSection icon="🔮" title="THE CORE IDEA" cards={CORE} columns={3} />
-        <CardSection icon="⚙️" title="HOW IT WORKS" cards={HOW} columns={3} />
+        <CardSection icon="⚖️" title="CAP & CONSISTENCY" cards={CAP} columns={2} />
+        <CardSection icon="🗳️" title="IN PRACTICE" cards={PRACTICE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#LLM</span><span>#Transformer</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#SystemDesign</span><span>#CAP</span>
         </footer>
       </div>
     </div>

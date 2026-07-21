@@ -2,73 +2,74 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const GH_LECTURE = 'https://github.com/Rohitnegi9/STRIKEGenAI/tree/main/Lecture40';
+const SRE_BOOK = 'https://sre.google/sre-book/table-of-contents/';
+const OTEL = 'https://opentelemetry.io/docs/';
 
 const LEARNT_TODAY = [
-  { title: 'Ids aren’t meaning', text: 'a token id like 4821 is just a label — the number itself carries no information about the word' },
-  { title: 'The embedding layer', text: 'a big lookup table: every token id maps to a learned vector of numbers (e.g. 768 dimensions)' },
-  { title: 'Meaning as geometry', text: 'the vector is the word’s meaning — similar words end up close together in that 768-D space' },
-  { title: 'It’s just weights', text: 'the table is vocab_size × 768 numbers, all learned by gradient descent like every other weight' },
-  { title: 'The scale is huge', text: 'a 10K vocab × 768 dims is ~7.7M numbers in the embedding table alone — and real vocabs are bigger' },
-  { title: 'One row per token', text: 'the sentence "The chai was too hot" becomes a stack of 768-length vectors, one per token' },
-  { title: 'Learned, not fixed', text: 'embeddings start random and are shaped by training so that geometry reflects real usage' },
-  { title: 'Input to the network', text: 'these vectors are what attention and the deeper layers actually operate on' },
+  { title: 'Observability = 3 pillars', text: 'logs, metrics and traces answer "what’s happening?"' },
+  { title: 'Logs', text: 'structured, searchable events — the detail of what happened' },
+  { title: 'Metrics', text: 'numbers over time — latency, error rate, throughput, saturation' },
+  { title: 'Traces', text: 'follow one request across services to find the slow hop' },
+  { title: 'SLI / SLO / SLA', text: 'measure, target, and promise reliability' },
+  { title: 'Alert on symptoms', text: 'page on user-facing problems, not every blip' },
+  { title: 'Error budget', text: 'the allowed unreliability that balances speed vs stability' },
+  { title: 'Design for failure', text: 'retries, timeouts, graceful degradation, redundancy' },
 ];
 
-const IDEA = [
+const PILLARS = [
   {
-    icon: '🧭', title: 'Id → Vector', titleClass: 'card-title-cyan', subtitle: 'The Lookup Table',
+    icon: '🔭', title: 'The Three Pillars', titleClass: 'card-title-cyan', subtitle: 'Logs · Metrics · Traces',
     description:
-      'The embedding layer is a table with one row per token in the vocabulary. Feed it an id and it returns that row — a dense vector of (say) 768 numbers. That vector is the token’s representation.',
-    code: '// vocab_size rows × 768 columns\n// id 4821 → row 4821 → [0.12, -0.94, ... 768]\n// "The chai" → two 768-length vectors',
+      'Logs are structured events (the detail), metrics are numbers over time (the trend), and traces follow a single request across services (the path). Together they let you answer "what broke, where, and why".',
+    code: '// logs:    { level, msg, requestId, userId, ... }\n// metrics: http_request_duration_ms, error_rate\n// traces:  gateway → orders → payments (spans + timing)',
   },
   {
-    icon: '📐', title: 'Meaning As Geometry', titleClass: 'card-title-purple', subtitle: 'Close = Similar',
+    icon: '📊', title: 'The Golden Signals', titleClass: 'card-title-purple', subtitle: 'What To Watch',
     description:
-      'Because the vectors are learned, words used alike land near each other. Distance and direction encode relationships — the "king − man + woman ≈ queen" idea, at 768 dimensions.',
-    code: '// similar meaning → small distance\n// king - man + woman ≈ queen\n// 768 dims = 768 subtle features',
+      'Track latency (how slow), traffic (how much), errors (how often it fails) and saturation (how full). These four "golden signals" catch most problems before users complain.',
+    code: '// latency (p95/p99) · traffic (RPS) ·\n// errors (%) · saturation (CPU/mem/queue depth)',
   },
 ];
 
-const SCALE = [
+const RELIABILITY = [
   {
-    icon: '🔢', title: 'It’s All Weights', titleClass: 'card-title-cyan', subtitle: 'Learned By Training',
+    icon: '🎯', title: 'SLI / SLO / SLA', titleClass: 'card-title-cyan', subtitle: 'Measure → Target → Promise',
     description:
-      'The embedding table isn’t hand-made. It starts as random numbers and gradient descent nudges every value so the geometry lines up with how words actually behave.',
-    code: '// embedding[id] starts random\n// training reshapes each row\n// → geometry reflects real usage',
+      'An SLI is a measured signal (e.g. % of requests < 300ms), an SLO is the internal target (99.9%), and an SLA is the customer promise (with penalties). They turn "reliable" into numbers you can act on.',
+    code: '// SLI: fraction of good requests\n// SLO: 99.9% good over 30 days (internal goal)\n// SLA: contractual promise (external)',
   },
   {
-    icon: '📈', title: 'The Numbers Add Up', titleClass: 'card-title-purple', subtitle: 'Millions Of Values',
+    icon: '💰', title: 'Error Budget', titleClass: 'card-title-purple', subtitle: 'Speed vs Stability',
     description:
-      'Even a modest 10,000-token vocabulary at 768 dims is 10,000 × 768 ≈ 7.7 million numbers — just for embeddings. Real models use far larger vocabularies and dimensions.',
-    code: '// 10,000 × 768 ≈ 7.7M numbers\n// (embedding table only!)\n// bigger vocab / dims → billions',
+      'If the SLO is 99.9%, you have a 0.1% "error budget" to spend. Plenty left → ship faster. Budget burned → freeze features and fix reliability. It aligns product speed with stability.',
+    code: '// SLO 99.9% → 0.1% budget (~43 min/month)\n// budget healthy → ship · budget spent → stabilise',
   },
   {
-    icon: '📥', title: 'The Model’s Real Input', titleClass: 'card-title-amber', subtitle: 'Vectors, Not Text',
+    icon: '🛡️', title: 'Design For Failure', titleClass: 'card-title-amber', subtitle: 'It Will Break',
     description:
-      'After embedding, the sentence is a stack of vectors — one row per token. Everything downstream (attention, the deeper layers) works on these numbers, never on the letters.',
-    code: '// "The chai was too hot"\n// → [v_the, v_chai, v_was, v_too, v_hot]\n// each v is 768 numbers → into attention',
+      'Assume everything fails. Add timeouts and retries (with backoff + jitter), circuit breakers, graceful degradation (serve stale/partial data), redundancy and health checks — so a component failure isn’t an outage.',
+    footer: 'timeouts · retries+backoff · degrade gracefully · redundancy',
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '💻', title: 'Lecture 40', titleClass: 'card-title-cyan', subtitle: 'Embeddings',
+    icon: '📕', title: 'Google SRE Book', titleClass: 'card-title-cyan', subtitle: 'Free',
     description:
-      'The embedding-layer material in the STRIKE GenAI repo — token ids to 768-dimension vectors, and the weight counts behind them.',
-    link: { href: GH_LECTURE, label: 'Open Lecture 40 →', external: true },
+      'The canonical guide to reliability engineering — SLOs, error budgets, on-call, and running systems at scale.',
+    link: { href: SRE_BOOK, label: 'Open the SRE book →', external: true },
   },
   {
-    icon: '🧠', title: 'Ties Back To Day 8', titleClass: 'card-title-purple', subtitle: 'Meaning As Geometry',
+    icon: '🔭', title: 'OpenTelemetry', titleClass: 'card-title-purple', subtitle: 'Instrumentation',
     description:
-      'This is the same "embeddings" idea from the RAG foundation — now placed as the first learned layer inside the LLM itself.',
-    footer: 'token id → lookup → 768-D vector → attention',
+      'The vendor-neutral standard for logs, metrics and traces — instrument your Node/TypeScript services once, export anywhere.',
+    link: { href: OTEL, label: 'Open OpenTelemetry →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Attention', titleClass: 'card-title-amber', subtitle: 'Prereq 39 Preview',
+    icon: '🔜', title: 'Next: Year 1 Complete', titleClass: 'card-title-amber', subtitle: 'Day 55 Preview',
     description:
-      'Tomorrow — Lecture 41: self-attention. Query, Key and Value let every token look at the others so "bank" means the right thing in context.',
-    link: { href: '/day-055', label: 'Go to Prereq 39 →' },
+      'Tomorrow — the Year-1 capstone: the full TypeScript stack (frontend, mobile, backend, DSA & System Design) reviewed, and what Year 2 (Python) holds.',
+    link: { href: '/day-055', label: 'Go to Day 55 →' },
   },
 ];
 
@@ -133,38 +134,38 @@ export default function Day054() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-053" className="day001-nav-btn day001-nav-prev">← Prereq 37</Link>
-          <p className="day001-datetime">Prerequisite · Gen AI 38</p>
-          <Link to="/day-055" className="day001-nav-btn day001-nav-next">Prereq 39 →</Link>
+          <Link to="/day-053" className="day001-nav-btn day001-nav-prev">← Day 53</Link>
+          <p className="day001-datetime">TypeScript Day 54</p>
+          <Link to="/day-055" className="day001-nav-btn day001-nav-next">Day 55 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Prerequisite</span><span>Gen AI</span><span>Lecture 40</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>System Design</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">PREREQ 38 <span aria-hidden="true">🧭</span></h1>
-              <p className="day001-day-theme">EMBEDDINGS — TOKEN IDS TO MEANING VECTORS</p>
+              <h1 className="day001-day-num">DAY 54 <span aria-hidden="true">🔭</span></h1>
+              <p className="day001-day-theme">SYSTEM DESIGN — OBSERVABILITY &amp; RELIABILITY</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">PREREQUISITE · GEN AI</p>
+              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '38%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '54%' }} /></div>
 
         <p className="day001-summary">
-          Lecture 40 — a token id like <code>4821</code> is just a label; it carries no meaning. The{' '}
-          <strong>embedding layer</strong> fixes that: a big lookup table maps every id to a learned{' '}
-          <strong>vector of ~768 numbers</strong>. That vector <em>is</em> the word’s meaning —{' '}
-          <strong>similar words sit close together</strong> in the space. It’s just weights, learned by gradient
-          descent, and the <strong>scale is huge</strong>: even a 10K vocab × 768 dims is ~7.7M numbers in the table
-          alone. A sentence becomes a <strong>stack of vectors</strong>, one row per token — and that stack, not the
-          text, is what the rest of the network operates on. <em>Next: attention.</em>
+          You can’t fix what you can’t see. <strong>Observability</strong> stands on three pillars —{' '}
+          <strong>logs</strong> (structured events), <strong>metrics</strong> (numbers over time) and{' '}
+          <strong>traces</strong> (one request across services). Watch the <strong>golden signals</strong> (latency,
+          traffic, errors, saturation). Turn "reliable" into numbers with <strong>SLI → SLO → SLA</strong>, and use the{' '}
+          <strong>error budget</strong> to balance shipping speed against stability. Above all,{' '}
+          <strong>design for failure</strong>: timeouts, retries with backoff, circuit breakers, graceful degradation
+          and redundancy — so a component failing isn’t an outage. <em>Next: the Year-1 capstone.</em>
         </p>
 
         <section className="day001-learnt">
@@ -179,12 +180,12 @@ export default function Day054() {
           </ul>
         </section>
 
-        <CardSection icon="🧭" title="THE EMBEDDING IDEA" cards={IDEA} columns={2} />
-        <CardSection icon="📈" title="WEIGHTS & SCALE" cards={SCALE} columns={3} />
+        <CardSection icon="🔭" title="OBSERVABILITY" cards={PILLARS} columns={2} />
+        <CardSection icon="🎯" title="RELIABILITY" cards={RELIABILITY} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#GenAI</span><span>#Embeddings</span><span>#LLM</span><span>#FirstPrinciples</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#SystemDesign</span><span>#SRE</span>
         </footer>
       </div>
     </div>
