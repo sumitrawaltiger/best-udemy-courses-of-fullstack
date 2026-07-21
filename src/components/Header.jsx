@@ -195,7 +195,7 @@ export default function Header({ onSearch }) {
 
   return (
     <header
-      className={`header ${track === 'mobile' ? 'header-mobile' : ''} ${track === 'nextjs' ? 'header-nextjs' : ''} ${track === 'python' ? 'header-python' : ''} ${track === 'java' ? 'header-java' : ''} ${track === 'aws' ? 'header-aws' : ''} ${track === 'devops' ? 'header-devops' : ''} ${track === 'k8s' ? 'header-k8s' : ''} ${track === 'interview' ? 'header-interview' : ''}`}
+      className={`header ${track === 'thunder' ? 'header-thunder' : ''} ${track === 'mobile' ? 'header-mobile' : ''} ${track === 'nextjs' ? 'header-nextjs' : ''} ${track === 'python' ? 'header-python' : ''} ${track === 'java' ? 'header-java' : ''} ${track === 'aws' ? 'header-aws' : ''} ${track === 'devops' ? 'header-devops' : ''} ${track === 'k8s' ? 'header-k8s' : ''} ${track === 'interview' ? 'header-interview' : ''}`}
     >
       <div className="header-inner">
         <Link to={TRACK_HOME[track]} className="logo" onClick={closeMenu}>
