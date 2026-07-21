@@ -6711,3 +6711,33 @@ a:hover {
 .header-interview-link {
   color: #ffb877 !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Unify EVERY track accent to STRIKE orange (one cohesive palette site-wide)
+   Dark background tokens (--*-navy / --*-dark bg) are intentionally left alone.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  --green: #ff8c1a;
+  --green-dark: #e0620f;
+  --green-hover: #ff7a0f;
+  --green-light: #fff2e6;
+
+  --mobile-orange: #ff8c1a;  --mobile-orange-dark: #e0620f;  --mobile-orange-light: #ffb877;
+  --nextjs-purple: #ff8c1a;  --nextjs-purple-dark: #e0620f;  --nextjs-purple-light: #ffb877;
+  --python-blue: #ff8c1a;    --python-blue-dark: #e0620f;    --python-yellow: #ff512f;
+  --java-orange: #ff8c1a;    --java-orange-dark: #e0620f;    --java-red: #ff512f;
+  --aws-orange: #ff8c1a;     --aws-orange-dark: #e0620f;
+  --devops-blue: #ff8c1a;    --devops-blue-dark: #e0620f;    --devops-purple: #ff512f;
+  --k8s-blue: #ff8c1a;       --k8s-blue-dark: #e0620f;       --k8s-cyan: #ff512f;
+  --interview-green: #ff8c1a; --interview-green-dark: #e0620f; --interview-gold: #ff512f;
+
+  --rm-y1: #ff8c1a; --rm-y2: #ff512f; --rm-y3: #e0620f; --rm-y4: #ffb877;
+}
+
+/* Roadmap year accents (scoped on .roadmap-page) → orange shades too */
+.roadmap-page {
+  --rm-y1: #ff8c1a;
+  --rm-y2: #ff512f;
+  --rm-y3: #e0620f;
+  --rm-y4: #ffb877;
+}
