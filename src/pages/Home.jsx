@@ -104,7 +104,7 @@ export default function Home() {
             <a href={strikeCourse} target="_blank" rel="noopener noreferrer">STRIKE GenAI</a> by Rohit Negi (Coder Army).
           </p>
           <div className="genai-stats">
-            <div className="genai-stat"><span className="genai-stat-val">39</span><span className="genai-stat-label">days · Prerequisite</span></div>
+            <div className="genai-stat"><span className="genai-stat-val">Gen AI &amp; Agentic AI</span><span className="genai-stat-label">prerequisite · in JavaScript</span></div>
             <div className="genai-stat"><span className="genai-stat-val">JS</span><span className="genai-stat-label">JavaScript · Gemini</span></div>
             <div className="genai-stat"><span className="genai-stat-val">LangChain.js</span><span className="genai-stat-label">· LangGraph · LangSmith</span></div>
             <div className="genai-stat"><span className="genai-stat-val">RAG + Agents</span><span className="genai-stat-label">tools · RAG · multi-agent</span></div>
