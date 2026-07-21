@@ -250,10 +250,10 @@ export default function RoadmapHome() {
       <section className="roadmap-flow">
         <h2 className="roadmap-flow-title">The flow, end to end</h2>
         <p className="roadmap-flow-text">
-          Prerequisites (Gen AI &amp; JavaScript) → then a 4-year coding journey: Year 1 TypeScript stack
-          (TypeScript, React, Next.js, React Native, Express JS) → Year 2 Python stack (Python, Django, FastAPI) →
-          Year 3 Java stack (Java, Spring Boot, Microservices) → Year 4 DevOps stack (Linux, Docker, Kubernetes,
-          CI/CD, AWS). 1,461 days across 4 years.
+          A 39-day prerequisite — Generative AI &amp; Agentic AI (with JavaScript) → then a 4-year coding journey:
+          Year 1 TypeScript stack (TypeScript, React, Next.js, React Native, Express JS) → Year 2 Python stack
+          (Python, Django, FastAPI) → Year 3 Java stack (Java, Spring Boot, Microservices) → Year 4 DevOps stack
+          (Linux, Docker, Kubernetes, CI/CD, AWS). 4 years (1,461 + 39 = 1,500 days).
         </p>
         <div className="roadmap-flow-actions">
           <Link to="/day-001" className="btn btn-lg roadmap-btn-primary">
