@@ -144,8 +144,8 @@ export default function RoadmapHome() {
         style={{ margin: '8px auto 4px', textAlign: 'center', maxWidth: '620px' }}
       >
         <img
-          src="/roadmap-notes/four-year-roadmap-no-dates.jpg"
-          alt="The 4-Year Roadmap to a Full Lifecycle Engineer — a glowing vertical timeline: prerequisites (Gen AI & Agentic AI, JavaScript), then Year 1 TypeScript stack, Year 2 Python stack, Year 3 Java stack and Year 4 DevOps stack, finishing at Full Lifecycle Engineer (4 years · 1,461 days · Web · App · Cloud)."
+          src="/roadmap-notes/roadmap-1500-days.jpg"
+          alt="1500 Days of Code — 39 days + 1,461 days = one complete journey. A glowing vertical timeline: a 39-day JavaScript with Agentic AI prerequisite, then Year 1 TypeScript, Year 2 Python, Year 3 Java and Year 4 DevOps (4 years · 1,461 days), finishing at Full Lifecycle Engineer."
           loading="lazy"
           style={{
             width: '100%',
