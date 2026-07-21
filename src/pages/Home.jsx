@@ -134,6 +134,9 @@ export default function Home() {
             <Link to="/nextjs-interview-questions" className="btn btn-nextjs btn-lg">
               Next.js Q&amp;A ▲
             </Link>
+            <Link to="/nodejs-interview-questions" className="btn btn-genai btn-lg">
+              Node.js Q&amp;A 🟢
+            </Link>
             <Link to="/java-interview-questions" className="btn btn-java btn-lg">
               Java Q&amp;A ☕
             </Link>
@@ -729,6 +732,9 @@ export default function Home() {
             </Link>
             <Link to="/nextjs-interview-questions" className="btn btn-nextjs btn-lg">
               Next.js Q&amp;A ▲
+            </Link>
+            <Link to="/nodejs-interview-questions" className="btn btn-genai btn-lg">
+              Node.js Q&amp;A 🟢
             </Link>
             <Link to="/java-interview-questions" className="btn btn-java btn-lg">
               Java Q&amp;A ☕
