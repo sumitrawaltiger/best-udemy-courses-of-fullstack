@@ -127,6 +127,7 @@ import ReactInterviewQuestions from './pages/ReactInterviewQuestions';
 import NextjsInterviewQuestions from './pages/NextjsInterviewQuestions';
 import JavaInterviewQuestions from './pages/JavaInterviewQuestions';
 import KafkaInterviewQuestions from './pages/KafkaInterviewQuestions';
+import DevopsInterviewQuestions from './pages/DevopsInterviewQuestions';
 import JavaStreamsPuzzles from './pages/JavaStreamsPuzzles';
 import SqlQueryPuzzles from './pages/SqlQueryPuzzles';
 import SpringBootEcommerceRoadmap from './pages/SpringBootEcommerceRoadmap';
@@ -262,6 +263,7 @@ export default function App() {
         <Route path="/nextjs-interview-questions" element={<NextjsInterviewQuestions />} />
         <Route path="/java-interview-questions" element={<JavaInterviewQuestions />} />
         <Route path="/kafka-interview-questions" element={<KafkaInterviewQuestions />} />
+        <Route path="/devops-interview-questions" element={<DevopsInterviewQuestions />} />
         <Route path="/java-streams-puzzles" element={<JavaStreamsPuzzles />} />
         <Route path="/sql-query-puzzles" element={<SqlQueryPuzzles />} />
         <Route path="/spring-boot-ecommerce-roadmap" element={<SpringBootEcommerceRoadmap />} />

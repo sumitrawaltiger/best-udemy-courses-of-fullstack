@@ -10,6 +10,7 @@ const TOPICS = [
   { id: 'kafka', label: 'Kafka', path: '/kafka-interview-questions' },
   { id: 'java-streams', label: 'Java 8 Streams', path: '/java-streams-puzzles' },
   { id: 'sql', label: 'SQL Queries', path: '/sql-query-puzzles' },
+  { id: 'devops', label: 'DevOps', path: '/devops-interview-questions' },
 ];
 
 function renderAnswer(text) {

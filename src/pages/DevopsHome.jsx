@@ -42,6 +42,9 @@ export default function DevopsHome() {
                 <a href="#devops-syllabus" className="btn btn-outline-devops btn-lg">
                   View Syllabus
                 </a>
+                <Link to="/devops-interview-questions" className="btn btn-devops btn-lg">
+                  💬 100 Interview Questions
+                </Link>
                 <a
                   href={DEVOPS_MASTERY_PDF}
                   download
