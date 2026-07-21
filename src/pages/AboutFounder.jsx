@@ -4,7 +4,7 @@ import './AboutFounder.css';
 
 const LINKEDIN = 'https://www.linkedin.com/in/lawyersumitrawal/';
 const CREDLY = 'https://www.credly.com/users/sumit-rawal658/badges/credly';
-const GITHUB = 'https://github.com/sumitrawal';
+const GITHUB = 'https://github.com/sumitrawaltiger';
 
 // Photo fallback chain — drop the new photo at public/sumit-about.jpg to use it;
 // otherwise it falls back to the existing headshots (never a broken image).
