@@ -111,3 +111,29 @@
   .jr-title { color: #f4f7fb; }
   .jr-sub, .jr-scroll-hint, .jr-poster-cap, .jr-tagline { color: #9aa7b4; }
 }
+
+/* ── Senior Java Developer Roadmap section ─────────────────────── */
+.jr-senior {
+  margin: 28px auto 4px;
+  max-width: 1000px;
+  text-align: center;
+}
+.jr-senior-title {
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  font-weight: 800;
+  margin: 0 0 6px;
+}
+.jr-senior-sub {
+  color: var(--jr-muted, #93a3b8);
+  max-width: 680px;
+  margin: 0 auto 14px;
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+.jr-poster-wide .jr-poster-btn img { width: 100%; height: auto; }
+.jr-poster-download {
+  color: var(--jr-accent, #f7a41d);
+  font-weight: 700;
+  text-decoration: none;
+}
+.jr-poster-download:hover { text-decoration: underline; }

@@ -17,9 +17,15 @@ function col(a, b) {
 
 const PHASE_COLOR = Object.fromEntries(ROADMAP_PHASES.map((p) => [p.id, p.color]));
 
+const SENIOR_ROADMAP = {
+  image: '/java-notes/senior-java-developer-roadmap-2026.jpg',
+  alt: 'Senior Java Developer Roadmap 2026 — 12 focus areas: Core Java, Spring Ecosystem, Microservices, Databases, Messaging, Cloud & DevOps, System Design, Testing, AI for Developers, Soft Skills, Architecture Principles, Tools & Productivity, plus a learning path.',
+};
+
 export default function JavaRoadmap() {
-  const [zoom, setZoom] = useState(false);
+  const [zoomSrc, setZoomSrc] = useState(null);
   const [imgOk, setImgOk] = useState(true);
+  const [seniorOk, setSeniorOk] = useState(true);
 
   return (
     <div className="jr-page">
@@ -36,7 +42,7 @@ export default function JavaRoadmap() {
       <figure className="jr-poster">
         {imgOk ? (
           <>
-            <button type="button" className="jr-poster-btn" onClick={() => setZoom(true)} aria-label="Zoom the Java plan">
+            <button type="button" className="jr-poster-btn" onClick={() => setZoomSrc(JAVA_ROADMAP_META.image)} aria-label="Zoom the Java plan">
               <img
                 src={JAVA_ROADMAP_META.image}
                 alt={JAVA_ROADMAP_META.imageAlt}
@@ -57,6 +63,30 @@ export default function JavaRoadmap() {
           </div>
         )}
       </figure>
+
+      {seniorOk && (
+        <section className="jr-senior">
+          <h2 className="jr-senior-title">Senior Java Developer Roadmap 2026</h2>
+          <p className="jr-senior-sub">
+            A practical roadmap to level up and grow as a Senior Java Developer — 12 focus areas from
+            Core Java and the Spring ecosystem to microservices, system design, AI for developers and soft skills.
+          </p>
+          <figure className="jr-poster jr-poster-wide">
+            <button
+              type="button"
+              className="jr-poster-btn"
+              onClick={() => setZoomSrc(SENIOR_ROADMAP.image)}
+              aria-label="Zoom the Senior Java Developer Roadmap"
+            >
+              <img src={SENIOR_ROADMAP.image} alt={SENIOR_ROADMAP.alt} loading="lazy" onError={() => setSeniorOk(false)} />
+            </button>
+            <figcaption className="jr-poster-cap">
+              Senior Java Developer Roadmap 2026 — click to zoom ·{' '}
+              <a href={SENIOR_ROADMAP.image} download className="jr-poster-download">Download image</a>
+            </figcaption>
+          </figure>
+        </section>
+      )}
 
       <p className="jr-scroll-hint">The matrix below scrolls sideways → all 16 stages.</p>
 
@@ -139,10 +169,10 @@ export default function JavaRoadmap() {
         <strong>Java is not just a language</strong> — it's a full engineering career, from FLC Engineer to Engineering Manager.
       </p>
 
-      {zoom && (
-        <div className="jr-lightbox" role="dialog" aria-modal="true" aria-label="Java plan, full size" onClick={() => setZoom(false)}>
+      {zoomSrc && (
+        <div className="jr-lightbox" role="dialog" aria-modal="true" aria-label="Roadmap, full size" onClick={() => setZoomSrc(null)}>
           <button type="button" className="jr-lightbox-close" aria-label="Close">✕</button>
-          <img src={JAVA_ROADMAP_META.image} alt={JAVA_ROADMAP_META.imageAlt} onClick={(e) => e.stopPropagation()} />
+          <img src={zoomSrc} alt="Java roadmap, full size" onClick={(e) => e.stopPropagation()} />
         </div>
       )}
     </div>
