@@ -119,14 +119,14 @@ export default function AboutFounder() {
             <span className="a-brace">{'{'}Full Lifecycle{'}'}</span>Web · App · Cloud Engineer
           </h1>
           <p className="a-bio">
-            <span className="a-tag">&lt;p&gt;</span>I&rsquo;m on a disciplined <em className="a-kw">4-year journey</em> to become a{' '}
-            <em className="a-kw">Full Lifecycle Engineer</em> — mastering the stack front to back. From typed apps with{' '}
-            <em className="a-kw">TypeScript</em>, <em className="a-kw">React</em>, <em className="a-kw">Next.js</em> and{' '}
-            <em className="a-kw">React Native</em>, to backends with <em className="a-kw">Node</em>,{' '}
-            <em className="a-kw">Python/Django</em> and <em className="a-kw">Java/Spring Boot</em>, to shipping and scaling
-            with <em className="a-kw">Docker</em>, <em className="a-kw">Kubernetes</em>, <em className="a-kw">CI/CD</em> and{' '}
-            <em className="a-kw">AWS</em> — grounded in <em className="a-kw">Gen AI</em>, <em className="a-kw">DSA</em> and{' '}
-            <em className="a-kw">System Design</em>.<span className="a-tag">&lt;/p&gt;</span>
+            <span className="a-tag">&lt;p&gt;</span>I&rsquo;m a <em className="a-kw">Full Lifecycle Engineer</em> — I build across the whole
+            stack, front to back. From typed apps with <em className="a-kw">TypeScript</em>, <em className="a-kw">React</em>,{' '}
+            <em className="a-kw">Next.js</em> and <em className="a-kw">React Native</em>, to backends with{' '}
+            <em className="a-kw">Node</em>, <em className="a-kw">Python/Django</em> and <em className="a-kw">Java/Spring Boot</em>,
+            to shipping and scaling with <em className="a-kw">Docker</em>, <em className="a-kw">Kubernetes</em>,{' '}
+            <em className="a-kw">CI/CD</em> and <em className="a-kw">AWS</em> — grounded in <em className="a-kw">Gen AI</em>,{' '}
+            <em className="a-kw">DSA</em> and <em className="a-kw">System Design</em>. And I share what I learn with the
+            world.<span className="a-tag">&lt;/p&gt;</span>
           </p>
 
           <div className="a-hero-actions">
@@ -166,7 +166,7 @@ export default function AboutFounder() {
 
       {/* ── Services ─────────────────────────────────────── */}
       <section className="a-section">
-        <p className="a-eyebrow"><span className="a-dot" /> What I&rsquo;m building toward</p>
+        <p className="a-eyebrow"><span className="a-dot" /> What I do</p>
         <h2 className="a-h2">Services</h2>
         <div className="a-services-grid">
           {SERVICES.map((svc) => (
