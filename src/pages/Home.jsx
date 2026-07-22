@@ -118,8 +118,8 @@ export default function Home() {
             </div>
 
             <div className="fle-cta-row">
-              <Link to={`/genai/learn/${genaiChapters[0].slug}`} className="fle-btn-primary">
-                Start the Journey →
+              <Link to="/day-000" className="fle-btn-primary">
+                Start Day 0 →
               </Link>
               <Link to="/roadmap" className="fle-btn-ghost">
                 View the Roadmap
@@ -127,6 +127,7 @@ export default function Home() {
             </div>
 
             <div className="fle-quicklinks">
+              <Link to="/day-000" className="fle-chip">🛠️ Day 0 · Setup</Link>
               <Link to="/genai" className="fle-chip">🤖 Gen AI Track</Link>
               <a href={PAID_COURSE_URL} target="_blank" rel="noopener noreferrer" className="fle-chip">🎬 Full Lectures</a>
               <Link to="/interview-questions" className="fle-chip">💬 Interview Q&amp;A</Link>

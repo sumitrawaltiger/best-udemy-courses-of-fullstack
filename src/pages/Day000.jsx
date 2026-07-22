@@ -241,7 +241,7 @@ export default function Day000() {
           <Link to="/" className="day001-nav-btn day001-nav-home">
             Home
           </Link>
-          <p className="day001-datetime">Study Day 0</p>
+          <p className="day001-datetime">23 Jul 2026 · Study Day 0</p>
           <Link to="/genai" className="day001-nav-btn day001-nav-next">
             Prerequisites →
           </Link>
@@ -250,6 +250,7 @@ export default function Day000() {
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
+              <span>1500 Days</span>
               <span>Setup</span>
               <span>Tooling</span>
               <span>Day 0</span>
@@ -271,25 +272,25 @@ export default function Day000() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">SETUP · DAY 0</p>
+              <p className="day001-profile-role">1500 DAYS · DAY 0</p>
             </div>
           </div>
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '0.5%' }} />
+          <div className="day001-progress-bar" style={{ width: '0.07%' }} />
         </div>
 
         <p className="day001-summary">
-          Day zero — the day before the 1500-day journey begins. Today is all about{' '}
-          <strong>environment setup</strong>: installing <code>Node.js</code>, <code>Git</code>, and{' '}
-          <code>VS Code</code>, wiring up the terminal and Chrome DevTools, creating my{' '}
+          <strong>Day 0 of the 1,500-day learning journey</strong> — 23 July 2026. Today is only{' '}
+          <strong>environment setup</strong>: install <code>Node.js</code>, <code>Git</code>, and{' '}
+          <code>VS Code</code>, wire the terminal and Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             GitHub
           </a>{' '}
-          and Netlify accounts, and locking the routine (wake 4 AM, study 5:00–8:00 AM). No lectures yet —
-          just clearing every obstacle so <strong>Day 1</strong> starts with zero friction. Sharpen the
-          axe before the first swing.
+          and Netlify accounts, and lock the routine (wake 4 AM, study 5:00–8:00 AM IST). No lectures yet —
+          clear every obstacle so <strong>Day 1</strong> (prerequisites → Gen AI &amp; JS) starts with zero
+          friction. Sharpen the axe before the first swing.
         </p>
 
         <section className="day001-learnt">

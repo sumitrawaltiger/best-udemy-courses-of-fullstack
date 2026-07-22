@@ -53,9 +53,9 @@ const SHIP = [
     code: '// Play Console: Internal testing → Production',
   },
   {
-    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'OTA & Production',
-    description: 'Next in the cohort: Expo Updates for JS over-the-air fixes, rollback plans, and a production monitoring checklist.',
-    link: { href: '/mobile', label: 'Open the RN track →' },
+    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Day 121 Preview',
+    description: 'Tomorrow: Expo Updates for JS over-the-air fixes, rollback plans, channels, and a production monitoring checklist.',
+    link: { href: '/day-121', label: 'Go to Day 121 →' },
   },
 ];
 
@@ -139,7 +139,7 @@ export default function Day120() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-119" className="day001-nav-btn day001-nav-prev">← Day 119</Link>
           <p className="day001-datetime">React Native Day 120</p>
-          <Link to="/mobile" className="day001-nav-btn day001-nav-next">RN Track →</Link>
+          <Link to="/day-121" className="day001-nav-btn day001-nav-next">Day 121 →</Link>
         </header>
 
         <div className="day001-hero">

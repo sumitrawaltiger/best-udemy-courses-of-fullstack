@@ -122,12 +122,13 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 4 years (+39 days) · 1,500 days of practice</span>
+        <span className="roadmap-hero-badge">📍 Day 0 setup · 4 years (+39 days) · 1,500 days of practice</span>
         <h1 className="roadmap-hero-title">The 4-Year Roadmap</h1>
         <p className="roadmap-hero-sub">
-          A <strong>4-year coding journey</strong> — <strong>TypeScript → Python → Java → DevOps</strong>,
-          one year each (<strong>1,461 days</strong>) — plus a <strong>39-day Agentic AI &amp; JavaScript</strong>{' '}
-          prerequisite, for <strong>1,500 days</strong> of focused, daily practice in total.
+          Starts with <strong>Day 0 — environment setup</strong>, then a <strong>4-year coding journey</strong> —{' '}
+          <strong>TypeScript → Python → Java → DevOps</strong>, one year each (<strong>1,461 days</strong>) — plus a{' '}
+          <strong>39-day Agentic AI &amp; JavaScript</strong> prerequisite, for <strong>1,500 days</strong> of
+          focused, daily practice in total.
         </p>
         <div className="roadmap-stats">
           {STATS.map((s) => (
@@ -169,10 +170,38 @@ export default function RoadmapHome() {
         style={{ maxWidth: '780px', margin: '4px auto 8px' }}
       >
         <h2 style={{ fontSize: '1.05rem', fontWeight: 800, margin: '0 0 4px', textAlign: 'center' }}>
-          🎒 Prerequisites — before Day 1
+          🛠️ Day 0 — before everything else
         </h2>
         <p style={{ textAlign: 'center', opacity: 0.7, fontSize: '0.9rem', margin: '0 0 14px' }}>
-          Complete these first — the 4-year journey assumes you already know them.
+          Environment setup first — Node, Git, VS Code, accounts, and the daily routine.
+        </p>
+        <Link
+          to="/day-000"
+          style={{
+            display: 'block',
+            padding: '14px 16px',
+            borderRadius: '14px',
+            border: '1px solid rgba(0, 255, 136, 0.35)',
+            background: 'rgba(0, 255, 136, 0.06)',
+            textDecoration: 'none',
+            color: 'inherit',
+            marginBottom: '22px',
+          }}
+        >
+          <div style={{ fontWeight: 800, fontSize: '1rem' }}>
+            <span aria-hidden="true">🛠️</span> Day 0 · Environment Setup
+            <span style={{ opacity: 0.55, fontWeight: 600, fontSize: '0.75rem' }}> · start here</span>
+          </div>
+          <div style={{ opacity: 0.7, fontSize: '0.85rem', marginTop: '4px' }}>
+            Node.js · Git · VS Code · Chrome DevTools · GitHub · Netlify · study routine
+          </div>
+        </Link>
+
+        <h2 style={{ fontSize: '1.05rem', fontWeight: 800, margin: '0 0 4px', textAlign: 'center' }}>
+          🎒 Prerequisites — before Year 1 Day 1
+        </h2>
+        <p style={{ textAlign: 'center', opacity: 0.7, fontSize: '0.9rem', margin: '0 0 14px' }}>
+          Complete these next — the 4-year journey assumes you already know them.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
           {PREREQS.map((p) => (
