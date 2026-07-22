@@ -23,8 +23,8 @@ export default function TypescriptSeries() {
           <Link to="/typescript/day/1" className="prereq-btn prereq-btn-primary">
             Start at Episode 1 →
           </Link>
-          <Link to="/typescript/day/9" className="prereq-btn prereq-btn-ghost">
-            Jump to Classes →
+          <Link to="/typescript/day/11" className="prereq-btn prereq-btn-ghost">
+            Jump to Abstract Classes →
           </Link>
         </div>
         <div className="prereq-stats">
@@ -47,8 +47,8 @@ export default function TypescriptSeries() {
         <p>
           TypeScript is <strong>JavaScript with a type system</strong> — the same language you know,
           plus static types that catch bugs before they run. These episodes go from installing the
-          compiler to <strong>enums, interfaces and type assertions</strong>, each with the full written
-          notes and every code snippet.
+          compiler through <strong>classes, inheritance and abstract classes</strong>, each with the
+          full written notes and every code snippet.
         </p>
       </section>
 

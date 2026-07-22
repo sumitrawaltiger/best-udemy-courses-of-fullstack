@@ -4,17 +4,17 @@
 
 export const TS_META = {
   title: 'The TypeScript Series',
-  subtitle: '10 Episodes · JavaScript, Now With Types',
+  subtitle: '11 Episodes · JavaScript, Now With Types',
   blurb:
-    'JavaScript with a type system bolted on — catching bugs before they run. Ten illustrated episodes, from installing the compiler to enums, interfaces, type assertions, classes, inheritance and access modifiers, each paired with the full written notes and every code snippet.',
-  totalDays: 10,
+    'JavaScript with a type system bolted on — catching bugs before they run. Eleven illustrated episodes, from installing the compiler to enums, interfaces, classes, inheritance, access modifiers and abstract classes, each paired with the full written notes and every code snippet.',
+  totalDays: 11,
 };
 
 export const TS_GROUPS = [
   { id: 'foundations', label: 'Getting Started', icon: '🚀', desc: 'What TypeScript is and how to set it up.' },
   { id: 'types', label: 'The Type System', icon: '🧩', desc: 'The types you reach for every single day.' },
   { id: 'structures', label: 'Structuring Types', icon: '🏗️', desc: 'Interfaces, enums, and asserting what you know.' },
-  { id: 'oop', label: 'Object-Oriented', icon: '🏛️', desc: 'Classes, inheritance and access modifiers.' },
+  { id: 'oop', label: 'Object-Oriented', icon: '🏛️', desc: 'Classes, inheritance, access modifiers and abstract classes.' },
 ];
 
 export const TS_DAYS = [
@@ -463,6 +463,66 @@ export const TS_DAYS = [
         label: 'Getters & setters guard a private field',
         code: 'class BankAccount {\n  private balance: number = 0;\n\n  getBalance(): number {\n    return this.balance;\n  }\n\n  deposit(amount: number) {\n    if (amount > 0) this.balance += amount;\n  }\n}\n\nconst acc = new BankAccount();\nacc.deposit(1000);\nconsole.log(acc.getBalance()); // 1000\n// acc.balance;                // ❌ Error! private',
         note: 'Every change to balance goes through deposit(), so it can be validated.',
+      },
+    ],
+  },
+  {
+    day: 11,
+    group: 'oop',
+    title: 'Abstract Classes',
+    tagline: 'Blueprints with some implementation — children must finish the rest.',
+    image: '/typescript-notes/ep11-abstract-classes.png',
+    tags: ['abstract', 'Abstract Methods', 'vs Interface', 'OOP'],
+    notes: [
+      { k: 'What it is', v: 'An **abstract class cannot be instantiated** directly — it is meant to be **inherited** by other classes.' },
+      { k: 'Blueprint + logic', v: 'Abstract classes let us define a **blueprint with some implementation**, but **force child classes to complete the rest**.' },
+      { k: 'Abstract methods', v: 'Declared **without a body** — child classes **must** provide the implementation, or TypeScript errors.' },
+      { k: 'Concrete methods', v: 'Abstract classes can also have **normal methods with a body** (shared behaviour for every child).' },
+      { k: 'When to use', v: 'Shared base with **some default behaviour**, plus a **contract** children must fill in — strong **is-a** relationships.' },
+      { k: 'vs interface', v: 'Abstract class = **structure + shared logic**. Interface = **contract / capability** only (no implementation, no constructors).' },
+      { k: 'No multiple inherit', v: 'A class can **extend only one** abstract class, but can **implement many** interfaces.' },
+      { k: 'Interview angle', v: 'Know the difference from interfaces, and when you’d pick an abstract class over a pure contract.' },
+    ],
+    theory: [
+      {
+        h: 'What is an abstract class?',
+        p: 'An abstract class **cannot be instantiated** directly and is meant to be **inherited** by other classes. Think of it as a **blueprint of a house**: it defines rooms, doors and windows (structure), but you must build the actual house (implement the details).\n\n- Cannot create objects of an abstract class.\n- Can have both **abstract** and **concrete** members.\n- Child classes must implement all abstract members.\n- Helps create a **common structure** for related classes.',
+        code: 'abstract class Animal {\n  constructor(public name: string) {}\n\n  // concrete method (with implementation)\n  sleep(): void {\n    console.log(`${this.name} is sleeping`);\n  }\n\n  // abstract method (no implementation)\n  abstract makeSound(): void;\n}',
+      },
+      {
+        h: 'Abstract methods',
+        p: '**Abstract methods are declared without implementation.** Child classes must provide the implementation. If a child class doesn’t implement all abstract methods, **TypeScript will throw an error**.',
+        code: 'abstract class Shape {\n  abstract area(): number;        // must be implemented\n  abstract perimeter(): number;   // must be implemented\n}\n\nclass Rectangle extends Shape {\n  constructor(private w: number, private h: number) {\n    super();\n  }\n  area(): number { return this.w * this.h; }\n  perimeter(): number { return 2 * (this.w + this.h); }\n}\n\nconst r = new Rectangle(5, 10);\nconsole.log(r.area()); // 50',
+      },
+      {
+        h: 'When to use abstract classes?',
+        p: 'Reach for an abstract class when:\n\n- Multiple classes share a **common set of properties and methods**.\n- You want to provide **default behaviour** for some methods but **enforce implementation** for others.\n- You want to define a **base contract** for future classes.\n\n**Good use cases:** Animals (Dog, Cat, Bird), Payment Gateways (Card, UPI, Wallet), UI Components (Button, Input, Modal).\n\n**Bad use case:** Don’t use abstract classes just to group similar things if they don’t have a strong **is-a** relationship. Use **interfaces** instead!',
+      },
+      {
+        h: 'Abstract class vs interface',
+        p: 'How they differ:\n\n- **Can have implementation** — abstract class ✅ · interface ❌\n- **Can have constructors** — abstract class ✅ · interface ❌\n- **Access modifiers** (`public` / `private` / `protected`) — abstract class ✅ · interface ❌\n- **Multiple inheritance** — abstract class ❌ (one `extends`) · interface ✅ (many `implements`)\n- **Best for** — abstract class: shared base with some implementation · interface: defining a contract (capability)\n\n**Pro tip:** use abstract classes when you want both **structure + shared logic**.',
+        code: 'abstract class Payment {\n  constructor(public amount: number) {}\n  process(): void {\n    console.log(`Processing $${this.amount}...`);\n  }\n  abstract pay(): void; // must be implemented\n}\n\nclass CreditCardPayment extends Payment {\n  pay(): void {\n    console.log("Paid using Credit Card ✅");\n  }\n}\n\nconst payment = new CreditCardPayment(1200);\npayment.process(); // Processing $1200...\npayment.pay();     // Paid using Credit Card ✅',
+      },
+      {
+        h: 'Quick recap',
+        p: '- Abstract classes **can’t be instantiated**.\n- They can have both **abstract** (no body) and **concrete** (with body) members.\n- Child classes **must implement** all abstract methods.\n- Use abstract classes to provide a **base structure + common functionality**.\n\n**Interview Q:** What is the difference between abstract class and interface? When do you use abstract classes?\n\nBuild strong foundations. Write better code. Ship with confidence.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Abstract class with concrete + abstract methods',
+        code: 'abstract class Animal {\n  constructor(public name: string) {}\n\n  sleep(): void {\n    console.log(`${this.name} is sleeping`);\n  }\n\n  abstract makeSound(): void;\n}\n\n// const a = new Animal("Rex"); // ❌ Cannot create an instance of an abstract class',
+        note: 'Concrete methods have a body; abstract methods do not — children must fill them in.',
+      },
+      {
+        label: 'Implementing abstract methods (Shape → Rectangle)',
+        code: 'abstract class Shape {\n  abstract area(): number;\n  abstract perimeter(): number;\n}\n\nclass Rectangle extends Shape {\n  constructor(private w: number, private h: number) {\n    super();\n  }\n  area(): number { return this.w * this.h; }\n  perimeter(): number { return 2 * (this.w + this.h); }\n}\n\nconst r = new Rectangle(5, 10);\nconsole.log(r.area()); // 50',
+        note: 'If Rectangle skipped area() or perimeter(), TypeScript would error.',
+      },
+      {
+        label: 'Shared logic + forced pay() (Payment)',
+        code: 'abstract class Payment {\n  constructor(public amount: number) {}\n  process(): void {\n    console.log(`Processing $${this.amount}...`);\n  }\n  abstract pay(): void;\n}\n\nclass CreditCardPayment extends Payment {\n  pay(): void {\n    console.log("Paid using Credit Card ✅");\n  }\n}\n\nconst payment = new CreditCardPayment(1200);\npayment.process(); // Processing $1200...\npayment.pay();     // Paid using Credit Card ✅',
+        note: 'process() is shared; pay() is unique per gateway — classic abstract-class pattern.',
       },
     ],
   },
