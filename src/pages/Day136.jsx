@@ -1,0 +1,192 @@
+import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import './Day001.css';
+
+const PAGINATION = 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Range_requests';
+const QUERY_MDN = 'https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams';
+const ZOD = 'https://zod.dev/';
+
+const LEARNT_TODAY = [
+  { title: 'Why paginate', text: 'never return unbounded lists — page + limit keep payloads and DB load small' },
+  { title: 'page & limit', text: 'query params like ?page=2&limit=20; coerce and clamp with Zod' },
+  { title: 'offset / skip', text: 'offset = (page - 1) * limit for SQL OFFSET or Mongo skip' },
+  { title: 'total count', text: 'return { items, page, limit, total } so clients can render page controls' },
+  { title: 'Filtering', text: '?done=true or ?q=search — push filters into the WHERE / find query' },
+  { title: 'Sorting', text: '?sort=createdAt&order=desc — whitelist allowed columns to avoid injection' },
+  { title: 'Stable defaults', text: 'default page=1, limit=20, max limit=100' },
+  { title: 'Empty pages', text: 'page past the end returns [] with total — not an error' },
+  { title: 'API grows up', text: 'Days 136–140 deepen a live API: lists, uploads, tests, docs, clients' },
+];
+
+const CORE = [
+  {
+    icon: '📄', title: 'Page & Limit', titleClass: 'card-title-cyan', subtitle: 'Query Contract',
+    description: 'Validate query with Zod (coerce numbers). Compute offset, then query a slice of rows.',
+    code: 'const q = z.object({\n  page: z.coerce.number().int().min(1).default(1),\n  limit: z.coerce.number().int().min(1).max(100).default(20),\n}).parse(req.query);\nconst offset = (q.page - 1) * q.limit;',
+  },
+  {
+    icon: '🔍', title: 'Filter & Search', titleClass: 'card-title-purple', subtitle: 'Narrow The Set',
+    description: 'Optional filters become SQL WHERE clauses or Mongo conditions. Keep them typed and optional.',
+    code: '// ?done=true&q=buy\nconst where = {\n  ...(done !== undefined ? { done } : {}),\n  ...(q ? { title: { contains: q } } : {}),\n};',
+  },
+  {
+    icon: '↕️', title: 'Sort Safely', titleClass: 'card-title-amber', subtitle: 'Whitelist Fields',
+    description: 'Never pass raw client strings into ORDER BY. Map allowed keys to real columns.',
+    code: 'const SORTS = { createdAt: "created_at", title: "title" };\nconst col = SORTS[sort] ?? "created_at";\nconst dir = order === "asc" ? "ASC" : "DESC";',
+  },
+];
+
+const RESP = [
+  {
+    icon: '📦', title: 'List Response Shape', titleClass: 'card-title-cyan', subtitle: 'Predictable JSON',
+    description: 'Always return items plus pagination meta so every client (web or RN) can paginate the same way.',
+    code: 'res.json({\n  items,\n  page,\n  limit,\n  total,\n  hasMore: offset + items.length < total,\n});',
+  },
+  {
+    icon: '🧮', title: 'Count + Page Query', titleClass: 'card-title-purple', subtitle: 'Two Queries',
+    description: 'One COUNT(*) (or estimated) for total, one SELECT … LIMIT/OFFSET for the page. Cache totals later if needed.',
+    code: 'const total = await countTasks(where);\nconst items = await listTasks({ where, limit, offset, order });',
+  },
+  {
+    icon: '⚡', title: 'Cursor Option', titleClass: 'card-title-amber', subtitle: 'Later Upgrade',
+    description: 'For huge feeds, cursor/keyset pagination (?cursor=id) beats deep OFFSET. Learn offset first; upgrade when lists grow.',
+    code: '// ?cursor=42&limit=20\n// WHERE id < 42 ORDER BY id DESC LIMIT 20',
+  },
+  {
+    icon: '🔜', title: 'Next: File Uploads', titleClass: 'card-title-lime', subtitle: 'Day 137 Preview',
+    description: 'Tomorrow: accept multipart uploads with Multer — images and documents on your API.',
+    link: { href: '/day-137', label: 'Go to Day 137 →' },
+  },
+];
+
+const RESOURCES = [
+  {
+    icon: '🔗', title: 'URLSearchParams', titleClass: 'card-title-cyan', subtitle: 'MDN',
+    description: 'How query strings work in the browser — mirrors what Express puts on req.query.',
+    link: { href: QUERY_MDN, label: 'Read URLSearchParams →', external: true },
+  },
+  {
+    icon: '🧪', title: 'Zod', titleClass: 'card-title-purple', subtitle: 'Coerce Query',
+    description: 'Validate and coerce page/limit from strings to numbers.',
+    link: { href: ZOD, label: 'Read Zod docs →', external: true },
+  },
+  {
+    icon: '📄', title: 'Range Requests', titleClass: 'card-title-amber', subtitle: 'MDN',
+    description: 'Related idea for partial content — useful context when you later stream large files.',
+    link: { href: PAGINATION, label: 'Read range requests →', external: true },
+  },
+];
+
+function TopicCard({ card }) {
+  return (
+    <article className="day001-card">
+      <span className="day001-card-icon" aria-hidden="true">{card.icon}</span>
+      <h3 className={`day001-card-title ${card.titleClass}`}>{card.title}</h3>
+      <p className="day001-card-subtitle">{card.subtitle}</p>
+      <p className="day001-card-desc">{card.description}</p>
+      {card.code && <pre className="day001-card-code">{card.code}</pre>}
+      {card.footer && <p className="day001-card-footer">{card.footer}</p>}
+      {card.link &&
+        (card.link.external ? (
+          <a href={card.link.href} target="_blank" rel="noopener noreferrer" className="day001-card-link">{card.link.label}</a>
+        ) : (
+          <Link to={card.link.href} className="day001-card-link">{card.link.label}</Link>
+        ))}
+    </article>
+  );
+}
+
+function CardSection({ icon, title, cards, columns = 3 }) {
+  return (
+    <section className="day001-section">
+      <h2 className="day001-section-title"><span aria-hidden="true">{icon}</span> {title}</h2>
+      <div className={`day001-card-row day001-card-row--${columns}`}>
+        {cards.map((card) => (<TopicCard key={card.title} card={card} />))}
+      </div>
+    </section>
+  );
+}
+
+export default function Day136() {
+  const scaleRef = useRef(null);
+  useEffect(() => {
+    const wrap = scaleRef.current;
+    if (!wrap) return;
+    const page = wrap.parentElement;
+    const fitToScreen = () => {
+      wrap.style.transform = 'none';
+      wrap.style.width = '100%';
+      if (page) page.style.height = '';
+      const pad = 12;
+      const scale = Math.min((window.innerHeight - pad) / wrap.scrollHeight, (window.innerWidth - pad) / wrap.scrollWidth);
+      wrap.style.transform = `scale(${scale})`;
+      wrap.style.transformOrigin = 'top center';
+      if (page) page.style.height = `${wrap.scrollHeight * scale + pad}px`;
+    };
+    fitToScreen();
+    window.addEventListener('resize', fitToScreen);
+    const observer = new ResizeObserver(fitToScreen);
+    observer.observe(wrap);
+    const avatar = wrap.querySelector('.day001-avatar');
+    if (avatar && !avatar.complete) avatar.addEventListener('load', fitToScreen);
+    return () => { window.removeEventListener('resize', fitToScreen); observer.disconnect(); };
+  }, []);
+
+  return (
+    <div className="day001-page">
+      <div className="day001-scale-wrap" ref={scaleRef}>
+        <header className="day001-topbar">
+          <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
+          <Link to="/day-135" className="day001-nav-btn day001-nav-prev">← Day 135</Link>
+          <p className="day001-datetime">Express Day 136</p>
+          <Link to="/day-137" className="day001-nav-btn day001-nav-next">Day 137 →</Link>
+        </header>
+
+        <div className="day001-hero">
+          <div className="day001-hero-left">
+            <div className="day001-tags"><span>Express</span><span>Year 1</span><span>Pagination</span><span>API</span></div>
+            <div className="day001-title-block">
+              <h1 className="day001-day-num">DAY 136 <span aria-hidden="true">📄</span></h1>
+              <p className="day001-day-theme">PAGINATION, FILTER &amp; SORT</p>
+            </div>
+          </div>
+          <div className="day001-profile">
+            <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
+            <div>
+              <p className="day001-profile-name">Sumit Rawal</p>
+              <p className="day001-profile-role">EXPRESS · YEAR 1</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '38%' }} /></div>
+
+        <p className="day001-summary">
+          Day 136 scales list endpoints. <strong>page</strong> and <strong>limit</strong>,{' '}
+          <strong>filters</strong>, safe <strong>sort</strong> whitelists, and a consistent{' '}
+          <code>{'{ items, total }'}</code> response — so clients never pull the whole table.
+        </p>
+
+        <section className="day001-learnt">
+          <h2 className="day001-learnt-title"><span className="day001-learnt-line" aria-hidden="true" />WHAT I LEARNED TODAY</h2>
+          <ul className="day001-learnt-list">
+            {LEARNT_TODAY.map((item) => (
+              <li key={item.title}>
+                <span className="day001-check" aria-hidden="true">✓</span>
+                <span><strong>{item.title}</strong> — {item.text}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <CardSection icon="📄" title="1 · QUERY PARAMS" cards={CORE} columns={3} />
+        <CardSection icon="📦" title="2 · RESPONSE & QUERIES" cards={RESP} columns={4} />
+        <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
+
+        <footer className="day001-hashtags">
+          <span>#100DaysOfCode</span><span>#Express</span><span>#Pagination</span><span>#REST</span><span>#JSLearnHub</span>
+        </footer>
+      </div>
+    </div>
+  );
+}
