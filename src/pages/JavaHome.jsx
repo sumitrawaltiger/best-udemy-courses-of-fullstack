@@ -59,6 +59,42 @@ export default function JavaHome() {
           <JavaSyllabus />
         </div>
 
+        <section className="roadmap" id="java-26">
+          <div className="section-header">
+            <h2>☕ Java 26 — Latest Features</h2>
+            <a href="/java-notes/java-26-latest-features.jpg" download className="btn btn-java">
+              📥 Download
+            </a>
+          </div>
+          <p className="section-desc">
+            <strong>Java 26 (JDK 26)</strong> is here — released <strong>17 March 2026</strong>. A one-page look at
+            the <strong>10 core updates in JDK 26</strong> — AOT object caching, structured concurrency, native
+            HTTP/3, integrity by default (JEP 500), AI-readiness, GC &amp; performance, the Foreign Function &amp;
+            Memory API, and platform modernization — plus the top recent releases (JDK 25 LTS, Spring Boot 4.0 &amp;
+            AI) and why it matters.
+          </p>
+          <figure style={{ margin: '0 auto', textAlign: 'center', maxWidth: '980px' }}>
+            <a href="/java-notes/java-26-latest-features.jpg" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/java-notes/java-26-latest-features.jpg"
+                alt="Java 26 is Here (released 17 March 2026) — the 10 core updates in JDK 26 (AOT object caching, structured concurrency, native HTTP/3, integrity by default JEP 500, removal of the Applet API, AI-readiness, performance & GC improvements, Foreign Function & Memory API, developer productivity, platform modernization), top Java releases (JDK 26, JDK 25 LTS, Spring Boot 4.0 & AI, Eclipse IDE 2026-06), and why it matters."
+                loading="lazy"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '14px',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  boxShadow: '0 14px 44px rgba(0, 0, 0, 0.45)',
+                }}
+                onError={(e) => { const f = e.currentTarget.closest('figure'); if (f) f.style.display = 'none'; }}
+              />
+            </a>
+            <figcaption style={{ marginTop: '8px', fontSize: '0.8rem', opacity: 0.6 }}>
+              Java 26 at a glance — click to open full size ↗
+            </figcaption>
+          </figure>
+        </section>
+
         <section className="roadmap">
           <h2>50-Module Java & Spring Roadmap</h2>
           <p className="section-desc">
