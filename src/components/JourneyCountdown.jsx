@@ -41,11 +41,7 @@ export default function JourneyCountdown({ variant = 'banner' }) {
     return (
       <div className="journey-countdown journey-countdown--hero" role="timer" aria-live="polite">
         <p className="journey-countdown-label">
-          {time.done ? (
-            <>1,500-day journey complete · <strong>1 Sep 2030</strong></>
-          ) : (
-            <>Countdown to journey end · <strong>1 Sep 2030</strong></>
-          )}
+          {time.done ? '1,500-day journey complete' : 'Countdown to journey end'}
         </p>
         <div className="journey-countdown-units">
           {units.map((u) => (
@@ -63,7 +59,7 @@ export default function JourneyCountdown({ variant = 'banner' }) {
     <div className="journey-countdown journey-countdown--banner" role="timer" aria-live="polite">
       <div className="journey-countdown-inner">
         <span className="journey-countdown-label">
-          {time.done ? 'Journey complete · 1 Sep 2030' : 'Until 1 Sep 2030'}
+          {time.done ? 'Journey complete' : 'Until journey end'}
         </span>
         <div className="journey-countdown-units">
           {units.map((u) => (
