@@ -53,9 +53,9 @@ const POLISH = [
     code: '<ScrollView refreshControl={\n  <RefreshControl refreshing={loading} onRefresh={load} />\n}>',
   },
   {
-    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'More Projects',
-    description: 'The cohort continues with a wallpaper app, AI study assistant, monetization, and more — each project stacking skills from Days 101–114.',
-    link: { href: '/mobile', label: 'Open the RN track →' },
+    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Day 116 Preview',
+    description: 'Tomorrow: a wallpaper app — image grid, categories & search, infinite scroll, download & save, caching, and favorites.',
+    link: { href: '/day-116', label: 'Go to Day 116 →' },
   },
 ];
 
@@ -139,7 +139,7 @@ export default function Day115() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-114" className="day001-nav-btn day001-nav-prev">← Day 114</Link>
           <p className="day001-datetime">React Native Day 115</p>
-          <Link to="/mobile" className="day001-nav-btn day001-nav-next">RN Track →</Link>
+          <Link to="/day-116" className="day001-nav-btn day001-nav-next">Day 116 →</Link>
         </header>
 
         <div className="day001-hero">
