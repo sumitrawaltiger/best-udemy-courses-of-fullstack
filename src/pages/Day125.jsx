@@ -48,9 +48,9 @@ const WRAP = [
     code: '// internal track → feedback → OTA',
   },
   {
-    icon: '🎉', title: 'Celebrate & Continue', titleClass: 'card-title-amber', subtitle: 'You Shipped Skills',
-    description: 'Mark the win, then schedule the next small release. The habit of shipping is the real graduation gift.',
-    code: '// retrospect → celebrate → next MVP',
+    icon: '🚂', title: 'What Comes Next', titleClass: 'card-title-amber', subtitle: 'Day 126 Preview',
+    description: 'Tomorrow starts Express.js on Node — hello server, routing, REST, JWT auth, and a real database.',
+    link: { href: '/day-126', label: 'Go to Day 126 →' },
   },
   {
     icon: '📱', title: 'Explore The RN Track', titleClass: 'card-title-lime', subtitle: 'Full Syllabus',
@@ -139,7 +139,7 @@ export default function Day125() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-124" className="day001-nav-btn day001-nav-prev">← Day 124</Link>
           <p className="day001-datetime">React Native Day 125</p>
-          <Link to="/mobile" className="day001-nav-btn day001-nav-next">RN Track →</Link>
+          <Link to="/day-126" className="day001-nav-btn day001-nav-next">Day 126 →</Link>
         </header>
 
         <div className="day001-hero">
