@@ -471,7 +471,7 @@ export const TS_DAYS = [
     group: 'oop',
     title: 'Abstract Classes',
     tagline: 'Blueprints with some implementation — children must finish the rest.',
-    image: '/typescript-notes/ep11-abstract-classes.png',
+    image: '/typescript-notes/ep11-abstract-classes.jpeg',
     tags: ['abstract', 'Abstract Methods', 'vs Interface', 'OOP'],
     notes: [
       { k: 'What it is', v: 'An **abstract class cannot be instantiated** directly — it is meant to be **inherited** by other classes.' },
