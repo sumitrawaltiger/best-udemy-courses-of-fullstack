@@ -139,10 +139,10 @@ export const CHEAT_SHEETS = [
     id: 'devops',
     title: 'DevOps Cheat Sheet',
     description:
-      'A handy DevOps quick reference — core tools and commands across CI/CD, containers, orchestration, and cloud workflows, bundled as a downloadable PDF.',
+      'A comprehensive 286-page DevOps reference covering Linux and shell scripting, version control, CI/CD, infrastructure as code, containers, Kubernetes, cloud platforms, monitoring, security, and production workflows.',
     category: 'devops-cloud',
     pdf: '/cheatsheets/devops-cheat-sheet.pdf',
-    tags: ['DevOps', 'CI/CD', 'PDF'],
+    tags: ['DevOps', 'CI/CD', 'Docker', 'Kubernetes', 'Cloud', '286 Pages'],
   },
   {
     id: 'kubernetes',
