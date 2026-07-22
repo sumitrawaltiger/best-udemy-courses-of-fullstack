@@ -53,9 +53,9 @@ const WIRE = [
     code: 'app.get("/health", async (req, res) => {\n  await pool.query("SELECT 1");\n  res.json({ ok: true });\n});',
   },
   {
-    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Keep Building',
-    description: 'You now have Express + REST + JWT + a database. Next journal days can deepen TypeScript on the server, validation (Zod), and deploying the API.',
-    code: '// validate → authenticate → persist → deploy',
+    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Day 131 Preview',
+    description: 'Tomorrow: Express + TypeScript — tsx in dev, typed handlers, then Zod, errors, security, and deploy.',
+    link: { href: '/day-131', label: 'Go to Day 131 →' },
   },
 ];
 
@@ -139,7 +139,7 @@ export default function Day130() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-129" className="day001-nav-btn day001-nav-prev">← Day 129</Link>
           <p className="day001-datetime">Express Day 130</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <Link to="/day-131" className="day001-nav-btn day001-nav-next">Day 131 →</Link>
         </header>
 
         <div className="day001-hero">

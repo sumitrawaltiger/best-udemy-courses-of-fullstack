@@ -6741,3 +6741,123 @@ a:hover {
   --rm-y3: #e0620f;
   --rm-y4: #ffb877;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Journey countdown — until 1 Sep 2030
+   ═══════════════════════════════════════════════════════════════════════════ */
+.journey-countdown--banner {
+  background: linear-gradient(90deg, #0a0a0a, #14110c 40%, #0a0a0a);
+  border-bottom: 1px solid rgba(255, 140, 26, 0.28);
+  color: #f5f5f5;
+  font-size: 0.8rem;
+}
+
+.journey-countdown-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px clamp(16px, 4vw, 48px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 20px;
+}
+
+.journey-countdown--banner .journey-countdown-label {
+  opacity: 0.75;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.journey-countdown--banner .journey-countdown-units {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.journey-countdown--banner .journey-countdown-unit {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 140, 26, 0.1);
+  border: 1px solid rgba(255, 140, 26, 0.28);
+}
+
+.journey-countdown--banner .journey-countdown-value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  color: #ff8c1a;
+  font-size: 0.95rem;
+}
+
+.journey-countdown--banner .journey-countdown-unit-label {
+  opacity: 0.65;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.journey-countdown--hero {
+  margin: 0 0 26px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 140, 26, 0.28);
+  box-shadow: 0 0 40px rgba(255, 140, 26, 0.08);
+}
+
+.journey-countdown--hero .journey-countdown-label {
+  margin: 0 0 12px;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  color: #eee;
+}
+
+.journey-countdown--hero .journey-countdown-label strong {
+  color: #ff8c1a;
+  font-weight: 700;
+}
+
+.journey-countdown--hero .journey-countdown-units {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.journey-countdown--hero .journey-countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 140, 26, 0.2);
+}
+
+.journey-countdown--hero .journey-countdown-value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  font-size: clamp(1.35rem, 3.5vw, 1.85rem);
+  color: #ff8c1a;
+  line-height: 1;
+}
+
+.journey-countdown--hero .journey-countdown-unit-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+  color: #ddd;
+}
+
+@media (max-width: 520px) {
+  .journey-countdown--hero .journey-countdown-units {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+

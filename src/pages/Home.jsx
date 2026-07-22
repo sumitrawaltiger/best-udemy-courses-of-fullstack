@@ -29,6 +29,7 @@ import { SQL_QUERY_PUZZLES } from '../data/sqlQueryPuzzles';
 import { BEST_COURSES } from '../data/bestUdemyCourses';
 import LectureCard from '../components/LectureCard';
 import Syllabus from '../components/Syllabus';
+import JourneyCountdown from '../components/JourneyCountdown';
 
 const BTECH_ROADMAP = [
   {
@@ -116,6 +117,8 @@ export default function Home() {
               <span className="fle-pill"><span aria-hidden="true">🧠</span> Gen AI &amp; Agentic AI</span>
               <span className="fle-pill"><span aria-hidden="true">🚀</span> Full Stack → DevOps</span>
             </div>
+
+            <JourneyCountdown variant="hero" />
 
             <div className="fle-cta-row">
               <Link to="/day-000" className="fle-btn-primary">

@@ -1,6 +1,7 @@
 import { Outlet, useParams, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import JourneyCountdown from './JourneyCountdown';
 import { discordCommunity } from '../data/syllabus';
 
 export default function Layout() {
@@ -48,6 +49,7 @@ export default function Layout() {
       className={`app ${isMobileTrack ? 'app-mobile' : ''} ${isNextjsTrack ? 'app-nextjs' : ''} ${isPythonTrack ? 'app-python' : ''} ${isJavaTrack ? 'app-java' : ''} ${isAwsTrack ? 'app-aws' : ''} ${isDevopsTrack ? 'app-devops' : ''} ${isK8sTrack ? 'app-k8s' : ''} ${isInterviewTrack ? 'app-interview' : ''}`}
     >
       <Header />
+      <JourneyCountdown variant="banner" />
       <div className={`main-layout ${showSidebar ? 'with-sidebar' : 'no-sidebar'}`}>
         {showSidebar && <Sidebar currentSlug={slug} track={track} />}
         <main className="content">
