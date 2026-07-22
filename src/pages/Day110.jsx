@@ -66,9 +66,9 @@ const WRAP = [
     footer: 'From "hello world" to using the GPS, camera, storage and sensors of a real phone.',
   },
   {
-    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-purple', subtitle: 'Ship It',
-    description: 'The cohort continues into background tasks, push notifications and authentication, then EAS cloud builds and store submission — turning these skills into a published app.',
-    code: '// next in the cohort\n// background tasks · push · auth\n// EAS build · store submission',
+    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-purple', subtitle: 'Day 111 Preview',
+    description: 'Tomorrow starts the Production phase: EAS cloud builds and custom dev clients, then background tasks, push notifications and authentication — turning these skills into a shippable app.',
+    link: { href: '/day-111', label: 'Go to Day 111 →' },
   },
   {
     icon: '📱', title: 'Explore The RN Track', titleClass: 'card-title-amber', subtitle: 'All 25 Lessons',
@@ -157,7 +157,7 @@ export default function Day110() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-109" className="day001-nav-btn day001-nav-prev">← Day 109</Link>
           <p className="day001-datetime">React Native Day 110</p>
-          <Link to="/mobile" className="day001-nav-btn day001-nav-next">RN Track →</Link>
+          <Link to="/day-111" className="day001-nav-btn day001-nav-next">Day 111 →</Link>
         </header>
 
         <div className="day001-hero">
