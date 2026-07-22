@@ -414,7 +414,7 @@ export const TS_DAYS = [
     group: 'oop',
     title: 'Inheritance & Access Modifiers',
     tagline: 'Re-use and extend code, and control who can see what.',
-    image: '/typescript-notes/ep10-inheritance-and-access-modifiers.jpeg',
+    image: '/typescript-notes/ep10-inheritance.jpeg',
     tags: ['Inheritance', 'extends', 'super', 'public/private/protected'],
     notes: [
       { k: 'Inheritance', v: 'Inheritance lets a class (**child**) acquire the properties and methods of another class (**parent**) with `extends` — so you **re-use and extend** code instead of repeating it.' },

@@ -53,9 +53,9 @@ const WIRE = [
     code: 'const data = await apiFetch(`/tasks?page=${page}`).then(r => r.json());\nsetItems((prev) => [...prev, ...data.items]);',
   },
   {
-    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Keep Building',
-    description: 'You closed the Express loop: API + docs + real clients. Next journal days can deepen realtime, jobs, or the next Year-1 topic.',
-    code: '// web + RN → your API\n// ship · measure · iterate',
+    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Day 141 Preview',
+    description: 'Tomorrow: WebSockets with Socket.IO — realtime events, rooms, and JWT on the handshake, still on Express.',
+    link: { href: '/day-141', label: 'Go to Day 141 →' },
   },
 ];
 
@@ -139,7 +139,7 @@ export default function Day140() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-139" className="day001-nav-btn day001-nav-prev">← Day 139</Link>
           <p className="day001-datetime">Express Day 140</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <Link to="/day-141" className="day001-nav-btn day001-nav-next">Day 141 →</Link>
         </header>
 
         <div className="day001-hero">
