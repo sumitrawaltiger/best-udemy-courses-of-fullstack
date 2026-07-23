@@ -9,7 +9,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Git & GitHub',
-    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 1500 days of code',
+    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 1600 days of code',
   },
   {
     title: 'VS Code',
@@ -33,7 +33,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 1500-day plan — 39 days of Gen AI (JavaScript), then a 4-year coding journey: TypeScript, Python, Java, then DevOps',
+    text: 'reviewed the full 1600-day plan — 39 days of Gen AI (JavaScript), then a 4-year coding journey: TypeScript, Python, Java, then DevOps',
   },
   {
     title: 'Prerequisites confirmed',
@@ -65,7 +65,7 @@ const CORE_TOOLS = [
     titleClass: 'card-title-amber',
     subtitle: 'Version Control',
     description:
-      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 1500 days is signed to you.',
+      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 1600 days is signed to you.',
     code: 'git --version\ngit config --global user.name "Sumit Rawal"\ngit config --global user.email "you@email.com"',
   },
   {
@@ -125,12 +125,12 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-amber',
     subtitle: '4 AM Wake · 5–8 AM Study',
     description:
-      'Wake at 4:00 AM, then study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1500 days.',
+      'Wake at 4:00 AM, then study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1600 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
     icon: '🗺️',
-    title: 'The 1500-Day Roadmap',
+    title: 'The 1600-Day Roadmap',
     titleClass: 'card-title-cyan',
     subtitle: '39 days GenAI + 4 years',
     description:
@@ -241,7 +241,7 @@ export default function Day000() {
           <Link to="/" className="day001-nav-btn day001-nav-home">
             Home
           </Link>
-          <p className="day001-datetime">23 Jul 2026 · Study Day 0</p>
+          <p className="day001-datetime">Study Day 0</p>
           <Link to="/genai" className="day001-nav-btn day001-nav-next">
             Prerequisites →
           </Link>
@@ -250,7 +250,7 @@ export default function Day000() {
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>1500 Days</span>
+              <span>1600 Days</span>
               <span>Setup</span>
               <span>Tooling</span>
               <span>Day 0</span>
@@ -272,7 +272,7 @@ export default function Day000() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">1500 DAYS · DAY 0</p>
+              <p className="day001-profile-role">1600 DAYS · DAY 0</p>
             </div>
           </div>
         </div>
@@ -282,7 +282,7 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 of the 1,500-day learning journey</strong> — 23 July 2026. Today is only{' '}
+          <strong>Day 0 of the 1,600-day learning journey</strong>. Today is only{' '}
           <strong>environment setup</strong>: install <code>Node.js</code>, <code>Git</code>, and{' '}
           <code>VS Code</code>, wire the terminal and Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
@@ -320,7 +320,7 @@ export default function Day000() {
           <span>#Day0</span>
           <span>#100DaysOfCode</span>
           <span>#DevSetup</span>
-          <span>#1500Days</span>
+          <span>#1600Days</span>
           <span>#JSLearnHub</span>
         </footer>
       </div>

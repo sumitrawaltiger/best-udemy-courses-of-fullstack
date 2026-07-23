@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 
-/** Target: 1 September 2030, 00:00:00 local time */
-export const JOURNEY_END = new Date(2030, 8, 1, 0, 0, 0, 0);
+/** End of the 4-year core journey (39-day prereq + 1,461 four-year days). */
+const CORE_JOURNEY_END = new Date(2030, 8, 1, 0, 0, 0, 0);
+/** Target: core end + the 100-day Capstone & Career Sprint = the 1,600-day total. */
+export const JOURNEY_END = new Date(CORE_JOURNEY_END.getTime() + 100 * 24 * 60 * 60 * 1000);
 
 function getRemaining(now = new Date()) {
   const diff = Math.max(0, JOURNEY_END.getTime() - now.getTime());
@@ -18,7 +20,7 @@ function pad(n) {
 }
 
 /**
- * Countdown to 1 Sep 2030 — days, hours, minutes, seconds.
+ * Live countdown to the end of the 1,600-day journey — days, hours, minutes, seconds.
  * @param {{ variant?: 'banner' | 'hero' }} props
  */
 export default function JourneyCountdown({ variant = 'banner' }) {
@@ -41,7 +43,7 @@ export default function JourneyCountdown({ variant = 'banner' }) {
     return (
       <div className="journey-countdown journey-countdown--hero" role="timer" aria-live="polite">
         <p className="journey-countdown-label">
-          {time.done ? '1,500-day journey complete' : 'Countdown to journey end'}
+          {time.done ? '1,600-day journey complete' : 'Countdown to journey end'}
         </p>
         <div className="journey-countdown-units">
           {units.map((u) => (

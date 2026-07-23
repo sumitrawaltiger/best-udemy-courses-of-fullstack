@@ -59,7 +59,7 @@ const RESOURCES = [
     link: { href: TS_HANDBOOK, label: 'Open the Handbook →', external: true },
   },
   {
-    icon: '🗺️', title: 'The 1500-Day Roadmap', titleClass: 'card-title-purple', subtitle: 'Where This Fits',
+    icon: '🗺️', title: 'The 1600-Day Roadmap', titleClass: 'card-title-purple', subtitle: 'Where This Fits',
     description:
       'Year 1 is the TypeScript stack in the full journey — Gen AI (Days 1–39) then four years of code. See the whole plan and its dated windows.',
     link: { href: '/roadmap', label: 'Open the roadmap →' },

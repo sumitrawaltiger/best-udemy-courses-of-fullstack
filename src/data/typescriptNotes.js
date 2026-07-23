@@ -4,10 +4,10 @@
 
 export const TS_META = {
   title: 'The TypeScript Series',
-  subtitle: '11 Episodes · JavaScript, Now With Types',
+  subtitle: '12 Episodes · JavaScript, Now With Types',
   blurb:
-    'JavaScript with a type system bolted on — catching bugs before they run. Eleven illustrated episodes, from installing the compiler to enums, interfaces, classes, inheritance, access modifiers and abstract classes, each paired with the full written notes and every code snippet.',
-  totalDays: 11,
+    'JavaScript with a type system bolted on — catching bugs before they run. Twelve illustrated episodes, from installing the compiler to enums, interfaces, classes, inheritance, access modifiers, abstract classes, and implementing interfaces with static members, each paired with the full written notes and every code snippet.',
+  totalDays: 12,
 };
 
 export const TS_GROUPS = [
@@ -523,6 +523,71 @@ export const TS_DAYS = [
         label: 'Shared logic + forced pay() (Payment)',
         code: 'abstract class Payment {\n  constructor(public amount: number) {}\n  process(): void {\n    console.log(`Processing $${this.amount}...`);\n  }\n  abstract pay(): void;\n}\n\nclass CreditCardPayment extends Payment {\n  pay(): void {\n    console.log("Paid using Credit Card ✅");\n  }\n}\n\nconst payment = new CreditCardPayment(1200);\npayment.process(); // Processing $1200...\npayment.pay();     // Paid using Credit Card ✅',
         note: 'process() is shared; pay() is unique per gateway — classic abstract-class pattern.',
+      },
+    ],
+  },
+  {
+    day: 12,
+    group: 'oop',
+    title: 'Implementing Interfaces & Static Members',
+    tagline: 'Contracts for classes, and members that belong to the class itself.',
+    image: '/typescript-notes/ep12-interfaces-and-static-members.jpeg',
+    tags: ['implements', 'Multiple Interfaces', 'Static Members', 'Interface vs Class'],
+    notes: [
+      { k: 'Implementing interfaces', v: 'A class **commits to an interface** using the `implements` keyword — it must provide every property and method the interface declares.' },
+      { k: 'Missing members = error', v: 'If a class is **missing any property or method** from the interface it implements, **TypeScript throws an error** at compile time.' },
+      { k: 'Consistent structure', v: 'Implementing an interface **ensures consistent structure** across every class that implements it.' },
+      { k: 'Multiple interfaces', v: 'A class can implement **more than one interface** at once, separated by commas — `class User implements Person, Contact { ... }`.' },
+      { k: 'Static members', v: '**Static members belong to the class itself, not to instances.** Access them via the **class name** (`Counter.count`), not an object.' },
+      { k: 'Instance vs static', v: 'An **instance member** belongs to an object and is accessed via that object (`c1.value`); a **static member** belongs to the class and is accessed via the class name (`Counter.count`).' },
+      { k: 'Static methods', v: 'A `static` method is called on the **class**, not an instance — `Demo.hello()` works, but `d.hello()` does not (only non-static methods are available on instances).' },
+      { k: 'When to use static', v: 'Prefer static members for **utility functions, constants, and helper methods** that don’t need object-specific data.' },
+    ],
+    theory: [
+      {
+        h: 'Implementing an interface',
+        p: 'A class can **commit to implementing an interface** using the `implements` keyword. The class **must implement all properties and methods** declared by the interface — if any are missing, **TypeScript will throw an error**. This ensures **consistent structure** across every implementation.\n\n**Real-world analogy:** an **interface is a contract**, and a **class is the employee** who signs it. The employee must follow every rule written in the contract — every property and method the interface promises, the class must actually provide.',
+        code: 'interface User {\n  id: number;\n  name: string;\n  email: string;\n  login(): void;\n}\n\nclass Admin implements User {\n  id: number;\n  name: string;\n  email: string;\n\n  constructor(id: number, name: string, email: string) {\n    this.id = id;\n    this.name = name;\n    this.email = email;\n  }\n  login(): void {\n    console.log(`${this.name} logged in`);\n  }\n}\n\nconst admin = new Admin(1, "Faisal", "faisal@example.com");\nadmin.login(); // Faisal logged in',
+      },
+      {
+        h: 'Multiple interfaces',
+        p: 'A class can **implement multiple interfaces** at once — list them after `implements`, separated by commas. The class must satisfy the combined contract of every interface listed.\n\n**Note:** use interfaces to **enforce structure and consistency in large applications** — each interface describes one capability, and a class can combine as many capabilities as it needs.',
+        code: 'interface Person {\n  name: string;\n}\ninterface Contact {\n  email: string;\n  phone: string;\n}\nclass User implements Person, Contact {\n  name: string;\n  email: string;\n  phone: string;\n\n  constructor(name: string, email: string, phone: string) {\n    this.name = name;\n    this.email = email;\n    this.phone = phone;\n  }\n}\n\nconst user = new User("Faisal", "faisal@example.com", "+91 9876543210");\nconsole.log(user.name); // Faisal',
+      },
+      {
+        h: 'Interface vs class',
+        p: 'Key differences: **contains implementation** — interface ❌ (structure only) · class ✅. **Keyword** — `interface` vs `class`. **Used for** — interface: define a contract · class: create objects. **Multiple inheritance** — interface ✅ (using commas) · class ❌ (single).',
+      },
+      {
+        h: 'Static members',
+        p: '**Static members belong to the class, not to instances.** An **instance member** belongs to an object and is accessed via that object (`c1.value`); a **static member** belongs to the class and is accessed via the **class name** (`Counter.count`).\n\nIn the example, every `new Counter()` increments the shared `static count` — so `Counter.getCount()` reports the total across *all* instances, and `c1.getCount()` is a compile error (static members aren’t available on instances).',
+        code: 'class Counter {\n  static count: number = 0;\n  constructor() {\n    Counter.count++; // accessing static member\n  }\n  static getCount(): void {\n    console.log(`Total objects: ${Counter.count}`);\n  }\n}\n\nconst c1 = new Counter();\nconst c2 = new Counter();\nCounter.getCount(); // Total objects: 2\n// c1.getCount();   // ❌ Error (use class name)',
+      },
+      {
+        h: 'Static methods vs instance methods',
+        p: 'An **instance method** (`method(): void {}`) is declared without `static`, and is called on an **object** (`object.method()`) — `this` is available. A **static method** (`static method(): void {}`) is called on the **class** (`Class.method()`) — `this` (referring to an instance) is **not available**.\n\n**Pro tip:** prefer static members for **utility functions, constants, and helper methods** that don’t need object-specific data — like `MathUtil.area(r)` computing a value from its arguments alone, with no instance state involved.',
+        code: 'class MathUtil {\n  static PI = 3.1415;\n  static area(r: number): number {\n    return MathUtil.PI * r * r;\n  }\n}\nconsole.log(MathUtil.area(5)); // 78.5375\n\nclass Demo {\n  static hello() {\n    console.log("Hello from static!");\n  }\n  welcome() {\n    console.log("Hello from instance!");\n  }\n}\nDemo.hello();       // ✅\nconst d = new Demo();\nd.welcome();         // ✅\n// d.hello();        // ❌ Not available on an instance',
+      },
+      {
+        h: 'Quick recap',
+        p: '- Implement interfaces using the **`implements`** keyword.\n- A class **must implement all members** of every interface it implements.\n- Use **multiple interfaces** for better modularity.\n- **Static members belong to the class**, not to instances.\n- Use static for **utility functions, constants, and helpers**.\n\n**Interview Q:** what’s the difference between an interface and a class? When would you use a static member over an instance member?\n\nStrong contracts, smart code.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'A class implementing an interface',
+        code: 'interface User {\n  id: number;\n  name: string;\n  email: string;\n  login(): void;\n}\n\nclass Admin implements User {\n  id: number;\n  name: string;\n  email: string;\n\n  constructor(id: number, name: string, email: string) {\n    this.id = id;\n    this.name = name;\n    this.email = email;\n  }\n  login(): void {\n    console.log(`${this.name} logged in`);\n  }\n}',
+        note: 'Admin must provide id, name, email, and login() — everything User declares.',
+      },
+      {
+        label: 'Implementing multiple interfaces',
+        code: 'interface Person { name: string; }\ninterface Contact { email: string; phone: string; }\n\nclass User implements Person, Contact {\n  name: string;\n  email: string;\n  phone: string;\n  constructor(name: string, email: string, phone: string) {\n    this.name = name;\n    this.email = email;\n    this.phone = phone;\n  }\n}',
+        note: 'Separate multiple interfaces with commas after implements.',
+      },
+      {
+        label: 'Static members — shared across all instances',
+        code: 'class Counter {\n  static count: number = 0;\n  constructor() {\n    Counter.count++;\n  }\n  static getCount(): void {\n    console.log(`Total objects: ${Counter.count}`);\n  }\n}\n\nconst c1 = new Counter();\nconst c2 = new Counter();\nCounter.getCount(); // Total objects: 2',
+        note: 'Static members belong to the class — accessed via the class name, not an instance.',
       },
     ],
   },

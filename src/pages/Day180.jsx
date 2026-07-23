@@ -45,7 +45,7 @@ const WRAP = [
   },
   {
     icon: '🏠', title: 'Back Home', titleClass: 'card-title-amber', subtitle: 'Hub',
-    description: 'Return to the hub for other tracks and the 1500-day map.',
+    description: 'Return to the hub for other tracks and the 1600-day map.',
     link: { href: '/', label: 'Go to Home →' },
   },
   {

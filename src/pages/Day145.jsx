@@ -54,7 +54,7 @@ const WRAP = [
   },
   {
     icon: '🏠', title: 'Back Home', titleClass: 'card-title-amber', subtitle: 'Hub',
-    description: 'Return to the hub for other tracks, TypeScript notes, and the full 1500-day journey map.',
+    description: 'Return to the hub for other tracks, TypeScript notes, and the full 1600-day journey map.',
     link: { href: '/', label: 'Go to Home →' },
   },
 ];
