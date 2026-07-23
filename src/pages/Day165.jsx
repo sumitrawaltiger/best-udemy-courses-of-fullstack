@@ -48,9 +48,9 @@ const WRAP = [
     code: 'Docker · Compose\nActions · Secrets · Ship',
   },
   {
-    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Keep Building',
-    description: 'Next journal days can deepen observability, Kubernetes, or the next Year-1 track — follow Day 166 when it lands.',
-    footer: 'Your API can leave the laptop.',
+    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Day 166 Preview',
+    description: 'Tomorrow: OpenTelemetry traces — spans across HTTP and DB, correlated with your logs.',
+    link: { href: '/day-166', label: 'Go to Day 166 →' },
   },
   {
     icon: '🏠', title: 'Back Home', titleClass: 'card-title-amber', subtitle: 'Hub',
@@ -139,7 +139,7 @@ export default function Day165() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-164" className="day001-nav-btn day001-nav-prev">← Day 164</Link>
           <p className="day001-datetime">Cloud Day 165</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <Link to="/day-166" className="day001-nav-btn day001-nav-next">Day 166 →</Link>
         </header>
 
         <div className="day001-hero">
