@@ -48,9 +48,9 @@ const WRAP = [
     code: 'Structure + DI\nData + GraphQL\nEvents + tests + ship',
   },
   {
-    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Keep Building',
-    description: 'Next journal days can explore gateways, microservices transport, or the next Year-1 track — follow Day 156 when it lands.',
-    footer: 'You can build and ship a Nest API with confidence.',
+    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Day 156 Preview',
+    description: 'Tomorrow: Nest WebSocket gateways — realtime events, rooms, and JWT on the handshake.',
+    link: { href: '/day-156', label: 'Go to Day 156 →' },
   },
   {
     icon: '🏠', title: 'Back Home', titleClass: 'card-title-amber', subtitle: 'Hub',
@@ -139,7 +139,7 @@ export default function Day155() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-154" className="day001-nav-btn day001-nav-prev">← Day 154</Link>
           <p className="day001-datetime">Nest Day 155</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <Link to="/day-156" className="day001-nav-btn day001-nav-next">Day 156 →</Link>
         </header>
 
         <div className="day001-hero">
