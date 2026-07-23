@@ -221,6 +221,36 @@ import Day167 from './pages/Day167';
 import Day168 from './pages/Day168';
 import Day169 from './pages/Day169';
 import Day170 from './pages/Day170';
+import Day171 from './pages/Day171';
+import Day172 from './pages/Day172';
+import Day173 from './pages/Day173';
+import Day174 from './pages/Day174';
+import Day175 from './pages/Day175';
+import Day176 from './pages/Day176';
+import Day177 from './pages/Day177';
+import Day178 from './pages/Day178';
+import Day179 from './pages/Day179';
+import Day180 from './pages/Day180';
+import Day181 from './pages/Day181';
+import Day182 from './pages/Day182';
+import Day183 from './pages/Day183';
+import Day184 from './pages/Day184';
+import Day185 from './pages/Day185';
+import Day186 from './pages/Day186';
+import Day187 from './pages/Day187';
+import Day188 from './pages/Day188';
+import Day189 from './pages/Day189';
+import Day190 from './pages/Day190';
+import Day191 from './pages/Day191';
+import Day192 from './pages/Day192';
+import Day193 from './pages/Day193';
+import Day194 from './pages/Day194';
+import Day195 from './pages/Day195';
+import Day196 from './pages/Day196';
+import Day197 from './pages/Day197';
+import Day198 from './pages/Day198';
+import Day199 from './pages/Day199';
+import Day200 from './pages/Day200';
 import InterviewQuestions from './pages/InterviewQuestions';
 import ReactInterviewQuestions from './pages/ReactInterviewQuestions';
 import NextjsInterviewQuestions from './pages/NextjsInterviewQuestions';
@@ -418,6 +448,36 @@ export default function App() {
         <Route path="/day-168" element={<Day168 />} />
         <Route path="/day-169" element={<Day169 />} />
         <Route path="/day-170" element={<Day170 />} />
+        <Route path="/day-171" element={<Day171 />} />
+        <Route path="/day-172" element={<Day172 />} />
+        <Route path="/day-173" element={<Day173 />} />
+        <Route path="/day-174" element={<Day174 />} />
+        <Route path="/day-175" element={<Day175 />} />
+        <Route path="/day-176" element={<Day176 />} />
+        <Route path="/day-177" element={<Day177 />} />
+        <Route path="/day-178" element={<Day178 />} />
+        <Route path="/day-179" element={<Day179 />} />
+        <Route path="/day-180" element={<Day180 />} />
+        <Route path="/day-181" element={<Day181 />} />
+        <Route path="/day-182" element={<Day182 />} />
+        <Route path="/day-183" element={<Day183 />} />
+        <Route path="/day-184" element={<Day184 />} />
+        <Route path="/day-185" element={<Day185 />} />
+        <Route path="/day-186" element={<Day186 />} />
+        <Route path="/day-187" element={<Day187 />} />
+        <Route path="/day-188" element={<Day188 />} />
+        <Route path="/day-189" element={<Day189 />} />
+        <Route path="/day-190" element={<Day190 />} />
+        <Route path="/day-191" element={<Day191 />} />
+        <Route path="/day-192" element={<Day192 />} />
+        <Route path="/day-193" element={<Day193 />} />
+        <Route path="/day-194" element={<Day194 />} />
+        <Route path="/day-195" element={<Day195 />} />
+        <Route path="/day-196" element={<Day196 />} />
+        <Route path="/day-197" element={<Day197 />} />
+        <Route path="/day-198" element={<Day198 />} />
+        <Route path="/day-199" element={<Day199 />} />
+        <Route path="/day-200" element={<Day200 />} />
         <Route path="/interview-questions" element={<InterviewQuestions />} />
         <Route path="/react-interview-questions" element={<ReactInterviewQuestions />} />
         <Route path="/nextjs-interview-questions" element={<NextjsInterviewQuestions />} />

@@ -38,9 +38,9 @@ const CORE = [
 
 const WRAP = [
   {
-    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Keep Building',
-    description: 'Next journal days can go into service mesh, data pipelines, or the next Year-1 subject — follow Day 171 when it lands.',
-    footer: 'You can observe, contain, and orchestrate what you build.',
+    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Day 171 Preview',
+    description: 'Tomorrow: database indexes — composite keys, EXPLAIN ANALYZE, and Prisma @@index.',
+    link: { href: '/day-171', label: 'Go to Day 171 →' },
   },
   {
     icon: '🏠', title: 'Back Home', titleClass: 'card-title-amber', subtitle: 'Hub',
@@ -139,7 +139,7 @@ export default function Day170() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-169" className="day001-nav-btn day001-nav-prev">← Day 169</Link>
           <p className="day001-datetime">Ops Day 170</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <Link to="/day-171" className="day001-nav-btn day001-nav-next">Day 171 →</Link>
         </header>
 
         <div className="day001-hero">
