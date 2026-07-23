@@ -48,9 +48,9 @@ const WRAP = [
     code: 'REST + JWT + DB\nTS + Zod + security\nScale + realtime + ops',
   },
   {
-    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Keep Building',
-    description: 'Next journal days can open a new Year-1 track or deepen GraphQL, Nest, or cloud-native APIs — follow Day 146 when it lands.',
-    footer: 'You now have a production-minded Express toolkit.',
+    icon: '🚀', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Day 146 Preview',
+    description: 'Tomorrow: GraphQL basics — schema, queries, mutations, and resolvers on top of the API skills you already have.',
+    link: { href: '/day-146', label: 'Go to Day 146 →' },
   },
   {
     icon: '🏠', title: 'Back Home', titleClass: 'card-title-amber', subtitle: 'Hub',
@@ -139,7 +139,7 @@ export default function Day145() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-144" className="day001-nav-btn day001-nav-prev">← Day 144</Link>
           <p className="day001-datetime">Express Day 145</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <Link to="/day-146" className="day001-nav-btn day001-nav-next">Day 146 →</Link>
         </header>
 
         <div className="day001-hero">
