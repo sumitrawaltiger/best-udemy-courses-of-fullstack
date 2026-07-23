@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 
-// ── The 4-year roadmap ──────────────────────────────────────────────────────
+// ── The 4-year + capstone roadmap ───────────────────────────────────────────
 // A 4-year coding journey (TypeScript → Python → Java → DevOps, one year each)
-// = 1461 days. Calendar dates are intentionally NOT shown (HR-facing page).
-// Gen AI and JavaScript are PREREQUISITES, completed before Year 1.
+// = 1461 days, plus a 39-day Gen AI & JavaScript prerequisite, plus a 100-day
+// Capstone & Career Sprint finale = 1,600 days total. Calendar dates are
+// intentionally NOT shown (HR-facing page). Gen AI and JavaScript are
+// PREREQUISITES, completed before Year 1; the Capstone Sprint follows Year 4.
 
 const PREREQS = [
   {
@@ -90,6 +92,24 @@ const PHASES = [
         detail: 'Linux · Docker · Kubernetes · CI/CD · AWS',
         source: 'CloudFolksHub / KodeKloud',
         to: '/devops',
+      },
+    ],
+  },
+  {
+    id: 'y5',
+    arcClass: 'y5',
+    icon: '🏆',
+    label: 'Capstone & Career Sprint',
+    tagline: '100 Days',
+    duration: '100 days',
+    blurb: 'The finale — one flagship project across all four stacks, advanced system design, an interview mastery sprint, and portfolio launch.',
+    items: [
+      {
+        icon: '🏆',
+        title: 'Capstone & Career Sprint',
+        detail: 'Full-stack capstone project · Advanced System Design · Interview mastery · Portfolio & launch',
+        source: 'Self-directed · ties every track together',
+        to: '/interview',
         final: true,
       },
     ],
@@ -97,9 +117,9 @@ const PHASES = [
 ];
 
 const STATS = [
-  { value: '4 years', label: '+ 39 prereq days' },
-  { value: '1,500', label: 'days of practice' },
-  { value: '4', label: 'stacks, front to back' },
+  { value: '4 years', label: '+ 139 prereq + capstone days' },
+  { value: '1,600', label: 'days of practice' },
+  { value: '5', label: 'stages, front to back' },
   { value: '30+', label: 'technologies' },
 ];
 
@@ -122,13 +142,14 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 Day 0 setup · 4 years (+39 days) · 1,500 days of practice</span>
+        <span className="roadmap-hero-badge">📍 Day 0 setup · 4 years (+139 days) · 1,600 days of practice</span>
         <h1 className="roadmap-hero-title">The 4-Year Roadmap</h1>
         <p className="roadmap-hero-sub">
           Starts with <strong>Day 0 — environment setup</strong>, then a <strong>4-year coding journey</strong> —{' '}
           <strong>TypeScript → Python → Java → DevOps</strong>, one year each (<strong>1,461 days</strong>) — plus a{' '}
-          <strong>39-day Agentic AI &amp; JavaScript</strong> prerequisite, for <strong>1,500 days</strong> of
-          focused, daily practice in total.
+          <strong>39-day Agentic AI &amp; JavaScript</strong> prerequisite and a{' '}
+          <strong>100-day Capstone &amp; Career Sprint</strong> finale, for <strong>1,600 days</strong> of focused,
+          daily practice in total.
         </p>
         <div className="roadmap-stats">
           {STATS.map((s) => (
@@ -145,8 +166,8 @@ export default function RoadmapHome() {
         style={{ margin: '8px auto 4px', textAlign: 'center', maxWidth: '620px' }}
       >
         <img
-          src="/roadmap-notes/roadmap-1500-days.jpg"
-          alt="1500 Days of Code — 39 days + 1,461 days = one complete journey. A glowing vertical timeline: a 39-day JavaScript with Agentic AI prerequisite, then Year 1 TypeScript, Year 2 Python, Year 3 Java and Year 4 DevOps (4 years · 1,461 days), finishing at Full Lifecycle Engineer."
+          src="/roadmap-notes/roadmap-1600-days.jpg"
+          alt="1600 Days of Code — 39 days + 1,461 days + 100 days = one complete journey. A glowing vertical timeline: a 39-day JavaScript with Agentic AI prerequisite, then Year 1 TypeScript, Year 2 Python, Year 3 Java and Year 4 DevOps (4 years · 1,461 days), finishing with a 100-day Capstone & Career Sprint at Full Lifecycle Engineer."
           loading="lazy"
           style={{
             width: '100%',
@@ -271,7 +292,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">4 years · 1,461 days · the complete stack</p>
+            <p className="roadmap-finish-date">4 years + 100-day capstone · 1,600 days · the complete stack</p>
           </div>
         </div>
       </div>
@@ -282,7 +303,9 @@ export default function RoadmapHome() {
           A 39-day prerequisite — Generative AI &amp; Agentic AI (with JavaScript) → then a 4-year coding journey:
           Year 1 TypeScript stack (TypeScript, React, Next.js, React Native, Express JS) → Year 2 Python stack
           (Python, Django, FastAPI) → Year 3 Java stack (Java, Spring Boot, Microservices) → Year 4 DevOps stack
-          (Linux, Docker, Kubernetes, CI/CD, AWS). 4 years (1,461 + 39 = 1,500 days).
+          (Linux, Docker, Kubernetes, CI/CD, AWS) → a 100-day Capstone &amp; Career Sprint (a full-stack capstone
+          project, advanced system design, interview mastery, and portfolio launch). 1,600 days end to end
+          (1,461 + 39 + 100).
         </p>
         <div className="roadmap-flow-actions">
           <Link to="/day-001" className="btn btn-lg roadmap-btn-primary">
@@ -290,6 +313,9 @@ export default function RoadmapHome() {
           </Link>
           <Link to="/genai" className="btn btn-lg roadmap-btn-outline">
             Prerequisites · Gen AI
+          </Link>
+          <Link to="/interview" className="btn btn-lg roadmap-btn-outline">
+            Capstone &amp; Career Sprint
           </Link>
           <Link to="/best-udemy-courses" className="btn btn-lg roadmap-btn-outline">
             All course picks

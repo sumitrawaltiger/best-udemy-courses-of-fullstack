@@ -85,6 +85,15 @@ const BTECH_ROADMAP = [
       { label: 'AWS Cloud', to: '/aws' },
     ],
   },
+  {
+    year: 'Capstone',
+    theme: 'Career Sprint',
+    icon: '🏆',
+    accent: 'y5',
+    topics: ['100 Days', 'Full-Stack Capstone', 'Advanced System Design', 'Interview Mastery', 'Portfolio & Launch'],
+    blurb: 'The 100-day finale — one flagship project across all four stacks, advanced system design, an interview mastery sprint, and portfolio launch.',
+    links: [{ label: 'System Design & Interview Prep', to: '/interview' }],
+  },
 ];
 
 export default function Home() {
@@ -108,14 +117,16 @@ export default function Home() {
               <span className="fle-hl">DevOps</span>
             </h1>
             <p className="fle-sub">
-              A structured <strong>1,500-day journey</strong> — Generative &amp; Agentic AI, then TypeScript, Python,
-              Java and DevOps. Learn by building, front to back, one day at a time.
+              A structured <strong>1,600-day journey</strong> — Generative &amp; Agentic AI, then TypeScript, Python,
+              Java and DevOps, finished with a 100-day capstone &amp; career sprint. Learn by building, front to
+              back, one day at a time.
             </p>
 
             <div className="fle-pills">
-              <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,500 Days of Code</span>
+              <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,600 Days of Code</span>
               <span className="fle-pill"><span aria-hidden="true">🧠</span> Gen AI &amp; Agentic AI</span>
               <span className="fle-pill"><span aria-hidden="true">🚀</span> Full Stack → DevOps</span>
+              <span className="fle-pill"><span aria-hidden="true">🏆</span> Capstone &amp; Career Sprint</span>
             </div>
 
             <JourneyCountdown variant="hero" />
@@ -163,8 +174,10 @@ export default function Home() {
           <p className="btech-sub">
             A structured path to a full lifecycle engineer — a <strong>4-year coding journey</strong>:{' '}
             <strong>TypeScript → Python → Java → DevOps</strong>, one year each (<strong>1,461 days</strong>), plus a{' '}
-            <strong>39-day Gen AI &amp; JavaScript</strong> prerequisite — <strong>4 years (+39 days) = 1,500 days</strong>{' '}
-            total. Each block maps to tracks on this site. Gen AI &amp; JavaScript (with HTML5 &amp; CSS3) come before Year 1.
+            <strong>39-day Gen AI &amp; JavaScript</strong> prerequisite and a{' '}
+            <strong>100-day Capstone &amp; Career Sprint</strong> finale —{' '}
+            <strong>4 years (+139 days) = 1,600 days</strong> total. Each block maps to tracks on this site. Gen AI
+            &amp; JavaScript (with HTML5 &amp; CSS3) come before Year 1; the Capstone Sprint follows Year 4.
           </p>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
@@ -658,20 +671,21 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            1,461 days · 4 years of code
+            1,600 days · 4 years + capstone
           </span>
-          <h2>Thunder++ — The 4-Year Journey</h2>
+          <h2>Thunder++ — The Full Journey</h2>
           <p className="section-desc">
             A <strong>4-year coding journey</strong> — <strong>Year 1 TypeScript</strong>,{' '}
             <strong>Year 2 Python</strong>, <strong>Year 3 Java</strong>, and <strong>Year 4 DevOps</strong> —
-            with <strong>DSA &amp; System Design</strong> practiced alongside in each stack’s language. That’s{' '}
-            <strong>1,461 days</strong> of focused study, 5:00–8:00 AM daily.{' '}
-            <strong>Gen AI &amp; JavaScript</strong> are prerequisites, done before Day 1.
+            with <strong>DSA &amp; System Design</strong> practiced alongside in each stack’s language, capped by a{' '}
+            <strong>100-day Capstone &amp; Career Sprint</strong>. That’s <strong>1,600 days</strong> of focused
+            study. <strong>Gen AI &amp; JavaScript</strong> are prerequisites, done before Day 1.
           </p>
           <div className="thunder-plus-highlights">
             <span>🎒 Prerequisites · Gen AI &amp; JavaScript</span>
             <span>⌨️ 4-Year Coding Journey</span>
             <span>☁️ TypeScript → Python → Java → DevOps</span>
+            <span>🏆 Capstone &amp; Career Sprint</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/interview" className="btn btn-interview-chaicode btn-lg">

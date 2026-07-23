@@ -1161,6 +1161,9 @@ a:hover {
 .btech-card--y4 {
   --yr-accent: #ff8c1a;
 }
+.btech-card--y5 {
+  --yr-accent: #ffd166;
+}
 .btech-card-head {
   display: flex;
   align-items: center;
@@ -5692,6 +5695,7 @@ a:hover {
   --rm-y2: #ff512f;
   --rm-y3: #ff8c1a;
   --rm-y4: #e0620f;
+  --rm-y5: #ffd166;
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem 1.25rem 4rem;
@@ -5774,13 +5778,15 @@ a:hover {
   background: linear-gradient(
     to bottom,
     var(--rm-y1) 0%,
-    var(--rm-y1) 22%,
-    var(--rm-y2) 28%,
-    var(--rm-y2) 48%,
-    var(--rm-y3) 54%,
-    var(--rm-y3) 74%,
-    var(--rm-y4) 80%,
-    var(--rm-y4) 100%
+    var(--rm-y1) 16%,
+    var(--rm-y2) 20%,
+    var(--rm-y2) 36%,
+    var(--rm-y3) 40%,
+    var(--rm-y3) 56%,
+    var(--rm-y4) 60%,
+    var(--rm-y4) 76%,
+    var(--rm-y5) 80%,
+    var(--rm-y5) 100%
   );
   border-radius: 3px;
 }
@@ -5807,6 +5813,7 @@ a:hover {
 .roadmap-arc-y2 .roadmap-arc-dot { background: var(--rm-y2); }
 .roadmap-arc-y3 .roadmap-arc-dot { background: var(--rm-y3); }
 .roadmap-arc-y4 .roadmap-arc-dot { background: var(--rm-y4); }
+.roadmap-arc-y5 .roadmap-arc-dot { background: var(--rm-y5); }
 .roadmap-arc-heading { padding-top: 0.1rem; }
 .roadmap-arc-title {
   margin: 0;
@@ -5832,6 +5839,7 @@ a:hover {
 .roadmap-arc-y2 .roadmap-arc-range { background: var(--rm-y2); }
 .roadmap-arc-y3 .roadmap-arc-range { background: var(--rm-y3); }
 .roadmap-arc-y4 .roadmap-arc-range { background: var(--rm-y4); }
+.roadmap-arc-y5 .roadmap-arc-range { background: var(--rm-y5); }
 .roadmap-arc-dates { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
 .roadmap-arc-blurb { margin: 0; font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
 
@@ -5869,6 +5877,8 @@ a:hover {
 .roadmap-arc-y3 .roadmap-node-num { color: var(--rm-y3); }
 .roadmap-arc-y4 .roadmap-node { border-color: var(--rm-y4); }
 .roadmap-arc-y4 .roadmap-node-num { color: var(--rm-y4); }
+.roadmap-arc-y5 .roadmap-node { border-color: var(--rm-y5); }
+.roadmap-arc-y5 .roadmap-node-num { color: var(--rm-y5); }
 
 .roadmap-card-link {
   flex: 1;
@@ -5889,6 +5899,7 @@ a:hover {
 .roadmap-arc-y2 .roadmap-card { border-left-color: var(--rm-y2); }
 .roadmap-arc-y3 .roadmap-card { border-left-color: var(--rm-y3); }
 .roadmap-arc-y4 .roadmap-card { border-left-color: var(--rm-y4); }
+.roadmap-arc-y5 .roadmap-card { border-left-color: var(--rm-y5); }
 .roadmap-card-link:hover .roadmap-card {
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
@@ -5938,7 +5949,7 @@ a:hover {
 }
 .roadmap-card-range { font-size: 0.76rem; color: var(--text-muted); font-weight: 600; }
 .roadmap-card-source { margin: 0; font-size: 0.82rem; color: var(--text-muted); }
-.roadmap-item-final .roadmap-card { border-color: var(--rm-y4); background: #f0fdfa; }
+.roadmap-item-final .roadmap-card { border-color: var(--rm-y5); background: #f0fdfa; }
 
 /* Finish line */
 .roadmap-finish {
@@ -6731,7 +6742,7 @@ a:hover {
   --k8s-blue: #ff8c1a;       --k8s-blue-dark: #e0620f;       --k8s-cyan: #ff512f;
   --interview-green: #ff8c1a; --interview-green-dark: #e0620f; --interview-gold: #ff512f;
 
-  --rm-y1: #ff8c1a; --rm-y2: #ff512f; --rm-y3: #e0620f; --rm-y4: #ffb877;
+  --rm-y1: #ff8c1a; --rm-y2: #ff512f; --rm-y3: #e0620f; --rm-y4: #ffb877; --rm-y5: #ffd166;
 }
 
 /* Roadmap year accents (scoped on .roadmap-page) → orange shades too */
@@ -6740,6 +6751,7 @@ a:hover {
   --rm-y2: #ff512f;
   --rm-y3: #e0620f;
   --rm-y4: #ffb877;
+  --rm-y5: #ffd166;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
