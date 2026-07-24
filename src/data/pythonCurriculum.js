@@ -97,6 +97,82 @@ const PYTHON_OOP_SECTIONS = [
     content: "**Inheritance** means **acquiring properties and methods from one class into another** — it gives us code re-usability, like a child inheriting a parent's properties.\n\n- **Parent class** is also called base class or super class.\n- **Child class** is also called derived class or sub class — it can access the parent's members directly.",
     code: "class Parent:\n    def house(self):\n        print(\"Parent House\")\n\nclass Child(Parent):\n    def bike(self):\n        print(\"Child Bike\")\n\nc = Child()\nc.bike()\nc.house()",
   },
+  {
+    id: "inheritance-chatbot-example",
+    title: "Inheritance in Action — a Chatbot Example",
+    content: "A more real-world example: a base `ChatBot` class provides shared behaviour (`welcome_user`, `collect_question`), and each specialised bot **inherits** it while adding its own behaviour.",
+    code: "class ChatBot:\n\n    def welcome_user(self):\n        print(\"Welcome to GEN AI Chatbot..\")\n\n    def collect_question(self, question):\n        print(\"User Question : \", question)\n\n\nclass CustomerSupportBot(ChatBot):\n    def solve_customer_issue(self):\n        print(\"Solving Customer issue using AI\")\n\nclass CourseCounsellingBot(ChatBot):\n    def suggest_course(self):\n        print(\"Suggesting Best Course Using AI\")\n\n\nbot1 = CustomerSupportBot()\nbot1.welcome_user()\nbot1.collect_question(\"Why my outlook is not working ?\")\nbot1.solve_customer_issue()\n\nprint(\"--------------------------\")\n\nbot2 = CourseCounsellingBot()\nbot2.welcome_user()\nbot2.collect_question(\"Which course is best for me ?\")\nbot2.suggest_course()",
+  },
+  {
+    id: "types-of-inheritance",
+    title: "Types of Inheritance",
+    content: "Python supports **5 types of inheritance**:\n1. Single Inheritance\n2. Multiple Inheritance\n3. Multilevel Inheritance\n4. Hierarchical Inheritance\n5. Hybrid Inheritance",
+  },
+  {
+    id: "single-inheritance",
+    title: "Single Inheritance",
+    content: "**One child class** inherits from **one parent class**.",
+    code: "class Parent:\n    def parent_method(self):\n        print(\"Parent method\")\n\nclass Child(Parent):\n    def child_method(self):\n        print(\"Child method\")\n\nobj = Child()\n\nobj.parent_method()\nobj.child_method()",
+  },
+  {
+    id: "multiple-inheritance-mro",
+    title: "Multiple Inheritance & MRO",
+    content: "**One child class** inherits from **multiple parent classes**. Python resolves which method to run using **MRO (Method Resolution Order)**:\n1. Check the current class first — if the method is available, execute it (no need to check the parents).\n2. If not available in the current class, check the **first** parent — if available, execute it (no need to check the second parent).\n3. Only if it's not in the first parent does Python check the **second** parent.",
+    code: "class Father:\n    def father_property(self):\n        print(\"Father property\")\n    def m1(self):\n        print(\"Father m1 method\")\n\nclass Mother:\n    def mother_property(self):\n        print(\"Mother property\")\n    def m1(self):\n        print(\"Mother m1 method\")\n\nclass Child(Father, Mother):\n    def child_property(self):\n        print(\"Child property\")\n    def m1(self):\n        print(\"Child m1 method\")\n\n\nobj = Child()\nobj.father_property()\nobj.mother_property()\nobj.child_property()\nobj.m1()",
+  },
+  {
+    id: "multilevel-inheritance",
+    title: "Multilevel Inheritance",
+    content: "**One class inherits from another child class** — forming a chain: Child → Parent → GrandParent.",
+    code: "class GrandParent:\n    def grandparent_method(self):\n        print(\"Grand Parent method\")\n\nclass Parent(GrandParent):\n    def parent_method(self):\n        print(\"Parent method\")\n\nclass Child(Parent):\n    def child_method(self):\n        print(\"Child Method\")\n\nobj = Child()\nobj.child_method()\nobj.parent_method()\nobj.grandparent_method()",
+  },
+  {
+    id: "hierarchical-inheritance",
+    title: "Hierarchical Inheritance",
+    content: "**Multiple child classes** inherit from the **same parent class**.",
+    code: "class Parent:\n    def parent_method(self):\n        print(\"Parent method\")\n\nclass Child1(Parent):\n    def child1_method(self):\n        print(\"Child1 method\")\n\nclass Child2(Parent):\n    def child2_method(self):\n        print(\"Child2 method\")\n\nc1 = Child1()\nc2 = Child2()\n\nc1.parent_method()\nc1.child1_method()\nprint(\"------------------\")\nc2.parent_method()\nc2.child2_method()",
+  },
+  {
+    id: "hybrid-inheritance",
+    title: "Hybrid Inheritance",
+    content: "**Hybrid inheritance** means combining two or more inheritance types in a single program.\n\nHere, `B` and `C` inherit from `A` (hierarchical), and `D` inherits from both `B` and `C` (multiple).",
+    code: "class A:\n    def method_a(self):\n        print(\"Method from class A\")\n\nclass B(A):\n    def method_b(self):\n        print(\"Method from class B\")\n\nclass C(A):\n    def method_c(self):\n        print(\"Method from class C\")\n\nclass D(B, C):\n    def method_d(self):\n        print(\"Method from class D\")\n\nobj = D()\nobj.method_a()\nobj.method_b()\nobj.method_c()\nobj.method_d()",
+  },
+  {
+    id: "method-overriding",
+    title: "Method Overriding",
+    content: "If a **child class provides its own implementation** for a method already defined in the parent class, it is called **method overriding**.",
+    code: "class Parent:\n    def display(self):\n        print(\"Parent display method\")\n\nclass Child(Parent):\n    def display(self):\n        print(\"Child display method\")\n\nobj = Child()\nobj.display()\n\n\n########## A more real-world example ##########\n\nclass AIModel:\n    def generate_response(self, prompt):\n        print(\"Generating response using general AI Model\")\n\nclass OpenAIModel(AIModel):\n    def generate_response(self, prompt):\n        print(\"Generating response using OpenAI GPT Model\")\n        print(\"Prompt:\", prompt)\n\nclass GeminiModel(AIModel):\n    def generate_response(self, prompt):\n        print(\"Generating response using Gemini Model\")\n        print(\"Prompt:\", prompt)\n\nmodel1 = OpenAIModel()\nmodel1.generate_response(\"Explain Python Decorators\")\nprint(\"====================================================\")\nmodel2 = GeminiModel()\nmodel2.generate_response(\"Explain Python File handling\")",
+  },
+  {
+    id: "super-function",
+    title: "The super() Function",
+    content: "**`super()`** is used to call the parent class's **constructor or method** from inside the child class.",
+    code: "class Parent:\n    def display(self):\n        print(\"Parent display method\")\n\nclass Child(Parent):\n    def display(self):\n        super().display()\n        print(\"Child display method\")\n\nobj = Child()\nobj.display()\n\n\n########## Using super() in a constructor ##########\n\nclass Person:\n    def __init__(self, name):\n        self.name = name\n\nclass Student(Person):\n    def __init__(self, name, course):\n        super().__init__(name)\n        self.course = course\n\n    def display(self):\n        print(self.name)\n        print(self.course)\n\n\ns1 = Student(\"Ashok\", \"Python\")\ns1.display()",
+  },
+  {
+    id: "polymorphism",
+    title: "Polymorphism",
+    content: "**Polymorphism** means **one name with many forms** — the same method name behaves differently based on the object calling it.\n\nA real-life analogy: the same person acts as a **trainer** in class, an **employee** at the office, a **director** at the institute, and a **family member** at home — one identity, many roles.",
+    code: "class Dog:\n    def sound(self):\n        print(\"Dog Barks\")\n\nclass Cat:\n    def sound(self):\n        print(\"Cat meows\")\n\ndef animal_sound(i):\n    i.sound()\n\ndog = Dog()\ncat = Cat()\n\nanimal_sound(dog)\nanimal_sound(cat)\n\n\n########## A payments example ##########\n\nclass UpiPayment:\n    def pay(self, amount):\n        print(f\"Paid ₹{amount} using UPI\")\n\nclass CreditCardPayment:\n    def pay(self, amount):\n        print(f\"Paid ₹{amount} using Credit Card\")\n\nclass DebitCardPayment:\n    def pay(self, amount):\n        print(f\"Paid ₹{amount} using Debit Card\")\n\nclass CashPayment:\n    def pay(self, amount):\n        print(f\"Paid ₹{amount} using Hand Cash\")\n\ndef make_payment(payment_method_type, amount):\n        payment_method_type.pay(amount)\n\nmake_payment(CreditCardPayment(), 1000)\nmake_payment(DebitCardPayment(), 2000)\nmake_payment(CashPayment(), 5000)\nmake_payment(UpiPayment(), 10000)",
+  },
+  {
+    id: "method-overloading",
+    title: "Method Overloading",
+    content: "Writing the **same method multiple times with different parameters** in the same class is called **method overloading**.\n\n**Note:** Python does **not** directly support method overloading — if you define a method with the same name more than once, the **latest definition replaces the previous one**.",
+    code: "class Calculator:\n\n    def add(self, a, b):\n        return a + b\n\n    def add(self, a, b, c):\n        return a + b + c\n\ncal = Calculator()\n# print(cal.add(1,2))     # TypeError — the 2-argument version no longer exists\nprint(cal.add(1, 2, 3))",
+  },
+  {
+    id: "abstraction-and-abstract-classes",
+    title: "Abstraction & Abstract Classes",
+    content: "**Abstraction** means hiding implementation details and showing only the required information. For example, when driving a car we use the steering, brakes, and accelerator — we don't need to know the internal engine implementation.\n\nAn **abstract class** is a class that contains **abstract methods**. It **cannot** be used to create an object directly. In Python, abstraction is implemented using the **`abc`** module (**abc = Abstract Base Classes**).\n\n- An **abstract method** is declared in the parent class but has no body (`pass`) — it must be implemented in the child class.\n- A **concrete method** is a method that **does** have a body, and can be inherited as-is.\n\nAn abstract class can contain abstract methods, concrete methods, a constructor, instance variables, and static methods. When a class extends an abstract class, it **must override every abstract method**. And if a child class doesn't define its own constructor, it uses the parent (abstract) class's constructor — if it **does** define one, it can still call the parent's via `super().__init__()`.",
+    code: "from abc import ABC, abstractmethod\n\nclass Payment(ABC):\n\n    def __init__(self):\n        print(\"Payment Class Constructor\")\n\n    @abstractmethod\n    def pay(self, amount):\n        pass\n\n    def payment_success_msg(self):\n        print(\"Payment is successful\")\n\nclass UpiPayment(Payment):\n    def pay(self, amount):\n        print(\"Paid using UPI : \", amount)\n        super().payment_success_msg()\n\nclass CreditCardPayment(Payment):\n    def __init__(self):\n        super().__init__()\n\n    def pay(self, amount):\n        print(\"Paid using CreditCard : \", amount)\n        super().payment_success_msg()\n\n\nupi = UpiPayment()\nupi.pay(120)\n\ncredit = CreditCardPayment()\ncredit.pay(35000)",
+  },
+  {
+    id: "oop-important-points",
+    title: "OOP — Important Points",
+    content: "- OOP stands for Object Oriented Programming; Python fully supports it.\n- A **class** is a blueprint/model/plan/template used to define properties and behaviours.\n- An **object** is an instance of a class; **self** refers to the current object.\n- A **constructor** (`__init__()`) initializes instance variables and is called automatically when an object is created.\n- Variables declared using `self` are **instance variables** — every object maintains its own copy. **Class variables** are shared by all objects.\n- **Instance methods** use `self` as their first parameter and are called via an object reference; **static/class-level methods** are called via the class name.\n- **Encapsulation** protects data — private variables use a double underscore (e.g. `__name`), accessed via getter/setter methods.\n- **Inheritance** improves code re-usability; a child class can access parent class members directly. Python follows **MRO** to decide which method runs.\n- **`super()`** calls the parent class's method or constructor.\n- **Polymorphism** means one name, many forms (behaviours). Redefining a parent's method in the child is **method overriding**; Python does **not** directly support method **overloading**.\n- **Abstraction** hides implementation details; an abstract class (via the `abc` module) can hold both abstract and concrete methods. Python has no separate \"interface\" concept — abstract classes fill that role. A class extending an abstract class must implement every abstract method.",
+  },
 ];
 
 const PYTHON_MODULES_SECTIONS = [
