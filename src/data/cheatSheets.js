@@ -7,6 +7,7 @@ export const CHEATSHEET_CATEGORIES = [
   { id: 'api-tools', label: 'API & Tools', icon: '🛠️' },
   { id: 'languages', label: 'Languages', icon: '💻' },
   { id: 'javascript', label: 'JavaScript', icon: '🟨' },
+  { id: 'css', label: 'CSS', icon: '🎨' },
   { id: 'python', label: 'Python', icon: '🐍' },
   { id: 'devops-cloud', label: 'DevOps & Cloud', icon: '☁️' },
   { id: 'git', label: 'Git & GitHub', icon: '🐙' },
@@ -35,6 +36,15 @@ export const CHEAT_SHEETS = [
     category: 'javascript',
     pdf: '/cheatsheets/javascript-objects-cheat-sheet.pdf',
     tags: ['JavaScript', 'Objects', 'Object.keys', 'Prototypes', 'Immutability'],
+  },
+  {
+    id: 'css-selectors',
+    title: 'CSS Selectors Cheat Sheet',
+    description:
+      'Every CSS selector in one reference — basic selectors (universal, type, class, ID, attribute presence), combinators (descendant, child, adjacent & general sibling), attribute selectors (exact match, starts/ends with, contains), pseudo-classes (:hover, :focus, :nth-child(), :not() and more), pseudo-elements (::before, ::after, ::first-letter, ::selection), grouping & shorthand, and selector functions (:is(), :where(), :has(), :nth-child(an+b) formulas). By @thedevspaceio (Full-Stack AI Developer Roadmap).',
+    category: 'css',
+    pdf: '/cheatsheets/css-selectors-cheat-sheet.pdf',
+    tags: ['CSS', 'Selectors', 'Pseudo-classes', 'Pseudo-elements', 'Combinators'],
   },
   {
     id: 'python-ultimate',
