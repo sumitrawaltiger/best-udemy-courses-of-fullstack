@@ -922,6 +922,89 @@ export const pythonLessons = [
   {
     pyDay: 10,
     phase: 'Python Foundations',
+    title: 'Multi-threading in Python',
+    subtitle: 'Processes, threads, race conditions, and thread synchronization',
+    topics: ['Process vs thread', 'Creating threads', 'start(), join() & is_alive()', 'Race conditions', 'Locks & synchronization'],
+    notionUrl: PORTAL,
+    youtube: yt('https://www.youtube.com/watch?v=IEEhzQoKtQU', 'Python Threading', 'Corey Schafer'),
+    sections: [
+      {
+        id: 'program-process-thread',
+        title: 'Program, Process & Thread',
+        content: "**A program** is a set of instructions written to perform a particular task — e.g. a calculator program, a banking application, a YouTube application, a file downloader, or a chat application. When we execute a Python program, the operating system creates a **process**.\n\n**A process** is a program that is currently running. When you open Google Chrome, PyCharm, Visual Studio Code, Spotify, Zoom, or Notepad, each application runs as a **separate process**. A process has its own memory, variables, resources, and execution environment.\n\n**A thread** is a small unit of execution inside a program/process. A single process can contain one or more threads. For example, a web browser may use separate threads for loading a web page, playing a video, downloading a file, checking user input, and displaying animations — all of these activities happen inside the **same** browser process.",
+      },
+      {
+        id: 'process-vs-thread',
+        title: 'Process vs Thread',
+        content: "**Process**\n- A process is a running program.\n- Every process has separate memory.\n- Creating a process is expensive.\n- Communication between processes is slower.\n- One process can contain multiple threads.\n\n**Thread**\n- A thread is a unit of execution inside a process.\n- Threads share the process memory.\n- Creating a thread is lightweight.\n- Communication between threads is faster.\n- A thread always belongs to a process.",
+      },
+      {
+        id: 'what-is-multitasking',
+        title: 'What is Multitasking?',
+        content: "**Multitasking** means performing multiple tasks during the same period. There are two major types:\n\n**1. Process-based multitasking** — multiple programs run at the same time, e.g. playing music, writing code in PyCharm, and browsing the internet. Each application usually runs as a separate process.\n\n**2. Thread-based multitasking** — multiple tasks run inside the same program. For example, a Python application may download a file, show progress, receive user input, and save information to a database — all at once. These tasks can be handled using different threads.",
+      },
+      {
+        id: 'what-is-multithreading',
+        title: 'What is Multithreading?',
+        content: "**Multithreading** means executing multiple threads within the same process.\n\nIn Python, multithreading is mainly used when a program has multiple independent tasks — especially tasks that spend time waiting, such as:\n- Downloading multiple files\n- Calling multiple REST APIs\n- Reading multiple files\n- Database operations\n- Sending emails\n- Chat applications\n- Network communications",
+      },
+      {
+        id: 'multithreading-real-life-example',
+        title: 'Real-Life Example — The Restaurant Analogy',
+        content: "Imagine a restaurant with only **one employee**. The employee must take the customer's order, prepare the food, serve the food, and collect payment — the second customer must wait until all the work for the first customer is completed. This is similar to **single-threaded execution**.\n\nNow imagine the restaurant has **multiple employees**: employee-1 takes orders, employee-2 prepares food, employee-3 serves food, and employee-4 collects payments. Multiple activities happen at the same time, and multiple tables are served during the same period — this is similar to **multithreading**. Each employee represents one thread.",
+      },
+      {
+        id: 'main-thread-and-threading-module',
+        title: 'Main Thread & the threading Module',
+        content: "Every Python program starts with one default thread called the **main thread**. Python provides the **`threading`** module for multithreading.",
+        code: "import threading\n\nprint(\"Current Thread:\", threading.current_thread())\nprint(\"Thread Name:\", threading.current_thread().name)\nprint(\"Thread Identifier:\", threading.current_thread().ident)\nprint(\"Active Thread Count:\", threading.active_count())",
+      },
+      {
+        id: 'creating-threads-in-python',
+        title: 'Creating Threads in Python',
+        content: "We need to **`import threading`** to work with multithreading. A thread can be created using the **`Thread`** class.\n\nSyntax: `thread = threading.Thread(target=function_name)`\n- `Thread` creates a new thread.\n- `target` specifies the function the thread should execute.\n- the `start()` method starts the new (worker) thread.\n\nAnother way to create a thread is by **subclassing `threading.Thread`** and overriding its `run()` method with your own implementation. When you call `start()`, Python internally calls `run()`.",
+        code: "import threading\nimport time\n\ndef task_one():\n    print(\"Task-1 Started\")\n    time.sleep(3)\n    print(\"Task-1 Completed\")\n\ndef task_two():\n    print(\"Task-2 Started\")\n    time.sleep(2)\n    print(\"Task-2 Completed\")\n\nthread1 = threading.Thread(target=task_one)\nthread2 = threading.Thread(target=task_two)\n\nthread1.start()\nthread2.start()\n\n\n########## Another way of creating a thread ##########\n\nclass MyThread(threading.Thread):\n\n    def run(self):\n        print(\"run() method started..\")\n        print(\"Thread Name :\", threading.current_thread().name)\n\nthread3 = MyThread()\nthread3.start()",
+      },
+      {
+        id: 'thread-methods-start-join',
+        title: 'Thread Methods — start() & join()',
+        content: "**`start()`** begins the execution of a thread — Python internally calls the target function in a separate thread. Don't call `run()` directly when you want separate-thread execution: calling `run()` directly executes the function using the **current** thread, it does not start a new thread.\n\n**`join()`** makes the current thread wait until another thread completes its execution. For example: Thread-1 downloads a file, Thread-2 reads data from the downloaded file — without `join()`, the main thread may continue before the worker thread finishes.",
+        code: "def download_file():\n    print(\"Download file started..\")\n    time.sleep(3)\n    print(\"Download completed\")\n\n\nt5 = threading.Thread(target=download_file)\nt5.start()\nt5.join()\n\nprint(\"Read data from downloaded file...\")",
+      },
+      {
+        id: 'thread-is-alive',
+        title: 'is_alive() — Checking Thread Status',
+        content: "The **`is_alive()`** method checks whether a thread is currently running.",
+        code: "def process_data():\n    time.sleep(3)\n\nthread = threading.Thread(target=process_data)\n\nthread.start()\nprint(thread.is_alive())\n\nthread.join()\n\nprint(thread.is_alive())",
+      },
+      {
+        id: 'thread-scheduling',
+        title: 'Thread Scheduling',
+        content: "When multiple threads are available, the **operating system** decides which thread should execute, how long it should execute, and when execution should switch to another thread — this process is called **thread scheduling**.\n\nBecause scheduling is controlled by the operating system, **thread execution order is not guaranteed**.",
+      },
+      {
+        id: 'what-is-race-condition',
+        title: 'What is a Race Condition?',
+        content: "A **race condition** occurs when multiple threads try to access and modify shared data at the same time, which may produce an incorrect result.\n\n**Example:** consider a bank account. Two threads try to withdraw money from the same account at the same time. Both threads may read the original balance as 1000, and both may then be allowed to withdraw 700 — creating incorrect account processing. The exact result depends on thread scheduling, which makes race-condition bugs difficult to reproduce.",
+        code: "import threading\nimport time\n\nbalance = 1000\n\ndef withdraw(amount):\n    global balance\n    if balance >= amount:\n        current_balance = balance\n        time.sleep(1)\n        balance = current_balance - amount\n        print(\"Withdraw successfully\")\n        print(\"Remaining Balance:\", balance)\n    else:\n        print(\"Insufficient Balance\")\n\nt1 = threading.Thread(target=withdraw, args=(700,))\nt2 = threading.Thread(target=withdraw, args=(700,))\n\nt1.start()\nt2.start()\n\nt1.join()\nt2.join()\n\nprint(\"Final Balance :\", balance)",
+      },
+      {
+        id: 'thread-synchronization-lock',
+        title: 'Thread Synchronization — Lock',
+        content: "**Thread synchronization** means controlling multiple threads so that only one thread accesses a critical shared resource at a time. Python provides synchronization tools such as **Lock, RLock, Semaphore, Event, and Condition** — for beginners, the most important tool is **Lock**.\n\nA `Lock` allows only one thread at a time to execute a protected section of code:\n- Create it with `lock = threading.Lock()`.\n- Before accessing the shared resource, **acquire** the lock: `lock.acquire()`.\n- After completing the work, **release** the lock: `lock.release()`.",
+        code: "import threading\nimport time\n\nbalance = 1000\n\nlock = threading.Lock()\n\ndef withdraw(amount):\n    global balance\n\n    lock.acquire()\n\n    try:\n        if balance >= amount:\n            print(\n                threading.current_thread().name,\n                \"is processing withdrawal\"\n            )\n\n            current_balance = balance\n            time.sleep(1)\n            balance = current_balance - amount\n            print(\"Remaining Balance:\", balance)\n        else:\n            print(\"insufficient balance\")\n    finally:\n        lock.release()\n\nt1 = threading.Thread(target=withdraw, args=(700,), name=\"Customer-1\")\nt2 = threading.Thread(target=withdraw, args=(700,), name=\"Customer-2\")\n\nt1.start()\nt2.start()\n\nt1.join()\nt2.join()\n\nprint(\"Final Balance:\", balance)",
+      },
+      {
+        id: 'lock-with-statement',
+        title: 'Lock Using the with Statement (Recommended)',
+        content: "The recommended way to use a lock is with the **`with`** statement — Python automatically acquires and releases the lock.\n\nSyntax:\n```\nwith lock:\n    # critical section\n```",
+        code: "import threading\nimport time\n\nbalance = 1000\n\nlock = threading.Lock()\n\ndef withdraw(amount):\n    global balance\n\n    with lock:\n        if balance >= amount:\n            print(\n                threading.current_thread().name,\n                \"is processing withdrawal\"\n            )\n            current_balance = balance\n            time.sleep(1)\n            balance = current_balance - amount\n            print(\"Remaining Balance:\", balance)\n        else:\n            print(threading.current_thread().name, \"- Insufficient balance\")\n\n\nt1 = threading.Thread(target=withdraw, args=(700,), name=\"Customer-1\")\nt2 = threading.Thread(target=withdraw, args=(700,), name=\"Customer-2\")\n\nt1.start()\nt2.start()\n\nt1.join()\nt2.join()\n\nprint(\"Final Balance:\", balance)",
+      },
+    ],
+  },
+  {
+    pyDay: 11,
+    phase: 'Python Foundations',
     title: 'Data Science Introduction',
     subtitle: 'NumPy, Pandas, and the data science workflow',
     topics: ['Data science pipeline', 'NumPy arrays', 'Pandas DataFrames', 'Data cleaning', 'Visualization intro'],
@@ -931,7 +1014,7 @@ export const pythonLessons = [
   },
   // ── Phase 2: ML & NLP ──
   {
-    pyDay: 11,
+    pyDay: 12,
     phase: 'ML & NLP',
     title: 'Machine Learning for NLP',
     subtitle: 'Tokenization, preprocessing, vectorization, and embeddings',
@@ -940,7 +1023,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=8d2jGY1w0PE', 'NLP with Python', 'freeCodeCamp'),
   },
   {
-    pyDay: 12,
+    pyDay: 13,
     phase: 'ML & NLP',
     title: 'Deep Learning for NLP',
     subtitle: 'Introduction to deep learning for text',
@@ -949,7 +1032,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=aircAruvnKk', 'Neural Networks', '3Blue1Brown'),
   },
   {
-    pyDay: 13,
+    pyDay: 14,
     phase: 'ML & NLP',
     title: 'Recurrent Neural Networks',
     subtitle: 'RNN forward/backward propagation and sequence modeling',
@@ -958,7 +1041,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=WCUNPb-5EYI', 'RNN Explained', 'StatQuest'),
   },
   {
-    pyDay: 14,
+    pyDay: 15,
     phase: 'ML & NLP',
     title: 'Artificial Neural Networks',
     subtitle: 'Neurons, activation functions, backpropagation, and training',
@@ -968,7 +1051,7 @@ export const pythonLessons = [
   },
   // ── Phase 3: Advanced DL Architectures ──
   {
-    pyDay: 15,
+    pyDay: 16,
     phase: 'Advanced DL',
     title: 'LSTM Networks',
     subtitle: 'Long Short-Term Memory gates, training, and GRU variants',
@@ -977,7 +1060,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=YCzL96nL7Rw', 'LSTM Explained', 'StatQuest'),
   },
   {
-    pyDay: 16,
+    pyDay: 17,
     phase: 'Advanced DL',
     title: 'Bidirectional RNN',
     subtitle: 'Bidirectional sequence modeling advantages and applications',
@@ -986,7 +1069,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=4PBn55otIcg', 'Bidirectional RNN', 'DeepLearningAI'),
   },
   {
-    pyDay: 17,
+    pyDay: 18,
     phase: 'Advanced DL',
     title: 'Decoders & GPT Architecture',
     subtitle: 'Decoder architecture, masked attention, and GPT training',
@@ -995,7 +1078,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=kCc8FmEb1nY', 'GPT Explained', 'Andrej Karpathy'),
   },
   {
-    pyDay: 18,
+    pyDay: 19,
     phase: 'Advanced DL',
     title: 'Encoders & BERT',
     subtitle: 'Encoder architecture, BERT pre-training and fine-tuning',
@@ -1004,7 +1087,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=xI0HHm6bjvs', 'BERT Explained', 'CodeEmporium'),
   },
   {
-    pyDay: 19,
+    pyDay: 20,
     phase: 'Advanced DL',
     title: 'Seq2Seq Architecture',
     subtitle: 'Encoder-decoder interaction and sequence-to-sequence models',
@@ -1013,7 +1096,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=L8HKweZIOmg', 'Seq2Seq Models', 'DeepLearningAI'),
   },
   {
-    pyDay: 20,
+    pyDay: 21,
     phase: 'Advanced DL',
     title: 'Attention Mechanism',
     subtitle: 'Attention architecture and the path to transformers',
@@ -1023,7 +1106,7 @@ export const pythonLessons = [
   },
   // ── Phase 4: Gen AI & LLMs ──
   {
-    pyDay: 21,
+    pyDay: 22,
     phase: 'Gen AI & LLMs',
     title: 'Transformers Architecture',
     subtitle: 'Self-attention, multi-head attention, positional encoding, and full encoder-decoder',
@@ -1032,7 +1115,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=4Bdc55j80LI', 'Transformers Explained', 'StatQuest'),
   },
   {
-    pyDay: 22,
+    pyDay: 23,
     phase: 'Gen AI & LLMs',
     title: 'Introduction to Generative AI',
     subtitle: 'AI vs ML vs DL vs Gen AI and evolution of LLM models',
@@ -1041,7 +1124,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=2IK3DFHRFfw', 'Generative AI Explained', 'IBM Technology'),
   },
   {
-    pyDay: 23,
+    pyDay: 24,
     phase: 'Gen AI & LLMs',
     title: 'Data Preprocessing & Embeddings',
     subtitle: 'Cleaning, embeddings, and the end-to-end Gen AI pipeline',
@@ -1050,7 +1133,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=5MaWmzuwx4g', 'Word Embeddings', 'StatQuest'),
   },
   {
-    pyDay: 24,
+    pyDay: 25,
     phase: 'Gen AI & LLMs',
     title: 'Large Language Models',
     subtitle: 'LLM architecture and the "Attention Is All You Need" paper',
@@ -1059,7 +1142,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=7xTGNNLPyMI', 'LLM Explained', 'Andrej Karpathy'),
   },
   {
-    pyDay: 25,
+    pyDay: 26,
     phase: 'Gen AI & LLMs',
     title: 'Vector Databases',
     subtitle: 'Vector indexes, similarity search, and practical vector DB usage',
@@ -1069,7 +1152,7 @@ export const pythonLessons = [
   },
   // ── Phase 5: OpenAI & LangChain ──
   {
-    pyDay: 26,
+    pyDay: 27,
     phase: 'OpenAI & LangChain',
     title: 'Complete Guide to OpenAI',
     subtitle: 'OpenAI API, chat completions, function calling, Whisper, and DALL-E',
@@ -1078,7 +1161,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=c-g6epk3fFE', 'OpenAI API Tutorial', 'freeCodeCamp'),
   },
   {
-    pyDay: 27,
+    pyDay: 28,
     phase: 'OpenAI & LangChain',
     title: 'Introduction to LangChain',
     subtitle: 'LangChain ecosystem, setup, and OpenAI integration',
@@ -1087,7 +1170,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=LbT1yp6NWGY', 'LangChain Crash Course', 'freeCodeCamp'),
   },
   {
-    pyDay: 28,
+    pyDay: 29,
     phase: 'OpenAI & LangChain',
     title: 'Open Source LLMs',
     subtitle: 'Llama, Falcon, and using open models with LangChain',
@@ -1096,7 +1179,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=dqM37myYAMs', 'Llama 3 Tutorial', 'Sam Witteveen'),
   },
   {
-    pyDay: 29,
+    pyDay: 30,
     phase: 'OpenAI & LangChain',
     title: 'LangChain Basic to Advanced',
     subtitle: 'Prompts, chains, agents, tools, memory, and document loaders',
@@ -1105,7 +1188,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=aywZrzNaKjs', 'LangChain Agents', 'Sam Witteveen'),
   },
   {
-    pyDay: 30,
+    pyDay: 31,
     phase: 'OpenAI & LangChain',
     title: 'LangChain Components & Modules',
     subtitle: 'Text splitters, embeddings, and Hugging Face integration',
@@ -1115,7 +1198,7 @@ export const pythonLessons = [
   },
   // ── Phase 6: RAG & Deployment ──
   {
-    pyDay: 31,
+    pyDay: 32,
     phase: 'RAG & Deployment',
     title: 'Retrieval Augmented Generation',
     subtitle: 'RAG architecture, practical demos, and RAG vs fine-tuning',
@@ -1124,7 +1207,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=T-D1OfcDW1M', 'RAG Explained', 'IBM Technology'),
   },
   {
-    pyDay: 32,
+    pyDay: 33,
     phase: 'RAG & Deployment',
     title: 'Fine-Tuning LLMs',
     subtitle: 'PEFT, LoRA, QLoRA, and fine-tuning Llama on custom data',
@@ -1133,7 +1216,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=Us5ZFp16PaU', 'LoRA Fine-Tuning', 'Sam Witteveen'),
   },
   {
-    pyDay: 33,
+    pyDay: 34,
     phase: 'RAG & Deployment',
     title: 'LlamaIndex',
     subtitle: 'LlamaIndex framework and financial stock analysis project',
@@ -1142,7 +1225,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=cbiiEuXKzo8', 'LlamaIndex Tutorial', 'Sam Witteveen'),
   },
   {
-    pyDay: 34,
+    pyDay: 35,
     phase: 'RAG & Deployment',
     title: 'LLM Apps Deployment',
     subtitle: 'Deploy Gen AI apps with Flask and AWS',
@@ -1152,7 +1235,7 @@ export const pythonLessons = [
   },
   // ── Phase 7: Django ──
   {
-    pyDay: 35,
+    pyDay: 36,
     phase: 'Django',
     title: 'Django Fundamentals',
     subtitle: 'MVT pattern, project setup, URLs, and views',
@@ -1161,7 +1244,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=F5mRW0jo-4I', 'Django Tutorial', 'Traversy Media'),
   },
   {
-    pyDay: 36,
+    pyDay: 37,
     phase: 'Django',
     title: 'Django Models & ORM',
     subtitle: 'Models, migrations, queries, and relationships',
@@ -1170,7 +1253,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=aHC3uTkT9r8', 'Django ORM', 'Corey Schafer'),
   },
   {
-    pyDay: 37,
+    pyDay: 38,
     phase: 'Django',
     title: 'Django Forms & Authentication',
     subtitle: 'Forms, user auth, sessions, and permissions',
@@ -1179,7 +1262,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=e1IyzVyrFSs', 'Django Auth', 'Corey Schafer'),
   },
   {
-    pyDay: 38,
+    pyDay: 39,
     phase: 'Django',
     title: 'Django REST Framework',
     subtitle: 'Web services, REST API fundamentals, JSON, and Django REST Framework',
@@ -1190,7 +1273,7 @@ export const pythonLessons = [
   },
   // ── Phase 8: FastAPI ──
   {
-    pyDay: 39,
+    pyDay: 40,
     phase: 'FastAPI',
     title: 'FastAPI Fundamentals',
     subtitle: 'Modern async Python APIs with automatic docs',
@@ -1199,7 +1282,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=0sOvCWHmTfU', 'FastAPI Tutorial', 'freeCodeCamp'),
   },
   {
-    pyDay: 40,
+    pyDay: 41,
     phase: 'FastAPI',
     title: 'FastAPI with Databases',
     subtitle: 'SQLAlchemy, async DB, and CRUD APIs',
@@ -1304,7 +1387,7 @@ export const pythonLessons = [
     ],
   },
   {
-    pyDay: 41,
+    pyDay: 42,
     phase: 'FastAPI',
     title: 'FastAPI Authentication & Security',
     subtitle: 'JWT auth, OAuth2, and securing AI API endpoints',
@@ -1370,7 +1453,7 @@ export const pythonLessons = [
     ],
   },
   {
-    pyDay: 42,
+    pyDay: 43,
     phase: 'FastAPI',
     title: 'FastAPI Production Deployment',
     subtitle: 'Deploy FastAPI with Uvicorn, Docker, and cloud hosting',
@@ -1432,7 +1515,7 @@ export const pythonLessons = [
   },
   // ── Phase 9: Agentic AI ──
   {
-    pyDay: 43,
+    pyDay: 44,
     phase: 'Agentic AI',
     title: 'Introduction to Agentic AI',
     subtitle: 'AI agents vs agentic AI, memory, planning, and multi-agent systems',
@@ -1454,7 +1537,7 @@ export const pythonLessons = [
     ],
   },
   {
-    pyDay: 44,
+    pyDay: 45,
     phase: 'Agentic AI',
     title: 'LangGraph & MCP',
     subtitle: 'LangGraph workflows and Model Context Protocol servers',
@@ -1463,7 +1546,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=9BPCV5TYPFA', 'LangGraph Tutorial', 'Sam Witteveen'),
   },
   {
-    pyDay: 45,
+    pyDay: 46,
     phase: 'Agentic AI',
     title: 'n8n & Agentic AI Workflows',
     subtitle: 'Automation with n8n, AI agent prompts, and end-to-end agentic pipelines',
