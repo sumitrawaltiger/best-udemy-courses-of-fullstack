@@ -1532,66 +1532,203 @@ export const chaptersDays20to100 = [
     "slug": "authentication-with-jwt",
     "track": "thunder",
     "day": 31,
-    "title": "Authentication with JWT",
-    "subtitle": "Register, login, tokens, and protected routes",
-    "duration": "2 hrs",
+    "title": "TLS and Authentication",
+    "subtitle": "Lecture 12 — Diffie-Hellman key exchange, TLS handshake, JWT tokens, cookies, tracking & password storage",
+    "duration": "2 hrs 30 mins",
     "createdOn": "15 Aug 2026",
     "status": "published",
+    "notionUrl": "https://app.notion.com/p/Lecture12-TLS-and-Authentication-3a6a9af81c9880faa24cc643b20c3b8f?source=copy_link",
     "topics": [
-      "Auth vs authorization",
-      "Password hashing",
-      "JWT structure",
-      "Login & register flow",
-      "Protecting routes"
+      "Diffie-Hellman key exchange",
+      "TLS handshake & certificates",
+      "Forward secrecy",
+      "Access & refresh tokens",
+      "Cookies & tracking",
+      "Password storage with bcrypt"
     ],
     "sections": [
       {
-        "id": "auth-vs-authorization",
-        "title": "Auth vs authorization",
-        "content": "Learn **Auth vs authorization** in Day 31 of Thunder: 100 Days of Code. Register, login, tokens, and protected routes",
-        "tryIt": "console.log(\"Day 31: Authentication with JWT\");"
+        "id": "why-we-need-tls",
+        "title": "1. Why We Need TLS",
+        "content": "**Day 31** follows **Lecture 12** ([TLS and Authentication Notion notes](https://app.notion.com/p/Lecture12-TLS-and-Authentication-3a6a9af81c9880faa24cc643b20c3b8f?source=copy_link)) — two linked note sets: [TLS, SSL & Diffie-Hellman](https://app.notion.com/p/TLS-SSL-and-Diffie-Hellman-Notes-3a6a9af81c98808e9dc2ca04f6cb2749) and [Web Authentication & Tracking](https://app.notion.com/p/Web-Authentication-and-Tracking-Notes-3a6a9af81c98804096b6e56264814dff).\n\nA request from a client to a bank server travels through Wi-Fi, an ISP, and multiple routers — the internet is **not automatically secure**. An attacker anywhere along that path could try to solve three problems in their favour:\n\n- **Confidentiality** — can the attacker read the message?\n- **Integrity** — can the attacker silently change it (e.g. \"Transfer ₹5,000 to Amit\" → \"...to Hacker\")?\n- **Authentication** — is the client really talking to `bank.com`, or a hacker pretending to be it?\n\n**TLS (Transport Layer Security)** protects communication between two systems and provides all three. **SSL (Secure Sockets Layer)** was the older protocol TLS replaced — people still say \"SSL certificate\" but usually mean TLS. **HTTPS = HTTP + TLS**: the HTTP message is encrypted by TLS before it travels, and decrypted by TLS at the other end — it is not a separate protocol."
       },
       {
-        "id": "password-hashing",
-        "title": "Password hashing",
-        "content": "Learn **Password hashing** in Day 31 of Thunder: 100 Days of Code. Register, login, tokens, and protected routes",
-        "tryIt": "console.log(\"Day 31: Authentication with JWT\");"
+        "id": "the-key-sharing-problem",
+        "title": "2. The Key-Sharing Problem",
+        "content": "**First idea:** client and server share one secret key (**symmetric encryption**, e.g. AES/ChaCha20) — fast, good for real traffic, but both sides need the **same** key. If the client just **sends** the key, a hacker reading the wire gets it too.\n\n**Old RSA-style fix:** the client generates a temporary shared secret, encrypts it with the **server's public key**, and sends it — only the server's **private key** can decrypt it.\n\n**The hidden problem:** if a hacker **records** the encrypted traffic today and the server's permanent private key **leaks years later**, every old recorded session becomes decryptable — because all those session keys were encrypted under the **same** long-term public key. We want every connection to get a **fresh** secret that doesn't depend on the server's permanent key — which is exactly what **Diffie-Hellman** (or its elliptic-curve form, **ECDHE**) provides.",
+        "code": "// Old RSA key exchange — vulnerable to future key leaks\nclient creates sharedSecret\nencryptedSecret = Encrypt(sharedSecret, serverPublicKey)\nserver: sharedSecret = Decrypt(encryptedSecret, serverPrivateKey)\n\n// If serverPrivateKey leaks later -> every past encryptedSecret is now readable"
       },
       {
-        "id": "jwt-structure",
-        "title": "JWT structure",
-        "content": "Learn **JWT structure** in Day 31 of Thunder: 100 Days of Code. Register, login, tokens, and protected routes",
-        "tryIt": "console.log(\"Day 31: Authentication with JWT\");"
+        "id": "diffie-hellman-example",
+        "title": "3. Diffie-Hellman — Worked Example",
+        "content": "Client and server want the **same secret** without ever sending it. Each keeps a **private number**; they only exchange **calculated public values**.\n\nBoth publicly agree on `P = 23` (modulus) and `G = 5` (generator) — not secret, a hacker can know these too.\n\n- **Client** picks private `6` (never sent), computes public value `5^6 mod 23 = 8`, sends `8`.\n- **Server** picks private `15` (never sent), computes public value `5^15 mod 23 = 19`, sends `19`.\n\nEach then combines the **other side's public value** with their **own private number** — and both land on the same shared secret, `2`, which was never transmitted.",
+        "code": "P = 23, G = 5   (public, a hacker can see these)\n\nClient: private=6,  public = 5^6  mod 23 = 8   -> sends 8\nServer: private=15, public = 5^15 mod 23 = 19  -> sends 19\n\nClient computes: 19^6  mod 23 = 2\nServer computes: 8^15  mod 23 = 2\n\n// Both arrive at shared secret = 2, without ever sending \"2\""
       },
       {
-        "id": "login-and-register-flow",
-        "title": "Login & register flow",
-        "content": "Learn **Login & register flow** in Day 31 of Thunder: 100 Days of Code. Register, login, tokens, and protected routes",
-        "tryIt": "console.log(\"Day 31: Authentication with JWT\");"
+        "id": "diffie-hellman-why-it-works",
+        "title": "4. Why Both Sides Get the Same Answer",
+        "content": "The trick is the exponent rule **`(a^b)^c = a^(b×c)`**. The client computes `19^6 mod 23`, but `19 = 5^15 mod 23`, so that's really `(5^15)^6 = 5^(15×6)`. The server computes `8^15 mod 23`, but `8 = 5^6 mod 23`, so that's `(5^6)^15 = 5^(6×15)`. Since `15×6 = 6×15`, both sides compute the exact same value.\n\n**Why can't a hacker do the same math?** They see `P`, `G`, and both public values (`8` and `19`), but to recover a private number they'd need to solve `5^x mod 23 = 8` — in this toy example small enough to brute-force, but with real Diffie-Hellman's enormous numbers this (the **discrete logarithm problem**) is practically impossible."
+      },
+      {
+        "id": "diffie-hellman-mitm",
+        "title": "5. Diffie-Hellman Isn't Enough — Man-in-the-Middle",
+        "content": "Diffie-Hellman creates a shared secret, but it **doesn't prove who you exchanged it with**. If a hacker sits between client and server, intercepting and replacing each side's public value, they end up with **two separate shared secrets** — one with the client, one with the server — and can decrypt, read, modify, and re-encrypt everything passing through. This is a **man-in-the-middle attack**.\n\nDiffie-Hellman needs to be paired with **certificates and digital signatures** to prove server identity."
+      },
+      {
+        "id": "certificates-and-trust",
+        "title": "6. Server Certificates & the Trust Store",
+        "content": "When connecting to `bank.com`, the server sends a **certificate** containing the domain name, its public key, expiry date, issuer, and a digital signature — asserting \"this public key belongs to `bank.com`.\"\n\nAnyone could type up a fake document claiming the same thing, so certificates are signed by a **Certificate Authority (CA)** that verifies the requester actually controls the domain. Browsers and operating systems ship with a **trust store** — a pre-loaded list of trusted CA public keys — so when a certificate arrives, the browser can verify the CA's signature on it without any prior interaction with that specific server."
+      },
+      {
+        "id": "digital-signature-and-dh-protection",
+        "title": "7. Digital Signatures & Protecting the DH Key",
+        "content": "A **digital signature** proves who signed data and whether it changed — signed with a **private key**, verified with the matching **public key**. It's the opposite direction from encryption: encryption provides secrecy, signatures provide **authenticity and integrity**.\n\nTLS uses this to protect the Diffie-Hellman exchange itself: the server generates a **temporary** DH key pair, sends its temporary public value openly, but also **signs** that handshake data with its **permanent certificate private key**. The browser verifies the server's certificate, extracts the trusted public key from it, and uses that to verify the signature on the temporary DH value — proving it really came from the real server. A hacker can generate their own DH values, but cannot forge a valid signature without the server's private key.",
+        "code": "signature = Sign(serverTemporaryPublicValue, serverPrivateKey)\n\n// Browser receives: temp public value + signature + certificate\n// Browser verifies certificate -> gets trusted public key -> verifies signature\n// If valid: this temporary DH value genuinely came from the real server"
+      },
+      {
+        "id": "why-tls-needs-more-than-dh",
+        "title": "8. Why TLS Needs More Than Just Diffie-Hellman",
+        "content": "Diffie-Hellman only solves *\"create a shared secret without sending it.\"* TLS also needs to answer: **who** are we creating this secret with? Was the handshake or the encrypted data modified? Which algorithms and key-derivation should be used?\n\nTLS is the combination of several mechanisms working together: **certificate** (proves server identity) → **digital signature** (proves the temporary key came from that server) → **Diffie-Hellman** (creates the fresh shared secret) → **symmetric encryption** (encrypts the actual data) → **authentication tag** (detects tampering)."
+      },
+      {
+        "id": "client-proof-and-key-types",
+        "title": "9. Client Proof, Permanent vs Temporary Keys",
+        "content": "The client's DH public value is sent **openly** too — a public value is designed to be public. TLS doesn't need to know the client is **specifically** Rohit — only that the client genuinely holds the private value matching its public value. Both sides prove this with a **proof** computed as `HMAC(sharedSecret, handshakeData)` — the client sends only the **proof**, never the shared secret itself, and the server independently computes its own expected proof to compare.\n\n**Three different key types**, easy to conflate: the **permanent certificate key pair** proves identity and signs handshake data; the **temporary Diffie-Hellman key pair** creates a fresh shared secret and is discarded after the connection; **session encryption keys**, derived from the DH shared secret via a key-derivation function, actually encrypt the HTTP traffic (with separate client→server and server→client keys — safer than one key for everything).",
+        "code": "proof = HMAC(sharedSecret, handshakeData)\n// Client sends: proof (never the sharedSecret itself)\n// Server: expectedProof = HMAC(sharedSecret, handshakeData); compare"
+      },
+      {
+        "id": "integrity-and-handshake",
+        "title": "10. Integrity of Encrypted Data & the TLS Handshake",
+        "content": "Encryption alone hides data, but an attacker could still flip bits in the ciphertext. Modern TLS uses **authenticated encryption** (e.g. AES-GCM) — every encrypted message carries an **authentication tag**; if even one bit changes, tag verification fails and the message is rejected. This is why TLS follows a **hybrid** approach: asymmetric crypto (certificate + signature + DH) for the handshake, fast symmetric crypto for the actual data.\n\n**Simplified handshake:** `ClientHello` (versions, algorithms, client temp public value) → `ServerHello` + certificate + signature + server proof → client verifies certificate/domain/signature/temp value, sends its own proof → both sides now share the same derived session keys → encrypted HTTP begins. The browser checks the certificate is CA-signed, valid for this domain, not expired, and chains up to a trusted root.",
+        "code": "ClientHello  -> versions, algorithms, client temp public value\nServerHello  <- selected version/algorithm, server temp public value\nCertificate  <- domain, public key, issuer, validity, CA signature\nSignature    <- proves the temp public value came from the real server\nClient verifies cert + domain + signature\nBoth sides derive the same session keys\nEncrypted HTTP communication begins"
+      },
+      {
+        "id": "mtls-selfsigned-forward-secrecy",
+        "title": "11. Mutual TLS, Self-Signed Certificates & Forward Secrecy",
+        "content": "**Mutual TLS (mTLS)** — both sides present certificates; the client verifies the server's and the server verifies the client's. Common for service-to-service calls, internal systems, and highly secure APIs.\n\nA **self-signed certificate** is signed by its own key rather than a CA — encryption still works, but browsers can't automatically trust the identity (fine for local dev/testing, not for production).\n\n**Forward secrecy:** because modern TLS uses **temporary** DH values that get discarded after the connection ends, a hacker who records today's traffic and steals the server's permanent private key **years later** still cannot recover the old (already-deleted) temporary values — so past sessions stay safe. This is the core advantage over the old RSA key-exchange design, where a single leaked permanent private key could unlock every past session it ever protected.\n\n**Final mental model:** certificate = who is the server; signature = did the real server send this temporary key; Diffie-Hellman = how both sides create a secret without sending it; symmetric encryption = how the actual data gets hidden efficiently; authentication tag = how tampering gets detected. **Diffie-Hellman creates a shared secret, but TLS proves who you're creating it with.**"
+      },
+      {
+        "id": "auth-big-picture",
+        "title": "12. Authentication Big Picture & Why We Need Tokens",
+        "content": "In a web app, authentication means **\"the server needs to know which user is making this request.\"** HTTP is **stateless** — every request is independent, so after login the server hands the browser some **proof** (session ID, JWT, access/refresh token) that later requests present back.\n\nThe core pieces: **password** (proves identity at login), **access token** (accesses protected APIs), **refresh token** (gets a new access token), **cookie** (browser storage sent automatically with requests)."
+      },
+      {
+        "id": "jwt-structure-warning",
+        "title": "13. JWT Structure & the Encoding Warning",
+        "content": "A **JWT** is `header.payload.signature`. The **header** names the algorithm (`HS256`); the **payload** carries claims (`userId`, `role`, `exp`); the **signature** proves the server created it and it wasn't modified — change the payload and the signature no longer matches, so the server rejects it.\n\n**Critical:** the payload is only **Base64URL-encoded, not encrypted** — anyone can decode and read it. Never put a password, OTP, or bank details in a JWT payload; only non-secret claims like `userId`, `role`, and `exp`."
+      },
+      {
+        "id": "access-vs-refresh-token",
+        "title": "14. Access Token vs Refresh Token",
+        "content": "**Access token** — used on every protected-API call (`Authorization: Bearer <token>`), deliberately **short-lived** (15–60 minutes) so a stolen token does limited damage.\n\n**Refresh token** — used only to obtain a new access token, **long-lived** (7–60 days), so the user isn't forced to re-login every 15 minutes. Split into two tokens with two different secrets because they serve different jobs with different risk profiles and different expiry.",
+        "code": "const accessToken = jwt.sign(\n  { userId: user._id },\n  process.env.ACCESS_TOKEN_SECRET,\n  { expiresIn: \"15m\" }\n);\nconst refreshToken = jwt.sign(\n  { userId: user._id },\n  process.env.REFRESH_TOKEN_SECRET,\n  { expiresIn: \"7d\" }\n);"
+      },
+      {
+        "id": "token-storage-frontend",
+        "title": "15. Where to Store Tokens on the Frontend",
+        "content": "**Access token** → application memory / React or Redux state — the frontend attaches it manually to each request's `Authorization` header.\n\n**Refresh token** → an **httpOnly, secure, sameSite** cookie. JavaScript **cannot read** an httpOnly cookie (`document.cookie` won't expose it), which blocks theft via an XSS vulnerability.\n\n**Never** put the refresh token in `localStorage` — any JavaScript (including an attacker's, if XSS exists) can read `localStorage.getItem(...)` directly.",
+        "code": "res.cookie(\"refreshToken\", refreshToken, {\n  httpOnly: true,\n  secure: true,\n  sameSite: \"strict\",\n  maxAge: 7 * 24 * 60 * 60 * 1000\n});\n\n// Frontend — access token lives only in memory\nlet accessToken = data.accessToken;\nfetch(\"/profile\", { headers: { Authorization: `Bearer ${accessToken}` } });"
+      },
+      {
+        "id": "login-and-protected-api-flow",
+        "title": "16. Login Flow & Protected API Flow",
+        "content": "On login, the server sets the refresh token as an httpOnly `Set-Cookie` and returns the access token in the **JSON body**. The frontend calls with `credentials: \"include\"` so the cookie round-trips.\n\nFor a protected route, the frontend attaches the access token as a bearer header; the backend verifies it with `jwt.verify()` and attaches the decoded payload to `req.user` before letting the route handler run.",
+        "code": "// Backend login response\nres.cookie(\"refreshToken\", refreshToken, { httpOnly: true, secure: true, sameSite: \"strict\" });\nres.json({ accessToken });\n\n// Frontend login call\nconst res = await fetch(\"/login\", {\n  method: \"POST\",\n  headers: { \"Content-Type\": \"application/json\" },\n  body: JSON.stringify({ email, password }),\n  credentials: \"include\"\n});\n\n// Protected route — backend\nconst token = req.headers.authorization?.split(\" \")[1];\nconst decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);\nreq.user = decoded;"
+      },
+      {
+        "id": "refresh-token-flow",
+        "title": "17. Access Token Expiry & the Refresh Flow",
+        "content": "When an access token expires, `jwt.verify()` throws `TokenExpiredError` and the backend replies `401 Unauthorized`. The frontend recognizes this and calls `/refresh-token` — since the refresh token lives in a cookie, the browser **automatically** attaches it. The backend verifies the refresh token and mints a **new** access token; the frontend stores it and **retries** the original request. An `apiFetch` wrapper can automate this whole retry dance transparently.",
+        "code": "async function apiFetch(url, options = {}) {\n  let res = await fetch(url, { ...options, headers: { ...options.headers, Authorization: `Bearer ${accessToken}` } });\n\n  if (res.status === 401) {\n    const refreshRes = await fetch(\"/refresh-token\", { method: \"POST\", credentials: \"include\" });\n    if (!refreshRes.ok) throw new Error(\"Login again\");\n\n    const data = await refreshRes.json();\n    accessToken = data.accessToken;\n    res = await fetch(url, { ...options, headers: { ...options.headers, Authorization: `Bearer ${accessToken}` } });\n  }\n  return res;\n}"
+      },
+      {
+        "id": "cookies-vs-localstorage",
+        "title": "18. What Is a Cookie? Cookie vs localStorage",
+        "content": "A **cookie** is a small piece of data the browser stores per-domain and **automatically resends** on every request to that domain — used for login sessions, refresh tokens, cart IDs, language/theme preference, and tracking IDs.\n\nThe key difference from `localStorage`: cookies are **sent automatically** with each request, while `localStorage` is not; an `httpOnly` cookie **cannot** be read by JavaScript, while `localStorage` always can. That's exactly why a refresh token belongs in an httpOnly cookie, not `localStorage`."
+      },
+      {
+        "id": "necessary-vs-optional-cookies",
+        "title": "19. Necessary vs Optional Cookies, and Analytics",
+        "content": "When a site asks *\"Accept cookies?\"*, it's mostly asking about **optional** cookies (analytics, advertising, personalization) — not the login cookie. **Necessary cookies** (session, cart, CSRF token) are required for the site to function and are usually always on.\n\n**Analytics** answers *\"which same visitor followed which journey?\"* — not just *\"what requests happened\"* (that's what backend logs already show). A cookie carries an anonymous `visitorId`, letting analytics stitch together `/home → /course/java → /payment` as **one person's** path rather than a pile of disconnected hits."
+      },
+      {
+        "id": "ad-tracking-and-retargeting",
+        "title": "20. Ad Tracking & Retargeting",
+        "content": "**Browser rule:** one site can never read another site's cookies — `news.com` cannot read a `nike.com` cookie. Cross-site ad tracking works anyway because many sites **load the same third-party ad network's script or pixel** (`<script src=\"https://ads-network.com/pixel.js\">`). That request lets `ads-network.com` set/read **its own** cookie (`adId=abc123`), which belongs to the ad network, not to Nike.\n\nNike's page sends the tracker an event (e.g. `{ event: \"ViewProduct\", website: \"nike.com\", product: \"Running Shoes\" }`) alongside that `adId` cookie. Later, when the same browser loads `news.com` (which loads the **same** ad network), that cookie identifies it as \"the browser that viewed Nike shoes,\" enabling a Nike ad there — **retargeting**. Tracking needs both pieces: the **cookie** (who) and the **event/pixel** (what happened) — neither alone is enough."
+      },
+      {
+        "id": "password-storage-why-not-plaintext-or-encryption",
+        "title": "21. Password Storage — Why Not Plain Text or Encryption",
+        "content": "The server never actually needs to know your real password — only whether a future attempt **matches**. So it should store **proof of the password, not the password itself**.\n\n**Plain text storage is dangerous:** a DB leak exposes every user's real password, and people reuse passwords across Gmail/GitHub/banking. **Encryption is also the wrong tool:** it's reversible by design — if an attacker gets the encryption key, every password decrypts at once. Since the server only needs to **verify**, not **recover**, **hashing** (one-way) is the right tool, not encryption."
+      },
+      {
+        "id": "hashing-with-bcrypt-and-salt",
+        "title": "22. Correct Way — Hashing With bcrypt & Salt",
+        "content": "Store only the hash (`$2b$10$Ydhdhd7283...`), never the password. On signup, hash before saving; on login, use `bcrypt.compare()` against the stored hash — never a direct equality check.\n\n**Salt** — random extra data mixed in before hashing, so identical passwords (`123456` for two different users) produce different hashes; with bcrypt the salt is generated automatically and stored inside the hash itself.\n\n**Why bcrypt, not SHA-256?** SHA-256 is **fast** — great for file checksums, bad for passwords, since a leaked DB lets an attacker brute-force millions of guesses quickly. **bcrypt is intentionally slow**, making brute force expensive. (A modern alternative: **Argon2id**.)",
+        "code": "// Signup\nconst hashedPassword = await bcrypt.hash(password, 10);\nawait User.create({ email, password: hashedPassword });\n\n// Login\nconst user = await User.findOne({ email });\nconst isPasswordCorrect = await bcrypt.compare(password, user.password);\n// true -> login successful · false -> reject"
+      },
+      {
+        "id": "complete-signup-login-and-mental-models",
+        "title": "23. Complete Signup & Login Code, and Final Mental Models",
+        "content": "A real login route: hash-compare the password, then sign **both** tokens, put the refresh token in an httpOnly cookie, and return only the access token in the JSON body.\n\n**Always return the same error message** (\"Invalid email or password\") whether the email doesn't exist or the password is wrong — a different message for each would let an attacker enumerate which emails are registered.\n\n**Final mental models:** don't store the password, store **proof** of it. Access token = short-term API pass. Refresh token = long-term login-renewal pass. Cookie = the browser's small stored note, automatically resent with requests. An httpOnly cookie sits with the browser, but JavaScript cannot read it. An analytics cookie connects one visitor's multiple actions together; an ads-tracking cookie recognizes the same browser across different sites via a shared third-party network.",
+        "code": "export async function login(req, res) {\n  const { email, password } = req.body;\n  const user = await User.findOne({ email });\n  if (!user) return res.status(401).json({ message: \"Invalid email or password\" });\n\n  const isPasswordCorrect = await bcrypt.compare(password, user.password);\n  if (!isPasswordCorrect) return res.status(401).json({ message: \"Invalid email or password\" });\n\n  const accessToken = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: \"15m\" });\n  const refreshToken = jwt.sign({ userId: user._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: \"7d\" });\n\n  res.cookie(\"refreshToken\", refreshToken, { httpOnly: true, secure: true, sameSite: \"strict\" });\n  res.json({ message: \"Login successful\", accessToken });\n}"
       }
     ],
     "quiz": [
       {
-        "question": "What is the main topic of Day 31?",
+        "question": "Why is Diffie-Hellman safer against future key leaks than the old RSA key-exchange method?",
         "options": [
-          "Authentication with JWT",
-          "HTML tables only",
-          "Linux kernel modules",
-          "Photoshop layers"
+          "DH uses temporary keys discarded after the session, so a leaked permanent private key years later cannot unlock old recorded sessions (forward secrecy)",
+          "DH does not use any mathematics, so it cannot be broken",
+          "DH sends the shared secret directly, which is faster",
+          "RSA and DH are identical in every way"
         ],
         "answer": 0,
-        "explanation": "Module 31 focuses on Authentication with JWT."
+        "explanation": "In old RSA key exchange, every session's shared secret was encrypted with the same long-term server public key — a later-leaked private key can decrypt all of them. DH's temporary, per-connection keys are discarded, so a future permanent-key leak cannot recover old shared secrets. This property is called forward secrecy."
       },
       {
-        "question": "Which phase includes this module?",
+        "question": "Why is Diffie-Hellman alone vulnerable to a man-in-the-middle attack?",
         "options": [
-          "Phase 2: Backend Mastery",
-          "Only DevOps",
-          "Only CSS",
-          "Not part of the course"
+          "DH proves a shared secret was created, but not who it was created with — an attacker can intercept and replace both sides' public values",
+          "DH cannot mathematically produce a shared secret",
+          "DH requires both parties to already know each other's private keys",
+          "DH only works over unencrypted HTTP"
         ],
         "answer": 0,
-        "explanation": "This module belongs to Phase 2: Backend Mastery."
+        "explanation": "Diffie-Hellman solves 'create a shared secret without sending it,' but doesn't authenticate either party. A hacker positioned between client and server can establish separate shared secrets with each side, decrypting and re-encrypting traffic — TLS closes this gap with certificates and digital signatures."
+      },
+      {
+        "question": "Why should a refresh token be stored in an httpOnly cookie instead of localStorage?",
+        "options": [
+          "JavaScript cannot read an httpOnly cookie, but it CAN read localStorage — so an XSS vulnerability could let an attacker steal a token stored in localStorage",
+          "localStorage cannot store strings",
+          "httpOnly cookies expire faster than localStorage",
+          "There is no difference in security between the two"
+        ],
+        "answer": 0,
+        "explanation": "httpOnly is a flag that blocks JavaScript (including malicious injected JavaScript from an XSS attack) from reading the cookie's value. localStorage has no such protection — any script running on the page, including an attacker's, can read it directly."
+      },
+      {
+        "question": "Why does the login route return the same 'Invalid email or password' message for both a missing email and a wrong password?",
+        "options": [
+          "A different message per case would let an attacker enumerate which emails are actually registered in the system",
+          "It's required by the JWT specification",
+          "bcrypt.compare() cannot distinguish between the two cases",
+          "It reduces server load"
+        ],
+        "answer": 0,
+        "explanation": "If 'email not found' and 'wrong password' returned different messages, an attacker could probe many emails and learn exactly which ones have accounts — a user-enumeration vulnerability. A single generic message hides that distinction."
+      },
+      {
+        "question": "Why is hashing (not encryption) the correct way to store passwords?",
+        "options": [
+          "The server only ever needs to verify a password matches, never to recover the original — hashing is one-way, so even a full DB leak doesn't expose real passwords",
+          "Hashing is faster than encryption so it should always be preferred",
+          "Encryption cannot be applied to text data",
+          "Passwords are always shorter than encryption block sizes"
+        ],
+        "answer": 0,
+        "explanation": "Encryption is reversible by design — anyone with the key can recover the original password. Since the server only needs to check a match (hash the attempt, compare hashes), a one-way hash (with salt, via bcrypt/Argon2) is the correct tool; it never needs to be reversed."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=mbsmsi7l3r4",
