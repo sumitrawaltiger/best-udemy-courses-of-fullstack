@@ -1005,6 +1005,78 @@ export const pythonLessons = [
   {
     pyDay: 11,
     phase: 'Python Foundations',
+    title: 'Database Connectivity in Python',
+    subtitle: 'CRUD operations with SQLite and MySQL',
+    topics: ['CRUD operations', 'Relational vs non-relational DBs', 'SQLite with sqlite3', 'MySQL with mysql-connector', 'Parameterized queries'],
+    notionUrl: PORTAL,
+    youtube: yt('https://www.youtube.com/watch?v=EsAIXPIsyQg', 'MySQL DB Server & Workbench Setup', 'Ashok IT'),
+    sections: [
+      {
+        id: 'what-is-database-connectivity',
+        title: 'What is Database Connectivity?',
+        content: "**Database connectivity** means connecting a Python application to a database to perform operations such as:\n- Insert data\n- Read data\n- Update data\n- Delete data\n\nThese four operations are called **CRUD Operations**:\n- **C** — Create\n- **R** — Read\n- **U** — Update\n- **D** — Delete",
+      },
+      {
+        id: 'types-of-databases',
+        title: 'Types of Databases',
+        content: "Databases are mainly divided into two types:\n\n**1. Relational databases** — store data in table format.\n- Examples: MySQL, Oracle, PostgreSQL, SQL Server, SQLite.\n\n**2. Non-relational databases** — store data in document, key-value, graph, or other formats.\n- Examples: MongoDB, Redis, Cassandra, Firebase.",
+      },
+      {
+        id: 'what-is-sqlite',
+        title: 'What is SQLite?',
+        content: "**SQLite** is a lightweight database. It does **not** require:\n1. A DB server installation\n2. A username and password\n3. A port number\n4. Separate configuration\n\nIt stores the complete database inside a **single file**. Python provides built-in support for SQLite using the **`sqlite3`** module.",
+      },
+      {
+        id: 'sqlite-create-table',
+        title: 'SQLite — Create a Table',
+        content: "Connect to a database file (created automatically if it doesn't exist), then use a **cursor** to execute SQL statements. `connection.commit()` saves the change, and `connection.close()` releases the connection.",
+        code: "import sqlite3\n\n# Establishing DB Connection\nconnection = sqlite3.connect(\"students.db\")\n\n# Create cursor object to execute SQL Queries\ncursor = connection.cursor()\n\n# Using cursor we can execute SQL queries\ncursor.execute(\"\"\"\n    create table if not exists students(\n        student_id integer primary key autoincrement,\n        student_name text,\n        student_email text unique,\n        student_course text,\n        student_fee real\n    )\n\"\"\")\n\nprint(\"Student Table Created Successfully....\")\n\nconnection.commit()\nconnection.close()",
+      },
+      {
+        id: 'sqlite-insert-record',
+        title: 'SQLite — Insert a Record',
+        content: "Use **parameterized queries** (`?` placeholders) instead of string-formatting values directly into SQL — this protects against SQL injection and handles quoting for you.",
+        code: "import sqlite3\n\n# Establishing DB Connection\nconnection = sqlite3.connect(\"students.db\")\n\n# Create cursor object to execute SQL Queries\ncursor = connection.cursor()\n\n# Read student information\nstudent_name = input(\"Enter Student Name: \")\nstudent_email = input(\"Enter Student Email: \")\nstudent_course = input(\"Enter Student Course: \")\nstudent_fee = float(input(\"Enter Student Fee: \"))\n\nsql = \"insert into students(student_name, student_email, student_course, student_fee) values(?, ?, ?, ?)\"\n\ncursor.execute(sql, (student_name, student_email, student_course, student_fee))\n\nconnection.commit()\n\nprint(\"Student inserted Successfully\")\nconnection.close()",
+      },
+      {
+        id: 'sqlite-retrieve-records',
+        title: 'SQLite — Retrieve Records',
+        content: "**`cursor.fetchall()`** returns every matching row as a list of tuples. **`cursor.fetchone()`** returns a single row — useful when querying by a unique key like `student_id`.",
+        code: "import sqlite3\n\n# Establishing DB Connection\nconnection = sqlite3.connect(\"students.db\")\n\n# Create cursor object to execute SQL Queries\ncursor = connection.cursor()\n\nsql = \"select * from students\"\n\ncursor.execute(sql)\n\nstudents = cursor.fetchall()\n\nprint(type(students))\n\nfor student in students:\n    print(student)",
+      },
+      {
+        id: 'sqlite-single-record',
+        title: 'SQLite — Retrieve a Single Record',
+        content: "Query for one record using a `WHERE` clause with a parameterized value, then read it with `fetchone()`.",
+        code: "import sqlite3\n\n# Establishing DB Connection\nconnection = sqlite3.connect(\"students.db\")\n\n# Create cursor object to execute SQL Queries\ncursor = connection.cursor()\n\n# Read student information\nstudent_id = int(input(\"Enter Student ID: \"))\n\nsql = \"select * from students where student_id =?\"\n\ncursor.execute(sql, (student_id,))\n\nstudent = cursor.fetchone()\nprint(student)",
+      },
+      {
+        id: 'python-with-mysql-setup',
+        title: 'Python with MySQL — Setup',
+        content: "Watch the [MySQL DB Server & Workbench Setup](https://www.youtube.com/watch?v=EsAIXPIsyQg) video first if MySQL isn't installed yet.\n\n**Step 1 — install the MySQL connector** inside a virtual environment:\n```\npython -m venv venv\nvenv\\Scripts\\activate\npip install mysql-connector-python\n```\n\nYou can list required libraries in a **`requirements.txt`** file and install them all at once:\n```\npip install -r requirements.txt\n```\n\n**Step 2 — create a Python file** with the methods you'll need: `get_connection()`, `create_table()`, `add_student()`, `view_students()`.",
+      },
+      {
+        id: 'mysql-connection-and-table',
+        title: 'MySQL — Connection & Table Creation',
+        content: "**`get_connection()`** opens (and safely handles failures for) a connection to the MySQL server. **`create_table()`** creates the `students` table if it doesn't already exist.",
+        code: "import mysql.connector\n\ndef get_connection():\n    try:\n        connection = mysql.connector.connect(\n                        host=\"localhost\",\n                        port=\"3306\",\n                        user=\"root\",\n                        passwd=\"root\",\n                        database=\"student\")\n        return connection\n    except mysql.connector.Error as error:\n        print(\"database conn failed:\", error)\n        return None\n\ndef create_table():\n    connection = get_connection()\n    if connection is None:\n        return\n    cursor = None\n    try:\n        cursor = connection.cursor()\n        sql = \"\"\"\n        CREATE TABLE IF NOT EXISTS students (\n                student_id INT PRIMARY KEY AUTO_INCREMENT,\n                student_name VARCHAR(100) NOT NULL,\n                student_email VARCHAR(100) UNIQUE NOT NULL,\n                student_course VARCHAR(100) NOT NULL,\n                student_fee DECIMAL(10, 2) NOT NULL\n            )\n        \"\"\"\n        cursor.execute(sql)\n        connection.commit()\n    except Exception as error:\n        print(\"Error while creating table,\", error)",
+      },
+      {
+        id: 'mysql-insert-and-view',
+        title: 'MySQL — Insert & View Students',
+        content: "MySQL's connector uses **`%s`** as the placeholder for parameterized queries (SQLite uses `?`). Always `commit()` after a write, and close the connection once you're done.",
+        code: "def add_student():\n    connection = get_connection()\n    cursor = connection.cursor()\n\n    student_name = input(\"Enter student name: \").strip()\n    student_email = input(\"Enter student email: \").strip()\n    student_course = input(\"Enter student course: \").strip()\n    student_fee = float(input(\"Enter student fee: \"))\n\n    sql = \"\"\"\n          INSERT INTO students\n              (student_name, student_email, student_course, student_fee)\n          VALUES (%s, %s, %s, %s)\n          \"\"\"\n\n    values = (\n        student_name,\n        student_email,\n        student_course,\n        student_fee\n    )\n\n    cursor.execute(sql, values)\n    connection.commit()\n    print(\"Student Inserted....\")\n    connection.close()\n\ndef view_all_students():\n    connection = get_connection()\n    cursor = connection.cursor()\n\n    sql = \"select * from students\"\n\n    cursor.execute(sql)\n\n    students = cursor.fetchall()\n    for student in students:\n        print(student)\n\n# create_table()\n\nadd_student()\n\nprint(\"-------------------------------\")\n\nview_all_students()",
+      },
+      {
+        id: 'assignment-student-management-system',
+        title: 'Assignment — Student Management System',
+        content: "Develop a **menu-driven Student Management System** using Python and MySQL. The application should connect to a MySQL database and perform the following CRUD operations:\n1. Add a new student\n2. View all students\n3. View a student by ID\n4. Update student details\n5. Delete a student\n6. Exit the application\n\n**Functional requirements:**\n- Use `mysql-connector-python` to connect Python with MySQL.\n- Create the database table automatically if it does not exist.\n- Use separate functions for each CRUD operation.\n- Use parameterized queries with `%s` placeholders.\n- Display a proper message when a student record is not found.\n- Prevent duplicate email addresses.\n- Handle database connection errors and invalid user input.\n- Ask for confirmation before deleting a student.\n- Close the cursor and database connection after every operation.",
+      },
+    ],
+  },
+  {
+    pyDay: 12,
+    phase: 'Python Foundations',
     title: 'Data Science Introduction',
     subtitle: 'NumPy, Pandas, and the data science workflow',
     topics: ['Data science pipeline', 'NumPy arrays', 'Pandas DataFrames', 'Data cleaning', 'Visualization intro'],
@@ -1014,7 +1086,7 @@ export const pythonLessons = [
   },
   // ── Phase 2: ML & NLP ──
   {
-    pyDay: 12,
+    pyDay: 13,
     phase: 'ML & NLP',
     title: 'Machine Learning for NLP',
     subtitle: 'Tokenization, preprocessing, vectorization, and embeddings',
@@ -1023,7 +1095,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=8d2jGY1w0PE', 'NLP with Python', 'freeCodeCamp'),
   },
   {
-    pyDay: 13,
+    pyDay: 14,
     phase: 'ML & NLP',
     title: 'Deep Learning for NLP',
     subtitle: 'Introduction to deep learning for text',
@@ -1032,7 +1104,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=aircAruvnKk', 'Neural Networks', '3Blue1Brown'),
   },
   {
-    pyDay: 14,
+    pyDay: 15,
     phase: 'ML & NLP',
     title: 'Recurrent Neural Networks',
     subtitle: 'RNN forward/backward propagation and sequence modeling',
@@ -1041,7 +1113,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=WCUNPb-5EYI', 'RNN Explained', 'StatQuest'),
   },
   {
-    pyDay: 15,
+    pyDay: 16,
     phase: 'ML & NLP',
     title: 'Artificial Neural Networks',
     subtitle: 'Neurons, activation functions, backpropagation, and training',
@@ -1051,7 +1123,7 @@ export const pythonLessons = [
   },
   // ── Phase 3: Advanced DL Architectures ──
   {
-    pyDay: 16,
+    pyDay: 17,
     phase: 'Advanced DL',
     title: 'LSTM Networks',
     subtitle: 'Long Short-Term Memory gates, training, and GRU variants',
@@ -1060,7 +1132,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=YCzL96nL7Rw', 'LSTM Explained', 'StatQuest'),
   },
   {
-    pyDay: 17,
+    pyDay: 18,
     phase: 'Advanced DL',
     title: 'Bidirectional RNN',
     subtitle: 'Bidirectional sequence modeling advantages and applications',
@@ -1069,7 +1141,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=4PBn55otIcg', 'Bidirectional RNN', 'DeepLearningAI'),
   },
   {
-    pyDay: 18,
+    pyDay: 19,
     phase: 'Advanced DL',
     title: 'Decoders & GPT Architecture',
     subtitle: 'Decoder architecture, masked attention, and GPT training',
@@ -1078,7 +1150,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=kCc8FmEb1nY', 'GPT Explained', 'Andrej Karpathy'),
   },
   {
-    pyDay: 19,
+    pyDay: 20,
     phase: 'Advanced DL',
     title: 'Encoders & BERT',
     subtitle: 'Encoder architecture, BERT pre-training and fine-tuning',
@@ -1087,7 +1159,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=xI0HHm6bjvs', 'BERT Explained', 'CodeEmporium'),
   },
   {
-    pyDay: 20,
+    pyDay: 21,
     phase: 'Advanced DL',
     title: 'Seq2Seq Architecture',
     subtitle: 'Encoder-decoder interaction and sequence-to-sequence models',
@@ -1096,7 +1168,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=L8HKweZIOmg', 'Seq2Seq Models', 'DeepLearningAI'),
   },
   {
-    pyDay: 21,
+    pyDay: 22,
     phase: 'Advanced DL',
     title: 'Attention Mechanism',
     subtitle: 'Attention architecture and the path to transformers',
@@ -1106,7 +1178,7 @@ export const pythonLessons = [
   },
   // ── Phase 4: Gen AI & LLMs ──
   {
-    pyDay: 22,
+    pyDay: 23,
     phase: 'Gen AI & LLMs',
     title: 'Transformers Architecture',
     subtitle: 'Self-attention, multi-head attention, positional encoding, and full encoder-decoder',
@@ -1115,7 +1187,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=4Bdc55j80LI', 'Transformers Explained', 'StatQuest'),
   },
   {
-    pyDay: 23,
+    pyDay: 24,
     phase: 'Gen AI & LLMs',
     title: 'Introduction to Generative AI',
     subtitle: 'AI vs ML vs DL vs Gen AI and evolution of LLM models',
@@ -1124,7 +1196,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=2IK3DFHRFfw', 'Generative AI Explained', 'IBM Technology'),
   },
   {
-    pyDay: 24,
+    pyDay: 25,
     phase: 'Gen AI & LLMs',
     title: 'Data Preprocessing & Embeddings',
     subtitle: 'Cleaning, embeddings, and the end-to-end Gen AI pipeline',
@@ -1133,7 +1205,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=5MaWmzuwx4g', 'Word Embeddings', 'StatQuest'),
   },
   {
-    pyDay: 25,
+    pyDay: 26,
     phase: 'Gen AI & LLMs',
     title: 'Large Language Models',
     subtitle: 'LLM architecture and the "Attention Is All You Need" paper',
@@ -1142,7 +1214,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=7xTGNNLPyMI', 'LLM Explained', 'Andrej Karpathy'),
   },
   {
-    pyDay: 26,
+    pyDay: 27,
     phase: 'Gen AI & LLMs',
     title: 'Vector Databases',
     subtitle: 'Vector indexes, similarity search, and practical vector DB usage',
@@ -1152,7 +1224,7 @@ export const pythonLessons = [
   },
   // ── Phase 5: OpenAI & LangChain ──
   {
-    pyDay: 27,
+    pyDay: 28,
     phase: 'OpenAI & LangChain',
     title: 'Complete Guide to OpenAI',
     subtitle: 'OpenAI API, chat completions, function calling, Whisper, and DALL-E',
@@ -1161,7 +1233,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=c-g6epk3fFE', 'OpenAI API Tutorial', 'freeCodeCamp'),
   },
   {
-    pyDay: 28,
+    pyDay: 29,
     phase: 'OpenAI & LangChain',
     title: 'Introduction to LangChain',
     subtitle: 'LangChain ecosystem, setup, and OpenAI integration',
@@ -1170,7 +1242,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=LbT1yp6NWGY', 'LangChain Crash Course', 'freeCodeCamp'),
   },
   {
-    pyDay: 29,
+    pyDay: 30,
     phase: 'OpenAI & LangChain',
     title: 'Open Source LLMs',
     subtitle: 'Llama, Falcon, and using open models with LangChain',
@@ -1179,7 +1251,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=dqM37myYAMs', 'Llama 3 Tutorial', 'Sam Witteveen'),
   },
   {
-    pyDay: 30,
+    pyDay: 31,
     phase: 'OpenAI & LangChain',
     title: 'LangChain Basic to Advanced',
     subtitle: 'Prompts, chains, agents, tools, memory, and document loaders',
@@ -1188,7 +1260,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=aywZrzNaKjs', 'LangChain Agents', 'Sam Witteveen'),
   },
   {
-    pyDay: 31,
+    pyDay: 32,
     phase: 'OpenAI & LangChain',
     title: 'LangChain Components & Modules',
     subtitle: 'Text splitters, embeddings, and Hugging Face integration',
@@ -1198,7 +1270,7 @@ export const pythonLessons = [
   },
   // ── Phase 6: RAG & Deployment ──
   {
-    pyDay: 32,
+    pyDay: 33,
     phase: 'RAG & Deployment',
     title: 'Retrieval Augmented Generation',
     subtitle: 'RAG architecture, practical demos, and RAG vs fine-tuning',
@@ -1207,7 +1279,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=T-D1OfcDW1M', 'RAG Explained', 'IBM Technology'),
   },
   {
-    pyDay: 33,
+    pyDay: 34,
     phase: 'RAG & Deployment',
     title: 'Fine-Tuning LLMs',
     subtitle: 'PEFT, LoRA, QLoRA, and fine-tuning Llama on custom data',
@@ -1216,7 +1288,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=Us5ZFp16PaU', 'LoRA Fine-Tuning', 'Sam Witteveen'),
   },
   {
-    pyDay: 34,
+    pyDay: 35,
     phase: 'RAG & Deployment',
     title: 'LlamaIndex',
     subtitle: 'LlamaIndex framework and financial stock analysis project',
@@ -1225,7 +1297,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=cbiiEuXKzo8', 'LlamaIndex Tutorial', 'Sam Witteveen'),
   },
   {
-    pyDay: 35,
+    pyDay: 36,
     phase: 'RAG & Deployment',
     title: 'LLM Apps Deployment',
     subtitle: 'Deploy Gen AI apps with Flask and AWS',
@@ -1235,7 +1307,7 @@ export const pythonLessons = [
   },
   // ── Phase 7: Django ──
   {
-    pyDay: 36,
+    pyDay: 37,
     phase: 'Django',
     title: 'Django Fundamentals',
     subtitle: 'MVT pattern, project setup, URLs, and views',
@@ -1244,7 +1316,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=F5mRW0jo-4I', 'Django Tutorial', 'Traversy Media'),
   },
   {
-    pyDay: 37,
+    pyDay: 38,
     phase: 'Django',
     title: 'Django Models & ORM',
     subtitle: 'Models, migrations, queries, and relationships',
@@ -1253,7 +1325,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=aHC3uTkT9r8', 'Django ORM', 'Corey Schafer'),
   },
   {
-    pyDay: 38,
+    pyDay: 39,
     phase: 'Django',
     title: 'Django Forms & Authentication',
     subtitle: 'Forms, user auth, sessions, and permissions',
@@ -1262,7 +1334,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=e1IyzVyrFSs', 'Django Auth', 'Corey Schafer'),
   },
   {
-    pyDay: 39,
+    pyDay: 40,
     phase: 'Django',
     title: 'Django REST Framework',
     subtitle: 'Web services, REST API fundamentals, JSON, and Django REST Framework',
@@ -1273,7 +1345,7 @@ export const pythonLessons = [
   },
   // ── Phase 8: FastAPI ──
   {
-    pyDay: 40,
+    pyDay: 41,
     phase: 'FastAPI',
     title: 'FastAPI Fundamentals',
     subtitle: 'Modern async Python APIs with automatic docs',
@@ -1282,7 +1354,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=0sOvCWHmTfU', 'FastAPI Tutorial', 'freeCodeCamp'),
   },
   {
-    pyDay: 41,
+    pyDay: 42,
     phase: 'FastAPI',
     title: 'FastAPI with Databases',
     subtitle: 'SQLAlchemy, async DB, and CRUD APIs',
@@ -1387,7 +1459,7 @@ export const pythonLessons = [
     ],
   },
   {
-    pyDay: 42,
+    pyDay: 43,
     phase: 'FastAPI',
     title: 'FastAPI Authentication & Security',
     subtitle: 'JWT auth, OAuth2, and securing AI API endpoints',
@@ -1453,7 +1525,7 @@ export const pythonLessons = [
     ],
   },
   {
-    pyDay: 43,
+    pyDay: 44,
     phase: 'FastAPI',
     title: 'FastAPI Production Deployment',
     subtitle: 'Deploy FastAPI with Uvicorn, Docker, and cloud hosting',
@@ -1515,7 +1587,7 @@ export const pythonLessons = [
   },
   // ── Phase 9: Agentic AI ──
   {
-    pyDay: 44,
+    pyDay: 45,
     phase: 'Agentic AI',
     title: 'Introduction to Agentic AI',
     subtitle: 'AI agents vs agentic AI, memory, planning, and multi-agent systems',
@@ -1537,7 +1609,7 @@ export const pythonLessons = [
     ],
   },
   {
-    pyDay: 45,
+    pyDay: 46,
     phase: 'Agentic AI',
     title: 'LangGraph & MCP',
     subtitle: 'LangGraph workflows and Model Context Protocol servers',
@@ -1546,7 +1618,7 @@ export const pythonLessons = [
     youtube: yt('https://www.youtube.com/watch?v=9BPCV5TYPFA', 'LangGraph Tutorial', 'Sam Witteveen'),
   },
   {
-    pyDay: 46,
+    pyDay: 47,
     phase: 'Agentic AI',
     title: 'n8n & Agentic AI Workflows',
     subtitle: 'Automation with n8n, AI agent prompts, and end-to-end agentic pipelines',
