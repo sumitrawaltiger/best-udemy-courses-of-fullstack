@@ -1738,73 +1738,141 @@ export const chaptersDays20to100 = [
   },
   {
     "id": 32,
-    "slug": "authorization-and-role-based-access",
+    "slug": "authentication-and-bcrypt",
     "track": "thunder",
     "day": 32,
-    "title": "Authorization & Role-Based Access",
-    "subtitle": "Roles, permissions, and access control patterns",
+    "title": "Authentication and bcrypt",
+    "subtitle": "Lecture 13 — jwt.sign/verify/decode, Express cookies, and password hashing with bcrypt",
     "duration": "2 hrs",
     "createdOn": "16 Aug 2026",
     "status": "published",
+    "notionUrl": "https://app.notion.com/p/Lecture13-Authentication-and-bcrypt-3a7a9af81c98800bb73edd11a52c8e70?source=copy_link",
     "topics": [
-      "RBAC concepts",
-      "User roles",
-      "Permission middleware",
-      "Admin vs user routes",
-      "Least privilege"
+      "jwt.sign(), verify() & decode()",
+      "Cookies — res.cookie() & req.cookies",
+      "httpOnly, secure & maxAge",
+      "bcrypt.hash() & compare()",
+      "Complete auth flow: register, login, protect, logout"
     ],
     "sections": [
       {
-        "id": "rbac-concepts",
-        "title": "RBAC concepts",
-        "content": "Learn **RBAC concepts** in Day 32 of Thunder: 100 Days of Code. Roles, permissions, and access control patterns",
-        "tryIt": "console.log(\"Day 32: Authorization & Role-Based Access\");"
+        "id": "notes-overview",
+        "title": "1. What These Notes Cover",
+        "content": "**Day 32** follows **Lecture 13** ([Authentication and bcrypt Notion notes](https://app.notion.com/p/Lecture13-Authentication-and-bcrypt-3a7a9af81c98800bb73edd11a52c8e70?source=copy_link), linking to [JWT, Cookies, and bcrypt in Node.js](https://app.notion.com/p/JWT-Cookies-and-bcrypt-in-Node-js-3a7a9af81c988006a74ae1e197b9408e)) — practical, function-first notes on **JWT**, **Cookies**, and **bcrypt**.\n\nFor every function, the notes cover: what **package** to install, what **function** to use, **when** to use it, what **arguments** it takes, what it **returns**, and common **use cases**."
       },
       {
-        "id": "user-roles",
-        "title": "User roles",
-        "content": "Learn **User roles** in Day 32 of Thunder: 100 Days of Code. Roles, permissions, and access control patterns",
-        "tryIt": "console.log(\"Day 32: Authorization & Role-Based Access\");"
+        "id": "jwt-sign",
+        "title": "2. jwt.sign() — Creating a Token",
+        "content": "**Package:** `npm i jsonwebtoken`, then `import jwt from \"jsonwebtoken\";`\n\nUse `jwt.sign()` when you want to create a token — usually right after a successful **login** or **registration** (or an auto-login after registration).\n\n**Basic syntax:** `jwt.sign(payload, secretKey)` — returns a JWT token string (e.g. `eyJhbGciOiJIUzI1NiIs...`).\n\n**Payload** is the data you want to store inside the token — best practice is to store only the `id` (e.g. `{ id: user._id }`), since the backend can fetch the full user record from the database using it. **Never** put a password, OTP, secret key, or other private data inside the payload.\n\n**Secret key** signs the token. In a real project, keep it in `.env` as `process.env.JWT_SECRET`, not a hardcoded string.\n\n`expiresIn` option is the most common third argument — valid values include `\"10s\"`, `\"10m\"`, `\"1h\"`, `\"7d\"`, or a plain number of seconds (`60`). Avoid a bare numeric **string** like `\"60\"` — it can behave differently than expected; prefer `\"60s\"` or the number `60`.\n\nWhen `expiresIn` is used, JWT automatically adds `iat` (issued at) and `exp` (expiry time) to the decoded payload.\n\n**Summary:** `jwt.sign(payload, secretKey, options)` needs a payload, a secret key, and optional settings like `expiresIn`; it returns a token string. **Use case:** create a token after login.",
+        "code": "// create a token after login\nconst token = jwt.sign(\n    { id: user._id },\n    process.env.JWT_SECRET,\n    { expiresIn: \"1h\" }\n);\n\n// decoded payload automatically gets iat & exp added:\n// { id: \"101\", iat: 1784890000, exp: 1784893600 }"
       },
       {
-        "id": "permission-middleware",
-        "title": "Permission middleware",
-        "content": "Learn **Permission middleware** in Day 32 of Thunder: 100 Days of Code. Roles, permissions, and access control patterns",
-        "tryIt": "console.log(\"Day 32: Authorization & Role-Based Access\");"
+        "id": "jwt-verify",
+        "title": "3. jwt.verify() — Checking a Token",
+        "content": "Use `jwt.verify()` when you want to check a token — typically inside **protected routes**, **auth middleware**, a **profile API**, or an **admin API**.\n\n**Basic syntax:** `jwt.verify(token, secretKey)`. If the token is valid, it **returns the payload**. If the token is invalid, changed, expired, or signed with a different secret key, `jwt.verify()` **throws an error** — so it's normally wrapped in a `try/catch`.\n\n`jwt.verify()` is **synchronous** when no callback is passed — it immediately returns the payload or throws. There's also a callback-style async form, but for beginner Express code, prefer the synchronous version.\n\n**Reading the token from a cookie:** `const token = req.cookies.token;` then `jwt.verify(token, secretKey)` — use `payload.id` to look up the user with `await User.findById(payload.id)`.\n\n**Summary:** `jwt.verify(token, secretKey)` needs the token and the **same** secret key used while signing; it returns the payload if valid, or throws an error if invalid/expired. **Use case:** check the token in a protected route.",
+        "code": "try {\n    const token = req.cookies.token;\n    const payload = jwt.verify(token, process.env.JWT_SECRET);\n    const user = await User.findById(payload.id);\n} catch (error) {\n    // invalid or expired token\n}"
       },
       {
-        "id": "admin-vs-user-routes",
-        "title": "Admin vs user routes",
-        "content": "Learn **Admin vs user routes** in Day 32 of Thunder: 100 Days of Code. Roles, permissions, and access control patterns",
-        "tryIt": "console.log(\"Day 32: Authorization & Role-Based Access\");"
+        "id": "jwt-decode",
+        "title": "4. jwt.decode() — Reading Without Checking",
+        "content": "Use `jwt.decode()` only when you want to read a token's payload **without checking it** — mostly for **debugging**, **learning**, or printing token data.\n\n**Basic syntax:** `jwt.decode(token)` — returns the payload. Important: `jwt.decode()` does **not** need a secret key, which means it does **not** check the token's signature, expiry, or authenticity. **Never use it for authentication or protected routes.**\n\n**Wrong for authentication:** `jwt.decode(token)`.\n**Correct for authentication:** `jwt.verify(token, secretKey)`.\n\n**JWT function memory — the three functions at a glance:**\n- `jwt.sign()` — creates a token.\n- `jwt.verify()` — checks a token and returns the payload.\n- `jwt.decode()` — only reads a token's payload, no verification.",
+        "code": "const data = jwt.decode(token); // reads the payload, does NOT verify signature or expiry"
+      },
+      {
+        "id": "cookies-setting",
+        "title": "5. Setting Cookies — cookie-parser & res.cookie()",
+        "content": "**Cookies** are used to store the token in the browser. Setting a cookie needs no extra package — but to **read** cookies easily, install `cookie-parser`: `npm i cookie-parser` → `import cookieParser from \"cookie-parser\";` → `app.use(cookieParser());`.\n\nUse `res.cookie()` when the backend wants the browser to save a cookie — usually right after login, once the token has been created.\n\n**Basic syntax:** `res.cookie(cookieName, cookieValue, options)`.\n\n**Key options:**\n- `httpOnly: true` — frontend JavaScript **cannot** read this cookie (it won't show up in `document.cookie`). Use it to protect the JWT from being stolen by frontend JavaScript.\n- `secure: false` — lets the cookie work over plain HTTP; use this for local development (`http://localhost:3000`). In production, set `secure: true` so the cookie is sent only over HTTPS.\n- **`maxAge: 60 * 60 * 1000`** — the cookie's expiry time in **milliseconds** (this example is 1 hour).\n\n**Important:** the JWT's `expiresIn` and the cookie's `maxAge` are two separate settings — keep them roughly in sync.",
+        "code": "const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: \"1h\" });\n\nres.cookie(\"token\", token, {\n    httpOnly: true,\n    secure: false,          // true in production (HTTPS only)\n    maxAge: 60 * 60 * 1000, // 1 hour, in ms\n});"
+      },
+      {
+        "id": "cookies-reading-clearing",
+        "title": "6. Reading & Clearing Cookies — req.cookies and res.clearCookie()",
+        "content": "Use `req.cookies` when you want to read a cookie sent by the browser (requires `app.use(cookieParser())` to be set up first). **Basic syntax:** `req.cookies.token`.\n\nWhy `cookie-parser`? The browser sends cookies as a raw string, e.g. `token=abc123; theme=dark`. `cookie-parser` converts that string into an object — `{ token: \"abc123\", theme: \"dark\" }` — so you can simply write `req.cookies.token` instead of manually splitting the string.\n\nUse `res.clearCookie()` during **logout** to remove the token cookie from the browser: `res.clearCookie(\"token\")`.\n\n**Cookie function memory:**\n- `res.cookie()` — set a cookie in the browser.\n- `req.cookies` — read a cookie from the request.\n- `res.clearCookie()` — delete a cookie from the browser.\n- `cookieParser()` — converts the raw cookie string into `req.cookies`.",
+        "code": "const token = req.cookies.token;\nconst payload = jwt.verify(token, process.env.JWT_SECRET);\n\n// logout\nres.clearCookie(\"token\");\nres.json({ message: \"Logout successful\" });"
+      },
+      {
+        "id": "bcrypt-hash",
+        "title": "7. bcrypt.hash() — Hashing a Password",
+        "content": "**Package:** `npm i bcrypt`, then `import bcrypt from \"bcrypt\";`\n\nUse `bcrypt.hash()` when you want to save a password safely — usually during **registration**, a **password reset**, or a **password change**.\n\n**Basic syntax:** `const hashedPassword = await bcrypt.hash(password, 10);` — `password` is the plain password from the user, and `10` is the **salt rounds / cost factor**.\n\n**What it returns:** a hashed password string, e.g. `$2b$10$CwTycUXWueOThq9StjUM0u...` — this is what gets stored in the database. **Never** save the plain password.\n\nWhat is the `10`? It's how much work bcrypt should do: `bcrypt.hash(password, 8)` is faster, `10` is common for beginner projects, `12` is slower. A higher number means slower (and more secure) hashing.\n\n**Reading a bcrypt hash string** (`$2b$10$CwTycUXWue0Thq9StjUM0uJ8XHhLQ...`): `$2b` is the bcrypt version, `$10` is the cost factor, the next 22 characters are the **salt**, and the remainder is the final password hash — the salt is already embedded in the hash, so it never needs to be stored separately.",
+        "code": "const hashedPassword = await bcrypt.hash(password, 10);\n\nawait User.create({\n    name,\n    email,\n    password: hashedPassword, // never store the plain password\n});"
+      },
+      {
+        "id": "bcrypt-compare",
+        "title": "8. bcrypt.compare() & genSalt() — Verifying a Password",
+        "content": "Use `bcrypt.compare()` during **login**, to check the entered password against the stored hash.\n\n**Basic syntax:** `const isMatch = await bcrypt.compare(password, user.password);` — `password` is the plain password from the login request, `user.password` is the hashed password from the database.\n\n**What it returns:** a **boolean** — `true` means the password is correct, `false` means it's wrong.\n\n**Important mistake to avoid:** never compare the raw strings directly (`password === user.password`) — the plain password (`Rohit@123`) and the stored hash (`$2b$10$abc...`) will never match that way. Always use `bcrypt.compare()`.\n\n`bcrypt.genSalt()` manually creates a salt (`const salt = await bcrypt.genSalt(10);` then `bcrypt.hash(password, salt)`) — this is optional and equivalent to just calling `bcrypt.hash(password, 10)` directly. Beginner projects don't need it.\n\n**bcrypt function memory:**\n- `bcrypt.hash(password, 10)` — used while saving a password; returns the hashed password.\n- `bcrypt.compare(password, user.password)` — used while logging in; returns `true`/`false`.\n- `bcrypt.genSalt(10)` — manually creates a salt; usually not needed for beginners.",
+        "code": "const user = await User.findOne({ email });\nconst isMatch = await bcrypt.compare(password, user.password);\n\nif (!isMatch) {\n    return res.json({ message: \"Invalid password\" });\n}"
+      },
+      {
+        "id": "complete-auth-flow",
+        "title": "9. Complete Beginner Auth Flow",
+        "content": "Putting every function together into the four flows a typical auth system needs:\n\n**Registration flow** — use `bcrypt.hash()` to convert the plain password into a hash, then save the user with the hashed password.\n\n**Login flow** — use `bcrypt.compare()` to check the entered password against the DB password hash. If it matches, use `jwt.sign()` to create a token, then `res.cookie()` to store that token in the browser cookie.\n\n**Protected route flow** — use `req.cookies.token` to get the token from the browser cookie, then `jwt.verify()` to check the token and get the payload, then use the payload's `id`/`email` to find the user in the database.\n\n**Logout flow** — use `res.clearCookie()` to remove the token from the browser cookie.",
+        "code": "app.post(\"/user\", async (req, res) => {\n    const { name, age, email, password } = req.body;\n\n    const hashedPassword = await bcrypt.hash(password, 10);\n    const u = await User.create({ name, age, email, password: hashedPassword });\n\n    const token = jwt.sign({ name, email }, process.env.JWT_SECRET, { expiresIn: \"1h\" });\n\n    res.cookie(\"token\", token, {\n        httpOnly: true,\n        secure: false,\n        maxAge: 60 * 60 * 1000,\n    });\n\n    res.json({ message: \"Profile created successfully\" });\n});\n\napp.get(\"/user\", async (req, res) => {\n    const token = req.cookies.token;\n    const payload = jwt.verify(token, process.env.JWT_SECRET);\n\n    const u = await User.findOne({ email: payload.email });\n    res.json({ message: \"User Details\", user: u });\n});"
+      },
+      {
+        "id": "function-reference-table",
+        "title": "10. Function Quick Reference",
+        "content": "A quick reference for every function covered in these notes:\n- `bcrypt.hash()` (bcrypt) — create a password hash → returns a hash string.\n- `bcrypt.compare()` (bcrypt) — check a password → returns `true`/`false`.\n- `bcrypt.genSalt()` (bcrypt) — manually create a salt → returns a salt string.\n- `jwt.sign()` (jsonwebtoken) — create a token → returns a token string.\n- `jwt.verify()` (jsonwebtoken) — verify a token → returns the payload, or throws an error.\n- `jwt.decode()` (jsonwebtoken) — read a token only (no verification) → returns the payload.\n- `res.cookie()` (Express) — set a cookie → response with cookie.\n- `req.cookies` (cookie-parser) — read a cookie → cookie value/object.\n- `res.clearCookie()` (Express) — delete a cookie → response clearing the cookie."
       }
     ],
     "quiz": [
       {
-        "question": "What is the main topic of Day 32?",
+        "question": "What does bcrypt.compare(password, user.password) return?",
         "options": [
-          "Authorization & Role-Based Access",
-          "HTML tables only",
-          "Linux kernel modules",
-          "Photoshop layers"
+          "A boolean — true if the password matches, false if it doesn't",
+          "The hashed password itself",
+          "A new JWT token",
+          "The plain-text password"
         ],
         "answer": 0,
-        "explanation": "Module 32 focuses on Authorization & Role-Based Access."
+        "explanation": "bcrypt.compare() checks the plain password against the stored hash and returns true or false."
       },
       {
-        "question": "Which phase includes this module?",
+        "question": "Why should you never put a password inside a JWT payload?",
         "options": [
-          "Phase 2: Backend Mastery",
-          "Only DevOps",
-          "Only CSS",
-          "Not part of the course"
+          "A JWT payload is only signed, not encrypted — anyone with the token can read it (it's just base64-encoded)",
+          "JWTs don't support string values",
+          "It would make jwt.sign() throw an error",
+          "Payloads are limited to 10 characters"
         ],
         "answer": 0,
-        "explanation": "This module belongs to Phase 2: Backend Mastery."
+        "explanation": "JWT payloads are readable by anyone who has the token — never store passwords, OTPs, or secret keys inside one."
+      },
+      {
+        "question": "What's the main difference between jwt.verify() and jwt.decode()?",
+        "options": [
+          "verify() checks the signature and expiry (and throws if invalid); decode() just reads the payload without checking anything",
+          "decode() is faster because it doesn't need a token",
+          "verify() only works with cookies, decode() only with headers",
+          "There is no real difference between them"
+        ],
+        "answer": 0,
+        "explanation": "jwt.decode() doesn't need a secret key and never validates the token — it should never be used for authentication."
+      },
+      {
+        "question": "What does httpOnly: true do when calling res.cookie()?",
+        "options": [
+          "Prevents frontend JavaScript from reading the cookie (protects a token from being stolen via document.cookie)",
+          "Forces the cookie to only work over HTTPS",
+          "Makes the cookie expire immediately",
+          "Encrypts the cookie's value"
+        ],
+        "answer": 0,
+        "explanation": "httpOnly hides the cookie from client-side JavaScript; secure (a separate option) is what restricts it to HTTPS."
+      },
+      {
+        "question": "In a login flow, what's the correct order of operations?",
+        "options": [
+          "bcrypt.compare() to verify the password → jwt.sign() to create a token → res.cookie() to store it in the browser",
+          "jwt.sign() → bcrypt.hash() → res.cookie()",
+          "res.cookie() → bcrypt.compare() → jwt.verify()",
+          "jwt.verify() → bcrypt.genSalt() → res.clearCookie()"
+        ],
+        "answer": 0,
+        "explanation": "Login checks the password with bcrypt.compare(), creates a token with jwt.sign(), then stores it with res.cookie()."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=HHuiV841g_w",
-    "youtubeTitle": "Node & Express Role-Based Authorization — Dipesh Malvia",
+    "youtubeUrl": "https://www.youtube.com/watch?v=Askv_dSvczw",
+    "youtubeTitle": "Authentication using JWT and Bcrypt in Express JS App — Kode With Kamran",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
