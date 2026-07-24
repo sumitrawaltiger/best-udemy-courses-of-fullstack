@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-/** End of the 4-year core journey (39-day prereq + 1,461 four-year days). */
-const CORE_JOURNEY_END = new Date(2030, 8, 1, 0, 0, 0, 0);
-/** Target: core end + the 100-day Capstone & Career Sprint = the 1,600-day total. */
-export const JOURNEY_END = new Date(CORE_JOURNEY_END.getTime() + 100 * 24 * 60 * 60 * 1000);
+/** Day 1 of the 1,600-day journey (39-day Gen AI & Python prereq starts here). */
+const JOURNEY_START = new Date(2026, 6, 25, 0, 0, 0, 0);
+/** Target: start of Day 1,600 — prereq + 4-year journey + 100-day System Design & Interview Prep. */
+export const JOURNEY_END = new Date(JOURNEY_START.getTime() + 1599 * 24 * 60 * 60 * 1000);
 
 function getRemaining(now = new Date()) {
   const diff = Math.max(0, JOURNEY_END.getTime() - now.getTime());
