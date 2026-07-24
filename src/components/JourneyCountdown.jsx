@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 
 /** Day 1 of the 1,600-day journey (39-day Gen AI & Python prereq starts here). */
 const JOURNEY_START = new Date(2026, 6, 25, 0, 0, 0, 0);
-/** Target: start of Day 1,600 — prereq + 4-year journey + 100-day System Design & Interview Prep. */
-export const JOURNEY_END = new Date(JOURNEY_START.getTime() + 1599 * 24 * 60 * 60 * 1000);
+/** Target: end of Day 1,600 (last day 10 Dec 2030) — prereq + 4-year journey + 100-day System Design & Interview Prep. */
+export const JOURNEY_END = new Date(JOURNEY_START.getTime() + 1600 * 24 * 60 * 60 * 1000);
 
 function getRemaining(now = new Date()) {
   const diff = Math.max(0, JOURNEY_END.getTime() - now.getTime());
