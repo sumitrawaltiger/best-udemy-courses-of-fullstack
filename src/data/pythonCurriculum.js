@@ -711,6 +711,41 @@ const PYTHON_DATA_SCIENCE_SECTIONS = [
   },
 ];
 
+const PYTHON_REST_API_SECTIONS = [
+  {
+    id: "what-is-webservice",
+    title: "What is a Web Service?",
+    content: "**Web services** are used to develop **distributed applications** — if one application communicates with another application, we call it a distributed application.\n\n- Passport ↔ AADHAR App\n- MakeMyTrip ↔ IRCTC App\n- GPay ↔ Banking App\n\nEvery distributed application should maintain **interoperability**:\n- JAVA App ↔ Python App\n- Python App ↔ .NET App\n- .NET App ↔ Java App\n- Angular App ↔ JAVA / Python / .NET / Node JS\n- React App ↔ JAVA / Python / .NET / Node JS\n\n**Interoperability** means that irrespective of platform and language, if applications are communicating with each other, we call them interoperable applications.",
+  },
+  {
+    id: "why-distributed-applications",
+    title: "Why Develop Distributed Applications?",
+    content: "Distributed applications are used for **Business to Business communication (B2B)** — we can reuse the functionality of one project inside another project.\n\n**Example 1:** the IRCTC project contains the business logic to book train tickets. The MakeMyTrip application communicates with IRCTC to book train tickets — MakeMyTrip is **re-using** IRCTC's booking logic instead of rebuilding it.\n\n**Example 2:** OpenAI developed the GPT model (LLM). Other applications can use the GPT model for their own AI implementation, without training a model of their own.\n\nDistributed applications can be developed in **2 ways**:\n1. **SOAP Web Services** — outdated.\n2. **RESTful Services** — trending.",
+  },
+  {
+    id: "what-is-rest-api",
+    title: "What is a REST API?",
+    content: "- **API** stands for **Application Programming Interface**.\n- **REST** stands for **Representational State Transfer**.\n- A **REST API** defines a set of rules to establish business-to-business communication.\n- Using a REST API, we can provide business services to other applications.\n\nA REST API defines **how to access one application from another application**:\n- What is the URL pattern\n- What type of request\n- What is the request data\n- What is the response data",
+  },
+  {
+    id: "rest-api-architecture",
+    title: "REST API Architecture — Provider & Consumer",
+    content: "A REST API architecture has two sides:\n1. **Provider**\n2. **Consumer**\n\n**Provider** is the application that provides business services to other applications. **Consumer** is the application that accesses business services from other applications.\n\n- IRCTC is a **provider**; MakeMyTrip and Yatra are **consumers**.\n- The OpenAI GPT project is a **provider**; an Ashok IT web app is a **consumer**.\n\nWe use **JSON** to exchange data between the provider and the consumer.",
+  },
+  {
+    id: "what-is-json",
+    title: "JSON — the Data Exchange Format",
+    content: "- **JSON** stands for **JavaScript Object Notation**.\n- JSON represents data in **key-value** format.\n- JSON is **very lightweight**.\n- JSON is **platform independent** and **language independent**.\n- JSON is used to transfer data over a network — distributed applications use JSON data for both the request and the response.",
+    code: "{\n\t\"id\" : 101,\n\t\"name\" : \"Ashok\",\n\t\"phone\" : 8686868\n}",
+  },
+  {
+    id: "json-module-in-python",
+    title: "Working with JSON in Python",
+    content: "Python has an in-built **`json`** module to work with JSON data:\n\n- **`json.dumps()`** — converts a Python object into a JSON string.\n- **`json.dump()`** — writes a Python object into a JSON file.\n- **`json.loads()`** — converts a JSON string into a Python object.\n- **`json.load()`** — reads a JSON file and converts it into a Python object.",
+    code: "import json\n\nstudent = {\n    \"id\": 101,\n    \"name\": \"Ravi\",\n    \"course\": \"Python\",\n    \"fee\": 15000\n}\n\nstudent_json = json.dumps(student, sort_keys=True, indent=4)\nprint(student_json)\nprint(type(student_json))\n\nprint(\"--------------------------------\")\n\nstudent = json.loads(student_json)\nprint(student)\nprint(type(student))\n\nprint(\"--------------------------------\")\n\nwith open(\"student.json\", \"w\") as file:\n    json.dump(student, file, indent=10)\n\nprint(\"JSON file created successfully\")\n\nprint(\"--------------------------------\")\n\nwith open(\"student.json\", \"r\") as file:\n    student = json.load(file)\n    print(student)",
+  },
+];
+
 export const pythonLessons = [
   // ── Phase 1: Python Foundations ──
   {
@@ -1099,10 +1134,11 @@ export const pythonLessons = [
     pyDay: 38,
     phase: 'Django',
     title: 'Django REST Framework',
-    subtitle: 'Build REST APIs with Django REST Framework',
-    topics: ['DRF setup', 'Serializers', 'ViewSets & routers', 'Authentication', 'API best practices'],
+    subtitle: 'Web services, REST API fundamentals, JSON, and Django REST Framework',
+    topics: ['Web services & interoperability', 'REST API & provider/consumer', 'JSON basics', 'DRF setup & serializers', 'ViewSets, routers & auth'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=c708Nf0cHrs', 'Django REST Framework', 'Very Academy'),
+    sections: PYTHON_REST_API_SECTIONS,
   },
   // ── Phase 8: FastAPI ──
   {
