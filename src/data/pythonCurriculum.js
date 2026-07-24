@@ -365,6 +365,11 @@ const PYTHON_FUNCTIONS_SECTIONS = [
     code: "def outer():\n    print(\"outer function\")\n\n    def inner():\n        print(\"inner function\")\n\n    inner()\n\nouter()\n\n# Real example: bill receipt for a course payment\ndef process_payment(student_name, course_fee, paid_amount):\n    def validate_payment():\n        if paid_amount <= 0:\n            return False\n        if paid_amount > course_fee:\n            return False\n        return True\n\n    def calculate_balance():\n        return course_fee - paid_amount\n\n    def generate_receipt(balance):\n        print(\"Payment Receipt\")\n        print(\"---------------\")\n        print(\"Student Name : \", student_name)\n        print(\"Course Fee : \", course_fee)\n        print(\"Paid Amount : \", paid_amount)\n        print(\"Balance : \", balance)\n\n    if validate_payment():\n        generate_receipt(calculate_balance())\n    else:\n        print(\"Invalid Payment\")\n\nprocess_payment(student_name=\"Ashok\", course_fee=12000, paid_amount=5000)",
   },
   {
+    id: "assignment-shopping-cart-bill",
+    title: "Assignment — Shopping Cart Bill Calculation",
+    content: "When a customer places an order, we need to:\n1. Calculate the total cart amount\n2. Apply a discount\n3. Add delivery charges\n4. Generate the final bill\n\n**Rules:**\n- If `cart_amount >= 5000`, apply a **2%** discount.\n- If `cart_amount >= 3000`, apply a **1%** discount.\n- If `cart_amount >= 1000`, delivery is **free**; otherwise the delivery charge is **₹50**.\n\nUse separate functions for each step (calculate total, apply discount, add delivery charge, generate bill) — the same **function-composition** pattern as the payment receipt example above.",
+  },
+  {
     id: "type-hints",
     title: "Type Hints",
     content: "Python lets you add **type hints** for parameters and the return type. They are **hints for developers only** — Python does not enforce them, so a function annotated for `int` still runs with strings.",
