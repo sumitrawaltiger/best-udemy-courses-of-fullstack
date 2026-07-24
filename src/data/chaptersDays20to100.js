@@ -1352,70 +1352,178 @@ export const chaptersDays20to100 = [
     "slug": "mongoose-odm",
     "track": "thunder",
     "day": 30,
-    "title": "Mongoose ODM",
-    "subtitle": "Schemas, models, validation, and relationships",
-    "duration": "2 hrs",
+    "title": "Cryptography & Security Concepts",
+    "subtitle": "Lecture 11 — encoding, encryption, hashing, HMAC, signatures, HTTPS, session ID & JWT",
+    "duration": "2 hrs 30 mins",
     "createdOn": "14 Aug 2026",
     "status": "published",
+    "notionUrl": "https://app.notion.com/p/Lecture-11-Cryptography-and-Security-Concepts-3a3a9af81c98805ab24dfeb8690ee385?source=copy_link",
     "topics": [
-      "Mongoose schemas",
-      "Models & queries",
-      "Validation",
-      "References vs embedding",
-      "Population"
+      "4 security goals",
+      "Encoding vs encryption vs hashing",
+      "Symmetric vs asymmetric encryption",
+      "Hashing, salt & pepper",
+      "HMAC & digital signatures",
+      "TLS certificates & HTTPS",
+      "Session ID vs JWT"
     ],
     "sections": [
       {
-        "id": "mongoose-schemas",
-        "title": "Mongoose schemas",
-        "content": "Learn **Mongoose schemas** in Day 30 of Thunder: 100 Days of Code. Schemas, models, validation, and relationships",
-        "tryIt": "console.log(\"Day 30: Mongoose ODM\");"
+        "id": "why-security-is-needed",
+        "title": "1. Why Security Is Needed",
+        "content": "**Day 30** follows **Lecture 11** ([Cryptography and Security Concepts Notion notes](https://app.notion.com/p/Lecture-11-Cryptography-and-Security-Concepts-3a3a9af81c98805ab24dfeb8690ee385?source=copy_link)).\n\nWhen data travels between systems, four questions matter — and they map to **4 security goals**:\n\n- **Confidentiality** — only the intended person can read the data (tool: encryption).\n- **Integrity** — data should not be changed silently (tool: hashing, HMAC, signature).\n- **Authentication** — prove the identity of user/server/sender (tool: password, certificate, JWT, signature).\n- **Non-repudiation** — the sender cannot deny the action later (tool: digital signature).\n\n**Simple mental model:** security is needed because data can be **read, changed, faked, or denied**.",
+        "code": "Original message: \"Transfer ₹1000 to Rahul\"\n\n// Someone reads it        -> confidentiality broken\n// Someone changes the sum -> integrity broken\n// Someone pretends to be the sender -> authentication broken\n// Sender denies later     -> non-repudiation issue"
       },
       {
-        "id": "models-and-queries",
-        "title": "Models & queries",
-        "content": "Learn **Models & queries** in Day 30 of Thunder: 100 Days of Code. Schemas, models, validation, and relationships",
-        "tryIt": "console.log(\"Day 30: Mongoose ODM\");"
+        "id": "encoding-vs-encryption-vs-hashing",
+        "title": "2. Encoding vs Encryption vs Hashing",
+        "content": "Beginners often confuse these three:\n\n- **Encoding** — changes format, is reversible, needs **no key** (Base64, URL encoding). **Base64 is not security — anyone can decode it.**\n- **Encryption** — hides data, is reversible, **needs a key** (AES, RSA).\n- **Hashing** — creates a fingerprint, is **not reversible**, needs no key (SHA-256, bcrypt).\n\n**Final mental model:** Encoding = format change. Encryption = secret locking. Hashing = fingerprint. Or: encoding is for systems, encryption is for secrecy, hashing is for verification.",
+        "code": "// Encoding (Base64) — reversible, no key\nHello -> SGVsbG8=\n\n// Encryption — reversible, needs a key\nHello Rohit -> A9#xP02!kLm\n\n// Hashing — one-way, no key\nHello -> 185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969"
       },
       {
-        "id": "validation",
-        "title": "Validation",
-        "content": "Learn **Validation** in Day 30 of Thunder: 100 Days of Code. Schemas, models, validation, and relationships",
-        "tryIt": "console.log(\"Day 30: Mongoose ODM\");"
+        "id": "encryption-and-decryption",
+        "title": "3. Encryption and Decryption",
+        "content": "**Plain text** is original readable data; **cipher text** is the encrypted, unreadable form. **Encryption** converts plain text → cipher text; **decryption** reverses it. A **key** controls both directions: `Plain Text + Algorithm + Key = Cipher Text`.\n\n**Important principle:** modern cryptography does not depend on hiding the algorithm — it depends on keeping the **key** secret. The attacker may know the algorithm (e.g. that AES is used), but should never know the key.",
+        "code": "// Simple Caesar Cipher demo — shift each letter by key=3\nMessage: HELLO\nKey: 3\n\nH -> K,  E -> H,  L -> O,  L -> O,  O -> R\n\nEncrypted: HELLO -> KHOOR\nDecrypt by shifting back by 3: KHOOR -> HELLO\n\n// Not secure today, but shows the basic idea of key-controlled lock/unlock"
       },
       {
-        "id": "references-vs-embedding",
-        "title": "References vs embedding",
-        "content": "Learn **References vs embedding** in Day 30 of Thunder: 100 Days of Code. Schemas, models, validation, and relationships",
-        "tryIt": "console.log(\"Day 30: Mongoose ODM\");"
+        "id": "symmetric-encryption",
+        "title": "4. Symmetric Encryption",
+        "content": "**Symmetric encryption** uses the **same key** for encryption and decryption — like a box locked and unlocked with one key. Common algorithms: **AES** (modern, widely used — focus here as a beginner), DES/3DES (old, avoid), ChaCha20 (modern, fast).\n\n**Why it's used:** it's fast and good for large data — files, videos, database records, disk encryption, and the actual HTTPS data transfer.\n\n**Main problem — key distribution:** both sides need the same secret key, but sharing that key safely is hard. If sent openly, an attacker can steal it. This problem is what leads to **asymmetric encryption**.",
+        "code": "Plain Text + Secret Key -> Cipher Text\nCipher Text + Same Secret Key -> Plain Text\n\n// Example\nMessage: \"I love JavaScript\"\nSecret key: \"mySecret123\"\nEncrypted: \"xA91@pLz#78Qk\""
+      },
+      {
+        "id": "asymmetric-encryption",
+        "title": "5. Asymmetric Encryption",
+        "content": "**Asymmetric encryption** uses **two mathematically-connected keys**: a **public key** (share with anyone) and a **private key** (keep secret) — the private key cannot practically be derived from the public key.\n\n**Direction matters:** encrypt with the **receiver's public key**, decrypt with the **receiver's private key**. Real-life analogy: the public key is a mailbox slot anyone can drop a letter into; the private key is the key that opens the mailbox.\n\nCommon algorithms: **RSA, ECC**, Diffie-Hellman, ECDH. Used for HTTPS key exchange, digital signatures, SSH, certificates, and JWT with RS256.\n\n**HTTPS uses both:** asymmetric cryptography handles trust setup / key exchange (slower), while symmetric encryption handles the actual fast data transfer.",
+        "code": "Message + Receiver's Public Key  -> Cipher Text\nCipher Text + Receiver's Private Key -> Message\n\n// Symmetric vs Asymmetric\n// Keys:  one shared key        vs  public + private key pair\n// Speed: fast                  vs  slower\n// Best:  large data            vs  key exchange, identity, signatures\n// e.g.:  AES                   vs  RSA, ECC"
+      },
+      {
+        "id": "hashing",
+        "title": "6. Hashing",
+        "content": "**Hashing** creates a fixed-size fingerprint of data — `Input → Hash Function → Hash Value` (also called a digest). A good hash function is:\n\n- **Deterministic** — same input always gives the same hash.\n- **Fixed-size output** — \"Hi\" and a 5 GB video both produce a hash of the same length (SHA-256 → 256 bits).\n- **One-way** — you cannot practically reverse a hash back to the input.\n- **Avalanche effect** — a tiny input change (`hello` → `Hello`) produces a completely different hash.\n- **Collision-resistant** — two different inputs producing the same hash should be practically impossible to find (even though, in theory, collisions can exist since infinite inputs map to fixed-size outputs).\n\n**Password verification with hashing:** the server stores the password's **hash**, never the original password. On login, it hashes the entered password and compares hashes — no decryption ever happens. **Do not use plain SHA-256 for passwords** — use bcrypt, Argon2, scrypt, or PBKDF2 instead (MD5 and SHA-1 are broken/weak, avoid for security).",
+        "code": "Input -> Hash Function -> Hash\n\"Hello\" -> \"185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969\"\n\n// Password verification — no decryption, only re-hash + compare\nStored:  passwordHash = hash(\"myPassword123\")\nLogin:   hash(enteredPassword) === passwordHash ?"
+      },
+      {
+        "id": "password-hashing-salt-pepper",
+        "title": "7. Password Hashing, Salt & Pepper",
+        "content": "Normal hashing is fast; **password hashing should be slow** — otherwise attackers can try millions/billions of guesses quickly. Plain hashing also has a problem: identical passwords produce identical hashes, which attackers exploit with precomputed **rainbow tables**.\n\n**Salt** — a random value added to the password before hashing, so identical passwords produce different hashes. Salt is stored **alongside** the hash and is **not secret**.\n\n**Pepper** — an additional **secret** value stored separately (e.g. environment variables), not in the database.\n\nUse intentionally slow algorithms: **bcrypt, Argon2, scrypt, PBKDF2**.",
+        "code": "password + random salt -> password hash\n\n// User 1: password123 + saltA -> hash1\n// User 2: password123 + saltB -> hash2\n// Same password, different hashes because the salt differs\n\npassword + salt + pepper -> hash   // pepper is secret, kept outside the DB"
+      },
+      {
+        "id": "data-integrity",
+        "title": "8. Data Integrity",
+        "content": "**Data integrity** means the receiver should be able to detect whether data was silently modified. **Confidentiality** asks **can someone read my data?** (tool: encryption); **integrity** asks **can someone change my data silently?** (tool: hash, HMAC, signature).\n\nSender hashes the data and sends both; receiver re-hashes the received data and compares. A mismatch means the data was changed.\n\n**Limitation of a plain hash:** an attacker can change **both** the data and its hash together, and the receiver's recomputed hash will match the (also-forged) hash it received. A plain hash catches **accidental** changes; it is **not enough** against a malicious attacker — that needs **HMAC or a digital signature**.",
+        "code": "Sender:   Data: amount=1000, Hash: hash(1000) = ABC123\nReceiver: hash(received data) == ABC123 ?  -> matches, unchanged\n\n// Malicious tamper — attacker changes BOTH data and hash together\nAttacker sends: Data: amount=9000, Hash: hash(9000) = XYZ999\nReceiver:       hash(9000) == XYZ999 ?  -> matches! plain hash alone is fooled"
+      },
+      {
+        "id": "hmac",
+        "title": "9. HMAC",
+        "content": "**HMAC = Hash-based Message Authentication Code** — instead of `hash(data)`, it's `HMAC(data, secretKey)`. A plain hash can be recalculated by anyone; HMAC **needs the secret key**, so an attacker without it cannot forge a valid HMAC.\n\n**What it provides:** integrity **+** authentication via a shared secret — it proves the data wasn't changed **and** that the sender likely knew the shared secret.\n\n**Real backend example — payment webhooks:** a payment gateway sends `payment_id`, `amount`, `status`, and a `signature`. Your backend recomputes the HMAC with the shared secret key; if it matches, the webhook is trusted — this protects against fake payment-success requests.",
+        "code": "HMAC(amount=1000, secretKey=\"mySecret\") = PQR555\n\n// Sender sends: Data + HMAC\n// Receiver (same secret): HMAC(receivedData, \"mySecret\") == PQR555 ?\n\n// Plain Hash: uses only data, anyone can calculate, good for accidental changes\n// HMAC:       uses data + secret, only secret holder can calculate, good for tampering"
+      },
+      {
+        "id": "digital-signature",
+        "title": "10. Digital Signature",
+        "content": "A **digital signature** proves three things at once: **authentication** (sender is genuine), **integrity** (data wasn't changed), and **non-repudiation** (sender cannot deny later). It uses public/private keys, but in the **opposite direction** from encryption: the **sender signs with their private key**, and the **receiver verifies with the sender's public key**.\n\nUsually you don't sign the whole message — you sign its **hash**: `Message → Hash → Hash + Sender's Private Key → Signature`. If an attacker changes the message, the hash changes, so the old signature no longer verifies. If an attacker tries to forge a new signature, they'd need the sender's private key, which they don't have.\n\n**Non-repudiation caveat:** this only holds if the sender's private key was never stolen. Used for HTTPS certificates, software/Git commit signing, legal documents, blockchain transactions, and JWT with RS256.",
+        "code": "// Signing\nhash(\"Pay ₹1000 to user 25\") = H123\nSignature = sign(H123, Rohit's private key) = S987\n\n// Verifying\nhash(receivedMessage) == H123 ?\nverify(S987, Rohit's public key) == valid ?\n\n// Digital Signature vs HMAC\n// Key type:        private/public pair   vs  shared secret\n// Who can verify:   anyone with public key vs only same-secret holder\n// Non-repudiation:  yes                   vs  weak/no"
+      },
+      {
+        "id": "ssl-tls-https",
+        "title": "11. SSL, TLS, and HTTPS",
+        "content": "**Correct terminology:** SSL is old/deprecated; **TLS** is the modern protocol; **HTTPS = HTTP + TLS**. People still say \"SSL certificate\" but usually mean a TLS certificate.\n\nHTTPS provides **confidentiality** (encrypted data), **integrity** (can't be silently modified), and **server authentication** (browser verifies the real domain). It uses **both** cryptography types: asymmetric for trust setup/key exchange, symmetric for the actual fast data transfer.\n\n**Important limitation:** HTTPS proves a **secure connection to a domain**, not that the site is trustworthy — `https://fake-gift-card-scam.com` can have perfectly valid HTTPS. It does not mean the website is honest, bug-free, or won't scam you.",
+        "code": "// HTTP vs HTTPS\n// Encrypted:      No   vs  Yes\n// Integrity:       No strong protection  vs  Yes\n// Server auth:     No   vs  Yes\n// URL:             http://  vs  https://\n// Default port:    80   vs  443\n// Certificate:     No   vs  Yes"
+      },
+      {
+        "id": "how-tls-certificate-is-issued",
+        "title": "12. How a TLS Certificate Is Issued",
+        "content": "**Correction:** TLS is the protocol, not something \"issued\" — a **certificate** is issued for a specific **domain/server**.\n\n**The flow:**\n1. The domain owner generates a **public/private key pair** — the private key **never leaves the server** / is never sent to the CA.\n2. The owner creates a **CSR (Certificate Signing Request)** containing the domain name and the server's public key (never the private key).\n3. The **Certificate Authority (CA)** — e.g. Let's Encrypt, DigiCert — verifies domain ownership, typically via a **DNS TXT record** or by hosting a file at a well-known path.\n4. The CA **issues the certificate**, containing the domain name, public key, issuer, validity dates — and signs it with the **CA's own private key**, vouching \"this public key belongs to this domain.\"\n5. The server **installs** the certificate + private key (in Nginx, Apache, a load balancer, Cloudflare, Vercel, Netlify, AWS ALB, etc.).\n\nBrowsers trust the certificate because they trust the CA that signed it.",
+        "code": "You generate a public/private key pair.\nYou submit the public key to the CA inside a CSR.\nCA verifies you own the domain (DNS or HTTP challenge).\nCA signs the certificate: \"this public key belongs to this domain.\"\nYou install the certificate + private key on your server.\nBrowser trusts the certificate because it trusts the CA."
+      },
+      {
+        "id": "certificate-fingerprint-and-browser-verification",
+        "title": "13 & 14. Certificate Fingerprint & Browser Verification",
+        "content": "A **certificate fingerprint** is not the certificate itself — it's a **SHA-256 hash of the full certificate**, used as a compact way to identify it. A **public key fingerprint** is likewise a hash of just the public key. The real certificate contains much more: domain name, actual public key, issuer, validity dates, signature algorithm, and the CA's digital signature.\n\n**When a browser connects over HTTPS, it checks:**\n1. **Domain name** — the certificate must match the domain being visited.\n2. **Validity date** — rejects/warns if expired.\n3. **Issuer & CA signature** — verifies the CA's digital signature using the CA's public key (root CAs are pre-trusted by the OS/browser).\n4. **Certificate chain** — website cert → intermediate CA → root CA, each link verified.\n5. **Private key ownership** — during the TLS handshake, the server proves it holds the matching private key **without ever sending it**.\n\n**One-line summary:** the browser verifies the full certificate using the CA's public key, checks domain and expiry, then confirms the server owns the matching private key — only then does HTTPS communication start.",
+        "code": "Certificate = full ID card\nCertificate fingerprint = hash/id number of that ID card\nPublic key fingerprint = hash of just the public key\n\n// Chain of trust\nRoot CA -> Intermediate CA -> Website Certificate"
+      },
+      {
+        "id": "session-id",
+        "title": "15. Session ID",
+        "content": "HTTP is **stateless** — every request is independent, so the server needs a way to remember \"this request is from an already-logged-in user.\"\n\n**Session-based auth flow:** user logs in → server verifies credentials → server generates a random **session ID** → server stores `sessionId → userId` (in memory/Redis/DB) → server sends the session ID to the browser via a cookie (`Set-Cookie: sid=...`) → future requests automatically include that cookie → server looks up the session store to identify the user.\n\n**Mental model:** like a hotel room card — the card number (204) doesn't contain your details, but the hotel's system knows who's in room 204. **Logout is simple:** delete the session server-side, and that session ID becomes instantly invalid.",
+        "code": "sid = \"a8x91kLmPq22\"\nSession store: { \"a8x91kLmPq22\": { userId: 101 } }\n\nSet-Cookie: sid=a8x91kLmPq22        // server -> browser, on login\nCookie: sid=a8x91kLmPq22            // browser -> server, on every later request"
+      },
+      {
+        "id": "jwt-token",
+        "title": "16. JWT Token",
+        "content": "**JWT = JSON Web Token.** Unlike a session ID, a JWT carries the user's information **inside the token itself**, as three dot-separated parts: **`header.payload.signature`**.\n\n- **Header** — token type and signing algorithm (e.g. `HS256`).\n- **Payload** — the claims/data (`userId`, `role`, `exp`).\n- **Signature** — `sign(header + payload, secretKey)`, proving the token wasn't tampered with.\n\n**Important:** the JWT payload is only **Base64URL-encoded, not encrypted** — anyone can decode and read it. What they **can't** do is modify it undetected, since that breaks the signature.\n\n**Never put sensitive data in the payload** (passwords, card numbers) — only non-secret claims like `userId`, `role`, `exp`.",
+        "code": "// header.payload.signature\n{ \"alg\": \"HS256\", \"typ\": \"JWT\" }              // header\n{ \"userId\": 101, \"role\": \"user\", \"exp\": 1780000000 }  // payload (readable, not secret)\nsignature = sign(header + payload, secretKey)\n\n// Client sends the token on every request:\nAuthorization: Bearer <jwt>"
+      },
+      {
+        "id": "session-id-vs-jwt",
+        "title": "17 & 18. Session ID vs JWT, and Securing Both",
+        "content": "**Session ID** — data lives on the **server**; client holds only a meaningless random ID; logout is a simple server-side delete; needs a server lookup on every request.\n\n**JWT** — data lives **inside the token**; the client holds a signed, readable payload; logout is **harder** (a valid JWT keeps working until it expires, unless you add short expiry, a blacklist, token versioning, or refresh-token rotation); no server lookup needed to trust the payload.\n\n**Simple line:** session ID is server-side login memory; JWT is signed, client-carried login proof. Session cookies are common for normal web apps; JWT is common for APIs/mobile/microservices, and should be **short-lived**.\n\n**Both are dangerous if stolen** — protect them with: HTTPS, **HttpOnly** cookies (JS can't read them — blocks XSS token theft), **Secure** cookies (HTTPS-only transport), **SameSite** cookies (CSRF protection), short expiry, and refresh-token rotation.",
+        "code": "// Session ID              vs  JWT\n// Data stored: on server   vs  inside token\n// Server lookup: usually yes vs not always\n// Logout: easy              vs  harder (needs blacklist/short expiry)\n// Token size: small         vs  larger\n// Readability: meaningless  vs  payload readable"
+      },
+      {
+        "id": "jwt-and-data-integrity",
+        "title": "19. JWT and Data Integrity",
+        "content": "JWT connects directly back to the hashing/signature concepts above: the payload is Base64URL-**encoded**, not encrypted. An attacker who decodes `{ \"userId\": 101, \"role\": \"user\" }` and changes it to `{ \"userId\": 101, \"role\": \"admin\" }` breaks the signature the moment they re-encode it — the server's signature check rejects the tampered token.\n\n**The key line:** JWT is **signed**, protecting integrity — it is **not encrypted** by default, so it protects **against modification**, not **against reading**.",
+        "code": "// Attacker decodes and edits the payload:\n{ \"userId\": 101, \"role\": \"admin\" }   // tampered\n\n// Server recomputes the signature from the (tampered) header+payload\n// It won't match the original signature -> token rejected"
+      },
+      {
+        "id": "final-summary",
+        "title": "20. Complete Final Summary",
+        "content": "- **Encoding** — format change, not security (Base64).\n- **Encryption** — hides data, reversible with a key, for confidentiality.\n- **Symmetric encryption** — one shared key, fast, used for large data; the problem is key sharing.\n- **Asymmetric encryption** — public key encrypts / private key decrypts; used for key exchange, identity, signatures.\n- **Hashing** — fixed-size, one-way fingerprint, used for verification, not recovery.\n- **Password hashing** — always salted, always slow (bcrypt/Argon2/scrypt/PBKDF2), never plain SHA-256.\n- **Data integrity** — detecting silent change; a plain hash catches accidents, HMAC/signature catch malicious tampering.\n- **HMAC** — hash + secret key, for webhooks/API verification.\n- **Digital signature** — private key signs, public key verifies; proves authentication + integrity + non-repudiation.\n- **TLS certificate** — binds a domain to a server's public key, signed by a CA.\n- **HTTPS** — HTTP + TLS: encryption + integrity + server authentication.\n- **Session ID** — random client-held ID, real session data lives server-side.\n- **JWT** — signed token carrying readable claims; the signature (not encryption) prevents tampering."
       }
     ],
     "quiz": [
       {
-        "question": "What is the main topic of Day 30?",
+        "question": "What is the key difference between encoding and encryption?",
         "options": [
-          "Mongoose ODM",
-          "HTML tables only",
-          "Linux kernel modules",
-          "Photoshop layers"
+          "Encoding changes format and needs no key (e.g. Base64, reversible by anyone); encryption hides data and requires a key to reverse",
+          "Encoding and encryption are the same thing",
+          "Encryption is reversible without a key, encoding is not",
+          "Encoding is only used for passwords"
         ],
         "answer": 0,
-        "explanation": "Module 30 focuses on Mongoose ODM."
+        "explanation": "Encoding (like Base64) is a reversible format change that anyone can undo — it is not security. Encryption hides data and requires a secret key to reverse it."
       },
       {
-        "question": "Which phase includes this module?",
+        "question": "Why is symmetric encryption's main weakness described as the 'key distribution problem'?",
         "options": [
-          "Phase 2: Backend Mastery",
-          "Only DevOps",
-          "Only CSS",
-          "Not part of the course"
+          "Both sides need the exact same secret key, and safely sharing that key without it being intercepted is difficult",
+          "Symmetric encryption cannot encrypt large files",
+          "AES is too slow for real use",
+          "Symmetric keys expire after one use"
         ],
         "answer": 0,
-        "explanation": "This module belongs to Phase 2: Backend Mastery."
+        "explanation": "Symmetric encryption requires both parties to hold the identical secret key. If that key is transmitted openly to share it, an attacker can steal it — this is the key distribution problem that asymmetric encryption solves."
+      },
+      {
+        "question": "Why can't a plain hash alone protect against a malicious attacker who tampers with data in transit?",
+        "options": [
+          "The attacker can recompute a new hash for the changed data and send both together, so the receiver's hash check still matches",
+          "Hashes are reversible so the attacker can just decrypt them",
+          "Plain hashes only work for text, not for numbers",
+          "A plain hash always produces the same output regardless of input"
+        ],
+        "answer": 0,
+        "explanation": "A plain hash only detects if the hash the receiver computes differs from the one they were sent. If the attacker changes both the data AND recomputes a matching hash, verification passes. HMAC (secret key) or a digital signature (private key) closes this gap since the attacker doesn't have the secret/private key."
+      },
+      {
+        "question": "Why is a JWT's payload readable by anyone who intercepts it, even though the token is considered secure against tampering?",
+        "options": [
+          "JWT payloads are only Base64URL-encoded (not encrypted); the signature detects tampering but does not hide the content",
+          "JWT payloads are always encrypted with AES by default",
+          "Only the server can decode a JWT payload",
+          "JWT tokens expire immediately after being read once"
+        ],
+        "answer": 0,
+        "explanation": "A JWT is signed, not encrypted, by default. Anyone can decode the payload and read it, but changing it invalidates the signature — so JWT protects integrity, not confidentiality. Sensitive data should never be placed in a JWT payload."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=DZBGEVgL2eE",
-    "youtubeTitle": "Mongoose Crash Course — Beginner to Advanced — Web Dev Simplified",
+    "youtubeUrl": "https://www.youtube.com/watch?v=kb_scuDUHls",
+    "youtubeTitle": "Cryptography for Beginners — SHA-256, AES, RSA, Passwords — freeCodeCamp",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
