@@ -4,6 +4,21 @@
 
 export const DSA_PDF = '/dsa-notes/dsa-handwritten-notes.pdf';
 
+// Complete DSA Notes — a 77-page illustrated handwritten reference covering
+// every major topic (public/dsa-notes/complete-dsa-notes.pdf), credit: @curious_programmer.
+export const COMPLETE_DSA_PDF = '/dsa-notes/complete-dsa-notes.pdf';
+export const COMPLETE_DSA_COVER = '/dsa-notes/complete-dsa-notes-cover.jpg';
+export const COMPLETE_DSA_GROUPS = [
+  ['🔢', 'Arrays'],
+  ['🔗', 'Linked Lists'],
+  ['📚', 'Stacks & Queues'],
+  ['📊', 'Sorting Algorithms'],
+  ['🌳', 'Trees'],
+  ['🔑', 'Hash Tables'],
+  ['🕸️', 'Graphs'],
+  ['🧮', 'Recursion & DP'],
+];
+
 // LeetCode Solutions in Python — a 227-page problem book grouped by data
 // structure (public/dsa-notes/leetcode-solutions-python.pdf), credit: LeetCode.
 export const LEETCODE_PDF = '/dsa-notes/leetcode-solutions-python.pdf';

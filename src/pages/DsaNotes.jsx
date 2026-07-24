@@ -1,6 +1,15 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { DSA_TOPICS, DSA_PDF, LEETCODE_PDF, LEETCODE_COVER, LEETCODE_GROUPS } from '../data/dsaNotes';
+import {
+  DSA_TOPICS,
+  DSA_PDF,
+  COMPLETE_DSA_PDF,
+  COMPLETE_DSA_COVER,
+  COMPLETE_DSA_GROUPS,
+  LEETCODE_PDF,
+  LEETCODE_COVER,
+  LEETCODE_GROUPS,
+} from '../data/dsaNotes';
 import './DsaNotes.css';
 
 function Block({ block }) {
@@ -96,6 +105,50 @@ export default function DsaNotes() {
           </nav>
         </div>
       </header>
+
+      <section className="dsa-leetcode" id="complete-dsa-notes">
+        <div className="dsa-leetcode-inner">
+          <div className="dsa-leetcode-text">
+            <p className="dsa-eyebrow">Reference · 77 pages</p>
+            <h2 className="dsa-leetcode-title">
+              <span aria-hidden="true">📗</span> Complete DSA Notes
+            </h2>
+            <p className="dsa-leetcode-sub">
+              A <strong>77-page illustrated handwritten reference</strong> covering every major data structure
+              and algorithm topic — arrays through advanced graphs — in the same colourful, diagram-first style
+              as the nine pages above, at full course depth.
+            </p>
+            <div className="dsa-leetcode-chips">
+              {COMPLETE_DSA_GROUPS.map(([icon, name]) => (
+                <span key={name} className="dsa-leetcode-chip">
+                  <span aria-hidden="true">{icon}</span> {name}
+                </span>
+              ))}
+            </div>
+            <div className="dsa-hero-actions">
+              <a href={COMPLETE_DSA_PDF} download className="dsa-btn dsa-btn-primary">
+                📥 Download Complete DSA Notes
+              </a>
+              <a href={COMPLETE_DSA_PDF} target="_blank" rel="noopener noreferrer" className="dsa-btn dsa-btn-outline">
+                Open in new tab ↗
+              </a>
+            </div>
+            <p className="dsa-leetcode-credit">Credit: @curious_programmer.</p>
+          </div>
+
+          <figure className="dsa-leetcode-figure">
+            <a href={COMPLETE_DSA_PDF} target="_blank" rel="noopener noreferrer">
+              <img
+                src={COMPLETE_DSA_COVER}
+                alt="Complete DSA Notes — cover of a 77-page illustrated handwritten reference covering arrays, linked lists, stacks & queues, sorting, trees, hash tables, graphs, recursion and DP."
+                loading="lazy"
+                onError={(e) => { const f = e.currentTarget.closest('.dsa-leetcode-figure'); if (f) f.style.display = 'none'; }}
+              />
+            </a>
+            <figcaption>Cover — click to open the full PDF ↗</figcaption>
+          </figure>
+        </div>
+      </section>
 
       <section className="dsa-leetcode" id="leetcode-solutions">
         <div className="dsa-leetcode-inner">
