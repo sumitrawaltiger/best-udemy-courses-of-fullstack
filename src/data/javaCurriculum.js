@@ -25,6 +25,7 @@ const PHASE_LESSONS = [
       ['Control Flow & Loops', 'if/else, switch, for, while, and do-while', ['Conditionals', 'switch expressions', 'Loops', 'break & continue']],
       ['OOP — Classes & Objects', 'Encapsulation, constructors, and methods', ['Classes & objects', 'Constructors', 'this keyword', 'Access modifiers']],
       ['OOP — Inheritance & Polymorphism', 'Abstract classes, interfaces, and overriding', ['Inheritance', 'Method overriding', 'Interfaces', 'Polymorphism']],
+      ['Java Internals', 'HashMap, String immutability, memory model, and concurrency basics', ['HashMap internals', 'Heap vs stack', 'equals() & hashCode()', 'Threads & synchronization']],
     ],
   },
   {
@@ -485,6 +486,68 @@ assertEquals("Pune",  copy.getAddress().getCity());`,
     image: '/java-notes/deep-copy-vs-shallow-copy-p8.jpg',
     imageAlt:
       'Decision guide, tests and interview revision — a decision checklist for choosing copy semantics, a JUnit test asserting the copy and its nested Address are different objects and mutating the copy leaves the original unchanged, 30-second interview answers about assignment, pass-by-value, shallow vs deep copy, List.copyOf and Object.clone, and a final production checklist',
+  },
+];
+
+// Java Internals — concepts every developer should really understand (visual note)
+const JAVA_INTERNALS_SECTIONS = [
+  {
+    id: 'hashmap-internals',
+    title: 'HashMap Internals',
+    content:
+      "**`HashMap`** is based on a **Hash Table**, which internally is an **array of buckets**.\n\n**Key operations:** `put(k, v)`, `get(k)`, `remove(k)`.\n\n**1. When you call `put(k, v)`:**\n- Calculate the hash — `hash = hashCode(k)`.\n- Find the index — `index = (n - 1) & hash` (n = capacity).\n- If the bucket is empty, store the new node there.\n- If not, handle the collision.\n\n**2. Collision handling:**\n- **Java 8** — collisions in a bucket are stored as a **linked list**.\n- **Java 8+** — if a bucket's list grows past **8** entries, it converts to a **Red-Black Tree** for faster lookups; it reverts back to a linked list if the size drops below **6**.\n\n**3. Resize:**\n- Triggered when `size > 0.75 * capacity` (the **load factor**).\n- **Capacity doubles** (e.g. 16 → 32).\n- All existing entries are **rehashed** into the new, larger array.\n\n**Key takeaway:** a good `hashCode()` and `equals()` implementation is crucial for performance — poor hashing collapses buckets into long lists (or trees) and slows every lookup.",
+    code: "Map<String, Integer> map = new HashMap<>(); // capacity 16\nmap.put(\"a\", 1); // hash(\"a\") -> bucket index\nmap.put(\"b\", 2);\nmap.get(\"a\");    // same hash -> same bucket -> found",
+    image: '/java-notes/java-internals-concepts.jpg',
+    imageAlt:
+      'Java Internals — concepts you should really understand: an 8-panel infographic covering HashMap internals (buckets, put/get/remove, collision handling via linked list and red-black tree, resizing), why String is immutable (security, thread safety, String Pool optimization, concat creating a new heap object), heap vs stack (what each stores, size, thread sharing, speed), equals() vs hashCode() (the contract that equal objects must share a hash code), Comparable vs Comparator (natural vs custom ordering), ExecutorService (thread pool types and task flow), Thread Lifecycle / java.lang.Thread.State (NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING, TERMINATED), and synchronization basics (synchronized keyword/method, ReentrantLock, a race-condition example without synchronization vs a correct example with it)',
+  },
+  {
+    id: 'why-string-is-immutable',
+    title: 'Why String is Immutable',
+    content:
+      "**`String` is immutable in Java** for three main reasons:\n- **Security** — e.g. passwords, file paths, and network connections passed as `String` can't be silently changed after validation.\n- **Thread safety** — an immutable object can be shared across threads with no synchronization needed.\n- **String Pool optimization** — identical literals can safely share the same object in memory.\n\n**How it works:** any operation on a `String` creates a **new object in the Heap** — the original is never modified.\n\n`concat()` creates a **new String object on the Heap**. It does **not** add the result to the **String Pool** — only string **literals** and `.intern()`-ed strings are stored in the String Pool.\n\n**Key takeaway:** immutability gives `String` safety and improves performance via caching (the String Pool).",
+    code: "String s1 = \"hello\";                  // literal -> interned in the String Pool\nString s2 = s1.concat(\" world\");      // new String \"hello world\" on the Heap (NOT pooled)\n\nSystem.out.println(s1 == s2);         // false — different objects\nSystem.out.println(s1 == \"hello\");    // true  — same pooled literal",
+  },
+  {
+    id: 'heap-vs-stack',
+    title: 'Heap vs Stack',
+    content:
+      "Java splits runtime memory into two very different regions:\n\n**Stack:**\n- Stores **primitive types** and **references** (not the objects themselves).\n- **Fixed size**, allocated **per thread**.\n- **LIFO** (Last In, First Out).\n- **Faster access** than the heap.\n\n**Heap:**\n- Stores **objects** (all `new` allocations — dynamically allocated memory).\n- **Dynamic size**.\n- **Shared among all threads**.\n- **Slower** than the stack.\n\n**Key takeaway:** the Stack is fast and small; the Heap is flexible and large.",
+    code: "int x = 10;   // x lives on the Stack\nint y = 20;   // y lives on the Stack, above x (top of stack)\n\nArrayList<Integer> list = new ArrayList<>();\n// the ArrayList object itself lives on the Heap;\n// the `list` reference that points to it lives on the Stack",
+  },
+  {
+    id: 'equals-vs-hashcode',
+    title: 'equals() vs hashCode()',
+    content:
+      "**`equals()`**\n- Compares **actual content** to check logical equality (`a.equals(b)`).\n\n**`hashCode()`**\n- Returns an **integer hash value**.\n- Used by hash-based collections (`HashMap`, `HashSet`).\n\n**Important contract:** if `a.equals(b)` is `true`, then `a.hashCode() == b.hashCode()` must also be `true`. The reverse isn't required — equal hash codes don't guarantee the objects are equal (a hash **collision**).\n\n**Key takeaway:** always override `equals()` and `hashCode()` together — breaking the contract makes `HashMap`/`HashSet` silently lose or duplicate entries.",
+    code: "@Override\npublic boolean equals(Object o) {\n    if (this == o) return true;\n    if (!(o instanceof Student s)) return false;\n    return this.age == s.age && this.name.equals(s.name);\n}\n\n@Override\npublic int hashCode() {\n    return Objects.hash(name, age);\n}",
+  },
+  {
+    id: 'comparable-vs-comparator',
+    title: 'Comparable vs Comparator',
+    content:
+      "Two different ways to define **ordering** for objects:\n\n**`Comparable`** (natural ordering)\n- Implemented **by the class itself**.\n- Uses the `compareTo()` method.\n- Only **one** natural ordering per class.\n\n**`Comparator`** (custom ordering)\n- Defined in a **separate class**.\n- Uses the `compare()` method.\n- **Multiple orderings** possible for the same class.\n\n**Key takeaway:** `Comparable` = the class's default order; `Comparator` = a custom order defined from the outside, without changing the class.",
+    code: "class Student implements Comparable<Student> {\n    int age;\n    public int compareTo(Student s) {\n        return this.age - s.age;\n    }\n}\n\nclass AgeComparator implements Comparator<Student> {\n    public int compare(Student s1, Student s2) {\n        return s1.age - s2.age;\n    }\n}",
+  },
+  {
+    id: 'executorservice-explained',
+    title: 'ExecutorService Explained',
+    content:
+      "**`ExecutorService`** is a framework to manage and control thread execution — instead of creating raw `Thread` objects yourself.\n\n**Why use it?**\n- **Reuse threads** instead of creating a new one per task.\n- **Better performance** through pooling.\n- **Manage the thread lifecycle** (submit, shutdown, await termination).\n\n**Common thread pool types:**\n- `newFixedThreadPool(n)` — a **fixed number** of threads.\n- `newCachedThreadPool()` — creates new threads **as needed**, reusing idle ones.\n- `newSingleThreadExecutor()` — a single worker thread.\n- `newScheduledThreadPool(n)` — for **scheduling** delayed/periodic tasks.\n\n**Flow:** Task Submit → Task Queue → Thread Pool → Execute → Complete.\n\n**Key takeaway:** `ExecutorService` helps write scalable and efficient multithreaded code by separating **task submission** from **how and when** the threads actually run them.",
+    code: "ExecutorService executor = Executors.newFixedThreadPool(4);\nexecutor.submit(() -> System.out.println(\"Task running\"));\nexecutor.shutdown();",
+  },
+  {
+    id: 'thread-lifecycle',
+    title: 'Thread Lifecycle (java.lang.Thread.State)',
+    content:
+      "A Java thread can be in one of **six states**, defined by `java.lang.Thread.State`:\n\n- **NEW** — the thread has been created but `start()` hasn't been called yet.\n- **RUNNABLE** — ready to run **or** actually running (the JVM doesn't distinguish the two — the OS scheduler decides).\n- **BLOCKED** — waiting to acquire a **monitor lock** held by another thread.\n- **WAITING** — waiting **indefinitely** for another thread (triggered by `Object.wait()`, `Thread.join()`, `LockSupport.park()`).\n- **TIMED_WAITING** — waiting for a **specified time** (triggered by `Thread.sleep(ms)`, `Object.wait(ms)`, `LockSupport.parkNanos()`).\n- **TERMINATED** — the thread has finished running (`run()` returned).\n\n**Flow:** `NEW` --`start()`--> `RUNNABLE` --lock acquired / notified / timeout--> back to `RUNNABLE` --`run()` finishes--> `TERMINATED`. From `RUNNABLE`, a thread moves to `BLOCKED`, `WAITING`, or `TIMED_WAITING` while it waits, then returns to `RUNNABLE`.\n\n**Key takeaway:** the JVM only tracks 6 thread states — `RUNNABLE` includes both **ready-to-run** and **actually running**; which one is happening at any instant is decided by the OS scheduler.",
+  },
+  {
+    id: 'synchronization-basics',
+    title: 'Synchronization Basics',
+    content:
+      "**Why synchronize?** Multiple threads can access shared resources at the same time, which can cause **data inconsistency** if their reads/writes interleave.\n\n**Ways to synchronize:**\n1. **`synchronized` keyword** — locks an object; only one thread may access it at a time.\n2. **`synchronized` method** — locks the current object (`this`).\n3. **`ReentrantLock`** — more features than `synchronized`, including `tryLock()` and fair locking.\n\n**Without synchronization:** Thread-1 and Thread-2 both read `count = 1`, both compute `count + 1`, and both write back `count = 1` — the increment is **lost** because their read-modify-write steps interleaved (a **race condition**).\n\n**With synchronization:** Thread-1 acquires the lock, completes `count = count + 1`, releases the lock — only then does Thread-2 acquire it and do the same. The final `count = 2` is **correct**.\n\n**Key takeaway:** synchronization serializes access to shared mutable state so read-modify-write operations complete atomically, preventing race conditions.",
+    code: "// Without synchronization — race condition\ncount = count + 1;   // Thread-1 and Thread-2 interleave -> lost update (wrong: count = 1)\n\n// With the synchronized keyword — correct\nsynchronized (lock) {\n    count = count + 1;   // count = 2 (correct)\n}\n\n// ReentrantLock alternative\nReentrantLock lock = new ReentrantLock();\nlock.lock();\ntry {\n    count = count + 1;\n} finally {\n    lock.unlock();\n}",
   },
 ];
 
@@ -1384,6 +1447,9 @@ function buildLessons() {
       }
       if (title === 'OOP — Classes & Objects') {
         lesson.sections = [...JAVA_METHODS_SECTIONS, ...DEEP_SHALLOW_COPY_SECTIONS];
+      }
+      if (title === 'Java Internals') {
+        lesson.sections = JAVA_INTERNALS_SECTIONS;
       }
       if (title === 'Building REST APIs') {
         lesson.sections = [...REST_API_SECTIONS, ...MAPSTRUCT_SECTIONS];
