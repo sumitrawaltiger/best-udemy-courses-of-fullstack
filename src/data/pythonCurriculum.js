@@ -150,6 +150,37 @@ const PYTHON_MODULES_SECTIONS = [
     content: "Create your own module and import it into another file.\n\n**Step 1:** create a file named `calculator.py` with your functions.\n**Step 2:** import and use it in `main.py` — with `import calculator`, `import calculator as calc`, or `from calculator import add, mul`.",
     code: "# calculator.py\ndef add(a, b):\n    return a + b\n\ndef sub(a, b):\n    return a - b\n\ndef mul(a, b):\n    return a * b\n\ndef div(a, b):\n    return a / b\n\n\n# main.py\n# import calculator\n# import calculator as calc\nfrom calculator import add, mul\n\nprint(add(10, 20))\nprint(mul(10, 20))",
   },
+  {
+    id: "what-is-a-python-library",
+    title: "What is a Python Library?",
+    content: "Imagine writing a calculator.\n\n- **Without libraries** — you write every mathematical function yourself.\n- **With libraries** — someone already wrote those functions; you simply use them.\n\n**Library = ready-made code.**",
+    code: "### without library ###\ndef square(num):\n    return num*num\n\nprint(square(10))\n\n### using library ###\nimport math\n\nprint(math.sqrt(100))",
+  },
+  {
+    id: "library-real-life-example",
+    title: "Real-Life Example — Building a House",
+    content: "Suppose you are constructing a house.\n\n**Without a library**, you'd have to **manufacture** the bricks, cement, steel, doors, and windows yourself before you could even start building — which is practically impossible.\n\nInstead, we **purchase ready-made material** required for house construction.\n\nProgramming is the same — **libraries are ready-made building blocks**.",
+  },
+  {
+    id: "what-is-a-library",
+    title: "What is a Library?",
+    content: "A **library** is a **collection of packages**.\n\n**Example — the NumPy library** contains packages for:\n- Linear Algebra\n- Random\n- Statistics\n- Matrix\n\n**Package** means a collection of modules. **Module** means a Python file.",
+  },
+  {
+    id: "types-of-python-libraries",
+    title: "Types of Python Libraries",
+    content: "**1. Standard Libraries** — already available, no need to install:\n- `math`, `random`, `datetime`, `os`, `sys`, `json`\n\n**2. Third-Party Libraries** — need to be installed:\n- `numpy`, `pandas`, `matplotlib`, `flask`, `django`, `tensorflow`, `fastapi`, `scikit-learn`, `streamlit`\n\nWe use **`pip`** to install third-party libraries. It's best to use a **virtual environment** to install project-specific libraries.",
+  },
+  {
+    id: "popular-libraries-data-science-ml",
+    title: "Popular Libraries — Data Science, ML & Deep Learning",
+    content: "**NumPy**\n- Purpose: Numerical computing\n- Used for: Arrays, matrix operations, linear algebra\n- Projects: AI, ML, scientific computing\n\n**Pandas**\n- Purpose: Data analysis\n- Used for: Reading CSV/Excel, data cleaning, data manipulation\n- Projects: Data science, business intelligence\n\n**Matplotlib**\n- Purpose: Data visualization\n- Used for: Line, bar, pie, graph, and scatter charts\n- Projects: Reports, dashboards\n\n**Scikit-Learn**\n- Purpose: Machine learning\n- Used for: Classification, regression, clustering\n- Projects: Prediction systems, recommendation systems\n\n**TensorFlow**\n- Purpose: Deep learning\n- Used for: Neural networks, computer vision, NLP\n- Projects: Image recognition",
+  },
+  {
+    id: "popular-libraries-web-genai",
+    title: "Popular Libraries — Web, APIs & Gen AI Deployment",
+    content: "**Flask**\n- Purpose: Web framework\n- Used for: REST APIs, small web applications\n- Projects: Backend services, microservices\n\n**Django**\n- Purpose: Full-stack web framework\n- Used for: Large-scale enterprise web applications\n- Projects: E-commerce, ERP, CRM\n\n**FastAPI**\n- Purpose: High-performance API framework\n- Used for: REST APIs for AI/ML/Gen AI/Agentic AI projects\n- Projects: Backend REST APIs\n\n**Streamlit**\n- Purpose: Web apps for data science\n- Used for: Building interactive dashboards\n- Projects: AI chatbot demos, data visualization\n\n**Hugging Face**\n- Purpose: AI model hub\n- Used for: LLMs, text generation, image generation, AI model deployment\n- Projects: ChatGPT-like applications, AI assistants, translation systems",
+  },
 ];
 
 const PYTHON_FUNCTIONS_SECTIONS = [
