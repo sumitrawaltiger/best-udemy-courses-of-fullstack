@@ -28,6 +28,15 @@ export const CHEAT_SHEETS = [
     tags: ['JavaScript', 'ES6+', 'DOM', 'Async', 'Fetch', 'JS Engine', '47 Episodes'],
   },
   {
+    id: 'javascript-objects',
+    title: 'JavaScript Objects Cheat Sheet',
+    description:
+      'Every Object method at a glance — creating objects (object literals, Object.create()), accessing properties (dot/bracket notation, computed property names), iterating (keys(), values(), entries(), fromEntries()), copying & merging (spread syntax, Object.assign()), property descriptors (defineProperty(), getOwnPropertyDescriptor()), immutability helpers (freeze(), seal(), preventExtensions()), checking properties (hasOwn(), the in operator), and prototypes (getPrototypeOf(), setPrototypeOf()) — each with a runnable code example. By @thedevspaceio (Full-Stack AI Developer Roadmap).',
+    category: 'javascript',
+    pdf: '/cheatsheets/javascript-objects-cheat-sheet.pdf',
+    tags: ['JavaScript', 'Objects', 'Object.keys', 'Prototypes', 'Immutability'],
+  },
+  {
     id: 'python-ultimate',
     title: 'Python — The Ultimate Cheat Sheet',
     description:
