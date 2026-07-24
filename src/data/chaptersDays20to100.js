@@ -1219,66 +1219,127 @@ export const chaptersDays20to100 = [
     "slug": "mongodb-and-database-design",
     "track": "thunder",
     "day": 29,
-    "title": "MongoDB & Database Design",
-    "subtitle": "NoSQL documents, collections, and CRUD operations",
+    "title": "Mongoose CRUD Deep Dive",
+    "subtitle": "Lecture 10 — full CRUD, filter/update operators, and operator syntax rules",
     "duration": "2 hrs",
     "createdOn": "13 Aug 2026",
     "status": "published",
+    "notionUrl": "https://app.notion.com/p/Lecture-10-39f43ac5cab9808e8721ff357d027c9a?source=copy_link",
     "topics": [
-      "MongoDB basics",
-      "Collections & documents",
-      "CRUD operations",
-      "Schema design",
-      "MongoDB Atlas"
+      "create() & insertMany()",
+      "find, findOne, findById",
+      "select, sort, limit, pagination",
+      "Filter operators — $gt/$in/$or/$regex",
+      "Update operators — $set/$inc/$push/$pull",
+      "Count & exists checks",
+      "Operator syntax rules"
     ],
     "sections": [
       {
-        "id": "mongodb-basics",
-        "title": "MongoDB basics",
-        "content": "Learn **MongoDB basics** in Day 29 of Thunder: 100 Days of Code. NoSQL documents, collections, and CRUD operations",
-        "tryIt": "console.log(\"Day 29: MongoDB & Database Design\");"
+        "id": "base-model",
+        "title": "Mongoose CRUD Notes — Base Model",
+        "content": "**Day 29** follows **Lecture 10** ([Mongoose CRUD Notion notes](https://app.notion.com/p/Lecture-10-39f43ac5cab9808e8721ff357d027c9a?source=copy_link)) — a full pass over every Mongoose CRUD command, filter, and update operator, plus the [Lecture 10 assignment](https://app.notion.com/p/Assignment-Lecture-10-3a143ac5cab9804bb89feaa1b57a1bcc?source=copy_link).\n\nAssume we already have this model, with a customer document shaped like this:",
+        "code": "import Customer from \"./models/customer.model.js\";\n\n// Customer document shape:\n{\n  name: \"Rohit\",\n  accountNumber: 101,\n  city: \"Dehradun\",\n  age: 25,\n  balance: 5000,\n  accountType: \"saving\"\n}"
       },
       {
-        "id": "collections-and-documents",
-        "title": "Collections & documents",
-        "content": "Learn **Collections & documents** in Day 29 of Thunder: 100 Days of Code. NoSQL documents, collections, and CRUD operations",
-        "tryIt": "console.log(\"Day 29: MongoDB & Database Design\");"
+        "id": "create-operations",
+        "title": "1. CREATE Operations",
+        "content": "**`create()`** inserts **one** document — a shortcut for creating and saving a document in one call, commonly used for a normal API flow (e.g. creating one customer from Postman).\n\n**`insertMany()`** inserts **multiple** documents at once — useful for dummy data, seed data, and bulk inserts (100 customers insert karna).",
+        "code": "// 1.1 Create one document\nconst customer = await Customer.create({\n  name: \"Rohit\",\n  accountNumber: 101,\n  city: \"Dehradun\",\n  age: 25,\n  balance: 5000,\n  accountType: \"saving\"\n});\n\n// 1.2 Create many documents\nconst customers = await Customer.insertMany([\n  { name: \"Rohit\", accountNumber: 101, city: \"Dehradun\", age: 25, balance: 5000, accountType: \"saving\" },\n  { name: \"Aman\", accountNumber: 102, city: \"Delhi\", age: 22, balance: 10000, accountType: \"current\" }\n]);"
       },
       {
-        "id": "crud-operations",
-        "title": "CRUD operations",
-        "content": "Learn **CRUD operations** in Day 29 of Thunder: 100 Days of Code. NoSQL documents, collections, and CRUD operations",
-        "tryIt": "console.log(\"Day 29: MongoDB & Database Design\");"
+        "id": "read-operations",
+        "title": "2. READ Operations",
+        "content": "**`find()`** returns all documents; add a filter object for an exact match, or list multiple fields in the **same object** for an **AND** — `{ city: \"Delhi\", accountType: \"saving\" }` means city is Delhi **and** accountType is saving.\n\n**`findOne()`** returns the first match — use it when you expect only one result. **`findById()`** finds by MongoDB `_id` — use this when the frontend sends the `_id`.\n\n**`.select(\"name city balance\")`** returns only those fields (add `-_id` to also drop `_id`). **`.sort({ balance: 1 })`** is ascending, **`-1`** is descending. **`.limit(5)`** caps the result count — combine sort + limit for \"top 5 richest customers\".",
+        "code": "// 2.1 Fetch all\nconst customers = await Customer.find();\n\n// 2.2 Exact match\nconst customers = await Customer.find({ city: \"Delhi\" });\n\n// 2.3 Multiple conditions (AND)\nconst customers = await Customer.find({ city: \"Delhi\", accountType: \"saving\" });\n\n// 2.4 Fetch one\nconst customer = await Customer.findOne({ accountNumber: 101 });\n\n// 2.5 Fetch by MongoDB _id\nconst customer = await Customer.findById(\"66a88f1b2c1234567890abcd\");\n\n// 2.6 Select fields only (drop _id too)\nconst customers = await Customer.find().select(\"name city balance -_id\");\n\n// 2.7 Sort — 1 ascending, -1 descending\nconst customers = await Customer.find().sort({ balance: -1 });\n\n// 2.8 + 2.9 Limit, and sort + limit together (top 5 richest)\nconst customers = await Customer.find().sort({ balance: -1 }).limit(5);"
       },
       {
-        "id": "schema-design",
-        "title": "Schema design",
-        "content": "Learn **Schema design** in Day 29 of Thunder: 100 Days of Code. NoSQL documents, collections, and CRUD operations",
-        "tryIt": "console.log(\"Day 29: MongoDB & Database Design\");"
+        "id": "filter-operators",
+        "title": "3. FILTER / QUERY Operators",
+        "content": "Comparison operators — **`$gt`/`$gte`/`$lt`/`$lte`** — compare a field against a value (combine `$gte`+`$lte` on the same field for a range). **`$ne`** means not equal.\n\n**`$in`** matches **any** value from a list — use it when one field can have multiple possible values (e.g. city is Delhi OR Mumbai OR Dehradun). **`$or`** combines multiple **separate** conditions. **`$regex`** with `$options: \"i\"` does a case-insensitive search — `{ name: { $regex: \"ro\", $options: \"i\" } }` matches Rohit, rohan, and Aarohi.",
+        "code": "// Comparisons\nawait Customer.find({ balance: { $gt: 10000 } });\nawait Customer.find({ balance: { $gte: 10000, $lte: 50000 } }); // between\nawait Customer.find({ city: { $ne: \"Delhi\" } });\n\n// $in — any value from a list\nawait Customer.find({ city: { $in: [\"Delhi\", \"Mumbai\", \"Dehradun\"] } });\n\n// $or — multiple separate conditions\nawait Customer.find({ $or: [{ city: \"Delhi\" }, { balance: { $gt: 50000 } }] });\n\n// $regex — case-insensitive search\nawait Customer.find({ name: { $regex: \"ro\", $options: \"i\" } });"
+      },
+      {
+        "id": "update-operations",
+        "title": "4. UPDATE Operations",
+        "content": "**`updateOne()`** returns an **update result**, not the updated document. **`findOneAndUpdate()`** with **`{ new: true }`** returns the **updated** document — without `new: true`, Mongoose returns the **old** document by default.\n\n**`$inc`** increases (or, with a negative value, decreases) a number atomically — combine the filter's own balance check with `$inc` in one call (\"withdraw only if enough balance exists\") so the condition and the update happen together, rather than checking balance separately first. **`findByIdAndUpdate()`** is the same idea keyed by `_id`. **`updateMany()`** updates every matching document.",
+        "code": "// 4.1 updateOne — returns a result, not the document\nawait Customer.updateOne({ accountNumber: 101 }, { $set: { city: \"Mumbai\" } });\n\n// 4.2 findOneAndUpdate — new: true returns the UPDATED document\nconst customer = await Customer.findOneAndUpdate(\n  { accountNumber: 101 }, { $set: { city: \"Mumbai\" } }, { new: true }\n);\n\n// 4.4 / 4.5 Increase / decrease balance with $inc\nawait Customer.findOneAndUpdate({ accountNumber: 101 }, { $inc: { balance: 2000 } }, { new: true });\nawait Customer.findOneAndUpdate({ accountNumber: 101 }, { $inc: { balance: -2000 } }, { new: true });\n\n// 4.6 Withdraw only if enough balance — condition + update together\nconst customer = await Customer.findOneAndUpdate(\n  { accountNumber: 101, balance: { $gte: 2000 } },\n  { $inc: { balance: -2000 } },\n  { new: true }\n);\n\n// 4.7 Update by _id, 4.8 Update many\nawait Customer.findByIdAndUpdate(\"66a88f1b2c1234567890abcd\", { $set: { city: \"Delhi\" } }, { new: true });\nawait Customer.updateMany({ city: \"Delhi\" }, { $set: { accountType: \"saving\" } });"
+      },
+      {
+        "id": "delete-operations",
+        "title": "5. DELETE Operations",
+        "content": "**`deleteOne()`** removes one matching document and returns details like `acknowledged`/`deletedCount`. **`findOneAndDelete()`** returns the **deleted** document — use it when you want the deleted record in the response. **`findByIdAndDelete()`** deletes by `_id`.\n\n**`deleteMany()`** deletes every matching document — be careful: `Customer.deleteMany({})` with an **empty filter** deletes the **entire collection**.",
+        "code": "await Customer.deleteOne({ accountNumber: 101 });\nconst customer = await Customer.findOneAndDelete({ accountNumber: 101 });\nawait Customer.findByIdAndDelete(\"66a88f1b2c1234567890abcd\");\nawait Customer.deleteMany({ city: \"Delhi\" });\n\n// ⚠️ Never do this accidentally — deletes ALL documents:\n// await Customer.deleteMany({});"
+      },
+      {
+        "id": "count-and-exists",
+        "title": "6 & 7. Count & Exists Checks",
+        "content": "**`countDocuments()`** counts all documents, or matching documents when given a filter. **`exists()`** checks whether a matching document is present without fetching the whole document — handy for a quick `if (customerExists) { ... }` guard.",
+        "code": "// Count\nconst count = await Customer.countDocuments();\nconst count = await Customer.countDocuments({ city: \"Delhi\" });\nconst count = await Customer.countDocuments({ balance: { $gt: 50000 } });\n\n// Exists\nconst customerExists = await Customer.exists({ accountNumber: 101 });\nif (customerExists) {\n  console.log(\"Customer already exists\");\n}"
+      },
+      {
+        "id": "useful-query-patterns",
+        "title": "8. Useful Query Patterns",
+        "content": "**Dynamic filtering from query params** — build the filter object conditionally, only adding keys the client actually sent, so `/customers/search?city=Delhi&accountType=saving&minBalance=10000` becomes a precise `find()` call.\n\n**Pagination** — `.skip((page - 1) * limit).limit(limit)`: page 1 skips 0, page 2 skips `limit`, page 3 skips `2 × limit`, and so on.\n\n**`.lean()`** returns plain JavaScript objects instead of full Mongoose documents — use it for read-only responses, since full Mongoose documents carry extra weight (change tracking, validation, middleware, methods, getters/setters).",
+        "code": "app.get(\"/customers/search\", async (req, res) => {\n  const { city, accountType, minBalance, maxBalance } = req.query;\n  const filter = {};\n\n  if (city) filter.city = city;\n  if (accountType) filter.accountType = accountType;\n  if (minBalance || maxBalance) {\n    filter.balance = {};\n    if (minBalance) filter.balance.$gte = Number(minBalance);\n    if (maxBalance) filter.balance.$lte = Number(maxBalance);\n  }\n\n  const customers = await Customer.find(filter);\n  res.json(customers);\n});\n\n// Pagination — page 1 -> skip 0, page 2 -> skip 10, page 3 -> skip 20 (limit 10)\nconst customers = await Customer.find().skip((page - 1) * limit).limit(limit);\n\n// Lean query — plain objects, no Mongoose document overhead\nconst customers = await Customer.find().lean();"
+      },
+      {
+        "id": "beginner-rule",
+        "title": "9 & 10. CRUD Summary & the Most Important Beginner Rule",
+        "content": "Nearly every Mongoose CRUD command follows the same shape: **`Model.command(filter, update, options)`**.\n\n- The **first** object usually answers: **whom do you want to find?** (the filter/condition)\n- The **second** object usually answers: **what do you want to change?** (the update/modification)\n- The **third** object usually answers: **how should Mongoose behave?** (extra options, like `new: true`)\n\n**Best line to remember:** find = read, create = insert, update = change, delete = remove.",
+        "code": "Customer.find({ city: \"Delhi\" })\nCustomer.findOne({ accountNumber: 101 })\nCustomer.findOneAndUpdate(\n  { accountNumber: 101 },\n  { $inc: { balance: 2000 } },\n  { new: true }\n)\nCustomer.findOneAndDelete({ accountNumber: 101 })"
+      },
+      {
+        "id": "operator-syntax-rules",
+        "title": "MongoDB / Mongoose Operator Syntax Rules",
+        "content": "There are **3 types** of operators, and each has a different placement rule:\n\n1. **Field-level query operators** (`$gt`, `$gte`, `$lt`, `$lte`, `$ne`, `$in`, `$nin`) apply to **one field** — the operator goes **inside** that field: `{ balance: { $lte: 10000 } }`.\n2. **Logical query operators** (`$or`, `$and`) combine **multiple full conditions** — the operator goes **outside**, wrapping an array: `{ $or: [{ city: \"Delhi\" }, { balance: { $gt: 50000 } }] }`. (Note: plain multi-field objects already mean AND — `$and` is rarely needed since `{ city: \"Delhi\", accountType: \"saving\" }` already means city Delhi **and** accountType saving.)\n3. **Update operators** (`$set`, `$inc`, `$push`, `$pop`, `$pull`) perform an **action**, not a condition — the operator goes **outside**: `{ $set: { city: \"Mumbai\" } }`.\n\n**`$push`** adds a value to the end of an array; **`$pop`** removes the last element with `1` or the first with `-1`; **`$pull`** removes array entries matching a value or a sub-condition (e.g. remove all `transactions` where `type` is `\"withdraw\"`).\n\n**Final memory line:** filter me condition lagti hai, update me action hota hai. Agar operator ek field ko describe kar raha hai, to field ke andar aayega. Agar operator multiple conditions ko combine kar raha hai ya database me change kar raha hai, to bahar aayega.",
+        "code": "// 1. Field-level — operator INSIDE the field\n{ balance: { $lte: 10000 } }\n{ age: { $gt: 18 } }\n\n// 2. Logical — operator OUTSIDE, wraps an array of conditions\n{ $or: [{ city: \"Delhi\" }, { accountType: \"current\" }] }\n{ $and: [{ city: \"Delhi\" }, { accountType: \"saving\" }] }\n\n// 3. Update — operator OUTSIDE, describes an action\n{ $set: { city: \"Mumbai\" } }\n{ $inc: { balance: -2000 } }\n{ $push: { transactions: { amount: 5000, type: \"deposit\" } } }\n{ $pop: { transactions: 1 } }   // remove last\n{ $pop: { transactions: -1 } }  // remove first\n{ $pull: { transactions: { type: \"withdraw\" } } }"
       }
     ],
     "quiz": [
       {
-        "question": "What is the main topic of Day 29?",
+        "question": "Why does findOneAndUpdate need { new: true } to return the updated document?",
         "options": [
-          "MongoDB & Database Design",
-          "HTML tables only",
-          "Linux kernel modules",
-          "Photoshop layers"
+          "Without it, Mongoose returns the document as it was BEFORE the update by default",
+          "new: true creates a brand new document instead of updating",
+          "It has no effect on the return value",
+          "It only affects deleteOne, not update"
         ],
         "answer": 0,
-        "explanation": "Module 29 focuses on MongoDB & Database Design."
+        "explanation": "By default findOneAndUpdate() returns the pre-update document. { new: true } tells Mongoose to return the document after the update is applied."
       },
       {
-        "question": "Which phase includes this module?",
+        "question": "In { balance: { $gte: 2000 } } combined with $inc inside the SAME findOneAndUpdate filter, why is this better than checking balance separately first?",
         "options": [
-          "Phase 2: Backend Mastery",
-          "Only DevOps",
-          "Only CSS",
-          "Not part of the course"
+          "The balance condition and the balance update happen together in one atomic operation, avoiding a race condition between check and update",
+          "It runs faster because it skips validation",
+          "It is required syntax — Mongoose won't run $inc without a $gte filter",
+          "It converts the update to a bulk operation"
         ],
         "answer": 0,
-        "explanation": "This module belongs to Phase 2: Backend Mastery."
+        "explanation": "Combining the filter condition (balance >= 2000) with the $inc update in one call means the check and the change happen atomically, rather than as two separate steps that could race with another request."
+      },
+      {
+        "question": "Where does a field-level operator like $lte go, versus a logical operator like $or?",
+        "options": [
+          "$lte goes INSIDE the field it applies to; $or goes OUTSIDE, wrapping an array of full conditions",
+          "Both always go outside the object",
+          "Both always go inside the field",
+          "$or goes inside a field; $lte wraps an array"
+        ],
+        "answer": 0,
+        "explanation": "Field-level operators describe one field's condition, so they nest inside that field: { balance: { $lte: 10000 } }. Logical operators combine multiple full conditions, so they wrap an array from the outside: { $or: [...] }."
+      },
+      {
+        "question": "What is the danger of calling Customer.deleteMany({}) with an empty filter object?",
+        "options": [
+          "It deletes every document in the entire collection",
+          "It does nothing since the filter is empty",
+          "It throws a validation error",
+          "It only deletes the first document"
+        ],
+        "answer": 0,
+        "explanation": "An empty filter object matches every document, so deleteMany({}) wipes the whole collection — a common accidental-deletion trap."
       }
     ],
     "youtubeUrl": "https://www.youtube.com/watch?v=ofme2o29ngU",
