@@ -870,6 +870,63 @@ export const pythonLessons = [
         image: '/python-notes/file-handling-and-json.jpg',
         imageAlt: 'File Handling and JSON in Python — problem statement, use cases, opening & reading files, writing files, file modes, with open(), JSON basics, JSON read/write code examples, file workflow diagram, real-world use cases, best practices, and common mistakes & trade-offs',
       },
+      {
+        id: 'what-is-file-handling',
+        title: 'What is File Handling?',
+        content: "**File handling** is used to create, read, write, update, and delete files using a Python program.\n\nA **file** is used to store data **permanently** — normal variables store data only temporarily, but files store data permanently in system storage.\n\n**Examples:** student records, employee details, course details, logs, reports, configuration data.",
+      },
+      {
+        id: 'types-of-files',
+        title: 'Types of Files — Text vs Binary',
+        content: "Python mainly works with two types of files:\n\n**1. Text files** — store data in readable text format.\n- Examples: `.txt`, `.csv`, `.json`, `.py`, `.html`\n- e.g. `students.txt`, `courses.txt`, `employees.csv`\n\n**2. Binary files** — store data in binary format.\n- Examples: images, videos, audio files, PDF files\n- e.g. `photo.jpg`, `video.mp4`, `resume.pdf`",
+      },
+      {
+        id: 'file-handling-steps-and-open',
+        title: 'File Handling Steps & the open() Function',
+        content: "File handling usually contains **3 steps**:\n1. Open file / create file\n2. Perform operation\n3. Close file\n\n**`open()`** is used to open a file — `open(\"file_name\", \"mode\")`. The **mode** specifies the operation:\n- `r` — read\n- `w` — write\n- `a` — append\n- `x` — create\n- `r+` — read and write\n- `w+` — write and read\n- `a+` — append and read\n- `rb` — read binary file\n- `wb` — write binary file\n- `ab` — append binary file\n\n**Reading methods:**\n- `read()` — reads the complete file data at once.\n- `read(number)` — reads a specific number of characters.\n- `readline()` — reads one line at a time.\n- `readlines()` — reads all lines and returns a list.\n\n**Writing methods:** `write()` and `writelines()`.",
+      },
+      {
+        id: 'reading-files-in-python',
+        title: 'Reading Files — for Loop, read() & readlines()',
+        content: "Looping over a file object directly reads it **line by line** — the most memory-efficient way to read a large file.",
+        code: "file = open(\"students.txt\", \"r\")\n\nfor line in file:\n    print(line)\n\nfile.close()",
+      },
+      {
+        id: 'write-and-writelines-methods',
+        title: 'write() & writelines() Methods',
+        content: "**`write()`** writes data into a file.",
+        code: "file = open(\"courses.txt\", \"w\")\n\nfile.write(\"Python\\n\")\nfile.write(\"Java\\n\")\nfile.write(\"DevOps\\n\")\n\nfile.close()\n\n# Output: courses.txt will contain the course names.",
+      },
+      {
+        id: 'writelines-method-detail',
+        title: 'writelines() — Writing Multiple Lines at Once',
+        content: "**`writelines()`** is used to write multiple lines into a file.\n\n**Important:** `writelines()` does **not** add a newline automatically — we should add `\\n` manually to each item.",
+        code: "courses = [\"Python\\n\", \"Java\\n\", \"DevOps\\n\"]\n\nfile = open(\"courses.txt\", \"w\")\n\nfile.writelines(courses)\n\nfile.close()\n\n# Output: courses.txt will contain all courses.",
+      },
+      {
+        id: 'close-method',
+        title: 'close() Method — Why It Matters',
+        content: "**`close()`** is used to close the file. **Always close the file after a file operation.**\n\n`close()` is important because it:\n- releases system resources.\n- saves pending data into the file.\n- avoids file corruption.\n- is a good programming practice.",
+        code: "file = open(\"students.txt\", \"r\")\n\ndata = file.read()\n\nprint(data)\n\nfile.close()",
+      },
+      {
+        id: 'file-handling-using-with',
+        title: 'File Handling Using with',
+        content: "The **`with`** statement is the best way to handle files — it automatically closes the file after the operation, even if an error occurs.\n\nSyntax:\n```\nwith open(\"filename\", \"mode\") as file:\n    # file operation\n```",
+        code: "with open(\"students.txt\", \"r\") as file:\n    data = file.read()\n    print(data)\n\nwith open(\"courses.txt\", \"w\") as file:\n    file.write(\"JAVA\\n\")\n    file.write(\"PYTHON\\n\")\n    file.write(\"GEN AI\\n\")",
+      },
+      {
+        id: 'check-delete-rename-files',
+        title: 'Check, Delete & Rename Files',
+        content: "The **`os`** module lets us manage files on disk.\n\n**Check if a file exists** — `os.path.exists(\"filename\")`.\n\n**Delete a file** — `os.remove(\"filename\")` (check it exists first).\n\n**Rename a file** — `os.rename(\"old_name\", \"new_name\")`.",
+        code: "import os\n\n# check file exists\nif os.path.exists(\"students.txt\"):\n    print(\"File exists\")\nelse:\n    print(\"File not found\")\n\n# delete file\nif os.path.exists(\"students.txt\"):\n    os.remove(\"students.txt\")\n    print(\"File deleted\")\nelse:\n    print(\"File not found\")\n\n# rename file\nos.rename(\"students.txt\", \"student_details.txt\")\nprint(\"File renamed successfully\")",
+      },
+      {
+        id: 'create-folder',
+        title: 'Create a Folder — os.mkdir()',
+        content: "We can create a folder using **`os.mkdir()`**.",
+        code: "import os\n\nos.mkdir(\"reports\")\n\nprint(\"Folder created successfully\")",
+      },
     ],
   },
   {
