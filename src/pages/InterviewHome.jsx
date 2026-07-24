@@ -72,12 +72,11 @@ export default function InterviewHome() {
         <section className="roadmap">
           <h2>DSA &amp; System Design — Every Phase</h2>
           <p className="section-desc">
-            Across the <strong>4-year</strong> plan, <strong>DSA</strong> and{' '}
-            <strong>System Design</strong> are practiced <strong>in each stack’s language</strong> through the{' '}
-            <strong>4-year coding journey</strong>: <strong>TypeScript / JavaScript</strong>, then{' '}
-            <strong>Python</strong>, then <strong>Java</strong>. That’s{' '}
-            <strong>TypeScript → Python → Java → DevOps</strong> (with Gen AI &amp; JavaScript as prerequisites).{' '}
-            {interviewChapters.length} modules on this track support these phases.
+            Across the <strong>16-phase, 1,600-day</strong> roadmap, <strong>DSA</strong> and{' '}
+            <strong>System Design</strong> are practiced <strong>in each phase’s language</strong> — not saved
+            for one dedicated block: <strong>Python</strong>, then <strong>JavaScript / TypeScript</strong>,
+            then <strong>Java</strong>, then <strong>DevOps</strong>.{' '}
+            {interviewChapters.length} modules on this track support every phase.
           </p>
 
           <div className="dsa-notes-banner">
@@ -109,7 +108,7 @@ export default function InterviewHome() {
               <span className="legend-dot published legend-dot-interview" /> {interviewChapters.length} modules
             </span>
             <span>
-              <span className="legend-dot published" /> DSA & System Design in each language: TypeScript · Python · Java · 1,461 days total
+              <span className="legend-dot published" /> DSA & System Design in each language: Python · TypeScript · Java · 1,600 days total
             </span>
           </div>
         </section>

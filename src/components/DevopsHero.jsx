@@ -6,7 +6,7 @@ export default function DevopsHero({ children, actions }) {
     <div className="devops-hero-block">
       <span className="devops-level-badge">
         <span className="devops-level-icon" aria-hidden="true">⚙️</span>
-        Year 4 · After AWS
+        Phase 15 · After Java
       </span>
 
       <h1 className="devops-title">

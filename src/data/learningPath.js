@@ -1,72 +1,77 @@
-// Header/nav track list, ordered to the Python-first 1,600-day roadmap:
-// Prerequisite (Gen AI & Agentic AI in Python) → Year 1 Python → Year 2 TypeScript
-// (React & Next.js, React Native) → Year 3 Java → Year 4 DevOps (DevOps, Kubernetes, AWS)
-// → System Design & Interview Prep finale. Thunder (JavaScript) is a separate, unmodified
-// bonus track, not part of the main chronological path.
+// Header/nav track list, ordered to the 16-phase, 1,600-day roadmap (100 days
+// per phase, no separate prerequisite and no separate finale — see
+// RoadmapHome.jsx): Python → FastAPI → Agentic AI using Python (Phases 1-3,
+// all under /python) → JavaScript (Phase 4) → TypeScript (Phase 5, no nav
+// entry yet) → React JS/Next JS (Phases 6-7) → React Native (Phase 8) →
+// Express/Node JS (Phase 9, also under /nextjs) → J2SE/J2EE/JPA/Spring
+// Boot/Microservices (Phases 10-14, all under /java) → DevOps (Phase 15) →
+// AWS Cloud (Phase 16). DSA & System Design are practiced throughout, not a
+// separate phase. GenAI (Agentic AI in JavaScript) is a separate, unmodified
+// bonus track — distinct from the Python-based Agentic AI in Phase 3.
 // Descriptions are dateless — personal calendar dates live only in the user's private schedule.
 export const LEARNING_PATH = [
-  {
-    id: 'genai',
-    label: 'GenAI & Agentic AI',
-    short: 'GEN',
-    desc: 'Prerequisite · Gen AI in Python',
-    path: '/genai',
-  },
   {
     id: 'python',
     label: 'Python & AI',
     short: 'PY',
-    desc: 'Year 1 · Python stack',
+    desc: 'Phases 1–3 · Python, FastAPI & Agentic AI',
     path: '/python',
   },
+  { id: 'thunder', label: 'Thunder', short: 'JS', desc: 'Phase 4 · JavaScript', path: '/' },
   {
     id: 'nextjs',
     label: 'React & Next.js',
     short: 'NX',
-    desc: 'Year 2 · TypeScript stack',
+    desc: 'Phases 6–7 · React JS & Next JS',
     path: '/nextjs',
   },
   {
     id: 'mobile',
     label: 'React Native',
     short: 'RN',
-    desc: 'Year 2 · TypeScript stack',
+    desc: 'Phase 8 · React Native',
     path: '/mobile',
   },
   {
     id: 'java',
     label: 'Java & Spring',
     short: 'JV',
-    desc: 'Year 3 · Java stack',
+    desc: 'Phases 10–14 · Java stack',
     path: '/java',
   },
   {
     id: 'devops',
     label: 'DevOps & CI/CD',
     short: 'DO',
-    desc: 'Year 4 · DevOps',
+    desc: 'Phase 15 · DevOps',
     path: '/devops',
   },
   {
     id: 'k8s',
     label: 'Kubernetes',
     short: 'K8s',
-    desc: 'Year 4 · DevOps',
+    desc: 'Phase 15 · DevOps',
     path: '/k8s',
   },
   {
     id: 'aws',
     label: '100 Days of AWS',
     short: 'AWS',
-    desc: 'Year 4 · DevOps',
+    desc: 'Phase 16 · AWS Cloud',
     path: '/aws',
   },
   {
     id: 'interview',
-    label: 'System Design & Interview Prep',
+    label: 'DSA & System Design',
     short: 'SD',
-    desc: 'Finale · 100 days after Year 4',
+    desc: 'Throughout · DSA & System Design',
     path: '/interview',
   },
-  { id: 'thunder', label: 'Thunder', short: 'JS', desc: 'Bonus · 100 Days of JavaScript', path: '/' },
+  {
+    id: 'genai',
+    label: 'GenAI & Agentic AI',
+    short: 'GEN',
+    desc: 'Bonus · Agentic AI in JavaScript',
+    path: '/genai',
+  },
 ];

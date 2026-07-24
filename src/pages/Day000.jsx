@@ -33,11 +33,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 1600-day plan — 39 days of Gen AI (JavaScript), then a 4-year coding journey: TypeScript, Python, Java, then DevOps',
+    text: 'reviewed the full 1,600-day plan — 16 sequential 100-day phases: Python, FastAPI, Agentic AI, JavaScript, TypeScript, React, Next.js, React Native, Express/Node, then Java (J2SE through Microservices), DevOps, and AWS Cloud',
   },
   {
-    title: 'Prerequisites confirmed',
-    text: 'HTML5, CSS3 & JavaScript are already known — they’re the prerequisites, so Day 1 starts straight into Gen AI (built in JavaScript)',
+    title: 'Ready for Phase 1',
+    text: 'no separate prerequisite phase this time — Day 1 starts straight into Phase 1: Python',
   },
   {
     title: 'Accounts ready',
@@ -95,7 +95,7 @@ const ACCOUNTS = [
     titleClass: 'card-title-purple',
     subtitle: 'Code Home',
     description:
-      'Create a GitHub account and your first repo. Every project, from Thunder Day 1 to the DevOps finale, gets committed and pushed here.',
+      'Create a GitHub account and your first repo. Every project, from Phase 1 (Python) to Phase 16 (AWS Cloud), gets committed and pushed here.',
     link: { href: 'https://github.com', label: 'Create GitHub account →', external: true },
   },
   {
@@ -132,19 +132,19 @@ const STUDY_SYSTEM = [
     icon: '🗺️',
     title: 'The 1600-Day Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '39 days GenAI + 4 years',
+    subtitle: '16 phases · 100 days each',
     description:
-      '39 days of Gen AI (in JavaScript), then a 4-year coding journey — Year 1 TypeScript, Year 2 Python, Year 3 Java, Year 4 DevOps — with DSA & System Design practiced in each stack’s language. Know the whole map before step one.',
+      '16 sequential 100-day phases — Python, FastAPI, Agentic AI, JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, and AWS Cloud — with DSA & System Design practiced throughout every phase. Know the whole map before step one.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
-    icon: '🎒',
-    title: 'Prerequisites First, Then Day 1',
+    icon: '🐍',
+    title: 'Day 1 Starts With Python',
     titleClass: 'card-title-lime',
-    subtitle: 'Gen AI & JavaScript → Day 1 TypeScript',
+    subtitle: 'No prerequisite phase this time',
     description:
-      'Before Day 1 come the prerequisites — Gen AI & Agentic AI in JavaScript (LLMs, RAG, LangChain.js, LangGraph) plus JavaScript. With those done, Day 1 of the 4-year journey begins with the TypeScript stack. Environment is ready, accounts are live, routine is locked.',
-    link: { href: '/genai', label: 'Start prerequisites →' },
+      'Day 1 begins directly with Phase 1: Python — no separate prerequisite phase before it. Environment is ready, accounts are live, routine is locked.',
+    link: { href: '/python', label: 'Start Phase 1 · Python →' },
   },
 ];
 
@@ -242,8 +242,8 @@ export default function Day000() {
             Home
           </Link>
           <p className="day001-datetime">Study Day 0</p>
-          <Link to="/genai" className="day001-nav-btn day001-nav-next">
-            Prerequisites →
+          <Link to="/python" className="day001-nav-btn day001-nav-next">
+            Phase 1 · Python →
           </Link>
         </header>
 
@@ -289,7 +289,7 @@ export default function Day000() {
             GitHub
           </a>{' '}
           and Netlify accounts, and lock the routine (wake 4 AM, study 5:00–8:00 AM IST). No lectures yet —
-          clear every obstacle so <strong>Day 1</strong> (prerequisites → Gen AI &amp; JS) starts with zero
+          clear every obstacle so <strong>Day 1</strong> (Phase 1 · Python) starts with zero
           friction. Sharpen the axe before the first swing.
         </p>
 

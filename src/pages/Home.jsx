@@ -33,66 +33,151 @@ import JourneyCountdown from '../components/JourneyCountdown';
 
 const BTECH_ROADMAP = [
   {
-    year: 'Prerequisites',
-    theme: 'Gen AI · Python',
-    icon: '🎒',
-    accent: 'y3',
-    topics: ['39 Days', 'Python Fundamentals', 'Gen AI & Agentic AI', 'LLMs & RAG', 'LangChain', 'LangGraph'],
-    blurb: 'A 39-day prerequisite, completed before Day 1 — Python fundamentals and Generative & Agentic AI in Python. The 4-year journey assumes you already know these.',
-    links: [{ label: 'GenAI Track', to: '/genai' }, { label: 'Python Basics', to: '/python' }],
-  },
-  {
-    year: 'Year 1',
-    theme: 'Python Stack',
+    year: 'Phase 1',
+    theme: 'Python',
     icon: '🐍',
     accent: 'y1',
-    topics: ['Python', 'Django', 'FastAPI'],
-    blurb: 'Year one of the 4-year coding journey — the Python stack end to end: the language, Django, and modern APIs with FastAPI.',
-    links: [{ label: 'Python & Agentic AI', to: '/python' }],
+    topics: ['100 Days', 'Core Syntax', 'OOP', 'File Handling', 'DB Connectivity', 'Multithreading'],
+    blurb: 'Phase one of sixteen — the Python language itself, end to end.',
+    links: [{ label: 'Python', to: '/python' }],
   },
   {
-    year: 'Year 2',
-    theme: 'TypeScript Stack',
+    year: 'Phase 2',
+    theme: 'FastAPI',
+    icon: '⚡',
+    accent: 'y1',
+    topics: ['100 Days', 'Fundamentals', 'Databases', 'Auth & Security', 'Production Deployment'],
+    blurb: 'Modern async Python APIs, from fundamentals to production deployment.',
+    links: [{ label: 'FastAPI', to: '/python' }],
+  },
+  {
+    year: 'Phase 3',
+    theme: 'Agentic AI using Python',
+    icon: '🤖',
+    accent: 'y1',
+    topics: ['100 Days', 'LangChain', 'LangGraph', 'MCP', 'n8n Workflows'],
+    blurb: 'Building AI agents in Python — a counted phase, not a prerequisite.',
+    links: [{ label: 'Agentic AI', to: '/python' }],
+  },
+  {
+    year: 'Phase 4',
+    theme: 'JavaScript',
+    icon: '🟨',
+    accent: 'y2',
+    topics: ['100 Days', 'Syntax', 'DOM', 'Async', 'Fundamentals'],
+    blurb: 'Core JavaScript — the foundation for every web phase that follows.',
+    links: [{ label: 'JavaScript', to: '/' }],
+  },
+  {
+    year: 'Phase 5',
+    theme: 'TypeScript',
     icon: '🔷',
     accent: 'y2',
-    topics: ['TypeScript', 'React JS', 'Next.js', 'React Native', 'Express JS'],
-    blurb: 'Year two — a full year of TypeScript: React, Next.js, React Native and Express JS.',
-    links: [
-      { label: 'JavaScript / TypeScript', to: '#syllabus' },
-      { label: 'React / Next.js', to: '/nextjs' },
-      { label: 'React Native', to: '/mobile' },
-    ],
+    topics: ['100 Days', 'Types', 'Interfaces', 'Generics', 'Classes'],
+    blurb: 'Typed JavaScript — interfaces, generics, and type-safe patterns.',
+    links: [{ label: 'TypeScript', to: '/typescript' }],
   },
   {
-    year: 'Year 3',
-    theme: 'Java Stack',
+    year: 'Phase 6',
+    theme: 'React JS',
+    icon: '⚛️',
+    accent: 'y2',
+    topics: ['100 Days', 'Components', 'Hooks', 'State', 'Routing'],
+    blurb: 'Components, hooks, state management, and the React ecosystem.',
+    links: [{ label: 'React JS', to: '/nextjs' }],
+  },
+  {
+    year: 'Phase 7',
+    theme: 'Next JS',
+    icon: '🌐',
+    accent: 'y2',
+    topics: ['100 Days', 'App Router', 'Server Components', 'Data & Server Actions', 'Deployment'],
+    blurb: 'Full-stack React — App Router, server components, and deployment.',
+    links: [{ label: 'Next JS', to: '/nextjs' }],
+  },
+  {
+    year: 'Phase 8',
+    theme: 'React Native',
+    icon: '📱',
+    accent: 'y2',
+    topics: ['100 Days', 'Expo', 'Native Components', 'Navigation', 'Builds & Publishing'],
+    blurb: 'Mobile apps with React — Expo, native components, and publishing.',
+    links: [{ label: 'React Native', to: '/mobile' }],
+  },
+  {
+    year: 'Phase 9',
+    theme: 'Express JS / Node JS',
+    icon: '🟢',
+    accent: 'y2',
+    topics: ['100 Days', 'REST APIs', 'Middleware', 'Prisma', 'JWT Auth'],
+    blurb: 'The backend for the web stack — REST APIs, middleware, and databases.',
+    links: [{ label: 'Express / Node JS', to: '/nextjs' }],
+  },
+  {
+    year: 'Phase 10',
+    theme: 'J2SE',
     icon: '☕',
     accent: 'y3',
-    topics: ['Java', 'Spring Boot', 'Microservices'],
-    blurb: 'Year three — enterprise Java: Spring Boot and microservices at production scale.',
-    links: [{ label: 'Java & Spring', to: '/java' }],
+    topics: ['100 Days', 'Core Java', 'Collections', 'Exceptions', 'Multithreading'],
+    blurb: 'Core Java — the foundation for every enterprise Java phase that follows.',
+    links: [{ label: 'J2SE', to: '/java' }],
   },
   {
-    year: 'Year 4',
-    theme: 'DevOps Stack',
-    icon: '☁️',
+    year: 'Phase 11',
+    theme: 'J2EE',
+    icon: '🏢',
+    accent: 'y3',
+    topics: ['100 Days', 'Servlets', 'JSP', 'Java EE Ecosystem'],
+    blurb: 'Enterprise Java — the Java EE ecosystem for large-scale applications.',
+    links: [{ label: 'J2EE', to: '/java' }],
+  },
+  {
+    year: 'Phase 12',
+    theme: 'JPA',
+    icon: '🗄️',
+    accent: 'y3',
+    topics: ['100 Days', 'ORM', 'Entities', 'Database Mapping'],
+    blurb: 'Java Persistence API — ORM, entities, and database mapping.',
+    links: [{ label: 'JPA', to: '/java' }],
+  },
+  {
+    year: 'Phase 13',
+    theme: 'Spring Boot',
+    icon: '🍃',
+    accent: 'y3',
+    topics: ['100 Days', 'Spring Data', 'REST APIs', 'Security'],
+    blurb: 'Production-grade Java web apps — Spring Boot, Spring Data, and security.',
+    links: [{ label: 'Spring Boot', to: '/java' }],
+  },
+  {
+    year: 'Phase 14',
+    theme: 'Microservices using Java',
+    icon: '🕸️',
+    accent: 'y3',
+    topics: ['100 Days', 'Microservices Architecture', 'API Gateway', 'Service Discovery'],
+    blurb: 'Microservices architecture and distributed systems in Java.',
+    links: [{ label: 'Microservices', to: '/java' }],
+  },
+  {
+    year: 'Phase 15',
+    theme: 'DevOps',
+    icon: '🚀',
     accent: 'y4',
-    topics: ['Linux & Shell', 'Docker', 'Kubernetes', 'CI/CD', 'AWS Cloud', 'Terraform / IaC', 'Monitoring'],
-    blurb: 'The final year of the coding journey — ship and scale everything: Linux, Docker, Kubernetes, CI/CD, AWS and observability.',
+    topics: ['100 Days', 'Linux', 'Docker', 'Kubernetes', 'CI/CD'],
+    blurb: 'Ship and scale everything — Linux, Docker, Kubernetes, and CI/CD pipelines.',
     links: [
       { label: 'DevOps', to: '/devops' },
       { label: 'Kubernetes', to: '/k8s' },
-      { label: 'AWS Cloud', to: '/aws' },
     ],
   },
   {
-    year: 'Finale',
-    theme: 'System Design & Interview Prep',
-    icon: '📐',
-    accent: 'y5',
-    topics: ['100 Days', 'Advanced System Design', 'Mock Interviews', 'DSA Revision', 'Behavioral Prep'],
-    blurb: 'The 100-day finale — entirely dedicated to System Design and Interview Preparation, after 4 years of coding.',
-    links: [{ label: 'System Design & Interview Prep', to: '/interview' }],
+    year: 'Phase 16',
+    theme: 'AWS Cloud',
+    icon: '☁️',
+    accent: 'y4',
+    topics: ['100 Days', 'Core AWS Services', 'Cloud Architecture'],
+    blurb: 'The final phase — core AWS services and cloud architecture, end to end.',
+    links: [{ label: 'AWS Cloud', to: '/aws' }],
   },
 ];
 
@@ -117,16 +202,17 @@ export default function Home() {
               <span className="fle-hl">DevOps</span>
             </h1>
             <p className="fle-sub">
-              A structured <strong>1,600-day journey</strong> — Generative &amp; Agentic AI in Python, then Python,
-              TypeScript, Java and DevOps, finished with 100 days of System Design &amp; Interview Preparation.
-              Learn by building, front to back, one day at a time.
+              A structured <strong>1,600-day journey</strong> — <strong>16 sequential 100-day phases</strong>:
+              Python, FastAPI, Agentic AI, JavaScript, TypeScript, React, Next.js, React Native, Express/Node,
+              J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, and AWS Cloud. Data Structures &amp; System
+              Design practiced throughout. Learn by building, front to back, one day at a time.
             </p>
 
             <div className="fle-pills">
               <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,600 Days of Code</span>
-              <span className="fle-pill"><span aria-hidden="true">🧠</span> Gen AI &amp; Agentic AI</span>
-              <span className="fle-pill"><span aria-hidden="true">🚀</span> Full Stack → DevOps</span>
-              <span className="fle-pill"><span aria-hidden="true">📐</span> System Design &amp; Interview Prep</span>
+              <span className="fle-pill"><span aria-hidden="true">🧠</span> 16 Sequential Phases</span>
+              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → JS/TS → Java → DevOps</span>
+              <span className="fle-pill"><span aria-hidden="true">📐</span> DSA &amp; System Design Throughout</span>
             </div>
 
             <JourneyCountdown variant="hero" />
@@ -170,14 +256,14 @@ export default function Home() {
       <section className="btech-roadmap" id="btech-roadmap">
         <div className="btech-inner">
           <span className="btech-badge">The Roadmap</span>
-          <h2 className="btech-title">The 4-Year Learning Path</h2>
+          <h2 className="btech-title">The 1,600-Day Learning Path</h2>
           <p className="btech-sub">
-            A structured path to a full lifecycle engineer — a <strong>4-year coding journey</strong>:{' '}
-            <strong>Python → TypeScript → Java → DevOps</strong>, one year each (<strong>1,461 days</strong>), plus a{' '}
-            <strong>39-day Gen AI &amp; Python</strong> prerequisite and{' '}
-            <strong>100 days of System Design &amp; Interview Preparation</strong> to finish —{' '}
-            <strong>4 years (+139 days) = 1,600 days</strong> total. Each block maps to tracks on this site. Gen AI
-            &amp; Python come before Year 1; System Design &amp; Interview Prep follows Year 4.
+            A structured path to a full lifecycle engineer — <strong>16 sequential phases</strong> of{' '}
+            <strong>100 days</strong> each: <strong>Python → FastAPI → Agentic AI → JavaScript → TypeScript →
+            React JS → Next JS → React Native → Express/Node JS → J2SE → J2EE → JPA → Spring Boot →
+            Microservices → DevOps → AWS Cloud</strong> — <strong>16 × 100 = 1,600 days</strong> total. Each
+            block maps to tracks on this site. Data Structures &amp; System Design are practiced throughout
+            every phase, not saved for a separate finale.
           </p>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
@@ -253,11 +339,11 @@ export default function Home() {
       <section className="thunder-plus-section thunder-genai-section" id="thunder-genai">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-genai">
-            Phase 1 · Gen AI · 39 Days
+            Bonus · Agentic AI in JavaScript
           </span>
           <h2>Thunder+ — GenAI Engineering Bootcamp</h2>
           <p className="section-desc">
-            The journey opens with <strong>Agentic AI in JavaScript</strong>: from how LLMs work and the Transformer
+            A bonus track — <strong>Agentic AI in JavaScript</strong>: from how LLMs work and the Transformer
             architecture to production-grade autonomous agents. {genaiChapters.length} modules across 3 parts — core
             theory, building agents, then production — with the modern stack{' '}
             <a href={GENAI_META.langchainJs} target="_blank" rel="noopener noreferrer">
@@ -295,10 +381,10 @@ export default function Home() {
 
       <section className="thunder-plus-section thunder-nextjs-section" id="thunder-nextjs">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-nextjs">Year 1 · TypeScript Stack</span>
+          <span className="thunder-plus-badge thunder-plus-badge-nextjs">Phases 6–7 · React &amp; Next JS</span>
           <h2>Thunder+ — React & Next.js</h2>
           <p className="section-desc">
-            Inside the TypeScript stack, React &amp; Next.js follow the core language, then React Native. Continue
+            React JS and Next JS follow TypeScript, then React Native. Continue
             with the{' '}
             <a href={NEXTJS_META.udemyUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode Udemy course
@@ -333,15 +419,15 @@ export default function Home() {
 
       <section className="thunder-plus-section" id="thunder-plus">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge">Year 1 · TypeScript Stack</span>
+          <span className="thunder-plus-badge">Phase 8 · React Native</span>
           <h2>Thunder++ — React Native</h2>
           <p className="section-desc">
-            Finish the post-Thunder frontend stretch with the{' '}
+            Finish the frontend stretch with the{' '}
             <a href={MOBILE_META.syllabusUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode Mobile Development Cohort
             </a>
             . {mobileChapters.length} lessons covering Expo, navigation, APIs, notifications, auth, and real-world app
-            projects. Node/Express rounds out the TypeScript stack; the Python stack follows.
+            projects. Express JS / Node JS (Phase 9) rounds out the web stack next.
           </p>
           <div className="thunder-plus-highlights">
             <span>📱 React Native + Expo</span>
@@ -371,12 +457,12 @@ export default function Home() {
       <section className="thunder-plus-section thunder-python-section" id="thunder-python">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-python">
-            Year 2 · Python Stack
+            Phases 1–3 · Python, FastAPI &amp; Agentic AI
           </span>
           <h2>Thunder++ — Python &amp; Django</h2>
           <p className="section-desc">
-            The <strong>Python stack</strong>: core Python
-            study, Django, FastAPI, and Agentic AI at{' '}
+            The opening phases: core Python
+            study, Django, FastAPI, and Agentic AI using Python, at{' '}
             <a href={PYTHON_META.portalUrl} target="_blank" rel="noopener noreferrer">
               {PYTHON_META.institute}
             </a>
@@ -411,11 +497,11 @@ export default function Home() {
       <section className="thunder-plus-section thunder-java-section" id="thunder-java">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-java">
-            Year 3 · Java Stack
+            Phases 10–14 · Java Stack
           </span>
           <h2>Thunder++ — Java & Spring</h2>
           <p className="section-desc">
-            The <strong>Java stack</strong>:{' '}
+            The <strong>Java phases</strong>:{' '}
             <strong>J2SE</strong>, <strong>J2EE</strong>, <strong>JPA</strong>, <strong>Spring Boot</strong>,{' '}
             <strong>Microservices</strong>, and <strong>Java Design Patterns</strong> — mapped from {JAVA_META.courses.length} Udemy courses into{' '}
             {javaChapters.length} modules on this site.
@@ -449,11 +535,11 @@ export default function Home() {
       <section className="thunder-plus-section thunder-aws-section" id="thunder-aws">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-aws">
-            Year 4 · DevOps
+            Phase 16 · AWS Cloud
           </span>
           <h2>Thunder++ — 100 Days of AWS Cloud</h2>
           <p className="section-desc">
-            Within the DevOps phase, AWS gets <strong>100 days</strong> of focused mastery with{' '}
+            The final phase — AWS gets its own <strong>100 days</strong> of focused mastery with{' '}
             <a href={AWS_META.kodekloudUrl} target="_blank" rel="noopener noreferrer">
               KodeKloud 100 Days of Cloud
             </a>{' '}
@@ -492,11 +578,11 @@ export default function Home() {
       <section className="thunder-plus-section thunder-devops-section" id="thunder-devops">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-devops">
-            Year 4 · DevOps · Finale
+            Phase 15 · DevOps
           </span>
           <h2>Thunder++ — DevOps &amp; CI/CD</h2>
           <p className="section-desc">
-            The journey closes with DevOps &amp; CI/CD — the core of the <strong>365-day</strong> DevOps phase, with{' '}
+            DevOps &amp; CI/CD — the core of the <strong>100-day</strong> DevOps phase, with{' '}
             <a href={DEVOPS_META.kodekloudUrl} target="_blank" rel="noopener noreferrer">
               KodeKloud 100 Days of DevOps
             </a>{' '}
@@ -535,7 +621,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-k8s-section" id="thunder-k8s">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-k8s">
-            Year 4 · DevOps
+            Phase 15 · DevOps
           </span>
           <h2>Thunder++ — Kubernetes</h2>
           <p className="section-desc">
@@ -598,7 +684,7 @@ export default function Home() {
             <a href={INTERVIEW_META.chaicodeUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode Interview Preparation
             </a>
-            . {interviewChapters.length} modules covering HLD/LLD, scalability, and case studies — re-applied in each year’s stack language.
+            . {interviewChapters.length} modules covering HLD/LLD, scalability, and case studies — re-applied in each phase’s stack language.
           </p>
           <div className="thunder-plus-highlights">
             <span>🏗️ System Design</span>
@@ -641,7 +727,7 @@ export default function Home() {
             <a href={DSA_META.chaicodeUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode practice
             </a>
-            . Arrays, trees, graphs, DP, and problem-solving patterns — solved in each year’s stack language.
+            . Arrays, trees, graphs, DP, and problem-solving patterns — solved in each phase’s stack language.
           </p>
           <div className="thunder-plus-highlights">
             <span>📊 Arrays & Strings</span>
@@ -671,22 +757,21 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            1,600 days · 4 years + finale
+            1,600 days · 16 phases
           </span>
           <h2>Thunder++ — The Full Journey</h2>
           <p className="section-desc">
-            A <strong>4-year coding journey</strong> — <strong>Year 1 Python</strong>,{' '}
-            <strong>Year 2 TypeScript</strong>, <strong>Year 3 Java</strong>, and <strong>Year 4 DevOps</strong> —
-            with <strong>DSA &amp; System Design</strong> practiced alongside in each stack’s language, capped by{' '}
-            <strong>100 days of System Design &amp; Interview Preparation</strong>. That’s{' '}
-            <strong>1,600 days</strong> of focused study. <strong>Gen AI &amp; Python</strong> are prerequisites,
-            done before Day 1.
+            <strong>16 sequential 100-day phases</strong> — <strong>Python, FastAPI, Agentic AI</strong>,{' '}
+            <strong>JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS</strong>,{' '}
+            <strong>J2SE, J2EE, JPA, Spring Boot, Microservices</strong>, and <strong>DevOps, AWS Cloud</strong> —
+            with <strong>DSA &amp; System Design</strong> practiced throughout every phase, not saved for one
+            dedicated block. That’s <strong>16 × 100 = 1,600 days</strong> of focused study, front to back.
           </p>
           <div className="thunder-plus-highlights">
-            <span>🎒 Prerequisites · Gen AI &amp; Python</span>
-            <span>⌨️ 4-Year Coding Journey</span>
-            <span>☁️ Python → TypeScript → Java → DevOps</span>
-            <span>📐 System Design &amp; Interview Prep</span>
+            <span>🐍 Python, FastAPI &amp; Agentic AI</span>
+            <span>⌨️ 16 Sequential Phases</span>
+            <span>☁️ JS/TS → Java → DevOps/AWS</span>
+            <span>📐 DSA &amp; System Design Throughout</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/interview" className="btn btn-interview-chaicode btn-lg">

@@ -6,7 +6,7 @@ export default function AwsHero({ children, actions }) {
     <div className="aws-hero-block">
       <span className="aws-level-badge">
         <span className="aws-level-icon" aria-hidden="true">☁️</span>
-        Year 4 · After Java
+        Phase 16 · After DevOps
       </span>
 
       <h1 className="aws-title">

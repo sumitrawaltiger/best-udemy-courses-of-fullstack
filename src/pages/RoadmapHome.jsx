@@ -1,126 +1,212 @@
 import { Link } from 'react-router-dom';
 
-// ── The 4-year + finale roadmap ─────────────────────────────────────────────
-// A 4-year coding journey (Python → TypeScript → Java → DevOps, one year each)
-// = 1461 days, plus a 39-day Gen AI & Python prerequisite, plus 100 days of
-// System Design & Interview Preparation = 1,600 days total. Calendar dates
-// are intentionally NOT shown (HR-facing page). Gen AI and Python fundamentals
-// are PREREQUISITES, completed before Year 1; the System Design & Interview
-// Prep sprint follows Year 4.
-
-const PREREQS = [
-  {
-    icon: '🤖',
-    title: 'Gen AI & Agentic AI',
-    detail: 'LLMs · token prediction · RAG · tools · LangChain · LangGraph — in Python',
-    to: '/genai',
-  },
-  {
-    icon: '🐍',
-    title: 'Python',
-    detail: 'Syntax, data types, OOP fundamentals — the base for Agentic AI and Year 1',
-    to: '/python',
-  },
-];
+// ── The 16-phase, 1,600-day roadmap ─────────────────────────────────────────
+// 16 sequential phases, 100 days each = 1,600 days total. No separate
+// prerequisite and no separate finale — Day 1 starts directly with Python,
+// Agentic AI is its own counted phase (not a prereq), and Data Structures &
+// System Design are practiced throughout every phase rather than as a single
+// dedicated block at the end. Calendar dates are intentionally NOT shown
+// (HR-facing page).
 
 const PHASES = [
   {
-    id: 'y1',
+    id: 'p1',
     arcClass: 'y1',
     icon: '🐍',
-    label: 'Year 1 · Python Stack',
-    tagline: 'Year 1',
-    duration: '1 year',
-    blurb: 'The first year of code — the Python stack, from the language to the web framework.',
+    label: 'Phase 1 · Python',
+    tagline: 'Days 1–100',
+    duration: '100 days',
+    blurb: 'The language itself — syntax, OOP, file handling, database connectivity, and multithreading.',
     items: [
-      {
-        icon: '🐍',
-        title: 'Python Stack',
-        detail: 'Python · Django · FastAPI',
-        source: 'Ashok IT',
-        to: '/python',
-      },
+      { icon: '🐍', title: 'Python', detail: 'Core syntax · OOP · file handling · DB connectivity · multithreading', source: 'Ashok IT', to: '/python' },
     ],
   },
   {
-    id: 'y2',
+    id: 'p2',
+    arcClass: 'y1',
+    icon: '⚡',
+    label: 'Phase 2 · FastAPI',
+    tagline: 'Days 101–200',
+    duration: '100 days',
+    blurb: 'Modern async Python APIs — from fundamentals to production deployment.',
+    items: [
+      { icon: '⚡', title: 'FastAPI', detail: 'Fundamentals · databases · auth & security · production deployment', source: 'Ashok IT', to: '/python' },
+    ],
+  },
+  {
+    id: 'p3',
+    arcClass: 'y1',
+    icon: '🤖',
+    label: 'Phase 3 · Agentic AI using Python',
+    tagline: 'Days 201–300',
+    duration: '100 days',
+    blurb: 'Building AI agents — LangChain, LangGraph, MCP, and automation workflows, in Python.',
+    items: [
+      { icon: '🤖', title: 'Agentic AI using Python', detail: 'LangChain · LangGraph · MCP · n8n agentic workflows', source: 'Ashok IT', to: '/python' },
+    ],
+  },
+  {
+    id: 'p4',
+    arcClass: 'y2',
+    icon: '🟨',
+    label: 'Phase 4 · JavaScript',
+    tagline: 'Days 301–400',
+    duration: '100 days',
+    blurb: 'Core JavaScript — the foundation for everything in the web phases that follow.',
+    items: [
+      { icon: '🟨', title: 'JavaScript', detail: '100 Days of JavaScript — syntax, DOM, async, and fundamentals', source: 'Thunder++', to: '/' },
+    ],
+  },
+  {
+    id: 'p5',
     arcClass: 'y2',
     icon: '🔷',
-    label: 'Year 2 · TypeScript Stack',
-    tagline: 'Year 2',
-    duration: '1 year',
-    blurb: 'A full year of TypeScript — typed frontend, full-stack web, and mobile.',
+    label: 'Phase 5 · TypeScript',
+    tagline: 'Days 401–500',
+    duration: '100 days',
+    blurb: 'Typed JavaScript — interfaces, generics, and type-safe patterns.',
     items: [
-      {
-        icon: '🔷',
-        title: 'TypeScript Stack',
-        detail: 'TypeScript · React · Next.js · React Native · Express JS',
-        source: 'Thunder++, Udemy & ChaiCode',
-        to: '/nextjs',
-      },
+      { icon: '🔷', title: 'TypeScript', detail: 'Types, interfaces, generics, enums, and classes', source: 'Illustrated TypeScript series', to: '/typescript' },
     ],
   },
   {
-    id: 'y3',
+    id: 'p6',
+    arcClass: 'y2',
+    icon: '⚛️',
+    label: 'Phase 6 · React JS',
+    tagline: 'Days 501–600',
+    duration: '100 days',
+    blurb: 'Components, hooks, state management, and the React ecosystem.',
+    items: [
+      { icon: '⚛️', title: 'React JS', detail: 'Components · hooks · state · routing · data fetching', source: 'ChaiCode', to: '/nextjs' },
+    ],
+  },
+  {
+    id: 'p7',
+    arcClass: 'y2',
+    icon: '🌐',
+    label: 'Phase 7 · Next JS',
+    tagline: 'Days 601–700',
+    duration: '100 days',
+    blurb: 'Full-stack React — App Router, server components, data & server actions, deployment.',
+    items: [
+      { icon: '🌐', title: 'Next JS', detail: 'App Router · server components · data & server actions · deployment', source: 'ChaiCode', to: '/nextjs' },
+    ],
+  },
+  {
+    id: 'p8',
+    arcClass: 'y2',
+    icon: '📱',
+    label: 'Phase 8 · React Native',
+    tagline: 'Days 701–800',
+    duration: '100 days',
+    blurb: 'Mobile apps with React — Expo, native components, navigation, and publishing.',
+    items: [
+      { icon: '📱', title: 'React Native', detail: 'Expo · native components · navigation · builds & publishing', source: 'ChaiCode', to: '/mobile' },
+    ],
+  },
+  {
+    id: 'p9',
+    arcClass: 'y2',
+    icon: '🟢',
+    label: 'Phase 9 · Express JS / Node JS',
+    tagline: 'Days 801–900',
+    duration: '100 days',
+    blurb: 'The backend for the TypeScript web stack — REST APIs, middleware, and databases.',
+    items: [
+      { icon: '🟢', title: 'Express JS / Node JS', detail: 'REST APIs · middleware · Prisma · JWT auth & deployment', source: 'ChaiCode', to: '/nextjs' },
+    ],
+  },
+  {
+    id: 'p10',
     arcClass: 'y3',
     icon: '☕',
-    label: 'Year 3 · Java Stack',
-    tagline: 'Year 3',
-    duration: '1 year',
-    blurb: 'A year of enterprise Java — Spring Boot and microservices at production scale.',
+    label: 'Phase 10 · J2SE',
+    tagline: 'Days 901–1000',
+    duration: '100 days',
+    blurb: 'Core Java — the foundation for the enterprise Java phases that follow.',
     items: [
-      {
-        icon: '☕',
-        title: 'Java Stack',
-        detail: 'Java · Spring Boot · Microservices',
-        source: 'Udemy',
-        to: '/java',
-      },
+      { icon: '☕', title: 'J2SE', detail: 'Core Java — OOP, collections, exceptions, multithreading', source: 'Udemy', to: '/java' },
     ],
   },
   {
-    id: 'y4',
+    id: 'p11',
+    arcClass: 'y3',
+    icon: '🏢',
+    label: 'Phase 11 · J2EE',
+    tagline: 'Days 1001–1100',
+    duration: '100 days',
+    blurb: 'Enterprise Java — the Java EE ecosystem for large-scale applications.',
+    items: [
+      { icon: '🏢', title: 'J2EE', detail: 'Servlets · JSP · the Java EE ecosystem', source: 'Udemy', to: '/java' },
+    ],
+  },
+  {
+    id: 'p12',
+    arcClass: 'y3',
+    icon: '🗄️',
+    label: 'Phase 12 · JPA',
+    tagline: 'Days 1101–1200',
+    duration: '100 days',
+    blurb: 'Java Persistence API — ORM, entities, and database mapping.',
+    items: [
+      { icon: '🗄️', title: 'JPA', detail: 'ORM · entities · database mapping', source: 'Udemy', to: '/java' },
+    ],
+  },
+  {
+    id: 'p13',
+    arcClass: 'y3',
+    icon: '🍃',
+    label: 'Phase 13 · Spring Boot',
+    tagline: 'Days 1201–1300',
+    duration: '100 days',
+    blurb: 'Production-grade Java web apps — Spring Boot, Spring Data, REST APIs, and security.',
+    items: [
+      { icon: '🍃', title: 'Spring Boot', detail: 'Spring Boot · Spring Data · REST APIs · security', source: 'Udemy', to: '/java' },
+    ],
+  },
+  {
+    id: 'p14',
+    arcClass: 'y3',
+    icon: '🕸️',
+    label: 'Phase 14 · Microservices using Java',
+    tagline: 'Days 1301–1400',
+    duration: '100 days',
+    blurb: 'Microservices architecture — API gateway, service discovery, and distributed systems in Java.',
+    items: [
+      { icon: '🕸️', title: 'Microservices using Java', detail: 'Microservices architecture · API gateway · service discovery', source: 'Udemy', to: '/java' },
+    ],
+  },
+  {
+    id: 'p15',
+    arcClass: 'y4',
+    icon: '🚀',
+    label: 'Phase 15 · DevOps',
+    tagline: 'Days 1401–1500',
+    duration: '100 days',
+    blurb: 'Ship and scale everything — Linux, Docker, Kubernetes, and CI/CD pipelines.',
+    items: [
+      { icon: '🚀', title: 'DevOps', detail: 'Linux · Docker · Kubernetes · CI/CD pipelines', source: 'KodeKloud', to: '/devops' },
+    ],
+  },
+  {
+    id: 'p16',
     arcClass: 'y4',
     icon: '☁️',
-    label: 'Year 4 · DevOps Stack',
-    tagline: 'Year 4',
-    duration: '1 year',
-    blurb: 'The final year — ship and scale everything: Linux, Docker, Kubernetes, CI/CD and AWS Cloud.',
-    items: [
-      {
-        icon: '🚀',
-        title: 'DevOps Stack',
-        detail: 'Linux · Docker · Kubernetes · CI/CD · AWS',
-        source: 'CloudFolksHub / KodeKloud',
-        to: '/devops',
-      },
-    ],
-  },
-  {
-    id: 'y5',
-    arcClass: 'y5',
-    icon: '📐',
-    label: 'System Design & Interview Prep',
-    tagline: '100 Days',
+    label: 'Phase 16 · AWS Cloud',
+    tagline: 'Days 1501–1600',
     duration: '100 days',
-    blurb: 'The finale — 100 days entirely dedicated to System Design and Interview Preparation, after 4 years of coding.',
+    blurb: 'The final phase — core AWS services and cloud architecture, end to end.',
     items: [
-      {
-        icon: '📐',
-        title: 'System Design & Interview Prep',
-        detail: 'Advanced System Design · Mock Interviews · DSA Revision · Behavioral Prep',
-        source: '100 days · after Year 4',
-        to: '/interview',
-        final: true,
-      },
+      { icon: '☁️', title: 'AWS Cloud', detail: '100 Days of AWS — core services and cloud architecture', source: 'KodeKloud', to: '/aws' },
     ],
   },
 ];
 
 const STATS = [
-  { value: '4 years', label: '+ 139 prereq + interview-prep days' },
+  { value: '16', label: 'sequential phases' },
   { value: '1,600', label: 'days of practice' },
-  { value: '5', label: 'stages, front to back' },
+  { value: '100', label: 'days per phase' },
   { value: '30+', label: 'technologies' },
 ];
 
@@ -143,14 +229,15 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 Day 0 setup · 4 years (+139 days) · 1,600 days of practice</span>
-        <h1 className="roadmap-hero-title">The 4-Year Roadmap</h1>
+        <span className="roadmap-hero-badge">📍 Day 0 setup · 16 phases · 1,600 days of practice</span>
+        <h1 className="roadmap-hero-title">The 1,600-Day Roadmap</h1>
         <p className="roadmap-hero-sub">
-          Starts with <strong>Day 0 — environment setup</strong>, then a <strong>4-year coding journey</strong> —{' '}
-          <strong>Python → TypeScript → Java → DevOps</strong>, one year each (<strong>1,461 days</strong>) — plus a{' '}
-          <strong>39-day Agentic AI &amp; Python</strong> prerequisite and{' '}
-          <strong>100 days of System Design &amp; Interview Preparation</strong> to finish, for{' '}
-          <strong>1,600 days</strong> of focused, daily practice in total.
+          Starts with <strong>Day 0 — environment setup</strong>, then <strong>16 sequential phases</strong>{' '}
+          of <strong>100 days</strong> each — <strong>Python → FastAPI → Agentic AI → JavaScript → TypeScript
+          → React JS → Next JS → React Native → Express/Node JS → J2SE → J2EE → JPA → Spring Boot →
+          Microservices → DevOps → AWS Cloud</strong> — <strong>1,600 days</strong> of focused, daily
+          practice, front to back. Data Structures &amp; System Design are practiced throughout, not a
+          separate add-on.
         </p>
         <div className="roadmap-stats">
           {STATS.map((s) => (
@@ -167,8 +254,8 @@ export default function RoadmapHome() {
         style={{ margin: '8px auto 4px', textAlign: 'center', maxWidth: '620px' }}
       >
         <img
-          src="/roadmap-notes/roadmap-1600-days-python-first.jpg"
-          alt="1600 Days of Code — 39 days + 1,461 days + 100 days = one complete journey. A glowing vertical timeline: a 39-day Python with Agentic AI prerequisite, then Year 1 Python, Year 2 TypeScript, Year 3 Java and Year 4 DevOps (4 years · 1,461 days), finishing with 100 days of System Design & Interview Preparation at Full Lifecycle Engineer."
+          src="/roadmap-notes/roadmap-1600-days-16-phases.jpg"
+          alt="1,600 Days of Code — 16 sequential 100-day phases: Python, FastAPI, Agentic AI, JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, and AWS Cloud, with Data Structures & System Design practiced throughout."
           loading="lazy"
           style={{
             width: '100%',
@@ -207,7 +294,7 @@ export default function RoadmapHome() {
             background: 'rgba(0, 255, 136, 0.06)',
             textDecoration: 'none',
             color: 'inherit',
-            marginBottom: '22px',
+            marginBottom: '4px',
           }}
         >
           <div style={{ fontWeight: 800, fontSize: '1rem' }}>
@@ -218,36 +305,6 @@ export default function RoadmapHome() {
             Node.js · Git · VS Code · Chrome DevTools · GitHub · Netlify · study routine
           </div>
         </Link>
-
-        <h2 style={{ fontSize: '1.05rem', fontWeight: 800, margin: '0 0 4px', textAlign: 'center' }}>
-          🎒 Prerequisites — before Year 1 Day 1
-        </h2>
-        <p style={{ textAlign: 'center', opacity: 0.7, fontSize: '0.9rem', margin: '0 0 14px' }}>
-          Complete these next — the 4-year journey assumes you already know them.
-        </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
-          {PREREQS.map((p) => (
-            <Link
-              key={p.title}
-              to={p.to}
-              style={{
-                display: 'block',
-                padding: '14px 16px',
-                borderRadius: '14px',
-                border: '1px dashed rgba(255,255,255,0.22)',
-                background: 'rgba(255,255,255,0.03)',
-                textDecoration: 'none',
-                color: 'inherit',
-              }}
-            >
-              <div style={{ fontWeight: 800, fontSize: '1rem' }}>
-                <span aria-hidden="true">{p.icon}</span> {p.title}
-                <span style={{ opacity: 0.55, fontWeight: 600, fontSize: '0.75rem' }}> · prerequisite</span>
-              </div>
-              <div style={{ opacity: 0.7, fontSize: '0.85rem', marginTop: '4px' }}>{p.detail}</div>
-            </Link>
-          ))}
-        </div>
       </section>
 
       <div className="roadmap-timeline">
@@ -268,7 +325,7 @@ export default function RoadmapHome() {
 
             <ol className="roadmap-list">
               {phase.items.map((item, i) => (
-                <li key={item.title} className={`roadmap-item ${item.final ? 'roadmap-item-final' : ''}`}>
+                <li key={item.title} className="roadmap-item">
                   <span className="roadmap-node" aria-hidden="true">
                     <span className="roadmap-node-num">{i + 1}</span>
                   </span>
@@ -277,7 +334,6 @@ export default function RoadmapHome() {
                       <div className="roadmap-card-top">
                         <span className="roadmap-card-icon" aria-hidden="true">{item.icon}</span>
                         <h3 className="roadmap-card-title">{item.title}</h3>
-                        {item.final && <span className="roadmap-card-final">Final</span>}
                       </div>
                       {item.detail && <p className="roadmap-card-detail">{item.detail}</p>}
                       <p className="roadmap-card-source">{item.source}</p>
@@ -293,7 +349,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">4 years + 100 days of System Design &amp; Interview Prep · 1,600 days</p>
+            <p className="roadmap-finish-date">16 phases · 1,600 days, front to back</p>
           </div>
         </div>
       </div>
@@ -301,21 +357,21 @@ export default function RoadmapHome() {
       <section className="roadmap-flow">
         <h2 className="roadmap-flow-title">The flow, end to end</h2>
         <p className="roadmap-flow-text">
-          A 39-day prerequisite — Generative AI &amp; Agentic AI (in Python) → then a 4-year coding journey:
-          Year 1 Python stack (Python, Django, FastAPI) → Year 2 TypeScript stack (TypeScript, React, Next.js,
-          React Native, Express JS) → Year 3 Java stack (Java, Spring Boot, Microservices) → Year 4 DevOps stack
-          (Linux, Docker, Kubernetes, CI/CD, AWS) → 100 days of System Design &amp; Interview Preparation.
-          1,600 days end to end (1,461 + 39 + 100).
+          Day 0 setup, then 16 sequential 100-day phases: <strong>Python</strong> → <strong>FastAPI</strong> →{' '}
+          <strong>Agentic AI using Python</strong> → <strong>JavaScript</strong> → <strong>TypeScript</strong> →{' '}
+          <strong>React JS</strong> → <strong>Next JS</strong> → <strong>React Native</strong> →{' '}
+          <strong>Express JS / Node JS</strong> → <strong>J2SE</strong> → <strong>J2EE</strong> →{' '}
+          <strong>JPA</strong> → <strong>Spring Boot</strong> → <strong>Microservices using Java</strong> →{' '}
+          <strong>DevOps</strong> → <strong>AWS Cloud</strong>. Data Structures &amp; System Design are
+          practiced throughout every phase, not saved for one dedicated block. 1,600 days end to end
+          (16 × 100).
         </p>
         <div className="roadmap-flow-actions">
           <Link to="/python" className="btn btn-lg roadmap-btn-primary">
-            Explore Year 1 · Python
-          </Link>
-          <Link to="/genai" className="btn btn-lg roadmap-btn-outline">
-            Prerequisites · Gen AI
+            Explore Phase 1 · Python
           </Link>
           <Link to="/interview" className="btn btn-lg roadmap-btn-outline">
-            System Design &amp; Interview Prep
+            DSA &amp; System Design
           </Link>
           <Link to="/best-udemy-courses" className="btn btn-lg roadmap-btn-outline">
             All course picks

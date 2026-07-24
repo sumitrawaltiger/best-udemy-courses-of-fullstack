@@ -13,7 +13,7 @@ export default function GenAIHome() {
     <>
       <section className="genai-hero">
         <div className="genai-hero-inner">
-          <span className="genai-badge">Year 1 · Agentic AI in JavaScript</span>
+          <span className="genai-badge">Bonus · Agentic AI in JavaScript</span>
           <h1 className="genai-title">GenAI Engineering Bootcamp</h1>
           <p className="genai-tagline">{GENAI_META.subtitle}</p>
           <div className="genai-stats">
