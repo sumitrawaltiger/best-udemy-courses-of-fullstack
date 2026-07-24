@@ -34,34 +34,34 @@ import JourneyCountdown from '../components/JourneyCountdown';
 const BTECH_ROADMAP = [
   {
     year: 'Prerequisites',
-    theme: 'Gen AI · JavaScript',
+    theme: 'Gen AI · Python',
     icon: '🎒',
     accent: 'y3',
-    topics: ['39 Days', 'JavaScript (ES6+)', 'HTML5 & CSS3', 'Gen AI & Agentic AI', 'LLMs & RAG', 'LangChain.js', 'LangGraph'],
-    blurb: 'A 39-day prerequisite, completed before Day 1 — JavaScript (with HTML5 & CSS3) and Generative & Agentic AI in JavaScript. The 4-year journey assumes you already know these.',
-    links: [{ label: 'GenAI Track', to: '/genai' }, { label: 'JS Prerequisites', to: '/prerequisites' }],
+    topics: ['39 Days', 'Python Fundamentals', 'Gen AI & Agentic AI', 'LLMs & RAG', 'LangChain', 'LangGraph'],
+    blurb: 'A 39-day prerequisite, completed before Day 1 — Python fundamentals and Generative & Agentic AI in Python. The 4-year journey assumes you already know these.',
+    links: [{ label: 'GenAI Track', to: '/genai' }, { label: 'Python Basics', to: '/python' }],
   },
   {
     year: 'Year 1',
+    theme: 'Python Stack',
+    icon: '🐍',
+    accent: 'y1',
+    topics: ['Python', 'Django', 'FastAPI'],
+    blurb: 'Year one of the 4-year coding journey — the Python stack end to end: the language, Django, and modern APIs with FastAPI.',
+    links: [{ label: 'Python & Agentic AI', to: '/python' }],
+  },
+  {
+    year: 'Year 2',
     theme: 'TypeScript Stack',
     icon: '🔷',
-    accent: 'y1',
+    accent: 'y2',
     topics: ['TypeScript', 'React JS', 'Next.js', 'React Native', 'Express JS'],
-    blurb: 'Year one of the 4-year coding journey — the TypeScript stack end to end: TypeScript, React, Next.js, React Native and Express JS.',
+    blurb: 'Year two — a full year of TypeScript: React, Next.js, React Native and Express JS.',
     links: [
       { label: 'JavaScript / TypeScript', to: '#syllabus' },
       { label: 'React / Next.js', to: '/nextjs' },
       { label: 'React Native', to: '/mobile' },
     ],
-  },
-  {
-    year: 'Year 2',
-    theme: 'Python Stack',
-    icon: '🐍',
-    accent: 'y2',
-    topics: ['Python', 'Django', 'FastAPI'],
-    blurb: 'Year two — a full year of Python: the language, Django, and modern APIs with FastAPI.',
-    links: [{ label: 'Python & Agentic AI', to: '/python' }],
   },
   {
     year: 'Year 3',
@@ -86,12 +86,12 @@ const BTECH_ROADMAP = [
     ],
   },
   {
-    year: 'Capstone',
-    theme: 'Career Sprint',
-    icon: '🏆',
+    year: 'Finale',
+    theme: 'System Design & Interview Prep',
+    icon: '📐',
     accent: 'y5',
-    topics: ['100 Days', 'Full-Stack Capstone', 'Advanced System Design', 'Interview Mastery', 'Portfolio & Launch'],
-    blurb: 'The 100-day finale — one flagship project across all four stacks, advanced system design, an interview mastery sprint, and portfolio launch.',
+    topics: ['100 Days', 'Advanced System Design', 'Mock Interviews', 'DSA Revision', 'Behavioral Prep'],
+    blurb: 'The 100-day finale — entirely dedicated to System Design and Interview Preparation, after 4 years of coding.',
     links: [{ label: 'System Design & Interview Prep', to: '/interview' }],
   },
 ];
@@ -117,16 +117,16 @@ export default function Home() {
               <span className="fle-hl">DevOps</span>
             </h1>
             <p className="fle-sub">
-              A structured <strong>1,600-day journey</strong> — Generative &amp; Agentic AI, then TypeScript, Python,
-              Java and DevOps, finished with a 100-day capstone &amp; career sprint. Learn by building, front to
-              back, one day at a time.
+              A structured <strong>1,600-day journey</strong> — Generative &amp; Agentic AI in Python, then Python,
+              TypeScript, Java and DevOps, finished with 100 days of System Design &amp; Interview Preparation.
+              Learn by building, front to back, one day at a time.
             </p>
 
             <div className="fle-pills">
               <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,600 Days of Code</span>
               <span className="fle-pill"><span aria-hidden="true">🧠</span> Gen AI &amp; Agentic AI</span>
               <span className="fle-pill"><span aria-hidden="true">🚀</span> Full Stack → DevOps</span>
-              <span className="fle-pill"><span aria-hidden="true">🏆</span> Capstone &amp; Career Sprint</span>
+              <span className="fle-pill"><span aria-hidden="true">📐</span> System Design &amp; Interview Prep</span>
             </div>
 
             <JourneyCountdown variant="hero" />
@@ -173,11 +173,11 @@ export default function Home() {
           <h2 className="btech-title">The 4-Year Learning Path</h2>
           <p className="btech-sub">
             A structured path to a full lifecycle engineer — a <strong>4-year coding journey</strong>:{' '}
-            <strong>TypeScript → Python → Java → DevOps</strong>, one year each (<strong>1,461 days</strong>), plus a{' '}
-            <strong>39-day Gen AI &amp; JavaScript</strong> prerequisite and a{' '}
-            <strong>100-day Capstone &amp; Career Sprint</strong> finale —{' '}
+            <strong>Python → TypeScript → Java → DevOps</strong>, one year each (<strong>1,461 days</strong>), plus a{' '}
+            <strong>39-day Gen AI &amp; Python</strong> prerequisite and{' '}
+            <strong>100 days of System Design &amp; Interview Preparation</strong> to finish —{' '}
             <strong>4 years (+139 days) = 1,600 days</strong> total. Each block maps to tracks on this site. Gen AI
-            &amp; JavaScript (with HTML5 &amp; CSS3) come before Year 1; the Capstone Sprint follows Year 4.
+            &amp; Python come before Year 1; System Design &amp; Interview Prep follows Year 4.
           </p>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
@@ -671,21 +671,22 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            1,600 days · 4 years + capstone
+            1,600 days · 4 years + finale
           </span>
           <h2>Thunder++ — The Full Journey</h2>
           <p className="section-desc">
-            A <strong>4-year coding journey</strong> — <strong>Year 1 TypeScript</strong>,{' '}
-            <strong>Year 2 Python</strong>, <strong>Year 3 Java</strong>, and <strong>Year 4 DevOps</strong> —
-            with <strong>DSA &amp; System Design</strong> practiced alongside in each stack’s language, capped by a{' '}
-            <strong>100-day Capstone &amp; Career Sprint</strong>. That’s <strong>1,600 days</strong> of focused
-            study. <strong>Gen AI &amp; JavaScript</strong> are prerequisites, done before Day 1.
+            A <strong>4-year coding journey</strong> — <strong>Year 1 Python</strong>,{' '}
+            <strong>Year 2 TypeScript</strong>, <strong>Year 3 Java</strong>, and <strong>Year 4 DevOps</strong> —
+            with <strong>DSA &amp; System Design</strong> practiced alongside in each stack’s language, capped by{' '}
+            <strong>100 days of System Design &amp; Interview Preparation</strong>. That’s{' '}
+            <strong>1,600 days</strong> of focused study. <strong>Gen AI &amp; Python</strong> are prerequisites,
+            done before Day 1.
           </p>
           <div className="thunder-plus-highlights">
-            <span>🎒 Prerequisites · Gen AI &amp; JavaScript</span>
+            <span>🎒 Prerequisites · Gen AI &amp; Python</span>
             <span>⌨️ 4-Year Coding Journey</span>
-            <span>☁️ TypeScript → Python → Java → DevOps</span>
-            <span>🏆 Capstone &amp; Career Sprint</span>
+            <span>☁️ Python → TypeScript → Java → DevOps</span>
+            <span>📐 System Design &amp; Interview Prep</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/interview" className="btn btn-interview-chaicode btn-lg">

@@ -1,24 +1,25 @@
 import { Link } from 'react-router-dom';
 
-// ── The 4-year + capstone roadmap ───────────────────────────────────────────
-// A 4-year coding journey (TypeScript → Python → Java → DevOps, one year each)
-// = 1461 days, plus a 39-day Gen AI & JavaScript prerequisite, plus a 100-day
-// Capstone & Career Sprint finale = 1,600 days total. Calendar dates are
-// intentionally NOT shown (HR-facing page). Gen AI and JavaScript are
-// PREREQUISITES, completed before Year 1; the Capstone Sprint follows Year 4.
+// ── The 4-year + finale roadmap ─────────────────────────────────────────────
+// A 4-year coding journey (Python → TypeScript → Java → DevOps, one year each)
+// = 1461 days, plus a 39-day Gen AI & Python prerequisite, plus 100 days of
+// System Design & Interview Preparation = 1,600 days total. Calendar dates
+// are intentionally NOT shown (HR-facing page). Gen AI and Python fundamentals
+// are PREREQUISITES, completed before Year 1; the System Design & Interview
+// Prep sprint follows Year 4.
 
 const PREREQS = [
   {
     icon: '🤖',
     title: 'Gen AI & Agentic AI',
-    detail: 'LLMs · token prediction · RAG · tools · LangChain.js · LangGraph',
+    detail: 'LLMs · token prediction · RAG · tools · LangChain · LangGraph — in Python',
     to: '/genai',
   },
   {
-    icon: '🟨',
-    title: 'JavaScript',
-    detail: 'ES6+, the DOM, async — with HTML5 & CSS3 fundamentals',
-    to: '/prerequisites',
+    icon: '🐍',
+    title: 'Python',
+    detail: 'Syntax, data types, OOP fundamentals — the base for Agentic AI and Year 1',
+    to: '/python',
   },
 ];
 
@@ -26,29 +27,11 @@ const PHASES = [
   {
     id: 'y1',
     arcClass: 'y1',
-    icon: '🔷',
-    label: 'Year 1 · TypeScript Stack',
+    icon: '🐍',
+    label: 'Year 1 · Python Stack',
     tagline: 'Year 1',
     duration: '1 year',
-    blurb: 'The first year of code — the TypeScript stack, front to back.',
-    items: [
-      {
-        icon: '🔷',
-        title: 'TypeScript Stack',
-        detail: 'TypeScript · React · Next.js · React Native · Express JS',
-        source: 'Thunder++, Udemy & ChaiCode',
-        to: '/nextjs',
-      },
-    ],
-  },
-  {
-    id: 'y2',
-    arcClass: 'y2',
-    icon: '🐍',
-    label: 'Year 2 · Python Stack',
-    tagline: 'Year 2',
-    duration: '1 year',
-    blurb: 'A full year of Python — the language, the web framework, and modern APIs.',
+    blurb: 'The first year of code — the Python stack, from the language to the web framework.',
     items: [
       {
         icon: '🐍',
@@ -56,6 +39,24 @@ const PHASES = [
         detail: 'Python · Django · FastAPI',
         source: 'Ashok IT',
         to: '/python',
+      },
+    ],
+  },
+  {
+    id: 'y2',
+    arcClass: 'y2',
+    icon: '🔷',
+    label: 'Year 2 · TypeScript Stack',
+    tagline: 'Year 2',
+    duration: '1 year',
+    blurb: 'A full year of TypeScript — typed frontend, full-stack web, and mobile.',
+    items: [
+      {
+        icon: '🔷',
+        title: 'TypeScript Stack',
+        detail: 'TypeScript · React · Next.js · React Native · Express JS',
+        source: 'Thunder++, Udemy & ChaiCode',
+        to: '/nextjs',
       },
     ],
   },
@@ -98,17 +99,17 @@ const PHASES = [
   {
     id: 'y5',
     arcClass: 'y5',
-    icon: '🏆',
-    label: 'Capstone & Career Sprint',
+    icon: '📐',
+    label: 'System Design & Interview Prep',
     tagline: '100 Days',
     duration: '100 days',
-    blurb: 'The finale — one flagship project across all four stacks, advanced system design, an interview mastery sprint, and portfolio launch.',
+    blurb: 'The finale — 100 days entirely dedicated to System Design and Interview Preparation, after 4 years of coding.',
     items: [
       {
-        icon: '🏆',
-        title: 'Capstone & Career Sprint',
-        detail: 'Full-stack capstone project · Advanced System Design · Interview mastery · Portfolio & launch',
-        source: 'Self-directed · ties every track together',
+        icon: '📐',
+        title: 'System Design & Interview Prep',
+        detail: 'Advanced System Design · Mock Interviews · DSA Revision · Behavioral Prep',
+        source: '100 days · after Year 4',
         to: '/interview',
         final: true,
       },
@@ -117,7 +118,7 @@ const PHASES = [
 ];
 
 const STATS = [
-  { value: '4 years', label: '+ 139 prereq + capstone days' },
+  { value: '4 years', label: '+ 139 prereq + interview-prep days' },
   { value: '1,600', label: 'days of practice' },
   { value: '5', label: 'stages, front to back' },
   { value: '30+', label: 'technologies' },
@@ -146,10 +147,10 @@ export default function RoadmapHome() {
         <h1 className="roadmap-hero-title">The 4-Year Roadmap</h1>
         <p className="roadmap-hero-sub">
           Starts with <strong>Day 0 — environment setup</strong>, then a <strong>4-year coding journey</strong> —{' '}
-          <strong>TypeScript → Python → Java → DevOps</strong>, one year each (<strong>1,461 days</strong>) — plus a{' '}
-          <strong>39-day Agentic AI &amp; JavaScript</strong> prerequisite and a{' '}
-          <strong>100-day Capstone &amp; Career Sprint</strong> finale, for <strong>1,600 days</strong> of focused,
-          daily practice in total.
+          <strong>Python → TypeScript → Java → DevOps</strong>, one year each (<strong>1,461 days</strong>) — plus a{' '}
+          <strong>39-day Agentic AI &amp; Python</strong> prerequisite and{' '}
+          <strong>100 days of System Design &amp; Interview Preparation</strong> to finish, for{' '}
+          <strong>1,600 days</strong> of focused, daily practice in total.
         </p>
         <div className="roadmap-stats">
           {STATS.map((s) => (
@@ -166,8 +167,8 @@ export default function RoadmapHome() {
         style={{ margin: '8px auto 4px', textAlign: 'center', maxWidth: '620px' }}
       >
         <img
-          src="/roadmap-notes/roadmap-1600-days.jpg"
-          alt="1600 Days of Code — 39 days + 1,461 days + 100 days = one complete journey. A glowing vertical timeline: a 39-day JavaScript with Agentic AI prerequisite, then Year 1 TypeScript, Year 2 Python, Year 3 Java and Year 4 DevOps (4 years · 1,461 days), finishing with a 100-day Capstone & Career Sprint at Full Lifecycle Engineer."
+          src="/roadmap-notes/roadmap-1600-days-python-first.jpg"
+          alt="1600 Days of Code — 39 days + 1,461 days + 100 days = one complete journey. A glowing vertical timeline: a 39-day Python with Agentic AI prerequisite, then Year 1 Python, Year 2 TypeScript, Year 3 Java and Year 4 DevOps (4 years · 1,461 days), finishing with 100 days of System Design & Interview Preparation at Full Lifecycle Engineer."
           loading="lazy"
           style={{
             width: '100%',
@@ -292,7 +293,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">4 years + 100-day capstone · 1,600 days · the complete stack</p>
+            <p className="roadmap-finish-date">4 years + 100 days of System Design &amp; Interview Prep · 1,600 days</p>
           </div>
         </div>
       </div>
@@ -300,22 +301,21 @@ export default function RoadmapHome() {
       <section className="roadmap-flow">
         <h2 className="roadmap-flow-title">The flow, end to end</h2>
         <p className="roadmap-flow-text">
-          A 39-day prerequisite — Generative AI &amp; Agentic AI (with JavaScript) → then a 4-year coding journey:
-          Year 1 TypeScript stack (TypeScript, React, Next.js, React Native, Express JS) → Year 2 Python stack
-          (Python, Django, FastAPI) → Year 3 Java stack (Java, Spring Boot, Microservices) → Year 4 DevOps stack
-          (Linux, Docker, Kubernetes, CI/CD, AWS) → a 100-day Capstone &amp; Career Sprint (a full-stack capstone
-          project, advanced system design, interview mastery, and portfolio launch). 1,600 days end to end
-          (1,461 + 39 + 100).
+          A 39-day prerequisite — Generative AI &amp; Agentic AI (in Python) → then a 4-year coding journey:
+          Year 1 Python stack (Python, Django, FastAPI) → Year 2 TypeScript stack (TypeScript, React, Next.js,
+          React Native, Express JS) → Year 3 Java stack (Java, Spring Boot, Microservices) → Year 4 DevOps stack
+          (Linux, Docker, Kubernetes, CI/CD, AWS) → 100 days of System Design &amp; Interview Preparation.
+          1,600 days end to end (1,461 + 39 + 100).
         </p>
         <div className="roadmap-flow-actions">
-          <Link to="/day-001" className="btn btn-lg roadmap-btn-primary">
-            Start Day 1 · TypeScript
+          <Link to="/python" className="btn btn-lg roadmap-btn-primary">
+            Explore Year 1 · Python
           </Link>
           <Link to="/genai" className="btn btn-lg roadmap-btn-outline">
             Prerequisites · Gen AI
           </Link>
           <Link to="/interview" className="btn btn-lg roadmap-btn-outline">
-            Capstone &amp; Career Sprint
+            System Design &amp; Interview Prep
           </Link>
           <Link to="/best-udemy-courses" className="btn btn-lg roadmap-btn-outline">
             All course picks
