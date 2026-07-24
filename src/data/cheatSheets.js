@@ -56,6 +56,15 @@ export const CHEAT_SHEETS = [
     tags: ['CSS', 'Transforms', 'translate', 'scale', 'rotate', 'skew', 'matrix'],
   },
   {
+    id: 'css-justify-align',
+    title: 'CSS Justify & Align Cheat Sheet',
+    description:
+      'Flexbox and Grid alignment side by side, visually — Flexbox horizontal alignment with justify-content (flex-start/end, center, space-between/around/evenly), Flexbox vertical alignment across wrapped lines with align-content, per-item cross-axis alignment with align-items (including baseline), plus the Grid equivalents: justify-content and justify-items for horizontal alignment, and align-content and align-items for vertical alignment (start/end/center/stretch/baseline) — every value shown as a labeled visual example. By @thedevspaceio (Full-Stack AI Developer Roadmap).',
+    category: 'css',
+    pdf: '/cheatsheets/css-justify-and-align-cheat-sheet.pdf',
+    tags: ['CSS', 'Flexbox', 'Grid', 'justify-content', 'align-items', 'align-content'],
+  },
+  {
     id: 'python-ultimate',
     title: 'Python — The Ultimate Cheat Sheet',
     description:
