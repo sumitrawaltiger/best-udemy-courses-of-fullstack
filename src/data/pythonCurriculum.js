@@ -856,6 +856,38 @@ const PYTHON_REST_API_SECTIONS = [
     content: "Python has an in-built **`json`** module to work with JSON data:\n\n- **`json.dumps()`** — converts a Python object into a JSON string.\n- **`json.dump()`** — writes a Python object into a JSON file.\n- **`json.loads()`** — converts a JSON string into a Python object.\n- **`json.load()`** — reads a JSON file and converts it into a Python object.",
     code: "import json\n\nstudent = {\n    \"id\": 101,\n    \"name\": \"Ravi\",\n    \"course\": \"Python\",\n    \"fee\": 15000\n}\n\nstudent_json = json.dumps(student, sort_keys=True, indent=4)\nprint(student_json)\nprint(type(student_json))\n\nprint(\"--------------------------------\")\n\nstudent = json.loads(student_json)\nprint(student)\nprint(type(student))\n\nprint(\"--------------------------------\")\n\nwith open(\"student.json\", \"w\") as file:\n    json.dump(student, file, indent=10)\n\nprint(\"JSON file created successfully\")\n\nprint(\"--------------------------------\")\n\nwith open(\"student.json\", \"r\") as file:\n    student = json.load(file)\n    print(student)",
   },
+  {
+    id: "what-is-http",
+    title: "What is HTTP?",
+    content: "**HTTP** stands for **Hyper Text Transfer Protocol** — it acts as the **mediator between client and server**.\n\n**HTTP is a stateless protocol** — it can't remember the conversation that happened between client and server; every request is treated independently.\n\nTo develop REST APIs, we need to know these HTTP concepts:\n1. HTTP Request Structure\n2. HTTP Response Structure\n3. HTTP Methods\n4. HTTP Status Codes",
+  },
+  {
+    id: "http-request-response-structure",
+    title: "HTTP Request & Response Structure",
+    content: "**HTTP Request** contains:\n1. **Request Line** — HTTP method + server URL.\n2. **Request Headers** — metadata, in key-value format.\n3. **Request Body** — the payload (text / XML / JSON).\n\n**HTTP Response** contains:\n1. **Response Line** — status code + status message.\n2. **Response Headers** — metadata, in key-value format.\n3. **Response Body** — the payload (text / XML / JSON).",
+  },
+  {
+    id: "http-methods",
+    title: "HTTP Methods",
+    content: "The 5 core HTTP methods:\n1. **GET** — get data from the server (no request body).\n2. **POST** — send data to the server (creates a new record).\n3. **PUT** — update a record (complete record update).\n4. **PATCH** — partial record update.\n5. **DELETE** — delete a record at the server.",
+  },
+  {
+    id: "http-status-codes",
+    title: "HTTP Status Codes",
+    content: "Status codes are grouped by their first digit:\n- **2xx (200–299)** — Success.\n- **4xx (400–499)** — Client error.\n- **5xx (500–599)** — Server error.",
+  },
+  {
+    id: "developing-rest-api-with-fastapi",
+    title: "Developing a REST API Using FastAPI",
+    content: "**Step 1** — create a Python project.\n**Step 2** — create a `requirements.txt` file inside the project.\n**Step 3** — configure the required libraries in `requirements.txt`.\n**Step 4** — create and activate a virtual environment.\n**Step 5** — install the libraries in the venv using `pip`.\n**Step 6** — create an `app.py` file with the REST endpoint methods.\n**Step 7** — run the application using `uvicorn`.\n**Step 8** — test the application using Swagger documentation at `http://localhost:8000/docs`.\n\nWhen you hit that URL, **FastAPI automatically generates API documentation** — what endpoints are available, which HTTP methods they're mapped to, the request parameters, request data format, and response data format. You can also **test the REST endpoints directly from Swagger**.\n\nYou can use **Postman** for API testing too — it won't auto-generate documentation, so you need to provide the API details to Postman yourself before sending a request.",
+    code: "pip install -r requirements.txt\n\n# run the app (reloads on code changes)\nuvicorn main:app --reload",
+  },
+  {
+    id: "fastapi-first-endpoints",
+    title: "FastAPI — Your First Endpoints",
+    content: "A minimal FastAPI app: create the app instance, then decorate a function with `@app.get(\"/path\")` to map it to a **GET** endpoint. The function's return value (a dict) is automatically sent back as **JSON**.",
+    code: "from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get(\"/welcome\")\ndef get_welcome_msg():\n    return {\"message\": \"Welcome to FastAPI\"}\n\n@app.get(\"/greet\")\ndef get_greet_msg():\n    return {\"message\": \"Good Morning\"}",
+  },
 ];
 
 export const pythonLessons = [
