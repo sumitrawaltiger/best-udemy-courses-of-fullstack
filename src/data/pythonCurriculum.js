@@ -876,10 +876,27 @@ export const pythonLessons = [
     pyDay: 8,
     phase: 'Python Foundations',
     title: 'Exception Handling',
-    subtitle: 'try, except, else, and finally blocks',
-    topics: ['try/except', 'else & finally', 'Custom exceptions', 'Raising errors', 'Best practices'],
+    subtitle: 'try, except, else, finally, and debugging in PyCharm',
+    topics: ['try/except', 'else & finally', 'Custom exceptions', 'Raising errors', 'Debugging with PyCharm'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=NIWwJbo-9-8', 'Python Exceptions', 'Corey Schafer'),
+    sections: [
+      {
+        id: 'what-is-debugging',
+        title: 'What is Debugging?',
+        content: "**Debugging** is the process of finding, understanding, and fixing errors in a program.\n\nWhen we write a Python program, it may not always produce the expected result. The program may:\n- Stop suddenly\n- Display an error message\n- Produce an incorrect output\n- Execute the wrong block of code\n- Get stuck in an infinite loop\n\nDebugging helps us understand:\n- which line is executing\n- what values variables contain\n- why a condition is true or false\n- where the error occurred\n- how the program reached that point\n\n**Debugging means executing a program step by step to identify and fix problems.**",
+      },
+      {
+        id: 'why-use-a-debugger',
+        title: 'Why Should We Use a Debugger?',
+        content: "Using a debugger, we can:\n- pause program execution\n- execute one line at a time\n- inspect variable values\n- enter inside functions\n- skip function execution\n- evaluate expressions\n- identify logical errors\n- understand the program's execution flow\n\nNormally, we execute the program using the **Run** option. To debug it, we use the **Debug** option.",
+      },
+      {
+        id: 'breakpoints-and-pycharm-shortcuts',
+        title: 'Breakpoints & PyCharm Debugging Shortcuts',
+        content: "A **breakpoint** tells PyCharm: **pause the program before executing this line.**\n\nWhen the debugger stops at a breakpoint, we can control program execution using these shortcuts:\n- **Shift + F9** — Start Debugging\n- **F7** — Step Into (enter inside a function)\n- **F8** — Step Over (move to the next line)\n- **F9** — Resume Program (move to the next breakpoint in the flow)\n- **Shift + F8** — Step Out (complete the function, return to the calling line)\n- **Alt + F9** — Run to Cursor (move the debugger to the line the cursor is on)\n- **Ctrl + F2** — Stop Debugging\n\nWhen a program is in debugging mode, we can also change variable values at runtime — useful for testing special scenarios.",
+      },
+    ],
   },
   {
     pyDay: 9,
