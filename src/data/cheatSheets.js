@@ -47,6 +47,15 @@ export const CHEAT_SHEETS = [
     tags: ['CSS', 'Selectors', 'Pseudo-classes', 'Pseudo-elements', 'Combinators'],
   },
   {
+    id: 'css-transforms',
+    title: 'CSS Transforms Cheat Sheet',
+    description:
+      'Every CSS transform function at a glance — translateX()/translateY()/translate() for moving elements, scale()/scaleX()/scaleY() for resizing, rotate() for spinning around the transform origin, skewX()/skewY()/skew() for shearing, and matrix() for a full custom 2D transform — each with a visual before/after example and the matrix() parameter breakdown (a, b, c, d, tx, ty) mapped to the underlying 3x3 transform matrix. By @thedevspaceio (Full-Stack AI Developer Roadmap).',
+    category: 'css',
+    pdf: '/cheatsheets/css-transforms-cheat-sheet.pdf',
+    tags: ['CSS', 'Transforms', 'translate', 'scale', 'rotate', 'skew', 'matrix'],
+  },
+  {
     id: 'python-ultimate',
     title: 'Python — The Ultimate Cheat Sheet',
     description:
