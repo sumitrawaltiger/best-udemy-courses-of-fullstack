@@ -1038,7 +1038,7 @@ export const chaptersDays20to100 = [
       "duration": "2 hrs 30 mins",
       "createdOn": "12 Aug 2026",
       "status": "published",
-      "notionUrl": "https://app.notion.com/p/Lecture09-MongoDB-and-Mongoose-39f43ac5cab9801da031d61c7de89719",
+      "notionUrl": "https://app.notion.com/p/Lecture09-MongoDB-and-Mongoose-39f43ac5cab9801da031d61c7de89719?source=copy_link",
       "topics": [
         "Why we need a database",
         "MongoDB documents",
