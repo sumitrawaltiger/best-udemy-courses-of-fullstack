@@ -4,10 +4,10 @@
 
 export const TS_META = {
   title: 'The TypeScript Series',
-  subtitle: '12 Episodes · JavaScript, Now With Types',
+  subtitle: '13 Episodes · JavaScript, Now With Types',
   blurb:
-    'JavaScript with a type system bolted on — catching bugs before they run. Twelve illustrated episodes, from installing the compiler to enums, interfaces, classes, inheritance, access modifiers, abstract classes, and implementing interfaces with static members, each paired with the full written notes and every code snippet.',
-  totalDays: 12,
+    'JavaScript with a type system bolted on — catching bugs before they run. Thirteen illustrated episodes, from installing the compiler to enums, interfaces, classes, inheritance, access modifiers, abstract classes, implementing interfaces with static members, and generics, each paired with the full written notes and every code snippet.',
+  totalDays: 13,
 };
 
 export const TS_GROUPS = [
@@ -15,6 +15,7 @@ export const TS_GROUPS = [
   { id: 'types', label: 'The Type System', icon: '🧩', desc: 'The types you reach for every single day.' },
   { id: 'structures', label: 'Structuring Types', icon: '🏗️', desc: 'Interfaces, enums, and asserting what you know.' },
   { id: 'oop', label: 'Object-Oriented', icon: '🏛️', desc: 'Classes, inheritance, access modifiers and abstract classes.' },
+  { id: 'generics', label: 'Generics', icon: '📦', desc: 'Flexible, reusable, type-safe components.' },
 ];
 
 export const TS_DAYS = [
@@ -588,6 +589,74 @@ export const TS_DAYS = [
         label: 'Static members — shared across all instances',
         code: 'class Counter {\n  static count: number = 0;\n  constructor() {\n    Counter.count++;\n  }\n  static getCount(): void {\n    console.log(`Total objects: ${Counter.count}`);\n  }\n}\n\nconst c1 = new Counter();\nconst c2 = new Counter();\nCounter.getCount(); // Total objects: 2',
         note: 'Static members belong to the class — accessed via the class name, not an instance.',
+      },
+    ],
+  },
+  {
+    day: 13,
+    group: 'generics',
+    title: 'Generics (Part 1)',
+    tagline: 'Write once, use everywhere — flexible, reusable, type-safe components.',
+    image: '/typescript-notes/ep13-generics-part-1.jpeg',
+    tags: ['Generics', 'Type Parameters', 'Reusability', 'Generic Classes'],
+    notes: [
+      { k: 'What are generics?', v: 'Generics let us write code that works with **any type**, without losing **type safety**.' },
+      { k: 'Real-world analogy', v: 'Think of a **box** that can hold anything — books, toys, clothes. The box is the same, but what it holds can change.' },
+      { k: 'Why use generics', v: 'Reusable for multiple types, type-safe, better developer experience, reduces code duplication, and works with functions, interfaces, classes & more.' },
+      { k: 'Type parameter', v: 'A generic uses a placeholder like **`T`** — a **type parameter** — that stands in for a real type until the generic is actually used.' },
+      { k: 'Naming', v: 'Name a type parameter anything — `T`, `U`, `V`, `K`, `Value`, `Data`. Convention: use **meaningful names** for readability, and start simple with one parameter (`T`) before moving to multiple.' },
+      { k: 'Generics vs any', v: '`any` gives up type safety entirely (no compile-time checks, limited autocomplete, risky refactors, errors caught late). **Generics keep full type safety** — compile-time checked, full autocomplete, safe refactors, errors caught early. **Avoid `any` when possible; prefer generics.**' },
+    ],
+    theory: [
+      {
+        h: '1. What are Generics?',
+        p: 'Generics let us write code that works with **any type**, without losing **type safety**. `T` is a **type parameter** — a placeholder for a type that gets filled in when the generic is actually called, so `identity<number>(42)` returns a `number` and `identity<string>("Hello")` returns a `string`, with the compiler checking each call.',
+        code: 'function identity<T>(value: T): T {\n  return value;\n}\n\nlet num = identity<number>(42);        // number\nlet str = identity<string>("Hello");   // string\nlet bool = identity<boolean>(true);    // boolean\n\n// T is a type parameter (placeholder for a type)',
+      },
+      {
+        h: '2. Generic Functions',
+        p: 'We can make functions generic using type parameters: `function functionName<T>(param: T): ReturnType { ... }` — the type parameter `T` is declared right after the function name, then used as a type both for the parameter and the return type.',
+        code: 'function firstElement<T>(arr: T[]): T {\n  return arr[0];\n}\n\nconst n = firstElement<number>([10, 20, 30]); // 10\nconst s = firstElement<string>(["a", "b", "c"]); // "a"',
+      },
+      {
+        h: '3. Generic Interfaces',
+        p: 'Interfaces can be generic too. A `Pair<T>` interface uses one type parameter for both of its fields; a `KeyValue<K, V>` interface uses **two** type parameters — one for the key, one for the value — so `key` and `value` can each be independently typed per usage.',
+        code: 'interface Pair<T> {\n  first: T;\n  second: T;\n}\n\nconst pairNum: Pair<number> = { first: 1, second: 2 };\nconst pairStr: Pair<string> = { first: "A", second: "B" };\n\n// Key-Value pair with two type parameters\ninterface KeyValue<K, V> {\n  key: K;\n  value: V;\n}\n\nconst user: KeyValue<string, { id: number; name: string }> = {\n  key: "u1",\n  value: { id: 1, name: "Faisal" },\n};',
+      },
+      {
+        h: '4. Generic Classes',
+        p: 'Classes can be generic too — a `Box<T>` can hold any type, and the type is decided when an object is **created**, then stays type-safe throughout. `new Box<number>(100)` gives a box whose `getValue()` returns `number`; `new Box<string>("TypeScript")` gives one whose `getValue()` returns `string`.',
+        code: 'class Box<T> {\n  private value: T;\n  constructor(value: T) {\n    this.value = value;\n  }\n  getValue(): T {\n    return this.value;\n  }\n}\n\nconst boxNum = new Box<number>(100);\nconst boxStr = new Box<string>("TypeScript");\nconsole.log(boxNum.getValue()); // 100\nconsole.log(boxStr.getValue()); // TypeScript',
+      },
+      {
+        h: 'Generics vs any',
+        p: 'A generic and `any` can both accept "anything," but they are opposites in what they check:\n\n- **Type safety** — Generics: compile-time safe. `any`: no safety.\n- **Auto-completion** — Generics: full support. `any`: limited.\n- **Refactoring** — Generics: easy & safe. `any`: risky.\n- **Error detection** — Generics: caught early. `any`: might fail later.\n\n**Avoid `any` when possible — prefer generics for type-safe, reusable code.**',
+      },
+      {
+        h: 'Quick recap',
+        p: '- Generics let us write **flexible & reusable** code.\n- Use **`<T>`** to create type parameters.\n- Work with **functions, interfaces & classes**.\n- Ensure **type safety** without sacrificing flexibility.\n- Great for building **libraries, utilities & frameworks**.\n\n**Interview Q:** what is a generic in TypeScript? How do generics help in writing reusable code? Can interfaces and classes be generic — give examples. What is the difference between `any` and generics?\n\nWrite once, use everywhere — that’s the power of generics.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Generic identity function',
+        code: 'function identity<T>(value: T): T {\n  return value;\n}\n\nidentity<number>(42);      // number\nidentity<string>("Hello"); // string',
+        note: 'T is filled in per call — the compiler checks the return type matches.',
+      },
+      {
+        label: 'Generic function over an array',
+        code: 'function firstElement<T>(arr: T[]): T {\n  return arr[0];\n}\n\nfirstElement<number>([10, 20, 30]); // 10\nfirstElement<string>(["a", "b", "c"]); // "a"',
+        note: 'Works for an array of any type, while keeping the return type accurate.',
+      },
+      {
+        label: 'Generic interface — Key-Value pair',
+        code: 'interface KeyValue<K, V> {\n  key: K;\n  value: V;\n}\n\nconst user: KeyValue<string, { id: number; name: string }> = {\n  key: "u1",\n  value: { id: 1, name: "Faisal" },\n};',
+        note: 'Two type parameters — one for the key, one for the value.',
+      },
+      {
+        label: 'Generic class — a type-safe Box',
+        code: 'class Box<T> {\n  private value: T;\n  constructor(value: T) {\n    this.value = value;\n  }\n  getValue(): T {\n    return this.value;\n  }\n}\n\nconst boxNum = new Box<number>(100);\nconst boxStr = new Box<string>("TypeScript");',
+        note: 'The type is decided when the object is created, then stays consistent.',
       },
     ],
   },
