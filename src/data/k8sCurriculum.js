@@ -309,8 +309,10 @@ const K8S_SLIDES_SECTIONS = [
   {
     id: "health-probes",
     title: "Health Probes",
-    content: "Probes let Kubernetes continuously check container health:\n- **Startup probe** — waits for slow-starting apps before other probes run.\n- **Liveness probe** — restarts the container if it becomes unhealthy.\n- **Readiness probe** — removes the Pod from Service endpoints until it's ready to receive traffic.",
-    code: "livenessProbe:\n  httpGet:\n    path: /healthz\n    port: 8080\n  initialDelaySeconds: 10\n  periodSeconds: 5\nreadinessProbe:\n  httpGet:\n    path: /ready\n    port: 8080",
+    content: "Probes let Kubernetes continuously check container health — it doesn't assume the app is healthy, it checks:\n- **Startup probe** — waits for slow-starting apps (Java, large DBs) to finish booting before the liveness/readiness probes start at all; if it fails repeatedly, the container is restarted.\n- **Liveness probe** — is the app still alive? Detects a crashed or hung app; if it fails, Kubernetes restarts the container.\n- **Readiness probe** — is the app ready to serve traffic? If it fails, the Pod stays running but is removed from Service endpoints (no traffic sent) until it passes again.\n\n**Flow:** New Pod → Startup Probe (must pass before anything else runs) → Liveness Probe (failure restarts the container) → Readiness Probe (failure removes the Pod from Service endpoints, success adds it back). Common fields across all three: `initialDelaySeconds` (wait before the first check), `periodSeconds` (time between checks), `timeoutSeconds` (max wait for a response), `failureThreshold` (failures before acting), `successThreshold` (successes to be considered healthy).",
+    code: "livenessProbe:\n  httpGet:\n    path: /healthz\n    port: 8080\n  initialDelaySeconds: 10\n  periodSeconds: 5\nreadinessProbe:\n  httpGet:\n    path: /ready\n    port: 8080\nstartupProbe:\n  httpGet:\n    path: /startup\n    port: 8080\n  failureThreshold: 30\n  periodSeconds: 5",
+    image: '/k8s-notes/kubernetes-probes.jpg',
+    imageAlt: 'Kubernetes Probes — how Kubernetes knows your app is healthy: the probe logic flow (new Pod, Startup Probe, Liveness Probe, Readiness Probe), what liveness/readiness/startup probes check with HTTP/TCP example YAML, a probe comparison table (what each checks, what happens on failure, whether it affects traffic), and the common probe fields (initialDelaySeconds, periodSeconds, timeoutSeconds, failureThreshold, successThreshold)',
   },
   {
     id: "storage-persistence",
