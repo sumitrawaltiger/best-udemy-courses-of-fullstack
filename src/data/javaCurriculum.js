@@ -1514,6 +1514,16 @@ function buildLessons() {
         href: '/spring-boot-ecommerce-microservices-course.pdf',
         icon: '📄',
       };
+      if (title === 'Introduction to Java & Setup') {
+        lesson.extraLinks = [
+          ...(lesson.extraLinks || []),
+          {
+            label: 'Java & Spring Boot — 100 Interview Questions (PDF)',
+            href: '/java-notes/java-and-spring-boot-100-interview-questions.pdf',
+            icon: '📄',
+          },
+        ];
+      }
       if (title === 'Spring Boot Fundamentals') {
         lesson.pdfUrl = '/java-spring-boot-slides.pdf';
         lesson.pdfLabel = 'Spring Boot Slides (PDF)';
