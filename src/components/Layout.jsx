@@ -65,7 +65,7 @@ export default function Layout() {
           — sharing my Full LifeCycle Engineering journey with the world.
         </p>
         <p className="footer-sub">
-          Agentic AI → TypeScript → Python → Java → DevOps
+          Agentic AI → TypeScript → Java → Python → DevOps
         </p>
         <p className="footer-community">
           <a href={discordCommunity} target="_blank" rel="noopener noreferrer">

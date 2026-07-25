@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 
-/** Day 1 of the 1,600-day journey (Phase 1 · Python starts here — no separate prerequisite phase). */
-const JOURNEY_START = new Date(2026, 6, 25, 0, 0, 0, 0);
-/** Target: end of Day 1,600 (last day 10 Dec 2030) — 16 sequential 100-day phases. */
-export const JOURNEY_END = new Date(JOURNEY_START.getTime() + 1600 * 24 * 60 * 60 * 1000);
+/** Day 1 was 25 Jul 2026 (Phase 1 · Agentic AI using Python starts here — no separate prerequisite phase). */
+/** Target: 1 Jan 2031, 00:00 — 5 sequential stacks (Agentic AI, TypeScript, Java, Python, DevOps). */
+export const JOURNEY_END = new Date(2031, 0, 1, 0, 0, 0, 0);
 
 function getRemaining(now = new Date()) {
   const diff = Math.max(0, JOURNEY_END.getTime() - now.getTime());
@@ -20,7 +19,7 @@ function pad(n) {
 }
 
 /**
- * Live countdown to the end of the 1,600-day journey — days, hours, minutes, seconds.
+ * Live countdown to the end of the journey (1 Jan 2031) — days, hours, minutes, seconds.
  * @param {{ variant?: 'banner' | 'hero' }} props
  */
 export default function JourneyCountdown({ variant = 'banner' }) {
@@ -43,7 +42,7 @@ export default function JourneyCountdown({ variant = 'banner' }) {
     return (
       <div className="journey-countdown journey-countdown--hero" role="timer" aria-live="polite">
         <p className="journey-countdown-label">
-          {time.done ? '1,600-day journey complete' : 'Countdown to journey end'}
+          {time.done ? 'Journey complete' : 'Countdown to journey end'}
         </p>
         <div className="journey-countdown-units">
           {units.map((u) => (

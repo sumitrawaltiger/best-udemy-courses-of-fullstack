@@ -9,7 +9,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Git & GitHub',
-    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 1600 days of code',
+    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 1621 days of code',
   },
   {
     title: 'VS Code',
@@ -33,11 +33,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 1,600-day plan — 16 sequential 100-day phases: Python, FastAPI, Agentic AI, JavaScript, TypeScript, React, Next.js, React Native, Express/Node, then Java (J2SE through Microservices), DevOps, and AWS Cloud',
+    text: 'reviewed the full 1,621-day plan — 5 sequential stacks: Agentic AI using Python, then the TypeScript Stack (JavaScript, TypeScript, React, Next.js, React Native, Express/Node), the Java Stack (J2SE through Microservices), the Python Stack (Python, FastAPI), and the DevOps Stack (DevOps, AWS Cloud)',
   },
   {
     title: 'Ready for Phase 1',
-    text: 'no separate prerequisite phase this time — Day 1 starts straight into Phase 1: Python',
+    text: 'no separate prerequisite phase this time — Day 1 starts straight into Phase 1: Agentic AI using Python',
   },
   {
     title: 'Accounts ready',
@@ -65,7 +65,7 @@ const CORE_TOOLS = [
     titleClass: 'card-title-amber',
     subtitle: 'Version Control',
     description:
-      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 1600 days is signed to you.',
+      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 1621 days is signed to you.',
     code: 'git --version\ngit config --global user.name "Sumit Rawal"\ngit config --global user.email "you@email.com"',
   },
   {
@@ -95,7 +95,7 @@ const ACCOUNTS = [
     titleClass: 'card-title-purple',
     subtitle: 'Code Home',
     description:
-      'Create a GitHub account and your first repo. Every project, from Phase 1 (Python) to Phase 16 (AWS Cloud), gets committed and pushed here.',
+      'Create a GitHub account and your first repo. Every project, from Phase 1 (Agentic AI) to Phase 5 (DevOps Stack), gets committed and pushed here.',
     link: { href: 'https://github.com', label: 'Create GitHub account →', external: true },
   },
   {
@@ -125,26 +125,26 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-amber',
     subtitle: '4 AM Wake · 5–8 AM Study',
     description:
-      'Wake at 4:00 AM, then study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1600 days.',
+      'Wake at 4:00 AM, then study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1621 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
     icon: '🗺️',
-    title: 'The 1600-Day Roadmap',
+    title: 'The 1621-Day Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '16 phases · 100 days each',
+    subtitle: '5 stacks · ~1 year each',
     description:
-      '16 sequential 100-day phases — Python, FastAPI, Agentic AI, JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, and AWS Cloud — with DSA & System Design practiced throughout every phase. Know the whole map before step one.',
+      '5 sequential stacks — Agentic AI using Python, the TypeScript Stack (JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS), the Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices), the Python Stack (Python, FastAPI), and the DevOps Stack (DevOps, AWS Cloud) — with DSA & System Design practiced throughout every stack. Know the whole map before step one.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
-    icon: '🐍',
-    title: 'Day 1 Starts With Python',
+    icon: '🤖',
+    title: 'Day 1 Starts With Agentic AI',
     titleClass: 'card-title-lime',
     subtitle: 'No prerequisite phase this time',
     description:
-      'Day 1 begins directly with Phase 1: Python — no separate prerequisite phase before it. Environment is ready, accounts are live, routine is locked.',
-    link: { href: '/python', label: 'Start Phase 1 · Python →' },
+      'Day 1 begins directly with Phase 1: Agentic AI using Python — no separate prerequisite phase before it. Environment is ready, accounts are live, routine is locked.',
+    link: { href: '/python', label: 'Start Phase 1 · Agentic AI →' },
   },
 ];
 
@@ -243,14 +243,14 @@ export default function Day000() {
           </Link>
           <p className="day001-datetime">Study Day 0</p>
           <Link to="/python" className="day001-nav-btn day001-nav-next">
-            Phase 1 · Python →
+            Phase 1 · Agentic AI →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>1600 Days</span>
+              <span>1621 Days</span>
               <span>Setup</span>
               <span>Tooling</span>
               <span>Day 0</span>
@@ -272,7 +272,7 @@ export default function Day000() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">1600 DAYS · DAY 0</p>
+              <p className="day001-profile-role">1621 DAYS · DAY 0</p>
             </div>
           </div>
         </div>
@@ -282,14 +282,14 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 of the 1,600-day learning journey</strong>. Today is only{' '}
+          <strong>Day 0 of the 1,621-day learning journey</strong>. Today is only{' '}
           <strong>environment setup</strong>: install <code>Node.js</code>, <code>Git</code>, and{' '}
           <code>VS Code</code>, wire the terminal and Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             GitHub
           </a>{' '}
           and Netlify accounts, and lock the routine (wake 4 AM, study 5:00–8:00 AM IST). No lectures yet —
-          clear every obstacle so <strong>Day 1</strong> (Phase 1 · Python) starts with zero
+          clear every obstacle so <strong>Day 1</strong> (Phase 1 · Agentic AI) starts with zero
           friction. Sharpen the axe before the first swing.
         </p>
 
@@ -320,7 +320,7 @@ export default function Day000() {
           <span>#Day0</span>
           <span>#100DaysOfCode</span>
           <span>#DevSetup</span>
-          <span>#1600Days</span>
+          <span>#1621Days</span>
           <span>#JSLearnHub</span>
         </footer>
       </div>
