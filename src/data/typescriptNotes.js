@@ -4,10 +4,10 @@
 
 export const TS_META = {
   title: 'The TypeScript Series',
-  subtitle: '13 Episodes · JavaScript, Now With Types',
+  subtitle: '14 Episodes · JavaScript, Now With Types',
   blurb:
-    'JavaScript with a type system bolted on — catching bugs before they run. Thirteen illustrated episodes, from installing the compiler to enums, interfaces, classes, inheritance, access modifiers, abstract classes, implementing interfaces with static members, and generics, each paired with the full written notes and every code snippet.',
-  totalDays: 13,
+    'JavaScript with a type system bolted on — catching bugs before they run. Fourteen illustrated episodes, from installing the compiler to enums, interfaces, classes, inheritance, access modifiers, abstract classes, implementing interfaces with static members, and generics — from type parameters through constraints, multiple type parameters and defaults — each paired with the full written notes and every code snippet.',
+  totalDays: 14,
 };
 
 export const TS_GROUPS = [
@@ -320,7 +320,7 @@ export const TS_DAYS = [
       },
       {
         h: 'Type assertions — “I know more than the compiler”',
-        p: 'Sometimes **you know more about a value than TypeScript can infer** — for example a DOM lookup or a value typed as `unknown`. A **type assertion** tells the compiler to treat it as a specific type. There are two syntaxes: `value as string` (the `as` form, preferred) and `<string>value` (the angle-bracket form, which clashes with JSX).\n\nCommon use cases: **working with the DOM, converting `unknown` types, and telling TS what you know.** The crucial warning: **type assertions do no checks at runtime.** You are overriding the compiler, so if you’re wrong, the code compiles and then crashes. Only assert when you are genuinely 100% sure.',
+        p: 'Sometimes **you know more about a value than TypeScript can infer** — for example a DOM lookup or a value typed as `unknown`. A **type assertion** tells the compiler to treat it as a specific type. There are two syntaxes: `value as string` (the `as` form, preferred) and `<string>value` (the angle-bracket form, which clashes with JSX).\n\nCommon use cases: working with the DOM, converting `unknown` types, and telling TS what you know. The crucial warning: **type assertions do no checks at runtime.** You are overriding the compiler, so if you’re wrong, the code compiles and then crashes. Only assert when you are genuinely 100% sure.',
       },
       {
         h: 'Quick recap',
@@ -373,7 +373,7 @@ export const TS_DAYS = [
       },
       {
         h: 'The constructor',
-        p: 'The **`constructor()` method is called automatically when an object is created**. Its job is to **initialize the object’s properties** from the arguments passed to `new`.\n\nThree things to remember: the method name is **always `constructor`**; it is called **only once**, at the time of object creation; and it is **used to initialize object properties**. Inside it, `this` points at the brand-new instance, so `this.title = title` stores that object’s own data.',
+        p: 'The `constructor()` method is called automatically when an object is created. Its job is to **initialize the object’s properties** from the arguments passed to `new`.\n\nThree things to remember: the method name is always `constructor`; it is called **only once**, at the time of object creation; and it is **used to initialize object properties**. Inside it, `this` points at the brand-new instance, so `this.title = title` stores that object’s own data.',
       },
       {
         h: 'Creating multiple objects',
@@ -420,7 +420,7 @@ export const TS_DAYS = [
     notes: [
       { k: 'Inheritance', v: 'Inheritance lets a class (**child**) acquire the properties and methods of another class (**parent**) with `extends` — so you **re-use and extend** code instead of repeating it.' },
       { k: 'extends', v: '`class Dog extends Animal` makes `Dog` inherit everything `Animal` has, then add its own members on top.' },
-      { k: 'super()', v: '`super(...)` calls the **parent constructor**, and `super.method()` calls a parent method. It **must run before you use `this`** in the child constructor.' },
+      { k: 'super()', v: '`super(...)` calls the **parent constructor**, and `super.method()` calls a parent method. It must run before you use `this` in the child constructor.' },
       { k: 'Method override', v: 'A child can **redefine** an inherited method (same name) to change behaviour — `Dog.speak()` overrides `Animal.speak()`.' },
       { k: 'public', v: 'The **default** modifier — visible **everywhere** (inside the class, outside it, and in subclasses). Like an *open hall*.' },
       { k: 'private', v: 'Visible **only inside the class** where it is declared — not even subclasses can touch it. Like a *locked room*; use it for sensitive data.' },
@@ -434,11 +434,11 @@ export const TS_DAYS = [
       },
       {
         h: 'The super keyword',
-        p: '`super` connects the child to its parent. It **calls the constructor of the parent class** (`super(name)`), and it can **access parent-class methods** (`super.speak()`). One firm rule: in a child constructor, **`super(...)` must be called before you use `this`** — the parent has to initialise its part of the object first.',
+        p: '`super` connects the child to its parent. It **calls the constructor of the parent class** (`super(name)`), and it can **access parent-class methods** (`super.speak()`). One firm rule: in a child constructor, `super(...)` must be called before you use `this` — the parent has to initialise its part of the object first.',
       },
       {
         h: 'Access modifiers — controlling visibility',
-        p: 'Access modifiers control the **visibility of class members**.\n\n- **`public`** — the default; visible **anywhere** (inside the class, outside it, and in subclasses). *e.g. `public name: string`.*\n- **`private`** — visible **only within the class** where it is declared. *e.g. `private age: number`.*\n- **`protected`** — visible in the **class and its subclasses**, but not outside. *e.g. `protected id: number`.*\n\nMental model: **private is a locked room**, **protected is a family room**, and **public is an open hall**. In the `Person`/`Employee` example, a subclass can read `this.id` (protected) but **not** `this.age` (private).',
+        p: 'Access modifiers control the **visibility of class members**.\n\n- `public` — the default; visible **anywhere** (inside the class, outside it, and in subclasses). *e.g. `public name: string`.*\n- `private` — visible **only within the class** where it is declared. *e.g. `private age: number`.*\n- `protected` — visible in the **class and its subclasses**, but not outside. *e.g. `protected id: number`.*\n\nMental model: **private is a locked room**, **protected is a family room**, and **public is an open hall**. In the `Person`/`Employee` example, a subclass can read `this.id` (protected) but **not** `this.age` (private).',
       },
       {
         h: 'Getters & setters (bonus)',
@@ -446,7 +446,7 @@ export const TS_DAYS = [
       },
       {
         h: 'Quick recap',
-        p: '- **Inheritance** helps us **re-use and extend** code.\n- The **`super`** keyword accesses parent-class features.\n- **Access modifiers** — `public`, `private`, `protected` — control **visibility**.\n- **Getters & setters** help manage and **validate data safely**.\n\nGood practice: prefer **`protected` over `public`** for class internals, use **`private`** for sensitive data, and remember — **inheritance + modifiers = powerful OOP**. Great code is not just working, it’s well-structured and future-proof.',
+        p: '- **Inheritance** helps us **re-use and extend** code.\n- The `super` keyword accesses parent-class features.\n- **Access modifiers** — `public`, `private`, `protected` — control **visibility**.\n- **Getters & setters** help manage and **validate data safely**.\n\nGood practice: prefer `protected` over `public` for class internals, use `private` for sensitive data, and remember — **inheritance + modifiers = powerful OOP**. Great code is not just working, it’s well-structured and future-proof.',
       },
     ],
     snippets: [
@@ -571,7 +571,7 @@ export const TS_DAYS = [
       },
       {
         h: 'Quick recap',
-        p: '- Implement interfaces using the **`implements`** keyword.\n- A class **must implement all members** of every interface it implements.\n- Use **multiple interfaces** for better modularity.\n- **Static members belong to the class**, not to instances.\n- Use static for **utility functions, constants, and helpers**.\n\n**Interview Q:** what’s the difference between an interface and a class? When would you use a static member over an instance member?\n\nStrong contracts, smart code.',
+        p: '- Implement interfaces using the `implements` keyword.\n- A class **must implement all members** of every interface it implements.\n- Use **multiple interfaces** for better modularity.\n- **Static members belong to the class**, not to instances.\n- Use static for **utility functions, constants, and helpers**.\n\n**Interview Q:** what’s the difference between an interface and a class? When would you use a static member over an instance member?\n\nStrong contracts, smart code.',
       },
     ],
     snippets: [
@@ -603,9 +603,9 @@ export const TS_DAYS = [
       { k: 'What are generics?', v: 'Generics let us write code that works with **any type**, without losing **type safety**.' },
       { k: 'Real-world analogy', v: 'Think of a **box** that can hold anything — books, toys, clothes. The box is the same, but what it holds can change.' },
       { k: 'Why use generics', v: 'Reusable for multiple types, type-safe, better developer experience, reduces code duplication, and works with functions, interfaces, classes & more.' },
-      { k: 'Type parameter', v: 'A generic uses a placeholder like **`T`** — a **type parameter** — that stands in for a real type until the generic is actually used.' },
+      { k: 'Type parameter', v: 'A generic uses a placeholder like `T` — a **type parameter** — that stands in for a real type until the generic is actually used.' },
       { k: 'Naming', v: 'Name a type parameter anything — `T`, `U`, `V`, `K`, `Value`, `Data`. Convention: use **meaningful names** for readability, and start simple with one parameter (`T`) before moving to multiple.' },
-      { k: 'Generics vs any', v: '`any` gives up type safety entirely (no compile-time checks, limited autocomplete, risky refactors, errors caught late). **Generics keep full type safety** — compile-time checked, full autocomplete, safe refactors, errors caught early. **Avoid `any` when possible; prefer generics.**' },
+      { k: 'Generics vs any', v: '`any` gives up type safety entirely (no compile-time checks, limited autocomplete, risky refactors, errors caught late). **Generics keep full type safety** — compile-time checked, full autocomplete, safe refactors, errors caught early. Avoid `any` when possible; prefer generics.' },
     ],
     theory: [
       {
@@ -630,11 +630,11 @@ export const TS_DAYS = [
       },
       {
         h: 'Generics vs any',
-        p: 'A generic and `any` can both accept "anything," but they are opposites in what they check:\n\n- **Type safety** — Generics: compile-time safe. `any`: no safety.\n- **Auto-completion** — Generics: full support. `any`: limited.\n- **Refactoring** — Generics: easy & safe. `any`: risky.\n- **Error detection** — Generics: caught early. `any`: might fail later.\n\n**Avoid `any` when possible — prefer generics for type-safe, reusable code.**',
+        p: 'A generic and `any` can both accept "anything," but they are opposites in what they check:\n\n- **Type safety** — Generics: compile-time safe. `any`: no safety.\n- **Auto-completion** — Generics: full support. `any`: limited.\n- **Refactoring** — Generics: easy & safe. `any`: risky.\n- **Error detection** — Generics: caught early. `any`: might fail later.\n\nAvoid `any` when possible — prefer generics for type-safe, reusable code.',
       },
       {
         h: 'Quick recap',
-        p: '- Generics let us write **flexible & reusable** code.\n- Use **`<T>`** to create type parameters.\n- Work with **functions, interfaces & classes**.\n- Ensure **type safety** without sacrificing flexibility.\n- Great for building **libraries, utilities & frameworks**.\n\n**Interview Q:** what is a generic in TypeScript? How do generics help in writing reusable code? Can interfaces and classes be generic — give examples. What is the difference between `any` and generics?\n\nWrite once, use everywhere — that’s the power of generics.',
+        p: '- Generics let us write **flexible & reusable** code.\n- Use `<T>` to create type parameters.\n- Work with **functions, interfaces & classes**.\n- Ensure **type safety** without sacrificing flexibility.\n- Great for building **libraries, utilities & frameworks**.\n\n**Interview Q:** what is a generic in TypeScript? How do generics help in writing reusable code? Can interfaces and classes be generic — give examples. What is the difference between `any` and generics?\n\nWrite once, use everywhere — that’s the power of generics.',
       },
     ],
     snippets: [
@@ -657,6 +657,73 @@ export const TS_DAYS = [
         label: 'Generic class — a type-safe Box',
         code: 'class Box<T> {\n  private value: T;\n  constructor(value: T) {\n    this.value = value;\n  }\n  getValue(): T {\n    return this.value;\n  }\n}\n\nconst boxNum = new Box<number>(100);\nconst boxStr = new Box<string>("TypeScript");',
         note: 'The type is decided when the object is created, then stays consistent.',
+      },
+    ],
+  },
+  {
+    day: 14,
+    group: 'generics',
+    title: 'Generics (Part 2)',
+    tagline: 'Advanced generics — constraints, multiple type parameters, and defaults.',
+    image: '/typescript-notes/ep14-generics-part-2.jpeg',
+    tags: ['Generics', 'Constraints', 'Default Types', 'API Wrapper'],
+    notes: [
+      { k: 'Generic constraints', v: 'Use `extends` to **restrict** which types a generic type parameter can be — e.g. requiring a `length` property.' },
+      { k: 'Multiple type parameters', v: 'A generic can take **more than one** type parameter — e.g. `K, V` for a key-value pair, or `T, U` for a swap function.' },
+      { k: 'Default generic types', v: 'Type parameters can have **default types**, so callers do not always have to specify them explicitly.' },
+      { k: 'Real-world use', v: 'Constraints, multiple parameters and defaults combine naturally in things like an API response wrapper — `ApiResponse<T = any, E = string>`.' },
+      { k: 'When to use which', v: 'Constraints when you need types with certain properties; multiple type parameters when a function/class works with several different types; defaults when callers should not always have to specify a type.' },
+    ],
+    theory: [
+      {
+        h: '1. Generic Constraints',
+        p: 'We can **restrict** the types that can be used with a generic using `extends`. `function getLength<T extends { length: number }>(item: T): number` only accepts values that have a `length` property — strings and arrays both qualify, but a plain `number` does not, so `getLength(42)` is a compile error.\n\nReal-world analogy: think of a container that can hold only items with a label (a `length` property) — you can put in a box, a book, or a bottle, but not a ball.',
+        code: 'function getLength<T extends { length: number }>(item: T): number {\n  return item.length;\n}\n\nconsole.log(getLength("TypeScript")); // 11 ✓\nconsole.log(getLength([1, 2, 3, 4]));  // 4  ✓\n// getLength(42);                      // ✗ Error: number has no length',
+      },
+      {
+        h: '2. Multiple Type Parameters',
+        p: 'A generic can use **more than one** type parameter — e.g. `pair<K, V>(key: K, value: V)` returns `{ key: K; value: V }`, with each call independently typing the key and the value. Type parameters can also be **inferred automatically** from the arguments, without writing them explicitly.\n\nPro tip: use meaningful names like `T`, `U`, `K`, `V` — keep the order logical and consistent.',
+        code: 'function pair<K, V>(key: K, value: V): { key: K; value: V } {\n  return { key, value };\n}\n\nconst p1 = pair<number, string>(1, "Faisal");\nconst p2 = pair<string, boolean>("Active", true);\n\n// Type is inferred automatically\nconst p3 = pair(10, "Ten");\n\n// Swap function — two type parameters\nfunction swap<T, U>(a: T, b: U): [U, T] {\n  return [b, a];\n}\nconst r = swap(10, "Ten"); // r is ["Ten", 10]',
+      },
+      {
+        h: '3. Default Generic Types',
+        p: 'Generic parameters can have **default types**, so a caller does not always have to specify every type argument. `createUser<T = string, U = number>` defaults `T` to `string` and `U` to `number` — calling it with just the required arguments infers those defaults, while a caller can still **override** a default when needed.\n\nWhy use defaults: reduces repetition, makes APIs easier to use, provides sensible fallbacks, and improves developer experience.\n\nRules: defaults are optional, and all required type parameters must come **before** any defaults.',
+        code: 'function createUser<T = string, U = number>(\n  name: T,\n  id: U\n): { name: T; id: U } {\n  return { name, id };\n}\n\nconst u1 = createUser("Faisal", 101);      // { name: string; id: number }\nconst u2 = createUser<boolean>(true, 202); // { name: boolean; id: number }\n// const u3 = createUser();                // Error: Expected 2 arguments',
+      },
+      {
+        h: '4. Real-world Example: API Response Wrapper',
+        p: 'Constraints, multiple type parameters and defaults come together naturally in an API response wrapper. `ApiResponse<T = any, E = string>` gives success/data/error fields whose `data` and `error` types can be customized per call, while defaulting to `any`/`string` when the caller does not need to be specific.',
+        code: 'interface ApiResponse<T = any, E = string> {\n  success: boolean;\n  data?: T;\n  error?: E;\n}\n\ninterface User { id: number; name: string }\n\nconst res1: ApiResponse = { success: true };                          // any, string\nconst res2: ApiResponse<User> = { success: true, data: { id: 1, name: "Faisal" } };\nconst res3: ApiResponse<User, { code: number; message: string }> = {\n  success: false,\n  error: { code: 404, message: "Not Found" },\n};',
+      },
+      {
+        h: 'When to Use Which',
+        p: '- Constraints (`extends`) — use when you want to limit types to those with certain properties.\n- **Multiple type parameters** — use when your function/class works with multiple different types.\n- **Default types** — use when you want to provide a default so users do not always have to specify types.',
+      },
+      {
+        h: 'Quick recap',
+        p: '- Use **constraints** to work with types that have a specific shape.\n- Use **multiple type parameters** for functions/classes that handle many types.\n- Use **default types** to make code cleaner and easier to use.\n- Generics help build **reusable, type-safe and scalable** code.\n\n**Interview Q:** what is a generic constraint? Give an example. How do default generic types work? Can we have a default type before a non-default type — why or why not? Create a generic function that returns the first element of an array.\n\nGenerics are the bridge between flexibility and safety — use them wisely.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Generic constraint — restrict to a shape',
+        code: 'function getLength<T extends { length: number }>(item: T): number {\n  return item.length;\n}\n\ngetLength("TypeScript"); // 11\ngetLength([1, 2, 3, 4]); // 4',
+        note: 'extends limits T to anything with a length property — strings and arrays both qualify.',
+      },
+      {
+        label: 'Multiple type parameters — swap function',
+        code: 'function swap<T, U>(a: T, b: U): [U, T] {\n  return [b, a];\n}\n\nswap(10, "Ten"); // ["Ten", 10]',
+        note: 'Two independent type parameters, each tracked through to the return type.',
+      },
+      {
+        label: 'Default generic types',
+        code: 'function createUser<T = string, U = number>(name: T, id: U) {\n  return { name, id };\n}\n\ncreateUser("Faisal", 101);      // defaults inferred\ncreateUser<boolean>(true, 202); // override T only',
+        note: 'Required type parameters must come before any defaults.',
+      },
+      {
+        label: 'API response wrapper with defaults',
+        code: 'interface ApiResponse<T = any, E = string> {\n  success: boolean;\n  data?: T;\n  error?: E;\n}\n\nconst res: ApiResponse<User> = { success: true, data: { id: 1, name: "Faisal" } };',
+        note: 'Constraints, multiple parameters and defaults combine in real-world API types.',
       },
     ],
   },
