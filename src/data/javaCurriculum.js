@@ -257,6 +257,20 @@ const MICROSERVICES_DESIGN_SECTIONS = [
   },
 ];
 
+// JDK vs JRE vs JVM (visual note, attached to the intro Java lesson)
+const JDK_JRE_JVM_SECTIONS = [
+  {
+    id: 'jdk-vs-jre-vs-jvm',
+    title: 'JDK vs JRE vs JVM',
+    content:
+      "Understanding the core of Java means understanding these three layered pieces.\n\n**JDK (Java Development Kit)** — the complete package for Java development.\n- **Includes:** the JRE, the JVM, development tools (`javac`, `jdb`, `javadoc`, `jar`, etc.), libraries, and headers.\n- **Used for:** developing, compiling, debugging, and running Java applications.\n- **Example:** `javac HelloWorld.java` then `java HelloWorld`.\n\n**JRE (Java Runtime Environment)** — provides the environment to run Java applications.\n- **Includes:** the JVM, core libraries, and other supporting files.\n- **Used for:** running Java applications.\n- **Example:** `java HelloWorld`.\n\n**JVM (Java Virtual Machine)** — executes Java bytecode and provides the runtime environment.\n- **Includes:** the class loader, bytecode verifier, execution engine, and runtime data areas (heap, stack, method area, etc.).\n- **Used for:** converting bytecode into machine code and executing it.\n- **Example:** `java -version`.\n\n**Quick comparison:**\n- **JDK** — primary role: development + execution. Includes JRE + tools + libraries. Required for developing & running.\n- **JRE** — primary role: execution environment. Includes JVM + libraries. Required for running applications.\n- **JVM** — primary role: execution engine. Includes runtime components. Required for executing bytecode.\n\n**In short:** install the JDK when you want to build Java applications; install the JRE when you only need to run Java applications. You don't install the JVM separately — it's part of both the JRE and the JDK. JDK is for developers, JRE is for running applications, and JVM is the engine that makes Java run anywhere.",
+    code: "javac HelloWorld.java   // JDK compiles .java -> .class (bytecode)\njava HelloWorld          // JRE + JVM run the bytecode\njava -version             // check the installed JVM",
+    image: '/java-notes/jdk-vs-jre-vs-jvm.jpg',
+    imageAlt:
+      'JDK vs JRE vs JVM — understanding the core of Java: JDK (Java Development Kit, the complete package for development, includes JRE + JVM + development tools like javac/jdb/javadoc/jar + libraries + headers, used for developing/compiling/debugging/running, example javac HelloWorld.java then java HelloWorld), JRE (Java Runtime Environment, provides the environment to run Java apps, includes JVM + core libraries + supporting files, used for running applications, example java HelloWorld), JVM (Java Virtual Machine, executes bytecode and provides the runtime environment, includes class loader/bytecode verifier/execution engine/runtime data areas like heap/stack/method area, used for converting bytecode to machine code and executing it, example java -version), a quick comparison table (primary role, includes, required for), and the summary that JDK is for developers, JRE is for running applications, and JVM is the engine that makes Java run anywhere',
+  },
+];
+
 // ---------------------------------------------------------------------------
 // Content distilled from EmbarkX (Faisal Memon) — "Spring Boot Microservices
 // Professional eCommerce Masterclass" (493-slide deck). Modules 31–40 & 45.
@@ -1515,6 +1529,7 @@ function buildLessons() {
         icon: '📄',
       };
       if (title === 'Introduction to Java & Setup') {
+        lesson.sections = [...JDK_JRE_JVM_SECTIONS, ...(lesson.sections || [])];
         lesson.extraLinks = [
           ...(lesson.extraLinks || []),
           {
