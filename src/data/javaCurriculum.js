@@ -921,6 +921,68 @@ const SPRING_DATA_JPA_SECTIONS = [
       "**PostgreSQL** is a powerful **object-relational** database (ORDBMS). It's popular for its **SQL compliance, extensibility, performance, strong community, and data integrity**.\n\n**Why PostgreSQL over H2** for real projects: better **scalability, durability, a richer feature set, and a mature ecosystem/tooling**. H2 (in-memory) is great for quick tests, but production microservices want a persistent, robust store — and each microservice owns **its own** database (database-per-service).",
   },
   {
+    id: 'transactional-overview',
+    title: '@Transactional — Internal Working Overview',
+    content:
+      "Most bugs blamed on SQL are actually **transaction boundary bugs**. `@Transactional` wraps an eligible method call in a transaction boundary using **Spring AOP** — it manages begin, suspend, resume, commit, rollback, flush timing, and exception-based rollback rules. It does **NOT** rewind your Java objects automatically.\n\n**The call chain:** Caller → Spring Proxy → TransactionInterceptor → Target Method → Commit / Rollback.\n\n**What it really controls:**\n1. DB transaction lifecycle.\n2. Persistence context scope.\n3. Flush / commit / rollback timing.\n4. Propagation across proxied method calls.\n\n**What it does NOT control:**\n1. Local variable history.\n2. Object reference reassignment.\n3. In-memory state reset after rollback.\n4. Self-invoked method interception.",
+  },
+  {
+    id: 'how-transactional-starts',
+    title: 'How @Transactional Actually Starts',
+    content:
+      "**Preconditions** for `@Transactional` to actually apply:\n- The method call must pass through the Spring proxy.\n- Usually a **public** method on a Spring bean.\n- A `TransactionManager` must be configured.\n- The annotation can be on the class or the method.\n- **Self-invocation bypasses the advice** — calling the method from inside the same class skips the proxy entirely.\n\n**The 6-step flow:** external caller invokes the bean → the proxy resolves the transaction attributes → the `TransactionInterceptor` opens or joins a transaction → a connection + persistence context is bound to the thread → the target method executes → commit or rollback, then cleanup.\n\n**No transaction advice when:**\n- The method is `private` / `final` / `static`.\n- It's called from a constructor.\n- It's a same-class self call.\n- The bean was created manually with `new` instead of going through Spring.\n\n**Rule: the annotation alone does nothing — interception is the key.**",
+    code: "@Service\nclass OrderService {\n    @Transactional\n    public void placeOrder(OrderRequest req) {\n        orderRepo.save(...);\n        inventoryRepo.reserve(...);\n    }\n}\n\n// If the call comes from another bean through the proxy,\n// Spring wraps this method in a transaction.",
+  },
+  {
+    id: 'txn-persistence-context-dirty-checking',
+    title: 'Persistence Context & Dirty Checking',
+    content:
+      "An entity moves through four states inside Hibernate: **New** (not tracked) → **Managed** (tracked by the persistence context) → **Detached** (a plain object now) → **Removed** (scheduled for delete).\n\n**What dirty checking means:**\n- Inside an active transaction, managed entities are watched for field changes.\n- Changed fields are synchronized during flush / commit.\n- You often do NOT need `repo.save()` after modifying a managed entity.\n- Detached objects are NOT auto-persisted.\n\nBecause the loaded entity is managed, Hibernate updates it at flush/commit time — no explicit save needed. A **managed** entity changed inside the transaction gets an `UPDATE` on flush/commit; a **detached** entity changed outside the transaction gets no DB update unless it's merged or saved.\n\n**Flush is not the same as commit:**\n- Flush = send SQL.\n- Commit = make the transaction permanent.\n- Rollback can still undo flushed SQL before commit.\n\nRemember: `@Transactional` governs DB state, not automatic Java object rollback.",
+    code: "@Transactional\npublic void activateUser(Long id) {\n    User u = repo.findById(id).orElseThrow();\n    u.setStatus(Status.ACTIVE); // dirty checking -- no explicit save() needed\n}",
+  },
+  {
+    id: 'txn-passing-objects-mutation',
+    title: 'Passing Objects, Assignments & Mutation',
+    content:
+      "**Java passes object references by value. Spring transactions do not clone your objects.**\n\nThree scenarios and their outcomes:\n- **Mutate the passed object** (`dto.setName('A')`) — the caller sees the changed fields; rollback does NOT revert the DTO in memory, only the DB work is rolled back.\n- **Reassign the parameter** (`dto = new UserDto(); dto.setName('B')`) — the caller's reference is unchanged; the local reassignment only affects the local variable.\n- Pass a detached entity into `@Transactional` — if the entity is detached, the change may not be persisted; load a managed entity or merge/save explicitly instead.\n\n**What changes where:**\n- Local variable assignment → method scope only.\n- Field mutation on a shared object → visible to the caller.\n- Managed entity mutation in a transaction → persisted by dirty checking.\n- Detached entity mutation → in-memory only, unless merged.\n\n**Production-safe pattern:** load the managed entity by ID inside the transactional method, then mutate that — don't pass detached entities across layers; prefer IDs and plain values instead.\n\n**Rollback reverts database effects, not arbitrary object mutations in memory.**",
+    code: "@Transactional\npublic void updateName(Long id, String name) {\n    User managed = repo.findById(id).orElseThrow();\n    managed.setName(name); // safe -- managed entity, tracked by dirty checking\n}",
+  },
+  {
+    id: 'txn-returns-detached-lazy-loading',
+    title: 'Returns, Detached State & Lazy Loading',
+    content:
+      "When a transactional method returns, its managed entities usually leave the persistence context and become **detached**.\n\n**Three return options:**\n- **Return the entity** — may work for already-loaded fields, but lazy associations can fail later, and the caller now holds a detached object.\n- **Return a DTO** — safe for API/service boundaries, no lazy-loading surprises, and the best choice for clear contracts.\n- **Return a primitive / boolean / count** — no persistence context concern, simple and stable.\n\n**LazyInitializationException risk** — happens when a returned entity is accessed after the transaction ends, a lazy association wasn't initialized, and there's no open session / persistence context. Fetch what you need up front, or map to a DTO before returning.\n\n**OSIV note:** Open Session in View can hide lazy-loading issues, but many teams disable it in production for cleaner transaction boundaries.\n\n**Return DTOs across boundaries; keep entities inside transactional business logic.**",
+    code: "// Bad -- returns a detached entity with potential lazy-loading traps\n@Transactional\npublic Order getOrder(Long id) {\n    return repo.findById(id).orElseThrow();\n}\n\n// Better -- map inside the transaction, return a safe DTO\n@Transactional(readOnly = true)\npublic OrderDto getOrder(Long id) {\n    Order o = repo.findById(id).orElseThrow();\n    return mapper.toDto(o);\n}",
+  },
+  {
+    id: 'txn-rollback-rules-exceptions',
+    title: 'Rollback Rules & Exception Behavior',
+    content:
+      "**Default Spring behavior:**\n- Rollback on `RuntimeException`.\n- Rollback on `Error`.\n- Checked exceptions do NOT roll back by default.\n\n**Scenario → result:**\n- `throw new RuntimeException()` → rollback.\n- `throw new IOException()` (a checked exception) → commit, unless `rollbackFor` is used.\n- `@Transactional(rollbackFor = Exception.class)` → checked exceptions roll back too.\n- `@Transactional(noRollbackFor = CustomException.class)` → commits for that specific exception.\n\n**Swallowed exception trap:** if a `catch` block fully swallows an exception (logs it and moves on) instead of re-throwing or marking rollback-only, the transaction may commit anyway — even though something clearly went wrong.\n\n**UnexpectedRollbackException** — if an inner operation marks the transaction rollback-only, the outer method may continue running and then fail at commit time with this exception.\n\n**Rules:** don't hide exceptions accidentally, use `rollbackFor` intentionally, and keep your transactional error policy explicit.",
+    code: "// Checked exception now triggers rollback\n@Transactional(rollbackFor = Exception.class)\npublic void importFile() throws Exception {\n    repo.save(...);\n    throw new IOException();\n}\n\n// Swallowed exception trap -- the transaction may still commit\n@Transactional\npublic void process() {\n    try {\n        repo.save(...);\n        risky();\n    } catch (Exception e) {\n        log.error(\"handled\", e); // exception swallowed -> tx can still commit\n    }\n}",
+  },
+  {
+    id: 'txn-propagation-modes',
+    title: 'Propagation Modes That Matter in Production',
+    content:
+      "**The propagation modes:**\n- **REQUIRED** — join the existing transaction, or create a new one (the default).\n- **REQUIRES_NEW** — suspend the outer transaction, start a completely new one.\n- **NESTED** — a savepoint within the existing transaction (if the driver supports it).\n- **SUPPORTS** — run with a transaction if one is present, otherwise run without.\n- **NOT_SUPPORTED** — run without a transaction, suspending any existing one.\n- **MANDATORY** — must already be running inside a transaction, or it throws.\n\n**REQUIRED vs REQUIRES_NEW:** with REQUIRED, the outer and inner work share the same transaction — if either fails, both roll back together. With REQUIRES_NEW, the outer transaction is suspended while the inner work runs and commits independently — the inner commit survives even if the outer transaction later fails.\n\n**Production scenarios:**\n- An audit log that must persist even if the outer operation fails → REQUIRES_NEW.\n- Normal service-to-service repository work → REQUIRED.\n- Partial rollback with savepoint-style logic → NESTED (needs driver/manager support).\n\n**Use REQUIRES_NEW carefully** — it creates an independent commit, can increase connection usage, and may surprise the outer flow's expectations.\n\n**Choose propagation based on the business boundary, not habit.**",
+    code: "@Transactional\npublic void placeOrder() {\n    orderService.save();\n    auditService.logInNewTx();\n}\n\n@Transactional(propagation = Propagation.REQUIRES_NEW)\npublic void logInNewTx() { ... }",
+  },
+  {
+    id: 'txn-isolation-readonly-flush',
+    title: 'Isolation, readOnly & Flush Timing',
+    content:
+      "**Isolation levels** (choose the weakest level that safely fits):\n- **READ_COMMITTED** — a good default; avoids dirty reads.\n- **REPEATABLE_READ** — stable re-reads within a transaction.\n- **SERIALIZABLE** — the strongest isolation, lowest concurrency.\n- **DEFAULT** — use the database's own default.\n\nIsolation reduces anomalies — it does not replace locking.\n\n`readOnly = true` communicates read-only intent and may enable ORM or driver-level optimizations. It is NOT a security boundary — don't rely on it to actually block writes everywhere.\n\n**When SQL may be flushed:** before commit, before certain queries, on an explicit `flush()` call — and it's still rollback-able until commit (flush sends SQL; commit makes it permanent).\n\n**Flush + concurrency:** long transactions reduce throughput, so use optimistic or pessimistic locking intentionally rather than holding transactions open.\n\n**Production rule:** keep the transaction short. Don't hold database locks while waiting on remote REST calls, file I/O, or slow user interactions.\n\n**Small transactions + correct isolation + explicit intent = safer production behavior.**",
+    code: "@Transactional(readOnly = true)\npublic List<OrderDto> findOpenOrders() { ... }\n\nentityManager.flush(); // sends pending SQL now, still rollback-able until commit",
+  },
+  {
+    id: 'txn-production-pitfalls-checklist',
+    title: 'Common Production Pitfalls & Final Checklist',
+    content:
+      "**Pitfalls and their safer patterns:**\n- Self-invocation of a `@Transactional` method → split it into another bean, or call through the proxy.\n- A long transaction wrapped around a remote REST call → keep the transaction short; commit DB work before remote I/O.\n- Publishing a message directly alongside a DB write → use the outbox pattern for reliability.\n- Returning entities to the controller → return DTOs instead.\n- Catching and hiding exceptions → re-throw, or mark rollback-only intentionally.\n\n**A safer checkout flow:** validate → write DB + outbox (same transaction) → commit → publish asynchronously — instead of writing to the DB and calling a payment client inside the same transaction, which keeps locks open while waiting on the network.\n\n**Async / event boundary:** `@Async` runs on another thread; thread-bound transaction context does NOT magically flow across it — be explicit about boundaries.\n\nMost `@Transactional` problems are boundary-design problems.\n\n**10 rules to remember:**\n1. No proxy call = no transactional advice.\n2. Self-invocation bypasses interception.\n3. Managed entities are dirty-checked.\n4. Detached objects are plain objects.\n5. Rollback affects the DB, not Java object history.\n6. Flush is not commit.\n7. Runtime exceptions roll back by default.\n8. Keep transactions short.\n9. Prefer DTOs at boundaries.\n10. Choose propagation intentionally.\n\nUnderstand the boundary, and `@Transactional` becomes predictable.",
+    code: "// Looks fine, fails in prod -- remote call inside the transaction\n@Transactional\npublic void checkout() {\n    repo.save(order);\n    paymentClient.charge(...); // locks stay open while waiting on network\n}\n\n// Safer flow: validate -> write DB + outbox -> commit -> publish asynchronously",
+  },
+  {
     id: 'jpa-locking',
     title: 'Optimistic vs Pessimistic Locking (Hibernate)',
     content:
@@ -1467,7 +1529,14 @@ function buildLessons() {
       }
       if (title === 'Spring Data JPA') {
         lesson.sections = [...SPRING_DATA_JPA_SECTIONS, ...MONGODB_SPRING_BOOT_SECTIONS];
-        lesson.extraLinks = [embarkxLink];
+        lesson.extraLinks = [
+          embarkxLink,
+          {
+            label: '@Transactional Internal Working Cheat Sheet (PDF)',
+            href: '/java-notes/transactional-internal-working-cheat-sheet.pdf',
+            icon: '📄',
+          },
+        ];
         lesson.pdfUrl = '/java-notes/mongodb-spring-boot.pdf';
         lesson.pdfLabel = 'MongoDB + Spring Boot (PDF)';
       }
