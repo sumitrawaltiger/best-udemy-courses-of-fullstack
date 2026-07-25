@@ -182,6 +182,26 @@ const DEVOPS_EXERCISES = {
 
 // Content sections keyed by module title, distilled from the cheat sheet.
 const DEVOPS_SECTION_MAP = {
+  'Introduction to 100 Days of DevOps': [
+    {
+      id: 'devops-flow',
+      title: 'The DevOps Flow — Recommended Learning Order',
+      content:
+        "Build each skill on top of the last, from the ground up to full observability — here's the recommended order:\n\n" +
+        "1. **Linux** — learn the command line. It's the foundation of modern infrastructure.\n" +
+        "2. **Networking** — understand IP addresses, DNS, ports, HTTP, and SSH. Everything in DevOps communicates over a network.\n" +
+        "3. **Git** — learn how developers collaborate and manage code changes.\n" +
+        "4. **Docker** — package your application so it runs consistently everywhere.\n" +
+        "5. **CI/CD** — automate building, testing, and deploying your applications.\n" +
+        "6. **Cloud** — now start learning AWS, Azure, or Google Cloud. You'll understand why you're using these services.\n" +
+        "7. **Kubernetes** — once you're comfortable with containers, learn how to deploy and manage them at scale.\n" +
+        "8. **Terraform** — automate your infrastructure instead of creating it manually.\n" +
+        "9. **Monitoring** — learn how to detect issues before your users do.",
+      image: '/devops-notes/devops-flow.jpg',
+      imageAlt:
+        'DevOps Flow — a 9-step recommended learning order, each connected by an arrow: 01 Linux, 02 Networking, 03 Git, 04 Docker, 05 CI/CD, 06 Cloud, 07 Kubernetes, 08 Terraform, 09 Monitoring',
+    },
+  ],
   'Fundamentals of DevOps': [
     {
       id: 'devops-toolchain',
