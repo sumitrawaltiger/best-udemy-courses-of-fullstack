@@ -213,6 +213,121 @@ const DEVOPS_SECTION_MAP = {
         '15 SRE Concepts Every DevOps Engineer Should Know — what SRE is, SRE principles (embrace risk, focus on reliability, eliminate toil, learn from failure, share responsibility), the SRE formula (Reliability = MTBF / (MTBF + MTTR)), 15 numbered concepts (SLI, SLO, SLA, Error Budget, Toil, Automation, Monitoring, Alerting, Incident Management, Postmortem, Capacity Planning, Chaos Engineering, Reliability Testing, Release Engineering, Observability) each with a definition and example, the SRE cycle (Measure SLI, Set Targets SLO, Monitor & Alert, Respond & Learn, Improve & Automate), the Golden Signals (Latency, Traffic, Errors, Saturation), and a remember checklist',
     },
   ],
+  'Jenkins Pipelines': [
+    {
+      id: 'jenkins-pipeline-real-time-script',
+      title: 'Jenkins Pipeline (Jenkinsfile) — Real-Time Script',
+      content:
+        "A complete, real-world **declarative Jenkinsfile** for a Spring Boot app — from checkout to a verified Kubernetes deployment.\n\n**Pipeline flow:** Checkout Source → Maven Build → SonarQube Scan → Trivy File Scan → Docker Build → Trivy Image Scan → Push Image to ECR → Deploy to EKS → Verify Deployment → Post Actions.\n\n1. **Checkout Source** — pulls code from the GitHub repository using stored credentials, on the `main` branch.\n2. **Maven Build** — cleans and builds the project, skips tests for a faster build, and generates the JAR/WAR in `target/`.\n3. **SonarQube Scan** — performs static code analysis: checks bugs, code smells, vulnerabilities, and coverage; a quality gate can be enforced.\n4. **Trivy File Scan** — scans the project files, detecting security issues, misconfigurations, and secrets.\n5. **Docker Build** — builds the Docker image and tags it for ECR.\n6. **Trivy Image Scan** — scans the built Docker image, detecting OS package and application vulnerabilities.\n7. **Push Image to Amazon ECR** — logs in to ECR, tags the image for ECR, pushes it, then logs out.\n8. **Deploy to Amazon EKS** — updates `kubeconfig`, updates the deployment image, and rolls out the new version.\n9. **Verify Deployment** — checks the rollout status, lists pods, and lists services.\n10. **Post Actions** — sends an email on success/failure, cleans the workspace, and keeps Jenkins clean.\n\n**Key takeaway:** this pipeline automates build, scan, push to Amazon ECR, deploy to EKS, and verifies the application. Practice + consistency = DevOps mastery.",
+      code: `pipeline {
+    agent any
+    environment {
+        EKS_CLUSTER     = "dev-eks-cluster"
+        AWS_REGION      = "us-east-1"
+        AWS_ACCOUNT_ID  = "123456789012"
+        ECR_REPOSITORY  = "springboot-app"
+        IMAGE_TAG       = "v1.0.\${BUILD_NUMBER}"
+        APP_NAME        = "springboot-app"
+        K8S_NAMESPACE   = "default"
+    }
+    stages {
+        stage('1. Checkout Source') {
+            steps {
+                echo 'Checking out code from GitHub'
+                git branch: 'main',
+                    credentialsId: 'github-creds',
+                    url: 'https://github.com/username/repository.git'
+            }
+        }
+        stage('2. Maven Build') {
+            steps {
+                echo 'Building the application with Maven'
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+        stage('3. SonarQube Scan') {
+            steps {
+                echo 'Running SonarQube analysis'
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+        stage('4. Trivy File Scan') {
+            steps {
+                echo 'Scanning project files with Trivy'
+                sh 'trivy fs .'
+            }
+        }
+        stage('5. Docker Build') {
+            steps {
+                echo 'Building Docker image'
+                sh """
+                    docker build -t \${ECR_REPOSITORY}:\${IMAGE_TAG} .
+                """
+            }
+        }
+        stage('6. Trivy Image Scan') {
+            steps {
+                echo 'Scanning Docker image with Trivy'
+                sh """
+                    trivy image \${ECR_REPOSITORY}:\${IMAGE_TAG}
+                """
+            }
+        }
+        stage('7. Push Image to Amazon ECR') {
+            steps {
+                echo 'Pushing Docker image to Amazon ECR'
+                withCredentials([
+                    [$class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: 'aws-creds']
+                ]) {
+                    sh """
+                        aws ecr get-login-password --region \${AWS_REGION} | \\
+                        docker login --username AWS --password-stdin \\
+                        \${AWS_ACCOUNT_ID}.dkr.ecr.\${AWS_REGION}.amazonaws.com
+                        docker tag \${ECR_REPOSITORY}:\${IMAGE_TAG} \\
+                        \${AWS_ACCOUNT_ID}.dkr.ecr.\${AWS_REGION}.amazonaws.com/\${ECR_REPOSITORY}:\${IMAGE_TAG}
+                        docker push \${AWS_ACCOUNT_ID}.dkr.ecr.\${AWS_REGION}.amazonaws.com/\${ECR_REPOSITORY}:\${IMAGE_TAG}
+                        docker logout \${AWS_ACCOUNT_ID}.dkr.ecr.\${AWS_REGION}.amazonaws.com
+                    """
+                }
+            }
+        }
+        stage('8. Deploy to Amazon EKS') {
+            steps {
+                echo 'Deploying to Amazon EKS'
+                sh """
+                    aws eks update-kubeconfig --region \${AWS_REGION} --name \${EKS_CLUSTER}
+                    kubectl set image deployment/\${APP_NAME} \${APP_NAME}= \\
+                    \${AWS_ACCOUNT_ID}.dkr.ecr.\${AWS_REGION}.amazonaws.com/\${ECR_REPOSITORY}:\${IMAGE_TAG} -n \${K8S_NAMESPACE}
+                """
+            }
+        }
+        stage('9. Verify Deployment') {
+            steps {
+                echo 'Verifying deployment'
+                sh """
+                    kubectl rollout status deployment/\${APP_NAME} -n \${K8S_NAMESPACE} --timeout=120s
+                    kubectl get pods -n \${K8S_NAMESPACE}
+                    kubectl get svc  -n \${K8S_NAMESPACE}
+                """
+            }
+        }
+    }
+    post {
+        success {
+            mail to: 'challa@gmail.com',
+                subject: "SUCCESS : \${JOB_NAME} #\${BUILD_NUMBER}",
+                body: "Deployment Successful.\\nBuild URL: \${BUILD_URL}"
+        }
+    }
+}`,
+      image: '/devops-notes/jenkins-pipeline-real-time-script.jpg',
+      imageAlt:
+        'Jenkins Pipeline (Jenkinsfile) — Real Time Script: a 10-stage declarative pipeline for a Spring Boot app — 1. Checkout Source (pulls code from GitHub, stored credentials, main branch), 2. Maven Build (cleans and builds, skips tests, generates JAR/WAR), 3. SonarQube Scan (static code analysis, bugs/code smells/vulnerabilities/coverage, quality gate), 4. Trivy File Scan (security issues, misconfigurations, secrets), 5. Docker Build (builds and tags image for ECR), 6. Trivy Image Scan (OS packages and application vulnerabilities), 7. Push Image to Amazon ECR (login, tag, push, logout), 8. Deploy to Amazon EKS (update kubeconfig, update deployment image, roll out), 9. Verify Deployment (rollout status, pods, services), 10. Post Actions (email on success/failure, clean workspace), the pipeline flow diagram, and the key takeaway that practice + consistency = DevOps mastery',
+    },
+  ],
   'Fundamentals of DevOps': [
     {
       id: 'devops-toolchain',
