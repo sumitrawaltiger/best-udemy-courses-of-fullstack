@@ -914,6 +914,13 @@ export const pythonLessons = [
       ...PYTHON_PROGRAMMING_ELEMENTS_SECTIONS,
       ...PYTHON_OPERATORS_SECTIONS,
     ],
+    extraLinks: [
+      {
+        label: 'Complete Handwritten Notes on Python (PDF) — CodeWithCurious.com',
+        href: '/python-notes/complete-handwritten-notes-on-python.pdf',
+        icon: '📄',
+      },
+    ],
   },
   {
     pyDay: 3,
