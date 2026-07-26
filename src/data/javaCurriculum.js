@@ -159,6 +159,15 @@ const MICROSERVICES_DESIGN_SECTIONS = [
     imageAlt: 'Monolithic vs Microservice comparison — architecture, modularity, agility, scaling, implementation, maintainability, and transactions (ACID vs BASE)',
   },
   {
+    id: 'monolith-vs-microservices-vs-serverless',
+    title: 'Monolith vs Microservices vs Serverless — Layer by Layer',
+    content:
+      "The same request traced through three architectures, layer by layer.\n\n**Monolith:**\n- **Request Handling** — User Request → Load Balancer.\n- **Application Layer** — a Monolithic Application: UI, Business Logic, and Data Access Layer, all deployed as a single unit.\n- **Data Layer** — a single Database, plus an optional Cache (e.g. Redis).\n- **Infrastructure & Ops** — File Storage (e.g. S3 / NFS), Monitoring & Logging (e.g. Prometheus, ELK).\n\n**Microservices:**\n- **Request Handling** — User Request → API Gateway / Load Balancer.\n- **Service Layer** — Microservices: User Service, Order Service, Product Service, Payment Service, Notification Service, Inventory Service.\n- **Data Layer** — Databases, one per service (database-per-service).\n- **Infra & Ops** — Cache / Message Broker (e.g. Redis, Kafka, RabbitMQ), Monitoring & Logging (e.g. Prometheus, ELK, Jaeger).\n\n**Serverless:**\n- **Request Handling** — User Request → API Gateway.\n- **Compute Layer** — Serverless Functions (e.g. AWS Lambda): many small, independently-invoked functions.\n- **Data & Services Layer** — Database (e.g. DynamoDB), Storage (e.g. S3), Queue / Stream (e.g. SQS, Kinesis).\n- **Security & Ops** — Authentication & Authorization (e.g. Cognito, IAM), Monitoring & Logging (e.g. CloudWatch, X-Ray).\n\n**Key takeaway:** moving from Monolith → Microservices → Serverless, each layer specializes further — a single deployable app becomes many independently deployable services, then disappears into managed, event-triggered functions — and the operational burden shifts progressively from your own infrastructure team to the cloud provider.",
+    image: '/java-notes/monolith-vs-microservices-vs-serverless.jpg',
+    imageAlt:
+      'Monolith vs Microservices vs Serverless — three architectures compared layer by layer. Monolith: User Request → Load Balancer → Monolithic Application (UI, Business Logic, Data Access Layer as one unit) → single Database + optional Cache → File Storage + Monitoring & Logging. Microservices: User Request → API Gateway/Load Balancer → Microservices (User, Order, Product, Payment, Notification, Inventory services) → Databases per service → Cache/Message Broker (Redis, Kafka, RabbitMQ) + Monitoring & Logging. Serverless: User Request → API Gateway → Serverless Functions (Lambda) → Database (DynamoDB), Storage (S3), Queue/Stream (SQS, Kinesis) → Authentication & Authorization (Cognito, IAM) + Monitoring & Logging (CloudWatch, X-Ray).',
+  },
+  {
     id: 'when-microservices',
     title: 'When to Use Microservices (and When Not)',
     content:
