@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-// ── The 5-stack, 1,620-day roadmap ──────────────────────────────────────────
+// ── The 5-stack, 1,614-day roadmap ──────────────────────────────────────────
 // 5 sequential stacks — Agentic AI using Python, then TypeScript Stack, Java
 // Stack, Python Stack, and DevOps Stack — bundling the underlying tracks on
 // this site. No separate prerequisite and no separate finale — Day 1 starts
@@ -14,8 +14,8 @@ const PHASES = [
     arcClass: 'y1',
     icon: '🤖',
     label: 'Phase 1 · Agentic AI using Python',
-    tagline: 'Days 1–159',
-    duration: '159 days',
+    tagline: 'Days 1–153',
+    duration: '153 days',
     blurb: 'The current focus — building AI agents with LangChain, LangGraph, MCP, and automation workflows, in Python.',
     items: [
       { icon: '🤖', title: 'Agentic AI using Python', detail: 'LangChain · LangGraph · MCP · n8n agentic workflows', source: 'Ashok IT', to: '/python' },
@@ -26,7 +26,7 @@ const PHASES = [
     arcClass: 'y2',
     icon: '🔷',
     label: 'Phase 2 · TypeScript Stack',
-    tagline: 'Days 160–524',
+    tagline: 'Days 154–518',
     duration: '365 days',
     blurb: 'The entire JavaScript/TypeScript web ecosystem in one stack — core JS through React, Next.js, React Native, and the Express/Node backend.',
     items: [
@@ -43,7 +43,7 @@ const PHASES = [
     arcClass: 'y3',
     icon: '☕',
     label: 'Phase 3 · Java Stack',
-    tagline: 'Days 525–890',
+    tagline: 'Days 519–884',
     duration: '366 days',
     blurb: 'The full enterprise Java path in one stack — core Java through Spring Boot and microservices.',
     items: [
@@ -59,7 +59,7 @@ const PHASES = [
     arcClass: 'y4',
     icon: '🐍',
     label: 'Phase 4 · Python Stack',
-    tagline: 'Days 891–1255',
+    tagline: 'Days 885–1249',
     duration: '365 days',
     blurb: 'The Python language and modern async APIs, from fundamentals to production deployment.',
     items: [
@@ -72,7 +72,7 @@ const PHASES = [
     arcClass: 'y5',
     icon: '🚀',
     label: 'Phase 5 · DevOps Stack',
-    tagline: 'Days 1256–1620',
+    tagline: 'Days 1250–1614',
     duration: '365 days',
     blurb: 'The final stack — ship and scale everything with Linux, Docker, Kubernetes, CI/CD, and core AWS services.',
     items: [
@@ -84,7 +84,7 @@ const PHASES = [
 
 const STATS = [
   { value: '5', label: 'sequential stacks' },
-  { value: '1,620', label: 'days of practice' },
+  { value: '1,614', label: 'days of practice' },
   { value: '~1 yr', label: 'per stack' },
   { value: '30+', label: 'technologies' },
 ];
@@ -108,12 +108,12 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 Day 0 setup · 5 stacks · 1,620 days of practice</span>
-        <h1 className="roadmap-hero-title">The 1,620-Day Roadmap</h1>
+        <span className="roadmap-hero-badge">📍 Day 0 setup · 5 stacks · 1,614 days of practice</span>
+        <h1 className="roadmap-hero-title">The 1,614-Day Roadmap</h1>
         <p className="roadmap-hero-sub">
           Starts with <strong>Day 0 — environment setup</strong>, then <strong>5 sequential stacks</strong> —{' '}
           <strong>Agentic AI using Python → TypeScript Stack → Java Stack → Python Stack → DevOps
-          Stack</strong> — <strong>1,620 days</strong> of focused, daily practice, front to back. Data
+          Stack</strong> — <strong>1,614 days</strong> of focused, daily practice, front to back. Data
           Structures &amp; System Design are practiced throughout, not a separate add-on.
         </p>
         <div className="roadmap-stats">
@@ -132,7 +132,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/roadmap-5-stacks-2026-2030.png"
-          alt="The Road to Full Lifecycle Engineer — 5 stacks, one journey, 26 Jul 2026 to 31 Dec 2030: Rest of 2026 Agentic AI using Python (LangChain, LangGraph, MCP), 2027 TypeScript Stack (JavaScript, TypeScript, React, Next.js, React Native, Express/Node), 2028 Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices), 2029 Python Stack (Python, FastAPI), 2030 DevOps Stack (DevOps, AWS Cloud) — 1,620 days, 5 stacks, 3 hrs/day, DSA & System Design throughout"
+          alt="The Road to Full Lifecycle Engineer — 5 stacks, one journey, 1 Aug 2026 to 31 Dec 2030: Rest of 2026 Agentic AI using Python (LangChain, LangGraph, MCP), 2027 TypeScript Stack (JavaScript, TypeScript, React, Next.js, React Native, Express/Node), 2028 Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices), 2029 Python Stack (Python, FastAPI), 2030 DevOps Stack (DevOps, AWS Cloud) — 1,614 days, 5 stacks, 3 hrs/day, DSA & System Design throughout"
           loading="lazy"
           style={{
             width: '100%',
@@ -226,7 +226,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">5 stacks · 1,620 days, front to back</p>
+            <p className="roadmap-finish-date">5 stacks · 1,614 days, front to back</p>
           </div>
         </div>
       </div>
@@ -239,7 +239,7 @@ export default function RoadmapHome() {
           Express/Node JS) → <strong>Java Stack</strong> (J2SE, J2EE, JPA, Spring Boot, Microservices) →{' '}
           <strong>Python Stack</strong> (Python, FastAPI) → <strong>DevOps Stack</strong> (DevOps, AWS
           Cloud). Data Structures &amp; System Design are practiced throughout every stack, not saved for
-          one dedicated block. 1,620 days end to end.
+          one dedicated block. 1,614 days end to end.
         </p>
         <div className="roadmap-flow-actions">
           <Link to="/python" className="btn btn-lg roadmap-btn-primary">

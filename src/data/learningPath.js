@@ -1,4 +1,4 @@
-// Header/nav track list, ordered to the 5-stack, 1,620-day roadmap (see
+// Header/nav track list, ordered to the 5-stack, 1,614-day roadmap (see
 // RoadmapHome.jsx): Agentic AI using Python (Phase 1, under /python) →
 // TypeScript Stack — JavaScript, TypeScript, React JS/Next JS, React Native,
 // Express/Node JS (Phase 2, under /, /typescript, /nextjs, /mobile) → Java

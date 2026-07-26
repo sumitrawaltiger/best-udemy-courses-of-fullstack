@@ -109,7 +109,7 @@ export default function Home() {
               <span className="fle-hl">DevOps</span>
             </h1>
             <p className="fle-sub">
-              A structured <strong>1,620-day journey</strong> — <strong>5 sequential stacks</strong>:
+              A structured <strong>1,614-day journey</strong> — <strong>5 sequential stacks</strong>:
               Agentic AI using Python, the TypeScript Stack (JavaScript, TypeScript, React, Next.js, React
               Native, Express/Node), the Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices), the Python
               Stack (Python, FastAPI), and the DevOps Stack (DevOps, AWS Cloud). Data Structures &amp; System
@@ -117,7 +117,7 @@ export default function Home() {
             </p>
 
             <div className="fle-pills">
-              <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,620 Days of Code</span>
+              <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,614 Days of Code</span>
               <span className="fle-pill"><span aria-hidden="true">🧠</span> 5 Sequential Stacks</span>
               <span className="fle-pill"><span aria-hidden="true">🚀</span> Agentic AI → JS/TS → Java → Python → DevOps</span>
               <span className="fle-pill"><span aria-hidden="true">📐</span> DSA &amp; System Design Throughout</span>
@@ -164,11 +164,11 @@ export default function Home() {
       <section className="btech-roadmap" id="btech-roadmap">
         <div className="btech-inner">
           <span className="btech-badge">The Roadmap</span>
-          <h2 className="btech-title">The 1,620-Day Learning Path</h2>
+          <h2 className="btech-title">The 1,614-Day Learning Path</h2>
           <p className="btech-sub">
             A structured path to a full lifecycle engineer — <strong>5 sequential stacks</strong>:{' '}
             <strong>Agentic AI using Python → TypeScript Stack → Java Stack → Python Stack → DevOps
-            Stack</strong> — <strong>1,620 days</strong> total. Each stack bundles several tracks on this
+            Stack</strong> — <strong>1,614 days</strong> total. Each stack bundles several tracks on this
             site. Data Structures &amp; System Design are practiced throughout every stack, not saved for a
             separate finale.
           </p>
@@ -664,7 +664,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            1,620 days · 5 stacks
+            1,614 days · 5 stacks
           </span>
           <h2>Thunder++ — The Full Journey</h2>
           <p className="section-desc">
@@ -673,7 +673,7 @@ export default function Home() {
             <strong>Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices)</strong>,{' '}
             <strong>Python Stack (Python, FastAPI)</strong>, and <strong>DevOps Stack (DevOps, AWS Cloud)</strong> —
             with <strong>DSA &amp; System Design</strong> practiced throughout every stack, not saved for one
-            dedicated block. That’s <strong>1,620 days</strong> of focused study, front to back.
+            dedicated block. That’s <strong>1,614 days</strong> of focused study, front to back.
           </p>
           <div className="thunder-plus-highlights">
             <span>🤖 Agentic AI First</span>

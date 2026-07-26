@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-/** Day 1 is 26 Jul 2026 (Phase 1 · Agentic AI using Python starts here — no separate prerequisite phase). */
+/** Day 1 is 1 Aug 2026 (Phase 1 · Agentic AI using Python starts here — no separate prerequisite phase). */
 /** Target: 1 Jan 2031, 00:00 — 5 sequential stacks (Agentic AI, TypeScript, Java, Python, DevOps). */
 export const JOURNEY_END = new Date(2031, 0, 1, 0, 0, 0, 0);
 
