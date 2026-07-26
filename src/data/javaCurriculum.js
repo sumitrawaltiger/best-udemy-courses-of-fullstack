@@ -314,6 +314,20 @@ const ABSTRACTION_SECTIONS = [
   },
 ];
 
+// Java Records — visual note (attached to Factory Methods for Collections)
+const JAVA_RECORDS_SECTIONS = [
+  {
+    id: 'java-records',
+    title: 'Java Records',
+    content:
+      "A **Java Record** is a concise way to create immutable data carrier classes in Java.\n\n**Key points:**\n- **Introduced in Java 16.**\n- **Reduces boilerplate code** — no need to hand-write a constructor, accessors, `equals()`, `hashCode()`, or `toString()`.\n- **Immutable by design** — every record component is implicitly `final` once the object is constructed.\n- **Auto-generates** a canonical constructor, accessor methods (named after each component, not `getX()`), `equals()`, `hashCode()`, and `toString()`.\n\nA single line — `public record Employee(int id, String name, double salary) {}` — replaces an entire hand-written class with a constructor, three accessor methods, and correct `equals()`/`hashCode()`/`toString()` overrides.\n\n**Best for:** DTOs, API models, and simple data-holding objects — anywhere you'd otherwise write a plain data class by hand.",
+    code: "public record Employee(int id, String name, double salary) {}\n\n// The compiler auto-generates the equivalent of:\n// - a canonical constructor: Employee(int id, String name, double salary)\n// - accessors: id(), name(), salary()\n// - equals(), hashCode(), and toString()\n\nEmployee e = new Employee(1, \"Asha\", 75000.0);\nSystem.out.println(e.name());  // Asha\nSystem.out.println(e);         // Employee[id=1, name=Asha, salary=75000.0]",
+    image: '/java-notes/java-records.jpg',
+    imageAlt:
+      'Java Records visual note — a concise way to create immutable data carrier classes in Java: introduced in Java 16, reduces boilerplate code, immutable by design, auto-generates constructor/accessors/equals()/hashCode()/toString(), a public record Employee(int id, String name, double salary) {} code example, and best for DTOs, API models, and simple data-holding objects',
+  },
+];
+
 // Deep Copy vs Shallow Copy — 8-page visual note (attached to OOP — Classes & Objects)
 const DEEP_SHALLOW_COPY_SECTIONS = [
   {
@@ -1702,6 +1716,9 @@ function buildLessons() {
       }
       if (title === 'OOP — Inheritance & Polymorphism') {
         lesson.sections = ABSTRACTION_SECTIONS;
+      }
+      if (title === 'Factory Methods for Collections') {
+        lesson.sections = JAVA_RECORDS_SECTIONS;
       }
       if (title === 'Java Internals') {
         lesson.sections = JAVA_INTERNALS_SECTIONS;
