@@ -328,6 +328,20 @@ const JAVA_RECORDS_SECTIONS = [
   },
 ];
 
+// Java Sealed Classes — visual note (attached to Process API & Improvements)
+const JAVA_SEALED_CLASSES_SECTIONS = [
+  {
+    id: 'java-sealed-classes',
+    title: 'Java Sealed Classes',
+    content:
+      "**Sealed classes** (Java 17+) restrict inheritance for better control and safer APIs.\n\n**1. Definition:** a sealed class or interface lets you control exactly which classes can extend or implement it.\n\n**2. Why use it?**\n- Controls class hierarchies.\n- Improves maintainability.\n- Works great with pattern matching.\n\n**3. Example:** a `sealed class Vehicle permits Car, Bike {}` declares only `Car` and `Bike` as allowed subclasses — any other class trying to extend `Vehicle` fails to compile.\n\n**Note:** only permitted subclasses can extend a sealed class. Subclasses are usually declared `final`, `sealed`, or `non-sealed`.",
+    code: "sealed class Vehicle permits Car, Bike {}\n\nfinal class Car extends Vehicle {}\n\nnon-sealed class Bike extends Vehicle {}\n\n// final       -> Car cannot be extended further\n// non-sealed  -> Bike opens the hierarchy back up, any class may extend Bike\n// sealed      -> a subclass could itself restrict its own permitted subclasses",
+    image: '/java-notes/java-sealed-classes.jpg',
+    imageAlt:
+      'Java Sealed Classes visual note — restrict inheritance for better control and safer APIs (Java 17+): definition (a sealed class or interface controls which classes can extend or implement it), why use it (controls class hierarchies, improves maintainability, works great with pattern matching), an example (sealed class Vehicle permits Car, Bike {}; final class Car extends Vehicle {}; non-sealed class Bike extends Vehicle {}), and a note that only permitted subclasses can extend a sealed class, and subclasses are usually final, sealed, or non-sealed',
+  },
+];
+
 // Deep Copy vs Shallow Copy — 8-page visual note (attached to OOP — Classes & Objects)
 const DEEP_SHALLOW_COPY_SECTIONS = [
   {
@@ -1719,6 +1733,9 @@ function buildLessons() {
       }
       if (title === 'Factory Methods for Collections') {
         lesson.sections = JAVA_RECORDS_SECTIONS;
+      }
+      if (title === 'Process API & Improvements') {
+        lesson.sections = JAVA_SEALED_CLASSES_SECTIONS;
       }
       if (title === 'Java Internals') {
         lesson.sections = JAVA_INTERNALS_SECTIONS;
