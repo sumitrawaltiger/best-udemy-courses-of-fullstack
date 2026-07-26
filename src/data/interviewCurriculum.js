@@ -34,6 +34,19 @@ const DSA_ROADMAP_SECTIONS = [
   },
 ];
 
+// Payment Service — System Design case study (attached to the fintech/e-commerce case-study lesson)
+const PAYMENT_SERVICE_SECTIONS = [
+  {
+    id: 'payment-service-system-design',
+    title: 'Payment Service — System Design',
+    content:
+      "A production-ready payment service architecture, modeled on patterns used at large e-commerce platforms (Amazon, Flipkart) — event-driven, idempotent, and built so the API never blocks on a slow payment gateway.\n\n**Payment flow, step by step:**\n1. **User initiates payment** — the Client/App (Web/Mobile) clicks Pay.\n2. **Cart Service calls Payment Service** — `PUT /api/v1/payment` with `userId`, `cart_session_id`, `amount`, `preferred_psp`.\n3. **Validate & create payment** — the Payment Orchestrator validates the request and creates a payment record in the Payments DB (Payment, Attempt, Refund, Outbox) with status `CREATED`.\n4. **Return payment_id** — Payment Service immediately returns `{payment_id: P123, status: CREATED}` to Cart Service, so the API responds fast without waiting on the PSP.\n5. **Write outbox record & publish event** — the Outbox Publisher writes an outbox record and publishes it as a Payment Requested event.\n6. **Consume payment requested event** — a Payment Processor Consumer picks it up from the Payment Processing Queue (Kafka topic).\n7. **Validations** — fraud detection, risk checks, amount/currency checks, and rate limiting.\n8. **Send payment request to preferred PSP** — the validated request is routed to the external PSP (PhonePe, Paytm, Amazon Pay, Razorpay).\n9. **Payment result callback (webhook)** — the PSP sends the final result back via the Callback Controller (`/payment/callback`).\n10. **Update payment status** — the Payment Status Updater marks the payment `SUCCESS` or `FAILED` in the Payments DB.\n11. **Publish payment details event** — pushed to the Payment Details Queue (Kafka topic).\n12. **Consume payment details event** — downstream consumers react independently: the Ledger Service Consumer updates ledger entries, accounting & balances; the Payout Service Consumer computes & updates payout for suppliers; the Cart Service Consumer marks the cart session closed and emits an event for order creation, which the Order Service picks up to create the order, and the Inventory Service reserves/deducts stock.\n\n**Datastores:**\n- **Payments DB (PostgreSQL)** — Payment, Attempt, Refund, Outbox.\n- **Ledger DB (PostgreSQL)** — double-entry ledger records.\n- **Payout DB (PostgreSQL)** — Payout, Settlement, Vendor details.\n- **Redis** — idempotency keys, rate limiting, locks, caching.\n\n**Key points:**\n- Idempotency using `cart_session_id`.\n- Outbox pattern for reliable event publishing.\n- Async processing using Kafka for scalability.\n- Callback (webhook) from the PSP ensures the final status.\n- Loose coupling between services.\n- High availability & fault tolerance.\n\n**Non-functional requirements:**\n- **Security** — PCI-DSS, TLS, data encryption.\n- **Reliability** — retries, DLQ, idempotency.\n- **Scalability** — horizontal scaling, auto scaling.\n- **Observability** — logs, metrics, tracing, alerts.\n- **Backup & DR** — Multi-AZ, backups, disaster recovery.\n\n**Key learnings:** event-driven architecture with Kafka; idempotent payment creation to avoid duplicate charges; webhooks for reliable payment confirmation; loose coupling using asynchronous messaging; the Outbox Pattern for reliable event publishing; a highly scalable and fault-tolerant design.\n\n**Why it matters:** the Payment Service doesn't block while waiting for the payment gateway. Instead, it responds quickly, processes payments asynchronously, and relies on callbacks/webhooks from the PSP to update the final status — making the entire system more resilient and scalable.",
+    image: '/interview-notes/payment-service-system-design.jpg',
+    imageAlt:
+      'Payment Service — System Design: a 12-step payment flow diagram. Client/App clicks Pay → Cart Service calls Payment Service (PUT /api/v1/payment) → Payment Orchestrator validates & creates a payment in the Payments DB (status CREATED) → payment_id returned immediately → Outbox Publisher writes an outbox record & publishes a Payment Requested event to a Kafka Payment Processing Queue → Payment Processor Consumer runs validations (fraud detection, risk checks, amount/currency, rate limiting) → sends the payment request to a preferred external PSP (PhonePe, Paytm, Amazon Pay, Razorpay) → PSP sends a payment result callback/webhook → Callback Controller updates payment status (SUCCESS/FAILED) → Payment Status Updater publishes a payment details event to a Kafka Payment Details Queue → downstream consumers (Ledger Service, Payout Service, Cart Service) react independently, with Cart Service triggering Order Service and Inventory Service. Also shows the datastores (Payments DB, Ledger DB, Payout DB, Redis), key points (idempotency, outbox pattern, async Kafka processing, webhook callbacks, loose coupling, high availability), and non-functional requirements (security, reliability, scalability, observability, backup & DR).',
+  },
+];
+
 const PHASE_LESSONS = [
   {
     phase: 'DSA Foundations',
@@ -159,6 +172,9 @@ function buildLessons() {
       }
       if (title === 'Introduction to Interview Prep') {
         lesson.sections = DSA_ROADMAP_SECTIONS;
+      }
+      if (title === 'Design Notifications, Uber & Robinhood') {
+        lesson.sections = PAYMENT_SERVICE_SECTIONS;
       }
       lessons.push(lesson);
       interviewDay += 1;
