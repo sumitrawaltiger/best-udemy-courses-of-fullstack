@@ -131,7 +131,7 @@ export default function RoadmapHome() {
         style={{ margin: '8px auto 4px', textAlign: 'center', maxWidth: '820px' }}
       >
         <img
-          src="/roadmap-notes/roadmap-5-stacks-2026-2030.png"
+          src="/roadmap-notes/roadmap-5-stacks-2026-2030-v2.png"
           alt="The Road to Full Lifecycle Engineer — 5 stacks, one journey, 1 Aug 2026 to 31 Dec 2030: Rest of 2026 Agentic AI using Python (LangChain, LangGraph, MCP), 2027 TypeScript Stack (JavaScript, TypeScript, React, Next.js, React Native, Express/Node), 2028 Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices), 2029 Python Stack (Python, FastAPI), 2030 DevOps Stack (DevOps, AWS Cloud) — 1,614 days, 5 stacks, 3 hrs/day, DSA & System Design throughout"
           loading="lazy"
           style={{
