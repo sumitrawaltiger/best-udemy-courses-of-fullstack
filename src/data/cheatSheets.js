@@ -254,6 +254,15 @@ export const CHEAT_SHEETS = [
     tags: ['System Design', 'Distributed Systems', 'Resilience', 'AI Architecture', '72 Concepts'],
   },
   {
+    id: 'system-design-failure-modes',
+    title: '10 Must-know System Design Failure Modes',
+    description:
+      'The ten ways distributed systems break, each paired with its fix, by DesignGurus.io. 1. Single Point of Failure — any component without redundancy is a SPOF; fix with multiple instances and failover/redundancy. 2. Cascading Failure — a slow dependency makes every caller slow; fix with timeouts, circuit breakers, and bulkheads. 3. Retry Storm — many clients retry after a failure and flood a recovering service; fix with exponential backoff + jitter, a retry budget, and a circuit breaker. 4. Cache Stampede — many requests miss the same key and overwhelm the database; fix with request coalescing and refreshing popular keys before expiry. 5. Hot Partition — one shard gets most of the traffic due to a poor shard key; fix by choosing an even shard key and handling hot entities separately. 6. Replication Lag — a write on the primary has not yet reached the replica; fix by routing critical reads to the primary and tracking which replica is current per user. 7. Duplicate Processing — a retried request processes the same operation twice; fix with idempotency keys and returning the original result for a repeated key. 8. Queue Backlog — producers are faster than consumers and the queue grows without bound; fix with backpressure, bounded queues, and load shedding. 9. Poison Message — a bad message keeps failing and blocks the queue; fix by moving it to a dead-letter queue after N failures so the rest of the queue continues. 10. Split Brain — two nodes believe they are primary and both accept writes; fix with leader election, quorum/fencing, and preventing dual writers.',
+    category: 'system-design',
+    image: '/cheatsheets/system-design-failure-modes.jpg',
+    tags: ['System Design', 'Failure Modes', 'Resilience', 'Distributed Systems'],
+  },
+  {
     id: 'networking',
     title: 'Networking Cheat Sheet',
     description:
