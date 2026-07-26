@@ -920,6 +920,11 @@ export const pythonLessons = [
         href: '/python-notes/complete-handwritten-notes-on-python.pdf',
         icon: '📄',
       },
+      {
+        label: 'Python Fundamentals — Handwritten Notes (PDF)',
+        href: '/python-notes/python-fundamentals-handwritten-notes.pdf',
+        icon: '📄',
+      },
     ],
   },
   {
