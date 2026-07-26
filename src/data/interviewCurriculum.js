@@ -23,6 +23,15 @@ const DSA_ROADMAP_SECTIONS = [
     imageAlt:
       'DSA Roadmap — a 13-stage path: 1. Foundations (What is DSA, Why DSA, Time Complexity, Space Complexity, Big-O Notation, Recursion Basics), 2. Programming Basics (Variables, Data Types, Control Structures, Loops, Functions, Input/Output), 3. Arrays (Basics, Traversal, Insertion & Deletion, Searching, Two Pointers, Sliding Window), 4. Strings (String Basics, Manipulation, Pattern Matching, Palindrome Problems, Anagrams, String Hashing), 5. Linked Lists (Types, Traversal, Insertion, Deletion, Reversal, Cycle Detection), 6. Stacks (LIFO Principle, Operations, Applications), 7. Queues (FIFO Principle, Types, Operations, Applications), 8. Hashing (Hash Tables, Hash Functions, Collision Handling, Applications), 9. Trees (Binary Tree, Traversals, BST/Heap, Trie), 10. Graphs (Representation, Traversal, Shortest Path, MST, Topological Sort), 11. Algorithmic Techniques (Recursion, Backtracking, Greedy Algorithms, Divide & Conquer, Dynamic Programming), 12. Sorting Algorithms (Bubble, Selection, Insertion, Merge, Quick, Heap Sort), 13. Searching Algorithms (Linear, Binary, Advanced Search), plus a problem-solving strategy, platforms to practice (LeetCode, Codeforces, HackerRank, GeeksforGeeks), and the final learning path',
   },
+  {
+    id: 'time-complexity-vs-space-complexity',
+    title: 'Time Complexity vs Space Complexity',
+    content:
+      "Understanding how algorithms trade execution time for memory usage.\n\n**Time Complexity** — measures how execution time grows as input size increases.\n- **Common notations:** `O(1)`, `O(log n)`, `O(n)`, `O(n log n)`, `O(n²)`.\n- **Examples:** Linear Search → `O(n)`; Binary Search → `O(log n)`.\n- **Goal:** faster execution.\n\n**Space Complexity** — measures how much extra memory an algorithm uses as input size increases.\n- **Common notations:** `O(1)`, `O(n)`, `O(n²)`.\n- **Examples:** in-place array operations → `O(1)`; storing a copy of data → `O(n)`.\n- **Goal:** lower memory usage.\n\n**Key takeaway:** the best algorithms balance both time and space based on the problem. Sometimes faster algorithms use more memory, while memory-efficient algorithms may take more time.",
+    image: '/interview-notes/time-complexity-vs-space-complexity.jpg',
+    imageAlt:
+      'Time Complexity vs Space Complexity visual note — understanding how algorithms trade execution time for memory usage. Time Complexity: measures how execution time grows as input size increases, common notations O(1)/O(log n)/O(n)/O(n log n)/O(n²), examples (Linear Search → O(n), Binary Search → O(log n)), goal: faster execution. Space Complexity: measures how much extra memory an algorithm uses as input size increases, common notations O(1)/O(n)/O(n²), examples (in-place array operations → O(1), storing a copy of data → O(n)), goal: lower memory usage. Key takeaway: the best algorithms balance both time and space based on the problem',
+  },
 ];
 
 const PHASE_LESSONS = [
