@@ -4,10 +4,10 @@
 
 export const TS_META = {
   title: 'The TypeScript Series',
-  subtitle: '14 Episodes · JavaScript, Now With Types',
+  subtitle: '15 Episodes · JavaScript, Now With Types',
   blurb:
-    'JavaScript with a type system bolted on — catching bugs before they run. Fourteen illustrated episodes, from installing the compiler to enums, interfaces, classes, inheritance, access modifiers, abstract classes, implementing interfaces with static members, and generics — from type parameters through constraints, multiple type parameters and defaults — each paired with the full written notes and every code snippet.',
-  totalDays: 14,
+    'JavaScript with a type system bolted on — catching bugs before they run. Fifteen illustrated episodes, from installing the compiler to enums, interfaces, classes, inheritance, access modifiers, abstract classes, implementing interfaces with static members, generics — from type parameters through constraints, multiple type parameters and defaults — and utility types like Partial, Required, Readonly and Record — each paired with the full written notes and every code snippet.',
+  totalDays: 15,
 };
 
 export const TS_GROUPS = [
@@ -16,6 +16,7 @@ export const TS_GROUPS = [
   { id: 'structures', label: 'Structuring Types', icon: '🏗️', desc: 'Interfaces, enums, and asserting what you know.' },
   { id: 'oop', label: 'Object-Oriented', icon: '🏛️', desc: 'Classes, inheritance, access modifiers and abstract classes.' },
   { id: 'generics', label: 'Generics', icon: '📦', desc: 'Flexible, reusable, type-safe components.' },
+  { id: 'utility-types', label: 'Utility Types', icon: '🧰', desc: 'Built-in generics that transform existing types.' },
 ];
 
 export const TS_DAYS = [
@@ -724,6 +725,75 @@ export const TS_DAYS = [
         label: 'API response wrapper with defaults',
         code: 'interface ApiResponse<T = any, E = string> {\n  success: boolean;\n  data?: T;\n  error?: E;\n}\n\nconst res: ApiResponse<User> = { success: true, data: { id: 1, name: "Faisal" } };',
         note: 'Constraints, multiple parameters and defaults combine in real-world API types.',
+      },
+    ],
+  },
+  {
+    day: 15,
+    group: 'utility-types',
+    title: 'Utility Types (Part 1)',
+    tagline: 'Partial, Required, Readonly, Record — small tools with big power.',
+    image: '/typescript-notes/ep15-utility-types-part-1.jpeg',
+    tags: ['Utility Types', 'Partial', 'Required', 'Readonly', 'Record'],
+    notes: [
+      { k: 'What are utility types?', v: 'Utility Types are **built-in generic types** provided by TypeScript that help us manipulate or transform existing types without writing code repeatedly.' },
+      { k: 'Why use utility types', v: 'Save time and reduce repetition, make code more consistent, handle complex type transformations easily, and improve maintainability and readability.' },
+      { k: 'Real-world analogy', v: 'Think of utility types as **tools in a toolbox**. Instead of creating new tools for every small job, you use the right tool to modify or adapt what you already have.' },
+      { k: 'Partial<T>', v: 'Makes every property in a type **optional**, using the `?` modifier.' },
+      { k: 'Required<T>', v: 'Removes optional `?` from all properties and makes them **required**.' },
+      { k: 'Readonly<T>', v: 'Makes all properties **readonly**, so they cannot be reassigned.' },
+      { k: 'Record<K, T>', v: 'Creates an object type with **keys of type K** and **values of type T**.' },
+    ],
+    theory: [
+      {
+        h: '1. What are Utility Types?',
+        p: 'Utility Types are **built-in generic types** provided by TypeScript that help us manipulate or transform existing types without writing code repeatedly.\n\n**Why use them:** save time and reduce repetition, make code more consistent, handle complex type transformations easily, and improve maintainability and readability.\n\n**Real-world analogy:** think of utility types as tools in a toolbox. Instead of creating new tools for every small job, you use the right tool to modify or adapt what you already have.',
+      },
+      {
+        h: '2. Partial<T> — Make all properties optional',
+        p: 'It makes every property in a type **optional** using the `?` modifier — `User` becomes `Partial<User>`, where every field can be omitted.\n\n**Pro tip:** very useful in APIs like PATCH requests, where we update only some fields.',
+        code: 'interface User {\n  id: number;\n  name: string;\n  email: string;\n  age: number;\n}\n\n// All properties are now optional\nlet updateUser: Partial<User> = {\n  name: "Faisal",\n  // we can pass any subset of properties\n};',
+      },
+      {
+        h: '3. Required<T> — Make all properties required',
+        p: 'It removes optional `?` from all properties and makes them **required** — a `User` with optional fields becomes a `Required<User>` where every field must be present.\n\n**When to use:** when you want to ensure that all properties must be present (e.g., when creating new data).',
+        code: 'interface User {\n  id?: number;\n  name?: string;\n  email?: string;\n}\n// All properties are now required\nlet newUser: Required<User> = {\n  id: 1,\n  name: "Faisal",\n  email: "faisal@example.com",\n};',
+      },
+      {
+        h: '4. Readonly<T> — Make all properties readonly',
+        p: 'It makes all properties **readonly**, so they cannot be reassigned after the object is created.\n\n**Note:** great for protecting objects from accidental changes.',
+        code: 'interface User {\n  id: number;\n  name: string;\n}\n\nlet user: Readonly<User> = {\n  id: 1,\n  name: "Faisal",\n};\n\n// user.id = 2;        // Error! Cannot assign to \'id\'\n// user.name = "Ahmed"; // Error! Cannot assign to \'name\'',
+      },
+      {
+        h: '5. Record<K, T> — Key-Value object type',
+        p: 'It creates an object type with keys of type `K` and values of type `T`. Keys can be `string` (or a union of string literals) and values any type — great for maps, dictionaries, lookup tables, and feature flags.\n\n**Real-world use:** perfect for maps, dictionaries, lookup tables, feature flags, and more.',
+        code: '// Keys are strings ("id", "name", "email")\n// Values are of type number\nlet scores: Record<string, number> = {\n  id: 101,\n  name: 95,\n  email: 88,\n};\n\n// Keys are a union of literals\ntype Status = "pending" | "active" | "blocked";\nlet userStatus: Record<Status, boolean> = {\n  pending: true,\n  active: true,\n  blocked: false,\n};',
+      },
+      {
+        h: 'Quick recap',
+        p: '- **Partial<T>** → makes all properties optional.\n- **Required<T>** → makes all properties required.\n- **Readonly<T>** → makes all properties readonly.\n- **Record<K, T>** → creates key-value object types.\n\n**Interview Q:** what is the difference between `Partial<T>` and `Required<T>`? How does `Readonly<T>` help in making our code safer? When would you use `Record<K, T>` in a real project?\n\nUtility types are small tools with BIG power! Use them and write cleaner, smarter code.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Partial<T> — optional update payload',
+        code: 'interface User {\n  id: number;\n  name: string;\n  email: string;\n  age: number;\n}\n\nlet updateUser: Partial<User> = {\n  name: "Faisal",\n};',
+        note: 'Every field becomes optional — ideal for PATCH-style partial updates.',
+      },
+      {
+        label: 'Required<T> — enforce every field',
+        code: 'interface User {\n  id?: number;\n  name?: string;\n  email?: string;\n}\n\nlet newUser: Required<User> = {\n  id: 1,\n  name: "Faisal",\n  email: "faisal@example.com",\n};',
+        note: 'Strips away optionality — every property must be provided.',
+      },
+      {
+        label: 'Readonly<T> — immutable object',
+        code: 'interface User {\n  id: number;\n  name: string;\n}\n\nlet user: Readonly<User> = { id: 1, name: "Faisal" };\n// user.id = 2; // Error! Cannot assign to \'id\'',
+        note: 'Protects an object from accidental reassignment after creation.',
+      },
+      {
+        label: 'Record<K, T> — union-literal keys',
+        code: 'type Status = "pending" | "active" | "blocked";\n\nlet userStatus: Record<Status, boolean> = {\n  pending: true,\n  active: true,\n  blocked: false,\n};',
+        note: 'K can be a union of string literals, giving you a fully-typed lookup table.',
       },
     ],
   },
