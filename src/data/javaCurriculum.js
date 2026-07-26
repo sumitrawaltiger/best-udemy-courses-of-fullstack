@@ -342,6 +342,19 @@ const JAVA_SEALED_CLASSES_SECTIONS = [
   },
 ];
 
+// Spring AI Architecture — visual note (attached to Inter-Service Communication)
+const SPRING_AI_SECTIONS = [
+  {
+    id: 'spring-ai-architecture',
+    title: 'Spring AI Architecture',
+    content:
+      "How Spring Boot applications connect with LLMs, tools, and knowledge sources.\n\n**1. Client / User Layer** — where the user request originates: **Web App**, **REST API**, or **Chat UI**.\n\n**2. Spring Boot Application** — **Controllers / Services** receive the request, hand off to **Business Logic**, which calls out through **Enterprise Integration**; the final response flows back to the client layer.\n\n**3. Spring AI Core** — the framework's building blocks: **ChatClient** (the main entry point for model calls), **Prompt Templates** (reusable, parameterized prompts), **Advisors** and **Memory** (intercept/enrich requests and retain conversation state), **RAG / Retrieval** and **Tool Calling** (pull in context and invoke external capabilities), **Structured Output** and **Observability** (typed responses and monitoring), and the **Embedding Client** (turns text into vectors for retrieval).\n\n**4. Model Providers** — Spring AI's consistent interface works across **OpenAI**, **Anthropic**, **Gemini**, **Azure OpenAI**, **Ollama**, and **Amazon Bedrock**.\n\n**Knowledge & Vector Stores** — RAG retrieval draws from **PGVector**, **Pinecone**, **Milvus**, **Redis**, or **MongoDB Atlas**.\n\n**External Tools / Functions** — tool calling can invoke a **Database**, a **Search API**, **CRM / ERP** systems, or **Internal Services**.\n\n**Three flows tie it together:**\n- **Primary Flow (Request → Response)** — the main client-to-model round trip.\n- **RAG Flow (Retrieve → Context)** — Spring AI Core queries a vector store and gets retrieved context back.\n- **Tool Calling Flow (Invoke → Result)** — Spring AI Core invokes an external tool and gets a tool result back.\n\n**Core concepts:**\n- **Prompt Orchestration** — design, manage, and reuse prompts for consistent AI interactions.\n- **Model Abstraction** — use any model provider through a consistent Spring AI interface.\n- **Retrieval Augmentation** — ground responses with enterprise knowledge using RAG.\n- **Tool Integration** — extend AI capabilities by securely invoking external tools and services.",
+    image: '/java-notes/spring-ai-architecture.jpg',
+    imageAlt:
+      'Spring AI Architecture visual note — how Spring Boot applications connect with LLMs, tools, and knowledge sources. 1. Client / User Layer (Web App, REST API, Chat UI) sends a User Request to 2. Spring Boot Application (Controllers/Services → Business Logic → Enterprise Integration), which calls 3. Spring AI Core (ChatClient, Prompt Templates, Advisors, Memory, RAG/Retrieval, Tool Calling, Structured Output, Observability, Embedding Client), which connects to 4. Model Providers (OpenAI, Anthropic, Gemini, Azure OpenAI, Ollama, Amazon Bedrock), Knowledge & Vector Stores (PGVector, Pinecone, Milvus, Redis, MongoDB Atlas) for RAG retrieve/context, and External Tools/Functions (Database, Search API, CRM/ERP, Internal Services) for tool call/result; three flow types (Primary Flow, RAG Flow, Tool Calling Flow); and four core concepts (Prompt Orchestration, Model Abstraction, Retrieval Augmentation, Tool Integration)',
+  },
+];
+
 // Deep Copy vs Shallow Copy — 8-page visual note (attached to OOP — Classes & Objects)
 const DEEP_SHALLOW_COPY_SECTIONS = [
   {
@@ -1736,6 +1749,9 @@ function buildLessons() {
       }
       if (title === 'Process API & Improvements') {
         lesson.sections = JAVA_SEALED_CLASSES_SECTIONS;
+      }
+      if (title === 'Inter-Service Communication') {
+        lesson.sections = SPRING_AI_SECTIONS;
       }
       if (title === 'Java Internals') {
         lesson.sections = JAVA_INTERNALS_SECTIONS;
