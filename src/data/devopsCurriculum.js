@@ -1093,6 +1093,20 @@ const DOCKER_POSTGRES_PROJECT_SECTIONS = [
   },
 ];
 
+// CI/CD Code Explanation (Jenkinsfile) — line-by-line breakdown, attached to CI/CD Concepts
+const CICD_JENKINSFILE_EXPLAINED_SECTIONS = [
+  {
+    id: "cicd-code-explanation-jenkinsfile",
+    title: "CI/CD Code Explanation (Jenkinsfile)",
+    content:
+      "This is a simple Jenkins Pipeline (Jenkinsfile) that automates **Build**, **Test**, and **Deploy** of an application.\n\n**Line-by-line explanation:**\n\n1. `pipeline {` — defines the Jenkins Pipeline.\n2. `agent any` — allows the pipeline to run on any available Jenkins agent.\n3. `environment { ... }` — defines global variables that can be used in all stages: **APP_NAME** (application name), **DOCKER_IMAGE** (local Docker image name), **REGISTRY** (Docker registry where the image will be pushed).\n4. `stages { ... }` — contains all the stages of the pipeline.\n5. **Checkout Code** — clones the source code from a Git repository (here GitHub) using the `main` branch.\n6. **Build** — compiles the application and creates the build artifact (JAR/WAR). `-DskipTests` skips tests in this step.\n7. **Test** — runs all the unit tests. If any test fails, the pipeline will stop.\n8. **Build & Push Docker Image** — builds the Docker image from the Dockerfile, tags the image with the registry name, and pushes the image to the Docker registry.\n9. **Deploy** — deploys the application to Kubernetes using the `deployment.yaml` file.\n10. `post { ... }` — actions to perform after pipeline completion: **success** runs if the pipeline is successful and shows a success message; **failure** runs if the pipeline fails and shows a failure message.\n\n**How it works (flow):** 1) code is fetched from GitHub → 2) application is built → 3) tests are executed → 4) Docker image is created & pushed → 5) application is deployed to Kubernetes → 6) notifications of success or failure are shown.\n\n**Key points:**\n- Automates the complete delivery process.\n- Ensures code quality with tests.\n- Uses Docker for consistency.\n- Deploys to Kubernetes for scalability.\n- Provides instant feedback.",
+    code: "pipeline {\n  agent any\n\n  environment {\n    APP_NAME = 'demo-app'\n    DOCKER_IMAGE = 'demo-app:latest'\n    REGISTRY = 'docker.io/abhishek/demo-app'\n  }\n\n  stages {\n\n    stage('Checkout Code') {\n      steps {\n        git url: 'https://github.com/user/demo-app.git',\n            branch: 'main'\n      }\n    }\n\n    stage('Build') {\n      steps {\n        sh 'mvn clean package -DskipTests'\n      }\n    }\n\n    stage('Test') {\n      steps {\n        sh 'mvn test'\n      }\n    }\n\n    stage('Build & Push Docker Image') {\n      steps {\n        sh 'docker build -t $DOCKER_IMAGE .'\n        sh \"docker tag $DOCKER_IMAGE $REGISTRY\"\n        sh \"docker push $REGISTRY\"\n      }\n    }\n\n    stage('Deploy') {\n      steps {\n        sh 'kubectl apply -f k8s/deployment.yaml'\n      }\n    }\n  }\n\n  post {\n    success {\n      echo '✅ Pipeline executed successfully!'\n    }\n    failure {\n      echo '❌ Pipeline failed. Please check logs!'\n    }\n  }\n}",
+    image: "/devops-notes/cicd-code-explanation-jenkinsfile.jpg",
+    imageAlt:
+      "CI/CD Code Explanation (Jenkinsfile) — a simple Jenkins Pipeline that automates Build, Test, and Deploy, with a line-by-line explanation: pipeline (defines the Jenkins Pipeline), agent any (runs on any available agent), environment block (APP_NAME, DOCKER_IMAGE, REGISTRY global variables), stages block, Checkout Code (clones from GitHub main branch), Build (mvn clean package -DskipTests), Test (mvn test, stops pipeline on failure), Build & Push Docker Image (build, tag, push to registry), Deploy (kubectl apply deployment.yaml), and post block (success/failure messages); plus a How It Works flow diagram (fetch, build, test, build & push image, deploy, notify) and key points (automates delivery, ensures code quality, uses Docker for consistency, deploys to Kubernetes for scalability, provides instant feedback)",
+  },
+];
+
 function buildLessons() {
   const lessons = [];
   let day = 1;
@@ -1115,6 +1129,7 @@ function buildLessons() {
         youtube: defaultYt,
       };
       if (title === 'CI/CD Concepts') {
+        lesson.sections = [...(lesson.sections || []), ...CICD_JENKINSFILE_EXPLAINED_SECTIONS];
         lesson.image = '/devops-notes/cicd-learning-plan.jpg';
         lesson.imageAlt =
           '18-Day CI/CD learning plan — source to build, test, package, deploy, monitor; end-to-end flow with Git, Jenkins, GitHub Actions, Docker, Kubernetes, and monitoring; tools, deployment strategies, and the learner-to-engineer journey';
