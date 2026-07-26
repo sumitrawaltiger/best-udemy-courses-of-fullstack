@@ -227,6 +227,15 @@ export const CHEAT_SHEETS = [
     tags: ['React', 'JSX', 'PDF'],
   },
   {
+    id: 'abortcontroller-in-react',
+    title: 'AbortController in React JS',
+    description:
+      "AbortController is a Web API that lets you abort (cancel) an in-flight fetch request — it prevents memory leaks, race conditions, and unnecessary state updates, by Ankur Singh Baghel. Why it matters: when the user navigates away, the component unmounts, or a new request is triggered, cancel the previous request before it completes. Without AbortController: typing 'r' → 're' → 'rea' fires three overlapping API calls; responses can arrive out of order, so an older response overwrites newer data and the UI ends up wrong. With AbortController: each keystroke aborts the previous in-flight request, so only the latest request is ever allowed to complete and update state. How to use in React (useEffect example): on every query change, create a new AbortController and pass its signal to fetch; in the effect's cleanup function, call controller.abort() so the previous request is cancelled before the next one starts or when the component unmounts; catch AbortError separately from real errors. Key benefits: prevents race conditions (only the latest response is used), saves bandwidth (cancels requests that are no longer needed), avoids memory leaks (no state updates on unmounted components), and gives a faster, more reliable UX. Common use cases: search suggestions, live auto-complete, data fetching on filter/sort/pagination, cancelling requests on route change, and preventing state updates on unmounted components. Pro tips: always handle AbortError separately in the catch block; AbortController works with fetch or any library that supports AbortSignal.",
+    category: 'react',
+    image: '/cheatsheets/abortcontroller-in-react.jpg',
+    tags: ['React', 'AbortController', 'Fetch', 'useEffect', 'Hooks'],
+  },
+  {
     id: 'sql',
     title: 'SQL Cheat Sheet',
     description:
