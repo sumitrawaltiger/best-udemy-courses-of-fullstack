@@ -545,6 +545,40 @@ const DEVOPS_SECTION_MAP = {
         'terraform apply         # create infra (type "yes")\n' +
         'terraform destroy       # tear it down',
     },
+    {
+      id: 'terraform-project-structure',
+      title: 'Terraform Project Structure',
+      content:
+        "A real-world Terraform project, file by file:\n\n- **main.tf** — the main configuration file; contains all the resources.\n- **variables.tf** — input variables for the configuration, making values reusable and configurable.\n- **outputs.tf** — output values exported after `terraform apply`.\n- **providers.tf** — provider configuration; defines the cloud provider and credentials/region.\n- **versions.tf** — specifies the required Terraform version and provider versions.\n- **modules/** — reusable modules for infrastructure components (e.g. VPC, EKS, RDS), each with its own `main.tf`, `variables.tf`, `outputs.tf`, and `versions.tf`.\n- **environments/** — environment-specific configurations (`dev/`, `staging/`, `prod/`), each with its own `terraform.tfvars` and `backend.tf`.\n- **backend.tf** — (optional) backend configuration for remote state storage (e.g. S3, Azure Blob).\n- **README.md** — project documentation and instructions.",
+      code:
+        'my-terraform-project/\n' +
+        '├── main.tf              # Main configuration file. Contains all the resources.\n' +
+        '├── variables.tf         # Input variables for the configuration.\n' +
+        '├── outputs.tf           # Output values exported after terraform apply.\n' +
+        '├── providers.tf         # Provider configuration — cloud provider + credentials/region.\n' +
+        '├── versions.tf          # Required Terraform version and provider versions.\n' +
+        '├── modules/\n' +
+        '│   └── vpc/\n' +
+        '│       ├── main.tf\n' +
+        '│       ├── variables.tf\n' +
+        '│       ├── outputs.tf\n' +
+        '│       └── versions.tf     # Reusable module (e.g. VPC, EKS, RDS) — own config.\n' +
+        '├── environments/\n' +
+        '│   ├── dev/\n' +
+        '│   │   ├── terraform.tfvars\n' +
+        '│   │   └── backend.tf\n' +
+        '│   ├── staging/\n' +
+        '│   │   ├── terraform.tfvars\n' +
+        '│   │   └── backend.tf\n' +
+        '│   └── prod/\n' +
+        '│       ├── terraform.tfvars\n' +
+        '│       └── backend.tf      # Environment-specific vars + backend config.\n' +
+        '├── backend.tf           # (Optional) remote state storage — S3, Azure Blob, etc.\n' +
+        '└── README.md            # Project documentation and instructions.',
+      image: '/devops-notes/terraform-project-structure.jpg',
+      imageAlt:
+        'Terraform Project Structure — my-terraform-project/ directory tree with main.tf (main configuration file, contains all resources), variables.tf (input variables), outputs.tf (output values exported after terraform apply), providers.tf (provider configuration, cloud provider and credentials/region), versions.tf (required Terraform and provider versions), modules/vpc/ with its own main.tf/variables.tf/outputs.tf/versions.tf (reusable modules for infrastructure components like VPC, EKS, RDS), environments/dev,staging,prod each with terraform.tfvars and backend.tf (environment-specific configurations), backend.tf (optional remote state storage — S3, Azure Blob), and README.md (project documentation and instructions)',
+    },
   ],
   'Ansible Fundamentals': [
     {
