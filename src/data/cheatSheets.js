@@ -245,6 +245,15 @@ export const CHEAT_SHEETS = [
     tags: ['System Design', 'Architecture', 'Interview'],
   },
   {
+    id: 'system-design-master-guide',
+    title: 'System Design Master Guide — 72 Concepts',
+    description:
+      "A 10-page hand-drawn reference covering 72 system design concepts across 8 categories, from classic distributed systems through modern AI architecture, by Tauseef Fayyaz. 1–9 System Design Fundamentals: Scalability, Latency vs Throughput, Availability & SLO, Idempotency, REST, GraphQL, gRPC, WebSockets, Sync vs Async. 10–18 Traffic, Scaling & Caching: Load Balancing, API Gateway, Reverse Proxy, CDN, Caching, Cache Invalidation, Rate Limiting, Consistent Hashing, Service Discovery. 19–27 Data & Storage: SQL vs NoSQL, Indexing, Sharding, Replication, Denormalization, ACID Transactions, Write-Ahead Log, Object Storage, Bloom Filter. 28–36 Distributed Systems: CAP Theorem, Consistency Models, Quorum, Consensus, Leader Election, Message Queue, Pub/Sub, Event Sourcing, CQRS. 37–45 Resilience Patterns: Circuit Breaker, Retry with Backoff, Timeout, Bulkhead, Dead Letter Queue, Backpressure, Saga Pattern, Graceful Degradation, Chaos Engineering. 46–54 Ship & Operate: Blue-Green Deploy, Canary Release, Feature Flags, Monitoring & Alerting, Distributed Tracing, Correlation ID, Structured Logging, Health Checks, Observability. 55–63 AI System Architecture (Part 1): Vector Database, Embedding Model, RAG, Chunking, Hybrid Search, Semantic Cache, Prompt Engineering, Function Calling, MCP. 64–72 AI System Architecture (Part 2): AI Agent, Multi-Agent Systems, Guardrails, LLM Gateway, Fine-Tuning vs RAG, Inference Optimisation, Evals & LLM-as-Judge, LLM Observability, Human in the Loop. Every concept pairs a small diagram with a one-line takeaway.",
+    category: 'system-design',
+    pdf: '/cheatsheets/system-design-master-guide.pdf',
+    tags: ['System Design', 'Distributed Systems', 'Resilience', 'AI Architecture', '72 Concepts'],
+  },
+  {
     id: 'networking',
     title: 'Networking Cheat Sheet',
     description:
