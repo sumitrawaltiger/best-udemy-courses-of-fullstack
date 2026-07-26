@@ -348,6 +348,20 @@ const K8S_SLIDES_SECTIONS = [
   },
 ];
 
+// How a Pod is Created in Kubernetes — visual note (attached to Pods & ReplicaSets)
+const POD_CREATION_SECTIONS = [
+  {
+    id: 'how-a-pod-is-created',
+    title: 'How a Pod is Created in Kubernetes',
+    content:
+      "From YAML to running container — six steps:\n\n**1. YAML sent** — you run `kubectl apply -f my-pod.yaml`. **kubectl** sends the manifest to the **API Server**.\n\n**2. State stored** — the **API Server** validates the YAML and stores the desired state in **etcd**.\n\n**3. Pod creation detected** — the **Controller Manager** watches the state in etcd and notices the Pod should exist but is not running.\n\n**4. Node selected for the Pod** — the **Scheduler** checks resources, affinity, taints, etc. and selects the best Node for the Pod.\n\n**5. Pod created, image pulled** — **kubelet** (on the selected Node) pulls the container image using **containerd**, creates and starts the container(s), and monitors the health of the Pod.\n\n**6. Pod is Running!** — the Pod is up and running on the selected Node.\n\n**If something goes wrong** (e.g. image not found), **kubelet** reports the issue back — the error flows back through the API Server / etcd so the Controller Manager and Scheduler stay in sync with reality.",
+    code: "$ kubectl apply -f my-pod.yaml\n\n# 1. kubectl sends the YAML to the API Server\n# 2. API Server validates it and stores desired state in etcd\n# 3. Controller Manager notices the Pod should exist but isn't running\n# 4. Scheduler picks the best Node for the Pod\n# 5. kubelet on that Node pulls the image (via containerd), creates + starts the container(s)\n# 6. Pod is Running!\n\n# If something goes wrong (e.g. image not found), kubelet reports the issue.",
+    image: '/k8s-notes/how-a-pod-is-created.jpg',
+    imageAlt:
+      'How a Pod is Created in Kubernetes — from YAML to running container in 6 steps: 1. YAML sent (kubectl apply -f my-pod.yaml sent to the API Server), 2. State stored (API Server validates the YAML and stores desired state in etcd), 3. Pod creation detected (Controller Manager watches etcd and notices the Pod should exist but is not running), 4. Node selected for the Pod (Scheduler checks resources, affinity, taints and picks the best Node), 5. Pod created, image pulled (kubelet pulls the image using containerd, creates and starts the container(s), monitors Pod health), 6. Pod is Running (up and running on the selected Node); plus an error path — if something goes wrong (e.g. image not found), kubelet reports the issue',
+  },
+];
+
 function buildLessons() {
   const lessons = [];
   let k8sDay = 1;
@@ -377,6 +391,9 @@ function buildLessons() {
         lesson.sections = K8S_SLIDES_SECTIONS;
         lesson.pdfUrl = '/docker-k8s-slides.pdf';
         lesson.pdfLabel = 'Docker & Kubernetes Slides (PDF)';
+      }
+      if (title === 'Pods & ReplicaSets') {
+        lesson.sections = POD_CREATION_SECTIONS;
       }
       lessons.push(lesson);
       k8sDay += 1;
