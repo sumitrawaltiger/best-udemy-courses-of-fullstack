@@ -355,6 +355,19 @@ const SPRING_AI_SECTIONS = [
   },
 ];
 
+// Circuit Breaker Explained — System Design Series Day 25 (attached to Resilience Patterns)
+const CIRCUIT_BREAKER_SECTIONS = [
+  {
+    id: 'circuit-breaker-explained',
+    title: 'Circuit Breaker Explained',
+    content:
+      "Stop cascading failures. Protect your system.\n\n**The Problem: Cascading Failure** — when a service fails, everything else starts failing too: **Payment Service Down → Requests Keep Coming → Timeouts Increase → Threads Get Blocked → Retries Multiply → System-Wide Outage.** One failure → system-wide outage.\n\n**The Solution: Circuit Breaker** — when failures cross a threshold, the circuit opens and stops the calls. Think of it as the circuit breaker in your home: if there's a dangerous fault, it cuts the connection to protect the entire house. Same idea in distributed systems.\n\n**How does it work? Three states:**\n1. **CLOSED (Healthy)** — everything is working fine, requests flow normally (Request → Service → Success). The circuit monitors failures.\n2. **OPEN (Unhealthy)** — too many failures detected, the circuit opens (Request → Circuit Breaker → BLOCKED). Requests don't reach the failing service — fail fast and protect your system, using a fallback response, cached data, try-again-later, or fail-fast.\n3. **HALF-OPEN (Recovering)** — after a timeout, the circuit allows a test request (Request → Circuit Breaker → Service). If the test succeeds, close the circuit; if it fails, open the circuit again.\n\n**The complete flow:** an incoming request checks — is the circuit OPEN? If **YES**, fail fast (don't call the service) and update the circuit state. If **NO**, call the service, record success/failure, and update the circuit state.\n\n**Real-world analogy — power grid example:** normal flow: electricity flows to the whole city. Fault detected: a fault occurs in one part of the system. Circuit breaker trips: the faulty section is isolated, and the rest of the city keeps running. Isolate the problem, protect everything else.\n\n**Common mistakes:** setting the failure threshold too low, setting the timeout too high, retrying aggressively while the circuit is open, and assuming the circuit breaker fixes the underlying issue — a circuit breaker contains failures, it doesn't repair them.\n\n**Key takeaway:** retries help with temporary failures; circuit breakers prevent repeated calls to unhealthy services — retry with backoff → still failing? open the circuit → stop hammering the service.\n\n**Rule of thumb:** one service is failing? Don't keep calling it blindly. Fail fast, protect your resources, let the unhealthy service recover, and isolate failures before they become outages.\n\n**Benefits:** prevents cascading failures, protects system resources, improves system stability, better user experience, allows failing services time to recover, and is essential for microservices and external calls.\n\n**Remember:** a resilient system doesn't avoid failures. It limits the damage they can cause.",
+    image: '/java-notes/circuit-breaker-explained.jpg',
+    imageAlt:
+      'Day 25 System Design Series — Circuit Breaker Explained: the problem (cascading failure — one failure leads to system-wide outage), the solution (circuit breaker opens when failures cross a threshold, home circuit-breaker analogy), the three states (CLOSED/Healthy, OPEN/Unhealthy with blocked requests and fallback/cached-data/fail-fast, HALF-OPEN/Recovering with a test request), the complete flow (is circuit open? fail fast vs call the service, update circuit state), a real-world power-grid analogy (normal flow, fault detected, circuit breaker trips and isolates the faulty section), common mistakes, key takeaway, rule of thumb, benefits, and the reminder that a resilient system limits damage rather than avoiding failures',
+  },
+];
+
 // Deep Copy vs Shallow Copy — 8-page visual note (attached to OOP — Classes & Objects)
 const DEEP_SHALLOW_COPY_SECTIONS = [
   {
@@ -1752,6 +1765,9 @@ function buildLessons() {
       }
       if (title === 'Inter-Service Communication') {
         lesson.sections = SPRING_AI_SECTIONS;
+      }
+      if (title === 'Resilience Patterns') {
+        lesson.sections = CIRCUIT_BREAKER_SECTIONS;
       }
       if (title === 'Java Internals') {
         lesson.sections = JAVA_INTERNALS_SECTIONS;
