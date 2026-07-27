@@ -900,6 +900,25 @@ const PYTHON_REST_API_SECTIONS = [
   },
 ];
 
+// Reference syllabus — Agentic AI 3.0 (Krish Naik Academy), a separate 5-phase
+// program (agenticai3.lovable.app), attached to the Phase-1 intro as a
+// reference/comparison syllabus. Does NOT replace the Ashok IT curriculum
+// this phase actually follows below.
+const AGENTIC_AI_3_REFERENCE_SECTIONS = [
+  {
+    id: "agentic-ai-3-reference-syllabus",
+    title: "Reference Syllabus — Agentic AI 3.0 (Krish Naik Academy)",
+    content:
+      "A separate reference program — **Agentic AI & GenAI-AgentOps with Cloud 3.0**, by Krish Naik Academy (Krish Naik — Chief AI Engineer, Mayank Aggrawal — Senior ML Engineer). The modern, direct path to mastering Agentic AI, from foundations to production multi-agent systems on **AWS, GCP, Azure, and VPS**. **5 months · 30 modules · 9 projects · 3 clouds**, beginner+, ~6 hrs/week, with a Python & AI fast-track in Phase 0.\n\n**Prerequisites:** no prior Agentic AI knowledge required — but you should have a good foundational understanding of GenAI along with the fundamentals of Machine Learning, Deep Learning & NLP.\n\n**Five phases, each stacking on the last:**\n\n**Phase 0 — Foundations** (Weeks 1–3 · 4 modules): build the foundation — Python, GenAI, prompting & structured outputs. You'll master GenAI vs Agentic AI (agent design patterns), Python + async fast-track for AI, Pydantic for tool schemas & structured outputs, and Prompt Engineering (CoT, few-shot, structured prompts). Roles unlocked: GenAI Intern, AI Associate, Prompt Engineer (Jr.).\n\n**Phase 1 — Core Frameworks & Protocols** (Weeks 4–9 · 9 modules + 2 projects): become production-ready with the core agent stack used in industry. You'll master LangChain + LCEL (end-to-end LLM pipelines), LangGraph (stateful, human-in-the-loop agents), Multi-Agent Architecture (Supervisor, Swarm), and MCP & A2A protocols, Agentic RAG, Context Engineering. Roles unlocked: AI Engineer, LLM Application Developer, RAG Engineer.\n\n**Phase 2 — Claude Ecosystem & Coding Agents** (Weeks 10–13 · 6 modules + 1 project): master the Claude ecosystem & next-gen autonomous coding agents. You'll master Claude Code, OpenClaw, NemoClaw, Hermes, Codex CLI, opencode, Antigravity IDE, mem0 (persistent agent memory), and building self-improving coding agents. Roles unlocked: Agentic Coding Engineer, Autonomous Agent Developer.\n\n**Phase 3 — Extended Frameworks** (Weeks 14–17 · 7 modules + 3 mini-projects): go cross-framework — ship agents in any ecosystem your team uses. You'll master OpenAI Agents SDK, CrewAI, Google ADK, AWS Strands, LlamaIndex workflows, and n8n & LangFlow (low-code agent automation), across 3 mini-projects. Roles unlocked: Multi-Framework AI Engineer, Agent Solutions Architect.\n\n**Phase 4 — Production Cloud Projects** (Weeks 18–22 · 1 module + 3 projects): deploy real production systems on AWS, GCP & Azure with full AgentOps. You'll master AgentOps CI/CD (observability, evals, cost), production deploy on Bedrock/Vertex AI/AI Foundry, Docker/FastAPI/GitHub Actions/BentoML, across 3 in-depth, portfolio-grade cloud projects. Roles unlocked: Senior Agentic AI Engineer, AgentOps / MLOps Engineer, AI Platform Engineer.",
+  },
+  {
+    id: "agentic-ai-3-tech-stack-and-projects",
+    title: "Agentic AI 3.0 — Tech Stack & the 9 Projects",
+    content:
+      "**Stack inventory — 56 tools across 9 categories:**\n- **Agent Frameworks (9)** — LangChain, LangGraph, OpenAI Agents SDK, Google ADK, AWS Strands, CrewAI, LlamaIndex, n8n, LangFlow.\n- **Claude & Coding Agents (7)** — Claude Code, OpenClaw, NemoClaw, Hermes Agent, Codex CLI, opencode, Antigravity IDE.\n- **Protocols & Standards (2)** — MCP, A2A.\n- **Memory & Knowledge (4)** — mem0, LangGraph Checkpointing, LlamaIndex Memory, GraphRAG.\n- **AgentOps & Observability (5)** — AgentOps, LangSmith, Opik, Langfuse, Logfire.\n- **Core Concepts (11)** — RAG, Agentic RAG, Context Engineering, Prompt Engineering, Pydantic, Vector DBs, Agent Evaluation, Agent Security, Guardrails, FAISS, Tavily.\n- **Deployment & CI/CD (7)** — Docker, GitHub Actions, FastAPI, BentoML, Nginx, Streamlit, Gradio.\n- **Cloud Platforms (4)** — AWS, GCP, Azure, VPS.\n- **LLM Providers (7)** — OpenAI, Anthropic, Gemini, Groq, Ollama, Bedrock, Azure OpenAI.\n\n**All 9 portfolio projects, across AWS, GCP, Azure, VPS, and local environments:**\n- **Phase 1, AWS** — Customer Support RAG Agent (LangGraph + LangChain).\n- **Phase 1, VPS** — Research Assistant Agent (LangGraph + Adaptive RAG).\n- **Phase 2, VPS** — Personal AI Assistant / Claude Ecosystem (Hermes Agent + Claude Code).\n- **Phase 3, Docker Compose** — Automated Content Intelligence Agent (OpenAI Agents SDK + CrewAI).\n- **Phase 3, GCP Cloud Run** — Multi-Source Data Analysis Agent (Google ADK + LlamaIndex).\n- **Phase 3, AWS Lambda + VPS** — Intelligent Sales Workflow Automation (AWS Strands + n8n + LangFlow).\n- **Phase 4, AWS** — Multi-Agent Business Intelligence System (AWS Strands Agents SDK).\n- **Phase 4, GCP** — Enterprise Knowledge Graph Assistant (Google ADK).\n- **Phase 4, Azure** — Multi-Agent Customer Intelligence Platform (CrewAI).",
+  },
+];
+
 export const pythonLessons = [
   // ── Phase 1: Python Foundations ──
   {
@@ -910,6 +929,7 @@ export const pythonLessons = [
     topics: ['Course roadmap', 'AI vs ML vs DL', 'Tools & setup', 'Python for AI', 'Project overview'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=rfscVS0vtbw', 'Learn Python - Full Course', 'freeCodeCamp'),
+    sections: AGENTIC_AI_3_REFERENCE_SECTIONS,
   },
   {
     pyDay: 2,
