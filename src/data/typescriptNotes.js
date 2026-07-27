@@ -4,10 +4,10 @@
 
 export const TS_META = {
   title: 'The TypeScript Series',
-  subtitle: '15 Episodes · JavaScript, Now With Types',
+  subtitle: '16 Episodes · JavaScript, Now With Types',
   blurb:
-    'JavaScript with a type system bolted on — catching bugs before they run. Fifteen illustrated episodes, from installing the compiler to enums, interfaces, classes, inheritance, access modifiers, abstract classes, implementing interfaces with static members, generics — from type parameters through constraints, multiple type parameters and defaults — and utility types like Partial, Required, Readonly and Record — each paired with the full written notes and every code snippet.',
-  totalDays: 15,
+    'JavaScript with a type system bolted on — catching bugs before they run. Sixteen illustrated episodes, from installing the compiler to enums, interfaces, classes, inheritance, access modifiers, abstract classes, implementing interfaces with static members, generics — from type parameters through constraints, multiple type parameters and defaults — and utility types like Partial, Required, Readonly, Record, Pick, Omit, Exclude and Extract — each paired with the full written notes and every code snippet.',
+  totalDays: 16,
 };
 
 export const TS_GROUPS = [
@@ -794,6 +794,81 @@ export const TS_DAYS = [
         label: 'Record<K, T> — union-literal keys',
         code: 'type Status = "pending" | "active" | "blocked";\n\nlet userStatus: Record<Status, boolean> = {\n  pending: true,\n  active: true,\n  blocked: false,\n};',
         note: 'K can be a union of string literals, giving you a fully-typed lookup table.',
+      },
+    ],
+  },
+  {
+    day: 16,
+    group: 'utility-types',
+    title: 'Utility Types (Part 2)',
+    tagline: 'Pick, Omit, Exclude, Extract — more ways to transform and filter types.',
+    image: '/typescript-notes/ep16-utility-types-part-2.jpeg',
+    tags: ['Utility Types', 'Pick', 'Omit', 'Exclude', 'Extract'],
+    notes: [
+      { k: 'Overview', v: 'These utility types help us **pick**, **remove**, or **extract** parts of existing types, making our code more precise and flexible.' },
+      { k: 'Pick<T, K>', v: 'Creates a new type by picking only the specified keys from a type `T`.' },
+      { k: 'Omit<T, K>', v: 'Creates a new type by omitting the specified keys from a type `T`.' },
+      { k: 'Exclude<T, U>', v: 'Creates a type by excluding from `T` all types that are assignable to `U`.' },
+      { k: 'Extract<T, U>', v: 'Creates a type by extracting from `T` all types that are assignable to `U`.' },
+    ],
+    theory: [
+      {
+        h: '1. Overview',
+        p: 'These utility types help us pick, remove, or extract parts of existing types, making our code more precise and flexible.',
+      },
+      {
+        h: '2. Pick<T, K> — pick only what you need',
+        p: 'Creates a new type by picking only the specified keys from a type `T`.\n\n**Syntax:** `Pick<T, K>`',
+        code: 'interface User {\n  id: number;\n  name: string;\n  email: string;\n  age: number;\n}\n\n// Pick only name & email\ntype UserInfo = Pick<User, "name" | "email">;\n\n// Result:\n// { name: string; email: string }',
+      },
+      {
+        h: '3. Omit<T, K> — remove what you don’t need',
+        p: 'Creates a new type by omitting the specified keys from a type `T`.\n\n**Syntax:** `Omit<T, K>`',
+        code: 'interface User {\n  id: number;\n  name: string;\n  email: string;\n  age: number;\n}\n\n// Omit email & age\ntype UserBasic = Omit<User, "email" | "age">;\n\n// Result:\n// { id: number; name: string }',
+      },
+      {
+        h: '4. Exclude<T, U> — remove from a union',
+        p: 'Creates a type by excluding from `T` all types that are assignable to `U`.\n\n**Syntax:** `Exclude<T, U>`',
+        code: 'type Status = "active" | "inactive" | "pending";\n\n// Exclude \'pending\'\ntype ActiveStatus = Exclude<Status, "pending">;\n\n// Result:\n// \'active\' | \'inactive\'',
+      },
+      {
+        h: '5. Extract<T, U> — get from a union',
+        p: 'Creates a type by extracting from `T` all types that are assignable to `U`.\n\n**Syntax:** `Extract<T, U>`',
+        code: 'type Event = "click" | "scroll" | "keydown" | "load";\n\n// Extract only \'click\' | \'load\'\ntype UIEvent = Extract<Event, "click" | "load">;\n\n// Result:\n// \'click\' | \'load\'',
+      },
+      {
+        h: 'Quick comparison',
+        p: 'Given the type `{ a: 1; b: 2; c: 3 }`:\n\n- **Pick<K>** — pick specific keys. `Pick<T, "a" | "c">` → `{ a: 1; c: 3 }`.\n- **Omit<K>** — remove specific keys. `Omit<T, "b">` → `{ a: 1; c: 3 }`.\n- **Exclude<T, U>** — remove types from a union. `Exclude<"a" | "b" | "c", "b">` → `"a" | "c"`.\n- **Extract<T, U>** — extract types from a union. `Extract<"a" | "b" | "c", "a" | "c">` → `"a" | "c"`.',
+      },
+      {
+        h: 'When to use?',
+        p: '- **Pick** — when you need only certain properties.\n- **Omit** — when you want to remove unwanted properties.\n- **Exclude** — when working with union types and want to remove some values.\n- **Extract** — when working with union types and want to get only some values.\n\n**Pro tip:** combine these utility types to build powerful and precise types for real-world projects!',
+      },
+      {
+        h: 'Quick recap',
+        p: '- **Pick** → keep what you need.\n- **Omit** → remove what you don’t need.\n- **Exclude** → remove from unions.\n- **Extract** → get from unions.\n\n**Interview Q:** what is the difference between `Pick` and `Omit`? How do `Exclude` and `Extract` work? Give an example use case for each utility type.\n\nMaster utility types to write cleaner, shorter, and smarter TypeScript code!',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Pick<T, K> — a narrowed view',
+        code: 'interface User {\n  id: number;\n  name: string;\n  email: string;\n  age: number;\n}\n\ntype UserInfo = Pick<User, "name" | "email">;\n// { name: string; email: string }',
+        note: 'Keeps only the keys you list — everything else is dropped from the type.',
+      },
+      {
+        label: 'Omit<T, K> — drop a few keys',
+        code: 'interface User {\n  id: number;\n  name: string;\n  email: string;\n  age: number;\n}\n\ntype UserBasic = Omit<User, "email" | "age">;\n// { id: number; name: string }',
+        note: 'The inverse of Pick — remove the keys you list, keep the rest.',
+      },
+      {
+        label: 'Exclude<T, U> — narrow a union',
+        code: 'type Status = "active" | "inactive" | "pending";\n\ntype ActiveStatus = Exclude<Status, "pending">;\n// \'active\' | \'inactive\'',
+        note: 'Removes members of a union that match U, leaving the rest.',
+      },
+      {
+        label: 'Extract<T, U> — keep only a subset of a union',
+        code: 'type Event = "click" | "scroll" | "keydown" | "load";\n\ntype UIEvent = Extract<Event, "click" | "load">;\n// \'click\' | \'load\'',
+        note: 'The inverse of Exclude — keep only union members that match U.',
       },
     ],
   },
