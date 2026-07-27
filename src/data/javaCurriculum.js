@@ -1690,6 +1690,15 @@ const MESSAGING_SECTIONS = [
       'Day 41 Phase 2B — Why Message Queues? The problem with synchronous communication (every service call waits for the previous one, slowest service delays everyone, tight coupling, failure in one service affects all); the problem when a service is slow or down (waiting, timeout/failure, high latency, cascading failures, blocked threads, lower throughput); queue-based architecture (publish an event to a message queue instead of calling every service directly, asynchronous processing, loose coupling, independent consumers, fast response, messages stay in the queue if a service is down); why message queues (decoupling, reliability, scalability with worker consumers, better user experience, cost effective); a real-world Amazon order example (immediate response to the user, asynchronous payment/inventory/shipping/email/invoice/recommendation/analytics processing behind the scenes); a synchronous vs queue-based comparison (communication, coupling, error handling, scalability, user experience); the complete high-level flow (client → order service → publish event → message queue → consumers → external services → process independently → done); and the key takeaway that message queues make systems more resilient, scalable, and loosely coupled rather than simply faster',
   },
   {
+    id: 'kafka-basic-architecture',
+    title: 'Apache Kafka — Basic Architecture',
+    content:
+      "Apache Kafka's building blocks, end to end: **Producers → Kafka Cluster (Brokers) → Consumers**.\n\n**Producers** — services that publish messages, e.g. an Order Service, Payment Service, or User Service. Producers send messages to a **Topic**.\n\n**Kafka Cluster (Brokers)** — a topic (e.g. `orders`) is split into **partitions** (Partition 0, Partition 1, Partition 2…). Each partition is an ordered, append-only log of numbered messages (0, 1, 2, 3, 4…). Partitions are distributed across **Brokers** (Broker 1, Broker 2, Broker 3…) in the cluster, which is how Kafka spreads load and scales horizontally.\n\n**Consumers** — downstream services (e.g. an Email Service, Notification Service, Inventory Service) read messages from the topic's partitions.\n\n**The flow:** Producer → Topic → Broker → Consumer. A producer sends a message to a topic; the topic's partitions live on brokers in the cluster; consumers read from those partitions to do their own work — independently and at their own pace.",
+    image: '/java-notes/apache-kafka-basic-architecture.jpg',
+    imageAlt:
+      'Apache Kafka — Basic Architecture: Producers (Order Service, Payment Service, User Service) send messages to a Kafka Cluster of Brokers. Inside the cluster, a Topic named "orders" is split into Partition 0, Partition 1, and Partition 2, each holding an ordered, numbered sequence of messages (0, 1, 2, 3, 4…); the partitions are distributed across Broker 1, Broker 2, and Broker 3. Consumers (Email Service, Notification Service, Inventory Service) read from the brokers. A "The Flow" strip summarizes it as Producer → Topic → Broker → Consumer.',
+  },
+  {
     id: 'messaging-exchanges',
     title: 'Messaging Exchanges & Types',
     content:
