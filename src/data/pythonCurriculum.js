@@ -737,6 +737,48 @@ const PYTHON_DATA_SCIENCE_SECTIONS = [
     content: "1. **Python Programming** — core + advanced Python.\n2. **Python Libraries for AI** — NumPy, Pandas, Matplotlib, statistics, scikit-learn, TensorFlow, FastAPI.\n3. **Machine Learning & Deep Learning** — supervised/unsupervised/reinforcement learning, regression, classification, clustering, neural networks, CNN/RNN, transformers.\n4. **LLMs & Prompt Engineering** — tokens, context window, temperature, zero/few-shot & chain-of-thought prompting, OpenAI/Gemini/Claude APIs.\n5. **Generative AI & RAG Systems** — embeddings, vector databases, semantic search, RAG architecture, chatbots, document Q&A.\n6. **Agentic AI, LangChain, LangGraph, MCP & AI Agents** — chains, memory, tools, graph-based workflows, multi-agent systems.\n7. **MLOps + LLMOps** — Git, Docker, Kubernetes, CI/CD, cloud/model deployment, monitoring.\n8. **Interview Prep & Resume Building** — Python/ML/DL/Gen AI/LLM/RAG interview questions, resume, GitHub & LinkedIn.",
   },
   {
+    id: "gen-ai-syllabus-python-foundations",
+    title: "Official Syllabus — Python Foundations (Ashok IT)",
+    content:
+      "The official, module-by-module Ashok IT course syllabus — the full breakdown behind the 8-module summary above.\n\n**Course Introduction** — what we will learn in this course.\n\n**Introduction to Python** — getting started with Python, Python basics & syntax, variables in Python, basic data types in Python, operators in Python.\n\n**Python Control Flow** — conditional statements (`if`, `elif`, `else`), loops.\n\n**Data Structures Using Python** — lists and list comprehension, tuples, dictionaries, sets.\n\n**Functions in Python** — getting started with functions, lambda functions, the `map()` function, the `filter()` function.\n\n**Importing, Creating Modules & Packages** — importing modules and packages, a standard-library overview.\n\n**File Handling** — file operations with Python, working with file paths.\n\n**Exception Handling** — exception handling with `try` / `except` / `else` / `finally` blocks.\n\n**OOPs** — classes & objects, single and multiple inheritance, polymorphism, encapsulation, abstraction.",
+  },
+  {
+    id: "gen-ai-syllabus-nlp-deep-learning",
+    title: "Official Syllabus — NLP & Deep Learning Foundations",
+    content:
+      "**Machine Learning for Natural Language Processing (NLP)** — tokenization; text pre-processing (stemming, lemmatization, stopwords); text vectorization (Bag of Words, N-Grams, TF-IDF); word embeddings (Word2Vec, CBOW, Skip-Grams, GloVe); parts-of-speech tagging; named entity recognition.\n\n**Deep Learning for NLP** — welcome to the module on DL, introduction to DL, understanding deep learning.\n\n**Recurrent Neural Networks** — RNN forward propagation with time, simple RNN backward propagation, problems with RNN, end-to-end deep learning projects with a simple RNN.\n\n**Artificial Neural Networks** — what is a neuron, activation functions (step, linear, sigmoid, tanh, ReLU), backpropagation vs forward pass, gradient descent, ANN intuition, ANN hyperparameter optimization, step-by-step training with ANN (optimizer, loss functions, finding the optimal number of hidden layers & hidden neurons).",
+  },
+  {
+    id: "gen-ai-syllabus-lstm-encoders-attention",
+    title: "Official Syllabus — LSTM, Encoders, Decoders & Attention",
+    content:
+      "**Long Short-Term Memory (LSTM)** — why LSTM, LSTM architecture, the forget gate, the input gate and candidate memory, the output gate, the training process, variants of LSTM, an in-depth GRU/RNN intuition, and an end-to-end LSTM/GRU deep learning project.\n\n**Bidirectional RNN** — what it is, why to use it, advantages & disadvantages, applications.\n\n**Decoders** — introduction to decoders, decoder architecture, GPT architecture, GPT's masked multi-head attention, GPT training.\n\n**Encoders** — introduction to encoders, encoder architecture, introduction to BERT, BERT configurations, BERT fine-tuning, BERT pre-training (masked LM), BERT input embeddings, RoBERTa, DistilBERT, ALBERT.\n\n**Sequence to Sequence Architecture** — the encoder and decoder, an in-depth intuition of encoder & decoder, Seq2Seq architecture, problems with encoder-decoder.\n\n**Attention Mechanism** — Seq2Seq networks, attention mechanism architecture.",
+  },
+  {
+    id: "gen-ai-syllabus-transformers-llms",
+    title: "Official Syllabus — Transformers & Introduction to Gen AI",
+    content:
+      "**Transformers** — what and why to use transformers; the basic encoder architecture; self-attention layer working; multi-head attention; the feed-forward network with multi-head attention; positional encoding; layer normalization (with examples); the complete encoder transformer architecture; the decoder's plan of action; decoder masked multi-head attention; encoder-decoder multi-head attention; the decoder's final linear and softmax layer.\n\n**Introduction to Gen AI** — what generative AI is (AI vs ML vs DL vs Generative AI); how OpenAI's ChatGPT or Llama 3 LLM models are trained; the evolution of LLM models; an analysis of all major LLM models.\n\n**Data Preprocessing & Embeddings** — data preprocessing (cleaning, embeddings); the end-to-end generative AI pipeline.\n\n**Introduction to Large Language Models** — LLM architecture; an in-depth intuition of the transformer 'Attention Is All You Need' paper; how ChatGPT is trained.\n\n**Vector Database** — vector databases; vector index vs vector database; how a vector DB works; vector database practicals.",
+  },
+  {
+    id: "gen-ai-syllabus-openai-langchain",
+    title: "Official Syllabus — OpenAI, LangChain & Open-Source LLMs",
+    content:
+      "**Complete Guide to OpenAI** — introduction to OpenAI; the OpenAI API and generating an API key; local environment setup; hands-on with the Chat Completion API and the Completion API; function calling in OpenAI; **projects:** fine-tuning GPT-3 for text classification, audio-transcript translation with Whisper, image generation with DALL-E.\n\n**Introduction to Langchain for Generative AI** — the complete LangChain ecosystem; creating a virtual environment; getting started with LangChain & OpenAI.\n\n**Open Source LLM** — introduction to open-source LLMs (Llama); using open-source LLMs with LangChain; a custom website chatbot using open-source LLMs; open-source LLMs (Falcon).\n\n**Lang Chain — Basic to Advance** — introduction & installation setup; prompt templates; chains; LangChain agents and tools; memory in LangChain; document loaders; multi-DataFrame agents; using Hugging Face open-source LLMs with LangChain; **projects:** an interview-questions creator application, a custom website chatbot.\n\n**Components & Modules in Langchain** — basic components and modules; data ingestion with document loaders; text-splitting techniques (Recursive Character Text Splitter, Character Text Splitter, HTML Header Text Splitter, Recursive JSON Splitter); OpenAI embeddings, Ollama embeddings, and HuggingFace embeddings.",
+  },
+  {
+    id: "gen-ai-syllabus-rag-finetuning-deployment",
+    title: "Official Syllabus — RAG, Fine-Tuning & Deployment",
+    content:
+      "**Retrieval Augmented Generation (RAG)** — introduction & importance of RAG; a RAG practical demo; RAG vs fine-tuning; building a Q&A app with RAG using Gemini Pro and LangChain.\n\n**Fine Tuning LLMs** — what fine-tuning is; parameter-efficient fine-tuning (LoRA, QLoRA); fine-tuning Meta Llama 2 on custom data.\n\n**LlamaIndex — Basic to Advance** — introduction to LlamaIndex and an end-to-end demo; **project:** financial stock analysis using LlamaIndex.\n\n**LLM Apps Deployment** — how to deploy a generative AI application, using Flask and AWS.",
+  },
+  {
+    id: "gen-ai-syllabus-agentic-ai-langgraph-mcp-n8n",
+    title: "Official Syllabus — Agentic AI, LangGraph, MCP & n8n",
+    content:
+      "**Introduction to Agentic-AI** — what Agentic AI is; AI agents vs Agentic AI; memory & planning; agentic architecture; types of agents; multi-agent systems.\n\n**Introduction to LangGraph** — introduction to LangGraph; LangGraph applications; setting up API keys; developing a simple graph/workflow with LangGraph; LangGraph components; **project:** an end-to-end Agentic AI project with LangGraph.\n\n**Model Context Protocol** — introduction to MCP; important MCP components; communication between MCP components; building MCP servers with tools & a client from scratch using LangChain.\n\n**n8n** — introduction to automation & n8n; key features; n8n hosting techniques; n8n essentials; n8n node types (trigger, action, data-transformation, switch/filter, split/aggregate).\n\n**Agentic AI Workflow in n8n** — the concept of workflow; how to give prompts to an AI agent; credential setup & testing.",
+  },
+  {
     id: "what-is-data-science",
     title: "What is Data Science?",
     content: "**Data** is the starting point of Data Science. Using data we create **intelligence**, and using intelligence we build systems that can learn from data, understand language, generate content, make predictions, and take actions.\n\n**Definition:** Data Science is the process of **collecting, cleaning, analyzing, and understanding data to make smart decisions** — in short, *extracting useful information from data*.",
@@ -1328,6 +1370,13 @@ export const pythonLessons = [
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=vmEHCJhZ2Jk', 'Python for Data Science', 'freeCodeCamp'),
     sections: PYTHON_DATA_SCIENCE_SECTIONS,
+    extraLinks: [
+      {
+        label: 'Gen AI & Agentic AI with Python — Official Syllabus (PDF)',
+        href: '/python-notes/gen-ai-and-agentic-ai-with-python-syllabus.pdf',
+        icon: '📄',
+      },
+    ],
   },
   // ── Phase 2: ML & NLP ──
   {
