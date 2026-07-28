@@ -4,10 +4,12 @@
 
 export const TS_META = {
   title: 'The TypeScript Series',
-  subtitle: '16 Episodes · JavaScript, Now With Types',
+  subtitle: '200 Episodes · JavaScript, Now With Types',
   blurb:
-    'JavaScript with a type system bolted on — catching bugs before they run. Sixteen illustrated episodes, from installing the compiler to enums, interfaces, classes, inheritance, access modifiers, abstract classes, implementing interfaces with static members, generics — from type parameters through constraints, multiple type parameters and defaults — and utility types like Partial, Required, Readonly, Record, Pick, Omit, Exclude and Extract — each paired with the full written notes and every code snippet.',
-  totalDays: 16,
+    'JavaScript with a type system bolted on — catching bugs before they run. Two hundred illustrated episodes, from installing the compiler to enums, interfaces, classes, inheritance, access modifiers, abstract classes, implementing interfaces with static members, generics — from type parameters through constraints, multiple type parameters and defaults — and utility types like Partial, Required, Readonly, Record, Pick, Omit, Exclude and Extract — each paired with the full written notes and every code snippet.',
+  totalDays: 200,
+  startDate: '1 Jan 2027',
+  endDate: '19 Jul 2027',
 };
 
 export const TS_GROUPS = [
@@ -19,9 +21,19 @@ export const TS_GROUPS = [
   { id: 'utility-types', label: 'Utility Types', icon: '🧰', desc: 'Built-in generics that transform existing types.' },
 ];
 
+
+// Returns the display date for any TypeScript day (Day 1 = 1 Jan 2027)
+export function getTsDate(dayNum) {
+  const start = new Date(2027, 0, 1); // 1 Jan 2027
+  const d = new Date(start);
+  d.setDate(d.getDate() + dayNum - 1);
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
 export const TS_DAYS = [
   {
     day: 1,
+    date: '1 Jan 2027',
     group: 'foundations',
     title: 'Introduction to TypeScript',
     tagline: 'JavaScript that catches your bugs before they run.',
@@ -57,6 +69,7 @@ export const TS_DAYS = [
   },
   {
     day: 2,
+    date: '2 Jan 2027',
     group: 'foundations',
     title: 'Setting Up TypeScript',
     tagline: 'tsc, tsconfig, and a clean project in minutes.',
@@ -96,6 +109,7 @@ export const TS_DAYS = [
   },
   {
     day: 3,
+    date: '3 Jan 2027',
     group: 'types',
     title: 'Type System Basics',
     tagline: 'Annotations, inference, and the primitive types.',
@@ -135,6 +149,7 @@ export const TS_DAYS = [
   },
   {
     day: 4,
+    date: '4 Jan 2027',
     group: 'types',
     title: 'Functions in TypeScript',
     tagline: 'Typed params, return types, and safer calls.',
@@ -174,6 +189,7 @@ export const TS_DAYS = [
   },
   {
     day: 5,
+    date: '5 Jan 2027',
     group: 'types',
     title: 'Data Types',
     tagline: 'Arrays, tuples, objects, unions and literals.',
@@ -213,6 +229,7 @@ export const TS_DAYS = [
   },
   {
     day: 6,
+    date: '6 Jan 2027',
     group: 'types',
     title: 'Advanced Types',
     tagline: 'Aliases, intersections, generics and narrowing.',
@@ -252,6 +269,7 @@ export const TS_DAYS = [
   },
   {
     day: 7,
+    date: '7 Jan 2027',
     group: 'structures',
     title: 'Interfaces',
     tagline: 'Named, extendable contracts for object shapes.',
@@ -291,6 +309,7 @@ export const TS_DAYS = [
   },
   {
     day: 8,
+    date: '8 Jan 2027',
     group: 'structures',
     title: 'Enums & Type Assertions',
     tagline: 'Names for constants, and telling TS what you know.',
@@ -352,6 +371,7 @@ export const TS_DAYS = [
   },
   {
     day: 9,
+    date: '9 Jan 2027',
     group: 'oop',
     title: 'Classes',
     tagline: 'Blueprints for objects — properties, constructors & methods.',
@@ -413,6 +433,7 @@ export const TS_DAYS = [
   },
   {
     day: 10,
+    date: '10 Jan 2027',
     group: 'oop',
     title: 'Inheritance & Access Modifiers',
     tagline: 'Re-use and extend code, and control who can see what.',
@@ -470,6 +491,7 @@ export const TS_DAYS = [
   },
   {
     day: 11,
+    date: '11 Jan 2027',
     group: 'oop',
     title: 'Abstract Classes',
     tagline: 'Blueprints with some implementation — children must finish the rest.',
@@ -530,6 +552,7 @@ export const TS_DAYS = [
   },
   {
     day: 12,
+    date: '12 Jan 2027',
     group: 'oop',
     title: 'Implementing Interfaces & Static Members',
     tagline: 'Contracts for classes, and members that belong to the class itself.',
@@ -595,6 +618,7 @@ export const TS_DAYS = [
   },
   {
     day: 13,
+    date: '13 Jan 2027',
     group: 'generics',
     title: 'Generics (Part 1)',
     tagline: 'Write once, use everywhere — flexible, reusable, type-safe components.',
@@ -663,6 +687,7 @@ export const TS_DAYS = [
   },
   {
     day: 14,
+    date: '14 Jan 2027',
     group: 'generics',
     title: 'Generics (Part 2)',
     tagline: 'Advanced generics — constraints, multiple type parameters, and defaults.',
@@ -730,6 +755,7 @@ export const TS_DAYS = [
   },
   {
     day: 15,
+    date: '15 Jan 2027',
     group: 'utility-types',
     title: 'Utility Types (Part 1)',
     tagline: 'Partial, Required, Readonly, Record — small tools with big power.',
@@ -799,6 +825,7 @@ export const TS_DAYS = [
   },
   {
     day: 16,
+    date: '16 Jan 2027',
     group: 'utility-types',
     title: 'Utility Types (Part 2)',
     tagline: 'Pick, Omit, Exclude, Extract — more ways to transform and filter types.',
