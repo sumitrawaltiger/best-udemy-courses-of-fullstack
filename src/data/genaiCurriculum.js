@@ -1319,4 +1319,1091 @@ await runRedTeam(adversarialTests);`,
       },
     ],
   },
+
+  // ── PART V: PRODUCTION MASTERY & THE FRONTIER ──
+  {
+    genaiDay: 56,
+    phase: 'Part V · Production Mastery & The Frontier',
+    title: 'Production-Grade RAG: Hybrid Search, Re-Ranking & RAGAS Evaluation',
+    subtitle: 'Go beyond basic vector search — combine BM25 with dense retrieval, re-rank for precision, and measure RAG quality automatically',
+    topics: [
+      'The limits of pure vector search and why hybrid search wins in production',
+      'Hybrid search: combining BM25 keyword retrieval with dense vector similarity',
+      'Cross-encoder re-ranking: precision-boosting the top-k retrieved results',
+      'RAGAS evaluation: measuring faithfulness, answer relevance and context precision automatically',
+    ],
+    notionUrl: LC,
+    youtube: yt('qppIies0V5E', 'Advanced RAG Techniques — Hybrid Search, Re-Ranking & Evaluation', 'AI Engineer'),
+    sections: [
+      {
+        id: 'pure-vector-limits',
+        title: 'Why Pure Vector Search Fails in Production',
+        content:
+          'Vector search finds semantically *similar* content — but "similar" is not the same as "relevant". Three failure modes hit every production RAG system:\\n\\n' +
+          '• **Keyword gaps:** a user types `"JWT 401 error"` — the document says `"invalid token"`. Low cosine similarity, correct answer missed.\\n' +
+          '• **Domain noise:** finance embeddings trained on news may cluster `"bond"` (finance) near `"bond"` (glue), depending on the model.\\n' +
+          '• **Top-k dilution:** the first 5 retrieved chunks may only partially overlap with the query; the actual answer is in position 8.\\n\\n' +
+          '**Production fix:** hybrid search (BM25 + vector) for recall, cross-encoder re-ranking for precision, and automatic evaluation to measure both.',
+      },
+      {
+        id: 'hybrid-search',
+        title: 'Hybrid Search: BM25 + Vector with LangChain',
+        content:
+          '**BM25** is a classic keyword-scoring algorithm (used by Elasticsearch and Solr). It scores documents by term frequency and inverse document frequency — great for exact keyword matches. **Vector search** captures semantic meaning. Combine both and you get the best of both worlds: `EnsembleRetriever` in LangChain merges their results with a configurable weight.',
+        code: `import { EnsembleRetriever } from 'langchain/retrievers/ensemble';
+import { MemoryVectorStore } from 'langchain/vectorstores/memory';
+import { BM25Retriever } from '@langchain/community/retrievers/bm25';
+import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
+import { Document } from '@langchain/core/documents';
+
+const docs = [
+  new Document({ pageContent: 'JWT tokens expire after 1 hour. Refresh with the refreshToken endpoint.' }),
+  new Document({ pageContent: 'The OAuth 2.0 flow requires a client_id and client_secret.' }),
+  new Document({ pageContent: 'HTTP 401 means the request lacks valid authentication credentials.' }),
+  new Document({ pageContent: 'Rate limiting returns HTTP 429 with a Retry-After header.' }),
+];
+
+const embeddings = new GoogleGenerativeAIEmbeddings({ model: 'text-embedding-004' });
+
+// Dense vector retriever
+const vectorStore = await MemoryVectorStore.fromDocuments(docs, embeddings);
+const vectorRetriever = vectorStore.asRetriever({ k: 3 });
+
+// Sparse BM25 retriever
+const bm25Retriever = BM25Retriever.fromDocuments(docs, { k: 3 });
+
+// Hybrid: 40% BM25, 60% vector
+const hybridRetriever = new EnsembleRetriever({
+  retrievers: [bm25Retriever, vectorRetriever],
+  weights: [0.4, 0.6],
+});
+
+const results = await hybridRetriever.invoke('JWT 401 error');
+results.forEach((d, i) => console.log(i + 1, d.pageContent.slice(0, 60)));`,
+      },
+      {
+        id: 'cross-encoder-reranking',
+        title: 'Cross-Encoder Re-Ranking: Precision After Recall',
+        content:
+          'Hybrid search improves **recall** — you retrieve more relevant chunks. Re-ranking improves **precision** — you push the most relevant chunk to position 1. A **cross-encoder** processes the query and each document *together*, scoring them jointly. It\'s slower than bi-encoder similarity (you can\'t precompute embeddings) but far more accurate. Run it on the top-10 retrieved results only.',
+        code: `import { CohereRerank } from '@langchain/cohere';
+import { ContextualCompressionRetriever } from 'langchain/retrievers/contextual_compression';
+
+// CohereRerank scores each (query, document) pair jointly
+const reranker = new CohereRerank({
+  apiKey: process.env.COHERE_API_KEY,
+  topN: 3,          // keep only the top 3 after re-ranking
+  model: 'rerank-english-v3.0',
+});
+
+// Wrap the hybrid retriever: retrieve top-10, then re-rank to top-3
+const precisionRetriever = new ContextualCompressionRetriever({
+  baseCompressor: reranker,
+  baseRetriever: hybridRetriever,
+});
+
+const rerankedDocs = await precisionRetriever.invoke('How do I fix a 401 JWT error?');
+console.log('Top result after re-ranking:');
+console.log(rerankedDocs[0].pageContent);
+// => "JWT tokens expire after 1 hour. Refresh with the refreshToken endpoint."`,
+      },
+      {
+        id: 'contextual-compression',
+        title: 'Contextual Compression: Extract Only the Relevant Passage',
+        content:
+          'A retrieved chunk might be 500 words; only 2 sentences answer the question. **Contextual compression** asks an LLM to extract just the relevant sentences before they enter the prompt — reducing token cost and noise.',
+        code: `import { LLMChainExtractor } from 'langchain/retrievers/document_compressors/chain_extract';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { ContextualCompressionRetriever } from 'langchain/retrievers/contextual_compression';
+
+const model = new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' });
+const compressor = LLMChainExtractor.fromLLM(model);
+
+const compressionRetriever = new ContextualCompressionRetriever({
+  baseCompressor: compressor,
+  baseRetriever: hybridRetriever,  // start from hybrid retriever
+});
+
+const compressed = await compressionRetriever.invoke('How do I fix a 401 JWT error?');
+// The LLM has extracted just the relevant sentence from each document
+compressed.forEach((d) => console.log('Extracted:', d.pageContent));`,
+      },
+      {
+        id: 'ragas-evaluation',
+        title: 'RAGAS: Evaluating Your RAG Pipeline Automatically',
+        content:
+          '**RAGAS** (Retrieval-Augmented Generation Assessment) is a framework that measures four key metrics using an LLM as judge:\\n\\n' +
+          '• **Faithfulness** — does the answer contain only information from the retrieved context? (0 = hallucinated, 1 = grounded)\\n' +
+          '• **Answer Relevance** — does the answer actually address the question?\\n' +
+          '• **Context Precision** — are the retrieved chunks relevant to the question?\\n' +
+          '• **Context Recall** — do the retrieved chunks contain everything needed to answer?\\n\\n' +
+          'Run RAGAS against a test set of 50+ question/answer/context triples before every RAG release.',
+        code: `// RAGAS evaluation (Python-first — call from a Node.js subprocess or API)
+// npm install ragas is not available; use the Python ragas package via a sidecar
+// Here we show the Node.js equivalent pattern using an LLM-as-judge approach
+
+async function measureFaithfulness(question, answer, contexts) {
+  const contextText = contexts.join('\\n---\\n');
+  const res = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents:
+      'Given the following context and answer, score the faithfulness from 0.0 to 1.0.\\n' +
+      'Faithfulness = fraction of answer claims supported by the context.\\n\\n' +
+      'Context:\\n' + contextText + '\\n\\n' +
+      'Question: ' + question + '\\n' +
+      'Answer: ' + answer + '\\n\\n' +
+      'Respond with only a number between 0.0 and 1.0.',
+    config: { thinkingConfig: { thinkingBudget: 0 } },
+  });
+  return parseFloat(res.text.trim());
+}
+
+// Run against a test set
+const testCases = [
+  {
+    question: 'How do I fix a 401 JWT error?',
+    answer: 'Refresh your JWT token using the refreshToken endpoint.',
+    contexts: ['JWT tokens expire after 1 hour. Refresh with the refreshToken endpoint.'],
+  },
+];
+
+for (const tc of testCases) {
+  const score = await measureFaithfulness(tc.question, tc.answer, tc.contexts);
+  console.log('Faithfulness:', score); // e.g. 0.95
+}`,
+      },
+      {
+        id: 'production-rag-pipeline',
+        title: 'Putting It Together: A Production RAG Pipeline',
+        content:
+          'A production RAG pipeline chains all four components: hybrid retrieval → compression → re-ranking → generation. Each stage improves quality at a different cost. Start with just hybrid search; add re-ranking and compression only if evaluation metrics drop below your threshold.',
+        code: `import { createRetrievalChain } from 'langchain/chains/retrieval';
+import { createStuffDocumentsChain } from 'langchain/chains/combine_documents';
+import { ChatPromptTemplate } from '@langchain/core/prompts';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+
+const model = new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' });
+
+const prompt = ChatPromptTemplate.fromMessages([
+  ['system',
+    'Answer the question using ONLY the provided context. ' +
+    'If the context does not contain the answer, say "I do not have enough information."\\n\\n' +
+    'Context:\\n{context}'],
+  ['human', '{input}'],
+]);
+
+// Stage 1: hybrid retrieval → Stage 2: re-rank → Stage 3: generate
+const documentChain = await createStuffDocumentsChain({ llm: model, prompt });
+const retrievalChain = await createRetrievalChain({
+  combineDocsChain: documentChain,
+  retriever: precisionRetriever, // hybrid + re-ranked
+});
+
+const response = await retrievalChain.invoke({ input: 'How do I fix a 401 JWT error?' });
+console.log(response.answer);`,
+      },
+      {
+        id: 'production-rag-practice',
+        title: 'Practice Exercises',
+        content:
+          'Build these to master Day 56: (1) **Hybrid vs vector** — build both retrievers on the same 20-document corpus, run 10 queries, and compare which returns the correct document in position 1 more often; (2) **Re-ranking gain** — measure precision@3 before and after adding CohereRerank and document the improvement; (3) **RAGAS loop** — build a 20-question test set for your Day 8 RAG app and score faithfulness + answer relevance; iterate on the prompt until faithfulness > 0.9; (4) **Compression cost** — measure token count before and after `LLMChainExtractor` and calculate the token saving.',
+      },
+    ],
+  },
+  {
+    genaiDay: 57,
+    phase: 'Part V · Production Mastery & The Frontier',
+    title: 'Reflection & Self-Critique: Agents That Improve Their Own Output',
+    subtitle: 'Build agents that generate, critique, and iteratively refine their own responses using reflection loops and multi-agent critic patterns',
+    topics: [
+      'The Reflection pattern: an LLM generates then critiques and rewrites its own output',
+      'Constitutional AI: self-critique against a checklist of explicit principles',
+      'The Critic-Writer multi-agent pattern: two specialised agents in a feedback loop',
+      'Convergence conditions: when to stop iterating and ship the result',
+    ],
+    notionUrl: LC,
+    youtube: yt('MkNSM-fKe1w', 'LangGraph Reflection Agent — Build Self-Improving AI', 'LangChain'),
+    sections: [
+      {
+        id: 'what-is-reflection',
+        title: 'What Is the Reflection Pattern?',
+        content:
+          'A standard LLM call is one-shot: generate → done. The **Reflection pattern** adds a second pass: generate → *critique the generation* → revise → repeat until quality is acceptable.\\n\\n' +
+          'It exploits a consistent LLM capability: **LLMs are better at detecting errors in text than at avoiding them on the first attempt**. An LLM that writes mediocre code on pass 1 will often identify the bugs correctly when asked to review it — and fix them on pass 2.\\n\\n' +
+          '**Classic use cases:** code generation, essay writing, data extraction, test case creation.',
+      },
+      {
+        id: 'simple-reflection',
+        title: 'Simple Reflection: Generate → Critique → Revise',
+        content:
+          'Three prompts, three calls, one feedback loop. (1) Ask the model to produce the output. (2) Ask it to critique that output against explicit criteria. (3) Ask it to revise based on the critique. Repeat step 2-3 up to N times.',
+        code: `import 'dotenv/config';
+import { GoogleGenAI } from '@google/genai';
+
+const ai = new GoogleGenAI({});
+
+async function generate(task) {
+  const res = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents: task,
+    config: { thinkingConfig: { thinkingBudget: 0 } },
+  });
+  return res.text;
+}
+
+async function critique(task, draft) {
+  const res = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents:
+      'You are a strict code reviewer. Review this solution for the task below.\\n' +
+      'List ONLY concrete bugs, edge cases missed, and improvements needed (no praise).\\n' +
+      'If the solution is acceptable, reply with exactly: LGTM\\n\\n' +
+      'Task: ' + task + '\\n\\nSolution:\\n' + draft,
+    config: { thinkingConfig: { thinkingBudget: 0 } },
+  });
+  return res.text.trim();
+}
+
+async function revise(task, draft, feedback) {
+  const res = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents:
+      'Revise the solution below based on the feedback. Return ONLY the improved solution.\\n\\n' +
+      'Task: ' + task + '\\n\\nCurrent solution:\\n' + draft +
+      '\\n\\nFeedback:\\n' + feedback,
+    config: { thinkingConfig: { thinkingBudget: 400 } },
+  });
+  return res.text;
+}
+
+async function reflectionLoop(task, maxIterations = 3) {
+  let draft = await generate(task);
+  console.log('--- Draft 0 ---\\n' + draft.slice(0, 200));
+
+  for (let i = 0; i < maxIterations; i++) {
+    const feedback = await critique(task, draft);
+    console.log('--- Critique ' + (i + 1) + ' ---\\n' + feedback.slice(0, 200));
+    if (feedback === 'LGTM') {
+      console.log('Converged after ' + (i + 1) + ' iteration(s).');
+      break;
+    }
+    draft = await revise(task, draft, feedback);
+    console.log('--- Revised Draft ' + (i + 1) + ' ---\\n' + draft.slice(0, 200));
+  }
+  return draft;
+}
+
+const task = 'Write a JavaScript function that returns the nth Fibonacci number efficiently.';
+const finalSolution = await reflectionLoop(task);
+console.log('\\n=== FINAL ===\\n' + finalSolution);`,
+      },
+      {
+        id: 'constitutional-ai',
+        title: 'Constitutional AI: Self-Critique Against Principles',
+        content:
+          '**Constitutional AI** (from Anthropic) defines a written *constitution* — a checklist of principles — and asks the model to critique and revise its output against each one. Instead of vague "make it better" feedback, the critique is anchored to specific rules.\\n\\n' +
+          'This is the basis of how Claude was trained to be helpful, harmless, and honest — and you can apply the same technique to make your agents follow domain-specific rules.',
+        code: `const CONSTITUTION = [
+  'The response must not recommend any action that could cause data loss.',
+  'The response must include error handling for every async operation.',
+  'The response must not hard-code credentials or secrets.',
+  'The response must be idiomatic JavaScript (ES2022+).',
+];
+
+async function constitutionalCritique(draft) {
+  const principles = CONSTITUTION.map((p, i) => (i + 1) + '. ' + p).join('\\n');
+  const res = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents:
+      'Review the following code against each principle.\\n' +
+      'For each violation, quote the offending line and explain the fix.\\n' +
+      'If all principles are satisfied, reply: ALL PRINCIPLES SATISFIED\\n\\n' +
+      'Principles:\\n' + principles + '\\n\\nCode:\\n' + draft,
+    config: { thinkingConfig: { thinkingBudget: 0 } },
+  });
+  return res.text.trim();
+}
+
+// Use in the reflection loop in place of the generic critique()
+const code = await generate('Write a Node.js function that uploads a file to S3.');
+const violations = await constitutionalCritique(code);
+if (violations !== 'ALL PRINCIPLES SATISFIED') {
+  const revised = await revise('Upload file to S3', code, violations);
+  console.log('Revised:', revised.slice(0, 300));
+}`,
+      },
+      {
+        id: 'critic-writer-langgraph',
+        title: 'The Critic-Writer Multi-Agent Pattern with LangGraph',
+        content:
+          'Separate the writer and critic into **two distinct agents** in a LangGraph graph. The writer node generates content; the critic node decides whether to loop back or end. This is more composable than a single-LLM loop: you can swap in a different model for the critic (e.g. a more capable model as critic, cheaper model as writer).',
+        code: `import { StateGraph, Annotation } from '@langchain/langgraph';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+
+const writerModel = new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' });
+const criticModel  = new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' });
+
+const State = Annotation.Root({
+  task:       Annotation({ reducer: (a, b) => b ?? a }),
+  draft:      Annotation({ reducer: (a, b) => b ?? a }),
+  feedback:   Annotation({ reducer: (a, b) => b ?? a }),
+  iterations: Annotation({ reducer: (a, b) => (b ?? 0) + (a ?? 0) }),
+  done:       Annotation({ reducer: (a, b) => b ?? a }),
+});
+
+const MAX_ITER = 3;
+
+async function writerNode(state) {
+  const prompt = state.feedback
+    ? 'Revise based on this feedback: ' + state.feedback + '\\n\\nTask: ' + state.task
+    : state.task;
+  const res = await writerModel.invoke(prompt);
+  return { draft: res.content, iterations: 1 };
+}
+
+async function criticNode(state) {
+  const res = await criticModel.invoke(
+    'Is this solution acceptable for the task? Reply ACCEPT or REJECT: <reason>\\n\\n' +
+    'Task: ' + state.task + '\\nSolution: ' + state.draft,
+  );
+  const accept = res.content.startsWith('ACCEPT') || state.iterations >= MAX_ITER;
+  return { feedback: accept ? null : res.content, done: accept };
+}
+
+const graph = new StateGraph(State)
+  .addNode('writer', writerNode)
+  .addNode('critic',  criticNode)
+  .addEdge('__start__', 'writer')
+  .addEdge('writer', 'critic')
+  .addConditionalEdges('critic', (s) => s.done ? '__end__' : 'writer')
+  .compile();
+
+const result = await graph.invoke({
+  task: 'Write a JS function to debounce any async function.',
+  iterations: 0,
+  done: false,
+});
+console.log('Final draft after', result.iterations, 'iteration(s):');
+console.log(result.draft);`,
+      },
+      {
+        id: 'convergence-conditions',
+        title: 'Convergence Conditions: When to Stop Iterating',
+        content:
+          'Unconstrained reflection loops are dangerous — the model can cycle, waste tokens, and never converge. Always set hard limits:\\n\\n' +
+          '• **Max iterations** (hard cap, e.g. 3) — never exceed this regardless of quality.\\n' +
+          '• **Critic confidence threshold** — stop when the critic scores quality above a threshold (e.g. 8/10).\\n' +
+          '• **Change detection** — if the diff between draft N and draft N-1 is below a character threshold, the model is stuck; stop.\\n' +
+          '• **Cost budget** — track token spend; abort if it exceeds your per-request budget.',
+        code: `function detectStagnation(prevDraft, newDraft, minChangePct = 0.05) {
+  if (!prevDraft) return false;
+  const changed = [...newDraft].filter((c, i) => c !== prevDraft[i]).length;
+  const changePct = changed / Math.max(prevDraft.length, newDraft.length);
+  return changePct < minChangePct; // true = stuck
+}
+
+async function safeReflectionLoop(task, maxIter = 3, tokenBudget = 5000) {
+  let draft = await generate(task);
+  let totalTokens = draft.length / 4; // rough estimate
+  let prevDraft = null;
+
+  for (let i = 0; i < maxIter; i++) {
+    const feedback = await critique(task, draft);
+    totalTokens += feedback.length / 4;
+
+    if (feedback === 'LGTM') { console.log('Accepted at iter', i + 1); break; }
+    if (totalTokens > tokenBudget) { console.log('Token budget exceeded'); break; }
+    if (detectStagnation(prevDraft, draft)) { console.log('Stagnated — stopping'); break; }
+
+    prevDraft = draft;
+    draft = await revise(task, draft, feedback);
+    totalTokens += draft.length / 4;
+  }
+  return draft;
+}`,
+      },
+      {
+        id: 'reflection-practice',
+        title: 'Practice Exercises',
+        content:
+          'Build these to master Day 57: (1) **3-pass code reviewer** — implement the `generate → critique → revise` loop on a 5-function coding task set and measure how often pass 2 is better than pass 1; (2) **Constitutional agent** — write a 5-rule constitution for a customer-support agent and verify each rule is enforced; (3) **Critic-Writer graph** — build the LangGraph Critic-Writer pattern for essay writing with a max of 2 iterations and log each draft; (4) **Convergence study** — run 10 tasks, record how many iterations each needs, and identify which task types converge fastest.',
+      },
+    ],
+  },
+  {
+    genaiDay: 58,
+    phase: 'Part V · Production Mastery & The Frontier',
+    title: 'Serving Agents as APIs: Express.js, SSE Streaming & Rate Limiting',
+    subtitle: 'Wrap your LangGraph agent in a production-ready REST API with token streaming, authentication, rate limiting, and graceful shutdown',
+    topics: [
+      'Wrapping a LangGraph agent in an Express.js REST API with proper request/response handling',
+      'Server-Sent Events (SSE) for token-by-token streaming responses to the client',
+      'API key authentication middleware and per-user rate limiting with express-rate-limit',
+      'Health checks, graceful shutdown, and production hardening for agent services',
+    ],
+    notionUrl: LC,
+    youtube: yt('SORiTsvnU7k', 'Build a Production AI API with Node.js and LangChain', 'Fireship'),
+    sections: [
+      {
+        id: 'why-api-layer',
+        title: 'Why Agents Need an API Layer',
+        content:
+          'A LangGraph agent running in a Node.js script is useful for prototyping, but production requires more: your React frontend, mobile app, and internal tools all need to call the same agent over HTTP — potentially thousands of times per minute from different users.\\n\\n' +
+          'An **API layer** provides: (1) a stable HTTP interface any client can call; (2) authentication so only authorised users run the agent; (3) rate limiting so no single user exhausts your LLM budget; (4) streaming so users see tokens as they arrive; (5) health checks so your Kubernetes probe knows when to restart the pod.',
+      },
+      {
+        id: 'basic-agent-api',
+        title: 'Basic Express.js Agent API',
+        content:
+          'Start with a single `POST /chat` endpoint that takes a `{ message, threadId }` body, invokes the agent, and returns the final response as JSON. This is the baseline — streaming and auth come next.',
+        code: `import express from 'express';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
+import { MemorySaver } from '@langchain/langgraph';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { tool } from '@langchain/core/tools';
+import { z } from 'zod';
+
+const app = express();
+app.use(express.json());
+
+const model = new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' });
+const checkpointer = new MemorySaver();
+
+// A simple echo tool — swap for real tools in production
+const echoTool = tool(
+  async ({ text }) => 'Echo: ' + text,
+  { name: 'echo', description: 'Echo text back.', schema: z.object({ text: z.string() }) },
+);
+
+const agent = createReactAgent({ llm: model, tools: [echoTool], checkpointer });
+
+// POST /chat — non-streaming baseline
+app.post('/chat', async (req, res) => {
+  const { message, threadId = 'default' } = req.body;
+  if (!message) return res.status(400).json({ error: 'message is required' });
+
+  try {
+    const result = await agent.invoke(
+      { messages: [{ role: 'user', content: message }] },
+      { configurable: { thread_id: threadId } },
+    );
+    const reply = result.messages.at(-1).content;
+    res.json({ reply, threadId });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Agent error: ' + err.message });
+  }
+});
+
+app.listen(3000, () => console.log('Agent API running on :3000'));`,
+      },
+      {
+        id: 'sse-streaming',
+        title: 'Server-Sent Events: Token-by-Token Streaming',
+        content:
+          '**Server-Sent Events (SSE)** let the server push a stream of events to the client over a single HTTP connection. Unlike WebSockets, SSE is one-directional and works natively with `EventSource` in any browser. It\'s the standard for LLM token streaming.\\n\\n' +
+          'Set `Content-Type: text/event-stream`, write `data: <token>\\n\\n` for each token, and `data: [DONE]\\n\\n` when finished.',
+        code: `// POST /chat/stream — token-by-token SSE streaming
+app.post('/chat/stream', async (req, res) => {
+  const { message, threadId = 'default' } = req.body;
+  if (!message) return res.status(400).json({ error: 'message is required' });
+
+  // Set SSE headers
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
+
+  const write = (data) => res.write('data: ' + JSON.stringify(data) + '\\n\\n');
+
+  try {
+    const stream = await agent.streamEvents(
+      { messages: [{ role: 'user', content: message }] },
+      { version: 'v2', configurable: { thread_id: threadId } },
+    );
+
+    for await (const event of stream) {
+      if (
+        event.event === 'on_chat_model_stream' &&
+        event.data?.chunk?.content
+      ) {
+        write({ token: event.data.chunk.content });
+      }
+    }
+
+    write({ done: true });
+    res.end();
+  } catch (err) {
+    write({ error: err.message });
+    res.end();
+  }
+});
+
+// Client-side usage:
+// const evtSource = new EventSource('/chat/stream');  — but POST requires fetch + ReadableStream
+// Fetch-based SSE client:
+// const res = await fetch('/chat/stream', { method: 'POST', body: JSON.stringify({ message }) });
+// const reader = res.body.getReader();
+// while (true) { const { done, value } = await reader.read(); if (done) break; ... }`,
+      },
+      {
+        id: 'api-key-auth',
+        title: 'API Key Authentication Middleware',
+        content:
+          'Every public agent endpoint needs authentication. The simplest approach for internal/B2B APIs is **API key auth**: the caller includes `x-api-key: <key>` in the request header; a middleware validates it against a store. For user-facing apps, replace with JWT bearer tokens.',
+        code: `// Simple API key middleware — swap Map for Redis/DB in production
+const validApiKeys = new Map([
+  ['sk-test-abc123', { userId: 'user-1', plan: 'pro' }],
+  ['sk-test-def456', { userId: 'user-2', plan: 'free' }],
+]);
+
+function requireApiKey(req, res, next) {
+  const key = req.headers['x-api-key'];
+  if (!key) return res.status(401).json({ error: 'Missing x-api-key header' });
+
+  const user = validApiKeys.get(key);
+  if (!user) return res.status(403).json({ error: 'Invalid API key' });
+
+  req.user = user; // attach user info for downstream middleware
+  next();
+}
+
+// Apply to all /chat routes
+app.use('/chat', requireApiKey);
+
+// Now req.user is available in route handlers:
+app.post('/chat', requireApiKey, async (req, res) => {
+  // Use req.user.userId as the thread prefix for isolation
+  const threadId = req.user.userId + '-' + (req.body.threadId ?? 'default');
+  // ... rest of handler
+});`,
+      },
+      {
+        id: 'rate-limiting',
+        title: 'Rate Limiting with express-rate-limit',
+        content:
+          'Rate limiting prevents a single user (or attacker) from exhausting your LLM API budget. `express-rate-limit` tracks request counts per IP or API key in a sliding window.',
+        code: `import rateLimit from 'express-rate-limit';
+
+// Free plan: 10 requests per minute
+const freeLimiter = rateLimit({
+  windowMs: 60 * 1000,  // 1 minute
+  max: 10,
+  keyGenerator: (req) => req.headers['x-api-key'] ?? req.ip,
+  handler: (req, res) => res.status(429).json({
+    error: 'Rate limit exceeded. Free plan allows 10 requests/minute.',
+    retryAfter: Math.ceil(req.rateLimit.resetTime / 1000),
+  }),
+});
+
+// Pro plan: 100 requests per minute
+const proLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 100,
+  keyGenerator: (req) => req.headers['x-api-key'] ?? req.ip,
+});
+
+// Apply based on plan
+function planLimiter(req, res, next) {
+  const limiter = req.user?.plan === 'pro' ? proLimiter : freeLimiter;
+  limiter(req, res, next);
+}
+
+app.use('/chat', requireApiKey, planLimiter);`,
+      },
+      {
+        id: 'health-graceful-shutdown',
+        title: 'Health Checks & Graceful Shutdown',
+        content:
+          'Kubernetes and load balancers use **health check** endpoints to decide whether to route traffic to your pod. **Graceful shutdown** ensures in-flight requests complete before the process exits — critical when agent calls can take 10-30 seconds.',
+        code: `// Health check endpoint — returns 200 when ready to serve
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', uptime: process.uptime(), timestamp: new Date().toISOString() });
+});
+
+// Track in-flight requests for graceful shutdown
+let activeRequests = 0;
+
+app.use((req, res, next) => {
+  activeRequests++;
+  res.on('finish', () => activeRequests--);
+  next();
+});
+
+const server = app.listen(3000, () => console.log('Agent API on :3000'));
+
+// Graceful shutdown: wait for active requests to complete
+async function shutdown(signal) {
+  console.log(signal + ' received — graceful shutdown starting');
+  server.close(async () => {
+    console.log('HTTP server closed');
+    // Wait for in-flight agent calls (max 30s)
+    const deadline = Date.now() + 30_000;
+    while (activeRequests > 0 && Date.now() < deadline) {
+      await new Promise((r) => setTimeout(r, 500));
+    }
+    if (activeRequests > 0) console.warn(activeRequests + ' requests still in flight — forcing exit');
+    process.exit(0);
+  });
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT',  () => shutdown('SIGINT'));`,
+      },
+      {
+        id: 'agent-api-practice',
+        title: 'Practice Exercises',
+        content:
+          'Build these to master Day 58: (1) **Basic API** — wrap your Day 28 persistent agent in an Express API with `POST /chat`; test with `curl`; (2) **SSE streaming** — add `POST /chat/stream` and build a simple HTML page that renders tokens as they arrive using `fetch` + `ReadableStream`; (3) **Multi-key auth** — store 3 API keys in a Map, attach `userId` to requests, and use `userId-{threadId}` as the LangGraph thread; (4) **Rate limit test** — set the limit to 3/minute, write a script that fires 10 requests, and confirm the 4th gets a 429.',
+      },
+    ],
+  },
+  {
+    genaiDay: 59,
+    phase: 'Part V · Production Mastery & The Frontier',
+    title: 'Multimodal Agents: Vision, Documents & Audio with Gemini',
+    subtitle: 'Extend your agents beyond text — process images, PDFs and audio files using Gemini\'s multimodal API',
+    topics: [
+      'Sending images to the Gemini Vision API: base64 inline and Google Cloud Storage URIs',
+      'PDF and document understanding: extracting structured data from files',
+      'Building a multimodal document analyst agent that reads and reasons over mixed content',
+      'Audio transcription and analysis with Gemini\'s audio capabilities',
+    ],
+    notionUrl: LC,
+    youtube: yt('v8unsHOG_S8', 'Gemini Multimodal API — Images, PDFs and Audio in JavaScript', 'Google for Developers'),
+    sections: [
+      {
+        id: 'what-is-multimodality',
+        title: 'What Is Multimodality?',
+        content:
+          'A **multimodal** model processes more than one type of input simultaneously. Gemini 2.5 Flash and Pro accept text, images, audio, and PDF documents in a single API call — the model reasons over all of them together.\\n\\n' +
+          'This unlocks an entirely new class of agents: document analysts that read scanned forms, vision agents that describe and reason about screenshots, audio agents that transcribe and summarise meetings, and table agents that extract data from images of spreadsheets.\\n\\n' +
+          '**Key insight:** multimodal inputs are just additional `parts` in the `contents` array alongside your text parts. The API shape is the same.',
+      },
+      {
+        id: 'image-analysis',
+        title: 'Image Analysis with the Gemini Vision API',
+        content:
+          'Pass an image as an `inlineData` part (base64-encoded) alongside your text prompt. Gemini sees both and can describe, classify, count objects, read text, compare images, or answer questions about them.',
+        code: `import 'dotenv/config';
+import { GoogleGenAI } from '@google/genai';
+import { readFileSync } from 'fs';
+
+const ai = new GoogleGenAI({});
+
+async function analyseImage(imagePath, question) {
+  const imageData = readFileSync(imagePath);
+  const base64 = imageData.toString('base64');
+  const mimeType = imagePath.endsWith('.png') ? 'image/png' : 'image/jpeg';
+
+  const response = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents: [
+      {
+        parts: [
+          { text: question },
+          { inlineData: { mimeType, data: base64 } },
+        ],
+      },
+    ],
+  });
+  return response.text;
+}
+
+// Examples
+const description = await analyseImage('./screenshot.png', 'Describe what you see in this UI screenshot.');
+console.log(description);
+
+const count = await analyseImage('./inventory.jpg', 'How many items are on the shelves? Count each category.');
+console.log(count);
+
+const receipt = await analyseImage('./receipt.jpg',
+  'Extract the total amount, date, and merchant name from this receipt. Return JSON only.');
+console.log(JSON.parse(receipt));`,
+      },
+      {
+        id: 'multi-image',
+        title: 'Processing Multiple Images in One Call',
+        content:
+          'Add multiple `inlineData` parts in the same `contents` array. Gemini processes them all together — useful for comparing before/after screenshots, analysing a sequence of UI states, or extracting data from multi-page scanned forms.',
+        code: `async function compareImages(imagePath1, imagePath2, question) {
+  const img1 = readFileSync(imagePath1).toString('base64');
+  const img2 = readFileSync(imagePath2).toString('base64');
+
+  const response = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents: [
+      {
+        parts: [
+          { text: question },
+          { inlineData: { mimeType: 'image/png', data: img1 } },
+          { text: 'Second image:' },
+          { inlineData: { mimeType: 'image/png', data: img2 } },
+        ],
+      },
+    ],
+  });
+  return response.text;
+}
+
+const diff = await compareImages(
+  './ui-before.png',
+  './ui-after.png',
+  'What visual changes were made between these two UI screenshots? List each change.',
+);
+console.log(diff);`,
+      },
+      {
+        id: 'pdf-documents',
+        title: 'PDF & Document Understanding',
+        content:
+          'Gemini accepts PDFs directly as `inlineData` with `mimeType: "application/pdf"`. It reads the entire document — text, tables, and embedded images — and can answer questions, extract structured data, or summarise sections.',
+        code: `async function analysePDF(pdfPath, prompt) {
+  const pdfData = readFileSync(pdfPath).toString('base64');
+
+  const response = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents: [
+      {
+        parts: [
+          { text: prompt },
+          { inlineData: { mimeType: 'application/pdf', data: pdfData } },
+        ],
+      },
+    ],
+  });
+  return response.text;
+}
+
+// Extract structured data from a PDF invoice
+const invoiceData = await analysePDF(
+  './invoice.pdf',
+  'Extract the following from this invoice and return as JSON: ' +
+  '{ invoiceNumber, date, vendor, lineItems: [{ description, qty, unitPrice, total }], grandTotal }',
+);
+console.log(JSON.parse(invoiceData));
+
+// Summarise a research paper
+const summary = await analysePDF(
+  './research-paper.pdf',
+  'Summarise this paper in 5 bullet points. Include the key finding, methodology, and limitations.',
+);
+console.log(summary);`,
+      },
+      {
+        id: 'multimodal-agent',
+        title: 'Building a Multimodal Document Analyst Agent',
+        content:
+          'Combine multimodal API calls with LangChain tools to build an agent that accepts file uploads, analyses them, and answers follow-up questions — all in a single conversation thread.',
+        code: `import { tool } from '@langchain/core/tools';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
+import { z } from 'zod';
+
+const model = new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' });
+
+// Tool: analyse any file (image or PDF) given its path and a question
+const analyseFileTool = tool(
+  async ({ filePath, question }) => {
+    const data = readFileSync(filePath).toString('base64');
+    const ext = filePath.split('.').pop().toLowerCase();
+    const mimeTypes = { pdf: 'application/pdf', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg' };
+    const mimeType = mimeTypes[ext] ?? 'application/octet-stream';
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: [{ parts: [{ text: question }, { inlineData: { mimeType, data } }] }],
+    });
+    return response.text;
+  },
+  {
+    name: 'analyse_file',
+    description: 'Analyse an image or PDF file and answer a question about its contents.',
+    schema: z.object({
+      filePath: z.string().describe('Absolute path to the image or PDF file'),
+      question: z.string().describe('Question to answer about the file contents'),
+    }),
+  },
+);
+
+const documentAgent = createReactAgent({ llm: model, tools: [analyseFileTool] });
+
+const result = await documentAgent.invoke({
+  messages: [{
+    role: 'user',
+    content: 'Analyse the invoice at ./invoice.pdf and tell me the grand total and payment due date.',
+  }],
+});
+console.log(result.messages.at(-1).content);`,
+      },
+      {
+        id: 'audio-analysis',
+        title: 'Audio Transcription & Analysis',
+        content:
+          'Gemini accepts audio files (MP3, WAV, FLAC, AAC) as `inlineData` parts. It can transcribe speech, identify speakers, summarise meeting content, extract action items, and answer questions about what was said.',
+        code: `async function analyseAudio(audioPath, prompt) {
+  const audioData = readFileSync(audioPath).toString('base64');
+  const ext = audioPath.split('.').pop().toLowerCase();
+  const mimeTypes = { mp3: 'audio/mpeg', wav: 'audio/wav', flac: 'audio/flac', aac: 'audio/aac' };
+  const mimeType = mimeTypes[ext] ?? 'audio/mpeg';
+
+  const response = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents: [
+      {
+        parts: [
+          { text: prompt },
+          { inlineData: { mimeType, data: audioData } },
+        ],
+      },
+    ],
+  });
+  return response.text;
+}
+
+// Transcribe a meeting recording
+const transcript = await analyseAudio(
+  './team-standup.mp3',
+  'Transcribe this audio accurately. Use "Speaker 1:", "Speaker 2:" labels.',
+);
+console.log(transcript);
+
+// Extract action items from a meeting
+const actions = await analyseAudio(
+  './team-standup.mp3',
+  'Extract all action items from this meeting. ' +
+  'Return as JSON: [{ owner, task, deadline }]. Use null if deadline is not mentioned.',
+);
+console.log(JSON.parse(actions));`,
+      },
+      {
+        id: 'multimodal-practice',
+        title: 'Practice Exercises',
+        content:
+          'Build these to master Day 59: (1) **Screenshot describer** — take 3 screenshots of any app, ask Gemini to describe each, then ask it to compare them and list the differences; (2) **Invoice extractor** — find or create a sample PDF invoice, extract all line items into a typed JSON object using `withStructuredOutput()`; (3) **Meeting summariser** — record a 2-minute voice memo, transcribe it, extract action items, and store them in a JSON file; (4) **Multimodal agent** — build the document analyst agent, test it with a mix of image and PDF files in a single conversation, and verify it switches tools correctly based on file type.',
+      },
+    ],
+  },
+  {
+    genaiDay: 60,
+    phase: 'Part V · Production Mastery & The Frontier',
+    title: 'Fine-Tuning vs RAG vs Prompting: When and How to Customise LLMs',
+    subtitle: 'Master the three customisation levers — prompting, RAG, and fine-tuning — and learn when each one wins',
+    topics: [
+      'The customisation triangle: strengths and trade-offs of prompting, RAG, and fine-tuning',
+      'Supervised fine-tuning (SFT) with Gemini on Vertex AI: dataset format, training, and evaluation',
+      'RLHF and DPO: aligning model behaviour with human preferences beyond SFT',
+      'A/B evaluation: measuring whether your customisation actually improved the model',
+    ],
+    notionUrl: LC,
+    youtube: yt('eC6Hd1hFvos', 'Fine-Tuning LLMs Explained — When and How to Customise Your Model', 'Andrej Karpathy'),
+    sections: [
+      {
+        id: 'customisation-triangle',
+        title: 'The Customisation Triangle: Choose Your Weapon',
+        content:
+          'There are three ways to make an LLM behave the way you want:\\n\\n' +
+          '**1. Prompting** — change the system instruction or few-shot examples. Zero infra cost, instant iteration, but limited by context window and model capability ceiling.\\n\\n' +
+          '**2. RAG** — inject domain knowledge at inference time from an external store. No training cost, knowledge is always fresh and auditable, but adds latency and retrieval complexity.\\n\\n' +
+          '**3. Fine-tuning** — update the model\'s weights on your domain data. Highest quality for very specific tasks, no runtime retrieval overhead, but expensive to train, slow to update, and risks catastrophic forgetting.\\n\\n' +
+          '**Decision rule:** always try prompting first, then RAG, and only fine-tune when both are insufficient and you have 1k+ high-quality labelled examples.',
+      },
+      {
+        id: 'when-prompting-wins',
+        title: 'When Prompting Is Enough',
+        content:
+          'Prompting wins when:\\n\\n' +
+          '• The task is well within the base model\'s capability (code review, summarisation, Q&A)\\n' +
+          '• You need fast iteration cycles (new system prompt in seconds, no retraining)\\n' +
+          '• The required "knowledge" fits in the context window\\n' +
+          '• You\'re prototyping and budget is limited\\n\\n' +
+          '**Signs prompting is failing:** the model consistently misunderstands your domain terminology, produces the wrong output format even with detailed instructions, or loses important context as history grows. Time to consider RAG or fine-tuning.',
+        code: `// Prompting is sufficient: style enforcement via system instruction
+const chat = ai.chats.create({
+  model: 'gemini-2.5-flash',
+  systemInstruction:
+    'You are a technical writer for AcmeCorp. Always:\\n' +
+    '1. Use active voice\\n' +
+    '2. Write at a 9th-grade reading level\\n' +
+    '3. End every section with a one-sentence summary\\n' +
+    '4. Never use the word "utilize" — use "use" instead\\n' +
+    '5. Format code samples with TypeScript, not JavaScript',
+});
+
+// This task is within the base model capability + prompting is enough
+const doc = await chat.sendMessage({ message: 'Write a getting-started guide for our REST API.' });
+console.log(doc.text);`,
+      },
+      {
+        id: 'when-rag-wins',
+        title: 'When RAG Is the Right Answer',
+        content:
+          'RAG wins when:\\n\\n' +
+          '• Your knowledge base is large (> context window), private, or updated frequently\\n' +
+          '• You need citations and auditable sources\\n' +
+          '• The base model lacks domain knowledge (internal product docs, proprietary data)\\n' +
+          '• Hallucination on domain-specific facts is a critical risk\\n\\n' +
+          '**RAG fails when:** the model needs to have deeply internalised a *style* or *reasoning pattern* (not just facts), or when every response requires the same context (just put it in the system prompt instead).',
+        code: `// RAG wins: private knowledge base that changes weekly
+// The model has no training data on "AcmeCorp API v4.2 — released last week"
+
+const vectorStore = await loadProductDocs(); // 50k token knowledge base
+
+async function answerSupportQuery(userQuestion) {
+  // Retrieve the 3 most relevant sections
+  const context = await vectorStore.similaritySearch(userQuestion, 3);
+  const contextText = context.map((d) => d.pageContent).join('\\n---\\n');
+
+  const response = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents: userQuestion,
+    config: {
+      systemInstruction:
+        'Answer using ONLY the documentation below. Cite the section title.\\n\\n' +
+        'Documentation:\\n' + contextText,
+    },
+  });
+  return response.text;
+}`,
+      },
+      {
+        id: 'when-finetuning-wins',
+        title: 'When Fine-Tuning Is Worth It',
+        content:
+          'Fine-tuning wins when:\\n\\n' +
+          '• You need a *specific output format* every time and prompting produces inconsistent results\\n' +
+          '• You have 1,000+ high-quality (input → output) examples\\n' +
+          '• The task is narrow and repetitive (NER, classification, code generation in a proprietary language)\\n' +
+          '• Latency matters and you want to eliminate the retrieval step\\n' +
+          '• You need to reduce prompt length (fine-tuned models need shorter prompts)\\n\\n' +
+          '**Cost reality:** fine-tuning a Gemini model on Vertex AI costs ~$0.003 per 1000 training examples. A 5k-example dataset costs ~$15 — but evaluation, iteration, and deployment add real engineering time.',
+      },
+      {
+        id: 'sft-vertex-ai',
+        title: 'Supervised Fine-Tuning (SFT) with Vertex AI',
+        content:
+          'Google\'s Vertex AI lets you fine-tune Gemini models on your own dataset. Your training data is a JSONL file of `{ "input_text": "...", "output_text": "..." }` pairs. After training, you get a model endpoint you call exactly like the base model.',
+        code: `// Step 1: Prepare training data as JSONL
+// Save to training_data.jsonl — one JSON object per line
+const trainingExamples = [
+  {
+    input_text: 'Classify this support ticket: "My payment was charged twice"',
+    output_text: JSON.stringify({ category: 'billing', priority: 'high', sentiment: 'frustrated' }),
+  },
+  {
+    input_text: 'Classify this support ticket: "How do I change my email address?"',
+    output_text: JSON.stringify({ category: 'account', priority: 'low', sentiment: 'neutral' }),
+  },
+  // ... need 1000+ examples for meaningful improvement
+];
+
+import { writeFileSync } from 'fs';
+writeFileSync(
+  'training_data.jsonl',
+  trainingExamples.map((ex) => JSON.stringify(ex)).join('\\n'),
+);
+
+// Step 2: Upload to Google Cloud Storage and create a fine-tuning job
+// (Done via gcloud CLI or Vertex AI SDK — shown here as shell commands)
+//
+// gcloud storage cp training_data.jsonl gs://my-bucket/fine-tuning/
+//
+// gcloud ai custom-jobs create \\
+//   --region=us-central1 \\
+//   --display-name="support-ticket-classifier" \\
+//   --config=fine_tune_config.yaml
+//
+// Step 3: After training (~30-60 mins), call your tuned endpoint
+// The endpoint behaves identically to the base model
+import { VertexAI } from '@google-cloud/vertexai';
+const vertex = new VertexAI({ project: 'my-project', location: 'us-central1' });
+const tunedModel = vertex.getGenerativeModel({ model: 'projects/my-project/locations/us-central1/models/my-tuned-model' });
+const result = await tunedModel.generateContent('Classify: "App crashes on login"');
+console.log(result.response.candidates[0].content.parts[0].text);`,
+      },
+      {
+        id: 'rlhf-dpo',
+        title: 'RLHF and DPO: Aligning with Human Preferences',
+        content:
+          'SFT teaches the model *what* to output. **RLHF** (Reinforcement Learning from Human Feedback) teaches it *how to be preferred by humans*: human annotators rank multiple responses; a reward model is trained on those rankings; the LLM is fine-tuned to maximise the reward.\\n\\n' +
+          '**DPO** (Direct Preference Optimisation) is a simpler, more stable alternative: instead of training a separate reward model, you directly train the LLM on pairs of `(chosen, rejected)` responses. This is how Llama 3, Mistral, and many open-source models are aligned.\\n\\n' +
+          '**For most application developers**, RLHF/DPO is not practical — it requires 10k+ preference annotations and significant GPU budget. The practical alternative: **use a strong model (Gemini Pro) as judge** to score candidate outputs and filter training data for your next SFT run.',
+        code: `// Practical RLHF alternative: LLM-as-judge preference scoring
+// Use this to build a high-quality SFT dataset from noisy source data
+
+async function judgeResponses(question, responseA, responseB) {
+  const res = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents:
+      'You are an expert evaluator. Given a question and two responses, ' +
+      'decide which is better on: accuracy, clarity, and completeness.\\n\\n' +
+      'Question: ' + question + '\\n\\n' +
+      'Response A: ' + responseA + '\\n\\n' +
+      'Response B: ' + responseB + '\\n\\n' +
+      'Reply with exactly: A or B, followed by a one-sentence reason.',
+    config: { thinkingConfig: { thinkingBudget: 0 } },
+  });
+  const text = res.text.trim();
+  return { winner: text.startsWith('A') ? 'A' : 'B', reason: text.slice(2).trim() };
+}
+
+// Build preference pairs for DPO training
+const preferences = [];
+for (const example of rawDataset) {
+  const { winner } = await judgeResponses(example.question, example.responseA, example.responseB);
+  preferences.push({
+    prompt: example.question,
+    chosen:   winner === 'A' ? example.responseA : example.responseB,
+    rejected: winner === 'A' ? example.responseB : example.responseA,
+  });
+}
+writeFileSync('dpo_dataset.jsonl', preferences.map((p) => JSON.stringify(p)).join('\\n'));`,
+      },
+      {
+        id: 'ab-evaluation',
+        title: 'A/B Evaluation: Measuring Whether It Worked',
+        content:
+          'Fine-tuning cost money and time — measure whether it was worth it. Run the same benchmark set against both the base model and your tuned model, score outputs automatically with an LLM judge, and compare win rates.',
+        code: `async function abEvaluate(benchmarkSet, baseModel, tunedModelEndpoint) {
+  const results = { baseWins: 0, tunedWins: 0, ties: 0 };
+
+  for (const { question, goldAnswer } of benchmarkSet) {
+    const [baseResponse, tunedResponse] = await Promise.all([
+      baseModel.invoke(question),
+      // Replace with your Vertex AI tuned model call
+      tunedModelEndpoint.invoke(question),
+    ]);
+
+    const { winner } = await judgeResponses(
+      question,
+      baseResponse.content,
+      tunedResponse.content,
+    );
+
+    if (winner === 'A') results.baseWins++;
+    else results.tunedWins++;
+  }
+
+  const total = benchmarkSet.length;
+  console.log('Base model wins:  ' + results.baseWins + '/' + total +
+    ' (' + Math.round(results.baseWins / total * 100) + '%)');
+  console.log('Tuned model wins: ' + results.tunedWins + '/' + total +
+    ' (' + Math.round(results.tunedWins / total * 100) + '%)');
+
+  // Rule of thumb: proceed with fine-tuned model only if it wins > 60% of comparisons
+  if (results.tunedWins / total > 0.6) {
+    console.log('Fine-tuning improved quality — deploy the tuned model.');
+  } else {
+    console.log('Fine-tuning did not improve quality — revisit the training data.');
+  }
+}`,
+      },
+      {
+        id: 'finetuning-practice',
+        title: 'Practice Exercises',
+        content:
+          'Build these to master Day 60: (1) **Decision worksheet** — take 5 real AI product ideas and write a 1-paragraph justification for which customisation approach (prompting/RAG/fine-tuning) you\'d pick for each, with criteria; (2) **JSONL dataset** — pick a narrow classification task (e.g. ticket severity), generate 50 labelled examples using an LLM, format as JSONL, and verify the schema is correct for Vertex AI; (3) **A/B evaluation** — build a 20-question benchmark set for your Day 8 RAG app, compare gemini-2.5-flash vs gemini-2.5-pro on it using the LLM-as-judge pattern, and report which wins and why; (4) **DPO dataset builder** — for 20 prompts, generate 2 candidate responses each, run the judge, and produce a `dpo_dataset.jsonl` with `chosen`/`rejected` pairs.',
+      },
+    ],
+  },
 ];
