@@ -266,6 +266,11 @@ import AgenticDay12 from './pages/AgenticDay12';
 import AgenticDay13 from './pages/AgenticDay13';
 import AgenticDay14 from './pages/AgenticDay14';
 import AgenticDay15 from './pages/AgenticDay15';
+import AgenticDay16 from './pages/AgenticDay16';
+import AgenticDay17 from './pages/AgenticDay17';
+import AgenticDay18 from './pages/AgenticDay18';
+import AgenticDay19 from './pages/AgenticDay19';
+import AgenticDay20 from './pages/AgenticDay20';
 import AgenticDay21 from './pages/AgenticDay21';
 import AgenticDay22 from './pages/AgenticDay22';
 import AgenticDay23 from './pages/AgenticDay23';
@@ -513,6 +518,11 @@ export default function App() {
         <Route path="/agentic-day-13" element={<AgenticDay13 />} />
         <Route path="/agentic-day-14" element={<AgenticDay14 />} />
         <Route path="/agentic-day-15" element={<AgenticDay15 />} />
+        <Route path="/agentic-day-16" element={<AgenticDay16 />} />
+        <Route path="/agentic-day-17" element={<AgenticDay17 />} />
+        <Route path="/agentic-day-18" element={<AgenticDay18 />} />
+        <Route path="/agentic-day-19" element={<AgenticDay19 />} />
+        <Route path="/agentic-day-20" element={<AgenticDay20 />} />
         <Route path="/agentic-day-21" element={<AgenticDay21 />} />
         <Route path="/agentic-day-22" element={<AgenticDay22 />} />
         <Route path="/agentic-day-23" element={<AgenticDay23 />} />

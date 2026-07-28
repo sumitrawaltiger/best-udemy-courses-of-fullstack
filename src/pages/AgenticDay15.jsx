@@ -53,7 +53,7 @@ const PRACTICE = [
   {
     icon: '🔜', title: 'What Comes Next', titleClass: 'card-title-amber', subtitle: 'Day 16 Preview',
     description: 'Next — Artificial Neural Networks deeper dive, then LSTMs on Day 17 of the curriculum.',
-    link: { href: '/', label: 'Back to Home →' },
+    link: { href: '/agentic-day-16', label: 'Go to Day 16 →' },
   },
 ];
 
@@ -138,7 +138,7 @@ export default function AgenticDay15() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-14" className="day001-nav-btn day001-nav-prev">← Day 14</Link>
           <p className="day001-datetime">Agentic AI Day 15 · 15 Aug 2026</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <Link to="/agentic-day-16" className="day001-nav-btn day001-nav-next">Day 16 →</Link>
         </header>
 
         <div className="day001-hero">
