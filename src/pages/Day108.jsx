@@ -156,7 +156,7 @@ export default function Day108() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-107" className="day001-nav-btn day001-nav-prev">← Day 107</Link>
-          <p className="day001-datetime">React Native Day 108</p>
+          <p className="day001-datetime">React Native Day 108 · 18 Apr 2027</p>
           <Link to="/day-109" className="day001-nav-btn day001-nav-next">Day 109 →</Link>
         </header>
 

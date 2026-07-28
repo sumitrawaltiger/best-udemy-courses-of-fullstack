@@ -138,7 +138,7 @@ export default function Day181() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-180" className="day001-nav-btn day001-nav-prev">← Day 180</Link>
-          <p className="day001-datetime">ML Day 181</p>
+          <p className="day001-datetime">ML Day 181 · 30 Jun 2027</p>
           <Link to="/day-182" className="day001-nav-btn day001-nav-next">Day 182 →</Link>
         </header>
 
