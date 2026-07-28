@@ -39,9 +39,9 @@ const practice = [
     code: 'demo · eval\npolicy · trace',
   },
   {
-    icon: '🔜', title: 'Next: Support Agents', titleClass: 'card-title-amber', subtitle: 'Day 116',
-    description: 'Continue Phase 16 — support, sales, research, internal copilots, then a multi-domain platform.',
-    link: { href: '/agentic-day-116', label: 'Go to Day 116 →' },
+    icon: '🔜', title: 'Next: Orchestration Scale', titleClass: 'card-title-amber', subtitle: 'Day 106',
+    description: 'Continue — scaling multi-agent orchestration (Days 106–115 bridge into domains).',
+    link: { href: '/agentic-day-106', label: 'Go to Day 106 →' },
   },
 ];
 
@@ -70,7 +70,7 @@ export default function AgenticDay105() {
       series="Agentic AI"
       dateLabel="Agentic AI Day 105 · 13 Nov 2026"
       prev={{ href: '/agentic-day-104', label: '← Day 104' }}
-      next={{ href: '/agentic-day-116', label: 'Day 116 →' }}
+      next={{ href: '/agentic-day-106', label: 'Day 106 →' }}
       tags={['Agentic AI', 'Milestone', 'Phase 15']}
       theme="DOMAIN AGENTS PORTFOLIO MILESTONE"
       heroIcon="🎓"

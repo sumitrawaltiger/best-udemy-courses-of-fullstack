@@ -71,7 +71,7 @@ export default function AgenticDay146() {
       dayNumber={146}
       series="Agentic AI"
       dateLabel="Agentic AI Day 146 · 24 Dec 2026"
-      prev={{ href: '/agentic-day-140', label: '← Day 140' }}
+      prev={{ href: '/agentic-day-145', label: '← Day 145' }}
       next={{ href: '/agentic-day-147', label: 'Day 147 →' }}
       tags={['Agentic AI', 'Feedback', 'Phase 20']}
       theme="FEEDBACK FLYWHEELS & PREFERENCE DATA"

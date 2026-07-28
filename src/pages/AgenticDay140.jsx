@@ -40,8 +40,8 @@ const practice = [
   },
   {
     icon: '🔜', title: 'What Comes Next', titleClass: 'card-title-amber', subtitle: 'Continue',
-    description: 'Next phase — learning systems (Days 146–150).',
-    link: { href: '/agentic-day-146', label: 'Go to Day 146 →' },
+    description: 'Next — enterprise ops bridge (Days 141–145), then learning systems.',
+    link: { href: '/agentic-day-141', label: 'Go to Day 141 →' },
   },
 ];
 
@@ -70,7 +70,7 @@ export default function AgenticDay140() {
       series="Agentic AI"
       dateLabel="Agentic AI Day 140 · 18 Dec 2026"
       prev={{ href: '/agentic-day-139', label: '← Day 139' }}
-      next={{ href: '/agentic-day-146', label: 'Day 146 →' }}
+      next={{ href: '/agentic-day-141', label: 'Day 141 →' }}
       tags={['Agentic AI', 'Production', 'Phase 19']}
       theme="PRODUCTION EXCELLENCE MILESTONE"
       heroIcon="🏁"

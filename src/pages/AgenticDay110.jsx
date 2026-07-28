@@ -18,7 +18,7 @@ const core = [
 const practice = [
   { icon: '📝', title: 'System Review', titleClass: 'card-title-cyan', subtitle: 'Reflect', description: 'Write what most improved reliability in your agent systems so far.', code: 'what changed most?' },
   { icon: '📊', title: 'Ops Scorecard', titleClass: 'card-title-purple', subtitle: 'Measure', description: 'Summarize tool reliability, task success, blocked actions, and incident readiness.', code: 'success · tools · policy · ops' },
-  { icon: '🏠', title: 'Back To Home', titleClass: 'card-title-amber', subtitle: 'Continue', description: 'Return to Home and keep extending the roadmap.', link: { href: '/', label: 'Back to Home ->' } },
+  { icon: '🔜', title: 'Next: Channels', titleClass: 'card-title-amber', subtitle: 'Day 111', description: 'Continue — channel design and domain-ready bridge (Days 111–115).', link: { href: '/agentic-day-111', label: 'Go to Day 111 →' } },
 ];
 
 const resources = [
@@ -33,7 +33,7 @@ export default function AgenticDay110() {
       dayNumber={110}
       dateLabel="Agentic AI Day 110 · 18 Nov 2026"
       prev={{ href: '/agentic-day-109', label: '← Day 109' }}
-      next={{ href: '/', label: 'Home ->' }}
+      next={{ href: '/agentic-day-111', label: 'Day 111 →' }}
       tags={['Agentic AI', 'Milestone', 'Day 110']}
       theme="AGENTIC SYSTEMS MILESTONE"
       heroIcon="🏁"

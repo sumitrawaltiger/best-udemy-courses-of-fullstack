@@ -32,7 +32,7 @@ export default function AgenticDay106() {
     <StandaloneJourneyPage
       dayNumber={106}
       dateLabel="Agentic AI Day 106 · 14 Nov 2026"
-      prev={{ href: '/agentic-day-100', label: '← Day 100' }}
+      prev={{ href: '/agentic-day-105', label: '← Day 105' }}
       next={{ href: '/agentic-day-107', label: 'Day 107 →' }}
       tags={['Agentic AI', 'Orchestration', 'Day 106']}
       theme="SCALING MULTI-AGENT ORCHESTRATION"
