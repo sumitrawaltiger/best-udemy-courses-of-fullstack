@@ -1747,6 +1747,38 @@ const MESSAGING_SECTIONS = [
   },
 ];
 
+// Deeper Kafka internals — distilled from a "Kafka with Spring Boot" reference
+// (public/java-notes/kafka-with-spring-boot.pdf). Complements MESSAGING_SECTIONS
+// above (which covers the why/architecture-diagram level) with offsets & consumer
+// groups, replication/fault-tolerance, ZooKeeper's role, and hands-on CLI commands.
+const KAFKA_DEEP_DIVE_SECTIONS = [
+  {
+    id: 'kafka-offsets-consumer-groups',
+    title: 'Offsets & Consumer Groups',
+    content:
+      "Inside each partition, messages are stored in **strict order**, and Kafka assigns each one a unique, ever-increasing number called an **offset** — the message's position within that partition.\n\nOffsets matter because Kafka **doesn't delete a message once it's consumed** — unlike a traditional queue. Instead, each **consumer** tracks which offset it has already read up to. This design has two big payoffs: it's cheap (no per-message delete), and a consumer can **re-read** messages from an earlier offset if needed (e.g. after a bug fix, replaying the last hour of events).\n\nConsumers pull data — they aren't pushed to — and they're usually organized into **consumer groups**: a logical set of consumers cooperating to process one topic's partitions. Consumer groups are the main reason Kafka scales so well — add more consumers to a group under load, and Kafka **automatically rebalances** which partitions each consumer owns, so throughput grows without any code change.",
+  },
+  {
+    id: 'kafka-replication-leader-follower',
+    title: 'Replication, Leader–Follower & Fault Tolerance',
+    content:
+      "Kafka assumes **failures are normal** — servers crash, disks fail, networks go down — and is built so data survives them anyway. The mechanism is **replication** plus a **leader–follower** model.\n\nEach partition can have multiple copies, called **replicas**, spread across different brokers. For every partition, Kafka designates one broker as the **leader** — it alone handles all reads and writes for that partition, giving one consistent source of truth. The other replicas are **followers**: they don't serve client requests directly, they just continuously copy the leader's messages in the same order, trying to stay in sync.\n\nFollowers that are fully caught up are called **in-sync replicas (ISR)**. If the leader's broker crashes, Kafka automatically promotes one of the in-sync followers to be the new leader — no manual intervention, and because only in-sync replicas are eligible, the new leader always has the latest committed data. From the outside, this failover is nearly invisible: producers and consumers keep working without needing to know which broker is currently the leader. Replication also spreads disk and network load across brokers, which is part of how Kafka scales to very large data volumes.",
+  },
+  {
+    id: 'kafka-zookeeper-role',
+    title: "ZooKeeper's Role in Kafka (3.x vs 4.x)",
+    content:
+      "A Kafka cluster is many brokers working together, and something has to coordinate them — that's **ZooKeeper**, in Kafka 3.x and earlier.\n\nZooKeeper runs as its **own separate system** alongside the Kafka brokers. It doesn't store any actual Kafka messages — only **metadata**, i.e. information about the cluster itself:\n\n- **Cluster management** — every broker registers with ZooKeeper on startup; if a broker stops or crashes, ZooKeeper detects it and updates the cluster view, so Kafka always knows which brokers are alive.\n- **Leader election** — when a partition's leader broker fails, ZooKeeper helps Kafka pick a new leader from the in-sync replicas.\n- **Configuration & metadata storage** — topics, partitions, replication details, and access-control info, giving every broker a consistent view of the cluster.\n\nBecause ZooKeeper is itself a distributed system that must be installed, configured, and monitored separately, it adds real operational overhead. **Kafka 4.x and later removes this dependency** — cluster metadata is managed internally by Kafka itself (via KRaft), keeping the same core concepts (brokers, partitions, leaders, replicas) while simplifying operations.",
+  },
+  {
+    id: 'kafka-cli-cheatsheet',
+    title: 'Running Kafka Locally — CLI Cheat Sheet (3.x, Windows)',
+    content:
+      "A minimal hands-on flow for running Apache Kafka 3.x on a local machine, straight from the `bin/windows` scripts in the downloaded Kafka folder — useful for trying out topics, partitions, and replication before wiring up a Spring Boot producer/consumer.\n\nIn 3.x, **ZooKeeper must be started first** — Kafka brokers depend on it for metadata, broker registration, and leader election — then one or more brokers, each on its own `server*.properties` file (multiple brokers = one Kafka cluster). By default, a broker listens on **port 9092** and registers itself with ZooKeeper.\n\nFrom there, `kafka-topics.bat` lists, creates, and describes topics (with partition count, leader broker, replicas, and in-sync replicas), while `kafka-console-producer.bat` / `kafka-console-consumer.bat` let you push and pull messages directly from the command line — including reading from just one specific partition — which is the fastest way to see offsets and partition-wise data in action.",
+    code: "REM Start ZooKeeper (must run before any broker)\n.\\bin\\windows\\zookeeper-server-start.bat .\\config\\zookeeper.properties\n\nREM Start a Kafka broker (default port 9092, registers with ZooKeeper)\n.\\bin\\windows\\kafka-server-start.bat .\\config\\server.properties\n\nREM Start additional brokers to form a cluster\n.\\bin\\windows\\kafka-server-start.bat .\\config\\server-1.properties\n.\\bin\\windows\\kafka-server-start.bat .\\config\\server-2.properties\n\nREM List all topics\n.\\bin\\windows\\kafka-topics.bat --list --bootstrap-server localhost:9092\n\nREM Create a topic (1 partition by default)\n.\\bin\\windows\\kafka-topics.bat --create --topic topicName --bootstrap-server localhost:9092\n\nREM Create a topic with 3 partitions and replication factor 3\n.\\bin\\windows\\kafka-topics.bat --create --topic topicName --partitions 3 --replication-factor 3 --bootstrap-server localhost:9092\n\nREM Describe a topic (partition count, leader, replicas, ISR)\n.\\bin\\windows\\kafka-topics.bat --describe --topic topicName --bootstrap-server localhost:9092\n\nREM Start a producer (type messages, Enter sends each as a Kafka message)\n.\\bin\\windows\\kafka-console-producer.bat --topic topicName --bootstrap-server localhost:9092\n\nREM Start a consumer that reads every message from the beginning\n.\\bin\\windows\\kafka-console-consumer.bat --topic topicName --bootstrap-server localhost:9092 --from-beginning\n\nREM Read only from partition 0\n.\\bin\\windows\\kafka-console-consumer.bat --topic topicName --partition 0 --from-beginning --bootstrap-server localhost:9092",
+  },
+];
+
 // Module — Spring Core & IoC — distilled from a 165-page "Spring Core & Spring Boot
 // with Microservices" reference (public/java-notes/spring-core-boot-microservices-notes.pdf).
 // Focused on the XML-configuration side of Spring Core that the annotation-first
@@ -2006,7 +2038,9 @@ function buildLessons() {
         lesson.extraLinks = [embarkxLink];
       }
       if (title === 'Kafka & Spring Events') {
-        lesson.sections = MESSAGING_SECTIONS;
+        lesson.sections = [...MESSAGING_SECTIONS, ...KAFKA_DEEP_DIVE_SECTIONS];
+        lesson.pdfUrl = '/java-notes/kafka-with-spring-boot.pdf';
+        lesson.pdfLabel = 'Kafka with Spring Boot (PDF)';
         lesson.extraLinks = [embarkxLink];
       }
       if (title === 'Microservices Architecture') {
