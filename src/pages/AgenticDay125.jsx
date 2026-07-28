@@ -40,9 +40,9 @@ const practice = [
     code: 'plans · plugins\nisolation · support',
   },
   {
-    icon: '🔜', title: 'What Comes Next', titleClass: 'card-title-amber', subtitle: 'Continue',
-    description: 'Deepen the SaaS, fill missing middle days, or return to the hub.',
-    link: { href: '/', label: 'Back to Home →' },
+    icon: '🔜', title: 'Next: Disaster Recovery', titleClass: 'card-title-amber', subtitle: 'Day 126 Preview',
+    description: 'Next — hardening the platform with multi-region failover, before edge & private agents.',
+    link: { href: '/agentic-day-126', label: 'Go to Day 126 →' },
   },
 ];
 
@@ -71,7 +71,7 @@ export default function AgenticDay125() {
       series="Agentic AI"
       dateLabel="Agentic AI Day 125 · 3 Dec 2026"
       prev={{ href: '/agentic-day-124', label: '← Day 124' }}
-      next={{ href: '/', label: 'Home →' }}
+      next={{ href: '/agentic-day-126', label: 'Day 126 →' }}
       tags={['Agentic AI', 'SaaS', 'Phase 17']}
       theme="AGENT SAAS PLATFORM MILESTONE"
       heroIcon="🏁"
