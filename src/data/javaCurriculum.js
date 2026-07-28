@@ -1996,6 +1996,21 @@ function buildLessons() {
           },
         ];
       }
+      const java8NotesLink = {
+        label: 'Java 8 Hand-Written Notes (PDF)',
+        href: '/java-notes/java-8-hand-written-notes.pdf',
+        icon: '📄',
+      };
+      if (title === 'Lambda Expressions') {
+        lesson.pdfUrl = '/java-notes/java-8-hand-written-notes.pdf';
+        lesson.pdfLabel = 'Java 8 Hand-Written Notes (PDF)';
+      }
+      if (title === 'Functional Interfaces') {
+        lesson.extraLinks = [java8NotesLink];
+      }
+      if (title === 'Stream API') {
+        lesson.extraLinks = [java8NotesLink];
+      }
       if (title === 'Spring Boot Fundamentals') {
         lesson.pdfUrl = '/java-spring-boot-slides.pdf';
         lesson.pdfLabel = 'Spring Boot Slides (PDF)';
