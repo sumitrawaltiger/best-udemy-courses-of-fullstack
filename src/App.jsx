@@ -73,6 +73,11 @@ import GenaiDay52 from './pages/GenaiDay52';
 import GenaiDay53 from './pages/GenaiDay53';
 import GenaiDay54 from './pages/GenaiDay54';
 import GenaiDay55 from './pages/GenaiDay55';
+import GenaiDay56 from './pages/GenaiDay56';
+import GenaiDay57 from './pages/GenaiDay57';
+import GenaiDay58 from './pages/GenaiDay58';
+import GenaiDay59 from './pages/GenaiDay59';
+import GenaiDay60 from './pages/GenaiDay60';
 import GenaiDay71 from './pages/GenaiDay71';
 import GenaiDay72 from './pages/GenaiDay72';
 import GenaiDay73 from './pages/GenaiDay73';
@@ -316,6 +321,11 @@ import AgenticDay52 from './pages/AgenticDay52';
 import AgenticDay53 from './pages/AgenticDay53';
 import AgenticDay54 from './pages/AgenticDay54';
 import AgenticDay55 from './pages/AgenticDay55';
+import AgenticDay56 from './pages/AgenticDay56';
+import AgenticDay57 from './pages/AgenticDay57';
+import AgenticDay58 from './pages/AgenticDay58';
+import AgenticDay59 from './pages/AgenticDay59';
+import AgenticDay60 from './pages/AgenticDay60';
 import AgenticDay61 from './pages/AgenticDay61';
 import AgenticDay66 from './pages/AgenticDay66';
 import AgenticDay67 from './pages/AgenticDay67';
@@ -633,6 +643,11 @@ export default function App() {
         <Route path="/agentic-day-53" element={<AgenticDay53 />} />
         <Route path="/agentic-day-54" element={<AgenticDay54 />} />
         <Route path="/agentic-day-55" element={<AgenticDay55 />} />
+        <Route path="/agentic-day-56" element={<AgenticDay56 />} />
+        <Route path="/agentic-day-57" element={<AgenticDay57 />} />
+        <Route path="/agentic-day-58" element={<AgenticDay58 />} />
+        <Route path="/agentic-day-59" element={<AgenticDay59 />} />
+        <Route path="/agentic-day-60" element={<AgenticDay60 />} />
         <Route path="/agentic-day-61" element={<AgenticDay61 />} />
         <Route path="/agentic-day-66" element={<AgenticDay66 />} />
         <Route path="/agentic-day-67" element={<AgenticDay67 />} />
@@ -737,6 +752,11 @@ export default function App() {
           <Route path="genai-day-53" element={<GenaiDay53 />} />
           <Route path="genai-day-54" element={<GenaiDay54 />} />
           <Route path="genai-day-55" element={<GenaiDay55 />} />
+          <Route path="genai-day-56" element={<GenaiDay56 />} />
+          <Route path="genai-day-57" element={<GenaiDay57 />} />
+          <Route path="genai-day-58" element={<GenaiDay58 />} />
+          <Route path="genai-day-59" element={<GenaiDay59 />} />
+          <Route path="genai-day-60" element={<GenaiDay60 />} />
           <Route path="genai-day-71" element={<GenaiDay71 />} />
           <Route path="genai-day-72" element={<GenaiDay72 />} />
           <Route path="genai-day-73" element={<GenaiDay73 />} />

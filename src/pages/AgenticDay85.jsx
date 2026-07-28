@@ -51,9 +51,9 @@ const PRACTICE = [
     code: 'README · docker\ntrace · eval Δ',
   },
   {
-    icon: '🔜', title: 'What Comes Next', titleClass: 'card-title-amber', subtitle: 'Continue',
-    description: 'Keep building cloud agent projects, or return to the hub for the next arc.',
-    link: { href: '/', label: 'Back to Home →' },
+    icon: '🔜', title: 'Next: Coding Agents', titleClass: 'card-title-amber', subtitle: 'Day 91',
+    description: 'Continue Phase 13 — coding agents, memory, A2A, cloud deploy, milestone.',
+    link: { href: '/agentic-day-91', label: 'Go to Day 91 →' },
   },
 ];
 
@@ -138,7 +138,7 @@ export default function AgenticDay85() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-84" className="day001-nav-btn day001-nav-prev">← Day 84</Link>
           <p className="day001-datetime">Agentic AI Day 85 · 24 Oct 2026</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <Link to="/agentic-day-91" className="day001-nav-btn day001-nav-next">Day 91 →</Link>
         </header>
 
         <div className="day001-hero">

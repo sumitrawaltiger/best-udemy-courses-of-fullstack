@@ -46,9 +46,9 @@ const PRACTICE = [
     code: "eval · traces · $",
   },
   {
-    icon: "🔜", title: "Next: LLMOps", titleClass: 'card-title-amber', subtitle: "Day 61",
-    description: "Continue with Phase 10 — versioning, Docker, deploy, monitoring, and CI/CD for agents.",
-    link: { href: '/agentic-day-61', label: 'Go to Day 61 →' },
+    icon: "🔜", title: "Next: Streaming UX", titleClass: 'card-title-amber', subtitle: "Day 56",
+    description: "Continue — harden production with streaming, cache, quotas, incidents, then LLMOps.",
+    link: { href: '/agentic-day-56', label: 'Go to Day 56 →' },
   },
 ];
 
@@ -132,7 +132,7 @@ export default function AgenticDay55() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-54" className="day001-nav-btn day001-nav-prev">← Day 54</Link>
           <p className="day001-datetime">Agentic AI Day 55 · 24 Sep 2026</p>
-          <Link to="/agentic-day-61" className="day001-nav-btn day001-nav-next">Day 61 →</Link>
+          <Link to="/agentic-day-56" className="day001-nav-btn day001-nav-next">Day 56 →</Link>
         </header>
 
         <div className="day001-hero">
