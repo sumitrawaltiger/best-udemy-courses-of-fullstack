@@ -138,7 +138,7 @@ export default function AgenticDay37() {
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Django</span><span>Day 37</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Phase 2</span><span>Django</span></div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">DAY 37 <span aria-hidden="true">🎸</span></h1>
               <p className="day001-day-theme">DJANGO FUNDAMENTALS</p>
@@ -148,7 +148,7 @@ export default function AgenticDay37() {
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">AGENTIC AI · DJANGO</p>
+              <p className="day001-profile-role">AGENTIC AI · PHASE 2</p>
             </div>
           </div>
         </div>

@@ -55,18 +55,18 @@ const PRACTICE = [
 const RESOURCES = [
   {
     icon: "📘", title: "Django Models & ORM", titleClass: 'card-title-cyan', subtitle: "PY Module 38",
-    description: "Full lesson on the site for this module.",
-    link: { href: "/python/learn/django-models-and-orm", label: 'Open module →' },
+    description: "Full lesson — models, fields, migrations, QuerySets, and relationships.",
+    link: { href: "/python/learn/django-models-and-orm", label: 'Open PY Module 38 →' },
   },
   {
     icon: "🎬", title: "Django ORM", titleClass: 'card-title-purple', subtitle: "Video",
-    description: "Video resource.",
-    link: { href: "https://www.youtube.com/watch?v=aHC3uTkT9r8", label: 'Open →', external: true },
+    description: "A hands-on look at defining models and querying them through the ORM.",
+    link: { href: "https://www.youtube.com/watch?v=aHC3uTkT9r8", label: 'Watch Django ORM video →', external: true },
   },
   {
     icon: "📖", title: "QuerySet API", titleClass: 'card-title-amber', subtitle: "Docs",
-    description: "Docs resource.",
-    link: { href: "https://docs.djangoproject.com/en/stable/ref/models/querysets/", label: 'Open →', external: true },
+    description: "Official reference for every QuerySet method — filter, exclude, annotate, and more.",
+    link: { href: "https://docs.djangoproject.com/en/stable/ref/models/querysets/", label: 'Open QuerySet docs →', external: true },
   },
 ];
 
@@ -132,13 +132,13 @@ export default function AgenticDay38() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-37" className="day001-nav-btn day001-nav-prev">← Day 37</Link>
-          <p className="day001-datetime">Agentic AI Day 38 · 38 Aug 2026</p>
+          <p className="day001-datetime">Agentic AI Day 38 · 7 Sep 2026</p>
           <Link to="/agentic-day-39" className="day001-nav-btn day001-nav-next">Day 39 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Django</span><span>Day 38</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Phase 2</span><span>Django ORM</span></div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">DAY 38 <span aria-hidden="true">🗃️</span></h1>
               <p className="day001-day-theme">DJANGO MODELS & ORM</p>
@@ -148,7 +148,7 @@ export default function AgenticDay38() {
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">AGENTIC AI · DJANGO</p>
+              <p className="day001-profile-role">AGENTIC AI · PHASE 2</p>
             </div>
           </div>
         </div>

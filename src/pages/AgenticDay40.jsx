@@ -55,18 +55,18 @@ const PRACTICE = [
 const RESOURCES = [
   {
     icon: "📘", title: "Django REST Framework", titleClass: 'card-title-cyan', subtitle: "PY Module 40",
-    description: "Full lesson on the site for this module.",
-    link: { href: "/python/learn/django-rest-framework", label: 'Open module →' },
+    description: "Full lesson — REST fundamentals, serializers, ViewSets & routers, and API authentication.",
+    link: { href: "/python/learn/django-rest-framework", label: 'Open PY Module 40 →' },
   },
   {
     icon: "🎬", title: "DRF Tutorial", titleClass: 'card-title-purple', subtitle: "Video",
-    description: "Video resource.",
-    link: { href: "https://www.youtube.com/watch?v=c708Nf0cHrs", label: 'Open →', external: true },
+    description: "A guided build of a real CRUD API using Django REST Framework.",
+    link: { href: "https://www.youtube.com/watch?v=c708Nf0cHrs", label: 'Watch DRF tutorial →', external: true },
   },
   {
     icon: "📖", title: "DRF Docs", titleClass: 'card-title-amber', subtitle: "Docs",
-    description: "Docs resource.",
-    link: { href: "https://www.django-rest-framework.org/", label: 'Open →', external: true },
+    description: "Official Django REST Framework documentation and the browsable API reference.",
+    link: { href: "https://www.django-rest-framework.org/", label: 'Open DRF docs →', external: true },
   },
 ];
 
@@ -132,13 +132,13 @@ export default function AgenticDay40() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-39" className="day001-nav-btn day001-nav-prev">← Day 39</Link>
-          <p className="day001-datetime">Agentic AI Day 40 · 40 Aug 2026</p>
+          <p className="day001-datetime">Agentic AI Day 40 · 9 Sep 2026</p>
           <Link to="/agentic-day-41" className="day001-nav-btn day001-nav-next">Day 41 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>DRF</span><span>Day 40</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Phase 2</span><span>DRF</span></div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">DAY 40 <span aria-hidden="true">🌐</span></h1>
               <p className="day001-day-theme">DJANGO REST FRAMEWORK</p>
@@ -148,7 +148,7 @@ export default function AgenticDay40() {
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">AGENTIC AI · DJANGO</p>
+              <p className="day001-profile-role">AGENTIC AI · PHASE 2</p>
             </div>
           </div>
         </div>

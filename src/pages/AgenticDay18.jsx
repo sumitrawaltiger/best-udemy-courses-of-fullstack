@@ -61,7 +61,7 @@ const RESOURCES = [
     link: { href: '/python/learn/bidirectional-rnn', label: 'Open PY Module 18 →' },
   },
   {
-    icon: '🎬', title: 'Bidirectional RNN', titleClass: 'card-title-purple', subtitle: 'DeepLearning.AI',
+    icon: '🎬', title: 'Bidirectional RNN Video', titleClass: 'card-title-purple', subtitle: 'DeepLearning.AI',
     description: 'Clear explanation of why and when reading a sequence both ways helps.',
     link: { href: BIRNN_YT, label: 'Watch BiRNN explained →', external: true },
   },
