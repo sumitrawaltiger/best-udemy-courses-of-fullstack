@@ -25,6 +25,7 @@ const PHASE_LESSONS = [
       ['Control Flow & Loops', 'if/else, switch, for, while, and do-while', ['Conditionals', 'switch expressions', 'Loops', 'break & continue']],
       ['OOP — Classes & Objects', 'Encapsulation, constructors, and methods', ['Classes & objects', 'Constructors', 'this keyword', 'Access modifiers']],
       ['OOP — Inheritance & Polymorphism', 'Abstract classes, interfaces, and overriding', ['Inheritance', 'Method overriding', 'Interfaces', 'Polymorphism']],
+      ['Design Patterns', '15 must-know GoF design patterns', ['Creational patterns', 'Structural patterns', 'Behavioral patterns', 'When to use each']],
       ['Java Internals', 'HashMap, String immutability, memory model, and concurrency basics', ['HashMap internals', 'Heap vs stack', 'equals() & hashCode()', 'Threads & synchronization']],
     ],
   },
@@ -663,6 +664,126 @@ assertEquals("Pune",  copy.getAddress().getCity());`,
     image: '/java-notes/deep-copy-vs-shallow-copy-p8.jpg',
     imageAlt:
       'Decision guide, tests and interview revision — a decision checklist for choosing copy semantics, a JUnit test asserting the copy and its nested Address are different objects and mutating the copy leaves the original unchanged, 30-second interview answers about assignment, pass-by-value, shallow vs deep copy, List.copyOf and Object.clone, and a final production checklist',
+  },
+];
+
+// 15 Must-Know Design Patterns — distilled from the algomaster.io infographic
+// (public/java-notes/15-must-know-design-patterns.jpg). Grouped Creational →
+// Structural → Behavioral, matching the poster's numbering (1-15).
+const DESIGN_PATTERNS_SECTIONS = [
+  {
+    id: 'design-patterns-overview',
+    title: '15 Must-Know Design Patterns — Overview',
+    content:
+      "**Design patterns** are proven, reusable solutions to common software design problems — not code you copy-paste, but a shared vocabulary and template for solving a recurring kind of problem. The classic **Gang of Four (GoF)** patterns split into three families:\n\n- **Creational** (1-3 below) — control *how* objects get created: Singleton, Factory Method, Builder.\n- **Structural** (4-8 below) — control how objects and classes are *composed* into larger structures: Adapter, Decorator, Facade, Proxy, Composite.\n- **Behavioral** (9-15 below) — control how objects *communicate and share responsibility*: Observer, Strategy, Command, Iterator, State, Template Method, Chain of Responsibility.\n\nKnowing the name of a pattern is less important than recognizing the **problem shape** it solves — interviewers care far more about \"when would you reach for this?\" than the textbook definition.",
+    image: '/java-notes/15-must-know-design-patterns.jpg',
+    imageAlt:
+      '15 Must-Know Design Patterns infographic (algomaster.io) — 1. Singleton (only one instance), 2. Factory Method (creates objects without specifying exact class), 3. Builder (constructs complex objects step by step), 4. Adapter (bridges incompatible interfaces), 5. Decorator (adds behavior dynamically), 6. Facade (simple interface to complex subsystems), 7. Proxy (controls access to another object), 8. Composite (treats individual objects and groups uniformly), 9. Observer (notifies multiple objects on state change), 10. Strategy (swaps algorithms at runtime), 11. Command (encapsulates a request as an object), 12. Iterator (traverses a collection without exposing internals), 13. State (changes object behavior based on its state), 14. Template Method (defines a skeleton, lets subclasses override steps), 15. Chain of Responsibility (passes requests along a chain of handlers)',
+  },
+  {
+    id: 'singleton',
+    title: '1. Singleton — Only One Instance',
+    content:
+      "**Category:** Creational. **Ensures only one instance of a class exists** in the entire application, and provides one global access point to it.\n\n**Real-world use:** a single shared `Runtime` object, a single database connection pool, a single application-wide logger or config object — anywhere having a *second* instance would be wasteful or actively wrong.\n\n**Watch out for:** the classic lazy-initialization version isn't thread-safe by default — two threads can both see `instance == null` and create two objects. Use double-checked locking with `volatile`, or simply an `enum` (the simplest thread-safe Singleton in Java).",
+    code: "public class ConfigManager {\n    private static volatile ConfigManager instance;\n    private ConfigManager() {}\n\n    public static ConfigManager getInstance() {\n        if (instance == null) {\n            synchronized (ConfigManager.class) {\n                if (instance == null) {\n                    instance = new ConfigManager();\n                }\n            }\n        }\n        return instance;\n    }\n}\n\n// Simplest thread-safe Singleton in Java: an enum\npublic enum ConfigManagerEnum {\n    INSTANCE;\n}",
+  },
+  {
+    id: 'factory-method',
+    title: '2. Factory Method — Create Without Specifying the Class',
+    content:
+      "**Category:** Creational. **Creates objects without the caller specifying their exact class** — the caller asks a factory for \"a shape\" or \"a payment processor\", and the factory decides which concrete class to instantiate.\n\n**Real-world use:** `ShapeFactory.createShape(\"circle\")`, a `PaymentGatewayFactory` that returns a Stripe/PayPal/Razorpay implementation based on config, or `Calendar.getInstance()` in the JDK.\n\n**Why it matters:** the caller depends only on an interface/abstract type, never on a concrete class — new shapes/gateways can be added later without touching any calling code.",
+    code: "interface Shape { void draw(); }\nclass Circle implements Shape { public void draw() { System.out.println(\"Circle\"); } }\nclass Square implements Shape { public void draw() { System.out.println(\"Square\"); } }\n\nclass ShapeFactory {\n    public static Shape createShape(String type) {\n        return switch (type) {\n            case \"circle\" -> new Circle();\n            case \"square\" -> new Square();\n            default -> throw new IllegalArgumentException(\"Unknown shape: \" + type);\n        };\n    }\n}\n\nShape shape = ShapeFactory.createShape(\"circle\"); // caller never sees `new Circle()`",
+  },
+  {
+    id: 'builder',
+    title: '3. Builder — Construct Step by Step',
+    content:
+      "**Category:** Creational. **Constructs a complex object step by step**, letting the caller set only the fields they care about, instead of one constructor with ten parameters (most of them optional).\n\n**Real-world use:** `StringBuilder`, `Stream.builder()`, and most HTTP client request builders. Especially valuable for objects with many optional fields, where **telescoping constructors** (`new User(id, name, email, null, null, age, null, ...)`) become unreadable.",
+    code: "public class User {\n    private final String name;\n    private final int age;\n    private final String email; // optional\n\n    private User(Builder b) {\n        this.name = b.name;\n        this.age = b.age;\n        this.email = b.email;\n    }\n\n    public static class Builder {\n        private String name;\n        private int age;\n        private String email;\n\n        public Builder name(String name) { this.name = name; return this; }\n        public Builder age(int age) { this.age = age; return this; }\n        public Builder email(String email) { this.email = email; return this; }\n        public User build() { return new User(this); }\n    }\n}\n\nUser user = new User.Builder().name(\"Faisal\").age(28).build(); // email left unset",
+  },
+  {
+    id: 'adapter',
+    title: '4. Adapter — Bridge Two Incompatible Interfaces',
+    content:
+      "**Category:** Structural. **Bridges two incompatible interfaces** — wraps an existing class behind a new interface that the client code actually expects, without modifying either side.\n\n**Real-world use:** `Arrays.asList()` adapting an array to the `List` interface, wrapping a third-party payment SDK's `charge(cents)` method behind your own `PaymentProcessor.pay(amount)` interface, or adapting an XML-based legacy service to a JSON-based one your app expects.",
+    code: "// Existing, incompatible class you can't change\nclass LegacyRoundPeg { void fitInRoundHole() { System.out.println(\"Round peg fits!\"); } }\n\n// The interface your new code expects\ninterface SquarePeg { void fitInSquareHole(); }\n\n// Adapter bridges the two\nclass PegAdapter implements SquarePeg {\n    private final LegacyRoundPeg roundPeg;\n    PegAdapter(LegacyRoundPeg roundPeg) { this.roundPeg = roundPeg; }\n\n    @Override\n    public void fitInSquareHole() {\n        roundPeg.fitInRoundHole(); // delegates to the incompatible API\n    }\n}",
+  },
+  {
+    id: 'decorator',
+    title: '5. Decorator — Add Behavior Dynamically',
+    content:
+      "**Category:** Structural. **Adds behavior to an individual object dynamically**, at runtime, by wrapping it in one or more decorator objects that implement the same interface — without subclassing and without touching the original class.\n\n**Real-world use:** Java's I/O classes are the textbook example — `new BufferedReader(new InputStreamReader(new FileInputStream(...)))` layers buffering and character-decoding behavior onto a raw byte stream, each layer adding one responsibility.",
+    code: "interface Coffee { double cost(); }\nclass SimpleCoffee implements Coffee { public double cost() { return 2.0; } }\n\nabstract class CoffeeDecorator implements Coffee {\n    protected final Coffee wrapped;\n    CoffeeDecorator(Coffee wrapped) { this.wrapped = wrapped; }\n}\n\nclass MilkDecorator extends CoffeeDecorator {\n    MilkDecorator(Coffee c) { super(c); }\n    public double cost() { return wrapped.cost() + 0.5; }\n}\n\nclass SugarDecorator extends CoffeeDecorator {\n    SugarDecorator(Coffee c) { super(c); }\n    public double cost() { return wrapped.cost() + 0.2; }\n}\n\nCoffee order = new SugarDecorator(new MilkDecorator(new SimpleCoffee()));\nSystem.out.println(order.cost()); // 2.7 -- each layer adds its own cost",
+  },
+  {
+    id: 'facade',
+    title: '6. Facade — A Simple Interface to Complex Subsystems',
+    content:
+      "**Category:** Structural. **Provides one simple, unified interface** in front of a complex set of subsystems, hiding the wiring between them from the caller.\n\n**Real-world use:** a `VideoConverterFacade.convert(file, format)` method that internally coordinates a codec reader, an audio mixer, and a compressor — the caller just calls one method instead of orchestrating three subsystems themselves. Spring's `JdbcTemplate` is a facade over raw JDBC's connection/statement/result-set boilerplate.",
+    code: "class UserService {}\nclass OrderService {}\nclass PaymentService {}\nclass NotificationService {}\n\n// Facade -- one simple method hides four subsystems working together\nclass CheckoutFacade {\n    private final UserService users = new UserService();\n    private final OrderService orders = new OrderService();\n    private final PaymentService payments = new PaymentService();\n    private final NotificationService notifications = new NotificationService();\n\n    public void checkout(String userId, String cartId) {\n        // validate user, create order, charge payment, send confirmation --\n        // the caller only ever calls checkout(...)\n    }\n}",
+  },
+  {
+    id: 'proxy',
+    title: '7. Proxy — Control Access to Another Object',
+    content:
+      "**Category:** Structural. **Controls access to another object**, standing in for the real object and adding behavior — like lazy loading, access control, caching, or logging — before or instead of forwarding the call.\n\n**Real-world use:** Spring AOP proxies wrap your `@Service` beans to add transaction management or security checks without changing your business logic; a `LazyImageProxy` that only loads a large image from disk the first time it's actually displayed.",
+    code: "interface Image { void display(); }\n\nclass RealImage implements Image {\n    private final String filename;\n    RealImage(String filename) { this.filename = filename; loadFromDisk(); }\n    private void loadFromDisk() { System.out.println(\"Loading \" + filename); }\n    public void display() { System.out.println(\"Displaying \" + filename); }\n}\n\nclass ProxyImage implements Image {\n    private final String filename;\n    private RealImage realImage; // not created until needed\n    ProxyImage(String filename) { this.filename = filename; }\n\n    public void display() {\n        if (realImage == null) {\n            realImage = new RealImage(filename); // lazy load on first use\n        }\n        realImage.display();\n    }\n}",
+  },
+  {
+    id: 'composite',
+    title: '8. Composite — Treat Individuals and Groups the Same Way',
+    content:
+      "**Category:** Structural. **Treats individual objects and groups of objects uniformly**, by arranging them into a tree and giving both leaves and composite nodes the same interface — so client code can call the same method on a single item or an entire subtree without checking which one it has.\n\n**Real-world use:** a filesystem where a `File` and a `Folder` (containing more files/folders) both implement `getSize()`; a UI component tree where a `Panel` (containing more components) and a `Button` both implement `render()`.",
+    code: "interface FileSystemNode { long getSize(); }\n\nclass File implements FileSystemNode {\n    private final long size;\n    File(long size) { this.size = size; }\n    public long getSize() { return size; }\n}\n\nclass Folder implements FileSystemNode {\n    private final List<FileSystemNode> children = new ArrayList<>();\n    void add(FileSystemNode node) { children.add(node); }\n\n    public long getSize() {\n        return children.stream().mapToLong(FileSystemNode::getSize).sum(); // recurse into subfolders\n    }\n}",
+  },
+  {
+    id: 'observer',
+    title: '9. Observer — Notify Many Objects on State Change',
+    content:
+      "**Category:** Behavioral. **Notifies multiple dependent objects automatically** whenever a subject's state changes, without the subject needing to know any concrete details about its observers — just that they implement a common `update()` contract.\n\n**Real-world use:** Java's own `PropertyChangeListener`, Spring's `ApplicationEventPublisher`/`@EventListener`, and any pub/sub or event-bus system. A stock-price `Ticker` notifying multiple registered `Display` widgets whenever the price changes is the textbook example.",
+    code: "interface Observer { void update(double price); }\n\nclass StockTicker {\n    private final List<Observer> observers = new ArrayList<>();\n    void subscribe(Observer o) { observers.add(o); }\n\n    void setPrice(double price) {\n        for (Observer o : observers) o.update(price); // notify everyone\n    }\n}\n\nclass PriceDisplay implements Observer {\n    public void update(double price) { System.out.println(\"Price updated: \" + price); }\n}",
+  },
+  {
+    id: 'strategy',
+    title: '10. Strategy — Swap Algorithms at Runtime',
+    content:
+      "**Category:** Behavioral. **Swaps algorithms at runtime** by extracting each variant behind a common interface, and letting the caller plug in whichever implementation it needs — instead of one method full of `if/else` branches for every variant.\n\n**Real-world use:** a `Comparator` passed to `Collections.sort()`, a `PaymentStrategy` interface with `CreditCardPayment`/`PayPalPayment`/`UpiPayment` implementations chosen at checkout, or different compression algorithms selected by file type.",
+    code: "interface PaymentStrategy { void pay(double amount); }\n\nclass CreditCardPayment implements PaymentStrategy {\n    public void pay(double amount) { System.out.println(\"Paid \" + amount + \" via credit card\"); }\n}\nclass UpiPayment implements PaymentStrategy {\n    public void pay(double amount) { System.out.println(\"Paid \" + amount + \" via UPI\"); }\n}\n\nclass Checkout {\n    private PaymentStrategy strategy;\n    void setStrategy(PaymentStrategy strategy) { this.strategy = strategy; } // swap at runtime\n    void checkout(double amount) { strategy.pay(amount); }\n}",
+  },
+  {
+    id: 'command',
+    title: '11. Command — Encapsulate a Request as an Object',
+    content:
+      "**Category:** Behavioral. **Encapsulates a request as an object**, so it can be passed around, queued, logged, or undone — decoupling the object that *invokes* an action (the invoker) from the object that actually *performs* it (the receiver).\n\n**Real-world use:** GUI button click handlers, a job queue where each queued item is a `Runnable`/`Command` object, and undo/redo stacks in editors — each action is an object you can store and reverse later.",
+    code: "interface Command { void execute(); }\n\nclass Light {\n    void turnOn() { System.out.println(\"Light ON\"); }\n}\n\nclass TurnOnCommand implements Command {\n    private final Light light;\n    TurnOnCommand(Light light) { this.light = light; }\n    public void execute() { light.turnOn(); } // encapsulates the request\n}\n\nclass RemoteControl {\n    private Command command;\n    void setCommand(Command command) { this.command = command; }\n    void pressButton() { command.execute(); } // invoker never knows about Light directly\n}",
+  },
+  {
+    id: 'iterator',
+    title: '12. Iterator — Traverse Without Exposing Internals',
+    content:
+      "**Category:** Behavioral. **Traverses a collection without exposing its internal structure** (array, linked list, tree) — the client just calls `hasNext()`/`next()` and never needs to know how the elements are actually stored.\n\n**Real-world use:** Java's own `Iterator`/`Iterable` interfaces are literally this pattern — every `for (X x : collection)` loop in Java is powered by it, whether the underlying collection is an `ArrayList`, a `LinkedList`, or a custom data structure.",
+    code: "class Playlist implements Iterable<String> {\n    private final String[] songs;\n    Playlist(String[] songs) { this.songs = songs; }\n\n    public Iterator<String> iterator() {\n        return new Iterator<>() {\n            private int index = 0;\n            public boolean hasNext() { return index < songs.length; }\n            public String next() { return songs[index++]; }\n        };\n    }\n}\n\nfor (String song : new Playlist(new String[]{\"A\", \"B\"})) {\n    System.out.println(song); // caller never sees the underlying array\n}",
+  },
+  {
+    id: 'state',
+    title: '13. State — Change Behavior Based on Internal State',
+    content:
+      "**Category:** Behavioral. **Changes an object's behavior when its internal state changes**, by delegating to a state object that implements a common interface — replacing a giant `switch` on a status field with polymorphism.\n\n**Real-world use:** an `Order` that behaves differently depending on whether it's `Idle`, `Active`, or in an `Error` state (matching the infographic's example) — a `TrafficLight` (Red/Yellow/Green) or a media player (Playing/Paused/Stopped) are classic textbook cases.",
+    code: "interface OrderState { void next(OrderContext ctx); }\n\nclass IdleState implements OrderState {\n    public void next(OrderContext ctx) { System.out.println(\"Idle -> Active\"); ctx.setState(new ActiveState()); }\n}\nclass ActiveState implements OrderState {\n    public void next(OrderContext ctx) { System.out.println(\"Active -> Error\"); ctx.setState(new ErrorState()); }\n}\nclass ErrorState implements OrderState {\n    public void next(OrderContext ctx) { System.out.println(\"Order failed, no further transitions\"); }\n}\n\nclass OrderContext {\n    private OrderState state = new IdleState();\n    void setState(OrderState state) { this.state = state; }\n    void advance() { state.next(this); } // behavior changes as state changes\n}",
+  },
+  {
+    id: 'template-method',
+    title: '14. Template Method — A Skeleton with Overridable Steps',
+    content:
+      "**Category:** Behavioral. **Defines the skeleton of an algorithm** in a base class method, deferring one or more individual **steps** to subclasses — the overall sequence stays fixed, but subclasses customize specific parts of it.\n\n**Real-world use:** Spring's `JdbcTemplate` handles the fixed skeleton (open connection → create statement → handle exceptions → close connection) while you supply just the query-specific step; JUnit's `setUp()`/`tearDown()` lifecycle around your test method is the same idea.",
+    code: "abstract class DataProcessor {\n    // Template method -- defines the fixed skeleton\n    public final void process() {\n        readData();\n        processData(); // subclasses override just this step\n        writeData();\n    }\n    private void readData() { System.out.println(\"Reading data\"); }\n    protected abstract void processData();\n    private void writeData() { System.out.println(\"Writing data\"); }\n}\n\nclass CsvProcessor extends DataProcessor {\n    protected void processData() { System.out.println(\"Processing as CSV\"); }\n}",
+  },
+  {
+    id: 'chain-of-responsibility',
+    title: '15. Chain of Responsibility — Pass Requests Along a Chain',
+    content:
+      "**Category:** Behavioral. **Passes a request along a chain of handler objects**, where each handler decides either to process the request itself, or to pass it on to the next handler in the chain — the sender doesn't need to know which handler will ultimately deal with it.\n\n**Real-world use:** Servlet filter chains, middleware pipelines (Express.js/Spring `HandlerInterceptor`), and support-ticket escalation (L1 → L2 → L3) all follow this exact shape — each link either handles the request or forwards it.",
+    code: "abstract class Handler {\n    protected Handler next;\n    Handler setNext(Handler next) { this.next = next; return next; }\n\n    void handle(int level) {\n        if (canHandle(level)) {\n            System.out.println(getClass().getSimpleName() + \" handled level \" + level);\n        } else if (next != null) {\n            next.handle(level); // pass along the chain\n        }\n    }\n    protected abstract boolean canHandle(int level);\n}\n\nclass HandlerA extends Handler { protected boolean canHandle(int level) { return level == 1; } }\nclass HandlerB extends Handler { protected boolean canHandle(int level) { return level == 2; } }\nclass HandlerC extends Handler { protected boolean canHandle(int level) { return level == 3; } }\n\nHandler chain = new HandlerA();\nchain.setNext(new HandlerB()).setNext(new HandlerC());\nchain.handle(3); // \"HandlerC handled level 3\"",
   },
 ];
 
@@ -2060,6 +2181,9 @@ function buildLessons() {
       }
       if (title === 'OOP — Inheritance & Polymorphism') {
         lesson.sections = ABSTRACTION_SECTIONS;
+      }
+      if (title === 'Design Patterns') {
+        lesson.sections = DESIGN_PATTERNS_SECTIONS;
       }
       if (title === 'Factory Methods for Collections') {
         lesson.sections = JAVA_RECORDS_SECTIONS;
