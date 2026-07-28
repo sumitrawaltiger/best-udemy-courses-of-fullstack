@@ -83,6 +83,11 @@ import GenaiDay72 from './pages/GenaiDay72';
 import GenaiDay73 from './pages/GenaiDay73';
 import GenaiDay74 from './pages/GenaiDay74';
 import GenaiDay75 from './pages/GenaiDay75';
+import GenaiDay106 from './pages/GenaiDay106';
+import GenaiDay107 from './pages/GenaiDay107';
+import GenaiDay108 from './pages/GenaiDay108';
+import GenaiDay109 from './pages/GenaiDay109';
+import GenaiDay110 from './pages/GenaiDay110';
 import Day018 from './pages/Day018';
 import Day019 from './pages/Day019';
 import Day020 from './pages/Day020';
@@ -366,11 +371,21 @@ import AgenticDay97 from './pages/AgenticDay97';
 import AgenticDay98 from './pages/AgenticDay98';
 import AgenticDay99 from './pages/AgenticDay99';
 import AgenticDay100 from './pages/AgenticDay100';
+import AgenticDay106 from './pages/AgenticDay106';
+import AgenticDay107 from './pages/AgenticDay107';
+import AgenticDay108 from './pages/AgenticDay108';
+import AgenticDay109 from './pages/AgenticDay109';
+import AgenticDay110 from './pages/AgenticDay110';
 import AgenticDay101 from './pages/AgenticDay101';
 import AgenticDay102 from './pages/AgenticDay102';
 import AgenticDay103 from './pages/AgenticDay103';
 import AgenticDay104 from './pages/AgenticDay104';
 import AgenticDay105 from './pages/AgenticDay105';
+import AgenticDay116 from './pages/AgenticDay116';
+import AgenticDay117 from './pages/AgenticDay117';
+import AgenticDay118 from './pages/AgenticDay118';
+import AgenticDay119 from './pages/AgenticDay119';
+import AgenticDay120 from './pages/AgenticDay120';
 import InterviewQuestions from './pages/InterviewQuestions';
 import ReactInterviewQuestions from './pages/ReactInterviewQuestions';
 import NextjsInterviewQuestions from './pages/NextjsInterviewQuestions';
@@ -703,6 +718,11 @@ export default function App() {
         <Route path="/agentic-day-103" element={<AgenticDay103 />} />
         <Route path="/agentic-day-104" element={<AgenticDay104 />} />
         <Route path="/agentic-day-105" element={<AgenticDay105 />} />
+        <Route path="/agentic-day-116" element={<AgenticDay116 />} />
+        <Route path="/agentic-day-117" element={<AgenticDay117 />} />
+        <Route path="/agentic-day-118" element={<AgenticDay118 />} />
+        <Route path="/agentic-day-119" element={<AgenticDay119 />} />
+        <Route path="/agentic-day-120" element={<AgenticDay120 />} />
         <Route path="/interview-questions" element={<InterviewQuestions />} />
         <Route path="/react-interview-questions" element={<ReactInterviewQuestions />} />
         <Route path="/nextjs-interview-questions" element={<NextjsInterviewQuestions />} />

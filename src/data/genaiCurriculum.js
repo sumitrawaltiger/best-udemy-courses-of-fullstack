@@ -2406,4 +2406,1079 @@ writeFileSync('dpo_dataset.jsonl', preferences.map((p) => JSON.stringify(p)).joi
       },
     ],
   },
+
+  // ── PART VI: EXPERT ENGINEERING & THE FRONTIER ──
+  {
+    genaiDay: 111,
+    phase: 'Part VI · Expert Engineering & The Frontier',
+    title: 'Building with the Model Context Protocol (MCP)',
+    subtitle: 'Master the emerging open standard that lets agents connect to any tool, database, or service through a unified interface',
+    topics: [
+      'What MCP is: the USB-C of AI — one protocol to connect any agent to any tool',
+      'MCP architecture: hosts, clients, servers, tools, resources, and prompts',
+      'Building an MCP server in Node.js that exposes custom tools to any MCP-compatible agent',
+      'Connecting a LangChain agent to an MCP server and calling its tools at runtime',
+    ],
+    notionUrl: LC,
+    youtube: yt('s4RcRZHUw3c', 'Model Context Protocol (MCP) Explained — The Future of AI Tool Use', 'Anthropic'),
+    sections: [
+      {
+        id: 'what-is-mcp',
+        title: 'What Is MCP and Why Does It Matter?',
+        content:
+          'Before MCP, every AI application had to build custom integrations: a bespoke GitHub connector, a hand-rolled database tool, a one-off filesystem reader. The **Model Context Protocol** (introduced by Anthropic in 2024) standardises this: it defines a single protocol for how AI agents discover and call tools, read resources, and inject prompts — regardless of which agent framework or LLM is used.\\n\\n' +
+          'Think of it as **USB-C for AI tools**: one port, every device. Any MCP-compatible agent (Claude Desktop, LangChain, Cursor, your own agent) can connect to any MCP server without any custom integration code.\\n\\n' +
+          '**Three things MCP servers can expose:**\\n' +
+          '• **Tools** — functions the LLM can call (search a database, send a Slack message)\\n' +
+          '• **Resources** — readable content (files, docs, API responses) the model can consume\\n' +
+          '• **Prompts** — reusable prompt templates the user can trigger',
+      },
+      {
+        id: 'mcp-architecture',
+        title: 'MCP Architecture: Hosts, Clients & Servers',
+        content:
+          '**Host** — the application that embeds the AI (Claude Desktop, VS Code with Copilot, your custom app). It manages MCP client connections.\\n\\n' +
+          '**Client** — lives inside the host; maintains a 1:1 connection to one MCP server over a transport (stdio or HTTP/SSE).\\n\\n' +
+          '**Server** — a lightweight process that exposes tools/resources/prompts. It runs locally (stdio) or remotely (HTTP).\\n\\n' +
+          'The flow: (1) Host starts; (2) Client connects to server and fetches the tool list; (3) LLM sees the tools in its context; (4) LLM calls a tool; (5) Client routes the call to the server; (6) Server executes and returns the result; (7) Result goes back to the LLM.',
+        code: `// MCP communication flow (simplified)
+//
+// [Your App / Host]
+//       |
+//   [MCP Client]  ←——— JSON-RPC over stdio or HTTP/SSE ———→  [MCP Server]
+//       |                                                           |
+//   [LLM API]                                              [Your tool logic]
+//
+// The MCP client handles the protocol; you only write the tool logic.
+//
+// JSON-RPC messages (what the protocol looks like under the hood):
+const listToolsRequest  = { jsonrpc: '2.0', id: 1, method: 'tools/list' };
+const callToolRequest   = {
+  jsonrpc: '2.0', id: 2, method: 'tools/call',
+  params: { name: 'search_docs', arguments: { query: 'JWT refresh token' } },
+};
+const toolResponse = {
+  jsonrpc: '2.0', id: 2,
+  result: { content: [{ type: 'text', text: 'JWT tokens expire after 1 hour...' }] },
+};`,
+      },
+      {
+        id: 'building-mcp-server',
+        title: 'Building an MCP Server in Node.js',
+        content:
+          'Use the official `@modelcontextprotocol/sdk` to build a server. Define tools with Zod schemas, implement handlers, and start the server over stdio (for local use) or HTTP (for remote use). The SDK handles all the JSON-RPC plumbing.',
+        code: `import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { z } from 'zod';
+import { readFileSync, readdirSync } from 'fs';
+
+// Create the MCP server
+const server = new McpServer({
+  name: 'project-tools',
+  version: '1.0.0',
+});
+
+// Tool 1: list files in a directory
+server.tool(
+  'list_files',
+  'List all files in a project directory.',
+  { dirPath: z.string().describe('Absolute path to the directory') },
+  async ({ dirPath }) => {
+    const files = readdirSync(dirPath, { withFileTypes: true });
+    const list = files.map((f) => (f.isDirectory() ? '[dir] ' : '[file] ') + f.name).join('\\n');
+    return { content: [{ type: 'text', text: list }] };
+  },
+);
+
+// Tool 2: read a file's contents
+server.tool(
+  'read_file',
+  'Read the contents of a file.',
+  { filePath: z.string().describe('Absolute path to the file') },
+  async ({ filePath }) => {
+    const content = readFileSync(filePath, 'utf-8');
+    return { content: [{ type: 'text', text: content }] };
+  },
+);
+
+// Tool 3: search files for a keyword
+server.tool(
+  'search_in_files',
+  'Search for a keyword across all .js and .ts files in a directory.',
+  {
+    dirPath: z.string().describe('Directory to search in'),
+    keyword: z.string().describe('Keyword to search for'),
+  },
+  async ({ dirPath, keyword }) => {
+    const files = readdirSync(dirPath).filter((f) => f.endsWith('.js') || f.endsWith('.ts'));
+    const matches = [];
+    for (const file of files) {
+      const text = readFileSync(dirPath + '/' + file, 'utf-8');
+      if (text.includes(keyword)) matches.push(file + ': found');
+    }
+    return { content: [{ type: 'text', text: matches.join('\\n') || 'No matches.' }] };
+  },
+);
+
+// Start on stdio (connect via Claude Desktop or any MCP client)
+const transport = new StdioServerTransport();
+await server.connect(transport);
+console.error('project-tools MCP server running on stdio');`,
+      },
+      {
+        id: 'mcp-client-langchain',
+        title: 'Connecting a LangChain Agent to an MCP Server',
+        content:
+          'Use `@langchain/mcp-adapters` to connect your LangGraph agent to any MCP server at runtime. The adapter discovers the server\'s tools automatically and converts them into LangChain-compatible tool objects.',
+        code: `import { MultiServerMCPClient } from '@langchain/mcp-adapters';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+
+const model = new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' });
+
+// Connect to one or more MCP servers
+const mcpClient = new MultiServerMCPClient({
+  servers: {
+    // Local server over stdio
+    'project-tools': {
+      transport: 'stdio',
+      command: 'node',
+      args: ['./mcp-servers/project-tools.js'],
+    },
+    // Remote server over HTTP (e.g. a cloud-hosted MCP server)
+    'web-search': {
+      transport: 'http',
+      url: 'https://mcp.example.com/search',
+    },
+  },
+});
+
+// Discover all tools from all connected servers automatically
+const tools = await mcpClient.getTools();
+console.log('MCP tools available:', tools.map((t) => t.name));
+// => ['list_files', 'read_file', 'search_in_files', 'web_search', ...]
+
+// Create an agent that uses the MCP tools natively
+const agent = createReactAgent({ llm: model, tools });
+
+const result = await agent.invoke({
+  messages: [{
+    role: 'user',
+    content: 'Search the /src/data directory for "genaiDay" and list the files that contain it.',
+  }],
+});
+console.log(result.messages.at(-1).content);`,
+      },
+      {
+        id: 'mcp-resources-prompts',
+        title: 'MCP Resources & Prompts',
+        content:
+          'Beyond tools, MCP servers can expose **resources** (readable content like files, DB rows, or API responses) and **prompts** (reusable prompt templates). Resources let the model read context without calling a tool; prompts let users trigger predefined agent workflows from the UI.',
+        code: `// Adding a resource: expose project README as readable content
+server.resource(
+  'project-readme',
+  'file:///project/README.md',
+  async (uri) => ({
+    contents: [{
+      uri: uri.href,
+      mimeType: 'text/markdown',
+      text: readFileSync('/project/README.md', 'utf-8'),
+    }],
+  }),
+);
+
+// Adding a prompt: reusable code review template
+server.prompt(
+  'code-review',
+  'Generate a code review for a given file.',
+  [{ name: 'filePath', description: 'Path to the file to review', required: true }],
+  ({ filePath }) => ({
+    messages: [{
+      role: 'user',
+      content: {
+        type: 'text',
+        text:
+          'Please review this code file for bugs, security issues, and style improvements.\\n' +
+          'File: ' + filePath,
+      },
+    }],
+  }),
+);`,
+      },
+      {
+        id: 'mcp-practice',
+        title: 'Practice Exercises',
+        content:
+          'Build these to master Day 111: (1) **File system MCP server** — implement the `list_files`, `read_file`, and `search_in_files` tools, connect it to Claude Desktop, and ask it to summarise your project structure; (2) **Database MCP server** — expose `query_table` and `list_tables` tools backed by a SQLite database; (3) **Multi-server agent** — connect your agent to both the file system and database MCP servers simultaneously and handle a query that spans both; (4) **Remote MCP server** — deploy your MCP server to a cloud function and connect to it over HTTP/SSE from a local agent.',
+      },
+    ],
+  },
+  {
+    genaiDay: 112,
+    phase: 'Part VI · Expert Engineering & The Frontier',
+    title: 'Agent Observability at Scale: Tracing, Cost Dashboards & Alerting',
+    subtitle: 'Instrument your agents for production with distributed tracing, per-user cost attribution, latency monitoring, and automated alerting',
+    topics: [
+      'Why observability is uniquely hard for agents: non-determinism, multi-step traces, and tool calls',
+      'LangSmith deep dive: capturing full agent traces, building evaluation datasets, and running evals in CI',
+      'Custom structured logging and OpenTelemetry spans for agent steps',
+      'Cost attribution, latency percentiles, and alerting on anomalies with Grafana',
+    ],
+    notionUrl: LC,
+    youtube: yt('NkGMXfQjXac', 'LLM Observability in Production — Tracing, Evals and Cost Tracking', 'LangChain'),
+    sections: [
+      {
+        id: 'observability-hard',
+        title: 'Why Agent Observability Is Uniquely Hard',
+        content:
+          'Observing a traditional REST API is simple: log the request, log the response, measure latency. Agents are different:\\n\\n' +
+          '• **Non-deterministic:** the same input produces different outputs and different tool call sequences each run.\\n' +
+          '• **Multi-step:** a single user request may trigger 10+ LLM calls and tool invocations — each billable.\\n' +
+          '• **Long-running:** agent runs can take minutes, spanning multiple async hops.\\n' +
+          '• **Cascading failures:** one bad tool call can poison the rest of the reasoning chain in ways that are hard to spot in plain logs.\\n\\n' +
+          '**What you need:** a trace per run (not just a log line), cost attribution per step, replay capability, and automated quality scoring.',
+      },
+      {
+        id: 'langsmith-tracing',
+        title: 'LangSmith Tracing: Full Agent Visibility',
+        content:
+          'LangSmith is LangChain\'s observability platform. Set two environment variables and every LangChain/LangGraph call is automatically traced — LLM inputs, outputs, token counts, latency, and tool calls — with a full timeline view in the UI.',
+        code: `// .env — all LangChain calls are auto-traced with just these two vars
+// LANGCHAIN_TRACING_V2=true
+// LANGCHAIN_API_KEY=ls__your_key_here
+// LANGCHAIN_PROJECT=my-agent-app   (optional — groups traces by project)
+
+import 'dotenv/config';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+// No other changes needed — tracing is automatic
+
+const agent = createReactAgent({
+  llm: new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' }),
+  tools: [],
+});
+
+const result = await agent.invoke(
+  { messages: [{ role: 'user', content: 'What is 2 + 2?' }] },
+  {
+    // Optional: tag this run for filtering in LangSmith
+    metadata: { userId: 'user-123', sessionId: 'sess-456', environment: 'production' },
+  },
+);
+// => Full trace visible at https://smith.langchain.com
+//    Shows: LLM input/output, token usage, latency, tool calls`,
+      },
+      {
+        id: 'custom-spans',
+        title: 'Custom Spans: Instrument Your Own Code',
+        content:
+          'Automatic tracing captures LLM calls, but you also need to trace your **application logic**: database queries, retrieval steps, external API calls. Use `traceable` from LangSmith to wrap any async function — it appears as a child span in the trace timeline.',
+        code: `import { traceable } from 'langsmith/traceable';
+
+// Wrap any function with @traceable to add it to the trace
+const retrieveFromDB = traceable(
+  async (query) => {
+    // Simulate a database lookup
+    await new Promise((r) => setTimeout(r, 50));
+    return [{ id: 1, content: 'JWT tokens expire after 1 hour.' }];
+  },
+  { name: 'retrieve_from_db', run_type: 'retriever' },
+);
+
+const validateUserInput = traceable(
+  async (input) => {
+    if (input.length < 3) throw new Error('Input too short');
+    return { valid: true, sanitized: input.trim() };
+  },
+  { name: 'validate_input', run_type: 'tool' },
+);
+
+// Now these appear as named spans in LangSmith traces
+async function handleRequest(userMessage) {
+  const { sanitized } = await validateUserInput(userMessage);
+  const docs = await retrieveFromDB(sanitized);
+  // ... agent call
+}`,
+      },
+      {
+        id: 'cost-attribution',
+        title: 'Cost Attribution: Track Spend Per User, Agent & Feature',
+        content:
+          'Token costs add up fast. You need to know **which users, agents, and features** are driving spend — not just total monthly cost. LangSmith\'s metadata tags enable this; pair with a simple aggregation query to get per-user cost breakdowns.',
+        code: `import { Client } from 'langsmith';
+
+const client = new Client();
+
+// Tag every run with billable metadata
+const result = await agent.invoke(
+  { messages: [{ role: 'user', content: userMessage }] },
+  {
+    metadata: {
+      userId:    req.user.userId,
+      plan:      req.user.plan,
+      feature:   'chat',          // 'chat' | 'search' | 'analysis'
+      sessionId: req.body.threadId,
+    },
+  },
+);
+
+// Aggregate cost per user (run as a scheduled job or on-demand)
+async function getCostPerUser(projectName, sinceHours = 24) {
+  const since = new Date(Date.now() - sinceHours * 3600_000).toISOString();
+  const runs = client.listRuns({ projectName, startTime: since, runType: 'llm' });
+
+  const costByUser = {};
+  for await (const run of runs) {
+    const userId = run.extra?.metadata?.userId ?? 'unknown';
+    const tokens = (run.promptTokens ?? 0) + (run.completionTokens ?? 0);
+    const cost = tokens / 1_000_000 * 0.15; // $0.15 per 1M tokens (Gemini 2.5 Flash)
+    costByUser[userId] = (costByUser[userId] ?? 0) + cost;
+  }
+  return costByUser;
+}
+
+const costs = await getCostPerUser('my-agent-app');
+console.log('Cost per user (last 24h):', costs);
+// => { 'user-123': 0.0042, 'user-456': 0.0218, ... }`,
+      },
+      {
+        id: 'eval-datasets',
+        title: 'Evaluation Datasets & CI Evals with LangSmith',
+        content:
+          'Build a **golden dataset** of 50+ question/expected-answer pairs and run it automatically on every deployment. LangSmith\'s `evaluate()` runs each example through your agent and scores it using an LLM judge or exact-match — blocking the deploy if quality drops.',
+        code: `import { Client, evaluate } from 'langsmith';
+
+const client = new Client();
+
+// Step 1: Create a golden dataset (do this once, update when needed)
+const dataset = await client.createDataset('production-qa-v1', {
+  description: '50 golden Q&A pairs for regression testing',
+});
+
+await client.createExamples({
+  inputs:  [{ question: 'How do I fix a 401 JWT error?' }],
+  outputs: [{ answer: 'Refresh your token using the refreshToken endpoint.' }],
+  datasetId: dataset.id,
+});
+
+// Step 2: Define the target function (what we're evaluating)
+const target = async (input) => {
+  const result = await agent.invoke({ messages: [{ role: 'user', content: input.question }] });
+  return { answer: result.messages.at(-1).content };
+};
+
+// Step 3: Run evals (add this to your CI pipeline)
+const evalResults = await evaluate(target, {
+  data: 'production-qa-v1',
+  evaluators: ['correctness'],  // LangSmith built-in LLM judge
+  experimentPrefix: 'deploy-' + process.env.GIT_SHA,
+});
+
+console.log('Mean correctness:', evalResults.results.reduce((s, r) => s + r.scores.correctness, 0) / evalResults.results.length);
+// => 0.87 — fail the build if this drops below 0.80`,
+      },
+      {
+        id: 'alerting',
+        title: 'Alerting on Latency, Error Rate & Cost Anomalies',
+        content:
+          'Combine LangSmith data with a time-series database (Prometheus) and Grafana to build dashboards and alerts. Set thresholds: alert if p95 latency > 10s, error rate > 5%, or hourly cost > $10.',
+        code: `// Export LangSmith metrics to Prometheus (run as a scrape target every 60s)
+import { register, Gauge, Counter } from 'prom-client';
+import express from 'express';
+
+const p95Latency = new Gauge({ name: 'agent_latency_p95_seconds', help: 'p95 agent run latency' });
+const errorRate  = new Gauge({ name: 'agent_error_rate',          help: 'Agent error rate (0-1)' });
+const hourlyCost = new Gauge({ name: 'agent_hourly_cost_usd',     help: 'Estimated hourly LLM cost' });
+
+async function refreshMetrics() {
+  const runs = [];
+  const iter = client.listRuns({ projectName: 'my-agent-app', runType: 'chain', limit: 200 });
+  for await (const r of iter) runs.push(r);
+
+  const latencies = runs.map((r) => (r.endTime - r.startTime) / 1000).sort((a, b) => a - b);
+  const p95 = latencies[Math.floor(latencies.length * 0.95)] ?? 0;
+  const errors = runs.filter((r) => r.error).length / runs.length;
+  const cost = runs.reduce((s, r) => s + ((r.promptTokens ?? 0) + (r.completionTokens ?? 0)), 0) / 1_000_000 * 0.15;
+
+  p95Latency.set(p95);
+  errorRate.set(errors);
+  hourlyCost.set(cost);
+}
+
+setInterval(refreshMetrics, 60_000);
+
+// Prometheus scrape endpoint
+express().get('/metrics', async (_, res) => {
+  res.set('Content-Type', register.contentType);
+  res.end(await register.metrics());
+}).listen(9090);`,
+      },
+      {
+        id: 'observability-practice',
+        title: 'Practice Exercises',
+        content:
+          'Build these to master Day 112: (1) **Auto-tracing** — add LangSmith env vars to your Day 58 agent API and inspect a full trace in the UI; note how token counts appear per LLM call; (2) **Cost report** — run 20 agent calls with different `userId` tags, then pull the cost-per-user report and verify the numbers; (3) **Golden dataset** — create a 10-question eval dataset for your RAG app, run `evaluate()`, and check the correctness score; (4) **Grafana dashboard** — run the Prometheus exporter, connect Grafana, and build a panel showing p95 latency over time; set an alert threshold.',
+      },
+    ],
+  },
+  {
+    genaiDay: 113,
+    phase: 'Part VI · Expert Engineering & The Frontier',
+    title: 'AI Code Generation Agents: Review Bots, Test Writers & Auto-Fixers',
+    subtitle: 'Build specialised coding agents that read diffs, write tests, post review comments, and automatically fix failing test cases',
+    topics: [
+      'Code review agent: reads a GitHub PR diff and posts structured review comments via the GitHub API',
+      'Test writer agent: analyses source code and generates comprehensive test suites with Jest',
+      'Auto-fixer agent: takes a failing test output and iteratively patches the source code until tests pass',
+      'Safety constraints for code-executing agents: sandboxing, approval gates, and blast-radius limits',
+    ],
+    notionUrl: LC,
+    youtube: yt('LSHmGhDzZVQ', 'Build an AI Code Review Agent with LangChain and GitHub', 'AI Engineer'),
+    sections: [
+      {
+        id: 'code-agents-overview',
+        title: 'Why Code Agents Are a Special Case',
+        content:
+          'Code agents have unique requirements compared to general agents:\\n\\n' +
+          '• **Determinism matters more:** a wrong email reply is embarrassing; a wrong code change can break production.\\n' +
+          '• **Context is structured:** source code has imports, types, function signatures — all useful as structured context.\\n' +
+          '• **Feedback loops exist:** you can *run* the code and get binary pass/fail signal — the perfect reward signal for iteration.\\n' +
+          '• **Blast radius must be controlled:** an auto-fixer that can write any file and run any command is dangerous.\\n\\n' +
+          '**Pattern:** keep code agents in tight loops with tool results as feedback, restrict filesystem access to the working directory, and always require human approval before pushing to remote.',
+      },
+      {
+        id: 'code-review-agent',
+        title: 'Code Review Agent: Reads a PR Diff & Posts Comments',
+        content:
+          'The agent fetches the diff from the GitHub API, analyses each changed file, and posts structured review comments back to the PR. Use `withStructuredOutput()` to force consistent comment format.',
+        code: `import { tool } from '@langchain/core/tools';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
+import { z } from 'zod';
+
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const model = new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' });
+
+// Tool: fetch the diff for a PR
+const getPRDiff = tool(
+  async ({ owner, repo, prNumber }) => {
+    const res = await fetch(
+      'https://api.github.com/repos/' + owner + '/' + repo + '/pulls/' + prNumber + '/files',
+      { headers: { Authorization: 'Bearer ' + GITHUB_TOKEN, Accept: 'application/vnd.github.v3+json' } },
+    );
+    const files = await res.json();
+    return files.map((f) => 'File: ' + f.filename + '\\n' + f.patch).join('\\n\\n---\\n\\n');
+  },
+  {
+    name: 'get_pr_diff',
+    description: 'Fetch the file diffs for a GitHub pull request.',
+    schema: z.object({ owner: z.string(), repo: z.string(), prNumber: z.number() }),
+  },
+);
+
+// Tool: post a review comment on a PR
+const postReviewComment = tool(
+  async ({ owner, repo, prNumber, body, commitId, path, position }) => {
+    const res = await fetch(
+      'https://api.github.com/repos/' + owner + '/' + repo + '/pulls/' + prNumber + '/comments',
+      {
+        method: 'POST',
+        headers: { Authorization: 'Bearer ' + GITHUB_TOKEN, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ body, commit_id: commitId, path, position }),
+      },
+    );
+    return res.ok ? 'Comment posted.' : 'Failed: ' + res.statusText;
+  },
+  {
+    name: 'post_review_comment',
+    description: 'Post an inline review comment on a specific line of a GitHub PR.',
+    schema: z.object({
+      owner: z.string(), repo: z.string(), prNumber: z.number(),
+      body: z.string(), commitId: z.string(), path: z.string(), position: z.number(),
+    }),
+  },
+);
+
+const reviewAgent = createReactAgent({
+  llm: model,
+  tools: [getPRDiff, postReviewComment],
+  messageModifier:
+    'You are a senior code reviewer. For each changed file: identify bugs, ' +
+    'security issues, and missing error handling. Post concise, actionable comments. ' +
+    'Prioritise: security > correctness > style.',
+});
+
+const result = await reviewAgent.invoke({
+  messages: [{
+    role: 'user',
+    content: 'Review PR #42 in the repo owner=acme repo=backend. Post comments on issues you find.',
+  }],
+});
+console.log(result.messages.at(-1).content);`,
+      },
+      {
+        id: 'test-writer-agent',
+        title: 'Test Writer Agent: Generates Jest Tests from Source Code',
+        content:
+          'The agent reads a source file, understands the function signatures and edge cases, and writes a complete Jest test file. Use the Reflection pattern (Day 57) to iterate until the tests actually pass.',
+        code: `import { execSync } from 'child_process';
+import { readFileSync, writeFileSync } from 'fs';
+
+// Tool: read source file
+const readSourceFile = tool(
+  async ({ filePath }) => readFileSync(filePath, 'utf-8'),
+  { name: 'read_source', description: 'Read a source file.', schema: z.object({ filePath: z.string() }) },
+);
+
+// Tool: write test file
+const writeTestFile = tool(
+  async ({ filePath, content }) => { writeFileSync(filePath, content); return 'Written to ' + filePath; },
+  { name: 'write_test_file', description: 'Write a test file.', schema: z.object({ filePath: z.string(), content: z.string() }) },
+);
+
+// Tool: run Jest and return output
+const runTests = tool(
+  async ({ testFilePath }) => {
+    try {
+      return execSync('npx jest ' + testFilePath + ' --no-coverage 2>&1', { encoding: 'utf-8', timeout: 30_000 });
+    } catch (err) {
+      return err.stdout ?? err.message; // Jest exits non-zero on failure — capture the output
+    }
+  },
+  { name: 'run_tests', description: 'Run Jest tests and return the output.', schema: z.object({ testFilePath: z.string() }) },
+);
+
+const testWriterAgent = createReactAgent({
+  llm: model,
+  tools: [readSourceFile, writeTestFile, runTests],
+  messageModifier:
+    'You are an expert test engineer. When given a source file: ' +
+    '1. Read the source file. ' +
+    '2. Write a comprehensive Jest test file covering happy paths, edge cases, and error cases. ' +
+    '3. Run the tests. ' +
+    '4. If any tests fail, read the error output, fix the test file, and run again. ' +
+    '5. Stop when all tests pass or after 3 iterations.',
+});
+
+const result = await testWriterAgent.invoke({
+  messages: [{ role: 'user', content: 'Write and run tests for ./src/utils/tokenizer.js' }],
+});
+console.log(result.messages.at(-1).content);`,
+      },
+      {
+        id: 'auto-fixer-agent',
+        title: 'Auto-Fixer Agent: Patches Source Code Until Tests Pass',
+        content:
+          'The auto-fixer reads a failing test output, identifies the root cause, patches the source file, and re-runs the tests — iterating until green or hitting the max attempt limit. This is the Reflection pattern applied to code.',
+        code: `// Tool: apply a targeted patch to a source file
+const patchFile = tool(
+  async ({ filePath, searchText, replaceText }) => {
+    const original = readFileSync(filePath, 'utf-8');
+    if (!original.includes(searchText)) return 'ERROR: search text not found in file.';
+    writeFileSync(filePath, original.replace(searchText, replaceText));
+    return 'Patched successfully.';
+  },
+  {
+    name: 'patch_file',
+    description: 'Replace a specific substring in a source file with new text.',
+    schema: z.object({
+      filePath: z.string().describe('File to patch'),
+      searchText: z.string().describe('Exact text to find and replace'),
+      replaceText: z.string().describe('Text to replace it with'),
+    }),
+  },
+);
+
+const autoFixerAgent = createReactAgent({
+  llm: new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' }),
+  tools: [readSourceFile, patchFile, runTests],
+  messageModifier:
+    'You are a debugging expert. You will be given a source file and its failing tests. ' +
+    'Steps: 1. Run the tests to see the failure. 2. Read the source file. ' +
+    '3. Identify the bug from the test failure. 4. Apply the minimal patch to fix it. ' +
+    '5. Re-run the tests. 6. Repeat up to 3 times. ' +
+    'CRITICAL: only use patch_file — never rewrite the entire file.',
+});
+
+await autoFixerAgent.invoke({
+  messages: [{
+    role: 'user',
+    content: 'Fix the failing tests in ./src/utils/tokenizer.test.js. The source file is ./src/utils/tokenizer.js',
+  }],
+});`,
+      },
+      {
+        id: 'code-agent-safety',
+        title: 'Safety Constraints for Code-Executing Agents',
+        content:
+          'A code agent with unrestricted filesystem and shell access is dangerous. Apply these constraints before deploying to production:\\n\\n' +
+          '• **Sandbox the working directory** — pass an allowlist of paths; reject any tool call outside it.\\n' +
+          '• **Disable destructive commands** — no `rm`, no `git push`, no `npm publish` without explicit approval.\\n' +
+          '• **Timeout all executions** — cap test runs at 30s; cap the agent loop at 3 iterations.\\n' +
+          '• **Human approval for file writes** — use LangGraph\'s `interrupt()` before any `writeFile` to production paths.\\n' +
+          '• **Dry-run mode** — add a `dryRun` flag; in dry-run, log what *would* change without writing anything.',
+        code: `const ALLOWED_DIR = '/tmp/agent-sandbox'; // restrict agent to this directory
+
+// Wrap all file tools with a path guard
+function guardPath(filePath) {
+  const resolved = require('path').resolve(filePath);
+  if (!resolved.startsWith(ALLOWED_DIR)) {
+    throw new Error('Access denied: ' + filePath + ' is outside the sandbox directory.');
+  }
+  return resolved;
+}
+
+const safePatchFile = tool(
+  async ({ filePath, searchText, replaceText }) => {
+    const safe = guardPath(filePath); // throws if outside sandbox
+    const original = readFileSync(safe, 'utf-8');
+    if (!original.includes(searchText)) return 'ERROR: search text not found.';
+    writeFileSync(safe, original.replace(searchText, replaceText));
+    return 'Patched: ' + safe;
+  },
+  {
+    name: 'patch_file',
+    description: 'Replace text in a file (restricted to the sandbox directory).',
+    schema: z.object({ filePath: z.string(), searchText: z.string(), replaceText: z.string() }),
+  },
+);`,
+      },
+      {
+        id: 'code-agents-practice',
+        title: 'Practice Exercises',
+        content:
+          'Build these to master Day 113: (1) **PR reviewer** — build the review agent, create a test GitHub repo with a simple PR containing a bug, and verify the agent posts a comment identifying it; (2) **Test writer** — run the test writer agent on a 3-function utility module, check the generated tests pass; (3) **Auto-fixer** — deliberately introduce a bug in a function, run its tests to fail, then run the auto-fixer agent and watch it patch the source until green; (4) **Safety audit** — add the path guard to all file tools, write a test that tries to read `/etc/passwd` via the agent, and confirm it is blocked.',
+      },
+    ],
+  },
+  {
+    genaiDay: 114,
+    phase: 'Part VI · Expert Engineering & The Frontier',
+    title: 'Full-Stack AI SaaS Architecture: Auth, Billing, Caching & K8s',
+    subtitle: 'Design and wire together every layer of a production AI SaaS — from React frontend to Kubernetes-scaled agent pods with cost controls',
+    topics: [
+      'End-to-end architecture: React + Vite frontend, Node.js API, LangGraph agent pods, PostgreSQL, Redis',
+      'Authentication with Clerk and per-user usage tracking tied to Stripe billing metered events',
+      'Semantic response caching with Redis to cut LLM costs by up to 70% on repeated queries',
+      'Kubernetes HPA for agent pods: auto-scaling based on queue depth and CPU, with pod disruption budgets',
+    ],
+    notionUrl: LC,
+    youtube: yt('k2p7QBEMi5w', 'Build and Deploy a Full-Stack AI SaaS — Complete Architecture Guide', 'Fireship'),
+    sections: [
+      {
+        id: 'saas-architecture',
+        title: 'End-to-End Architecture Overview',
+        content:
+          'A production AI SaaS has seven layers, each with a clear responsibility:\\n\\n' +
+          '1. **Frontend (React + Vite)** — chat UI, auth redirects, SSE token streaming consumer\\n' +
+          '2. **API Gateway (Express.js)** — JWT validation, rate limiting, request routing\\n' +
+          '3. **Agent Service (Node.js + LangGraph)** — stateful agent logic, tool execution\\n' +
+          '4. **Cache Layer (Redis)** — semantic response cache + LangGraph checkpoints\\n' +
+          '5. **Database (PostgreSQL)** — user records, usage events, conversation history\\n' +
+          '6. **Message Queue (BullMQ/Redis)** — async agent job dispatch for long-running runs\\n' +
+          '7. **Billing (Stripe)** — metered events per token consumed, subscription management\\n\\n' +
+          'Deploy layers 2-6 as Kubernetes Deployments; scale the Agent Service pod count with an HPA.',
+      },
+      {
+        id: 'auth-clerk',
+        title: 'Authentication with Clerk & Per-User Usage Tracking',
+        content:
+          'Clerk handles sign-up, sign-in, and JWT issuance. Your API validates the JWT on every request, extracts the `userId`, and writes a usage event to PostgreSQL after each agent run — enabling per-user billing and quota enforcement.',
+        code: `import { clerkClient, requireAuth } from '@clerk/express';
+import { Pool } from 'pg';
+
+const db = new Pool({ connectionString: process.env.DATABASE_URL });
+
+// Clerk JWT middleware — rejects requests without a valid session token
+app.use('/api', requireAuth());
+
+// Record usage after each agent run (call this in your /chat handler)
+async function recordUsage(userId, tokensUsed, feature) {
+  await db.query(
+    'INSERT INTO usage_events (user_id, tokens_used, feature, created_at) VALUES ($1, $2, $3, NOW())',
+    [userId, tokensUsed, feature],
+  );
+}
+
+// Quota check — enforce free-tier limits before running the agent
+async function checkQuota(userId) {
+  const { rows } = await db.query(
+    'SELECT COALESCE(SUM(tokens_used), 0) AS total FROM usage_events ' +
+    'WHERE user_id = $1 AND created_at > NOW() - INTERVAL \\'30 days\\'',
+    [userId],
+  );
+  const used = parseInt(rows[0].total);
+  const user = await clerkClient.users.getUser(userId);
+  const plan = user.publicMetadata.plan ?? 'free';
+  const limits = { free: 100_000, pro: 5_000_000 };
+  if (used >= limits[plan]) throw new Error('Monthly token quota exceeded. Upgrade to Pro.');
+}
+
+// In your /chat route:
+app.post('/api/chat', requireAuth(), async (req, res) => {
+  await checkQuota(req.auth.userId);
+  const result = await agent.invoke({ messages: [{ role: 'user', content: req.body.message }] });
+  const tokensUsed = result.usage?.totalTokens ?? 0;
+  await recordUsage(req.auth.userId, tokensUsed, 'chat');
+  res.json({ reply: result.messages.at(-1).content });
+});`,
+      },
+      {
+        id: 'stripe-billing',
+        title: 'Stripe Metered Billing for Token Consumption',
+        content:
+          'Report token usage to Stripe as **metered events** — Stripe automatically calculates the invoice at the end of each billing period. This lets you charge `$0.001 per 1,000 tokens` without building any billing maths yourself.',
+        code: `import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+// Report usage to Stripe (call after each agent run)
+async function reportUsageToStripe(stripeSubscriptionItemId, tokensUsed) {
+  await stripe.subscriptionItems.createUsageRecord(
+    stripeSubscriptionItemId,
+    {
+      quantity: Math.ceil(tokensUsed / 1000), // charge per 1k tokens
+      timestamp: Math.floor(Date.now() / 1000),
+      action: 'increment',
+    },
+  );
+}
+
+// Webhook: sync Stripe subscription status to your DB
+app.post('/webhooks/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  const event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+
+  if (event.type === 'customer.subscription.updated') {
+    const sub = event.data.object;
+    await db.query(
+      'UPDATE users SET stripe_status = $1 WHERE stripe_customer_id = $2',
+      [sub.status, sub.customer],
+    );
+  }
+  res.json({ received: true });
+});`,
+      },
+      {
+        id: 'semantic-cache',
+        title: 'Semantic Response Cache: Cut LLM Costs by 70%',
+        content:
+          'Many users ask semantically identical questions (`"How do I reset my password?"` vs `"Forgot my password — how do I get a new one?"`). A **semantic cache** embeds the query, finds the most similar cached response, and returns it directly if similarity > threshold — zero LLM call, zero cost.',
+        code: `import { createClient } from 'redis';
+import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
+
+const redis = createClient({ url: process.env.REDIS_URL });
+await redis.connect();
+
+const embeddings = new GoogleGenerativeAIEmbeddings({ model: 'text-embedding-004' });
+
+const CACHE_THRESHOLD = 0.95; // cosine similarity — tune for your use case
+const CACHE_TTL = 3600; // 1 hour
+
+function cosineSimilarity(a, b) {
+  const dot = a.reduce((s, v, i) => s + v * b[i], 0);
+  const magA = Math.sqrt(a.reduce((s, v) => s + v * v, 0));
+  const magB = Math.sqrt(b.reduce((s, v) => s + v * v, 0));
+  return dot / (magA * magB);
+}
+
+async function semanticCacheLookup(query) {
+  const queryEmbed = await embeddings.embedQuery(query);
+  const keys = await redis.keys('cache:*');
+
+  for (const key of keys) {
+    const cached = JSON.parse(await redis.get(key));
+    const sim = cosineSimilarity(queryEmbed, cached.embedding);
+    if (sim >= CACHE_THRESHOLD) {
+      console.log('Cache HIT (similarity: ' + sim.toFixed(3) + ')');
+      return cached.response;
+    }
+  }
+  return null;
+}
+
+async function semanticCacheStore(query, response) {
+  const embedding = await embeddings.embedQuery(query);
+  const key = 'cache:' + Date.now();
+  await redis.setEx(key, CACHE_TTL, JSON.stringify({ embedding, response }));
+}
+
+// Wrap your agent call
+async function cachedAgentCall(message) {
+  const cached = await semanticCacheLookup(message);
+  if (cached) return cached;
+
+  const result = await agent.invoke({ messages: [{ role: 'user', content: message }] });
+  const response = result.messages.at(-1).content;
+  await semanticCacheStore(message, response);
+  return response;
+}`,
+      },
+      {
+        id: 'kubernetes-hpa',
+        title: 'Kubernetes HPA: Auto-Scaling Agent Pods',
+        content:
+          'Agent runs are CPU and memory intensive. Use a **Horizontal Pod Autoscaler** to scale the agent Deployment up when queue depth or CPU rises, and down when idle — keeping costs low without manual intervention.',
+        code: `# agent-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: agent-service
+  template:
+    metadata:
+      labels:
+        app: agent-service
+    spec:
+      containers:
+        - name: agent
+          image: my-registry/agent-service:latest
+          resources:
+            requests: { cpu: "500m", memory: "512Mi" }
+            limits:   { cpu: "2",    memory: "2Gi"  }
+          env:
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef: { name: agent-secrets, key: gemini-api-key }
+---
+# agent-hpa.yaml — scale 2-10 pods based on CPU
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: agent-service-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: agent-service
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60  # scale up when avg CPU > 60%
+---
+# pod-disruption-budget.yaml — always keep 1 pod available during rolling updates
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: agent-service-pdb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: agent-service`,
+      },
+      {
+        id: 'saas-practice',
+        title: 'Practice Exercises',
+        content:
+          'Build these to master Day 114: (1) **Auth + quota** — add Clerk to your Day 58 API, extract `userId`, and enforce a 10-request-per-hour quota using PostgreSQL; (2) **Semantic cache** — implement `cachedAgentCall()`, run 20 queries with 5 semantically similar pairs, and log cache hit rate and total tokens saved; (3) **Stripe webhook** — set up a Stripe test mode subscription, send usage records after each agent call, and verify the metered invoice in the Stripe dashboard; (4) **K8s deploy** — write the `Deployment`, `HPA`, and `Service` manifests for your agent service, apply them to a local minikube cluster, and verify the HPA scales up under a load test.',
+      },
+    ],
+  },
+  {
+    genaiDay: 115,
+    phase: 'Part VI · Expert Engineering & The Frontier',
+    title: 'The Road Ahead: Reasoning Models, Computer Use & What to Build Next',
+    subtitle: 'Understand where the field is heading — from reasoning models to computer-use agents — and chart your own path as a GenAI engineer',
+    topics: [
+      'Reasoning models (o3, Gemini Thinking, DeepSeek R1): how they differ from standard LLMs and when to use them',
+      'Computer-use agents: controlling browsers, desktops and APIs with visual observation and action loops',
+      'The agent capability ladder: where current systems sit and what each rung unlocks',
+      'Your portfolio strategy: which projects signal GenAI engineering mastery to employers and clients',
+    ],
+    notionUrl: LC,
+    youtube: yt('AhyznRSDjw8', 'The Future of AI Agents — Reasoning Models, Computer Use and AGI', 'Andrej Karpathy'),
+    sections: [
+      {
+        id: 'reasoning-models',
+        title: 'Reasoning Models: Thinking Before Answering',
+        content:
+          'Standard LLMs predict the next token immediately. **Reasoning models** (OpenAI o3, Gemini 2.5 with `thinkingBudget`, DeepSeek R1) generate a hidden chain of thought — sometimes thousands of tokens — before producing the final answer. The result is dramatically better performance on multi-step problems, maths, and complex code.\\n\\n' +
+          '**When to pay the thinking-token premium:**\\n' +
+          '• Multi-step planning (architecture decisions, strategy documents)\\n' +
+          '• Complex code generation (algorithms, data structures, concurrency)\\n' +
+          '• Mathematical reasoning (proofs, financial models, simulations)\\n' +
+          '• Hard logical deduction (legal analysis, constraint satisfaction)\\n\\n' +
+          '**When NOT to use reasoning:**\\n' +
+          '• Simple Q&A, summarisation, translation — thinking tokens waste money\\n' +
+          '• High-frequency calls (>100/min) — latency impact is significant\\n' +
+          '• Streaming UX — thinking tokens can delay the first output token',
+        code: `import 'dotenv/config';
+import { GoogleGenAI } from '@google/genai';
+
+const ai = new GoogleGenAI({});
+
+// Adaptive thinking: spend more tokens on harder problems
+async function adaptiveReasoning(task, complexityHint = 'auto') {
+  const budgets = { low: 0, medium: 500, high: 2000, max: 8000 };
+
+  // Heuristic: classify complexity from keywords
+  const budget = complexityHint === 'auto'
+    ? task.match(/proof|algorithm|architect|optimize|debug|design/i) ? budgets.high : budgets.low
+    : budgets[complexityHint] ?? budgets.medium;
+
+  const response = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents: task,
+    config: { thinkingConfig: { thinkingBudget: budget } },
+  });
+
+  return { answer: response.text, thinkingTokensUsed: response.usageMetadata?.thoughtsTokenCount ?? 0 };
+}
+
+// Simple task — no thinking tokens
+const simple = await adaptiveReasoning('What is the capital of France?');
+console.log('Simple:', simple.thinkingTokensUsed, 'thinking tokens'); // 0
+
+// Complex task — high thinking budget
+const complex = await adaptiveReasoning(
+  'Design a rate-limiting algorithm for a distributed system ' +
+  'that handles 1M requests/second with sub-millisecond latency.',
+);
+console.log('Complex:', complex.thinkingTokensUsed, 'thinking tokens'); // 1000+
+console.log(complex.answer);`,
+      },
+      {
+        id: 'computer-use-agents',
+        title: 'Computer-Use Agents: Seeing and Acting on Screens',
+        content:
+          '**Computer-use** agents take a screenshot, understand the UI visually, and then emit actions (click, type, scroll) — just like a human would. Claude\'s computer-use API and Google\'s Project Mariner are the leading implementations.\\n\\n' +
+          'The loop: **observe** (screenshot) → **reason** (what should I do next?) → **act** (click / type) → **observe** again.\\n\\n' +
+          '**Current state (2026):** impressive on web tasks, unreliable on complex desktop UIs. Best for: browser automation, form filling, data extraction from non-API sources, UI testing.\\n\\n' +
+          '**Production risk:** computer-use agents can accidentally click the wrong button, submit forms with wrong data, or navigate to unintended pages. Always run in a sandboxed browser with rollback capability.',
+        code: `// Computer-use with Playwright + Gemini Vision (simplified pattern)
+// For production, use Anthropic's computer-use API or Google's Mariner
+
+import { chromium } from 'playwright';
+import { GoogleGenAI } from '@google/genai';
+import { readFileSync } from 'fs';
+
+const ai = new GoogleGenAI({});
+
+async function computerUseLoop(task, maxSteps = 10) {
+  const browser = await chromium.launch({ headless: false });
+  const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
+  await page.goto('https://example.com');
+
+  for (let step = 0; step < maxSteps; step++) {
+    // 1. Observe: take a screenshot
+    const screenshot = await page.screenshot({ type: 'png' });
+    const base64 = screenshot.toString('base64');
+
+    // 2. Reason: ask Gemini what to do next
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: [{
+        parts: [
+          { text: 'Task: ' + task + '\\nWhat single action should I take next? ' +
+            'Reply as JSON: { "action": "click|type|scroll|done", "selector": "...", "text": "..." }' },
+          { inlineData: { mimeType: 'image/png', data: base64 } },
+        ],
+      }],
+    });
+
+    const instruction = JSON.parse(response.text);
+    console.log('Step', step + 1, ':', instruction.action, instruction.selector ?? '');
+
+    // 3. Act
+    if (instruction.action === 'done') break;
+    if (instruction.action === 'click')  await page.click(instruction.selector);
+    if (instruction.action === 'type')   await page.fill(instruction.selector, instruction.text);
+    if (instruction.action === 'scroll') await page.evaluate(() => window.scrollBy(0, 500));
+  }
+
+  await browser.close();
+}
+
+await computerUseLoop('Find the contact email on the page and log it.');`,
+      },
+      {
+        id: 'capability-ladder',
+        title: 'The Agent Capability Ladder',
+        content:
+          'Agent capability evolves across five rungs — understanding where your system sits tells you what\'s achievable today and what to build toward:\\n\\n' +
+          '**Rung 1 — Reactive assistant:** single LLM call, responds to prompts. (Days 1-6)\\n' +
+          '**Rung 2 — Tool-augmented:** calls external APIs, searches knowledge bases. (Days 8-9)\\n' +
+          '**Rung 3 — Stateful agent:** persists state across turns, maintains memory. (Days 10, 28-29)\\n' +
+          '**Rung 4 — Multi-agent system:** specialised agents collaborate, delegate, and critique. (Days 10, 57)\\n' +
+          '**Rung 5 — Computer-use / world model:** acts on the environment, recovers from errors, self-improves. (Day 115, near-future)\\n\\n' +
+          'The field moved from Rung 1 to Rung 4 between 2022 and 2025. Rung 5 is the active research frontier — and where the most valuable engineering opportunities lie.',
+      },
+      {
+        id: 'portfolio-strategy',
+        title: 'Your Portfolio Strategy: Projects That Signal Mastery',
+        content:
+          'A GenAI engineer portfolio needs to show three things: **depth** (you understand the stack, not just the APIs), **production thinking** (observability, safety, cost), and **business value** (the project solves a real problem).\\n\\n' +
+          '**Five portfolio projects that signal mastery:**\\n' +
+          '1. **Production RAG system** — hybrid search, re-ranking, RAGAS evals, LangSmith tracing (Days 8, 56)\\n' +
+          '2. **Multi-agent coding assistant** — code review bot, test writer, auto-fixer with safety constraints (Days 10, 57, 113)\\n' +
+          '3. **Multimodal document analyst** — handles PDFs, images, audio; deployed as an API with SSE streaming (Days 58, 59)\\n' +
+          '4. **Full-stack AI SaaS** — React + Node.js + LangGraph + Stripe + K8s, end to end (Day 114)\\n' +
+          '5. **Fine-tuned domain specialist** — a custom model with A/B eval proving improvement over the base (Day 60)\\n\\n' +
+          '**The differentiator:** instrument every project with LangSmith, add RAGAS or LLM-as-judge evals, and document the cost-quality trade-offs you measured. Most candidates show working demos; few show working demos with evidence.',
+        code: `// A checklist for every portfolio project
+const portfolioProjectChecklist = {
+  core: [
+    'Solves a real, specific problem (not "a chatbot")',
+    'README with architecture diagram and design decisions',
+    'Live demo or video walkthrough',
+  ],
+  engineering: [
+    'LangSmith tracing enabled with metadata tags',
+    'Automated evaluation (RAGAS or LLM-as-judge) with reported scores',
+    'Cost tracking: tokens per run, monthly estimate',
+    'Unit tests for critical utility functions',
+  ],
+  production: [
+    'Dockerfile + docker-compose for one-command local setup',
+    'Environment variables documented in .env.example',
+    'Error handling: graceful fallbacks, no stack traces to users',
+    'Rate limiting or quota system to prevent runaway costs',
+  ],
+  differentiation: [
+    'Documented a specific trade-off you measured (e.g. hybrid vs vector search)',
+    'A/B comparison of two approaches with numbers',
+    'A known limitation honestly documented with a proposed fix',
+  ],
+};
+
+// Self-score your projects before publishing
+for (const [category, items] of Object.entries(portfolioProjectChecklist)) {
+  console.log('\\n' + category.toUpperCase());
+  items.forEach((item) => console.log('  [ ] ' + item));
+}`,
+      },
+      {
+        id: 'whats-next',
+        title: 'What\'s Next: The 12-Month Research Frontier',
+        content:
+          'The GenAI field moves fast. Here are the developments most likely to reshape what you build in the next 12 months:\\n\\n' +
+          '**Longer context, less retrieval** — as context windows hit 10M+ tokens, some RAG use cases collapse into "just put everything in the prompt". But retrieval still wins for privacy, freshness, and cost at scale.\\n\\n' +
+          '**Agentic memory as infrastructure** — purpose-built agent memory stores (Mem0, Letta) are replacing hand-rolled vector-store memory. Learn the patterns now; the tools will commoditise.\\n\\n' +
+          '**Test-time compute scaling** — spending more compute at inference (thinking tokens, self-play, best-of-N sampling) is proving more efficient than bigger model weights. Expect reasoning APIs to become the default for hard tasks.\\n\\n' +
+          '**Agent-to-agent communication** — MCP (Day 111) is the beginning. Expect standardised agent communication protocols that let your agents discover and call other agents as first-class tools.\\n\\n' +
+          '**The engineer\'s competitive advantage:** the models will get smarter and cheaper automatically. Your value is in knowing *how to build reliable systems around them* — evaluation, observability, safety, and production engineering. Those skills compound.',
+      },
+      {
+        id: 'day115-practice',
+        title: 'Capstone Challenge: Ship Your Signature Project',
+        content:
+          'Day 115 is not a coding exercise — it\'s a shipping challenge. Pick the single project from this curriculum you are most proud of and make it portfolio-ready using the checklist above. Then:\\n\\n' +
+          '(1) **Deploy it** — at minimum, a public Render/Railway/Fly.io deployment or a video demo.\\n' +
+          '(2) **Instrument it** — add LangSmith tracing, a cost report, and one automated eval.\\n' +
+          '(3) **Document the hard parts** — write a 300-word README section on one non-obvious technical decision you made and why.\\n' +
+          '(4) **Share it** — post to LinkedIn or X with the architecture diagram. Tag the libraries you used. The community engages with real builds.\\n\\n' +
+          'You have completed **Part VI · Expert Engineering & The Frontier**. You can now design, build, evaluate, secure, scale, and deploy autonomous AI agents — from a single Gemini API call to a Kubernetes-scaled, Stripe-billed, LangSmith-observed production system. The rest is shipped code.',
+      },
+    ],
+  },
 ];
