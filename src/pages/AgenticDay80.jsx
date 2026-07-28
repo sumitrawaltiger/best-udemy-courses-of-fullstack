@@ -51,9 +51,9 @@ const PRACTICE = [
     code: 'record → review\nfix 2 things',
   },
   {
-    icon: '🔜', title: 'What Comes Next', titleClass: 'card-title-amber', subtitle: 'Continue',
-    description: 'Keep drilling interviews, ship one more portfolio agent, or fill missing middle days.',
-    link: { href: '/', label: 'Back to Home →' },
+    icon: '🔜', title: 'Next: Agentic RAG', titleClass: 'card-title-amber', subtitle: 'Day 81',
+    description: 'Continue Phase 12 — Agentic RAG, context engineering, schemas, AgentOps, milestone.',
+    link: { href: '/agentic-day-81', label: 'Go to Day 81 →' },
   },
 ];
 
@@ -138,7 +138,7 @@ export default function AgenticDay80() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-79" className="day001-nav-btn day001-nav-prev">← Day 79</Link>
           <p className="day001-datetime">Agentic AI Day 80 · 19 Oct 2026</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <Link to="/agentic-day-81" className="day001-nav-btn day001-nav-next">Day 81 →</Link>
         </header>
 
         <div className="day001-hero">
