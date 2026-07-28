@@ -266,6 +266,71 @@ const MICROSERVICES_DESIGN_SECTIONS = [
   },
 ];
 
+// The classic Netflix OSS microservices stack — distilled from "Mastery in
+// Microservices" (public/java-notes/mastery-in-microservices.pdf). Complements
+// MICROSERVICES_DESIGN_SECTIONS (patterns/theory) and the modern Spring Cloud
+// modules elsewhere (Resilience4j, OpenFeign, Spring Cloud Gateway) with the
+// older Zuul/Ribbon/Hystrix stack, tied together through a worked Currency
+// Conversion ↔ Currency Exchange example.
+const MICROSERVICES_CLASSIC_STACK_SECTIONS = [
+  {
+    id: 'building-a-simple-microservice',
+    title: 'Building a Simple Microservice with Spring Boot',
+    content:
+      "Every microservice starts the same way: a Spring Boot project exposing one REST endpoint. Add `spring-boot-starter-web`, annotate the main class with `@SpringBootApplication`, then a `@RestController` maps an HTTP path to a method that returns data — no view, no template, just JSON.\n\nSpring Boot's `MockMvc` (from `spring-boot-starter-test`) lets you test that endpoint without starting a real server: `mockMvc.perform(get(\"/books\"))` fires a simulated request through the same `DispatcherServlet`/controller pipeline, and `.andExpect(...)` asserts on the status, content type, and JSON body.",
+    code: "// Book.java\npublic class Book {\n    private Long id;\n    private String title;\n    private String author;\n    // constructors, getters, setters\n}\n\n// BookController.java\n@RestController\npublic class BookController {\n\n    @GetMapping(\"/books\")\n    public List<Book> getBooks() {\n        List<Book> books = new ArrayList<>();\n        books.add(new Book(1L, \"Sample Book 1\", \"Author 1\"));\n        books.add(new Book(2L, \"Sample Book 2\", \"Author 2\"));\n        return books;\n    }\n}\n\n// BookControllerTest.java\n@WebMvcTest(BookController.class)\npublic class BookControllerTest {\n    @Autowired\n    private MockMvc mockMvc;\n\n    @Test\n    public void testGetBooks() throws Exception {\n        mockMvc.perform(get(\"/books\"))\n            .andExpect(status().isOk())\n            .andExpect(content().contentType(\"application/json\"))\n            .andExpect(jsonPath(\"$[0].title\").value(\"Sample Book 1\"));\n    }\n}",
+  },
+  {
+    id: 'currency-conversion-exchange-example',
+    title: 'Worked Example — Currency Conversion ↔ Currency Exchange',
+    content:
+      "A single running example ties the rest of this stack together: a **Currency Conversion** microservice that needs the latest exchange rate, and a **Currency Exchange** microservice that provides it.\n\n- **Currency Exchange Microservice** — stores/serves exchange-rate data via a REST API, with data validation on the currency pairs it accepts.\n- **Currency Conversion Microservice** — fetches the rate from Currency Exchange, then multiplies it by the requested amount to return a converted total. It also persists each conversion (source, target, amount, timestamp) via a JPA entity/repository for audit and history.\n\nThe two services can talk **synchronously** (a direct REST call, blocking until the rate comes back) or **asynchronously** (via a message broker like RabbitMQ/Kafka, if the caller doesn't need the result immediately). This same pair of services is reused in the sections below to show Feign, Ribbon/Eureka, and Zuul in action.",
+    code: "@RestController\npublic class CurrencyConversionController {\n\n    @Autowired\n    private CurrencyExchangeServiceProxy exchangeServiceProxy;\n\n    @GetMapping(\"/convert\")\n    public ResponseEntity<ConversionResult> convertCurrency(\n            @RequestParam(\"sourceCurrency\") String sourceCurrency,\n            @RequestParam(\"targetCurrency\") String targetCurrency,\n            @RequestParam(\"amount\") BigDecimal amount) {\n\n        // Fetch exchange rate from Currency Exchange Microservice\n        ExchangeRate exchangeRate =\n            exchangeServiceProxy.getExchangeRate(sourceCurrency, targetCurrency);\n\n        BigDecimal convertedAmount =\n            amount.multiply(exchangeRate.getConversionRate());\n\n        return ResponseEntity.ok(\n            new ConversionResult(sourceCurrency, targetCurrency, amount, convertedAmount));\n    }\n}",
+  },
+  {
+    id: 'feign-hystrix-fallback',
+    title: 'Feign REST Client + Hystrix Fallback',
+    content:
+      "Rather than wiring `RestTemplate` calls by hand, `spring-cloud-starter-openfeign` lets you declare the remote service as a plain Java **interface** — `@FeignClient(name = \"currency-exchange-service\")` — and call it like any other Spring bean. Feign generates the HTTP client implementation for you at runtime.\n\nPaired with **Hystrix** (`@EnableCircuitBreaker` on the main class), a `fallback` class on the `@FeignClient` annotation supplies an alternate implementation of the same interface — if the real Currency Exchange service is down or times out, Hystrix routes the call to the fallback instead of letting the failure propagate, so Currency Conversion keeps responding (with a safe default rate) instead of failing outright.",
+    code: "// CurrencyExchangeServiceProxy.java\n@FeignClient(name = \"currency-exchange-service\", fallback = CurrencyExchangeFallback.class)\npublic interface CurrencyExchangeServiceProxy {\n    @GetMapping(\"/exchange-rate\")\n    ExchangeRate getExchangeRate(\n        @RequestParam(\"sourceCurrency\") String sourceCurrency,\n        @RequestParam(\"targetCurrency\") String targetCurrency);\n}\n\n// CurrencyExchangeFallback.java\n@Component\npublic class CurrencyExchangeFallback implements CurrencyExchangeServiceProxy {\n    @Override\n    public ExchangeRate getExchangeRate(String sourceCurrency, String targetCurrency) {\n        // Runs only when the real service call fails or times out\n        return new ExchangeRate(sourceCurrency, targetCurrency, BigDecimal.ONE);\n    }\n}\n\n// Main class\n@EnableFeignClients\n@EnableCircuitBreaker\n@SpringBootApplication\npublic class CurrencyConversionApplication { /* ... */ }",
+  },
+  {
+    id: 'ribbon-eureka-load-balancing',
+    title: 'Client-Side Load Balancing — Ribbon + Eureka Naming Server',
+    content:
+      "When a service runs as **multiple instances** for high availability, something has to decide which instance handles each call — that's **client-side load balancing**: the calling service itself picks an instance, rather than a separate load-balancer box in front of it.\n\n**Eureka** acts as the naming server: each microservice registers itself with `@EnableEurekaServer` (server) / `spring-cloud-starter-netflix-eureka-client` + `eureka.client.service-url.defaultZone` (clients). **Ribbon** (`spring-cloud-starter-netflix-ribbon`) then plugs into that registry automatically — a `@FeignClient(name = \"my-microservice\")` referencing a Eureka-registered service name, instead of a hardcoded host:port, gets requests spread across every healthy instance with zero extra configuration.",
+    code: "// EurekaServerApplication.java\n@EnableEurekaServer\n@SpringBootApplication\npublic class EurekaServerApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(EurekaServerApplication.class, args);\n    }\n}\n\n# application.properties (each client microservice)\nspring.application.name=my-microservice\neureka.client.service-url.defaultZone=http://localhost:8761/eureka\n\n// MyServiceClient.java -- Ribbon load-balances across every registered instance\n@FeignClient(name = \"my-microservice\")\npublic interface MyServiceClient {\n    @GetMapping(\"/endpoint\")\n    String getResponse();\n}",
+  },
+  {
+    id: 'zuul-api-gateway-classic',
+    title: 'Zuul — the Classic Netflix API Gateway',
+    content:
+      "Before Spring Cloud Gateway, **Zuul** was Spring Cloud's answer to the API Gateway pattern: a reverse proxy that gives clients one entry point, routes each request to the right microservice by path, and discovers those services through Eureka.\n\nEnable it with `@EnableZuulProxy` on the main class, then map routes in `application.properties` — `zuul.routes.my-microservice.path=/my-service/**` plus `zuul.routes.my-microservice.service-id=my-microservice` sends any request under `/my-service/**` to the Eureka-registered `my-microservice`. A custom `ZuulFilter` (overriding `filterType()`, `filterOrder()`, `shouldFilter()`, and `run()`) can log or inspect every request as it passes through — the same cross-cutting-concerns idea used by the modern Spring Cloud Gateway's `GlobalFilter`.",
+    code: "// ZuulApiGatewayApplication.java\n@EnableZuulProxy\n@SpringBootApplication\npublic class ZuulApiGatewayApplication { /* ... */ }\n\n# application.properties\nzuul.routes.my-microservice.path=/my-service/**\nzuul.routes.my-microservice.service-id=my-microservice\n\n// ZuulLoggingFilter.java\n@Component\npublic class ZuulLoggingFilter extends ZuulFilter {\n    private static final Logger logger = LoggerFactory.getLogger(ZuulLoggingFilter.class);\n\n    @Override public String filterType() { return \"pre\"; } // before routing\n    @Override public int filterOrder() { return 1; }\n    @Override public boolean shouldFilter() { return true; }\n\n    @Override\n    public Object run() {\n        RequestContext context = RequestContext.getCurrentContext();\n        logger.info(\"Request Method: {}\", context.getRequest().getMethod());\n        logger.info(\"Request URL: {}\", context.getRequest().getRequestURL().toString());\n        return null;\n    }\n}\n\n// A client hits the gateway, not the microservice directly:\n// curl -X GET http://localhost:8765/my-service/api/data",
+  },
+  {
+    id: 'zipkin-distributed-tracing-classic',
+    title: 'Zipkin Server — Visualizing a Distributed Trace',
+    content:
+      "Once requests hop through Eureka → Zuul → several microservices, following one request by eyeballing logs stops working. **Zipkin** collects, stores, and visualizes exactly that: enable a standalone Zipkin server with `@EnableZipkinServer`, then add `spring-cloud-starter-zipkin` to every microservice you want traced (each registered with Eureka so Zipkin can discover them).\n\nOnce instrumented, services automatically report tracing data — no manual logging needed. Open the Zipkin dashboard to search traces by service or time range, and see the **duration**, **dependencies**, and **spans** of a request as it crossed multiple microservices, which is exactly how you'd spot which specific hop in a chain was the slow one.",
+    code: "// ZipkinServerApplication.java\n@EnableZipkinServer\n@EnableEurekaClient\n@SpringBootApplication\npublic class ZipkinServerApplication { /* ... */ }\n\n<!-- pom.xml, on every traced microservice -->\n<dependency>\n  <groupId>org.springframework.cloud</groupId>\n  <artifactId>spring-cloud-starter-zipkin</artifactId>\n</dependency>\n\n// Dashboard: http://zipkin-server-host:port\n// microserviceA calling microserviceB shows up as one trace,\n// spanning both services, with per-hop timing.",
+  },
+  {
+    id: 'spring-cloud-bus-config-refresh',
+    title: 'Spring Cloud Bus — Broadcasting Config Changes',
+    content:
+      "A Spring Cloud Config Server centralizes configuration, but updating it doesn't automatically push those changes out — every service still has stale values in memory until it restarts. **Spring Cloud Bus** closes that gap: it rides on top of Config Server plus a message broker (RabbitMQ or Kafka) to broadcast a refresh event to **every** registered service at once.\n\nAfter committing a config change to the Config Server's Git backend, a single `POST` to `/actuator/bus-refresh` (on any one instance) ripples the refresh across the whole fleet — or target one application/instance specifically with `/actuator/bus-refresh/{application-name}:{instance-id}`. No rolling restarts, no manually curling every instance one by one.",
+    code: "<!-- pom.xml, on every service that should refresh together -->\n<dependency>\n  <groupId>org.springframework.cloud</groupId>\n  <artifactId>spring-cloud-starter-bus-amqp</artifactId>\n</dependency>\n\n# Refresh every registered service at once\ncurl -X POST http://microservice-host:port/actuator/bus-refresh\n\n# Refresh only one specific application instance\ncurl -X POST http://microservice-host:port/actuator/bus-refresh/{application-name}:{instance-id}",
+  },
+  {
+    id: 'hystrix-circuit-breaker-classic',
+    title: 'Hystrix — the Classic Netflix Circuit Breaker',
+    content:
+      "Before Resilience4j became the standard, **Hystrix** (Netflix OSS, `spring-cloud-starter-netflix-hystrix`) was Spring Cloud's circuit breaker: enable it fleet-wide with `@EnableHystrix` (or `@EnableCircuitBreaker`), then annotate any method that calls another microservice with `@HystrixCommand(fallbackMethod = \"...\")`.\n\nIf that method fails or times out, Hystrix runs the named fallback method instead — same idea as the Feign fallback class above, but applicable to any method, not just Feign interfaces. Circuit-breaker behaviour is tunable per-command in `application.properties`: `hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds`, `...circuitBreaker.requestVolumeThreshold` (how many failures trip it), and `...circuitBreaker.sleepWindowInMilliseconds` (how long it stays open before testing again).",
+    code: "// MyService.java\n@Service\npublic class MyService {\n\n    @HystrixCommand(fallbackMethod = \"fallbackMethod\")\n    public String remoteMicroserviceCall() {\n        // call to another microservice — may fail or time out\n    }\n\n    public String fallbackMethod() {\n        return \"Fallback response\";\n    }\n}\n\n# application.properties -- tune the breaker\nhystrix.command.default.execution.isolation.thread.timeoutInMilliseconds=5000\nhystrix.command.default.circuitBreaker.requestVolumeThreshold=20\nhystrix.command.default.circuitBreaker.sleepWindowInMilliseconds=5000",
+  },
+];
+
 // JDK vs JRE vs JVM (visual note, attached to the intro Java lesson)
 const JDK_JRE_JVM_SECTIONS = [
   {
@@ -2046,7 +2111,7 @@ function buildLessons() {
       if (title === 'Microservices Architecture') {
         lesson.pdfUrl = '/java-microservices-slides.pdf';
         lesson.pdfLabel = 'Microservices Slides (PDF)';
-        lesson.sections = MICROSERVICES_DESIGN_SECTIONS;
+        lesson.sections = [...MICROSERVICES_DESIGN_SECTIONS, ...MICROSERVICES_CLASSIC_STACK_SECTIONS];
         lesson.topics = [
           'Architecture evolution: monolith → microservices',
           'When (and when not) to use microservices',
@@ -2061,11 +2126,17 @@ function buildLessons() {
           'Distributed caching (cache-aside)',
           'Containers, Kubernetes, CI/CD & GitOps',
           'Resilience & observability',
+          'Classic stack: Zuul, Ribbon, Hystrix, Spring Cloud Bus',
         ];
         lesson.extraLinks = [
           {
             label: 'Design Patterns Slides — 749 pages (PDF)',
             href: '/microservices-design-slides.pdf',
+            icon: '📄',
+          },
+          {
+            label: 'Mastery in Microservices (PDF)',
+            href: '/java-notes/mastery-in-microservices.pdf',
             icon: '📄',
           },
         ];
