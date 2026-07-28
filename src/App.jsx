@@ -276,6 +276,32 @@ import Day197 from './pages/Day197';
 import Day198 from './pages/Day198';
 import Day199 from './pages/Day199';
 import Day200 from './pages/Day200';
+import Day201 from './pages/Day201';
+import Day202 from './pages/Day202';
+import Day203 from './pages/Day203';
+import Day204 from './pages/Day204';
+import Day205 from './pages/Day205';
+import Day206 from './pages/Day206';
+import Day207 from './pages/Day207';
+import Day208 from './pages/Day208';
+import Day209 from './pages/Day209';
+import Day210 from './pages/Day210';
+import Day211 from './pages/Day211';
+import Day212 from './pages/Day212';
+import Day213 from './pages/Day213';
+import Day214 from './pages/Day214';
+import Day215 from './pages/Day215';
+import Day216 from './pages/Day216';
+import Day217 from './pages/Day217';
+import Day218 from './pages/Day218';
+import Day219 from './pages/Day219';
+import Day220 from './pages/Day220';
+import Day225 from './pages/Day225';
+import Day226 from './pages/Day226';
+import Day227 from './pages/Day227';
+import Day228 from './pages/Day228';
+import Day229 from './pages/Day229';
+import Day230 from './pages/Day230';
 import AgenticDay01 from './pages/AgenticDay01';
 import AgenticDay02 from './pages/AgenticDay02';
 import AgenticDay03 from './pages/AgenticDay03';
@@ -656,6 +682,32 @@ export default function App() {
         <Route path="/day-198" element={<Day198 />} />
         <Route path="/day-199" element={<Day199 />} />
         <Route path="/day-200" element={<Day200 />} />
+        <Route path="/day-201" element={<Day201 />} />
+        <Route path="/day-202" element={<Day202 />} />
+        <Route path="/day-203" element={<Day203 />} />
+        <Route path="/day-204" element={<Day204 />} />
+        <Route path="/day-205" element={<Day205 />} />
+        <Route path="/day-206" element={<Day206 />} />
+        <Route path="/day-207" element={<Day207 />} />
+        <Route path="/day-208" element={<Day208 />} />
+        <Route path="/day-209" element={<Day209 />} />
+        <Route path="/day-210" element={<Day210 />} />
+        <Route path="/day-211" element={<Day211 />} />
+        <Route path="/day-212" element={<Day212 />} />
+        <Route path="/day-213" element={<Day213 />} />
+        <Route path="/day-214" element={<Day214 />} />
+        <Route path="/day-215" element={<Day215 />} />
+        <Route path="/day-216" element={<Day216 />} />
+        <Route path="/day-217" element={<Day217 />} />
+        <Route path="/day-218" element={<Day218 />} />
+        <Route path="/day-219" element={<Day219 />} />
+        <Route path="/day-220" element={<Day220 />} />
+        <Route path="/day-225" element={<Day225 />} />
+        <Route path="/day-226" element={<Day226 />} />
+        <Route path="/day-227" element={<Day227 />} />
+        <Route path="/day-228" element={<Day228 />} />
+        <Route path="/day-229" element={<Day229 />} />
+        <Route path="/day-230" element={<Day230 />} />
         <Route path="/agentic-day-1" element={<AgenticDay01 />} />
         <Route path="/agentic-day-2" element={<AgenticDay02 />} />
         <Route path="/agentic-day-3" element={<AgenticDay03 />} />

@@ -53,9 +53,9 @@ const PRACTICE = [
     code: '// ship · measure\n'// guard · iterate',
   },
   {
-    icon: '🔜', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Day 201+',
-    description: 'Next journal days can open a new Year-1 subject or deeper MLOps — Day 201 when ready.',
-    link: { href: '/', label: 'Back to Home →' },
+    icon: '🔜', title: 'What Comes Next', titleClass: 'card-title-lime', subtitle: 'Day 201',
+    description: 'Next arc — advanced TypeScript (Days 201–205): conditionals, infer, mapped types, and brands.',
+    link: { href: '/day-201', label: 'Go to Day 201 →' },
   },
 ];
 
@@ -139,7 +139,7 @@ export default function Day200() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-199" className="day001-nav-btn day001-nav-prev">← Day 199</Link>
           <p className="day001-datetime">ML Day 200 · 19 Jul 2027</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <Link to="/day-201" className="day001-nav-btn day001-nav-next">Day 201 →</Link>
         </header>
 
         <div className="day001-hero">
