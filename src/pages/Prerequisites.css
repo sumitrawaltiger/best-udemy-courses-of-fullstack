@@ -232,6 +232,17 @@
   background: #fff;
   margin-bottom: 0.8rem;
 }
+.prereq-card-thumb-missing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: var(--pq-panel-2);
+  color: var(--pq-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+}
 .prereq-card-title {
   margin: 0 0 0.35rem;
   font-size: 1rem;

@@ -9,6 +9,26 @@ function pad(n) {
   return String(n).padStart(2, '0');
 }
 
+function CardThumb({ src, alt }) {
+  const [failed, setFailed] = useState(false);
+  if (failed) {
+    return (
+      <div className="prereq-card-thumb prereq-card-thumb-missing">
+        <span aria-hidden="true">🖼️</span> Image coming soon
+      </div>
+    );
+  }
+  return (
+    <img
+      className="prereq-card-thumb"
+      src={src}
+      alt={alt}
+      loading="lazy"
+      onError={() => setFailed(true)}
+    />
+  );
+}
+
 export default function TypescriptSeries() {
   const [group, setGroup] = useState(ALL);
   const days = group === ALL ? TS_DAYS : TS_DAYS.filter((d) => d.group === group);
@@ -89,7 +109,7 @@ export default function TypescriptSeries() {
               <span className="prereq-card-day">Ep {pad(d.day)}</span>
               <span className="prereq-card-ep">TS {pad(d.day)}</span>
             </div>
-            <img className="prereq-card-thumb" src={d.image} alt="" loading="lazy" />
+            <CardThumb src={d.image} alt="" />
             <h2 className="prereq-card-title">{d.title}</h2>
             <p className="prereq-card-tagline">{d.tagline}</p>
             <div className="prereq-card-tags">
