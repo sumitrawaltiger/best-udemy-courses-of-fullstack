@@ -3,69 +3,70 @@ import { Link } from 'react-router-dom';
 import './Day001.css';
 
 const LEARNT_TODAY = [
-  { title: "Arc 31–55", text: "LangChain → RAG/FT → LlamaIndex/deploy → Django/DRF → FastAPI → Agentic (LangGraph/MCP/n8n) → prod & capstone" },
-  { title: "RAG first", text: "ground answers before chasing fine-tunes" },
-  { title: "APIs matter", text: "Django/FastAPI give agents and UIs a stable contract" },
-  { title: "Agents = loops", text: "plan → tool → observe with stop rules and budgets" },
-  { title: "MCP & n8n", text: "standard tools + visual automation accelerate delivery" },
-  { title: "Eval & safety", text: "measure success; least privilege; HITL for irreversible acts" },
-  { title: "Portfolio", text: "one agentic capstone with README, eval, and demo beats ten tutorials" },
-  { title: "What’s next", text: "deeper MLOps/LLMOps, more multi-agent products, or the next stack in the 1500-day journey" },
+  { title: 'Agentic app = system', text: 'graph + tools + policies + logs + UX, not just chat' },
+  { title: 'Choose one workflow', text: 'triage bot, research bot, ops bot — one domain, one win' },
+  { title: 'Tool discipline', text: 'schemas, timeouts, retries, and idempotency make it reliable' },
+  { title: 'Safety rails', text: 'policy gates + HITL for irreversible actions' },
+  { title: 'Memory with scope', text: 'recall is powerful only when tenant/user boundaries are strict' },
+  { title: 'Evaluation', text: 'define success rate and run regression suites every release' },
+  { title: 'Ops readiness', text: 'queues, budgets, alerts, and runbooks' },
+  { title: 'Portfolio story', text: 'demo a real task end-to-end with logs and guardrails visible' },
 ];
 
 const CORE = [
   {
-    icon: "✅", title: "Checklist", titleClass: 'card-title-cyan', subtitle: "Ship It",
+    icon: '🎓', title: 'Capstone', titleClass: 'card-title-cyan', subtitle: 'Ship',
     description:
-      "RAG service, authenticated API, agent graph with tools, eval suite, deploy + runbook.",
-    code: "RAG · API · agent\neval · deploy",
+      'Build one end-to-end agentic system: UI/API, graph orchestration, tools, memory, and safety.',
+    code: 'agent -> tools -> result',
   },
   {
-    icon: "🧪", title: "Quality Bar", titleClass: 'card-title-purple', subtitle: "Prove",
+    icon: '✅', title: 'Quality Bar', titleClass: 'card-title-purple', subtitle: 'Prove',
     description:
-      "Offline eval pass rate + online success% without budget blowups.",
-    code: "eval · cost · safety",
+      'Gate releases by eval pass rate, tool success rate, and budget compliance.',
+    code: 'eval · tools · $',
   },
   {
-    icon: "🗺️", title: "Journey Map", titleClass: 'card-title-amber', subtitle: "31–55",
+    icon: '🏁', title: 'Milestone', titleClass: 'card-title-amber', subtitle: 'Wrap',
     description:
-      "From LangChain building blocks to production agentic systems.",
-    code: "build → automate → harden",
+      'The goal is not “more autonomy” — it is reliable automation with control and auditability.',
+    code: 'control -> trust',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: "📦", title: "Portfolio Story", titleClass: 'card-title-cyan', subtitle: "Demo",
-    description: "Walk: data → RAG → agent tools → approval → API → metrics.",
-    code: "5-minute narrative",
+    icon: '🧪', title: 'Ship MVP', titleClass: 'card-title-cyan', subtitle: 'Build',
+    description: 'Complete a vertical slice and record a 2-minute demo with one failure recovery.',
+    code: 'demo-ready',
   },
   {
-    icon: "🔍", title: "Health Ritual", titleClass: 'card-title-purple', subtitle: "Weekly",
-    description: "Re-run eval suite; review traces; check spend; rotate one secret.",
-    code: "eval · traces · $",
+    icon: '📕', title: 'Runbook', titleClass: 'card-title-purple', subtitle: 'Ops',
+    description: 'Write one page: symptoms, checks, mitigations, rollback.',
+    code: 'on-call ready',
   },
   {
-    icon: "🔜", title: "Next: LLMOps", titleClass: 'card-title-amber', subtitle: "Day 61",
-    description: "Continue with Phase 10 — versioning, Docker, deploy, monitoring, and CI/CD for agents.",
-    link: { href: '/agentic-day-61', label: 'Go to Day 61 →' },
+    icon: '🏠', title: 'Back To Home', titleClass: 'card-title-amber', subtitle: 'Continue',
+    description: 'Return to Home and keep extending the roadmap.',
+    link: { href: '/', label: 'Back to Home →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: "📘", title: "Python & Agentic Track", titleClass: 'card-title-cyan', subtitle: "Hub",
-    description: "Full lesson on the site for this module.",
-    link: { href: "/python", label: 'Open module →' },
+    icon: '📘', title: 'LangGraph', titleClass: 'card-title-cyan', subtitle: 'Docs',
+    description: 'Graph orchestration patterns for agentic systems.',
+    link: { href: 'https://langchain-ai.github.io/langgraph/', label: 'Open →', external: true },
   },
   {
-    icon: "📘", title: "GenAI Journal Track", titleClass: 'card-title-purple', subtitle: "Hub",
-    description: "Full lesson on the site for this module.",
-    link: { href: "/genai", label: 'Open module →' },
+    icon: '📖', title: 'OWASP LLM Top 10', titleClass: 'card-title-purple', subtitle: 'Security',
+    description: 'A checklist of threats to test and mitigate.',
+    link: { href: 'https://owasp.org/www-project-top-10-for-large-language-model-applications/', label: 'Open →', external: true },
   },
   {
-    icon: "🗺️", title: "Mindset", titleClass: 'card-title-amber', subtitle: "Remember",
-    description: "Ship simple agents, measure hard, and add complexity only when the metrics actually demand it.",
+    icon: '🗺️', title: 'Rule', titleClass: 'card-title-amber', subtitle: 'Remember',
+    description: 'Agentic engineering is software engineering with sharper edges.',
+    footer: 'Make it observable and safe.',
   },
 ];
 
@@ -99,7 +100,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function AgenticDay55() {
+export default function AgenticDay75() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -130,32 +131,33 @@ export default function AgenticDay55() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/agentic-day-54" className="day001-nav-btn day001-nav-prev">← Day 54</Link>
-          <p className="day001-datetime">Agentic AI Day 55 · 24 Sep 2026</p>
-          <Link to="/agentic-day-61" className="day001-nav-btn day001-nav-next">Day 61 →</Link>
+          <Link to="/agentic-day-74" className="day001-nav-btn day001-nav-prev">← Day 74</Link>
+          <p className="day001-datetime">Agentic AI Day 75 · 75 Aug 2026</p>
+          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Milestone</span><span>Day 55</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Capstone</span><span>Day 75</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 55 <span aria-hidden="true">🏁</span></h1>
-              <p className="day001-day-theme">GEN AI & AGENTIC AI MILESTONE</p>
+              <h1 className="day001-day-num">DAY 75 <span aria-hidden="true">🏁</span></h1>
+              <p className="day001-day-theme">AGENTIC AI CAPSTONE MILESTONE</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">AGENTIC AI · AGENTS</p>
+              <p className="day001-profile-role">AGENTIC AI · SHIP</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '37%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '51%' }} /></div>
 
         <p className="day001-summary">
-          Day 55 closes this stretch. You can explain the stack from <strong>LangChain/RAG</strong> through <strong>Django/FastAPI</strong> to <strong>LangGraph, MCP, and n8n agents</strong> — and ship safely.
+          Day 75 is a capstone checkpoint: multi-agent orchestration, reliable tools, scoped memory, policy gates,
+          and production ops. The outcome is an agentic system you can demo and defend.
         </p>
 
         <section className="day001-learnt">
@@ -164,7 +166,7 @@ export default function AgenticDay55() {
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
                 <span className="day001-check" aria-hidden="true">✓</span>
-                <span><strong>{item.title}</strong> — {item.text}</span>
+                <span><strong>{item.title}</strong> - {item.text}</span>
               </li>
             ))}
           </ul>
@@ -175,9 +177,10 @@ export default function AgenticDay55() {
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#AgenticAI</span><span>#GenAI</span><span>#Day55</span><span>#Milestone</span><span>#100DaysOfCode</span>
+          <span>#AgenticAI</span><span>#Capstone</span><span>#Day75</span><span>#MCP</span><span>#100DaysOfCode</span>
         </footer>
       </div>
     </div>
   );
 }
+

@@ -3,69 +3,70 @@ import { Link } from 'react-router-dom';
 import './Day001.css';
 
 const LEARNT_TODAY = [
-  { title: "Arc 31–55", text: "LangChain → RAG/FT → LlamaIndex/deploy → Django/DRF → FastAPI → Agentic (LangGraph/MCP/n8n) → prod & capstone" },
-  { title: "RAG first", text: "ground answers before chasing fine-tunes" },
-  { title: "APIs matter", text: "Django/FastAPI give agents and UIs a stable contract" },
-  { title: "Agents = loops", text: "plan → tool → observe with stop rules and budgets" },
-  { title: "MCP & n8n", text: "standard tools + visual automation accelerate delivery" },
-  { title: "Eval & safety", text: "measure success; least privilege; HITL for irreversible acts" },
-  { title: "Portfolio", text: "one agentic capstone with README, eval, and demo beats ten tutorials" },
-  { title: "What’s next", text: "deeper MLOps/LLMOps, more multi-agent products, or the next stack in the 1500-day journey" },
+  { title: 'You can ship now', text: 'a Gen AI product is a pipeline + UX + metrics, not just prompts' },
+  { title: 'Your differentiator', text: 'data quality, retrieval, and domain focus beat model chasing' },
+  { title: 'LLMOps mindset', text: 'eval gates, canary releases, and rollback plans reduce risk' },
+  { title: 'Security is core', text: 'PII, tenant isolation, and audit trails keep you production-ready' },
+  { title: 'Portfolio story', text: 'show problem → approach → demo → metrics → constraints' },
+  { title: 'Keep it narrow', text: 'one valuable workflow beats five half-finished demos' },
+  { title: 'Iterate by evidence', text: 'fix what the logs and evals prove, not what feels cool' },
+  { title: 'Next: agentic', text: 'these foundations make tool-using systems easier to build' },
 ];
 
 const CORE = [
   {
-    icon: "✅", title: "Checklist", titleClass: 'card-title-cyan', subtitle: "Ship It",
+    icon: '🏁', title: 'Milestone', titleClass: 'card-title-cyan', subtitle: 'Wrap',
     description:
-      "RAG service, authenticated API, agent graph with tools, eval suite, deploy + runbook.",
-    code: "RAG · API · agent\neval · deploy",
+      'You now have a map: performance + cost, tuning decisions, eval harness, and governance to ship confidently.',
+    code: 'build -> measure -> ship',
   },
   {
-    icon: "🧪", title: "Quality Bar", titleClass: 'card-title-purple', subtitle: "Prove",
+    icon: '📦', title: 'Portfolio Pack', titleClass: 'card-title-purple', subtitle: 'Show',
     description:
-      "Offline eval pass rate + online success% without budget blowups.",
-    code: "eval · cost · safety",
+      'Add README, screenshots, sample inputs, and a short demo script. Make the project easy to run and evaluate.',
+    code: 'repo + demo',
   },
   {
-    icon: "🗺️", title: "Journey Map", titleClass: 'card-title-amber', subtitle: "31–55",
+    icon: '🗺️', title: 'Next Builds', titleClass: 'card-title-amber', subtitle: 'Plan',
     description:
-      "From LangChain building blocks to production agentic systems.",
-    code: "build → automate → harden",
+      'Pick one: deeper RAG, multimodal workflows, or agentic tool automation with strict safety.',
+    code: 'choose one path',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: "📦", title: "Portfolio Story", titleClass: 'card-title-cyan', subtitle: "Demo",
-    description: "Walk: data → RAG → agent tools → approval → API → metrics.",
-    code: "5-minute narrative",
+    icon: '🎬', title: 'Demo Script', titleClass: 'card-title-cyan', subtitle: '2 minutes',
+    description: 'Write a tight demo: success case + edge case + metric impact.',
+    code: 'happy + edge + metric',
   },
   {
-    icon: "🔍", title: "Health Ritual", titleClass: 'card-title-purple', subtitle: "Weekly",
-    description: "Re-run eval suite; review traces; check spend; rotate one secret.",
-    code: "eval · traces · $",
+    icon: '📊', title: 'Scorecard', titleClass: 'card-title-purple', subtitle: 'Report',
+    description: 'Publish your p95 latency, token cost, and eval pass rate for the app.',
+    code: 'p95 · tokens · pass%',
   },
   {
-    icon: "🔜", title: "Next: LLMOps", titleClass: 'card-title-amber', subtitle: "Day 61",
-    description: "Continue with Phase 10 — versioning, Docker, deploy, monitoring, and CI/CD for agents.",
-    link: { href: '/agentic-day-61', label: 'Go to Day 61 →' },
+    icon: '🏠', title: 'Back To Track', titleClass: 'card-title-amber', subtitle: 'Continue',
+    description: 'Return to the Gen AI home and extend the roadmap from here.',
+    link: { href: '/genai', label: 'Open Gen AI Track →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: "📘", title: "Python & Agentic Track", titleClass: 'card-title-cyan', subtitle: "Hub",
-    description: "Full lesson on the site for this module.",
-    link: { href: "/python", label: 'Open module →' },
+    icon: '📘', title: 'Gen AI Track', titleClass: 'card-title-cyan', subtitle: 'Hub',
+    description: 'Browse the full Gen AI lessons and curriculum on the site.',
+    link: { href: '/genai', label: 'Open Gen AI Track →' },
   },
   {
-    icon: "📘", title: "GenAI Journal Track", titleClass: 'card-title-purple', subtitle: "Hub",
-    description: "Full lesson on the site for this module.",
-    link: { href: "/genai", label: 'Open module →' },
+    icon: '📖', title: 'LangChain', titleClass: 'card-title-purple', subtitle: 'Docs',
+    description: 'Patterns spanning prompts, retrieval, evaluation, and agents.',
+    link: { href: 'https://js.langchain.com/docs/introduction/', label: 'Open →', external: true },
   },
   {
-    icon: "🗺️", title: "Mindset", titleClass: 'card-title-amber', subtitle: "Remember",
-    description: "Ship simple agents, measure hard, and add complexity only when the metrics actually demand it.",
+    icon: '🗺️', title: 'Rule', titleClass: 'card-title-amber', subtitle: 'Remember',
+    description: 'Shipping with metrics beats collecting concepts.',
+    footer: 'Build, measure, iterate.',
   },
 ];
 
@@ -99,7 +100,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function AgenticDay55() {
+export default function GenaiDay75() {
   const scaleRef = useRef(null);
 
   useEffect(() => {
@@ -130,32 +131,33 @@ export default function AgenticDay55() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/agentic-day-54" className="day001-nav-btn day001-nav-prev">← Day 54</Link>
-          <p className="day001-datetime">Agentic AI Day 55 · 24 Sep 2026</p>
-          <Link to="/agentic-day-61" className="day001-nav-btn day001-nav-next">Day 61 →</Link>
+          <Link to="/genai-day-74" className="day001-nav-btn day001-nav-prev">← Day 74</Link>
+          <p className="day001-datetime">Gen AI Day 75 · 75 Aug 2026</p>
+          <Link to="/genai" className="day001-nav-btn day001-nav-next">Gen AI →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Milestone</span><span>Day 55</span></div>
+            <div className="day001-tags"><span>Gen AI</span><span>Milestone</span><span>Day 75</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 55 <span aria-hidden="true">🏁</span></h1>
-              <p className="day001-day-theme">GEN AI & AGENTIC AI MILESTONE</p>
+              <h1 className="day001-day-num">DAY 75 <span aria-hidden="true">🏁</span></h1>
+              <p className="day001-day-theme">GEN AI MILESTONE</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">AGENTIC AI · AGENTS</p>
+              <p className="day001-profile-role">GEN AI · SHIP</p>
             </div>
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '37%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '51%' }} /></div>
 
         <p className="day001-summary">
-          Day 55 closes this stretch. You can explain the stack from <strong>LangChain/RAG</strong> through <strong>Django/FastAPI</strong> to <strong>LangGraph, MCP, and n8n agents</strong> — and ship safely.
+          Day 75 is a checkpoint. You can build a Gen AI app that is <strong>fast</strong>, <strong>measurable</strong>, and <strong>safe</strong>:
+          budgets, tuning choices, eval harnesses, and governance. Now keep shipping.
         </p>
 
         <section className="day001-learnt">
@@ -164,7 +166,7 @@ export default function AgenticDay55() {
             {LEARNT_TODAY.map((item) => (
               <li key={item.title}>
                 <span className="day001-check" aria-hidden="true">✓</span>
-                <span><strong>{item.title}</strong> — {item.text}</span>
+                <span><strong>{item.title}</strong> - {item.text}</span>
               </li>
             ))}
           </ul>
@@ -175,9 +177,10 @@ export default function AgenticDay55() {
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#AgenticAI</span><span>#GenAI</span><span>#Day55</span><span>#Milestone</span><span>#100DaysOfCode</span>
+          <span>#GenAI</span><span>#Milestone</span><span>#Day75</span><span>#LLMOps</span><span>#100DaysOfCode</span>
         </footer>
       </div>
     </div>
   );
 }
+
