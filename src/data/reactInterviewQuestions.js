@@ -1381,6 +1381,54 @@ export const REACT_INTERVIEW_QUESTIONS = [
     question: "How is React Router different from the history library it's built on?",
     answer: "React Router is a wrapper around the lower-level history library, which is the piece that actually talks to the browser's window.history and exposes browser and hash history implementations. History also provides a memory history, which is what makes React Router usable in environments with no global browser history object at all — React Native apps and Node-based unit tests, for example.",
   },
+  {
+    id: "react-q229",
+    category: "jsx-components",
+    question: "What is the key prop used for in React, and why does it matter?",
+    answer: "The key prop tells React's reconciliation algorithm how to match each list item across renders, so it knows which components to update, add, or remove rather than guessing. Using the array index as a key is risky once the list can be reordered, filtered, or have items inserted or removed, because the index ends up pointing at a different item while React still associates it with the old component instance — leading to state landing on the wrong row or stale content showing up in the wrong place. A stable, unique identifier taken from the actual data (like a database id) avoids that entirely, since it always points to the same logical item no matter how the list gets reshuffled.",
+  },
+  {
+    id: "react-q230",
+    category: "hooks",
+    question: "When does the cleanup function inside useEffect actually run?",
+    answer: "The function you return from inside a useEffect callback is its cleanup function, and React calls it right before the effect runs again on a later render (whenever a dependency changes) as well as when the component unmounts entirely. This matters for anything that sets up an ongoing subscription, timer, or listener — a repeating interval, a socket connection, an event listener — because without cleanup, each re-run of the effect would stack a brand-new one on top of the previous one instead of replacing it, quietly leaking timers and listeners and degrading performance over time.",
+  },
+  {
+    id: "react-q231",
+    category: "jsx-components",
+    question: "What is JSX, and how is it different from plain HTML?",
+    answer: "JSX is a syntax extension that lets you write HTML-like markup directly inside JavaScript files; unlike real HTML, which browsers parse natively, JSX has to be compiled — by Babel or the TypeScript compiler — down into plain `React.createElement()` calls before it can run. JSX is also stricter than HTML: every block must return exactly one root element (wrap siblings in a real element or a Fragment), and attribute names follow JavaScript's camelCase convention rather than HTML's dashed one — `className` and `onClick` instead of `class` and `onclick` — since `class` is a reserved word and dashes aren't valid in identifiers; the two carve-outs are the `data-*` and `aria-*` attributes, which stay as-is.",
+  },
+  {
+    id: "react-q232",
+    category: "lifecycle-advanced",
+    question: "What is batching in React, and how did it change in React 18?",
+    answer: "Batching means React groups several state updates that happen within the same tick into a single re-render, instead of re-rendering once per setter call — so calling two setters back-to-back inside one event handler still only re-renders the component once. Before React 18, this only happened automatically inside React's own event handlers; anything triggered from a promise, a timeout, or a native (non-React) event handler bypassed batching and re-rendered on every call. React 18's automatic batching extends that same behavior everywhere, and for the rare case where you deliberately need a synchronous, un-batched update, `flushSync` from react-dom opts a specific call back out of it.",
+  },
+  {
+    id: "react-q233",
+    category: "lifecycle-advanced",
+    question: "What are the phases of a React render cycle?",
+    answer: "A render cycle has three phases: trigger, render, and commit. Trigger is whatever schedules the render — the initial mount or a state/props update. Render is where React calls your component functions to figure out what should appear, builds a new Virtual DOM tree, and diffs it against the previous one (reconciliation) — this phase touches nothing on the real DOM and can be paused, aborted, or restarted, which is exactly what makes React's concurrent features possible. Commit is where React actually applies the calculated changes to the real DOM; `useLayoutEffect` callbacks fire synchronously here before the browser paints, while `useEffect` callbacks fire afterward, once painting is done.",
+  },
+  {
+    id: "react-q234",
+    category: "hooks",
+    question: "When should you actually reach for useMemo, beyond just caching expensive calculations?",
+    answer: "Besides caching a genuinely expensive computation — heavy filtering, sorting, or transforming of large data — so it doesn't re-run on every render, useMemo is also the tool for referential stability: keeping the same object or array reference across renders when that value is passed as a dependency to another hook, or as a prop to a child wrapped in `React.memo`, since a brand-new reference on every render would otherwise defeat the memoization or dependency check entirely. It isn't free, though — React still has to compare the dependency array on every render — so it's not something to wrap around every value by default; profile first, and memoize only what's actually measurably costing you.",
+  },
+  {
+    id: "react-q235",
+    category: "fundamentals",
+    question: "How does React decide when to re-render after a state update, especially for arrays and objects?",
+    answer: "React re-renders after a state setter is called with a value that's different from the current one, using `Object.is` for that comparison — so calling the setter with a value that's reference-equal to the existing state is a no-op and skips the re-render entirely. That's exactly why array and object state has to be updated immutably: mutating in place keeps the same reference, so React sees no change and never re-renders, whereas creating a brand-new reference — spreading the array or object into a new one before calling the setter — is what actually triggers the update.",
+  },
+  {
+    id: "react-q236",
+    category: "hooks",
+    question: "What are the rules of hooks in React, and why do they exist?",
+    answer: "There are two rules, both enforced by the eslint-plugin-react-hooks linter: only call hooks at the top level of a component — never inside a loop, a conditional, or a nested function — and only call them from React function components or from other custom hooks, never from a plain JavaScript function. The first rule exists because React matches each hook call to its internal state slot purely by the order the calls happen in on every render, so a hook called conditionally would shift that order between renders and corrupt the mapping; the fix is to always call the hook unconditionally and move the condition inside its callback instead. Custom hooks also need to be named starting with `use` so both React and the linter recognize them and apply these same rules.",
+  },
 ];
 
 export function searchReactQuestions(query) {
