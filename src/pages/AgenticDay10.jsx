@@ -62,9 +62,9 @@ const RESOURCES = [
     link: { href: PY_THREADING_DOCS, label: 'Open the docs →', external: true },
   },
   {
-    icon: '🎉', title: 'Two Weeks Complete', titleClass: 'card-title-amber', subtitle: 'Days 1–10 Done',
-    description: 'Python fundamentals, modules, files, exceptions, OOP, and threading are covered. Next: deeper Python + first ML/DL concepts.',
-    link: { href: '/', label: 'Back to Home →' },
+    icon: '🎉', title: 'Next: Databases', titleClass: 'card-title-amber', subtitle: 'Day 11 Preview',
+    description: 'Tomorrow — SQLite, MySQL, CRUD, and a student management assignment.',
+    link: { href: '/agentic-day-11', label: 'Go to Day 11 →' },
   },
 ];
 
@@ -131,7 +131,7 @@ export default function AgenticDay10() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-9" className="day001-nav-btn day001-nav-prev">← Day 9</Link>
           <p className="day001-datetime">Agentic AI Day 10 · 10 Aug 2026</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <Link to="/agentic-day-11" className="day001-nav-btn day001-nav-next">Day 11 →</Link>
         </header>
 
         <div className="day001-hero">
