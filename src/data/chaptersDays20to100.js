@@ -1950,58 +1950,89 @@ export const chaptersDays20to100 = [
   },
   {
     "id": 34,
-    "slug": "websockets-and-real-time-apis",
+    "slug": "project-building-chat-app-database-design",
     "track": "thunder",
     "day": 34,
-    "title": "WebSockets & Real-Time APIs",
-    "subtitle": "Socket.io, rooms, and live updates",
+    "title": "Project Building — Chat App Database Design",
+    "subtitle": "Designing a MongoDB schema for an LLM chat app — Users, Chats & Messages",
     "duration": "2 hrs",
     "createdOn": "18 Aug 2026",
     "status": "published",
     "topics": [
-      "HTTP vs WebSockets",
-      "Socket.io setup",
-      "Emit & on events",
-      "Rooms & namespaces",
-      "Real-time chat demo"
+      "The 4 schema-design questions",
+      "Embedded vs referenced data",
+      "User + Chat + Message collections",
+      "Token usage tracking",
+      "Mongoose schemas & indexes"
     ],
     "sections": [
       {
-        "id": "http-vs-websockets",
-        "title": "HTTP vs WebSockets",
-        "content": "Learn **HTTP vs WebSockets** in Day 34 of Thunder: 100 Days of Code. Socket.io, rooms, and live updates",
-        "tryIt": "console.log(\"Day 34: WebSockets & Real-Time APIs\");"
+        "id": "the-4-design-questions",
+        "title": "The 4 Questions Before You Design a Schema",
+        "content": "**Day 34** follows **Lecture 15: Project Building** from the [Thunder Notion notes](https://app.notion.com/p/Lecture-15-Project-Building-3aaa9af81c988068bc1df83f04e67070). Before modeling any MongoDB collection, ask four questions about the data:\n\n1. **Will this data grow forever?** (e.g. a user's chat history keeps growing — it never stops.)\n2. **Will I always need this data together?** (Do you always read the user and their chats and every message in one go?)\n3. **Will I query this data separately?** (Do you sometimes need just the chat list, without every message?)\n4. **Will I update this data frequently?** (Messages are append-only; a user's profile rarely changes.)\n\nThe answers decide whether data should be **embedded** (nested inside one document) or **referenced** (split into its own collection, linked by ID)."
       },
       {
-        "id": "socket-io-setup",
-        "title": "Socket.io setup",
-        "content": "Learn **Socket.io setup** in Day 34 of Thunder: 100 Days of Code. Socket.io, rooms, and live updates",
-        "tryIt": "console.log(\"Day 34: WebSockets & Real-Time APIs\");"
+        "id": "design-1-everything-embedded",
+        "title": "Design 1: Everything Embedded",
+        "content": "The naive first attempt: one **User** document embeds an array of `chats`, and each chat embeds its full `messages` array.\n\n**Why this breaks:** chats and messages **grow forever** inside the same user document — MongoDB documents have a **16MB size limit**, and a long-lived power user's chat history will eventually blow past it. It also means every time you load a user (e.g. just to check their `usage.tokenUsed`), you drag along their entire chat and message history, even if you don't need it.",
+        "code": "{\n  name: \"Aman\",\n  age: 22,\n  email: \"aman@gmail.com\",\n  password: \"hashed_password\",\n\n  usage: {\n    tokenUsed: 2500,\n    tokenLimit: 10000,\n    resetAt: \"2026-07-27T20:00:00.000Z\"\n  },\n\n  chats: [\n    {\n      chatId: \"chat_1\",\n      topic: \"Recursion Doubt\",\n      model: \"openai/gpt-4o-mini\",\n\n      messages: [\n        { role: \"user\", content: \"Explain recursion\" },\n        { role: \"assistant\", content: \"Recursion means function calling itself...\" }\n      ],\n\n      totalTokens: 140,\n      createdAt: \"2026-07-27\",\n      updatedAt: \"2026-07-27\"\n    },\n    {\n      chatId: \"chat_2\",\n      topic: \"TLS comparison\",\n      model: \"openai/gpt-4o-mini\",\n\n      messages: [\n        { role: \"user\", content: \"Explain recursion\" },\n        { role: \"assistant\", content: \"Recursion means function calling itself...\" }\n      ],\n\n      totalTokens: 140,\n      createdAt: \"2026-07-27\",\n      updatedAt: \"2026-07-27\"\n    }\n  ]\n}",
+        "tryIt": "console.log(\"Design 1: user + chats + messages all embedded in one document\");"
       },
       {
-        "id": "emit-and-on-events",
-        "title": "Emit & on events",
-        "content": "Learn **Emit & on events** in Day 34 of Thunder: 100 Days of Code. Socket.io, rooms, and live updates",
-        "tryIt": "console.log(\"Day 34: WebSockets & Real-Time APIs\");"
+        "id": "design-2-user-and-chat-separate",
+        "title": "Design 2: User + Chat Separate",
+        "content": "Split the **User** and **Chat** data apart. The user document now only keeps a **lightweight list of chat summaries** — `chatId`, `topic`, `model`, `lastMessage`, and `totalTokens` — instead of every message. The full conversation moves into its own **Chat collection**, where each chat document still embeds its own `messages` array.\n\nThis already fixes the \"drag the whole world along\" problem for the user document — but each **Chat** document can still grow without bound if a single conversation runs very long.",
+        "code": "// User document — only a lightweight chat summary list\n{\n  name: \"Aman\",\n  age: 22,\n  email: \"aman@gmail.com\",\n  password: \"hashed_password\",\n\n  usage: {\n    tokenUsed: 2500,\n    tokenLimit: 10000,\n    resetAt: \"2026-07-27T20:00:00.000Z\"\n  },\n\n  chats: [\n    {\n      chatId: \"chat_1\",\n      topic: \"Recursion Doubt\",\n      model: \"openai/gpt-4o-mini\",\n      lastMessage: \"Recursion means function calling itself...\",\n      totalTokens: 140,\n      createdAt: \"2026-07-27\",\n      updatedAt: \"2026-07-27\"\n    },\n    {\n      chatId: \"chat_2\",\n      topic: \"JWT Doubt\",\n      model: \"meta-llama/llama-3.1-8b-instruct\",\n      lastMessage: \"JWT is used for authentication...\",\n      totalTokens: 300,\n      createdAt: \"2026-07-27\",\n      updatedAt: \"2026-07-27\"\n    }\n  ]\n}\n\n// Chat collection — its own document, still embeds full messages\n{\n  _id: \"chat_1\",\n  userId: \"user_123\",\n\n  topic: \"Recursion Doubt\",\n  model: \"openai/gpt-4o-mini\",\n\n  messages: [\n    { role: \"user\", content: \"Explain recursion\", createdAt: \"2026-07-27\" },\n    { role: \"assistant\", content: \"Recursion means function calling itself...\", createdAt: \"2026-07-27\" }\n  ],\n\n  totalTokens: 140,\n  createdAt: \"2026-07-27\",\n  updatedAt: \"2026-07-27\"\n}",
+        "tryIt": "console.log(\"Design 2: User references Chat by chatId; Chat still embeds its own messages\");"
       },
       {
-        "id": "rooms-and-namespaces",
-        "title": "Rooms & namespaces",
-        "content": "Learn **Rooms & namespaces** in Day 34 of Thunder: 100 Days of Code. Socket.io, rooms, and live updates",
-        "tryIt": "console.log(\"Day 34: WebSockets & Real-Time APIs\");"
+        "id": "design-3-user-chat-message-separate",
+        "title": "Design 3: User + Chat + Message Separate",
+        "content": "Go one step further and give **messages their own collection** too. Now there are three collections:\n\n1. **User** — profile + token usage (`usage.totalTokenUsed` tracks lifetime consumption).\n2. **Chat** — just the conversation's metadata (`topic`, `model`, `lastMessage`, `totalTokens`) — no messages array at all.\n3. **Message** — one document per message, each tagged with both `userId` and `chatId` so it can be queried either way, plus its own `tokens` count.\n\nThis is the shape that scales: a chat with 10,000 messages is 10,000 small Message documents, not one giant array field.",
+        "code": "// 1. User Collection\n{\n  name: \"Aman\",\n  age: 22,\n  email: \"aman@gmail.com\",\n  password: \"hashed_password\",\n\n  usage: {\n    tokenUsed: 2500,\n    tokenLimit: 10000,\n    resetAt: \"2026-07-27T20:00:00.000Z\",\n    totalTokenUsed: 52000\n  }\n}\n\n// 2. Chat Collection\n{\n  _id: \"chat_1\",\n  userId: \"user_123\",\n\n  topic: \"Recursion Doubt\",\n  model: \"openai/gpt-4o-mini\",\n\n  lastMessage: \"Recursion means function calling itself...\",\n  totalTokens: 140,\n\n  createdAt: \"2026-07-27\",\n  updatedAt: \"2026-07-27\"\n}\n\n// 3. Message Collection\n{\n  _id: \"msg_1\",\n  userId: \"user_123\",\n  chatId: \"chat_1\",\n\n  role: \"user\",\n  content: \"Explain recursion\",\n  tokens: 20,\n\n  createdAt: \"2026-07-27\"\n}\n\n// Assistant message\n{\n  _id: \"msg_2\",\n  userId: \"user_123\",\n  chatId: \"chat_1\",\n\n  role: \"assistant\",\n  content: \"Recursion means function calling itself...\",\n  tokens: 120,\n\n  createdAt: \"2026-07-27\"\n}",
+        "tryIt": "console.log(\"Design 3: User, Chat, and Message each live in their own collection\");"
+      },
+      {
+        "id": "talking-to-the-llm",
+        "title": "Talking to the LLM: Summary + Last 10 Messages",
+        "content": "With messages in their own collection, you never have to send an entire conversation history back to the LLM on every turn. The practical pattern: if we need to talk to the LLM, we send it the chat's `summary` plus the last 10 messages — not the full message history.\n\nThis keeps the prompt small and the token cost predictable, no matter how long the conversation has actually run for."
+      },
+      {
+        "id": "final-database-design",
+        "title": "Final Database Design",
+        "content": "The production-ready version adds **summary tracking** to the Chat collection (so the LLM-context trick above actually works) and a **detailed token breakdown** (`promptTokens` / `completionTokens` / `totalTokens`) on both Chat and Message.\n\n- **User** — adds `_id` and `timestamps`.\n- **Chat** — adds `summary`, `summaryUpdatedAt`, `summarizedTillMessageNumber` (how far the summary has been rolled up to), `messageCount`, and a structured `usage` object.\n- **Message** — the assistant's message now carries its own `usage` breakdown (prompt vs completion tokens for that single reply).",
+        "code": "// 1. User Collection\n{\n  _id: \"user_123\",\n\n  name: \"Aman\",\n  age: 22,\n  email: \"aman@gmail.com\",\n  password: \"hashed_password\",\n\n  usage: {\n    tokenUsed: 2500,\n    tokenLimit: 10000,\n    resetAt: \"2026-07-27T20:00:00.000Z\",\n    totalTokenUsed: 52000\n  },\n\n  createdAt: \"2026-07-27\",\n  updatedAt: \"2026-07-27\"\n}\n\n// 2. Chat Collection\n{\n  _id: \"chat_456\",\n  userId: \"user_123\",\n\n  topic: \"Recursion Doubt\",\n  model: \"openai/gpt-4o-mini\",\n\n  summary: \"User is learning recursion. We discussed function calling itself, base case, recursive case, and dry run of factorial.\",\n  summaryUpdatedAt: \"2026-07-27T18:30:00.000Z\",\n  summarizedTillMessageNumber: 20,\n\n  lastMessage: \"Now explain recursion with code.\",\n  messageCount: 28,\n\n  usage: {\n    promptTokens: 2200,\n    completionTokens: 1800,\n    totalTokens: 4000\n  },\n\n  createdAt: \"2026-07-27\",\n  updatedAt: \"2026-07-27\"\n}\n\n// 3. Message Collection\n{\n  _id: \"msg_1\",\n  userId: \"user_123\",\n  chatId: \"chat_456\",\n\n  role: \"user\",\n  content: \"Explain recursion\",\n  tokens: 20,\n\n  createdAt: \"2026-07-27T18:00:00.000Z\"\n}\n\n{\n  _id: \"msg_2\",\n  userId: \"user_123\",\n  chatId: \"chat_456\",\n\n  role: \"assistant\",\n  content: \"Recursion means function calling itself...\",\n\n  usage: {\n    promptTokens: 300,\n    completionTokens: 120,\n    totalTokens: 420\n  },\n\n  createdAt: \"2026-07-27T18:00:10.000Z\"\n}"
+      },
+      {
+        "id": "final-mongoose-user-schema",
+        "title": "Final Mongoose Schema — User",
+        "content": "The **User** schema stores the profile plus a nested `usage` sub-document tracking the current-window token count, the limit, when the window resets, and a lifetime `totalTokenUsed` counter. `{ timestamps: true }` auto-adds `createdAt`/`updatedAt`.",
+        "code": "import mongoose from \"mongoose\";\n\nconst userSchema = new mongoose.Schema({\n  name: { type: String, required: true },\n  age: { type: Number },\n  email: { type: String, required: true, unique: true },\n  password: { type: String, required: true },\n\n  usage: {\n    tokenUsed: { type: Number, default: 0 },\n    tokenLimit: { type: Number, default: 10000 },\n    resetAt: {\n      type: Date,\n      default: () => new Date(Date.now() + 5 * 60 * 60 * 1000)\n    },\n    totalTokenUsed: { type: Number, default: 0 }\n  }\n}, { timestamps: true });\n\nconst User = mongoose.model(\"User\", userSchema);\n\nexport default User;"
+      },
+      {
+        "id": "final-mongoose-chat-schema",
+        "title": "Final Mongoose Schema — Chat",
+        "content": "The **Chat** schema references its owning `User` via `userId`, and carries the rolling `summary` used to keep LLM prompts short, plus a structured token-usage breakdown. The compound index `{ userId: 1, updatedAt: -1 }` makes \"a user's most-recently-updated chats first\" a fast, indexed query — exactly how a chat sidebar is usually sorted.",
+        "code": "import mongoose from \"mongoose\";\n\nconst chatSchema = new mongoose.Schema({\n  userId: { type: mongoose.Schema.Types.ObjectId, ref: \"User\", required: true },\n\n  topic: { type: String, default: \"New Chat\" },\n  model: { type: String, required: true },\n\n  summary: { type: String, default: \"\" },\n  summaryUpdatedAt: { type: Date, default: null },\n  summarizedTillMessageNumber: { type: Number, default: 0 },\n\n  lastMessage: { type: String, default: \"\" },\n  messageCount: { type: Number, default: 0 },\n\n  usage: {\n    promptTokens: { type: Number, default: 0 },\n    completionTokens: { type: Number, default: 0 },\n    totalTokens: { type: Number, default: 0 }\n  }\n}, { timestamps: true });\n\nchatSchema.index({ userId: 1, updatedAt: -1 });\n\nconst Chat = mongoose.model(\"Chat\", chatSchema);\n\nexport default Chat;"
+      },
+      {
+        "id": "final-mongoose-message-schema",
+        "title": "Final Mongoose Schema — Message",
+        "content": "The **Message** schema stores `userId` **and** `chatId` on every message — so you can query \"all messages in this chat, oldest first\" (`{ chatId: 1, createdAt: 1 }`) or \"all of this user's messages, newest first\" (`{ userId: 1, createdAt: -1 }`), both as fast indexed lookups instead of a collection scan.",
+        "code": "import mongoose from \"mongoose\";\n\nconst messageSchema = new mongoose.Schema({\n  userId: { type: mongoose.Schema.Types.ObjectId, ref: \"User\", required: true },\n  chatId: { type: mongoose.Schema.Types.ObjectId, ref: \"Chat\", required: true },\n\n  role: { type: String, enum: [\"user\", \"assistant\"], required: true },\n  content: { type: String, required: true },\n\n  tokens: { type: Number, default: 0 },\n\n  usage: {\n    promptTokens: { type: Number, default: 0 },\n    completionTokens: { type: Number, default: 0 },\n    totalTokens: { type: Number, default: 0 }\n  }\n}, { timestamps: true });\n\nmessageSchema.index({ chatId: 1, createdAt: 1 });\nmessageSchema.index({ userId: 1, createdAt: -1 });\n\nconst Message = mongoose.model(\"Message\", messageSchema);\n\nexport default Message;"
       }
     ],
     "quiz": [
       {
         "question": "What is the main topic of Day 34?",
         "options": [
-          "WebSockets & Real-Time APIs",
+          "Project Building — Chat App Database Design",
           "HTML tables only",
           "Linux kernel modules",
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Module 34 focuses on WebSockets & Real-Time APIs."
+        "explanation": "Module 34 focuses on Project Building — Chat App Database Design."
       },
       {
         "question": "Which phase includes this module?",
@@ -2015,8 +2046,7 @@ export const chaptersDays20to100 = [
         "explanation": "This module belongs to Phase 2: Backend Mastery."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=ZKEqqIO7n-k",
-    "youtubeTitle": "Socket.io Crash Course — Traversy Media",
+    "notionUrl": "https://app.notion.com/p/Lecture-15-Project-Building-3aaa9af81c988068bc1df83f04e67070",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
