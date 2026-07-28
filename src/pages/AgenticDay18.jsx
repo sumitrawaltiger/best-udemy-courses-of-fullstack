@@ -68,7 +68,7 @@ const RESOURCES = [
   {
     icon: '🎉', title: 'Sequence Models Wrapped', titleClass: 'card-title-amber', subtitle: 'Days 13–18 Done',
     description: 'NLP basics, deep learning, RNNs, ANNs, LSTM, and BiRNN are covered. Next: decoder & encoder architectures — GPT and BERT.',
-    link: { href: '/', label: 'Back to Home →' },
+    link: { href: '/agentic-day-19', label: 'Go to Day 19 →' },
   },
 ];
 
@@ -134,7 +134,7 @@ export default function AgenticDay18() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-17" className="day001-nav-btn day001-nav-prev">← Day 17</Link>
-          <p className="day001-datetime">Agentic AI Day 18 · 18 Aug 2026</p>
+          <p className="day001-datetime">Agentic AI Day 18 · 21 Jul 2026</p>
           <Link to="/agentic-day-19" className="day001-nav-btn day001-nav-next">Day 19 →</Link>
         </header>
 

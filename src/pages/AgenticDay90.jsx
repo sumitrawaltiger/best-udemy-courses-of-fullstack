@@ -48,7 +48,7 @@ const PRACTICE = [
   {
     icon: '🏁', title: 'What Comes Next', titleClass: 'card-title-amber', subtitle: 'Beyond Day 90',
     description: 'Apply this advanced Gen AI toolkit to a real product, or move on to the next stack in the journey.',
-    link: { href: '/', label: 'Back to Home →' },
+    link: { href: '/agentic-day-91', label: 'Go to Day 91 →' },
   },
 ];
 
@@ -131,8 +131,8 @@ export default function AgenticDay90() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-89" className="day001-nav-btn day001-nav-prev">← Day 89</Link>
-          <p className="day001-datetime">Agentic AI Day 90 · 29 Oct 2026</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <p className="day001-datetime">Agentic AI Day 90 · 1 Oct 2026</p>
+          <Link to="/agentic-day-91" className="day001-nav-btn day001-nav-next">Day 91 →</Link>
         </header>
 
         <div className="day001-hero">

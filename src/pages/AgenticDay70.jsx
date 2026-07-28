@@ -48,7 +48,7 @@ const PRACTICE = [
   {
     icon: '🏁', title: 'What Comes Next', titleClass: 'card-title-amber', subtitle: 'Beyond Day 70',
     description: 'Apply this same LLMOps loop to the next agentic product you build, or move on to the next stack in the journey.',
-    link: { href: '/', label: 'Back to Home →' },
+    link: { href: '/agentic-day-71', label: 'Go to Day 71 →' },
   },
 ];
 
@@ -132,8 +132,8 @@ export default function AgenticDay70() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-69" className="day001-nav-btn day001-nav-prev">← Day 69</Link>
-          <p className="day001-datetime">Agentic AI Day 70 · 9 Oct 2026</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <p className="day001-datetime">Agentic AI Day 70 · 11 Sep 2026</p>
+          <Link to="/agentic-day-71" className="day001-nav-btn day001-nav-next">Day 71 →</Link>
         </header>
 
         <div className="day001-hero">

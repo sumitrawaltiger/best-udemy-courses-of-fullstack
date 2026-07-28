@@ -48,7 +48,7 @@ const PRACTICE = [
   {
     icon: '🏠', title: 'Back To Home', titleClass: 'card-title-amber', subtitle: 'Continue',
     description: 'Return to Home and keep extending the roadmap.',
-    link: { href: '/', label: 'Back to Home →' },
+    link: { href: '/agentic-day-76', label: 'Go to Day 76 →' },
   },
 ];
 
@@ -132,8 +132,8 @@ export default function AgenticDay75() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-74" className="day001-nav-btn day001-nav-prev">← Day 74</Link>
-          <p className="day001-datetime">Agentic AI Day 75 · 14 Oct 2026</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <p className="day001-datetime">Agentic AI Day 75 · 16 Sep 2026</p>
+          <Link to="/agentic-day-76" className="day001-nav-btn day001-nav-next">Day 76 →</Link>
         </header>
 
         <div className="day001-hero">

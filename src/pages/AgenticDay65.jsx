@@ -53,7 +53,7 @@ const PRACTICE = [
   {
     icon: '🔜', title: 'Next: Interview Prep', titleClass: 'card-title-amber', subtitle: 'Day 76',
     description: 'Continue with Phase 11 — Python/ML → DL/NLP → Gen AI/RAG → Agentic design → career pack.',
-    link: { href: '/agentic-day-76', label: 'Go to Day 76 →' },
+    link: { href: '/agentic-day-66', label: 'Go to Day 66 →' },
   },
 ];
 
@@ -137,8 +137,8 @@ export default function AgenticDay65() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-64" className="day001-nav-btn day001-nav-prev">← Day 64</Link>
-          <p className="day001-datetime">Agentic AI Day 65 · 4 Oct 2026</p>
-          <Link to="/agentic-day-76" className="day001-nav-btn day001-nav-next">Day 76 →</Link>
+          <p className="day001-datetime">Agentic AI Day 65 · 6 Sep 2026</p>
+          <Link to="/agentic-day-66" className="day001-nav-btn day001-nav-next">Day 66 →</Link>
         </header>
 
         <div className="day001-hero">

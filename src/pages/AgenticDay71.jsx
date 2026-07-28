@@ -131,8 +131,8 @@ export default function AgenticDay71() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/agentic-day-65" className="day001-nav-btn day001-nav-prev">← Day 65</Link>
-          <p className="day001-datetime">Agentic AI Day 71 · 10 Oct 2026</p>
+          <Link to="/agentic-day-70" className="day001-nav-btn day001-nav-prev">← Day 70</Link>
+          <p className="day001-datetime">Agentic AI Day 71 · 12 Sep 2026</p>
           <Link to="/agentic-day-72" className="day001-nav-btn day001-nav-next">Day 72 →</Link>
         </header>
 
