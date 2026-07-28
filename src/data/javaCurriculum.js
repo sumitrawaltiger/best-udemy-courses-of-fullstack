@@ -2139,6 +2139,11 @@ function buildLessons() {
             href: '/java-notes/mastery-in-microservices.pdf',
             icon: '📄',
           },
+          {
+            label: 'Spring Boot Microservices Handbook (PDF)',
+            href: '/java-notes/spring-boot-microservices-handbook.pdf',
+            icon: '📄',
+          },
         ];
       }
       lessons.push(lesson);
