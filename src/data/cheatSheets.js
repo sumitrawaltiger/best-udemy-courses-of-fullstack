@@ -47,6 +47,15 @@ export const CHEAT_SHEETS = [
     tags: ['CSS', 'Selectors', 'Pseudo-classes', 'Pseudo-elements', 'Combinators'],
   },
   {
+    id: 'css-flexbox',
+    title: 'CSS Flexbox Cheat Sheet',
+    description:
+      'Every core Flexbox property, with a live before/after example for each — display: flex/inline-flex; flex-direction (row, row-reverse, column, column-reverse); flex-wrap (nowrap, wrap, wrap-reverse) and the flex-flow shorthand; gap/row-gap/column-gap; order for reordering items; and the item-sizing trio flex-grow, flex-shrink, and flex-basis plus the flex shorthand that combines them. By @thedevspaceio (Full-Stack AI Developer Roadmap).',
+    category: 'css',
+    pdf: '/cheatsheets/css-flexbox-cheat-sheet.pdf',
+    tags: ['CSS', 'Flexbox', 'flex-direction', 'flex-wrap', 'flex-grow', 'flex-shrink', 'flex-basis'],
+  },
+  {
     id: 'css-transforms',
     title: 'CSS Transforms Cheat Sheet',
     description:
