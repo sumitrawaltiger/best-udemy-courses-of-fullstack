@@ -63,9 +63,9 @@ const RESOURCES = [
     link: { href: PY_FUNCTIONS_DOCS, label: 'Open the docs →', external: true },
   },
   {
-    icon: '🎉', title: 'Week 1 Complete', titleClass: 'card-title-amber', subtitle: 'Days 1–5 Done',
-    description: 'Setup, syntax, control flow, data structures, and functions — the core of Python is covered. Next: deeper Python + first ML/DL concepts.',
-    link: { href: '/', label: 'Back to Home →' },
+    icon: '🔜', title: 'Next: Modules & Packages', titleClass: 'card-title-amber', subtitle: 'Day 6 Preview',
+    description: 'Tomorrow — import statements, creating your own modules, packages, the standard library, and pip.',
+    link: { href: '/agentic-day-6', label: 'Go to Day 6 →' },
   },
 ];
 
@@ -132,7 +132,7 @@ export default function AgenticDay05() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-4" className="day001-nav-btn day001-nav-prev">← Day 4</Link>
           <p className="day001-datetime">Agentic AI Day 5 · 5 Aug 2026</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <Link to="/agentic-day-6" className="day001-nav-btn day001-nav-next">Day 6 →</Link>
         </header>
 
         <div className="day001-hero">

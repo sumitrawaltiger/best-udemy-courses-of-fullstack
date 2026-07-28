@@ -256,6 +256,11 @@ import AgenticDay02 from './pages/AgenticDay02';
 import AgenticDay03 from './pages/AgenticDay03';
 import AgenticDay04 from './pages/AgenticDay04';
 import AgenticDay05 from './pages/AgenticDay05';
+import AgenticDay06 from './pages/AgenticDay06';
+import AgenticDay07 from './pages/AgenticDay07';
+import AgenticDay08 from './pages/AgenticDay08';
+import AgenticDay09 from './pages/AgenticDay09';
+import AgenticDay10 from './pages/AgenticDay10';
 import InterviewQuestions from './pages/InterviewQuestions';
 import ReactInterviewQuestions from './pages/ReactInterviewQuestions';
 import NextjsInterviewQuestions from './pages/NextjsInterviewQuestions';
@@ -488,6 +493,11 @@ export default function App() {
         <Route path="/agentic-day-3" element={<AgenticDay03 />} />
         <Route path="/agentic-day-4" element={<AgenticDay04 />} />
         <Route path="/agentic-day-5" element={<AgenticDay05 />} />
+        <Route path="/agentic-day-6" element={<AgenticDay06 />} />
+        <Route path="/agentic-day-7" element={<AgenticDay07 />} />
+        <Route path="/agentic-day-8" element={<AgenticDay08 />} />
+        <Route path="/agentic-day-9" element={<AgenticDay09 />} />
+        <Route path="/agentic-day-10" element={<AgenticDay10 />} />
         <Route path="/interview-questions" element={<InterviewQuestions />} />
         <Route path="/react-interview-questions" element={<ReactInterviewQuestions />} />
         <Route path="/nextjs-interview-questions" element={<NextjsInterviewQuestions />} />
