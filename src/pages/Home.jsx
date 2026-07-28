@@ -120,7 +120,7 @@ export default function Home() {
             <div className="fle-pills">
               <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,614 Days of Code</span>
               <span className="fle-pill"><span aria-hidden="true">🧠</span> 5 Sequential Stacks</span>
-              <span className="fle-pill"><span aria-hidden="true">🚀</span> Gen AI → TS → Java → Python → DevOps</span>
+              <span className="fle-pill"><span aria-hidden="true">🚀</span> Agentic AI → TypeScript → Java → Python → DevOps</span>
               <span className="fle-pill"><span aria-hidden="true">📐</span> DSA &amp; System Design Throughout</span>
             </div>
 
