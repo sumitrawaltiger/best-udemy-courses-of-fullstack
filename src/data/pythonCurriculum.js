@@ -1959,6 +1959,40 @@ export const pythonLessons = [
     topics: ['LangGraph intro', 'Graph workflows', 'LangGraph project', 'MCP components', 'MCP servers with LangChain'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=9BPCV5TYPFA', 'LangGraph Tutorial', 'Sam Witteveen'),
+    sections: [
+      {
+        id: 'why-langgraph',
+        title: 'Why LangGraph for Agent Loops',
+        content:
+          "**LangGraph** models an agent as a **stateful graph**: nodes are steps, edges are transitions, and cycles express the plan → act → observe loop.\n\nCompared with a single LangChain chain:\n\n- You get **explicit control flow** (conditionals, retries, human interrupts).\n- **Shared typed state** travels through every node.\n- You can **visualize and debug** which path ran.\n\nThat structure is what production agentic systems need when a linear prompt chain is not enough.",
+      },
+      {
+        id: 'graph-state-nodes',
+        title: 'State, Nodes, Edges, and Compile',
+        content:
+          "Define a **state schema** (TypedDict / Pydantic). Each **node** is a function that reads state and returns updates. **Edges** connect nodes; **conditional edges** branch on tool results or flags.\n\nCompile the graph into a runnable app, then `invoke` with initial state. Always set **max steps** / recursion limits so a bad loop cannot burn your budget.",
+        code: 'from typing import TypedDict\nfrom langgraph.graph import StateGraph, END\n\nclass AgentState(TypedDict):\n    goal: str\n    notes: str\n    draft: str\n\ndef plan(state: AgentState):\n    return {"notes": f"Plan for: {state[\'goal\']}"}\n\ndef write(state: AgentState):\n    return {"draft": state["notes"]}\n\ngraph = StateGraph(AgentState)\ngraph.add_node("plan", plan)\ngraph.add_node("write", write)\ngraph.set_entry_point("plan")\ngraph.add_edge("plan", "write")\ngraph.add_edge("write", END)\napp = graph.compile()\napp.invoke({"goal": "Summarize MCP", "notes": "", "draft": ""})',
+      },
+      {
+        id: 'mcp-basics',
+        title: 'Model Context Protocol (MCP)',
+        content:
+          "**MCP** is a standard for connecting models to **tools and context** (filesystem, browser, DB, custom APIs).\n\nCore pieces:\n\n- **Host / client** — the app or agent runtime that talks MCP.\n- **Server** — exposes tools and resources over the protocol.\n- **Tools** — callable actions with schemas.\n- **Resources / prompts** — readable context the model can pull in.\n\nWhy it matters: tool wiring becomes **portable** across editors and agent frameworks instead of one-off glue per product.",
+      },
+      {
+        id: 'mcp-with-langchain',
+        title: 'MCP Servers with LangChain / LangGraph',
+        content:
+          "Run or connect an MCP server, **list tools**, then bind them into your agent/graph so the LLM can call them like any other tool.\n\nStill apply Day-45 safety: timeouts, least privilege, and **human approval** before destructive writes — MCP standardizes discovery, not your security policy.",
+        code: '# Pseudocode shape\ntools = mcp_client.list_tools()\n# bind tools into LangGraph / LangChain agent\n# agent.invoke({"messages": [...]})',
+      },
+      {
+        id: 'day46-checklist',
+        title: 'Day 46 Checklist & What’s Next',
+        content:
+          "Before moving on, you should be able to:\n\n- Build a small LangGraph with typed state, two nodes, and a compile/invoke path.\n- Explain conditional edges and why max-step limits matter.\n- Describe MCP client/server/tools at a high level.\n- Wire (or sketch) one MCP tool into an agent loop.\n\n**What’s next — Day 47:** visual automation with **n8n** — triggers, AI nodes, credentials, and human gates.",
+      },
+    ],
   },
   {
     pyDay: 47,
@@ -1968,5 +2002,38 @@ export const pythonLessons = [
     topics: ['n8n automation', 'Trigger & action nodes', 'AI agent prompts', 'Credential setup', 'Agentic workflow project'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=KOLd6XZ9DaI', 'n8n AI Agents', 'n8n'),
+    sections: [
+      {
+        id: 'why-n8n',
+        title: 'Why n8n for Agentic Pipelines',
+        content:
+          "**n8n** is a visual workflow tool. For agentic systems it shines when you need to connect **webhooks, SaaS APIs, LLMs, and humans** without writing all the glue yourself.\n\nUse code (LangGraph) when control flow and state are complex. Use n8n when the job is **integration-heavy**: ticket systems, Slack, Sheets, CRM, schedules.",
+      },
+      {
+        id: 'triggers-actions',
+        title: 'Triggers, Actions, and Branching',
+        content:
+          "A workflow starts with a **trigger** (Webhook, Schedule, or app event). **Action nodes** call HTTP APIs, send Slack messages, or run AI Agent nodes.\n\n**IF / Switch** nodes route success vs failure. Treat execution history as your debugger — inspect each node’s input and output.",
+      },
+      {
+        id: 'credentials-prompts',
+        title: 'Credentials and AI Agent Prompts',
+        content:
+          "Store API keys in the **n8n credentials vault**, not inside node JSON. Rotate keys without rewriting the flow.\n\nFor AI Agent nodes, write a clear **system prompt**, name tools well, and describe when each tool should be used. Bad tool descriptions cause the same wrong-tool failures you see in code agents.",
+      },
+      {
+        id: 'hitl-e2e',
+        title: 'Human-in-the-Loop E2E Project',
+        content:
+          "Classic pattern:\n\n1. Webhook receives a support ticket.\n2. AI agent researches / drafts a reply.\n3. **Human approval** node gates the send.\n4. On approve → send email/Slack; on reject → revise or escalate.\n5. Log the run for later eval.\n\nNever auto-send irreversible messages until you trust the eval numbers (Day 50).",
+        code: 'Webhook → AI Agent → Wait/Approve\n→ IF approved → Send\n→ ELSE → Revise / Escalate',
+      },
+      {
+        id: 'day47-checklist',
+        title: 'Day 47 Checklist & What’s Next',
+        content:
+          "Before moving on, you should be able to:\n\n- Build a webhook → AI → respond workflow in n8n.\n- Use credentials instead of hardcoded secrets.\n- Branch success/failure paths.\n- Add a human approval gate before a side effect.\n\n**What’s next — Days 48–50 (journal arc):** multi-agent patterns, memory/tool contracts, and evaluation/observability.",
+      },
+    ],
   },
 ];

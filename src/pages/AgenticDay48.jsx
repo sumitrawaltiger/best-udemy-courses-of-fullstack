@@ -2,71 +2,75 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
+const MULTI_AGENT_DOCS = 'https://langchain-ai.github.io/langgraph/tutorials/multi_agent/';
+
 const LEARNT_TODAY = [
-  { title: "Why multi-agent", text: "specialize roles; parallelize work; add critics for quality" },
-  { title: "Router pattern", text: "classify intent → send to the right specialist agent" },
-  { title: "Supervisor", text: "one orchestrator assigns and merges worker outputs" },
-  { title: "Crew / swarm", text: "peer agents with shared goals and message passing" },
-  { title: "Handoffs", text: "explicit state transfer between agents with schemas" },
-  { title: "Conflict", text: "two agents disagree — need a judge or priority rules" },
-  { title: "Cost control", text: "more agents = more tokens; budget per run" },
-  { title: "When not to", text: "simple FAQ does not need five agents" },
+  { title: 'Why multi-agent', text: 'specialize roles, parallelize work, and add critics for quality' },
+  { title: 'Router pattern', text: 'classify intent → send to the right specialist agent' },
+  { title: 'Supervisor', text: 'one orchestrator assigns tasks and merges worker outputs' },
+  { title: 'Crew / swarm', text: 'peer agents with shared goals and message passing' },
+  { title: 'Handoffs', text: 'explicit state transfer between agents with schemas — no silent context loss' },
+  { title: 'Conflict', text: 'when two agents disagree, need a judge node or priority rules' },
+  { title: 'Cost control', text: 'more agents = more tokens; set a budget per run' },
+  { title: 'When not to', text: 'a simple FAQ does not need five agents — start with one' },
 ];
 
 const CORE = [
   {
-    icon: "🧭", title: "Router", titleClass: 'card-title-cyan', subtitle: "Dispatch",
+    icon: '🧭', title: 'Router', titleClass: 'card-title-cyan', subtitle: 'Dispatch',
     description:
-      "Intent classifier picks researcher vs coder vs support.",
-    code: "intent → specialist",
+      'An intent classifier picks researcher vs coder vs support. Keep the router thin — classify, don’t solve.',
+    code: 'intent = classify(msg)\nif intent == "research":\n  → researcher\nelif intent == "code":\n  → coder',
   },
   {
-    icon: "👔", title: "Supervisor", titleClass: 'card-title-purple', subtitle: "Orchestrate",
+    icon: '👔', title: 'Supervisor', titleClass: 'card-title-purple', subtitle: 'Orchestrate',
     description:
-      "Plan tasks, call workers, synthesize final answer.",
-    code: "plan → workers → merge",
+      'Plan tasks, call workers, synthesize the final answer. The supervisor owns stop rules and the merge step.',
+    code: 'plan → workers\n→ merge → answer\n# supervisor owns budget',
   },
   {
-    icon: "🧵", title: "Shared Scratchpad", titleClass: 'card-title-amber', subtitle: "State",
+    icon: '🧵', title: 'Shared Scratchpad', titleClass: 'card-title-amber', subtitle: 'State',
     description:
-      "Common memory object all agents read/write with locks/roles.",
-    code: "shared state dict",
+      'A common memory object all agents read/write with clear roles. Prefer schema’d fields over free-form dumps.',
+    code: 'state = {\n  "goal": ...,\n  "notes": [],\n  "draft": None,\n}',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: "🧪", title: "Two-Agent Debate", titleClass: 'card-title-cyan', subtitle: "Lab",
-    description: "Proposer + critic; loop until critic approves or max 3 rounds.",
-    code: "propose → critique",
+    icon: '🧪', title: 'Two-Agent Debate', titleClass: 'card-title-cyan', subtitle: 'Lab',
+    description:
+      'Proposer + critic loop until the critic approves or you hit max 3 rounds. Log each round.',
+    code: 'propose → critique\nrepeat ≤ 3',
   },
   {
-    icon: "💵", title: "Budget Cap", titleClass: 'card-title-purple', subtitle: "Ops",
-    description: "Stop when total tokens > N; return best-so-far.",
-    code: "max_tokens_run",
+    icon: '💵', title: 'Budget Cap', titleClass: 'card-title-purple', subtitle: 'Ops',
+    description:
+      'Stop when total tokens > N; return best-so-far with a clear “budget exceeded” flag.',
+    code: 'if tokens > MAX:\n  return best_so_far',
   },
   {
-    icon: "🔜", title: "Next: Memory", titleClass: 'card-title-amber', subtitle: "Day 49",
-    description: "Tomorrow — deep dive on agent memory and tools.",
+    icon: '🔜', title: 'Next: Memory & Tools', titleClass: 'card-title-amber', subtitle: 'Day 49 Preview',
+    description: 'Tomorrow — short/long-term memory and reliable tool contracts.',
     link: { href: '/agentic-day-49', label: 'Go to Day 49 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: "📘", title: "Course Hub", titleClass: 'card-title-cyan', subtitle: "Python Track",
-    description: "Full lesson on the site for this module.",
-    link: { href: "/python", label: 'Open module →' },
+    icon: '📘', title: 'Agentic Intro', titleClass: 'card-title-cyan', subtitle: 'PY Module 45',
+    description: 'Foundation for multi-agent ideas — agents, memory, and architecture.',
+    link: { href: '/python/learn/introduction-to-agentic-ai', label: 'Open PY Module 45 →' },
   },
   {
-    icon: "📖", title: "LangGraph Multi-Agent", titleClass: 'card-title-purple', subtitle: "Docs",
-    description: "Docs resource.",
-    link: { href: "https://langchain-ai.github.io/langgraph/tutorials/multi_agent/", label: 'Open →', external: true },
+    icon: '📖', title: 'LangGraph Multi-Agent', titleClass: 'card-title-purple', subtitle: 'Docs',
+    description: 'Official multi-agent tutorials — supervisor, handoffs, and collaboration patterns.',
+    link: { href: MULTI_AGENT_DOCS, label: 'Open multi-agent docs →', external: true },
   },
   {
-    icon: "🗺️", title: "Rule", titleClass: 'card-title-amber', subtitle: "Remember",
-    description: "Remember resource.",
-    link: { href: "Add agents only when specialization or review clearly helps.", label: 'Open →', external: true },
+    icon: '🕸️', title: 'LangGraph & MCP', titleClass: 'card-title-amber', subtitle: 'PY Module 46',
+    description: 'Graph primitives you use to implement routers and supervisors in code.',
+    link: { href: '/python/learn/langgraph-and-mcp', label: 'Open PY Module 46 →' },
   },
 ];
 
@@ -132,13 +136,13 @@ export default function AgenticDay48() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-47" className="day001-nav-btn day001-nav-prev">← Day 47</Link>
-          <p className="day001-datetime">Agentic AI Day 48 · 48 Aug 2026</p>
+          <p className="day001-datetime">Agentic AI Day 48 · 17 Sep 2026</p>
           <Link to="/agentic-day-49" className="day001-nav-btn day001-nav-next">Day 49 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Multi-Agent</span><span>Day 48</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Multi-Agent</span><span>Phase 9</span></div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">DAY 48 <span aria-hidden="true">👥</span></h1>
               <p className="day001-day-theme">MULTI-AGENT SYSTEMS PATTERNS</p>
@@ -148,7 +152,7 @@ export default function AgenticDay48() {
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">AGENTIC AI · AGENTS</p>
+              <p className="day001-profile-role">AGENTIC AI · MULTI-AGENT</p>
             </div>
           </div>
         </div>
@@ -156,7 +160,8 @@ export default function AgenticDay48() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '32%' }} /></div>
 
         <p className="day001-summary">
-          Day 48 scales beyond one brain. Learn <strong>router</strong>, <strong>supervisor</strong>, and <strong>crew</strong> patterns for multi-agent collaboration.
+          Day 48 scales beyond one brain. Learn <strong>router</strong>, <strong>supervisor</strong>, and{' '}
+          <strong>crew</strong> patterns for multi-agent collaboration.
         </p>
 
         <section className="day001-learnt">
@@ -171,12 +176,12 @@ export default function AgenticDay48() {
           </ul>
         </section>
 
-        <CardSection icon="👥" title="CORE IDEAS" cards={CORE} columns={3} />
+        <CardSection icon="👥" title="TEAM PATTERNS" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="PRACTICE" cards={PRACTICE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#AgenticAI</span><span>#GenAI</span><span>#Day48</span><span>#Multi-Agent</span><span>#100DaysOfCode</span>
+          <span>#AgenticAI</span><span>#MultiAgent</span><span>#Day48</span><span>#LangGraph</span><span>#GenAI</span>
         </footer>
       </div>
     </div>

@@ -2,71 +2,76 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
+const MEMORY_DOCS = 'https://python.langchain.com/docs/concepts/memory/';
+const MCP = 'https://modelcontextprotocol.io/';
+
 const LEARNT_TODAY = [
-  { title: "Short-term memory", text: "current thread messages and scratchpad" },
-  { title: "Long-term memory", text: "vector store or DB facts keyed by user/project" },
-  { title: "Episodic vs semantic", text: "what happened vs general knowledge" },
-  { title: "Tool contracts", text: "JSON schema, timeouts, idempotency keys" },
-  { title: "Side effects", text: "reads are safe; writes need confirmation" },
-  { title: "Tool errors", text: "typed errors so the agent can retry or replan" },
-  { title: "Caching", text: "cache pure tool results to cut cost/latency" },
-  { title: "Privacy", text: "don’t put secrets into long-term memory dumps" },
+  { title: 'Short-term memory', text: 'current thread messages and scratchpad for this run' },
+  { title: 'Long-term memory', text: 'vector store or DB facts keyed by user/project across sessions' },
+  { title: 'Episodic vs semantic', text: 'what happened in a past run vs general reusable knowledge' },
+  { title: 'Tool contracts', text: 'JSON schema, timeouts, and idempotency keys for every tool' },
+  { title: 'Side effects', text: 'reads are usually safe; writes need confirmation and audit logs' },
+  { title: 'Tool errors', text: 'typed errors so the agent can retry, replan, or ask a human' },
+  { title: 'Caching', text: 'cache pure tool results to cut cost and latency' },
+  { title: 'Privacy', text: 'don’t dump secrets or PII into long-term memory without redaction' },
 ];
 
 const CORE = [
   {
-    icon: "💾", title: "Memory Tiers", titleClass: 'card-title-cyan', subtitle: "Design",
+    icon: '💾', title: 'Memory Tiers', titleClass: 'card-title-cyan', subtitle: 'Design',
     description:
-      "Buffer → summary → vector recall. Evict aggressively.",
-    code: "hot · warm · cold",
+      'Hot buffer for the thread, warm summaries when history grows, cold vector recall for long-term facts. Evict aggressively.',
+    code: 'hot:  message buffer\nwarm: running summary\ncold: vector / DB facts',
   },
   {
-    icon: "🛠️", title: "Tool Spec", titleClass: 'card-title-purple', subtitle: "Schema",
+    icon: '🛠️', title: 'Tool Spec', titleClass: 'card-title-purple', subtitle: 'Schema',
     description:
-      "name, description, args schema, examples, failure modes.",
-    code: "JSON schema + timeout",
+      'Every tool needs name, description, args schema, examples, timeout, and documented failure modes.',
+    code: '{\n  "name": "search",\n  "args": { "q": "string" },\n  "timeout_ms": 8000\n}',
   },
   {
-    icon: "🔐", title: "Safe Writes", titleClass: 'card-title-amber', subtitle: "HITL",
+    icon: '🔐', title: 'Safe Writes', titleClass: 'card-title-amber', subtitle: 'HITL',
     description:
-      "destructive tools require explicit confirm=true from user/agent policy.",
-    code: "confirm before write",
+      'Destructive tools require confirm=true from policy or a human. Prefer dry-run modes when you can.',
+    code: 'if tool.is_write:\n  require confirm=True\n  audit_log(call)',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: "🧪", title: "Memory Demo", titleClass: 'card-title-cyan', subtitle: "Lab",
-    description: "Store user preference; recall it in a later session.",
-    code: "save → retrieve",
+    icon: '🧪', title: 'Memory Demo', titleClass: 'card-title-cyan', subtitle: 'Lab',
+    description:
+      'Store a user preference in session 1; recall it in session 2 without repeating the question.',
+    code: 'save preference\n→ later: retrieve',
   },
   {
-    icon: "🧰", title: "Three Tools", titleClass: 'card-title-purple', subtitle: "Build",
-    description: "search, calculator, ticket_create with schemas + timeouts.",
-    code: "3 tools · schemas",
+    icon: '🧰', title: 'Three Tools', titleClass: 'card-title-purple', subtitle: 'Build',
+    description:
+      'Implement search, calculator, and ticket_create with JSON schemas + timeouts. Force one intentional failure path.',
+    code: 'search · calculate\nticket_create (+ timeout)',
   },
   {
-    icon: "🔜", title: "Next: Eval", titleClass: 'card-title-amber', subtitle: "Day 50",
-    description: "Tomorrow — evaluating and observing agents.",
+    icon: '🔜', title: 'Next: Eval', titleClass: 'card-title-amber', subtitle: 'Day 50 Preview',
+    description: 'Tomorrow — offline eval sets, traces, and online agent SLOs.',
     link: { href: '/agentic-day-50', label: 'Go to Day 50 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: "📘", title: "Python Track", titleClass: 'card-title-cyan', subtitle: "Hub",
-    description: "Full lesson on the site for this module.",
-    link: { href: "/python", label: 'Open module →' },
+    icon: '📘', title: 'LangGraph & MCP', titleClass: 'card-title-cyan', subtitle: 'PY Module 46',
+    description: 'Where tools and protocol servers plug into your agent graph.',
+    link: { href: '/python/learn/langgraph-and-mcp', label: 'Open PY Module 46 →' },
   },
   {
-    icon: "📖", title: "LangChain Memory", titleClass: 'card-title-purple', subtitle: "Docs",
-    description: "Docs resource.",
-    link: { href: "https://python.langchain.com/docs/concepts/memory/", label: 'Open →', external: true },
+    icon: '📖', title: 'LangChain Memory', titleClass: 'card-title-purple', subtitle: 'Docs',
+    description: 'Concepts for short-term, long-term, and summarization memory patterns.',
+    link: { href: MEMORY_DOCS, label: 'Open memory docs →', external: true },
   },
   {
-    icon: "🗺️", title: "Rule", titleClass: 'card-title-amber', subtitle: "Remember",
-    description: "Remember resource.",
-    link: { href: "Tools need contracts; memory needs eviction and privacy rules.", label: 'Open →', external: true },
+    icon: '🔌', title: 'MCP Spec', titleClass: 'card-title-amber', subtitle: 'Protocol',
+    description: 'Standard tool discovery and calling — keep tool contracts portable.',
+    link: { href: MCP, label: 'Open MCP →', external: true },
   },
 ];
 
@@ -132,13 +137,13 @@ export default function AgenticDay49() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-48" className="day001-nav-btn day001-nav-prev">← Day 48</Link>
-          <p className="day001-datetime">Agentic AI Day 49 · 49 Aug 2026</p>
+          <p className="day001-datetime">Agentic AI Day 49 · 18 Sep 2026</p>
           <Link to="/agentic-day-50" className="day001-nav-btn day001-nav-next">Day 50 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Memory</span><span>Day 49</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Memory</span><span>Phase 9</span></div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">DAY 49 <span aria-hidden="true">🧠</span></h1>
               <p className="day001-day-theme">AGENT MEMORY & TOOLS DEEP DIVE</p>
@@ -148,7 +153,7 @@ export default function AgenticDay49() {
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">AGENTIC AI · AGENTS</p>
+              <p className="day001-profile-role">AGENTIC AI · MEMORY</p>
             </div>
           </div>
         </div>
@@ -156,7 +161,8 @@ export default function AgenticDay49() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '33%' }} /></div>
 
         <p className="day001-summary">
-          Day 49 sharpens the toolbox. Design <strong>short/long-term memory</strong>, reliable <strong>tool contracts</strong>, and safe side effects.
+          Day 49 sharpens the toolbox. Design <strong>short/long-term memory</strong>, reliable{' '}
+          <strong>tool contracts</strong>, and safe side effects.
         </p>
 
         <section className="day001-learnt">
@@ -171,12 +177,12 @@ export default function AgenticDay49() {
           </ul>
         </section>
 
-        <CardSection icon="🧠" title="CORE IDEAS" cards={CORE} columns={3} />
+        <CardSection icon="🧠" title="MEMORY & TOOLS" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="PRACTICE" cards={PRACTICE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#AgenticAI</span><span>#GenAI</span><span>#Day49</span><span>#Memory</span><span>#100DaysOfCode</span>
+          <span>#AgenticAI</span><span>#Memory</span><span>#Tools</span><span>#Day49</span><span>#GenAI</span>
         </footer>
       </div>
     </div>

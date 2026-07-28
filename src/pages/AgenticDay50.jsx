@@ -2,71 +2,75 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
+const LANGSMITH = 'https://docs.smith.langchain.com/';
+
 const LEARNT_TODAY = [
-  { title: "Offline eval sets", text: "golden tasks with expected final answers or rubrics" },
-  { title: "Online metrics", text: "success rate, retries, human takeovers" },
-  { title: "Tool metrics", text: "wrong tool rate, arg error rate" },
-  { title: "Tracing", text: "span every LLM and tool call with inputs/outputs redacted" },
-  { title: "Latency & cost", text: "p95 latency and $ per successful task" },
-  { title: "Regression suites", text: "re-run evals on every prompt/graph change" },
-  { title: "Failure taxonomies", text: "hallucination, loop, tool fail, policy block" },
-  { title: "Ship gate", text: "don’t promote agents that only “feel” better" },
+  { title: 'Offline eval sets', text: 'golden tasks with expected final answers or scoring rubrics' },
+  { title: 'Online metrics', text: 'success rate, retries, and human takeovers in production' },
+  { title: 'Tool metrics', text: 'wrong-tool rate and argument-error rate tell you where graphs break' },
+  { title: 'Tracing', text: 'span every LLM and tool call with redacted inputs/outputs' },
+  { title: 'Latency & cost', text: 'track p95 latency and $ per successful task — not just accuracy' },
+  { title: 'Regression suites', text: 're-run evals on every prompt or graph change before promote' },
+  { title: 'Failure taxonomies', text: 'hallucination, loop, tool fail, policy block — label every miss' },
+  { title: 'Ship gate', text: 'don’t promote agents that only “feel” better — require numbers' },
 ];
 
 const CORE = [
   {
-    icon: "📋", title: "Eval Set", titleClass: 'card-title-cyan', subtitle: "Offline",
+    icon: '📋', title: 'Eval Set', titleClass: 'card-title-cyan', subtitle: 'Offline',
     description:
-      "30–100 tasks covering happy path and nasty edge cases.",
-    code: "task → expected",
+      '30–100 tasks covering happy path and nasty edge cases. Store expected outcomes or judge rubrics.',
+    code: 'task_id · input\nexpected · rubric\npass / fail / score',
   },
   {
-    icon: "🔭", title: "Traces", titleClass: 'card-title-purple', subtitle: "Debug",
+    icon: '🔭', title: 'Traces', titleClass: 'card-title-purple', subtitle: 'Debug',
     description:
-      "OpenTelemetry-style spans or LangSmith/equivalent.",
-    code: "llm · tool · retrieve",
+      'OpenTelemetry-style spans or LangSmith (or equivalent). One failed run should be reconstructable from the trace.',
+    code: 'span: llm\nspan: tool\nspan: retrieve',
   },
   {
-    icon: "📈", title: "Dashboards", titleClass: 'card-title-amber', subtitle: "Online",
+    icon: '📈', title: 'Dashboards', titleClass: 'card-title-amber', subtitle: 'Online',
     description:
-      "success%, cost/task, p95, loop rate.",
-    code: "SLOs for agents",
+      'success%, cost/task, p95 latency, loop rate. Treat agents like services with SLOs.',
+    code: 'success% · $/task\np95 · loop_rate',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: "🧪", title: "Scorecard", titleClass: 'card-title-cyan', subtitle: "Lab",
-    description: "Run 10 tasks; score pass/fail + notes; compare prompt v1 vs v2.",
-    code: "v1 vs v2",
+    icon: '🧪', title: 'Scorecard', titleClass: 'card-title-cyan', subtitle: 'Lab',
+    description:
+      'Run 10 golden tasks; score pass/fail + notes; compare prompt/graph v1 vs v2 side by side.',
+    code: 'v1 vs v2\n10 tasks · scorecard',
   },
   {
-    icon: "🔍", title: "Trace One Fail", titleClass: 'card-title-purple', subtitle: "Debug",
-    description: "Pick a failed run; identify which node broke.",
-    code: "find failing span",
+    icon: '🔍', title: 'Trace One Fail', titleClass: 'card-title-purple', subtitle: 'Debug',
+    description:
+      'Pick a failed run; walk the spans; name the failing node (router, tool, merge, or stop rule).',
+    code: 'find failing span\n→ fix that node',
   },
   {
-    icon: "🔜", title: "Next: MCP Hands-On", titleClass: 'card-title-amber', subtitle: "Day 51",
-    description: "Tomorrow — build and consume MCP servers.",
+    icon: '🔜', title: 'Next: MCP Hands-On', titleClass: 'card-title-amber', subtitle: 'Day 51 Preview',
+    description: 'Tomorrow — build and consume MCP servers in a real agent setup.',
     link: { href: '/agentic-day-51', label: 'Go to Day 51 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: "📘", title: "Python Track", titleClass: 'card-title-cyan', subtitle: "Hub",
-    description: "Full lesson on the site for this module.",
-    link: { href: "/python", label: 'Open module →' },
+    icon: '📘', title: 'Agentic Intro', titleClass: 'card-title-cyan', subtitle: 'PY Module 45',
+    description: 'Architecture context for what you are measuring — loops, memory, multi-agent.',
+    link: { href: '/python/learn/introduction-to-agentic-ai', label: 'Open PY Module 45 →' },
   },
   {
-    icon: "📖", title: "LangSmith", titleClass: 'card-title-purple', subtitle: "Docs",
-    description: "Docs resource.",
-    link: { href: "https://docs.smith.langchain.com/", label: 'Open →', external: true },
+    icon: '📖', title: 'LangSmith Docs', titleClass: 'card-title-purple', subtitle: 'Observability',
+    description: 'Tracing, datasets, and evaluation workflows for LangChain / LangGraph apps.',
+    link: { href: LANGSMITH, label: 'Open LangSmith docs →', external: true },
   },
   {
-    icon: "🗺️", title: "Rule", titleClass: 'card-title-amber', subtitle: "Remember",
-    description: "Remember resource.",
-    link: { href: "If you can’t measure it, you can’t safely improve the agent.", label: 'Open →', external: true },
+    icon: '🕸️', title: 'LangGraph Docs', titleClass: 'card-title-amber', subtitle: 'Graphs',
+    description: 'Stateful graphs you instrument — nodes are natural span boundaries.',
+    link: { href: 'https://langchain-ai.github.io/langgraph/', label: 'Open LangGraph →', external: true },
   },
 ];
 
@@ -132,13 +136,13 @@ export default function AgenticDay50() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-49" className="day001-nav-btn day001-nav-prev">← Day 49</Link>
-          <p className="day001-datetime">Agentic AI Day 50 · 50 Aug 2026</p>
+          <p className="day001-datetime">Agentic AI Day 50 · 19 Sep 2026</p>
           <Link to="/agentic-day-51" className="day001-nav-btn day001-nav-next">Day 51 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Eval</span><span>Day 50</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Eval</span><span>Phase 9</span></div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">DAY 50 <span aria-hidden="true">📏</span></h1>
               <p className="day001-day-theme">AGENT EVALUATION & OBSERVABILITY</p>
@@ -148,7 +152,7 @@ export default function AgenticDay50() {
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">AGENTIC AI · AGENTS</p>
+              <p className="day001-profile-role">AGENTIC AI · EVAL</p>
             </div>
           </div>
         </div>
@@ -156,7 +160,8 @@ export default function AgenticDay50() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '33%' }} /></div>
 
         <p className="day001-summary">
-          Day 50 measures agents. Track <strong>task success</strong>, <strong>tool accuracy</strong>, latency/cost, and add traces you can debug.
+          Day 50 measures agents. Track <strong>task success</strong>, <strong>tool accuracy</strong>, latency/cost, and add
+          traces you can debug.
         </p>
 
         <section className="day001-learnt">
@@ -171,12 +176,12 @@ export default function AgenticDay50() {
           </ul>
         </section>
 
-        <CardSection icon="📏" title="CORE IDEAS" cards={CORE} columns={3} />
+        <CardSection icon="📏" title="MEASURE & TRACE" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="PRACTICE" cards={PRACTICE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#AgenticAI</span><span>#GenAI</span><span>#Day50</span><span>#Eval</span><span>#100DaysOfCode</span>
+          <span>#AgenticAI</span><span>#Eval</span><span>#Observability</span><span>#Day50</span><span>#GenAI</span>
         </footer>
       </div>
     </div>

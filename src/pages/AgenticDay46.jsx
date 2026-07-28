@@ -2,9 +2,8 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const LANGGRAPH = 'https://langchain-ai.github.io/langgraph/';
-const MCP = 'https://modelcontextprotocol.io/';
 const LANGGRAPH_YT = 'https://www.youtube.com/watch?v=9BPCV5TYPFA';
+const LANGGRAPH = 'https://langchain-ai.github.io/langgraph/';
 
 const LEARNT_TODAY = [
   { title: 'LangGraph', text: 'stateful graph workflows — nodes, edges, and cycles that model real agent loops' },
@@ -70,8 +69,8 @@ const RESOURCES = [
     link: { href: LANGGRAPH_YT, label: 'Watch LangGraph tutorial →', external: true },
   },
   {
-    icon: '📖', title: 'LangGraph + MCP Docs', titleClass: 'card-title-amber', subtitle: 'Official',
-    description: 'Primary references for stateful graphs and the Model Context Protocol.',
+    icon: '📖', title: 'LangGraph Docs', titleClass: 'card-title-amber', subtitle: 'Official',
+    description: 'Stateful agent graphs. For tool servers, also read the MCP spec at modelcontextprotocol.io.',
     link: { href: LANGGRAPH, label: 'Open LangGraph docs →', external: true },
   },
 ];
