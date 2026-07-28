@@ -2,71 +2,77 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
+const LANGGRAPH = 'https://langchain-ai.github.io/langgraph/';
+const MCP = 'https://modelcontextprotocol.io/';
+const LANGGRAPH_YT = 'https://www.youtube.com/watch?v=9BPCV5TYPFA';
+
 const LEARNT_TODAY = [
-  { title: "LangGraph", text: "stateful graph workflows — nodes, edges, cycles for agent loops" },
-  { title: "State", text: "typed shared state passed between nodes" },
-  { title: "Conditional edges", text: "route to different nodes based on tool results or flags" },
-  { title: "MCP idea", text: "standard way for models to discover and call external tools/context" },
-  { title: "MCP servers", text: "expose filesystem, browser, DB, or custom tools over the protocol" },
-  { title: "LangChain + MCP", text: "wire MCP tool servers into agent graphs" },
-  { title: "Debugging graphs", text: "visualize paths; log state transitions" },
-  { title: "Reliability", text: "timeouts, max steps, and interrupt points for humans" },
+  { title: 'LangGraph', text: 'stateful graph workflows — nodes, edges, and cycles that model real agent loops' },
+  { title: 'Typed state', text: 'a shared state object (often TypedDict / Pydantic) flows through every node' },
+  { title: 'Conditional edges', text: 'route to different nodes based on tool results, flags, or LLM decisions' },
+  { title: 'MCP idea', text: 'Model Context Protocol — a standard way for models to discover and call external tools/context' },
+  { title: 'MCP servers', text: 'expose filesystem, browser, DB, or custom tools over the protocol' },
+  { title: 'LangChain + MCP', text: 'wire MCP tool servers into agent graphs so tools stay swappable' },
+  { title: 'Debugging graphs', text: 'visualize paths; log state transitions at each node' },
+  { title: 'Reliability', text: 'timeouts, max steps, and interrupt points for human approval' },
 ];
 
 const CORE = [
   {
-    icon: "🕸️", title: "Graph Workflow", titleClass: 'card-title-cyan', subtitle: "Nodes",
+    icon: '🕸️', title: 'Graph Workflow', titleClass: 'card-title-cyan', subtitle: 'Nodes',
     description:
-      "Define nodes as functions; add edges; compile and invoke with initial state.",
-    code: "graph.add_node(\"plan\", plan)\ngraph.add_edge(...)",
+      'Define nodes as functions that read/write state. Add edges (and cycles). Compile, then invoke with initial state.',
+    code: 'from langgraph.graph import StateGraph\n\ngraph = StateGraph(AgentState)\ngraph.add_node("plan", plan)\ngraph.add_node("act", act)\ngraph.add_edge("plan", "act")\napp = graph.compile()\napp.invoke({"goal": "..."})',
   },
   {
-    icon: "🔌", title: "MCP Tools", titleClass: 'card-title-purple', subtitle: "Protocol",
+    icon: '🔌', title: 'MCP Tools', titleClass: 'card-title-purple', subtitle: 'Protocol',
     description:
-      "Run an MCP server; client lists tools; agent calls them safely.",
-    code: "list_tools → call_tool",
+      'Run an MCP server; the client lists tools; your agent calls them with a clear schema. Same protocol across editors and runtimes.',
+    code: 'list_tools()\n→ call_tool(name, args)\n# filesystem · fetch · custom',
   },
   {
-    icon: "🛑", title: "Stop Rules", titleClass: 'card-title-amber', subtitle: "Safety",
+    icon: '🛑', title: 'Stop Rules', titleClass: 'card-title-amber', subtitle: 'Safety',
     description:
-      "max_iterations, budget, and human approval nodes for side effects.",
-    code: "max_steps · approve",
+      'Cap max_iterations and budget. Put human-approval nodes before irreversible side effects (send email, delete, charge).',
+    code: 'max_steps · timeout\ninterrupt_before=["send"]',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: "🧪", title: "Two-Node Graph", titleClass: 'card-title-cyan', subtitle: "Lab",
-    description: "research node → write node with shared state.",
-    code: "state[\"notes\"] → draft",
+    icon: '🧪', title: 'Two-Node Graph', titleClass: 'card-title-cyan', subtitle: 'Lab',
+    description:
+      'research node writes notes into state; write node turns notes into a draft. Print state after each hop.',
+    code: 'state["notes"] → draft\nlog every transition',
   },
   {
-    icon: "🧰", title: "MCP Demo", titleClass: 'card-title-purple', subtitle: "Tools",
-    description: "Connect one MCP filesystem or fetch server to a tiny agent.",
-    code: "MCP + LangGraph",
+    icon: '🧰', title: 'MCP Demo', titleClass: 'card-title-purple', subtitle: 'Tools',
+    description:
+      'Connect one MCP filesystem or fetch server to a tiny LangGraph agent. Call exactly one tool end-to-end.',
+    code: 'MCP server → list_tools\n→ agent call_tool',
   },
   {
-    icon: "🔜", title: "Next: n8n", titleClass: 'card-title-amber', subtitle: "Day 47",
-    description: "Tomorrow — n8n automation and agentic workflows.",
+    icon: '🔜', title: 'Next: n8n', titleClass: 'card-title-amber', subtitle: 'Day 47 Preview',
+    description: 'Tomorrow — visual automation with n8n triggers, AI nodes, and human gates.',
     link: { href: '/agentic-day-47', label: 'Go to Day 47 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: "📘", title: "LangGraph & MCP", titleClass: 'card-title-cyan', subtitle: "PY Module 46",
-    description: "Full lesson on the site for this module.",
-    link: { href: "/python/learn/langgraph-and-mcp", label: 'Open module →' },
+    icon: '📘', title: 'LangGraph & MCP', titleClass: 'card-title-cyan', subtitle: 'PY Module 46',
+    description: 'Full lesson — graph workflows, MCP components, and wiring servers into agents.',
+    link: { href: '/python/learn/langgraph-and-mcp', label: 'Open PY Module 46 →' },
   },
   {
-    icon: "📖", title: "LangGraph", titleClass: 'card-title-purple', subtitle: "Docs",
-    description: "Docs resource.",
-    link: { href: "https://langchain-ai.github.io/langgraph/", label: 'Open →', external: true },
+    icon: '🎬', title: 'LangGraph Tutorial', titleClass: 'card-title-purple', subtitle: 'Sam Witteveen',
+    description: 'Hands-on walkthrough of LangGraph agent graphs.',
+    link: { href: LANGGRAPH_YT, label: 'Watch LangGraph tutorial →', external: true },
   },
   {
-    icon: "📖", title: "MCP", titleClass: 'card-title-amber', subtitle: "Spec",
-    description: "Spec resource.",
-    link: { href: "https://modelcontextprotocol.io/", label: 'Open →', external: true },
+    icon: '📖', title: 'LangGraph + MCP Docs', titleClass: 'card-title-amber', subtitle: 'Official',
+    description: 'Primary references for stateful graphs and the Model Context Protocol.',
+    link: { href: LANGGRAPH, label: 'Open LangGraph docs →', external: true },
   },
 ];
 
@@ -132,13 +138,13 @@ export default function AgenticDay46() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-45" className="day001-nav-btn day001-nav-prev">← Day 45</Link>
-          <p className="day001-datetime">Agentic AI Day 46 · 46 Aug 2026</p>
+          <p className="day001-datetime">Agentic AI Day 46 · 15 Sep 2026</p>
           <Link to="/agentic-day-47" className="day001-nav-btn day001-nav-next">Day 47 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>LangGraph</span><span>Day 46</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>LangGraph</span><span>Phase 9</span></div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">DAY 46 <span aria-hidden="true">🕸️</span></h1>
               <p className="day001-day-theme">LANGGRAPH & MCP</p>
@@ -148,7 +154,7 @@ export default function AgenticDay46() {
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">AGENTIC AI · AGENTS</p>
+              <p className="day001-profile-role">AGENTIC AI · LANGGRAPH</p>
             </div>
           </div>
         </div>
@@ -156,7 +162,8 @@ export default function AgenticDay46() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '31%' }} /></div>
 
         <p className="day001-summary">
-          Day 46 builds graphs. Orchestrate agents with <strong>LangGraph</strong> and connect tools via <strong>MCP</strong> (Model Context Protocol) servers.
+          Day 46 builds graphs. Orchestrate agents with <strong>LangGraph</strong> and connect tools via{' '}
+          <strong>MCP</strong> (Model Context Protocol) servers.
         </p>
 
         <section className="day001-learnt">
@@ -171,12 +178,12 @@ export default function AgenticDay46() {
           </ul>
         </section>
 
-        <CardSection icon="🕸️" title="CORE IDEAS" cards={CORE} columns={3} />
+        <CardSection icon="🕸️" title="GRAPH & PROTOCOL" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="PRACTICE" cards={PRACTICE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#AgenticAI</span><span>#GenAI</span><span>#Day46</span><span>#LangGraph</span><span>#100DaysOfCode</span>
+          <span>#AgenticAI</span><span>#LangGraph</span><span>#MCP</span><span>#Day46</span><span>#GenAI</span>
         </footer>
       </div>
     </div>
