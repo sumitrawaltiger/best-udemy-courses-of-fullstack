@@ -4,12 +4,12 @@
 
 export const TS_META = {
   title: 'The TypeScript Series',
-  subtitle: '200 Episodes · JavaScript, Now With Types',
+  subtitle: '365 Lectures · The Full TypeScript Stack',
   blurb:
-    'JavaScript with a type system bolted on — catching bugs before they run. Two hundred illustrated episodes, from installing the compiler to enums, interfaces, classes, inheritance, access modifiers, abstract classes, implementing interfaces with static members, generics — from type parameters through constraints, multiple type parameters and defaults — and utility types like Partial, Required, Readonly, Record, Pick, Omit, Exclude and Extract — each paired with the full written notes and every code snippet.',
-  totalDays: 200,
+    'JavaScript with a type system bolted on — catching bugs before they run. Three hundred and sixty-five illustrated episodes covering the entire TypeScript stack: the language itself (installing the compiler, enums, interfaces, classes, inheritance, access modifiers, abstract classes, generics, utility types like Partial, Required, Readonly, Record, Pick, Omit, Exclude and Extract), then React, Next.js, React Native, and Express JS — each paired with the full written notes and every code snippet.',
+  totalDays: 365,
   startDate: '1 Jan 2027',
-  endDate: '19 Jul 2027',
+  endDate: '31 Dec 2027',
 };
 
 export const TS_GROUPS = [
@@ -19,6 +19,10 @@ export const TS_GROUPS = [
   { id: 'oop', label: 'Object-Oriented', icon: '🏛️', desc: 'Classes, inheritance, access modifiers and abstract classes.' },
   { id: 'generics', label: 'Generics', icon: '📦', desc: 'Flexible, reusable, type-safe components.' },
   { id: 'utility-types', label: 'Utility Types', icon: '🧰', desc: 'Built-in generics that transform existing types.' },
+  { id: 'react', label: 'React', icon: '⚛️', desc: 'Typed components, props, hooks, and state.' },
+  { id: 'nextjs', label: 'Next.js', icon: '▲', desc: 'The App Router, server components, and data fetching — in TypeScript.' },
+  { id: 'react-native', label: 'React Native', icon: '📱', desc: 'Typed mobile apps with React Native and Expo.' },
+  { id: 'express', label: 'Express JS', icon: '🛰️', desc: 'Typed REST APIs, middleware, and Node.js on the backend.' },
 ];
 
 

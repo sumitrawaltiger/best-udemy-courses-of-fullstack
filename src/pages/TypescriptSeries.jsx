@@ -57,8 +57,8 @@ export default function TypescriptSeries() {
             <span className="prereq-stat-label">themes</span>
           </div>
           <div className="prereq-stat">
-            <span className="prereq-stat-value">JS→TS</span>
-            <span className="prereq-stat-label">types on JavaScript</span>
+            <span className="prereq-stat-value">TS→Stack</span>
+            <span className="prereq-stat-label">TS, React, Next.js, RN &amp; Express</span>
           </div>
         </div>
       </section>
@@ -67,8 +67,9 @@ export default function TypescriptSeries() {
         <p>
           TypeScript is <strong>JavaScript with a type system</strong> — the same language you know,
           plus static types that catch bugs before they run. These episodes go from installing the
-          compiler through <strong>classes, inheritance and abstract classes</strong>, each with the
-          full written notes and every code snippet.
+          compiler through <strong>classes, inheritance and abstract classes</strong>, then out into{' '}
+          <strong>React, Next.js, React Native, and Express JS</strong> — each with the full written
+          notes and every code snippet.
         </p>
       </section>
 
