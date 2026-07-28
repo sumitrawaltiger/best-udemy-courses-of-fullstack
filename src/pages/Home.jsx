@@ -24,6 +24,7 @@ import { REACT_INTERVIEW_QUESTIONS } from '../data/reactInterviewQuestions';
 import { NEXTJS_INTERVIEW_QUESTIONS } from '../data/nextjsInterviewQuestions';
 import { JAVA_INTERVIEW_QUESTIONS } from '../data/javaInterviewQuestions';
 import { KAFKA_INTERVIEW_QUESTIONS } from '../data/kafkaInterviewQuestions';
+import { MICROSERVICES_INTERVIEW_QUESTIONS } from '../data/microservicesInterviewQuestions';
 import { JAVA_STREAMS_PUZZLES } from '../data/javaStreamsPuzzles';
 import { SQL_QUERY_PUZZLES } from '../data/sqlQueryPuzzles';
 import { BEST_COURSES } from '../data/bestUdemyCourses';
@@ -700,6 +701,7 @@ export default function Home() {
               NEXTJS_INTERVIEW_QUESTIONS.length +
               JAVA_INTERVIEW_QUESTIONS.length +
               KAFKA_INTERVIEW_QUESTIONS.length +
+              MICROSERVICES_INTERVIEW_QUESTIONS.length +
               JAVA_STREAMS_PUZZLES.length +
               SQL_QUERY_PUZZLES.length}
             + questions and answers. <strong>JavaScript</strong> — closures, the <code>this</code> keyword,
@@ -709,7 +711,9 @@ export default function Home() {
             <strong>Java</strong> —{' '}
             {JAVA_INTERVIEW_QUESTIONS.length} on OOP, collections, concurrency, Spring &amp; REST.{' '}
             <strong>Kafka</strong> — {KAFKA_INTERVIEW_QUESTIONS.length} of the trickiest questions on
-            partitions, ordering, delivery semantics &amp; rebalancing. <strong>Java 8 Streams</strong> —{' '}
+            partitions, ordering, delivery semantics &amp; rebalancing.{' '}
+            <strong>Microservices</strong> — {MICROSERVICES_INTERVIEW_QUESTIONS.length} on API gateways,
+            service discovery, resilience, deployment &amp; security. <strong>Java 8 Streams</strong> —{' '}
             {JAVA_STREAMS_PUZZLES.length} predict-the-output puzzles with worked solutions.{' '}
             <strong>SQL</strong> — {SQL_QUERY_PUZZLES.length} tricky query puzzles on joins, window
             functions, NULLs &amp; classic patterns. Click any question to reveal the answer.
@@ -721,6 +725,7 @@ export default function Home() {
             <span>☕ Java &amp; OOP</span>
             <span>🍃 Spring &amp; REST</span>
             <span>🔀 Kafka &amp; Streaming</span>
+            <span>🧱 Microservices</span>
             <span>🧩 Stream Puzzles</span>
             <span>🗄️ Tricky SQL</span>
           </div>
@@ -742,6 +747,9 @@ export default function Home() {
             </Link>
             <Link to="/kafka-interview-questions" className="btn btn-devops btn-lg">
               Kafka Q&amp;A 🔀
+            </Link>
+            <Link to="/microservices-interview-questions" className="btn btn-java btn-lg">
+              Microservices Q&amp;A 🧱
             </Link>
             <Link to="/java-streams-puzzles" className="btn btn-java btn-lg">
               Java Streams Puzzles 🧩

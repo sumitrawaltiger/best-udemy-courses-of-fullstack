@@ -9,6 +9,7 @@ const TOPICS = [
   { id: 'nodejs', label: 'Node.js', path: '/nodejs-interview-questions' },
   { id: 'java', label: 'Java', path: '/java-interview-questions' },
   { id: 'kafka', label: 'Kafka', path: '/kafka-interview-questions' },
+  { id: 'microservices', label: 'Microservices', path: '/microservices-interview-questions' },
   { id: 'java-streams', label: 'Java 8 Streams', path: '/java-streams-puzzles' },
   { id: 'sql', label: 'SQL Queries', path: '/sql-query-puzzles' },
   { id: 'devops', label: 'DevOps', path: '/devops-interview-questions' },
