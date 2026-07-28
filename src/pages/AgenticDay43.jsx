@@ -2,71 +2,76 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
+const SECURITY_DOCS = 'https://fastapi.tiangolo.com/tutorial/security/';
+const AUTH_YT = 'https://www.youtube.com/watch?v=5GxQ1rLTwaU';
+
 const LEARNT_TODAY = [
-  { title: "OAuth2 password flow", text: "standard way to issue tokens for SPAs and mobile" },
-  { title: "JWT access tokens", text: "stateless auth — verify signature and expiry on each request" },
-  { title: "Password hashing", text: "passlib/bcrypt — never store plaintext" },
-  { title: "Depends(get_current_user)", text: "inject the authenticated user into protected routes" },
-  { title: "Scopes / roles", text: "limit who can call admin or expensive generate endpoints" },
-  { title: "CORS", text: "allow only trusted frontends" },
-  { title: "Secrets rotation", text: "JWT secret and API keys in env; rotate carefully" },
-  { title: "Abuse prevention", text: "rate limits + auth together protect model spend" },
+  { title: 'OAuth2 password flow', text: 'standard login that returns a bearer token for SPAs and mobile clients' },
+  { title: 'JWT access tokens', text: 'stateless auth — sign claims (sub, exp); verify on every protected request' },
+  { title: 'Password hashing', text: 'bcrypt/passlib — never store plaintext passwords' },
+  { title: 'get_current_user', text: 'Depends that decodes the Bearer token and loads the user or raises 401' },
+  { title: 'Protected routes', text: 'inject current user; gate expensive /ask and admin endpoints' },
+  { title: 'CORS', text: 'allow only trusted frontend origins in production' },
+  { title: 'Rate limits', text: 'pair auth with rate limiting so stolen keys cannot burn your LLM budget' },
+  { title: 'Least privilege', text: 'scopes/roles — not every user can reindex or call admin tools' },
 ];
 
 const CORE = [
   {
-    icon: "🔑", title: "JWT Issue", titleClass: 'card-title-cyan', subtitle: "Login",
+    icon: '🔑', title: 'Issue a JWT', titleClass: 'card-title-cyan', subtitle: 'Login',
     description:
-      "Verify password → create access_token with sub=user_id.",
-    code: "create_access_token({\"sub\": user.id})",
+      'Verify username/password, then create_access_token with sub=user_id and an expiry. Return {"access_token", "token_type": "bearer"}.',
+    code: 'token = create_access_token({"sub": str(user.id)})\nreturn {"access_token": token, "token_type": "bearer"}',
   },
   {
-    icon: "👤", title: "Current User", titleClass: 'card-title-purple', subtitle: "Guard",
+    icon: '👤', title: 'Current User Guard', titleClass: 'card-title-purple', subtitle: 'Depends',
     description:
-      "Decode Bearer token; load user; 401 if invalid.",
-    code: "user = Depends(get_current_user)",
+      'Extract Authorization: Bearer …, decode JWT, load user. Invalid/expired tokens → 401.',
+    code: 'async def get_current_user(\n  creds: HTTPAuthorizationCredentials = Depends(bearer),\n  db: Session = Depends(get_db),\n):\n    payload = decode(creds.credentials)\n    user = db.get(User, payload["sub"])\n    if not user: raise HTTPException(401)\n    return user',
   },
   {
-    icon: "🛡️", title: "Hardening", titleClass: 'card-title-amber', subtitle: "Extras",
+    icon: '🛡️', title: 'Harden the Edge', titleClass: 'card-title-amber', subtitle: 'Extras',
     description:
-      "HTTPS only, CORS allowlist, rate limit /ask.",
-    code: "CORS · rate limit · HTTPS",
+      'HTTPS only, CORS allowlist, rate limit /ask, and never log raw tokens or passwords.',
+    code: 'CORS · rate limit · HTTPS\nno secrets in logs',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: "🧪", title: "Protected /ask", titleClass: 'card-title-cyan', subtitle: "Lab",
-    description: "Require Bearer token before calling the LLM.",
-    code: "Authorization: Bearer …",
+    icon: '🧪', title: 'Protect /ask', titleClass: 'card-title-cyan', subtitle: 'Lab',
+    description:
+      'Require Bearer token before calling the LLM. Unauthenticated requests must get 401.',
+    code: '@app.post("/ask")\ndef ask(body: AskIn, user=Depends(get_current_user)):\n    ...',
   },
   {
-    icon: "👥", title: "Role Gate", titleClass: 'card-title-purple', subtitle: "RBAC",
-    description: "Only role=admin can hit /admin/reindex.",
-    code: "if user.role != \"admin\"",
+    icon: '👥', title: 'Role Gate', titleClass: 'card-title-purple', subtitle: 'RBAC',
+    description:
+      'Only role=admin can hit /admin/reindex. Return 403 when the user is authenticated but forbidden.',
+    code: 'if user.role != "admin":\n    raise HTTPException(403)',
   },
   {
-    icon: "🔜", title: "Next: Prod Deploy", titleClass: 'card-title-amber', subtitle: "Day 44",
-    description: "Tomorrow — FastAPI production deployment.",
+    icon: '🔜', title: 'Next: Prod Deploy', titleClass: 'card-title-amber', subtitle: 'Day 44 Preview',
+    description: 'Tomorrow — Uvicorn/Gunicorn, Docker, env config, and a production checklist.',
     link: { href: '/agentic-day-44', label: 'Go to Day 44 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: "📘", title: "FastAPI Auth & Security", titleClass: 'card-title-cyan', subtitle: "PY Module 43",
-    description: "Full lesson on the site for this module.",
-    link: { href: "/python/learn/fastapi-authentication-and-security", label: 'Open module →' },
+    icon: '📘', title: 'FastAPI Auth & Security', titleClass: 'card-title-cyan', subtitle: 'PY Module 43',
+    description: 'Full lesson — OAuth2, JWT, protected routes, CORS, and rate limiting.',
+    link: { href: '/python/learn/fastapi-authentication-and-security', label: 'Open PY Module 43 →' },
   },
   {
-    icon: "📖", title: "FastAPI Security", titleClass: 'card-title-purple', subtitle: "Docs",
-    description: "Docs resource.",
-    link: { href: "https://fastapi.tiangolo.com/tutorial/security/", label: 'Open →', external: true },
+    icon: '🎬', title: 'FastAPI Auth', titleClass: 'card-title-purple', subtitle: 'Video',
+    description: 'Video walkthrough of FastAPI authentication patterns.',
+    link: { href: AUTH_YT, label: 'Watch FastAPI auth →', external: true },
   },
   {
-    icon: "📖", title: "OAuth2", titleClass: 'card-title-amber', subtitle: "Overview",
-    description: "Overview resource.",
-    link: { href: "https://oauth.net/2/", label: 'Open →', external: true },
+    icon: '📖', title: 'Security Tutorial', titleClass: 'card-title-amber', subtitle: 'Docs',
+    description: 'Official FastAPI security and OAuth2 tutorial.',
+    link: { href: SECURITY_DOCS, label: 'Open security docs →', external: true },
   },
 ];
 
@@ -132,16 +137,16 @@ export default function AgenticDay43() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-42" className="day001-nav-btn day001-nav-prev">← Day 42</Link>
-          <p className="day001-datetime">Agentic AI Day 43 · 43 Aug 2026</p>
+          <p className="day001-datetime">Agentic AI Day 43 · 12 Sep 2026</p>
           <Link to="/agentic-day-44" className="day001-nav-btn day001-nav-next">Day 44 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Security</span><span>Day 43</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>FastAPI</span><span>Security</span></div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">DAY 43 <span aria-hidden="true">🔒</span></h1>
-              <p className="day001-day-theme">FASTAPI AUTHENTICATION & SECURITY</p>
+              <p className="day001-day-theme">FASTAPI AUTHENTICATION &amp; SECURITY</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -156,7 +161,8 @@ export default function AgenticDay43() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '29%' }} /></div>
 
         <p className="day001-summary">
-          Day 43 locks the API. Add <strong>JWT/OAuth2</strong>, password hashing, and security headers so LLM routes are not public by default.
+          Day 43 locks the API. Add <strong>JWT/OAuth2</strong>, hash passwords, and protect LLM routes so
+          agents and users only call what they are allowed to.
         </p>
 
         <section className="day001-learnt">
@@ -171,12 +177,12 @@ export default function AgenticDay43() {
           </ul>
         </section>
 
-        <CardSection icon="🔒" title="CORE IDEAS" cards={CORE} columns={3} />
+        <CardSection icon="🔒" title="AUTH CORE" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="PRACTICE" cards={PRACTICE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#AgenticAI</span><span>#GenAI</span><span>#Day43</span><span>#Security</span><span>#100DaysOfCode</span>
+          <span>#AgenticAI</span><span>#FastAPI</span><span>#Day43</span><span>#JWT</span><span>#Security</span>
         </footer>
       </div>
     </div>

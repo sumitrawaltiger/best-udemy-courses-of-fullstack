@@ -2,71 +2,76 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
+const FASTAPI_DOCS = 'https://fastapi.tiangolo.com/';
+const FASTAPI_YT = 'https://www.youtube.com/watch?v=0sOvCWHmTfU';
+
 const LEARNT_TODAY = [
-  { title: "Why FastAPI", text: "async-friendly, type-hint driven, automatic docs — great for LLM microservices" },
-  { title: "Path operations", text: "GET/POST handlers with clear status codes" },
-  { title: "Request bodies", text: "Pydantic models validate JSON automatically" },
-  { title: "Response models", text: "declare what you return — clients get a contract" },
-  { title: "OpenAPI /docs", text: "Swagger UI and ReDoc generated from your types" },
-  { title: "Dependency injection", text: "shared logic (db, auth) via Depends()" },
-  { title: "Async routes", text: "async def for I/O-bound LLM calls" },
-  { title: "Vs Django", text: "leaner API service; Django still stronger for full admin/CMS" },
+  { title: 'Why FastAPI', text: 'async-friendly, type-hint driven APIs with automatic OpenAPI docs — ideal for LLM microservices' },
+  { title: 'Path operations', text: '@app.get / @app.post map URLs to handlers with clear status codes' },
+  { title: 'Pydantic models', text: 'request and response bodies are validated automatically from type hints' },
+  { title: 'Request bodies', text: 'declare a BaseModel; FastAPI parses JSON and returns 422 on bad input' },
+  { title: 'Response models', text: 'response_model= keeps your public contract stable for clients and agents' },
+  { title: 'Auto /docs', text: 'Swagger UI and ReDoc are generated from your code — no separate OpenAPI file to maintain' },
+  { title: 'Depends()', text: 'dependency injection shares db sessions, auth, and config across routes' },
+  { title: 'Async routes', text: 'async def awaits LLM HTTP calls without blocking the event loop' },
 ];
 
 const CORE = [
   {
-    icon: "🚀", title: "First App", titleClass: 'card-title-cyan', subtitle: "Setup",
+    icon: '🚀', title: 'First App', titleClass: 'card-title-cyan', subtitle: 'Setup',
     description:
-      "uvicorn main:app --reload; hit /docs immediately.",
-    code: "app = FastAPI()\n@app.get(\"/health\")",
+      'Create the app, run uvicorn with --reload, and open /docs immediately. That loop is how FastAPI feels fast to learn.',
+    code: 'from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get("/health")\ndef health():\n    return {"ok": True}\n\n# uvicorn main:app --reload',
   },
   {
-    icon: "📐", title: "Pydantic", titleClass: 'card-title-purple', subtitle: "Types",
+    icon: '📐', title: 'Pydantic Bodies', titleClass: 'card-title-purple', subtitle: 'Validate',
     description:
-      "class AskIn(BaseModel): question: str; validate before calling the LLM.",
-    code: "def ask(body: AskIn): ...",
+      'Define AskIn with question: str. FastAPI validates before your handler runs — never trust raw JSON.',
+    code: 'from pydantic import BaseModel\n\nclass AskIn(BaseModel):\n    question: str\n    top_k: int = 5\n\n@app.post("/ask")\ndef ask(body: AskIn):\n    return {"answer": "...", "model": "gpt"}',
   },
   {
-    icon: "📖", title: "Auto Docs", titleClass: 'card-title-amber', subtitle: "DX",
+    icon: '📖', title: 'OpenAPI Docs', titleClass: 'card-title-amber', subtitle: 'Contract',
     description:
-      "OpenAPI stays in sync with code — agents and frontends can discover endpoints.",
-    code: "/docs · /redoc",
+      '/docs (Swagger) and /redoc stay in sync with your types. Frontends and agent tools can discover endpoints from the schema.',
+    code: '# Interactive docs\n# http://127.0.0.1:8000/docs\n# http://127.0.0.1:8000/redoc',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: "🧪", title: "Ask Endpoint", titleClass: 'card-title-cyan', subtitle: "Lab",
-    description: "POST /ask with question; return {answer, model}.",
-    code: "POST /ask → JSON",
+    icon: '🧪', title: 'Ask Endpoint Lab', titleClass: 'card-title-cyan', subtitle: 'Build',
+    description:
+      'POST /ask with a Pydantic body; return {answer, model}. Hit it from /docs and from curl.',
+    code: 'curl -X POST /ask \\\n  -H "Content-Type: application/json" \\\n  -d \'{"question":"What is RAG?"}\'',
   },
   {
-    icon: "🧵", title: "Async Call", titleClass: 'card-title-purple', subtitle: "Perf",
-    description: "async route that awaits an HTTP LLM client.",
-    code: "await client.chat(...)",
+    icon: '🧵', title: 'Async LLM Call', titleClass: 'card-title-purple', subtitle: 'Perf',
+    description:
+      'Use async def and httpx/AsyncOpenAI so concurrent requests do not block while waiting on the model.',
+    code: '@app.post("/ask")\nasync def ask(body: AskIn):\n    return await client.chat(body.question)',
   },
   {
-    icon: "🔜", title: "Next: DB", titleClass: 'card-title-amber', subtitle: "Day 42",
-    description: "Tomorrow — FastAPI + SQLAlchemy CRUD.",
+    icon: '🔜', title: 'Next: Databases', titleClass: 'card-title-amber', subtitle: 'Day 42 Preview',
+    description: 'Tomorrow — SQLAlchemy, get_db dependency, and CRUD endpoints.',
     link: { href: '/agentic-day-42', label: 'Go to Day 42 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: "📘", title: "FastAPI Fundamentals", titleClass: 'card-title-cyan', subtitle: "PY Module 41",
-    description: "Full lesson on the site for this module.",
-    link: { href: "/python/learn/fastapi-fundamentals", label: 'Open module →' },
+    icon: '📘', title: 'FastAPI Fundamentals', titleClass: 'card-title-cyan', subtitle: 'PY Module 41',
+    description: 'Full lesson on the site — setup, path ops, Pydantic, and OpenAPI docs.',
+    link: { href: '/python/learn/fastapi-fundamentals', label: 'Open PY Module 41 →' },
   },
   {
-    icon: "🎬", title: "FastAPI Tutorial", titleClass: 'card-title-purple', subtitle: "Video",
-    description: "Video resource.",
-    link: { href: "https://www.youtube.com/watch?v=0sOvCWHmTfU", label: 'Open →', external: true },
+    icon: '🎬', title: 'FastAPI Tutorial', titleClass: 'card-title-purple', subtitle: 'freeCodeCamp',
+    description: 'Long-form video walkthrough of FastAPI from zero.',
+    link: { href: FASTAPI_YT, label: 'Watch FastAPI tutorial →', external: true },
   },
   {
-    icon: "📖", title: "FastAPI Docs", titleClass: 'card-title-amber', subtitle: "Docs",
-    description: "Docs resource.",
-    link: { href: "https://fastapi.tiangolo.com/", label: 'Open →', external: true },
+    icon: '📖', title: 'FastAPI Docs', titleClass: 'card-title-amber', subtitle: 'Official',
+    description: 'The official tutorial and reference — best primary source.',
+    link: { href: FASTAPI_DOCS, label: 'Open FastAPI docs →', external: true },
   },
 ];
 
@@ -132,13 +137,13 @@ export default function AgenticDay41() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-40" className="day001-nav-btn day001-nav-prev">← Day 40</Link>
-          <p className="day001-datetime">Agentic AI Day 41 · 41 Aug 2026</p>
+          <p className="day001-datetime">Agentic AI Day 41 · 10 Sep 2026</p>
           <Link to="/agentic-day-42" className="day001-nav-btn day001-nav-next">Day 42 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>FastAPI</span><span>Day 41</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>FastAPI</span><span>APIs</span></div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">DAY 41 <span aria-hidden="true">⚡</span></h1>
               <p className="day001-day-theme">FASTAPI FUNDAMENTALS</p>
@@ -156,7 +161,8 @@ export default function AgenticDay41() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '27%' }} /></div>
 
         <p className="day001-summary">
-          Day 41 switches to modern APIs. Build <strong>FastAPI</strong> routes with <strong>Pydantic</strong> models and free <strong>OpenAPI</strong> docs.
+          Day 41 opens the FastAPI stretch. Build typed <strong>path operations</strong>, validate with{' '}
+          <strong>Pydantic</strong>, and get free <strong>OpenAPI docs</strong> — the API layer agents and UIs will call.
         </p>
 
         <section className="day001-learnt">
@@ -171,12 +177,12 @@ export default function AgenticDay41() {
           </ul>
         </section>
 
-        <CardSection icon="⚡" title="CORE IDEAS" cards={CORE} columns={3} />
+        <CardSection icon="⚡" title="FASTAPI CORE" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="PRACTICE" cards={PRACTICE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#AgenticAI</span><span>#GenAI</span><span>#Day41</span><span>#FastAPI</span><span>#100DaysOfCode</span>
+          <span>#AgenticAI</span><span>#FastAPI</span><span>#Day41</span><span>#Pydantic</span><span>#OpenAPI</span>
         </footer>
       </div>
     </div>

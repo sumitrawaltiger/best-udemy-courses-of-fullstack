@@ -2,71 +2,76 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
+const AGENT_YT = 'https://www.youtube.com/watch?v=sal78ACtGTc';
+const LANGGRAPH = 'https://langchain-ai.github.io/langgraph/';
+
 const LEARNT_TODAY = [
-  { title: "Agent vs chatbot", text: "chatbots answer; agents pursue goals with tools and multi-step plans" },
-  { title: "Agentic AI", text: "systems that plan, act, observe, and iterate toward an objective" },
-  { title: "Memory", text: "short-term scratchpad vs long-term vector/DB memory" },
-  { title: "Planning", text: "decompose goals into steps; replan when tools fail" },
-  { title: "Architecture", text: "brain (LLM) + tools + memory + orchestrator loop" },
-  { title: "Multi-agent", text: "specialist agents (researcher, coder, critic) collaborating" },
-  { title: "Human-in-the-loop", text: "approve risky actions before execution" },
-  { title: "What’s next", text: "LangGraph/MCP and n8n turn this theory into workflows" },
+  { title: 'Agent vs chatbot', text: 'chatbots answer once; agents pursue a goal with tools and multi-step plans' },
+  { title: 'Agentic AI', text: 'systems that plan, act, observe, and iterate until the goal (or budget) is hit' },
+  { title: 'Memory', text: 'short-term scratchpad vs long-term vector/DB memory for facts across sessions' },
+  { title: 'Planning', text: 'decompose goals into steps; replan when a tool fails' },
+  { title: 'Architecture', text: 'LLM brain + tools + memory + orchestrator loop with a clear stop rule' },
+  { title: 'Multi-agent', text: 'specialists (researcher, coder, critic) collaborating under a supervisor/router' },
+  { title: 'Human-in-the-loop', text: 'approve risky side effects before they run' },
+  { title: 'What’s next', text: 'LangGraph/MCP and n8n turn this theory into real workflows' },
 ];
 
 const CORE = [
   {
-    icon: "🎯", title: "Goal Loop", titleClass: 'card-title-cyan', subtitle: "Think→Act",
+    icon: '🎯', title: 'Goal Loop', titleClass: 'card-title-cyan', subtitle: 'Think → Act',
     description:
-      "observe → plan → tool call → observe → … until done or budget hit.",
-    code: "plan → act → observe",
+      'observe → plan → tool call → observe → … until done or max steps. Always define stop conditions up front.',
+    code: 'while not done and steps < MAX:\n  plan → act → observe\n# stop: success | fail | budget',
   },
   {
-    icon: "🧠", title: "Memory Layers", titleClass: 'card-title-purple', subtitle: "State",
+    icon: '🧠', title: 'Memory Layers', titleClass: 'card-title-purple', subtitle: 'State',
     description:
-      "Conversation buffer + retrieved long-term facts + tool results log.",
-    code: "short · long · tool log",
+      'Conversation buffer for the thread, summaries when history grows, vector recall for long-term facts.',
+    code: 'short-term: messages\nlong-term: vector / DB\ntool log: what ran',
   },
   {
-    icon: "👥", title: "Multi-Agent", titleClass: 'card-title-amber', subtitle: "Team",
+    icon: '👥', title: 'Multi-Agent', titleClass: 'card-title-amber', subtitle: 'Team',
     description:
-      "Router assigns sub-tasks; critic agent reviews outputs.",
-    code: "researcher | writer | critic",
+      'Router sends intent to a specialist; a critic reviews output. Only add agents when specialization helps.',
+    code: 'router → researcher\n         → writer\n         → critic',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: "🧪", title: "Toy Agent", titleClass: 'card-title-cyan', subtitle: "Lab",
-    description: "LLM + calculator tool that solves multi-step math word problems.",
-    code: "tool: calculate",
+    icon: '🧪', title: 'Toy Agent', titleClass: 'card-title-cyan', subtitle: 'Lab',
+    description:
+      'LLM + calculator tool that solves a multi-step word problem. Log every tool call.',
+    code: 'tool: calculate(expr)\nloop until final answer',
   },
   {
-    icon: "📝", title: "Write Spec", titleClass: 'card-title-purple', subtitle: "Design",
-    description: "One-page agent spec: goal, tools, memory, stop conditions.",
-    code: "goal · tools · stop",
+    icon: '📝', title: 'Write a Spec', titleClass: 'card-title-purple', subtitle: 'Design',
+    description:
+      'One page: goal, tools, memory, stop rules, and what needs human approval.',
+    code: 'goal · tools · memory\nstop · HITL gates',
   },
   {
-    icon: "🔜", title: "Next: LangGraph", titleClass: 'card-title-amber', subtitle: "Day 46",
-    description: "Tomorrow — LangGraph workflows and MCP servers.",
+    icon: '🔜', title: 'Next: LangGraph & MCP', titleClass: 'card-title-amber', subtitle: 'Day 46 Preview',
+    description: 'Next — stateful graph workflows and Model Context Protocol tool servers.',
     link: { href: '/agentic-day-46', label: 'Go to Day 46 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: "📘", title: "Introduction to Agentic AI", titleClass: 'card-title-cyan', subtitle: "PY Module 45",
-    description: "Full lesson on the site for this module.",
-    link: { href: "/python/learn/introduction-to-agentic-ai", label: 'Open module →' },
+    icon: '📘', title: 'Introduction to Agentic AI', titleClass: 'card-title-cyan', subtitle: 'PY Module 45',
+    description: 'Full lesson — agents vs agentic AI, roadmap, memory, and multi-agent ideas.',
+    link: { href: '/python/learn/introduction-to-agentic-ai', label: 'Open PY Module 45 →' },
   },
   {
-    icon: "📖", title: "LangGraph Concepts", titleClass: 'card-title-purple', subtitle: "Docs",
-    description: "Docs resource.",
-    link: { href: "https://langchain-ai.github.io/langgraph/", label: 'Open →', external: true },
+    icon: '🎬', title: 'Agentic AI Explained', titleClass: 'card-title-purple', subtitle: 'IBM',
+    description: 'Accessible overview of agentic AI concepts.',
+    link: { href: AGENT_YT, label: 'Watch agentic AI intro →', external: true },
   },
   {
-    icon: "🗺️", title: "Mental Model", titleClass: 'card-title-amber', subtitle: "Remember",
-    description: "Remember resource.",
-    link: { href: "Agent = LLM + tools + memory + loop with a clear stop rule.", label: 'Open →', external: true },
+    icon: '📖', title: 'LangGraph Docs', titleClass: 'card-title-amber', subtitle: 'Next Step',
+    description: 'Stateful agent graphs — the framework Day 46 builds on.',
+    link: { href: LANGGRAPH, label: 'Open LangGraph →', external: true },
   },
 ];
 
@@ -132,13 +137,13 @@ export default function AgenticDay45() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-44" className="day001-nav-btn day001-nav-prev">← Day 44</Link>
-          <p className="day001-datetime">Agentic AI Day 45 · 45 Aug 2026</p>
+          <p className="day001-datetime">Agentic AI Day 45 · 14 Sep 2026</p>
           <Link to="/agentic-day-46" className="day001-nav-btn day001-nav-next">Day 46 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Agents</span><span>Day 45</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Agents</span><span>Phase 9</span></div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">DAY 45 <span aria-hidden="true">🤖</span></h1>
               <p className="day001-day-theme">INTRODUCTION TO AGENTIC AI</p>
@@ -156,7 +161,8 @@ export default function AgenticDay45() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '30%' }} /></div>
 
         <p className="day001-summary">
-          Day 45 opens true agents. Learn how <strong>agentic AI</strong> plans, uses memory, and coordinates <strong>multi-agent</strong> systems beyond single chat replies.
+          Day 45 opens true agents. Learn how <strong>agentic AI</strong> plans, uses{' '}
+          <strong>memory</strong>, and coordinates <strong>multi-agent</strong> teams beyond a single chat reply.
         </p>
 
         <section className="day001-learnt">
@@ -171,12 +177,12 @@ export default function AgenticDay45() {
           </ul>
         </section>
 
-        <CardSection icon="🤖" title="CORE IDEAS" cards={CORE} columns={3} />
+        <CardSection icon="🤖" title="AGENT BASICS" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="PRACTICE" cards={PRACTICE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#AgenticAI</span><span>#GenAI</span><span>#Day45</span><span>#Agents</span><span>#100DaysOfCode</span>
+          <span>#AgenticAI</span><span>#Agents</span><span>#Day45</span><span>#GenAI</span><span>#MultiAgent</span>
         </footer>
       </div>
     </div>

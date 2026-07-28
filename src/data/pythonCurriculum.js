@@ -1646,6 +1646,55 @@ export const pythonLessons = [
     topics: ['FastAPI setup', 'Path operations', 'Request bodies', 'Pydantic models', 'Auto OpenAPI docs'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=0sOvCWHmTfU', 'FastAPI Tutorial', 'freeCodeCamp'),
+    sections: [
+      {
+        id: 'why-fastapi',
+        title: 'Why FastAPI for Gen AI & Agentic Backends',
+        content:
+          "**FastAPI** is a modern Python web framework for building APIs. It is a strong fit for Gen AI and agentic systems because:\n\n- **Type hints drive validation** — Pydantic models catch bad JSON before your LLM code runs.\n- **Automatic OpenAPI docs** — `/docs` and `/redoc` stay in sync with your code so frontends and agent tools can discover endpoints.\n- **Async-first** — `async def` routes await model HTTP calls without blocking the whole process.\n- **Dependency injection** — share DB sessions, auth, and settings cleanly with `Depends()`.\n\nCompared with Django, FastAPI is leaner for pure API/microservice work. Django still wins when you need a full admin/CMS-style product UI out of the box.",
+      },
+      {
+        id: 'first-app-uvicorn',
+        title: 'First App — FastAPI + Uvicorn',
+        content:
+          "Install FastAPI and an ASGI server, create a tiny app, and run it with **uvicorn**. The `--reload` flag restarts on file changes during development.\n\nOpen `http://127.0.0.1:8000/docs` to see the interactive Swagger UI generated from your routes.",
+        code: '# pip install fastapi uvicorn\n\nfrom fastapi import FastAPI\n\napp = FastAPI(title="Agentic Ask API")\n\n@app.get("/health")\ndef health():\n    return {"ok": True}\n\n# uvicorn main:app --reload',
+      },
+      {
+        id: 'path-operations',
+        title: 'Path Operations — GET, POST, Path & Query Params',
+        content:
+          "A **path operation** is a route handler decorated with `@app.get`, `@app.post`, and so on. Path parameters become function arguments; query parameters are also declared as arguments with defaults or `Query(...)`.\n\nReturn JSON-serializable dicts or Pydantic models. Use `status_code=` on the decorator when you need `201 Created` or similar.",
+        code: 'from fastapi import FastAPI, Query\n\napp = FastAPI()\n\n@app.get("/items/{item_id}")\ndef read_item(item_id: int, q: str | None = Query(default=None)):\n    return {"item_id": item_id, "q": q}\n\n@app.post("/items", status_code=201)\ndef create_item(name: str):\n    return {"name": name}',
+      },
+      {
+        id: 'pydantic-request-bodies',
+        title: 'Pydantic Models — Request Bodies & Validation',
+        content:
+          "Declare a **`BaseModel`** for the JSON body. FastAPI parses the body, validates types and constraints, and returns **422** with clear errors when input is invalid — before your handler runs.\n\nThis is the same discipline you want in front of expensive LLM calls: reject bad input early.",
+        code: 'from pydantic import BaseModel, Field\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\nclass AskIn(BaseModel):\n    question: str = Field(min_length=1, max_length=2000)\n    top_k: int = Field(default=5, ge=1, le=20)\n\n@app.post("/ask")\ndef ask(body: AskIn):\n    # body.question is validated\n    return {"answer": f"Echo: {body.question}", "top_k": body.top_k}',
+      },
+      {
+        id: 'response-models-docs',
+        title: 'Response Models & Auto OpenAPI Docs',
+        content:
+          "Use **`response_model=`** so the public contract stays stable — extra internal fields are filtered out of the response. Clients (and agents) can trust the schema.\n\nFastAPI builds an OpenAPI document from your types. Browse it at:\n\n- `/docs` — Swagger UI\n- `/redoc` — ReDoc\n\nTreat that schema as the contract between your FastAPI service and every consumer.",
+        code: 'from pydantic import BaseModel\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\nclass AskOut(BaseModel):\n    answer: str\n    model: str\n\n@app.post("/ask", response_model=AskOut)\ndef ask(body: AskIn) -> AskOut:\n    return AskOut(answer="...", model="gpt-4.1-mini")',
+      },
+      {
+        id: 'depends-async',
+        title: 'Depends() and Async Routes',
+        content:
+          "**`Depends()`** injects shared logic — config, DB sessions (Day 42), or the current user (Day 43) — into any route without globals.\n\nPrefer **`async def`** when the handler awaits I/O (LLM HTTP clients, DB drivers). FastAPI runs sync `def` routes in a threadpool, but async is the natural fit for agent backends that wait on tools and models.",
+        code: 'from fastapi import Depends, FastAPI\n\napp = FastAPI()\n\ndef get_settings():\n    return {"env": "dev"}\n\n@app.get("/config")\ndef read_config(settings=Depends(get_settings)):\n    return settings\n\n@app.post("/ask")\nasync def ask_async(body: AskIn):\n    # await client.chat.completions.create(...)\n    return {"answer": "ok"}',
+      },
+      {
+        id: 'day41-checklist',
+        title: 'Day 41 Checklist & What’s Next',
+        content:
+          "Before moving on, you should be able to:\n\n- Run a FastAPI app with uvicorn and open `/docs`.\n- Declare GET/POST routes with path and query parameters.\n- Validate JSON bodies with Pydantic `BaseModel`.\n- Return a typed `response_model`.\n- Explain why `Depends()` and `async def` matter for LLM APIs.\n\n**What’s next — Day 42:** connect SQLAlchemy, inject `get_db`, and build CRUD endpoints so chats and documents persist.",
+      },
+    ],
   },
   {
     pyDay: 42,

@@ -2,71 +2,76 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
+const SA_DOCS = 'https://docs.sqlalchemy.org/';
+const SA_YT = 'https://www.youtube.com/watch?v=5GorMC2lPpk';
+
 const LEARNT_TODAY = [
-  { title: "SQLAlchemy + FastAPI", text: "models, engine, SessionLocal — same ORM ideas as Django, different wiring" },
-  { title: "Depends(get_db)", text: "yield a session per request; close in finally" },
-  { title: "CRUD endpoints", text: "create/read/update/delete with status codes" },
-  { title: "Async DB", text: "async engines/sessions when you go fully async" },
-  { title: "Error handling", text: "HTTPException for 404/400; don’t leak stack traces" },
-  { title: "Migrations", text: "Alembic for schema changes in real projects" },
-  { title: "Gen AI tables", text: "store conversations, tool traces, document metadata" },
-  { title: "Transactions", text: "commit on success; rollback on failure" },
+  { title: 'SQLAlchemy role', text: 'ORM + Core SQL toolkit — define tables as Python classes, query without raw SQL strings' },
+  { title: 'Engine & Session', text: 'engine talks to the DB; SessionLocal is your unit of work per request' },
+  { title: 'Models', text: 'subclass Base, set __tablename__, declare Column fields with types and constraints' },
+  { title: 'get_db dependency', text: 'FastAPI Depends yields a session, closes it in finally — one session per request' },
+  { title: 'CRUD endpoints', text: 'POST create, GET list/detail, PATCH update, DELETE remove with proper status codes' },
+  { title: 'HTTPException', text: 'raise 404 when a row is missing — never leak stack traces to clients' },
+  { title: 'Alembic preview', text: 'version schema changes with migrations instead of editing prod by hand' },
+  { title: 'Gen AI tables', text: 'store conversations, messages, and document metadata beside your LLM routes' },
 ];
 
 const CORE = [
   {
-    icon: "🧱", title: "Models + Engine", titleClass: 'card-title-cyan', subtitle: "Setup",
+    icon: '🧱', title: 'Model + Engine', titleClass: 'card-title-cyan', subtitle: 'Setup',
     description:
-      "Declarative Base + create_engine; SessionLocal factory.",
-    code: "SessionLocal = sessionmaker(...)",
+      'Create the engine from DATABASE_URL, SessionLocal factory, and declarative Base. Models inherit Base and map to tables.',
+    code: 'from sqlalchemy import create_engine, Column, Integer, String\nfrom sqlalchemy.orm import sessionmaker, declarative_base\n\nengine = create_engine("sqlite:///./app.db")\nSessionLocal = sessionmaker(bind=engine, autoflush=False)\nBase = declarative_base()\n\nclass Message(Base):\n    __tablename__ = "messages"\n    id = Column(Integer, primary_key=True)\n    role = Column(String(20))\n    content = Column(String)',
   },
   {
-    icon: "🔌", title: "get_db", titleClass: 'card-title-purple', subtitle: "DI",
+    icon: '🔌', title: 'get_db', titleClass: 'card-title-purple', subtitle: 'DI',
     description:
-      "def get_db(): db=SessionLocal(); try yield db; finally close.",
-    code: "db: Session = Depends(get_db)",
+      'Yield a session to the route, always close it. FastAPI Depends injects it into every CRUD handler.',
+    code: 'def get_db():\n    db = SessionLocal()\n    try:\n        yield db\n    finally:\n        db.close()\n\n@app.get("/messages")\ndef list_messages(db: Session = Depends(get_db)):\n    return db.query(Message).all()',
   },
   {
-    icon: "📋", title: "CRUD Routes", titleClass: 'card-title-amber', subtitle: "API",
+    icon: '📋', title: 'CRUD Shape', titleClass: 'card-title-amber', subtitle: 'API',
     description:
-      "POST create, GET list/detail, PATCH update, DELETE remove.",
-    code: "201 · 200 · 404",
+      'Create commits and refreshes; reads use filter/first/all; updates mutate then commit; deletes remove then commit.',
+    code: 'db.add(row); db.commit(); db.refresh(row)\nrow = db.query(Message).filter_by(id=id).first()\nif not row: raise HTTPException(404)',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: "🧪", title: "Messages CRUD", titleClass: 'card-title-cyan', subtitle: "Lab",
-    description: "Table messages(id, role, content); full CRUD via FastAPI.",
-    code: "POST /messages",
+    icon: '🧪', title: 'Messages CRUD', titleClass: 'card-title-cyan', subtitle: 'Lab',
+    description:
+      'Table messages(id, role, content). Wire POST /messages, GET /messages, GET /messages/{id}, DELETE.',
+    code: 'POST /messages\nGET  /messages/{id}\nDELETE /messages/{id}',
   },
   {
-    icon: "⚠️", title: "404 Path", titleClass: 'card-title-purple', subtitle: "Errors",
-    description: "Raise HTTPException(404) when id missing.",
-    code: "raise HTTPException(404)",
+    icon: '⚠️', title: '404 Path', titleClass: 'card-title-purple', subtitle: 'Errors',
+    description:
+      'Missing ids must return HTTPException(status_code=404, detail="Not found") — keep error bodies consistent.',
+    code: 'raise HTTPException(404, detail="Message not found")',
   },
   {
-    icon: "🔜", title: "Next: Security", titleClass: 'card-title-amber', subtitle: "Day 43",
-    description: "Tomorrow — FastAPI auth & security.",
+    icon: '🔜', title: 'Next: Auth', titleClass: 'card-title-amber', subtitle: 'Day 43 Preview',
+    description: 'Tomorrow — JWT/OAuth2, password hashing, and protecting LLM routes.',
     link: { href: '/agentic-day-43', label: 'Go to Day 43 →' },
   },
 ];
 
 const RESOURCES = [
   {
-    icon: "📘", title: "FastAPI with Databases", titleClass: 'card-title-cyan', subtitle: "PY Module 42",
-    description: "Full lesson on the site for this module.",
-    link: { href: "/python/learn/fastapi-with-databases", label: 'Open module →' },
+    icon: '📘', title: 'FastAPI with Databases', titleClass: 'card-title-cyan', subtitle: 'PY Module 42',
+    description: 'Full lesson — SQLAlchemy, sessions, CRUD, Alembic, and seed data.',
+    link: { href: '/python/learn/fastapi-with-databases', label: 'Open PY Module 42 →' },
   },
   {
-    icon: "🎬", title: "FastAPI + SQLAlchemy", titleClass: 'card-title-purple', subtitle: "Video",
-    description: "Video resource.",
-    link: { href: "https://www.youtube.com/watch?v=5GorMC2lPpk", label: 'Open →', external: true },
+    icon: '🎬', title: 'FastAPI + SQLAlchemy', titleClass: 'card-title-purple', subtitle: 'Video',
+    description: 'Hands-on video wiring FastAPI to SQLAlchemy.',
+    link: { href: SA_YT, label: 'Watch tutorial →', external: true },
   },
   {
-    icon: "📖", title: "SQLAlchemy 2.0", titleClass: 'card-title-amber', subtitle: "Docs",
-    description: "Docs resource.",
-    link: { href: "https://docs.sqlalchemy.org/", label: 'Open →', external: true },
+    icon: '📖', title: 'SQLAlchemy Docs', titleClass: 'card-title-amber', subtitle: 'Official',
+    description: 'ORM and Core reference for models, sessions, and queries.',
+    link: { href: SA_DOCS, label: 'Open SQLAlchemy docs →', external: true },
   },
 ];
 
@@ -132,13 +137,13 @@ export default function AgenticDay42() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-41" className="day001-nav-btn day001-nav-prev">← Day 41</Link>
-          <p className="day001-datetime">Agentic AI Day 42 · 42 Aug 2026</p>
+          <p className="day001-datetime">Agentic AI Day 42 · 11 Sep 2026</p>
           <Link to="/agentic-day-43" className="day001-nav-btn day001-nav-next">Day 43 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>FastAPI</span><span>Day 42</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>FastAPI</span><span>SQLAlchemy</span></div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">DAY 42 <span aria-hidden="true">🗄️</span></h1>
               <p className="day001-day-theme">FASTAPI WITH DATABASES</p>
@@ -156,7 +161,8 @@ export default function AgenticDay42() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '28%' }} /></div>
 
         <p className="day001-summary">
-          Day 42 persists API data. Wire <strong>SQLAlchemy</strong>, async sessions, and clean <strong>CRUD</strong> endpoints with dependency injection.
+          Day 42 persists API data. Wire <strong>SQLAlchemy</strong>, inject sessions with{' '}
+          <strong>Depends(get_db)</strong>, and ship clean <strong>CRUD</strong> endpoints.
         </p>
 
         <section className="day001-learnt">
@@ -171,12 +177,12 @@ export default function AgenticDay42() {
           </ul>
         </section>
 
-        <CardSection icon="🗄️" title="CORE IDEAS" cards={CORE} columns={3} />
+        <CardSection icon="🗄️" title="ORM &amp; SESSIONS" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="PRACTICE" cards={PRACTICE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#AgenticAI</span><span>#GenAI</span><span>#Day42</span><span>#FastAPI</span><span>#100DaysOfCode</span>
+          <span>#AgenticAI</span><span>#FastAPI</span><span>#Day42</span><span>#SQLAlchemy</span><span>#CRUD</span>
         </footer>
       </div>
     </div>
