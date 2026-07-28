@@ -1,43 +1,43 @@
 import StandaloneJourneyPage from './StandaloneJourneyPage';
 
 const learntToday = [
-  { title: 'Usage analytics', text: 'track which agents, tools, and intents get used most — build on real usage, not guesses' },
-  { title: 'Success beyond eval', text: 'task completion rate, user satisfaction, and time-to-resolution matter once it\'s live' },
-  { title: 'A/B testing in prod', text: 'run two prompt/model versions behind the router and compare real outcomes, not just offline eval' },
-  { title: 'Feedback loops', text: 'thumbs up/down and free-text feedback feed straight back into the next golden eval set' },
-  { title: 'Drift detection', text: 'watch for eval scores or satisfaction quietly declining over weeks, not just at launch' },
-  { title: 'Cohort analysis', text: 'some domains or tenants need different tuning — segment the metrics, don\'t average them away' },
-  { title: 'Stakeholder dashboards', text: 'a business-facing view — tasks resolved, cost saved — sits beside the engineering one' },
-  { title: 'What\'s next', text: 'agents handing tasks to other agents, and the governance that keeps a platform trustworthy' },
+  { title: 'Why DR for agents', text: 'an outage in one region shouldn\'t take down every tenant\'s agent access on the platform' },
+  { title: 'RTO & RPO', text: 'recovery time objective and recovery point objective set how much downtime and data loss is acceptable' },
+  { title: 'Active-active vs active-passive', text: 'run agents live in two regions at once, or fail over to a warm standby when the primary goes down' },
+  { title: 'State replication', text: 'conversation history, memory, and traces replicate across regions too, not just the model calls' },
+  { title: 'Chaos testing', text: 'deliberately kill a region in staging and confirm the platform actually fails over cleanly' },
+  { title: 'Runbook rehearsal', text: 'a DR runbook that\'s never been rehearsed is a guess, not a plan — practice the failover for real' },
+  { title: 'Residency vs DR tension', text: 'data-residency requirements and disaster-recovery replication can pull in opposite directions — plan for both' },
+  { title: 'What\'s next', text: 'multi-agent collaboration across a platform that itself now spans regions' },
 ];
 
 const core = [
   {
-    icon: '📈', title: 'Usage & Success Metrics', titleClass: 'card-title-cyan', subtitle: 'Beyond Eval',
-    description: 'Task completion rate, satisfaction score, and time-to-resolution — the numbers that matter once real users show up.',
-    code: 'completion_rate · csat\ntime_to_resolution',
+    icon: '🎯', title: 'RTO & RPO Targets', titleClass: 'card-title-cyan', subtitle: 'Set The Bar First',
+    description: 'Decide how much downtime (RTO) and data loss (RPO) is acceptable before designing the failover — the targets drive the architecture.',
+    code: 'RTO ≤ 5 min · RPO ≤ 30 sec',
   },
   {
-    icon: '⚖️', title: 'A/B Testing in Production', titleClass: 'card-title-purple', subtitle: 'Real Outcomes',
-    description: 'Route a slice of traffic to a new prompt or model version and compare live results against the current one.',
-    code: 'variant = router.assign(user, "prompt_v2", 10%)',
+    icon: '🌍', title: 'Active-Active vs Active-Passive', titleClass: 'card-title-purple', subtitle: 'Two Strategies',
+    description: 'Active-active serves traffic from two regions simultaneously; active-passive keeps a warm standby ready to take over.',
+    code: 'active-active: both serve traffic\nactive-passive: standby waits, then takes over',
   },
   {
-    icon: '🔁', title: 'Feedback → Eval Sets', titleClass: 'card-title-amber', subtitle: 'Close The Loop',
-    description: 'Thumbs-down responses become new golden-set cases, so the eval suite grows from real failures.',
-    code: 'if feedback == "bad": golden_set.add(case)',
+    icon: '🔄', title: 'State Replication', titleClass: 'card-title-amber', subtitle: 'Not Just The Model',
+    description: 'Memory, conversation history, and traces need cross-region replication — losing them mid-failover breaks continuity.',
+    code: 'replicate(conversation_state, region_b)',
   },
 ];
 
 const practice = [
   {
-    icon: '🧪', title: 'Instrument One Metric', titleClass: 'card-title-cyan', subtitle: 'Lab',
-    description: 'Add task-completion tracking to one agent flow and build a one-panel dashboard for it.',
-    code: 'log completion_rate per flow',
+    icon: '🧪', title: 'Run a Chaos Drill', titleClass: 'card-title-cyan', subtitle: 'Lab',
+    description: 'Kill one region in staging and time exactly how long it takes the platform to fail over cleanly.',
+    code: 'kill(region_a) → measure failover_time',
   },
   {
-    icon: '🔬', title: 'Run a Prompt A/B Test', titleClass: 'card-title-purple', subtitle: 'Practice',
-    description: 'Split traffic between two prompt versions for a week and compare completion rate and cost.',
+    icon: '📕', title: 'Rehearse the DR Runbook', titleClass: 'card-title-purple', subtitle: 'Practice',
+    description: 'Walk through the disaster-recovery runbook step by step with the team, not just read it.',
   },
   {
     icon: '🔜', title: 'Next: Multi-Agent Collaboration', titleClass: 'card-title-amber', subtitle: 'Day 127 Preview',
@@ -48,19 +48,19 @@ const practice = [
 
 const resources = [
   {
-    icon: '📏', title: 'Evaluating LLM Applications', titleClass: 'card-title-cyan', subtitle: 'Day 87',
-    description: 'The eval discipline from Day 87 is exactly what feedback loops feed back into.',
-    link: { href: '/agentic-day-87', label: 'Open Day 87 →' },
+    icon: '🏘️', title: 'Multi-Tenant SaaS Hardening', titleClass: 'card-title-cyan', subtitle: 'Day 123',
+    description: 'The tenant-isolation work from Day 123 has to survive a regional failover too.',
+    link: { href: '/agentic-day-123', label: 'Open Day 123 →' },
   },
   {
-    icon: '📊', title: 'Monitoring & Observability', titleClass: 'card-title-purple', subtitle: 'Day 67',
-    description: 'The golden signals from Day 67 form the engineering half of this analytics story.',
-    link: { href: '/agentic-day-67', label: 'Open Day 67 →' },
+    icon: '📈', title: 'Scaling LLM Services', titleClass: 'card-title-purple', subtitle: 'Day 68',
+    description: 'Autoscaling and load-balancing patterns that extend naturally into a multi-region setup.',
+    link: { href: '/agentic-day-68', label: 'Open Day 68 →' },
   },
   {
-    icon: '🎓', title: 'Domain Agents Portfolio', titleClass: 'card-title-amber', subtitle: 'Day 105',
-    description: 'Prior milestone — the domain agents this analytics layer now measures.',
-    link: { href: '/agentic-day-105', label: 'Open Day 105 →' },
+    icon: '🏭', title: 'LLMOps Foundations', titleClass: 'card-title-amber', subtitle: 'Day 61',
+    description: 'The rollback-plan discipline from Day 61 is exactly what a DR runbook formalizes at scale.',
+    link: { href: '/agentic-day-61', label: 'Open Day 61 →' },
   },
 ];
 
@@ -70,25 +70,25 @@ export default function AgenticDay126() {
       dayNumber={126}
       series="Agentic AI"
       dateLabel="Agentic AI Day 126 · 4 Dec 2026"
-      prev={{ href: '/agentic-day-120', label: '← Day 120' }}
+      prev={{ href: '/agentic-day-125', label: '← Day 125' }}
       next={{ href: '/agentic-day-127', label: 'Day 127 →' }}
-      tags={['Agentic AI', 'Analytics', 'Phase 17']}
-      theme="AGENT ANALYTICS & CONTINUOUS IMPROVEMENT"
-      heroIcon="📊"
-      profileRole="AGENTIC AI · ANALYTICS"
+      tags={['Agentic AI', 'Reliability', 'Phase 17']}
+      theme="DISASTER RECOVERY & MULTI-REGION AGENTS"
+      heroIcon="🌍"
+      profileRole="AGENTIC AI · RELIABILITY"
       progressWidth="84%"
       summary={
         <>
-          Day 126 opens Phase 17. Measure the platform with real <strong>usage metrics</strong>, run{' '}
-          <strong>A/B tests</strong> in production, and turn user <strong>feedback</strong> straight into the
-          next eval set.
+          Day 126 hardens the platform against a bad day. <strong>RTO/RPO targets</strong>,{' '}
+          <strong>active-active or active-passive</strong> failover, and <strong>state replication</strong>{' '}
+          so a regional outage doesn't take every tenant down with it.
         </>
       }
       learntToday={learntToday}
       core={core}
       practice={practice}
       resources={resources}
-      hashtags={['#AgenticAI', '#AgentAnalytics', '#Day126', '#ABTesting', '#100DaysOfCode']}
+      hashtags={['#AgenticAI', '#DisasterRecovery', '#Day126', '#MultiRegion', '#100DaysOfCode']}
     />
   );
 }

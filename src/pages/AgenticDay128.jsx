@@ -39,8 +39,8 @@ const practice = [
     description: 'Write one runbook template with placeholders for domain-specific symptoms, dashboards, and rollback steps.',
   },
   {
-    icon: '🔜', title: 'Next: Monetizing Agent Products', titleClass: 'card-title-amber', subtitle: 'Day 129 Preview',
-    description: 'Tomorrow — cost-to-serve, usage-based billing, and pricing tiers.',
+    icon: '🔜', title: 'Next: Customer Success', titleClass: 'card-title-amber', subtitle: 'Day 129 Preview',
+    description: 'Tomorrow — time-to-first-value, onboarding playbooks, and catching churn early.',
     link: { href: '/agentic-day-129', label: 'Go to Day 129 →' },
   },
 ];
