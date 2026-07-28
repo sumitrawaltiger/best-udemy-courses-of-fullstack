@@ -899,6 +899,296 @@ export const TS_DAYS = [
       },
     ],
   },
+
+  {
+    day: 226,
+    date: '14 Aug 2027',
+    group: 'generics',
+    title: 'The infer Keyword',
+    tagline: 'Extract hidden types from conditional types at compile time.',
+    image: '/typescript-notes/ep226-infer-keyword.jpeg',
+    tags: ['infer', 'Conditional Types', 'Type Extraction'],
+    notes: [
+      { k: 'What infer does', v: 'Inside a conditional type, **`infer X`** tells TypeScript to *capture* a type it works out by itself and bind it to the name `X`.' },
+      { k: 'Syntax', v: '`T extends (infer U)[] ? U : never` — if `T` is an array, `U` is inferred as the element type.' },
+      { k: 'ReturnType<T>', v: 'The built-in `ReturnType` utility is just `T extends (...args: any[]) => infer R ? R : never` — it uses `infer` under the hood.' },
+      { k: 'UnpackPromise', v: '`type Awaited<T> = T extends Promise<infer V> ? V : T` — extract whatever a Promise resolves to.' },
+      { k: 'Multiple infers', v: 'You can infer several positions at once: `T extends (a: infer A, b: infer B) => infer R` captures both parameter types and the return.' },
+    ],
+    theory: [
+      {
+        h: 'What the infer keyword does',
+        p: 'Without `infer`, conditional types can only test whether `T` extends some known shape. `infer` adds the ability to *capture* a part of that shape into a new type variable that you can use on the true branch.\n\nThink of it as a pattern-match variable: `T extends Promise<infer V>` means "if `T` is a Promise of *something*, name that something `V` and use it here".',
+      },
+      {
+        h: 'Anatomy of an infer usage',
+        p: '`type ElementType<T> = T extends (infer E)[] ? E : never;`\n\n- `T extends (infer E)[]` — the condition: is `T` an array?\n- `infer E` — if yes, capture the element type as `E`\n- `? E : never` — on the true branch, return `E`; otherwise return `never`',
+        code: 'type ElementType<T> = T extends (infer E)[] ? E : never;\n\ntype A = ElementType<string[]>;   // string\ntype B = ElementType<number[][]>;  // number[]\ntype C = ElementType<boolean>;     // never',
+      },
+      {
+        h: 'ReturnType — the classic example',
+        p: 'The built-in `ReturnType<T>` is defined as:\n\n`type ReturnType<T> = T extends (...args: any[]) => infer R ? R : never;`\n\nIf `T` is a function, `R` is inferred as its return type. This is 100% `infer` — no magic, just the pattern.',
+        code: 'type ReturnType<T> = T extends (...args: any[]) => infer R ? R : never;\n\nfunction getUser() {\n  return { id: 1, name: "Alice" };\n}\n\ntype User = ReturnType<typeof getUser>;\n// { id: number; name: string }',
+      },
+      {
+        h: 'Awaited / UnpackPromise',
+        p: '`infer` shines when stripping wrapper types:\n\n`type Awaited<T> = T extends Promise<infer V> ? V : T;`\n\nIf `T` is `Promise<string>`, `V` is captured as `string`. You can recurse to unwrap nested promises.',
+        code: 'type Awaited<T> = T extends Promise<infer V> ? Awaited<V> : T;\n\ntype A = Awaited<Promise<string>>;           // string\ntype B = Awaited<Promise<Promise<number>>>;  // number',
+      },
+      {
+        h: 'Inferring function parameters',
+        p: 'You can infer from parameter positions too:\n\n`type FirstArg<T> = T extends (first: infer F, ...rest: any[]) => any ? F : never;`',
+        code: 'type FirstArg<T> = T extends (first: infer F, ...rest: any[]) => any ? F : never;\n\ntype A = FirstArg<(x: number, y: string) => void>; // number\ntype B = FirstArg<() => void>;                     // never',
+      },
+    ],
+    snippets: [
+      {
+        label: 'ElementType — unwrap an array',
+        code: 'type ElementType<T> = T extends (infer E)[] ? E : never;\n\ntype StrEl = ElementType<string[]>;  // string\ntype NumEl = ElementType<number[]>;  // number',
+        note: 'Pattern-matches on the array shape and captures the element with infer.',
+      },
+      {
+        label: 'ReturnType — built-in utility, demystified',
+        code: 'type MyReturnType<T> = T extends (...args: any[]) => infer R ? R : never;\n\nconst add = (a: number, b: number) => a + b;\ntype Result = MyReturnType<typeof add>; // number',
+        note: 'The real ReturnType in TypeScript is exactly this — infer at work.',
+      },
+      {
+        label: 'Awaited — unwrap a Promise',
+        code: 'type Awaited<T> = T extends Promise<infer V> ? Awaited<V> : T;\n\ntype A = Awaited<Promise<string>>;           // string\ntype B = Awaited<Promise<Promise<boolean>>>; // boolean',
+        note: 'Recursively unwraps nested Promises to get the resolved value type.',
+      },
+    ],
+  },
+  {
+    day: 227,
+    date: '15 Aug 2027',
+    group: 'types',
+    title: 'Template Literal Types',
+    tagline: 'Build new string types by combining existing ones at compile time.',
+    image: '/typescript-notes/ep227-template-literal-types.jpeg',
+    tags: ['Template Literal', 'String Types', 'Type Composition'],
+    notes: [
+      { k: 'What they are', v: 'Template literal types use **backtick syntax at the type level** — type Greeting = `Hello, ${string}` — to produce new string types.' },
+      { k: 'Union expansion', v: 'When a union is used inside a template literal, TypeScript **distributes** over every member: type AB = `$("a" | "b")_end` → `"a_end" | "b_end"`.' },
+      { k: 'Intrinsic helpers', v: 'Built-in utilities: `Uppercase<S>`, `Lowercase<S>`, `Capitalize<S>`, `Uncapitalize<S>` — all operate on string type literals.' },
+      { k: 'Event naming patterns', v: 'Classic use case: type EventName<T extends string> = `on${Capitalize<T>}` turns `"click"` into `"onClick"`.' },
+      { k: 'Parsing strings', v: 'Combine with `infer` to split string types: T extends `${infer Head}_${infer Tail}` extracts the parts around an underscore.' },
+    ],
+    theory: [
+      {
+        h: 'Template literal types — the basics',
+        p: 'Just as JavaScript template literals interpolate runtime values, TypeScript template literal types interpolate *types* inside backtick strings. The result is a new string type.\n\ntype Lang = "TypeScript" | "JavaScript";\ntype Label = `Learn ${Lang}`;\n// "Learn TypeScript" | "Learn JavaScript"',
+        code: 'type Lang = "TypeScript" | "JavaScript";\ntype Label = `Learn ${Lang}`;\n// "Learn TypeScript" | "Learn JavaScript"',
+      },
+      {
+        h: 'Union distribution',
+        p: 'When a union appears inside a template literal, TypeScript produces the cross-product of all combinations. This is called *distribution*.',
+        code: 'type Color = "red" | "blue";\ntype Size  = "sm"  | "lg";\ntype Class = `${Color}-${Size}`;\n// "red-sm" | "red-lg" | "blue-sm" | "blue-lg"',
+      },
+      {
+        h: 'Intrinsic string helpers',
+        p: 'TypeScript ships four built-in type-level string transforms:\n\n- `Uppercase<S>` — `"hello"` → `"HELLO"`\n- `Lowercase<S>` — `"HELLO"` → `"hello"`\n- `Capitalize<S>` — `"hello"` → `"Hello"`\n- `Uncapitalize<S>` — `"Hello"` → `"hello"`',
+        code: 'type A = Uppercase<"hello">;      // "HELLO"\ntype B = Capitalize<"click">;     // "Click"\ntype C = Uncapitalize<"OnClick">; // "onClick"',
+      },
+      {
+        h: 'Building event handler names',
+        p: 'A classic real-world pattern — derive `"onClick" | "onHover"` from `"click" | "hover"` automatically:',
+        code: 'type EventName<T extends string> = `on${Capitalize<T>}`;\n\ntype BtnEvents = EventName<"click" | "focus" | "blur">;\n// "onClick" | "onFocus" | "onBlur"',
+      },
+      {
+        h: 'Parsing string types with infer',
+        p: 'Combine template literals with `infer` to dissect string types:',
+        code: 'type SplitFirst<T extends string> =\n  T extends `${infer Head}_${infer Tail}` ? Head : T;\n\ntype A = SplitFirst<"user_name">;  // "user"\ntype B = SplitFirst<"hello">;      // "hello"',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Cross-product of two unions',
+        code: 'type Color = "red" | "blue";\ntype Size  = "sm" | "lg";\ntype Class = `${Color}-${Size}`;\n// "red-sm" | "red-lg" | "blue-sm" | "blue-lg"',
+        note: 'Template literal types distribute over union members automatically.',
+      },
+      {
+        label: 'Event handler name generator',
+        code: 'type EventHandler<T extends string> = `on${Capitalize<T>}`;\n\ntype Handlers = EventHandler<"click" | "focus" | "blur">;\n// "onClick" | "onFocus" | "onBlur"',
+        note: 'Combine Capitalize with a template literal to derive handler names from event names.',
+      },
+      {
+        label: 'Parsing a string type with infer',
+        code: 'type GetPrefix<T extends string> =\n  T extends `${infer P}_${string}` ? P : never;\n\ntype A = GetPrefix<"user_name">;  // "user"\ntype B = GetPrefix<"id_123">;     // "id"',
+        note: 'Use infer inside template literal types to extract substrings at the type level.',
+      },
+    ],
+  },
+  {
+    day: 228,
+    date: '16 Aug 2027',
+    group: 'structures',
+    title: 'Advanced Mapped Types',
+    tagline: 'Transform object types with modifiers, key remapping, and filtering.',
+    image: '/typescript-notes/ep228-advanced-mapped-types.jpeg',
+    tags: ['Mapped Types', 'as clause', 'Key Remapping'],
+    notes: [
+      { k: 'Mapped type recap', v: '`{ [K in keyof T]: T[K] }` iterates every key of `T` and produces a new property — the foundation of `Partial`, `Readonly`, `Required`.' },
+      { k: 'Modifiers', v: 'Prefix `+` or `-` before `readonly` or `?` to add or remove those modifiers: `{ [K in keyof T]-?: T[K] }` removes optional from all properties.' },
+      { k: '`as` clause (key remapping)', v: 'In TypeScript 4.1+, `[K in keyof T as NewKey]` lets you rename, filter, or transform keys inside a mapped type.' },
+      { k: 'Filtering keys with never', v: 'Use `as` with a conditional: `[K in keyof T as T[K] extends string ? K : never]` keeps only string-valued properties.' },
+      { k: 'Homomorphic vs non-homomorphic', v: 'Mapped types over `keyof T` are *homomorphic* — they preserve modifiers. Non-homomorphic mapped types (over an explicit union) start fresh.' },
+    ],
+    theory: [
+      {
+        h: 'Modifier control — + and -',
+        p: 'Every property in an object type can be `readonly` and/or optional (`?`). Mapped types let you add or remove these modifiers with `+` (add) or `-` (remove).\n\nMost built-in utilities use this:\n- `Partial<T>` adds `?` to every key\n- `Required<T>` removes `?` from every key\n- `Readonly<T>` adds `readonly`',
+        code: '// Remove optional and readonly from every property\ntype Mutable<T> = { -readonly [K in keyof T]-?: T[K] };\n\ntype Strict = Mutable<{ readonly name?: string; age?: number }>;\n// { name: string; age: number }  — mutable and required',
+      },
+      {
+        h: 'Key remapping with the as clause',
+        p: 'TypeScript 4.1 added `as NewKey` inside mapped types. The `as` expression runs for every key and the result becomes the new key name. Use `never` to filter keys out.',
+        code: '// Prefix every key with "get"\ntype Getters<T> = {\n  [K in keyof T as `get${Capitalize<string & K>}`]: () => T[K];\n};\n\ntype User = { name: string; age: number };\ntype UserGetters = Getters<User>;\n// { getName: () => string; getAge: () => number }',
+      },
+      {
+        h: 'Filtering keys with never',
+        p: '`never` in a union is automatically removed. So mapping a key `as never` drops that property entirely from the output type.',
+        code: '// Keep only properties whose values are strings\ntype StringProps<T> = {\n  [K in keyof T as T[K] extends string ? K : never]: T[K];\n};\n\ntype Product = { name: string; price: number; sku: string };\ntype StringFields = StringProps<Product>;\n// { name: string; sku: string }',
+      },
+      {
+        h: 'Non-homomorphic mapped types',
+        p: 'If you map over an explicit union (not `keyof T`), TypeScript does not preserve existing modifiers — you\'re building a brand-new type from scratch.',
+        code: '// Over a union (non-homomorphic) — no modifier preservation\ntype Flags<T extends string> = { [K in T]: boolean };\n\ntype FeatureFlags = Flags<"darkMode" | "beta" | "devTools">;\n// { darkMode: boolean; beta: boolean; devTools: boolean }',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Mutable — strip readonly and optional',
+        code: 'type Mutable<T> = { -readonly [K in keyof T]-?: T[K] };\n\ntype A = Mutable<{ readonly id?: number; name?: string }>;\n// { id: number; name: string }',
+        note: '-readonly removes the readonly modifier; -? removes the optional marker.',
+      },
+      {
+        label: 'Getters — remap keys with as',
+        code: 'type Getters<T> = {\n  [K in keyof T as `get${Capitalize<string & K>}`]: () => T[K];\n};\n\ntype User = { name: string; age: number };\ntype G = Getters<User>;\n// { getName: () => string; getAge: () => number }',
+        note: 'The as clause runs a template literal type on each key to rename it.',
+      },
+      {
+        label: 'Filter — keep only string properties',
+        code: 'type StringOnly<T> = {\n  [K in keyof T as T[K] extends string ? K : never]: T[K];\n};\n\ntype Config = { host: string; port: number; mode: string };\ntype S = StringOnly<Config>;\n// { host: string; mode: string }',
+        note: 'Mapping a key as never removes it — the cleanest way to filter by value type.',
+      },
+    ],
+  },
+  {
+    day: 229,
+    date: '17 Aug 2027',
+    group: 'structures',
+    title: 'Declaration Merging & Module Augmentation',
+    tagline: 'Extend existing types and third-party modules without touching their source.',
+    image: '/typescript-notes/ep229-declaration-merging.jpeg',
+    tags: ['Declaration Merging', 'Module Augmentation', 'Ambient Types'],
+    notes: [
+      { k: 'Declaration merging', v: 'TypeScript **merges multiple declarations with the same name** in the same scope — two interfaces with the same name become one combined interface.' },
+      { k: 'Interface merging', v: 'Declare the same interface twice and TypeScript merges the members: `interface Window { myPlugin: Plugin }` adds `myPlugin` to the built-in Window.' },
+      { k: 'Module augmentation', v: 'To add types to an existing module, use `declare module "module-name" { ... }` inside a `.d.ts` file or a regular `.ts` file with an import.' },
+      { k: 'Global augmentation', v: '`declare global { ... }` inside a module adds properties to the global scope — used to extend `Window`, `NodeJS.ProcessEnv`, etc.' },
+      { k: 'Ambient declarations', v: '`.d.ts` files contain only type declarations (no runtime code). Use them to describe the shape of plain JavaScript libraries that have no built-in types.' },
+    ],
+    theory: [
+      {
+        h: 'Interface declaration merging',
+        p: 'When TypeScript encounters two interface declarations with the same name in the same scope, it merges their members into a single type. This is the primary use case:\n\n- Extending `Window` with browser plugin properties\n- Extending Express `Request` with custom fields added by middleware',
+        code: '// First declaration (original)\ninterface Request {\n  method: string;\n  url: string;\n}\n\n// Second declaration — merged into the first\ninterface Request {\n  user?: { id: string; role: string };\n}\n\n// Result: Request has method, url, AND user\nconst req: Request = { method: "GET", url: "/", user: { id: "1", role: "admin" } };',
+      },
+      {
+        h: 'Module augmentation',
+        p: 'To add types to a third-party module (e.g. `express`), create a `.d.ts` file and use `declare module`:',
+        code: '// src/types/express.d.ts\nimport "express";\n\ndeclare module "express" {\n  interface Request {\n    user?: { id: string; role: "admin" | "user" };\n  }\n}\n\n// Now in your route handlers:\n// req.user is typed as { id: string; role: "admin" | "user" } | undefined',
+      },
+      {
+        h: 'Global augmentation',
+        p: 'To add a property to the global `Window` or `process.env`, use `declare global` inside a module file (one that has at least one import/export):',
+        code: '// src/types/global.d.ts\nexport {}; // makes this a module\n\ndeclare global {\n  interface Window {\n    analytics: {\n      track: (event: string, props?: Record<string, unknown>) => void;\n    };\n  }\n\n  namespace NodeJS {\n    interface ProcessEnv {\n      API_KEY: string;\n      NODE_ENV: "development" | "production" | "test";\n    }\n  }\n}',
+      },
+      {
+        h: 'Ambient .d.ts files',
+        p: 'A `.d.ts` file is a *type-only* file — no runtime JavaScript, just type information. Use them to describe the shape of plain JavaScript libraries that don\'t ship their own types, or to declare global variables injected by bundlers.',
+        code: '// src/types/my-legacy-lib.d.ts\ndeclare module "my-legacy-lib" {\n  export function doThing(input: string): number;\n  export const version: string;\n}\n\n// Now TypeScript knows the shape:\nimport { doThing } from "my-legacy-lib";\nconst result: number = doThing("hello"); // typed!',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Extend Express Request via module augmentation',
+        code: '// types/express.d.ts\nimport "express";\ndeclare module "express" {\n  interface Request {\n    user?: { id: string; role: string };\n  }\n}',
+        note: 'After this, req.user is typed across every Express route handler in the project.',
+      },
+      {
+        label: 'Extend Window with a global plugin',
+        code: '// types/global.d.ts\nexport {};\ndeclare global {\n  interface Window {\n    myAnalytics: { track: (e: string) => void };\n  }\n}\n\n// Usage:\nwindow.myAnalytics.track("page_view");',
+        note: 'declare global is only valid inside a module (file with at least one import/export).',
+      },
+      {
+        label: 'Type process.env variables',
+        code: '// types/env.d.ts\nexport {};\ndeclare global {\n  namespace NodeJS {\n    interface ProcessEnv {\n      DATABASE_URL: string;\n      PORT: string;\n      NODE_ENV: "development" | "production";\n    }\n  }\n}',
+        note: 'Now process.env.DATABASE_URL is typed as string, not string | undefined.',
+      },
+    ],
+  },
+  {
+    day: 230,
+    date: '18 Aug 2027',
+    group: 'types',
+    title: 'Branded / Nominal Types',
+    tagline: 'Make structurally identical types incompatible to prevent mix-up bugs.',
+    image: '/typescript-notes/ep230-branded-types.jpeg',
+    tags: ['Branded Types', 'Nominal Typing', 'Type Safety'],
+    notes: [
+      { k: 'The structural problem', v: 'TypeScript uses **structural typing** — two types with the same shape are interchangeable. `UserId` and `OrderId` defined as `number` are identical to the compiler.' },
+      { k: 'Branding', v: 'A **branded type** adds a unique phantom property to distinguish types at compile time without adding it at runtime: `type UserId = number & { __brand: "UserId" }`.' },
+      { k: 'Brand factory', v: 'Create a cast function that asserts the type: `const toUserId = (n: number): UserId => n as UserId`. All validation happens here; the brand is pure type-level.' },
+      { k: 'Zero runtime cost', v: 'The `__brand` property **never exists at runtime** — it is purely a compile-time tag. The emitted JavaScript is just the raw primitive.' },
+      { k: 'Common use cases', v: 'UserId vs OrderId, validated email vs raw string, euros vs dollars, sanitised vs unsanitised HTML — any domain where mixing two same-primitive values would be a bug.' },
+    ],
+    theory: [
+      {
+        h: 'The structural typing problem',
+        p: 'TypeScript checks types by shape ("structural typing"), not by name ("nominal typing"). Two types that look the same are completely interchangeable:\n\n`type UserId = number;\ntype OrderId = number;\n// These are identical — you can pass an OrderId where a UserId is expected`\n\nFor IDs, currencies, and validated strings this is dangerous.',
+        code: 'type UserId  = number;\ntype OrderId = number;\n\nfunction getUser(id: UserId) { /* ... */ }\n\nconst orderId: OrderId = 42;\ngetUser(orderId); // No error! TypeScript can\'t tell them apart.',
+      },
+      {
+        h: 'The branding pattern',
+        p: 'Add a "phantom" property using an intersection type. The property name (e.g. `__brand`) is never set at runtime — it only exists in the type system. Because the property value types differ, the two branded types are no longer interchangeable.',
+        code: 'type UserId  = number & { readonly __brand: "UserId" };\ntype OrderId = number & { readonly __brand: "OrderId" };\n\nfunction getUser(id: UserId) { /* ... */ }\n\nconst orderId = 42 as OrderId;\ngetUser(orderId);\n// ❌ Error: Argument of type OrderId is not assignable to parameter of type UserId.',
+      },
+      {
+        h: 'Brand factory functions',
+        p: 'You never write `x as UserId` in application code. Instead, create a factory that validates the raw value and returns the branded type. The brand is applied in one place; the rest of the codebase uses the safe branded type.',
+        code: 'type UserId = number & { readonly __brand: "UserId" };\n\n// The only place that creates UserIds\nfunction toUserId(n: number): UserId {\n  if (!Number.isInteger(n) || n <= 0) throw new Error("Invalid UserId");\n  return n as UserId;\n}\n\nconst id: UserId  = toUserId(42);  // ✓\nconst bad: UserId = 42;            // ❌ Type number is not assignable to UserId',
+      },
+      {
+        h: 'Generic Brand utility',
+        p: 'Extract the pattern into a reusable generic so you can brand any primitive quickly:',
+        code: 'type Brand<T, B> = T & { readonly __brand: B };\n\ntype UserId    = Brand<number, "UserId">;\ntype OrderId   = Brand<number, "OrderId">;\ntype Email     = Brand<string, "Email">;\ntype SafeHtml  = Brand<string, "SafeHtml">;\n\n// All four are distinct types the compiler enforces.',
+      },
+      {
+        h: 'Real-world example — currency safety',
+        p: 'Prevent accidentally adding euros to dollars:',
+        code: 'type EUR = Brand<number, "EUR">;\ntype USD = Brand<number, "USD">;\n\nconst price:    EUR = 10 as EUR;\nconst shipping: USD = 5  as USD;\n\nconst total = price + shipping;\n// ❌ Operator + cannot be applied to types EUR and USD',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Generic Brand utility type',
+        code: 'type Brand<T, B> = T & { readonly __brand: B };\n\ntype UserId  = Brand<number, "UserId">;\ntype OrderId = Brand<number, "OrderId">;\n\nfunction getUser(id: UserId) {}\n\nconst oid: OrderId = 99 as OrderId;\ngetUser(oid); // ❌ Type error — OrderId ≠ UserId',
+        note: 'Zero runtime cost: __brand never exists in the emitted JavaScript.',
+      },
+      {
+        label: 'Brand factory with validation',
+        code: 'type UserId = Brand<number, "UserId">;\n\nfunction toUserId(n: number): UserId {\n  if (!Number.isInteger(n) || n <= 0)\n    throw new Error("UserId must be a positive integer");\n  return n as UserId;\n}\n\nconst id = toUserId(42);  // UserId ✓\nconst bad = toUserId(-1); // throws at runtime',
+        note: 'All casts happen inside the factory — the rest of the codebase never uses `as`.',
+      },
+      {
+        label: 'Currency safety with brands',
+        code: 'type EUR = Brand<number, "EUR">;\ntype USD = Brand<number, "USD">;\n\nconst price:    EUR = 10 as EUR;\nconst shipping: USD = 5  as USD;\n\n// const total = price + shipping; // ❌ Type error',
+        note: 'Branded types make it impossible to add euros to dollars accidentally.',
+      },
+    ],
+  },
 ];
 
 export function getTsDay(day) {
