@@ -18,7 +18,7 @@ const core = [
     code: 'tenant · units\n$est · trace_id\nappend-only',
   },
   {
-    icon: '💳', title: 'Plan Caps', titleClass: 'card-title-purple', subtitle: ' entitlements',
+    icon: '💳', title: 'Plan Caps', titleClass: 'card-title-purple', subtitle: 'Entitlements',
     description: 'Plan defines included units + overage. Gateway checks entitlement before expensive model calls.',
     code: 'plan → included\noverrage · hard stop',
   },

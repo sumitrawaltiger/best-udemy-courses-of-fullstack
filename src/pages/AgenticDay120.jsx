@@ -41,9 +41,9 @@ const practice = [
     code: 'ticket + IT Q\nsame gateway',
   },
   {
-    icon: '🔜', title: 'What Comes Next', titleClass: 'card-title-amber', subtitle: 'Continue',
-    description: 'Fill days 106–115 later, deepen one domain, or return to the hub.',
-    link: { href: '/', label: 'Back to Home →' },
+    icon: '🔜', title: 'Next: Plugins', titleClass: 'card-title-amber', subtitle: 'Day 121',
+    description: 'Continue Phase 17 — marketplace plugins, metering, multi-tenant SaaS, experiments, milestone.',
+    link: { href: '/agentic-day-121', label: 'Go to Day 121 →' },
   },
 ];
 
@@ -72,7 +72,7 @@ export default function AgenticDay120() {
       series="Agentic AI"
       dateLabel="Agentic AI Day 120 · 28 Nov 2026"
       prev={{ href: '/agentic-day-119', label: '← Day 119' }}
-      next={{ href: '/', label: 'Home →' }}
+      next={{ href: '/agentic-day-121', label: 'Day 121 →' }}
       tags={['Agentic AI', 'Platform', 'Phase 16']}
       theme="MULTI-DOMAIN AGENT PLATFORM MILESTONE"
       heroIcon="🏛️"
