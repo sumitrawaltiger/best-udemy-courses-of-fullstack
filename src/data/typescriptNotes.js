@@ -901,6 +901,86 @@ export const TS_DAYS = [
   },
 
   {
+    day: 17,
+    date: '17 Jan 2027',
+    group: 'types',
+    title: 'Advanced Type Operators',
+    tagline: 'keyof, typeof, Indexed Access, and as const — extract and work with types in smarter ways.',
+    image: '/typescript-notes/ep17-advanced-type-operators.jpeg',
+    tags: ['keyof', 'typeof', 'Indexed Access', 'as const'],
+    notes: [
+      { k: 'keyof', v: 'Returns a **union of all keys** of an object type. Syntax: `keyof T`.' },
+      { k: 'typeof', v: 'Gets the **type of a value or variable**. Syntax: `typeof value`.' },
+      { k: 'Indexed Access', v: 'Access a specific **property type** using `T["key"]`. Syntax: `T["key"]`.' },
+      { k: 'as const', v: 'Tells TypeScript **not to widen literals** and to make the object **readonly**. Syntax: `value as const`.' },
+    ],
+    theory: [
+      {
+        h: '1. Understanding the Operators',
+        p: 'Type operators help us extract and work with types in smarter ways.\n\n- **keyof** — returns a union of all keys of an object type.\n- **typeof** — gets the type of a value or variable.\n- **Indexed Access (`T["key"]`)** — access a specific property type.\n- **as const** — tells TypeScript not to widen literals and to make the object readonly.',
+      },
+      {
+        h: '2. keyof — get all keys of a type',
+        p: '`keyof T` returns a **union of all keys** of an object type as string-literal types.',
+        code: 'interface User {\n  id: number;\n  name: string;\n  email: string;\n}\n\ntype UserKeys = keyof User;\n\n// Result:\n// \'id\' | \'name\' | \'email\'',
+      },
+      {
+        h: '3. typeof — get the type of a value',
+        p: '`typeof value` gets the **type** of a value or variable — handy for reusing a type you already have without redeclaring an interface.',
+        code: 'const user = {\n  id: 1,\n  name: "Faisal",\n  active: true,\n};\n\ntype UserType = typeof user;\n\n// Result:\n// { id: number; name: string; active: boolean; }',
+      },
+      {
+        h: '4. Indexed Access — get the type of a specific property',
+        p: 'Access a specific property type using `T["key"]` — great for pulling out just the type of one field from a larger interface.',
+        code: 'interface User {\n  id: number;\n  name: string;\n  email: string;\n}\n\ntype NameType = User["name"];\ntype EmailType = User["email"];\n\n// Result:\n// NameType -> string\n// EmailType -> string',
+      },
+      {
+        h: '5. as const — preserve literal types & make readonly',
+        p: '`as const` tells TypeScript **not to widen literals** (so `"dark"` stays `"dark"`, not the wider `string`) and makes every property **readonly**.',
+        code: 'const config = {\n  mode: "dark",\n  version: 1,\n} as const;\n\n// Result:\n// {\n//   readonly mode: "dark";\n//   readonly version: 1;\n// }',
+      },
+      {
+        h: 'Quick comparison',
+        p: '- **keyof** — gets all keys of a type as a union. Use case: create key-based types, validation, mapping.\n- **typeof** — gets the type of a value or variable. Use case: reuse types, infer types from values.\n- **Indexed Access** — gets the type of a specific property. Use case: extract property types, create lookup types.\n- **as const** — prevents widening and makes objects readonly. Use case: constants, configs, immutability.',
+      },
+      {
+        h: 'When to use?',
+        p: '- Use **keyof** when you need the keys of an object.\n- Use **typeof** to reuse types and avoid duplication.\n- Use **indexed access** to extract specific property types.\n- Use **as const** to preserve literal types and make objects immutable.\n\n**Pro tip:** combining these operators makes your types more powerful and expressive!',
+      },
+      {
+        h: 'Common mistakes',
+        p: '- Forgetting that `keyof` returns a **union** of keys, not an array.\n- Using `typeof` on **types** instead of **values** (it only works on values/variables).\n- Using the **wrong keys** in indexed access types (`T["typo"]` will error).\n- Not using `as const` when working with constant data — leaving literals widened to `string`/`number`.',
+      },
+      {
+        h: 'Quick recap',
+        p: '- **keyof** → Get keys.\n- **typeof** → Get value type.\n- **T["key"]** → Get property type.\n- **as const** → Keep literals & readonly.\n\n**Interview Q:** What does `keyof` return? What is the difference between `typeof` and `keyof`? How does indexed access work? What happens when you use `as const`?\n\nMaster these operators and level up your TypeScript skills!',
+      },
+    ],
+    snippets: [
+      {
+        label: 'keyof — union of an interface\'s keys',
+        code: 'interface User {\n  id: number;\n  name: string;\n  email: string;\n}\n\ntype UserKeys = keyof User;\n// \'id\' | \'name\' | \'email\'',
+        note: 'A type-safe way to know exactly which property names exist on User.',
+      },
+      {
+        label: 'typeof — infer a type from a value',
+        code: 'const user = { id: 1, name: "Faisal", active: true };\n\ntype UserType = typeof user;\n// { id: number; name: string; active: boolean; }',
+        note: 'Lets you derive a type from an existing object instead of writing it twice.',
+      },
+      {
+        label: 'Indexed Access — pull out one property\'s type',
+        code: 'interface User {\n  id: number;\n  name: string;\n  email: string;\n}\n\ntype NameType = User["name"]; // string\ntype EmailType = User["email"]; // string',
+        note: 'Use T["key"] to reuse a single field\'s type without repeating it manually.',
+      },
+      {
+        label: 'as const — literal, readonly config object',
+        code: 'const config = {\n  mode: "dark",\n  version: 1,\n} as const;\n\n// {\n//   readonly mode: "dark";\n//   readonly version: 1;\n// }',
+        note: 'Locks each value to its exact literal type and marks every property readonly.',
+      },
+    ],
+  },
+
+  {
     day: 226,
     date: '14 Aug 2027',
     group: 'generics',
