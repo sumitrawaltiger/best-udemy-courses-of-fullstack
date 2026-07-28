@@ -2,105 +2,105 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TSCONFIG = 'https://www.typescriptlang.org/tsconfig/';
-const HANDBOOK = 'https://www.typescriptlang.org/docs/handbook/intro.html';
+const PRISMA = 'https://www.prisma.io/docs';
+const CLIENT = 'https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/introduction';
 
 const LEARNT_TODAY = [
-  { title: 'Arc 216–220', text: 'aliases → declarations → strict migrate → typed tests → milestone' },
-  { title: 'Tooling bar', text: 'paths work in TS and bundler; .d.ts for gaps; strict on; tests gate CI' },
-  { title: 'Migration craft', text: 'file-by-file, leaf-first, any burn-down with owners' },
-  { title: 'Reuse prior arcs', text: 'advanced types (201–205) + app patterns (211–215) still apply' },
-  { title: 'Demo story', text: 'alias import → shim lib → convert file → vitest + tsc green' },
-  { title: 'Team ready', text: 'write the import rules and Definition of Done once' },
-  { title: 'Keep shipping', text: 'next: Node APIs, monorepos, or more product features in TS' },
+  { title: 'schema.prisma', text: 'models become TypeScript types when you generate the client' },
+  { title: 'PrismaClient', text: 'queries are typed — findUnique returns Model | null, not any' },
+  { title: 'Select/include', text: 'narrow the payload type by selecting fields' },
+  { title: 'Transactions', text: 'interactive transactions keep the same typed client' },
+  { title: 'Migrate + generate', text: 'schema change → migrate → prisma generate → types update' },
+  { title: 'Repo layer', text: 'wrap Prisma behind functions that return domain types (Zod optional)' },
+  { title: 'What’s next', text: 'share DTOs so client and server agree' },
 ];
 
 const CORE = [
   {
-    icon: '✅',
-    title: 'Checklist',
+    icon: '🗄️',
+    title: 'Generate Types',
     titleClass: 'card-title-cyan',
-    subtitle: 'Ship',
-    description: '@ alias synced · one .d.ts shim · strict true · any audit · tsc + vitest in CI.',
-    code: 'paths · d.ts\nstrict · tests · CI',
+    subtitle: 'Prisma',
+    description: 'Models in schema.prisma compile into a typed client API.',
+    code: 'model User {\n  id    String @id @default(cuid())\n  email String @unique\n}\n// npx prisma generate',
   },
   {
-    icon: '🎬',
-    title: '5-Min Demo',
+    icon: '🔎',
+    title: 'Typed Query',
     titleClass: 'card-title-purple',
-    subtitle: 'Show',
-    description: 'Broken deep import → @/ fix → untyped lib shim → migrated util with tests.',
-    code: 'alias · shim\nmigrate · test',
+    subtitle: 'Client',
+    description: 'TypeScript knows email is string and missing rows are null.',
+    code: 'const user = await prisma.user.findUnique({\n  where: { email },\n});\n// User | null',
   },
   {
-    icon: '🗺️',
-    title: '216–220 Map',
+    icon: '🎯',
+    title: 'Select Narrow',
     titleClass: 'card-title-amber',
-    subtitle: 'Arc',
-    description: 'Resolve modules → describe JS → migrate strictly → test types → ship tooling.',
-    code: 'resolve · declare\nmigrate · test · done',
+    subtitle: 'Payload',
+    description: 'Select only what the API needs — the return type shrinks with you.',
+    code: 'prisma.user.findMany({\n  select: { id: true, email: true },\n});\n// { id: string; email: string }[]',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: '📦',
-    title: 'Tooling README',
+    icon: '🧪',
+    title: 'User Model',
     titleClass: 'card-title-cyan',
-    subtitle: 'Docs',
-    description: 'Document aliases, declaration folder, strict flags, and CI commands.',
-    code: 'aliases · types/\nstrict · ci cmds',
+    subtitle: 'Lab',
+    description: 'Add User with id + email. Generate client. Write findByEmail typed helper.',
+    code: 'export async function findByEmail(email: string) {\n  return prisma.user.findUnique({ where: { email } });\n}',
   },
   {
-    icon: '🧪',
-    title: 'Sign-Off Score',
+    icon: '🔍',
+    title: 'Null Check',
     titleClass: 'card-title-purple',
-    subtitle: 'Lab',
-    description: 'Rate 0–2 on aliases, d.ts, migration, tests. Fix the lowest.',
-    code: 'score 0–2\nfix weakest',
+    subtitle: 'Safety',
+    description: 'Handler returns 404 when findUnique is null — no non-null assertion.',
+    code: 'if (!user) return res.status(404).end();',
   },
   {
     icon: '📝',
-    title: 'Next Gap List',
+    title: 'Select DTO',
     titleClass: 'card-title-amber',
-    subtitle: 'Plan',
-    description: 'List 3 next TS topics (Node, monorepo, GraphQL codegen) and pick one.',
-    code: '3 gaps → pick 1',
+    subtitle: 'API',
+    description: 'List users with select { id, email } only — prove passwordHash is not in the type.',
+    code: 'select: { id: true, email: true }',
   },
   {
     icon: '🔜',
-    title: 'What Comes Next',
+    title: 'Next: Contracts',
     titleClass: 'card-title-lime',
-    subtitle: 'Day 221',
-    description: 'Next — quality & packages bridge (Days 221–224), then backend TypeScript.',
-    link: { href: '/day-221', label: 'Go to Day 221 →' },
+    subtitle: 'Day 228',
+    description: 'Tomorrow — shared API contracts / DTOs.',
+    link: { href: '/day-228', label: 'Go to Day 228 →' },
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📘',
-    title: 'tsconfig Ref',
+    title: 'Prisma Docs',
     titleClass: 'card-title-cyan',
-    subtitle: 'Docs',
-    description: 'Full compiler options reference.',
-    link: { href: TSCONFIG, label: 'Open tsconfig →', external: true },
+    subtitle: 'ORM',
+    description: 'Schema, migrate, and client.',
+    link: { href: PRISMA, label: 'Open Prisma →', external: true },
   },
   {
-    icon: '📖',
-    title: 'Handbook',
+    icon: '🧲',
+    title: 'Prisma Client',
     titleClass: 'card-title-purple',
-    subtitle: 'Learn',
-    description: 'Language handbook home.',
-    link: { href: HANDBOOK, label: 'Open handbook →', external: true },
+    subtitle: 'Setup',
+    description: 'Generating and using the client.',
+    link: { href: CLIENT, label: 'Open client intro →', external: true },
   },
   {
-    icon: '📂',
-    title: 'Day 216',
+    icon: '🧩',
+    title: 'Day 226',
     titleClass: 'card-title-amber',
-    subtitle: 'Start',
-    description: 'Start of this tooling arc.',
-    link: { href: '/day-216', label: 'Open Day 216 →' },
+    subtitle: 'Prior',
+    description: 'Middleware that calls typed repos.',
+    link: { href: '/day-226', label: 'Open Day 226 →' },
   },
 ];
 
@@ -134,7 +134,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day220() {
+export default function Day227() {
   const scaleRef = useRef(null);
   useEffect(() => {
     const wrap = scaleRef.current;
@@ -164,17 +164,17 @@ export default function Day220() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-219" className="day001-nav-btn day001-nav-prev">← Day 219</Link>
-          <p className="day001-datetime">TypeScript Day 220 · 8 Aug 2027</p>
-          <Link to="/day-221" className="day001-nav-btn day001-nav-next">Day 221 →</Link>
+          <Link to="/day-226" className="day001-nav-btn day001-nav-prev">← Day 226</Link>
+          <p className="day001-datetime">TypeScript Day 227 · 15 Aug 2027</p>
+          <Link to="/day-228" className="day001-nav-btn day001-nav-next">Day 228 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Milestone</span><span>Day 220</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Backend</span><span>Day 227</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 220 <span aria-hidden="true">🏁</span></h1>
-              <p className="day001-day-theme">TOOLING & MIGRATION MILESTONE</p>
+              <h1 className="day001-day-num">DAY 227 <span aria-hidden="true">🗄️</span></h1>
+              <p className="day001-day-theme">PRISMA & DATABASE TYPES</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -186,10 +186,10 @@ export default function Day220() {
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '62%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '64%' }} /></div>
 
         <p className="day001-summary">
-          Day 220 closes the tooling arc. Ship <strong>aliases</strong>, <strong>declarations</strong>, a <strong>strict migration</strong> plan, and <strong>typed tests</strong> in CI.
+          Day 227 types the database. Use <strong>Prisma</strong> so queries return real models, and <strong>select</strong> to shrink API payloads.
         </p>
 
         <section className="day001-learnt">
@@ -204,12 +204,12 @@ export default function Day220() {
           </ul>
         </section>
 
-        <CardSection icon="🏁" title="1 · MILESTONE" cards={CORE} columns={3} />
+        <CardSection icon="🗄️" title="1 · PRISMA TYPES" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="2 · PRACTICE" cards={PRACTICE} columns={4} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Day220</span><span>#Milestone</span><span>#Tooling</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Day227</span><span>#Prisma</span><span>#Database</span>
         </footer>
       </div>
     </div>

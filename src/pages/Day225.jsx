@@ -2,105 +2,105 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TSCONFIG = 'https://www.typescriptlang.org/tsconfig/';
-const HANDBOOK = 'https://www.typescriptlang.org/docs/handbook/intro.html';
+const EXPRESS = 'https://expressjs.com/';
+const NODE_TS = 'https://nodejs.org/en/learn/getting-started/nodejs-with-typescript';
 
 const LEARNT_TODAY = [
-  { title: 'Arc 216–220', text: 'aliases → declarations → strict migrate → typed tests → milestone' },
-  { title: 'Tooling bar', text: 'paths work in TS and bundler; .d.ts for gaps; strict on; tests gate CI' },
-  { title: 'Migration craft', text: 'file-by-file, leaf-first, any burn-down with owners' },
-  { title: 'Reuse prior arcs', text: 'advanced types (201–205) + app patterns (211–215) still apply' },
-  { title: 'Demo story', text: 'alias import → shim lib → convert file → vitest + tsc green' },
-  { title: 'Team ready', text: 'write the import rules and Definition of Done once' },
-  { title: 'Keep shipping', text: 'next: Node APIs, monorepos, or more product features in TS' },
+  { title: 'ts-node / tsx', text: 'run TypeScript on the server without a manual build during dev' },
+  { title: '@types/express', text: 'Request, Response, NextFunction come from DefinitelyTyped' },
+  { title: 'Typed handlers', text: 'annotate req/res so body and params stop being any' },
+  { title: 'Router modules', text: 'split routes into typed Router() files — keep app.ts thin' },
+  { title: 'Build emit', text: 'production still compiles to dist/ with tsc or a bundler' },
+  { title: 'Env typing', text: 'load env with a schema (Zod) before the server listens' },
+  { title: 'What’s next', text: 'middleware needs Request augmentation to stay typed' },
 ];
 
 const CORE = [
   {
-    icon: '✅',
-    title: 'Checklist',
+    icon: '🟢',
+    title: 'Typed Handler',
     titleClass: 'card-title-cyan',
-    subtitle: 'Ship',
-    description: '@ alias synced · one .d.ts shim · strict true · any audit · tsc + vitest in CI.',
-    code: 'paths · d.ts\nstrict · tests · CI',
+    subtitle: 'Express',
+    description: 'Use Request/Response generics or Zod-parsed bodies instead of any.',
+    code: 'import type { Request, Response } from \'express\';\n\nexport function health(_req: Request, res: Response) {\n  res.json({ ok: true });\n}',
   },
   {
-    icon: '🎬',
-    title: '5-Min Demo',
+    icon: '🛤️',
+    title: 'Router Split',
     titleClass: 'card-title-purple',
-    subtitle: 'Show',
-    description: 'Broken deep import → @/ fix → untyped lib shim → migrated util with tests.',
-    code: 'alias · shim\nmigrate · test',
+    subtitle: 'Structure',
+    description: 'create Router(), mount under /api, export from routes/index.ts.',
+    code: 'import { Router } from \'express\';\nconst users = Router();\nusers.get(\'/:id\', getUser);\nexport default users;',
   },
   {
-    icon: '🗺️',
-    title: '216–220 Map',
+    icon: '🚀',
+    title: 'Dev Runner',
     titleClass: 'card-title-amber',
-    subtitle: 'Arc',
-    description: 'Resolve modules → describe JS → migrate strictly → test types → ship tooling.',
-    code: 'resolve · declare\nmigrate · test · done',
+    subtitle: 'tsx',
+    description: 'Prefer tsx watch for fast reloads; keep tsc --noEmit in CI.',
+    code: 'tsx watch src/server.ts\ntsc --noEmit',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: '📦',
-    title: 'Tooling README',
+    icon: '🧪',
+    title: 'Hello API',
     titleClass: 'card-title-cyan',
-    subtitle: 'Docs',
-    description: 'Document aliases, declaration folder, strict flags, and CI commands.',
-    code: 'aliases · types/\nstrict · ci cmds',
+    subtitle: 'Lab',
+    description: 'GET /health returns { ok: true } with full TS types and no any.',
+    code: 'app.get("/health", health);',
   },
   {
-    icon: '🧪',
-    title: 'Sign-Off Score',
+    icon: '🔍',
+    title: 'Params Type',
     titleClass: 'card-title-purple',
-    subtitle: 'Lab',
-    description: 'Rate 0–2 on aliases, d.ts, migration, tests. Fix the lowest.',
-    code: 'score 0–2\nfix weakest',
+    subtitle: 'Strict',
+    description: 'Type req.params.id as string and reject empty ids with 400.',
+    code: 'const { id } = req.params;\nif (!id) return res.status(400).end();',
   },
   {
     icon: '📝',
-    title: 'Next Gap List',
+    title: 'Scripts',
     titleClass: 'card-title-amber',
-    subtitle: 'Plan',
-    description: 'List 3 next TS topics (Node, monorepo, GraphQL codegen) and pick one.',
-    code: '3 gaps → pick 1',
+    subtitle: 'package.json',
+    description: 'Add dev, build, start, and typecheck scripts.',
+    code: '"dev": "tsx watch src/server.ts"\n"typecheck": "tsc --noEmit"',
   },
   {
     icon: '🔜',
-    title: 'What Comes Next',
+    title: 'Next: Middleware',
     titleClass: 'card-title-lime',
-    subtitle: 'Day 221',
-    description: 'Next — quality & packages bridge (Days 221–224), then backend TypeScript.',
-    link: { href: '/day-221', label: 'Go to Day 221 →' },
+    subtitle: 'Day 226',
+    description: 'Tomorrow — typed middleware and Request augmentation.',
+    link: { href: '/day-226', label: 'Go to Day 226 →' },
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📘',
-    title: 'tsconfig Ref',
+    title: 'Express',
     titleClass: 'card-title-cyan',
     subtitle: 'Docs',
-    description: 'Full compiler options reference.',
-    link: { href: TSCONFIG, label: 'Open tsconfig →', external: true },
+    description: 'HTTP framework reference.',
+    link: { href: EXPRESS, label: 'Open Express →', external: true },
   },
   {
-    icon: '📖',
-    title: 'Handbook',
+    icon: '🟢',
+    title: 'Node + TS',
     titleClass: 'card-title-purple',
-    subtitle: 'Learn',
-    description: 'Language handbook home.',
-    link: { href: HANDBOOK, label: 'Open handbook →', external: true },
+    subtitle: 'Guide',
+    description: 'Official Node TypeScript getting started.',
+    link: { href: NODE_TS, label: 'Open Node+TS →', external: true },
   },
   {
-    icon: '📂',
-    title: 'Day 216',
+    icon: '🏁',
+    title: 'Day 224',
     titleClass: 'card-title-amber',
-    subtitle: 'Start',
-    description: 'Start of this tooling arc.',
-    link: { href: '/day-216', label: 'Open Day 216 →' },
+    subtitle: 'Prior',
+    description: 'OpenAPI codegen bridge before this backend arc.',
+    link: { href: '/day-224', label: 'Open Day 224 →' },
   },
 ];
 
@@ -134,7 +134,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day220() {
+export default function Day225() {
   const scaleRef = useRef(null);
   useEffect(() => {
     const wrap = scaleRef.current;
@@ -164,17 +164,17 @@ export default function Day220() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-219" className="day001-nav-btn day001-nav-prev">← Day 219</Link>
-          <p className="day001-datetime">TypeScript Day 220 · 8 Aug 2027</p>
-          <Link to="/day-221" className="day001-nav-btn day001-nav-next">Day 221 →</Link>
+          <Link to="/day-224" className="day001-nav-btn day001-nav-prev">← Day 224</Link>
+          <p className="day001-datetime">TypeScript Day 225 · 13 Aug 2027</p>
+          <Link to="/day-226" className="day001-nav-btn day001-nav-next">Day 226 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Milestone</span><span>Day 220</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Backend</span><span>Day 225</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 220 <span aria-hidden="true">🏁</span></h1>
-              <p className="day001-day-theme">TOOLING & MIGRATION MILESTONE</p>
+              <h1 className="day001-day-num">DAY 225 <span aria-hidden="true">🟢</span></h1>
+              <p className="day001-day-theme">NODE & EXPRESS WITH TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -186,10 +186,10 @@ export default function Day220() {
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '62%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '63%' }} /></div>
 
         <p className="day001-summary">
-          Day 220 closes the tooling arc. Ship <strong>aliases</strong>, <strong>declarations</strong>, a <strong>strict migration</strong> plan, and <strong>typed tests</strong> in CI.
+          Day 225 brings TypeScript to the server. Type <strong>Express handlers</strong>, split <strong>routers</strong>, and run with <strong>tsx</strong> while CI still typechecks.
         </p>
 
         <section className="day001-learnt">
@@ -204,12 +204,12 @@ export default function Day220() {
           </ul>
         </section>
 
-        <CardSection icon="🏁" title="1 · MILESTONE" cards={CORE} columns={3} />
+        <CardSection icon="🟢" title="1 · NODE + EXPRESS" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="2 · PRACTICE" cards={PRACTICE} columns={4} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Day220</span><span>#Milestone</span><span>#Tooling</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Day225</span><span>#Node</span><span>#Express</span>
         </footer>
       </div>
     </div>

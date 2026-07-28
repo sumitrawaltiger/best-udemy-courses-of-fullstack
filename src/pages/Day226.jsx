@@ -2,105 +2,105 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TSCONFIG = 'https://www.typescriptlang.org/tsconfig/';
-const HANDBOOK = 'https://www.typescriptlang.org/docs/handbook/intro.html';
+const MERGING = 'https://www.typescriptlang.org/docs/handbook/declaration-merging.html';
+const EXPRESS = 'https://expressjs.com/en/guide/using-middleware.html';
 
 const LEARNT_TODAY = [
-  { title: 'Arc 216–220', text: 'aliases → declarations → strict migrate → typed tests → milestone' },
-  { title: 'Tooling bar', text: 'paths work in TS and bundler; .d.ts for gaps; strict on; tests gate CI' },
-  { title: 'Migration craft', text: 'file-by-file, leaf-first, any burn-down with owners' },
-  { title: 'Reuse prior arcs', text: 'advanced types (201–205) + app patterns (211–215) still apply' },
-  { title: 'Demo story', text: 'alias import → shim lib → convert file → vitest + tsc green' },
-  { title: 'Team ready', text: 'write the import rules and Definition of Done once' },
-  { title: 'Keep shipping', text: 'next: Node APIs, monorepos, or more product features in TS' },
+  { title: 'Middleware signature', text: '(req, res, next) => void — errors go to next(err)' },
+  { title: 'Augment Request', text: 'declare global Express.Request fields once (user, requestId)' },
+  { title: 'No cast spam', text: 'augmentation beats (req as any).user everywhere' },
+  { title: 'Async wrap', text: 'catch rejected promises and forward to error middleware' },
+  { title: 'Order matters', text: 'auth middleware before handlers that need req.user' },
+  { title: 'Typed locals', text: 'res.locals can be typed for template/data handoff' },
+  { title: 'What’s next', text: 'database clients generate even richer types' },
 ];
 
 const CORE = [
   {
-    icon: '✅',
-    title: 'Checklist',
+    icon: '🧩',
+    title: 'Augment Request',
     titleClass: 'card-title-cyan',
-    subtitle: 'Ship',
-    description: '@ alias synced · one .d.ts shim · strict true · any audit · tsc + vitest in CI.',
-    code: 'paths · d.ts\nstrict · tests · CI',
+    subtitle: '.d.ts',
+    description: 'Extend Express.Request so handlers see user after auth middleware.',
+    code: 'declare global {\n  namespace Express {\n    interface Request {\n      user?: { id: string; role: \'admin\' | \'user\' };\n      requestId: string;\n    }\n  }\n}\nexport {};',
   },
   {
-    icon: '🎬',
-    title: '5-Min Demo',
+    icon: '🛡️',
+    title: 'Auth Middleware',
     titleClass: 'card-title-purple',
-    subtitle: 'Show',
-    description: 'Broken deep import → @/ fix → untyped lib shim → migrated util with tests.',
-    code: 'alias · shim\nmigrate · test',
+    subtitle: 'Gate',
+    description: 'Verify token, set req.user, or return 401 — fully typed.',
+    code: 'export function requireUser(\n  req: Request, res: Response, next: NextFunction\n) {\n  if (!req.user) return res.status(401).end();\n  next();\n}',
   },
   {
-    icon: '🗺️',
-    title: '216–220 Map',
+    icon: '🧯',
+    title: 'Async Handler',
     titleClass: 'card-title-amber',
-    subtitle: 'Arc',
-    description: 'Resolve modules → describe JS → migrate strictly → test types → ship tooling.',
-    code: 'resolve · declare\nmigrate · test · done',
+    subtitle: 'Errors',
+    description: 'Wrap async routes so thrown errors hit your error middleware.',
+    code: 'const wrap = (fn: RequestHandler): RequestHandler =>\n  (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: '📦',
-    title: 'Tooling README',
+    icon: '🧪',
+    title: 'requestId',
     titleClass: 'card-title-cyan',
-    subtitle: 'Docs',
-    description: 'Document aliases, declaration folder, strict flags, and CI commands.',
-    code: 'aliases · types/\nstrict · ci cmds',
+    subtitle: 'Lab',
+    description: 'Middleware sets req.requestId = crypto.randomUUID() and types it on Request.',
+    code: 'req.requestId = crypto.randomUUID();\nnext();',
   },
   {
-    icon: '🧪',
-    title: 'Sign-Off Score',
+    icon: '🔍',
+    title: 'requireAdmin',
     titleClass: 'card-title-purple',
-    subtitle: 'Lab',
-    description: 'Rate 0–2 on aliases, d.ts, migration, tests. Fix the lowest.',
-    code: 'score 0–2\nfix weakest',
+    subtitle: 'Authz',
+    description: 'Allow only role admin; prove a user handler cannot see admin-only fields without the gate.',
+    code: 'if (req.user?.role !== \'admin\') return res.status(403).end();',
   },
   {
     icon: '📝',
-    title: 'Next Gap List',
+    title: 'Error MW',
     titleClass: 'card-title-amber',
-    subtitle: 'Plan',
-    description: 'List 3 next TS topics (Node, monorepo, GraphQL codegen) and pick one.',
-    code: '3 gaps → pick 1',
+    subtitle: 'Ops',
+    description: 'Four-arg error middleware logs requestId and returns JSON { error }.',
+    code: '(err, req, res, _next) => {\n  console.error(req.requestId, err);\n  res.status(500).json({ error: "internal" });\n}',
   },
   {
     icon: '🔜',
-    title: 'What Comes Next',
+    title: 'Next: Prisma',
     titleClass: 'card-title-lime',
-    subtitle: 'Day 221',
-    description: 'Next — quality & packages bridge (Days 221–224), then backend TypeScript.',
-    link: { href: '/day-221', label: 'Go to Day 221 →' },
+    subtitle: 'Day 227',
+    description: 'Tomorrow — Prisma and database types.',
+    link: { href: '/day-227', label: 'Go to Day 227 →' },
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📘',
-    title: 'tsconfig Ref',
+    title: 'Declaration Merging',
     titleClass: 'card-title-cyan',
-    subtitle: 'Docs',
-    description: 'Full compiler options reference.',
-    link: { href: TSCONFIG, label: 'Open tsconfig →', external: true },
+    subtitle: 'Handbook',
+    description: 'How Request augmentation works.',
+    link: { href: MERGING, label: 'Open merging →', external: true },
   },
   {
-    icon: '📖',
-    title: 'Handbook',
+    icon: '🛡️',
+    title: 'Express Middleware',
     titleClass: 'card-title-purple',
-    subtitle: 'Learn',
-    description: 'Language handbook home.',
-    link: { href: HANDBOOK, label: 'Open handbook →', external: true },
+    subtitle: 'Guide',
+    description: 'Using middleware in Express.',
+    link: { href: EXPRESS, label: 'Open middleware →', external: true },
   },
   {
-    icon: '📂',
-    title: 'Day 216',
+    icon: '🟢',
+    title: 'Day 225',
     titleClass: 'card-title-amber',
-    subtitle: 'Start',
-    description: 'Start of this tooling arc.',
-    link: { href: '/day-216', label: 'Open Day 216 →' },
+    subtitle: 'Prior',
+    description: 'Express + TS basics.',
+    link: { href: '/day-225', label: 'Open Day 225 →' },
   },
 ];
 
@@ -134,7 +134,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day220() {
+export default function Day226() {
   const scaleRef = useRef(null);
   useEffect(() => {
     const wrap = scaleRef.current;
@@ -164,17 +164,17 @@ export default function Day220() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-219" className="day001-nav-btn day001-nav-prev">← Day 219</Link>
-          <p className="day001-datetime">TypeScript Day 220 · 8 Aug 2027</p>
-          <Link to="/day-221" className="day001-nav-btn day001-nav-next">Day 221 →</Link>
+          <Link to="/day-225" className="day001-nav-btn day001-nav-prev">← Day 225</Link>
+          <p className="day001-datetime">TypeScript Day 226 · 14 Aug 2027</p>
+          <Link to="/day-227" className="day001-nav-btn day001-nav-next">Day 227 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Milestone</span><span>Day 220</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Backend</span><span>Day 226</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 220 <span aria-hidden="true">🏁</span></h1>
-              <p className="day001-day-theme">TOOLING & MIGRATION MILESTONE</p>
+              <h1 className="day001-day-num">DAY 226 <span aria-hidden="true">🧩</span></h1>
+              <p className="day001-day-theme">TYPED MIDDLEWARE & REQUEST AUGMENTATION</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -186,10 +186,10 @@ export default function Day220() {
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '62%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '63%' }} /></div>
 
         <p className="day001-summary">
-          Day 220 closes the tooling arc. Ship <strong>aliases</strong>, <strong>declarations</strong>, a <strong>strict migration</strong> plan, and <strong>typed tests</strong> in CI.
+          Day 226 types the pipeline. <strong>Augment Request</strong>, write typed auth middleware, and wrap async handlers so errors stay safe.
         </p>
 
         <section className="day001-learnt">
@@ -204,12 +204,12 @@ export default function Day220() {
           </ul>
         </section>
 
-        <CardSection icon="🏁" title="1 · MILESTONE" cards={CORE} columns={3} />
+        <CardSection icon="🧩" title="1 · MIDDLEWARE TYPES" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="2 · PRACTICE" cards={PRACTICE} columns={4} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Day220</span><span>#Milestone</span><span>#Tooling</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Day226</span><span>#Express</span><span>#Middleware</span>
         </footer>
       </div>
     </div>

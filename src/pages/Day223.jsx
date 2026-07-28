@@ -2,105 +2,105 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TSCONFIG = 'https://www.typescriptlang.org/tsconfig/';
-const HANDBOOK = 'https://www.typescriptlang.org/docs/handbook/intro.html';
+const PACKAGES = 'https://www.typescriptlang.org/docs/handbook/declaration-files/publishing.html';
+const EXPORTS = 'https://nodejs.org/api/packages.html#packagejson-exports';
 
 const LEARNT_TODAY = [
-  { title: 'Arc 216–220', text: 'aliases → declarations → strict migrate → typed tests → milestone' },
-  { title: 'Tooling bar', text: 'paths work in TS and bundler; .d.ts for gaps; strict on; tests gate CI' },
-  { title: 'Migration craft', text: 'file-by-file, leaf-first, any burn-down with owners' },
-  { title: 'Reuse prior arcs', text: 'advanced types (201–205) + app patterns (211–215) still apply' },
-  { title: 'Demo story', text: 'alias import → shim lib → convert file → vitest + tsc green' },
-  { title: 'Team ready', text: 'write the import rules and Definition of Done once' },
-  { title: 'Keep shipping', text: 'next: Node APIs, monorepos, or more product features in TS' },
+  { title: 'types field', text: 'package.json types or exports.types points consumers at .d.ts' },
+  { title: 'exports map', text: 'modern packages use exports for ESM/CJS + types entry points' },
+  { title: 'declaration emit', text: 'tsc with declaration: true is the default path for libs' },
+  { title: 'files / sideEffects', text: 'publish only dist + README; keep the tarball small' },
+  { title: 'semver types', text: 'breaking type changes are breaking releases for TS consumers' },
+  { title: 'prepublish', text: 'typecheck + build before npm publish' },
+  { title: 'What’s next', text: 'codegen can produce the types your package consumes from OpenAPI' },
 ];
 
 const CORE = [
   {
-    icon: '✅',
-    title: 'Checklist',
+    icon: '📤',
+    title: 'package.json',
     titleClass: 'card-title-cyan',
-    subtitle: 'Ship',
-    description: '@ alias synced · one .d.ts shim · strict true · any audit · tsc + vitest in CI.',
-    code: 'paths · d.ts\nstrict · tests · CI',
+    subtitle: 'Entry',
+    description: 'Point main/module/types (or exports) at emitted JS and .d.ts.',
+    code: '{\n  "name": "@acme/utils",\n  "main": "./dist/index.js",\n  "types": "./dist/index.d.ts",\n  "exports": {\n    ".": {\n      "types": "./dist/index.d.ts",\n      "import": "./dist/index.js"\n    }\n  }\n}',
   },
   {
-    icon: '🎬',
-    title: '5-Min Demo',
+    icon: '🏗️',
+    title: 'Build Types',
     titleClass: 'card-title-purple',
-    subtitle: 'Show',
-    description: 'Broken deep import → @/ fix → untyped lib shim → migrated util with tests.',
-    code: 'alias · shim\nmigrate · test',
+    subtitle: 'Emit',
+    description: 'Library tsconfig emits JS + declarations to dist/.',
+    code: '{\n  "compilerOptions": {\n    "declaration": true,\n    "outDir": "dist",\n    "rootDir": "src"\n  }\n}',
   },
   {
-    icon: '🗺️',
-    title: '216–220 Map',
+    icon: '🧾',
+    title: 'Semver Care',
     titleClass: 'card-title-amber',
-    subtitle: 'Arc',
-    description: 'Resolve modules → describe JS → migrate strictly → test types → ship tooling.',
-    code: 'resolve · declare\nmigrate · test · done',
+    subtitle: 'API',
+    description: 'Removing an exported type or making a param required is a major bump.',
+    code: '// before: name?: string\n// after:  name: string  → MAJOR',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: '📦',
-    title: 'Tooling README',
+    icon: '🧪',
+    title: 'Tiny Lib',
     titleClass: 'card-title-cyan',
-    subtitle: 'Docs',
-    description: 'Document aliases, declaration folder, strict flags, and CI commands.',
-    code: 'aliases · types/\nstrict · ci cmds',
+    subtitle: 'Lab',
+    description: 'Publish-ready folder: src/index.ts, build to dist, types field resolves in a demo app.',
+    code: 'npm pack --dry-run',
   },
   {
-    icon: '🧪',
-    title: 'Sign-Off Score',
+    icon: '🔍',
+    title: 'exports Check',
     titleClass: 'card-title-purple',
-    subtitle: 'Lab',
-    description: 'Rate 0–2 on aliases, d.ts, migration, tests. Fix the lowest.',
-    code: 'score 0–2\nfix weakest',
+    subtitle: 'Resolve',
+    description: 'Import from package root only — deep imports should fail if exports blocks them.',
+    code: 'import { add } from \'@acme/utils\';',
   },
   {
     icon: '📝',
-    title: 'Next Gap List',
+    title: 'Changelog Note',
     titleClass: 'card-title-amber',
-    subtitle: 'Plan',
-    description: 'List 3 next TS topics (Node, monorepo, GraphQL codegen) and pick one.',
-    code: '3 gaps → pick 1',
+    subtitle: 'Docs',
+    description: 'Write one changelog line for a type-breaking change vs a non-breaking add.',
+    code: 'BREAKING: ...\nfeat: add OptionalId helper',
   },
   {
     icon: '🔜',
-    title: 'What Comes Next',
+    title: 'Next: Codegen',
     titleClass: 'card-title-lime',
-    subtitle: 'Day 221',
-    description: 'Next — quality & packages bridge (Days 221–224), then backend TypeScript.',
-    link: { href: '/day-221', label: 'Go to Day 221 →' },
+    subtitle: 'Day 224',
+    description: 'Tomorrow — OpenAPI/codegen to TypeScript.',
+    link: { href: '/day-224', label: 'Go to Day 224 →' },
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📘',
-    title: 'tsconfig Ref',
+    title: 'Publishing .d.ts',
     titleClass: 'card-title-cyan',
-    subtitle: 'Docs',
-    description: 'Full compiler options reference.',
-    link: { href: TSCONFIG, label: 'Open tsconfig →', external: true },
+    subtitle: 'Handbook',
+    description: 'How to publish declaration files.',
+    link: { href: PACKAGES, label: 'Open publishing →', external: true },
   },
   {
-    icon: '📖',
-    title: 'Handbook',
+    icon: '📦',
+    title: 'exports',
     titleClass: 'card-title-purple',
-    subtitle: 'Learn',
-    description: 'Language handbook home.',
-    link: { href: HANDBOOK, label: 'Open handbook →', external: true },
+    subtitle: 'Node',
+    description: 'package.json exports field.',
+    link: { href: EXPORTS, label: 'Open Node exports →', external: true },
   },
   {
-    icon: '📂',
-    title: 'Day 216',
+    icon: '📚',
+    title: 'Day 222',
     titleClass: 'card-title-amber',
-    subtitle: 'Start',
-    description: 'Start of this tooling arc.',
-    link: { href: '/day-216', label: 'Open Day 216 →' },
+    subtitle: 'Prior',
+    description: 'Monorepo packages you might publish.',
+    link: { href: '/day-222', label: 'Open Day 222 →' },
   },
 ];
 
@@ -134,7 +134,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day220() {
+export default function Day223() {
   const scaleRef = useRef(null);
   useEffect(() => {
     const wrap = scaleRef.current;
@@ -164,17 +164,17 @@ export default function Day220() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-219" className="day001-nav-btn day001-nav-prev">← Day 219</Link>
-          <p className="day001-datetime">TypeScript Day 220 · 8 Aug 2027</p>
-          <Link to="/day-221" className="day001-nav-btn day001-nav-next">Day 221 →</Link>
+          <Link to="/day-222" className="day001-nav-btn day001-nav-prev">← Day 222</Link>
+          <p className="day001-datetime">TypeScript Day 223 · 11 Aug 2027</p>
+          <Link to="/day-224" className="day001-nav-btn day001-nav-next">Day 224 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Milestone</span><span>Day 220</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Packages</span><span>Day 223</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 220 <span aria-hidden="true">🏁</span></h1>
-              <p className="day001-day-theme">TOOLING & MIGRATION MILESTONE</p>
+              <h1 className="day001-day-num">DAY 223 <span aria-hidden="true">📤</span></h1>
+              <p className="day001-day-theme">PUBLISHING A TYPED PACKAGE</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -186,10 +186,10 @@ export default function Day220() {
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '62%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '63%' }} /></div>
 
         <p className="day001-summary">
-          Day 220 closes the tooling arc. Ship <strong>aliases</strong>, <strong>declarations</strong>, a <strong>strict migration</strong> plan, and <strong>typed tests</strong> in CI.
+          Day 223 ships types to others. Emit <strong>.d.ts</strong>, set <strong>types/exports</strong>, and treat type breaks as <strong>semver majors</strong>.
         </p>
 
         <section className="day001-learnt">
@@ -204,12 +204,12 @@ export default function Day220() {
           </ul>
         </section>
 
-        <CardSection icon="🏁" title="1 · MILESTONE" cards={CORE} columns={3} />
+        <CardSection icon="📤" title="1 · PUBLISH TYPES" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="2 · PRACTICE" cards={PRACTICE} columns={4} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Day220</span><span>#Milestone</span><span>#Tooling</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Day223</span><span>#npm</span><span>#d.ts</span>
         </footer>
       </div>
     </div>

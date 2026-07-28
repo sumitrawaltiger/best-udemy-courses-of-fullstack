@@ -2,105 +2,105 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TSCONFIG = 'https://www.typescriptlang.org/tsconfig/';
-const HANDBOOK = 'https://www.typescriptlang.org/docs/handbook/intro.html';
+const OPENAPI = 'https://swagger.io/specification/';
+const OPENAPI_TS = 'https://github.com/openapi-ts/openapi-typescript';
 
 const LEARNT_TODAY = [
-  { title: 'Arc 216–220', text: 'aliases → declarations → strict migrate → typed tests → milestone' },
-  { title: 'Tooling bar', text: 'paths work in TS and bundler; .d.ts for gaps; strict on; tests gate CI' },
-  { title: 'Migration craft', text: 'file-by-file, leaf-first, any burn-down with owners' },
-  { title: 'Reuse prior arcs', text: 'advanced types (201–205) + app patterns (211–215) still apply' },
-  { title: 'Demo story', text: 'alias import → shim lib → convert file → vitest + tsc green' },
-  { title: 'Team ready', text: 'write the import rules and Definition of Done once' },
-  { title: 'Keep shipping', text: 'next: Node APIs, monorepos, or more product features in TS' },
+  { title: 'Spec first', text: 'OpenAPI describes HTTP contracts — codegen turns them into TS types/clients' },
+  { title: 'openapi-typescript', text: 'generates types from a YAML/JSON spec without hand-written DTOs' },
+  { title: 'Regenerate', text: 'spec change → CI codegen → type errors show call-site breakage' },
+  { title: 'Do not edit output', text: 'treat generated files as build artifacts' },
+  { title: 'Validate runtime', text: 'pair codegen types with Zod/runtime checks at the edge when needed' },
+  { title: 'Bridge to backend', text: 'Day 225+ Express routes should match the same spec' },
+  { title: 'What’s next', text: 'Node & Express with TypeScript — implement the server side' },
 ];
 
 const CORE = [
   {
-    icon: '✅',
-    title: 'Checklist',
+    icon: '⚙️',
+    title: 'From Spec',
     titleClass: 'card-title-cyan',
-    subtitle: 'Ship',
-    description: '@ alias synced · one .d.ts shim · strict true · any audit · tsc + vitest in CI.',
-    code: 'paths · d.ts\nstrict · tests · CI',
+    subtitle: 'Generate',
+    description: 'Point a generator at openapi.yaml; commit or CI-produce api.d.ts.',
+    code: 'npx openapi-typescript openapi.yaml -o src/api/schema.d.ts',
   },
   {
-    icon: '🎬',
-    title: '5-Min Demo',
+    icon: '🧾',
+    title: 'Use Paths',
     titleClass: 'card-title-purple',
-    subtitle: 'Show',
-    description: 'Broken deep import → @/ fix → untyped lib shim → migrated util with tests.',
-    code: 'alias · shim\nmigrate · test',
+    subtitle: 'Types',
+    description: 'Import operations and component schemas — no duplicated interfaces.',
+    code: 'import type { paths } from \'./schema\';\ntype User = paths[\'/users/{id}\'][\'get\'][\'responses\'][200][\'content\'][\'application/json\'];',
   },
   {
-    icon: '🗺️',
-    title: '216–220 Map',
+    icon: '🔁',
+    title: 'CI Regen',
     titleClass: 'card-title-amber',
-    subtitle: 'Arc',
-    description: 'Resolve modules → describe JS → migrate strictly → test types → ship tooling.',
-    code: 'resolve · declare\nmigrate · test · done',
+    subtitle: 'Gate',
+    description: 'Fail the build if generated output is stale vs the spec.',
+    code: 'openapi-typescript ...\ngit diff --exit-code src/api/schema.d.ts',
   },
 ];
 
 const PRACTICE = [
   {
-    icon: '📦',
-    title: 'Tooling README',
+    icon: '🧪',
+    title: 'Mini Spec',
     titleClass: 'card-title-cyan',
-    subtitle: 'Docs',
-    description: 'Document aliases, declaration folder, strict flags, and CI commands.',
-    code: 'aliases · types/\nstrict · ci cmds',
+    subtitle: 'Lab',
+    description: 'Write a tiny OpenAPI for GET /health and GET /users/{id}. Generate types.',
+    code: 'openapi: 3.0.3\npaths:\n  /health:\n    get: ...',
   },
   {
-    icon: '🧪',
-    title: 'Sign-Off Score',
+    icon: '🔍',
+    title: 'Break on Purpose',
     titleClass: 'card-title-purple',
-    subtitle: 'Lab',
-    description: 'Rate 0–2 on aliases, d.ts, migration, tests. Fix the lowest.',
-    code: 'score 0–2\nfix weakest',
+    subtitle: 'Safety',
+    description: 'Rename a response field in the spec, regen, and fix one call site error.',
+    code: 'email → emailAddress\n→ tsc errors',
   },
   {
     icon: '📝',
-    title: 'Next Gap List',
+    title: 'Codegen README',
     titleClass: 'card-title-amber',
-    subtitle: 'Plan',
-    description: 'List 3 next TS topics (Node, monorepo, GraphQL codegen) and pick one.',
-    code: '3 gaps → pick 1',
+    subtitle: 'Docs',
+    description: 'Document the command and “do not hand-edit generated files”.',
+    code: 'npm run codegen\n# never edit schema.d.ts',
   },
   {
     icon: '🔜',
-    title: 'What Comes Next',
+    title: 'Next: Express',
     titleClass: 'card-title-lime',
-    subtitle: 'Day 221',
-    description: 'Next — quality & packages bridge (Days 221–224), then backend TypeScript.',
-    link: { href: '/day-221', label: 'Go to Day 221 →' },
+    subtitle: 'Day 225',
+    description: 'Tomorrow — Node & Express with TypeScript (backend arc starts).',
+    link: { href: '/day-225', label: 'Go to Day 225 →' },
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📘',
-    title: 'tsconfig Ref',
+    title: 'OpenAPI Spec',
     titleClass: 'card-title-cyan',
-    subtitle: 'Docs',
-    description: 'Full compiler options reference.',
-    link: { href: TSCONFIG, label: 'Open tsconfig →', external: true },
+    subtitle: 'Standard',
+    description: 'OpenAPI specification overview.',
+    link: { href: OPENAPI, label: 'Open Swagger/OpenAPI →', external: true },
   },
   {
-    icon: '📖',
-    title: 'Handbook',
+    icon: '⚙️',
+    title: 'openapi-typescript',
     titleClass: 'card-title-purple',
-    subtitle: 'Learn',
-    description: 'Language handbook home.',
-    link: { href: HANDBOOK, label: 'Open handbook →', external: true },
+    subtitle: 'Tool',
+    description: 'Generate TypeScript types from OpenAPI.',
+    link: { href: OPENAPI_TS, label: 'Open GitHub →', external: true },
   },
   {
-    icon: '📂',
-    title: 'Day 216',
+    icon: '📤',
+    title: 'Day 223',
     titleClass: 'card-title-amber',
-    subtitle: 'Start',
-    description: 'Start of this tooling arc.',
-    link: { href: '/day-216', label: 'Open Day 216 →' },
+    subtitle: 'Prior',
+    description: 'Publishing packages that may wrap generated clients.',
+    link: { href: '/day-223', label: 'Open Day 223 →' },
   },
 ];
 
@@ -134,7 +134,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day220() {
+export default function Day224() {
   const scaleRef = useRef(null);
   useEffect(() => {
     const wrap = scaleRef.current;
@@ -164,17 +164,17 @@ export default function Day220() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-219" className="day001-nav-btn day001-nav-prev">← Day 219</Link>
-          <p className="day001-datetime">TypeScript Day 220 · 8 Aug 2027</p>
-          <Link to="/day-221" className="day001-nav-btn day001-nav-next">Day 221 →</Link>
+          <Link to="/day-223" className="day001-nav-btn day001-nav-prev">← Day 223</Link>
+          <p className="day001-datetime">TypeScript Day 224 · 12 Aug 2027</p>
+          <Link to="/day-225" className="day001-nav-btn day001-nav-next">Day 225 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Milestone</span><span>Day 220</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Codegen</span><span>Day 224</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 220 <span aria-hidden="true">🏁</span></h1>
-              <p className="day001-day-theme">TOOLING & MIGRATION MILESTONE</p>
+              <h1 className="day001-day-num">DAY 224 <span aria-hidden="true">⚙️</span></h1>
+              <p className="day001-day-theme">OPENAPI CODEGEN → TYPESCRIPT</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -186,10 +186,10 @@ export default function Day220() {
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '62%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '64%' }} /></div>
 
         <p className="day001-summary">
-          Day 220 closes the tooling arc. Ship <strong>aliases</strong>, <strong>declarations</strong>, a <strong>strict migration</strong> plan, and <strong>typed tests</strong> in CI.
+          Day 224 generates contracts. Turn <strong>OpenAPI</strong> into TypeScript types, regenerate in CI, and never hand-edit the output.
         </p>
 
         <section className="day001-learnt">
@@ -204,12 +204,12 @@ export default function Day220() {
           </ul>
         </section>
 
-        <CardSection icon="🏁" title="1 · MILESTONE" cards={CORE} columns={3} />
+        <CardSection icon="⚙️" title="1 · CODEGEN" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="2 · PRACTICE" cards={PRACTICE} columns={4} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Day220</span><span>#Milestone</span><span>#Tooling</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Day224</span><span>#OpenAPI</span><span>#Codegen</span>
         </footer>
       </div>
     </div>

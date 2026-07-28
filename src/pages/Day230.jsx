@@ -2,17 +2,16 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const TSCONFIG = 'https://www.typescriptlang.org/tsconfig/';
-const HANDBOOK = 'https://www.typescriptlang.org/docs/handbook/intro.html';
+const EXPRESS = 'https://expressjs.com/';
+const PRISMA = 'https://www.prisma.io/docs';
 
 const LEARNT_TODAY = [
-  { title: 'Arc 216–220', text: 'aliases → declarations → strict migrate → typed tests → milestone' },
-  { title: 'Tooling bar', text: 'paths work in TS and bundler; .d.ts for gaps; strict on; tests gate CI' },
-  { title: 'Migration craft', text: 'file-by-file, leaf-first, any burn-down with owners' },
-  { title: 'Reuse prior arcs', text: 'advanced types (201–205) + app patterns (211–215) still apply' },
-  { title: 'Demo story', text: 'alias import → shim lib → convert file → vitest + tsc green' },
-  { title: 'Team ready', text: 'write the import rules and Definition of Done once' },
-  { title: 'Keep shipping', text: 'next: Node APIs, monorepos, or more product features in TS' },
+  { title: 'Arc 225–230', text: 'Express → middleware → Prisma → contracts → auth → milestone' },
+  { title: 'Backend bar', text: 'typed routes, augmented Request, DB types, shared DTOs, AuthUser guards' },
+  { title: 'Demo story', text: 'POST /users with Zod → Prisma create → session → GET /me' },
+  { title: 'Reuse prior', text: 'tooling (216–220) and app patterns (211–215) still apply on the server' },
+  { title: 'CI', text: 'tsc --noEmit + vitest + prisma validate before deploy' },
+  { title: 'Keep shipping', text: 'add real features; keep any and unchecked bodies out' },
 ];
 
 const CORE = [
@@ -21,86 +20,86 @@ const CORE = [
     title: 'Checklist',
     titleClass: 'card-title-cyan',
     subtitle: 'Ship',
-    description: '@ alias synced · one .d.ts shim · strict true · any audit · tsc + vitest in CI.',
-    code: 'paths · d.ts\nstrict · tests · CI',
+    description: 'tsx/tsc · typed routers · Request aug · Prisma select · shared Zod · AuthUser guards.',
+    code: 'express · mw\nprisma · dto · auth',
   },
   {
     icon: '🎬',
     title: '5-Min Demo',
     titleClass: 'card-title-purple',
     subtitle: 'Show',
-    description: 'Broken deep import → @/ fix → untyped lib shim → migrated util with tests.',
-    code: 'alias · shim\nmigrate · test',
+    description: 'Invalid body 400 → valid create → cookie session → typed /me.',
+    code: '400 · create\nsession · /me',
   },
   {
     icon: '🗺️',
-    title: '216–220 Map',
+    title: '225–230 Map',
     titleClass: 'card-title-amber',
     subtitle: 'Arc',
-    description: 'Resolve modules → describe JS → migrate strictly → test types → ship tooling.',
-    code: 'resolve · declare\nmigrate · test · done',
+    description: 'Server TS → pipeline types → DB → contracts → identity → ship.',
+    code: 'http · mw · db\ncontracts · auth',
   },
 ];
 
 const PRACTICE = [
   {
     icon: '📦',
-    title: 'Tooling README',
+    title: 'API Slice',
     titleClass: 'card-title-cyan',
-    subtitle: 'Docs',
-    description: 'Document aliases, declaration folder, strict flags, and CI commands.',
-    code: 'aliases · types/\nstrict · ci cmds',
+    subtitle: 'Portfolio',
+    description: 'Ship users router + schema + prisma helper + requireUser on /me.',
+    code: 'routes · zod\nrepo · auth',
   },
   {
     icon: '🧪',
     title: 'Sign-Off Score',
     titleClass: 'card-title-purple',
     subtitle: 'Lab',
-    description: 'Rate 0–2 on aliases, d.ts, migration, tests. Fix the lowest.',
+    description: 'Rate 0–2 on Express, middleware, Prisma, DTOs, auth. Fix the lowest.',
     code: 'score 0–2\nfix weakest',
   },
   {
     icon: '📝',
-    title: 'Next Gap List',
+    title: 'Runbook',
     titleClass: 'card-title-amber',
-    subtitle: 'Plan',
-    description: 'List 3 next TS topics (Node, monorepo, GraphQL codegen) and pick one.',
-    code: '3 gaps → pick 1',
+    subtitle: 'Docs',
+    description: 'How to migrate schema, regenerate client, and typecheck before release.',
+    code: 'migrate · generate\ntypecheck · test',
   },
   {
     icon: '🔜',
-    title: 'What Comes Next',
+    title: 'Keep Learning',
     titleClass: 'card-title-lime',
-    subtitle: 'Day 221',
-    description: 'Next — quality & packages bridge (Days 221–224), then backend TypeScript.',
-    link: { href: '/day-221', label: 'Go to Day 221 →' },
+    subtitle: 'Hub',
+    description: 'Illustrated TypeScript series or Home when you are ready for the next arc.',
+    link: { href: '/typescript', label: 'Open TypeScript series →' },
   },
 ];
 
 const RESOURCES = [
   {
     icon: '📘',
-    title: 'tsconfig Ref',
+    title: 'Express',
     titleClass: 'card-title-cyan',
-    subtitle: 'Docs',
-    description: 'Full compiler options reference.',
-    link: { href: TSCONFIG, label: 'Open tsconfig →', external: true },
+    subtitle: 'HTTP',
+    description: 'Framework docs.',
+    link: { href: EXPRESS, label: 'Open Express →', external: true },
   },
   {
-    icon: '📖',
-    title: 'Handbook',
+    icon: '🗄️',
+    title: 'Prisma',
     titleClass: 'card-title-purple',
-    subtitle: 'Learn',
-    description: 'Language handbook home.',
-    link: { href: HANDBOOK, label: 'Open handbook →', external: true },
+    subtitle: 'ORM',
+    description: 'Typed database access.',
+    link: { href: PRISMA, label: 'Open Prisma →', external: true },
   },
   {
-    icon: '📂',
-    title: 'Day 216',
+    icon: '🟢',
+    title: 'Day 225',
     titleClass: 'card-title-amber',
     subtitle: 'Start',
-    description: 'Start of this tooling arc.',
-    link: { href: '/day-216', label: 'Open Day 216 →' },
+    description: 'Start of this backend arc.',
+    link: { href: '/day-225', label: 'Open Day 225 →' },
   },
 ];
 
@@ -134,7 +133,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
   );
 }
 
-export default function Day220() {
+export default function Day230() {
   const scaleRef = useRef(null);
   useEffect(() => {
     const wrap = scaleRef.current;
@@ -164,17 +163,17 @@ export default function Day220() {
       <div className="day001-scale-wrap" ref={scaleRef}>
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
-          <Link to="/day-219" className="day001-nav-btn day001-nav-prev">← Day 219</Link>
-          <p className="day001-datetime">TypeScript Day 220 · 8 Aug 2027</p>
-          <Link to="/day-221" className="day001-nav-btn day001-nav-next">Day 221 →</Link>
+          <Link to="/day-229" className="day001-nav-btn day001-nav-prev">← Day 229</Link>
+          <p className="day001-datetime">TypeScript Day 230 · 18 Aug 2027</p>
+          <Link to="/typescript" className="day001-nav-btn day001-nav-next">TS Series →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Milestone</span><span>Day 220</span></div>
+            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>Milestone</span><span>Day 230</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 220 <span aria-hidden="true">🏁</span></h1>
-              <p className="day001-day-theme">TOOLING & MIGRATION MILESTONE</p>
+              <h1 className="day001-day-num">DAY 230 <span aria-hidden="true">🏁</span></h1>
+              <p className="day001-day-theme">BACKEND TYPESCRIPT MILESTONE</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -186,10 +185,10 @@ export default function Day220() {
           </div>
         </div>
 
-        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '62%' }} /></div>
+        <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '65%' }} /></div>
 
         <p className="day001-summary">
-          Day 220 closes the tooling arc. Ship <strong>aliases</strong>, <strong>declarations</strong>, a <strong>strict migration</strong> plan, and <strong>typed tests</strong> in CI.
+          Day 230 closes the backend arc. Ship a typed <strong>Express + Prisma</strong> slice with <strong>shared DTOs</strong> and <strong>AuthUser</strong> guards.
         </p>
 
         <section className="day001-learnt">
@@ -209,7 +208,7 @@ export default function Day220() {
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Day220</span><span>#Milestone</span><span>#Tooling</span>
+          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Day230</span><span>#Milestone</span><span>#Backend</span>
         </footer>
       </div>
     </div>

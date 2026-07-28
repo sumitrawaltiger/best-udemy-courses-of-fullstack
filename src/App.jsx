@@ -296,6 +296,10 @@ import Day217 from './pages/Day217';
 import Day218 from './pages/Day218';
 import Day219 from './pages/Day219';
 import Day220 from './pages/Day220';
+import Day221 from './pages/Day221';
+import Day222 from './pages/Day222';
+import Day223 from './pages/Day223';
+import Day224 from './pages/Day224';
 import Day225 from './pages/Day225';
 import Day226 from './pages/Day226';
 import Day227 from './pages/Day227';
@@ -702,6 +706,10 @@ export default function App() {
         <Route path="/day-218" element={<Day218 />} />
         <Route path="/day-219" element={<Day219 />} />
         <Route path="/day-220" element={<Day220 />} />
+        <Route path="/day-221" element={<Day221 />} />
+        <Route path="/day-222" element={<Day222 />} />
+        <Route path="/day-223" element={<Day223 />} />
+        <Route path="/day-224" element={<Day224 />} />
         <Route path="/day-225" element={<Day225 />} />
         <Route path="/day-226" element={<Day226 />} />
         <Route path="/day-227" element={<Day227 />} />
