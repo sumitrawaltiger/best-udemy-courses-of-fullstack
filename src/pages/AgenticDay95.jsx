@@ -50,9 +50,9 @@ const PRACTICE = [
     code: 'symptom → dash\n→ rollback → page',
   },
   {
-    icon: '🔜', title: 'What Comes Next', titleClass: 'card-title-amber', subtitle: 'Continue',
-    description: 'Deepen one cloud project, fill missing journal days, or return to the hub.',
-    link: { href: '/', label: 'Back to Home →' },
+    icon: '🔜', title: 'Next: Voice Agents', titleClass: 'card-title-amber', subtitle: 'Day 96 Preview',
+    description: 'Next in the curriculum — Phase 14: voice, computer-use, enterprise integration, and agent UX.',
+    link: { href: '/agentic-day-96', label: 'Go to Day 96 →' },
   },
 ];
 
@@ -137,7 +137,7 @@ export default function AgenticDay95() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-94" className="day001-nav-btn day001-nav-prev">← Day 94</Link>
           <p className="day001-datetime">Agentic AI Day 95 · 3 Nov 2026</p>
-          <Link to="/" className="day001-nav-btn day001-nav-next">Home →</Link>
+          <Link to="/agentic-day-96" className="day001-nav-btn day001-nav-next">Day 96 →</Link>
         </header>
 
         <div className="day001-hero">
