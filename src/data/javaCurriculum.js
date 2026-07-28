@@ -1747,6 +1747,122 @@ const MESSAGING_SECTIONS = [
   },
 ];
 
+// Module — Spring Core & IoC — distilled from a 165-page "Spring Core & Spring Boot
+// with Microservices" reference (public/java-notes/spring-core-boot-microservices-notes.pdf).
+// Focused on the XML-configuration side of Spring Core that the annotation-first
+// Spring Boot Fundamentals module above doesn't cover.
+const SPRING_CORE_IOC_SECTIONS = [
+  {
+    id: 'xml-bean-configuration',
+    title: 'XML-Based Bean Configuration',
+    content:
+      "Before annotations, Spring beans were wired entirely in a separate **XML configuration file** (e.g. `myappconfig.xml`) using the `<bean>` tag — and the mechanics still explain a lot about how DI works under the hood.\n\nEach `<bean id=\"...\" class=\"...\">` declares one bean. Two ways to inject dependencies into it:\n\n- **Setter injection** — a `<property name=\"...\" value=\"...\">` tag for each setter, matched by the property's variable name.\n- **Constructor injection** — a `<constructor-arg value=\"...\">` per constructor parameter, either **by position** or — safer — using the `index` attribute, so reordering constructor parameters later can't silently swap the wrong values in.\n\nTo inject **one bean into another** (not just a primitive value), use `ref` instead of `value`: `<property name=\"engine\" ref=\"myEngine\"/>`. The container resolves `myEngine` to the actual bean object before wiring it in.",
+    code: "<!-- myappconfig.xml -->\n<beans xmlns=\"http://www.springframework.org/schema/beans\" ...>\n\n    <bean id=\"myEngine\" class=\"finance.loandept.model.Engine\">\n        <property name=\"engNo\" value=\"102de\" />\n        <property name=\"engineModel\" value=\"suzuki-itch\" />\n    </bean>\n\n    <!-- Setter injection: <property> + ref -->\n    <bean id=\"myCar\" class=\"finance.loandept.model.Car\">\n        <property name=\"engine\" ref=\"myEngine\" />\n    </bean>\n\n    <!-- Constructor injection: <constructor-arg>, index avoids ordering mistakes -->\n    <bean id=\"myCar2\" class=\"finance.loandept.model.Car\">\n        <constructor-arg index=\"0\" ref=\"myEngine\" />\n    </bean>\n\n</beans>",
+  },
+  {
+    id: 'applicationcontext-vs-beanfactory',
+    title: 'ApplicationContext vs BeanFactory — Eager vs Lazy Loading',
+    content:
+      "Spring's XML era offered two ways to load that configuration file, and the difference still shows up as the eager-vs-lazy bean question today:\n\n- **`ApplicationContext`** (via `ClassPathXmlApplicationContext`) — **eager loading**. Every bean is created the moment the container starts, whether or not it's used yet. This is the recommended, default approach.\n- **`BeanFactory`** (via `XmlBeanFactory`, now deprecated) — **lazy loading**. A bean is only created the first time `getBean()` is called for it.\n\n`ApplicationContext` is the interface actually used in real projects — `BeanFactory` is mostly historical, but the eager/lazy distinction it introduced lives on in `@Lazy` and `lazy-init` today.",
+    code: "// Eager loading -- every bean created at startup\nApplicationContext context =\n    new ClassPathXmlApplicationContext(\"myconfig.xml\");\nCar car = (Car) context.getBean(\"car\");\n\n// Lazy loading -- bean created only on first getBean() call (legacy, deprecated)\nBeanFactory factory = new XmlBeanFactory(\n    new ClassPathResource(\"myconfig.xml\"));\nCar car2 = (Car) factory.getBean(\"car\");",
+  },
+  {
+    id: 'xml-collection-injection',
+    title: 'Injecting Collections — List, Set & Map via XML',
+    content:
+      "A single dependent object is easy — `ref` handles it. But a field like `private Set<Engine> engines` or `private Map<String, Engine> engines` needs its own XML syntax:\n\n- **`<set>`** — wraps multiple `<ref bean=\"...\"/>` entries for a `Set<T>` field.\n- **`<map>`** — wraps `<entry key=\"...\" value-ref=\"...\"/>` pairs for a `Map<K, V>` field.\n\nThe same pattern works whether you're injecting via setter (`<property>`) or constructor (`<constructor-arg>`) — only the outer wrapper tag changes.",
+    code: "<bean id=\"mycar\" class=\"finance.loandept.model.Car\">\n    <property name=\"engine\">\n        <set>\n            <ref bean=\"myeng1\" />\n            <ref bean=\"myeng2\" />\n            <ref bean=\"myeng3\" />\n        </set>\n    </property>\n</bean>\n\n<bean id=\"mycar2\" class=\"finance.loandept.model.Car\">\n    <property name=\"engine\">\n        <map>\n            <entry key=\"old-engine\" value-ref=\"myeng1\" />\n        </map>\n    </property>\n</bean>",
+  },
+];
+
+// Module — Dependency Injection — autowiring mechanics that complement the
+// constructor/setter/field DI already covered in Spring Boot Fundamentals above.
+const DEPENDENCY_INJECTION_SECTIONS = [
+  {
+    id: 'autowiring-byname-bytype-constructor',
+    title: 'Autowiring — byName, byType & Constructor',
+    content:
+      "Manually wiring every bean with `<ref>` is fine for a handful of objects, but doesn't scale — 50 dependencies means 50 hand-written `<property>`/`ref` pairs. **Autowiring** asks the IoC container to resolve dependencies for you, in one of three modes (set via the `autowire` attribute on the XML `<bean>` tag):\n\n- **`byName`** — matches the dependent **property name** in the class against a **bean id** in the config. If a bean with that exact id exists, it's injected via the setter.\n- **`byType`** — matches the dependent **property's type** against a **bean's class**. Simpler (any bean id works), but throws `NoSuchBeanDefinitionException`/ambiguity if more than one bean of that type exists.\n- **`constructor`** — same type-matching as `byType`, but via the constructor. If more than one bean of the same type exists, it falls back to matching the **constructor parameter name** against a bean id.\n\nAnnotation-based `@Autowired` (see Spring Boot Fundamentals) behaves like `byType` first, falling back to `byName` automatically if more than one bean of that type exists — one annotation replaces having to pick a mode in XML.",
+    code: "<!-- autowire=\"byName\": property name 'engine' must match a bean id 'engine' -->\n<bean id=\"engine\" class=\"finance.loandept.model.Engine\" />\n<bean id=\"car\" class=\"finance.loandept.model.Car\" autowire=\"byName\" />\n\n<!-- autowire=\"byType\": any bean id works, but only ONE bean of that class may exist -->\n<bean id=\"tataeng\" class=\"finance.loandept.model.Engine\" />\n<bean id=\"car\" class=\"finance.loandept.model.Car\" autowire=\"byType\" />\n\n<!-- autowire=\"constructor\": type match first, then constructor-param-name vs bean id -->\n<bean id=\"nexoneng\" class=\"finance.loandept.model.Engine\" />\n<bean id=\"car\" class=\"finance.loandept.model.Car\" autowire=\"constructor\" />",
+  },
+  {
+    id: 'qualifier-vs-primary',
+    title: '@Qualifier vs @Primary — Resolving Ambiguous Beans',
+    content:
+      "When two or more beans of the **same type** exist, `@Autowired` alone can't decide which one to inject — two annotations resolve the conflict, and they have a strict precedence order:\n\n- **`@Qualifier(\"bean-name\")`** — placed alongside `@Autowired`, forces a match against a specific bean **name**, regardless of the field's property name.\n- **`@Primary`** — placed on the `@Bean`/`@Component` definition itself, marks it as the **default** choice whenever there's a type conflict and no `@Qualifier` is present.\n\n**Precedence when both are used:** `@Qualifier` always wins over `@Primary` — an explicit \"inject this exact bean\" request always beats a bean merely marked as the default.",
+    code: "@Configuration\npublic class AppConfig {\n\n    @Bean(\"dept\")\n    @Primary // default choice on type conflict\n    public Department department() {\n        Department d = new Department();\n        d.setDeptName(\"Engineering\");\n        return d;\n    }\n\n    @Bean(\"dept1\")\n    public Department department1() {\n        Department d = new Department();\n        d.setDeptName(\"Software\");\n        return d;\n    }\n}\n\n@Component\npublic class Employee {\n    @Autowired\n    @Qualifier(\"dept1\") // wins over @Primary above\n    private Department department;\n}",
+  },
+  {
+    id: 'bean-scope-loading-matrix',
+    title: 'Bean Scope × Loading — Singleton/Prototype and Eager/Lazy',
+    content:
+      "Two independent switches control how many bean instances exist and when they're created — and it's the **combination** of the two that trips people up:\n\n- **Scope — `singleton`** (default): one shared instance per `ApplicationContext`; every `getBean()` call for the same id returns the exact same object.\n- **Scope — `prototype`** (`@Scope(\"prototype\")`): a **new** instance is created on **every** `getBean()` call, regardless of loading mode.\n- **Loading — eager** (default): the bean is created the moment the `ApplicationContext` is built.\n- **Loading — lazy** (`@Lazy` / `lazy-init=\"true\"`): the bean is created only the first time it's actually requested via `getBean()`.\n\n**The three cases that matter in practice:** *Singleton + Eager* — one instance, created at startup, reused forever. *Singleton + Lazy* — still one instance, but creation is deferred until the first `getBean()` call. *Prototype + Eager* — \"eager\" has no real effect here, because prototype beans are, by definition, only ever created on `getBean()` — there's no single \"startup instance\" to create ahead of time.",
+    code: "@Configuration\npublic class AppConfig {\n\n    @Bean\n    @Lazy // Singleton (default scope) + Lazy loading\n    public Employee employee() {\n        return new Employee();\n    }\n\n    @Bean\n    @Scope(\"prototype\") // new instance on every getBean() call\n    public Department department() {\n        return new Department();\n    }\n}",
+  },
+];
+
+// Module — Spring Configuration — @Configuration/@Bean, profiles & property sources.
+const SPRING_CONFIGURATION_SECTIONS = [
+  {
+    id: 'configuration-bean-annotations',
+    title: '@Configuration & @Bean — Annotation-Based Config Without XML',
+    content:
+      "Annotation-based configuration replaces the separate XML file entirely: a plain Java class marked `@Configuration` becomes the configuration itself, and any method inside it marked `@Bean` is called once by the container, with its return value registered as a bean — the **method name doubles as the bean id**.\n\nLoad it with `AnnotationConfigApplicationContext(AppConfig.class)` instead of `ClassPathXmlApplicationContext`.\n\n**`@ComponentScan`** is the annotation counterpart of manually declaring every bean — it tells Spring to also scan a package for `@Component`-annotated classes and register them automatically, so you don't need a `@Bean` method for every single class (only for ones that need custom construction logic, e.g. from a third-party library).",
+    code: "@Configuration\n@ComponentScan(basePackages = \"com.codeminestech\")\npublic class AppConfig {\n\n    @Bean // method name \"employee\" becomes the bean id\n    public Employee employee() {\n        Employee emp = new Employee();\n        emp.setEmpId(101);\n        emp.setEname(\"akash\");\n        return emp;\n    }\n}\n\nApplicationContext context =\n    new AnnotationConfigApplicationContext(AppConfig.class);\nEmployee emp = (Employee) context.getBean(\"employee\");",
+  },
+  {
+    id: 'properties-vs-yml',
+    title: 'application.properties vs application.yml',
+    content:
+      "Both files configure a Spring Boot app, but they represent data differently:\n\n- **`application.properties`** — flat **key-value** pairs, one per line (`spring.mvc.view.prefix=/view/`). Only Java/Spring understands this format.\n- **`application.yml`** — **YAML** (Yet Another Markup Language), a **hierarchical** structure where shared prefixes (e.g. `spring.mvc.view.*`) are written once and nested underneath, making it more readable for deeply-nested config. YAML is understood by many languages, not just Java — and IDEs can auto-convert a `.properties` file to `.yml` with one click.\n\nBe careful with **indentation** in YAML — spacing is significant and a misaligned key silently breaks the hierarchy.",
+    code: "# application.properties\nspring.mvc.view.prefix=/view/\nspring.mvc.view.suffix=.jsp\n\n# application.yml -- same config, hierarchical\nspring:\n  mvc:\n    view:\n      prefix: /view/\n      suffix: .jsp",
+  },
+  {
+    id: 'spring-profiles',
+    title: 'Spring Profiles — Environment-Specific Configuration',
+    content:
+      "Real applications run in several environments — **dev, test, uat, prod** — each needing its own database URL, credentials, and settings. Editing one shared config file by hand for every environment is error-prone; **Profiles** solve it properly.\n\n- For `.properties`: create one file per environment — `application-dev.properties`, `application-test.properties`, `application-prod.properties` — alongside the base `application.properties`.\n- For `.yml`: a **single file** can hold every profile's config, separated by `---` (three dashes), which prevents duplicate-property clashes between blocks.\n\nWhichever format you use, the **base file** decides which profile is active: `spring.profiles.active=test`. Common, shared settings stay in the base file (loaded first, always); only the environment-specific values (datasource URL, credentials) go in the per-profile block.",
+    code: "# application.yml -- one file, multiple profiles\nspring:\n  profiles:\n    active: dev\n---\nspring:\n  config:\n    activate:\n      on-profile: dev\n  datasource:\n    url: jdbc:mysql://localhost:3306/devdb\n---\nspring:\n  config:\n    activate:\n      on-profile: prod\n  datasource:\n    url: jdbc:mysql://localhost:3306/proddb",
+  },
+];
+
+// Module — Spring MVC & Testing — the MVC request-handling half of this module
+// (JUnit / @SpringBootTest are covered separately, elsewhere in the track).
+const SPRING_MVC_TESTING_SECTIONS = [
+  {
+    id: 'spring-mvc-architecture',
+    title: 'Spring Web MVC Architecture',
+    content:
+      "Every request into a Spring MVC app passes through the same five actors, in order:\n\n1. **DispatcherServlet** (the Front Controller) — receives every incoming HTTP request first, and pre-/post-processes it.\n2. **HandlerMapping** — identifies **which controller method** should handle this specific request.\n3. **Controller** — executes the business logic and returns a `ModelAndView` (data + a logical view name).\n4. **ViewResolver** — translates that logical view name into the view file's **physical location** in the project.\n5. **View** — renders the model data into the final response (HTML, JSON, etc.), sent back through the DispatcherServlet.\n\nIf a controller method is annotated `@ResponseBody` (or the class is `@RestController`), steps 4–5 are skipped entirely — the returned value is written directly to the response body, with no view file involved.",
+    code: "@Controller\npublic class MyFirstController {\n\n    @GetMapping(\"/welcome\")\n    public ModelAndView displayWelcome() {\n        ModelAndView mav = new ModelAndView();\n        mav.addObject(\"msg\", \"Welcome to codeminestech!\");\n        mav.setViewName(\"welcome\"); // resolved to /view/welcome.jsp\n        return mav;\n    }\n\n    // @Controller + @ResponseBody = @RestController -- response sent directly,\n    // no ViewResolver / view file involved\n    @GetMapping(\"/alldata\")\n    @ResponseBody\n    public String getUserData() {\n        return \"all users are very good..\";\n    }\n}",
+  },
+  {
+    id: 'query-path-params-forms',
+    title: 'Sending Data to a Controller — Query Params, Path Params & Forms',
+    content:
+      "Three ways for a browser to send data to a Spring MVC controller:\n\n- **Query Parameters** — key-value pairs at the **end** of the URL, starting with `?` and joined with `&` (`?name=java&fee=7999`). Read with `@RequestParam(\"name\")`. Best when retrieving results filtered by **multiple** optional criteria.\n- **Path Parameters** — data embedded **directly** in the URL path via a `{}` placeholder, no key-value pair. Read with `@PathVariable(\"name\")`. Best for looking up a **single, unique** resource (`/coursename/java`).\n- **Form data** — Spring's `form:` tag library binds an entire object to a `<form>` via `modelAttribute`, and each field to a property via `path` — so submitting the form populates a Java object automatically, no manual parameter-by-parameter reading required.\n\nBoth query and path params only carry **text** — never sensitive data (passwords, tokens) — since they're visible directly in the URL.",
+    code: "// Query param: /coursename?name=angular\n@GetMapping(\"/coursename\")\npublic ModelAndView getCourse(@RequestParam(\"name\") String name) { ... }\n\n// Path param: /coursename/angular\n@GetMapping(\"/coursename/{name}\")\npublic ModelAndView getCourseByPath(@PathVariable(\"name\") String name) { ... }\n\n// Form binding\n@PostMapping(\"/user\")\npublic ModelAndView registerUser(User newuser) { // form:form modelAttribute=\"user\"\n    String msg = userService.saveUserData(newuser);\n    ModelAndView mav = new ModelAndView();\n    mav.addObject(\"msg\", msg);\n    mav.setViewName(\"index\");\n    return mav;\n}",
+  },
+  {
+    id: 'thymeleaf-basics',
+    title: 'Thymeleaf — A Faster Alternative to JSP',
+    content:
+      "JSP has a hidden cost: every JSP file is converted into a Servlet on the server before it can respond, adding overhead as the number of views grows. **Thymeleaf** is a modern template engine that processes HTML **directly**, with no such conversion step — Spring Boot auto-detects Thymeleaf templates in `src/main/resources/templates/*.html`, with no `ViewResolver` configuration needed.\n\nCore syntax, using the `xmlns:th=\"http://www.thymeleaf.org\"` namespace:\n\n- **`th:text=\"${variable}\"`** — renders a model attribute as text.\n- **`th:each=\"item : ${list}\"`** — iterates a list, exposing helper properties like `.index`, `.count`, `.even`/`.odd`, `.first`, `.last` on a companion `*Stat` variable.\n- **`th:if` / `th:unless`** — conditional rendering.\n- **`#strings`, `#numbers`, etc.** — built-in utility objects for calling Java class methods (`${#strings.toUpperCase(name)}`) directly in a template expression.",
+    code: "<html xmlns:th=\"http://www.thymeleaf.org\">\n<body>\n    <h3>Name: <span th:text=\"${name}\"></span></h3>\n    <h3 th:text=\"${#strings.toUpperCase(name)}\"></h3>\n\n    <table border=\"1\">\n        <tr th:each=\"val, status : ${list}\">\n            <td th:text=\"${val.empId}\"></td>\n            <td th:style=\"${status.even} ? 'color:blue' : ''\"\n                th:text=\"${val.empName}\"></td>\n        </tr>\n    </table>\n</body>\n</html>",
+  },
+];
+
+// Module — Distributed Tracing & Logging — Sleuth & Zipkin.
+const DISTRIBUTED_TRACING_LOGGING_SECTIONS = [
+  {
+    id: 'sleuth-zipkin',
+    title: 'Sleuth & Zipkin — Trace IDs, Span IDs & Distributed Log Tracing',
+    content:
+      "In a microservices system, one user action can fan out across five or six REST APIs — so a single log line from one service tells you almost nothing about the **overall** request. **Sleuth** and **Zipkin** solve this together:\n\n- **Sleuth** — a Spring Cloud library that generates a **trace-id** and a **span-id**, and attaches them to every log message and outgoing service call header (via MDC).\n  - **trace-id** — generated once per incoming request, and stays the **same** across every REST API involved in processing that one request.\n  - **span-id** — generated per REST API hop; if one request touches multiple services, each service call gets its own span-id, still tagged with the shared trace-id.\n- **Zipkin** — a server providing a **UI** to visualize the trace-id/span-id data Sleuth generates, so you can see exactly which downstream call in a chain took the most time.\n\nTogether, they give you **Distributed Log Tracing** — the ability to follow one logical request across every microservice it touched, and immediately spot which hop was slow. In Spring Boot 3.x, Sleuth is superseded by **Micrometer Tracing**, but the trace-id/span-id model is identical.",
+    code: "// Spring Boot 2.x -- spring-cloud-starter-sleuth + spring-cloud-starter-zipkin\n@RestController\npublic class MyController {\n    Logger logger = LoggerFactory.getLogger(MyController.class);\n\n    @GetMapping(\"/all\")\n    public String getAll() {\n        logger.info(\"**** getAll execution started ****\"); // tagged with trace-id + span-id\n        String msg = \"Welcome to codeminestech...!!\";\n        logger.info(\"**** getAll execution ended ****\");\n        return msg;\n    }\n}\n\n// application.properties\nspring.zipkin.base-url=http://127.0.0.1:9411/\nspring.sleuth.sampler.probability=1.0\nspring.application.name=welcome",
+  },
+];
+
 function buildLessons() {
   const lessons = [];
   let javaDay = 1;
@@ -1800,6 +1916,32 @@ function buildLessons() {
             icon: '📄',
           },
         ];
+      }
+      const springCoreNotesLink = {
+        label: 'Spring Core, Boot & Microservices — Full Notes (PDF)',
+        href: '/java-notes/spring-core-boot-microservices-notes.pdf',
+        icon: '📄',
+      };
+      if (title === 'Spring Core & IoC') {
+        lesson.sections = SPRING_CORE_IOC_SECTIONS;
+        lesson.pdfUrl = '/java-notes/spring-core-boot-microservices-notes.pdf';
+        lesson.pdfLabel = 'Spring Core, Boot & Microservices — Full Notes (PDF)';
+      }
+      if (title === 'Dependency Injection') {
+        lesson.sections = DEPENDENCY_INJECTION_SECTIONS;
+        lesson.extraLinks = [springCoreNotesLink];
+      }
+      if (title === 'Spring Configuration') {
+        lesson.sections = SPRING_CONFIGURATION_SECTIONS;
+        lesson.extraLinks = [springCoreNotesLink];
+      }
+      if (title === 'Spring MVC & Testing') {
+        lesson.sections = SPRING_MVC_TESTING_SECTIONS;
+        lesson.extraLinks = [springCoreNotesLink];
+      }
+      if (title === 'Distributed Tracing & Logging') {
+        lesson.sections = DISTRIBUTED_TRACING_LOGGING_SECTIONS;
+        lesson.extraLinks = [springCoreNotesLink];
       }
       if (title === 'OOP — Classes & Objects') {
         lesson.sections = [...JAVA_METHODS_SECTIONS, ...DEEP_SHALLOW_COPY_SECTIONS];
