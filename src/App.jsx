@@ -339,8 +339,18 @@ import AgenticDay80 from './pages/AgenticDay80';
 import AgenticDay81 from './pages/AgenticDay81';
 import AgenticDay82 from './pages/AgenticDay82';
 import AgenticDay83 from './pages/AgenticDay83';
+import AgenticDay86 from './pages/AgenticDay86';
+import AgenticDay87 from './pages/AgenticDay87';
+import AgenticDay88 from './pages/AgenticDay88';
+import AgenticDay89 from './pages/AgenticDay89';
+import AgenticDay90 from './pages/AgenticDay90';
 import AgenticDay84 from './pages/AgenticDay84';
 import AgenticDay85 from './pages/AgenticDay85';
+import AgenticDay91 from './pages/AgenticDay91';
+import AgenticDay92 from './pages/AgenticDay92';
+import AgenticDay93 from './pages/AgenticDay93';
+import AgenticDay94 from './pages/AgenticDay94';
+import AgenticDay95 from './pages/AgenticDay95';
 import InterviewQuestions from './pages/InterviewQuestions';
 import ReactInterviewQuestions from './pages/ReactInterviewQuestions';
 import NextjsInterviewQuestions from './pages/NextjsInterviewQuestions';
@@ -646,8 +656,18 @@ export default function App() {
         <Route path="/agentic-day-81" element={<AgenticDay81 />} />
         <Route path="/agentic-day-82" element={<AgenticDay82 />} />
         <Route path="/agentic-day-83" element={<AgenticDay83 />} />
+        <Route path="/agentic-day-86" element={<AgenticDay86 />} />
+        <Route path="/agentic-day-87" element={<AgenticDay87 />} />
+        <Route path="/agentic-day-88" element={<AgenticDay88 />} />
+        <Route path="/agentic-day-89" element={<AgenticDay89 />} />
+        <Route path="/agentic-day-90" element={<AgenticDay90 />} />
         <Route path="/agentic-day-84" element={<AgenticDay84 />} />
         <Route path="/agentic-day-85" element={<AgenticDay85 />} />
+        <Route path="/agentic-day-91" element={<AgenticDay91 />} />
+        <Route path="/agentic-day-92" element={<AgenticDay92 />} />
+        <Route path="/agentic-day-93" element={<AgenticDay93 />} />
+        <Route path="/agentic-day-94" element={<AgenticDay94 />} />
+        <Route path="/agentic-day-95" element={<AgenticDay95 />} />
         <Route path="/interview-questions" element={<InterviewQuestions />} />
         <Route path="/react-interview-questions" element={<ReactInterviewQuestions />} />
         <Route path="/nextjs-interview-questions" element={<NextjsInterviewQuestions />} />

@@ -50,9 +50,9 @@ const PRACTICE = [
     code: 'bad json → error obj\nno traceback to user',
   },
   {
-    icon: '🔜', title: 'Next: AgentOps', titleClass: 'card-title-amber', subtitle: 'Day 84 Preview',
-    description: 'Tomorrow — traces, eval hooks, and observability platforms for agents.',
-    link: { href: '/agentic-day-84', label: 'Go to Day 84 →' },
+    icon: '🔜', title: 'Next: Prompt Optimization', titleClass: 'card-title-amber', subtitle: 'Day 86 Preview',
+    description: 'Next in the curriculum — declarative prompt optimization, few-shot selection, and compression.',
+    link: { href: '/agentic-day-86', label: 'Go to Day 86 →' },
   },
 ];
 
@@ -137,7 +137,7 @@ export default function AgenticDay83() {
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-82" className="day001-nav-btn day001-nav-prev">← Day 82</Link>
           <p className="day001-datetime">Agentic AI Day 83 · 22 Oct 2026</p>
-          <Link to="/agentic-day-84" className="day001-nav-btn day001-nav-next">Day 84 →</Link>
+          <Link to="/agentic-day-86" className="day001-nav-btn day001-nav-next">Day 86 →</Link>
         </header>
 
         <div className="day001-hero">
