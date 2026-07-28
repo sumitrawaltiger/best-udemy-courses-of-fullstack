@@ -304,6 +304,7 @@
   font-size: 0.8rem;
   margin: 14px 0 0;
 }
+.dsa-leetcode-inner--solo { grid-template-columns: 1fr; }
 .dsa-leetcode-figure { margin: 0; text-align: center; }
 .dsa-leetcode-figure img {
   width: 100%;

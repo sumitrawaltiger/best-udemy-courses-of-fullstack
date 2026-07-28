@@ -36,6 +36,21 @@ export const LEETCODE_GROUPS = [
   ['🏗️', 'Design'],
 ];
 
+// DSA Algorithms in Java — theory + working Java code (with main() demos and
+// time complexity) for every major algorithm family
+// (public/dsa-notes/dsa-algorithms-in-java.pdf).
+export const JAVA_DSA_PDF = '/dsa-notes/dsa-algorithms-in-java.pdf';
+export const JAVA_DSA_GROUPS = [
+  ['📊', 'Sorting'],
+  ['🔍', 'Searching'],
+  ['🧮', 'Dynamic Programming'],
+  ['🕸️', 'Graphs'],
+  ['🪙', 'Greedy'],
+  ['🔙', 'Backtracking'],
+  ['➗', 'Mathematical'],
+  ['🌳', 'Trees'],
+];
+
 export const DSA_TOPICS = [
   {
     n: '01',

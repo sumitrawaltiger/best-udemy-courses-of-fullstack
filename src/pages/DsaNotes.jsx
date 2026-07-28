@@ -9,6 +9,8 @@ import {
   LEETCODE_PDF,
   LEETCODE_COVER,
   LEETCODE_GROUPS,
+  JAVA_DSA_PDF,
+  JAVA_DSA_GROUPS,
 } from '../data/dsaNotes';
 import './DsaNotes.css';
 
@@ -191,6 +193,37 @@ export default function DsaNotes() {
             </a>
             <figcaption>Cover — click to open the full PDF ↗</figcaption>
           </figure>
+        </div>
+      </section>
+
+      <section className="dsa-leetcode" id="dsa-algorithms-java">
+        <div className="dsa-leetcode-inner dsa-leetcode-inner--solo">
+          <div className="dsa-leetcode-text">
+            <p className="dsa-eyebrow">Practice · Java</p>
+            <h2 className="dsa-leetcode-title">
+              <span aria-hidden="true">☕</span> DSA Algorithms in Java
+            </h2>
+            <p className="dsa-leetcode-sub">
+              A reference covering <strong>every major algorithm family with working Java code</strong> —
+              theory, step-by-step algorithm, a runnable <code>main()</code> demo, and time complexity for
+              each one. The Java companion to the notes above.
+            </p>
+            <div className="dsa-leetcode-chips">
+              {JAVA_DSA_GROUPS.map(([icon, name]) => (
+                <span key={name} className="dsa-leetcode-chip">
+                  <span aria-hidden="true">{icon}</span> {name}
+                </span>
+              ))}
+            </div>
+            <div className="dsa-hero-actions">
+              <a href={JAVA_DSA_PDF} download className="dsa-btn dsa-btn-primary">
+                📥 Download Algorithms (Java)
+              </a>
+              <a href={JAVA_DSA_PDF} target="_blank" rel="noopener noreferrer" className="dsa-btn dsa-btn-outline">
+                Open in new tab ↗
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
