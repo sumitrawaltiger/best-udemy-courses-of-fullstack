@@ -3481,4 +3481,1104 @@ for (const [category, items] of Object.entries(portfolioProjectChecklist)) {
       },
     ],
   },
+
+  // ── PART VII: REAL-WORLD SYSTEMS & ADVANCED PATTERNS ──
+  {
+    genaiDay: 141,
+    phase: 'Part VII · Real-World Systems & Advanced Patterns',
+    title: 'Autonomous Research Agents: Deep Search, Synthesis & Structured Reports',
+    subtitle: 'Build a Perplexity-style research agent that iteratively searches the web, evaluates sources, and produces cited, structured reports',
+    topics: [
+      'Iterative search: the agent decides what to search for next based on what it has already found',
+      'Source evaluation: scoring credibility, recency, and relevance before synthesising',
+      'Multi-round synthesis: merging findings from multiple sources into a coherent narrative',
+      'Structured report generation: producing Markdown reports with citations, key findings, and confidence scores',
+    ],
+    notionUrl: LC,
+    youtube: yt('BqFpMQOm1i4', 'Build a Deep Research AI Agent — LangGraph Web Search & Synthesis', 'LangChain'),
+    sections: [
+      {
+        id: 'research-agent-overview',
+        title: 'What Makes a Research Agent Different',
+        content:
+          'A simple RAG agent retrieves once and answers. A **research agent** iterates: after each search round it evaluates what it found, decides whether the answer is complete, and searches again with a refined query if not.\\n\\n' +
+          'This mirrors how a human researcher works: start broad, find relevant threads, follow the most promising ones, cross-reference sources, and stop when confidence is high enough.\\n\\n' +
+          '**The key loop:** Plan search queries → Execute searches in parallel → Evaluate coverage → Decide: synthesise now or search again (with a refined query) → Generate the final report with citations.',
+      },
+      {
+        id: 'search-tool',
+        title: 'Giving the Agent a Web Search Tool',
+        content:
+          'Use the Tavily Search API — purpose-built for LLM agents, it returns clean text extracts rather than raw HTML. Pass `includeRawContent: false` and set `maxResults` to control token usage.',
+        code: `import { tool } from '@langchain/core/tools';
+import { TavilySearchResults } from '@langchain/community/tools/tavily_search';
+import { z } from 'zod';
+
+// Tavily returns pre-extracted text snippets — ideal for agents
+const tavilySearch = new TavilySearchResults({
+  maxResults: 5,
+  apiKey: process.env.TAVILY_API_KEY,
+});
+
+// Wrap in a typed tool so the agent can call it with structured args
+const searchWeb = tool(
+  async ({ query, focus }) => {
+    const results = await tavilySearch.invoke(query + (focus ? ' ' + focus : ''));
+    // Return a compact summary to save tokens
+    return results
+      .map((r, i) => '[' + (i + 1) + '] ' + r.title + '\\n' + r.content.slice(0, 400))
+      .join('\\n\\n');
+  },
+  {
+    name: 'search_web',
+    description:
+      'Search the web for current information on a topic. ' +
+      'Use a specific query. Set focus to narrow to a domain (e.g. "site:arxiv.org").',
+    schema: z.object({
+      query: z.string().describe('The search query'),
+      focus: z.string().optional().describe('Optional domain or filter (e.g. "site:github.com")'),
+    }),
+  },
+);`,
+      },
+      {
+        id: 'iterative-research-graph',
+        title: 'Iterative Research Loop with LangGraph',
+        content:
+          'Model the research process as a LangGraph graph with three nodes: `plan` (decide what to search), `search` (execute queries in parallel), and `evaluate` (decide whether to keep going or synthesise). A conditional edge loops back to `plan` until the agent is satisfied.',
+        code: `import { StateGraph, Annotation } from '@langchain/langgraph';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+
+const model = new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' });
+
+const ResearchState = Annotation.Root({
+  topic:       Annotation({ reducer: (a, b) => b ?? a }),
+  queries:     Annotation({ reducer: (a, b) => b ?? a }),
+  findings:    Annotation({ reducer: (a, b) => [...(a ?? []), ...(b ?? [])] }),
+  round:       Annotation({ reducer: (a, b) => (a ?? 0) + (b ?? 0) }),
+  done:        Annotation({ reducer: (a, b) => b ?? a }),
+  report:      Annotation({ reducer: (a, b) => b ?? a }),
+});
+
+const MAX_ROUNDS = 3;
+
+// Node 1: plan — decide which queries to run this round
+async function planNode(state) {
+  const context = state.findings.length
+    ? 'Already found:\\n' + state.findings.map((f) => '- ' + f.query + ': ' + f.summary).join('\\n')
+    : 'No findings yet.';
+
+  const res = await model.invoke(
+    'You are a research planner. Topic: "' + state.topic + '"\\n' + context + '\\n\\n' +
+    'Generate 2-3 specific search queries to fill gaps. ' +
+    'Reply as a JSON array of strings only.',
+  );
+
+  const text = res.content;
+  const queries = JSON.parse(text.slice(text.indexOf('['), text.lastIndexOf(']') + 1));
+  return { queries, round: 1 };
+}
+
+// Node 2: search — run all queries in parallel
+async function searchNode(state) {
+  const results = await Promise.all(
+    state.queries.map(async (query) => {
+      const raw = await searchWeb.invoke({ query });
+      return { query, summary: raw.slice(0, 600) };
+    }),
+  );
+  return { findings: results };
+}
+
+// Node 3: evaluate — decide if we have enough or need another round
+async function evaluateNode(state) {
+  if (state.round >= MAX_ROUNDS) return { done: true };
+
+  const res = await model.invoke(
+    'Evaluate research completeness for topic: "' + state.topic + '"\\n\\n' +
+    'Findings so far:\\n' + state.findings.map((f) => f.query + ': ' + f.summary).join('\\n') + '\\n\\n' +
+    'Is the research complete enough to write a comprehensive report? ' +
+    'Reply with only: COMPLETE or INCOMPLETE',
+    { config: { thinkingConfig: { thinkingBudget: 0 } } },
+  );
+
+  return { done: res.content.includes('COMPLETE') };
+}
+
+const researchGraph = new StateGraph(ResearchState)
+  .addNode('plan',     planNode)
+  .addNode('search',   searchNode)
+  .addNode('evaluate', evaluateNode)
+  .addEdge('__start__', 'plan')
+  .addEdge('plan',     'search')
+  .addEdge('search',   'evaluate')
+  .addConditionalEdges('evaluate', (s) => s.done ? 'synthesise' : 'plan')
+  .addNode('synthesise', async (state) => ({ report: 'placeholder' }))
+  .addEdge('synthesise', '__end__')
+  .compile();`,
+      },
+      {
+        id: 'report-synthesis',
+        title: 'Synthesising a Cited, Structured Report',
+        content:
+          'The final synthesis node merges all findings into a structured Markdown report with numbered citations, a key-findings summary, and a confidence score. Use `withStructuredOutput()` to enforce the report schema.',
+        code: `import { z } from 'zod';
+
+const ReportSchema = z.object({
+  title:          z.string().describe('Report title'),
+  executive_summary: z.string().describe('2-3 sentence summary of key findings'),
+  sections: z.array(z.object({
+    heading:  z.string(),
+    content:  z.string().describe('Paragraph of synthesised findings'),
+    sources:  z.array(z.number()).describe('Citation indices from the sources list'),
+  })),
+  key_findings:   z.array(z.string()).describe('3-5 bullet point findings'),
+  confidence:     z.number().min(0).max(1).describe('Confidence in report accuracy (0-1)'),
+  limitations:    z.string().describe('Known gaps or caveats in the research'),
+});
+
+const structuredModel = new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' })
+  .withStructuredOutput(ReportSchema);
+
+async function synthesiseReport(topic, findings) {
+  const sourcesText = findings
+    .map((f, i) => '[' + (i + 1) + '] Query: ' + f.query + '\\n' + f.summary)
+    .join('\\n\\n');
+
+  return await structuredModel.invoke(
+    'Write a comprehensive research report on: "' + topic + '"\\n\\n' +
+    'Sources:\\n' + sourcesText + '\\n\\n' +
+    'Synthesise these findings into a well-structured report. ' +
+    'Cite sources by their [n] index numbers. ' +
+    'Be honest about confidence and limitations.',
+  );
+}`,
+      },
+      {
+        id: 'source-evaluation',
+        title: 'Source Credibility Scoring',
+        content:
+          'Not all search results are equally reliable. Before synthesis, score each source on recency, domain authority, and relevance. Drop sources that score below a threshold to improve report quality.',
+        code: `async function scoreSource(query, snippet) {
+  const res = await model.invoke(
+    'Score this search result on three axes (0.0-1.0 each).\\n' +
+    'Reply as JSON: { "recency": n, "authority": n, "relevance": n }\\n\\n' +
+    'Query: ' + query + '\\n' +
+    'Snippet: ' + snippet.slice(0, 300),
+  );
+
+  const text = res.content;
+  const scores = JSON.parse(text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1));
+  const composite = (scores.recency * 0.2 + scores.authority * 0.4 + scores.relevance * 0.4);
+  return { ...scores, composite };
+}
+
+async function filterFindings(findings, minScore = 0.5) {
+  const scored = await Promise.all(
+    findings.map(async (f) => {
+      const score = await scoreSource(f.query, f.summary);
+      return { ...f, score };
+    }),
+  );
+  const kept = scored.filter((f) => f.score.composite >= minScore);
+  console.log('Kept', kept.length + '/' + findings.length, 'sources after quality filter');
+  return kept;
+}`,
+      },
+      {
+        id: 'research-agent-practice',
+        title: 'Practice Exercises',
+        content:
+          'Build these to master Day 141: (1) **Basic research agent** — build the 3-node LangGraph graph, run it on "latest LangGraph features 2026", and print the final findings; (2) **Source scoring** — add `filterFindings()`, run with 5 sources, and verify low-quality results are dropped; (3) **Structured report** — integrate `synthesiseReport()` as the synthesis node, run on a technical topic, and save the JSON report to a file; (4) **Parallel rounds** — modify `searchNode` to run all queries with `Promise.all` and measure latency vs sequential; compare the difference in seconds.',
+      },
+    ],
+  },
+  {
+    genaiDay: 142,
+    phase: 'Part VII · Real-World Systems & Advanced Patterns',
+    title: 'Event-Driven Agent Architectures: BullMQ, Worker Pools & Async Pipelines',
+    subtitle: 'Decouple agent invocation from execution using job queues — enabling retries, worker scaling, and resilient long-running agent pipelines',
+    topics: [
+      'Why synchronous HTTP falls short for long-running agents: timeouts, scaling, and retry limitations',
+      'BullMQ job queues: dispatching agent tasks to a Redis-backed queue with priority and delay support',
+      'Worker pools: running multiple agent workers in parallel from the same queue',
+      'Dead-letter queues, exponential backoff retries, and job progress reporting',
+    ],
+    notionUrl: LC,
+    youtube: yt('rPg70vE4jlE', 'BullMQ Tutorial — Background Jobs and Queues with Node.js and Redis', 'Fireship'),
+    sections: [
+      {
+        id: 'why-queues',
+        title: 'Why Synchronous HTTP Is Not Enough for Agents',
+        content:
+          'A typical agent run takes 5–30 seconds. HTTP has hard timeout limits (30s in most load balancers, 10s in serverless). If the agent takes longer, the client gets a 504 and the work is lost.\\n\\n' +
+          'Job queues fix this with **fire-and-forget**: (1) client sends a request; (2) API creates a job and returns immediately with a `jobId`; (3) a worker picks up the job, runs the agent, and stores the result; (4) client polls `GET /jobs/:id` for the result.\\n\\n' +
+          '**Additional benefits:** retry failed jobs automatically, prioritise urgent jobs, scale workers independently of the API, and inspect queue state in a dashboard.',
+      },
+      {
+        id: 'bullmq-setup',
+        title: 'BullMQ: Setting Up Queues and Workers',
+        content:
+          'BullMQ uses Redis as its backend. A **Queue** adds jobs; a **Worker** consumes them. They communicate entirely through Redis — Queue and Worker can run in separate processes or containers.',
+        code: `import { Queue, Worker, QueueEvents } from 'bullmq';
+import { Redis } from 'ioredis';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+
+const connection = new Redis({ host: 'localhost', port: 6379, maxRetriesPerRequest: null });
+
+// ── QUEUE (lives in your API server) ──────────────────────────────────────
+export const agentQueue = new Queue('agent-jobs', { connection });
+
+// Add a job — returns immediately with job metadata
+export async function enqueueAgentJob(userId, message, threadId) {
+  const job = await agentQueue.add(
+    'chat',
+    { userId, message, threadId },
+    {
+      priority: 1,          // lower number = higher priority
+      attempts: 3,          // retry up to 3 times on failure
+      backoff: { type: 'exponential', delay: 2000 }, // 2s, 4s, 8s
+      removeOnComplete: { age: 3600 },  // keep completed jobs for 1 hour
+      removeOnFail: { age: 86400 },     // keep failed jobs for 24 hours
+    },
+  );
+  return job.id;
+}
+
+// ── WORKER (runs in a separate process) ──────────────────────────────────
+const model = new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' });
+const agent = createReactAgent({ llm: model, tools: [] });
+
+const worker = new Worker(
+  'agent-jobs',
+  async (job) => {
+    const { userId, message, threadId } = job.data;
+    console.log('Processing job', job.id, 'for user', userId);
+
+    // Report progress so the client can show a spinner
+    await job.updateProgress(10);
+
+    const result = await agent.invoke(
+      { messages: [{ role: 'user', content: message }] },
+      { configurable: { thread_id: threadId } },
+    );
+
+    await job.updateProgress(100);
+    return { reply: result.messages.at(-1).content };
+  },
+  {
+    connection,
+    concurrency: 5,  // process up to 5 jobs in parallel per worker process
+  },
+);
+
+worker.on('completed', (job) => console.log('Job', job.id, 'completed'));
+worker.on('failed',    (job, err) => console.error('Job', job.id, 'failed:', err.message));`,
+      },
+      {
+        id: 'job-status-api',
+        title: 'Job Status API: Polling and Progress',
+        content:
+          'The client dispatches a job and polls `GET /jobs/:id` for status. Return progress percentage, result when done, and error details when failed. BullMQ stores all this in Redis automatically.',
+        code: `import express from 'express';
+
+const app = express();
+app.use(express.json());
+
+// POST /chat — enqueue and return jobId immediately (non-blocking)
+app.post('/chat', async (req, res) => {
+  const { message, threadId = 'default' } = req.body;
+  const jobId = await enqueueAgentJob(req.user.userId, message, threadId);
+  res.status(202).json({ jobId, status: 'queued' });
+});
+
+// GET /jobs/:id — poll for result
+app.get('/jobs/:id', async (req, res) => {
+  const job = await agentQueue.getJob(req.params.id);
+  if (!job) return res.status(404).json({ error: 'Job not found' });
+
+  const state  = await job.getState();   // 'waiting' | 'active' | 'completed' | 'failed'
+  const progress = job.progress ?? 0;
+
+  if (state === 'completed') {
+    return res.json({ status: 'completed', result: job.returnvalue, progress: 100 });
+  }
+  if (state === 'failed') {
+    return res.json({ status: 'failed', error: job.failedReason, attempts: job.attemptsMade });
+  }
+
+  res.json({ status: state, progress, jobId: job.id });
+});
+
+// Client polling pattern (frontend code):
+// async function waitForResult(jobId) {
+//   while (true) {
+//     const { status, result, progress } = await fetch('/jobs/' + jobId).then(r => r.json());
+//     if (status === 'completed') return result;
+//     if (status === 'failed') throw new Error('Job failed');
+//     console.log('Progress:', progress + '%');
+//     await new Promise(r => setTimeout(r, 1000)); // poll every 1s
+//   }
+// }`,
+      },
+      {
+        id: 'worker-pools',
+        title: 'Worker Pools: Scaling Horizontally',
+        content:
+          'Run multiple worker processes (or pods in Kubernetes) consuming from the same BullMQ queue. Redis distributes jobs across all workers automatically — no manual load balancing needed. Each worker processes `concurrency` jobs in parallel.',
+        code: `// worker.js — start multiple instances of this file to scale
+// pm2: pm2 start worker.js -i 4  (4 worker processes)
+// Docker: run multiple replicas of the worker container
+// Kubernetes: set replicas: 4 in the worker Deployment
+
+// Monitor queue health
+import { QueueEvents } from 'bullmq';
+
+const queueEvents = new QueueEvents('agent-jobs', { connection });
+
+// Real-time events across ALL workers
+queueEvents.on('completed', ({ jobId, returnvalue }) => {
+  console.log('Job', jobId, 'completed with result:', JSON.stringify(returnvalue).slice(0, 100));
+});
+
+queueEvents.on('failed', ({ jobId, failedReason }) => {
+  console.error('Job', jobId, 'failed:', failedReason);
+});
+
+queueEvents.on('progress', ({ jobId, data }) => {
+  console.log('Job', jobId, 'progress:', data + '%');
+});
+
+// Queue metrics (use in health check or Prometheus exporter)
+async function getQueueMetrics() {
+  const [waiting, active, completed, failed] = await Promise.all([
+    agentQueue.getWaitingCount(),
+    agentQueue.getActiveCount(),
+    agentQueue.getCompletedCount(),
+    agentQueue.getFailedCount(),
+  ]);
+  return { waiting, active, completed, failed };
+}`,
+      },
+      {
+        id: 'priority-scheduling',
+        title: 'Priority Queues & Scheduled Jobs',
+        content:
+          'BullMQ supports job priorities (lower number = processed first) and delayed jobs (run after N milliseconds). Use priorities to fast-track Pro-plan users; use delays to implement scheduled/recurring agent runs.',
+        code: `// Priority: Pro users jump the queue
+async function enqueueWithPriority(userId, message, plan) {
+  const priority = plan === 'pro' ? 1 : 10; // pro users processed first
+  return agentQueue.add('chat', { userId, message }, { priority, attempts: 3 });
+}
+
+// Delayed job: run an agent 5 minutes from now
+async function scheduleReport(userId, topic) {
+  const fiveMinutes = 5 * 60 * 1000;
+  return agentQueue.add(
+    'research-report',
+    { userId, topic },
+    { delay: fiveMinutes, attempts: 2 },
+  );
+}
+
+// Repeatable job: run a daily summary agent every morning at 8am UTC
+import { Queue } from 'bullmq';
+await agentQueue.add(
+  'daily-summary',
+  { type: 'morning-briefing' },
+  {
+    repeat: { pattern: '0 8 * * *' }, // cron syntax
+    jobId: 'daily-summary-singleton',  // prevent duplicate repeatable jobs
+  },
+);`,
+      },
+      {
+        id: 'bullmq-practice',
+        title: 'Practice Exercises',
+        content:
+          'Build these to master Day 142: (1) **Basic queue** — replace your Day 58 `/chat` endpoint with `enqueueAgentJob()` + `GET /jobs/:id` polling; test with `curl` and verify the job progresses from queued → active → completed; (2) **Worker pool** — start 3 worker processes with PM2, fire 15 jobs simultaneously, and observe them distributed across workers in the BullMQ dashboard; (3) **Priority queue** — send 5 jobs with priority 10 then 1 job with priority 1; confirm the priority-1 job runs first; (4) **Scheduled job** — add a repeatable job that runs every minute and logs "heartbeat" — verify it fires reliably, then stop the repeatable job with `obliterate()`.',
+      },
+    ],
+  },
+  {
+    genaiDay: 143,
+    phase: 'Part VII · Real-World Systems & Advanced Patterns',
+    title: 'Agent Testing & Quality Assurance: Unit Tests, Integration Tests & Load Testing',
+    subtitle: 'Build a complete testing pyramid for agent systems — from unit-testing individual tools to load-testing your agent API under production traffic',
+    topics: [
+      'Unit testing agent tools in isolation with Jest mocks — no API calls, deterministic results',
+      'Integration testing full agent runs against a curated set of known inputs and expected outputs',
+      'Contract testing: verifying tool schemas match what the LLM expects to call',
+      'Load testing agent APIs with k6 to find throughput limits and latency regressions',
+    ],
+    notionUrl: LC,
+    youtube: yt('CxXwNSzUcgU', 'Testing LLM Applications — Unit, Integration and Eval Testing', 'AI Engineer'),
+    sections: [
+      {
+        id: 'testing-pyramid',
+        title: 'The Agent Testing Pyramid',
+        content:
+          'Traditional software has a testing pyramid: many unit tests, fewer integration tests, even fewer E2E tests. Agent testing adds two new layers at the top:\\n\\n' +
+          '**Level 1 — Tool unit tests:** test each tool function in isolation with mocked inputs/outputs. Fast, deterministic, cheap. (This session)\\n' +
+          '**Level 2 — Chain unit tests:** test a single LLM chain (prompt + model + output parser) with a fixed model response. Mock the model.\\n' +
+          '**Level 3 — Agent integration tests:** run the full agent against real inputs; assert output *properties* (contains X, is valid JSON), not exact strings.\\n' +
+          '**Level 4 — Eval tests:** score output quality with LLM-as-judge; run on every deploy with LangSmith.\\n' +
+          '**Level 5 — Load tests:** measure throughput and latency under simulated traffic; run before capacity changes.',
+      },
+      {
+        id: 'tool-unit-tests',
+        title: 'Unit Testing Agent Tools with Jest',
+        content:
+          'Test each tool function as a plain JavaScript function — no LLM involved. Mock external dependencies (fetch, filesystem, database) and assert the tool returns the correct structure and content.',
+        code: `// tools/weather.js — the tool under test
+export async function fetchWeather({ city, unit = 'celsius' }) {
+  const res = await fetch(
+    'https://api.open-meteo.com/v1/forecast?latitude=51.5&longitude=-0.1&current=temperature_2m',
+  );
+  const data = await res.json();
+  const temp = unit === 'fahrenheit'
+    ? data.current.temperature_2m * 9 / 5 + 32
+    : data.current.temperature_2m;
+  return JSON.stringify({ city, temperature: temp, unit });
+}
+
+// tools/weather.test.js
+import { fetchWeather } from './weather.js';
+
+// Mock global fetch
+global.fetch = jest.fn();
+
+beforeEach(() => jest.clearAllMocks());
+
+test('returns weather for a city in celsius', async () => {
+  global.fetch.mockResolvedValueOnce({
+    json: async () => ({ current: { temperature_2m: 18.5 } }),
+  });
+
+  const result = await fetchWeather({ city: 'London', unit: 'celsius' });
+  const parsed = JSON.parse(result);
+
+  expect(parsed.city).toBe('London');
+  expect(parsed.temperature).toBe(18.5);
+  expect(parsed.unit).toBe('celsius');
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+});
+
+test('converts to fahrenheit correctly', async () => {
+  global.fetch.mockResolvedValueOnce({
+    json: async () => ({ current: { temperature_2m: 0 } }),
+  });
+
+  const result = JSON.parse(await fetchWeather({ city: 'Oslo', unit: 'fahrenheit' }));
+  expect(result.temperature).toBe(32); // 0°C = 32°F
+});
+
+test('defaults to celsius when unit is omitted', async () => {
+  global.fetch.mockResolvedValueOnce({ json: async () => ({ current: { temperature_2m: 20 } }) });
+  const result = JSON.parse(await fetchWeather({ city: 'Paris' }));
+  expect(result.unit).toBe('celsius');
+});`,
+      },
+      {
+        id: 'agent-integration-tests',
+        title: 'Integration Testing Full Agent Runs',
+        content:
+          'Integration tests run the full agent (real LLM + real tools) against a small set of known queries. Assert on output **properties** — not exact text, since LLMs are non-deterministic. Use a real API key but a cheap model to keep costs low.',
+        code: `// agent.integration.test.js
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { weatherTool, searchTool } from '../tools/index.js';
+
+// Use a real model but fast/cheap for tests
+const model = new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' });
+const agent = createReactAgent({ llm: model, tools: [weatherTool, searchTool] });
+
+// Increase timeout — real LLM calls take 2-10s
+jest.setTimeout(30_000);
+
+async function invoke(message) {
+  const result = await agent.invoke({ messages: [{ role: 'user', content: message }] });
+  return result.messages.at(-1).content;
+}
+
+describe('weather tool integration', () => {
+  test('answers a weather query', async () => {
+    const reply = await invoke('What is the weather in London?');
+    expect(typeof reply).toBe('string');
+    expect(reply.length).toBeGreaterThan(10);
+    // Assert the reply mentions temperature or weather — not exact wording
+    expect(reply.toLowerCase()).toMatch(/temperature|weather|celsius|fahrenheit|degrees/);
+  });
+
+  test('handles an unknown city gracefully', async () => {
+    const reply = await invoke('What is the weather in Xyzville1234?');
+    expect(typeof reply).toBe('string');
+    // Should not throw; should indicate it could not find the city
+    expect(reply.toLowerCase()).toMatch(/could not|unable|not found|error|unknown/);
+  });
+});
+
+describe('multi-tool usage', () => {
+  test('uses multiple tools for a compound query', async () => {
+    const reply = await invoke('Search for the latest LangGraph release and summarise it.');
+    expect(reply.length).toBeGreaterThan(50);
+    // Should contain something about LangGraph
+    expect(reply.toLowerCase()).toContain('langgraph');
+  });
+});`,
+      },
+      {
+        id: 'contract-testing',
+        title: 'Contract Testing: Verifying Tool Schemas',
+        content:
+          'The model calls tools by name and argument schema. If a tool schema changes (renamed field, changed type) without updating the LLM call, you get silent failures. Contract tests verify tool schemas match expected shapes.',
+        code: `// contracts/tool-schemas.test.js
+import { weatherTool, searchTool, patchFileTool } from '../tools/index.js';
+
+// Every tool must have: name, description, schema with required fields
+function assertValidToolContract(tool) {
+  expect(typeof tool.name).toBe('string');
+  expect(tool.name).toMatch(/^[a-z_]+$/); // snake_case only
+  expect(tool.description.length).toBeGreaterThan(20); // descriptive
+  expect(tool.schema).toBeDefined();
+}
+
+test('all tools satisfy the contract', () => {
+  [weatherTool, searchTool, patchFileTool].forEach(assertValidToolContract);
+});
+
+test('weather tool schema has required city field', () => {
+  const shape = weatherTool.schema.shape ?? weatherTool.schema._def?.shape?.();
+  expect(shape).toHaveProperty('city');
+  // Verify city is required (not optional)
+  const cityDef = shape.city._def;
+  expect(cityDef.typeName).not.toBe('ZodOptional');
+});
+
+test('patch_file tool schema has searchText and replaceText', () => {
+  const shape = patchFileTool.schema.shape;
+  expect(shape).toHaveProperty('searchText');
+  expect(shape).toHaveProperty('replaceText');
+  expect(shape).toHaveProperty('filePath');
+});`,
+      },
+      {
+        id: 'load-testing',
+        title: 'Load Testing with k6',
+        content:
+          'k6 is a JavaScript-based load testing tool. Write a script that simulates concurrent users hitting your agent API, then measure p95 latency, throughput, and error rate under load.',
+        code: `// load-test.js — run with: k6 run load-test.js
+// Install: brew install k6
+
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+import { Rate, Trend } from 'k6/metrics';
+
+const errorRate   = new Rate('errors');
+const agentLatency = new Trend('agent_latency', true); // true = milliseconds
+
+export const options = {
+  stages: [
+    { duration: '30s', target: 10 },  // ramp up to 10 users over 30s
+    { duration: '60s', target: 10 },  // hold at 10 users for 1 minute
+    { duration: '30s', target: 0  },  // ramp down
+  ],
+  thresholds: {
+    errors:          ['rate < 0.05'],    // fail if error rate > 5%
+    agent_latency:   ['p(95) < 15000'],  // fail if p95 > 15s
+    http_req_duration: ['p(99) < 30000'],
+  },
+};
+
+export default function () {
+  const payload = JSON.stringify({
+    message: 'What is 2 + 2?', // cheap query for load testing
+    threadId: 'load-test-' + __VU, // one thread per virtual user
+  });
+
+  const res = http.post('http://localhost:3000/chat', payload, {
+    headers: { 'Content-Type': 'application/json', 'x-api-key': 'sk-test-abc123' },
+    timeout: '30s',
+  });
+
+  const ok = check(res, {
+    'status is 200':         (r) => r.status === 200,
+    'has reply field':       (r) => JSON.parse(r.body).reply !== undefined,
+    'reply is non-empty':    (r) => JSON.parse(r.body).reply.length > 0,
+  });
+
+  errorRate.add(!ok);
+  agentLatency.add(res.timings.duration);
+
+  sleep(1); // think time between requests
+}`,
+      },
+      {
+        id: 'testing-practice',
+        title: 'Practice Exercises',
+        content:
+          'Build these to master Day 143: (1) **Tool unit tests** — write Jest tests for 3 of your agent tools, mock all external calls, and achieve 100% branch coverage on each; (2) **Integration suite** — write 5 integration tests for your Day 9 research agent covering happy path, tool failure, and ambiguous input; (3) **Schema contract** — write contract tests for all tools in your Day 58 API and add them to a pre-commit hook that blocks commits if contracts break; (4) **Load test** — run the k6 script against your Day 58 API, find the concurrency level where p95 latency exceeds 15s, and document the result.',
+      },
+    ],
+  },
+  {
+    genaiDay: 144,
+    phase: 'Part VII · Real-World Systems & Advanced Patterns',
+    title: 'Domain-Specific AI Applications: Legal, Medical & Financial Guardrails',
+    subtitle: 'Build AI applications in regulated domains with appropriate disclaimers, compliance guardrails, domain-adapted RAG, and full audit trails',
+    topics: [
+      'The compliance challenge: what regulated-domain AI must never do and why standard guardrails are not enough',
+      'Domain-adapted RAG: structuring knowledge bases for legal, medical, and financial corpora',
+      'Hard guardrails: blocking specific advice types at the system-prompt and output-filter layers',
+      'Audit trails: logging every agent decision with a tamper-evident record for regulatory review',
+    ],
+    notionUrl: LC,
+    youtube: yt('jBa7CaFjVkY', 'Building Responsible AI for Regulated Industries', 'IBM Technology'),
+    sections: [
+      {
+        id: 'regulated-domains',
+        title: 'Why Regulated Domains Are Different',
+        content:
+          'A generic chatbot making a factual error is annoying. A medical AI misdiagnosing a condition, a legal AI giving wrong advice, or a financial AI recommending unsuitable investments can cause serious harm — and expose operators to liability.\\n\\n' +
+          '**The three compliance requirements:**\\n' +
+          '• **Hard prohibitions** — the AI must never give specific legal/medical/financial advice (only information). This must be enforced at the system level, not just hoped for from the model.\\n' +
+          '• **Mandatory disclosures** — every response must include domain-specific disclaimers ("This is not legal advice. Consult a qualified solicitor.").\\n' +
+          '• **Audit trails** — every interaction must be logged with who asked what, what the AI said, and when — for regulatory inspection and liability defence.',
+      },
+      {
+        id: 'domain-system-prompt',
+        title: 'Domain-Specific System Instructions & Hard Prohibitions',
+        content:
+          'Start with a tightly-scoped system instruction that defines the agent\'s role, its limitations, and mandatory disclaimers. Combine with constitutional AI (Day 57) to continuously self-critique against domain rules.',
+        code: `// Domain-specific system instructions for different regulated contexts
+
+const LEGAL_SYSTEM_INSTRUCTION =
+  'You are a legal information assistant for UK law. Your role is to explain legal concepts, ' +
+  'summarise relevant legislation, and help users understand their general rights.\\n\\n' +
+  'HARD RULES — you must NEVER violate these:\\n' +
+  '1. Never give specific legal advice tailored to the user\\'s situation.\\n' +
+  '2. Never state that a particular course of action is definitely legal or illegal.\\n' +
+  '3. Never predict the outcome of a legal dispute.\\n' +
+  '4. Always end your response with: "This is general legal information only, not legal advice. ' +
+  'For advice specific to your situation, consult a qualified solicitor."\\n\\n' +
+  'Acceptable: "In general, a contract requires offer, acceptance, and consideration."\\n' +
+  'NOT acceptable: "Based on what you\\'ve described, you have a strong breach of contract claim."';
+
+const MEDICAL_SYSTEM_INSTRUCTION =
+  'You are a medical information assistant. Provide evidence-based health information ' +
+  'from reputable sources (NHS, WHO, peer-reviewed literature).\\n\\n' +
+  'HARD RULES:\\n' +
+  '1. Never diagnose a medical condition.\\n' +
+  '2. Never recommend a specific treatment, medication, or dosage.\\n' +
+  '3. Never advise a user to stop or change their prescribed medication.\\n' +
+  '4. For any symptoms that could indicate an emergency, always direct to 999/A&E immediately.\\n' +
+  '5. End every response with: "This is health information only. Consult your GP for medical advice."';
+
+const FINANCIAL_SYSTEM_INSTRUCTION =
+  'You are a financial education assistant. Explain financial concepts, products, and regulations.\\n\\n' +
+  'HARD RULES:\\n' +
+  '1. Never recommend specific investments, funds, or financial products.\\n' +
+  '2. Never give tax advice specific to an individual\\'s situation.\\n' +
+  '3. Always state: "Past performance does not guarantee future results."\\n' +
+  '4. End every response with: "This is financial education only, not financial advice. ' +
+  'Consult a FCA-authorised financial adviser."';`,
+      },
+      {
+        id: 'domain-rag',
+        title: 'Domain-Adapted RAG: Structuring Regulated Knowledge Bases',
+        content:
+          'Generic RAG retrieves by semantic similarity alone. Domain RAG adds **metadata filtering** (jurisdiction, date, document type) so the agent only retrieves content that is valid for the user\'s specific context.',
+        code: `import { MemoryVectorStore } from 'langchain/vectorstores/memory';
+import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
+import { Document } from '@langchain/core/documents';
+
+const embeddings = new GoogleGenerativeAIEmbeddings({ model: 'text-embedding-004' });
+
+// Documents tagged with domain metadata for filtered retrieval
+const legalDocs = [
+  new Document({
+    pageContent: 'A contract requires offer, acceptance, consideration, and intention to create legal relations.',
+    metadata: { type: 'definition', jurisdiction: 'UK', area: 'contract-law', date: '2024-01' },
+  }),
+  new Document({
+    pageContent: 'The Equality Act 2010 prohibits discrimination based on protected characteristics.',
+    metadata: { type: 'statute', jurisdiction: 'UK', area: 'employment-law', date: '2010-04' },
+  }),
+];
+
+const legalVectorStore = await MemoryVectorStore.fromDocuments(legalDocs, embeddings);
+
+// Domain-filtered retrieval: only return UK employment law, post-2020
+async function retrieveLegalContext(query, jurisdiction = 'UK', legalArea = null) {
+  const docs = await legalVectorStore.similaritySearch(query, 10);
+
+  // Post-retrieval metadata filter (swap for native filter if using Pinecone/Qdrant)
+  return docs.filter((d) => {
+    if (d.metadata.jurisdiction !== jurisdiction) return false;
+    if (legalArea && d.metadata.area !== legalArea) return false;
+    return true;
+  }).slice(0, 3);
+}`,
+      },
+      {
+        id: 'output-compliance-filter',
+        title: 'Output Compliance Filter: Catching Prohibited Advice',
+        content:
+          'Even with a strict system instruction, models can occasionally slip into advice-giving. Add an output compliance filter that classifies the response before returning it to the user.',
+        code: `const DOMAIN_PROHIBITIONS = {
+  legal: [
+    /you (should|must|need to) (file|sue|claim|pursue)/i,
+    /you (have|likely have) a (strong|valid|good) (case|claim)/i,
+    /I (recommend|advise|suggest) you (to )?(contact|hire|consult)/i,
+    /this is (definitely|clearly|certainly) (legal|illegal)/i,
+  ],
+  medical: [
+    /you (likely|probably|definitely) have/i,
+    /I (recommend|suggest|advise) (taking|stopping|increasing)/i,
+    /your symptoms (suggest|indicate|point to)/i,
+    /(increase|decrease|stop|start) (your|the) (medication|dose|dosage)/i,
+  ],
+  financial: [
+    /you should (invest|buy|sell|put money into)/i,
+    /I (recommend|suggest) (this fund|this stock|this product)/i,
+    /your tax (liability|bill|return) (is|should be|will be)/i,
+  ],
+};
+
+function checkDomainCompliance(response, domain) {
+  const prohibitions = DOMAIN_PROHIBITIONS[domain] ?? [];
+  const violations = prohibitions.filter((re) => re.test(response));
+
+  if (violations.length > 0) {
+    return {
+      compliant: false,
+      violations: violations.map((re) => re.toString()),
+      safeResponse:
+        'I can provide general information on this topic, but I\\'m not able to give specific ' +
+        domain + ' advice. Please consult a qualified professional for guidance on your situation.',
+    };
+  }
+
+  return { compliant: true };
+}
+
+// In your agent response handler:
+async function domainAgentReply(message, domain) {
+  const result = await agent.invoke({ messages: [{ role: 'user', content: message }] });
+  const reply = result.messages.at(-1).content;
+  const compliance = checkDomainCompliance(reply, domain);
+
+  if (!compliance.compliant) {
+    console.warn('Compliance violation detected:', compliance.violations);
+    return compliance.safeResponse; // return safe fallback instead
+  }
+
+  return reply;
+}`,
+      },
+      {
+        id: 'audit-trail',
+        title: 'Audit Trails: Tamper-Evident Logging for Compliance',
+        content:
+          'Regulated industries require every AI interaction to be logged with full fidelity — user input, AI output, timestamp, and agent version — and the log must be tamper-evident so it can be used in a regulatory review.',
+        code: `import { createHash } from 'crypto';
+import { Pool } from 'pg';
+
+const db = new Pool({ connectionString: process.env.DATABASE_URL });
+
+// Create audit log table (run once)
+// CREATE TABLE audit_log (
+//   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+//   user_id TEXT NOT NULL,
+//   domain TEXT NOT NULL,
+//   user_input TEXT NOT NULL,
+//   agent_output TEXT NOT NULL,
+//   compliance_status TEXT NOT NULL,
+//   agent_version TEXT NOT NULL,
+//   hash TEXT NOT NULL,           -- SHA-256 of the record content
+//   prev_hash TEXT,               -- hash of the previous record (chain integrity)
+//   created_at TIMESTAMPTZ DEFAULT NOW()
+// );
+
+async function auditLog(userId, domain, userInput, agentOutput, complianceStatus) {
+  // Get the hash of the previous record to form a chain
+  const { rows } = await db.query(
+    'SELECT hash FROM audit_log ORDER BY created_at DESC LIMIT 1',
+  );
+  const prevHash = rows[0]?.hash ?? 'GENESIS';
+
+  const agentVersion = process.env.AGENT_VERSION ?? 'unknown';
+  const content = userId + domain + userInput + agentOutput + complianceStatus + agentVersion + prevHash;
+  const hash = createHash('sha256').update(content).digest('hex');
+
+  await db.query(
+    'INSERT INTO audit_log (user_id, domain, user_input, agent_output, compliance_status, agent_version, hash, prev_hash) ' +
+    'VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+    [userId, domain, userInput, agentOutput, complianceStatus, agentVersion, hash, prevHash],
+  );
+
+  return hash;
+}
+
+// Verify audit log integrity (for compliance review)
+async function verifyAuditChain() {
+  const { rows } = await db.query('SELECT * FROM audit_log ORDER BY created_at ASC');
+  let prevHash = 'GENESIS';
+  let valid = true;
+
+  for (const row of rows) {
+    const content = row.user_id + row.domain + row.user_input + row.agent_output +
+      row.compliance_status + row.agent_version + prevHash;
+    const expectedHash = createHash('sha256').update(content).digest('hex');
+
+    if (expectedHash !== row.hash) {
+      console.error('AUDIT CHAIN BROKEN at record', row.id);
+      valid = false;
+    }
+    prevHash = row.hash;
+  }
+
+  return valid ? 'Audit chain intact.' : 'INTEGRITY VIOLATION DETECTED.';
+}`,
+      },
+      {
+        id: 'domain-practice',
+        title: 'Practice Exercises',
+        content:
+          'Build these to master Day 144: (1) **Legal chatbot** — implement the `LEGAL_SYSTEM_INSTRUCTION` with a 10-document UK contract law knowledge base; test that 10 queries all include the mandatory disclaimer; (2) **Compliance filter** — run `checkDomainCompliance()` on 20 responses generated by the legal bot; measure how many are caught and compare with/without the strict system instruction; (3) **Audit trail** — implement `auditLog()` for your medical chatbot, generate 5 interactions, then run `verifyAuditChain()` and confirm integrity; (4) **Tamper test** — manually update one row in the audit table and re-run `verifyAuditChain()` — confirm it detects the breach.',
+      },
+    ],
+  },
+  {
+    genaiDay: 145,
+    phase: 'Part VII · Real-World Systems & Advanced Patterns',
+    title: 'Building Your Own LLM Gateway: Routing, Fallbacks & Cost Optimisation',
+    subtitle: 'Build a production LLM gateway that routes requests to the cheapest capable model, falls back gracefully on failure, and caches across providers',
+    topics: [
+      'What an LLM gateway does: unified API over multiple providers with routing, caching, and observability',
+      'Cost-tiered model routing: try the cheapest model first, escalate to more capable on failure or low confidence',
+      'Provider fallbacks: automatic failover from Gemini to OpenAI to Anthropic on rate-limit or outage',
+      'Cross-provider semantic caching and usage analytics: optimise spend without degrading quality',
+    ],
+    notionUrl: LC,
+    youtube: yt('Ps7U6jN3MzE', 'Build an LLM Gateway — Model Routing, Fallbacks and Caching', 'AI Engineer'),
+    sections: [
+      {
+        id: 'why-llm-gateway',
+        title: 'What an LLM Gateway Is and Why You Need One',
+        content:
+          'Every serious GenAI application eventually needs more than one model. You want Gemini Flash for fast/cheap tasks, Gemini Pro for complex reasoning, and OpenAI as a fallback when Google has an outage. Without a gateway, this logic is scattered across your codebase.\\n\\n' +
+          'An **LLM gateway** is a thin proxy service that sits between your application and all LLM providers. It provides:\\n' +
+          '• **Unified API** — your application calls one endpoint regardless of provider\\n' +
+          '• **Model routing** — cheapest capable model for each request type\\n' +
+          '• **Provider fallbacks** — automatic failover on rate-limit or outage\\n' +
+          '• **Semantic caching** — cross-provider cache so a cached Gemini response also answers identical OpenAI calls\\n' +
+          '• **Unified observability** — one place to see cost, latency, and errors across all providers\\n\\n' +
+          'Open-source gateways (LiteLLM, Portkey, Traefik AI) do this — but building your own teaches you the patterns and gives you full control.',
+      },
+      {
+        id: 'provider-abstraction',
+        title: 'Provider Abstraction Layer',
+        content:
+          'Define a common interface that all provider clients implement. Your gateway logic works against the interface — swapping providers requires no changes to routing or fallback logic.',
+        code: `import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
+import { ChatOpenAI } from '@langchain/openai';
+import { ChatAnthropic } from '@langchain/anthropic';
+
+// Unified provider registry
+const PROVIDERS = {
+  'gemini-flash': {
+    client:       new ChatGoogleGenerativeAI({ model: 'gemini-2.5-flash' }),
+    costPer1kTokens: 0.00015,   // $0.15 / 1M tokens
+    maxTokens:    1_000_000,
+    tier:         'fast',
+  },
+  'gemini-pro': {
+    client:       new ChatGoogleGenerativeAI({ model: 'gemini-2.5-pro' }),
+    costPer1kTokens: 0.00125,
+    maxTokens:    2_000_000,
+    tier:         'smart',
+  },
+  'gpt-4o-mini': {
+    client:       new ChatOpenAI({ model: 'gpt-4o-mini' }),
+    costPer1kTokens: 0.00015,
+    maxTokens:    128_000,
+    tier:         'fast',
+  },
+  'gpt-4o': {
+    client:       new ChatOpenAI({ model: 'gpt-4o' }),
+    costPer1kTokens: 0.0025,
+    maxTokens:    128_000,
+    tier:         'smart',
+  },
+  'claude-haiku': {
+    client:       new ChatAnthropic({ model: 'claude-haiku-4-5' }),
+    costPer1kTokens: 0.00025,
+    maxTokens:    200_000,
+    tier:         'fast',
+  },
+};
+
+// Select cheapest model for a given tier
+function cheapestModel(tier) {
+  return Object.entries(PROVIDERS)
+    .filter(([, p]) => p.tier === tier)
+    .sort(([, a], [, b]) => a.costPer1kTokens - b.costPer1kTokens)[0][0];
+}`,
+      },
+      {
+        id: 'cost-tiered-routing',
+        title: 'Cost-Tiered Model Routing',
+        content:
+          'Route requests to the cheapest model by default. Only escalate to a more capable (expensive) model if the cheap model\'s response fails a quality check — keeping costs low while preserving quality for hard tasks.',
+        code: `async function routedCompletion(messages, options = {}) {
+  const { tier = 'auto', maxCostUsd = 0.01 } = options;
+
+  // Auto-tier: classify complexity from the last user message
+  const lastMessage = messages.at(-1)?.content ?? '';
+  const resolvedTier = tier === 'auto'
+    ? lastMessage.match(/explain|design|architecture|debug|analyse|proof/i) ? 'smart' : 'fast'
+    : tier;
+
+  const primaryModelId = cheapestModel(resolvedTier);
+  const provider = PROVIDERS[primaryModelId];
+
+  console.log('Routing to', primaryModelId, '(tier:', resolvedTier + ')');
+
+  try {
+    const start = Date.now();
+    const response = await provider.client.invoke(messages);
+    const latencyMs = Date.now() - start;
+
+    // Estimate cost (rough token estimate: 4 chars = 1 token)
+    const estimatedTokens = (messages.reduce((s, m) => s + m.content.length, 0) + response.content.length) / 4;
+    const estimatedCost = estimatedTokens / 1000 * provider.costPer1kTokens;
+
+    console.log('Latency:', latencyMs + 'ms | Est. cost: $' + estimatedCost.toFixed(6));
+
+    // Escalate to smart tier if response looks too short for a complex query
+    if (resolvedTier === 'fast' && response.content.length < 50 && lastMessage.length > 100) {
+      console.log('Response too short — escalating to smart tier');
+      return routedCompletion(messages, { tier: 'smart' });
+    }
+
+    return { content: response.content, model: primaryModelId, latencyMs, estimatedCost };
+  } catch (err) {
+    console.warn(primaryModelId + ' failed:', err.message, '— trying fallback');
+    return null; // signal fallback needed
+  }
+}`,
+      },
+      {
+        id: 'provider-fallbacks',
+        title: 'Provider Fallbacks: Automatic Failover',
+        content:
+          'When a provider throws a rate-limit (429) or server error (5xx), automatically try the next provider in the fallback chain. Track provider health to avoid retrying a provider that has been failing repeatedly.',
+        code: `// Fallback chains: try providers in order until one succeeds
+const FALLBACK_CHAINS = {
+  fast:  ['gemini-flash', 'gpt-4o-mini', 'claude-haiku'],
+  smart: ['gemini-pro',   'gpt-4o',      'gemini-flash'],
+};
+
+// Simple in-memory health tracker (use Redis in production)
+const providerHealth = {};
+function markUnhealthy(modelId, durationMs = 60_000) {
+  providerHealth[modelId] = Date.now() + durationMs;
+  console.warn(modelId + ' marked unhealthy for', durationMs / 1000, 'seconds');
+}
+function isHealthy(modelId) {
+  return !providerHealth[modelId] || Date.now() > providerHealth[modelId];
+}
+
+async function completionWithFallback(messages, tier = 'fast') {
+  const chain = FALLBACK_CHAINS[tier] ?? FALLBACK_CHAINS.fast;
+
+  for (const modelId of chain) {
+    if (!isHealthy(modelId)) {
+      console.log('Skipping', modelId, '(marked unhealthy)');
+      continue;
+    }
+
+    try {
+      const start = Date.now();
+      const response = await PROVIDERS[modelId].client.invoke(messages);
+      return { content: response.content, model: modelId, latencyMs: Date.now() - start };
+    } catch (err) {
+      const isTransient = err.status === 429 || (err.status >= 500 && err.status < 600);
+      if (isTransient) {
+        markUnhealthy(modelId, 60_000); // back off for 60s
+      }
+      console.warn(modelId + ' failed (' + err.status + '):', err.message);
+    }
+  }
+
+  throw new Error('All providers in ' + tier + ' chain failed.');
+}`,
+      },
+      {
+        id: 'gateway-api',
+        title: 'Wrapping It All in a Gateway API',
+        content:
+          'Expose the gateway as a single Express endpoint. Your application calls `POST /gateway/chat` and gets back a response — the routing, fallbacks, and caching are all invisible to the caller.',
+        code: `import express from 'express';
+import { createClient } from 'redis';
+
+const app  = express();
+app.use(express.json());
+
+const redis = createClient({ url: process.env.REDIS_URL });
+await redis.connect();
+
+// Simple MD5-based cache key (use semantic cache from Day 114 for fuzzy matching)
+import { createHash } from 'crypto';
+function cacheKey(messages) {
+  const fingerprint = messages.map((m) => m.role + ':' + m.content).join('|');
+  return 'gateway:' + createHash('md5').update(fingerprint).digest('hex');
+}
+
+app.post('/gateway/chat', async (req, res) => {
+  const { messages, tier = 'auto', skipCache = false } = req.body;
+
+  // 1. Cache lookup
+  if (!skipCache) {
+    const key = cacheKey(messages);
+    const cached = await redis.get(key);
+    if (cached) {
+      const hit = JSON.parse(cached);
+      console.log('Cache HIT — model:', hit.model);
+      return res.json({ ...hit, cached: true });
+    }
+  }
+
+  // 2. Routed completion with fallbacks
+  const response = await completionWithFallback(
+    messages,
+    tier === 'auto'
+      ? messages.at(-1)?.content?.match(/explain|design|debug/i) ? 'smart' : 'fast'
+      : tier,
+  );
+
+  // 3. Cache the result for 1 hour
+  await redis.setEx(cacheKey(messages), 3600, JSON.stringify(response));
+
+  res.json({ ...response, cached: false });
+});
+
+// Usage analytics endpoint
+app.get('/gateway/stats', async (req, res) => {
+  const keys = await redis.keys('gateway:*');
+  res.json({ cachedResponses: keys.length });
+});
+
+app.listen(4000, () => console.log('LLM Gateway on :4000'));`,
+      },
+      {
+        id: 'gateway-practice',
+        title: 'Practice Exercises',
+        content:
+          'Build these to master Day 145: (1) **Provider abstraction** — set up all three providers (Gemini, OpenAI, Anthropic), run the same 5 prompts through each, and compare response quality and latency; (2) **Cost-tiered routing** — send 20 mixed-complexity queries through `routedCompletion()`, log which tier each gets routed to, and calculate total cost vs always using the smart tier; (3) **Fallback test** — intentionally break one provider (invalid API key), send 10 requests, and confirm all succeed via the fallback chain; log which model actually handled each; (4) **Gateway API** — deploy the full gateway, point your Day 58 agent API at it instead of calling Gemini directly, and verify it works end-to-end with caching and fallbacks active.',
+      },
+    ],
+  },
 ];
