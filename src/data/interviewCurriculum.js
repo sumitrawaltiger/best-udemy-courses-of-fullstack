@@ -56,6 +56,41 @@ const PAYMENT_SERVICE_SECTIONS = [
   },
 ];
 
+// API Design — REST vs GraphQL vs gRPC (Backend Roadmap Part 1/11), attached
+// to the API & Service Design lesson.
+const API_DESIGN_SECTIONS = [
+  {
+    id: 'api-design-overview-and-rest',
+    title: 'API Design — The Foundation of Modern Software',
+    content:
+      "APIs are the backbone of every modern application. Whether you're building a SaaS, mobile app, or a distributed system, choosing the right API style can make or break your product.\n\n**Why it matters:**\n- Enables communication between systems.\n- Impacts performance, scalability & security.\n- A good API = happy developers + users.\n- Key to building scalable products & integrations.\n\n**The 3 main API styles:**\n- **REST** — Simple, Stateless, Widely used.\n- **GraphQL** — Flexible, Efficient, Powerful.\n- **gRPC** — High Performance, Binary, great for Microservices.\n\n**REST (Representational State Transfer):** an architectural style that uses HTTP methods to perform operations on resources.\n\n**Key characteristics:** stateless, resource-based (nouns), uses standard HTTP methods, returns data in JSON/XML, easy to cache, widely used in web APIs.\n\n**REST example** — base URL `https://api.example.com`: `GET /users` → get all users, `GET /users/1` → get user by ID, `POST /users` → create user, `PUT /users/1` → update user, `DELETE /users/1` → delete user.\n\n**Request flow:** the Client (Web/Mobile App) sends an HTTP request (`GET /users`) to the REST API Server, which talks to the Database and sends back an HTTP response (JSON data).\n\n**Best for:** public APIs, simple CRUD operations, caching, small to medium scale applications.",
+    code: "GET    /users      -> Get all users\nGET    /users/1    -> Get user by ID\nPOST   /users      -> Create user\nPUT    /users/1    -> Update user\nDELETE /users/1    -> Delete user",
+  },
+  {
+    id: 'api-design-graphql',
+    title: 'API Design — GraphQL',
+    content:
+      "**What is GraphQL?** A query language for APIs, and a runtime for executing those queries with your existing data.\n\n**Key characteristics:** the client asks for exactly what it needs, a single endpoint, reduces over-fetching & under-fetching, a strongly typed schema, evolvable & developer friendly.\n\n**Best for:** complex queries, multiple clients (mobile, web), and frequent changes in requirements.",
+    code: "# Endpoint: https://api.example.com/graphql\n\n# Query\n{\n  user(id: 1) {\n    id\n    name\n    email\n    posts {\n      id\n      title\n    }\n  }\n}\n\n# Response\n{\n  \"user\": {\n    \"id\": 1,\n    \"name\": \"Vikash\",\n    \"email\": \"vikash@example.com\",\n    \"posts\": [\n      { \"id\": 10, \"title\": \"Post 1\" },\n      { \"id\": 11, \"title\": \"Post 2\" }\n    ]\n  }\n}",
+  },
+  {
+    id: 'api-design-grpc',
+    title: 'API Design — gRPC',
+    content:
+      "**What is gRPC?** A high-performance RPC framework developed by Google. It uses HTTP/2 and Protocol Buffers (binary) for communication.\n\n**Key characteristics:** high performance & low latency, uses Protocol Buffers (binary), HTTP/2 based, supports streaming (bi-directional), ideal for microservices communication, strongly typed contracts (`.proto` files).\n\n**How gRPC works:** the gRPC Client (Service A) talks to the gRPC Server (Service B) over HTTP/2 as the transport.\n\n**Best for:** microservices, internal services, real-time, high-performance systems.",
+    code: "// .proto file (defines service & messages)\nservice UserService {\n  rpc GetUser (UserRequest) returns (UserResponse);\n}\n\nmessage UserRequest {\n  int32 id = 1;\n}\n\nmessage UserResponse {\n  int32 id = 1;\n  string name = 2;\n  string email = 3;\n}",
+  },
+  {
+    id: 'api-design-rest-vs-graphql-vs-grpc',
+    title: 'REST vs GraphQL vs gRPC — When to Use What',
+    content:
+      "**Feature-by-feature comparison:**\n- **Protocol** — REST: HTTP/1.1; GraphQL: HTTP/1.1; gRPC: HTTP/2.\n- **Data format** — REST: JSON/XML; GraphQL: JSON; gRPC: Protocol Buffers (binary).\n- **Endpoint** — REST: multiple; GraphQL: single; gRPC: multiple.\n- **Performance** — REST: medium; GraphQL: medium; gRPC: high.\n- **Over-fetching** — REST: high (possible); GraphQL: low (avoided); gRPC: low (efficient).\n- **Learning curve** — REST: low; GraphQL: medium; gRPC: high.\n- **Best use case** — REST: simple CRUD, public APIs; GraphQL: complex queries, flexible clients; gRPC: microservices, high performance.\n- **Caching** — REST: easy (HTTP caching); GraphQL: harder; gRPC: harder.\n- **Streaming** — REST: limited; GraphQL: subscriptions (real-time); gRPC: yes (bi-directional).\n- **Schema** — REST: not strict; GraphQL: strongly typed; gRPC: strongly typed.\n\n**No one size fits all** — choose the right tool based on your use case.\n\n**When to use REST:** you need simple, standard APIs; public APIs; caching is important; less frequent changes; easy adoption is a priority.\n\n**When to use GraphQL:** complex & flexible queries; multiple clients (mobile, web); frequent schema changes; need to reduce over/under-fetching.\n\n**When to use gRPC:** high performance & low latency; microservices communication; real-time streaming needed; working in a controlled environment.\n\n**Interview quick tips:**\n- REST is about resources & HTTP methods.\n- GraphQL is about asking the right data in one request.\n- gRPC is about fast, reliable & efficient service communication.\n- Understand trade-offs, not just definitions.\n\n**Remember:** great APIs don't just work — they are secure, scalable, and a joy to integrate.",
+    image: '/interview-notes/api-design-rest-graphql-grpc.jpg',
+    imageAlt:
+      'API Design — Backend Roadmap Part 1/11, a 6-panel illustrated note. Panel 1: API Design overview (why it matters, the 3 main API styles: REST simple/stateless/widely used, GraphQL flexible/efficient/powerful, gRPC high performance/binary/great for microservices). Panel 2: REST (what it is, key characteristics, a REST example with GET/POST/PUT/DELETE endpoints, the client-server-database request/response flow, best for public APIs and simple CRUD). Panel 3: GraphQL (what it is, key characteristics, a GraphQL query and JSON response example, best for complex queries and multiple clients). Panel 4: gRPC (what it is, key characteristics, a .proto service/message example, how gRPC works client-to-server over HTTP/2, best for microservices). Panel 5: a REST vs GraphQL vs gRPC comparison table across protocol/data format/endpoint/performance/over-fetching/learning curve/best use case/caching/streaming/schema. Panel 6: when to use REST vs GraphQL vs gRPC, interview quick tips, and a reminder that great APIs are secure, scalable, and a joy to integrate.',
+  },
+];
+
 const PHASE_LESSONS = [
   {
     phase: 'DSA Foundations',
@@ -184,6 +219,9 @@ function buildLessons() {
       }
       if (title === 'Design Notifications, Uber & Robinhood') {
         lesson.sections = PAYMENT_SERVICE_SECTIONS;
+      }
+      if (title === 'API & Service Design') {
+        lesson.sections = API_DESIGN_SECTIONS;
       }
       lessons.push(lesson);
       interviewDay += 1;
