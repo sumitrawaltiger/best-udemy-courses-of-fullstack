@@ -1,13 +1,12 @@
 import StandaloneJourneyPage from './StandaloneJourneyPage';
 
 const learntToday = [
-  { title: 'Series complete', text: 'this is the last Agentic AI journal day — you have the full pattern library' },
+  { title: 'Graduation-ready', text: 'capstone demo, golden suite, runbook, cost/latency guards, and security drills all landed' },
   { title: 'What travels', text: 'loops, schemas, HITL, budgets, traces, flywheels, and eval beat any framework fad' },
   { title: 'Portfolio proof', text: 'one recorded demo + README + golden suite is stronger than a long unfinished course log' },
   { title: 'Trust is product', text: 'privacy, allowlists, and honest degrade modes are how users stay' },
   { title: 'Measure to improve', text: 'north star + guardrails keep shipping from becoming roulette' },
-  { title: 'Keep going', text: 'return to Python track lessons, fill journal gaps, or deepen one vertical in production' },
-  { title: 'Teach forward', text: 'the best next step is helping someone else ship their first safe agent' },
+  { title: 'Two days left', text: 'tomorrow: retrospective + portfolio packaging, then the series finale' },
 ];
 
 const core = [
@@ -22,9 +21,9 @@ const core = [
     code: 'loop · rag · ops\nedge · learn',
   },
   {
-    icon: '🗺️', title: 'After Day 153', titleClass: 'card-title-amber', subtitle: 'Next',
-    description: 'Ship in a real domain, mentor a peer, or revisit weak phases — the journal ends; the craft continues.',
-    code: 'ship · mentor\nrevisit · grow',
+    icon: '🔜', title: 'After Day 153', titleClass: 'card-title-amber', subtitle: 'Next',
+    description: 'Two wrap-up days ahead: a retrospective and portfolio pass, then the series closes for good.',
+    code: 'retro · portfolio\n· finale',
   },
 ];
 
@@ -40,9 +39,9 @@ const practice = [
     code: 'problem → result\nlinks',
   },
   {
-    icon: '🏠', title: 'Journey Complete', titleClass: 'card-title-amber', subtitle: 'Hub',
-    description: 'Agentic AI journal ends here. Return to the hub or the Python track.',
-    link: { href: '/python', label: 'Open Python track →' },
+    icon: '🔜', title: 'Next: Retrospective', titleClass: 'card-title-amber', subtitle: 'Day 154',
+    description: 'Tomorrow — step back, write the retro, and polish the portfolio for real eyes.',
+    link: { href: '/agentic-day-154', label: 'Go to Day 154 →' },
   },
 ];
 
@@ -71,23 +70,23 @@ export default function AgenticDay153() {
       series="Agentic AI"
       dateLabel="Agentic AI Day 153 · 3 Dec 2026"
       prev={{ href: '/agentic-day-152', label: '← Day 152' }}
-      next={{ href: '/python', label: 'Python Track →' }}
-      tags={['Agentic AI', 'Finale', 'Phase 21']}
-      theme="AGENTIC AI SERIES FINALE"
+      next={{ href: '/agentic-day-154', label: 'Day 154 →' }}
+      tags={['Agentic AI', 'Capstone', 'Phase 21']}
+      theme="CAPSTONE DEMO DAY"
       heroIcon="🎓"
-      profileRole="AGENTIC AI · GRADUATION"
-      progressWidth="100%"
+      profileRole="AGENTIC AI · CAPSTONE"
+      progressWidth="99%"
       summary={
         <>
-          Day 153 is the <strong>last Agentic AI day</strong>. Graduate with a demo, golden suite, and portfolio card —
-          then keep shipping in the real world.
+          Day 153 is <strong>capstone demo day</strong>. Graduate with a recorded demo, golden suite, and portfolio
+          card — two wrap-up days remain before the series truly closes.
         </>
       }
       learntToday={learntToday}
       core={core}
       practice={practice}
       resources={resources}
-      hashtags={['#Graduation', '#Finale', '#Day153', '#AgenticAI', '#Portfolio']}
+      hashtags={['#Capstone', '#Demo', '#Day153', '#AgenticAI', '#Portfolio']}
     />
   );
 }

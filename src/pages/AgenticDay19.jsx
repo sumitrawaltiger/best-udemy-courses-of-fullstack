@@ -68,7 +68,7 @@ const RESOURCES = [
     link: { href: GPT_YT, label: 'Watch GPT explained →', external: true },
   },
   {
-    icon: '✅', title: 'Progress Check', titleClass: 'card-title-amber', subtitle: 'Day 19 Of 153',
+    icon: '✅', title: 'Progress Check', titleClass: 'card-title-amber', subtitle: 'Day 19 Of 155',
     description: 'RNNs, LSTM, BiRNN, and now decoder-only GPT models — the generative side of modern NLP is coming together.',
   },
 ];

@@ -41,8 +41,8 @@ const practice = [
     code: 'timeout · inject\nUX proof',
   },
   {
-    icon: '🔜', title: 'Next: Finale', titleClass: 'card-title-amber', subtitle: 'Day 153',
-    description: 'Tomorrow — Agentic AI series finale (last day).',
+    icon: '🔜', title: 'Next: Capstone Demo', titleClass: 'card-title-amber', subtitle: 'Day 153',
+    description: 'Tomorrow — capstone demo day, then a 2-day wrap-up before the series closes.',
     link: { href: '/agentic-day-153', label: 'Go to Day 153 →' },
   },
 ];

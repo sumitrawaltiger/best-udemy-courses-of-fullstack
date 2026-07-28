@@ -40,7 +40,7 @@ const practice = [
   },
   {
     icon: '🔜', title: 'What Comes Next', titleClass: 'card-title-amber', subtitle: 'Continue',
-    description: 'Finale — capstone brief, build, and series graduation (Days 151–153).',
+    description: 'Finale — capstone brief, build, and series graduation (Days 151–155).',
     link: { href: '/agentic-day-151', label: 'Go to Day 151 →' },
   },
 ];
