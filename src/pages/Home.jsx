@@ -25,6 +25,7 @@ import { NEXTJS_INTERVIEW_QUESTIONS } from '../data/nextjsInterviewQuestions';
 import { JAVA_INTERVIEW_QUESTIONS } from '../data/javaInterviewQuestions';
 import { KAFKA_INTERVIEW_QUESTIONS } from '../data/kafkaInterviewQuestions';
 import { MICROSERVICES_INTERVIEW_QUESTIONS } from '../data/microservicesInterviewQuestions';
+import { SQL_INTERVIEW_QUESTIONS } from '../data/sqlInterviewQuestions';
 import { JAVA_STREAMS_PUZZLES } from '../data/javaStreamsPuzzles';
 import { SQL_QUERY_PUZZLES } from '../data/sqlQueryPuzzles';
 import { BEST_COURSES } from '../data/bestUdemyCourses';
@@ -699,7 +700,8 @@ export default function Home() {
               KAFKA_INTERVIEW_QUESTIONS.length +
               MICROSERVICES_INTERVIEW_QUESTIONS.length +
               JAVA_STREAMS_PUZZLES.length +
-              SQL_QUERY_PUZZLES.length}
+              SQL_QUERY_PUZZLES.length +
+              SQL_INTERVIEW_QUESTIONS.length}
             + questions and answers. <strong>JavaScript</strong> — closures, the <code>this</code> keyword,
             promises, and the event loop. <strong>React</strong> — {REACT_INTERVIEW_QUESTIONS.length} on
             components, hooks, lifecycle, routing, and Redux. <strong>Next.js</strong> —{' '}
@@ -711,8 +713,9 @@ export default function Home() {
             <strong>Microservices</strong> — {MICROSERVICES_INTERVIEW_QUESTIONS.length} on API gateways,
             service discovery, resilience, deployment &amp; security. <strong>Java 8 Streams</strong> —{' '}
             {JAVA_STREAMS_PUZZLES.length} predict-the-output puzzles with worked solutions.{' '}
-            <strong>SQL</strong> — {SQL_QUERY_PUZZLES.length} tricky query puzzles on joins, window
-            functions, NULLs &amp; classic patterns. Click any question to reveal the answer.
+            <strong>SQL</strong> — {SQL_QUERY_PUZZLES.length} tricky query puzzles plus{' '}
+            {SQL_INTERVIEW_QUESTIONS.length} interview Q&amp;A on joins, window functions, indexes, ACID &amp;
+            optimization. Click any question to reveal the answer.
           </p>
           <div className="thunder-plus-highlights">
             <span>📘 JS Fundamentals</span>
@@ -724,6 +727,7 @@ export default function Home() {
             <span>🧱 Microservices</span>
             <span>🧩 Stream Puzzles</span>
             <span>🗄️ Tricky SQL</span>
+            <span>📊 SQL Q&amp;A</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/interview-questions" className="btn btn-interview btn-lg">
@@ -752,6 +756,9 @@ export default function Home() {
             </Link>
             <Link to="/sql-query-puzzles" className="btn btn-python btn-lg">
               Tricky SQL Queries 🗄️
+            </Link>
+            <Link to="/sql-interview-questions" className="btn btn-python btn-lg">
+              SQL Q&amp;A 📊
             </Link>
           </div>
         </div>

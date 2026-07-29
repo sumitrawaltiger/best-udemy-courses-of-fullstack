@@ -471,6 +471,7 @@ import DevopsInterviewQuestions from './pages/DevopsInterviewQuestions';
 import NodejsInterviewQuestions from './pages/NodejsInterviewQuestions';
 import JavaStreamsPuzzles from './pages/JavaStreamsPuzzles';
 import SqlQueryPuzzles from './pages/SqlQueryPuzzles';
+import SqlInterviewQuestions from './pages/SqlInterviewQuestions';
 import SpringBootEcommerceRoadmap from './pages/SpringBootEcommerceRoadmap';
 import CheatSheets from './pages/CheatSheets';
 import BestUdemyCourses from './pages/BestUdemyCourses';
@@ -884,6 +885,7 @@ export default function App() {
         <Route path="/nodejs-interview-questions" element={<NodejsInterviewQuestions />} />
         <Route path="/java-streams-puzzles" element={<JavaStreamsPuzzles />} />
         <Route path="/sql-query-puzzles" element={<SqlQueryPuzzles />} />
+        <Route path="/sql-interview-questions" element={<SqlInterviewQuestions />} />
         <Route path="/spring-boot-ecommerce-roadmap" element={<SpringBootEcommerceRoadmap />} />
         <Route path="/cheat-sheets" element={<CheatSheets />} />
         <Route path="/best-udemy-courses" element={<BestUdemyCourses />} />
