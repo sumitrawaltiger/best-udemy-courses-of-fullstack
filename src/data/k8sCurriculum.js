@@ -304,6 +304,16 @@ const K8S_SLIDES_SECTIONS = [
     imageAlt: 'Kubernetes YAML explained line-by-line — annotated Pod, Deployment, Service, ConfigMap, Secret, and Namespace manifests, a complete Deployment + Service application example, common K8s YAML fields (apiVersion, kind, metadata, name, labels, spec, status), useful kubectl commands, and best practices',
   },
   {
+    id: "deployment-file-structure",
+    title: "Kubernetes Deployment File Structure",
+    content:
+      "When we deploy an application on Kubernetes, we use multiple YAML files to define different Kubernetes resources. A typical project structure looks like this (file names can vary based on the application and environment) — see the file tree below.\n\n**What does each file do?**\n1. **deployment.yaml** — Defines the Deployment resource which manages Pods, replicas, updates and rollbacks. It specifies the container image, ports, env, resources, etc.\n2. **service.yaml** — Defines the Service resource to expose the application within the cluster or outside the cluster (ClusterIP, NodePort, LoadBalancer, etc.)\n3. **configmap.yaml** — Stores non-sensitive configuration data in key-value pairs. Used by Pods as environment variables or files.\n4. **secret.yaml** — Stores sensitive information like passwords, API keys, tokens, etc. in an encoded format.\n5. **ingress.yaml** — Defines the Ingress resource to manage external HTTP/HTTPS access to the services, usually through a domain name.\n6. **namespace.yaml** — (Optional) Creates a separate namespace for our application to isolate resources.\n\n**How to use?**\n- Apply all files using: `kubectl apply -f <file>` or `kubectl apply -f .`\n- It's good practice to keep these files in version control (Git).\n- We can also use Kustomize or Helm for managing multiple environments.\n\nThis structure keeps our Kubernetes manifests organized, scalable, and easy to maintain.",
+    code: "my-app/\n├── deployment.yaml\n├── service.yaml\n├── configmap.yaml\n├── secret.yaml\n├── ingress.yaml\n└── namespace.yaml (optional)",
+    image: '/k8s-notes/kubernetes-deployment-file-structure.jpg',
+    imageAlt:
+      'Kubernetes Deployment File Structure — a typical my-app project directory containing deployment.yaml, service.yaml, configmap.yaml, secret.yaml, ingress.yaml, and an optional namespace.yaml, with a breakdown of what each file does, how to apply them with kubectl apply -f, and best practices like version control and Kustomize/Helm',
+  },
+  {
     id: "yaml-end-to-end-deployment-service-ingress",
     title: "Kubernetes YAML — End to End (Deployment, Service & Ingress)",
     content:
