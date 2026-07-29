@@ -2052,73 +2052,117 @@ export const chaptersDays20to100 = [
   },
   {
     "id": 35,
-    "slug": "error-handling-and-validation",
+    "slug": "http-status-codes-and-auth-api-design",
     "track": "thunder",
     "day": 35,
-    "title": "Error Handling & Validation",
-    "subtitle": "Express-validator, custom errors, and API responses",
+    "title": "HTTP Status Codes & Auth API Design",
+    "subtitle": "What every response code actually means, applied to a full signup/login backend",
     "duration": "2 hrs",
     "createdOn": "19 Aug 2026",
     "status": "published",
     "topics": [
-      "Validation middleware",
-      "express-validator",
-      "Custom error classes",
-      "Central error handler",
-      "Consistent API errors"
+      "Status code vs response body",
+      "2xx success, 4xx client, 5xx server",
+      "401 vs 403, 400 vs 422, 404 vs 409",
+      "A full signup/login/profile backend"
     ],
     "sections": [
       {
-        "id": "validation-middleware",
-        "title": "Validation middleware",
-        "content": "Learn **Validation middleware** in Day 35 of Thunder: 100 Days of Code. Express-validator, custom errors, and API responses",
-        "tryIt": "console.log(\"Day 35: Error Handling & Validation\");"
+        "id": "status-code-mental-model",
+        "title": "Status Code vs Response Body — The Mental Model",
+        "content": "**Day 35** follows **Lecture 16: ChatGPT Project (continue)** from the [Thunder Notion notes](https://app.notion.com/p/Lecture16-Chatgpt-Project-continue-3aba9af81c98806a9b82db0c37b949d5?source=copy_link). Whenever the frontend sends a request, the backend must answer one question: **what happened to this request?** The answer has two parts:\n\n1. **HTTP status code** — the broad result (a category).\n2. **Response body** — the exact detail.\n\n```js\nres.status(404).json({\n  success: false,\n  message: \"User not found\"\n});\n```\n\n`404` tells you the category (not found); the `message` tells you the specific detail (which thing wasn't found). The three broad categories: **2xx** = success, **4xx** = client/frontend mistake, **5xx** = backend/server mistake. Simple mental model: 200/201 = *kaam ho gaya*; 400/401/403/404/409/422/429 = *request bhejne wale side se issue*; 500 = *backend side se issue*.\n\n**Never** do this:\n```js\nres.status(200).json({ success: false, message: \"Something failed\" });\n```\nHTTP says the request succeeded, but the body says it failed — that mismatch creates real confusion for anyone consuming the API."
       },
       {
-        "id": "express-validator",
-        "title": "express-validator",
-        "content": "Learn **express-validator** in Day 35 of Thunder: 100 Days of Code. Express-validator, custom errors, and API responses",
-        "tryIt": "console.log(\"Day 35: Error Handling & Validation\");"
+        "id": "200-and-201",
+        "title": "200 OK vs 201 Created",
+        "content": "**200 OK** — the request succeeded and the backend is returning data (or confirming an action). Use it for fetching data, login success, logout success, an update that returns a response.\n\n**201 Created** — the request succeeded **and a new resource was created**. Use it for signup, creating a product, creating an order.\n\n**The difference in one line:** login doesn't create a new user, so it's `200`; signup **does** create a new user, so it's `201`.",
+        "code": "// GET /profile -- 200, nothing new was created\nres.status(200).json({ success: true, user });\n\n// POST /signup -- 201, a new User document now exists\nres.status(201).json({\n  success: true,\n  message: \"User created successfully\",\n  user\n});"
       },
       {
-        "id": "custom-error-classes",
-        "title": "Custom error classes",
-        "content": "Learn **Custom error classes** in Day 35 of Thunder: 100 Days of Code. Express-validator, custom errors, and API responses",
-        "tryIt": "console.log(\"Day 35: Error Handling & Validation\");"
+        "id": "400-bad-request",
+        "title": "400 Bad Request",
+        "content": "The frontend sent an **incomplete or badly-formatted** request. The backend is saying: *I cannot process this — required data is missing or malformed.* Use `400` for a missing required field, invalid JSON/body, an invalid query parameter, or an invalid MongoDB id format.",
+        "code": "// POST /signup with { \"email\": \"abc@gmail.com\" } -- password is missing\nif (!name || !email || !password) {\n  return res.status(400).json({\n    success: false,\n    message: \"Name, email and password are required\"\n  });\n}"
       },
       {
-        "id": "central-error-handler",
-        "title": "Central error handler",
-        "content": "Learn **Central error handler** in Day 35 of Thunder: 100 Days of Code. Express-validator, custom errors, and API responses",
-        "tryIt": "console.log(\"Day 35: Error Handling & Validation\");"
+        "id": "401-vs-403",
+        "title": "401 Unauthorized vs 403 Forbidden",
+        "content": "These two get confused constantly — the difference is exactly one word: **who** vs **what they're allowed to do**.\n\n- **401 Unauthorized** — *Who are you? Login first.* Token/cookie/session is missing, invalid, or expired.\n- **403 Forbidden** — *I know who you are, but you don't have permission.* The user is authenticated, but their role doesn't allow this action.\n\n**One-line rule:** `401` = not logged in. `403` = logged in but not allowed. No token sent → `401`. A normal user hitting an admin-only route → `403`.",
+        "code": "// 401 -- no/invalid/expired token\nres.status(401).json({ success: false, message: \"Please login first\" });\nres.status(401).json({ success: false, message: \"Invalid or expired token\" });\n\n// 403 -- logged in, but wrong role\nif (req.user.role !== \"admin\") {\n  return res.status(403).json({\n    success: false,\n    message: \"Only admin can access this route\"\n  });\n}"
+      },
+      {
+        "id": "404-not-found",
+        "title": "404 Not Found",
+        "content": "The thing the frontend asked for **does not exist** — either a specific record (`GET /users/999` with no such user), or the route itself doesn't exist on the backend at all.",
+        "code": "// Case 1: record not found\nres.status(404).json({ success: false, message: \"User not found\" });\n\n// Case 2: route not found -- catch-all at the end of the app\napp.use((req, res) => {\n  res.status(404).json({ success: false, message: \"Route not found\" });\n});"
+      },
+      {
+        "id": "409-conflict",
+        "title": "409 Conflict",
+        "content": "The request itself is **valid**, but it clashes with data that already exists — the classic case is signing up with an email that's already registered. Also use it for a duplicate username, a duplicate account number, or a booking slot that's already taken.",
+        "code": "const existingUser = await User.findOne({ email });\n\nif (existingUser) {\n  return res.status(409).json({\n    success: false,\n    message: \"Email already exists\"\n  });\n}"
+      },
+      {
+        "id": "422-validation-error",
+        "title": "422 Validation Error (vs 400)",
+        "content": "The data is **present** and the request is well-formed — but it fails a **business rule**. This is the key distinction from `400`:\n\n- **400** = required data is missing, or the request structure itself is wrong.\n- **422** = the data is there, but a validation rule failed.\n\nExample: password **missing** → `400`. Password **present but only `\"123\"`** → `422`. (In beginner projects it's common to just use `400` for both — professionally, `422` gives more clarity.)",
+        "code": "if (password.length < 8) {\n  return res.status(422).json({\n    success: false,\n    message: \"Password must be at least 8 characters\"\n  });\n}"
+      },
+      {
+        "id": "429-too-many-requests",
+        "title": "429 Too Many Requests",
+        "content": "The client is hitting the API **too much, too fast** — the backend is saying *slow down*. Used for rate limiting: too many login attempts, too many OTP requests, too many API calls in a short window. This is the standard defense against brute-force login attempts and spam.",
+        "code": "res.status(429).json({\n  success: false,\n  message: \"Too many requests. Try again later.\"\n});\n\n// e.g. POST /login hit 50 times in 1 minute -> 429\n// e.g. POST /send-otp hit 10 times in 1 minute -> 429"
+      },
+      {
+        "id": "500-server-error",
+        "title": "500 Server Error — Never Leak Raw Errors",
+        "content": "The request itself may have been fine — the backend **failed internally** (database crashed, an unhandled exception, a third-party API failed, a bug). This is **not** the frontend's fault.\n\n**Never** expose the raw error object to the client in production — log it on the server, and send the user a safe, generic message instead.",
+        "code": "// Bad -- leaks internal error details to the client\nres.status(500).json({ success: false, error: error });\n\n// Better -- log server-side, send a safe message to the user\nconsole.log(error);\nres.status(500).json({\n  success: false,\n  message: \"Internal server error\"\n});"
+      },
+      {
+        "id": "route-by-route-status-map",
+        "title": "Route-by-Route: Signup, Login, Profile & Admin",
+        "content": "Putting every code together, route by route:\n\n**`POST /signup`** — missing name/email/password → `400`; password too weak → `422`; email already exists → `409`; created → `201`; server error → `500`.\n\n**`POST /login`** — email/password missing → `400`; wrong email or password → `401` (**not** a separate \"user not found\" — for security, never reveal which emails are registered); success → `200`; server error → `500`.\n\n**`GET /profile`** — token missing/invalid/expired → `401`; user found → `200`; user was deleted from the DB after the token was issued → `404`; server error → `500`.\n\n**`GET /admin/users`** — token missing → `401`; user isn't an admin → `403`; users fetched → `200`; server error → `500`.\n\n**Final mental model:** status code = *what category happened*; response body = *what exactly happened*. Success → `2xx`. Frontend/user mistake → `4xx`. Backend/server mistake → `5xx`."
+      },
+      {
+        "id": "auth-controller-signup-login",
+        "title": "Applying It: Auth Controller — Signup & Login",
+        "content": "A full `userController.js` that puts every status code above into practice — `400` for missing fields, `422` isn't used here (kept simple) but `409` guards the duplicate email, `201` on a real signup, `401` on bad credentials (deliberately the *same* message for \"no such user\" and \"wrong password\", so an attacker can't fingerprint which emails exist), and a JWT issued as an `httpOnly` cookie rather than handed back in the response body.",
+        "code": "import bcrypt from \"bcrypt\";\nimport jwt from \"jsonwebtoken\";\nimport User from \"../models/userSchema.js\";\n\nconst createToken = (userId) => {\n  if (!process.env.JWT_SECRET) {\n    throw new Error(\"JWT_SECRET is missing\");\n  }\n  return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: \"1h\" });\n};\n\nconst cookieOptions = {\n  httpOnly: true,\n  secure: process.env.NODE_ENV === \"production\",\n  maxAge: 60 * 60 * 1000\n};\n\nexport const signup = async (req, res) => {\n  try {\n    const { name, age, email, password } = req.body;\n\n    if (!name || !email || !password) {\n      return res.status(400).json({ message: \"Name, email and password are required\" });\n    }\n\n    const existingUser = await User.findOne({ email });\n    if (existingUser) {\n      return res.status(409).json({ message: \"User already exists\" });\n    }\n\n    const hashPassword = await bcrypt.hash(password, 12);\n    const user = await User.create({ name, age, email, password: hashPassword });\n\n    const token = createToken(user._id);\n    res.cookie(\"token\", token, cookieOptions);\n\n    res.status(201).json({\n      message: \"User created successfully\",\n      user: { id: user._id, name: user.name, email: user.email, age: user.age }\n    });\n  } catch (err) {\n    res.status(500).json({ message: err.message });\n  }\n};\n\nexport const login = async (req, res) => {\n  try {\n    const { email, password } = req.body;\n\n    if (!email || !password) {\n      return res.status(400).json({ message: \"Email and password are required\" });\n    }\n\n    const user = await User.findOne({ email }).select(\"+password\");\n    if (!user) {\n      return res.status(401).json({ message: \"Invalid email or password\" });\n    }\n\n    const isMatch = await bcrypt.compare(password, user.password);\n    if (!isMatch) {\n      return res.status(401).json({ message: \"Invalid email or password\" });\n    }\n\n    const token = createToken(user._id);\n    res.cookie(\"token\", token, cookieOptions);\n\n    res.json({ message: \"User logged in successfully\" });\n  } catch (err) {\n    res.status(500).json({ message: err.message });\n  }\n};\n\nexport const getProfile = async (req, res) => {\n  res.json({ message: \"User profile\", user: req.user });\n};\n\nexport const logout = async (req, res) => {\n  res.clearCookie(\"token\", {\n    httpOnly: true,\n    secure: process.env.NODE_ENV === \"production\"\n  });\n  res.json({ message: \"User logged out successfully\" });\n};"
+      },
+      {
+        "id": "auth-middleware-routes-server",
+        "title": "Applying It: Auth Middleware, Routes & Server Wiring",
+        "content": "The `authMiddleware` is where `401` lives for every protected route: no cookie → \"Please login first\"; the token's user no longer exists → \"User no longer exists\"; the token fails `jwt.verify` → \"Invalid or expired token\". Everything else — routing and server startup — is plain wiring around it.",
+        "code": "// middleware/authMiddleware.js\nimport jwt from \"jsonwebtoken\";\nimport User from \"../models/userSchema.js\";\n\nconst authMiddleware = async (req, res, next) => {\n  try {\n    const { token } = req.cookies;\n    if (!token) {\n      return res.status(401).json({ message: \"Please login first\" });\n    }\n\n    const payload = jwt.verify(token, process.env.JWT_SECRET);\n    const user = await User.findById(payload.id);\n    if (!user) {\n      return res.status(401).json({ message: \"User no longer exists\" });\n    }\n\n    req.user = user;\n    next();\n  } catch (err) {\n    res.status(401).json({ message: \"Invalid or expired token\" });\n  }\n};\n\nexport default authMiddleware;\n\n// routes/userRoutes.js\nimport express from \"express\";\nimport { signup, login, logout, getProfile } from \"../controllers/userController.js\";\nimport authMiddleware from \"../middlewares/authMiddleware.js\";\n\nconst userRoutes = express.Router();\n\nuserRoutes.post(\"/signup\", signup);\nuserRoutes.post(\"/login\", login);\nuserRoutes.post(\"/logout\", logout);\nuserRoutes.get(\"/profile\", authMiddleware, getProfile);\n\nexport default userRoutes;\n\n// config/database.js\nimport mongoose from \"mongoose\";\n\nconst connectDB = async () => {\n  if (!process.env.MONGO_URI) {\n    throw new Error(\"MONGO_URI is missing\");\n  }\n  await mongoose.connect(process.env.MONGO_URI);\n  console.log(\"MongoDB connected successfully\");\n};\n\nexport default connectDB;\n\n// index.js\nimport dotenv from \"dotenv\";\ndotenv.config();\n\nimport express from \"express\";\nimport cookieParser from \"cookie-parser\";\nimport connectDB from \"./config/database.js\";\nimport userRoutes from \"./routes/userRoutes.js\";\n\nconst app = express();\napp.use(express.json());\napp.use(cookieParser());\n\napp.get(\"/\", (req, res) => {\n  res.json({ message: \"AI Chat Backend is running\" });\n});\n\napp.use(\"/\", userRoutes);\n\nconst startServer = async () => {\n  try {\n    await connectDB();\n    app.listen(process.env.PORT, () => {\n      console.log(`Server is listening at port ${process.env.PORT}`);\n    });\n  } catch (err) {\n    console.log(\"Server failed to start\");\n    console.log(err.message);\n    process.exit(1);\n  }\n};\n\nstartServer();"
       }
     ],
     "quiz": [
       {
         "question": "What is the main topic of Day 35?",
         "options": [
-          "Error Handling & Validation",
+          "HTTP Status Codes & Auth API Design",
           "HTML tables only",
           "Linux kernel modules",
           "Photoshop layers"
         ],
         "answer": 0,
-        "explanation": "Module 35 focuses on Error Handling & Validation."
+        "explanation": "Module 35 focuses on HTTP Status Codes & Auth API Design."
       },
       {
-        "question": "Which phase includes this module?",
+        "question": "A user is logged in but tries to access an admin-only route. What status code should the backend return?",
         "options": [
-          "Phase 2: Backend Mastery",
-          "Only DevOps",
-          "Only CSS",
-          "Not part of the course"
+          "403 Forbidden",
+          "401 Unauthorized",
+          "404 Not Found",
+          "200 OK"
         ],
         "answer": 0,
-        "explanation": "This module belongs to Phase 2: Backend Mastery."
+        "explanation": "401 means \"not logged in\"; 403 means \"logged in but not allowed\" — exactly this case."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=-OjIF9Zympo",
-    "youtubeTitle": "Error Handling in Express.js — The Ultimate Guide — CodeLucky",
+    "notionUrl": "https://app.notion.com/p/Lecture16-Chatgpt-Project-continue-3aba9af81c98806a9b82db0c37b949d5?source=copy_link",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
