@@ -1515,6 +1515,45 @@ export const pythonLessons = [
     topics: ['Vector databases', 'Index vs database', 'Similarity search', 'Pinecone/Chroma intro', 'Hands-on practicum'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=kl6KZE6kQcQ', 'Vector Databases', 'Pinecone'),
+    sections: [
+      {
+        id: 'vector-databases-cheat-sheet',
+        title: 'Vector Databases — Complete Cheat Sheet',
+        content:
+          "1. **What is a vector database?** — it stores data as numerical vectors called **embeddings** and retrieves the most similar vectors using **similarity search**. It is mainly used for semantic search, RAG, recommendation systems, and image search, where results are found by **meaning** rather than exact keyword matching.\n" +
+          "2. **What is a vector index?** — a data structure that organizes embeddings so the vector database can find similar vectors quickly without comparing the query with every stored vector. Examples include `Flat`, `IVF`, and `HNSW`. The vector database **stores** vectors; the vector index makes **searching** those vectors faster.\n" +
+          "3. **What is a similarity search?** — the process of finding stored vectors that are closest or most similar to a query vector. It compares vectors using metrics such as `cosine similarity`, `Euclidean distance`, or `dot product`. Example: a search for \"How can I recover my account?\" may retrieve \"Steps to reset your password\" because both have similar meaning, even though the words are different.\n" +
+          "4. **Examples of vector databases** (most used across the industry): FAISS, Chroma DB, Pinecone, Milvus, Qdrant, PostgreSQL + pgvector, OpenSearch / AWS OpenSearch, Azure AI Search.\n" +
+          "5. **Types of vector databases (by deployment):** **In-memory** (FAISS, Chroma DB) — fast access, data in RAM. **Local persistent** (FAISS, Chroma, Qdrant, Milvus) — stored on local disk, you manage it. **Vendor-managed SaaS** (Pinecone, Qdrant, Milvus, Weaviate) — the database vendor manages it. **Cloud-provider managed** (Azure AI Search, AWS OpenSearch, Vertex AI Vector Search, BigQuery Vector Search) — AWS, Azure, or GCP manages it.\n" +
+          "6. **Vector similarity search — core types:** **Exact Nearest Neighbor Search** checks the query vector against every stored vector, guaranteeing the true nearest matches — 100% exact, but slower on large datasets, best for small datasets & evaluation (e.g. a `Flat` index). **Approximate Nearest Neighbor Search (ANN)** searches a faster subset (clusters/graph) of the index — approximate with high recall, much faster, best for large-scale production search (e.g. `HNSW`, `IVF`). **Exact search prioritizes accuracy; ANN prioritizes speed and scalability.**\n" +
+          "7. **Vector DB — high-level view:** a vector DB's `INDEX` branches into an **exact match** path (`FLAT`) and an **approximate match** path (`IVF` / `HNSW`, built on techniques like clustering, an inverted file index, or a hierarchical navigable small world graph). Only the index-relevant `data` is stored inside the index: the **actual data**, its **corresponding embedding**, and the original **metadata**.\n" +
+          "8. **ANN search — how it works:** raw data (e.g. three sentences) is converted into embeddings — numeric vectors like `D1 = [1,2,3,4,5,6,7,8,9]`. Each vector, its metadata, and its source file live together behind the index (`FLAT` / `IVF` / `HNSW`). A query is embedded the same way (`Q`), then compared against the stored vectors via `cosine similarity`, `dot product`, or `Euclidean distance` to find the best possible match. An **exact search** compares the query against every vector; an **ANN search** (`IVF` = clustering, `HNSW` = a navigable graph) narrows the search so it doesn't have to iterate over every row.\n" +
+          "9. **End-to-end flow (query → result):** a query like \"ML is future\" is embedded into a vector, ANN search matches it against the stored vectors (actual data + embedded data + metadata) to find the closest match, and that becomes the **context** handed to the LLM.\n" +
+          "10. **Key takeaways:**\n" +
+          "- Vector DB stores embeddings (vectors).\n" +
+          "- Vector index (Flat / IVF / HNSW) makes search fast.\n" +
+          "- Similarity search finds closest vectors by meaning.\n" +
+          "- Exact search = 100% accurate but slower.\n" +
+          "- ANN search = very fast, high recall, scalable.\n" +
+          "- Choose DB type based on deployment & scale needs.",
+        code:
+          "# Toy example: embeddings + cosine similarity\n" +
+          'D1 = [1, 2, 3, 4, 5, 6, 7, 8, 9]      # "AI is future"\n' +
+          'D2 = [2, 2, 6, 9, 5, 10, 13, 14, 15]  # "Use cases in world"\n' +
+          'D3 = [6, 8, 7, 9, 12, 13, 16, 12]     # "System design is imp"\n' +
+          'Q  = [5, 6, 7, 8, 9, 10, 60, 55]      # query: "ML is future"\n\n' +
+          "from numpy import dot\n" +
+          "from numpy.linalg import norm\n\n" +
+          "def cosine_similarity(a, b):\n" +
+          "    return dot(a, b) / (norm(a) * norm(b))\n\n" +
+          "# Exact search: compare Q against every vector (D1, D2, D3, ...)\n" +
+          "# ANN search (IVF/HNSW): only compare Q against the nearest cluster/graph node\n" +
+          "best_match = max([D1, D2, D3], key=lambda d: cosine_similarity(Q, d))",
+        image: '/python-notes/vector-databases-cheat-sheet.jpg',
+        imageAlt:
+          'Vector Databases cheat sheet — 10 sections: what is a vector database, what is a vector index, what is similarity search, examples of vector databases (FAISS, Chroma DB, Pinecone, Milvus, Qdrant, PostgreSQL+pgvector, OpenSearch, Azure AI Search), types of vector databases by deployment (in-memory, local persistent, vendor-managed SaaS, cloud-provider managed), vector similarity search core types (exact nearest neighbor vs ANN) with a comparison table, a Vector DB high-level view diagram (INDEX branching into FLAT exact match and IVF/HNSW approximate match), a detailed ANN search how-it-works diagram (data to embeddings D1/D2/D3, FLAT/IVF/HNSW index, cosine similarity/dot product/Euclidean distance, best possible match), an end-to-end query-to-result flow diagram, and key takeaways.',
+      },
+    ],
   },
   // ── Phase 5: OpenAI & LangChain ──
   {
