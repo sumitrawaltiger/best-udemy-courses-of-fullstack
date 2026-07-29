@@ -254,6 +254,15 @@ export const CHEAT_SHEETS = [
     tags: ['SQL', 'Database', 'Queries'],
   },
   {
+    id: 'sql-intermediate',
+    title: 'SQL Cheat Sheet — Intermediate Level',
+    description:
+      "A 12-section intermediate SQL quick reference by Vishakha Singhal. 1. Filtering Data — WHERE with comparisons, LIKE 'A%' (starts with) / LIKE '%son' (ends with), IN (...) / NOT IN (...) to match or exclude a list, and BETWEEN for date ranges. 2. Aggregate Functions — COUNT(*), COUNT(DISTINCT ...), SUM, AVG, MIN/MAX, GROUP BY, and HAVING to filter aggregated results. 3. JOINs — INNER, LEFT, RIGHT, FULL OUTER, and CROSS JOIN, each with a worked example. 4. Subqueries — IN, NOT IN, EXISTS, and scalar subqueries (a subquery returning a single value used inline, e.g. a per-row order count). 5. Set Operations — UNION (removes duplicates), UNION ALL (keeps duplicates), INTERSECT, and EXCEPT/MINUS. 6. Ordering & Limiting — ORDER BY (ASC/DESC, multi-column), LIMIT, and LIMIT with OFFSET for pagination. 7. Window Functions — ROW_NUMBER(), RANK(), and SUM() OVER (PARTITION BY ... ORDER BY ...) for running totals. 8. Common Table Expressions (CTE) — WITH ... AS (...) to name a subquery and join against it. 9. CASE Statement — conditional columns (e.g. classifying age into Minor/Adult/Senior). 10. Indexes — CREATE INDEX on single columns, with a note that indexes speed up searches but slow down writes. 11. Transactions — START TRANSACTION, UPDATE, and COMMIT for atomic multi-statement changes. 12. Useful Commands — SELECT, DESCRIBE, SHOW TABLES, ALTER TABLE ADD COLUMN, and DROP TABLE.",
+    category: 'sql',
+    image: '/cheatsheets/sql-cheat-sheet-intermediate.jpg',
+    tags: ['SQL', 'Database', 'Joins', 'Window Functions', 'CTE'],
+  },
+  {
     id: 'system-design',
     title: 'System Design Cheat Sheet',
     description:
