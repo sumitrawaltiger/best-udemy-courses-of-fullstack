@@ -983,6 +983,86 @@ export const TS_DAYS = [
       },
     ],
   },
+
+  {
+    day: 18,
+    date: '18 Jan 2027',
+    group: 'types',
+    title: 'Advanced Type System',
+    tagline: 'Mapped Types, Conditional Types, infer, and Template Literal Types — transform, filter, and build types in smarter ways.',
+    image: '/typescript-notes/ep18-advanced-type-system.jpeg',
+    tags: ['Mapped Types', 'Conditional Types', 'infer', 'Template Literal Types'],
+    notes: [
+      { k: 'Mapped Types', v: 'Create a new type by **mapping over the keys** of another type. Syntax: `{ [K in Keys]: Type }`.' },
+      { k: 'Conditional Types', v: 'Choose one type or another based on a **condition**. Syntax: `T extends U ? X : Y`.' },
+      { k: 'infer Keyword', v: 'Extract a type from another type, typically used **inside** conditional types. Syntax: `infer R`.' },
+      { k: 'Template Literal Types', v: 'Create string literal types by combining literal types using **template literals**. Syntax: `` `prefix-${Type}-${Type}` ``.' },
+    ],
+    theory: [
+      {
+        h: '1. Overview',
+        p: 'Advanced type system features allow us to create new types from existing ones using powerful transformations and logic.\n\n- **Mapped Types** — create a new type by mapping over the keys of another type.\n- **Conditional Types** — choose one type or another based on a condition.\n- **infer Keyword** — extract a type from another type, typically used in conditional types.\n- **Template Literal Types** — create string literal types by combining literal types using template literals.',
+      },
+      {
+        h: '2. Mapped Types — transform every property',
+        p: 'A mapped type creates a **new type by mapping over the keys** of another type, using the `{ [K in Keys]: Type }` syntax. Below, every property of `User` becomes `readonly`.',
+        code: 'type User = {\n  id: number;\n  name: string;\n  email: string;\n  age: number;\n};\n\n// Make all properties readonly\ntype ReadonlyUser = {\n  readonly [K in keyof User]: User[K];\n};\n\n// Result:\n// {\n//   readonly id: number;\n//   readonly name: string;\n//   readonly email: string;\n//   readonly age: number;\n// }',
+      },
+      {
+        h: '3. Conditional Types — choose a type based on a condition',
+        p: '`T extends U ? X : Y` picks between two types depending on whether `T` is assignable to `U` — exactly like a ternary, but at the type level. Combined with a **practical example** — extracting the `id` field\'s type out of any shape that has one.',
+        code: 'type IsString<T> =\n  T extends string ? true : false;\n\n// Usage\ntype A = IsString<string>; // true\ntype B = IsString<number>; // false\n\n// Practical Example\ntype ExtractId<T> =\n  T extends { id: infer U } ? U : never;\n\ntype UserId = ExtractId<{ id: number; name: string }>;\n// number',
+      },
+      {
+        h: '4. infer Keyword — extract a type from another type',
+        p: '`infer R` grabs a type out of a larger type **inside** a conditional type — most commonly used to pull out a function\'s return type, or to unwrap a generic wrapper like `Promise<T>`.',
+        code: 'type GetReturnType<T> =\n  T extends (...args: any[]) => infer R ? R : never;\n\nfunction add(a: number, b: number) {\n  return a + b;\n}\n\ntype AddReturnType = GetReturnType<typeof add>;\n// number\n\n// With Promise\ntype UnwrapPromise<T> =\n  T extends Promise<infer U> ? U : T;\n\ntype R = UnwrapPromise<Promise<string>>;\n// string',
+      },
+      {
+        h: '5. Template Literal Types — build string literal types',
+        p: 'Combine literal types using backtick template syntax to generate a whole **union of valid strings** — TypeScript checks every combination for you, and rejects any string outside that union.',
+        code: 'type User = "Alice" | "Bob";\ntype Action = "Create" | "Delete";\n\ntype LogMessage =\n  `${User} has ${Action}d the item`;\n\nlet msg1: LogMessage =\n  "Alice has Created the item"; // ✓\nlet msg2: LogMessage =\n  "Bob has Deleted the item"; // ✓\nlet msg3: LogMessage =\n  "Eve has Created the item"; // ✗\n// Error: "Eve" not in User',
+      },
+      {
+        h: 'Quick comparison',
+        p: '- **Mapped Types** — transforms properties of an existing type. Use case: make all properties readonly, optional, or change their types.\n- **Conditional Types** — chooses a type based on a condition. Use case: return different types based on input type.\n- **infer Keyword** — extracts a type from another type. Use case: get return type, parameter types, element types, etc.\n- **Template Literal Types** — creates string literal types using template strings. Use case: build dynamic string types like URLs, events, or routes.',
+      },
+      {
+        h: 'When to use?',
+        p: '- Use **Mapped Types** to create variations of existing types.\n- Use **Conditional Types** when a type depends on another type.\n- Use **infer** to extract and reuse parts of existing types.\n- Use **Template Literal Types** for strongly typed strings like routes, events, or API endpoints.',
+      },
+      {
+        h: 'Common mistakes',
+        p: '- Not understanding **distribution** in conditional types (conditional types distribute over union types member-by-member).\n- Forgetting to handle `never` in conditional types — the `: never` branch matters, not just the truthy one.\n- **Overusing** complex types, leading to unreadable code.\n- Using template literal types with **non-literal** types (a plain `string` won\'t narrow the way a literal union does).',
+      },
+      {
+        h: 'Quick recap',
+        p: '- **Mapped Types** → Transform keys.\n- **Conditional Types** → Choose based on conditions.\n- **infer** → Extract types.\n- **Template Literals** → Create dynamic string types.\n\n**Interview Q:** What are mapped types? Give an example. How do conditional types work? What does the `infer` keyword do? Give an example of template literal types.\n\nMaster advanced types today, build safer and smarter code tomorrow!',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Mapped Types — make every property readonly',
+        code: 'type User = {\n  id: number;\n  name: string;\n  email: string;\n  age: number;\n};\n\ntype ReadonlyUser = {\n  readonly [K in keyof User]: User[K];\n};',
+        note: 'Maps over every key of User and re-applies it as readonly — no property is manually retyped.',
+      },
+      {
+        label: 'Conditional Types — a type-level ternary',
+        code: 'type IsString<T> = T extends string ? true : false;\n\ntype A = IsString<string>; // true\ntype B = IsString<number>; // false',
+        note: 'T extends U ? X : Y resolves to X or Y depending on whether T is assignable to U.',
+      },
+      {
+        label: 'infer — pull the return type out of a function',
+        code: 'type GetReturnType<T> =\n  T extends (...args: any[]) => infer R ? R : never;\n\nfunction add(a: number, b: number) { return a + b; }\n\ntype AddReturnType = GetReturnType<typeof add>; // number',
+        note: 'infer R captures whatever type sits in that position, so it can be reused on the other side of the conditional.',
+      },
+      {
+        label: 'Template Literal Types — a checked message format',
+        code: 'type User = "Alice" | "Bob";\ntype Action = "Create" | "Delete";\n\ntype LogMessage = `${User} has ${Action}d the item`;\n\nlet msg: LogMessage = "Alice has Created the item"; // ✓\n// let bad: LogMessage = "Eve has Created the item"; // ✗ Error',
+        note: 'TypeScript expands every combination of User × Action into a union and rejects any string outside it.',
+      },
+    ],
+  },
 ];
 
 export function getTsDay(day) {
