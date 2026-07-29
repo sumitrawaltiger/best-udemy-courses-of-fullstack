@@ -1666,6 +1666,45 @@ export const pythonLessons = [
     topics: ['RAG introduction', 'RAG pipeline', 'RAG vs fine-tuning', 'Gemini + LangChain Q&A', 'Production RAG'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=T-D1OfcDW1M', 'RAG Explained', 'IBM Technology'),
+    sections: [
+      {
+        id: 'rag-vs-ai-agents',
+        title: 'RAG vs AI Agents',
+        content:
+          "**Retrieval systems answer questions. Agents take actions.** (AIForLeaders.com)\n\n" +
+          "**RAG — Retrieval-Augmented Generation, \"The Smart Librarian\":** the flow is `Query → Search → Generate → Answer`. A **user query** hits a **vector database**, which feeds a **document retrieval engine**, which an **LLM response generator** turns into the **final answer** — a **grounded response** with **no autonomous planning**.\n" +
+          "- **Best for:** enterprise search, document Q&A, customer support chatbots.\n" +
+          "- **Memory:** context window only.\n" +
+          "- **Autonomy:** reactive.\n\n" +
+          "**AI Agents — \"The Intelligent Operator\", a dynamic autonomous workflow system:** the flow is `Goal → Plan → Use Tool → Evaluate → Repeat`. A **goal** feeds a **reasoning engine**, which works with a **memory module** and **planning module** to drive a **tool usage system** (calling **APIs**, **browser automation**, **task execution**), then **evaluates** the result — looping back to plan again if needed.\n" +
+          "- **Best for:** autonomous research, workflow automation, AI copilots, task execution systems.\n" +
+          "- **Memory:** persistent memory.\n" +
+          "- **Autonomy:** proactive.\n\n" +
+          "**Side-by-side comparison:**\n" +
+          "- **Primary purpose:** RAG retrieves knowledge; an Agent takes actions.\n" +
+          "- **Reasoning:** RAG's is limited; an Agent's is advanced, multi-step.\n" +
+          "- **Memory:** RAG has context-window-only memory; an Agent has persistent memory.\n" +
+          "- **Tool usage:** RAG usually has none; for an Agent, it's a core capability.\n" +
+          "- **Autonomy:** RAG is reactive; an Agent is proactive.\n\n" +
+          "**Key takeaway:** they aren't competitors — RAG grounds an answer in retrieved documents, while an agent plans, calls tools, and acts toward a goal. Production systems increasingly combine both: an agent that reasons and acts, using RAG as one of its tools to retrieve grounded knowledge along the way.",
+        code:
+          "# RAG: Query -> Search -> Generate -> Answer\n" +
+          "def rag_answer(query):\n" +
+          "    docs = vector_db.search(embed(query))       # retrieve\n" +
+          "    return llm.generate(query, context=docs)    # grounded, one-shot answer\n\n" +
+          "# AI Agent: Goal -> Plan -> Use Tool -> Evaluate -> Repeat\n" +
+          "def agent_run(goal):\n" +
+          "    state = {\"goal\": goal, \"memory\": persistent_memory}\n" +
+          "    while not done(state):\n" +
+          "        plan = reasoning_engine.plan(state)      # multi-step reasoning\n" +
+          "        result = tools.call(plan.next_tool)      # APIs, browser, task execution\n" +
+          "        state = evaluate(state, result)          # proactive loop\n" +
+          "    return state[\"final_result\"]",
+        image: '/python-notes/rag-vs-ai-agents.jpg',
+        imageAlt:
+          'RAG vs AI Agents — Retrieval systems answer questions, agents take actions. RAG ("The Smart Librarian"): Query -> Search -> Generate -> Answer, with User query -> Vector database -> Document retrieval engine -> Final answer, an LLM response generator producing a grounded response with no autonomous planning; best for enterprise search, document Q&A, customer support chatbots; memory is context-window only; autonomy is reactive. AI Agents ("The Intelligent Operator", a dynamic autonomous workflow system): Goal -> Plan -> Use Tool -> Evaluate -> Repeat, with a reasoning engine, memory module, and planning module driving a tool usage system (APIs, browser automation, task execution) that feeds into Evaluate and loops back; best for autonomous research, workflow automation, AI copilots, task execution systems; memory is persistent; autonomy is proactive. A 5-row comparison table (Aspect / RAG / Agent): Primary Purpose (retrieve knowledge / take actions), Reasoning (limited / advanced multi-step), Memory (context window only / persistent memory), Tool Usage (usually no / core capability), Autonomy (reactive / proactive).',
+      },
+    ],
   },
   {
     pyDay: 34,
