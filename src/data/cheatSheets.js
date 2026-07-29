@@ -299,6 +299,15 @@ export const CHEAT_SHEETS = [
     tags: ['System Design', 'Failure Modes', 'Resilience', 'Distributed Systems'],
   },
   {
+    id: 'top-20-low-latency-practices',
+    title: 'Top 20 Low Latency Practices Every Engineer Should Know',
+    description:
+      "Twenty proven techniques for shaving latency off a request path, by Tauseef Fayyaz. 1. In-Memory Caching — serve hot data straight from RAM so the common request never reaches the database at all. 2. Database Indexing — an index turns a full table scan into a handful of page reads on the columns you filter by. 3. Connection Pooling — reuse warm connections instead of paying for a TCP and TLS handshake on every single call. 4. Payload Compression — Gzip or Brotli cuts bytes on the wire, and fewer bytes means fewer round trips to fill. 5. CDN Distribution — static assets served from a nearby edge location shave the speed of light off every fetch. 6. HTTP/2 Multiplexing — many streams share one connection, so a slow response no longer blocks everything behind it. 7. Request Batching — fold many small calls into one round trip and pay the network overhead a single time. 8. Async Message Queues — acknowledge immediately and push the slow work to a background worker off the request path. 9. Load Balancing — spread traffic across healthy instances so no single node queues requests behind a backlog. 10. Fewer External Calls — every third-party hop inherits someone else's worst day; cache or drop it from the hot path. 11. Edge Computing — run the logic itself at the edge so dynamic responses never cross an ocean to be built. 12. Efficient Serialization — binary formats like Protobuf encode and parse far faster than text, and ship fewer bytes. 13. Vertical Scaling — more CPU and memory on one box removes queueing delay without adding a network hop. 14. Lazy Loading — load only what is on screen; everything below the fold can wait until the reader scrolls. 15. Client-Side Rendering — ship data once and let the browser redraw locally instead of round-tripping for every view. 16. Prefetching — predict the next click and fetch it early, so the request is already finished when it happens. 17. Read Replicas — send reads to replicas so heavy queries stop competing with writes on the primary. 18. Denormalized Reads — precompute the join at write time so the read path is one lookup instead of five. 19. Hedged Requests — fire a second copy after a short delay and take whichever answer lands first; tail latency drops. 20. Colocate Services — keep chatty services and their data in the same region and zone; distance is pure latency.",
+    category: 'system-design',
+    image: '/cheatsheets/top-20-low-latency-practices.jpg',
+    tags: ['System Design', 'Latency', 'Performance', 'Scalability'],
+  },
+  {
     id: 'networking',
     title: 'Networking Cheat Sheet',
     description:
