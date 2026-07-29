@@ -700,6 +700,30 @@ const DEVOPS_SECTION_MAP = {
         '# panels and alert rules on these queries.',
     },
   ],
+  'Deployment Pipelines': [
+    {
+      id: 'canary-vs-shadow-deployment',
+      title: 'Canary vs Shadow Deployment',
+      content:
+        '**Canary Deployment** — send real users to two versions at once: `90%` of Users/Requests go to **Model v1 (Current)**, `10%` go to **Model v2 (Canary)**. **Typical progression:** `10% → 25% → 50% → 100%`, increasing the canary\'s share as confidence grows. **If issues are detected:** roll back to 100% on v1. **Goal:** validate the new model in production before a full rollout.\n\n' +
+        '**Shadow Deployment** — Users/Requests get their real **response** from **Model v1 (Production)**, while the same request is also sent as a **mirror request** to **Model v2 (Shadow)** in the background — the shadow model never affects what the user sees. Both models\' outputs go to **Logs / Predictions**, which feeds a **Compare Predictions** step. **Goal:** validate the new model on real traffic without impacting users.\n\n' +
+        '**Key difference:** canary deployment lets a small slice of **real traffic actually hit** the new version (so it can affect real users if something goes wrong, but you get real user-facing signal); shadow deployment mirrors traffic to the new version **without ever serving its response** to a real user (zero user-facing risk, but you only get comparison data, not real user reactions).',
+      code:
+        '# Canary: route a shrinking share of traffic to v1, growing share to v2\n' +
+        'if random() < 0.10:\n' +
+        '    response = model_v2.predict(request)   # canary (10%)\n' +
+        'else:\n' +
+        '    response = model_v1.predict(request)   # current (90%)\n' +
+        '# progression: 10% -> 25% -> 50% -> 100%, rollback to v1 on issues\n\n' +
+        '# Shadow: v1 always serves the response, v2 only mirrors + logs\n' +
+        'response = model_v1.predict(request)       # served to the user\n' +
+        'shadow_response = model_v2.predict(request) # mirrored, not served\n' +
+        'log_predictions(response, shadow_response)  # compare later',
+      image: '/devops-notes/canary-vs-shadow-deployment.jpg',
+      imageAlt:
+        'Canary vs Shadow Deployment — side-by-side diagrams. Canary Deployment: Users/Requests split 90% to Model v1 (Current) and 10% to Model v2 (Canary), with a Typical Progression of 10% -> 25% -> 50% -> 100% and a rollback to 100% on v1 if issues are detected; goal is to validate the new model in production before full rollout. Shadow Deployment: Users/Requests get their response from Model v1 (Production) while a mirrored copy of the request also goes to Model v2 (Shadow); both models write to a Logs/Predictions store which feeds a Compare Predictions step; goal is to validate the new model on real traffic without impacting users.',
+    },
+  ],
 };
 
 const LINUX_VIRTUALIZATION_SECTIONS = [
