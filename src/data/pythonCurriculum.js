@@ -1579,6 +1579,36 @@ export const pythonLessons = [
         imageAlt:
           'Vector Databases cheat sheet — 10 sections: what is a vector database, what is a vector index, what is similarity search, examples of vector databases (FAISS, Chroma DB, Pinecone, Milvus, Qdrant, PostgreSQL+pgvector, OpenSearch, Azure AI Search), types of vector databases by deployment (in-memory, local persistent, vendor-managed SaaS, cloud-provider managed), vector similarity search core types (exact nearest neighbor vs ANN) with a comparison table, a Vector DB high-level view diagram (INDEX branching into FLAT exact match and IVF/HNSW approximate match), a detailed ANN search how-it-works diagram (data to embeddings D1/D2/D3, FLAT/IVF/HNSW index, cosine similarity/dot product/Euclidean distance, best possible match), an end-to-end query-to-result flow diagram, and key takeaways.',
       },
+      {
+        id: 'vector-databases-90-seconds',
+        title: 'Learn Vector Databases in 90 Seconds',
+        content:
+          "A fast, practical tour across 12 panels:\n" +
+          "1. **What is a Vector Database?** — a specialized database designed to store, index, and search high-dimensional vectors efficiently. It enables similarity search to find items that are semantically similar, not just exact matches. **Purpose:** store vectors and find the most similar ones fast!\n" +
+          "2. **How it works (high level):** `Data` (text, images, audio, etc.) → an **Embedding Model** converts it to vectors → the **Vector Database** stores & indexes those vectors → a **Query** is converted to a vector the same way → **Results** returns the Top K similar results. Vectors capture meaning — the database finds what's closest in meaning, not just keywords.\n" +
+          "3. **Key characteristics:** high-dimensional vector storage, similarity (semantic) search, Approximate Nearest Neighbor (ANN) for speed, scalable to millions/billions of vectors, support for metadata filtering, optimized indexing structures. Designed for AI/ML, RAG, recommendation, semantic search, and more.\n" +
+          "4. **Vector representation:** data is converted into numeric vectors (embeddings) of a fixed dimension — e.g. a 1536-dimensional vector like `[0.12, -0.34, 0.56, ..., 0.98]`. Closer vectors mean more similar meaning.\n" +
+          "5. **Similarity search:** the goal is to find vectors closest to the query vector, projected here in a 2D vector space to find the Top K results — using distance metrics like `cosine similarity`, `dot product`, or `Euclidean distance`.\n" +
+          "6. **Common indexing techniques (ANN):** `HNSW` (Hierarchical Navigable Small World), `IVF` (Inverted File Index), `PQ` (Product Quantization), `ScaNN` / `DiskANN` / `NSG` — these enable fast search with high accuracy using approximate methods. ANN trades a little accuracy for very high recall at speed.\n" +
+          "7. **Core components:** **Collection / Index** — a logical grouping of vectors. **Vector** — the high-dimensional numeric representation (embedding). **Metadata / Payload** — additional information associated with the vector. **Index** — the data structure that enables fast similarity search.\n" +
+          "8. **Typical workflow:** (1) ingest raw data (text, image, audio, etc.) → (2) generate an embedding using a model (e.g. OpenAI, BGE, Sentence Transformers) → (3) store the embedding + metadata in the vector database → (4) at query time, convert the query to a vector → (5) perform similarity search → (6) return the Top K similar results with metadata.\n" +
+          "9. **Popular vector databases:** **Pinecone** (Managed/Cloud) — serverless, scalable, easy to use. **Weaviate** (Open Source) — hybrid search, modules, GraphQL API. **Milvus** (Open Source) — highly scalable, distributed architecture. **Qdrant** (Open Source) — Rust-based, payload filtering, fast & efficient. **Chroma** (Open Source) — simple, lightweight, great for RAG apps. **Redis Vector** (Managed/Module) — real-time, integrated with the Redis ecosystem.\n" +
+          "10. **Use cases:** semantic search, RAG (Retrieval-Augmented Generation), recommendation systems, image/video similarity search, fraud detection, anomaly detection, code search, personalization.\n" +
+          "11. **Best practices:** choose the right embedding model, normalize vectors (if required), pick the right index for your use case, use metadata filtering to narrow the search, tune recall vs latency, monitor index size and performance, batch upserts and queries for efficiency. **Good embeddings + good index = accurate & fast results.**\n" +
+          "12. **Things to consider:** the curse of dimensionality, storage & memory requirements, index build time, the recall-vs-latency trade-off, model quality impacts results, data updates & re-indexing, cost at scale. **Plan early for scale, quality, and performance.**\n\n" +
+          "**Key takeaway:** vector databases help machines understand meaning and find what is similar, not just what matches — they are the backbone of modern AI-powered applications and intelligent search. **Store vectors. Search meaning. Build smarter applications.** Vectors represent meaning; vector DBs make it searchable at scale — the future is semantic.",
+        code:
+          "# Typical workflow, in pseudocode\n" +
+          "raw_data = load(\"text | image | audio\")                 # 1. Ingest\n" +
+          "embedding = embedding_model.encode(raw_data)             # 2. Generate embedding (OpenAI / BGE / Sentence Transformers)\n" +
+          "vector_db.upsert(id=doc_id, vector=embedding, metadata=meta)  # 3. Store embedding + metadata\n\n" +
+          "query_vector = embedding_model.encode(query_text)        # 4. Convert query to a vector\n" +
+          "results = vector_db.search(query_vector, top_k=5)        # 5. Similarity search (HNSW / IVF / PQ)\n" +
+          "# 6. results -> top K similar items, each with its metadata",
+        image: '/python-notes/vector-databases-90-seconds.jpg',
+        imageAlt:
+          'Learn Vector Databases in 90 Seconds — 12 panels: what is a vector database, how it works at a high level (data to embedding model to vector database to query to results), key characteristics, vector representation (1536-dimensional embedding example), similarity search (query vector vs 2D vector space, cosine/dot product/Euclidean distance), common indexing techniques (HNSW, IVF, PQ, ScaNN, DiskANN, NSG), core components (collection/index, vector, metadata/payload, index), typical workflow (6 steps from ingest to top-K results), a popular vector databases comparison table (Pinecone, Weaviate, Milvus, Qdrant, Chroma, Redis Vector with type and highlights), use cases (semantic search, RAG, recommendations, image/video similarity, fraud detection, anomaly detection, code search, personalization), best practices, things to consider, and a key takeaway that vector databases are the backbone of modern AI-powered applications.',
+      },
     ],
   },
   // ── Phase 5: OpenAI & LangChain ──
