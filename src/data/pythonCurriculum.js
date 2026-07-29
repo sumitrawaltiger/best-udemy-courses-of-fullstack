@@ -470,6 +470,32 @@ const PYTHON_DATA_STRUCTURES_SECTIONS = [
     code: "student = {\"name\": \"Ravi\", \"age\": 25, \"course\": \"Python\"}\nstudent[\"grade\"] = \"A\"        # add\nstudent[\"name\"] = \"Raj\"       # update\n\nprint(student.keys())\nprint(student.values())\nprint(student.items())\n\nstudent.update({\"name\": \"Ashok\"})\nstudent.pop(\"grade\")\nstudent.popitem()\ndel student[\"name\"]\nprint(student)",
   },
   {
+    id: "important-methods-set-dict-list",
+    title: "Important Methods — Set, Dictionary & List",
+    content:
+      "A side-by-side reference of the most useful built-in methods for each collection type:\n\n" +
+      "**Set:** `add()` `pop()` `copy()` `clear()` `union()` `issubset()` `issuperset()` `difference()` `intersection()` `isdisjoint()` `setdiscard()`\n\n" +
+      "**Dictionary:** `get()` `pop()` `copy()` `clear()` `items()` `values()` `update()` `setdefault()` `popitem()` `keys()` `fromkeys()`\n\n" +
+      "**List:** `pop()` `sort()` `copy()` `append()` `insert()` `reverse()` `remove()` `extend()` `index()` `count()` `clear()`\n\n" +
+      "Notice the overlap: `pop()`, `copy()`, and `clear()` exist on all three, but behave differently — a set's `pop()` removes an arbitrary element, a dict's `pop(key)` removes by key, and a list's `pop(index)` removes by position (last item by default).",
+    code:
+      "# Set\n" +
+      "s = {1, 2, 3}\n" +
+      "s.add(4); s.pop(); s.union({5, 6})\n" +
+      "s.issubset({1, 2, 3, 4, 5, 6}); s.difference({2}); s.isdisjoint({9})\n\n" +
+      "# Dictionary\n" +
+      "d = {\"a\": 1, \"b\": 2}\n" +
+      "d.get(\"a\"); d.setdefault(\"c\", 3); d.update({\"a\": 10})\n" +
+      "d.keys(); d.values(); d.items(); d.popitem()\n\n" +
+      "# List\n" +
+      "l = [3, 1, 2]\n" +
+      "l.append(4); l.insert(0, 0); l.sort(); l.reverse()\n" +
+      "l.index(2); l.count(1); l.remove(1); l.extend([5, 6])",
+    image: '/python-notes/important-methods-set-dict-list.jpg',
+    imageAlt:
+      'Important Methods in Python — three columns of built-in methods: Set (add, pop, copy, clear, union, issubset, issuperset, difference, intersection, isdisjoint, setdiscard), Dictionary (get, pop, copy, clear, items, values, update, setdefault, popitem, keys, fromkeys), and List (pop, sort, copy, append, insert, reverse, remove, extend, index, count, clear).',
+  },
+  {
     id: "nested-dictionary",
     title: "Nested Dictionary",
     content: "A dictionary can contain other dictionaries as values — useful for structured records. Access nested values by chaining keys, and loop with nested `for` over `.items()`.",
