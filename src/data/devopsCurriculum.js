@@ -453,6 +453,54 @@ const DEVOPS_SECTION_MAP = {
         'git rebase main                  # reapply commits onto main\n' +
         'git log --oneline --graph        # compact history',
     },
+    {
+      id: 'github-complete-guide',
+      title: 'GitHub — Complete Guide (Basic to Advanced)',
+      content:
+        'A complete, 13-category tour of GitHub from first setup to open-source contribution:\n' +
+        '1. **Initial Setup** — `git config --global user.name "Your Name"`, `git config --global user.email "you@example.com"` to set your identity, `git config --list` to check it.\n' +
+        '2. **Create / Clone Repository** — create a new repo on GitHub, then `git clone <url>` and `cd repo`.\n' +
+        '3. **Basic Workflow** — `git status` (check status), `git add .` / `git add <file>` (stage), `git commit -m "message"` (commit), `git log --oneline --graph --all` (view history), `git push origin main` (push to GitHub).\n' +
+        '4. **Branches — Basics** — `git branch` (list), `git branch <branch-name>` (create), `git checkout <branch-name>` (switch), `git checkout -b <branch-name>` (create & switch), `git branch -d <branch-name>` (delete), `git branch -D <branch-name>` (force delete).\n' +
+        '5. **Branching — Workflow** — create a branch (`git checkout -b feature/login`) → work & commit (`git add .`, `git commit -m "Add login feature"`) → push the branch (`git push -u origin feature/login`) → open a Pull Request on GitHub → after review, merge the PR.\n' +
+        '6. **Merge** — switch to the target branch (e.g. `git checkout main`), merge the feature branch in (`git merge feature/login`); if a conflict occurs, resolve it, then `git add .` and `git commit -m "Resolve merge conflict"`, then `git push origin main`.\n' +
+        '7. **Handling Merge Conflicts** — Git shows the conflicted files → open the file and look for `<<<<<<<`, `=======`, `>>>>>>>` markers → edit & keep the correct changes → `git add <file>` → `git commit -m "Resolved conflict"`.\n' +
+        '8. **Remote Repositories** — `git remote -v` (list remotes), `git remote add origin <url>` (add), `git remote remove origin` (remove), `git fetch origin` (fetch latest), `git pull origin main` (pull latest changes).\n' +
+        '9. **Advanced Branching** — `git switch <branch>` / `git switch -c <branch>` (new way to switch / create & switch), `git merge --no-ff <branch>` (merge with a commit), `git rebase <branch>` (rebase current branch), `git cherry-pick <commit-hash>` (apply a specific commit), `git stash` / `git stash pop` / `git stash list` (save, apply, and list stashed changes).\n' +
+        '10. **Undo / Revert** — `git restore <file>` (discard working-dir changes), `git restore --staged <file>` (unstage), `git reset --soft HEAD~1` (undo last commit, keep changes), `git reset --mixed HEAD~1` (undo commit, unstage changes), `git reset --hard HEAD~1` (undo commit, discard changes), `git revert <commit-hash>` (safe revert).\n' +
+        '11. **Tagging** — `git tag` (list), `git tag <tag-name>` (create), `git tag -a <tag-name> -m "message"` (annotated tag), `git push origin <tag-name>` (push one tag), `git push origin --tags` (push all tags).\n' +
+        '12. **Fork & Contribute (Open Source)** — fork the repo on GitHub → clone your fork (`git clone <your-fork-url>`) → create a branch (`git checkout -b feature/your-feature`) → commit & push (`git push -u origin feature/your-feature`) → open a Pull Request.\n' +
+        '13. **Useful Extras** — `.gitignore` (ignore unwanted files), `README.md` (project info), `git log --stat` (detailed changes), `git log --pretty` (history of a file), `git diff` (see changes), `git blame <file>` (see who changed each line).\n\n' +
+        '**Pro Tips:** always pull before you push; commit small & meaningful changes; write clear commit messages; use branches for new features; keep your main branch clean.',
+      code:
+        '# Initial setup\n' +
+        'git config --global user.name "Your Name"\n' +
+        'git config --global user.email "you@example.com"\n\n' +
+        '# Common commands quick view\n' +
+        'git status                          # Check status\n' +
+        'git add .                           # Stage changes\n' +
+        'git commit -m "message"             # Commit\n' +
+        'git push origin main                # Push\n' +
+        'git pull                            # Pull\n' +
+        'git branch                          # List branches\n' +
+        'git checkout <branch>               # Switch branch\n' +
+        'git checkout -b <branch>            # Create & switch\n' +
+        'git merge <branch>                  # Merge branch\n' +
+        'git log --oneline --graph --all     # History\n' +
+        'git tag <tag>                        # Create tag\n\n' +
+        '# Advanced branching\n' +
+        'git switch -c feature/login          # Create & switch (new syntax)\n' +
+        'git rebase main                      # Rebase current branch\n' +
+        'git cherry-pick <commit-hash>        # Apply specific commit\n' +
+        'git stash && git stash pop           # Shelve, then reapply work-in-progress\n\n' +
+        '# Undo / revert\n' +
+        'git restore <file>                   # Discard working-dir changes\n' +
+        'git reset --soft HEAD~1              # Undo last commit, keep changes\n' +
+        'git revert <commit-hash>             # Safe revert (new commit)',
+      image: '/devops-notes/github-complete-guide.jpg',
+      imageAlt:
+        'GitHub — Complete Guide (Basic to Advanced) — a 13-category cheat sheet: Initial Setup, Create/Clone Repository, Basic Workflow, Branches Basics, Branching Workflow (create, commit, push, PR, merge), Merge & conflict resolution, Handling Merge Conflicts, Remote Repositories, Advanced Branching (switch, rebase, cherry-pick, stash), Undo/Revert (restore, reset, revert), Tagging, Fork & Contribute for open source, and Useful Extras (.gitignore, README, log, diff, blame) — plus a Common Commands Quick View box and Pro Tips.',
+    },
   ],
   'Jenkins Setup & Interface': [
     {
