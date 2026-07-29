@@ -6,7 +6,7 @@ export default function DevopsHero({ children, actions }) {
     <div className="devops-hero-block">
       <span className="devops-level-badge">
         <span className="devops-level-icon" aria-hidden="true">⚙️</span>
-        Phase 5 · DevOps Stack
+        Phase 4 · DevOps Stack
       </span>
 
       <h1 className="devops-title">

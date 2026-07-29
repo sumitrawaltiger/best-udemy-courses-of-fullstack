@@ -6,8 +6,8 @@ const learntToday = [
   { title: 'Portfolio proof', text: 'one recorded demo + README + golden suite is stronger than a long unfinished course log' },
   { title: 'Trust is product', text: 'privacy, allowlists, and honest degrade modes are how users stay' },
   { title: 'Measure to improve', text: 'north star + guardrails keep shipping from becoming roulette' },
-  { title: 'Five stacks, one plan', text: 'Agentic AI → TypeScript → Java → Python → DevOps — Phase 1 of 5 is done' },
-  { title: 'Tomorrow: Day 156', text: 'the TypeScript Stack begins — same daily rhythm, new language and ecosystem' },
+  { title: 'Four stacks, one plan', text: 'Python Stack → TypeScript → Java → DevOps — the Agentic AI leg of Phase 1 is done, 365 Python days remain' },
+  { title: 'Tomorrow: Day 156', text: 'the Python Stack continues — core Python & FastAPI, same daily rhythm' },
 ];
 
 const core = [
@@ -22,9 +22,9 @@ const core = [
     code: 'loop · rag · ops\nedge · learn',
   },
   {
-    icon: '🚀', title: 'Up Next: TypeScript Stack', titleClass: 'card-title-amber', subtitle: '365 Days',
-    description: 'JavaScript → TypeScript → React → Next.js → React Native → Express/Node, one calendar year, starting Day 156.',
-    code: 'js · ts · react\nnext · rn · express',
+    icon: '🐍', title: 'Up Next: Core Python & FastAPI', titleClass: 'card-title-amber', subtitle: '365 Days',
+    description: 'The Python Stack continues — core syntax, OOP, DB connectivity, then FastAPI — one more calendar year, starting Day 156.',
+    code: 'python · oop\ndb · fastapi',
   },
 ];
 
@@ -40,26 +40,26 @@ const practice = [
     code: 'post once\nhigh leverage',
   },
   {
-    icon: '🔜', title: 'Preview: Episode 1', titleClass: 'card-title-amber', subtitle: 'TypeScript',
-    description: 'Skim the first illustrated TypeScript episode before Day 156 — installing the compiler.',
-    link: { href: '/typescript/day/1', label: 'Open Episode 1 →' },
+    icon: '🔜', title: 'Preview: Python Modules', titleClass: 'card-title-amber', subtitle: 'Python',
+    description: 'Skim the next Python modules before Day 156 — core syntax and OOP pick up right where Agentic AI leaves off.',
+    link: { href: '/python', label: 'Open Python track →' },
   },
 ];
 
 const resources = [
   {
-    icon: '🚀', title: 'TypeScript Stack', titleClass: 'card-title-cyan', subtitle: 'Next Stack',
-    description: 'The illustrated TypeScript series — where Day 156 of the 5-stack plan picks up.',
-    link: { href: '/typescript', label: 'Open TypeScript series →' },
-  },
-  {
-    icon: '📘', title: 'Python Track', titleClass: 'card-title-purple', subtitle: 'Reference',
-    description: 'The full Gen AI + Agentic curriculum this journal was grounded in — keep it as a reference.',
+    icon: '📘', title: 'Python Track', titleClass: 'card-title-cyan', subtitle: 'Tomorrow',
+    description: 'The full Gen AI + Agentic curriculum this journal was grounded in — Days 156-520 continue here as core Python & FastAPI.',
     link: { href: '/python', label: 'Open Python track →' },
   },
   {
-    icon: '🗺️', title: '5-Stack Roadmap', titleClass: 'card-title-amber', subtitle: 'Big Picture',
-    description: 'See where Agentic AI fits in the full 1,616-day plan, and what the next four stacks cover.',
+    icon: '🔷', title: 'TypeScript Stack', titleClass: 'card-title-purple', subtitle: 'Later — Day 521',
+    description: 'The illustrated TypeScript series — where Phase 2 picks up once the full Python Stack wraps at Day 520.',
+    link: { href: '/typescript', label: 'Open TypeScript series →' },
+  },
+  {
+    icon: '🗺️', title: '4-Stack Roadmap', titleClass: 'card-title-amber', subtitle: 'Big Picture',
+    description: 'See where the Python Stack fits in the full 1,616-day plan, and what the next three stacks cover.',
     link: { href: '/roadmap', label: 'Open the roadmap →' },
   },
 ];
@@ -71,7 +71,7 @@ export default function AgenticDay155() {
       series="Agentic AI"
       dateLabel="Agentic AI Day 155 · 31 Dec 2026"
       prev={{ href: '/agentic-day-154', label: '← Day 154' }}
-      next={{ href: '/typescript', label: 'TypeScript Stack →' }}
+      next={{ href: '/python', label: 'Python Stack Continues →' }}
       tags={['Agentic AI', 'Finale', 'Phase 21']}
       theme="AGENTIC AI SERIES FINALE"
       heroIcon="🏁"
@@ -80,7 +80,8 @@ export default function AgenticDay155() {
       summary={
         <>
           Day 155 is the <strong>last Agentic AI day</strong> — 155 days, capstone shipped, retro written. Tag your
-          repo, share the journey once, then turn the page: the <strong>TypeScript Stack</strong> starts tomorrow.
+          repo, share the journey once — the <strong>Python Stack itself keeps going</strong>, rolling into core
+          Python &amp; FastAPI for another 365 days before TypeScript picks up at Day 521.
         </>
       }
       learntToday={learntToday}

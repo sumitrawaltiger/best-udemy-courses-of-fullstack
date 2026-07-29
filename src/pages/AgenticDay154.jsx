@@ -7,7 +7,7 @@ const learntToday = [
   { title: 'Case study > changelog', text: 'problem → approach → safety → result tells a story a commit list never will' },
   { title: 'Prune the portfolio', text: '3 strong, polished projects beat 20 half-finished ones' },
   { title: 'Handoff to future you', text: 'write down the "why" behind decisions — you will forget the context in 3 months' },
-  { title: 'One day left', text: 'tomorrow the Agentic AI journal closes for good, and the TypeScript Stack begins' },
+  { title: 'One day left', text: 'tomorrow the Agentic AI journal closes for good — the Python Stack itself continues into core Python & FastAPI' },
 ];
 
 const core = [
@@ -31,7 +31,7 @@ const core = [
 const practice = [
   {
     icon: '✍️', title: 'Write Your Retro', titleClass: 'card-title-cyan', subtitle: 'Reflect',
-    description: 'One page: 5 things to keep, 3 to drop, 1 to try in the TypeScript Stack. Be specific, not generic.',
+    description: 'One page: 5 things to keep, 3 to drop, 1 to try as the Python Stack continues. Be specific, not generic.',
     code: '5 keep · 3 drop\n1 try',
   },
   {
@@ -41,7 +41,7 @@ const practice = [
   },
   {
     icon: '🔜', title: 'Next: Finale', titleClass: 'card-title-amber', subtitle: 'Day 155',
-    description: 'Tomorrow — the Agentic AI series finale, then straight into the TypeScript Stack.',
+    description: 'Tomorrow — the Agentic AI series finale, then the Python Stack rolls on into core Python & FastAPI.',
     link: { href: '/agentic-day-155', label: 'Go to Day 155 →' },
   },
 ];

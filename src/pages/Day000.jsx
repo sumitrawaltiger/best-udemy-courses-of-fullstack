@@ -33,7 +33,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 1,616-day plan — 5 sequential stacks: Agentic AI using Python, then the TypeScript Stack (JavaScript, TypeScript, React, Next.js, React Native, Express/Node), the Java Stack (J2SE through Microservices), the Python Stack (Python, FastAPI), and the DevOps Stack (DevOps, AWS Cloud)',
+    text: 'reviewed the full 1,616-day plan — 4 sequential stacks: the Python Stack (Agentic AI using Python, then core Python and FastAPI), the TypeScript Stack (JavaScript, TypeScript, React, Next.js, React Native, Express/Node), the Java Stack (J2SE through Microservices), and the DevOps Stack (DevOps, AWS Cloud)',
   },
   {
     title: 'Ready for Phase 1',
@@ -95,7 +95,7 @@ const ACCOUNTS = [
     titleClass: 'card-title-purple',
     subtitle: 'Code Home',
     description:
-      'Create a GitHub account and your first repo. Every project, from Phase 1 (Agentic AI) to Phase 5 (DevOps Stack), gets committed and pushed here.',
+      'Create a GitHub account and your first repo. Every project, from Phase 1 (Agentic AI & Python) to Phase 4 (DevOps Stack), gets committed and pushed here.',
     link: { href: 'https://github.com', label: 'Create GitHub account →', external: true },
   },
   {
@@ -132,9 +132,9 @@ const STUDY_SYSTEM = [
     icon: '🗺️',
     title: 'The 1616-Day Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '5 stacks · ~1 year each',
+    subtitle: '4 stacks · ~1 year each',
     description:
-      '5 sequential stacks — Agentic AI using Python, the TypeScript Stack (JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS), the Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices), the Python Stack (Python, FastAPI), and the DevOps Stack (DevOps, AWS Cloud) — with DSA & System Design practiced throughout every stack. Know the whole map before step one.',
+      '4 sequential stacks — the Python Stack (Agentic AI using Python, then core Python and FastAPI), the TypeScript Stack (JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS), the Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices), and the DevOps Stack (DevOps, AWS Cloud) — with DSA & System Design practiced throughout every stack. Know the whole map before step one.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {

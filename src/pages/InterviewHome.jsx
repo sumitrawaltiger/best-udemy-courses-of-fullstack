@@ -72,10 +72,10 @@ export default function InterviewHome() {
         <section className="roadmap">
           <h2>DSA &amp; System Design — Every Phase</h2>
           <p className="section-desc">
-            Across the <strong>5-stack, 1,616-day</strong> roadmap, <strong>DSA</strong> and{' '}
+            Across the <strong>4-stack, 1,616-day</strong> roadmap, <strong>DSA</strong> and{' '}
             <strong>System Design</strong> are practiced <strong>in each stack’s language</strong> — not saved
-            for one dedicated block: <strong>Python</strong> (Agentic AI), then <strong>JavaScript /
-            TypeScript</strong>, then <strong>Java</strong>, then <strong>Python</strong> again, then{' '}
+            for one dedicated block: <strong>Python</strong> (Agentic AI, then core Python), then{' '}
+            <strong>JavaScript / TypeScript</strong>, then <strong>Java</strong>, then{' '}
             <strong>DevOps</strong>.{' '}
             {interviewChapters.length} modules on this track support every stack.
           </p>

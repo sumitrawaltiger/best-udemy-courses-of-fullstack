@@ -35,12 +35,15 @@ import JourneyCountdown from '../components/JourneyCountdown';
 const BTECH_ROADMAP = [
   {
     year: 'Phase 1',
-    theme: 'Agentic AI using Python',
-    icon: '🤖',
+    theme: 'Python Stack',
+    icon: '🐍',
     accent: 'y1',
-    topics: ['LangChain', 'LangGraph', 'MCP', 'n8n Workflows'],
-    blurb: 'The current focus — building AI agents in Python. First of five stacks.',
-    links: [{ label: 'Agentic AI', to: '/python' }],
+    topics: ['LangChain', 'LangGraph', 'MCP', 'n8n Workflows', 'Core Python', 'FastAPI'],
+    blurb: 'The current focus — starts with building AI agents in Python, then continues into core Python and FastAPI. First of four stacks.',
+    links: [
+      { label: 'Agentic AI', to: '/python' },
+      { label: 'Python & FastAPI', to: '/python' },
+    ],
   },
   {
     year: 'Phase 2',
@@ -67,15 +70,6 @@ const BTECH_ROADMAP = [
   },
   {
     year: 'Phase 4',
-    theme: 'Python Stack',
-    icon: '🐍',
-    accent: 'y4',
-    topics: ['Core Syntax', 'OOP', 'File Handling', 'DB Connectivity', 'FastAPI'],
-    blurb: 'The Python language and modern async APIs, from fundamentals to production deployment.',
-    links: [{ label: 'Python Stack', to: '/python' }],
-  },
-  {
-    year: 'Phase 5',
     theme: 'DevOps Stack',
     icon: '🚀',
     accent: 'y5',
@@ -110,17 +104,18 @@ export default function Home() {
               <span className="fle-hl">DevOps</span>
             </h1>
             <p className="fle-sub">
-              A structured <strong>1,616-day journey</strong> — <strong>5 sequential stacks</strong>:
-              Agentic AI using Python, the TypeScript Stack (JavaScript, TypeScript, React, Next.js, React
-              Native, Express/Node), the Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices), the Python
-              Stack (Python, FastAPI), and the DevOps Stack (DevOps, AWS Cloud). Data Structures &amp; System
-              Design practiced throughout. Learn by building, front to back, one day at a time.
+              A structured <strong>1,616-day journey</strong> — <strong>4 sequential stacks</strong>: the
+              Python Stack (Agentic AI using Python, then core Python and FastAPI), the TypeScript Stack
+              (JavaScript, TypeScript, React, Next.js, React Native, Express/Node), the Java Stack (J2SE,
+              J2EE, JPA, Spring Boot, Microservices), and the DevOps Stack (DevOps, AWS Cloud). Data
+              Structures &amp; System Design practiced throughout. Learn by building, front to back, one day
+              at a time.
             </p>
 
             <div className="fle-pills">
               <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,616 Days of Code</span>
-              <span className="fle-pill"><span aria-hidden="true">🧠</span> 5 Sequential Stacks</span>
-              <span className="fle-pill"><span aria-hidden="true">🚀</span> Agentic AI → TypeScript → Java → Python → DevOps</span>
+              <span className="fle-pill"><span aria-hidden="true">🧠</span> 4 Sequential Stacks</span>
+              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python (Agentic AI) → TypeScript → Java → DevOps</span>
               <span className="fle-pill"><span aria-hidden="true">📐</span> DSA &amp; System Design Throughout</span>
             </div>
 
@@ -167,8 +162,8 @@ export default function Home() {
           <span className="btech-badge">The Roadmap</span>
           <h2 className="btech-title">The 1,616-Day Learning Path</h2>
           <p className="btech-sub">
-            A structured path to a full lifecycle engineer — <strong>5 sequential stacks</strong>:{' '}
-            <strong>Agentic AI using Python → TypeScript Stack → Java Stack → Python Stack → DevOps
+            A structured path to a full lifecycle engineer — <strong>4 sequential stacks</strong>:{' '}
+            <strong>Python Stack (Agentic AI → Python → FastAPI) → TypeScript Stack → Java Stack → DevOps
             Stack</strong> — <strong>1,616 days</strong> total. Each stack bundles several tracks on this
             site. Data Structures &amp; System Design are practiced throughout every stack, not saved for a
             separate finale.
@@ -365,12 +360,12 @@ export default function Home() {
       <section className="thunder-plus-section thunder-python-section" id="thunder-python">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-python">
-            Phases 1 &amp; 4 · Agentic AI + Python Stack
+            Phase 1 · Agentic AI + Python Stack
           </span>
           <h2>Thunder++ — Python &amp; Django</h2>
           <p className="section-desc">
-            Agentic AI using Python comes first (Phase 1); core Python
-            study, Django, and FastAPI make up the Python Stack (Phase 4), at{' '}
+            Agentic AI using Python comes first, then core Python
+            study, Django, and FastAPI continue the same Phase 1 Python Stack, at{' '}
             <a href={PYTHON_META.portalUrl} target="_blank" rel="noopener noreferrer">
               {PYTHON_META.institute}
             </a>
@@ -443,7 +438,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-aws-section" id="thunder-aws">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-aws">
-            Phase 5 · DevOps Stack
+            Phase 4 · DevOps Stack
           </span>
           <h2>Thunder++ — 100 Days of AWS Cloud</h2>
           <p className="section-desc">
@@ -486,7 +481,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-devops-section" id="thunder-devops">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-devops">
-            Phase 5 · DevOps Stack
+            Phase 4 · DevOps Stack
           </span>
           <h2>Thunder++ — DevOps &amp; CI/CD</h2>
           <p className="section-desc">
@@ -529,7 +524,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-k8s-section" id="thunder-k8s">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-k8s">
-            Phase 5 · DevOps Stack
+            Phase 4 · DevOps Stack
           </span>
           <h2>Thunder++ — Kubernetes</h2>
           <p className="section-desc">
@@ -665,21 +660,22 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            1,616 days · 5 stacks
+            1,616 days · 4 stacks
           </span>
           <h2>Thunder++ — The Full Journey</h2>
           <p className="section-desc">
-            <strong>5 sequential stacks</strong> — <strong>Agentic AI using Python</strong>,{' '}
+            <strong>4 sequential stacks</strong> — <strong>Python Stack (Agentic AI using Python, then Python
+            &amp; FastAPI)</strong>,{' '}
             <strong>TypeScript Stack (JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS)</strong>,{' '}
-            <strong>Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices)</strong>,{' '}
-            <strong>Python Stack (Python, FastAPI)</strong>, and <strong>DevOps Stack (DevOps, AWS Cloud)</strong> —
+            <strong>Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices)</strong>, and{' '}
+            <strong>DevOps Stack (DevOps, AWS Cloud)</strong> —
             with <strong>DSA &amp; System Design</strong> practiced throughout every stack, not saved for one
             dedicated block. That’s <strong>1,616 days</strong> of focused study, front to back.
           </p>
           <div className="thunder-plus-highlights">
             <span>🤖 Agentic AI First</span>
-            <span>⌨️ 5 Sequential Stacks</span>
-            <span>☁️ TS → Java → Python → DevOps</span>
+            <span>⌨️ 4 Sequential Stacks</span>
+            <span>☁️ TypeScript → Java → DevOps</span>
             <span>📐 DSA &amp; System Design Throughout</span>
           </div>
           <div className="thunder-plus-actions">

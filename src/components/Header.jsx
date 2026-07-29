@@ -170,7 +170,7 @@ export default function Header({ onSearch }) {
                     ? 'React & Next.js by ChaiCode'
                     : track === 'genai'
                       ? 'Agentic AI in JavaScript'
-                      : 'Agentic AI → TypeScript → Java → Python → DevOps';
+                      : 'Python (Agentic AI) → TypeScript → Java → DevOps';
 
   const searchPlaceholder =
     track === 'mobile'
