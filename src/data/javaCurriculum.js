@@ -267,6 +267,60 @@ const MICROSERVICES_DESIGN_SECTIONS = [
   },
 ];
 
+// "8 Microservices Mistakes Killing Your Apps" — distilled from Anton
+// Martyniuk's antondevtips.com PDF (public/java-notes/8-microservices-mistakes.pdf).
+// Each mistake follows a Problem → Solution → Why-it-matters shape.
+const MICROSERVICES_MISTAKES_SECTIONS = [
+  {
+    id: 'mistake-01-synchronous-chains',
+    title: '1. Synchronous Requests Between Services',
+    content:
+      "**❌ Problem:** calling Service A → B → C → D in a chain for every request.\n\n**✅ Solution:** use async messaging (RabbitMQ, Kafka) for non-critical flows. Reserve HTTP calls for truly real-time needs.\n\n**Why it matters:** one slow service freezes the whole request. Your total timeout becomes the **sum of every service in the chain**.",
+  },
+  {
+    id: 'mistake-02-shared-database',
+    title: '2. Shared Database Between Services',
+    content:
+      "**❌ Problem:** multiple services reading and writing the same database tables.\n\n**✅ Solution:** give each service its own database. Communicate through APIs or events, not shared tables.\n\n**Why it matters:** this is the **#1 sign** you have a distributed monolith, not microservices. You lose independent deployability without even realizing it.",
+  },
+  {
+    id: 'mistake-03-no-api-gateway',
+    title: '3. No API Gateway',
+    content:
+      "**❌ Problem:** clients calling each service directly by URL.\n\n**✅ Solution:** add an API Gateway (YARP, Ocelot, AWS API Gateway) as the single entry point.\n\n**Why it matters:** without a gateway, every service handles auth, rate limiting, and SSL on its own — you repeat the same code everywhere.",
+  },
+  {
+    id: 'mistake-04-missing-circuit-breaker',
+    title: '4. Missing Circuit Breaker',
+    content:
+      "**❌ Problem:** no fallback when a downstream service goes down.\n\n**✅ Solution:** add circuit breakers, retries, and timeouts on all outbound calls (e.g. Polly in .NET, Resilience4j in Java).\n\n**Why it matters:** one unhealthy service cascades into a full system outage. A circuit breaker stops the failure from spreading to the rest of your system.",
+  },
+  {
+    id: 'mistake-05-no-distributed-tracing',
+    title: '5. No Distributed Tracing',
+    content:
+      "**❌ Problem:** each service logs in isolation, with no way to connect the dots.\n\n**✅ Solution:** add OpenTelemetry and send traces to Jaeger, Zipkin, or your cloud provider.\n\n**Why it matters:** when a bug spans 5 services, you need **one trace ID** to follow the full request path. Without it, debugging is pure guesswork.",
+  },
+  {
+    id: 'mistake-06-ignoring-eventual-consistency',
+    title: '6. Ignoring Eventual Consistency',
+    content:
+      "**❌ Problem:** expecting immediate data consistency across services, just like in a monolith.\n\n**✅ Solution:** design for eventual consistency. Use the **Outbox Pattern** to safely publish events after database writes.\n\n**Why it matters:** microservices are distributed by nature. Forcing strong consistency creates hidden data conflicts and broken business logic under load.",
+  },
+  {
+    id: 'mistake-07-hardcoded-service-urls',
+    title: '7. Hardcoded Service URLs',
+    content:
+      "**❌ Problem:** services calling each other with hardcoded IPs or URLs in config files.\n\n**✅ Solution:** use service discovery (Consul, Kubernetes DNS, .NET Aspire, Eureka) so services find each other dynamically.\n\n**Why it matters:** one redeploy or IP change breaks everything. Service discovery removes this fragile hidden dependency entirely.",
+  },
+  {
+    id: 'mistake-08-no-idempotent-consumers',
+    title: '8. No Idempotent Message Consumers',
+    content:
+      "**❌ Problem:** processing messages from a queue with no duplicate checks.\n\n**✅ Solution:** store a processed message ID before handling. Skip duplicates on retry.\n\n**Why it matters:** message brokers guarantee **at-least-once delivery**. Without idempotency, retries silently create duplicate orders, payments, or database records.",
+  },
+];
+
 // The classic Netflix OSS microservices stack — distilled from "Mastery in
 // Microservices" (public/java-notes/mastery-in-microservices.pdf). Complements
 // MICROSERVICES_DESIGN_SECTIONS (patterns/theory) and the modern Spring Cloud
@@ -2250,7 +2304,7 @@ function buildLessons() {
       if (title === 'Microservices Architecture') {
         lesson.pdfUrl = '/java-microservices-slides.pdf';
         lesson.pdfLabel = 'Microservices Slides (PDF)';
-        lesson.sections = [...MICROSERVICES_DESIGN_SECTIONS, ...MICROSERVICES_CLASSIC_STACK_SECTIONS];
+        lesson.sections = [...MICROSERVICES_DESIGN_SECTIONS, ...MICROSERVICES_CLASSIC_STACK_SECTIONS, ...MICROSERVICES_MISTAKES_SECTIONS];
         lesson.topics = [
           'Architecture evolution: monolith → microservices',
           'When (and when not) to use microservices',
@@ -2266,6 +2320,7 @@ function buildLessons() {
           'Containers, Kubernetes, CI/CD & GitOps',
           'Resilience & observability',
           'Classic stack: Zuul, Ribbon, Hystrix, Spring Cloud Bus',
+          '8 common microservices mistakes to avoid',
         ];
         lesson.extraLinks = [
           {
@@ -2281,6 +2336,11 @@ function buildLessons() {
           {
             label: 'Spring Boot Microservices Handbook (PDF)',
             href: '/java-notes/spring-boot-microservices-handbook.pdf',
+            icon: '📄',
+          },
+          {
+            label: '8 Microservices Mistakes Killing Your Apps (PDF)',
+            href: '/java-notes/8-microservices-mistakes.pdf',
             icon: '📄',
           },
         ];
