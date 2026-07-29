@@ -2054,6 +2054,24 @@ export const pythonLessons = [
           "**MCP** is a standard for connecting models to **tools and context** (filesystem, browser, DB, custom APIs).\n\nCore pieces:\n\n- **Host / client** — the app or agent runtime that talks MCP.\n- **Server** — exposes tools and resources over the protocol.\n- **Tools** — callable actions with schemas.\n- **Resources / prompts** — readable context the model can pull in.\n\nWhy it matters: tool wiring becomes **portable** across editors and agent frameworks instead of one-off glue per product.",
       },
       {
+        id: 'mcp-vs-api',
+        title: 'MCP vs API — Different by Design, Powerful Together',
+        content:
+          "MCP and APIs solve **different problems**. Comparing them aspect by aspect:\n\n" +
+          "- **What it is:** MCP is a protocol that provides context and capabilities to AI models. An API is a set of rules that allows applications to communicate and exchange data.\n" +
+          "- **Who it's for:** MCP is for AI models, LLMs, and AI-powered applications. APIs are for applications, systems, mobile apps, web apps, and developers.\n" +
+          "- **Purpose:** MCP provides context, tools, and data to help AI models understand and act. APIs enable communication between systems to perform operations (CRUD, auth, transactions, etc.).\n" +
+          "- **What it enables:** MCP enables context sharing, tool discovery, prompting, and capability negotiation. APIs enable data exchange, functionality access, and integration between systems.\n" +
+          "- **How it works:** MCP is dynamic, context-aware, semantic communication. APIs are request/response based on endpoints (REST, GraphQL, SOAP, etc.).\n" +
+          "- **Use cases:** MCP powers AI copilots, intelligent agents, LLM plugins, and AI workflows. APIs power mobile apps, web apps, SaaS platforms, integrations, and third-party services.\n" +
+          "- **Relationship:** MCP complements API by bringing context and intelligence — **APIs provide the actions, MCP provides the understanding.**\n\n" +
+          "**In short:** APIs power applications. MCP powers intelligence. The future is not MCP vs API — it's **MCP + API**.\n\n" +
+          "With the rise of AI, a new standard is emerging: Model Context Protocol (MCP). While APIs have been the backbone of integrations for decades, MCP is designed to bring context, tools, and intelligence to AI models. Both solve different problems — but when combined, they unlock the real potential: applications that are not just connected, but also context-aware and intelligent.",
+        image: '/python-notes/mcp-vs-api.jpg',
+        imageAlt:
+          "MCP vs API — Different by Design, Powerful Together. A 7-row comparison table across What it is, Who it's for, Purpose, What it enables, How it works, Use cases, and Relationship: MCP (a protocol that provides context and capabilities to AI models, for AI models/LLMs/AI-powered apps, enabling context sharing/tool discovery/prompting/capability negotiation via dynamic context-aware semantic communication, powering AI copilots/intelligent agents/LLM plugins/AI workflows, complementing API by bringing context and intelligence) versus API (a set of rules allowing applications to communicate and exchange data, for applications/systems/mobile apps/web apps/developers, enabling data exchange/functionality access/integration via request-response endpoints like REST/GraphQL/SOAP, powering mobile apps/web apps/SaaS platforms/integrations/third-party services, providing the actions while MCP provides the understanding). Concludes: APIs power applications, MCP powers intelligence — the future is MCP + API, not MCP vs API.",
+      },
+      {
         id: 'mcp-with-langchain',
         title: 'MCP Servers with LangChain / LangGraph',
         content:
