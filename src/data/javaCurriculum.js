@@ -1408,6 +1408,60 @@ const SPRING_DATA_JPA_SECTIONS = [
       "**PostgreSQL** is a powerful **object-relational** database (ORDBMS). It's popular for its **SQL compliance, extensibility, performance, strong community, and data integrity**.\n\n**Why PostgreSQL over H2** for real projects: better **scalability, durability, a richer feature set, and a mature ecosystem/tooling**. H2 (in-memory) is great for quick tests, but production microservices want a persistent, robust store — and each microservice owns **its own** database (database-per-service).",
   },
   {
+    id: 'transactional-aop-how-it-works',
+    title: '@Transactional in Spring Boot — How It Works Using AOP',
+    content:
+      "`@Transactional` is implemented using Spring **AOP (Aspect-Oriented Programming)**. It creates a **proxy** around the target bean and manages database transactions before, after, or when an exception occurs.\n\n" +
+      "**How it works (AOP behind the scenes) — 5 steps:**\n" +
+      "1. **Client Call** — the client calls a method on the Spring Bean.\n" +
+      "2. **Proxy Intercepts** — Spring creates a proxy (a JDK dynamic proxy or a CGLIB proxy).\n" +
+      "3. **Transaction Starts** — the `@Transactional` aspect intercepts the call and starts a transaction (before advice).\n" +
+      "4. **Method Execution** — the actual target method is executed.\n" +
+      "5. **Commit / Rollback** — if successful, **commit**; if an exception occurs, **rollback** (after / after-throwing advice).\n\n" +
+      "The magic is done by `TransactionInterceptor` (an AOP advice), which uses `PlatformTransactionManager` to manage transactions.\n\n" +
+      "**Key annotations & attributes on @Transactional:**\n" +
+      "- **propagation** — defines how transactions are propagated (`REQUIRED`, `REQUIRES_NEW`, `SUPPORTS`, etc.)\n" +
+      "- **isolation** — defines the isolation level (`DEFAULT`, `READ_COMMITTED`, `REPEATABLE_READ`, etc.)\n" +
+      "- **timeout** — the transaction timeout in seconds.\n" +
+      "- **readOnly** — a hint for read-only transactions.\n" +
+      "- **rollbackFor** — specifies exceptions that should trigger a rollback.\n" +
+      "- **noRollbackFor** — specifies exceptions that should **not** trigger a rollback.\n\n" +
+      "**Case 1 — Success (Commit):** `placeOrder()` is called → transaction starts → order saved → payment processed → no exception → transaction **committed**.\n\n" +
+      "**Case 2 — Exception (Rollback):** `placeOrder()` is called → transaction starts → order saved → exception occurs in payment → transaction **rolled back** → no data persists.\n\n" +
+      "**Important points:**\n" +
+      "- `@Transactional` works only on **public** methods.\n" +
+      "- **Self-invocation** (calling another `@Transactional` method within the same class) will **NOT** go through the proxy.\n" +
+      "- By default, it rolls back on `RuntimeException` (unchecked exceptions).\n" +
+      "- You can customize rollback behavior using `rollbackFor` and `noRollbackFor`.\n\n" +
+      "**Different propagation examples:** `REQUIRED` (default) — join an existing transaction, or create a new one if none exists. `REQUIRES_NEW` — suspend the existing transaction and create a new one. `SUPPORTS` — support the current transaction, or execute non-transactionally if none exists. `NOT_SUPPORTED` — execute non-transactionally, suspending any existing transaction.",
+    code:
+      "// Service Layer\n" +
+      "@Service\n" +
+      "public class OrderService {\n" +
+      "    private final OrderRepository orderRepository;\n" +
+      "    private final PaymentService paymentService;\n\n" +
+      "    @Transactional\n" +
+      "    public void placeOrder(OrderRequest request) {\n" +
+      "        Order order = orderRepository.save(request.toOrder());\n" +
+      "        paymentService.processPayment(order.getId());\n" +
+      "        // If any exception occurs above,\n" +
+      "        // transaction will be rolled back\n" +
+      "    }\n" +
+      "}\n\n" +
+      "// Repository Layer\n" +
+      "@Repository\n" +
+      "public interface OrderRepository extends JpaRepository<Order, Long> {\n" +
+      "}\n\n" +
+      "// application.properties\n" +
+      "spring.datasource.url=jdbc:postgresql://localhost:5432/mydb\n" +
+      "spring.datasource.username=postgres\n" +
+      "spring.datasource.password=postgres\n" +
+      "spring.jpa.hibernate.ddl-auto=update",
+    image: '/java-notes/transactional-spring-boot-aop.jpg',
+    imageAlt:
+      '@Transactional in Spring Boot — How it works using AOP: a 5-step flow (Client Call, Proxy Intercepts via JDK dynamic proxy or CGLIB, Transaction Starts, Method Execution, Commit/Rollback) with TransactionInterceptor and PlatformTransactionManager; example Service/Repository/application.properties code; Success (Commit) vs Exception (Rollback) case walkthroughs; Important Points about public methods, self-invocation, and default RuntimeException rollback; Key Annotations & Attributes (propagation, isolation, timeout, readOnly, rollbackFor, noRollbackFor); and a Different Propagation Examples table (REQUIRED, REQUIRES_NEW, SUPPORTS, NOT_SUPPORTED).',
+  },
+  {
     id: 'transactional-overview',
     title: '@Transactional — Internal Working Overview',
     content:
