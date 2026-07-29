@@ -13,6 +13,7 @@ const TOPICS = [
   { id: 'java-streams', label: 'Java 8 Streams', path: '/java-streams-puzzles' },
   { id: 'sql', label: 'SQL Queries', path: '/sql-query-puzzles' },
   { id: 'sql-interview', label: 'SQL Q&A', path: '/sql-interview-questions' },
+  { id: 'mongodb', label: 'MongoDB', path: '/mongodb-interview-questions' },
   { id: 'devops', label: 'DevOps', path: '/devops-interview-questions' },
 ];
 
