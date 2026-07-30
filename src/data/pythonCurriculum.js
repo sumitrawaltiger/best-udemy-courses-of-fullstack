@@ -290,7 +290,7 @@ const PYTHON_FUNCTIONS_SECTIONS = [
   {
     id: "parameter-vs-argument",
     title: "Parameter vs Argument",
-    content: "- **Parameter** — the variable declared in the function *definition*.\n- **Argument** — the actual value passed during the function *call*.\n\nIn `add(10, 20)` below, `a` and `b` are **parameters**; `10` and `20` are **arguments**.",
+    content: "- **Parameter** — the variable declared in the function definition.\n- **Argument** — the actual value passed during the function call.\n\nIn `add(10, 20)` below, `a` and `b` are **parameters**; `10` and `20` are **arguments**.",
     code: "def add(a, b):\n    print(a + b)\n\nadd(10, 20)",
   },
   {
@@ -331,7 +331,7 @@ const PYTHON_FUNCTIONS_SECTIONS = [
   {
     id: "default-arguments",
     title: "Default Arguments",
-    content: "**Default arguments** provide default values to parameters. If a value is not passed, the default is used.\n\n**Note:** default arguments must come *after* non-default arguments.",
+    content: "**Default arguments** provide default values to parameters. If a value is not passed, the default is used.\n\n**Note:** default arguments must come after non-default arguments.",
     code: "def enroll_student(name, course=\"GEN AI\"):\n    print(\"Student Name:\", name)\n    print(\"Enrolled Course:\", course)\n\nenroll_student(\"Ashok\", \"DEVOPS\")\nenroll_student(\"Steve\")",
   },
   {
@@ -375,6 +375,50 @@ const PYTHON_FUNCTIONS_SECTIONS = [
     content: "Python lets you add **type hints** for parameters and the return type. They are **hints for developers only** — Python does not enforce them, so a function annotated for `int` still runs with strings.",
     code: "def f1(a, b):\n    return a + b\n\ndef f2(a: int, b: int) -> int:\n    return a + b\n\nresult = f2(10, 20)\nprint(result, type(result))\n\nresult = f2(\"Hi\", \"Hello\")   # hints are not enforced\nprint(result, type(result))",
   },
+  {
+    id: "decorators",
+    title: "Decorators",
+    content:
+      "A **decorator** is a function that takes another function as an argument and **extends or modifies its behavior** without permanently modifying the original function — `Original Function + Decorator Function = Enhanced Function`. Think of it like a **gift wrapper**: it doesn't change the gift, but makes it look better and more useful.\n\n" +
+      "**How decorators work:** the decorator defines an inner `wrapper(*args, **kwargs)` function that can do something before calling the original function, call it (`result = original_func(*args, **kwargs)`), do something after, then return the result. The decorator returns `wrapper`, and `@decorator` syntax applies it.\n\n" +
+      "**Decorators with arguments:** the wrapper accepts `*args, **kwargs` and forwards them to the original function — this lets a decorator like `@repeat(3)` (call a function 3 times) or `@timer` (measure and print execution time) work on any function signature.\n\n" +
+      "**Multiple decorators** stack — `@decor_one` above `@decor_two` on the same function runs `decor_one`'s \"before\" first, then `decor_two`'s \"before\", then the function, then `decor_two`'s \"after\", then `decor_one`'s \"after\" (like nested wrapping).\n\n" +
+      "**Built-in decorators:** `@staticmethod` defines a static method; `@classmethod` defines a class method; `@property` defines a read-only attribute (you can create a setter too); `@functools.lru_cache` caches the results of a function.\n\n" +
+      "**Benefits:** promotes code reusability, improves readability, keeps logic DRY (Don't Repeat Yourself), and makes it easy to add or modify behavior — great for logging, timing, authentication, validation, and caching.\n\n" +
+      "**When to use decorators:** when you want to add the same functionality to many functions, when you want to keep your code clean and DRY, and for cross-cutting concerns like logging, authentication, and caching.\n\n" +
+      "**Quick recap (flow):** create a decorator function → it takes a function as an argument (`func`) → it returns a wrapper function (`wrapper()`) → apply it with `@decorator` syntax on `def func(): ...` → the enhanced function is ready to use.\n\n" +
+      "**Pro tip:** use decorators wisely — too many stacked decorators can make code hard to understand.",
+    code:
+      "def my_decorator(func):\n" +
+      "    def wrapper():\n" +
+      "        print(\"Before function call\")\n" +
+      "        func()\n" +
+      "        print(\"After function call\")\n" +
+      "    return wrapper\n\n" +
+      "@my_decorator\n" +
+      "def say_hello():\n" +
+      "    print(\"Hello, Python Developer!\")\n\n" +
+      "say_hello()\n" +
+      "# Output:\n" +
+      "# Before function call\n" +
+      "# Hello, Python Developer!\n" +
+      "# After function call\n\n" +
+      "# Decorator with arguments\n" +
+      "def repeat(num):\n" +
+      "    def decorator(func):\n" +
+      "        def wrapper(*args, **kwargs):\n" +
+      "            for _ in range(num):\n" +
+      "                func(*args, **kwargs)\n" +
+      "        return wrapper\n" +
+      "    return decorator\n\n" +
+      "@repeat(3)\n" +
+      "def greet(name):\n" +
+      "    print(f\"Hello {name}!\")\n\n" +
+      "greet(\"Rahul\")   # prints \"Hello Rahul!\" three times",
+    image: "/python-notes/python-decorators-day51.jpg",
+    imageAlt:
+      "Python Decorators (Day 51/100, #100DaysOfCode Data Engineering Journey, by DataWithRahul) — a decorator takes another function as an argument and extends or modifies its behavior without permanently modifying the original function: Original Function + Decorator Function = Enhanced Function. Sections: What is a Decorator, How Decorators Work (decorator_func wrapping a wrapper around original_func), a Simple Example (@my_decorator on say_hello with before/after print output), Decorator with Arguments (@repeat(3) calling greet 3 times), Decorator with Arguments Example (@timer measuring execution time), Multiple Decorators (stacked @decor_one @decor_two showing nested before/after order), Built-in Decorators (@staticmethod, @classmethod, @property, @functools.lru_cache), Benefits of Decorators (reusability, readability, DRY, easy to add/modify behavior, great for logging/timing/auth/caching), When to Use Decorators, and a Quick Recap flow diagram (create decorator function -> takes a function as argument -> returns a wrapper function -> apply with @decorator syntax -> enhanced function ready to use).",
+  },
 ];
 
 const PYTHON_DATA_STRUCTURES_SECTIONS = [
@@ -394,6 +438,8 @@ const PYTHON_DATA_STRUCTURES_SECTIONS = [
     title: "List Indexing & Slicing",
     content: "**Positive indexing** starts from the left (0, 1, 2…); **negative indexing** starts from the right (-1, -2…).\n\n**Slicing** gets a part of a list — `list_name[start:end]` (start inclusive, end exclusive).",
     code: "items = [\"Laptop\", \"Mouse\", \"Keyboard\", \"Monitor\"]\nprint(items[0])    # positive index\nprint(items[-1])   # negative index\n\nnumbers = [10, 20, 30, 40, 50, 60]\nprint(numbers[1:4])   # 20 30 40\nprint(numbers[:3])    # first three\nprint(numbers[2:])    # from index 2 to end\nprint(numbers[::2])   # step by 2\nprint(numbers[::-1])  # reverse",
+    image: "/python-notes/python-list-and-slicing-day13.jpg",
+    imageAlt: "Python List & Slicing (Day 13/100, #100DaysOfCode Data Engineering Journey) — lists are ordered, mutable collections of items. An example list numbers = [10, 20, 30, 40, 50] with indices 0-4; common operations append/insert/remove/len/access. A slicing table: numbers[1:4] -> [20, 30, 40] (start:1, end:4 exclusive), numbers[:3] -> [10, 20, 30] (start to index 2), numbers[2:] -> [30, 40, 50] (index 2 to end), numbers[-2:] -> [40, 50] (last 2 elements), numbers[::-1] -> [50, 40, 30, 20, 10] (reverse list). A list comprehension example squares = [i*i for i in range(1, 6)], and a nested list example matrix = [[1,2,3],[4,5,6],[7,8,9]] accessed with matrix[1][2]. Why lists are important: store multiple values, easily process and transform data, used in almost every Python program, foundation for advanced structures, essential for data engineers.",
   },
   {
     id: "list-operations",
@@ -414,6 +460,8 @@ const PYTHON_DATA_STRUCTURES_SECTIONS = [
     title: "List Comprehension",
     content: "**List comprehension** is a short, clean way to create a new list from an existing sequence (range, list, tuple, string). It reduces multiple lines of loop code into a single line, and can include a condition.",
     code: "# normal way vs comprehension\nnumbers = [i for i in range(1, 6)]\nsquares = [i * i for i in range(1, 6)]\neven_numbers = [i for i in range(1, 11) if i % 2 == 0]\n\nnames = [\"ravi\", \"sita\", \"kiran\"]\nupper_names = [name.upper() for name in names]\n\nmarks = [80, 30, 90, 45, 20]\nresults = [\"Pass\" if mark >= 35 else \"Fail\" for mark in marks]\n\nprices = [1000, 2000, 5000]\nprice_with_gst = [price + (price * 18 / 100) for price in prices]\nprint(numbers, squares, even_numbers, results, price_with_gst)",
+    image: "/python-notes/python-tip-list-comprehension-day8.jpg",
+    imageAlt: "Python Tip (Day 8/100, #100DaysOfCode Data Engineering Journey) — List Comprehension: instead of a 4-line loop appending squares to a list, use a one-line list comprehension squares = [i * i for i in range(1, 6)] for the same [1, 4, 9, 16, 25] output. Why use list comprehension: less code, more readable, Pythonic, and often more efficient than traditional loops. More examples: even numbers, converting a list to uppercase, and a comprehension with a condition.",
   },
   {
     id: "zip-function",
@@ -468,6 +516,8 @@ const PYTHON_DATA_STRUCTURES_SECTIONS = [
     title: "Dictionary Operations",
     content: "- Add/update a pair with `dict[key] = value`\n- **keys()**, **values()**, **items()** — view contents\n- **update()** — update values or add new pairs\n- **pop(key)** — remove by key; **popitem()** — remove the last inserted pair\n- **clear()** / **del** — remove all / delete",
     code: "student = {\"name\": \"Ravi\", \"age\": 25, \"course\": \"Python\"}\nstudent[\"grade\"] = \"A\"        # add\nstudent[\"name\"] = \"Raj\"       # update\n\nprint(student.keys())\nprint(student.values())\nprint(student.items())\n\nstudent.update({\"name\": \"Ashok\"})\nstudent.pop(\"grade\")\nstudent.popitem()\ndel student[\"name\"]\nprint(student)",
+    image: "/python-notes/python-tip-dictionaries-day14.jpg",
+    imageAlt: "Python Tip (Day 14/100, #100DaysOfCode Data Engineering Journey) — Use Dictionaries for Key-Value Power: instead of storing data in parallel lists and accessing by index (confusing), use a dictionary like person = {\"name\": \"Alice\", \"age\": 25, \"role\": \"Data Engineer\"} and access with person[\"name\"] (super easy). Common dictionary operations: Access d[\"key\"], Add/Update d[\"key\"] = value, Delete del d[\"key\"], Keys d.keys(), Values d.values(), Items d.items(). Pro tip: dictionaries are unordered (Python 3.7+ remembers insertion order), great for mappings and fast lookups, use .get() to avoid KeyError.",
   },
   {
     id: "important-methods-set-dict-list",
@@ -518,6 +568,8 @@ const PYTHON_DATA_STRUCTURES_SECTIONS = [
     title: "String Formatting & f-strings",
     content: "**String formatting** inserts variable values into a string — via commas, concatenation, **.format()**, or the cleanest option, **f-strings**.",
     code: "name = \"Ashok\"\ncourse = \"Python\"\n\nprint(\"Student name is\", name, \"and course is\", course)\nprint(\"Student name is {} and course is {}\".format(name, course))\n\n# f-string (preferred)\nmsg = f\"Student name is {name} and course is {course}\"\nprint(msg)",
+    image: "/python-notes/python-tip-fstrings-day12.jpg",
+    imageAlt: "Python Tip (Day 12/100, #100DaysOfCode Data Engineering Journey) — Use f-strings for Cleaner and More Readable Code: instead of string concatenation with + and str(), use an f-string like f\"Hello, {name}! You are on day {days} of your journey.\" Why use f-strings: more readable, less typing (no concatenation or str()), better performance than older formatting methods, and cleaner code. Note: f-strings are available in Python 3.6+ — always prefer modern, Pythonic ways.",
   },
   {
     id: "string-usecases",
