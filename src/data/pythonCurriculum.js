@@ -1018,6 +1018,42 @@ const PYTHON_REST_API_SECTIONS = [
     content: "A minimal FastAPI app: create the app instance, then decorate a function with `@app.get(\"/path\")` to map it to a **GET** endpoint. The function's return value (a dict) is automatically sent back as **JSON**.",
     code: "from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get(\"/welcome\")\ndef get_welcome_msg():\n    return {\"message\": \"Welcome to FastAPI\"}\n\n@app.get(\"/greet\")\ndef get_greet_msg():\n    return {\"message\": \"Good Morning\"}",
   },
+  {
+    id: "fastapi-get-api-example",
+    title: "GET API Example",
+    content: "A **GET** API is used to **fetch data from the server**. The function returns a Python dict and FastAPI serialises it to JSON automatically.\n\nWhen using a GET request, data can be sent to the server **in the URL** using two options:\n1. **Path Parameter** — data embedded directly in the URL path.\n2. **Query Parameter** — data appended after `?` in the URL.",
+    code: "from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get(\"/course\")\ndef get_course():\n    return {\n        \"course\": \"Gen AI with Python\",\n        \"duration\": \"3 Months\",\n        \"trainer\": \"Ashok\"\n    }\n\n# URL: http://127.0.0.1:8000/course",
+  },
+  {
+    id: "fastapi-path-parameter",
+    title: "Path Parameter",
+    content: "**Path parameters** are used to send data **directly embedded in the URL**. You declare its position in the URL template using `{param_name}`, and FastAPI automatically reads and type-checks it.\n\nIf no matching resource is found, raise an `HTTPException` with status `404`.",
+    code: "from fastapi import FastAPI, HTTPException\nfrom courses import courses\n\napp = FastAPI()\n\n@app.get(\"/courses\")\ndef get_all_courses():\n    return courses\n\n@app.get(\"/courses/{course_id}\")\ndef get_course(course_id: int):\n    course = courses.get(course_id)\n    if course is None:\n        raise HTTPException(\n            status_code=404,\n            detail=\"Course not found\"\n        )\n    return course",
+  },
+  {
+    id: "fastapi-query-parameter",
+    title: "Query Parameter",
+    content: "**Query parameters** are passed after `?` in the URL, separated by `&`.\n\nRules:\n- Query parameters start with `?`.\n- Multiple parameters are separated by `&`.\n- Query parameters must appear **at the end** of the URL.\n\nExample URL: `http://localhost:8000/course-search?search=stack`\n\nFastAPI maps the URL parameter name directly to the function argument name.",
+    code: "@app.get(\"/course-search\")\ndef search_course(search: str):\n    result = []\n    for course_id, course in courses.items():\n        if search.lower() in course[\"course_name\"].lower():\n            result.append({\n                \"course_id\": course_id,\n                **course\n            })\n    return result\n\n# URL: http://localhost:8000/course-search?search=stack",
+  },
+  {
+    id: "fastapi-post-api-request-body",
+    title: "POST API with Request Body",
+    content: "**POST** is used to send data to the server. FastAPI uses **Pydantic models** to receive and validate the request body data automatically.\n\nDefine a class that inherits from `BaseModel` — FastAPI reads the JSON request body, validates the types, and injects the validated object into your function.",
+    code: "from fastapi import FastAPI\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\nclass Course(BaseModel):\n    course_id: int\n    course_name: str\n    course_price: int\n\n@app.post(\"/course\", status_code=201)\ndef create_course(course: Course):\n    # logic to insert data into db\n    return {\n        \"message\": \"Course created\",\n        \"course\": course\n    }",
+  },
+  {
+    id: "fastapi-crud-with-mysql",
+    title: "CRUD REST API with MySQL Database",
+    content: "A full CRUD project with FastAPI + MySQL. Project structure:\n- `requirements.txt` — library list (`fastapi`, `uvicorn`, `mysql-connector-python`).\n- `db.py` — all database logic (connection, table creation, CRUD functions).\n- `main.py` — FastAPI app with REST endpoints.\n\n**Key patterns:**\n- `@app.on_event(\"startup\")` — runs `create_table()` once when the app starts.\n- `Field(..., min_length=3)` — Pydantic field-level validation.\n- `cursor(dictionary=True)` — returns rows as dicts instead of tuples.\n- `base_path = \"/api\"` — prefix all routes consistently.\n- `uvicorn main:app --reload` — run the server with hot-reload.",
+    code: "# db.py\nimport mysql.connector\n\ndef get_connection():\n    return mysql.connector.connect(\n        host=\"localhost\", user=\"root\",\n        password=\"root\", database=\"pydb\"\n    )\n\ndef create_table():\n    conn = get_connection()\n    cursor = conn.cursor()\n    cursor.execute(\"\"\"\n        CREATE TABLE IF NOT EXISTS STUDENTS(\n            ID INT AUTO_INCREMENT PRIMARY KEY,\n            NAME VARCHAR(100) NOT NULL,\n            COURSE VARCHAR(100) NOT NULL,\n            FEE DECIMAL(10,2) NOT NULL\n        )\n    \"\"\")\n    cursor.close(); conn.close()\n\ndef create_student(student):\n    conn = get_connection(); cursor = conn.cursor()\n    cursor.execute(\n        \"INSERT INTO STUDENTS(name, course, fee) VALUES(%s,%s,%s)\",\n        (student.name, student.course, student.fee)\n    )\n    conn.commit(); cursor.close(); conn.close()\n    return {\"success\": True, \"data\": student}\n\ndef get_students():\n    conn = get_connection()\n    cursor = conn.cursor(dictionary=True)\n    cursor.execute(\"SELECT * FROM STUDENTS\")\n    students = cursor.fetchall()\n    cursor.close(); conn.close()\n    return {\"success\": True, \"data\": students}\n\ndef get_student_by_id(id: int):\n    conn = get_connection()\n    cursor = conn.cursor(dictionary=True)\n    cursor.execute(\"SELECT * FROM STUDENTS WHERE ID=%s\", (id,))\n    student = cursor.fetchone()\n    cursor.close(); conn.close()\n    return {\"success\": bool(student), \"data\": student}\n\n# main.py\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel, Field\nimport db\n\napp = FastAPI()\nbase_path = \"/api\"\n\n@app.on_event(\"startup\")\ndef startup(): db.create_table()\n\nclass Student(BaseModel):\n    name: str = Field(..., min_length=3, max_length=15)\n    course: str = Field(..., min_length=3, max_length=15)\n    fee: float = Field(..., gt=0)\n\n@app.post(f\"{base_path}/student\", status_code=201)\ndef create_student(student: Student):\n    return db.create_student(student)\n\n@app.get(f\"{base_path}/students\")\ndef get_all_students():\n    return db.get_students()\n\n@app.get(f\"{base_path}/students/{{student_id}}\")\ndef get_student_by_id(student_id: int):\n    return db.get_student_by_id(student_id)",
+  },
+  {
+    id: "consuming-rest-apis-with-requests",
+    title: "Consuming REST APIs Using Python requests",
+    content: "Python's popular **`requests`** library lets you send HTTP requests programmatically from a consumer application.\n\nThe `requests` library supports:\n1. Sending HTTP requests (GET, POST, PUT, DELETE).\n2. Accessing response content (`response.text`, `response.json()`).\n3. JSON processing.\n4. Passing headers and query parameters.\n\nInstall with: `pip install requests`\n\n**`params` dict** — pass query parameters as a dictionary; `requests` appends them to the URL automatically.",
+    code: "import requests\n\n# Basic GET request\napi_url = \"https://jsonplaceholder.typicode.com/users\"\nresponse = requests.get(api_url)\nprint(\"Status Code:\", response.status_code)\nprint(response.text)\n\n# -------------------------------------------\n\n# GET with query parameters\ncity = \"Hyderabad\"\napi_url = \"https://geocoding-api.open-meteo.com/v1/search\"\nparams = {\"name\": city, \"count\": 1}\nresponse = requests.get(api_url, params=params)\nprint(response.text)\n\n# -------------------------------------------\n\n# Weather API — combine two requests\nlatitude = 17.38405\nlongitude = 78.45636\nurl = \"https://api.open-meteo.com/v1/forecast\"\nparams = {\n    \"latitude\": latitude,\n    \"longitude\": longitude,\n    \"current\": \"temperature_2m,relative_humidity_2m,wind_speed_10m\",\n    \"timezone\": \"auto\"\n}\nresponse = requests.get(url, params=params)\nprint(response.text)",
+  },
 ];
 
 // Reference syllabus — Agentic AI 3.0 (Krish Naik Academy), a separate 5-phase
