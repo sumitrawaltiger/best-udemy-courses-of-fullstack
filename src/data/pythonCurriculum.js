@@ -1124,14 +1124,13 @@ export const pythonLessons = [
     pyDay: 2,
     phase: 'Python Foundations',
     title: 'Introduction to Python',
-    subtitle: 'Getting started, syntax, variables, data types, and operators',
-    topics: ['Getting started with Python', 'Syntax & variables', 'Basic data types', 'Operators', 'First programs'],
+    subtitle: 'Getting started, syntax, variables, data types, and type casting',
+    topics: ['Getting started with Python', 'Syntax & variables', 'Basic data types', 'Type casting', 'First programs'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=_uQrJ0TkZlc', 'Python for Beginners', 'Programming with Mosh'),
     sections: [
       ...PYTHON_INTRO_SECTIONS,
       ...PYTHON_PROGRAMMING_ELEMENTS_SECTIONS,
-      ...PYTHON_OPERATORS_SECTIONS,
     ],
     extraLinks: [
       {
@@ -1145,6 +1144,17 @@ export const pythonLessons = [
         icon: '📄',
       },
     ],
+  },
+  {
+    pyDay: 2,
+    slug: 'python-operators',
+    phase: 'Python Foundations',
+    title: 'Python Operators',
+    subtitle: 'Arithmetic, assignment, comparison, logical, membership, and identity operators',
+    topics: ['Arithmetic operators', 'Assignment operators', 'Comparison operators', 'Logical operators', 'Membership operators', 'Identity operators'],
+    notionUrl: PORTAL,
+    youtube: yt('https://www.youtube.com/watch?v=_uQrJ0TkZlc', 'Python for Beginners', 'Programming with Mosh'),
+    sections: PYTHON_OPERATORS_SECTIONS,
   },
   {
     pyDay: 3,
