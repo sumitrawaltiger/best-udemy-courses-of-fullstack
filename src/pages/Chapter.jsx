@@ -79,6 +79,7 @@ const TRACKS = {
     codeLabel: 'Course Code',
     lessonLabel: 'Module',
     extraLink: { href: PYTHON_META.portalUrl, label: '🏫 Ashok IT Portal' },
+    trackLinks: [{ href: PYTHON_META.githubRepo, label: '🐙 Ashok IT GitHub' }],
     banner: {
       title: 'Access full class notes?',
       text: 'Download notes and watch recordings on the Ashok IT student portal.',
@@ -461,6 +462,17 @@ export default function Chapter({ track = 'thunder' }) {
               {cfg.extraLink.label}
             </a>
           )}
+          {cfg.trackLinks?.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="chapter-link-btn outline"
+            >
+              {link.label}
+            </a>
+          ))}
           {chapter.githubPath && (
             <a
               href={`${chapter.codeRepo || cfg.codeRepo}/${chapter.githubPath}`}
