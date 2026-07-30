@@ -1169,8 +1169,8 @@ export const pythonLessons = [
   {
     pyDay: 5,
     phase: 'Python Foundations',
-    title: 'Functions in Python',
-    subtitle: 'Functions, lambda, map, and filter',
+    title: 'Python Functions',
+    subtitle: 'Functions, parameters, return, arguments, scope, and lambda',
     topics: ['Defining functions', 'Parameters & return', 'Lambda functions', 'map()', 'filter()'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=9Os0o3wzssI', 'Python Functions', 'Corey Schafer'),
