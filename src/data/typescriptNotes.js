@@ -23,6 +23,7 @@ export const TS_GROUPS = [
   { id: 'nextjs', label: 'Next.js', icon: '▲', desc: 'The App Router, server components, and data fetching — in TypeScript.' },
   { id: 'react-native', label: 'React Native', icon: '📱', desc: 'Typed mobile apps with React Native and Expo.' },
   { id: 'express', label: 'Express JS', icon: '🛰️', desc: 'Typed REST APIs, middleware, and Node.js on the backend.' },
+  { id: 'project', label: 'Project & Modules', icon: '📁', desc: 'tsconfig.json, import/export patterns, declaration files, and path aliases.' },
 ];
 
 
@@ -1060,6 +1061,88 @@ export const TS_DAYS = [
         label: 'Template Literal Types — a checked message format',
         code: 'type User = "Alice" | "Bob";\ntype Action = "Create" | "Delete";\n\ntype LogMessage = `${User} has ${Action}d the item`;\n\nlet msg: LogMessage = "Alice has Created the item"; // ✓\n// let bad: LogMessage = "Eve has Created the item"; // ✗ Error',
         note: 'TypeScript expands every combination of User × Action into a union and rejects any string outside it.',
+      },
+    ],
+  },
+  {
+    day: 19,
+    date: '19 Jan 2027',
+    group: 'project',
+    title: 'Project Structure & Modules',
+    tagline: 'Organize, configure, import, export, and scale — a clean setup today saves hours tomorrow.',
+    image: '/typescript-notes/ep19-project-structure-modules.jpeg',
+    tags: ['tsconfig.json', 'Named Export', 'Default Export', 'Type-Only Import', 'Declaration Files', 'Path Aliases'],
+    notes: [
+      { k: 'tsconfig.json', v: 'The TypeScript config file that tells the compiler **how to compile and type-check** your code. Lives at the project root.' },
+      { k: 'compilerOptions', v: 'The main section inside tsconfig.json. Controls target JS version, module system, source/output directories, strict mode, and more.' },
+      { k: 'strict: true', v: 'Enables **all strict type checks** at once. Start with it from day one — your future self will thank you.' },
+      { k: 'Named Export', v: 'Export multiple things from a file with `export`. Import only what you need with `import { add, PI } from "./math"`.' },
+      { k: 'Default Export', v: 'Only **one** default export per file. Import it with any name: `import logger from "./logger"`.' },
+      { k: 'Export Everything', v: 'Import all exports as a single namespace object: `import * as utils from "./utils"`. Access via `utils.name`, `utils.greet()`.' },
+      { k: 'import type', v: 'Imports only the type, **removed entirely from JS output** — no runtime cost. Use for interfaces, types, and enums.' },
+      { k: 'Declaration Files (.d.ts)', v: 'Provide **types for JavaScript libraries** or global variables without any runtime code. Must be included in tsconfig.' },
+      { k: 'Path Aliases', v: 'Configure short import paths in tsconfig (`@components/*`) so you never write `../../../utils/math` again.' },
+    ],
+    theory: [
+      {
+        h: '1. tsconfig.json — your powerhouse',
+        p: 'TypeScript needs a config file (`tsconfig.json`) to know how to compile and check your code. It lives at the project root and controls everything from which JS version to target to how strict the type checker should be.\n\n**Key `compilerOptions` fields:**\n- `target` — which JS version to compile to (e.g. `"ES2020"`).\n- `module` — the module system to emit (`"CommonJS"` for Node, `"ESNext"` for modern bundlers).\n- `rootDir` — where your source code lives (e.g. `"src"`).\n- `outDir` — where compiled `.js` files go (e.g. `"dist"`).\n- `strict` — turns on **all** strict type-checking rules at once.\n- `esModuleInterop` — smoother default imports from CommonJS packages.\n- `forceConsistentCasingInFileNames` — prevents case-sensitivity bugs across OSes.\n- `skipLibCheck` — skip type-checking of `.d.ts` files in `node_modules` (faster builds).\n- `include` — which files/folders to include (e.g. `["src"]`).\n\n**Pro Tip:** Start with `"strict": true` from day one.',
+        code: '// tsconfig.json\n{\n  "compilerOptions": {\n    "target": "ES2020",           // JS version\n    "module": "CommonJS",         // Module system\n    "rootDir": "src",             // Source folder\n    "outDir": "dist",             // Output folder\n    "strict": true,               // Enable all strict checks\n    "esModuleInterop": true,      // Smooth default imports\n    "forceConsistentCasingInFileNames": true,\n    "skipLibCheck": true\n  },\n  "include": ["src"]              // Files to include\n}',
+      },
+      {
+        h: '2. Modules — Named, Default, and Export Everything',
+        p: 'TypeScript uses the same ES module syntax as modern JavaScript. There are three main export patterns:\n\n**Named Export** — export multiple things from a single file. The importer picks exactly what they need with destructuring. Best for utility files and libraries.\n\n**Default Export** — only one default export per file. The importer can name it anything. Best for a single class or function per file (e.g. a React component).\n\n**Export Everything** — import all named exports as a single namespace object using `import * as`. Good when you want to keep all utilities grouped under one name.',
+        code: '// --- Named Export (math.ts) ---\nexport function add(a: number, b: number) {\n  return a + b;\n}\nexport const PI = 3.14;\n\n// app.ts — import only what you need\nimport { add, PI } from "./math";\nconsole.log(add(2, 3), PI);\n\n// --- Default Export (logger.ts) ---\nconst logger = (msg: string) => {\n  console.log(msg);\n};\nexport default logger;\n\n// app.ts — import with any name\nimport logger from "./logger";\nlogger("Hello TypeScript!");\n\n// --- Export Everything (utils.ts) ---\nexport const name = "Neo";\nexport const version = "1.0";\nexport function greet() { return "Hi!"; }\n\n// app.ts — import all as one object\nimport * as utils from "./utils";\nconsole.log(utils.name, utils.greet());',
+      },
+      {
+        h: '3. Type-Only Imports & Exports',
+        p: 'When you import or export **only a type** (interface, type alias, or enum), use the `type` keyword. This tells TypeScript and the bundler that this import exists only for type-checking — it is **completely removed from the compiled JavaScript output**, resulting in a smaller and cleaner bundle.\n\nUsing `import type` is a best practice for any import that you only use as a type annotation — it prevents accidental runtime dependencies and makes your module boundaries explicit.',
+        code: '// types.ts — export a type\nexport type User = {\n  id: number;\n  name: string;\n};\n\n// app.ts — import only the type (removed in JS output)\nimport type { User } from "./types";\n\nconst u: User = { id: 1, name: "Faisal" };\n// No trace of "User" in the compiled .js file',
+      },
+      {
+        h: '4. Declaration Files (.d.ts)',
+        p: 'Declaration files (`.d.ts`) provide **type information for JavaScript code** — they contain no runtime logic, only type declarations. Use them for:\n- Typing JavaScript libraries that do not ship their own types.\n- Declaring global variables available everywhere in your project (e.g. `API_URL`, utility functions injected by a build tool).\n- Providing types for a `.js` module without converting it to TypeScript.\n\nDeclaration files must be included in your `tsconfig.json` so TypeScript can find them.',
+        code: '// global.d.ts — declare global variables\ndeclare const API_URL: string;\ndeclare function formatDate(date: Date): string;\n\n// tsconfig.json — include the declaration files\n{\n  "include": ["src", "types/**/*.d.ts"]\n}\n\n// Now you can use API_URL anywhere without importing it:\nconsole.log(API_URL); // ✓ TypeScript knows the type',
+      },
+      {
+        h: '5. Path Aliases — clean imports',
+        p: 'Deep relative imports like `../../../utils/math` are error-prone and hard to read. **Path aliases** let you define short, readable import paths in `tsconfig.json`.\n\nSet `baseUrl` to your source root, then define `paths` entries mapping alias patterns to real folder locations. Now `import Button from "@/components/Button"` works anywhere in the project, regardless of nesting depth.\n\nNote: if you also use a bundler (Vite, webpack, esbuild), you need to configure the same aliases there too, since bundlers resolve imports independently of `tsc`.',
+        code: '// tsconfig.json\n{\n  "compilerOptions": {\n    "baseUrl": "src",\n    "paths": {\n      "@/*": ["*"],\n      "@components/*": ["components/*"]\n    }\n  }\n}\n\n// Before path aliases (ugly)\nimport Button from "../../../components/Button";\nimport { add } from "../../../utils/math";\n\n// After path aliases (clean!)\nimport Button from "@/components/Button";\nimport { add } from "@/utils/math";',
+      },
+      {
+        h: 'Common mistakes',
+        p: '- **Forgetting to set `rootDir` and `outDir`** — without these, compiled files end up scattered next to source files.\n- **Using default export in many files** — a project full of default exports is harder to refactor (the importer can silently rename them to anything).\n- **Incorrect file paths or extensions** — TypeScript import paths must not include `.ts`; use bare module specifiers.\n- **Not using type-only imports for types** — importing a type without `import type` can cause runtime module loading and bundler issues.\n- **Ignoring strict mode** — turning it on later in a project causes a flood of errors; enable it from day one.',
+      },
+      {
+        h: 'Quick recap',
+        p: '- **tsconfig.json** controls how TypeScript compiles your code.\n- **Modules** let you split and organize code across files.\n- **Export/import smartly**: named (multiple things), default (one thing per file), or `import *` (everything as a namespace).\n- **`import type`** keeps type annotations out of JS output — cleaner and faster.\n- **`.d.ts` files** provide types for JS libraries and global variables.\n- **Path aliases** replace `../../../` with readable `@/...` paths.\n\n**Interview Q:**\n1. What is the purpose of `tsconfig.json`?\n2. What is the difference between named and default export?\n3. What is a declaration file?\n4. What is the benefit of using path aliases?\n5. What does `import type` do?\n\nStructure your project like a pro — and scale with confidence!',
+      },
+    ],
+    snippets: [
+      {
+        label: 'tsconfig.json — production-ready starter',
+        code: '{\n  "compilerOptions": {\n    "target": "ES2020",\n    "module": "CommonJS",\n    "rootDir": "src",\n    "outDir": "dist",\n    "strict": true,\n    "esModuleInterop": true,\n    "forceConsistentCasingInFileNames": true,\n    "skipLibCheck": true\n  },\n  "include": ["src"]\n}',
+        note: 'strict: true enables all strict checks at once — enable it from day one.',
+      },
+      {
+        label: 'Named vs Default vs Export Everything',
+        code: '// Named — export multiple, import what you need\nexport function add(a: number, b: number) { return a + b; }\nexport const PI = 3.14;\nimport { add, PI } from "./math";\n\n// Default — one per file, any import name\nexport default function logger(msg: string) { console.log(msg); }\nimport logger from "./logger";\n\n// Export Everything — namespace import\nimport * as utils from "./utils";\nconsole.log(utils.greet());',
+        note: 'Prefer named exports for libraries — they are easier to tree-shake and refactor.',
+      },
+      {
+        label: 'import type — zero runtime cost',
+        code: '// types.ts\nexport type User = { id: number; name: string };\n\n// app.ts\nimport type { User } from "./types"; // removed in JS output\n\nconst user: User = { id: 1, name: "Faisal" };',
+        note: '"import type" is erased completely from the compiled JS — use it for every type-only import.',
+      },
+      {
+        label: 'Declaration file — global variable typing',
+        code: '// global.d.ts\ndeclare const API_URL: string;\ndeclare function formatDate(date: Date): string;\n\n// tsconfig.json\n{ "include": ["src", "types/**/*.d.ts"] }\n\n// anywhere in your project\nconsole.log(API_URL); // ✓ typed, no import needed',
+        note: '.d.ts files contain only types — no runtime code is emitted.',
+      },
+      {
+        label: 'Path aliases — clean imports',
+        code: '// tsconfig.json\n{\n  "compilerOptions": {\n    "baseUrl": "src",\n    "paths": { "@/*": ["*"], "@components/*": ["components/*"] }\n  }\n}\n\n// Before\nimport Button from "../../../components/Button";\n\n// After\nimport Button from "@/components/Button";',
+        note: 'Also configure the same aliases in your bundler (Vite/webpack) — tsc and bundlers resolve imports independently.',
       },
     ],
   },
