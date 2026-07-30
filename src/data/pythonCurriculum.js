@@ -1190,9 +1190,9 @@ export const pythonLessons = [
   {
     pyDay: 6,
     phase: 'Python Foundations',
-    title: 'Modules & Packages',
-    subtitle: 'Importing, creating modules, and standard libraries',
-    topics: ['import statements', 'Creating modules', 'Packages', 'Standard library', 'pip basics'],
+    title: 'Python Libraries Introduction',
+    subtitle: 'Modules, packages, standard libraries, and popular third-party libraries',
+    topics: ['import statements', 'Creating modules', 'Packages', 'Standard library', 'pip basics', 'NumPy, Pandas, FastAPI, Streamlit'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=CqvZ3vGoGs0', 'Python Modules', 'Corey Schafer'),
     sections: PYTHON_MODULES_SECTIONS,
