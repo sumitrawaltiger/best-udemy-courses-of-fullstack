@@ -1276,8 +1276,8 @@ export const pythonLessons = [
   {
     pyDay: 8,
     phase: 'Python Foundations',
-    title: 'Exception Handling',
-    subtitle: 'try, except, else, finally, and debugging in PyCharm',
+    title: 'Python Debugging',
+    subtitle: 'Exception handling (try/except/finally) and debugging in PyCharm',
     topics: ['try/except', 'else & finally', 'Custom exceptions', 'Raising errors', 'Debugging with PyCharm'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=NIWwJbo-9-8', 'Python Exceptions', 'Corey Schafer'),
