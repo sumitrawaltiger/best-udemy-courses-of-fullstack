@@ -116,7 +116,7 @@ export const pythonHighlights = [
   'ML, NLP & Transformers',
   'Generative AI & LLMs',
   'LangChain, RAG & Fine-Tuning',
-  'Django REST Framework',
+  'REST API with FastAPI',
   'FastAPI production APIs',
   'Agentic AI with LangGraph & n8n',
 ];

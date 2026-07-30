@@ -1852,8 +1852,8 @@ export const pythonLessons = [
   {
     pyDay: 40,
     phase: 'Django',
-    title: 'Django REST Framework',
-    subtitle: 'Web services, REST API fundamentals, JSON, and Django REST Framework',
+    title: 'REST API',
+    subtitle: 'Web services, REST API fundamentals, JSON, HTTP methods, and FastAPI',
     topics: ['Web services & interoperability', 'REST API & provider/consumer', 'JSON basics', 'DRF setup & serializers', 'ViewSets, routers & auth'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=c708Nf0cHrs', 'Django REST Framework', 'Very Academy'),
