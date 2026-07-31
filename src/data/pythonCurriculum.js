@@ -1101,6 +1101,48 @@ const IITM_PRAVARTAK_AGENTIC_AI_SECTIONS = [
   },
 ];
 
+const PYTHON_STREAMLIT_SECTIONS = [
+  {
+    id: 'what-is-streamlit',
+    title: 'What is Streamlit?',
+    content: "**Streamlit** is a Python framework used to create web applications very easily.\n\nIn Gen AI projects, Streamlit is commonly used to create simple UIs for:\n- AI Chatbot\n- Code Generator\n- Text Summarizer\n- Resume Analyzer\n- Image Generation\n\nStreamlit is very useful for Python developers because we can create a UI without learning HTML, CSS, or JavaScript.",
+  },
+  {
+    id: 'why-streamlit',
+    title: 'Why Streamlit?',
+    content: "Streamlit is useful because:\n- Easy to learn\n- Less code required\n- Good for AI/ML/Gen AI project demos\n- No frontend knowledge required\n- Automatic refresh when UI code changes\n- Good for classroom demos and mini projects",
+  },
+  {
+    id: 'install-streamlit',
+    title: 'Install Streamlit',
+    content: "Install Streamlit using `pip` inside your virtual environment:",
+    code: "pip install streamlit",
+  },
+  {
+    id: 'first-streamlit-app',
+    title: 'First Streamlit App — app.py',
+    content: "Create a file named **`app.py`**. The example below demonstrates the core layout functions (`st.title`, `st.write`, `st.header`, `st.subheader`, `st.markdown`), input widgets (`st.text_input`, `st.selectbox`, `st.file_uploader`), and a submit button with conditional output.",
+    code: "import streamlit as st\n\nst.title(\"Welcome to Streamlit\")\nst.write(\"This is my First Streamlit UI Application\")\n\nst.header(\"Course Details\")\nst.subheader(\"Streamlit UI\")\nst.write(\"Streamlit is used to create UI using Python.\")\nst.markdown(\"### This is markdown text\")\n\nname = st.text_input(\"Enter Student Name\")\nemail = st.text_input(\"Enter Student Email\")\ncourse = st.selectbox(\n    \"Select Course\",\n    [\"JAVA\", \"Python\", \"DevOps\", \"AI & ML\"]\n)\nuploaded_file = st.file_uploader(\"Upload Your Resume :\", type=[\"pdf\", \"docx\"])\n\nif st.button(\"Submit\"):\n    st.write(\"Given Name: \", name)\n    st.write(\"Given Email: \", email)\n    st.write(\"Selected Course: \", course)\n\nif uploaded_file is not None:\n    st.success(\"File uploaded successfully\")\n    st.write(\"File Name:\", uploaded_file.name)",
+  },
+  {
+    id: 'run-streamlit-app',
+    title: 'Run the Streamlit Application',
+    content: "Run the app from your terminal. Streamlit opens a local browser tab automatically and **hot-reloads** whenever you save the file.",
+    code: "streamlit run app.py",
+  },
+  {
+    id: 'important-streamlit-functions',
+    title: 'Important Streamlit Functions',
+    content: "The most-used Streamlit functions:\n- `st.title()` — display the page title\n- `st.write()` — display text or data\n- `st.text_input()` — take single-line input via textbox\n- `st.text_area()` — take multi-line input\n- `st.button()` — create a button\n- `st.selectbox()` — create a dropdown\n- `st.file_uploader()` — upload files\n- `st.chat_input()` — create a chatbot input box\n- `st.spinner()` — show a loading message while a task runs",
+  },
+  {
+    id: 'streamlit-fastapi-student-consumer',
+    title: 'Project — FastAPI + Streamlit Student Management System',
+    content: "A complete example combining **FastAPI** (backend REST API) with **Streamlit** (frontend UI). The app connects to a FastAPI server at `http://127.0.0.1:8000/api` and exposes three operations via a sidebar menu: **Create Student**, **View Students**, and **Search Student**.\n\nNotable patterns used:\n- `st.set_page_config()` — sets the page title, icon, and layout\n- `st.sidebar.selectbox()` — navigation menu in the left sidebar\n- `st.columns()` — side-by-side metric tiles\n- `st.metric()` — KPI display (total students, total fee, average fee)\n- `pd.DataFrame()` + `st.dataframe()` — render tabular API results\n- `requests.post/get()` — call the FastAPI endpoints\n\nGitHub source: `https://github.com/surik64/Student-Management-System`",
+    code: "import streamlit as st\nimport requests\nimport pandas as pd\n\nAPI_URL = \"http://127.0.0.1:8000/api\"\n\nst.set_page_config(\n    page_title=\"Student Management System\",\n    page_icon=\"🎓\",\n    layout=\"wide\"\n)\n\nst.title(\"🎓 Student Management System\")\nst.write(\"### FastAPI + Streamlit REST API Demo\")\n\nmenu = st.sidebar.selectbox(\n    \"Select Operation\",\n    [\"Create Student\", \"View Students\", \"Search Student\"]\n)\n\n# ── CREATE STUDENT ──────────────────────────────────\nif menu == \"Create Student\":\n    st.subheader(\"➕ Create Student\")\n    name = st.text_input(\"Student Name\")\n    course = st.selectbox(\n        \"Course\",\n        [\"PYTHON\", \"JAVA\", \"DEVOPS\", \"GEN AI\", \"DATA SCIENCE\"]\n    )\n    fee = st.number_input(\"Course Fee\", min_value=1.0, step=100.0)\n\n    if st.button(\"Save Student\"):\n        payload = {\"name\": name, \"course\": course, \"fee\": fee}\n        response = requests.post(f\"{API_URL}/student\", json=payload)\n        result = response.json()\n        if response.status_code == 201:\n            st.success(result.get(\"Message\", \"Student Created Successfully\"))\n            if \"data\" in result:\n                df = pd.DataFrame([result[\"data\"]])\n                st.dataframe(df, use_container_width=True, hide_index=True)\n        else:\n            st.error(result)\n\n# ── VIEW STUDENTS ────────────────────────────────────\nelif menu == \"View Students\":\n    st.subheader(\"📋 Student List\")\n    if st.button(\"Load Students\"):\n        response = requests.get(f\"{API_URL}/students\")\n        result = response.json()\n        if response.status_code == 200:\n            students = result[\"data\"]\n            df = pd.DataFrame(students)\n            col1, col2, col3 = st.columns(3)\n            col1.metric(\"Total Students\", len(df))\n            if \"FEE\" in df.columns:\n                col2.metric(\"Total Fee\", f\"₹ {df['FEE'].sum():,.0f}\")\n                col3.metric(\"Average Fee\", f\"₹ {df['FEE'].mean():,.0f}\")\n            st.divider()\n            st.dataframe(df, use_container_width=True, hide_index=True)\n        else:\n            st.error(result.get(\"Message\", \"Unable to fetch students\"))\n\n# ── SEARCH STUDENT ───────────────────────────────────\nelif menu == \"Search Student\":\n    st.subheader(\"🔍 Search Student\")\n    student_id = st.number_input(\"Student ID\", min_value=1, step=1)\n    if st.button(\"Search\"):\n        response = requests.get(f\"{API_URL}/students/{student_id}\")\n        result = response.json()\n        if response.status_code == 200:\n            student = result[\"data\"]\n            df = pd.DataFrame([student]) if isinstance(student, dict) else pd.DataFrame(student)\n            st.success(result.get(\"Message\", \"Student Found\"))\n            st.dataframe(df, use_container_width=True, hide_index=True)\n        else:\n            st.error(result.get(\"Message\", \"Student Not Found\"))",
+  },
+];
+
 export const pythonLessons = [
   // ── Phase 1: Python Foundations ──
   {
@@ -1629,6 +1671,24 @@ export const pythonLessons = [
         id: 'assignment-student-management-system',
         title: 'Assignment — Student Management System',
         content: "Develop a **menu-driven Student Management System** using Python and MySQL. The application should connect to a MySQL database and perform the following CRUD operations:\n1. Add a new student\n2. View all students\n3. View a student by ID\n4. Update student details\n5. Delete a student\n6. Exit the application\n\n**Functional requirements:**\n- Use `mysql-connector-python` to connect Python with MySQL.\n- Create the database table automatically if it does not exist.\n- Use separate functions for each CRUD operation.\n- Use parameterized queries with `%s` placeholders.\n- Display a proper message when a student record is not found.\n- Prevent duplicate email addresses.\n- Handle database connection errors and invalid user input.\n- Ask for confirmation before deleting a student.\n- Close the cursor and database connection after every operation.",
+      },
+    ],
+  },
+  {
+    pyDay: 11,
+    slug: 'streamlit-ui-in-python',
+    phase: 'Python Foundations',
+    title: 'Streamlit UI in Python',
+    subtitle: 'Build web apps for Gen AI projects without HTML, CSS, or JavaScript',
+    topics: ['What is Streamlit', 'Why Streamlit', 'Install & run', 'Core widgets', 'FastAPI + Streamlit project'],
+    notionUrl: PORTAL,
+    youtube: yt('https://www.youtube.com/watch?v=VqgUkExPvLY', 'Streamlit Python Tutorial', 'freeCodeCamp'),
+    sections: PYTHON_STREAMLIT_SECTIONS,
+    extraLinks: [
+      {
+        label: 'Student Management System — GitHub (FastAPI + Streamlit)',
+        href: 'https://github.com/surik64/Student-Management-System',
+        icon: '🔗',
       },
     ],
   },
