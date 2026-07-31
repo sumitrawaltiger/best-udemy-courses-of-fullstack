@@ -8,7 +8,7 @@ const learntToday = [
   { title: 'Metrics on screen', text: 'cost, TTFT, and success for the live run — not a slide' },
   { title: 'Record once', text: 'capture a clean 5-minute take; fix only what the recording reveals' },
   { title: 'README for humans', text: 'how to run, env vars, risks, and how to roll back the policy pack' },
-  { title: 'What’s next', text: 'tomorrow — graduate: portfolio proof and series close' },
+  { title: ‘What\’s next’, text: ‘tomorrow — Day 153 is the finale: capstone demo, retro, portfolio proof, and the Agentic AI series closes’ },
 ];
 
 const core = [
@@ -41,8 +41,8 @@ const practice = [
     code: 'timeout · inject\nUX proof',
   },
   {
-    icon: '🔜', title: 'Next: Capstone Demo', titleClass: 'card-title-amber', subtitle: 'Day 153',
-    description: 'Tomorrow — capstone demo day, then a 2-day wrap-up before the series closes.',
+    icon: '🔜', title: 'Next: Series Finale', titleClass: 'card-title-amber', subtitle: 'Day 153 · 31 Dec 2026',
+    description: 'Tomorrow — Day 153 is the Agentic AI series finale. Capstone demo, retro, portfolio — 153 days complete, Python Stack continues.',
     link: { href: '/agentic-day-153', label: 'Go to Day 153 →' },
   },
 ];
