@@ -24,6 +24,7 @@ export const TS_GROUPS = [
   { id: 'react-native', label: 'React Native', icon: '📱', desc: 'Typed mobile apps with React Native and Expo.' },
   { id: 'express', label: 'Express JS', icon: '🛰️', desc: 'Typed REST APIs, middleware, and Node.js on the backend.' },
   { id: 'project', label: 'Project & Modules', icon: '📁', desc: 'tsconfig.json, import/export patterns, declaration files, and path aliases.' },
+  { id: 'real-world', label: 'Real Projects', icon: '🌍', desc: 'TypeScript with React, fetch, async/await, forms, and production best practices.' },
 ];
 
 
@@ -1143,6 +1144,89 @@ export const TS_DAYS = [
         label: 'Path aliases — clean imports',
         code: '// tsconfig.json\n{\n  "compilerOptions": {\n    "baseUrl": "src",\n    "paths": { "@/*": ["*"], "@components/*": ["components/*"] }\n  }\n}\n\n// Before\nimport Button from "../../../components/Button";\n\n// After\nimport Button from "@/components/Button";',
         note: 'Also configure the same aliases in your bundler (Vite/webpack) — tsc and bundlers resolve imports independently.',
+      },
+    ],
+  },
+  {
+    day: 20,
+    date: '20 Jan 2027',
+    group: 'real-world',
+    title: 'Using TypeScript in Real Projects',
+    tagline: 'React, fetch, async/await, forms, and best practices — TypeScript helps you write better code, not just more code.',
+    image: '/typescript-notes/ep20-using-typescript-in-real-projects.jpeg',
+    tags: ['React.FC', 'Props', 'interface', 'Promise<T>', 'Async/Await', 'FormEvent', 'Type Assertion', 'Best Practices'],
+    notes: [
+      { k: 'React.FC<Props>', v: 'The generic type that marks a **function component**. Accepts a `Props` type that describes what can be passed in — TypeScript then checks every usage at the call site.' },
+      { k: 'type Props', v: 'A **type alias** defining the shape of a component\'s props. `title: string` and `count: number` mean TypeScript rejects any caller that passes the wrong type.' },
+      { k: 'interface Todo', v: 'A blueprint for API response objects — `id: number`, `title: string`, `completed: boolean`. Defining it once means every fetch result is checked against this shape.' },
+      { k: 'Promise<T>', v: 'The **return type of async functions**. `Promise<Todo[]>` tells TypeScript that when the promise resolves, you get an array of `Todo` objects — not `any`.' },
+      { k: 'const data: Todo[] = await res.json()', v: 'Annotating the parsed JSON result. `res.json()` returns `any` by default — adding the type annotation gives you **autocomplete and safety** on every property you access.' },
+      { k: 'try / catch in async', v: 'Wrap `await` calls in `try/catch` to handle network failures. Log the error, then **rethrow** so callers know the operation failed rather than silently receiving `undefined`.' },
+      { k: 'React.FormEvent<HTMLFormElement>', v: 'The **event type for onSubmit**. Gives you `e.preventDefault()` and typed access to the form — without it, TypeScript widens the event to the generic `Event` type.' },
+      { k: 'e.target as HTMLFormElement', v: '`e.target` is typed as `EventTarget` by default. **Type assertion** narrows it to `HTMLFormElement` so you can access `.elements` safely.' },
+      { k: 'namedItem("name") as HTMLInputElement', v: '`elements.namedItem()` returns `Element | null`. Asserting to `HTMLInputElement` lets you read `.value` — pair this with a null check in production code.' },
+      { k: 'strict: true', v: 'The single tsconfig.json flag that **enables all strict checks at once**: `noImplicitAny`, `strictNullChecks`, `strictFunctionTypes`, and more. Enable from day one.' },
+    ],
+    theory: [
+      {
+        h: '1. React with TypeScript',
+        p: 'TypeScript shines in React because every component\'s props become a **typed contract**. You define a `type Props` (or `interface Props`) with the exact shape your component expects, then pass it as the generic argument to `React.FC<Props>`.\n\nThe compiler then checks every place you use `<Card />` — if you forget a required prop or pass the wrong type, the error appears **before** the browser ever sees the code.\n\n**Key patterns:**\n- Use `type Props = { ... }` for simple prop shapes.\n- Prefer `interface Props { ... }` when you need to extend or merge later.\n- `React.FC<Props>` is shorthand for a function that accepts props of that type and returns JSX.\n- You can also type the function directly: `function Card({ title, count }: Props) { ... }`.',
+        code: 'type Props = {\n  title: string;\n  count: number;\n};\n\nconst Card: React.FC<Props> = ({ title, count }) => {\n  return (\n    <div className="card">\n      <h3>{title}</h3>\n      <p>Count: {count}</p>\n    </div>\n  );\n};\n\n// Usage — TypeScript checks these at compile time:\n<Card title="Items" count={5} />   // ✓\n<Card title="Items" />              // ✗ count is required\n<Card title={42} count={5} />       // ✗ title must be string',
+      },
+      {
+        h: '2. API Requests with Fetch',
+        p: 'The browser\'s `fetch` API returns `Promise<Response>`, and `res.json()` returns `Promise<any>`. Without a type annotation, every property you access on the parsed data is untyped — you lose all autocomplete and safety.\n\nThe fix is simple: **define an interface** that mirrors the API response shape, then annotate the parsed variable with that type. TypeScript trusts your annotation and checks all downstream usage against it.\n\n**Best practice:** define the interface in a separate `types.ts` file and import it wherever you make requests — one source of truth for the API contract.',
+        code: 'interface Todo {\n  id: number;\n  title: string;\n  completed: boolean;\n}\n\nconst fetchTodos = async (): Promise<Todo[]> => {\n  const res = await fetch(\n    "https://jsonplaceholder.typicode.com/todos"\n  );\n  const data: Todo[] = await res.json();\n  return data;\n};\n\n// TypeScript now knows data[0].title is a string:\nconst todos = await fetchTodos();\nconsole.log(todos[0].title); // ✓ autocomplete works\nconsole.log(todos[0].done);  // ✗ Property "done" does not exist',
+      },
+      {
+        h: '3. Async/Await with Return Types',
+        p: 'When you write an `async` function, TypeScript automatically wraps the return type in `Promise<T>`. But being **explicit** about the return type (`Promise<Todo>`) has two benefits:\n\n1. TypeScript verifies that everything you return from the function actually matches `Todo`.\n2. Callers get full type information without having to hover over the function.\n\n**Error handling:** always wrap `await` calls in `try/catch`. Log the error for observability, then rethrow — if you swallow the error silently, callers receive `undefined` and have no way to know the fetch failed.',
+        code: 'const getTodo = async (id: number): Promise<Todo> => {\n  try {\n    const res = await fetch(\n      `https://jsonplaceholder.typicode.com/todos/${id}`\n    );\n    const data: Todo = await res.json();\n    return data;\n  } catch (err) {\n    console.error("Failed to fetch todo", err);\n    throw err; // rethrow so the caller can handle it\n  }\n};\n\n// Caller can now await and handle errors:\ntry {\n  const todo = await getTodo(1);\n  console.log(todo.title);\n} catch (err) {\n  // handle gracefully\n}',
+      },
+      {
+        h: '4. Forms with TypeScript',
+        p: 'HTML form handling in vanilla JavaScript is stringly-typed — `event.target`, `.elements`, and `.value` are all untyped. TypeScript lets you **lock down** every step:\n\n1. Define a `FormData` interface with the exact fields the form collects.\n2. Type the `onSubmit` handler as `(e: React.FormEvent<HTMLFormElement>) => void`.\n3. Assert `e.target` to `HTMLFormElement` to access `.elements`.\n4. Assert each `namedItem()` result to the correct input type (`HTMLInputElement`, `HTMLTextAreaElement`) to read `.value`.\n\nThe result: TypeScript catches typos in field names and wrong input casts **before** you run the app.',
+        code: 'interface FormData {\n  name: string;\n  email: string;\n  message: string;\n}\n\nconst handleSubmit = (\n  e: React.FormEvent<HTMLFormElement>\n) => {\n  e.preventDefault();\n  const form = e.target as HTMLFormElement;\n  const data: FormData = {\n    name: (\n      form.elements.namedItem("name") as HTMLInputElement\n    ).value,\n    email: (\n      form.elements.namedItem("email") as HTMLInputElement\n    ).value,\n    message: (\n      form.elements.namedItem("message") as HTMLTextAreaElement\n    ).value,\n  };\n  console.log(data);\n};\n\n// In JSX:\n<form onSubmit={handleSubmit}>...</form>',
+      },
+      {
+        h: '5. TypeScript Best Practices',
+        p: 'Applying TypeScript well in a real project is about **discipline**, not just syntax. These five rules prevent the most common mistakes:\n\n**1. Enable `strict` mode** — turns on all strict checks in one line inside `tsconfig.json`. Catches `null` access, implicit `any`, and more.\n\n**2. Use types/interfaces for everything** — every function parameter, return value, and API response should be typed. Don\'t leave anything as `any` by accident.\n\n**3. Avoid `any`** — `any` silently disables the type checker for that value. Use `unknown` when you don\'t know the type, then narrow it with `typeof` or a type guard.\n\n**4. Use meaningful names** — `UserProfile` beats `Data`; `fetchUserById` beats `getData`. Good names make the types self-documenting.\n\n**5. Let TypeScript infer — but be explicit at boundaries** — TypeScript can infer `const count = 5` is `number`. Don\'t over-annotate the obvious. But **always** be explicit on function signatures, API responses, and public interfaces — that\'s where inference breaks down and bugs hide.',
+        code: '// tsconfig.json — enable strict from day one\n{\n  "compilerOptions": {\n    "strict": true\n  }\n}\n\n// ✗ Avoid any — disables all checking\nfunction process(data: any) { ... }\n\n// ✓ Use unknown and narrow\nfunction process(data: unknown) {\n  if (typeof data === "string") {\n    console.log(data.toUpperCase());\n  }\n}\n\n// ✓ Infer the obvious, annotate the boundaries\nconst count = 5; // inferred as number — fine\n\n// Annotate function return types explicitly\nfunction getUser(id: number): User { ... }\nasync function fetchData(): Promise<Todo[]> { ... }',
+      },
+      {
+        h: 'Common mistakes',
+        p: '- **Using `any` as an escape hatch** — reach for `unknown` + type guards instead; `any` silently removes all safety.\n- **Forgetting to type `res.json()`** — always annotate the parsed result; `res.json()` returns `any` by default.\n- **Skipping error handling in async functions** — an unhandled rejection in a `fetch` call can crash your component silently.\n- **Type-asserting too aggressively** — `as HTMLInputElement` without a null check will throw at runtime if `namedItem` returns `null`.\n- **Turning off strict mode** — it feels easier at first, but every `strictNullChecks` violation is a future runtime crash.',
+      },
+      {
+        h: 'Quick recap',
+        p: '- **React with TypeScript**: type your props with `type Props` or `interface Props`, use `React.FC<Props>` for components.\n- **Fetch + interface**: define the response shape as an interface, annotate `const data: Todo[] = await res.json()`.\n- **Async/Await**: always declare explicit return types like `Promise<Todo>`, and rethrow after logging errors.\n- **Forms**: type the event as `React.FormEvent<HTMLFormElement>`, assert inputs to `HTMLInputElement` or `HTMLTextAreaElement`.\n- **Best practices**: `strict: true`, no `any`, explicit boundaries, meaningful names, let inference work for locals.\n\n**Interview Q:**\n1. How do you type React component props in TypeScript?\n2. How do you type the result of `res.json()` after a fetch call?\n3. What is the difference between `any` and `unknown`?\n4. Why should you always declare the return type of an async function?\n5. What is a type assertion and when should you use one?',
+      },
+    ],
+    snippets: [
+      {
+        label: 'React component with typed props',
+        code: 'type Props = {\n  title: string;\n  count: number;\n};\n\nconst Card: React.FC<Props> = ({ title, count }) => (\n  <div className="card">\n    <h3>{title}</h3>\n    <p>Count: {count}</p>\n  </div>\n);',
+        note: 'React.FC<Props> makes TypeScript check every usage of <Card /> at compile time.',
+      },
+      {
+        label: 'Typed fetch with interface',
+        code: 'interface Todo {\n  id: number;\n  title: string;\n  completed: boolean;\n}\n\nconst fetchTodos = async (): Promise<Todo[]> => {\n  const res = await fetch(\n    "https://jsonplaceholder.typicode.com/todos"\n  );\n  const data: Todo[] = await res.json();\n  return data;\n};',
+        note: 'res.json() returns any — the annotation `Todo[]` is what gives you autocomplete on the result.',
+      },
+      {
+        label: 'Async/Await with error handling',
+        code: 'const getTodo = async (id: number): Promise<Todo> => {\n  try {\n    const res = await fetch(\n      `https://jsonplaceholder.typicode.com/todos/${id}`\n    );\n    const data: Todo = await res.json();\n    return data;\n  } catch (err) {\n    console.error("Failed to fetch todo", err);\n    throw err;\n  }\n};',
+        note: 'Always rethrow after logging — swallowing the error leaves callers with no way to react.',
+      },
+      {
+        label: 'Typed form handler',
+        code: 'interface FormData {\n  name: string;\n  email: string;\n  message: string;\n}\n\nconst handleSubmit = (\n  e: React.FormEvent<HTMLFormElement>\n) => {\n  e.preventDefault();\n  const form = e.target as HTMLFormElement;\n  const data: FormData = {\n    name: (form.elements.namedItem("name") as HTMLInputElement).value,\n    email: (form.elements.namedItem("email") as HTMLInputElement).value,\n    message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,\n  };\n  console.log(data);\n};',
+        note: 'namedItem() returns Element | null — in production, always add a null check before reading .value.',
+      },
+      {
+        label: 'Best practices at a glance',
+        code: '// 1. strict mode in tsconfig.json\n{ "compilerOptions": { "strict": true } }\n\n// 2. Types/interfaces for everything\ninterface User { id: number; name: string; }\n\n// 3. Avoid any — use unknown + narrowing\nfunction parse(raw: unknown) {\n  if (typeof raw === "string") return raw.trim();\n}\n\n// 4. Meaningful names\nfunction fetchUserById(id: number): Promise<User> { ... }\n\n// 5. Infer locals, annotate boundaries\nconst count = 5; // inferred\nfunction getAll(): User[] { ... } // explicit',
+        note: 'strict: true is one flag that enables all strict checks — turn it on from day one, not after.',
       },
     ],
   },
