@@ -33,11 +33,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 1,614-day plan — 4 sequential stacks: the Python Stack (Agentic AI using Python, then core Python and FastAPI), the TypeScript Stack (JavaScript, TypeScript, React, Next.js, React Native, Express/Node), the Java Stack (J2SE through Microservices), and the DevOps Stack (DevOps, AWS Cloud)',
+    text: 'reviewed the full 53-month (1,614-day) plan — Phase 1: Python Stack starts with 153 days of Agentic AI (LangChain, LangGraph, MCP), then continues with core Python and FastAPI through end of 2027. Then TypeScript Stack (2028), Java Stack (2029), and DevOps Stack (2030)',
   },
   {
-    title: 'Ready for Phase 1',
-    text: 'no separate prerequisite phase this time — Day 1 starts straight into Phase 1: Agentic AI using Python',
+    title: 'Ready for Phase 1 · Python Stack',
+    text: 'Day 1 (1 Aug 2026) starts straight into Phase 1: Agentic AI using Python — 153 days of LangChain, LangGraph, MCP, and agentic workflows, followed by core Python and FastAPI',
   },
   {
     title: 'Accounts ready',
@@ -130,21 +130,21 @@ const STUDY_SYSTEM = [
   },
   {
     icon: '🗺️',
-    title: 'The 1614-Day Roadmap',
+    title: 'The 53-Month Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '4 stacks · ~1 year each',
+    subtitle: '4 stacks · Python Stack starts 1 Aug 2026',
     description:
-      '4 sequential stacks — the Python Stack (Agentic AI using Python, then core Python and FastAPI), the TypeScript Stack (JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS), the Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices), and the DevOps Stack (DevOps, AWS Cloud) — with DSA & System Design practiced throughout every stack. Know the whole map before step one.',
+      'Phase 1 · Python Stack (518 days): 153 days of Agentic AI (LangChain, LangGraph, MCP, n8n) → core Python → FastAPI. Then TypeScript Stack (2028) → Java Stack (2029) → DevOps Stack (2030). DSA & System Design practiced throughout every stack. 1,614 days total.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
     icon: '🤖',
-    title: 'Day 1 Starts With Agentic AI',
+    title: 'Day 1 · Agentic AI using Python',
     titleClass: 'card-title-lime',
-    subtitle: 'No prerequisite phase this time',
+    subtitle: 'Phase 1 · Python Stack · 153 days of Agentic AI',
     description:
-      'Day 1 begins directly with Phase 1: Agentic AI using Python — no separate prerequisite phase before it. Environment is ready, accounts are live, routine is locked.',
-    link: { href: '/python', label: 'Start Phase 1 · Agentic AI →' },
+      'Day 1 (1 Aug 2026) begins with 153 days of Agentic AI — building AI agents with LangChain, LangGraph, MCP, and n8n agentic workflows. Phase 1 (Python Stack) then continues into core Python and FastAPI through 31 Dec 2027.',
+    link: { href: '/python', label: 'Start Phase 1 · Python Stack →' },
   },
 ];
 
@@ -241,7 +241,7 @@ export default function Day000() {
           <Link to="/" className="day001-nav-btn day001-nav-home">
             Home
           </Link>
-          <p className="day001-datetime">Study Day 0</p>
+          <p className="day001-datetime">Day 0 · 31 Jul 2026</p>
           <Link to="/python" className="day001-nav-btn day001-nav-next">
             Phase 1 · Agentic AI →
           </Link>
@@ -250,16 +250,16 @@ export default function Day000() {
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
+              <span>53 Months</span>
               <span>1614 Days</span>
-              <span>Setup</span>
-              <span>Tooling</span>
-              <span>Day 0</span>
+              <span>Python Stack</span>
+              <span>Day 0 · 31 Jul 2026</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
                 DAY 0 <span aria-hidden="true">🛠️</span>
               </h1>
-              <p className="day001-day-theme">ENVIRONMENT SETUP — SHARPENING THE AXE</p>
+              <p className="day001-day-theme">ENVIRONMENT SETUP · PYTHON STACK BEGINS 1 AUG 2026</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -282,15 +282,15 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 of the 1,614-day learning journey</strong>. Today is only{' '}
-          <strong>environment setup</strong>: install <code>Node.js</code>, <code>Git</code>, and{' '}
-          <code>VS Code</code>, wire the terminal and Chrome DevTools, create{' '}
+          <strong>Day 0 · 31 Jul 2026 — environment setup before the 53-month journey begins.</strong>{' '}
+          Install <code>Node.js</code>, <code>Git</code>, and <code>VS Code</code>, wire the terminal and
+          Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             GitHub
           </a>{' '}
-          and Netlify accounts, and lock the routine (wake 4 AM, study 5:00–8:00 AM IST). No lectures yet —
-          clear every obstacle so <strong>Day 1</strong> (Phase 1 · Agentic AI) starts with zero
-          friction. Sharpen the axe before the first swing.
+          and Netlify accounts, and lock the routine (wake 4 AM, study 5:00–8:00 AM IST). No lectures today —
+          clear every obstacle so <strong>Day 1 (1 Aug 2026)</strong> starts with zero friction:{' '}
+          <strong>153 days of Agentic AI</strong> using Python — LangChain, LangGraph, MCP, n8n. Sharpen the axe before the first swing.
         </p>
 
         <section className="day001-learnt">
@@ -318,10 +318,10 @@ export default function Day000() {
 
         <footer className="day001-hashtags">
           <span>#Day0</span>
-          <span>#100DaysOfCode</span>
-          <span>#DevSetup</span>
+          <span>#PythonStack</span>
+          <span>#AgenticAI</span>
+          <span>#53Months</span>
           <span>#1614Days</span>
-          <span>#JSLearnHub</span>
         </footer>
       </div>
     </div>
