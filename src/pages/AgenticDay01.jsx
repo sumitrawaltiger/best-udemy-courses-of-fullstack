@@ -152,7 +152,7 @@ export default function AgenticDay01() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '1%' }} /></div>
 
         <p className="day001-summary">
-          Day 1 of 155 — the start of <strong>Phase 1: Agentic AI using Python</strong>, running{' '}
+          Day 1 of 153 — the start of <strong>Phase 1: Agentic AI using Python</strong>, running{' '}
           <strong>1 Aug – 31 Dec 2026</strong>. Today is pure orientation: what <strong>Generative AI</strong>{' '}
           and <strong>Agentic AI</strong> actually mean, how they sit on top of <strong>AI → ML → DL</strong>,
           why <strong>Python</strong> is the language for this journey, and getting the toolchain (Python +

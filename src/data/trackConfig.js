@@ -87,7 +87,7 @@ export const INTERVIEW_PREP_WEEKS = 0;
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
 //  chapterFactory.js = 20 Jul 2026, so module Day 1 also dates to 20 Jul 2026.)
 export const JOURNEY_START_LABEL = '20 Jul 2026';
-export const JOURNEY_END_LABEL = '23 Jul 2030';
+export const JOURNEY_END_LABEL = '31 Dec 2030';
 export const JOURNEY_TOTAL_DAYS = 1465;
 // Factory calendar: Day 1 = 20 Jul 2026 (COURSE_START); factory day N = journey Day N.
 export const JOURNEY_END_FACTORY_DAY = 1461;
