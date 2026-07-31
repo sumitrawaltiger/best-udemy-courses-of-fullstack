@@ -6,9 +6,9 @@ export const THUNDER_DAYS = 100;
 // First 47 days  = JavaScript          (1 Jan – 16 Feb 2028)
 // Next  20 days  = TypeScript          (17 Feb – 7 Mar 2028)
 // Remaining 299  = React + RN + Next + Express  (8 Mar – 31 Dec 2028)
-export const TS_YEAR_JS_DAYS = 47;          // 2028 · JavaScript phase
-export const TS_YEAR_TS_DAYS = 20;          // 2028 · TypeScript phase
-export const TS_YEAR_FRAMEWORKS_DAYS = 299; // 2028 · Frameworks phase (366 − 67)
+export const TS_YEAR_JS_DAYS = 47;          // 2028 · JavaScript phase (1 Jan – 16 Feb 2028)
+export const TS_YEAR_TS_DAYS = 21;          // 2028 · TypeScript phase (17 Feb – 9 Mar 2028)
+export const TS_YEAR_FRAMEWORKS_DAYS = 298; // 2028 · Frameworks phase (366 − 68, 10 Mar – 31 Dec 2028)
 export const TS_YEAR_TOTAL_DAYS = 366;      // 2028 leap year
 // ─────────────────────────────────────────────────────────────────────────────
 
