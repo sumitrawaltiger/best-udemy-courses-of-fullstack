@@ -59,7 +59,7 @@ const resources = [
   },
   {
     icon: '🗺️', title: '4-Stack Roadmap', titleClass: 'card-title-amber', subtitle: 'Big Picture',
-    description: 'See where the Python Stack fits in the full 1,616-day plan, and what the next three stacks cover.',
+    description: 'See where the Python Stack fits in the full 53-month (1,614-day) plan, and what the next three stacks cover.',
     link: { href: '/roadmap', label: 'Open the roadmap →' },
   },
 ];
