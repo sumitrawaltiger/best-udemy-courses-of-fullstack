@@ -1,6 +1,17 @@
 // Learning path calendar offsets (Day 1 = 20 Jul 2026)
 export const THUNDER_DAYS = 100;
 
+// ── TypeScript Stack Year (2028) ─────────────────────────────────────────────
+// 2028 is a leap year: 366 calendar days (Days 519–884 of the full journey)
+// First 47 days  = JavaScript          (1 Jan – 16 Feb 2028)
+// Next  20 days  = TypeScript          (17 Feb – 7 Mar 2028)
+// Remaining 299  = React + RN + Next + Express  (8 Mar – 31 Dec 2028)
+export const TS_YEAR_JS_DAYS = 47;          // 2028 · JavaScript phase
+export const TS_YEAR_TS_DAYS = 20;          // 2028 · TypeScript phase
+export const TS_YEAR_FRAMEWORKS_DAYS = 299; // 2028 · Frameworks phase (366 − 67)
+export const TS_YEAR_TOTAL_DAYS = 366;      // 2028 leap year
+// ─────────────────────────────────────────────────────────────────────────────
+
 // After Thunder: React & Next.js + React Native through 23 Jan 2027
 // Calendar Days 101–185 = 31 Oct 2026 → 23 Jan 2027 (85 calendar days; ~84 learning days after Day 100)
 export const NEXTJS_RN_PHASE_DAYS = 85;
