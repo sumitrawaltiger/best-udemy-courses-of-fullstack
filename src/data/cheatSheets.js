@@ -209,6 +209,15 @@ export const CHEAT_SHEETS = [
     tags: ['Git', 'GitHub', 'Branching', 'Version Control'],
   },
   {
+    id: 'devops-notes-handbook',
+    title: 'DevOps Notes — Illustrated Handbook',
+    description:
+      'An 8-page illustrated DevOps handbook covering the definition & introduction, DevOps architecture (People → Process → Tools), the continuous flow lifecycle (Plan → Code → Build → Test → Release → Deploy → Operate → Monitor), benefits of DevOps, and a DevOps tools reference (Git, GitHub, Jenkins, Docker, Kubernetes, Terraform, Ansible, Prometheus, Grafana).',
+    category: 'devops-cloud',
+    pdf: '/devops-notes/devops-notes-8-pages.pdf',
+    tags: ['DevOps', 'Architecture', 'Lifecycle', 'CI/CD', 'Tools', 'Handbook'],
+  },
+  {
     id: 'devops',
     title: 'DevOps Cheat Sheet',
     description:

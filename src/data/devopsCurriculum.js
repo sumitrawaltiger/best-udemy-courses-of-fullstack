@@ -173,6 +173,12 @@ const DEVOPS_GUIDE = {
   icon: '⬇️',
 };
 
+const DEVOPS_NOTES_PDF = {
+  label: 'DevOps Notes — 8-page Illustrated Handbook (PDF)',
+  href: '/devops-notes/devops-notes-8-pages.pdf',
+  icon: '📄',
+};
+
 // Community practice repo — 2600+ DevOps exercises, questions, and answers.
 const DEVOPS_EXERCISES = {
   label: 'DevOps Exercises & Interview Questions (GitHub)',
@@ -1328,6 +1334,10 @@ function buildLessons() {
       // Community practice repo — surface on the intro and interview-prep modules.
       if (title === 'Introduction to 100 Days of DevOps' || title === 'DevOps Interview Preparation') {
         lesson.extraLinks = [...(lesson.extraLinks || []), DEVOPS_EXERCISES];
+      }
+      // 8-page illustrated DevOps handbook — attach to the intro and fundamentals modules.
+      if (title === 'Introduction to 100 Days of DevOps' || title === 'Fundamentals of DevOps') {
+        lesson.extraLinks = [...(lesson.extraLinks || []), DEVOPS_NOTES_PDF];
       }
       // Docker roadmap overview on Day 1.
       if (title === 'Introduction to 100 Days of DevOps') {
