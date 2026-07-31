@@ -8,7 +8,7 @@ const learntToday = [
   { title: 'Metrics on screen', text: 'cost, TTFT, and success for the live run — not a slide' },
   { title: 'Record once', text: 'capture a clean 5-minute take; fix only what the recording reveals' },
   { title: 'README for humans', text: 'how to run, env vars, risks, and how to roll back the policy pack' },
-  { title: ‘What\’s next’, text: ‘tomorrow — Day 153 is the finale: capstone demo, retro, portfolio proof, and the Agentic AI series closes’ },
+  { title: "What’s next", text: "tomorrow — Day 153 is the finale: capstone demo, retro, portfolio proof, and the Agentic AI series closes" },
 ];
 
 const core = [
