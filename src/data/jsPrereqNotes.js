@@ -5,10 +5,10 @@
 
 export const PREREQ_META = {
   title: 'JavaScript Prerequisites',
-  subtitle: '47 Days · The Complete JavaScript Series',
+  subtitle: '48 Days · The Complete JavaScript Series',
   blurb:
-    'HTML5, CSS3 and JavaScript are assumed knowledge before Day 1 of the four-year plan. This is the JavaScript half of that foundation — 47 illustrated episodes, from why Brendan Eich wrote the language in ten days to how the V8 engine runs your code.',
-  totalDays: 47,
+    'HTML5, CSS3 and JavaScript are assumed knowledge before Day 1 of the four-year plan. This is the JavaScript half of that foundation — 48 illustrated episodes, from why Brendan Eich wrote the language in ten days to how the V8 engine runs your code.',
+  totalDays: 48,
   pdf: '/cheatsheets/javascript-series-47-episodes.pdf',
 };
 
@@ -4093,6 +4093,127 @@ export const PREREQ_DAYS = [
       {
         label: "The last line of the series",
         code: "console.log(\"Legend\"); // because you are one!",
+      },
+    ],
+  },
+  {
+    day: 48,
+    group: 'core',
+    title: 'JavaScript Numbers',
+    tagline: 'From decimals to Math helpers — numbers, completely.',
+    image: '/javascript-notes/ep48-javascript-numbers.jpeg',
+    tags: ['Numbers', 'Math', 'BigInt', 'parseInt', 'Intl.NumberFormat'],
+    notes: [
+      { k: 'Number creation', v: 'Decimal (123, -5, 3.14), binary (0b prefix), octal (0o prefix), hex (0x prefix — common for colors and bitmasks).' },
+      { k: 'Numeric separator', v: 'Use underscore `_` between digits for readability: `1_000_000`. Cannot appear at ends or next to the decimal point.' },
+      { k: 'BigInt', v: 'Large integers with `n` suffix or `BigInt()`. Cannot mix BigInt with Number in arithmetic — you get a TypeError.' },
+      { k: 'Converting', v: '`Number(value)` converts any value — `null` → 0, `undefined` → NaN, empty string → 0, trimmed "42" → 42.' },
+      { k: 'Parsing', v: '`parseInt(str, radix)` parses to integer and supports any base. `parseFloat(str)` handles decimals. `num.toString(radix)` does the reverse.' },
+      { k: 'Important constants', v: '`Number.MAX_SAFE_INTEGER` (9007199254740991), `Number.EPSILON`, `NaN` (only value not equal to itself), `Infinity`, `-Infinity`.' },
+      { k: 'Checking values', v: '`Number.isNaN()` — reliable NaN check (no coercion). `Number.isFinite()`, `Number.isInteger()`, `Number.isSafeInteger()`.' },
+      { k: 'Rounding', v: '`Math.round()` ties → +Infinity. `Math.floor()` → always down. `Math.ceil()` → always up. `Math.trunc()` → just drop the decimal.' },
+      { k: 'Formatting', v: '`num.toFixed(n)` string with exact decimal places. `toExponential()` scientific notation. `Intl.NumberFormat` for locale-aware currencies.' },
+      { k: 'Math helpers', v: '`Math.abs`, `Math.max`, `Math.min`, `Math.pow`, `Math.sqrt`, `Math.cbrt`, `Math.random`, `Math.hypot`, `Math.sign`, `Math.imul`, `Math.fround`.' },
+    ],
+    theory: [
+      {
+        h: 'JavaScript Numbers — The Complete Guide',
+        p: 'JavaScript has a single **Number type** — a 64-bit IEEE 754 double-precision floating-point. That single type covers integers, decimals, and special values like `NaN` and `Infinity`. Beyond that, **BigInt** handles arbitrarily large integers. This episode covers creation, conversion, parsing, checking, rounding, formatting, and the full Math helper API.',
+      },
+      {
+        h: '1. Number Creation',
+        p: 'JavaScript supports four literal forms:\n\n- **Decimal** — simple base-10 numbers. JavaScript supports integers and floating-point values.\n- **Binary** — binary literals use the `0b` prefix.\n- **Octal** — octal literals use the `0o` prefix.\n- **Hex** — hexadecimal literals use the `0x` prefix. Common for colors, bitmasks, and low-level values.',
+        code: '123;   // integer\n-5;    // negative number\n3.14;  // float\n\n0b1010; // binary → decimal 10\n0o755;  // octal  → decimal 493\n0xff;   // hex    → decimal 255',
+      },
+      {
+        h: '2. Numeric Separator & BigInt',
+        p: '**Numeric Separator** — use underscore (`_`) to group digits for readability. Separators must appear between digits — not at ends or next to the decimal point.\n\n**BigInt** — large integers with arbitrary precision, created with an `n` suffix or `BigInt()`. Cannot mix BigInt with Number in arithmetic operations — you get a `TypeError`.',
+        code: 'const oneM   = 1_000_000;\nconst amount = 1_234_567.89;\n\n123n;\n9007199254740993n; // beyond Number.MAX_SAFE_INTEGER\n\n1n + 2; // TypeError: cannot mix BigInt and Number',
+      },
+      {
+        h: '3. Parsing & Converting',
+        p: '**`Number(value)`** converts to number. `null` converts to 0; `undefined` will be converted to `NaN`. Trimmed whitespace is handled: `Number("  42  ")` gives `42`.\n\n**`parseInt(str, radix)`** parses the string (`str`) to integer. Supports octal, hex, and binary numbers as well by specifying `radix`.\n\n**`parseFloat(str)`** parses string to floating number.\n\n**`num.toString(radix)`** converts `num` to string. Supports octal, hex, and binary numbers as well by specifying `radix`.',
+        code: 'Number("12.3");    // 12.3\nNumber(true);      // 1\nNumber(false);     // 0\nNumber(null);      // 0\nNumber(undefined); // NaN\nNumber("");        // 0\nNumber("  42 ");   // 42\n\nparseInt("08");       // decimal 8\nparseInt("1010", 2);  // binary 10\nparseInt("755", 8);   // octal 493\nparseInt("ff", 16);   // hex 255\n\nparseFloat("3.14px"); // 3.14\n\n(100).toString();    // "100"\n(10).toString(2);    // "1010"\n(493).toString(8);   // "755"\n(255).toString(16);  // "ff"',
+      },
+      {
+        h: '4. Important Constants',
+        p: 'The Number namespace exposes several key constants:\n\n- **`Number.MAX_VALUE`** — largest positive number.\n- **`Number.MIN_VALUE`** — smallest positive value (closest to zero, not most negative).\n- **`Number.MAX_SAFE_INTEGER`** — largest integer safely represented without losing precision.\n- **`Number.MIN_SAFE_INTEGER`** — smallest safe integer.\n- **`Number.EPSILON`** — difference between 1 and the next representable float; useful for float-comparison tolerances.\n- **`NaN`** — Not-A-Number; result of an invalid numeric operation and **the only value not equal to itself** (`NaN !== NaN`).\n- **`Infinity`** — positive infinity.\n- **`-Infinity`** — negative infinity.',
+        code: 'Number.MAX_VALUE;         // 1.7976931348623157e+308\nNumber.MIN_VALUE;         // 5e-324\nNumber.MAX_SAFE_INTEGER;  // 9007199254740991\nNumber.MIN_SAFE_INTEGER;  // -9007199254740991\nNumber.EPSILON;           // 2.220446049250313e-16\n\nNaN;       // NaN\nInfinity;  // Infinity\n-Infinity; // -Infinity',
+      },
+      {
+        h: '5. Checking Values',
+        p: 'Four static methods on `Number` for checking what you have:\n\n- **`Number.isNaN(value)`** — reliable NaN check. Unlike the global `isNaN()`, this one does **not** coerce its argument: `Number.isNaN("NaN")` is `false`.\n- **`Number.isFinite(value)`** — checks that value is a finite number (not `Infinity`, `-Infinity`, or `NaN`).\n- **`Number.isInteger(value)`** — returns `true` for integer numbers. Note: `3.0` is an integer.\n- **`Number.isSafeInteger(value)`** — checks if the number is within the safe integer range.',
+        code: 'Number.isNaN(NaN);                    // true\nNumber.isNaN("NaN");                  // false (no coercion)\nNumber.isFinite(1 / 0);               // false\nNumber.isInteger(3.0);                // true\nNumber.isSafeInteger(9007199254740992); // false',
+      },
+      {
+        h: '6. Rounding & Formatting',
+        p: '**`Math.round(x)`** rounds x to the nearest integer; ties go toward +Infinity.\n**`Math.floor(x)`** rounds down towards the largest integer less than or equal to x.\n**`Math.ceil(x)`** rounds up towards the smallest integer greater than or equal to x.\n**`Math.trunc(x)`** removes the fractional part (toward zero).\n**`num.toFixed(n)`** returns a string with exactly `n` digits after the decimal. Result is rounded and zero-padded.',
+        code: 'Math.round(1.5);   // 2\nMath.round(-1.5);  // -1\n\nMath.floor(1.9);   // 1\nMath.floor(-1.1);  // -2\n\nMath.ceil(1.1);    // 2\nMath.ceil(-1.9);   // -1\n\nMath.trunc(1.9);   // 1\nMath.trunc(-1.9);  // -1\n\n(1.2345).toFixed(2); // "1.23"\n(1).toFixed(3);      // "1.000"',
+      },
+      {
+        h: '7. Exponential, Precision & Intl.NumberFormat',
+        p: '**`num.toExponential(fractionDigits)`** returns a string in scientific notation with the given digits after the decimal. Argument is optional.\n\n**`num.toPrecision(precision)`** returns a string with the specified number of significant digits; output may be fixed or exponential depending on the number.\n\n**`Intl.NumberFormat`** — locale-aware formatting for numbers, currencies, and percentages; configure with options.',
+        code: '(12345).toExponential(2);   // "1.23e+4"\n\n(1.2345).toPrecision(3);    // "1.23"\n(12345).toPrecision(3);     // "1.23e+4"\n\nnew Intl.NumberFormat("en-US").format(12345.678);\n// "12,345.678"\n\nnew Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(1234.5);\n// "1.234,50 €"',
+      },
+      {
+        h: '8. Math Helpers',
+        p: 'The `Math` object provides a wide range of helper functions:\n\n- **`Math.abs(x)`** — absolute value; returns non-negative magnitude.\n- **`Math.max(...vals)`** — largest value among arguments; returns `-Infinity` if no args.\n- **`Math.min(...vals)`** — smallest value among arguments; returns `Infinity` if no args.\n- **`Math.pow(x, y)`** — x raised to the power y (same as `x ** y`).\n- **`Math.sqrt(x)`** — square root; returns `NaN` for negative inputs.\n- **`Math.cbrt(x)`** — cube root (handles negatives, unlike `sqrt`).\n- **`Math.random()`** — pseudo-random number in [0, 1); not cryptographically secure.\n- **`Math.hypot(...vals)`** — Euclidean norm (sqrt of sum of squares); useful for vector lengths and avoids overflow/underflow.\n- **`Math.sign(x)`** — sign of x: `1` (positive), `-1` (negative), `0`, `-0`, or `NaN` for non-numbers.\n- **`Math.imul(a, b)`** — 32-bit integer multiplication with C-like wraparound; faster and accurate for 32-bit maths.\n- **`Math.fround(x)`** — converts to 32-bit single-precision float (rounds to nearest float32).',
+        code: 'Math.abs(-3);        // 3\nMath.max(1, 5, 3);   // 5\nMath.min(1, 5, 3);   // 1\nMath.pow(2, 10);     // 1024\nMath.sqrt(9);        // 3\nMath.cbrt(-8);       // -2\nMath.random();       // 0.0 <= x < 1.0\nMath.hypot(3, 4);    // 5\nMath.sign(100);      // 1\nMath.sign(-100);     // -1\nMath.sign(-0);       // -0\nMath.imul(0xffffffff, 2); // -2\nMath.fround(1.337);  // 1.3370000123977661',
+      },
+      {
+        h: 'Quick Reference Table',
+        p: 'The full Numbers API at a glance:\n\n- **Creation**: `123`, `0b1010`, `0o755`, `0xFF`, `1_000_000`\n- **Types**: `Number`, `BigInt` (`123n`)\n- **Convert**: `Number(x)`, `+x`, `String(x)`, `x.toString(radix)`\n- **Parse**: `parseInt(str, radix)`, `parseFloat(str)`\n- **Check**: `Number.isNaN`, `Number.isFinite`, `Number.isInteger`, `Number.isSafeInteger`\n- **Rounding**: `Math.round`, `Math.floor`, `Math.ceil`, `Math.trunc`, `toFixed`\n- **Math**: `Math.max`, `Math.min`, `Math.pow`, `Math.sqrt`, `Math.hypot`, `Math.random`\n- **BigInt**: `123n`, `BigInt(str)` — no mixing with Number\n- **Formatting**: `toFixed`, `toExponential`, `toPrecision`, `Intl.NumberFormat`',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Number creation — all literal forms',
+        code: '123;    // decimal integer\n3.14;   // decimal float\n0b1010; // binary → 10\n0o755;  // octal  → 493\n0xff;   // hex    → 255',
+        note: '`0x` hex is common for colors and bitmasks; all four forms produce a JS Number.',
+      },
+      {
+        label: 'Numeric separator & BigInt',
+        code: 'const budget = 1_000_000;\nconst amount = 1_234_567.89;\n\n// BigInt — n suffix or BigInt()\nconst big = 9007199254740993n;\nconst same = BigInt("9007199254740993");\n\n// 1n + 2; // TypeError — cannot mix BigInt and Number',
+        note: '`_` improves readability; BigInt and Number cannot mix in arithmetic.',
+      },
+      {
+        label: 'Converting values to numbers',
+        code: 'Number("12.3");    // 12.3\nNumber(true);      // 1\nNumber(null);      // 0\nNumber(undefined); // NaN\nNumber("");        // 0\nNumber("  42 ");   // 42  (whitespace trimmed)',
+      },
+      {
+        label: 'Parsing — parseInt and parseFloat',
+        code: 'parseInt("08");       // 8\nparseInt("1010", 2);  // 10  (binary)\nparseInt("755", 8);   // 493 (octal)\nparseInt("ff", 16);   // 255 (hex)\n\nparseFloat("3.14px"); // 3.14',
+        note: 'Always pass a radix to `parseInt` to avoid surprises.',
+      },
+      {
+        label: 'toString — number to string in any base',
+        code: '(100).toString();    // "100"\n(10).toString(2);    // "1010"\n(493).toString(8);   // "755"\n(255).toString(16);  // "ff"',
+      },
+      {
+        label: 'Number constants',
+        code: 'Number.MAX_VALUE;         // 1.7976931348623157e+308\nNumber.MIN_VALUE;         // 5e-324\nNumber.MAX_SAFE_INTEGER;  // 9007199254740991\nNumber.MIN_SAFE_INTEGER;  // -9007199254740991\nNumber.EPSILON;           // 2.220446049250313e-16\nNaN; Infinity; -Infinity;',
+      },
+      {
+        label: 'Checking values — isNaN, isFinite, isInteger, isSafeInteger',
+        code: 'Number.isNaN(NaN);                     // true\nNumber.isNaN("NaN");                   // false — no coercion\nNumber.isFinite(1 / 0);                // false\nNumber.isInteger(3.0);                 // true\nNumber.isSafeInteger(9007199254740992);// false',
+        note: '`Number.isNaN` is safer than the global `isNaN()` because it does not coerce.',
+      },
+      {
+        label: 'Rounding — round, floor, ceil, trunc',
+        code: 'Math.round(1.5);  // 2\nMath.round(-1.5); // -1\nMath.floor(1.9);  // 1\nMath.floor(-1.1); // -2\nMath.ceil(1.1);   // 2\nMath.ceil(-1.9);  // -1\nMath.trunc(1.9);  // 1\nMath.trunc(-1.9); // -1',
+      },
+      {
+        label: 'toFixed, toExponential, toPrecision',
+        code: '(1.2345).toFixed(2);        // "1.23"\n(1).toFixed(3);             // "1.000"\n(12345).toExponential(2);   // "1.23e+4"\n(1.2345).toPrecision(3);    // "1.23"\n(12345).toPrecision(3);     // "1.23e+4"',
+        note: '`toFixed` is handy for currency; `toPrecision` controls significant digits.',
+      },
+      {
+        label: 'Intl.NumberFormat — locale-aware formatting',
+        code: 'new Intl.NumberFormat("en-US").format(12345.678);\n// "12,345.678"\n\nnew Intl.NumberFormat("de-DE", {\n  style: "currency",\n  currency: "EUR"\n}).format(1234.5);\n// "1.234,50 €"',
+      },
+      {
+        label: 'Math helpers — the full toolkit',
+        code: 'Math.abs(-3);       // 3\nMath.max(1, 5, 3);  // 5\nMath.min(1, 5, 3);  // 1\nMath.pow(2, 10);    // 1024\nMath.sqrt(9);       // 3\nMath.cbrt(-8);      // -2\nMath.random();      // [0, 1)\nMath.hypot(3, 4);   // 5\nMath.sign(-100);    // -1\nMath.imul(0xffffffff, 2); // -2\nMath.fround(1.337); // 1.3370000123977661',
       },
     ],
   },

@@ -38,6 +38,15 @@ export const CHEAT_SHEETS = [
     tags: ['JavaScript', 'Arrays', 'map', 'filter', 'reduce', 'splice', 'Methods'],
   },
   {
+    id: 'javascript-numbers',
+    title: 'JavaScript Numbers Cheat Sheet',
+    description:
+      'A complete JavaScript Numbers reference in 12 illustrated pages by @thedevspaceio (Full-Stack AI Developer Roadmap). Covers number creation (decimal, binary with `0b` prefix, octal with `0o` prefix, hexadecimal with `0x` prefix — common for colors, bitmasks, and low-level values), numeric separator (underscore `_` for readability: `1_000_000`), and BigInt (large integers with `n` suffix or `BigInt()` — cannot mix BigInt with Number in arithmetic). Parsing and converting: `Number(value)` converts to number (`null` → 0, `undefined` → NaN), `parseInt(str, radix)` parses string to integer supporting octal, hex, and binary via radix, `parseFloat(str)` parses string to floating number, and `num.toString(radix)` converts a number to string in any base. Important constants: `Number.MAX_VALUE`, `Number.MIN_VALUE`, `Number.MAX_SAFE_INTEGER` (9007199254740991), `Number.MIN_SAFE_INTEGER`, `Number.EPSILON` (difference between 1 and next float), `NaN` (Not-A-Number — the only value not equal to itself), `Infinity`, and `-Infinity`. Checking values: `Number.isNaN(value)` reliable NaN check, `Number.isFinite(value)` checks finite number, `Number.isInteger(value)` returns true for integers, `Number.isSafeInteger(value)` checks safe integer range. Rounding and formatting: `Math.round(x)` ties go toward +Infinity, `Math.floor(x)` rounds toward -Infinity, `Math.ceil(x)` rounds toward +Infinity, `Math.trunc(x)` removes fractional part, `num.toFixed(n)` returns string with exactly n decimal digits (rounded, zero-padded), `num.toExponential(fractionDigits)` scientific notation, `num.toPrecision(precision)` specified significant digits, `Intl.NumberFormat` locale-aware formatting for currencies and percentages. Math helpers: `Math.abs(x)`, `Math.max(...vals)`, `Math.min(...vals)`, `Math.pow(x, y)` same as `x ** y`, `Math.sqrt(x)` returns NaN for negatives, `Math.cbrt(x)` cube root, `Math.random()` pseudo-random in [0,1), `Math.hypot(...vals)` Euclidean norm, `Math.sign(x)` returns 1/-1/0/-0/NaN, `Math.imul(a, b)` 32-bit integer multiplication, `Math.fround(x)` converts to 32-bit single-precision float.',
+    category: 'javascript',
+    pdf: '/cheatsheets/javascript-numbers-cheat-sheet.pdf',
+    tags: ['JavaScript', 'Numbers', 'Math', 'BigInt', 'parseInt', 'toFixed', 'Intl.NumberFormat'],
+  },
+  {
     id: 'javascript-objects',
     title: 'JavaScript Objects Cheat Sheet',
     description:
