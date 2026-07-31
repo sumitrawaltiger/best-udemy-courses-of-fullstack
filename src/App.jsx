@@ -893,8 +893,10 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="roadmap" element={<RoadmapHome />} />
-          <Route path="prerequisites" element={<Prerequisites />} />
-          <Route path="prerequisites/day/:day" element={<PrereqDay />} />
+          <Route path="javascript" element={<Prerequisites />} />
+          <Route path="javascript/day/:day" element={<PrereqDay />} />
+          <Route path="prerequisites" element={<Navigate to="/javascript" replace />} />
+          <Route path="prerequisites/day/:day" element={<Navigate to="/javascript" replace />} />
           <Route path="typescript" element={<TypescriptSeries />} />
           <Route path="typescript/day/:day" element={<TypescriptDay />} />
           <Route path="about-founder" element={<AboutFounder />} />

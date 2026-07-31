@@ -52,7 +52,7 @@ export default function PrereqDay() {
             The JavaScript prerequisite series runs from Day 1 to Day {PREREQ_META.totalDays}.
           </p>
           <div className="prereq-hero-actions">
-            <Link to="/prerequisites" className="prereq-btn prereq-btn-primary">
+            <Link to="/javascript" className="prereq-btn prereq-btn-primary">
               ← Back to all 47 days
             </Link>
           </div>
@@ -70,19 +70,19 @@ export default function PrereqDay() {
   return (
     <div className={`prereq-page prereq-day-page prereq-theme-${entry.group}`}>
       <nav className="prereq-daynav">
-        <Link to="/prerequisites" className="prereq-daynav-btn">
+        <Link to="/javascript" className="prereq-daynav-btn">
           All 47 days
         </Link>
         <span className="prereq-daynav-spacer" />
         {prev ? (
-          <Link to={`/prerequisites/day/${prev.day}`} className="prereq-daynav-btn">
+          <Link to={`/javascript/day/${prev.day}`} className="prereq-daynav-btn">
             ← Day {pad(prev.day)}
           </Link>
         ) : (
           <span className="prereq-daynav-btn is-disabled">← Day 00</span>
         )}
         {next ? (
-          <Link to={`/prerequisites/day/${next.day}`} className="prereq-daynav-btn prereq-daynav-next">
+          <Link to={`/javascript/day/${next.day}`} className="prereq-daynav-btn prereq-daynav-next">
             Day {pad(next.day)} →
           </Link>
         ) : (
@@ -210,7 +210,7 @@ export default function PrereqDay() {
 
       <footer className="prereq-dayfoot">
         {next ? (
-          <Link to={`/prerequisites/day/${next.day}`} className="prereq-btn prereq-btn-primary">
+          <Link to={`/javascript/day/${next.day}`} className="prereq-btn prereq-btn-primary">
             Next · Day {pad(next.day)} — {next.title} →
           </Link>
         ) : (

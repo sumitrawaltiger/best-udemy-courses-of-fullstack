@@ -16,11 +16,11 @@ export default function Prerequisites() {
   return (
     <div className="prereq-page">
       <section className="prereq-hero">
-        <span className="prereq-hero-badge">📚 Before Day 1 · Prerequisite</span>
+        <span className="prereq-hero-badge">🟨 JavaScript · Illustrated Series</span>
         <h1 className="prereq-hero-title">{PREREQ_META.title}</h1>
         <p className="prereq-hero-sub">{PREREQ_META.blurb}</p>
         <div className="prereq-hero-actions">
-          <Link to="/prerequisites/day/1" className="prereq-btn prereq-btn-primary">
+          <Link to="/javascript/day/1" className="prereq-btn prereq-btn-primary">
             Start at Day 1 →
           </Link>
           <a
@@ -50,9 +50,9 @@ export default function Prerequisites() {
 
       <section className="prereq-note">
         <p>
-          The plan starts on <strong>Day 1</strong> with Agentic AI in JavaScript,
-          because HTML5, CSS3 and JavaScript are assumed knowledge. These 47 episodes are that assumption
-          written down — the JavaScript you should be comfortable with before the journey begins.
+          47 illustrated episodes covering the full JavaScript language — from the history and origin of JS
+          through core syntax, the engine internals, async patterns, OOP, and advanced features. Theory
+          companion to the JavaScript curriculum.
         </p>
       </section>
 
@@ -88,7 +88,7 @@ export default function Prerequisites() {
 
       <section className="prereq-grid">
         {days.map((d) => (
-          <Link key={d.day} to={`/prerequisites/day/${d.day}`} className={`prereq-card prereq-card-${d.group}`}>
+          <Link key={d.day} to={`/javascript/day/${d.day}`} className={`prereq-card prereq-card-${d.group}`}>
             <div className="prereq-card-top">
               <span className="prereq-card-day">Day {pad(d.day)}</span>
               <span className="prereq-card-ep">EP {pad(d.day)}</span>

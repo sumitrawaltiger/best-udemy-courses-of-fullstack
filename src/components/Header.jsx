@@ -284,8 +284,8 @@ export default function Header({ onSearch }) {
           </div>
 
           <div className="header-nav-actions">
-            <Link to="/prerequisites" className="header-nav-link" onClick={closeMenu}>
-              Prerequisites
+            <Link to="/javascript" className="header-nav-link" onClick={closeMenu}>
+              JavaScript
             </Link>
             <Link to="/typescript" className="header-nav-link" onClick={closeMenu}>
               TypeScript

@@ -127,7 +127,7 @@ export default function TypescriptSeries() {
         <p>
           Notes written from <em>The TypeScript Series</em> — {TS_META.totalDays} illustrated episodes.
           Coming from JavaScript? Start with the{' '}
-          <Link to="/prerequisites">JavaScript prerequisites</Link> first.
+          <Link to="/javascript">JavaScript series</Link> first.
         </p>
       </footer>
     </div>
