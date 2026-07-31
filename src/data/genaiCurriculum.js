@@ -395,6 +395,34 @@ await main();`,
     ],
     notionUrl: LC,
     youtube: yt('sVcwVQRHIc8', 'Learn RAG From Scratch – LangChain AI Tutorial', 'freeCodeCamp.org'),
+    sections: [
+      {
+        id: 'rag-definition',
+        title: 'What is RAG?',
+        content: "**Retrieval-Augmented Generation (RAG)** — retrieve information before asking the LLM to generate a response.\n\nInstead of relying only on the LLM's training data, RAG gives the model fresh, specific, and private knowledge at query time by first searching a **vector database** and injecting the most relevant results into the prompt.",
+      },
+      {
+        id: 'rag-phase-1-prepare',
+        title: 'Phase 1 — Prepare the Knowledge (One-Time Setup)',
+        content: "This pipeline runs once when you load or update your knowledge base — not on every user query.\n\n**Step 1 — Load Documents:** collect your source information — `.docs`, `.pdf`, source code, Notion pages, wikis, API responses, or any text source.\n\n**Step 2 — Split into Chunks:** break documents into smaller pieces (`Chunk 1`, `Chunk 2`, `Chunk 3`, ..., `Chunk n`). Chunk size affects retrieval quality — too large loses precision, too small loses context.\n\n**Step 3 — Create Embeddings:** run each chunk through an embedding model to produce a dense numeric vector, e.g. `[0.21, -0.41, 0.73, ...]`. Semantically similar text produces similar vectors.\n\n**Step 4 — Store in a Vector DB:** persist all chunk vectors in a vector database such as `Pinecone`, `Weaviate`, or `Qdrant`. The DB supports fast **approximate nearest-neighbour** search by cosine or dot-product similarity.\n\nThis only needs to happen when documents are added or updated.",
+      },
+      {
+        id: 'rag-phase-2-query',
+        title: 'Phase 2 — Answer a User\'s Question (Happens Every Time)',
+        content: "Every user query triggers this three-step flow:\n\n**① Search**\n- Convert the user question into an embedding using the same embedding model: `\"How does RAG work?\"` → `[0.23, -0.11, 0.67, ...]`\n- Run a **semantic search** against the vector DB\n- Retrieve the **top relevant chunks** ranked by similarity score (e.g. Chunk 7 at 0.92, Chunk 3 at 0.89, Chunk 12 at 0.85)\n\n**② Build the Prompt**\n- Combine into a **Final Prompt** sent to the LLM:\n  - System Instructions (`You are a helpful assistant...`)\n  - User Question (`How does RAG work?`)\n  - Retrieved Context (`Chunk 7: ..., Chunk 3: ..., Chunk 12: ...`)\n\n**③ Generate the Response**\n- The LLM receives the complete context\n- It reasons over the retrieved information\n- It generates a **grounded** final answer based on real evidence — not just training memory",
+      },
+      {
+        id: 'rag-key-notes',
+        title: 'Key Notes — How RAG Actually Works',
+        content: "**The LLM never searches the database itself.** The application retrieves the relevant chunks first, then passes them to the LLM as part of the prompt context.\n\n**What counts as a \"document\" in RAG?** In RAG, a document is any piece of information that can be searched and retrieved. Depending on the application, documents can be:\n- **Source code** — Claude Code, Cursor, GitHub Copilot\n- **Uploaded files** — ChatGPT, Gemini, Claude\n- **Project documentation and knowledge bases** — Notion AI, Glean, Atlassian Rovo\n- **Test artifacts, test specifications and project metadata** — BugO, KaneAI\n- **Wikis, APIs, or internal documentation**",
+      },
+      {
+        id: 'rag-formula',
+        title: 'RAG in One Line',
+        content: "**Knowledge** (Your Data) + **Retrieval** (Semantic Search) + **Context** (Build Prompt) + **LLM** (Reasoning) = **Better Answers**\n\nRAG solves the core limitation of LLMs: they only know what was in their training data. By retrieving fresh, relevant context at query time, you get answers that are accurate, up-to-date, and grounded in your specific documents — without re-training the model.",
+        code: "# Minimal RAG flow (LangChain)\nfrom langchain_community.vectorstores import Chroma\nfrom langchain_openai import OpenAIEmbeddings, ChatOpenAI\nfrom langchain.chains import RetrievalQA\n\n# Phase 1: index your docs once\nvectorstore = Chroma.from_documents(\n    documents=chunks,          # pre-split doc chunks\n    embedding=OpenAIEmbeddings()\n)\n\n# Phase 2: answer questions at query time\nqa = RetrievalQA.from_chain_type(\n    llm=ChatOpenAI(model='gpt-4o'),\n    retriever=vectorstore.as_retriever(search_kwargs={'k': 3})\n)\nprint(qa.run('How does RAG work?'))",
+      },
+    ],
   },
   {
     genaiDay: 9,

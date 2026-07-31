@@ -4,6 +4,7 @@
 // Drop the file into public/cheatsheets/ with the matching filename.
 
 export const CHEATSHEET_CATEGORIES = [
+  { id: 'ai-genai', label: 'AI & Gen AI', icon: '🤖' },
   { id: 'api-tools', label: 'API & Tools', icon: '🛠️' },
   { id: 'languages', label: 'Languages', icon: '💻' },
   { id: 'javascript', label: 'JavaScript', icon: '🟨' },
@@ -19,6 +20,15 @@ export const CHEATSHEET_CATEGORIES = [
 ];
 
 export const CHEAT_SHEETS = [
+  {
+    id: 'rag-workflow',
+    title: 'RAG Workflow Cheatsheet',
+    description:
+      'A visual two-phase RAG reference. Phase 1 (one-time setup): load Documents → split into Chunks → create Embeddings → store in a Vector DB (Pinecone, Weaviate, Qdrant). Phase 2 (every query): convert the question to an embedding → semantic search the vector DB → retrieve the top-scored chunks → build a Final Prompt (system instructions + user question + retrieved context) → send to the LLM → get a grounded answer. Key notes: the LLM never searches the database itself — the application retrieves first, then passes context. "Documents" in RAG means any searchable info: source code, uploaded files, project docs, knowledge bases, wikis, or test metadata. Summary formula: Knowledge + Retrieval + Context + LLM = Better Answers.',
+    category: 'ai-genai',
+    image: '/cheatsheets/rag-workflow-cheatsheet.jpg',
+    tags: ['RAG', 'Agentic AI', 'Vector DB', 'Embeddings', 'LangChain', 'Gen AI'],
+  },
   {
     id: 'javascript-series-47',
     title: 'The JavaScript Series — 47 Illustrated Episodes',
