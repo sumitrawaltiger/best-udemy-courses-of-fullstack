@@ -29,6 +29,15 @@ export const CHEAT_SHEETS = [
     tags: ['JavaScript', 'ES6+', 'DOM', 'Async', 'Fetch', 'JS Engine', '47 Episodes'],
   },
   {
+    id: 'javascript-arrays',
+    title: 'JavaScript Arrays Cheat Sheet',
+    description:
+      'A complete JavaScript arrays reference in 11 illustrated pages by @thedevspaceio (Full-Stack AI Developer Roadmap). Covers every array property and method in a quick-reference table — mutating vs non-mutating — then dives into each group with runnable code examples: creating arrays (Array.isArray(), Array.from(), Array.of()); adding & removing elements (.push(), .pop(), .unshift(), .shift(), .splice()); transforming arrays (.map(), .filter(), .reduce()); searching arrays (.includes(), .find(), .findIndex()); iterating arrays (.forEach(), .every(), .some()); ordering & joining (.sort(), .reverse(), .join()); and flattening arrays (.flat(), .flatMap()). Every method comes with a concise explanation and a clear code snippet.',
+    category: 'javascript',
+    pdf: '/cheatsheets/javascript-arrays-cheat-sheet.pdf',
+    tags: ['JavaScript', 'Arrays', 'map', 'filter', 'reduce', 'splice', 'Methods'],
+  },
+  {
     id: 'javascript-objects',
     title: 'JavaScript Objects Cheat Sheet',
     description:
