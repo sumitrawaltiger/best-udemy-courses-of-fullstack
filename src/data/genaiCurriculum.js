@@ -25,6 +25,50 @@ export const genaiLessons = [
     ],
     notionUrl: LC,
     youtube: yt('zjkBMFhNj_g', '[1hr Talk] Intro to Large Language Models', 'Andrej Karpathy'),
+    image: '/cheatsheets/5-months-agentic-ai-learning-plan.jpg',
+    imageAlt: '5 Months Agentic AI Learning Plan — 153 days covering Foundations (Month 1), Tools & Memory (Month 2), Reasoning & Planning (Month 3), Workflows & Orchestration (Month 4), and Advanced & Deployment (Month 5), with 8 syllabus topics and capstone project ideas using LangChain, LangGraph, MCP, FastAPI, Docker, and PostgreSQL',
+    sections: [
+      {
+        id: 'agentic-ai-5-month-plan',
+        title: '5-Month Agentic AI Learning Plan — Overview',
+        content: "**Agentic AI** refers to autonomous AI systems (agents) that perceive their environment, reason, plan, take actions using tools, learn from feedback, and achieve goals with minimal human intervention.\n\nThis 5-month, 153-day plan covers the full Agentic AI stack — from foundations through production deployment — using **LangChain**, **LangGraph**, **MCP**, **FastAPI**, **Docker**, **PostgreSQL/Vector DB**, and **Streamlit**.\n\n**Key capabilities you build:**\n- Autonomous Reasoning\n- Goal Planning\n- Tool Use\n- Memory & Context\n- Multi-step Execution\n- Adaptation & Learning\n\n**Outcomes:**\n- Understand agent architecture and design patterns\n- Build real-world AI agents with tools and workflows\n- Orchestrate complex tasks using LangChain & LangGraph\n- Integrate memory, retrieval, and external systems\n- Deploy and evaluate agent applications",
+      },
+      {
+        id: 'agentic-month-1',
+        title: 'Month 1 — Foundations (31 Days)',
+        content: "**Focus:** Basics of Agentic AI & Core Concepts\n\n**Topics:**\n- What is Agentic AI?\n- AI Agents vs LLMs vs Traditional Automation\n- Agent Architecture Overview (Perception, Reasoning, Planning, Action)\n- Types of Agents (Reactive, Deliberative, Hybrid)\n- Agent Design Patterns\n- Introduction to LangChain\n- Environment & Setup\n\n**Project:** Build your first AI Agent that can chat and respond using an LLM.",
+      },
+      {
+        id: 'agentic-month-2',
+        title: 'Month 2 — Tools & Memory (30 Days)',
+        content: "**Focus:** Tools, Memory & Context Management\n\n**Topics:**\n- Tools & Tool Calling\n- Using Built-in Tools (`SerpAPI`, `Calculator`, etc.)\n- Custom Tools\n- Memory Types (Buffer, Summary, Entity)\n- Conversational Memory\n- Vector Stores & Embeddings\n- Document Loaders (PDF, Web, CSV, etc.)\n\n**Project:** Build an agent that can use tools (search, calc, API) and remember conversations.",
+      },
+      {
+        id: 'agentic-month-3',
+        title: 'Month 3 — Reasoning & Planning (31 Days)',
+        content: "**Focus:** Reasoning, Planning & Multi-step Execution\n\n**Topics:**\n- Prompt Engineering for Agents\n- ReAct Pattern (Reason + Act)\n- Plan-and-Execute Pattern\n- Chain-of-Thought Reasoning\n- Task Decomposition\n- Multi-step Workflows\n- Error Handling & Self-Correction\n- Evaluation & Tracing (LangSmith Basics)\n\n**Project:** Build a multi-step agent that can plan and solve complex tasks autonomously.",
+      },
+      {
+        id: 'agentic-month-4',
+        title: 'Month 4 — Workflows & Orchestration (30 Days)',
+        content: "**Focus:** LangGraph, Advanced Workflows & Orchestration\n\n**Topics:**\n- Introduction to LangGraph\n- State Graph Fundamentals\n- Nodes, Edges & Conditional Routing\n- Human-in-the-Loop\n- Parallel & Async Execution\n- Subgraphs & Modularization\n- Long-term Memory with Vector DB\n- Integration with External APIs & Databases\n\n**Project:** Orchestrate a complex workflow with LangGraph (for real-world use case).",
+      },
+      {
+        id: 'agentic-month-5',
+        title: 'Month 5 — Advanced & Deployment (31 Days)',
+        content: "**Focus:** Advanced Agents, Optimization & Deployment\n\n**Topics:**\n- Multi-Agent Systems\n- Agent Collaboration Patterns\n- Retrieval-Augmented Agents (RAG + Agents)\n- Guardrails & Safety\n- Observability & Monitoring\n- Performance Optimization\n- Deploying Agents (FastAPI, Docker, Cloud)\n- Capstone Project\n\n**Project:** Build and deploy a production-ready Agentic AI application end-to-end.",
+      },
+      {
+        id: 'agentic-syllabus-8-topics',
+        title: 'Complete Syllabus — 8 Core Topic Areas',
+        content: "The full curriculum covers 8 structured topic areas:\n\n**1. Agent Foundations** — What is Agentic AI, Agent Types & Architectures, Capabilities & Limitations, Design Patterns, Ethics & Best Practices.\n\n**2. LangChain Basics** — LLMs & Chat Models, Prompt Templates, Chains, Output Parsers, Callbacks & Tracing.\n\n**3. Tools & Actions** — Tool Calling, Built-in Tools, Custom Tools, API Integrations, Function Calling.\n\n**4. Memory & Context** — Conversation Memory, Summary Memory, Entity Memory, Vector Stores, Embeddings & Retrieval.\n\n**5. Reasoning & Planning** — ReAct, Plan-and-Execute, Reflection & Self-Correction, Multi-step Reasoning, Task Decomposition.\n\n**6. LangGraph & Workflows** — StateGraph Basics, Nodes, Edges, State, Conditional Routing, Human-in-the-Loop, Subgraphs & Reusability.\n\n**7. Advanced Topics** — Multi-Agent Systems, Agent Collaboration, RAG + Agents, Guardrails & Safety, Evaluation & Observability.\n\n**8. Deployment & Ops** — FastAPI Integration, Dockerization, Cloud Deployment, Monitoring & Logging, Scaling & Optimization.",
+      },
+      {
+        id: 'agentic-capstone-ideas',
+        title: 'Capstone Project Ideas',
+        content: "Five production-ready project ideas to demonstrate Agentic AI skills:\n\n- **Personal AI Assistant** — with tools and memory\n- **Research Agent** — search, summarize, and cite sources automatically\n- **Data Analyst Agent** — analyze and visualize data on demand\n- **Customer Support Agent** — multi-agent + RAG for knowledge-base-grounded support\n- **Autonomous Workflow Agent** — end-to-end automation across tools and APIs",
+      },
+    ],
   },
   {
     genaiDay: 2,

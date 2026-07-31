@@ -21,6 +21,15 @@ export const CHEATSHEET_CATEGORIES = [
 
 export const CHEAT_SHEETS = [
   {
+    id: '5-months-agentic-ai-plan',
+    title: '5 Months Agentic AI Learning Plan',
+    description:
+      'A 153-day, 5-month roadmap to master Agentic AI. Month 1 (Foundations): agent architecture, types of agents, design patterns, LangChain intro. Month 2 (Tools & Memory): tool calling, built-in tools, custom tools, memory types (Buffer/Summary/Entity), vector stores, document loaders. Month 3 (Reasoning & Planning): ReAct, Plan-and-Execute, chain-of-thought, task decomposition, multi-step workflows, LangSmith tracing. Month 4 (Workflows & Orchestration): LangGraph, state graphs, conditional routing, human-in-the-loop, parallel execution, long-term memory with vector DB. Month 5 (Advanced & Deployment): multi-agent systems, RAG + agents, guardrails, observability, deploying with FastAPI/Docker/Cloud, capstone. Full tech stack: LangChain, LangGraph, MCP, n8n, Python, OpenAI, FAISS/Chroma, FastAPI, Docker, PostgreSQL/Vector DB, Streamlit.',
+    category: 'ai-genai',
+    image: '/cheatsheets/5-months-agentic-ai-learning-plan.jpg',
+    tags: ['Agentic AI', 'LangChain', 'LangGraph', 'RAG', 'Learning Plan', '153 Days'],
+  },
+  {
     id: 'rag-workflow',
     title: 'RAG Workflow Cheatsheet',
     description:
