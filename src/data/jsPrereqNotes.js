@@ -5,10 +5,10 @@
 
 export const PREREQ_META = {
   title: 'JavaScript Prerequisites',
-  subtitle: '48 Days · The Complete JavaScript Series',
+  subtitle: '49 Days · The Complete JavaScript Series',
   blurb:
-    'HTML5, CSS3 and JavaScript are assumed knowledge before Day 1 of the four-year plan. This is the JavaScript half of that foundation — 48 illustrated episodes, from why Brendan Eich wrote the language in ten days to how the V8 engine runs your code.',
-  totalDays: 48,
+    'HTML5, CSS3 and JavaScript are assumed knowledge before Day 1 of the four-year plan. This is the JavaScript half of that foundation — 49 illustrated episodes, from why Brendan Eich wrote the language in ten days to how the V8 engine runs your code.',
+  totalDays: 49,
   pdf: '/cheatsheets/javascript-series-47-episodes.pdf',
 };
 
@@ -4214,6 +4214,120 @@ export const PREREQ_DAYS = [
       {
         label: 'Math helpers — the full toolkit',
         code: 'Math.abs(-3);       // 3\nMath.max(1, 5, 3);  // 5\nMath.min(1, 5, 3);  // 1\nMath.pow(2, 10);    // 1024\nMath.sqrt(9);       // 3\nMath.cbrt(-8);      // -2\nMath.random();      // [0, 1)\nMath.hypot(3, 4);   // 5\nMath.sign(-100);    // -1\nMath.imul(0xffffffff, 2); // -2\nMath.fround(1.337); // 1.3370000123977661',
+      },
+    ],
+  },
+  {
+    day: 49,
+    group: 'core',
+    title: 'JavaScript Objects — Full Reference',
+    tagline: 'Every Object method, with runnable examples.',
+    image: '/javascript-notes/ep49-javascript-objects-reference.jpeg',
+    tags: ['Objects', 'Object.keys', 'Immutability', 'Prototypes', 'Descriptors'],
+    notes: [
+      { k: 'Iterating', v: '`Object.keys()` → names, `Object.values()` → values, `Object.entries()` → `[key, value]` pairs, `Object.fromEntries()` → back to object.' },
+      { k: 'Creating', v: 'Object literal `{}` for most cases. `Object.create(proto)` for a specific prototype chain; pass `null` for a prototype-free dictionary.' },
+      { k: 'Accessing', v: 'Dot notation `o.a` for known keys. Bracket notation `o["b-key"]` for dynamic or hyphenated keys. Computed property names `{ [key]: value }`.' },
+      { k: 'Copying & merging', v: 'Spread `{ ...o, c: 3 }` creates a new object. `Object.assign(target, src1, src2)` mutates target and copies all enumerable own properties.' },
+      { k: 'Property descriptors', v: '`Object.defineProperty(obj, "name", { value, writable, enumerable, configurable })`. `getOwnPropertyDescriptor` reads the descriptor back.' },
+      { k: 'Freeze', v: '`Object.freeze(obj)` — prevents adding, removing, or changing properties. Shallow — nested objects are not frozen.' },
+      { k: 'Seal', v: '`Object.seal(obj)` — prevents adding or removing properties, but existing values can still be changed.' },
+      { k: 'preventExtensions', v: '`Object.preventExtensions(obj)` — prevents adding new properties only. Existing ones can be changed or deleted.' },
+      { k: 'Checking properties', v: '`Object.hasOwn(obj, key)` — own property only. `"key" in obj` — also checks the prototype chain.' },
+      { k: 'Prototypes', v: '`Object.getPrototypeOf(obj)` reads the prototype. `Object.setPrototypeOf(obj, proto)` changes it — use carefully as it hurts performance.' },
+    ],
+    theory: [
+      {
+        h: 'JavaScript Objects — Full Reference',
+        p: 'JavaScript objects are collections of key-value pairs and the backbone of nearly all JS data structures. Beyond the basics, the `Object` namespace provides a rich set of static methods for iterating, copying, defining property attributes, locking down objects, checking ownership, and manipulating prototypes. This episode is the complete reference — every method, with a runnable example.',
+      },
+      {
+        h: '1. Object Methods — Quick Reference Table',
+        p: 'All Object static methods at a glance:\n\n- **`Object.keys()`** — returns an array of own enumerable property names.\n- **`Object.values()`** — returns an array of own enumerable property values.\n- **`Object.entries()`** — returns an array of `[key, value]` pairs.\n- **`Object.fromEntries()`** — creates an object from `[key, value]` pairs.\n- **`Object.assign()`** — copies properties from source objects to a target.\n- **`Object.create()`** — creates a new object with a specified prototype.\n- **`Object.defineProperty()`** — defines or modifies a property with a descriptor.\n- **`Object.defineProperties()`** — defines or modifies multiple properties.\n- **`Object.getOwnPropertyDescriptor()`** — returns the descriptor for a property.\n- **`Object.getOwnPropertyNames()`** — returns all own property names.\n- **`Object.getOwnPropertySymbols()`** — returns all own symbol properties.\n- **`Object.freeze()`** — prevents modifications to an object.\n- **`Object.seal()`** — prevents adding/removing properties.\n- **`Object.preventExtensions()`** — prevents adding new properties.\n- **`Object.isFrozen()`** — checks if an object is frozen.\n- **`Object.isSealed()`** — checks if an object is sealed.\n- **`Object.isExtensible()`** — checks if new properties can be added.\n- **`Object.hasOwn()`** — checks if a property is an own property.\n- **`Object.getPrototypeOf()`** — returns the prototype of an object.\n- **`Object.setPrototypeOf()`** — sets the prototype of an object.\n- **`Object.is()`** — compares two values, including `NaN` and `-0`.',
+      },
+      {
+        h: '2. Creating Objects',
+        p: '**Object literal** is the most common form — curly braces with key-value pairs. Used for almost everything.\n\n**`Object.create(proto)`** creates an object with a specified prototype. Useful when you need a specific prototype chain without using a class. Pass `null` to create a prototype-free dictionary (no inherited `toString`, `hasOwnProperty`, etc.).',
+        code: '// Object literal\nconst user = {\n  name: "Alice",\n  age: 30,\n};\n\n// Object.create() — with a specified prototype\nconst proto = {\n  greet() {\n    return "hello";\n  },\n};\nconst obj = Object.create(proto);\nobj.greet(); // "hello"\n\n// No prototype — pure dictionary\nconst dict = Object.create(null);',
+      },
+      {
+        h: '3. Accessing Properties',
+        p: '**Dot notation** (`o.a`) — the standard way to read known property names. **Bracket notation** (`o["b-key"]`) — required when the key is dynamic, stored in a variable, or contains characters not valid in identifiers (hyphens, spaces).\n\n**Computed property names** let you use an expression as the key inside an object literal using `[expr]`.',
+        code: 'const o = { a: 1, "b-key": 2 };\no.a;        // 1\no["b-key"]; // 2\n\n// Computed property name\nconst key = "name";\nconst user = { [key]: "Alice" };\nuser.name; // "Alice"',
+      },
+      {
+        h: '4. Iterating Objects',
+        p: '**`Object.keys(o)`** — returns an array of own enumerable property names.\n**`Object.values(o)`** — returns an array of own enumerable property values.\n**`Object.entries(o)`** — returns an array of `[key, value]` pairs. Useful for iterating with `for...of` or passing to `Map`.\n**`Object.fromEntries(entries)`** — the inverse of `entries()`. Creates an object from an iterable of `[key, value]` pairs — great for transforming objects via `map()`.',
+        code: 'const o = { a: 1, b: 2 };\n\nObject.keys(o);    // ["a", "b"]\nObject.values(o);  // [1, 2]\nObject.entries(o); // [["a", 1], ["b", 2]]\n\n// Round-trip: entries → transform → fromEntries\nconst entries = [\n  ["a", 1],\n  ["b", 2],\n];\nObject.fromEntries(entries); // { a: 1, b: 2 }',
+      },
+      {
+        h: '5. Copying and Merging',
+        p: '**Spread syntax** (`{ ...o }`) — creates a new object by spreading all own enumerable properties. Any properties after the spread override earlier ones. This is a **shallow copy** — nested objects are still shared by reference.\n\n**`Object.assign(target, ...sources)`** — copies own enumerable properties from each source into `target` (mutating it) and returns `target`. Later sources overwrite earlier ones.',
+        code: '// Spread — copy and add c: 3\nconst o = { a: 1, b: 2 };\nconst copy = { ...o, c: 3 };\n// { a: 1, b: 2, c: 3 }\n\n// Object.assign — mutates target\nconst target = { a: 1 };\nObject.assign(target, { b: 2 }, { c: 3 });\n// target is { a: 1, b: 2, c: 3 }',
+        note: 'Both spread and `Object.assign` do a **shallow** copy — nested objects are not cloned.',
+      },
+      {
+        h: '6. Property Descriptors',
+        p: '**`Object.defineProperty(obj, name, descriptor)`** — defines or modifies a property with a precise descriptor object that controls:\n\n- **`value`** — the property value.\n- **`writable`** — if `false`, assignment is silently ignored (throws in strict mode).\n- **`enumerable`** — if `false`, the key is hidden from `for...in` and `Object.keys()`.\n- **`configurable`** — if `false`, the property cannot be redefined or deleted.\n\n**`Object.getOwnPropertyDescriptor(obj, name)`** reads the descriptor back so you can inspect these flags.',
+        code: 'const obj = {};\nObject.defineProperty(obj, "name", {\n  value: "Alice",\n  writable: false,\n  enumerable: true,\n  configurable: false,\n});\nobj.name = "Bob"; // ignored in strict mode\n\n// Read the descriptor\nObject.getOwnPropertyDescriptor(obj, "name");\n// { value: "Alice", writable: false, enumerable: true, configurable: false }',
+      },
+      {
+        h: '7. Immutability Helpers',
+        p: '**`Object.freeze(obj)`** — the strictest lock. Prevents adding, removing, **or changing** any property. Writes are silently ignored (throw in strict mode). Note: this is a **shallow freeze** — nested objects remain mutable.\n\n**`Object.seal(obj)`** — prevents adding or removing properties, but existing values **can still be changed**. Think "shape is fixed, values are not".\n\n**`Object.preventExtensions(obj)`** — the lightest lock. Only prevents adding new properties. Existing ones can be changed or deleted.\n\nUse `Object.isFrozen()`, `Object.isSealed()`, and `Object.isExtensible()` to check the current state.',
+        code: '// freeze — nothing can change\nconst o1 = { a: 1 };\nObject.freeze(o1);\no1.a = 2; // ignored in strict mode\n\n// seal — can change values, cannot add/remove\nconst o2 = { a: 1 };\nObject.seal(o2);\no2.a = 2; // works\no2.b = 3; // ignored\n\n// preventExtensions — cannot add new properties\nconst o3 = { a: 1 };\nObject.preventExtensions(o3);\no3.b = 2; // ignored',
+        note: '`freeze` ⊃ `seal` ⊃ `preventExtensions` — each is strictly more permissive than the one above it.',
+      },
+      {
+        h: '8. Checking Properties',
+        p: '**`Object.hasOwn(obj, key)`** — checks if `key` is an **own** property of `obj` (not inherited through the prototype chain). The modern replacement for `obj.hasOwnProperty(key)`.\n\n**`in` operator** — checks if the property exists **anywhere** in the prototype chain, including inherited ones.\n\nRule of thumb: use `in` when you want to check inherited properties, and `Object.hasOwn()` when you only want own properties.',
+        code: 'const o = { a: 1 };\nObject.hasOwn(o, "a");         // true\nObject.hasOwn(o, "toString");  // false (inherited)\n\nconst user = { name: "Alice" };\n"name" in user;       // true  (own property)\n"toString" in user;   // true  (inherited from Object.prototype)\n"age" in user;        // false\n\n// Compare\nObject.hasOwn(user, "name");      // true\nObject.hasOwn(user, "toString");  // false',
+      },
+      {
+        h: '9. Prototypes',
+        p: '**`Object.getPrototypeOf(obj)`** — returns the prototype of `obj`. Every plain object\'s prototype is `Object.prototype`; every array\'s is `Array.prototype`.\n\n**`Object.setPrototypeOf(obj, proto)`** — changes the prototype of `obj` at runtime. Use carefully — modifying the prototype after object creation significantly **hurts performance** because the JS engine optimizes objects for a fixed prototype shape.\n\n**`Object.is(a, b)`** — compares two values with strict equality plus two fixes: `Object.is(NaN, NaN)` is `true` (unlike `===`) and `Object.is(+0, -0)` is `false` (unlike `===`).',
+        code: '// getPrototypeOf\nconst obj = {};\nObject.getPrototypeOf(obj) === Object.prototype; // true\nconst arr = [];\nObject.getPrototypeOf(arr) === Array.prototype;  // true\n\n// setPrototypeOf\nconst animal = {\n  speak() { return "sound"; },\n};\nconst dog = { breed: "lab" };\nObject.setPrototypeOf(dog, animal);\ndog.speak(); // "sound"\nObject.getPrototypeOf(dog) === animal; // true\n\n// Object.is\nObject.is(NaN, NaN); // true  (=== gives false)\nObject.is(+0, -0);   // false (=== gives true)',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Object literal and Object.create()',
+        code: 'const user = { name: "Alice", age: 30 };\n\nconst proto = { greet() { return "hello"; } };\nconst obj = Object.create(proto);\nobj.greet(); // "hello"\n\nconst dict = Object.create(null); // no prototype',
+      },
+      {
+        label: 'Dot vs bracket notation and computed property names',
+        code: 'const o = { a: 1, "b-key": 2 };\no.a;        // 1\no["b-key"]; // 2\n\nconst key = "name";\nconst user = { [key]: "Alice" };\nuser.name; // "Alice"',
+      },
+      {
+        label: 'Iterating — keys, values, entries, fromEntries',
+        code: 'const o = { a: 1, b: 2 };\nObject.keys(o);    // ["a", "b"]\nObject.values(o);  // [1, 2]\nObject.entries(o); // [["a", 1], ["b", 2]]\n\nObject.fromEntries([["a", 1], ["b", 2]]); // { a: 1, b: 2 }',
+        note: 'Use `entries` + `fromEntries` to transform an object via `map()`.',
+      },
+      {
+        label: 'Copying and merging — spread vs Object.assign',
+        code: '// Spread — new object, non-mutating\nconst o = { a: 1, b: 2 };\nconst copy = { ...o, c: 3 }; // { a: 1, b: 2, c: 3 }\n\n// Object.assign — mutates target\nconst target = { a: 1 };\nObject.assign(target, { b: 2 }, { c: 3 });\n// target → { a: 1, b: 2, c: 3 }',
+        note: 'Both are shallow copies — nested objects are not cloned.',
+      },
+      {
+        label: 'Property descriptor — defineProperty',
+        code: 'const obj = {};\nObject.defineProperty(obj, "name", {\n  value: "Alice",\n  writable: false,\n  enumerable: true,\n  configurable: false,\n});\nobj.name = "Bob"; // ignored in strict mode\n\nObject.getOwnPropertyDescriptor(obj, "name");\n// { value: "Alice", writable: false, ... }',
+      },
+      {
+        label: 'Immutability — freeze, seal, preventExtensions',
+        code: 'const a = { x: 1 };\nObject.freeze(a);\na.x = 2; // ignored — nothing can change\n\nconst b = { x: 1 };\nObject.seal(b);\nb.x = 2; // works — values can change\nb.y = 3; // ignored — no new keys\n\nconst c = { x: 1 };\nObject.preventExtensions(c);\nc.y = 2; // ignored — cannot add properties',
+      },
+      {
+        label: 'Checking properties — hasOwn vs in',
+        code: 'const user = { name: "Alice" };\n\nObject.hasOwn(user, "name");     // true  (own)\nObject.hasOwn(user, "toString"); // false (inherited)\n\n"name" in user;     // true\n"toString" in user; // true  — checks prototype chain too',
+        note: 'Use `Object.hasOwn` when you only care about own properties.',
+      },
+      {
+        label: 'Prototypes — getPrototypeOf, setPrototypeOf',
+        code: 'Object.getPrototypeOf({}) === Object.prototype; // true\nObject.getPrototypeOf([]) === Array.prototype;  // true\n\nconst animal = { speak() { return "sound"; } };\nconst dog = { breed: "lab" };\nObject.setPrototypeOf(dog, animal);\ndog.speak(); // "sound"',
+        note: '`setPrototypeOf` hurts performance — prefer `Object.create()` at construction time.',
+      },
+      {
+        label: 'Object.is — strict equality with NaN and -0 fixes',
+        code: 'Object.is(NaN, NaN); // true  (=== returns false for NaN)\nObject.is(+0, -0);   // false (=== returns true)\nObject.is(1, 1);     // true',
       },
     ],
   },
