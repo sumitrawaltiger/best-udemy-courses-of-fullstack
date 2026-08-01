@@ -2273,6 +2273,11 @@ function buildLessons() {
             href: '/java-notes/three-spring-boot-concepts.pdf',
             icon: '📄',
           },
+          {
+            label: 'Spring Boot Notes (PDF)',
+            href: '/java-notes/spring-boot-notes.pdf',
+            icon: '📄',
+          },
         ];
       }
       const springCoreNotesLink = {
