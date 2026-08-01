@@ -472,6 +472,8 @@ await main();`,
     ],
     notionUrl: LC,
     youtube: yt('yF9kGESAi3M', 'LangChain Master Class For Beginners 2024', 'aiwithbrandon'),
+    pdfUrl: '/genai-notes/important-components-of-langchain.pdf',
+    pdfLabel: 'Important Components of LangChain (PDF)',
   },
   {
     genaiDay: 8,
