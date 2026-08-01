@@ -495,6 +495,109 @@ const SPRING_AI_SECTIONS = [
   },
 ];
 
+const SPRING_AI_ASHOK_SECTIONS = [
+  {
+    id: 'what-is-openai',
+    title: 'What is OpenAI?',
+    content:
+      "**OpenAI** is an AI research and development company that builds AI systems.\n\n- OpenAI helps people to work, learn, and create AI systems effectively.\n- It has several AI models to solve real-world problems — **Text**, **Images**, **Audio**, **Embeddings**.\n- It got popular because of its product **ChatGPT** — an AI-powered chatbot that answers questions and generates text/images based on input.\n- ChatGPT is a browser-based tool for individual workflows.\n\n**What OpenAI Develops:**\n\n- **GPT Models** — Powerful language models used in apps, websites, and tools.\n- **DALL-E** — Creates images from text prompts.\n- **Whisper** — Converts speech to text.\n\nOpenAI exposes their LLMs as **REST APIs**. In your application you can integrate OpenAI-provided APIs and complete tasks without developing your own models.",
+  },
+  {
+    id: 'what-is-llm',
+    title: 'What is LLM?',
+    content:
+      "**LLM** stands for **Large Language Model**.\n\nAn LLM is an AI model trained on massive data (books, websites, articles, code...). After training is complete, the LLM can understand and generate human language.\n\nSeveral companies have developed and released LLMs:\n\n- **OpenAI** — GPT-4 / GPT-4o\n- **Google** — Gemini\n- **Meta** — LLaMA\n- **Anthropic** — Claude",
+  },
+  {
+    id: 'what-is-spring-ai',
+    title: 'What is Spring AI?',
+    content:
+      "**Spring AI** is a Spring Framework project that helps Java developers build AI-powered applications easily using existing LLMs.\n\nSpring AI provides abstractions, starters, and integrations to connect your Spring applications with AI models and AI services.\n\n`Spring AI = Spring Boot + AI Models`\n\nWith Spring AI you can:\n- Call **OpenAI**, **Gemini**, **Ollama**, **Anthropic**, and other LLMs through a single consistent API.\n- Use **ChatClient** to send prompts and receive responses.\n- Add **Chat Memory** so the AI remembers previous messages.\n- Build **RAG** pipelines using Vector Stores.\n- Create **Prompt Templates** with dynamic placeholders.",
+  },
+  {
+    id: 'spring-ai-project-setup',
+    title: 'Spring AI Project Setup',
+    content:
+      "**Step 1** — Create an OpenAI account at `https://platform.openai.com/`\n\n**Step 2** — Generate an API key to access OpenAI LLMs.\n\n**Step 3** — Create a Spring Boot application with these dependencies:\n- `spring-boot-starter-web`\n- `spring-boot-starter-thymeleaf`\n- `lombok`\n- `spring-boot-devtools`\n- `spring-ai-starter-model-openai`\n\n**Step 4** — Configure `application.yml` (see code below).\n\n**Step 5** — Create a service class to communicate with the OpenAI model using Spring AI components.\n\n**Step 6** — Create a Controller class to handle request and response.\n\n**Step 7** — Create a view page using Thymeleaf.",
+    code:
+      "# application.yml\nspring:\n  ai:\n    openai:\n      api-key: <YOUR_API_KEY>\n      chat:\n        options:\n          model: gpt-4o\n          max-tokens: 100",
+  },
+  {
+    id: 'chat-memory-advisors',
+    title: 'Chat Memory Advisors',
+    content:
+      "By default, **ChatClient** in Spring AI does not remember previous conversations with the LLM.\n\n**Chat Memory Advisors** make the AI remember previous questions and answers and respond in a context-aware way — just like ChatGPT.\n\nA Chat Memory Advisor is a **middleware component** that:\n- Stores user questions.\n- Stores AI model responses.\n- Injects past conversation into every new prompt automatically.\n\n**Stateless vs Stateful ChatClient:**\n- **Stateless** — each call to the LLM is independent, no memory of past messages.\n- **Stateful** — past messages are stored and sent along with every new prompt via `MessageChatMemoryAdvisor`.\n\nThe `CONVERSATION_ID` advisor param groups messages by user session.",
+    code:
+      "@Service\npublic class OpenAIService {\n\n    private ChatClient chatClient;\n\n    // Stateful client (remembers conversation)\n    public OpenAIService(ChatClient.Builder builder, ChatMemory chatMemory) {\n        this.chatClient = builder\n            .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())\n            .build();\n    }\n\n    public String askAnything(String question) {\n        return chatClient.prompt()\n            .user(question)\n            .advisors(advisor -> advisor.param(ChatMemory.CONVERSATION_ID, \"user-101\"))\n            .call()\n            .content();\n    }\n}",
+  },
+  {
+    id: 'openai-controller',
+    title: 'OpenAI Controller',
+    content:
+      "The **Controller** maps HTTP requests to the service and passes the question and answer to the Thymeleaf view.\n\n- `GET /` — returns the `index` view (empty chat UI).\n- `POST /askAnything` — calls `openAiService.askAnything(question)`, puts `question` and `answer` into the `Model`, and returns to the `index` view.\n\nThe **Thymeleaf view** renders a chat-style UI:\n- User message bubble (blue, right-aligned) shows the question.\n- AI message bubble (white, left-aligned) shows the answer.\n- A form at the bottom submits the next question via `POST /askAnything`.",
+    code:
+      "@Controller\npublic class OpenAIController {\n\n    @Autowired\n    private OpenAIService openAiService;\n\n    @GetMapping(\"/\")\n    public String index() {\n        return \"index\";\n    }\n\n    @PostMapping(\"/askAnything\")\n    public String handleAskAnything(@RequestParam String question, Model model) {\n        String answer = openAiService.askAnything(question);\n        model.addAttribute(\"question\", question);\n        model.addAttribute(\"answer\", answer);\n        return \"index\";\n    }\n}",
+  },
+  {
+    id: 'prompt-engineering',
+    title: 'What is Prompt Engineering?',
+    content:
+      "**Prompt Engineering** is the skill of designing clear, effective instructions (prompts) to get the best possible output from AI models like OpenAI, Gemini, Ollama, or Claude.\n\n**Poor prompt:** `Explain JAVA`\n\n**Good prompt:** `Act as a Java trainer. Explain Java for beginners in simple English with real-world examples in 10 points.`\n\n**Key elements of a good prompt:**\n\n1. **Role** — e.g., `Act as a Java trainer`\n2. **Task** — e.g., `Explain Spring Boot`\n3. **Context** — e.g., `for Java beginners`\n4. **Format** — e.g., `use bullet points with real-world examples`\n5. **Constraints** — e.g., `in 10 points`",
+  },
+  {
+    id: 'prompt-templates',
+    title: 'Prompt Templates — Travel Guide Example',
+    content:
+      "**PromptTemplate** in Spring AI lets you define a reusable prompt with named placeholders (`{place}`, `{month}`, `{language}`, `{budget}`) and fill them at runtime using a `Map`.\n\n**Flow:** User fills the travel form → Controller calls `getTravelGuidance(...)` → Service builds the prompt from the template → ChatClient sends it to the LLM → response is rendered as Markdown in the Thymeleaf view.\n\nThe `TravelGuidanceController` maps:\n- `GET /showTravelGuide` — renders the form.\n- `POST /showTravelGuide` — calls the service and adds `place` and `response` to the Model.\n\n**Assignment:** Develop image generation functionality using Spring AI.",
+    code:
+      "public String getTravelGuidance(String place, String month, String language, String budget) {\n\n    PromptTemplate promptTemplate = new PromptTemplate(\n        \"Welcome to the {place} travel guide!\\n\"\n        + \"If you are visiting in {month}, here is what you can do:\\n\"\n        + \"1. Must-visit attractions.\\n\"\n        + \"2. Local cuisine you must try.\\n\"\n        + \"3. Useful phrases in {language}.\\n\"\n        + \"4. Tips for traveling on a {budget} budget.\"\n    );\n\n    Prompt prompt = promptTemplate.create(\n        Map.of(\"place\", place, \"month\", month, \"language\", language, \"budget\", budget)\n    );\n\n    return chatClient.prompt(prompt)\n        .call()\n        .chatResponse()\n        .getResult()\n        .getOutput()\n        .getText();\n}",
+  },
+  {
+    id: 'ollama-local-llm',
+    title: 'Open Source LLM — Local Setup with Ollama',
+    content:
+      "A **Local LLM** means running a Large Language Model directly on your own machine instead of calling cloud APIs.\n\n**Cloud AI:** `Spring Boot → Spring AI → OpenAI API → Response`\n**Local AI:** `Spring Boot → Spring AI → Ollama (local) → Local LLM → Response`\n\n**Ollama** is the easiest tool for running open-source LLMs locally. It provides a CLI and a local REST API at `http://localhost:11434`. Supported models: `llama3.2`, `mistral`, `gemma2`, `deepseek-r1`, `phi3`.\n\n**Advantages:** No API key, no cost, privacy, offline use, great for learning.\n**Limitations:** Needs RAM, slower than cloud, model quality varies.\n\n**System Requirements:** 8 GB RAM (16 GB recommended), modern CPU (min i5), Windows / Linux / macOS, GPU 6–8 GB VRAM (optional).",
+    code:
+      "# Install Ollama from https://ollama.com\n\n# Show help\n$ ollama help\n\n# List downloaded models\n$ ollama list\n\n# Download a model\n$ ollama pull gemma:2b\n\n# Run the model interactively\n$ ollama run gemma:2b\n\n# See running models\n$ ollama ps\n\n# Stop the model\nCtrl+D  or  /bye",
+  },
+  {
+    id: 'spring-boot-ollama-setup',
+    title: 'Connect Spring Boot to Local LLM (Gemma:2b)',
+    content:
+      "**Step 1** — Start Ollama as an API server: `$ ollama serve`\n\n**Step 2** — Add the Ollama starter to `pom.xml` (see code).\n\n**Step 3** — Configure `application.yml` to point Spring AI at the local Ollama instance and specify the model.\n\nOnce configured, your `ChatClient` calls go to the local Gemma model — no API key needed, no cloud cost.",
+    code:
+      "<!-- pom.xml -->\n<dependency>\n    <groupId>org.springframework.ai</groupId>\n    <artifactId>spring-ai-starter-model-ollama</artifactId>\n</dependency>\n\n# application.yml\nspring:\n  ai:\n    ollama:\n      chat:\n        options:\n          model: gemma:2b",
+  },
+  {
+    id: 'vector-store-database',
+    title: 'Vector Store / Vector Database',
+    content:
+      "A **Vector Store** (Vector Database) is a database designed to store and search data in the form of **vectors (numbers)** instead of rows and columns.\n\n**Why Vectors?** Text, images, audio, and code cannot be directly compared by meaning. So we convert them into **embeddings** (numeric vectors) using AI models and then search by similarity.\n\nExample — \"What is Docker?\" becomes: `[0.12, -0.45, 0.88, 0.31, ...]`\n\nEach document chunk is stored alongside its embedding vector. A similarity search finds the chunks whose vectors are closest to the query vector — meaning the most semantically relevant content.\n\n**Popular Vector Databases:**\n- **Chroma DB** — lightweight, developer-friendly\n- **Pinecone** — fully managed cloud vector DB\n- **Milvus** — open-source, high performance\n- **Weaviate** — open-source with GraphQL API\n- **FAISS** — Facebook AI Similarity Search (in-memory)",
+  },
+  {
+    id: 'what-is-rag',
+    title: 'What is RAG?',
+    content:
+      "**RAG** stands for **Retrieval-Augmented Generation**.\n\nRAG is an AI architecture that combines **Vector search + LLM generation**. Instead of asking the LLM to answer from memory alone, RAG:\n\n1. **Retrieves** relevant data from a Vector DB.\n2. **Augments** the prompt with that retrieved data.\n3. **Generates** a grounded, accurate answer using the LLM.\n\n**Why RAG is needed** — to overcome these LLM limitations:\n- LLMs do not have access to **private data** or **latest data**.\n- LLMs have a fixed **training cutoff** (knowledge stops at a certain date).\n\n**4 Implementation Steps:**\n\n**Step 1 — Data Ingestion (one-time):** Collect PDFs, Word files, text files → convert into embeddings → store in Vector DB.\n\n**Step 2 — User Query:** User asks a question → question is converted into an embedding.\n\n**Step 3 — Retrieval:** Vector DB finds the most similar documents → returns the top relevant chunks.\n\n**Step 4 — Generation:** Retrieved chunks + user question → sent to LLM (GPT, LLaMA, Gemini) → LLM generates the final grounded answer.",
+  },
+  {
+    id: 'rag-pinecone-assignment',
+    title: 'Assignment — Spring AI + Pinecone + RAG',
+    content:
+      "Build a Spring AI application using **Pinecone** (vector DB) and **Gemma:2b** (local LLM via Ollama) to demonstrate RAG with a real Vector DB.\n\n**Step 1** — Set up a free Pinecone account at `https://www.pinecone.io/`\n\n**Step 2** — Generate and note your Pinecone API key.\n\n**Step 3** — Create a Pinecone Index with model `text-embedding-3-small` and Dimensions `1536`.\n\n**Step 4** — Create a Spring Boot application with:\n- `spring-boot-starter-web`\n- `spring-ai-starter-model-openai`\n- `spring-ai-advisors-vector-store`\n- `spring-ai-vector-store-pinecone`\n\n**Step 5** — Configure OpenAI API key + LLM model + Pinecone API key in `application.yml`.\n\n**Step 6** — Keep data files (`spring-notes.txt`, `products-data.txt`) in the `resources` folder.\n\n**Step 7** — Create a `DataLoader` class to load data into Pinecone as embeddings.\n\n**Step 8** — Create a Service class to search the Vector DB and generate a response.\n\n**Step 9** — Create a REST Controller to handle search requests.",
+    code:
+      "# application.yml — RAG with Pinecone\nspring:\n  ai:\n    openai:\n      api-key: <YOUR_OPENAI_API_KEY>\n      chat:\n        options:\n          model: gpt-4o\n    vectorstore:\n      pinecone:\n        api-key: <YOUR_PINECONE_API_KEY>\n        index-name: <YOUR_INDEX_NAME>\n        namespace: default",
+  },
+  {
+    id: 'vibe-coding',
+    title: 'Normal Coding vs Vibe Coding',
+    content:
+      "**Normal Coding** — the developer writes code manually using programming languages like Java, Python, JavaScript, SQL, etc.\n\n**Vibe Coding** — the developer explains the requirement in natural language, and AI tools generate most of the code.\n\nBefore AI tools: **coding was the most difficult job in IT**.\nNow with AI tools: **coding is the easiest job** (because of vibe coding).\n\n**Key skill now:** Writing effective prompts — the better the prompt, the better the generated code.",
+    code:
+      "// Vibe Coding Prompt 1 — Email OTP\nAct as a Spring Boot developer.\nDevelop a Spring Boot project to generate OTP\nand send OTP to the customer in email upon registration.\nUse proper logging and exception handling.\nExplain the code step by step.\n\n// Vibe Coding Prompt 2 — RAG with Vector DB\nAct as a Spring Boot developer.\nDevelop a Spring AI application using Pinecone vector DB\nand Gemma:2b LLM (local LLM) to demonstrate RAG.\nMake it production ready.\nUse proper logging and exception handling.\nExplain code step by step.",
+  },
+];
+
 // Circuit Breaker Explained — System Design Series Day 25 (attached to Resilience Patterns)
 const CIRCUIT_BREAKER_SECTIONS = [
   {
@@ -2322,7 +2425,7 @@ function buildLessons() {
         lesson.sections = JAVA_SEALED_CLASSES_SECTIONS;
       }
       if (title === 'Inter-Service Communication') {
-        lesson.sections = SPRING_AI_SECTIONS;
+        lesson.sections = [...SPRING_AI_SECTIONS, ...SPRING_AI_ASHOK_SECTIONS];
       }
       if (title === 'Resilience Patterns') {
         lesson.sections = CIRCUIT_BREAKER_SECTIONS;
