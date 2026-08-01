@@ -1,5 +1,6 @@
 import { useSearchParams, Link } from 'react-router-dom';
-import { chapters, searchChapters } from '../data/chapters';
+import { chapters } from '../data/chapters';
+import { searchAllCurricula } from '../data/searchAll';
 import { nextjsChapters } from '../data/nextjsChapters';
 import { pythonChapters } from '../data/pythonChapters';
 import { javaChapters } from '../data/javaChapters';
@@ -88,7 +89,8 @@ const BTECH_ROADMAP = [
 export default function Home() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
-  const results = query ? searchChapters(query) : chapters;
+  const searchResults = query ? searchAllCurricula(query) : [];
+  const results = query ? searchResults : chapters;
 
   return (
     <>
@@ -812,7 +814,18 @@ export default function Home() {
         ) : (
           <div className="lecture-list">
             {results.map((ch) => (
-              <LectureCard key={ch.slug} chapter={ch} />
+              <div key={`${ch._basePath || ''}-${ch.slug}`}>
+                {query && ch._track && (
+                  <p style={{ margin: '0 0 4px 2px', fontSize: '0.75rem', fontWeight: 600, opacity: 0.6, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                    {ch._track}
+                  </p>
+                )}
+                <LectureCard
+                  chapter={ch}
+                  basePath={ch._basePath || '/learn'}
+                  dayPrefix={ch._dayPrefix || 'Day'}
+                />
+              </div>
             ))}
           </div>
         )}
