@@ -68,6 +68,52 @@ export const genaiLessons = [
         title: 'Capstone Project Ideas',
         content: "Five production-ready project ideas to demonstrate Agentic AI skills:\n\n- **Personal AI Assistant** — with tools and memory\n- **Research Agent** — search, summarize, and cite sources automatically\n- **Data Analyst Agent** — analyze and visualize data on demand\n- **Customer Support Agent** — multi-agent + RAG for knowledge-base-grounded support\n- **Autonomous Workflow Agent** — end-to-end automation across tools and APIs",
       },
+      {
+        id: 'spring-ai-course-overview',
+        title: 'Spring AI — Course Overview',
+        content: "**Pre-requisites:** Spring Boot + REST APIs\n\n**Course Content:**\n\n1. What is Data Science?\n2. What is AI, ML, DL, NLP, Gen AI & Agentic AI?\n3. What is LLM?\n4. What is OpenAI?\n5. Spring Boot integration with OpenAI LLMs using Spring AI\n6. What is Ollama and why?\n7. Spring AI with Local LLM Integration\n8. Image Generation using OpenAI Models\n9. What is Prompt Engineering?\n10. RAG Systems Development with Vector DB / Pinecone DB",
+      },
+      {
+        id: 'what-is-data-science',
+        title: 'What is Data Science?',
+        content: "**Data** is the starting point — using data, we can create intelligence. Using intelligence, we can build systems that can learn, understand language, generate content, and even take actions.\n\n**Definition:** Data Science is the process of collecting, cleaning, analyzing, and understanding data patterns to make smart decisions in business.\n\n**Data Science Life Cycle:**\n\n1. **Collect data**\n2. **Clean data**\n3. **Analyze data**\n4. **Visualize data**\n5. **Build Model** (LLM)\n6. **Train Model**\n7. **Test Model**\n8. **Deploy Model**\n9. **Monitor Model**",
+      },
+      {
+        id: 'what-is-ai',
+        title: 'What is AI? (Artificial Intelligence)',
+        content: "**AI** is the branch of computer science / data science that aims to create machines that can think and act like humans. It is used to create intelligent machines and systems.\n\n`AI = Making computers do tasks that normally require human intelligence`\n\n**Normal programming:** you tell the computer exactly what to do.\n\n**With AI, the machine:**\n1. Observes\n2. Learns from data patterns\n3. Improves over time\n4. Takes decisions on its own\n\n**Example:** A traditional program turns on AC only when `temp > 40`. An AI system learns what temperature students prefer, what time the room gets hot, and adjusts automatically — it is adaptive and smart.\n\n**AI Real-life Examples:**\n- Self-driving cars\n- Fraud detection in banks\n- Spam detection in email\n- ChatGPT answering questions\n- GitHub Copilot generating code\n\n**Why AI is Important Today:**\n- Automates repetitive tasks and reduces human errors\n- Saves time and cost\n- Helps in medicine, farming, finance, education, e-commerce\n- Makes technology more personalized\n- Helps companies make better decisions\n- AI is shaping the future in every industry\n\n`AI is no longer only a research topic — it is used in real business applications today.`",
+        code: "// Traditional programming\nif (temp > 40) {\n    turnOnAc();\n}\n\n// AI approach — learns patterns and adapts automatically\n// No hardcoded rules — the model decides based on data",
+      },
+      {
+        id: 'what-is-ml',
+        title: 'What is ML? (Machine Learning)',
+        content: "**Machine Learning** is a subset of AI. ML allows computers to learn patterns from data instead of writing programs explicitly.\n\nMachine Learning is a technique where:\n1. We give a lot of data to the computer.\n2. The computer finds patterns in that data.\n3. It uses those patterns to make predictions or decisions.\n\nML does not follow fixed rules — it learns from examples.\n\n**Example 1 — Image Classification:** Show the machine 1,000 pictures of cats and dogs → it learns the patterns → it identifies new cat/dog images based on those patterns.\n\n**Example 2 — Email Spam Filter:** ML learns from thousands of emails, observes which emails are marked as spam, and then automatically identifies spam in your inbox.\n\n**Daily Life ML Examples:**\n- **Netflix / YouTube** — learns your watching patterns and suggests similar videos\n- **Google Photos** — recognizes faces, pets, and objects\n- **Amazon / Flipkart** — shows products based on your past purchases\n- **Credit Card Fraud Detection** — detects unusual transactions\n\n**How ML works in projects:**\n1. **Collect data** (images, text, numbers, articles...)\n2. **Train the model** (model learns patterns from data)\n3. **Test the model** (check if predictions are correct)\n4. **Use the model** (predict on new, unseen data)\n\n`Machine Learning = Learn from data → Improve over time → Make Predictions`",
+      },
+      {
+        id: 'what-is-deep-learning',
+        title: 'What is Deep Learning? (DL)',
+        content: "**Deep Learning** is a subset of ML that uses **artificial neural networks** inspired by the human brain to learn from large amounts of data.\n\nDL is part of Machine Learning but is much more powerful.\n\n**ML vs DL Comparison:**\n\n- **ML** works well with small to medium data; **DL** needs huge amounts of data.\n- **ML** works with structured data; **DL** works with unstructured data (images, audio, video, files).\n- **ML algorithms:** Linear Regression, Logistic Regression, Decision Tree, Random Forest.\n- **DL algorithms:** Transformers, RAG.\n- **ML model training:** Faster; **DL model training:** Slower.\n\n**Where Deep Learning is Used:**\n- **Face recognition** — detects your face using deep neural networks\n- **Speech-to-text** — converts speech to text and vice versa\n- **ChatGPT (LLMs)** — uses huge deep learning Transformer models\n- **Self-driving cars** — understands lanes, traffic signs, obstacles\n- **Google Photos** — identifies objects: cats, dogs, people, cars\n- **Medical Diagnosis** — detects diseases from X-rays and MRI scans\n\n**When to use ML:** data is limited, problem is simple, need an explainable model, high accuracy is not critical.\n\n**When to use DL:** large data is available, data is images/audio/text, high accuracy is critical.",
+      },
+      {
+        id: 'what-is-nlp',
+        title: 'What is NLP? (Natural Language Processing)',
+        content: "**NLP** is a branch of AI that helps computers understand, interpret, and generate human language.\n\n`NLP = Teaching computers to understand English, Telugu, Hindi, or any human language`\n\nHumans communicate using language — sentences, emotions, tone, grammar. Computers communicate using numbers (0s and 1s). **NLP is the bridge between humans and computers.**\n\nUsing NLP, computers can:\n- Read text\n- Listen to speech\n- Understand meaning\n- Analyze human emotions\n- Generate answers\n- Translate languages\n\n**NLP Real-life Examples:**\n- **ChatGPT / Gemini** — understands your questions and replies like a human\n- **Google Translate** — converts Telugu to English or Hindi to Tamil\n- **Siri / Alexa** — understands spoken commands and responds",
+      },
+      {
+        id: 'what-is-generative-ai',
+        title: 'What is Generative AI? (Gen AI)',
+        content: "**Generative AI** is a type of AI that can create new content — text, images, videos, audio, code — based on the data it has learned.\n\nGen AI models don't just analyze data — they **generate something new**.\n\n**Traditional AI focuses on:**\n- Classification (spam or not spam)\n- Prediction (price, weather)\n- Detection (objects, fraud)\n\n**But Generative AI goes beyond that** — it learns patterns from huge amounts of data and generates original content that looks like it was created by a human.\n\n**Gen AI Examples:**\n- **ChatGPT** — creates text\n- **MidJourney / DALL-E** — creates images\n- **Suno** — creates music\n- **RunwayML** — creates videos\n- **GitHub Copilot** — writes code\n\n`If you train a Gen AI model on 1,000 songs, it can create a new song that is not a copy of any single song.`",
+      },
+      {
+        id: 'what-is-agentic-ai',
+        title: 'What is Agentic AI?',
+        content: "**Agentic AI** is a type of AI that can **think, decide, and take actions on its own** to achieve a goal. It is used to build intelligent AI assistants and AI agents.\n\nTraditional AI answers questions. Agentic AI **plans + acts + completes tasks independently**.\n\n**Gen AI vs Agentic AI:**\n- **Gen AI** — only generates content, needs a user prompt, gives a static response.\n- **Agentic AI** — takes actions to achieve goals, can work autonomously, is interactive and decision-making.\n\n`Agentic AI behaves like a digital worker.`\n\n**Example Scenario — Organize a school event:**\nAgentic AI can automatically: make a plan → book the hall → send messages to students → create posters → prepare the guest list → send invitations → manage the event schedule.\n\n**Prompt: \"Create Java Material\"**\n- **Gen AI:** Creates the material and gives it as a file.\n- **Agentic AI:** Creates the material AND sends it to your email.\n\n**Agentic AI Real-life Examples:**\n- An AI that books flight tickets after comparing prices\n- AI that reads your emails and drafts replies\n- AI DevOps agents that deploy apps automatically\n- AI customer support agents that resolve issues end-to-end\n- AI personal assistant that schedules meetings",
+      },
+      {
+        id: 'ai-concepts-summary',
+        title: 'Summary — AI Concepts at a Glance',
+        content: "- **Data Science** — Find useful insights from data to make smart business decisions.\n- **AI** — Big umbrella; used to make systems more intelligent.\n- **ML** — System learns from existing data and makes decisions/predictions on new data.\n- **DL** — ML that uses neural networks to find patterns in complex data.\n- **NLP** — AI that understands human language.\n- **Gen AI** — AI that creates new content.\n- **Agentic AI** — AI that takes actions (AI Agent).\n\n`Data → Intelligence → Systems that learn, understand, generate, and act.`",
+      },
     ],
   },
   {
