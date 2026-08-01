@@ -31,10 +31,10 @@ const PHASES = [
     label: 'Phase 2 · TypeScript Stack',
     tagline: 'Days 519–884',
     duration: '366 days',
-    blurb: '47 days of JavaScript → 21 days of TypeScript → 298 days of React, React Native, Next.js, and Express.js — the full JS/TS web ecosystem in one calendar year.',
+    blurb: '47 days of JavaScript → 20 days of TypeScript → 299 days of React, React Native, Next.js, and Express.js — the full JS/TS web ecosystem in one calendar year.',
     items: [
       { icon: '🟨', title: 'JavaScript', detail: '47 days — syntax, DOM, async, and fundamentals', source: 'Thunder++', to: '/' },
-      { icon: '🔷', title: 'TypeScript', detail: '21 days — types, interfaces, generics, enums, and classes', source: 'Illustrated TypeScript series', to: '/typescript' },
+      { icon: '🔷', title: 'TypeScript', detail: '20 days — types, interfaces, generics, enums, and classes', source: 'Illustrated TypeScript series', to: '/typescript' },
       { icon: '⚛️', title: 'React JS', detail: 'Components · hooks · state · routing · data fetching', source: 'ChaiCode', to: '/nextjs' },
       { icon: '🌐', title: 'Next JS', detail: 'App Router · server components · data & server actions · deployment', source: 'ChaiCode', to: '/nextjs' },
       { icon: '📱', title: 'React Native', detail: 'Expo · native components · navigation · builds & publishing', source: 'ChaiCode', to: '/mobile' },
