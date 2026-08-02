@@ -242,8 +242,8 @@ export default function Day000() {
             Home
           </Link>
           <p className="day001-datetime">Day 0 · 4 Aug 2026</p>
-          <Link to="/python" className="day001-nav-btn day001-nav-next">
-            Phase 1 · Agentic AI →
+          <Link to="/agentic-day-1" className="day001-nav-btn day001-nav-next">
+            Day 1 · Agentic AI →
           </Link>
         </header>
 
