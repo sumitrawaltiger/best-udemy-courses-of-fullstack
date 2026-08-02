@@ -3,12 +3,12 @@ export const THUNDER_DAYS = 100;
 
 // ── TypeScript Stack Year (2028) ─────────────────────────────────────────────
 // 2028 is a leap year: 366 calendar days (Days 519–884 of the full journey)
-// First 47 days  = JavaScript          (1 Jan – 16 Feb 2028)
-// Next  20 days  = TypeScript          (17 Feb – 7 Mar 2028)
-// Remaining 299  = React + RN + Next + Express  (8 Mar – 31 Dec 2028)
-export const TS_YEAR_JS_DAYS = 47;          // 2028 · JavaScript phase (1 Jan – 16 Feb 2028)
-export const TS_YEAR_TS_DAYS = 20;          // 2028 · TypeScript phase (17 Feb – 7 Mar 2028)
-export const TS_YEAR_FRAMEWORKS_DAYS = 299; // 2028 · Frameworks phase (366 − 67, 8 Mar – 31 Dec 2028)
+// First 46 days  = JavaScript          (1 Jan – 15 Feb 2028, day 47 is Series Finale)
+// Next  20 days  = TypeScript          (16 Feb – 6 Mar 2028)
+// Remaining 300  = React + RN + Next + Express  (7 Mar – 31 Dec 2028)
+export const TS_YEAR_JS_DAYS = 46;          // 2028 · JavaScript phase (days 1–46; day 47 = JS Series Finale)
+export const TS_YEAR_TS_DAYS = 20;          // 2028 · TypeScript phase (ep01–ep20 study + ep21 Series Finale)
+export const TS_YEAR_FRAMEWORKS_DAYS = 300; // 2028 · Frameworks phase (366 − 66, 7 Mar – 31 Dec 2028)
 export const TS_YEAR_TOTAL_DAYS = 366;      // 2028 leap year
 // ─────────────────────────────────────────────────────────────────────────────
 
