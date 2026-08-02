@@ -481,6 +481,8 @@ import Prerequisites from './pages/Prerequisites';
 import PrereqDay from './pages/PrereqDay';
 import TypescriptSeries from './pages/TypescriptSeries';
 import TypescriptDay from './pages/TypescriptDay';
+import ReactSeries from './pages/ReactSeries';
+import ReactDay from './pages/ReactDay';
 import JavaRoadmap from './pages/JavaRoadmap';
 import DsaNotes from './pages/DsaNotes';
 
@@ -899,6 +901,8 @@ export default function App() {
           <Route path="prerequisites/day/:day" element={<Navigate to="/javascript" replace />} />
           <Route path="typescript" element={<TypescriptSeries />} />
           <Route path="typescript/day/:day" element={<TypescriptDay />} />
+          <Route path="react" element={<ReactSeries />} />
+          <Route path="react/day/:day" element={<ReactDay />} />
           <Route path="about-founder" element={<AboutFounder />} />
           <Route path="learn/:slug" element={<Chapter />} />
           <Route path="nextjs" element={<NextjsHome />} />
