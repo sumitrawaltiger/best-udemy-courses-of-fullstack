@@ -38,24 +38,24 @@ import JourneyCountdown from '../components/JourneyCountdown';
 
 const BTECH_ROADMAP = [
   {
-    year: 'Phase 1',
-    theme: 'Python Stack',
+    year: 'Skills 1–3',
+    theme: 'Python + FastAPI + Agentic AI',
     icon: '🐍',
     accent: 'y1',
-    topics: ['LangChain', 'LangGraph', 'MCP', 'n8n Workflows', 'Core Python', 'FastAPI'],
-    blurb: 'The current focus — starts with building AI agents in Python, then continues into core Python and FastAPI. First of four stacks.',
+    topics: ['Core Python', 'FastAPI', 'LangChain', 'LangGraph', 'MCP', 'n8n Workflows'],
+    blurb: 'The Python foundation — 100 days each of core Python, FastAPI APIs, and Agentic AI (LangChain, LangGraph, MCP). Days 1–300.',
     links: [
-      { label: 'Agentic AI', to: '/python' },
       { label: 'Python & FastAPI', to: '/python' },
+      { label: 'Agentic AI', to: '/python' },
     ],
   },
   {
-    year: 'Phase 2',
-    theme: 'TypeScript Stack',
+    year: 'Skills 4–9',
+    theme: 'JavaScript → TypeScript → React → Next JS → React Native → Express JS',
     icon: '🔷',
     accent: 'y2',
     topics: ['JavaScript', 'TypeScript', 'React JS', 'Next JS', 'React Native', 'Express / Node JS'],
-    blurb: 'The whole JS/TS web ecosystem in one stack — from core JavaScript through React, Next.js, React Native, and the Express/Node backend.',
+    blurb: 'The full JS/TS web ecosystem — 100 days each of JavaScript, TypeScript, React, Next JS, React Native, and Express JS. Days 301–900.',
     links: [
       { label: 'JavaScript', to: '/' },
       { label: 'TypeScript', to: '/typescript' },
@@ -64,25 +64,25 @@ const BTECH_ROADMAP = [
     ],
   },
   {
-    year: 'Phase 3',
-    theme: 'Java Stack',
+    year: 'Skills 10–14',
+    theme: 'J2SE → J2EE → JPA → Spring Boot → Microservices',
     icon: '☕',
     accent: 'y3',
     topics: ['J2SE', 'J2EE', 'JPA', 'Spring Boot', 'Microservices'],
-    blurb: 'The full enterprise Java path in one stack — core Java through Spring Boot and microservices.',
+    blurb: 'The full enterprise Java path — 100 days each of J2SE, J2EE, JPA, Spring Boot, and Microservices. Days 901–1400.',
     links: [{ label: 'Java Stack', to: '/java' }],
   },
   {
-    year: 'Phase 4',
-    theme: 'DevOps Stack',
+    year: 'Skills 15–17',
+    theme: 'DevOps → Cloud → Capstone Project',
     icon: '🚀',
     accent: 'y5',
-    topics: ['Linux', 'Docker', 'Kubernetes', 'CI/CD', 'AWS Cloud'],
-    blurb: 'The final stack — ship and scale everything with Linux, Docker, Kubernetes, CI/CD, and core AWS services.',
+    topics: ['Linux', 'Docker', 'Kubernetes', 'CI/CD', 'AWS Cloud', 'Capstone'],
+    blurb: 'Ship, scale, and integrate — 100 days of DevOps, 100 days of AWS Cloud, then a 100-day Capstone tying all 16 skills together. Days 1401–1700.',
     links: [
       { label: 'DevOps', to: '/devops' },
-      { label: 'Kubernetes', to: '/k8s' },
       { label: 'AWS Cloud', to: '/aws' },
+      { label: 'Roadmap', to: '/roadmap' },
     ],
   },
 ];
@@ -116,18 +116,17 @@ export default function Home() {
               <span className="fle-hl">DevOps</span>
             </h1>
             <p className="fle-sub">
-              A structured <strong>1,700-day journey</strong> — <strong>5 phases</strong>: the
-              Python Stack (Agentic AI using Python, then core Python and FastAPI), the TypeScript Stack
-              (JavaScript, TypeScript, React, Next.js, React Native, Express/Node), the Java Stack (J2SE,
-              J2EE, JPA, Spring Boot, Microservices), the DevOps Stack (DevOps, AWS Cloud), and a Capstone
-              Project integrating all four stacks. Data Structures &amp; System Design practiced throughout.
-              Learn by building, front to back, one day at a time.
+              A structured <strong>1,700-day journey</strong> — <strong>17 skills, 100 days each</strong>:
+              Python, FastAPI, Agentic AI, JavaScript, TypeScript, React, Next JS, React Native,
+              Express JS, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS), and a
+              Capstone Project integrating all 16 skills. Data Structures &amp; System Design
+              practiced throughout. One skill at a time, fully focused, front to back.
             </p>
 
             <div className="fle-pills">
               <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,700 Days of Code</span>
-              <span className="fle-pill"><span aria-hidden="true">🧠</span> 5 Phases · 4 Stacks + Capstone</span>
-              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → TypeScript → Java → DevOps → Capstone</span>
+              <span className="fle-pill"><span aria-hidden="true">🧠</span> 17 Skills · 100 Days Each</span>
+              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → JS/TS → Java → DevOps → Capstone</span>
               <span className="fle-pill"><span aria-hidden="true">📐</span> DSA &amp; System Design Throughout</span>
             </div>
 
