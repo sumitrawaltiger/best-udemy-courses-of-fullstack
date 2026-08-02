@@ -18,6 +18,10 @@ export default function ReactInterviewQuestions() {
       search={searchReactQuestions}
       downloadPdf={[
         {
+          href: '/top-20-react-interview-questions.pdf',
+          label: 'Top 20 React Interview Questions & Answers (PDF)',
+        },
+        {
           href: '/top-200-react-interview-questions.pdf',
           label: 'Top 200 React Interview Questions (PDF)',
         },
