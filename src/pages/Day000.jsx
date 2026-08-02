@@ -33,11 +33,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 55-month (1,700-day) plan — Phase 1: Python Stack (365 days) starts with Agentic AI using Python (LangChain, LangGraph, MCP), then continues into core Python and FastAPI. Then Phase 2: TypeScript Stack (366 days) → Phase 3: Java Stack (365 days) → Phase 4: DevOps Stack (365 days) → Phase 5: Capstone Project (239 days) integrating all four stacks',
+    text: 'reviewed the full 55-month (1,700-day) plan — 17 skills at 100 days each: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React → Next JS → React Native → Express JS → J2SE → J2EE → JPA → Spring Boot → Microservices → DevOps → Cloud (AWS) → Capstone Project',
   },
   {
-    title: 'Ready for Phase 1 · Python Stack',
-    text: 'Day 1 (5 Aug 2026) starts straight into Phase 1: Agentic AI using Python — LangChain, LangGraph, MCP, and agentic workflows, followed by core Python and FastAPI across the full 365-day Python Stack',
+    title: 'Ready for Skill 1 · Python',
+    text: 'Day 1 (5 Aug 2026) starts with Skill 1: Python — core syntax, OOP, file I/O, database connectivity, and multithreading. 100 days to master the language foundation',
   },
   {
     title: 'Accounts ready',
@@ -132,19 +132,19 @@ const STUDY_SYSTEM = [
     icon: '🗺️',
     title: 'The 55-Month Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '5 phases · Python Stack starts 5 Aug 2026',
+    subtitle: '17 skills · 100 days each · starts 5 Aug 2026',
     description:
-      'Phase 1 · Python Stack (365 days): Agentic AI (LangChain, LangGraph, MCP, n8n) → core Python → FastAPI. Then Phase 2: TypeScript Stack (366 days) → Phase 3: Java Stack (365 days) → Phase 4: DevOps Stack (365 days) → Phase 5: Capstone Project (239 days). DSA & System Design practiced throughout. 1,700 days total.',
+      '17 skills at 100 days each: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React → Next JS → React Native → Express JS → J2SE → J2EE → JPA → Spring Boot → Microservices → DevOps → Cloud (AWS) → Capstone Project. DSA & System Design practiced throughout. 1,700 days total.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
     icon: '🤖',
-    title: 'Day 1 · Agentic AI using Python',
+    title: 'Day 1 · Skill 1 · Python',
     titleClass: 'card-title-lime',
-    subtitle: 'Phase 1 · Python Stack · 153 days of Agentic AI',
+    subtitle: 'Days 1–100 · 5 Aug 2026 · core Python',
     description:
-      'Day 1 (1 Aug 2026) begins with 153 days of Agentic AI — building AI agents with LangChain, LangGraph, MCP, and n8n agentic workflows. Phase 1 (Python Stack) then continues into core Python and FastAPI through 31 Dec 2027.',
-    link: { href: '/python', label: 'Start Phase 1 · Python Stack →' },
+      'Day 1 (5 Aug 2026) begins with Skill 1: Python — 100 days of core syntax, OOP, file I/O, database connectivity, and multithreading. Then FastAPI (Days 101–200), then Agentic AI with LangChain, LangGraph, MCP (Days 201–300).',
+    link: { href: '/python', label: 'Explore the Python track →' },
   },
 ];
 
@@ -241,7 +241,7 @@ export default function Day000() {
           <Link to="/" className="day001-nav-btn day001-nav-home">
             Home
           </Link>
-          <p className="day001-datetime">Day 0 · 31 Jul 2026</p>
+          <p className="day001-datetime">Day 0 · 4 Aug 2026</p>
           <Link to="/python" className="day001-nav-btn day001-nav-next">
             Phase 1 · Agentic AI →
           </Link>
@@ -253,7 +253,7 @@ export default function Day000() {
               <span>55 Months</span>
               <span>1700 Days</span>
               <span>Python Stack</span>
-              <span>Day 0 · 31 Jul 2026</span>
+              <span>Day 0 · 4 Aug 2026</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
@@ -282,15 +282,15 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 · 31 Jul 2026 — environment setup before the 55-month journey begins.</strong>{' '}
+          <strong>Day 0 · 4 Aug 2026 — environment setup before the 55-month journey begins.</strong>{' '}
           Install <code>Node.js</code>, <code>Git</code>, and <code>VS Code</code>, wire the terminal and
           Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             GitHub
           </a>{' '}
           and Netlify accounts, and lock the routine (wake 4 AM, study 5:00–8:00 AM IST). No lectures today —
-          clear every obstacle so <strong>Day 1 (1 Aug 2026)</strong> starts with zero friction:{' '}
-          <strong>153 days of Agentic AI</strong> using Python — LangChain, LangGraph, MCP, n8n. Sharpen the axe before the first swing.
+          clear every obstacle so <strong>Day 1 (5 Aug 2026)</strong> starts with zero friction:{' '}
+          <strong>Skill 1 · Python</strong> — core syntax, OOP, file I/O, and the language that powers everything. Sharpen the axe before the first swing.
         </p>
 
         <section className="day001-learnt">
