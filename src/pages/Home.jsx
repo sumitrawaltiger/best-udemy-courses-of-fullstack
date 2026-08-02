@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { chapters } from '../data/chapters';
 import { searchAllCurricula } from '../data/searchAll';
@@ -92,6 +93,13 @@ export default function Home() {
   const searchResults = query ? searchAllCurricula(query) : [];
   const results = query ? searchResults : chapters;
 
+  useEffect(() => {
+    if (query) {
+      const el = document.getElementById('search-results-top');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [query]);
+
   return (
     <>
       <section className="fle-hero">
@@ -159,6 +167,37 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {query && (
+        <section id="search-results-top" style={{ maxWidth: '900px', margin: '0 auto', padding: '40px 20px 20px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
+            <h2 style={{ margin: 0, fontSize: '1.35rem', fontWeight: 800 }}>
+              {searchResults.length > 0
+                ? `${searchResults.length} result${searchResults.length !== 1 ? 's' : ''} for "${query}"`
+                : `No results for "${query}"`}
+            </h2>
+            <Link to="/" style={{ fontSize: '0.85rem', opacity: 0.65, textDecoration: 'none', border: '1px solid currentColor', padding: '4px 12px', borderRadius: '20px' }}>
+              ✕ Clear search
+            </Link>
+          </div>
+          {searchResults.length === 0 ? (
+            <p style={{ opacity: 0.6 }}>Try a different keyword — e.g. "LangChain", "Spring Boot", "Docker", "React".</p>
+          ) : (
+            <div className="lecture-list">
+              {searchResults.map((ch) => (
+                <div key={`${ch._basePath || ''}-${ch.slug}`}>
+                  {ch._track && (
+                    <p style={{ margin: '12px 0 4px 2px', fontSize: '0.72rem', fontWeight: 700, opacity: 0.55, letterSpacing: '0.07em', textTransform: 'uppercase' }}>
+                      {ch._track}
+                    </p>
+                  )}
+                  <LectureCard chapter={ch} basePath={ch._basePath || '/learn'} dayPrefix={ch._dayPrefix || 'Day'} />
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
 
       <div className="home">
       <section className="btech-roadmap" id="btech-roadmap">
