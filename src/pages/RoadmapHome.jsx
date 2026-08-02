@@ -255,18 +255,18 @@ export default function RoadmapHome() {
 
       {/* ── 100-Day Skill Calendar ─────────────────────────────────────────────── */}
       <section style={{ maxWidth: '780px', margin: '16px auto 8px', padding: '0 12px' }}>
-        <h2 style={{ fontSize: '1rem', fontWeight: 800, textAlign: 'center', marginBottom: '12px', letterSpacing: '0.03em', opacity: 0.9 }}>
+        <h2 style={{ fontSize: '1.1rem', fontWeight: 900, textAlign: 'center', marginBottom: '14px', letterSpacing: '0.04em', color: '#fff' }}>
           📅 100-Day Skill Calendar
         </h2>
-        <div style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', lineHeight: 1.4 }}>
+        <div style={{ overflowX: 'auto', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.22)', background: 'rgba(255,255,255,0.06)' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem', lineHeight: 1.5 }}>
             <thead>
-              <tr style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em', opacity: 0.5 }}>
-                <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.08)', fontWeight: 700 }}>#</th>
-                <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.08)', fontWeight: 700 }}>Skill</th>
-                <th style={{ padding: '8px 10px', textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', fontWeight: 700 }}>Days</th>
-                <th style={{ padding: '8px 10px', textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', fontWeight: 700 }}>Start</th>
-                <th style={{ padding: '8px 10px', textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', fontWeight: 700 }}>End</th>
+              <tr style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.08em', background: 'rgba(255,255,255,0.07)', color: '#c8d0de' }}>
+                <th style={{ padding: '10px 12px', textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.15)', fontWeight: 800 }}>#</th>
+                <th style={{ padding: '10px 12px', textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.15)', fontWeight: 800 }}>Skill</th>
+                <th style={{ padding: '10px 12px', textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.15)', fontWeight: 800 }}>Days</th>
+                <th style={{ padding: '10px 12px', textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.15)', fontWeight: 800 }}>Start</th>
+                <th style={{ padding: '10px 12px', textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.15)', fontWeight: 800 }}>End</th>
               </tr>
             </thead>
             <tbody>
@@ -274,21 +274,21 @@ export default function RoadmapHome() {
                 const d1 = i * 100 + 1;
                 const d2 = (i + 1) * 100;
                 return (
-                  <tr key={skill.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                    <td style={{ padding: '7px 10px', opacity: 0.45, fontVariantNumeric: 'tabular-nums', fontSize: '0.78rem' }}>{String(i + 1).padStart(2, '0')}</td>
-                    <td style={{ padding: '7px 10px', fontWeight: 700 }}>{skill.icon} {skill.label}</td>
-                    <td style={{ padding: '7px 10px', textAlign: 'center', opacity: 0.65, fontVariantNumeric: 'tabular-nums', fontSize: '0.8rem' }}>
+                  <tr key={skill.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.09)' }}>
+                    <td style={{ padding: '9px 12px', color: '#8a95a3', fontVariantNumeric: 'tabular-nums', fontSize: '0.8rem', fontWeight: 600 }}>{String(i + 1).padStart(2, '0')}</td>
+                    <td style={{ padding: '9px 12px', fontWeight: 700, color: '#ffffff', fontSize: '0.92rem' }}>{skill.icon} {skill.label}</td>
+                    <td style={{ padding: '9px 12px', textAlign: 'center', color: '#9ba8b8', fontVariantNumeric: 'tabular-nums', fontSize: '0.83rem', fontWeight: 600 }}>
                       {d1}–{d2}
                     </td>
-                    <td style={{ padding: '7px 10px', textAlign: 'center', opacity: 0.85, fontVariantNumeric: 'tabular-nums' }}>{_calDate(d1)}</td>
-                    <td style={{ padding: '7px 10px', textAlign: 'center', opacity: 0.85, fontVariantNumeric: 'tabular-nums' }}>{_calDate(d2)}</td>
+                    <td style={{ padding: '9px 12px', textAlign: 'center', color: '#00e5a0', fontVariantNumeric: 'tabular-nums', fontWeight: 700, fontSize: '0.88rem' }}>{_calDate(d1)}</td>
+                    <td style={{ padding: '9px 12px', textAlign: 'center', color: '#ff9f43', fontVariantNumeric: 'tabular-nums', fontWeight: 700, fontSize: '0.88rem' }}>{_calDate(d2)}</td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
         </div>
-        <p style={{ textAlign: 'center', opacity: 0.4, fontSize: '0.72rem', marginTop: '8px' }}>
+        <p style={{ textAlign: 'center', color: '#6b7b8e', fontSize: '0.75rem', marginTop: '10px' }}>
           Day 1 = 5 Aug 2026 · 100 days per skill · journey ends 31 Mar 2031
         </p>
       </section>
