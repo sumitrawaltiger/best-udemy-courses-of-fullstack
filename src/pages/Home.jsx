@@ -582,7 +582,7 @@ export default function Home() {
           </span>
           <h2>Thunder++ — System Design</h2>
           <p className="section-desc">
-            <strong>System Design</strong> runs <strong>alongside the build phase</strong>, practiced in each stack’s
+            <strong>System Design</strong> runs <strong>alongside the build phase</strong>, practiced in each stack's
             language as you learn it: deep study with{' '}
             <a href={INTERVIEW_META.gfgSystemDesignUrl} target="_blank" rel="noopener noreferrer">
               GeeksForGeeks System Design
@@ -591,7 +591,7 @@ export default function Home() {
             <a href={INTERVIEW_META.chaicodeUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode Interview Preparation
             </a>
-            . {interviewChapters.length} modules covering HLD/LLD, scalability, and case studies — re-applied in each phase’s stack language.
+            . {interviewChapters.length} modules covering HLD/LLD, scalability, and case studies — re-applied in each phase's stack language.
           </p>
           <div className="thunder-plus-highlights">
             <span>🏗️ System Design</span>
@@ -625,7 +625,7 @@ export default function Home() {
           </span>
           <h2>Thunder++ — Data Structures</h2>
           <p className="section-desc">
-            <strong>DSA</strong> runs <strong>alongside the build phase</strong>, practiced in each stack’s language —
+            <strong>DSA</strong> runs <strong>alongside the build phase</strong>, practiced in each stack's language —
             starting in JavaScript (Elshad Karimov): deep <strong>Data Structures &amp; Algorithms</strong> study with{' '}
             <a href={DSA_META.gfgDsaUrl} target="_blank" rel="noopener noreferrer">
               GeeksForGeeks DSA Self Paced
@@ -634,7 +634,7 @@ export default function Home() {
             <a href={DSA_META.chaicodeUrl} target="_blank" rel="noopener noreferrer">
               ChaiCode practice
             </a>
-            . Arrays, trees, graphs, DP, and problem-solving patterns — solved in each phase’s stack language.
+            . Arrays, trees, graphs, DP, and problem-solving patterns — solved in each phase's stack language.
           </p>
           <div className="thunder-plus-highlights">
             <span>📊 Arrays & Strings</span>
@@ -669,13 +669,13 @@ export default function Home() {
           <h2>Thunder++ — The Full Journey</h2>
           <p className="section-desc">
             <strong>5 phases</strong> — <strong>Python Stack (Agentic AI using Python, then Python
-            &amp; FastAPI)</strong>,{‘ ‘}
-            <strong>TypeScript Stack (JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS)</strong>,{‘ ‘}
-            <strong>Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices)</strong>,{‘ ‘}
-            <strong>DevOps Stack (DevOps, AWS Cloud)</strong>, and a{‘ ‘}
+            &amp; FastAPI)</strong>,{' '}
+            <strong>TypeScript Stack (JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS)</strong>,{' '}
+            <strong>Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices)</strong>,{' '}
+            <strong>DevOps Stack (DevOps, AWS Cloud)</strong>, and a{' '}
             <strong>Capstone Project</strong> integrating all four stacks —
             with <strong>DSA &amp; System Design</strong> practiced throughout every stack, not saved for one
-            dedicated block. That’s <strong>1,700 days</strong> of focused study, front to back.
+            dedicated block. That's <strong>1,700 days</strong> of focused study, front to back.
           </p>
           <div className="thunder-plus-highlights">
             <span>🤖 Agentic AI First</span>
