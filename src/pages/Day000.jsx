@@ -29,7 +29,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Study routine',
-    text: 'locked the routine: wake 4:00 AM, study 5:00–8:00 AM IST (UTC+5:30, 3 hrs/day), every single day',
+    text: 'locked the routine: wake 4:00 AM, study 4:30–7:30 AM IST (UTC+5:30, 3 hrs/day), every single day',
   },
   {
     title: 'The roadmap',
@@ -123,9 +123,9 @@ const STUDY_SYSTEM = [
     icon: '⏰',
     title: 'Daily Routine',
     titleClass: 'card-title-amber',
-    subtitle: '4 AM Wake · 5–8 AM Study',
+    subtitle: '4 AM Wake · 4:30–7:30 AM Study',
     description:
-      'Wake at 4:00 AM, then study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1700 days.',
+      'Wake at 4:00 AM, then study 4:30–7:30 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1700 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
@@ -288,7 +288,7 @@ export default function Day000() {
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             GitHub
           </a>{' '}
-          and Netlify accounts, and lock the routine (wake 4 AM, study 5:00–8:00 AM IST). No lectures today —
+          and Netlify accounts, and lock the routine (wake 4 AM, study 4:30–7:30 AM IST). No lectures today —
           clear every obstacle so <strong>Day 1 (5 Aug 2026)</strong> starts with zero friction:{' '}
           <strong>Skill 1 · Python</strong> — core syntax, OOP, file I/O, and the language that powers everything. Sharpen the axe before the first swing.
         </p>
