@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
 /** Day 1 is 5 Aug 2026 (Phase 1 · Python Stack, starting with Agentic AI using Python — no separate prerequisite phase). */
-/** Target: 31 Mar 2031, 00:00 — 4 stacks + Capstone Project (Python, TypeScript, Java, DevOps, Capstone). */
-export const JOURNEY_END = new Date(2031, 2, 31, 0, 0, 0, 0);
+/** Target: 1 Apr 2031, 00:00 — 4 stacks + Capstone Project (Python, TypeScript, Java, DevOps, Capstone). */
+export const JOURNEY_END = new Date(2031, 3, 1, 0, 0, 0, 0);
 
 function getRemaining(now = new Date()) {
   const diff = Math.max(0, JOURNEY_END.getTime() - now.getTime());
