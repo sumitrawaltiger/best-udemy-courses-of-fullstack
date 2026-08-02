@@ -108,18 +108,18 @@ export default function Home() {
               <span className="fle-hl">DevOps</span>
             </h1>
             <p className="fle-sub">
-              A structured <strong>1,614-day journey</strong> — <strong>4 sequential stacks</strong>: the
+              A structured <strong>1,700-day journey</strong> — <strong>5 phases</strong>: the
               Python Stack (Agentic AI using Python, then core Python and FastAPI), the TypeScript Stack
               (JavaScript, TypeScript, React, Next.js, React Native, Express/Node), the Java Stack (J2SE,
-              J2EE, JPA, Spring Boot, Microservices), and the DevOps Stack (DevOps, AWS Cloud). Data
-              Structures &amp; System Design practiced throughout. Learn by building, front to back, one day
-              at a time.
+              J2EE, JPA, Spring Boot, Microservices), the DevOps Stack (DevOps, AWS Cloud), and a Capstone
+              Project integrating all four stacks. Data Structures &amp; System Design practiced throughout.
+              Learn by building, front to back, one day at a time.
             </p>
 
             <div className="fle-pills">
-              <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,614 Days of Code</span>
-              <span className="fle-pill"><span aria-hidden="true">🧠</span> 4 Sequential Stacks</span>
-              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python (Agentic AI) → TypeScript → Java → DevOps</span>
+              <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,700 Days of Code</span>
+              <span className="fle-pill"><span aria-hidden="true">🧠</span> 5 Phases · 4 Stacks + Capstone</span>
+              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → TypeScript → Java → DevOps → Capstone</span>
               <span className="fle-pill"><span aria-hidden="true">📐</span> DSA &amp; System Design Throughout</span>
             </div>
 
@@ -164,11 +164,11 @@ export default function Home() {
       <section className="btech-roadmap" id="btech-roadmap">
         <div className="btech-inner">
           <span className="btech-badge">The Roadmap</span>
-          <h2 className="btech-title">The 1,614-Day Learning Path</h2>
+          <h2 className="btech-title">The 1,700-Day Learning Path</h2>
           <p className="btech-sub">
-            A structured path to a full lifecycle engineer — <strong>4 sequential stacks</strong>:{' '}
+            A structured path to a full lifecycle engineer — <strong>5 phases</strong>:{' '}
             <strong>Python Stack (Agentic AI → Python → FastAPI) → TypeScript Stack → Java Stack → DevOps
-            Stack</strong> — <strong>1,614 days</strong> total. Each stack bundles several tracks on this
+            Stack → Capstone Project</strong> — <strong>1,700 days</strong> total. Each stack bundles several tracks on this
             site. Data Structures &amp; System Design are practiced throughout every stack, not saved for a
             separate finale.
           </p>
@@ -664,22 +664,23 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            1,614 days · 4 stacks
+            1,700 days · 5 phases
           </span>
           <h2>Thunder++ — The Full Journey</h2>
           <p className="section-desc">
-            <strong>4 sequential stacks</strong> — <strong>Python Stack (Agentic AI using Python, then Python
-            &amp; FastAPI)</strong>,{' '}
-            <strong>TypeScript Stack (JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS)</strong>,{' '}
-            <strong>Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices)</strong>, and{' '}
-            <strong>DevOps Stack (DevOps, AWS Cloud)</strong> —
+            <strong>5 phases</strong> — <strong>Python Stack (Agentic AI using Python, then Python
+            &amp; FastAPI)</strong>,{‘ ‘}
+            <strong>TypeScript Stack (JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS)</strong>,{‘ ‘}
+            <strong>Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices)</strong>,{‘ ‘}
+            <strong>DevOps Stack (DevOps, AWS Cloud)</strong>, and a{‘ ‘}
+            <strong>Capstone Project</strong> integrating all four stacks —
             with <strong>DSA &amp; System Design</strong> practiced throughout every stack, not saved for one
-            dedicated block. That’s <strong>1,614 days</strong> of focused study, front to back.
+            dedicated block. That’s <strong>1,700 days</strong> of focused study, front to back.
           </p>
           <div className="thunder-plus-highlights">
             <span>🤖 Agentic AI First</span>
-            <span>⌨️ 4 Sequential Stacks</span>
-            <span>☁️ TypeScript → Java → DevOps</span>
+            <span>⌨️ 5 Phases · 4 Stacks + Capstone</span>
+            <span>☁️ TypeScript → Java → DevOps → Capstone</span>
             <span>📐 DSA &amp; System Design Throughout</span>
           </div>
           <div className="thunder-plus-actions">

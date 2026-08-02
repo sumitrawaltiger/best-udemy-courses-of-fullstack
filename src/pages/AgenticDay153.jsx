@@ -58,8 +58,8 @@ const resources = [
     link: { href: '/typescript', label: 'Open TypeScript series →' },
   },
   {
-    icon: '🗺️', title: '4-Stack Roadmap', titleClass: 'card-title-amber', subtitle: 'Big Picture',
-    description: 'See where the Python Stack fits in the full 53-month (1,614-day) plan, and what the next three stacks cover.',
+    icon: '🗺️', title: '5-Phase Roadmap', titleClass: 'card-title-amber', subtitle: 'Big Picture',
+    description: 'See where the Python Stack fits in the full 55-month (1,700-day) plan, and what the next four phases cover.',
     link: { href: '/roadmap', label: 'Open the roadmap →' },
   },
 ];

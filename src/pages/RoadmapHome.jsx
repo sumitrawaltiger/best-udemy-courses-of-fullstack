@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 
-// ── The 4-stack, 1,614-day roadmap ──────────────────────────────────────────
-// 4 sequential stacks — Python Stack (starts with Agentic AI using Python,
-// then core Python + FastAPI), TypeScript Stack, Java Stack, and DevOps
-// Stack — bundling the underlying tracks on this site. No separate
-// prerequisite and no separate finale — Day 1 starts directly with Agentic
-// AI, and Data Structures & System Design are practiced throughout every
-// stack rather than as a single dedicated block at the end.
+// ── The 5-phase, 1,700-day roadmap ──────────────────────────────────────────
+// 4 sequential stacks + a 239-day Capstone — Python Stack (starts with
+// Agentic AI using Python, then core Python + FastAPI), TypeScript Stack,
+// Java Stack, DevOps Stack, and a Capstone Project that integrates all four.
+// No separate prerequisite and no separate finale — Day 1 starts directly
+// with Agentic AI, and Data Structures & System Design are practiced
+// throughout every stack rather than as a single dedicated block at the end.
 // Calendar dates are intentionally NOT shown (HR-facing page).
 
 const PHASES = [
@@ -15,8 +15,8 @@ const PHASES = [
     arcClass: 'y1',
     icon: '🐍',
     label: 'Phase 1 · Python Stack',
-    tagline: 'Days 1–518',
-    duration: '518 days',
+    tagline: 'Days 1–365',
+    duration: '365 days',
     blurb: 'The current focus — starts with building AI agents (LangChain, LangGraph, MCP, agentic workflows), then continues into core Python and FastAPI for a full Python-first stretch.',
     items: [
       { icon: '🤖', title: 'Agentic AI using Python', detail: 'LangChain · LangGraph · MCP · n8n agentic workflows', source: 'Ashok IT', to: '/python' },
@@ -29,7 +29,7 @@ const PHASES = [
     arcClass: 'y2',
     icon: '🔷',
     label: 'Phase 2 · TypeScript Stack',
-    tagline: 'Days 519–884',
+    tagline: 'Days 366–731',
     duration: '366 days',
     blurb: '46 days of JavaScript → 20 days of TypeScript → 300 days of React, React Native, Next.js, and Express.js — the full JS/TS web ecosystem in one calendar year.',
     items: [
@@ -46,7 +46,7 @@ const PHASES = [
     arcClass: 'y3',
     icon: '☕',
     label: 'Phase 3 · Java Stack',
-    tagline: 'Days 885–1249',
+    tagline: 'Days 732–1096',
     duration: '365 days',
     blurb: 'The full enterprise Java path in one stack — core Java through Spring Boot and microservices.',
     items: [
@@ -62,20 +62,35 @@ const PHASES = [
     arcClass: 'y5',
     icon: '🚀',
     label: 'Phase 4 · DevOps Stack',
-    tagline: 'Days 1250–1614',
+    tagline: 'Days 1097–1461',
     duration: '365 days',
-    blurb: 'The final stack — ship and scale everything with Linux, Docker, Kubernetes, CI/CD, and core AWS services.',
+    blurb: 'The fourth stack — ship and scale everything with Linux, Docker, Kubernetes, CI/CD, and core AWS services.',
     items: [
       { icon: '🚀', title: 'DevOps', detail: 'Linux · Docker · Kubernetes · CI/CD pipelines', source: 'KodeKloud', to: '/devops' },
       { icon: '☁️', title: 'AWS Cloud', detail: '100 Days of AWS — core services and cloud architecture', source: 'KodeKloud', to: '/aws' },
     ],
   },
+  {
+    id: 'p5',
+    arcClass: 'capstone',
+    icon: '🎯',
+    label: 'Phase 5 · Capstone Project',
+    tagline: 'Days 1462–1700',
+    duration: '239 days',
+    blurb: 'The 239-day capstone — bring all four stacks together in production-grade projects: Agentic AI pipelines, TypeScript frontends, Java microservices backends, and full DevOps deployment.',
+    items: [
+      { icon: '🤖', title: 'Agentic AI Integration', detail: 'LangChain · LangGraph · MCP — agents wired to real backends', source: 'Capstone', to: '/python' },
+      { icon: '⚛️', title: 'Full-Stack TypeScript', detail: 'React · Next.js · Express — the web layer, end to end', source: 'Capstone', to: '/' },
+      { icon: '☕', title: 'Java Microservices', detail: 'Spring Boot · REST · Kafka · Docker — enterprise-grade backends', source: 'Capstone', to: '/java' },
+      { icon: '🚀', title: 'DevOps Deployment', detail: 'Kubernetes · CI/CD · Terraform · AWS — ship and monitor at scale', source: 'Capstone', to: '/devops' },
+    ],
+  },
 ];
 
 const STATS = [
-  { value: '4', label: 'sequential stacks' },
-  { value: '53', label: 'months · 1,614 days' },
-  { value: '~1 yr', label: 'per stack' },
+  { value: '5', label: 'phases · 4 stacks + capstone' },
+  { value: '55', label: 'months · 1,700 days' },
+  { value: '~1 yr', label: 'per phase (239 d capstone)' },
   { value: '30+', label: 'technologies' },
 ];
 
@@ -98,12 +113,12 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 Day 0 setup · 4 stacks · 53-month learning journey · 1,614 days</span>
-        <h1 className="roadmap-hero-title">The 53-Month Learning Journey</h1>
+        <span className="roadmap-hero-badge">📍 Day 0 setup · 5 phases · 55-month learning journey · 1,700 days</span>
+        <h1 className="roadmap-hero-title">The 55-Month Learning Journey</h1>
         <p className="roadmap-hero-sub">
-          Starts with <strong>Day 0 — environment setup</strong>, then <strong>4 sequential stacks</strong> —{' '}
+          Starts with <strong>Day 0 — environment setup</strong>, then <strong>5 phases</strong> —{' '}
           <strong>Python Stack (Agentic AI → Python → FastAPI) → TypeScript Stack → Java Stack → DevOps
-          Stack</strong> — <strong>53 months (1,614 days)</strong> of focused, daily practice, front to back. Data
+          Stack → Capstone Project</strong> — <strong>55 months (1,700 days)</strong> of focused, daily practice, front to back. Data
           Structures &amp; System Design are practiced throughout, not a separate add-on.
         </p>
         <div className="roadmap-stats">
@@ -216,7 +231,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">4 stacks · 53 months · 1,614 days, front to back</p>
+            <p className="roadmap-finish-date">5 phases · 55 months · 1,700 days, front to back</p>
           </div>
         </div>
       </div>
@@ -224,12 +239,12 @@ export default function RoadmapHome() {
       <section className="roadmap-flow">
         <h2 className="roadmap-flow-title">The flow, end to end</h2>
         <p className="roadmap-flow-text">
-          Day 0 setup, then 4 sequential stacks: <strong>Python Stack</strong> (Agentic AI using Python →
+          Day 0 setup, then 5 phases: <strong>Python Stack</strong> (Agentic AI using Python →
           Python → FastAPI) → <strong>TypeScript Stack</strong> (JavaScript, TypeScript, React JS, Next JS,
           React Native, Express/Node JS) → <strong>Java Stack</strong> (J2SE, J2EE, JPA, Spring Boot,
-          Microservices) → <strong>DevOps Stack</strong> (DevOps, AWS Cloud). Data Structures &amp; System
-          Design are practiced throughout every stack, not saved for one dedicated block. 53 months (1,614 days) end to
-          end.
+          Microservices) → <strong>DevOps Stack</strong> (DevOps, AWS Cloud) → <strong>Capstone Project</strong> (all
+          four stacks integrated). Data Structures &amp; System Design are practiced throughout every stack, not saved
+          for one dedicated block. 55 months (1,700 days) end to end.
         </p>
         <div className="roadmap-flow-actions">
           <Link to="/python" className="btn btn-lg roadmap-btn-primary">

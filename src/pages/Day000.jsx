@@ -9,7 +9,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Git & GitHub',
-    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 1614 days of code',
+    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 1700 days of code',
   },
   {
     title: 'VS Code',
@@ -33,11 +33,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 53-month (1,614-day) plan — Phase 1: Python Stack starts with 153 days of Agentic AI (LangChain, LangGraph, MCP), then continues with core Python and FastAPI through end of 2027. Then TypeScript Stack (2028), Java Stack (2029), and DevOps Stack (2030)',
+    text: 'reviewed the full 55-month (1,700-day) plan — Phase 1: Python Stack (365 days) starts with Agentic AI using Python (LangChain, LangGraph, MCP), then continues into core Python and FastAPI. Then Phase 2: TypeScript Stack (366 days) → Phase 3: Java Stack (365 days) → Phase 4: DevOps Stack (365 days) → Phase 5: Capstone Project (239 days) integrating all four stacks',
   },
   {
     title: 'Ready for Phase 1 · Python Stack',
-    text: 'Day 1 (1 Aug 2026) starts straight into Phase 1: Agentic AI using Python — 153 days of LangChain, LangGraph, MCP, and agentic workflows, followed by core Python and FastAPI',
+    text: 'Day 1 (5 Aug 2026) starts straight into Phase 1: Agentic AI using Python — LangChain, LangGraph, MCP, and agentic workflows, followed by core Python and FastAPI across the full 365-day Python Stack',
   },
   {
     title: 'Accounts ready',
@@ -65,7 +65,7 @@ const CORE_TOOLS = [
     titleClass: 'card-title-amber',
     subtitle: 'Version Control',
     description:
-      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 1614 days is signed to you.',
+      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 1700 days is signed to you.',
     code: 'git --version\ngit config --global user.name "Sumit Rawal"\ngit config --global user.email "you@email.com"',
   },
   {
@@ -125,16 +125,16 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-amber',
     subtitle: '4 AM Wake · 5–8 AM Study',
     description:
-      'Wake at 4:00 AM, then study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1614 days.',
+      'Wake at 4:00 AM, then study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1700 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
     icon: '🗺️',
-    title: 'The 53-Month Roadmap',
+    title: 'The 55-Month Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '4 stacks · Python Stack starts 1 Aug 2026',
+    subtitle: '5 phases · Python Stack starts 5 Aug 2026',
     description:
-      'Phase 1 · Python Stack (518 days): 153 days of Agentic AI (LangChain, LangGraph, MCP, n8n) → core Python → FastAPI. Then TypeScript Stack (2028) → Java Stack (2029) → DevOps Stack (2030). DSA & System Design practiced throughout every stack. 1,614 days total.',
+      'Phase 1 · Python Stack (365 days): Agentic AI (LangChain, LangGraph, MCP, n8n) → core Python → FastAPI. Then Phase 2: TypeScript Stack (366 days) → Phase 3: Java Stack (365 days) → Phase 4: DevOps Stack (365 days) → Phase 5: Capstone Project (239 days). DSA & System Design practiced throughout. 1,700 days total.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
@@ -250,8 +250,8 @@ export default function Day000() {
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>53 Months</span>
-              <span>1614 Days</span>
+              <span>55 Months</span>
+              <span>1700 Days</span>
               <span>Python Stack</span>
               <span>Day 0 · 31 Jul 2026</span>
             </div>
@@ -259,7 +259,7 @@ export default function Day000() {
               <h1 className="day001-day-num">
                 DAY 0 <span aria-hidden="true">🛠️</span>
               </h1>
-              <p className="day001-day-theme">ENVIRONMENT SETUP · PYTHON STACK BEGINS 1 AUG 2026</p>
+              <p className="day001-day-theme">ENVIRONMENT SETUP · PYTHON STACK BEGINS 5 AUG 2026</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -272,7 +272,7 @@ export default function Day000() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">1614 DAYS · DAY 0</p>
+              <p className="day001-profile-role">1700 DAYS · DAY 0</p>
             </div>
           </div>
         </div>
@@ -282,7 +282,7 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 · 31 Jul 2026 — environment setup before the 53-month journey begins.</strong>{' '}
+          <strong>Day 0 · 31 Jul 2026 — environment setup before the 55-month journey begins.</strong>{' '}
           Install <code>Node.js</code>, <code>Git</code>, and <code>VS Code</code>, wire the terminal and
           Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
@@ -320,8 +320,8 @@ export default function Day000() {
           <span>#Day0</span>
           <span>#PythonStack</span>
           <span>#AgenticAI</span>
-          <span>#53Months</span>
-          <span>#1614Days</span>
+          <span>#55Months</span>
+          <span>#1700Days</span>
         </footer>
       </div>
     </div>

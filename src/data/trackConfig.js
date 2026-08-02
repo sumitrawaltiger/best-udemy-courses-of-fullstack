@@ -1,8 +1,8 @@
-// Learning path calendar offsets (Day 1 = 20 Jul 2026)
+// Learning path calendar offsets (Day 1 = 5 Aug 2026)
 export const THUNDER_DAYS = 100;
 
-// ── TypeScript Stack Year (2028) ─────────────────────────────────────────────
-// 2028 is a leap year: 366 calendar days (Days 519–884 of the full journey)
+// ── TypeScript Stack Year (Phase 2) ─────────────────────────────────────────
+// 2028 is a leap year: 366 calendar days (Days 366–731 of the full journey)
 // First 46 days  = JavaScript          (1 Jan – 15 Feb 2028, day 47 is Series Finale)
 // Next  20 days  = TypeScript          (16 Feb – 6 Mar 2028)
 // Remaining 300  = React + RN + Next + Express  (7 Mar – 31 Dec 2028)
@@ -94,17 +94,17 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: Day 1 = 20 Jul 2026 (Mon). User-facing framing: 1465 days / 3 phases.
+// Full journey: Day 1 = 5 Aug 2026. User-facing framing: 1700 days / 5 phases.
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
-//  chapterFactory.js = 20 Jul 2026, so module Day 1 also dates to 20 Jul 2026.)
-export const JOURNEY_START_LABEL = '20 Jul 2026';
-export const JOURNEY_END_LABEL = '31 Dec 2030';
-export const JOURNEY_TOTAL_DAYS = 1465;
-// Factory calendar: Day 1 = 20 Jul 2026 (COURSE_START); factory day N = journey Day N.
-export const JOURNEY_END_FACTORY_DAY = 1461;
+//  chapterFactory.js = 5 Aug 2026, so module Day 1 also dates to 5 Aug 2026.)
+export const JOURNEY_START_LABEL = '5 Aug 2026';
+export const JOURNEY_END_LABEL = '31 Mar 2031';
+export const JOURNEY_TOTAL_DAYS = 1700;
+// Factory calendar: Day 1 = 5 Aug 2026 (COURSE_START); factory day N = journey Day N.
+export const JOURNEY_END_FACTORY_DAY = 1700;
 
-// Explicit day-offsets for the re-sequenced 4-year plan (offset = phase start day − 1).
-// Year 1 (JS/TS): Days 1–365 · Year 2 (Python): 366–731 · Year 3 (Java): 732–1096 · Year 4 (DevOps): 1097–1461.
+// Explicit day-offsets for the re-sequenced 5-phase plan (offset = phase start day − 1).
+// Phase 1 (Python): Days 1–365 · Phase 2 (TypeScript): 366–731 · Phase 3 (Java): 732–1096 · Phase 4 (DevOps): 1097–1461 · Phase 5 (Capstone): 1462–1700.
 export const TRACK_OFFSETS = {
   thunder: 0, // Thunder JavaScript — Days 1–100 (24 Jul – 31 Oct 2026)
   nextjs: 100, // React & Next.js — Days 101–150 (1 Nov – 20 Dec 2026)
