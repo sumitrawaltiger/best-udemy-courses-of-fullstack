@@ -1,5 +1,13 @@
 import { Link } from 'react-router-dom';
 
+// ── Skill calendar helpers ───────────────────────────────────────────────────
+const _CAL_DAY1 = new Date(2026, 7, 5); // 5 Aug 2026
+function _calDate(dayN) {
+  const d = new Date(_CAL_DAY1);
+  d.setDate(d.getDate() + dayN - 1);
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
 // ── 17 skills · 100 days each · 1,700 days ──────────────────────────────────
 // Python (1–100) → FastAPI (101–200) → Agentic AI (201–300) →
 // JavaScript (301–400) → TypeScript (401–500) → React (501–600) →
@@ -244,6 +252,46 @@ export default function RoadmapHome() {
           The full journey at a glance
         </figcaption>
       </figure>
+
+      {/* ── 100-Day Skill Calendar ─────────────────────────────────────────────── */}
+      <section style={{ maxWidth: '780px', margin: '16px auto 8px', padding: '0 12px' }}>
+        <h2 style={{ fontSize: '1rem', fontWeight: 800, textAlign: 'center', marginBottom: '12px', letterSpacing: '0.03em', opacity: 0.9 }}>
+          📅 100-Day Skill Calendar
+        </h2>
+        <div style={{ overflowX: 'auto', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem', lineHeight: 1.4 }}>
+            <thead>
+              <tr style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em', opacity: 0.5 }}>
+                <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.08)', fontWeight: 700 }}>#</th>
+                <th style={{ padding: '8px 10px', textAlign: 'left', borderBottom: '1px solid rgba(255,255,255,0.08)', fontWeight: 700 }}>Skill</th>
+                <th style={{ padding: '8px 10px', textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', fontWeight: 700 }}>Days</th>
+                <th style={{ padding: '8px 10px', textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', fontWeight: 700 }}>Start</th>
+                <th style={{ padding: '8px 10px', textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', fontWeight: 700 }}>End</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SKILLS.map((skill, i) => {
+                const d1 = i * 100 + 1;
+                const d2 = (i + 1) * 100;
+                return (
+                  <tr key={skill.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                    <td style={{ padding: '7px 10px', opacity: 0.45, fontVariantNumeric: 'tabular-nums', fontSize: '0.78rem' }}>{String(i + 1).padStart(2, '0')}</td>
+                    <td style={{ padding: '7px 10px', fontWeight: 700 }}>{skill.icon} {skill.label}</td>
+                    <td style={{ padding: '7px 10px', textAlign: 'center', opacity: 0.65, fontVariantNumeric: 'tabular-nums', fontSize: '0.8rem' }}>
+                      {d1}–{d2}
+                    </td>
+                    <td style={{ padding: '7px 10px', textAlign: 'center', opacity: 0.85, fontVariantNumeric: 'tabular-nums' }}>{_calDate(d1)}</td>
+                    <td style={{ padding: '7px 10px', textAlign: 'center', opacity: 0.85, fontVariantNumeric: 'tabular-nums' }}>{_calDate(d2)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p style={{ textAlign: 'center', opacity: 0.4, fontSize: '0.72rem', marginTop: '8px' }}>
+          Day 1 = 5 Aug 2026 · 100 days per skill · journey ends 31 Mar 2031
+        </p>
+      </section>
 
       <section
         className="roadmap-prereq"
