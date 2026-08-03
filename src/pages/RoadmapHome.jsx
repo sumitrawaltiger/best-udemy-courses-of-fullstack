@@ -8,16 +8,19 @@ function _calDate(dayN) {
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-// ── 18 skills · 1,826 days · 5 years (5 Aug 2026 → 4 Aug 2031) ─────────────
-// Skills 1–16: 100 days each (Days 1–1600)
-// Skill 17: DSA & System Design sprint — 126 days (Days 1601–1726)
-// Skill 18: Capstone Project — 100 days (Days 1727–1826)
+// ── 17 skills · 100 days each · 1,700 days ──────────────────────────────────
+// Python (1–100) → FastAPI (101–200) → Agentic AI (201–300) →
+// JavaScript (301–400) → TypeScript (401–500) → React (501–600) →
+// Next JS (601–700) → React Native (701–800) → Express JS (801–900) →
+// J2SE (901–1000) → J2EE (1001–1100) → JPA (1101–1200) →
+// Spring Boot (1201–1300) → Microservices (1301–1400) →
+// DevOps (1401–1500) → Cloud / AWS (1501–1600) → Capstone (1601–1700).
 // Calendar dates are intentionally NOT shown (HR-facing page).
 
 const SKILLS = [
   // ── Python domain: Skills 1–3 ─────────────────────────────────────────────
   {
-    id: 's01', arcClass: 'y1', icon: '🐍', dayStart: 1, dayEnd: 100,
+    id: 's01', arcClass: 'y1', icon: '🐍',
     label: 'Skill 1 · Python',
     tagline: 'Days 1–100', duration: '100 days',
     blurb: 'Core Python from scratch — syntax, OOP, file I/O, database connectivity, and multithreading. The language foundation for everything that follows.',
@@ -26,7 +29,7 @@ const SKILLS = [
     ],
   },
   {
-    id: 's02', arcClass: 'y1', icon: '⚡', dayStart: 101, dayEnd: 200,
+    id: 's02', arcClass: 'y1', icon: '⚡',
     label: 'Skill 2 · FastAPI',
     tagline: 'Days 101–200', duration: '100 days',
     blurb: 'Build production-ready Python APIs — fundamentals, database integration, authentication, security, and deployment.',
@@ -35,7 +38,7 @@ const SKILLS = [
     ],
   },
   {
-    id: 's03', arcClass: 'y1', icon: '🤖', dayStart: 201, dayEnd: 300,
+    id: 's03', arcClass: 'y1', icon: '🤖',
     label: 'Skill 3 · Agentic AI',
     tagline: 'Days 201–300', duration: '100 days',
     blurb: 'Build AI agents using Python — LangChain, LangGraph, MCP, and n8n agentic workflows. The skills that define the next decade of software.',
@@ -45,7 +48,7 @@ const SKILLS = [
   },
   // ── JavaScript / TypeScript domain: Skills 4–9 ────────────────────────────
   {
-    id: 's04', arcClass: 'y2', icon: '🟨', dayStart: 301, dayEnd: 400,
+    id: 's04', arcClass: 'y2', icon: '🟨',
     label: 'Skill 4 · JavaScript',
     tagline: 'Days 301–400', duration: '100 days',
     blurb: "The web's native language — syntax, DOM, async, closures, and all the ES6+ fundamentals that power modern applications.",
@@ -54,7 +57,7 @@ const SKILLS = [
     ],
   },
   {
-    id: 's05', arcClass: 'y2', icon: '🔷', dayStart: 401, dayEnd: 500,
+    id: 's05', arcClass: 'y2', icon: '🔷',
     label: 'Skill 5 · TypeScript',
     tagline: 'Days 401–500', duration: '100 days',
     blurb: 'Add static typing to JavaScript — types, interfaces, generics, enums, and classes for safer, more scalable code.',
@@ -63,7 +66,7 @@ const SKILLS = [
     ],
   },
   {
-    id: 's06', arcClass: 'y2', icon: '⚛️', dayStart: 501, dayEnd: 600,
+    id: 's06', arcClass: 'y2', icon: '⚛️',
     label: 'Skill 6 · React',
     tagline: 'Days 501–600', duration: '100 days',
     blurb: 'Build interactive UIs — components, hooks, state management, routing, and data fetching.',
@@ -72,7 +75,7 @@ const SKILLS = [
     ],
   },
   {
-    id: 's07', arcClass: 'y2', icon: '🌐', dayStart: 601, dayEnd: 700,
+    id: 's07', arcClass: 'y2', icon: '🌐',
     label: 'Skill 7 · Next JS',
     tagline: 'Days 601–700', duration: '100 days',
     blurb: 'Full-stack React — App Router, server components, data & server actions, and production deployment.',
@@ -81,7 +84,7 @@ const SKILLS = [
     ],
   },
   {
-    id: 's08', arcClass: 'y2', icon: '📱', dayStart: 701, dayEnd: 800,
+    id: 's08', arcClass: 'y2', icon: '📱',
     label: 'Skill 8 · React Native',
     tagline: 'Days 701–800', duration: '100 days',
     blurb: 'Build native mobile apps — Expo, native components, navigation, builds, and publishing to the app stores.',
@@ -90,7 +93,7 @@ const SKILLS = [
     ],
   },
   {
-    id: 's09', arcClass: 'y2', icon: '🟢', dayStart: 801, dayEnd: 900,
+    id: 's09', arcClass: 'y2', icon: '🟢',
     label: 'Skill 9 · Express JS',
     tagline: 'Days 801–900', duration: '100 days',
     blurb: 'Node.js backends — REST APIs, middleware, Prisma ORM, JWT authentication, and deployment.',
@@ -100,7 +103,7 @@ const SKILLS = [
   },
   // ── Java domain: Skills 10–14 ─────────────────────────────────────────────
   {
-    id: 's10', arcClass: 'y3', icon: '☕', dayStart: 901, dayEnd: 1000,
+    id: 's10', arcClass: 'y3', icon: '☕',
     label: 'Skill 10 · J2SE',
     tagline: 'Days 901–1000', duration: '100 days',
     blurb: 'Core Java — OOP, collections, exceptions, multithreading, and the language fundamentals that underpin the entire Java ecosystem.',
@@ -109,7 +112,7 @@ const SKILLS = [
     ],
   },
   {
-    id: 's11', arcClass: 'y3', icon: '🏢', dayStart: 1001, dayEnd: 1100,
+    id: 's11', arcClass: 'y3', icon: '🏢',
     label: 'Skill 11 · J2EE',
     tagline: 'Days 1001–1100', duration: '100 days',
     blurb: 'Enterprise Java — Servlets, JSP, and the full Java EE ecosystem for building server-side applications.',
@@ -118,7 +121,7 @@ const SKILLS = [
     ],
   },
   {
-    id: 's12', arcClass: 'y3', icon: '🗄️', dayStart: 1101, dayEnd: 1200,
+    id: 's12', arcClass: 'y3', icon: '🗄️',
     label: 'Skill 12 · JPA',
     tagline: 'Days 1101–1200', duration: '100 days',
     blurb: 'ORM and database mapping — entities, relationships, queries, and JPA best practices for production database layers.',
@@ -127,7 +130,7 @@ const SKILLS = [
     ],
   },
   {
-    id: 's13', arcClass: 'y3', icon: '🍃', dayStart: 1201, dayEnd: 1300,
+    id: 's13', arcClass: 'y3', icon: '🍃',
     label: 'Skill 13 · Spring Boot',
     tagline: 'Days 1201–1300', duration: '100 days',
     blurb: 'The premier Java framework — Spring Boot, Spring Data, REST APIs, and security for enterprise-grade applications.',
@@ -136,7 +139,7 @@ const SKILLS = [
     ],
   },
   {
-    id: 's14', arcClass: 'y3', icon: '🕸️', dayStart: 1301, dayEnd: 1400,
+    id: 's14', arcClass: 'y3', icon: '🕸️',
     label: 'Skill 14 · Microservices',
     tagline: 'Days 1301–1400', duration: '100 days',
     blurb: 'Distributed systems — microservices architecture, API gateway, and service discovery with Java.',
@@ -146,7 +149,7 @@ const SKILLS = [
   },
   // ── DevOps / Cloud domain: Skills 15–16 ──────────────────────────────────
   {
-    id: 's15', arcClass: 'y5', icon: '🚀', dayStart: 1401, dayEnd: 1500,
+    id: 's15', arcClass: 'y5', icon: '🚀',
     label: 'Skill 15 · DevOps',
     tagline: 'Days 1401–1500', duration: '100 days',
     blurb: 'Ship and operate software at scale — Linux, Docker, Kubernetes, and CI/CD pipelines.',
@@ -155,7 +158,7 @@ const SKILLS = [
     ],
   },
   {
-    id: 's16', arcClass: 'y5', icon: '☁️', dayStart: 1501, dayEnd: 1600,
+    id: 's16', arcClass: 'y5', icon: '☁️',
     label: 'Skill 16 · Cloud (AWS)',
     tagline: 'Days 1501–1600', duration: '100 days',
     blurb: '100 days of AWS — core cloud services, architecture patterns, and production-grade cloud engineering.',
@@ -163,24 +166,12 @@ const SKILLS = [
       { icon: '☁️', title: 'AWS Cloud', detail: '100 Days of AWS — core services and cloud architecture', source: 'KodeKloud', to: '/aws' },
     ],
   },
-  // ── DSA & System Design Sprint: Skill 17 (126 days) ─────────────────────
+  // ── Capstone: Skill 17 ────────────────────────────────────────────────────
   {
-    id: 's17', arcClass: 'capstone', icon: '🧠', dayStart: 1601, dayEnd: 1726,
-    label: 'Skill 17 · DSA & System Design',
-    tagline: 'Days 1601–1726', duration: '126 days',
-    blurb: 'A dedicated 126-day sprint to master Data Structures, Algorithms, and System Design — the skills that unlock top-tier engineering roles. LeetCode patterns, system design deep-dives, and mock interview practice.',
-    items: [
-      { icon: '📊', title: 'Data Structures & Algorithms', detail: 'Arrays · trees · graphs · DP · sorting — LeetCode patterns', source: 'ChaiCode / GFG', to: '/interview' },
-      { icon: '🏗️', title: 'System Design', detail: 'Scalability · databases · caching · microservices architecture', source: 'ChaiCode / GFG', to: '/interview' },
-      { icon: '🎤', title: 'Mock Interviews', detail: 'Behavioral · technical rounds · whiteboard practice', source: 'ChaiCode', to: '/interview' },
-    ],
-  },
-  // ── Capstone Project: Skill 18 ────────────────────────────────────────────
-  {
-    id: 's18', arcClass: 'capstone', icon: '🎯', dayStart: 1727, dayEnd: 1826,
-    label: 'Skill 18 · Capstone Project',
-    tagline: 'Days 1727–1826', duration: '100 days',
-    blurb: 'The 100-day capstone — integrate all 17 skills into production-grade projects: Python APIs, Agentic AI pipelines, TypeScript frontends, Java microservices, and full DevOps deployment on AWS.',
+    id: 's17', arcClass: 'capstone', icon: '🎯',
+    label: 'Skill 17 · Capstone Project',
+    tagline: 'Days 1601–1700', duration: '100 days',
+    blurb: 'The 100-day capstone — integrate all 16 skills into production-grade projects: Python APIs, Agentic AI pipelines, TypeScript frontends, Java microservices backends, and full DevOps deployment on AWS.',
     items: [
       { icon: '🤖', title: 'Agentic AI Integration', detail: 'LangChain · LangGraph · MCP — agents wired to real backends', source: 'Capstone', to: '/python' },
       { icon: '⚛️', title: 'Full-Stack TypeScript', detail: 'React · Next.js · Express — the web layer, end to end', source: 'Capstone', to: '/' },
@@ -191,9 +182,9 @@ const SKILLS = [
 ];
 
 const STATS = [
-  { value: '18', label: 'skills · one at a time' },
-  { value: '1,826', label: 'days · 5 years' },
-  { value: '60', label: 'months · 5,478 hours' },
+  { value: '17', label: 'skills · one at a time' },
+  { value: '100', label: 'days per skill' },
+  { value: '55', label: 'months · 1,700 days' },
   { value: '30+', label: 'technologies' },
 ];
 
@@ -216,16 +207,16 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 Day 0 setup · 18 skills · 1,826 days · 5 years</span>
-        <h1 className="roadmap-hero-title">18 Skills, 1,826 Days</h1>
+        <span className="roadmap-hero-badge">📍 Day 0 setup · 17 skills · 100 days each · 1,700 days</span>
+        <h1 className="roadmap-hero-title">17 Skills, 1,700 Days</h1>
         <p className="roadmap-hero-sub">
-          Starts with <strong>Day 0 — environment setup</strong>, then <strong>16 skills</strong>{' '}
-          at 100 days each — <strong>Python → FastAPI → Agentic AI → JavaScript → TypeScript
+          Starts with <strong>Day 0 — environment setup</strong>, then <strong>17 skills</strong>{' '}
+          mastered one at a time — <strong>Python → FastAPI → Agentic AI → JavaScript → TypeScript
           → React → Next JS → React Native → Express JS → J2SE → J2EE → JPA → Spring Boot
-          → Microservices → DevOps → Cloud (AWS)</strong> — followed by a{' '}
-          <strong>126-day DSA &amp; System Design sprint</strong>, then a{' '}
-          <strong>100-day Capstone Project</strong> integrating everything.{' '}
-          <strong>5 years · 60 months · 1,826 days</strong> of focused daily practice, front to back.
+          → Microservices → DevOps → Cloud → Capstone</strong> —{' '}
+          <strong>100 days each, 55 months (1,700 days)</strong> of focused daily practice,
+          front to back. Data Structures &amp; System Design are practiced throughout,
+          not a separate add-on.
         </p>
         <div className="roadmap-stats">
           {STATS.map((s) => (
@@ -242,8 +233,8 @@ export default function RoadmapHome() {
         style={{ margin: '8px auto 4px', textAlign: 'center', maxWidth: '820px' }}
       >
         <img
-          src="/roadmap-notes/5-year-full-stack-journey.png"
-          alt="5-Year Full Stack Journey — 18 Skills · 1,826 Days · 5 Aug 2026 → 4 Aug 2031. Skills 1–16 at 100 days each, then 126-day DSA & System Design sprint, then 100-day Capstone Project. Sumit Rawal · Full Lifecycle Engineer."
+          src="/roadmap-notes/1700-days-learning-journey-2026-2031.png"
+          alt="Road to Full Lifecycle Engineer — 1,700 Days · 55 Months · 17 Skills (5 Aug 2026 – 31 Mar 2031). 17 skills at 100 days each: Python, FastAPI, Agentic AI, JavaScript, TypeScript, React, Next JS, React Native, Express JS, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS), Capstone Project. DSA & System Design practiced throughout. One Goal: Build, Deploy, Automate, Scale."
           loading="lazy"
           style={{
             width: '100%',
@@ -296,8 +287,8 @@ export default function RoadmapHome() {
             </thead>
             <tbody>
               {SKILLS.map((skill, i) => {
-                const d1 = skill.dayStart;
-                const d2 = skill.dayEnd;
+                const d1 = i * 100 + 1;
+                const d2 = (i + 1) * 100;
                 return (
                   <tr key={skill.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.09)' }}>
                     <td style={{ padding: '9px 12px', color: '#8a95a3', fontVariantNumeric: 'tabular-nums', fontSize: '0.8rem', fontWeight: 600 }}>{String(i + 1).padStart(2, '0')}</td>
@@ -314,7 +305,7 @@ export default function RoadmapHome() {
           </table>
         </div>
         <p style={{ textAlign: 'center', color: '#6b7b8e', fontSize: '0.75rem', marginTop: '10px' }}>
-          Day 1 = 5 Aug 2026 · 1,826 days · journey ends 4 Aug 2031
+          Day 1 = 5 Aug 2026 · 100 days per skill · journey ends 31 Mar 2031
         </p>
       </section>
 
@@ -393,7 +384,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">16 skills · DSA sprint · Capstone · 1,826 days · 5 years</p>
+            <p className="roadmap-finish-date">17 skills · 100 days each · 1,700 days, front to back</p>
           </div>
         </div>
       </div>
@@ -401,16 +392,16 @@ export default function RoadmapHome() {
       <section className="roadmap-flow">
         <h2 className="roadmap-flow-title">The flow, end to end</h2>
         <p className="roadmap-flow-text">
-          Day 0 setup, then 16 skills at 100 days each:{' '}
-          <strong>Python</strong> {'->'} <strong>FastAPI</strong> {'->'} <strong>Agentic AI</strong> {'->'}
-          {' '}<strong>JavaScript</strong> {'->'} <strong>TypeScript</strong> {'->'} <strong>React</strong> {'->'}
-          {' '}<strong>Next JS</strong> {'->'} <strong>React Native</strong> {'->'} <strong>Express JS</strong> {'->'}
-          {' '}<strong>J2SE</strong> {'->'} <strong>J2EE</strong> {'->'} <strong>JPA</strong> {'->'}
-          {' '}<strong>Spring Boot</strong> {'->'} <strong>Microservices</strong> {'->'} <strong>DevOps</strong> {'->'}
-          {' '}<strong>Cloud (AWS)</strong> {'->'} then a <strong>126-day DSA &amp; System Design sprint</strong>{' '}
-          (LeetCode patterns, system design, mock interviews) {'->'} finally a{' '}
-          <strong>100-day Capstone Project</strong> integrating all 17 skills into production systems.
-          5 years · 60 months · 1,826 days end to end, finishing on <strong>4 Aug 2031</strong>.
+          Day 0 setup, then 17 skills at 100 days each:{' '}
+          <strong>Python</strong> (core language) {'->'} <strong>FastAPI</strong> (Python APIs) {'->'}
+          {' '}<strong>Agentic AI</strong> (LangChain, LangGraph, MCP) {'->'} <strong>JavaScript</strong> {'->'}
+          {' '}<strong>TypeScript</strong> {'->'} <strong>React</strong> {'->'} <strong>Next JS</strong> {'->'}
+          {' '}<strong>React Native</strong> {'->'} <strong>Express JS</strong> {'->'} <strong>J2SE</strong> {'->'}
+          {' '}<strong>J2EE</strong> {'->'} <strong>JPA</strong> {'->'} <strong>Spring Boot</strong> {'->'}
+          {' '}<strong>Microservices</strong> {'->'} <strong>DevOps</strong> {'->'} <strong>Cloud (AWS)</strong> {'->'}
+          {' '}<strong>Capstone Project</strong> (all 16 skills integrated). One skill at a time, fully focused.
+          Data Structures &amp; System Design practiced throughout every skill, not saved for one dedicated block.
+          55 months (1,700 days) end to end.
         </p>
         <div className="roadmap-flow-actions">
           <Link to="/python" className="btn btn-lg roadmap-btn-primary">
