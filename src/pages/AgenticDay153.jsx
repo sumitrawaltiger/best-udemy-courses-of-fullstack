@@ -1,13 +1,13 @@
 import StandaloneJourneyPage from './StandaloneJourneyPage';
 
 const learntToday = [
-  { title: 'Series complete', text: '153 days of Agentic AI — from "Hello, LangChain!" to a graded capstone with eval, traces, and security drills' },
+  { title: 'Capstone milestone', text: '153 days of Agentic AI — from "Hello, LangChain!" to a graded capstone with eval, traces, and security drills — and the journey is only half done' },
   { title: 'What travels', text: 'loops, schemas, HITL, budgets, traces, flywheels, and eval beat any framework fad' },
   { title: 'Portfolio proof', text: 'one recorded demo + README + golden suite is stronger than a long unfinished course log' },
   { title: 'Trust is product', text: 'privacy, allowlists, and honest degrade modes are how users stay' },
   { title: 'Measure to improve', text: 'north star + guardrails keep shipping from becoming roulette' },
-  { title: 'Four stacks, one plan', text: 'Python Stack → TypeScript → Java → DevOps — the Agentic AI leg of Phase 1 is done, core Python & FastAPI continue from Day 154' },
-  { title: 'Tomorrow: Day 154', text: 'the Python Stack continues — core Python syntax, OOP, file handling, DB connectivity, same daily rhythm' },
+  { title: '147 days remain', text: 'Agentic AI continues through Day 300 (31 May 2027) — deeper agent work, new tools, and production-grade pipelines ahead' },
+  { title: 'Tomorrow: Day 154', text: 'the Agentic AI journey continues — same 4:30–7:30 AM rhythm, next topic area incoming' },
 ];
 
 const core = [
@@ -22,9 +22,9 @@ const core = [
     code: 'loop · rag · ops\nedge · learn',
   },
   {
-    icon: '🐍', title: 'Up Next: Core Python & FastAPI', titleClass: 'card-title-amber', subtitle: '365 Days',
-    description: 'The Python Stack continues from Day 154 — core syntax, OOP, DB connectivity, then FastAPI — through 31 Dec 2027.',
-    code: 'python · oop\ndb · fastapi',
+    icon: '🤖', title: 'Agentic AI Continues', titleClass: 'card-title-amber', subtitle: 'Days 154–300',
+    description: 'Day 153 is a capstone checkpoint — 147 days of Agentic AI remain through Day 300 (31 May 2027). Deeper agent work, new tools, and multi-language pipelines ahead.',
+    code: 'day 154 → day 300\n31 may 2027',
   },
 ];
 
@@ -40,26 +40,26 @@ const practice = [
     code: 'post once\nhigh leverage',
   },
   {
-    icon: '🔜', title: 'Preview: Python Modules', titleClass: 'card-title-amber', subtitle: 'Python',
-    description: 'Skim the Python track before Day 154 — core syntax and OOP pick up right where Agentic AI leaves off.',
-    link: { href: '/python', label: 'Open Python track →' },
+    icon: '🔜', title: 'Day 154 — Continuing', titleClass: 'card-title-amber', subtitle: 'Agentic AI',
+    description: 'Next topic in the Agentic AI curriculum — same 4:30–7:30 AM rhythm, deeper into agents and production pipelines.',
+    link: { href: '/agentic-day-154', label: 'Day 154 →' },
   },
 ];
 
 const resources = [
   {
-    icon: '📘', title: 'Python Track', titleClass: 'card-title-cyan', subtitle: 'Tomorrow',
-    description: 'The full Agentic AI + core Python curriculum — Day 154 onwards is core Python & FastAPI.',
-    link: { href: '/python', label: 'Open Python track →' },
+    icon: '🤖', title: 'Agentic AI Ahead', titleClass: 'card-title-cyan', subtitle: 'Days 154–300',
+    description: 'The Agentic AI journal continues through Day 300 (31 May 2027) — deeper topics, more tools, production pipelines.',
+    link: { href: '/agentic-day-154', label: 'Continue to Day 154 →' },
   },
   {
-    icon: '🔷', title: 'TypeScript Stack', titleClass: 'card-title-purple', subtitle: 'Later — Day 519',
-    description: 'The illustrated TypeScript series — where Phase 2 picks up once the full Python Stack wraps at Day 518.',
+    icon: '🔷', title: 'TypeScript Stack', titleClass: 'card-title-purple', subtitle: 'Later — Skill 5',
+    description: 'The illustrated TypeScript series — Skill 5 of 17 in the 1,700-day journey, after Python, FastAPI, Agentic AI, and JavaScript.',
     link: { href: '/typescript', label: 'Open TypeScript series →' },
   },
   {
-    icon: '🗺️', title: '5-Phase Roadmap', titleClass: 'card-title-amber', subtitle: 'Big Picture',
-    description: 'See where the Python Stack fits in the full 55-month (1,700-day) plan, and what the next four phases cover.',
+    icon: '🗺️', title: '1,700-Day Roadmap', titleClass: 'card-title-amber', subtitle: 'Big Picture',
+    description: 'See where Agentic AI (Days 201–300) fits in the full 17-skill plan — Python → FastAPI → Agentic AI → JS → TS → … → Capstone.',
     link: { href: '/roadmap', label: 'Open the roadmap →' },
   },
 ];
@@ -71,24 +71,24 @@ export default function AgenticDay153() {
       series="Agentic AI"
       dateLabel="Agentic AI Day 153 · 31 Dec 2026"
       prev={{ href: '/agentic-day-152', label: '← Day 152' }}
-      next={{ href: '/python', label: 'Python Stack Continues →' }}
-      tags={['Agentic AI', 'Finale', 'Graduation']}
-      theme="AGENTIC AI SERIES FINALE"
-      heroIcon="🏁"
-      profileRole="AGENTIC AI · GRADUATION"
-      progressWidth="100%"
+      next={{ href: '/agentic-day-154', label: 'Day 154 →' }}
+      tags={['Agentic AI', 'Capstone', 'Milestone']}
+      theme="AGENTIC AI CAPSTONE MILESTONE"
+      heroIcon="🎯"
+      profileRole="AGENTIC AI · MILESTONE"
+      progressWidth="51%"
       summary={
         <>
-          Day 153 is the <strong>last Agentic AI day</strong> — 153 days complete, capstone shipped, retro written.
-          Tag your repo, share the journey once — the <strong>Python Stack continues from Day 154</strong> into
-          core Python &amp; FastAPI through 31 Dec 2027.
+          Day 153 is the <strong>capstone milestone</strong> — 153 days complete, capstone shipped, retro written.
+          Tag your repo, share the progress once — <strong>Agentic AI continues through Day 300 (31 May 2027)</strong>,{' '}
+          with 147 days of deeper agent work, new tools, and production pipelines still ahead.
         </>
       }
       learntToday={learntToday}
       core={core}
       practice={practice}
       resources={resources}
-      hashtags={['#Graduation', '#Finale', '#Day153', '#AgenticAI', '#PythonStack']}
+      hashtags={['#Capstone', '#Milestone', '#Day153', '#AgenticAI', '#300Days']}
     />
   );
 }
