@@ -5,14 +5,14 @@ import './Day001.css';
 const PYTHON_DOWNLOADS = 'https://www.python.org/downloads/';
 
 const LEARNT_TODAY = [
-  { title: 'The 5-month roadmap', text: 'Python fundamentals → ML/DL basics → Generative AI → LangChain, RAG, LangGraph, MCP, and real agent projects' },
+  { title: 'The 300-day Python Stack', text: 'Skills 1–3 of the 1,700-day journey — Python (Days 1–100) → FastAPI (Days 101–200) → Agentic AI (Days 201–300), 100 days each' },
   { title: 'AI vs ML vs DL vs Gen AI', text: 'each one builds on the last — AI is the umbrella, ML learns from data, DL uses neural networks, Gen AI creates new content' },
   { title: 'Why Python for AI', text: 'simple syntax + a huge ecosystem (NumPy, Pandas, TensorFlow, LangChain) made it the default language for AI work' },
   { title: 'Toolchain setup', text: 'installed Python, ticked "Add to PATH" during install, and picked an editor to write code in' },
   { title: 'python --version', text: 'the first command every Python dev runs, to confirm the interpreter is actually installed and on PATH' },
   { title: 'The interpreter', text: 'Python reads and runs code line by line — no separate compile step before you can run a file' },
   { title: 'print()', text: 'the smallest possible Python program — and the first thing almost every course starts with' },
-  { title: "What's ahead", text: 'Python basics first, then ML/DL concepts, then Generative AI, RAG, and Agentic AI with LangChain, LangGraph & MCP' },
+  { title: "What's ahead (100 days)", text: 'Python basics first, then ML/DL concepts, then Generative AI, RAG, and Agentic AI with LangChain, LangGraph & MCP — all within this 100-day Agentic AI skill block' },
 ];
 
 const SETUP = [
@@ -51,7 +51,7 @@ const BIG_PICTURE = [
 const RESOURCES = [
   {
     icon: '📘', title: 'Course Introduction', titleClass: 'card-title-cyan', subtitle: 'PY Module 1',
-    description: 'The full course overview on the site — roadmap, AI vs ML vs DL, tools & setup, and what the 5 months ahead look like.',
+    description: 'The full course overview on the site — roadmap, AI vs ML vs DL, tools & setup, and what the 100 days of Agentic AI ahead look like.',
     link: { href: '/python/learn/course-introduction', label: 'Open PY Module 1 →' },
   },
   {
@@ -152,12 +152,14 @@ export default function AgenticDay01() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '1%' }} /></div>
 
         <p className="day001-summary">
-          Day 1 of 153 — the start of <strong>Phase 1: Agentic AI using Python</strong>, running{' '}
-          <strong>1 Aug – 31 Dec 2026</strong>. Today is pure orientation: what <strong>Generative AI</strong>{' '}
+          Day 1 of 100 — the start of <strong>Skill 3 · Agentic AI</strong>, part of the{' '}
+          <strong>300-day Python Stack</strong> (Skills 1–3 of the 1,700-day journey):{' '}
+          <strong>Python (Days 1–100) → FastAPI (Days 101–200) → Agentic AI (Days 201–300)</strong>.
+          Today is pure orientation: what <strong>Generative AI</strong>{' '}
           and <strong>Agentic AI</strong> actually mean, how they sit on top of <strong>AI → ML → DL</strong>,
-          why <strong>Python</strong> is the language for this journey, and getting the toolchain (Python +
+          why <strong>Python</strong> is the language for this skill, and getting the toolchain (Python +
           editor) installed and verified with <code>python --version</code>. No frameworks yet —
-          just <code>print("Hello, Agentic AI!")</code> and a clear picture of where the next five months are
+          just <code>print("Hello, Agentic AI!")</code> and a clear picture of where the next 100 days are
           headed: Python fundamentals, then ML/DL basics, then Generative AI, RAG, and finally LangChain,
           LangGraph, and MCP-based agents.
         </p>
