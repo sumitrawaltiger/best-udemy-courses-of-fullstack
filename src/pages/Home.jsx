@@ -116,18 +116,18 @@ export default function Home() {
               <span className="fle-hl">DevOps</span>
             </h1>
             <p className="fle-sub">
-              A structured <strong>1,700-day journey</strong> — <strong>17 skills, 100 days each</strong>:
+              A structured <strong>1,826-day journey</strong> — <strong>16 skills at 100 days each</strong>,
+              then a <strong>126-day DSA &amp; System Design sprint</strong>, then a <strong>100-day Capstone Project</strong>.
               Python, FastAPI, Agentic AI, JavaScript, TypeScript, React, Next JS, React Native,
-              Express JS, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS), and a
-              Capstone Project integrating all 16 skills. Data Structures &amp; System Design
-              practiced throughout. One skill at a time, fully focused, front to back.
+              Express JS, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS).
+              5 years · front to back.
             </p>
 
             <div className="fle-pills">
-              <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,700 Days of Code</span>
-              <span className="fle-pill"><span aria-hidden="true">🧠</span> 17 Skills · 100 Days Each</span>
-              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → JS/TS → Java → DevOps → Capstone</span>
-              <span className="fle-pill"><span aria-hidden="true">📐</span> DSA &amp; System Design Throughout</span>
+              <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,826 Days · 5 Years</span>
+              <span className="fle-pill"><span aria-hidden="true">🧠</span> 18 Skills · 5,478 Hours</span>
+              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → JS/TS → Java → DevOps → DSA → Capstone</span>
+              <span className="fle-pill"><span aria-hidden="true">📐</span> DSA &amp; System Design Sprint</span>
             </div>
 
             <JourneyCountdown variant="hero" />
@@ -202,13 +202,11 @@ export default function Home() {
       <section className="btech-roadmap" id="btech-roadmap">
         <div className="btech-inner">
           <span className="btech-badge">The Roadmap</span>
-          <h2 className="btech-title">The 1,700-Day Learning Path</h2>
+          <h2 className="btech-title">The 1,826-Day Learning Path</h2>
           <p className="btech-sub">
-            A structured path to a full lifecycle engineer — <strong>5 phases</strong>:{' '}
-            <strong>Python Stack (Agentic AI → Python → FastAPI) → TypeScript Stack → Java Stack → DevOps
-            Stack → Capstone Project</strong> — <strong>1,700 days</strong> total. Each stack bundles several tracks on this
-            site. Data Structures &amp; System Design are practiced throughout every stack, not saved for a
-            separate finale.
+            A structured path to a full lifecycle engineer —{' '}
+            <strong>Python Stack → TypeScript Stack → Java Stack → DevOps Stack</strong>,
+            then a <strong>126-day DSA &amp; System Design sprint</strong> and a <strong>100-day Capstone Project</strong> — <strong>1,826 days · 5 years</strong> total.
           </p>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
@@ -702,24 +700,24 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            1,700 days · 5 phases
+            1,826 days · 5 years
           </span>
           <h2>Thunder++ — The Full Journey</h2>
           <p className="section-desc">
-            <strong>5 phases</strong> — <strong>Python Stack (Agentic AI using Python, then Python
-            &amp; FastAPI)</strong>,{' '}
+            <strong>16 skills at 100 days each</strong> —{' '}
+            <strong>Python Stack (Agentic AI, Python, FastAPI)</strong>,{' '}
             <strong>TypeScript Stack (JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS)</strong>,{' '}
             <strong>Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices)</strong>,{' '}
-            <strong>DevOps Stack (DevOps, AWS Cloud)</strong>, and a{' '}
-            <strong>Capstone Project</strong> integrating all four stacks —
-            with <strong>DSA &amp; System Design</strong> practiced throughout every stack, not saved for one
-            dedicated block. That's <strong>1,700 days</strong> of focused study, front to back.
+            <strong>DevOps Stack (DevOps, AWS Cloud)</strong> — then a dedicated{' '}
+            <strong>126-day DSA &amp; System Design sprint</strong> and a{' '}
+            <strong>100-day Capstone Project</strong> integrating all 17 skills.
+            That's <strong>1,826 days · 5 years</strong> of focused study, front to back.
           </p>
           <div className="thunder-plus-highlights">
             <span>🤖 Agentic AI First</span>
-            <span>⌨️ 5 Phases · 4 Stacks + Capstone</span>
-            <span>☁️ TypeScript → Java → DevOps → Capstone</span>
-            <span>📐 DSA &amp; System Design Throughout</span>
+            <span>⌨️ 18 Skills · 1,826 Days</span>
+            <span>🧠 126-Day DSA &amp; System Design Sprint</span>
+            <span>🎯 100-Day Capstone Project</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/interview" className="btn btn-interview-chaicode btn-lg">
