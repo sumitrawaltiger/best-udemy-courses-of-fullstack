@@ -242,8 +242,8 @@ export default function RoadmapHome() {
         style={{ margin: '8px auto 4px', textAlign: 'center', maxWidth: '820px' }}
       >
         <img
-          src="/roadmap-notes/1700-days-learning-journey-2026-2031.png"
-          alt="Road to Full Lifecycle Engineer — 1,700 Days · 55 Months · 17 Skills (5 Aug 2026 – 31 Mar 2031). 17 skills at 100 days each: Python, FastAPI, Agentic AI, JavaScript, TypeScript, React, Next JS, React Native, Express JS, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS), Capstone Project. DSA & System Design practiced throughout. One Goal: Build, Deploy, Automate, Scale."
+          src="/roadmap-notes/5-year-full-stack-journey.png"
+          alt="5-Year Full Stack Journey — 18 Skills · 1,826 Days · 5 Aug 2026 → 4 Aug 2031. Skills 1–16 at 100 days each, then 126-day DSA & System Design sprint, then 100-day Capstone Project. Sumit Rawal · Full Lifecycle Engineer."
           loading="lazy"
           style={{
             width: '100%',
