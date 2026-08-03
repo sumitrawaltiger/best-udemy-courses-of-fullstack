@@ -7,7 +7,7 @@ export const REACT_META = {
   subtitle: 'Illustrated Episodes · React from Zero to Production',
   blurb:
     'React from the ground up — illustrated, one episode at a time. Component-based thinking, the Virtual DOM, JSX, hooks (useState, useEffect, useRef, useContext), state management, routing, performance optimisation, and real-world patterns — each episode paired with the full written notes and every code snippet.',
-  totalDays: 2,
+  totalDays: 3,
   startDate: '7 Mar 2028',
 };
 
@@ -93,10 +93,80 @@ export const REACT_DAYS = [
   {
     day: 2,
     date: '8 Mar 2028',
+    group: 'foundations',
+    title: 'Installing React & Project Structure',
+    tagline: 'Set up your first React project with Create React App and understand every file it creates.',
+    image: '/react-notes/ep02-installing-react.jpeg',
+    tags: ['Create React App', 'CRA', 'Project Structure', 'npm start', 'Setup'],
+    notes: [
+      { k: 'Create React App (CRA)', v: 'The easiest way to start a new React project is using **Create React App (CRA)**. Run `npx create-react-app my-react-app` to scaffold a complete project instantly.' },
+      { k: 'Setup Steps', v: '1. Open your terminal. 2. Run `npx create-react-app my-react-app`. 3. Wait for installation to complete. 4. Run `cd my-react-app` then `npm start`.' },
+      { k: 'public/ folder', v: 'Contains **static files** like `index.html`, favicon, and other assets that are served directly — React mounts your app inside the `<div id="root">` in `index.html`.' },
+      { k: 'src/ folder', v: 'Contains **all source code** of the application — your components, styles, and logic live here. Changes here reflect instantly in the browser.' },
+      { k: 'index.js', v: 'The **entry point** of your React application. It renders `<App />` inside the root div using `ReactDOM.createRoot()`.' },
+      { k: 'App.js', v: 'The **main App component**. This is where you start building your UI. Edit this file to see changes in the browser.' },
+      { k: 'package.json', v: 'Contains project info, **dependencies and scripts** (`start`, `build`, `test`, `eject`). The `start` script runs your app in development mode.' },
+      { k: 'npm start', v: 'Starts the dev server → compiles React code (Babel + Webpack) → watches for file changes and rebuilds automatically → opens your app at **localhost:3000**.' },
+      { k: 'Do not rename root div', v: 'Never change `id="root"` in `public/index.html`. React uses this exact id to mount your entire application.' },
+      { k: 'Production build', v: 'Run `npm run build` to create an optimised production bundle. Use `Ctrl + C` to stop the development server.' },
+    ],
+    theory: [
+      {
+        h: 'Installing React with Create React App',
+        p: 'The simplest way to start a new React project is **Create React App (CRA)** — an officially supported tool that sets up everything you need with zero configuration.\n\nRun this in your terminal:\n\n`npx create-react-app my-react-app`\n`cd my-react-app`\n`npm start`\n\nYour app will automatically open in the browser at **http://localhost:3000**.',
+      },
+      {
+        h: 'Project Structure Explained',
+        p: '**my-react-app/**\n- **public/** — Static files (index.html, favicon, etc.). React mounts your app inside the `<div id="root">` in `index.html`.\n- **src/** — All source code of the application. This is where you spend most of your time.\n  - **index.js** — Entry point of the app. Renders `<App />` into the root div.\n  - **App.js** — Main App component. Start editing here.\n  - **index.css** — Global styles.\n  - **reportWebVitals.js** — Performance tracking.\n  - **setupTests.js** — Testing setup.\n- **.gitignore** — Git ignore rules.\n- **package.json** — Project info & dependencies.\n- **README.md** — Project documentation.',
+      },
+      {
+        h: 'Key Files — Quick Overview',
+        p: '**package.json** — Contains project info, dependencies and scripts. The `"start": "react-scripts start"` script runs your app in development mode.\n\n**public/index.html** — The main HTML file. React mounts your app inside the `<div id="root">`. Do not change the `id="root"`.\n\n**src/index.js** — Entry point of your React application. Renders `<App />` inside the root div.\n\n**src/App.js** — Main component. Edit this file to see changes in the browser.',
+      },
+      {
+        h: 'What Happens When You Run npm start?',
+        p: '1. **Starts the development server** — a local server is launched.\n2. **Compiles your React code** — Babel transpiles JSX to JavaScript; Webpack bundles all files.\n3. **Watches for file changes** — any save in `src/` triggers an automatic rebuild.\n4. **Opens your app in the browser** — usually at http://localhost:3000.',
+      },
+      {
+        h: 'Important Notes',
+        p: '- **Keep your terminal running** while developing — closing it stops the dev server.\n- **Changes in src/ folder reflect instantly** — thanks to Hot Module Replacement.\n- Use **Ctrl + C** to stop the server.\n- For production build, use `npm run build`.',
+      },
+      {
+        h: 'Quick Summary',
+        p: '- Use **Create React App** to quickly set up a new React project.\n- Understand the basic project structure and key files.\n- Run **npm start** to start the development server.\n- Make changes in **src/App.js** and see them live in the browser.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Create and start a React project',
+        code: '# Create a new React project\nnpx create-react-app my-react-app\n\n# Go into the project directory\ncd my-react-app\n\n# Start the development server\nnpm start\n\n# Your app opens at http://localhost:3000',
+        note: 'Run these 3 commands in order. `npx` downloads and runs `create-react-app` without installing it globally.',
+      },
+      {
+        label: 'src/index.js — entry point',
+        code: "import React from 'react';\nimport ReactDOM from 'react-dom/client';\nimport App from './App';\n\nconst root = ReactDOM.createRoot(\n  document.getElementById('root')\n);\nroot.render(<App />);\n\n// Renders <App /> inside the root div.",
+        note: '`createRoot` is the React 18 API. It replaces the older `ReactDOM.render()`. The root div is in `public/index.html`.',
+      },
+      {
+        label: 'src/App.js — your first component',
+        code: "function App() {\n  return (\n    <div className=\"App\">\n      <h1>Hello React! 👋</h1>\n    </div>\n  );\n}\n\nexport default App;",
+        note: 'This is the main App component. Everything you build lives inside here — or in components you import into it.',
+      },
+      {
+        label: 'package.json scripts',
+        code: '{\n  "scripts": {\n    "start": "react-scripts start",\n    "build": "react-scripts build",\n    "test":  "react-scripts test",\n    "eject": "react-scripts eject"\n  }\n}\n\n// "start" runs your app in development mode.',
+        note: '`npm start` → development. `npm run build` → optimised production bundle. Never run `eject` unless you know what you\'re doing.',
+      },
+    ],
+  },
+  // ── Episode 3 ─────────────────────────────────────────────────────────────
+  {
+    day: 3,
+    date: '9 Mar 2028',
     group: 'hooks',
     title: 'useState Hook in React',
     tagline: 'useState lets you add state to functional components — the most important hook in React.',
-    image: '/react-notes/ep02-usestate-hook.jpeg',
+    image: '/react-notes/ep03-usestate-hook.jpeg',
     tags: ['useState', 'Hooks', 'State', 'Functional Components', 'Re-render'],
     notes: [
       { k: 'What is useState?', v: '`useState` is a React Hook that lets you add **state** to a functional component. It returns an array of two values: the current state and a function to update it.' },
