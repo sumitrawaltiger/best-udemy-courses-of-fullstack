@@ -38,24 +38,35 @@ import JourneyCountdown from '../components/JourneyCountdown';
 
 const BTECH_ROADMAP = [
   {
-    year: 'Skills 1–3',
-    theme: 'Python + FastAPI + Agentic AI',
-    icon: '🐍',
+    year: 'Year 1 · Agentic AI Stack',
+    theme: 'Agentic AI Stack',
+    icon: '🤖',
     accent: 'y1',
-    topics: ['Core Python', 'FastAPI', 'LangChain', 'LangGraph', 'MCP', 'n8n Workflows'],
-    blurb: 'The Python foundation — 100 days each of core Python, FastAPI APIs, and Agentic AI (LangChain, LangGraph, MCP). Days 1–300.',
+    topics: ['LangChain', 'LangGraph', 'MCP', 'n8n', 'RAG', 'Vector DBs', 'AI Agents', 'TypeScript'],
+    blurb: 'Year 1 — build production-grade AI agents from the ground up: RAG pipelines, LangGraph workflows, MCP, and autonomous multi-agent systems. Days 1–365.',
     links: [
-      { label: 'Python & FastAPI', to: '/python' },
       { label: 'Agentic AI', to: '/python' },
+      { label: 'Gen AI Track', to: '/genai' },
     ],
   },
   {
-    year: 'Skills 4–9',
-    theme: 'JavaScript → TypeScript → React → Next JS → React Native → Express JS',
+    year: 'Year 2 · Python Stack',
+    theme: 'Python Stack',
+    icon: '🐍',
+    accent: 'y1',
+    topics: ['Core Python', 'OOP', 'FastAPI', 'Databases', 'Auth & Security', 'Deployment'],
+    blurb: 'Year 2 — core Python from syntax and OOP to production FastAPI APIs, database integration, authentication, and deployment. Days 366–731.',
+    links: [
+      { label: 'Python & FastAPI', to: '/python' },
+    ],
+  },
+  {
+    year: 'Year 3 · TypeScript Stack',
+    theme: 'TypeScript Stack',
     icon: '🔷',
     accent: 'y2',
     topics: ['JavaScript', 'TypeScript', 'React JS', 'Next JS', 'React Native', 'Express / Node JS'],
-    blurb: 'The full JS/TS web ecosystem — 100 days each of JavaScript, TypeScript, React, Next JS, React Native, and Express JS. Days 301–900.',
+    blurb: 'Year 3 — the full JS/TS web ecosystem: JavaScript, TypeScript, React, Next JS, React Native, and Express JS backends. Days 732–1096.',
     links: [
       { label: 'JavaScript', to: '/' },
       { label: 'TypeScript', to: '/typescript' },
@@ -64,25 +75,24 @@ const BTECH_ROADMAP = [
     ],
   },
   {
-    year: 'Skills 10–14',
-    theme: 'J2SE → J2EE → JPA → Spring Boot → Microservices',
+    year: 'Year 4 · Java Stack',
+    theme: 'Java Stack',
     icon: '☕',
     accent: 'y3',
     topics: ['J2SE', 'J2EE', 'JPA', 'Spring Boot', 'Microservices'],
-    blurb: 'The full enterprise Java path — 100 days each of J2SE, J2EE, JPA, Spring Boot, and Microservices. Days 901–1400.',
+    blurb: 'Year 4 — the full enterprise Java path: J2SE, J2EE, JPA, Spring Boot, and distributed Microservices. Days 1097–1461.',
     links: [{ label: 'Java Stack', to: '/java' }],
   },
   {
-    year: 'Skills 15–17',
-    theme: 'DevOps → Cloud → Capstone Project',
+    year: 'Year 5 · DevOps Stack',
+    theme: 'DevOps Stack',
     icon: '🚀',
     accent: 'y5',
-    topics: ['Linux', 'Docker', 'Kubernetes', 'CI/CD', 'AWS Cloud', 'Capstone'],
-    blurb: 'Ship, scale, and integrate — 100 days of DevOps, 100 days of AWS Cloud, then a 100-day Capstone tying all 16 skills together. Days 1401–1700.',
+    topics: ['Linux', 'Docker', 'Kubernetes', 'CI/CD', 'AWS Cloud'],
+    blurb: 'Year 5 — ship and operate at scale: Linux, Docker, Kubernetes, CI/CD pipelines, and AWS Cloud engineering. Days 1462–1826.',
     links: [
       { label: 'DevOps', to: '/devops' },
       { label: 'AWS Cloud', to: '/aws' },
-      { label: 'Roadmap', to: '/roadmap' },
     ],
   },
 ];
@@ -205,8 +215,7 @@ export default function Home() {
           <h2 className="btech-title">The 1,826-Day Learning Path</h2>
           <p className="btech-sub">
             A structured path to a full lifecycle engineer —{' '}
-            <strong>Python Stack → TypeScript Stack → Java Stack → DevOps Stack</strong>,
-            then a <strong>126-day DSA &amp; System Design sprint</strong> and a <strong>100-day Capstone Project</strong> — <strong>1,826 days · 5 years</strong> total.
+            <strong>Agentic AI Stack → Python Stack → TypeScript Stack → Java Stack → DevOps Stack</strong> — one year per skill, <strong>1,826 days · 5 years</strong> total.
           </p>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
