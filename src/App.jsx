@@ -460,6 +460,7 @@ import AgenticDay151 from './pages/AgenticDay151';
 import AgenticDay152 from './pages/AgenticDay152';
 import AgenticDay153 from './pages/AgenticDay153';
 import InterviewQuestions from './pages/InterviewQuestions';
+import SystemDesignHandbook from './pages/SystemDesignHandbook';
 import ReactInterviewQuestions from './pages/ReactInterviewQuestions';
 import NextjsInterviewQuestions from './pages/NextjsInterviewQuestions';
 import JavaInterviewQuestions from './pages/JavaInterviewQuestions';
@@ -876,6 +877,7 @@ export default function App() {
         <Route path="/agentic-day-153" element={<AgenticDay153 />} />
         <Route path="/agentic-day-154" element={<Navigate to="/agentic-day-153" replace />} />
         <Route path="/agentic-day-155" element={<Navigate to="/agentic-day-153" replace />} />
+        <Route path="/system-design-handbook" element={<SystemDesignHandbook />} />
         <Route path="/interview-questions" element={<InterviewQuestions />} />
         <Route path="/react-interview-questions" element={<ReactInterviewQuestions />} />
         <Route path="/nextjs-interview-questions" element={<NextjsInterviewQuestions />} />
