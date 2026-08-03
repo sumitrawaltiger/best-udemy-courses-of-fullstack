@@ -464,6 +464,18 @@ import AgenticDay155 from './pages/AgenticDay155';
 import AgenticDay156 from './pages/AgenticDay156';
 import AgenticDay157 from './pages/AgenticDay157';
 import AgenticDay158 from './pages/AgenticDay158';
+import AgenticDay159 from './pages/AgenticDay159';
+import AgenticDay160 from './pages/AgenticDay160';
+import AgenticDay161 from './pages/AgenticDay161';
+import AgenticDay162 from './pages/AgenticDay162';
+import AgenticDay163 from './pages/AgenticDay163';
+import AgenticDay164 from './pages/AgenticDay164';
+import AgenticDay165 from './pages/AgenticDay165';
+import AgenticDay166 from './pages/AgenticDay166';
+import AgenticDay167 from './pages/AgenticDay167';
+import AgenticDay168 from './pages/AgenticDay168';
+import AgenticDay169 from './pages/AgenticDay169';
+import AgenticDay170 from './pages/AgenticDay170';
 import InterviewQuestions from './pages/InterviewQuestions';
 import SystemDesignHandbook from './pages/SystemDesignHandbook';
 import ReactInterviewQuestions from './pages/ReactInterviewQuestions';
@@ -885,7 +897,19 @@ export default function App() {
         <Route path="/agentic-day-156" element={<AgenticDay156 />} />
         <Route path="/agentic-day-157" element={<AgenticDay157 />} />
         <Route path="/agentic-day-158" element={<AgenticDay158 />} />
-        <Route path="/agentic-day-159" element={<Navigate to="/agentic-day-158" replace />} />
+        <Route path="/agentic-day-159" element={<AgenticDay159 />} />
+        <Route path="/agentic-day-160" element={<AgenticDay160 />} />
+        <Route path="/agentic-day-161" element={<AgenticDay161 />} />
+        <Route path="/agentic-day-162" element={<AgenticDay162 />} />
+        <Route path="/agentic-day-163" element={<AgenticDay163 />} />
+        <Route path="/agentic-day-164" element={<AgenticDay164 />} />
+        <Route path="/agentic-day-165" element={<AgenticDay165 />} />
+        <Route path="/agentic-day-166" element={<AgenticDay166 />} />
+        <Route path="/agentic-day-167" element={<AgenticDay167 />} />
+        <Route path="/agentic-day-168" element={<AgenticDay168 />} />
+        <Route path="/agentic-day-169" element={<AgenticDay169 />} />
+        <Route path="/agentic-day-170" element={<AgenticDay170 />} />
+        <Route path="/agentic-day-171" element={<Navigate to="/agentic-day-170" replace />} />
         <Route path="/system-design-handbook" element={<SystemDesignHandbook />} />
         <Route path="/interview-questions" element={<InterviewQuestions />} />
         <Route path="/react-interview-questions" element={<ReactInterviewQuestions />} />

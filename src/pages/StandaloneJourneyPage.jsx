@@ -2,15 +2,6 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-// Day 1 of the Agentic AI journey = 5 Aug 2026
-const AGENTIC_DAY1 = new Date(2026, 7, 5);
-
-function agenticDate(dayNum) {
-  const d = new Date(AGENTIC_DAY1.getTime());
-  d.setDate(d.getDate() + dayNum - 1);
-  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-}
-
 function TopicCard({ card }) {
   return (
     <article className="day001-card">
@@ -43,6 +34,7 @@ function CardSection({ icon, title, cards, columns = 3 }) {
 
 export default function StandaloneJourneyPage({
   dayNumber,
+  series,
   dateLabel,
   prev,
   next,
@@ -95,7 +87,7 @@ export default function StandaloneJourneyPage({
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to={prev.href} className="day001-nav-btn day001-nav-prev">{prev.label}</Link>
-          <p className="day001-datetime">Agentic AI Day {dayNumber} · {agenticDate(dayNumber)}</p>
+          <p className="day001-datetime">{dateLabel ?? `${series ?? 'Day'} ${dayNumber}`}</p>
           <Link to={next.href} className="day001-nav-btn day001-nav-next">{next.label}</Link>
         </header>
 
