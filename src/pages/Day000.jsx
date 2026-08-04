@@ -9,7 +9,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Git & GitHub',
-    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 1700 days of code',
+    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 1,826 days of code',
   },
   {
     title: 'VS Code',
@@ -33,7 +33,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 55-month (1,700-day) plan — 17 skills at 100 days each: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React → Next JS → React Native → Express JS → J2SE → J2EE → JPA → Spring Boot → Microservices → DevOps → Cloud (AWS) → Capstone Project',
+    text: 'reviewed the full 5-year (1,826-day) plan — 18 skills: 17×100 days + Capstone 126 days: Python → FastAPI → Agentic AI → PySpark → JavaScript → TypeScript → React → Next JS → React Native → Express JS → J2SE → J2EE → JPA → Spring Boot → Microservices → DevOps → Cloud (AWS) → Capstone Project',
   },
   {
     title: 'Ready for Skill 1 · Python',
@@ -65,7 +65,7 @@ const CORE_TOOLS = [
     titleClass: 'card-title-amber',
     subtitle: 'Version Control',
     description:
-      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 1700 days is signed to you.',
+      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 1,826 days is signed to you.',
     code: 'git --version\ngit config --global user.name "Sumit Rawal"\ngit config --global user.email "you@email.com"',
   },
   {
@@ -125,7 +125,7 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-amber',
     subtitle: '4 AM Wake · 4:30–7:30 AM Study',
     description:
-      'Wake at 4:00 AM, then study 4:30–7:30 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1700 days.',
+      'Wake at 4:00 AM, then study 4:30–7:30 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1,826 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
@@ -134,7 +134,7 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-cyan',
     subtitle: '17 skills · 100 days each · starts 5 Aug 2026',
     description:
-      '17 skills at 100 days each: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React → Next JS → React Native → Express JS → J2SE → J2EE → JPA → Spring Boot → Microservices → DevOps → Cloud (AWS) → Capstone Project. DSA & System Design practiced throughout. 1,700 days total.',
+      '18 skills: 17×100 days + Capstone 126 days: Python → FastAPI → Agentic AI → PySpark → JavaScript → TypeScript → React → Next JS → React Native → Express JS → J2SE → J2EE → JPA → Spring Boot → Microservices → DevOps → Cloud (AWS) → Capstone Project. DSA & System Design practiced throughout. 1,826 days total.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
@@ -250,8 +250,8 @@ export default function Day000() {
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>55 Months</span>
-              <span>1700 Days</span>
+              <span>5 Years</span>
+              <span>1826 Days</span>
               <span>Python Stack</span>
               <span>Day 0 · 4 Aug 2026</span>
             </div>
@@ -272,17 +272,17 @@ export default function Day000() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">1700 DAYS · DAY 0</p>
+              <p className="day001-profile-role">1826 DAYS · DAY 0</p>
             </div>
           </div>
         </div>
 
         <div className="day001-progress-wrap">
-          <div className="day001-progress-bar" style={{ width: '0.07%' }} />
+          <div className="day001-progress-bar" style={{ width: '0.05%' }} />
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 · 4 Aug 2026 — environment setup before the 55-month journey begins.</strong>{' '}
+          <strong>Day 0 · 4 Aug 2026 — environment setup before the 5-year journey begins.</strong>{' '}
           Install <code>Node.js</code>, <code>Git</code>, and <code>VS Code</code>, wire the terminal and
           Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
@@ -320,8 +320,8 @@ export default function Day000() {
           <span>#Day0</span>
           <span>#PythonStack</span>
           <span>#AgenticAI</span>
-          <span>#55Months</span>
-          <span>#1700Days</span>
+          <span>#5Years</span>
+          <span>#1826Days</span>
         </footer>
       </div>
     </div>

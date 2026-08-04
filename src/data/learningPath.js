@@ -1,4 +1,4 @@
-// Header/nav track list, ordered to the 5-phase, 1,700-day roadmap (see
+// Header/nav track list, ordered to the 5-phase, 1,826-day roadmap (see
 // RoadmapHome.jsx): Python Stack — Agentic AI using Python, then core Python
 // & FastAPI (Phase 1, under /python) → TypeScript Stack — JavaScript,
 // TypeScript, React JS/Next JS, React Native, Express/Node JS (Phase 2, under
