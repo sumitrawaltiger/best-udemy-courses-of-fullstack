@@ -6,7 +6,7 @@ export default function InterviewHero({ children, actions }) {
     <div className="interview-hero-block">
       <span className="interview-level-badge">
         <span className="interview-level-icon" aria-hidden="true">🎯</span>
-        1,700 days · 5 phases (4 stacks + capstone) · DSA & System Design in each stack’s language
+        1,826 days · 5 stacks (Python · JS/TS · Java · DevOps · Capstone) · DSA & System Design throughout
       </span>
 
       <h1 className="interview-title">

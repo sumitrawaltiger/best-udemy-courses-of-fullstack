@@ -5,7 +5,7 @@ import './Day001.css';
 const PYTHON_DOWNLOADS = 'https://www.python.org/downloads/';
 
 const LEARNT_TODAY = [
-  { title: 'The 300-day Python Stack', text: 'Skills 1–3 of the 1,700-day journey — Python (Days 1–100) → FastAPI (Days 101–200) → Agentic AI (Days 201–300), 100 days each' },
+  { title: 'The 400-day Python Stack', text: 'Skills 1–4 of the 1,826-day journey — Python (Days 1–100) → FastAPI (Days 101–200) → Agentic AI (Days 201–300) → PySpark / Data Engineering (Days 301–400), 100 days each' },
   { title: 'AI vs ML vs DL vs Gen AI', text: 'each one builds on the last — AI is the umbrella, ML learns from data, DL uses neural networks, Gen AI creates new content' },
   { title: 'Why Python for AI', text: 'simple syntax + a huge ecosystem (NumPy, Pandas, TensorFlow, LangChain) made it the default language for AI work' },
   { title: 'Toolchain setup', text: 'installed Python, ticked "Add to PATH" during install, and picked an editor to write code in' },
@@ -153,8 +153,8 @@ export default function AgenticDay01() {
 
         <p className="day001-summary">
           Day 1 of 100 — the start of <strong>Skill 3 · Agentic AI</strong>, part of the{' '}
-          <strong>300-day Python Stack</strong> (Skills 1–3 of the 1,700-day journey):{' '}
-          <strong>Python (Days 1–100) → FastAPI (Days 101–200) → Agentic AI (Days 201–300)</strong>.
+          <strong>400-day Python Stack</strong> (Skills 1–4 of the 1,826-day journey):{' '}
+          <strong>Python (Days 1–100) → FastAPI (Days 101–200) → Agentic AI (Days 201–300) → PySpark (Days 301–400)</strong>.
           Today is pure orientation: what <strong>Generative AI</strong>{' '}
           and <strong>Agentic AI</strong> actually mean, how they sit on top of <strong>AI → ML → DL</strong>,
           why <strong>Python</strong> is the language for this skill, and getting the toolchain (Python +

@@ -72,7 +72,7 @@ export default function InterviewHome() {
         <section className="roadmap">
           <h2>DSA &amp; System Design — Every Phase</h2>
           <p className="section-desc">
-            Across the <strong>55-month, 1,700-day</strong> roadmap, <strong>DSA</strong> and{' '}
+            Across the <strong>60-month, 1,826-day</strong> roadmap, <strong>DSA</strong> and{' '}
             <strong>System Design</strong> are practiced <strong>in each stack’s language</strong> — not saved
             for one dedicated block: <strong>Python</strong> (Agentic AI, then core Python), then{' '}
             <strong>JavaScript / TypeScript</strong>, then <strong>Java</strong>, then{' '}
@@ -109,7 +109,7 @@ export default function InterviewHome() {
               <span className="legend-dot published legend-dot-interview" /> {interviewChapters.length} modules
             </span>
             <span>
-              <span className="legend-dot published" /> DSA & System Design in each language: Python · TypeScript · Java · 55 months · 1,700 days total
+              <span className="legend-dot published" /> DSA & System Design in each language: Python · TypeScript · Java · 60 months · 1,826 days total
             </span>
           </div>
         </section>

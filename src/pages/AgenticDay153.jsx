@@ -54,12 +54,12 @@ const resources = [
   },
   {
     icon: '🔷', title: 'TypeScript Stack', titleClass: 'card-title-purple', subtitle: 'Later — Skill 5',
-    description: 'The illustrated TypeScript series — Skill 5 of 17 in the 1,700-day journey, after Python, FastAPI, Agentic AI, and JavaScript.',
+    description: 'The illustrated TypeScript series — Skill 6 of 18 in the 1,826-day journey, after Python, FastAPI, Agentic AI, PySpark, and JavaScript.',
     link: { href: '/typescript', label: 'Open TypeScript series →' },
   },
   {
-    icon: '🗺️', title: '1,700-Day Roadmap', titleClass: 'card-title-amber', subtitle: 'Big Picture',
-    description: 'See where Agentic AI (Days 201–300) fits in the full 17-skill plan — Python → FastAPI → Agentic AI → JS → TS → … → Capstone.',
+    icon: '🗺️', title: '1,826-Day Roadmap', titleClass: 'card-title-amber', subtitle: 'Big Picture',
+    description: 'See where Agentic AI (Days 201–300) fits in the full 18-skill plan — Python → FastAPI → Agentic AI → PySpark → JS → TS → … → Capstone.',
     link: { href: '/roadmap', label: 'Open the roadmap →' },
   },
 ];
