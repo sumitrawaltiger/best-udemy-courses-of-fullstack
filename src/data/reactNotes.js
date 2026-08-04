@@ -7,7 +7,7 @@ export const REACT_META = {
   subtitle: 'Illustrated Episodes · React from Zero to Production',
   blurb:
     'React from the ground up — illustrated, one episode at a time. Component-based thinking, the Virtual DOM, JSX, hooks (useState, useEffect, useRef, useContext), state management, routing, performance optimisation, and real-world patterns — each episode paired with the full written notes and every code snippet.',
-  totalDays: 3,
+  totalDays: 4,
   startDate: '7 Mar 2028',
 };
 
@@ -163,6 +163,81 @@ export const REACT_DAYS = [
   {
     day: 3,
     date: '9 Mar 2028',
+    group: 'components',
+    title: 'JSX Explained & JSX Rules',
+    tagline: 'JSX is a syntax extension that lets you write HTML-like code inside JavaScript — the foundation of every React component.',
+    image: '/react-notes/ep03-jsx-explained.jpeg',
+    tags: ['JSX', 'JavaScript XML', 'Babel', 'className', 'JSX Rules', 'React.createElement'],
+    notes: [
+      { k: 'What is JSX?', v: '**JSX (JavaScript XML)** is a syntax extension for JavaScript. It lets us write **HTML-like code inside JavaScript**. Babel converts JSX into regular JavaScript that the browser can run.' },
+      { k: 'Why JSX?', v: 'JSX looks similar to HTML → easy to understand. It lets you write UI structure and logic in one place. Code is more **readable and maintainable**. JSX is not HTML inside JS — it is a **syntax extension**.' },
+      { k: 'className, not class', v: 'In HTML we use `class="..."`. In JSX we must use `className="..."`. This is because `class` is a reserved JavaScript keyword — using it in JSX would cause a conflict.' },
+      { k: 'How JSX Works', v: 'JSX Code → **Babel** (transpiler) → JavaScript → Browser. Babel transforms JSX into `React.createElement()` calls that the browser understands. You write readable JSX; Babel produces the machine-level calls.' },
+      { k: 'JSX Syntax — parentheses', v: 'Multi-line JSX is wrapped in parentheses so JavaScript does not treat it as multiple statements. Single-line JSX does not need them, but parentheses are always safe to use.' },
+      { k: 'JSX Syntax — expressions', v: 'Use curly braces `{}` to embed any valid JavaScript expression inside JSX. Example: `<h1>Hello, {name}!</h1>`. Full statements (if, for) cannot go inside `{}` — use ternaries or logical operators instead.' },
+      { k: 'JSX Syntax — camelCase events', v: 'Event names in JSX follow camelCase: `onClick`, `onChange`, `onSubmit`, `onKeyDown`. The equivalent HTML attributes (`onclick`, `onchange`) are lowercase — JSX uses camelCase throughout.' },
+      { k: 'Single Parent Rule', v: 'A JSX expression must return **one single parent element**. Wrap siblings in a `<div>`, `<section>`, or an empty fragment `<>...</>` — fragments add no extra DOM nodes.' },
+      { k: 'Always Close Tags', v: 'Every tag in JSX must be closed — either with a closing tag (`</p>`) or self-closed (`<img />`). HTML5 allows unclosed tags; JSX does not. Forgetting a slash causes a syntax error.' },
+      { k: 'JSX is NOT a String', v: 'JSX looks like a string but it is not. It is a description of UI that Babel compiles into `React.createElement()` calls. Do not wrap JSX in quotes — `"<h1>Hello</h1>"` is just a string, not a React element.' },
+      { k: 'Common Mistakes', v: '1. Using `class` instead of `className`. 2. Returning multiple elements without a wrapper. 3. Forgetting to close tags. 4. Using inline styles without double braces `{{ }}` — styles must be a JS object: `style={{ color: "red" }}`.' },
+    ],
+    theory: [
+      {
+        h: 'What is JSX?',
+        p: '**JSX (JavaScript XML)** is a syntax extension for JavaScript created by the React team. It lets you write HTML-like markup directly inside your JavaScript files.\n\nThis looks unusual at first — mixing HTML and JavaScript in one file — but it is one of React\'s most powerful ideas. Instead of keeping structure (HTML), style (CSS), and behaviour (JavaScript) in separate files, React groups UI logic and markup together into **components**.\n\nBabel, a JavaScript transpiler, converts your JSX into plain `React.createElement()` calls that every browser understands. You write readable, HTML-flavoured code; the browser receives standard JavaScript.',
+      },
+      {
+        h: 'Why JSX?',
+        p: '**1. Looks similar to HTML** — If you already know HTML, JSX feels immediately familiar. The syntax map is almost 1:1.\n\n**2. UI structure and logic in one place** — Your component describes what to render and how it behaves without switching between separate files.\n\n**3. More readable and maintainable** — `<Button label="Submit" />` is much clearer than `React.createElement(Button, { label: "Submit" })`.\n\n**4. It is a syntax extension, not HTML inside JS** — JSX compiles away entirely. The browser never sees it — only the plain JavaScript it becomes.',
+      },
+      {
+        h: 'How JSX Works — The Pipeline',
+        p: 'There are four steps from your JSX to the browser:\n\n**Step 1 — You write JSX** — e.g. `<div className="card"><h1>Hello</h1></div>`.\n\n**Step 2 — Babel transpiles it** — Babel converts each JSX element into a `React.createElement(type, props, ...children)` call.\n\n**Step 3 — React builds the Virtual DOM** — The nested createElement calls produce a JavaScript object tree (the Virtual DOM).\n\n**Step 4 — React commits to the real DOM** — React calculates the minimal set of real DOM changes needed and applies them.\n\nExample transformation by Babel:\n`<h1 className="title">Hello</h1>`\n→ `React.createElement("h1", { className: "title" }, "Hello")`',
+      },
+      {
+        h: 'JSX Syntax Rules',
+        p: '**1. Parentheses for multi-line JSX** — Wrap multi-line returns in `()` so JavaScript does not insert an automatic semicolon and break the expression.\n\n**2. className instead of class** — `class` is a reserved JS keyword. JSX uses `className` for the HTML class attribute.\n\n**3. JavaScript expressions in `{}`** — Any valid JS expression (variables, ternaries, function calls, template literals) can go inside curly braces. Full statements (`if`, `for`) cannot — use array `.map()` for lists and ternary (`? :`) for conditions.\n\n**4. camelCase event names** — `onClick`, `onChange`, `onSubmit`, `onMouseEnter`. HTML uses lowercase; JSX uses camelCase.',
+      },
+      {
+        h: 'Important Points',
+        p: '- **JSX is NOT a string** — do not wrap it in quotes. `"<h1>Hello</h1>"` is a plain string; `<h1>Hello</h1>` is a React element.\n- **One single parent element** — JSX must return one root. Wrap siblings with a `<div>` or an empty fragment `<>...</>` (fragments are preferred — they add no extra DOM nodes).\n- **Always close all tags** — `<img />`, `<br />`, `<input />`. Self-closing required.\n- **Inline styles are objects** — `style={{ color: "red", fontSize: 16 }}`. Double braces: outer for JSX expression, inner for the JS object literal.',
+      },
+      {
+        h: 'Common Mistakes',
+        p: '**1. `class` instead of `className`** — `<div class="box">` → error. Use `<div className="box">`.\n\n**2. Returning multiple elements without a wrapper** — `return <h1>Hi</h1><p>There</p>` → error. Use `return <><h1>Hi</h1><p>There</p></>`.\n\n**3. Forgetting to close tags** — `<img src="..." >` → error. Use `<img src="..." />`.\n\n**4. Inline styles without double braces** — `style="color:red"` is string syntax (HTML). In JSX: `style={{ color: "red" }}`.',
+      },
+      {
+        h: 'Quick Summary',
+        p: 'JSX lets you write **HTML-like code inside JavaScript**. It is a syntax extension — not HTML, not a string — that Babel compiles into `React.createElement()` calls.\n\nKey rules to remember: use **className** (not `class`), return **one parent element**, always **close all tags**, put JS expressions inside **`{}`**, and write events in **camelCase**.\n\nMastering JSX is the first step to mastering React. Once it feels natural, the rest of React\'s component model clicks into place.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'HTML vs JSX — side by side',
+        code: '// ── HTML ──────────────────────────────────────────\n<div class="card">\n  <h1>Hello React</h1>\n  <p>Welcome to JSX!</p>\n  <button>Click Me</button>\n</div>\n\n// ── JSX ────────────────────────────────────────────\n<div className="card">   {/* class → className */}\n  <h1>Hello React</h1>\n  <p>Welcome to JSX!</p>\n  <button>Click Me</button>\n</div>',
+        note: 'The only difference here is `class` → `className`. In JSX, `class` is a reserved JS keyword so React uses `className` instead.',
+      },
+      {
+        label: 'JSX syntax — expressions, events, multi-line',
+        code: "const element = (\n  <div className=\"container\">\n    <h1>Hello React</h1>\n    <p>This is JSX in action!</p>\n    <button onClick={() => alert('Clicked!')}>\n      Click Me\n    </button>\n  </div>\n);\n\nexport default element;\n\n// Rules demonstrated:\n// 1. Wrapped in parentheses (multi-line)\n// 2. className instead of class\n// 3. onClick in camelCase\n// 4. Arrow function inside {} for the handler",
+        note: 'All four JSX syntax rules in one snippet: parentheses, className, curly-brace expressions, camelCase events.',
+      },
+      {
+        label: 'Fragment — return multiple elements without a wrapper div',
+        code: "// ❌ Error — two root elements\nfunction Bad() {\n  return (\n    <h1>Title</h1>\n    <p>Paragraph</p>\n  );\n}\n\n// ✅ Correct — fragment adds no extra DOM node\nfunction Good() {\n  return (\n    <>\n      <h1>Title</h1>\n      <p>Paragraph</p>\n    </>\n  );\n}",
+        note: 'Empty fragment `<>...</>` is shorthand for `<React.Fragment>`. Use it whenever you need multiple root elements but do not want an extra `<div>` in the DOM.',
+      },
+      {
+        label: 'Mini Challenge — JSX element with heading, paragraph, button',
+        code: "function Welcome() {\n  return (\n    <div className=\"welcome-card\">\n      <h1>Welcome to React</h1>\n      <p>JSX makes UI easier!</p>\n      <button onClick={() => alert('Learning JSX!')}>\n        Learn JSX\n      </button>\n    </div>\n  );\n}\n\nexport default Welcome;",
+        note: 'The mini challenge from Episode 3: a heading, a paragraph, and a button, all wrapped in one parent element.',
+      },
+    ],
+  },
+  // ── Episode 4 ─────────────────────────────────────────────────────────────
+  {
+    day: 4,
+    date: '10 Mar 2028',
     group: 'hooks',
     title: 'useState Hook in React',
     tagline: 'useState lets you add state to functional components — the most important hook in React.',
