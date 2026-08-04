@@ -942,6 +942,162 @@ const PYTHON_DATA_SCIENCE_SECTIONS = [
     content: "These technologies build on each other:\n- **Data Science** — find useful insights from data for smart business decisions.\n- **AI** — the big umbrella; makes systems intelligent.\n- **ML** — systems learn from existing data and predict on new data.\n- **DL** — ML using neural networks for complex data.\n- **NLP** — AI that understands human language.\n- **Gen AI** — AI that creates new content.\n- **Agentic AI** — AI that takes actions (AI agents).\n\n**In short:** Data → Data Science → AI → ML → DL → NLP / Gen AI applications — the foundation of modern tools like ChatGPT, Gemini, self-driving cars, recommendation and fraud-detection systems.",
   },
   {
+    id: "what-is-numpy",
+    title: "What is NumPy?",
+    content:
+      "**NumPy** stands for **Numerical Python**.\n\n" +
+      "NumPy is a Python library used for **numerical and scientific calculations**. It is mainly used to work with **arrays**.\n\n" +
+      "An **array** is a collection of values.\n\n" +
+      "**NumPy arrays are faster than normal Python lists** because they use contiguous memory blocks and support vectorised operations.",
+    code:
+      "# Install NumPy\npip install numpy\n\n" +
+      "import numpy as np\n\n" +
+      "arr = np.array([10, 20, 30])\nprint(arr)  # [10 20 30]",
+  },
+  {
+    id: "why-numpy",
+    title: "Why NumPy?",
+    content:
+      "NumPy is used for:\n\n" +
+      "1. Working with large data\n" +
+      "2. Mathematical calculations\n" +
+      "3. Scientific calculations\n" +
+      "4. Data Analysis\n" +
+      "5. Machine Learning\n" +
+      "6. Deep Learning\n" +
+      "7. Matrix operations\n" +
+      "8. Statistical operations",
+  },
+  {
+    id: "what-is-numpy-array",
+    title: "What is a NumPy Array?",
+    content:
+      "A **NumPy array** is a special data structure used to store multiple values — similar to a list, but **faster and more powerful**.\n\n" +
+      "**List vs NumPy Array:**\n\n" +
+      "| | List | NumPy Array |\n" +
+      "|---|---|---|\n" +
+      "| Origin | Built-in Python | NumPy library |\n" +
+      "| Data types | Can mix different types | Usually one type |\n" +
+      "| Speed | Slower for numerical ops | Faster |\n" +
+      "| Math ops | No direct support | Direct support |\n\n" +
+      "**Array properties:**\n" +
+      "- `ndim` — number of dimensions\n" +
+      "- `shape` — rows and columns\n" +
+      "- `size` — total number of elements\n" +
+      "- `dtype` — data type of elements",
+    code:
+      "import numpy as np\n\n" +
+      "arr = np.array([10, 20, 30])\nprint(arr)\nprint(arr * 2)   # [20 40 60]\n\n" +
+      "list_data = [10, 20, 30]\nprint(list_data * 2)  # [10, 20, 30, 10, 20, 30]  (repeats, not multiplies)\n\n" +
+      "# 1-D, 2-D, 3-D arrays\narr1 = np.array([10, 20, 30])\narr2 = np.array([[10, 20, 30], [40, 50, 60]])\narr3 = np.array([[[10, 20], [30, 40]], [[50, 60], [70, 80]]])\n\n" +
+      "print(arr1.ndim)   # 1\nprint(arr2.ndim)   # 2\nprint(arr3.ndim)   # 3\n\n" +
+      "print(arr2.shape)  # (2, 3)\nprint(arr2.size)   # 6\nprint(arr2.dtype)  # int64\n\n" +
+      "# Explicit dtype\narr4 = np.array([10, 20, 30, 40, 50, 60], dtype=float)\nprint(arr4)        # [10. 20. 30. 40. 50. 60.]\n\n" +
+      "# Indexing & slicing\nprint(arr4[0])     # 10.0\nprint(arr4[-1])    # 60.0\nprint(arr2[0, 0])  # 10\nprint(arr4[0:4])   # [10. 20. 30. 40.]",
+  },
+  {
+    id: "numpy-array-creation",
+    title: "NumPy Array Creation Functions",
+    content:
+      "NumPy provides helper functions to create arrays quickly:\n\n" +
+      "- `zeros()` — array filled with zeros\n" +
+      "- `ones()` — array filled with ones\n" +
+      "- `full()` — array filled with a constant value\n" +
+      "- `arange()` — array with a range of values (like Python `range()`)\n" +
+      "- `reshape()` — change the shape of an existing array\n" +
+      "- `flatten()` — convert any multi-dimensional array to 1-D",
+    code:
+      "import numpy as np\n\n" +
+      "print(np.zeros(5))       # [0. 0. 0. 0. 0.]\nprint(np.zeros((2, 3)))  # 2 rows, 3 cols of zeros\n\n" +
+      "print(np.ones(5))        # [1. 1. 1. 1. 1.]\nprint(np.ones((2, 3)))   # 2 rows, 3 cols of ones\n\n" +
+      "print(np.full(5, 10))    # [10 10 10 10 10]\nprint(np.full((2, 3), 8)) # 2×3 array of 8s\n\n" +
+      "print(np.arange(1, 11))       # [ 1  2  3  4  5  6  7  8  9 10]\nprint(np.arange(1, 11, 2))    # [1 3 5 7 9]\n\n" +
+      "# reshape: 6 values → 2 rows × 3 cols\narr = np.arange(1, 13, 2).reshape(2, 3)\nprint(arr)\n\n" +
+      "# flatten: back to 1-D\nprint(arr.flatten())",
+  },
+  {
+    id: "numpy-random",
+    title: "NumPy Random Module",
+    content:
+      "NumPy has a **`random`** module to generate random numbers.\n\n" +
+      "- `np.random.randint(low, high, size)` — random **integers** in the given range\n" +
+      "- `np.random.rand(size)` — random **decimal** values between 0 and 1",
+    code:
+      "import numpy as np\n\n" +
+      "arr = np.random.randint(1, 9, 5)\nprint(arr)  # e.g. [3 7 1 8 4]\n\n" +
+      "arr = np.random.rand(5)\nprint(arr)  # e.g. [0.42 0.17 0.89 0.05 0.63]",
+  },
+  {
+    id: "numpy-math-operations",
+    title: "NumPy Mathematical Operations",
+    content:
+      "NumPy supports **direct mathematical operations** on arrays — no loops needed.\n\n" +
+      "You can also perform **array-to-array operations** element-wise.",
+    code:
+      "import numpy as np\n\n" +
+      "arr = np.array([10, 20, 30])\n\nprint(arr + 5)   # [15 25 35]\nprint(arr - 5)   # [ 5 15 25]\nprint(arr * 2)   # [20 40 60]\nprint(arr / 2)   # [ 5. 10. 15.]\n\n" +
+      "# Array-to-array operations\na = np.array([10, 20, 30])\nb = np.array([1,  2,  3])\n\nprint(a + b)  # [11 22 33]\nprint(a - b)  # [ 9 18 27]\nprint(a * b)  # [ 10  40  90]\nprint(a / b)  # [10. 10. 10.]",
+  },
+  {
+    id: "numpy-statistical-functions",
+    title: "NumPy Statistical Functions",
+    content:
+      "NumPy provides statistical functions:\n\n" +
+      "1. `sum()` — total of all values\n" +
+      "2. `mean()` — average value\n" +
+      "3. `median()` — middle value\n" +
+      "4. `min()` / `max()` — smallest / largest value\n" +
+      "5. `std()` — **standard deviation** — how much values are spread from the mean\n" +
+      "6. `var()` — **variance** — average of squared distances from the mean\n\n" +
+      "**Standard deviation is preferred over variance** because it is in the same units as the original data, making it easier to interpret.\n\n" +
+      "In real-world projects they help **identify consistency, detect anomalies, measure risk, monitor quality**, and prepare data for ML models.",
+    code:
+      "import numpy as np\n\n" +
+      "classA = np.array([48, 49, 50, 51, 52])  # mean = 50, low spread\nclassB = np.array([20, 40, 50, 60, 80])  # mean = 50, high spread\n\n" +
+      "print(np.mean(classA))  # 50.0\nprint(np.mean(classB))  # 50.0\n\nprint(np.std(classA))   # 1.41  ← consistent\nprint(np.std(classB))   # 20.0  ← varies a lot\n\n" +
+      "# Both classes have the same average.\n# Class A is consistent; Class B varies widely.\n\n" +
+      "# Stock risk example\np1 = [10, 11, 9, 10, 10]   # stable stock\np2 = [2, 20, -5, 25, 8]    # volatile stock\n\nprint(np.mean(p1), np.std(p1))  # 10.0, 0.63\nprint(np.mean(p2), np.std(p2))  # 10.0, 9.95",
+  },
+  {
+    id: "numpy-boolean-indexing",
+    title: "Boolean Indexing & Sorting",
+    content:
+      "**Boolean indexing** filters array elements based on a condition — it returns only the elements that satisfy the condition.",
+    code:
+      "import numpy as np\n\n" +
+      "arr = np.array([10, 20, 30, 40, 50])\nresult = arr[arr > 25]\nprint(result)  # [30 40 50]\n\n" +
+      "arr = np.array([1, 2, 3, 4, 5, 6])\neven = arr[arr % 2 == 0]\nprint(even)    # [2 4 6]\n\n" +
+      "# Sorting\narr = np.array([40, 10, 30, 20])\nprint(np.sort(arr))  # [10 20 30 40]",
+  },
+  {
+    id: "numpy-copy-vs-view",
+    title: "copy() vs view()",
+    content:
+      "- **`copy()`** — creates a **separate copy** of the array. Changes to the copy do **not** affect the original.\n" +
+      "- **`view()`** — creates a **view** (reference) of the original array. Changes in the view **do** affect the original.",
+    code:
+      "import numpy as np\n\n" +
+      "# copy()\narr1 = np.array([10, 20, 30])\narr2 = arr1.copy()\narr2[0] = 100\nprint(arr1)  # [10 20 30]  ← unchanged\nprint(arr2)  # [100  20  30]\n\n" +
+      "# view()\narr1 = np.array([10, 20, 30])\narr2 = arr1.view()\narr2[0] = 300\nprint(arr1)  # [300  20  30]  ← affected!\nprint(arr2)  # [300  20  30]",
+  },
+  {
+    id: "numpy-important-points",
+    title: "NumPy — Important Points",
+    content:
+      "- NumPy stands for **Numerical Python**.\n" +
+      "- Used for **numerical calculations** and mainly for **arrays**.\n" +
+      "- NumPy arrays are **faster** than Python lists.\n" +
+      "- Install with **`pip install numpy`** (external library).\n" +
+      "- `np.array()` creates a NumPy array.\n" +
+      "- `ndim` → number of dimensions · `shape` → rows & columns · `size` → total elements · `dtype` → element data type.\n" +
+      "- `zeros()` → zeros · `ones()` → ones · `full()` → constant · `arange()` → range.\n" +
+      "- `reshape()` → change shape · `flatten()` → convert to 1-D.\n" +
+      "- Supports **direct mathematical operations** and **array-to-array operations**.\n" +
+      "- **Boolean indexing** filters elements by condition.\n" +
+      "- `copy()` → separate copy (no side effects) · `view()` → reference to original.\n" +
+      "- Useful for **Data Science, Machine Learning, and AI**.",
+  },
+  {
     id: "parquet-file-basics",
     title: "Parquet File Basics",
     content:
