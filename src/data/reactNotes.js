@@ -7,7 +7,7 @@ export const REACT_META = {
   subtitle: 'Illustrated Episodes · React from Zero to Production',
   blurb:
     'React from the ground up — illustrated, one episode at a time. Component-based thinking, the Virtual DOM, JSX, hooks (useState, useEffect, useRef, useContext), state management, routing, performance optimisation, and real-world patterns — each episode paired with the full written notes and every code snippet.',
-  totalDays: 4,
+  totalDays: 5,
   startDate: '7 Mar 2028',
 };
 
@@ -238,6 +238,92 @@ export const REACT_DAYS = [
   {
     day: 4,
     date: '10 Mar 2028',
+    group: 'components',
+    title: 'Components & Functional Components',
+    tagline: 'Components are the building blocks of React — reusable pieces of UI that return JSX.',
+    image: '/react-notes/ep04-components.jpeg',
+    tags: ['Components', 'Functional Components', 'JSX', 'Reusability', 'Props'],
+    notes: [
+      { k: 'What is a Component?', v: 'A component is a **reusable** piece of UI that returns some **JSX**. Think of components like Lego blocks — you can build complex UIs by combining small components.' },
+      { k: 'Why Use Components?', v: '**Reusability** — write once, use everywhere. **Maintainability** — easy to update and manage. **Modularity** — break UI into small, independent parts. **Scalability** — helps in building large applications.' },
+      { k: 'Functional Component', v: 'A **JavaScript function** that returns JSX. This is the modern way to write React components.' },
+      { k: 'Component Name Rule', v: 'Component names **must start with a capital letter**. `Hello` is valid; `hello` is not — React treats lowercase names as plain HTML tags.' },
+      { k: 'Using a Component', v: 'Import the component and use it like an HTML tag: `<Hello />`. React will replace `<Hello />` with the JSX returned by the Hello component.' },
+      { k: 'Multiple Components', v: 'Create separate files for each component (e.g. `Header.js`, `Footer.js`), then import and combine them in `App.js`.' },
+      { k: 'Single Parent Rule', v: 'Always return a **single parent element** from a component. Use `<div>` or **`<>`** (React Fragment) to wrap multiple elements.' },
+      { k: 'Nesting Components', v: 'You can **nest** components inside other components — just like HTML elements nest inside each other.' },
+    ],
+    theory: [
+      { heading: 'Functional Component Syntax', body: 'A functional component is simply a JavaScript function that returns JSX. Export it with `export default` so other files can import it.' },
+      { heading: 'How React Uses Components', body: 'When you write `<Hello />` in JSX, React calls the `Hello` function and renders whatever JSX it returns — replacing the tag with real DOM elements.' },
+      { heading: 'Why Functional Components?', body: 'Functional components are simpler, easier to read, and are the standard in modern React. Class components still exist but are rarely used in new projects.' },
+      { heading: 'Component Composition', body: 'The real power of React is **composition** — building complex UIs by combining small, focused components. Each component owns its own piece of the UI.' },
+    ],
+    snippets: [
+      {
+        label: 'Hello.js — A basic functional component',
+        code: `import React from 'react';
+
+function Hello() {
+  return (
+    <div>
+      <h1>Hello React! 👋</h1>
+      <p>This is a functional component.</p>
+    </div>
+  );
+}
+
+export default Hello;`,
+      },
+      {
+        label: 'App.js — Importing and using a component',
+        code: `import React from 'react';
+import Hello from './Hello';
+
+function App() {
+  return (
+    <div>
+      <Hello />
+    </div>
+  );
+}
+
+export default App;`,
+      },
+      {
+        label: 'Multiple components — Header, Footer, App',
+        code: `// Header.js
+export default function Header() {
+  return <header><h1>My React App</h1></header>;
+}
+
+// Footer.js
+export default function Footer() {
+  return <footer><p>© 2025 Neon Dev</p></footer>;
+}
+
+// App.js
+import Header from './Header';
+import Footer from './Footer';
+
+function App() {
+  return (
+    <div>
+      <Header />
+      <main>Welcome to my app 🚀</main>
+      <Footer />
+    </div>
+  );
+}
+
+export default App;`,
+      },
+    ],
+  },
+  // ── Episode 5 ─────────────────────────────────────────────────────────────
+  {
+    day: 5,
+    date: '11 Mar 2028',
     group: 'hooks',
     title: 'useState Hook in React',
     tagline: 'useState lets you add state to functional components — the most important hook in React.',
