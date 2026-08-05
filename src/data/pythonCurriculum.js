@@ -1098,6 +1098,135 @@ const PYTHON_DATA_SCIENCE_SECTIONS = [
       "- Useful for **Data Science, Machine Learning, and AI**.",
   },
   {
+    id: "what-is-pandas",
+    title: "What is Pandas?",
+    content:
+      "**Pandas** is a Python library used for **data analysis and data manipulation**.\n\n" +
+      "Pandas is mainly used to work with **structured data** — data stored in rows and columns.\n\n" +
+      "**Examples of structured data:**\n" +
+      "- Student Marks Data\n" +
+      "- Employee Salary Data\n" +
+      "- Sales Data\n" +
+      "- Course Enrollment Data\n" +
+      "- CSV Files\n" +
+      "- Excel Files",
+  },
+  {
+    id: "why-pandas",
+    title: "Why Pandas?",
+    content:
+      "Pandas is used for:\n\n" +
+      "- **Reading data** — load data from CSV, Excel, JSON, SQL, and more\n" +
+      "- **Writing data** — save data back to files or databases\n" +
+      "- **Cleaning data** — fix missing values, remove duplicates, correct formats\n" +
+      "- **Filtering data** — select rows and columns based on conditions\n" +
+      "- **Sorting data** — order data by one or more columns\n" +
+      "- **Grouping data** — aggregate rows by a category (`groupby`)\n" +
+      "- **Analyzing data** — compute statistics, summaries, and insights\n" +
+      "- **Working with CSV files** — `read_csv()` / `to_csv()`\n" +
+      "- **Working with Excel files** — `read_excel()` / `to_excel()`\n" +
+      "- **Handling missing values** — detect, fill, or drop `NaN` values",
+  },
+  {
+    id: "pandas-installation",
+    title: "Pandas Installation",
+    content:
+      "Pandas is an **external library** — it is not included with Python by default.\n\n" +
+      "Install it using **pip** (Python's package manager):",
+    code: "pip install pandas",
+  },
+  {
+    id: "pandas-data-structures",
+    title: "Main Data Structures in Pandas",
+    content:
+      "Pandas has two important data structures:\n\n" +
+      "**1. Series** — one-dimensional, like a single column.\n\n" +
+      "**2. DataFrame** — two-dimensional, like an Excel sheet with rows and columns.",
+  },
+  {
+    id: "what-is-series",
+    title: "What is Series?",
+    content:
+      "**Series** is a **one-dimensional** data structure in Pandas.\n\n" +
+      "It is like a **single column** — each element has an index (0, 1, 2 … by default).",
+    code:
+      "import pandas as pd\n\nmarks = pd.Series([80, 90, 75, 60])\nprint(marks)\n\n# Output:\n# 0    80\n# 1    90\n# 2    75\n# 3    60\n# dtype: int64",
+  },
+  {
+    id: "what-is-dataframe",
+    title: "What is DataFrame?",
+    content:
+      "**DataFrame** is a **two-dimensional** data structure in Pandas.\n\n" +
+      "It stores data in **rows and columns** — like an Excel sheet or a database table.",
+    code:
+      "import pandas as pd\n\nstudents = {\n    \"name\":   [\"Ravi\", \"Sita\", \"Kiran\"],\n    \"course\": [\"Python\", \"Java\", \"DevOps\"],\n    \"marks\":  [80, 90, 75]\n}\n\ndf = pd.DataFrame(students)\nprint(df)\n\n#     name  course  marks\n# 0   Ravi  Python     80\n# 1   Sita    Java     90\n# 2  Kiran  DevOps     75",
+  },
+  {
+    id: "series-vs-dataframe",
+    title: "Difference Between Series and DataFrame",
+    content:
+      "**Series:**\n" +
+      "- One-dimensional data\n" +
+      "- Like a single column\n" +
+      "- Created using `pd.Series()`\n\n" +
+      "**DataFrame:**\n" +
+      "- Two-dimensional data (rows and columns)\n" +
+      "- Like an Excel sheet or database table\n" +
+      "- Created using `pd.DataFrame()`",
+  },
+  {
+    id: "series-custom-index",
+    title: "Create Series with Custom Index",
+    content:
+      "By default, Series uses 0, 1, 2 … as index. You can pass your own index labels using the `index` parameter.",
+    code:
+      "import pandas as pd\n\ncourses = pd.Series(\n    [\"Python\", \"JAVA\", \"DevOps\"],\n    index=[\"C1\", \"C2\", \"C3\"]\n)\n\nprint(courses)\n# C1    Python\n# C2      JAVA\n# C3    DevOps\n# dtype: object\n\nprint(courses[\"C1\"])   # Python",
+  },
+  {
+    id: "pandas-write-csv",
+    title: "Write DataFrame to CSV File",
+    content:
+      "`to_csv()` writes a DataFrame to a CSV file.\n\n" +
+      "Pass `index=False` to skip writing the row numbers into the file.",
+    code:
+      "import pandas as pd\n\nstudents = {\n    \"name\":   [\"Ravi\", \"Sita\", \"Kiran\"],\n    \"course\": [\"Python\", \"Java\", \"DevOps\"],\n    \"marks\":  [80, 90, 75]\n}\n\ndf = pd.DataFrame(students)\ndf.to_csv(\"students.csv\", index=False)\nprint(\"CSV file created successfully\")",
+  },
+  {
+    id: "pandas-read-csv",
+    title: "Reading Data From CSV File",
+    content:
+      "**CSV** stands for **Comma Separated Values**.\n\n" +
+      "`read_csv()` reads a CSV file and returns a DataFrame.",
+    code:
+      "import pandas as pd\n\ndf = pd.read_csv(\"students.csv\")\nprint(df)",
+  },
+  {
+    id: "pandas-excel",
+    title: "Working with Excel",
+    content:
+      "Install `openpyxl` first to work with Excel files:\n```\npip install openpyxl\n```\n\n" +
+      "Functions:\n" +
+      "- `to_excel()` — write a DataFrame to an Excel file\n" +
+      "- `read_excel()` — read an Excel file into a DataFrame",
+    code:
+      "import pandas as pd\n\nstudents = {\n    \"name\":   [\"Ravi\", \"Sita\", \"Kiran\"],\n    \"course\": [\"Python\", \"Java\", \"DevOps\"],\n    \"marks\":  [80, 90, 75]\n}\n\ndf = pd.DataFrame(students)\ndf.to_excel(\"Students.xlsx\", index=False)\nprint(\"Excel Created Successfully\")\n\ndf = pd.read_excel(\"Students.xlsx\")\nprint(df)",
+  },
+  {
+    id: "pandas-important-functions",
+    title: "Important Functions and Attributes",
+    content:
+      "1. **`head()`** — displays the **first 5 rows** by default. Pass a number to change the count.\n\n" +
+      "2. **`tail()`** — displays the **last 5 rows** by default.\n\n" +
+      "3. **`info()`** — displays DataFrame information:\n" +
+      "   - number of rows and columns\n" +
+      "   - column names\n" +
+      "   - data types\n" +
+      "   - non-null value counts\n\n" +
+      "4. **`describe()`** — gives a **statistical summary** for numeric columns (count, mean, std, min, 25%, 50%, 75%, max).",
+    code:
+      "import pandas as pd\n\ndf = pd.read_csv(\"students.csv\")\n\nprint(df.head())       # first 5 rows\nprint(df.tail())       # last 5 rows\nprint(df.info())       # schema + null counts\nprint(df.describe())   # stats for numeric columns",
+  },
+  {
     id: "parquet-file-basics",
     title: "Parquet File Basics",
     content:
