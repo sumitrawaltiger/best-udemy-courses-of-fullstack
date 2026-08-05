@@ -254,10 +254,10 @@ export const REACT_DAYS = [
       { k: 'Nesting Components', v: 'You can **nest** components inside other components — just like HTML elements nest inside each other.' },
     ],
     theory: [
-      { heading: 'Functional Component Syntax', body: 'A functional component is simply a JavaScript function that returns JSX. Export it with `export default` so other files can import it.' },
-      { heading: 'How React Uses Components', body: 'When you write `<Hello />` in JSX, React calls the `Hello` function and renders whatever JSX it returns — replacing the tag with real DOM elements.' },
-      { heading: 'Why Functional Components?', body: 'Functional components are simpler, easier to read, and are the standard in modern React. Class components still exist but are rarely used in new projects.' },
-      { heading: 'Component Composition', body: 'The real power of React is **composition** — building complex UIs by combining small, focused components. Each component owns its own piece of the UI.' },
+      { h: 'Functional Component Syntax', p: 'A functional component is simply a JavaScript function that returns JSX. Export it with `export default` so other files can import it.' },
+      { h: 'How React Uses Components', p: 'When you write `<Hello />` in JSX, React calls the `Hello` function and renders whatever JSX it returns — replacing the tag with real DOM elements.' },
+      { h: 'Why Functional Components?', p: 'Functional components are simpler, easier to read, and are the standard in modern React. Class components still exist but are rarely used in new projects.' },
+      { h: 'Component Composition', p: 'The real power of React is **composition** — building complex UIs by combining small, focused components. Each component owns its own piece of the UI.' },
     ],
     snippets: [
       {
