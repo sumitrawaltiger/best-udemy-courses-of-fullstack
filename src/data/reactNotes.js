@@ -324,6 +324,143 @@ export default App;`,
   {
     day: 5,
     date: '11 Mar 2028',
+    group: 'components',
+    title: 'Props & Passing Data',
+    tagline: 'Props are read-only inputs passed from parent to child — the mechanism for sharing data across React components.',
+    image: '/react-notes/ep05-props.jpeg',
+    tags: ['Props', 'Data Flow', 'Destructuring', 'One-way Flow', 'Reusability'],
+    notes: [
+      { k: 'What are Props?', v: 'Props (short for **properties**) are **read-only** inputs passed from a **parent** component to a **child** component. Think of them like function arguments — they allow components to be **dynamic** and **reusable**.' },
+      { k: 'One-way Data Flow', v: 'Data flows only from **parent → child**. The parent holds the data and passes it down via props. The child receives and displays it. React enforces this one-way flow to keep your app predictable.' },
+      { k: 'Passing Props', v: 'Pass props like HTML attributes: `<UserCard name={name} age={age} />`. Inside the child, access them via `props.name`, `props.age`, etc. Props are **immutable** — the child cannot change them.' },
+      { k: 'Destructuring Props', v: 'Instead of `props.name`, destructure in the function signature: `function UserCard({ name, age })`. Cleaner, more readable — especially with many props. Preferred in modern React.' },
+      { k: 'Types of Props', v: 'Props can be any JS type: **String** `name="Neon"`, **Number** `age={20}`, **Boolean** `isActive={true}`, **Array** `skills={["JS","React"]}`, **Object** `info={{name:"N",age:20}}`.' },
+      { k: 'Default Props', v: 'Use `ComponentName.defaultProps = { name: "Guest" }` to provide fallback values when a prop is not passed. If the prop is provided, the default is ignored.' },
+      { k: 'Props are Immutable', v: 'A child component **cannot** modify props. Trying to do so (e.g., `props.name = "X"`) is an error. If data needs to change, lift state up to the parent.' },
+      { k: 'Key Takeaway', v: 'Props make components **reusable** and **dynamic**. Master one-way data flow + destructuring and you have the foundation for every React app ever written.' },
+    ],
+    theory: [
+      {
+        h: 'What are Props?',
+        p: 'Props — short for **properties** — are the mechanism React uses to pass data from one component to another.\n\nThink of a React component as a JavaScript function. Just as a function accepts arguments, a component accepts props. They make components **dynamic** (different data, same component) and **reusable** (one component, many uses).\n\nProps flow in **one direction only**: from parent to child. This is called the **one-way data flow** model. The parent holds the data and passes it down; the child receives and renders it — but can never change it.',
+      },
+      {
+        h: 'Passing and Accessing Props',
+        p: 'You pass props like HTML attributes in JSX:\n\n`<UserCard name="Neon Dev" age={20} />`\n\nInside the child component, props arrive as an object:\n\n```jsx\nfunction UserCard(props) {\n  return <h2>{props.name} — {props.age}</h2>;\n}\n```\n\n`props.name` and `props.age` access the values. The `{}` in JSX tells React to evaluate an expression rather than treat it as a string.',
+      },
+      {
+        h: 'Destructuring Props',
+        p: 'Destructuring extracts prop values directly in the function signature, making the code cleaner and easier to read:\n\n```jsx\nfunction UserCard({ name, age }) {\n  return <h2>{name} — {age}</h2>;\n}\n```\n\nThis is equivalent to the `props.name` approach but preferred in modern React. Especially useful when a component has many props — you can see exactly what it expects at a glance.',
+      },
+      {
+        h: 'Types of Props',
+        p: 'Props can carry any JavaScript value:\n\n- **String** — `<User name="Neon" />` (no curly braces needed for strings)\n- **Number** — `<User age={20} />` (curly braces for non-string values)\n- **Boolean** — `<User isActive={true} />` (or just `<User isActive />` — presence implies `true`)\n- **Array** — `<User skills={["JS", "React"]} />`\n- **Object** — `<User info={{ name: "N", age: 20 }} />` (double curly braces: outer = JSX expression, inner = JS object)\n- **Function** — `<Button onClick={() => console.log("clicked")} />`',
+      },
+      {
+        h: 'Props are Immutable',
+        p: 'This is a core React rule: **props are read-only inside the child component**. A child must never modify its props.\n\nIf data needs to change in response to user interaction, that data belongs in **state** (using `useState`), not props. State lives in the parent, and the parent passes updated values down as new props.\n\nViolating immutability (e.g., `props.name = "X"`) breaks React\'s predictable rendering model and will either fail silently or cause bugs.',
+      },
+      {
+        h: 'Common Mistakes',
+        p: '**1. Trying to modify props in child** — Props are read-only. Use state in the parent instead.\n\n**2. Not passing required props** — If a child expects `name` but the parent forgets to pass it, `name` is `undefined`. Add PropTypes validation or default props to guard against this.\n\n**3. Forgetting `props.key` syntax** — Without destructuring, accessing `name` directly (instead of `props.name`) returns `undefined`.\n\n**4. Overcomplicating without destructuring** — Using `props.a`, `props.b`, `props.c`… is verbose. Destructure instead.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Basic Props — Parent passing, Child receiving',
+        code: `// App.js (Parent)
+import UserCard from './UserCard';
+
+function App() {
+  const name = "Neon Dev";
+  const age = 20;
+  return (
+    <div>
+      <h1>My Profile</h1>
+      <UserCard name={name} age={age} />
+    </div>
+  );
+}
+export default App;
+
+// UserCard.js (Child)
+function UserCard(props) {
+  return (
+    <div className="card">
+      <h2>{props.name}</h2>
+      <p>Age: {props.age}</p>
+    </div>
+  );
+}
+export default UserCard;`,
+        note: 'Props are passed like HTML attributes and accessed via props.key inside the child.',
+      },
+      {
+        label: 'Destructuring Props',
+        code: `// UserCard.js — cleaner with destructuring
+function UserCard({ name, age }) {
+  return (
+    <div className="card">
+      <h2>{name}</h2>
+      <p>Age: {age}</p>
+    </div>
+  );
+}
+export default UserCard;`,
+        note: 'Destructure in the function signature — no need for props.name, just name. Much cleaner with many props.',
+      },
+      {
+        label: 'All Prop Types',
+        code: `// Passing different types
+<User name="Neon" />           // String
+<User age={20} />              // Number
+<User isActive={true} />       // Boolean (or just <User isActive />)
+<User skills={['JS','React']} /> // Array
+<User info={{ name: 'N', age: 20 }} /> // Object`,
+        note: 'Strings can be passed without curly braces. Everything else needs {}.',
+      },
+      {
+        label: 'Default Props',
+        code: `function UserCard({ name }) {
+  return <h2>{name}</h2>;
+}
+
+// Fallback when prop is not passed
+UserCard.defaultProps = {
+  name: "Guest User"
+};
+
+// Modern alternative: default parameter value
+function UserCard({ name = "Guest User" }) {
+  return <h2>{name}</h2>;
+}`,
+        note: 'Prefer the default parameter syntax — it is more readable and does not need a separate .defaultProps assignment.',
+      },
+      {
+        label: 'Mini Challenge — Pass title, score, isWinner',
+        code: `// Parent
+function App() {
+  return <ScoreCard title="React Quiz" score={95} isWinner={true} />;
+}
+
+// Child
+function ScoreCard({ title, score, isWinner }) {
+  return (
+    <div>
+      <h2>{title}</h2>
+      <p>Score: {score}</p>
+      <p>{isWinner ? '🏆 You Won!' : 'Try again'}</p>
+    </div>
+  );
+}`,
+        note: 'The mini challenge from the infographic — three prop types (string, number, boolean) in one component.',
+      },
+    ],
+  },
+  // ── Episode 6 ─────────────────────────────────────────────────────────────
+  {
+    day: 6,
+    date: '12 Mar 2028',
     group: 'hooks',
     title: 'useState Hook in React',
     tagline: 'useState lets you add state to functional components — the most important hook in React.',
