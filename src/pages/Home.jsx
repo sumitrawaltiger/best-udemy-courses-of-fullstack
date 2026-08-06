@@ -281,6 +281,183 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="roadmap" id="backend-engineering-notes">
+        <div className="section-header">
+          <h2>⚙️ Backend Engineering — API Gateway</h2>
+          <a href="/backend-notes/api-gateway-day55.jpeg" download className="btn">
+            📥 Download
+          </a>
+        </div>
+        <p className="section-desc">
+          <strong>Day 55 — API Gateway: Concepts and Simple Implementation.</strong> A single entry point for all
+          client requests — routing, authentication, rate limiting, caching, and request/response transformation.
+          Built with <strong>Node.js + Express + http-proxy-middleware</strong>.
+        </p>
+        <figure style={{ margin: '0 auto', textAlign: 'center', maxWidth: '700px' }}>
+          <a href="/backend-notes/api-gateway-day55.jpeg" target="_blank" rel="noopener noreferrer">
+            <img
+              src="/backend-notes/api-gateway-day55.jpeg"
+              alt="Learning Backend Engineering Day 55 — API Gateway: concepts (what it is, how it works, key responsibilities, benefits, common patterns, architecture), popular solutions (Kong, Nginx, Amazon API Gateway, Traefik, Spring Cloud Gateway, Apigee), simple Node.js implementation with Express and http-proxy-middleware, security, monitoring, best practices, use cases, common pitfalls, and key takeaway."
+              loading="lazy"
+              style={{ width: '100%', height: 'auto', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.12)', boxShadow: '0 14px 44px rgba(0,0,0,0.45)' }}
+              onError={(e) => { const f = e.currentTarget.closest('figure'); if (f) f.style.display = 'none'; }}
+            />
+          </a>
+          <figcaption style={{ marginTop: '8px', fontSize: '0.8rem', opacity: 0.6 }}>
+            Learning Backend Engineering · Day 55 — click to open full size ↗
+          </figcaption>
+        </figure>
+
+        <div style={{ marginTop: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(270px, 1fr))', gap: '1.25rem' }}>
+          {[
+            {
+              title: 'What is an API Gateway?',
+              color: '#6366f1',
+              points: [
+                'A single entry point for all client requests to backend services.',
+                'Routes requests to the right services.',
+                'Handles cross-cutting concerns: security, rate limiting, logging.',
+                'Hides internal service architecture.',
+                'Centralizes common functionality.',
+                'Improves security, performance, scalability, and monitoring.',
+              ],
+            },
+            {
+              title: 'How It Works',
+              color: '#10b981',
+              points: [
+                '1. Client sends request to the API Gateway.',
+                '2. Gateway authenticates, authorizes, and validates the request.',
+                '3. Gateway routes the request to the appropriate service.',
+                '4. Response is returned to the client through the gateway.',
+                'Flow: Client → API Gateway → User Service / Order Service / Payment Service.',
+              ],
+            },
+            {
+              title: 'Key Responsibilities',
+              color: '#f59e0b',
+              points: [
+                'Authentication & Authorization — validate tokens, API keys, or OAuth.',
+                'Routing — route requests to the correct service.',
+                'Rate Limiting — protect services from abuse and overload.',
+                'Logging & Monitoring — capture logs, metrics, and traces.',
+                'Caching — cache responses to improve performance.',
+                'Request/Response Transformation — modify headers, body, or format.',
+              ],
+            },
+            {
+              title: 'Common Patterns',
+              color: '#ec4899',
+              points: [
+                'Proxy Pattern — gateway acts as a proxy for backend services.',
+                'Backend for Frontend (BFF) — different gateways for web, mobile, etc.',
+                'Aggregation — combine data from multiple services.',
+                'Circuit Breaker — prevent cascading failures.',
+              ],
+            },
+            {
+              title: 'Popular Solutions',
+              color: '#14b8a6',
+              points: [
+                'Kong — open source, cloud-native API gateway.',
+                'Nginx — high performance, can act as API gateway.',
+                'Amazon API Gateway — managed service by AWS.',
+                'Traefik — modern reverse proxy and gateway.',
+                'Spring Cloud Gateway — built on Spring WebFlux.',
+                'Apigee — enterprise API management platform.',
+              ],
+            },
+            {
+              title: 'Node.js Implementation',
+              color: '#f97316',
+              code: 'npm init -y\nnpm install express http-proxy-middleware cors\n\n// index.js\nconst { createProxyMiddleware } = require("http-proxy-middleware");\napp.use("/users", createProxyMiddleware({\n  target: process.env.USER_SERVICE,\n  changeOrigin: true,\n  pathRewrite: { "^/users": "/" }\n}));\napp.use("/orders", createProxyMiddleware({\n  target: process.env.ORDER_SERVICE,\n  changeOrigin: true\n}));\napp.listen(PORT);',
+              points: [],
+            },
+            {
+              title: 'Security at Gateway',
+              color: '#8b5cf6',
+              points: [
+                'Validate JWT / OAuth tokens.',
+                'API key validation.',
+                'IP whitelisting / blacklisting.',
+                'OWASP protection (rate limiting, input validation).',
+                'HTTPS / TLS termination.',
+              ],
+            },
+            {
+              title: 'Monitoring & Observability',
+              color: '#06b6d4',
+              points: [
+                'Track request/response logs.',
+                'Metrics: QPS, latency, errors.',
+                'Distributed tracing.',
+                'Alerts and dashboards (Prometheus, Grafana).',
+              ],
+            },
+            {
+              title: 'Best Practices',
+              color: '#84cc16',
+              points: [
+                'Keep gateway stateless.',
+                'Use caching for frequent responses.',
+                'Implement rate limiting and throttling.',
+                'Apply circuit breaker for downstream calls.',
+                'Version your APIs.',
+                'Monitor and alert on failures.',
+              ],
+            },
+            {
+              title: 'Common Pitfalls',
+              color: '#ef4444',
+              points: [
+                'Gateway becomes a bottleneck.',
+                'Too much logic in the gateway.',
+                'Missing timeouts and retries.',
+                'Not securing the gateway.',
+                'Ignoring monitoring and logging.',
+              ],
+            },
+            {
+              title: 'Use Cases',
+              color: '#a78bfa',
+              points: [
+                'Microservices architectures.',
+                'Mobile and SPA backends.',
+                'Partner / third-party integrations.',
+                'Multi-tenant systems.',
+                'Hybrid cloud and distributed systems.',
+              ],
+            },
+            {
+              title: 'Key Takeaway',
+              color: '#fbbf24',
+              points: [
+                'An API Gateway simplifies client interaction, improves security, and centralizes cross-cutting concerns.',
+                "It's a must-have component in modern backend architectures.",
+                'One Gateway. Many Services. Infinite Possibilities.',
+              ],
+            },
+          ].map((card) => (
+            <div
+              key={card.title}
+              style={{ background: 'var(--card-bg, rgba(255,255,255,0.04))', border: `1.5px solid ${card.color}55`, borderRadius: '10px', padding: '1rem 1.25rem' }}
+            >
+              <h3 style={{ color: card.color, fontSize: '0.9rem', fontWeight: 700, marginBottom: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                {card.title}
+              </h3>
+              {card.points.length > 0 && (
+                <ul style={{ margin: 0, paddingLeft: '1.1rem', fontSize: '0.85rem', lineHeight: 1.6 }}>
+                  {card.points.map((p, i) => <li key={i}>{p}</li>)}
+                </ul>
+              )}
+              {card.code && (
+                <pre style={{ marginTop: '0.5rem', background: 'rgba(0,0,0,0.3)', borderRadius: '6px', padding: '0.5rem 0.75rem', fontSize: '0.75rem', overflowX: 'auto' }}>{card.code}</pre>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="thunder-plus-section thunder-genai-section" id="thunder-genai">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-genai">
