@@ -1215,16 +1215,61 @@ const PYTHON_DATA_SCIENCE_SECTIONS = [
     id: "pandas-important-functions",
     title: "Important Functions and Attributes",
     content:
-      "1. **`head()`** — displays the **first 5 rows** by default. Pass a number to change the count.\n\n" +
-      "2. **`tail()`** — displays the **last 5 rows** by default.\n\n" +
-      "3. **`info()`** — displays DataFrame information:\n" +
-      "   - number of rows and columns\n" +
-      "   - column names\n" +
-      "   - data types\n" +
-      "   - non-null value counts\n\n" +
-      "4. **`describe()`** — gives a **statistical summary** for numeric columns (count, mean, std, min, 25%, 50%, 75%, max).",
+      "**Core inspection functions:**\n\n" +
+      "1. **`head(n)`** — displays the **first 5 rows** by default (pass `n` to change).\n" +
+      "2. **`tail(n)`** — displays the **last 5 rows** by default.\n" +
+      "3. **`info()`** — shows number of rows/columns, column names, data types, and non-null counts.\n" +
+      "4. **`describe()`** — statistical summary for numeric columns (count, mean, std, min, 25%, 50%, 75%, max).\n\n" +
+      "**Column selection:**\n" +
+      "- Single column: `df[\"Name\"]`\n" +
+      "- Multiple columns: `df[[\"Name\", \"Salary\"]]`\n\n" +
+      "**Filtering rows:**\n" +
+      "- `df[df[\"Salary\"] > 50000]` — rows where Salary > 50000\n" +
+      "- `df[df[\"Department\"] == \"IT\"]` — rows where Department is IT\n" +
+      "- `&` for AND, `|` for OR between conditions\n\n" +
+      "**Sorting:** `sort_values(\"col\")` — ascending by default; pass `ascending=False` for descending.\n\n" +
+      "**Adding / dropping columns:**\n" +
+      "- Add: `df[\"Bonus\"] = df[\"Salary\"] * 0.10`\n" +
+      "- Drop: `df.drop(columns=[\"Bonus\"], inplace=True)`\n\n" +
+      "**GroupBy:** `df.groupby(\"Department\")[\"Salary\"].mean()` — aggregates per group.\n\n" +
+      "**Unique values:** `df[\"col\"].unique()` — list of unique values; `nunique()` — count of unique values.\n\n" +
+      "**Missing values:** `df[\"col\"].fillna(0)` — replace `NaN` with a value.",
     code:
-      "import pandas as pd\n\ndf = pd.read_csv(\"students.csv\")\n\nprint(df.head())       # first 5 rows\nprint(df.tail())       # last 5 rows\nprint(df.info())       # schema + null counts\nprint(df.describe())   # stats for numeric columns",
+      "import pandas as pd\n\nemployees = {\n    \"EmpId\": [101, 102, 103, 104, 105, 106],\n    \"Name\": [\"Ravi\", \"Sita\", \"Kiran\", \"Rahul\", \"Priya\", \"Anil\"],\n    \"Department\": [\"IT\", \"HR\", \"IT\", \"Sales\", \"HR\", \"IT\"],\n    \"Salary\": [50000, 45000, 70000, 40000, 48000, 65000],\n    \"Experience\": [2, 5, 8, 1, 4, 7]\n}\n\ndf = pd.DataFrame(employees)\nprint(df)\nprint(df.head(3))                              # first 3 rows\nprint(df.tail(3))                              # last 3 rows\nprint(df[\"Name\"])                              # single column\nprint(df[[\"Name\", \"Salary\"]])                  # multiple columns\n\n# --- Filtering ---\nprint(df[df[\"Salary\"] > 50000])\nprint(df[df[\"Department\"] == \"IT\"])\nprint(df[(df[\"Department\"] == \"IT\") & (df[\"Salary\"] > 60000)])   # AND\nprint(df[(df[\"Department\"] == \"IT\") | (df[\"Salary\"] > 60000)])   # OR\n\n# --- Sorting ---\nprint(df.sort_values(\"Salary\"))\nprint(df.sort_values(\"Salary\", ascending=False))\nprint(df.sort_values([\"Department\", \"Salary\"]))\n\n# --- Add / drop columns ---\ndf[\"Bonus\"] = df[\"Salary\"] * 0.10\ndf[\"Total Salary\"] = df[\"Salary\"] + df[\"Bonus\"]\nprint(df)\ndf.drop(columns=[\"Bonus\"], inplace=True)\nprint(df)\n\n# --- GroupBy aggregations ---\nprint(df.groupby(\"Department\")[\"Salary\"].mean())\nprint(df.groupby(\"Department\")[\"Salary\"].max())\nprint(df.groupby(\"Department\")[\"Salary\"].min())\nprint(df.groupby(\"Department\")[\"Salary\"].sum())\n\n# --- Unique values ---\nprint(df[\"Department\"].unique())       # list of unique departments\nprint(df[\"Department\"].nunique())      # count of unique departments\n\n# --- Missing values ---\nemps = {\n    \"Name\": [\"Ravi\", \"Sita\", \"Kiran\", \"Rahul\"],\n    \"Salary\": [50000, None, 65000, None]\n}\nndf = pd.DataFrame(emps)\nprint(ndf)\nndf[\"Salary\"] = ndf[\"Salary\"].fillna(0)   # replace NaN with 0\nprint(ndf)",
+  },
+  {
+    id: "pandas-assignment-1",
+    title: "Practice Assignment 1 — Students",
+    content:
+      "Build a student DataFrame and practise the core Pandas operations:\n\n" +
+      "1. Show only Python students.\n" +
+      "2. Show students with marks > 80.\n" +
+      "3. Sort students by marks.\n" +
+      "4. Find the highest marks.\n" +
+      "5. Find the average marks.\n" +
+      "6. Count students in each course.\n" +
+      "7. Add a **Grade** column (e.g. A / B / C based on marks).\n" +
+      "8. Save the student data to a CSV file.\n" +
+      "9. Read the CSV file back into a DataFrame.\n" +
+      "10. Store the data into an Excel file.",
+    code:
+      "import pandas as pd\n\nstudents = {\n    \"Name\":   [\"Ravi\", \"Sita\", \"Kiran\", \"Rahul\", \"Priya\"],\n    \"Course\": [\"Python\", \"Java\", \"Python\", \"DevOps\", \"Python\"],\n    \"Marks\":  [85, 90, 75, 60, 95]\n}\n\ndf = pd.DataFrame(students)\n\n# 1) Python students only\nprint(df[df[\"Course\"] == \"Python\"])\n\n# 2) Marks > 80\nprint(df[df[\"Marks\"] > 80])\n\n# 3) Sort by marks\nprint(df.sort_values(\"Marks\"))\n\n# 4) Highest marks\nprint(df[\"Marks\"].max())\n\n# 5) Average marks\nprint(df[\"Marks\"].mean())\n\n# 6) Count per course\nprint(df.groupby(\"Course\")[\"Name\"].count())\n\n# 7) Add Grade column\ndf[\"Grade\"] = df[\"Marks\"].apply(\n    lambda m: \"A\" if m >= 90 else (\"B\" if m >= 75 else \"C\")\n)\nprint(df)\n\n# 8) Save to CSV\ndf.to_csv(\"students.csv\", index=False)\nprint(\"CSV saved\")\n\n# 9) Read CSV\ndf2 = pd.read_csv(\"students.csv\")\nprint(df2)\n\n# 10) Save to Excel\ndf.to_excel(\"students.xlsx\", index=False)\nprint(\"Excel saved\")",
+  },
+  {
+    id: "pandas-assignment-2",
+    title: "Practice Assignment 2 — Products",
+    content:
+      "Build a products DataFrame and practise filtering, aggregation, and derived columns:\n\n" +
+      "1. Show products priced above ₹10,000.\n" +
+      "2. Sort products by price.\n" +
+      "3. Count products by category.\n" +
+      "4. Find the average price by category.\n" +
+      "5. Add a **GST** column (18% of price).\n" +
+      "6. Calculate the **Final Price** (price + GST).\n" +
+      "7. Save the DataFrame to a CSV file.\n" +
+      "8. Read the CSV file back.",
+    code:
+      "import pandas as pd\n\nproducts = {\n    \"Product\":  [\"Laptop\", \"Mouse\", \"Keyboard\", \"Monitor\", \"Printer\"],\n    \"Category\": [\"Electronics\", \"Accessories\", \"Accessories\", \"Electronics\", \"Electronics\"],\n    \"Price\":    [60000, 500, 1200, 15000, 10000],\n    \"Stock\":    [15, 200, 120, 25, 18]\n}\n\ndf = pd.DataFrame(products)\n\n# 1) Products above ₹10,000\nprint(df[df[\"Price\"] > 10000])\n\n# 2) Sort by price\nprint(df.sort_values(\"Price\"))\n\n# 3) Count by category\nprint(df.groupby(\"Category\")[\"Product\"].count())\n\n# 4) Average price by category\nprint(df.groupby(\"Category\")[\"Price\"].mean())\n\n# 5) GST column (18%)\ndf[\"GST\"] = df[\"Price\"] * 0.18\n\n# 6) Final price\ndf[\"Final Price\"] = df[\"Price\"] + df[\"GST\"]\nprint(df)\n\n# 7) Save to CSV\ndf.to_csv(\"products.csv\", index=False)\nprint(\"CSV saved\")\n\n# 8) Read CSV\ndf2 = pd.read_csv(\"products.csv\")\nprint(df2)",
   },
   {
     id: "parquet-file-basics",
