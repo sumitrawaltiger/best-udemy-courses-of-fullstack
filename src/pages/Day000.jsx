@@ -130,7 +130,7 @@ const STUDY_SYSTEM = [
   },
   {
     icon: '🗺️',
-    title: 'The 55-Month Roadmap',
+    title: 'The 60+ Month Roadmap',
     titleClass: 'card-title-cyan',
     subtitle: '17 skills · 100 days each · starts 8 Aug 2026',
     description:
