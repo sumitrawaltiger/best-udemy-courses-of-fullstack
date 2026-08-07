@@ -1,4 +1,4 @@
-// Learning path calendar offsets (Day 1 = 5 Aug 2026)
+// Learning path calendar offsets (Day 1 = 8 Aug 2026)
 export const THUNDER_DAYS = 100;
 
 // ── TypeScript Stack Year (Phase 2) ─────────────────────────────────────────
@@ -94,22 +94,22 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: Day 1 = 5 Aug 2026. User-facing framing: 1826 days / 18 skills / 17×100 days + Capstone 126 days.
+// Full journey: Day 1 = 8 Aug 2026. User-facing framing: 1850 days / 18 skills / 17×100 days + Capstone 150 days.
 // Skill order: Python(1-100) → FastAPI(101-200) → Agentic AI(201-300) → PySpark(301-400) →
 // JavaScript(401-500) → TypeScript(501-600) → React(601-700) → Next JS(701-800) →
 // React Native(801-900) → Express JS(901-1000) → J2SE(1001-1100) → J2EE(1101-1200) →
 // JPA(1201-1300) → Spring Boot(1301-1400) → Microservices(1401-1500) →
-// DevOps(1501-1600) → Cloud/AWS(1601-1700) → Capstone(1701-1826, 126 days).
+// DevOps(1501-1600) → Cloud/AWS(1601-1700) → Capstone(1701-1850, 150 days).
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
-//  chapterFactory.js = 5 Aug 2026, so module Day 1 also dates to 5 Aug 2026.)
-export const JOURNEY_START_LABEL = '5 Aug 2026';
-export const JOURNEY_END_LABEL = '4 Aug 2031';
-export const JOURNEY_TOTAL_DAYS = 1826;
-// Factory calendar: Day 1 = 5 Aug 2026 (COURSE_START); factory day N = journey Day N.
-export const JOURNEY_END_FACTORY_DAY = 1826;
+//  chapterFactory.js = 8 Aug 2026, so module Day 1 also dates to 8 Aug 2026.)
+export const JOURNEY_START_LABEL = '8 Aug 2026';
+export const JOURNEY_END_LABEL = '31 Aug 2031';
+export const JOURNEY_TOTAL_DAYS = 1850;
+// Factory calendar: Day 1 = 8 Aug 2026 (COURSE_START); factory day N = journey Day N.
+export const JOURNEY_END_FACTORY_DAY = 1850;
 
 // Explicit day-offsets for the 18-skill plan (offset = skill start day − 1).
-// Skills 1–4 (Python domain): 1–400 · Skills 5–10 (JS/TS domain): 401–1000 · Skills 11–15 (Java domain): 1001–1500 · Skills 16–17 (DevOps/Cloud): 1501–1700 · Skill 18 (Capstone): 1701–1826.
+// Skills 1–4 (Python domain): 1–400 · Skills 5–10 (JS/TS domain): 401–1000 · Skills 11–15 (Java domain): 1001–1500 · Skills 16–17 (DevOps/Cloud): 1501–1700 · Skill 18 (Capstone): 1701–1850.
 export const TRACK_OFFSETS = {
   thunder: 0, // Thunder JavaScript — Days 1–100 (24 Jul – 31 Oct 2026)
   nextjs: 100, // React & Next.js — Days 101–150 (1 Nov – 20 Dec 2026)
