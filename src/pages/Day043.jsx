@@ -10,7 +10,7 @@ const LEARNT_TODAY = [
   { title: 'Dijkstra', text: 'greedy + a min-heap (priority queue); non-negative weights only' },
   { title: 'Priority queue', text: 'always expand the closest unsettled node next' },
   { title: 'Topological sort', text: 'order a DAG so every edge points forward' },
-  { title: "Kahn's algorithm", text: 'repeatedly remove nodes with in-degree 0' },
+  { title: "Kahn\'s algorithm", text: 'repeatedly remove nodes with in-degree 0' },
   { title: 'Cycle detection', text: 'if a topo sort can’t finish, the graph has a cycle' },
   { title: 'Union-Find (DSU)', text: 'near-O(1) connectivity queries and cycle detection' },
   { title: 'Path compression + rank', text: 'the two optimisations that make DSU fast' },
@@ -18,7 +18,7 @@ const LEARNT_TODAY = [
 
 const PATHS = [
   {
-    icon: '🛰️', title: "Dijkstra's Algorithm", titleClass: 'card-title-cyan', subtitle: 'Weighted Shortest Path',
+    icon: '🛰️', title: "Dijkstra\'s Algorithm", titleClass: 'card-title-cyan', subtitle: 'Weighted Shortest Path',
     description:
       'BFS finds shortest paths only when every edge costs the same. With weights, Dijkstra expands the closest unsettled node (via a min-heap), relaxing its neighbours. Non-negative weights only.',
     code: '// dist[start] = 0, others ∞; min-heap of [dist, node]\n// pop the closest; for each edge (n → m, w):\n//   if dist[n] + w < dist[m]: update + push\n// O((V + E) log V)',

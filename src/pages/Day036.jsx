@@ -6,7 +6,7 @@ const JWT_INTRO = 'https://jwt.io/introduction';
 const BCRYPT_DOCS = 'https://www.npmjs.com/package/bcrypt';
 
 const LEARNT_TODAY = [
-  { title: 'Never store plain passwords', text: 'hash with bcrypt (salted) — even a leaked DB doesn’t reveal passwords' },
+  { title: 'Never store plain passwords', text: 'hash with bcrypt (salted) — even a leaked DB doesn\'t reveal passwords' },
   { title: 'JWT', text: 'a signed token proving who the user is, sent on each request' },
   { title: 'Sign on login', text: 'verify the password, then sign a JWT with the user id and an expiry' },
   { title: 'Verify per request', text: 'auth middleware checks the token and attaches req.user' },
@@ -23,7 +23,7 @@ const AUTH = [
   {
     icon: '🔒', title: 'Hash Passwords', titleClass: 'card-title-cyan', subtitle: 'bcrypt',
     description:
-      'Store a salted bcrypt hash, never the password. On signup, hash it; on login, compare the attempt to the stored hash. A stolen database still can’t reveal the real passwords.',
+      'Store a salted bcrypt hash, never the password. On signup, hash it; on login, compare the attempt to the stored hash. A stolen database still can\'t reveal the real passwords.',
     code: 'const hash = await bcrypt.hash(password, 10);   // signup\nconst ok = await bcrypt.compare(attempt, user.hash); // login',
   },
   {
@@ -38,7 +38,7 @@ const PROTECT = [
   {
     icon: '🛂', title: 'Auth Middleware', titleClass: 'card-title-cyan', subtitle: 'Verify & Attach',
     description:
-      'A middleware reads the token, verifies the signature, and attaches the user to req. Fail with 401 if it’s missing or invalid — then downstream handlers can trust req.user.',
+      'A middleware reads the token, verifies the signature, and attaches the user to req. Fail with 401 if it\'s missing or invalid — then downstream handlers can trust req.user.',
     code: 'function auth(req, res, next) {\n  const token = req.headers.authorization?.split(" ")[1];\n  try { req.user = jwt.verify(token!, SECRET); next(); }\n  catch { res.status(401).json({ error: "Unauthorized" }); }\n}\napp.get("/me", auth, getMe);',
   },
   {

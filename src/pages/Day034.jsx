@@ -10,7 +10,7 @@ const LEARNT_TODAY = [
   { title: 'The CRUD mapping', text: 'GET=read, POST=create, PUT/PATCH=update, DELETE=remove' },
   { title: 'Status codes matter', text: '200 ok, 201 created, 204 no content, 400 bad, 404 not found, 500 error' },
   { title: 'Validate input', text: 'parse req.body with Zod before trusting it — clients send anything' },
-  { title: 'Layered structure', text: 'route → controller → service → data, so logic isn’t stuck in handlers' },
+  { title: 'Layered structure', text: 'route → controller → service → data, so logic isn\'t stuck in handlers' },
   { title: 'Consistent shapes', text: 'return predictable JSON and error shapes the frontend can rely on' },
   { title: 'Async handlers', text: 'wrap async work so rejected promises reach the error middleware' },
   { title: 'Stateless', text: 'each request carries what it needs; the server keeps no session in memory' },
@@ -163,7 +163,7 @@ export default function Day034() {
           verbs — one resource, five <strong>CRUD</strong> routes (list, read, create, update, delete). The{' '}
           <strong>status code</strong> is part of the contract: 201 Created, 204 No Content, 400 Bad, 404 Not Found,
           500 Error. Always <strong>validate the body with Zod</strong> (return 400 on failure), and{' '}
-          <strong>layer the code</strong> — route → controller → service → data — so logic isn’t trapped in handlers.
+          <strong>layer the code</strong> — route → controller → service → data — so logic isn\'t trapped in handlers.
           Wrap async handlers so rejected promises reach the error middleware, and return{' '}
           <strong>consistent JSON shapes</strong> the frontend can trust. <em>Next: databases with Prisma.</em>
         </p>

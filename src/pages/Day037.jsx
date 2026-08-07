@@ -12,12 +12,12 @@ const LEARNT_TODAY = [
   { title: 'Arrays', text: 'contiguous, O(1) index access, O(n) search/insert-in-middle' },
   { title: 'Strings are arrays of chars', text: 'immutable in JS/TS — building strings costs, use an array + join' },
   { title: 'Two pointers', text: 'scan from both ends (or slow/fast) to solve in O(n)' },
-  { title: ‘Prefix sums’, text: ‘precompute running totals for O(1) range-sum queries’ },
-  { title: ‘Kadane’s algorithm’, text: ‘maximum contiguous subarray sum in O(n)’ },
-  { title: ‘chatRouter’, text: ‘auth-protected Express router — POST, GET, GET /:chatId, DELETE /:chatId’ },
-  { title: ‘createChat’, text: ‘create a new Chat doc in MongoDB and return it as JSON’ },
-  { title: ‘getRecentChats’, text: ‘find the 20 most recently updated chats for the logged-in user’ },
-  { title: ‘deleteChat’, text: ‘delete the chat and cascade-delete all its messages’ },
+  { title: 'Prefix sums', text: 'precompute running totals for O(1) range-sum queries' },
+  { title: 'Kadane\'s algorithm', text: 'maximum contiguous subarray sum in O(n)' },
+  { title: 'chatRouter', text: 'auth-protected Express router — POST, GET, GET /:chatId, DELETE /:chatId' },
+  { title: 'createChat', text: 'create a new Chat doc in MongoDB and return it as JSON' },
+  { title: 'getRecentChats', text: 'find the 20 most recently updated chats for the logged-in user' },
+  { title: 'deleteChat', text: 'delete the chat and cascade-delete all its messages' },
 ];
 
 const COMPLEXITY = [
@@ -49,7 +49,7 @@ const PATTERNS = [
     code: 'const p = [0];\nfor (const x of arr) p.push(p.at(-1)! + x);\n// sum of arr[i..j] = p[j + 1] - p[i]',
   },
   {
-    icon: '🏆', title: "Kadane's Algorithm", titleClass: 'card-title-amber', subtitle: 'Max Subarray',
+    icon: '🏆', title: "Kadane\'s Algorithm", titleClass: 'card-title-amber', subtitle: 'Max Subarray',
     description:
       'Track the best sum ending here and the best overall, resetting when the running sum drops below zero. Maximum contiguous subarray sum in a single O(n) pass.',
     code: 'let best = -Infinity, cur = 0;\nfor (const x of arr) {\n  cur = Math.max(x, cur + x);\n  best = Math.max(best, cur);\n}',
@@ -210,7 +210,7 @@ export default function Day037() {
           O(1) index access but O(n) search; <strong>strings</strong> are immutable, so build with an array + join.
           Three array patterns carry a huge share of problems: <strong>two pointers</strong> (O(n) scans instead of
           nested loops), <strong>prefix sums</strong> (O(1) range queries after an O(n) preprocess), and{' '}
-          <strong>Kadane’s algorithm</strong> (max contiguous subarray in one pass).{' '}
+          <strong>Kadane\'s algorithm</strong> (max contiguous subarray in one pass).{' '}
           <em>Next: hashing &amp; sliding window.</em>
         </p>
 

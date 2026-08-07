@@ -180,7 +180,7 @@ export default function Day055() {
         </section>
 
         <CardSection icon="🔷" title="LANGUAGE, FRONTEND, WEB & MOBILE" cards={STACK} columns={2} />
-        <CardSection icon="🟢" title="BACKEND · DSA · WHAT'S NEXT" cards={REST} columns={3} />
+        <CardSection icon="🟢" title="BACKEND · DSA · WHAT\'S NEXT" cards={REST} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">

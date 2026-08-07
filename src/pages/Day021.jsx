@@ -29,7 +29,7 @@ const TAKEAWAYS = [
     description: 'Typed interfaces and contracts make large teams productive. When every function signature is a contract, you can work in a large codebase without reading every line.',
   },
   {
-    icon: '🤝', title: 'Understand Types', titleClass: 'card-title-cyan', subtitle: "Don't Fight Them",
+    icon: '🤝', title: 'Understand Types', titleClass: 'card-title-cyan', subtitle: "Don\'t Fight Them",
     description: "When a type error appears, read it carefully. The compiler is usually right. TypeScript errors are not obstacles — they are the compiler pointing at a real bug.",
   },
   {
@@ -177,16 +177,16 @@ export default function Day021() {
             fontSize: '1.05rem',
             lineHeight: 1.65,
           }}>
-            "TypeScript is not just about types, it's about building <strong>better applications</strong> and
+            "TypeScript is not just about types, it\'s about building <strong>better applications</strong> and
             stronger confidence as a developer."
           </blockquote>
           <p style={{ opacity: 0.75, fontSize: '0.9rem', marginTop: '8px' }}>
             Types are your <strong>allies</strong>, not your enemies. The habit of thinking in types — asking
-            "what shape is this data?" — transfers to every language and every codebase you'll ever touch.
+            "what shape is this data?" — transfers to every language and every codebase you\'ll ever touch.
           </p>
         </section>
 
-        <CardSection icon="🚀" title="WHAT'S NEXT — TYPESCRIPT STACK CONTINUES" cards={NEXT_STEPS} columns={2} />
+        <CardSection icon="🚀" title="WHAT\'S NEXT — TYPESCRIPT STACK CONTINUES" cards={NEXT_STEPS} columns={2} />
 
         <footer className="day001-hashtags">
           <span>#TypeScript</span><span>#SeriesFinale</span><span>#Year1</span><span>#KeepBuilding</span><span>#100DaysOfCode</span>

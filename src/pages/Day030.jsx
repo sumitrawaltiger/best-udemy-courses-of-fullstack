@@ -35,7 +35,7 @@ const NATIVE = [
   {
     icon: '💾', title: 'Local Storage', titleClass: 'card-title-cyan', subtitle: 'AsyncStorage',
     description:
-      'For small persisted data (a token, settings), AsyncStorage is an async key-value store. For server data, TanStack Query’s cache works in React Native just like on web.',
+      'For small persisted data (a token, settings), AsyncStorage is an async key-value store. For server data, TanStack Query\'s cache works in React Native just like on web.',
     code: "import AsyncStorage from '@react-native-async-storage/async-storage';\nawait AsyncStorage.setItem('token', jwt);\nconst t = await AsyncStorage.getItem('token');",
   },
   {

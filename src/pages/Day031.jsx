@@ -20,7 +20,7 @@ const BUILD = [
   {
     icon: '🏗️', title: 'EAS Build', titleClass: 'card-title-cyan', subtitle: 'Cloud Native Builds',
     description:
-      'EAS builds real iOS and Android binaries in the cloud from your Expo project — you don’t need Xcode or a Mac. Profiles in eas.json define dev, preview and production builds.',
+      'EAS builds real iOS and Android binaries in the cloud from your Expo project — you don\'t need Xcode or a Mac. Profiles in eas.json define dev, preview and production builds.',
     code: 'npm i -g eas-cli && eas login\neas build:configure\neas build --platform ios --profile production\neas build --platform android --profile production',
   },
   {

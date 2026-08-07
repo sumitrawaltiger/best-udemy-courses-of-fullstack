@@ -29,7 +29,7 @@ const HASHING = [
   {
     icon: '🎯', title: 'Two Sum', titleClass: 'card-title-purple', subtitle: 'Complements In A Map',
     description:
-      'The canonical hashing win: instead of checking every pair (O(n²)), store each number’s complement in a Map and look it up — one O(n) pass.',
+      'The canonical hashing win: instead of checking every pair (O(n²)), store each number\'s complement in a Map and look it up — one O(n) pass.',
     code: 'function twoSum(a: number[], t: number) {\n  const seen = new Map<number, number>();\n  for (let i = 0; i < a.length; i++) {\n    if (seen.has(t - a[i])) return [seen.get(t - a[i])!, i];\n    seen.set(a[i], i);\n  }\n}',
   },
 ];
@@ -71,7 +71,7 @@ const MSG_ROUTES = [
   {
     icon: '📨', title: 'sendMessage', titleClass: 'card-title-amber', subtitle: 'POST /api/messages/:chatId',
     description:
-      'Create a Message document, auto-generate a topic on the first message, and increment the parent Chat's messageCount in one atomic findByIdAndUpdate.',
+      'Create a Message document, auto-generate a topic on the first message, and increment the parent Chat\'s messageCount in one atomic findByIdAndUpdate.',
     code: 'export const sendMessage = async (req, res) => {\n  try {\n    const { chatId } = req.params;\n    const msg = await Message.create({ chatId, ...req.body });\n    // auto-topic on first message\n    const count = await Message.countDocuments({ chatId });\n    if (count === 1) {\n      await Chat.findByIdAndUpdate(chatId, {\n        topic: req.body.content?.slice(0, 50) ?? "New chat"\n      });\n    }\n    await Chat.findByIdAndUpdate(chatId, { $inc: { messageCount: 1 } });\n    res.status(201).json(msg);\n  } catch (err) {\n    res.status(500).json({ message: err.message });\n  }\n};',
   },
 ];
