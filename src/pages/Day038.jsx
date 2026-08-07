@@ -14,6 +14,9 @@ const LEARNT_TODAY = [
   { title: 'Sliding window', text: 'a moving range over an array/string for subarray problems' },
   { title: 'Fixed vs variable window', text: 'fixed size (sum of k) or grow/shrink to satisfy a condition' },
   { title: 'Space for time', text: 'a little extra memory turns O(n²) into O(n)' },
+  { title: 'messageRouter', text: 'auth-protected router — GET /:chatId (history) and POST /:chatId (send)' },
+  { title: 'sendMessage', text: 'create a Message doc, auto-generate topic if first message, increment messageCount on Chat' },
+  { title: 'App wiring', text: 'import chatRouter + messageRouter in index.js and mount under /api/chats and /api/messages' },
 ];
 
 const HASHING = [
@@ -49,6 +52,48 @@ const WINDOW = [
     description:
       'Hashing and windows spend a little memory (a Map or Set) to skip repeated work. Recognising when a nested loop hides an O(n) hashing solution is a core interview skill.',
     footer: 'nested loop? → look for a Map/Set solution',
+  },
+];
+
+const MSG_ROUTES = [
+  {
+    icon: '🗺️', title: 'messageRoutes.js', titleClass: 'card-title-cyan', subtitle: 'routes/messageRoutes.js — Lecture 19',
+    description:
+      'Create a Router, protect it with authMiddleware, then wire two endpoints: GET /:chatId fetches message history, POST /:chatId sends a new message.',
+    code: 'import express from "express";\nimport { authMiddleware } from "../middleware/auth.js";\nimport { getMessages, sendMessage }\n  from "../controllers/messageController.js";\n\nconst messageRouter = express.Router();\nmessageRouter.use(authMiddleware);\n\nmessageRouter.get("/:chatId",  getMessages);\nmessageRouter.post("/:chatId", sendMessage);\n\nexport default messageRouter;',
+  },
+  {
+    icon: '📜', title: 'getMessages', titleClass: 'card-title-purple', subtitle: 'GET /api/messages/:chatId',
+    description:
+      'Find all messages whose chatId matches the URL param, sorted oldest-first so the client renders the conversation in order.',
+    code: 'export const getMessages = async (req, res) => {\n  try {\n    const messages = await Message\n      .find({ chatId: req.params.chatId })\n      .sort({ createdAt: 1 });\n    res.json(messages);\n  } catch (err) {\n    res.status(500).json({ message: err.message });\n  }\n};',
+  },
+  {
+    icon: '📨', title: 'sendMessage', titleClass: 'card-title-amber', subtitle: 'POST /api/messages/:chatId',
+    description:
+      'Create a Message document, auto-generate a topic on the first message, and increment the parent Chat's messageCount in one atomic findByIdAndUpdate.',
+    code: 'export const sendMessage = async (req, res) => {\n  try {\n    const { chatId } = req.params;\n    const msg = await Message.create({ chatId, ...req.body });\n    // auto-topic on first message\n    const count = await Message.countDocuments({ chatId });\n    if (count === 1) {\n      await Chat.findByIdAndUpdate(chatId, {\n        topic: req.body.content?.slice(0, 50) ?? "New chat"\n      });\n    }\n    await Chat.findByIdAndUpdate(chatId, { $inc: { messageCount: 1 } });\n    res.status(201).json(msg);\n  } catch (err) {\n    res.status(500).json({ message: err.message });\n  }\n};',
+  },
+];
+
+const APP_WIRING = [
+  {
+    icon: '🔌', title: 'index.js Imports', titleClass: 'card-title-cyan', subtitle: 'Wiring All Routers',
+    description:
+      'In the main entry file, import userRouter, chatRouter and messageRouter, then mount them under their respective /api prefixes. One require per router, one app.use line each.',
+    code: 'import userRouter    from "./routes/userRoutes.js";\nimport chatRouter    from "./routes/chatRoutes.js";\nimport messageRouter from "./routes/messageRoutes.js";\n\napp.use("/api/users",    userRouter);\napp.use("/api/chats",    chatRouter);\napp.use("/api/messages", messageRouter);',
+  },
+  {
+    icon: '🏗️', title: 'Full API Surface', titleClass: 'card-title-purple', subtitle: 'All Endpoints After Wiring',
+    description:
+      'After mounting all three routers the Express app exposes a clean REST surface for users, chats, and messages.',
+    code: 'POST   /api/users/signup\nPOST   /api/users/login\n\nPOST   /api/chats          — createChat\nGET    /api/chats          — getRecentChats\nGET    /api/chats/:id      — getSingleChat\nDELETE /api/chats/:id      — deleteChat\n\nGET    /api/messages/:id   — getMessages\nPOST   /api/messages/:id   — sendMessage',
+  },
+  {
+    icon: '🔒', title: 'Auth on Every Route', titleClass: 'card-title-amber', subtitle: 'Middleware at Router Level',
+    description:
+      'chatRouter and messageRouter both call router.use(authMiddleware) so every single endpoint is protected without repeating the guard. Only /api/users/signup and /api/users/login are public.',
+    footer: 'router.use(authMiddleware) → all child routes protected',
   },
 ];
 
@@ -182,6 +227,8 @@ export default function Day038() {
 
         <CardSection icon="🗺️" title="HASHING" cards={HASHING} columns={2} />
         <CardSection icon="🪟" title="SLIDING WINDOW" cards={WINDOW} columns={3} />
+        <CardSection icon="📨" title="MESSAGE ROUTES & CONTROLLER — Lecture 19" cards={MSG_ROUTES} columns={3} />
+        <CardSection icon="🔌" title="APP WIRING — index.js" cards={APP_WIRING} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">

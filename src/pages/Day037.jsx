@@ -12,8 +12,12 @@ const LEARNT_TODAY = [
   { title: 'Arrays', text: 'contiguous, O(1) index access, O(n) search/insert-in-middle' },
   { title: 'Strings are arrays of chars', text: 'immutable in JS/TS — building strings costs, use an array + join' },
   { title: 'Two pointers', text: 'scan from both ends (or slow/fast) to solve in O(n)' },
-  { title: 'Prefix sums', text: 'precompute running totals for O(1) range-sum queries' },
-  { title: 'Kadane’s algorithm', text: 'maximum contiguous subarray sum in O(n)' },
+  { title: ‘Prefix sums’, text: ‘precompute running totals for O(1) range-sum queries’ },
+  { title: ‘Kadane’s algorithm’, text: ‘maximum contiguous subarray sum in O(n)’ },
+  { title: ‘chatRouter’, text: ‘auth-protected Express router — POST, GET, GET /:chatId, DELETE /:chatId’ },
+  { title: ‘createChat’, text: ‘create a new Chat doc in MongoDB and return it as JSON’ },
+  { title: ‘getRecentChats’, text: ‘find the 20 most recently updated chats for the logged-in user’ },
+  { title: ‘deleteChat’, text: ‘delete the chat and cascade-delete all its messages’ },
 ];
 
 const COMPLEXITY = [
@@ -49,6 +53,48 @@ const PATTERNS = [
     description:
       'Track the best sum ending here and the best overall, resetting when the running sum drops below zero. Maximum contiguous subarray sum in a single O(n) pass.',
     code: 'let best = -Infinity, cur = 0;\nfor (const x of arr) {\n  cur = Math.max(x, cur + x);\n  best = Math.max(best, cur);\n}',
+  },
+];
+
+const CHAT_ROUTES = [
+  {
+    icon: '🗺️', title: 'chatRoutes.js Setup', titleClass: 'card-title-cyan', subtitle: 'routes/chatRoutes.js — Lecture 18',
+    description:
+      'Create an Express Router, protect every route with authMiddleware, and mount four endpoints: POST / (new chat), GET / (list recent), GET /:chatId (single chat), DELETE /:chatId (delete + cascade).',
+    code: 'import express from "express";\nimport { authMiddleware } from "../middleware/auth.js";\nimport { createChat, getRecentChats,\n         getSingleChat, deleteChat } from "../controllers/chatController.js";\n\nconst chatRouter = express.Router();\nchatRouter.use(authMiddleware);\n\nchatRouter.post("/",          createChat);\nchatRouter.get("/",           getRecentChats);\nchatRouter.get("/:chatId",    getSingleChat);\nchatRouter.delete("/:chatId", deleteChat);\n\nexport default chatRouter;',
+  },
+  {
+    icon: '➕', title: 'createChat', titleClass: 'card-title-purple', subtitle: 'POST /api/chats',
+    description:
+      'Create a new Chat document from req.body (title, participants etc.), save it to MongoDB, and return it as JSON with a 201 status.',
+    code: 'export const createChat = async (req, res) => {\n  try {\n    const chat = await Chat.create(req.body);\n    res.status(201).json(chat);\n  } catch (err) {\n    res.status(500).json({ message: err.message });\n  }\n};',
+  },
+  {
+    icon: '📋', title: 'getRecentChats', titleClass: 'card-title-amber', subtitle: 'GET /api/chats',
+    description:
+      'Return the 20 most recently updated chats that belong to the authenticated user, sorted by updatedAt descending.',
+    code: 'export const getRecentChats = async (req, res) => {\n  try {\n    const chats = await Chat\n      .find({ userId: req.user._id })\n      .sort({ updatedAt: -1 })\n      .limit(20);\n    res.json(chats);\n  } catch (err) {\n    res.status(500).json({ message: err.message });\n  }\n};',
+  },
+];
+
+const CHAT_CONTROLLER = [
+  {
+    icon: '🔍', title: 'getSingleChat', titleClass: 'card-title-cyan', subtitle: 'GET /api/chats/:chatId',
+    description:
+      'Find a single chat by its Mongoose _id. Return 404 if not found, 200 with the chat document if found.',
+    code: 'export const getSingleChat = async (req, res) => {\n  try {\n    const chat = await Chat.findById(req.params.chatId);\n    if (!chat) return res.status(404).json({ message: "Not found" });\n    res.json(chat);\n  } catch (err) {\n    res.status(500).json({ message: err.message });\n  }\n};',
+  },
+  {
+    icon: '🗑️', title: 'deleteChat', titleClass: 'card-title-purple', subtitle: 'DELETE /api/chats/:chatId — Cascade',
+    description:
+      'Delete the chat document and all its associated messages in one transaction. Use deleteOne on Chat and deleteMany on Message filtered by chatId.',
+    code: 'export const deleteChat = async (req, res) => {\n  try {\n    const { chatId } = req.params;\n    await Chat.deleteOne({ _id: chatId });\n    await Message.deleteMany({ chatId });\n    res.json({ message: "Chat deleted" });\n  } catch (err) {\n    res.status(500).json({ message: err.message });\n  }\n};',
+  },
+  {
+    icon: '🔐', title: 'authMiddleware', titleClass: 'card-title-amber', subtitle: 'Shared Guard',
+    description:
+      'The same JWT-verifying middleware used throughout the app. chatRouter.use(authMiddleware) protects all chat routes without repeating the guard on each individual endpoint.',
+    code: '// Applied once at router level\nchatRouter.use(authMiddleware);\n// All four endpoints are now protected:\n// POST / GET / GET /:id DELETE /:id',
   },
 ];
 
@@ -182,6 +228,8 @@ export default function Day037() {
 
         <CardSection icon="📈" title="COMPLEXITY & DATA" cards={COMPLEXITY} columns={2} />
         <CardSection icon="↔️" title="ARRAY PATTERNS" cards={PATTERNS} columns={3} />
+        <CardSection icon="💬" title="CHAT ROUTES — Lecture 18" cards={CHAT_ROUTES} columns={3} />
+        <CardSection icon="🗂️" title="CHAT CONTROLLER" cards={CHAT_CONTROLLER} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
