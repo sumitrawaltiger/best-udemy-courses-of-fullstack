@@ -2039,6 +2039,74 @@ export const pythonLessons = [
       },
     ],
   },
+  {
+    pyDay: 12,
+    slug: 'matplotlib-in-python',
+    phase: 'Python Foundations',
+    title: 'Matplotlib in Python',
+    subtitle: 'Data visualization with line charts, bar charts, pie charts, scatter plots, and histograms',
+    topics: ['What is Matplotlib', 'Why Matplotlib', 'Installation', 'Line chart', 'Bar & horizontal bar chart', 'Pie chart', 'Scatter plot', 'Histogram', 'Multiple lines & legend'],
+    notionUrl: PORTAL,
+    youtube: yt('https://www.youtube.com/watch?v=3Xc3CA655Y4', 'Matplotlib Tutorial for Beginners', 'freeCodeCamp'),
+    sections: [
+      {
+        id: 'what-is-matplotlib',
+        title: 'What is Matplotlib?',
+        content: "**Matplotlib** is a Python library used for **data visualization**.\n\n**Data visualization** means representing data using charts and graphs so it is easier to understand and analyse.\n\nMatplotlib is mainly used to create:\n1. **Line charts** — show trends over time\n2. **Bar charts** — compare values across categories\n3. **Pie charts** — show proportions of a whole\n4. **Scatter plots** — show relationships between two variables\n5. **Histograms** — show distribution of data",
+      },
+      {
+        id: 'why-matplotlib',
+        title: 'Why Matplotlib?',
+        content: "Matplotlib is used for:\n\n1. **Visualizing data** — turn raw numbers into charts\n2. **Understanding data easily** — a chart communicates faster than a table\n3. **Comparing values** — side-by-side bars make comparisons instant\n4. **Finding Trends** — line charts reveal direction over time\n5. **Finding Patterns** — scatter plots expose hidden relationships\n6. **Creating Reports** — embed charts in dashboards and PDFs\n7. **Data Analysis** — the foundation of every data science workflow\n\nMatplotlib is useful for **Data Science**, **Machine Learning**, and reporting.",
+      },
+      {
+        id: 'matplotlib-installation',
+        title: 'Installation & Setup',
+        content: "Matplotlib is an **external library** — it does not come with Python by default.\n\nInstall it using pip:\n```\npip install matplotlib\n```\n\nThe most commonly used module is **`pyplot`**. Import it with the standard alias `plt`:\n```\nimport matplotlib.pyplot as plt\n```",
+      },
+      {
+        id: 'line-chart',
+        title: 'Line Chart — plot()',
+        content: "**`plt.plot()`** creates a line chart. Use it to show **trends over time** — e.g. monthly sales.\n\nKey parameters:\n- `marker` — symbol at each data point (`\"o\"` = circle)\n- `linestyle` — style of the connecting line (`\"--\"` = dashed)\n- `color` — line colour",
+        code: 'import matplotlib.pyplot as plt\n\nmonths = ["Jan", "Feb", "Mar", "Apr"]\nsales = [10000, 15000, 12000, 18000]\n\nplt.plot(months, sales, marker="o", linestyle="--", color="blue")\n\nplt.title("Sales by Month")\nplt.xlabel("Month")\nplt.ylabel("Sales")\n\nplt.show()',
+      },
+      {
+        id: 'bar-chart',
+        title: 'Bar Chart & Horizontal Bar Chart — bar() / barh()',
+        content: "**`plt.bar()`** creates a **vertical** bar chart — best for comparing values across categories.\n\n**`plt.barh()`** creates a **horizontal** bar chart — useful when category names are long.",
+        code: 'import matplotlib.pyplot as plt\n\ncourses = ["Python", "Java", "DevOps", "AWS"]\nstudents = [50, 40, 30, 35]\n\n# Vertical bar chart\n# plt.bar(courses, students)\n\n# Horizontal bar chart\nplt.barh(courses, students)\n\nplt.title("Course Enrollment Report")\nplt.xlabel("Students Count")\nplt.ylabel("Course")\n\nplt.show()',
+      },
+      {
+        id: 'pie-chart',
+        title: 'Pie Chart — pie()',
+        content: "**`plt.pie()`** creates a pie chart — best for showing **proportions of a whole**.\n\n- `labels` — category names shown around the chart\n- `autopct` — displays the percentage on each slice (e.g. `\"%1.1f%%\"` = one decimal place)",
+        code: 'import matplotlib.pyplot as plt\n\ncourses = ["Python", "Java", "DevOps", "AWS"]\nstudents = [50, 40, 30, 35]\n\nplt.pie(students, labels=courses, autopct="%1.1f%%")\n\nplt.title("Course Enrollment Share")\n\nplt.show()',
+      },
+      {
+        id: 'scatter-plot',
+        title: 'Scatter Plot — scatter()',
+        content: "**`plt.scatter()`** creates a scatter plot — best for showing the **relationship between two variables**.\n\nExample: does studying more hours lead to higher marks? Each dot is one student.",
+        code: 'import matplotlib.pyplot as plt\n\nstudy_hours = [1, 2, 3, 4, 5]\nmarks = [35, 45, 60, 75, 90]\n\nplt.scatter(study_hours, marks)\n\nplt.title("Study Hours vs Marks")\nplt.xlabel("Study Hours")\nplt.ylabel("Marks")\n\nplt.show()',
+      },
+      {
+        id: 'histogram',
+        title: 'Histogram — hist()',
+        content: "**`plt.hist()`** creates a histogram — best for showing the **distribution of a dataset**.\n\nA histogram groups values into bins and shows how many items fall in each bin. Useful for spotting whether data is evenly spread, skewed, or clustered.",
+        code: 'import matplotlib.pyplot as plt\n\nmarks = [35, 45, 50, 60, 65, 70, 75, 80, 85, 90, 95]\n\nplt.hist(marks)\n\nplt.title("Marks Distribution")\nplt.xlabel("Marks")\nplt.ylabel("Number of Students")\n\nplt.show()',
+      },
+      {
+        id: 'multiple-lines-legend',
+        title: 'Multiple Lines, Legend & Grid',
+        content: "Plot **multiple lines on the same chart** by calling `plt.plot()` more than once.\n\n- **`label`** — assigns a name to each line\n- **`plt.legend()`** — displays a box showing which line is which\n- **`plt.grid()`** — adds grid lines for easier reading",
+        code: 'import matplotlib.pyplot as plt\n\nmonths = ["Jan", "Feb", "Mar", "Apr"]\n\npython_sales = [10000, 15000, 12000, 18000]\njava_sales = [8000, 12000, 10000, 14000]\n\nplt.plot(months, python_sales, marker="o", label="Python")\nplt.plot(months, java_sales, marker="o", label="Java")\n\nplt.title("Course Sales Comparison")\nplt.xlabel("Months")\nplt.ylabel("Sales")\n\nplt.legend()\nplt.grid()\n\nplt.show()',
+      },
+      {
+        id: 'matplotlib-quick-reference',
+        title: 'Key Functions — Quick Reference',
+        content: "| Function | What it does |\n|---|---|\n| `plot()` | Line chart |\n| `bar()` | Vertical bar chart |\n| `barh()` | Horizontal bar chart |\n| `pie()` | Pie chart |\n| `scatter()` | Scatter plot |\n| `hist()` | Histogram |\n| `show()` | Display the chart |\n| `title()` | Add chart title |\n| `xlabel()` | Add x-axis label |\n| `ylabel()` | Add y-axis label |\n| `legend()` | Display line labels |\n| `grid()` | Display grid lines |\n\n**Always import as:** `import matplotlib.pyplot as plt`\n\n**Install once:** `pip install matplotlib`",
+      },
+    ],
+  },
   // ── Phase 2: ML & NLP ──
   {
     pyDay: 13,
