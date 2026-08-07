@@ -241,7 +241,7 @@ export default function Day000() {
           <Link to="/" className="day001-nav-btn day001-nav-home">
             Home
           </Link>
-          <p className="day001-datetime">Day 0 · 4 Aug 2026</p>
+          <p className="day001-datetime">Day 0 · 7 Aug 2026</p>
           <Link to="/agentic-day-1" className="day001-nav-btn day001-nav-next">
             Day 1 · Agentic AI →
           </Link>
@@ -253,13 +253,13 @@ export default function Day000() {
               <span>5 Years</span>
               <span>1850 Days</span>
               <span>Python Stack</span>
-              <span>Day 0 · 4 Aug 2026</span>
+              <span>Day 0 · 7 Aug 2026</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
                 DAY 0 <span aria-hidden="true">🛠️</span>
               </h1>
-              <p className="day001-day-theme">ENVIRONMENT SETUP · PYTHON STACK BEGINS 5 AUG 2026</p>
+              <p className="day001-day-theme">ENVIRONMENT SETUP · PYTHON STACK BEGINS 8 AUG 2026</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -282,7 +282,7 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 · 4 Aug 2026 — environment setup before the 5-year journey begins.</strong>{' '}
+          <strong>Day 0 · 7 Aug 2026 — environment setup before the 5-year journey begins.</strong>{' '}
           Install <code>Node.js</code>, <code>Git</code>, and <code>VS Code</code>, wire the terminal and
           Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
