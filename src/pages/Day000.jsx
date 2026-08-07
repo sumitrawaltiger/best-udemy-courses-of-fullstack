@@ -9,7 +9,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Git & GitHub',
-    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 1,826 days of code',
+    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 1,850 days of code',
   },
   {
     title: 'VS Code',
@@ -33,11 +33,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 5-year (1,826-day) plan — 18 skills: 17×100 days + Capstone 126 days: Python → FastAPI → Agentic AI → PySpark → JavaScript → TypeScript → React → Next JS → React Native → Express JS → J2SE → J2EE → JPA → Spring Boot → Microservices → DevOps → Cloud (AWS) → Capstone Project',
+    text: 'reviewed the full 5-year (1,850-day) plan — 18 skills: 17×100 days + Capstone 150 days: Python → FastAPI → Agentic AI → PySpark → JavaScript → TypeScript → React → Next JS → React Native → Express JS → J2SE → J2EE → JPA → Spring Boot → Microservices → DevOps → Cloud (AWS) → Capstone Project',
   },
   {
     title: 'Ready for Skill 1 · Python',
-    text: 'Day 1 (5 Aug 2026) starts with Skill 1: Python — core syntax, OOP, file I/O, database connectivity, and multithreading. 100 days to master the language foundation',
+    text: 'Day 1 (8 Aug 2026) starts with Skill 1: Python — core syntax, OOP, file I/O, database connectivity, and multithreading. 100 days to master the language foundation',
   },
   {
     title: 'Accounts ready',
@@ -65,7 +65,7 @@ const CORE_TOOLS = [
     titleClass: 'card-title-amber',
     subtitle: 'Version Control',
     description:
-      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 1,826 days is signed to you.',
+      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 1,850 days is signed to you.',
     code: 'git --version\ngit config --global user.name "Sumit Rawal"\ngit config --global user.email "you@email.com"',
   },
   {
@@ -125,25 +125,25 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-amber',
     subtitle: '4 AM Wake · 4:30–7:30 AM Study',
     description:
-      'Wake at 4:00 AM, then study 4:30–7:30 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1,826 days.',
+      'Wake at 4:00 AM, then study 4:30–7:30 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1,850 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
     icon: '🗺️',
     title: 'The 55-Month Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '17 skills · 100 days each · starts 5 Aug 2026',
+    subtitle: '17 skills · 100 days each · starts 8 Aug 2026',
     description:
-      '18 skills: 17×100 days + Capstone 126 days: Python → FastAPI → Agentic AI → PySpark → JavaScript → TypeScript → React → Next JS → React Native → Express JS → J2SE → J2EE → JPA → Spring Boot → Microservices → DevOps → Cloud (AWS) → Capstone Project. DSA & System Design practiced throughout. 1,826 days total.',
+      '18 skills: 17×100 days + Capstone 150 days: Python → FastAPI → Agentic AI → PySpark → JavaScript → TypeScript → React → Next JS → React Native → Express JS → J2SE → J2EE → JPA → Spring Boot → Microservices → DevOps → Cloud (AWS) → Capstone Project. DSA & System Design practiced throughout. 1,850 days total.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
     icon: '🤖',
     title: 'Day 1 · Skill 1 · Python',
     titleClass: 'card-title-lime',
-    subtitle: 'Days 1–100 · 5 Aug 2026 · core Python',
+    subtitle: 'Days 1–100 · 8 Aug 2026 · core Python',
     description:
-      'Day 1 (5 Aug 2026) begins with Skill 1: Python — 100 days of core syntax, OOP, file I/O, database connectivity, and multithreading. Then FastAPI (Days 101–200), then Agentic AI with LangChain, LangGraph, MCP (Days 201–300).',
+      'Day 1 (8 Aug 2026) begins with Skill 1: Python — 100 days of core syntax, OOP, file I/O, database connectivity, and multithreading. Then FastAPI (Days 101–200), then Agentic AI with LangChain, LangGraph, MCP (Days 201–300).',
     link: { href: '/python', label: 'Explore the Python track →' },
   },
 ];
@@ -251,7 +251,7 @@ export default function Day000() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>5 Years</span>
-              <span>1826 Days</span>
+              <span>1850 Days</span>
               <span>Python Stack</span>
               <span>Day 0 · 4 Aug 2026</span>
             </div>
@@ -272,7 +272,7 @@ export default function Day000() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">1826 DAYS · DAY 0</p>
+              <p className="day001-profile-role">1850 DAYS · DAY 0</p>
             </div>
           </div>
         </div>
@@ -289,7 +289,7 @@ export default function Day000() {
             GitHub
           </a>{' '}
           and Netlify accounts, and lock the routine (wake 4 AM, study 4:30–7:30 AM IST). No lectures today —
-          clear every obstacle so <strong>Day 1 (5 Aug 2026)</strong> starts with zero friction:{' '}
+          clear every obstacle so <strong>Day 1 (8 Aug 2026)</strong> starts with zero friction:{' '}
           <strong>Skill 1 · Python</strong> — core syntax, OOP, file I/O, and the language that powers everything. Sharpen the axe before the first swing.
         </p>
 
@@ -321,7 +321,7 @@ export default function Day000() {
           <span>#PythonStack</span>
           <span>#AgenticAI</span>
           <span>#5Years</span>
-          <span>#1826Days</span>
+          <span>#1850Days</span>
         </footer>
       </div>
     </div>

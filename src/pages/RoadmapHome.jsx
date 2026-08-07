@@ -1,20 +1,20 @@
 import { Link } from 'react-router-dom';
 
 // ── Skill calendar helpers ───────────────────────────────────────────────────
-const _CAL_DAY1 = new Date(2026, 7, 5); // 5 Aug 2026
+const _CAL_DAY1 = new Date(2026, 7, 8); // 8 Aug 2026
 function _calDate(dayN) {
   const d = new Date(_CAL_DAY1);
   d.setDate(d.getDate() + dayN - 1);
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-// ── 18 skills · 17×100 days each + Capstone 126 days · 1,826 days ───────────
+// ── 18 skills · 17×100 days each + Capstone 150 days · 1,850 days ───────────
 // Python (1–100) → FastAPI (101–200) → Agentic AI (201–300) → PySpark (301–400) →
 // JavaScript (401–500) → TypeScript (501–600) → React (601–700) →
 // Next JS (701–800) → React Native (801–900) → Express JS (901–1000) →
 // J2SE (1001–1100) → J2EE (1101–1200) → JPA (1201–1300) →
 // Spring Boot (1301–1400) → Microservices (1401–1500) →
-// DevOps (1501–1600) → Cloud / AWS (1601–1700) → Capstone (1701–1826, 126 days).
+// DevOps (1501–1600) → Cloud / AWS (1601–1700) → Capstone (1701–1850, 126 days).
 // Calendar dates are intentionally NOT shown (HR-facing page).
 
 const SKILLS = [
@@ -179,8 +179,8 @@ const SKILLS = [
   {
     id: 's18', arcClass: 'capstone', icon: '🎯',
     label: 'Skill 18 · Capstone Project',
-    tagline: 'Days 1701–1826', duration: '126 days',
-    blurb: 'The 126-day capstone — integrate all 17 skills into production-grade projects: Python APIs, Agentic AI + PySpark pipelines, TypeScript frontends, Java microservices backends, and full DevOps deployment on AWS.',
+    tagline: 'Days 1701–1850', duration: '126 days',
+    blurb: 'The 150-day capstone — integrate all 17 skills into production-grade projects: Python APIs, Agentic AI + PySpark pipelines, TypeScript frontends, Java microservices backends, and full DevOps deployment on AWS.',
     items: [
       { icon: '🤖', title: 'Agentic AI + Data Engineering', detail: 'LangChain · LangGraph · PySpark — agents wired to data pipelines', source: 'Capstone', to: '/python' },
       { icon: '⚛️', title: 'Full-Stack TypeScript', detail: 'React · Next.js · Express — the web layer, end to end', source: 'Capstone', to: '/' },
@@ -193,7 +193,7 @@ const SKILLS = [
 const STATS = [
   { value: '18', label: 'skills · one at a time' },
   { value: '100', label: 'days per skill (+ 126 capstone)' },
-  { value: '60', label: 'months · 1,826 days' },
+  { value: '60', label: 'months · 1,850 days' },
   { value: '35+', label: 'technologies' },
 ];
 
@@ -216,14 +216,14 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 Day 0 setup · 18 skills · 17×100 days + Capstone 126 · 1,826 days</span>
-        <h1 className="roadmap-hero-title">18 Skills, 1,826 Days</h1>
+        <span className="roadmap-hero-badge">📍 Day 0 setup · 18 skills · 17×100 days + Capstone 150 · 1,850 days</span>
+        <h1 className="roadmap-hero-title">18 Skills, 1,850 Days</h1>
         <p className="roadmap-hero-sub">
           Starts with <strong>Day 0 — environment setup</strong>, then <strong>18 skills</strong>{' '}
           mastered one at a time — <strong>Python → FastAPI → Agentic AI → PySpark → JavaScript → TypeScript
           → React JS → Next JS → React Native → Express JS → J2SE → J2EE → JPA → Spring Boot
           → Microservices → DevOps → Cloud (AWS) → Capstone</strong> —{' '}
-          <strong>17 skills at 100 days each + 126-day Capstone, 60 months (1,826 days)</strong> of focused daily practice,
+          <strong>17 skills at 100 days each + 150-day Capstone, 60 months (1,850 days)</strong> of focused daily practice,
           front to back. Data Structures &amp; System Design are practiced throughout,
           not a separate add-on.
         </p>
@@ -242,8 +242,8 @@ export default function RoadmapHome() {
         style={{ margin: '8px auto 4px', textAlign: 'center', maxWidth: '820px' }}
       >
         <img
-          src="/roadmap-notes/1826-days-learning-journey-2026-2031.png"
-          alt="Road to Full Lifecycle Engineer — 1,826 Days · 60 Months · 18 Skills (5 Aug 2026 – 4 Aug 2031). 17 skills at 100 days each + Capstone 126 days: Python, FastAPI, Agentic AI, PySpark, JavaScript, TypeScript, React JS, Next JS, React Native, Express JS, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS), Capstone Project. DSA & System Design practiced throughout. One Goal: Build, Deploy, Automate, Scale."
+          src="/roadmap-notes/1850-days-learning-journey-2026-2031.png"
+          alt="Road to Full Lifecycle Engineer — 1,850 Days · 60 Months · 18 Skills (8 Aug 2026 – 31 Aug 2031). 17 skills at 100 days each + Capstone 150 days: Python, FastAPI, Agentic AI, PySpark, JavaScript, TypeScript, React JS, Next JS, React Native, Express JS, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS), Capstone Project. DSA & System Design practiced throughout. One Goal: Build, Deploy, Automate, Scale."
           loading="lazy"
           style={{
             width: '100%',
@@ -269,8 +269,8 @@ export default function RoadmapHome() {
         </h2>
         <figure style={{ margin: '0 0 18px', textAlign: 'center' }}>
           <img
-            src="/roadmap-notes/1826-day-skill-calendar.png"
-            alt="1,826-Day Full Stack Journey — 18 skills (17×100 days + Capstone 126) from 5 Aug 2026 to 4 Aug 2031"
+            src="/roadmap-notes/1850-day-skill-calendar.png"
+            alt="1,850-Day Full Stack Journey — 18 skills (17×100 days + Capstone 150) from 8 Aug 2026 to 31 Aug 2031"
             loading="lazy"
             style={{
               width: '100%',
@@ -297,7 +297,7 @@ export default function RoadmapHome() {
             <tbody>
               {SKILLS.map((skill, i) => {
                 const d1 = i * 100 + 1;
-                const d2 = i < 17 ? (i + 1) * 100 : 1826;
+                const d2 = i < 17 ? (i + 1) * 100 : 1850;
                 return (
                   <tr key={skill.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.09)' }}>
                     <td style={{ padding: '9px 12px', color: '#8a95a3', fontVariantNumeric: 'tabular-nums', fontSize: '0.8rem', fontWeight: 600 }}>{String(i + 1).padStart(2, '0')}</td>
@@ -314,7 +314,7 @@ export default function RoadmapHome() {
           </table>
         </div>
         <p style={{ textAlign: 'center', color: '#6b7b8e', fontSize: '0.75rem', marginTop: '10px' }}>
-          Day 1 = 5 Aug 2026 · 17 skills × 100 days + Capstone 126 days · journey ends 4 Aug 2031
+          Day 1 = 8 Aug 2026 · 17 skills × 100 days + Capstone 150 days · journey ends 31 Aug 2031
         </p>
       </section>
 
@@ -393,7 +393,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">18 skills · 17×100 days + Capstone 126 · 1,826 days, front to back</p>
+            <p className="roadmap-finish-date">18 skills · 17×100 days + Capstone 150 · 1,850 days, front to back</p>
           </div>
         </div>
       </div>
@@ -401,7 +401,7 @@ export default function RoadmapHome() {
       <section className="roadmap-flow">
         <h2 className="roadmap-flow-title">The flow, end to end</h2>
         <p className="roadmap-flow-text">
-          Day 0 setup, then 18 skills — 17 at 100 days each + Capstone 126 days:{' '}
+          Day 0 setup, then 18 skills — 17 at 100 days each + Capstone 150 days:{' '}
           <strong>Python</strong> {'->'} <strong>FastAPI</strong> {'->'} <strong>Agentic AI</strong> (LangChain, LangGraph, MCP) {'->'}
           {' '}<strong>PySpark</strong> (Data Engineering) {'->'} <strong>JavaScript</strong> {'->'} <strong>TypeScript</strong> {'->'}
           {' '}<strong>React JS</strong> {'->'} <strong>Next JS</strong> {'->'} <strong>React Native</strong> {'->'}
@@ -409,7 +409,7 @@ export default function RoadmapHome() {
           {' '}<strong>Spring Boot</strong> {'->'} <strong>Microservices</strong> {'->'} <strong>DevOps</strong> {'->'} <strong>Cloud (AWS)</strong> {'->'}
           {' '}<strong>Capstone Project</strong> (all 17 skills integrated, 126 days). One skill at a time, fully focused.
           Data Structures &amp; System Design practiced throughout every skill, not saved for one dedicated block.
-          60 months (1,826 days) end to end.
+          60 months (1,850 days) end to end.
         </p>
         <div className="roadmap-flow-actions">
           <Link to="/python" className="btn btn-lg roadmap-btn-primary">
