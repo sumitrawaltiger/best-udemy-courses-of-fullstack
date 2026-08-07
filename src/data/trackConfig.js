@@ -95,7 +95,7 @@ export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
 // Full journey: Day 1 = 8 Aug 2026. User-facing framing: 1850 days / 18 skills / 17×100 days + Capstone 150 days.
-// Skill order: Python(1-100) → FastAPI(101-200) → Agentic AI(201-300) → PySpark(301-400) →
+// Skill order: Python(1-100) → FastAPI(101-200) → Agentic AI(201-300) → JavaScript(301-400) →
 // JavaScript(401-500) → TypeScript(501-600) → React(601-700) → Next JS(701-800) →
 // React Native(801-900) → Express JS(901-1000) → J2SE(1001-1100) → J2EE(1101-1200) →
 // JPA(1201-1300) → Spring Boot(1301-1400) → Microservices(1401-1500) →

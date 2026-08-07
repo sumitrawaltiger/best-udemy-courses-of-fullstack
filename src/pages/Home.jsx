@@ -38,30 +38,39 @@ import JourneyCountdown from '../components/JourneyCountdown';
 
 const BTECH_ROADMAP = [
   {
-    year: 'Skills 1–4',
-    theme: 'Python + FastAPI + Agentic AI + PySpark',
+    year: 'Skills 1–3',
+    theme: 'Python + FastAPI + Agentic AI',
     icon: '🐍',
     accent: 'y1',
-    topics: ['Core Python', 'FastAPI', 'LangChain', 'LangGraph', 'MCP', 'n8n Workflows', 'PySpark', 'ETL Pipelines'],
-    blurb: 'The Python Stack — 100 days each of core Python, FastAPI APIs, Agentic AI (LangChain, LangGraph, MCP), and Data Engineering with PySpark. Days 1–400.',
+    topics: ['Core Python', 'FastAPI', 'LangChain', 'LangGraph', 'MCP', 'n8n Workflows', 'AI Agents'],
+    blurb: 'The Python Stack — 100 days each of core Python, FastAPI APIs, and Agentic AI (LangChain, LangGraph, MCP). The AI + API foundation. Days 1–300.',
     links: [
       { label: 'Python & FastAPI', to: '/python' },
       { label: 'Agentic AI', to: '/python' },
     ],
   },
   {
-    year: 'Skills 5–10',
+    year: 'Skills 4–9',
     theme: 'JavaScript → TypeScript → React JS → Next JS → React Native → Express JS',
     icon: '🔷',
     accent: 'y2',
     topics: ['JavaScript', 'TypeScript', 'React JS', 'Next JS', 'React Native', 'Express / Node JS'],
-    blurb: 'The full JS/TS web ecosystem — 100 days each of JavaScript, TypeScript, React JS, Next JS, React Native, and Express JS. Days 401–1000.',
+    blurb: 'The full JS/TS web ecosystem — 100 days each of JavaScript, TypeScript, React JS, Next JS, React Native, and Express JS. Days 301–900.',
     links: [
       { label: 'JavaScript', to: '/' },
       { label: 'TypeScript', to: '/typescript' },
       { label: 'React & Next JS', to: '/nextjs' },
       { label: 'React Native', to: '/mobile' },
     ],
+  },
+  {
+    year: 'Skill 10',
+    theme: 'Databases — SQL · NoSQL · Caching',
+    icon: '🗄️',
+    accent: 'y3',
+    topics: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'SQLAlchemy', 'Schema Design'],
+    blurb: 'The data layer — PostgreSQL, MySQL, MongoDB, Redis. 100 days of SQL and NoSQL mastery that feeds directly into JPA, Spring Boot, and the Capstone. Days 901–1000.',
+    links: [{ label: 'Java & Databases', to: '/java' }],
   },
   {
     year: 'Skills 11–15',
@@ -117,8 +126,8 @@ export default function Home() {
             </h1>
             <p className="fle-sub">
               A structured <strong>1,850-day journey</strong> — <strong>18 skills, 17×100 days + Capstone 150</strong>:
-              Python, FastAPI, Agentic AI, PySpark, JavaScript, TypeScript, React JS, Next JS, React Native,
-              Express JS, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS), and a
+              Python, FastAPI, Agentic AI, JavaScript, TypeScript, React JS, Next JS, React Native,
+              Express JS, Databases, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS), and a
               150-day Capstone Project integrating all 17 skills. Data Structures &amp; System Design
               practiced throughout. One skill at a time, fully focused, front to back.
             </p>
@@ -126,7 +135,7 @@ export default function Home() {
             <div className="fle-pills">
               <span className="fle-pill"><span aria-hidden="true">⚡</span> 1,850 Days of Code</span>
               <span className="fle-pill"><span aria-hidden="true">🧠</span> 18 Skills · 17×100 Days + Capstone 150</span>
-              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → PySpark → JS/TS → Java → DevOps → Capstone</span>
+              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → JS/TS → Databases → Java → DevOps → Capstone</span>
               <span className="fle-pill"><span aria-hidden="true">📐</span> DSA &amp; System Design Throughout</span>
             </div>
 
