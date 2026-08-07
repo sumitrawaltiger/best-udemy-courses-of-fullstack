@@ -10,6 +10,7 @@ import {
 } from './trackConfig.js';
 
 export const DOCKER_K8S_PDF = '/docker-k8s-slides.pdf';
+export const K8S_100DAYS_PDF = '/devops-notes/100-days-of-kubernetes.pdf';
 
 export const K8S_RESOURCES = [
   { title: 'Kubernetes Learning Path', url: KODEKLOUD_K8S_PATH_URL },

@@ -1,6 +1,6 @@
 import { useSearchParams, Link } from 'react-router-dom';
 import { k8sChapters, searchK8sChapters } from '../data/k8sChapters';
-import { K8S_META, K8S_RESOURCES, DOCKER_K8S_PDF } from '../data/k8sSyllabus';
+import { K8S_META, K8S_RESOURCES, DOCKER_K8S_PDF, K8S_100DAYS_PDF } from '../data/k8sSyllabus';
 import LectureCard from '../components/LectureCard';
 import K8sSyllabus from '../components/K8sSyllabus';
 import K8sHero, { K8sHeroStats } from '../components/K8sHero';
@@ -162,6 +162,15 @@ export default function K8sHome() {
                 >
                   📄 Docker &amp; K8s Slides (PDF)
                 </a>
+                <a
+                  href={K8S_100DAYS_PDF}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-k8s btn-lg"
+                >
+                  📥 100 Days of Kubernetes (PDF)
+                </a>
                 <Link to="/devops" className="btn btn-outline-k8s btn-lg">
                   ← 100 Days of DevOps
                 </Link>
@@ -253,6 +262,48 @@ export default function K8sHome() {
             </a>
             <figcaption>Cover of the guide — click to open the full 12-page PDF ↗</figcaption>
           </figure>
+        </section>
+
+        <section className="kubectl-cheat" id="k8s-100days">
+          <div className="section-header">
+            <h2>100 Days of Kubernetes — Challenge Book</h2>
+            <a href={K8S_100DAYS_PDF} download className="btn btn-k8s">
+              📥 Download PDF
+            </a>
+          </div>
+          <p className="section-desc">
+            A <strong>139-page community-driven book</strong> built around the #100DaysOfKubernetes challenge —
+            learn something new about Kubernetes every day for 100 days. Each chapter covers a topic with
+            curated learning resources, community notes, and example contributions. Whether you are just
+            getting started or already hands-on with K8s, this book gives you a structured daily path
+            through the cloud-native ecosystem.
+          </p>
+          <div className="k8s-core-chips">
+            {[
+              ['📅', '#100DaysOfKubernetes'],
+              ['📖', '139 Pages'],
+              ['🌐', 'Cloud Native'],
+              ['🤝', 'Community Driven'],
+              ['🧩', 'Daily Topics'],
+              ['🔗', 'Curated Resources'],
+            ].map(([icon, label]) => (
+              <span key={label} className="k8s-core-chip">
+                <span aria-hidden="true">{icon}</span> {label}
+              </span>
+            ))}
+          </div>
+          <div style={{ marginTop: '1.25rem' }}>
+            <a
+              href={K8S_100DAYS_PDF}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-k8s"
+              style={{ fontSize: '1rem', padding: '0.75rem 2rem' }}
+            >
+              📥 Download 100 Days of Kubernetes PDF (1.8 MB)
+            </a>
+          </div>
         </section>
 
         <div id="k8s-syllabus">
