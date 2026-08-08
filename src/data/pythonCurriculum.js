@@ -1483,6 +1483,8 @@ export const pythonLessons = [
     topics: ['Course roadmap', 'AI vs ML vs DL', 'Tools & setup', 'Python for AI', 'Project overview'],
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=rfscVS0vtbw', 'Learn Python - Full Course', 'freeCodeCamp'),
+    pdfUrl: '/python-notes/PYTHON.pdf',
+    pdfLabel: 'Python Course Notes',
     sections: [...AGENTIC_AI_3_REFERENCE_SECTIONS, ...IITM_PRAVARTAK_AGENTIC_AI_SECTIONS],
     extraLinks: [
       {
