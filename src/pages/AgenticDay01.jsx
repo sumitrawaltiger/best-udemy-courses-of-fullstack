@@ -5,7 +5,7 @@ import './Day001.css';
 const PYTHON_DOWNLOADS = 'https://www.python.org/downloads/';
 
 const LEARNT_TODAY = [
-  { title: 'The 400-day Python Stack', text: 'Skills 1–4 of the 1,850-day journey — Python (Days 1–100) → FastAPI (Days 101–200) → Agentic AI (Days 201–300) → PySpark / Data Engineering (Days 301–400), 100 days each' },
+  { title: 'The 300-day Python Stack', text: 'Skills 1–3 of the 1,850-day journey — Python (Days 1–100) → FastAPI (Days 101–200) → Agentic AI (Days 201–300), 100 days each. After this comes the JS/TS Stack (Skills 4–9), then Databases, Java, DevOps & Cloud, and Capstone' },
   { title: 'AI vs ML vs DL vs Gen AI', text: 'each one builds on the last — AI is the umbrella, ML learns from data, DL uses neural networks, Gen AI creates new content' },
   { title: 'Why Python for AI', text: 'simple syntax + a huge ecosystem (NumPy, Pandas, TensorFlow, LangChain) made it the default language for AI work' },
   { title: 'Toolchain setup', text: 'installed Python, ticked "Add to PATH" during install, and picked an editor to write code in' },
@@ -134,7 +134,7 @@ export default function AgenticDay01() {
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>Agentic AI</span><span>Phase 1</span><span>Day 1</span></div>
+            <div className="day001-tags"><span>Agentic AI</span><span>Python Stack</span><span>Skill 3</span><span>Day 1</span></div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">DAY 1 <span aria-hidden="true">🤖</span></h1>
               <p className="day001-day-theme">COURSE INTRODUCTION — GEN AI &amp; AGENTIC AI WITH PYTHON</p>
@@ -144,7 +144,7 @@ export default function AgenticDay01() {
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">AGENTIC AI · PHASE 1</p>
+              <p className="day001-profile-role">AGENTIC AI · PYTHON STACK</p>
             </div>
           </div>
         </div>
@@ -152,16 +152,17 @@ export default function AgenticDay01() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '1%' }} /></div>
 
         <p className="day001-summary">
-          Day 1 of 100 — the start of <strong>Skill 3 · Agentic AI</strong>, part of the{' '}
-          <strong>400-day Python Stack</strong> (Skills 1–4 of the 1,850-day journey):{' '}
-          <strong>Python (Days 1–100) → FastAPI (Days 101–200) → Agentic AI (Days 201–300) → PySpark (Days 301–400)</strong>.
+          Day 1 of 100 — the start of <strong>Skill 3 · Agentic AI</strong>, the final skill of the{' '}
+          <strong>300-day Python Stack</strong> (Skills 1–3 of the 1,850-day journey):{' '}
+          <strong>Python (Days 1–100) → FastAPI (Days 101–200) → Agentic AI (Days 201–300)</strong>.
           Today is pure orientation: what <strong>Generative AI</strong>{' '}
           and <strong>Agentic AI</strong> actually mean, how they sit on top of <strong>AI → ML → DL</strong>,
           why <strong>Python</strong> is the language for this skill, and getting the toolchain (Python +
           editor) installed and verified with <code>python --version</code>. No frameworks yet —
           just <code>print("Hello, Agentic AI!")</code> and a clear picture of where the next 100 days are
           headed: Python fundamentals, then ML/DL basics, then Generative AI, RAG, and finally LangChain,
-          LangGraph, and MCP-based agents.
+          LangGraph, and MCP-based agents. After this 300-day Python Stack, the journey continues with the
+          600-day JS/TS Stack (Skills 4–9), then Databases, Java, DevOps &amp; Cloud, and Capstone.
         </p>
 
         <section className="day001-learnt">
