@@ -2792,11 +2792,38 @@ export const pythonLessons = [
     pyDay: 46,
     phase: 'Agentic AI',
     title: 'LangGraph & MCP',
-    subtitle: 'LangGraph workflows and Model Context Protocol servers',
-    topics: ['LangGraph intro', 'Graph workflows', 'LangGraph project', 'MCP components', 'MCP servers with LangChain'],
+    subtitle: 'What is LangGraph, the 8 Pillars, Nodes & Edges, and Model Context Protocol',
+    topics: ['What is LangGraph', 'LangGraph 6-step cycle', 'Why LangGraph was created', 'Nodes and Edges', '8 Pillars of LangGraph', 'State & Persistence', 'Multi-agent orchestration', 'MCP components', 'MCP servers with LangChain'],
+    pdfUrl: '/python-notes/LangGraph.pdf',
+    pdfLabel: 'LangGraph Notes (CDU)',
     notionUrl: PORTAL,
     youtube: yt('https://www.youtube.com/watch?v=9BPCV5TYPFA', 'LangGraph Tutorial', 'Sam Witteveen'),
     sections: [
+      {
+        id: 'what-is-langgraph',
+        title: 'What is LangGraph?',
+        content:
+          "If **LangChain** helps you build AI applications, **LangGraph** helps you build AI agents that can **think, remember, make decisions, use tools, and execute complex workflows reliably**.\n\nThink of it this way:\n- **LangChain** = Building blocks\n- **LangGraph** = Intelligent workflow engine\n\nLangGraph is an open-source framework developed by the LangChain team for creating **stateful, multi-step AI agents**.\n\n**How LangGraph Works — the 6-step cycle:**\n\n1. **START** — User Input arrives\n2. **THINK** — Reason & Plan the next action\n3. **USE TOOLS** — Call Tools / APIs\n4. **MEMORY** — Store & Retrieve Information\n5. **DECIDE** — Evaluate Results\n6. **EXECUTE** — Perform Action → loops back to THINK\n\n**Four core properties:**\n- **STATEFUL** — Maintains context across steps\n- **MULTI-STEP** — Orchestrates complex workflows\n- **TOOL INTEGRATION** — Connects with APIs, databases, and more\n- **RELIABLE** — Built for production, designed for scale\n\n*\"LangGraph turns your AI ideas into intelligent, reliable, and scalable agents.\"*",
+      },
+      {
+        id: 'why-langgraph-created',
+        title: 'Why Was LangGraph Created?',
+        content:
+          "LangGraph was created to build **stateful, multi-step AI applications** that can reason, act, and handle complex real-world workflows reliably.\n\n**Early LLM applications were simple:**\n\nUser → LLM → Answer. Everything happened in one prompt.\n\nExample: User: *\"What is Python programming?\"* → LLM replies instantly → Done.\n\n**But real-world AI applications are much more complicated.**\n\nSuppose a user asks: *\"Analyze this sales data, query SQL Server, generate Python code, create charts, explain insights, and email me the report.\"*\n\nThat is not one LLM call. It involves many steps:\n1. Understand Request\n2. Query SQL\n3. Generate Python\n4. Execute Code\n5. Analyze Output\n6. Create Report\n7. Email Result\n\nManaging these workflows became **difficult using only chains**.\n\n**LangGraph solves this problem:**\n- **STATEFUL** — Remembers context across steps\n- **FLEXIBLE** — Create complex conditional workflows\n- **RELIABLE** — Handles failures and retries gracefully\n- **SCALABLE** — Build agents that can grow with your needs",
+      },
+      {
+        id: 'why-called-graph',
+        title: 'Why Is It Called "Graph"?',
+        content:
+          "A **graph** is a computer science data structure consisting of **Nodes** and **Edges**.\n\nExample flow: User → Planner → Search or Calculator → Final Answer\n\nEach box is a **node**. Each arrow is an **edge**.\n\n**NODES — The Workers**\n\nA node performs **one task**. Think of each node as a worker. Examples:\n- **LLM Node** — reasons and generates text\n- **Tool Node** — calls external tools/APIs\n- **Python Node** — executes Python code\n- **SQL Node** — queries a database\n- **Search Node** — performs web search\n- **Memory Node** — reads/writes memory\n\nEach worker performs one job and hands off to the next.\n\n**EDGES — The Decision Makers**\n\nEdges decide where execution goes next. Two types:\n1. **Simple edge** — one direct path from A to B\n2. **Conditional edge** — different paths based on conditions (e.g. Planner → if search needed → Search Node; if SQL needed → SQL Node)\n\nThe graph decides **dynamically** based on the situation at runtime.",
+      },
+      {
+        id: '8-pillars-of-langgraph',
+        title: 'The 8 Pillars of LangGraph',
+        content:
+          "These 8 pillars work together to help you build powerful, reliable, scalable, and production-ready AI agents.\n\n**1. STATE (THE BRAIN)**\n\nThe State is the **shared data** that flows through the entire graph. Every node reads the current state, performs its task, and returns updates. LangGraph merges updates automatically. Without state, nodes cannot collaborate effectively.\n\n**2. NODES (THE WORKERS)**\n\nNodes perform the actual work. A node can be: an LLM call, a Python function, a Tool call, SQL execution, an API call, a Human approval gate, or even another graph. Each node has **one responsibility** — like an employee with one job.\n\n**3. EDGES (THE DECISION MAKER)**\n\nEdges determine where execution goes next. Types: Normal edges, Conditional edges, Loops (via conditional routing), and END transitions. Edges are what make the workflow **dynamic** rather than linear.\n\n**4. MEMORY & PERSISTENCE**\n\nLangGraph supports saving progress using **checkpointing**, enabling: conversation memory, long-running workflows, human approval gates, resume after failure, and multi-session agents.\n\n*Without persistence: crash → start again. With persistence: crash → resume from checkpoint.*\n\n**5. TOOLS (THE HANDS)**\n\nLLMs can't directly interact with external systems. Tools give them capabilities. Examples: SQL Database, Python executor, REST APIs, Search engines, Azure services, Databricks, Microsoft Fabric, Power BI.\n\n**6. OBSERVABILITY (THE EYES)**\n\nObservability lets you inspect everything happening inside your agent: node execution, state changes, prompts, responses, tool calls, token counts, latency, errors, and full traces.\n\n*Without observability: \"Agent Failed — why?\" is unanswerable. With observability: you see exactly which step failed and why.*\n\nPlatforms like **LangSmith** provide rich tracing and debugging.\n\n**7. MULTI-AGENT ORCHESTRATION (THE TEAM)**\n\nInstead of one large agent doing everything, multiple **specialized agents collaborate**. A Supervisor coordinates SQL, Research, and Coding agents → Final Answer. Each agent focuses on what it does best — accuracy improves, complexity is managed.\n\n**8. HUMAN-IN-THE-LOOP (THE SUPERVISOR)**\n\nSometimes AI should pause and wait for **human approval** before continuing. Common scenarios: financial transactions, database updates, sending emails, healthcare decisions, legal documents.\n\nFlow: Generate SQL → Human Review → Approved? Yes → Execute; No → Revise.",
+        code: "# Pillar 1: State — shared TypedDict\nfrom typing import TypedDict\n\nclass AgentState(TypedDict):\n    question: str\n    sql_query: str | None\n    result: str | None\n    answer: str | None\n\n# Pillar 4: Persistence — checkpointing\nfrom langgraph.checkpoint.memory import MemorySaver\ncheckpointer = MemorySaver()\napp = graph.compile(checkpointer=checkpointer)\n\n# Pillar 8: Human-in-the-Loop\ngraph.add_node(\"human_review\", interrupt_before=[\"execute_sql\"])",
+      },
       {
         id: 'why-langgraph',
         title: 'Why LangGraph for Agent Loops',
