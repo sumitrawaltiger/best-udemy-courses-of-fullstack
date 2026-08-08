@@ -543,6 +543,89 @@ function ScoreCard({ title, score, isWinner }) {
       },
     ],
   },
+  // ── Episode 7 ─────────────────────────────────────────────────────────────
+  {
+    day: 7,
+    date: '13 Mar 2028',
+    group: 'hooks',
+    title: 'Event Handling in React',
+    tagline: 'Event handling lets your components respond to user actions like clicks, typing, hovering and more.',
+    image: '/react-notes/react7.jpeg',
+    tags: ['Event Handling', 'onClick', 'onChange', 'onSubmit', 'Event Object', 'preventDefault', 'camelCase Events'],
+    notes: [
+      { k: 'What is Event Handling?', v: 'Just like HTML events, React can respond to user actions. In React, we use **camelCase** names (e.g., `onClick` not `onclick`) and pass **functions** — not function calls — as event handlers.' },
+      { k: 'Common Events', v: '`onClick` — element clicked; `onChange` — input value changes; `onSubmit` — form submitted; `onMouseEnter` — mouse enters element; `onMouseLeave` — mouse leaves element; `onKeyDown` — key pressed.' },
+      { k: 'Pass a Function, Not a Call', v: 'Write `onClick={handleClick}` (pass the function). NOT `onClick={handleClick()}` (call immediately). The second form runs the function on every render, not on click.' },
+      { k: 'Arrow Functions for Arguments', v: 'To pass arguments to a handler, wrap in an arrow function: `onClick={() => greet("Neon Dev")}`. Writing `onClick={greet("Neon Dev")}` runs immediately — the arrow function delays execution until the click.' },
+      { k: 'e.preventDefault()', v: 'Use `e.preventDefault()` in `onSubmit` handlers to stop the browser from reloading the page when a form is submitted. Without it, the page refreshes and state is lost.' },
+      { k: 'Event Object', v: 'React passes a **SyntheticEvent** object as the first argument to every handler. Use `e.target` to get the element that triggered the event, `e.target.value` for input values, and `e.target.textContent` for text.' },
+      { k: 'Common Mistakes', v: '❌ Using `onclick` (lowercase) instead of `onClick`. ❌ Calling the function: `onClick={myFunc()}`. ❌ Forgetting `e.preventDefault()` in forms. ❌ Not wrapping with an arrow function when passing arguments.' },
+      { k: 'Tips', v: '✅ Use camelCase for event names. ✅ Pass the function, never call it. ✅ Use arrow functions for arguments. ✅ Use `e.preventDefault()` in forms. ✅ Keep handlers small and clear.' },
+      { k: 'Mini Challenge', v: 'Create a **Counter App** with a button to increase count, a button to decrease count, and the count displayed in between.' },
+      { k: 'Quick Summary', v: 'Event handling lets components respond to user actions. Use camelCase (`onClick`, `onChange`, `onSubmit`). Pass functions not calls. Use the event object `e` to access details. Makes React apps interactive and dynamic.' },
+    ],
+    theory: [
+      {
+        h: 'What is Event Handling?',
+        p: 'Event handling is how React components respond to **user actions** — a click, a keystroke, a form submission, a mouse movement.\n\nReact\'s event system closely mirrors browser DOM events, but with two key differences:\n\n**1. camelCase names** — HTML uses lowercase (`onclick`, `onchange`); React uses camelCase (`onClick`, `onChange`).\n\n**2. Functions, not strings** — HTML allows `onclick="myFunc()"` (a string). React requires a function reference or an inline arrow function.\n\nUnder the hood, React uses a **SyntheticEvent** system — a cross-browser wrapper around native browser events — so your event handlers behave consistently across every browser.',
+      },
+      {
+        h: 'Common Events in React',
+        p: '| Event | JSX Attribute | When it Fires |\n|---|---|---|\n| Click | `onClick` | When an element is clicked |\n| Change | `onChange` | When an input value changes |\n| Submit | `onSubmit` | When a form is submitted |\n| Mouse Enter | `onMouseEnter` | When the mouse enters an element |\n| Mouse Leave | `onMouseLeave` | When the mouse leaves an element |\n| Key Down | `onKeyDown` | When a keyboard key is pressed down |\n\nThere are many more: `onFocus`, `onBlur`, `onScroll`, `onDragStart`, `onDrop`, etc. — the full list mirrors the DOM event model.',
+      },
+      {
+        h: 'Pass a Function, Not a Call',
+        p: 'This is the single most common mistake beginners make with event handling.\n\n```jsx\n// ✅ Correct — pass a reference to the function\n<button onClick={handleClick}>Click</button>\n\n// ❌ Wrong — calls the function immediately on every render\n<button onClick={handleClick()}>Click</button>\n```\n\nWhen you write `handleClick()` (with parentheses), JavaScript evaluates it right away — before any click happens — and passes the **return value** (usually `undefined`) to `onClick`. Without parentheses, you pass the function itself, and React calls it only when the click event fires.',
+      },
+      {
+        h: 'Passing Arguments to Handlers',
+        p: 'If your handler needs an argument, wrap it in an arrow function:\n\n```jsx\nfunction greet(name) {\n  alert(`Hello, ${name}! 👋`);\n}\n\n// ✅ Correct — arrow function delays execution\n<button onClick={() => greet("Neon Dev")}>Greet Me</button>\n\n// ❌ Wrong — runs immediately on render, not on click\n<button onClick={greet("Neon Dev")}>Greet Me</button>\n```\n\nThe arrow function `() => greet("Neon Dev")` creates a new function that React calls on click. Inside that function, `greet("Neon Dev")` runs — at click time, not render time.',
+      },
+      {
+        h: 'Handling Form Submit',
+        p: '`onSubmit` fires when the user submits a form. By default, form submission reloads the page — which wipes all React state. Use `e.preventDefault()` to stop this:\n\n```jsx\nfunction handleSubmit(e) {\n  e.preventDefault(); // stops the page refresh\n  alert("Form Submitted! ✅");\n}\n\nreturn (\n  <form onSubmit={handleSubmit}>\n    <input type="text" placeholder="Type something" />\n    <button type="submit">Submit</button>\n  </form>\n);\n```\n\n`e` is the event object. Calling `e.preventDefault()` tells the browser: "do not handle this event in the default way." For forms, the default is a full-page HTTP request — something you never want in a React SPA.',
+      },
+      {
+        h: 'The Event Object (e)',
+        p: 'React automatically passes a **SyntheticEvent** object as the first argument to every event handler. The most useful properties:\n\n- `e.target` — the DOM element that triggered the event\n- `e.target.value` — current value of an input field (essential for controlled inputs)\n- `e.target.textContent` — text content of the element\n- `e.target.name` — the `name` attribute (useful in multi-field forms)\n- `e.preventDefault()` — prevent default browser behaviour\n- `e.stopPropagation()` — stop the event from bubbling up to parent elements\n\nSyntheticEvent wraps the native browser event and normalises it across browsers, so you never need to write browser-specific workarounds.',
+      },
+      {
+        h: 'Common Mistakes',
+        p: '**1. Lowercase event names** — `onclick` instead of `onClick`. React will silently ignore the lowercase attribute.\n\n**2. Calling the function immediately** — `onClick={myFunc()}` runs on render, not on click. Use `onClick={myFunc}` or `onClick={() => myFunc()}`.\n\n**3. Forgetting `e.preventDefault()` in forms** — The page reloads and React state is lost.\n\n**4. Not using an arrow function for arguments** — `onClick={greet("name")}` fires immediately. Always wrap: `onClick={() => greet("name")}`.',
+      },
+      {
+        h: 'Quick Summary',
+        p: 'Event handling is what makes React apps **interactive**.\n\nThe rules to remember:\n- Use **camelCase** event names (`onClick`, `onChange`, `onSubmit`).\n- **Pass functions**, never calls — `onClick={handler}` not `onClick={handler()}`.\n- Use **arrow functions** to pass arguments: `onClick={() => handler(arg)}`.\n- Use **`e.preventDefault()`** in form submit handlers.\n- Use the **event object** (`e`) to inspect the target element and its value.\n\nMaster these five rules and you can handle any user interaction React throws at you.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Basic onClick — Click Counter',
+        code: "import { useState } from 'react';\n\nfunction ClickCounter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div className=\"box\">\n      <h2>You clicked {count} times</h2>\n      <button onClick={() => setCount(count + 1)}>\n        Click Me\n      </button>\n    </div>\n  );\n}\n\nexport default ClickCounter;",
+        note: 'Arrow function inside onClick so the function runs only when clicked — not immediately on render.',
+      },
+      {
+        label: 'Passing arguments to a handler',
+        code: "function greet(name) {\n  alert(`Hello, ${name}! 👋`);\n}\n\nfunction App() {\n  return (\n    <button onClick={() => greet('Neon Dev')}>\n      Greet Me\n    </button>\n  );\n}\n\n// ❌ Wrong — runs immediately on every render:\n// <button onClick={greet('Neon Dev')}>Greet Me</button>",
+        note: "Wrap in an arrow function to delay execution. onClick={greet('Neon Dev')} fires on render, not on click.",
+      },
+      {
+        label: 'Form submit with e.preventDefault()',
+        code: "function FormExample() {\n  function handleSubmit(e) {\n    e.preventDefault(); // stops page reload\n    alert('Form Submitted! ✅');\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input type=\"text\" placeholder=\"Type something\" />\n      <button type=\"submit\">Submit</button>\n    </form>\n  );\n}",
+        note: 'e.preventDefault() is essential in form handlers — without it, the page reloads and React state is lost.',
+      },
+      {
+        label: 'Event object — e.target',
+        code: "function handleClick(e) {\n  console.log(e);                    // SyntheticEvent\n  console.log(e.target);             // the button element\n  console.log(e.target.textContent); // 'Check Console'\n}\n\nfunction App() {\n  return (\n    <button onClick={handleClick}>Check Console</button>\n  );\n}\n\n// e.target.value is used for inputs:\nfunction handleChange(e) {\n  console.log(e.target.value); // current input text\n}",
+        note: 'e.target is the element that fired the event. e.target.value is essential for reading input field values.',
+      },
+      {
+        label: 'Mini Challenge — Counter with + and − buttons',
+        code: "import { useState } from 'react';\n\nfunction CounterApp() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div style={{ textAlign: 'center', marginTop: '2rem' }}>\n      <button onClick={() => setCount(count - 1)}>−</button>\n      <span style={{ margin: '0 1rem', fontSize: '1.5rem' }}>\n        {count}\n      </span>\n      <button onClick={() => setCount(count + 1)}>+</button>\n    </div>\n  );\n}\n\nexport default CounterApp;",
+        note: 'Mini challenge from the infographic: increase button, count display, decrease button — all using onClick.',
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
