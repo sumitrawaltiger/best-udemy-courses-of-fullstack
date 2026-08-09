@@ -8,13 +8,14 @@ function _calDate(dayN) {
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-// ── 18 skills · 17×100 days each + Capstone 150 days · 1,850 days ───────────
+// ── 20 skills · 19×100 days each + Capstone 100 days · 2,000 days ───────────
 // Python (1–100) → FastAPI (101–200) → Agentic AI (201–300) →
 // JavaScript (301–400) → TypeScript (401–500) → React (501–600) →
 // Next JS (601–700) → React Native (701–800) → Express JS (801–900) →
 // Databases (901–1000) → J2SE (1001–1100) → J2EE (1101–1200) → JPA (1201–1300) →
 // Spring Boot (1301–1400) → Microservices (1401–1500) →
-// DevOps (1501–1600) → Cloud / AWS (1601–1700) → Capstone (1701–1850, 150 days).
+// DevOps (1501–1600) → Cloud / AWS (1601–1700) → Kubernetes (1701–1800) →
+// System Design (1801–1900) → Capstone (1901–2000, 100 days).
 // Calendar dates are intentionally NOT shown (HR-facing page).
 
 const SKILLS = [
@@ -177,27 +178,47 @@ const SKILLS = [
       { icon: '☁️', title: 'AWS Cloud', detail: '100 Days of AWS — core services and cloud architecture', source: 'KodeKloud', to: '/aws' },
     ],
   },
-  // ── Capstone: Skill 18 ────────────────────────────────────────────────────
+  // ── Kubernetes: Skill 18 ─────────────────────────────────────────────────
   {
-    id: 's18', arcClass: 'capstone', icon: '🎯',
-    label: 'Skill 18 · Capstone Project',
-    tagline: 'Days 1701–1850', duration: '150 days',
-    blurb: 'The 150-day capstone — integrate all 17 skills into one production-grade system: Python APIs, Agentic AI, TypeScript frontends, Java microservices, databases, and full DevOps deployment on AWS.',
+    id: 's18', arcClass: 'y5', icon: '☸️',
+    label: 'Skill 18 · Kubernetes',
+    tagline: 'Days 1701–1800', duration: '100 days',
+    blurb: 'Production-grade container orchestration — CKA certification prep, Helm, Istio, EKS, GitOps with ArgoCD/Flux, and Prometheus/Grafana observability at scale.',
+    items: [
+      { icon: '☸️', title: 'Kubernetes', detail: 'CKA prep · Helm · Istio · EKS · GitOps (ArgoCD/Flux) · Prometheus/Grafana', source: 'KodeKloud', to: '/k8s' },
+    ],
+  },
+  // ── System Design: Skill 19 ──────────────────────────────────────────────
+  {
+    id: 's19', arcClass: 'y5', icon: '🏗️',
+    label: 'Skill 19 · System Design',
+    tagline: 'Days 1801–1900', duration: '100 days',
+    blurb: 'The art of building at scale — HLD/LLD, CAP theorem, distributed systems, database design, caching, message queues, and case studies (design Twitter, Uber, Netflix).',
+    items: [
+      { icon: '🏗️', title: 'System Design', detail: 'HLD/LLD · scalability · distributed systems · case studies · mock interviews', source: 'ChaiCode + GfG', to: '/interview' },
+    ],
+  },
+  // ── Capstone: Skill 20 ────────────────────────────────────────────────────
+  {
+    id: 's20', arcClass: 'capstone', icon: '🎯',
+    label: 'Skill 20 · Capstone Project',
+    tagline: 'Days 1901–2000', duration: '100 days',
+    blurb: 'The 100-day capstone — integrate all 19 skills into one production-grade system: Python APIs, Agentic AI, TypeScript frontends, Java microservices, Kubernetes deployment, and full AWS infrastructure.',
     items: [
       { icon: '🤖', title: 'Agentic AI + Python APIs', detail: 'LangChain · LangGraph · FastAPI — AI-powered backend services', source: 'Capstone', to: '/python' },
       { icon: '🗄️', title: 'Data Layer', detail: 'PostgreSQL · MongoDB · Redis — multi-database architecture', source: 'Capstone', to: '/java' },
       { icon: '⚛️', title: 'Full-Stack TypeScript', detail: 'React · Next.js · Express — the web layer, end to end', source: 'Capstone', to: '/' },
       { icon: '☕', title: 'Java Microservices', detail: 'Spring Boot · REST · Kafka · Docker — enterprise-grade backends', source: 'Capstone', to: '/java' },
-      { icon: '🚀', title: 'DevOps & AWS Deployment', detail: 'Kubernetes · CI/CD · Terraform · AWS — ship and monitor at scale', source: 'Capstone', to: '/devops' },
+      { icon: '☸️', title: 'Kubernetes & AWS Deployment', detail: 'K8s · CKA · CI/CD · Terraform · AWS — ship and monitor at scale', source: 'Capstone', to: '/k8s' },
     ],
   },
 ];
 
 const STATS = [
-  { value: '18', label: 'skills · one at a time' },
-  { value: '100', label: 'days per skill (+ 150 capstone)' },
-  { value: '60', label: 'months · 1,850 days' },
-  { value: '35+', label: 'technologies' },
+  { value: '20', label: 'skills · one at a time' },
+  { value: '100', label: 'days per skill (+ 100 capstone)' },
+  { value: '66', label: 'months · 2,000 days' },
+  { value: '40+', label: 'technologies' },
 ];
 
 function ItemLink({ item, children }) {
@@ -219,15 +240,15 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 Day 0 setup · 18 skills · 17×100 days + Capstone 150 · 1,850 days</span>
-        <h1 className="roadmap-hero-title">18 Skills, 1,850 Days</h1>
+        <span className="roadmap-hero-badge">📍 Day 0 setup · 20 skills · 19×100 days + Capstone 100 · 2,000 days</span>
+        <h1 className="roadmap-hero-title">20 Skills, 2,000 Days</h1>
         <p className="roadmap-hero-sub">
-          Starts with <strong>Day 0 — environment setup</strong>, then <strong>18 skills</strong>{' '}
+          Starts with <strong>Day 0 — environment setup</strong>, then <strong>20 skills</strong>{' '}
           mastered one at a time — <strong>Python → FastAPI → Agentic AI → JavaScript → TypeScript
           → React JS → Next JS → React Native → Express JS → Databases → J2SE → J2EE → JPA → Spring Boot
-          → Microservices → DevOps → Cloud (AWS) → Capstone</strong> —{' '}
-          <strong>17 skills at 100 days each + 150-day Capstone, 60 months (1,850 days)</strong> of focused daily practice,
-          front to back. DSA practiced 30 min daily (1 LeetCode/day) throughout all 18 skills.
+          → Microservices → DevOps → Cloud (AWS) → Kubernetes → System Design → Capstone</strong> —{' '}
+          <strong>19 skills at 100 days each + 100-day Capstone, 66 months (2,000 days)</strong> of focused daily practice,
+          front to back. DSA practiced 30 min daily (1 LeetCode/day) throughout all 20 skills.
         </p>
         <div className="roadmap-stats">
           {STATS.map((s) => (
@@ -244,8 +265,8 @@ export default function RoadmapHome() {
         style={{ margin: '8px auto 4px', textAlign: 'center', maxWidth: '820px' }}
       >
         <img
-          src="/roadmap-notes/1850_days_of_study.png"
-          alt="Full Lifecycle Engineer — 1,850 Days · 2026–2031. 6 arcs: Python Stack (Skills 1–3, 300 days), JS/TS Stack (Skills 4–9, 600 days), Databases (Skill 10, 100 days), Java Stack (Skills 11–15, 500 days), DevOps & Cloud (Skills 16–17, 200 days), Capstone Project (Skill 18, 150 days). DSA 30 min/day throughout. Day 1: 8 Aug 2026 · Day 1,850: 31 Aug 2031."
+          src="/roadmap-notes/2000days.png"
+          alt="5 Years. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python (2026) → FastAPI → JavaScript → TypeScript → React → Java → Spring Boot → Microservices → Kubernetes (2030) → System Design (2031) → Capstone 2032. Day 0: 10 Aug 2026 · Day 2,000: 31 Jan 2032."
           loading="lazy"
           style={{
             width: '100%',
