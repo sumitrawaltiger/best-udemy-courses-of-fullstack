@@ -59,7 +59,7 @@ const resources = [
   },
   {
     icon: '🗺️', title: '2,000-Day Roadmap', titleClass: 'card-title-amber', subtitle: 'Big Picture',
-    description: 'See where Agentic AI (Days 201–300) fits in the full 18-skill plan — Python → FastAPI → Agentic AI → PySpark → JS → TS → … → Capstone.',
+    description: 'See where Agentic AI (Days 201–300) fits in the full 20-skill, 2,000-day plan — Python → FastAPI → Agentic AI → JS → TS → React → … → Kubernetes → System Design → Capstone.',
     link: { href: '/roadmap', label: 'Open the roadmap →' },
   },
 ];
