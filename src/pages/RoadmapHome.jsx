@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 // ── Skill calendar helpers ───────────────────────────────────────────────────
-const _CAL_DAY1 = new Date(2026, 7, 8); // 8 Aug 2026
+const _CAL_DAY1 = new Date(2026, 7, 11); // 11 Aug 2026
 function _calDate(dayN) {
   const d = new Date(_CAL_DAY1);
   d.setDate(d.getDate() + dayN - 1);
@@ -320,7 +320,7 @@ export default function RoadmapHome() {
             <tbody>
               {SKILLS.map((skill, i) => {
                 const d1 = i * 100 + 1;
-                const d2 = i < 17 ? (i + 1) * 100 : 1850;
+                const d2 = (i + 1) * 100;
                 return (
                   <tr key={skill.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.09)' }}>
                     <td style={{ padding: '9px 12px', color: '#8a95a3', fontVariantNumeric: 'tabular-nums', fontSize: '0.8rem', fontWeight: 600 }}>{String(i + 1).padStart(2, '0')}</td>
@@ -337,7 +337,7 @@ export default function RoadmapHome() {
           </table>
         </div>
         <p style={{ textAlign: 'center', color: '#6b7b8e', fontSize: '0.75rem', marginTop: '10px' }}>
-          Day 1 = 8 Aug 2026 · 17 skills × 100 days + Capstone 150 days · journey ends 31 Aug 2031
+          Day 1 = 11 Aug 2026 · 19 skills × 100 days + Capstone 100 days · journey ends 31 Jan 2032
         </p>
       </section>
 
