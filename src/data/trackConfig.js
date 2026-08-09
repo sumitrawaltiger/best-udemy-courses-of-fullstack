@@ -102,11 +102,11 @@ export const INTERVIEW_PREP_WEEKS = 0;
 // DevOps(1501-1600) → Cloud/AWS(1601-1700) → Capstone(1701-1850, 150 days).
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
 //  chapterFactory.js = 8 Aug 2026, so module Day 1 also dates to 8 Aug 2026.)
-export const JOURNEY_START_LABEL = '10 Aug 2026';
-export const JOURNEY_END_LABEL = '31 Aug 2031';
-export const JOURNEY_TOTAL_DAYS = 1850;
+export const JOURNEY_START_LABEL = '11 Aug 2026';
+export const JOURNEY_END_LABEL = '31 Jan 2032';
+export const JOURNEY_TOTAL_DAYS = 2000;
 // Factory calendar: Day 1 = 8 Aug 2026 (COURSE_START); factory day N = journey Day N.
-export const JOURNEY_END_FACTORY_DAY = 1850;
+export const JOURNEY_END_FACTORY_DAY = 2000;
 
 // Explicit day-offsets for the 18-skill plan (offset = skill start day − 1).
 // Skills 1–4 (Python domain): 1–400 · Skills 5–10 (JS/TS domain): 401–1000 · Skills 11–15 (Java domain): 1001–1500 · Skills 16–17 (DevOps/Cloud): 1501–1700 · Skill 18 (Capstone): 1701–1850.

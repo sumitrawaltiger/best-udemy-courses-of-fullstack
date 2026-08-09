@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-/** Day 1 is 8 Aug 2026 (Phase 1 · Python Stack, starting with Agentic AI using Python — no separate prerequisite phase). */
-/** Target: 1 Sep 2031, 00:00 — end of Day 1850 (31 Aug 2031). 18 skills · 1,850 days. */
-export const JOURNEY_END = new Date(2031, 8, 1, 0, 0, 0, 0);
+/** Day 1 is 11 Aug 2026 (Phase 1 · Python Stack). */
+/** Target: 1 Feb 2032, 00:00 — end of Day 2000 (31 Jan 2032). 19 skills · 2,000 days. */
+export const JOURNEY_END = new Date(2032, 1, 1, 0, 0, 0, 0);
 
 function getRemaining(now = new Date()) {
   const diff = Math.max(0, JOURNEY_END.getTime() - now.getTime());
