@@ -293,7 +293,7 @@ export default function RoadmapHome() {
         <figure style={{ margin: '0 0 18px', textAlign: 'center' }}>
           <img
             src="/roadmap-notes/1850-day-skill-calendar.png"
-            alt="1,850-Day Full Stack Journey — 18 skills (17×100 days + Capstone 150) from 8 Aug 2026 to 31 Aug 2031"
+            alt="2,000-Day Full Stack Journey — 20 skills (19×100 days + Capstone 100) from 11 Aug 2026 to 31 Jan 2032"
             loading="lazy"
             style={{
               width: '100%',
@@ -416,7 +416,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">18 skills · 17×100 days + Capstone 150 · 1,850 days, front to back</p>
+            <p className="roadmap-finish-date">20 skills · 19×100 days + Capstone 100 · 2,000 days, front to back</p>
           </div>
         </div>
       </div>
@@ -424,15 +424,16 @@ export default function RoadmapHome() {
       <section className="roadmap-flow">
         <h2 className="roadmap-flow-title">The flow, end to end</h2>
         <p className="roadmap-flow-text">
-          Day 0 setup, then 18 skills — 17 at 100 days each + Capstone 150 days:{' '}
+          Day 0 setup, then 20 skills — 19 at 100 days each + Capstone 100 days:{' '}
           <strong>Python</strong> {'->'} <strong>FastAPI</strong> {'->'} <strong>Agentic AI</strong> (LangChain, LangGraph, MCP) {'->'}
           {' '}<strong>JavaScript</strong> {'->'} <strong>TypeScript</strong> {'->'}
           {' '}<strong>React JS</strong> {'->'} <strong>Next JS</strong> {'->'} <strong>React Native</strong> {'->'}
           {' '}<strong>Express JS</strong> {'->'} <strong>Databases</strong> (PostgreSQL · MongoDB · Redis) {'->'} <strong>J2SE</strong> {'->'} <strong>J2EE</strong> {'->'} <strong>JPA</strong> {'->'}
           {' '}<strong>Spring Boot</strong> {'->'} <strong>Microservices</strong> {'->'} <strong>DevOps</strong> {'->'} <strong>Cloud (AWS)</strong> {'->'}
-          {' '}<strong>Capstone Project</strong> (all 17 skills integrated, 150 days). One skill at a time, fully focused.
-          Data Structures &amp; System Design practiced throughout every skill, not saved for one dedicated block.
-          60 months (1,850 days) end to end.
+          {' '}<strong>Kubernetes</strong> {'->'} <strong>System Design</strong> {'->'}
+          {' '}<strong>Capstone Project</strong> (all 19 skills integrated, 100 days). One skill at a time, fully focused.
+          DSA practiced 30 min daily (1 LeetCode/day) throughout all 20 skills.
+          66 months (2,000 days) end to end.
         </p>
         <div className="roadmap-flow-actions">
           <Link to="/python" className="btn btn-lg roadmap-btn-primary">
