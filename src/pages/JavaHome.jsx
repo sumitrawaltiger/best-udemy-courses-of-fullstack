@@ -243,7 +243,7 @@ export default function JavaHome() {
           <h2>50-Module Java & Spring Roadmap</h2>
           <p className="section-desc">
             Path:{' '}
-            <strong>J2SE → Automation Testing → JPA → Spring Boot → Microservices</strong> — {javaChapters.length} modules of the
+            <strong>J2SE → JPA → Spring Boot → Microservices → Automation Testing</strong> — {javaChapters.length} modules of the
             Java stack.
           </p>
           <div className="roadmap-grid roadmap-java">
@@ -258,7 +258,7 @@ export default function JavaHome() {
               <span className="legend-dot published legend-dot-java" /> {javaChapters.length} modules
             </span>
             <span>
-              <span className="legend-dot published" /> J2SE → Automation Testing → JPA → Spring Boot → Microservices
+              <span className="legend-dot published" /> J2SE → JPA → Spring Boot → Microservices → Automation Testing
             </span>
           </div>
         </section>

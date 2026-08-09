@@ -36,7 +36,7 @@ export const JAVA_META = {
   phaseWindow: 'Days 306–458 · 5 May – 4 Oct 2027',
   startsAfter: 'Python & Agentic AI (through 4 May 2027)',
   endsOn: '4 Oct 2027',
-  focusAreas: ['J2SE', 'JPA', 'Spring Boot', 'Microservices'],
+  focusAreas: ['J2SE', 'JPA', 'Spring Boot', 'Microservices', 'Automation Testing'],
 };
 
 function lessonToModule(ch) {
