@@ -738,6 +738,56 @@ const DEVOPS_SECTION_MAP = {
         'Canary vs Shadow Deployment — side-by-side diagrams. Canary Deployment: Users/Requests split 90% to Model v1 (Current) and 10% to Model v2 (Canary), with a Typical Progression of 10% -> 25% -> 50% -> 100% and a rollback to 100% on v1 if issues are detected; goal is to validate the new model in production before full rollout. Shadow Deployment: Users/Requests get their response from Model v1 (Production) while a mirrored copy of the request also goes to Model v2 (Shadow); both models write to a Logs/Predictions store which feeds a Compare Predictions step; goal is to validate the new model on real traffic without impacting users.',
     },
   ],
+  'Create a Linux User': [
+    {
+      id: 'linux-filesystem-fundamentals',
+      title: 'Phase 1 — Filesystem Fundamentals',
+      content:
+        "Linux organizes almost everything under one root:\n\n```\n/\n```\n\nUnlike Windows (C:\\, D:\\, E:\\), Linux has a single unified tree:\n\n```\n/\n├── home\n├── etc\n├── var\n├── usr\n├── opt\n├── tmp\n├── dev\n├── proc\n└── root\n```\n\n**Before memorizing directories, understand these path concepts:**\n\n- **Absolute path** — starts from root, e.g. `/home/aditya/projects/app.jar`\n- **Relative path** — relative to your current directory, e.g. `projects/app.jar`\n- **Current working directory** — where you are right now\n- **Parent directory** — the directory above your current one\n- **Home directory** — your user's home (`~` or `/home/username`)\n- **Root directory** — the very top of the filesystem (`/`)\n\n**Essential commands to learn first (don't memorize dozens yet):**\n\n```\npwd  ls  cd  mkdir  dir  touch  cp  mv  rm  cat\nless  head  tail\n```\n\nAlso learn: `ls -l` and `ls -a`",
+    },
+    {
+      id: 'linux-directory-hierarchy',
+      title: 'Phase 2 — Linux Directory Hierarchy',
+      content:
+        "You don't need to memorize the entire Filesystem Hierarchy Standard. Focus on these:\n\n**`/home`** — Normal users' home directories.\n```\n/home/aditya\n/home/rohit\n```\nComparable to user folders on Windows.\n\n**`/root`** — Home directory of the `root` user. Don't confuse `/` (root of filesystem) with `/root` (root user's home). They are different.\n\n**`/etc`** — System and application configuration. **Very important for DevOps.** Examples:\n```\n/etc/nginx/\n/etc/ssh/\n/etc/systemd/\n/etc/hosts\n```\nMental model: `/etc ≈ configuration`\n\n**`/var`** — Data that changes while the system runs. Especially `/var/log` for logs.\n```\n/var/log/nginx/\n/var/lib/docker/\n/var/lib/mysql/\n```\nMental model: `/var ≈ runtime / changing application data`\n\n**`/tmp`** — Temporary files. Cleared on reboot.\n\n**`/opt`** — Optional/third-party applications, e.g. `/opt/myapp`. Nice location for manually deployed software.\n\n**`/usr`** — Installed programs, libraries, and shared resources. Frequently encounter:\n```\n/usr/bin\n/usr/local/bin\n```\nFor DevOps: understand what it represents, not every subdirectory.\n\n**`/proc`** — Not a real disk directory. Linux exposes kernel and process information through it. `/proc/1234` might represent process ID 1234. Key insight: **Linux exposes many system concepts as files.**\n\n**`/dev`** — Represents devices: `/dev/null`, `/dev/sda`. Understand the idea, don't dive deeply into device management.",
+    },
+    {
+      id: 'linux-finding-inspecting',
+      title: 'Phase 3 — Finding and Inspecting Files',
+      content:
+        "Before permissions, learn how DevOps engineers actually navigate servers.\n\n**Finding Files — `find`**\n```bash\nfind /var/log -name \"*.log\"\n```\n\nAlso understand `which`:\n```bash\nwhich java\n# → /usr/bin/java\n```\nThis answers: *Which executable will Linux run when I type `java`?*\n\n**Viewing Files and Logs**\n\nVery important commands:\n```\ncat\nless\nhead\ntail\n```\n\nEspecially:\n```bash\ntail -f application.log\n```\n\nBecause DevOps work frequently means:\n```\ndeploy application\n    ↓\napplication fails\n    ↓\nopen logs\n    ↓\nwatch logs live\n```\n\n`tail -f` follows a log file in real time — essential when debugging a deployment that just went wrong.",
+    },
+    {
+      id: 'linux-users-groups',
+      title: 'Phases 4 & 5 — Users, Groups & Ownership',
+      content:
+        "**Linux is a multi-user operating system.** Imagine a server with:\n```\nServer\n|\n├── root\n├── ubuntu\n├── deploy\n├── nginx\n└── mysql\n```\n\nDifferent processes run as different users:\n```\nnginx process  → nginx user\nmysql process  → mysql user\nyour shell     → ubuntu user\n```\n\nLearn: `whoami` and `id`\n\n---\n\n**Groups** let multiple users share access:\n```\ndevelopers\n├── aditya\n├── rohit\n└── harshita\n```\n\nThen files can belong to:\n```\nOwner: aditya\nGroup: developers\n```\n\nThis prepares you for Linux permissions. Learn: `id` and `groups`\n\n---\n\n**Ownership — every file has it.** Run:\n```bash\nls -l\n```\n\nYou may see:\n```\n-rw-r--r-- 1 aditya developers 2048 Aug 8 app.conf\n```\n\nThe important part:\n```\naditya  developers\n  ↓         ↓\nowner    group\n```\n\nEvery file essentially has:\n```\nFile\n├── Owner\n├── Group\n└── Permissions\n```",
+    },
+    {
+      id: 'linux-permissions-chmod',
+      title: 'Phases 6 & 7 — Linux Permissions & chmod',
+      content:
+        "**Three basic permissions:**\n```\nr = read\nw = write\nx = execute\n```\n\nLinux defines them for three categories:\n```\nuser\ngroup\nothers\n```\n\nSo `rwxr-xr--` means:\n```\nUser   → rwx\nGroup  → r-x\nOthers → r--\n```\n\nSpend significant time understanding this — it is far more important than memorizing syntax.\n\n**For files:**\n```\nr → read file\nw → modify file\nx → execute file\n```\n\n**For directories (the meaning changes):**\n```\nr → list directory contents\nw → create/delete entries\nx → enter/traverse directory\n```\n\nDevOps engineers must understand this distinction.\n\n---\n\n**chmod — numeric permissions (emphasize these, you'll encounter them everywhere):**\n```\nr = 4\nw = 2\nx = 1\n```\n\nTherefore:\n```\n7 = rwx\n6 = rw-\n5 = r-x\n4 = r--\n```\n\n`chmod 755 deploy.sh` means:\n```\nOwner  → 7 → rwx\nGroup  → 5 → r-x\nOthers → 5 → r-x\n```\n\n`chmod 600 secret.key` means:\n```\nOwner        → rw-\nEveryone else → ---\n```\n\n**Useful DevOps examples:**\n```bash\nchmod +x deploy.sh\nchmod 755 script.sh\nchmod 600 private-key.pem\n```",
+    },
+    {
+      id: 'linux-chown-sudo',
+      title: 'Phases 8 & 9 — chown, chgrp & sudo',
+      content:
+        "**What if permissions are correct, but the wrong user owns the file?**\n\nThat's where `chown` comes in.\n\nExample:\n```bash\nsudo chown ubuntu:developers app.jar\n```\n\nMeaning:\n```\nowner → ubuntu\ngroup → developers\n```\n\nLearn both `chown` and `chgrp`, but `chown user:group` is usually enough for practical DevOps usage.\n\n---\n\n**sudo and root**\n\nLinux separates:\n```\nnormal user\n    ↓\nlimited permissions\n\nroot\n    ↓\nalmost unrestricted access\n```\n\nInstead of permanently working as root, use:\n```bash\nsudo command\n```\n\nExample:\n```bash\nsudo systemctl restart nginx\n```\n\nStudents should understand **why sudo is needed**, rather than treating `sudo` as something you add whenever a command fails.",
+    },
+    {
+      id: 'linux-processes-signals',
+      title: 'Phases 10–13 — Processes, Inspection & Signals',
+      content:
+        "**Program vs Process:**\n```\nProgram → static executable/file\nProcess → running instance of program\n```\n\n`/usr/bin/java` is a program stored on disk. When executed with `java -jar app.jar`, Linux creates a **Process** with a unique **PID**.\n\n---\n\n**Process Inspection — essential commands:**\n```\nps  ps aux  top\n```\n\nOptionally `htop` if available. Students should recognize: `PID`, `USER`, `CPU`, `MEM`, `COMMAND`. Don't memorize all `ps` flags. This is far more useful in practice:\n```bash\nps aux | grep java\n```\n\n---\n\n**Foreground and Background Processes:**\n\n```bash\njava -jar app.jar      # foreground — terminal is occupied\njava -jar app.jar &    # background — terminal is free\n```\n\nLearn: `jobs`, `fg`, `bg`, `&`\n\nThe important question: *What happens if I close my SSH session?* → This leads naturally to long-running services.\n\n---\n\n**Process Signals — `kill` sends a signal, not just destroys:**\n\n```bash\nkill 1234     # asks the process to terminate gracefully (SIGTERM)\nkill -9 1234  # forces it (SIGKILL)\n```\n\nPractical difference:\n```\nSIGTERM → Please terminate gracefully\nSIGKILL → Kernel immediately stops process\n```\n\nDevOps engineers should avoid instinctively using `kill -9`.",
+    },
+    {
+      id: 'linux-services-systemd',
+      title: 'Phases 14–17 — Services, systemd & systemctl',
+      content:
+        "**Why background processes aren't enough.** Running `java -jar app.jar &` has problems:\n```\nWhat happens after reboot?\nWhat if the application crashes?\nWho restarts it?\nWhere do logs go?\nHow do we consistently start/stop it?\n```\n\nThis naturally introduces **Services** — programs intended to run continuously or in the background:\n```\nnginx\nmysql\ndocker\nssh\njenkins\n```\n\nMany are also called **daemons**.\n\n---\n\n**systemd** — now students finally understand why it exists:\n```\nLinux boots\n    ↓\nsystemd starts\n    ↓\nsystemd starts required services\n```\n\nsystemd can:\n```\nstart services\nstop services\nrestart services\nautomatically start them at boot\ntrack their state\nmanage dependencies\ncollect logs\nrestart failed services\n```\n\n---\n\n**systemctl — the part DevOps engineers use constantly:**\n\n```bash\nsystemctl status nginx\nsystemctl start nginx\nsystemctl stop nginx\nsystemctl restart nginx\nsystemctl enable nginx    # auto-start at boot\nsystemctl disable nginx\n```\n\nCritical difference:\n```\nstart  → Start it right now\nenable → Configure it to start automatically on boot\n```\n\n`sudo systemctl enable nginx` and `sudo systemctl start nginx` do **different things**.\n\n---\n\n**systemd Unit Files** — learn the concept, don't memorize every directive:\n\n```\n/etc/systemd/system/myapp.service\n```\n\nExample:\n```ini\n[Unit]\nDescription=My Spring Boot Application\n\n[Service]\nUser=ubuntu\nExecStart=/usr/bin/java -jar /opt/myapp/app.jar\nRestart=always\n```",
+    },
+  ],
 };
 
 const LINUX_VIRTUALIZATION_SECTIONS = [
@@ -1325,6 +1375,11 @@ function buildLessons() {
         lesson.sections = [...DOCKER_VOLUMES_SECTIONS, ...DOCKER_POSTGRES_PROJECT_SECTIONS];
         lesson.image = DOCKER_VOLUMES_SECTIONS[0].image;
         lesson.imageAlt = DOCKER_VOLUMES_SECTIONS[0].imageAlt;
+      }
+      // Linux Essentials notes PDF — attached to the Create a Linux User module (Day 2).
+      if (title === 'Create a Linux User') {
+        lesson.pdfUrl = '/devops-notes/Notes.pdf';
+        lesson.pdfLabel = 'Linux Essentials Notes (PDF)';
       }
       // The DevOps fundamentals module is the home for the full guide download.
       if (title === 'Fundamentals of DevOps') {
