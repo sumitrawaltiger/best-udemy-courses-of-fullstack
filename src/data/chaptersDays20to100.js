@@ -2456,73 +2456,125 @@ export const chaptersDays20to100 = [
   },
   {
     "id": 40,
-    "slug": "backend-capstone-project",
+    "slug": "openrouter-ai-chat-backend",
     "track": "thunder",
     "day": 40,
-    "title": "Backend Capstone Project",
-    "subtitle": "Build and ship a production-ready API",
+    "title": "OpenRouter Integration — AI Chat Backend",
+    "subtitle": "Lecture 21: wire up OpenRouter SDK, conversation context, token tracking, and rolling summaries",
     "duration": "2 hrs",
     "createdOn": "24 Aug 2026",
     "status": "published",
     "topics": [
-      "Capstone requirements",
-      "Full API build",
-      "Auth + database",
-      "Error handling",
-      "Backend phase recap"
+      "Project structure & OpenRouter setup",
+      "Generating AI responses",
+      "Building conversation context",
+      "Token & usage tracking",
+      "Rolling conversation summaries",
+      "Message controller & routes"
     ],
     "sections": [
       {
-        "id": "capstone-requirements",
-        "title": "Capstone requirements",
-        "content": "Learn **Capstone requirements** in Day 40 of Thunder: 100 Days of Code. Build and ship a production-ready API",
-        "tryIt": "console.log(\"Day 40: Backend Capstone Project\");"
+        "id": "project-structure",
+        "title": "Project Structure",
+        "content": "The AI chat backend follows a clean MVC-style layout. Every concern lives in its own folder — config wires up clients, models define schemas, services hold business logic, controllers handle HTTP, routes map URLs, and utils hold pure helpers.\n\n```\nproject\n├── config\n│   ├── database.js\n│   └── openRouter.js\n├── controllers\n│   └── messageController.js\n├── models\n│   ├── userSchema.js\n│   ├── chatSchema.js\n│   └── messageSchema.js\n├── routes\n│   └── messageRoutes.js\n├── services\n│   ├── openRouterService.js\n│   └── summaryService.js\n└── utils\n    ├── chatContext.js\n    ├── tokenUsage.js\n    └── userUsage.js\n```\n\n**Step 1 — install the SDK:**",
+        "code": "npm install @openrouter/sdk"
       },
       {
-        "id": "full-api-build",
-        "title": "Full API build",
-        "content": "Learn **Full API build** in Day 40 of Thunder: 100 Days of Code. Build and ship a production-ready API",
-        "tryIt": "console.log(\"Day 40: Backend Capstone Project\");"
+        "id": "env-and-config",
+        "title": ".env + config/openRouter.js",
+        "content": "Store your OpenRouter API key in `.env` — never commit it. The config file creates a single shared client instance and throws early if the key is missing, so the server fails loudly at startup instead of silently at request time.",
+        "code": "// .env\nOPENROUTER_API_KEY=sk-or-v1-your-key-here\nDEFAULT_AI_MODEL=openrouter/free\n\n// config/openRouter.js\nimport { OpenRouter } from \"@openrouter/sdk\";\n\nif (!process.env.OPENROUTER_API_KEY) {\n  throw new Error(\"OPENROUTER_API_KEY is missing\");\n}\n\nconst openRouter = new OpenRouter({\n  apiKey: process.env.OPENROUTER_API_KEY,\n});\n\nexport default openRouter;"
       },
       {
-        "id": "auth-database",
-        "title": "Auth + database",
-        "content": "Learn **Auth + database** in Day 40 of Thunder: 100 Days of Code. Build and ship a production-ready API",
-        "tryIt": "console.log(\"Day 40: Backend Capstone Project\");"
+        "id": "openrouter-service",
+        "title": "services/openRouterService.js — Generating AI Responses",
+        "content": "`generateAIResponse` is the single entry point for all AI calls. It sends a `model` + `messages` array to OpenRouter and returns the reply text plus token counts. Centralising this means every caller gets consistent error handling and usage data — no duplicated SDK calls spread across controllers.",
+        "code": "import openRouter from \"../config/openRouter.js\";\n\nexport const generateAIResponse = async ({ model, messages }) => {\n  const completion = await openRouter.chat.send({\n    chatRequest: { model, messages },\n  });\n\n  const aiReply = completion.choices[0]?.message?.content;\n  if (!aiReply) throw new Error(\"AI response is empty\");\n\n  const promptTokens = completion.usage?.promptTokens || 0;\n  const completionTokens = completion.usage?.completionTokens || 0;\n\n  return {\n    aiReply,\n    usage: {\n      promptTokens,\n      completionTokens,\n      totalTokens: promptTokens + completionTokens,\n    },\n  };\n};"
       },
       {
-        "id": "error-handling",
-        "title": "Error handling",
-        "content": "Learn **Error handling** in Day 40 of Thunder: 100 Days of Code. Build and ship a production-ready API",
-        "tryIt": "console.log(\"Day 40: Backend Capstone Project\");"
+        "id": "chat-context",
+        "title": "utils/chatContext.js — Building Conversation Context",
+        "content": "`buildMessagesForAI` assembles the exact array the model receives. The order matters:\n\n1. **System prompt** — defines the AI's persona and rules\n2. **Rolling summary** — if the conversation is long, a compressed summary of earlier messages replaces the raw history (saves tokens)\n3. **Recent messages** — the last N messages the model hasn't seen yet\n4. **Current user message** — the new question\n\nThis pattern keeps context within the model's token window regardless of how long the conversation gets.",
+        "code": "const SYSTEM_PROMPT = `\nYou are a helpful AI assistant.\nAnswer the user's question clearly and accurately.\nIf the user asks for code, provide clean and practical code.\nIf the user asks for explanation, explain in a simple and structured way.\nIf you are unsure, say that you are unsure instead of guessing.\n`;\n\nexport const buildMessagesForAI = ({ chat, oldMessages, currentMessage }) => {\n  const messages = [{ role: \"system\", content: SYSTEM_PROMPT }];\n\n  // inject rolling summary instead of full history\n  if (chat.summary && chat.summary.trim() !== \"\") {\n    messages.push({\n      role: \"system\",\n      content: `Previous conversation summary:\\n${chat.summary}`,\n    });\n  }\n\n  // append unsummarized messages\n  for (const msg of oldMessages) {\n    messages.push({ role: msg.role, content: msg.content });\n  }\n\n  // append current user message\n  messages.push({ role: \"user\", content: currentMessage });\n\n  return messages;\n};"
+      },
+      {
+        "id": "user-usage",
+        "title": "utils/userUsage.js — Per-User Token Limits",
+        "content": "Three helpers enforce a sliding token quota per user:\n\n- **`resetUsageIfNeeded`** — resets the counter every 5 hours so users get a fresh allowance regularly\n- **`hasTokenLimitReached`** — returns true when the user has exhausted their quota (controller returns 429)\n- **`addUserTokenUsage`** — increments both the rolling window count and the lifetime total",
+        "code": "export const resetUsageIfNeeded = async (user) => {\n  const now = new Date();\n  if (now > user.usage.resetAt) {\n    user.usage.tokenUsed = 0;\n    user.usage.resetAt = new Date(Date.now() + 5 * 60 * 60 * 1000); // +5 hours\n    await user.save();\n  }\n};\n\nexport const hasTokenLimitReached = (user) =>\n  user.usage.tokenUsed >= user.usage.tokenLimit;\n\nexport const addUserTokenUsage = async (user, totalTokens) => {\n  user.usage.tokenUsed += totalTokens;\n  user.usage.totalTokenUsed += totalTokens;\n  await user.save();\n};"
+      },
+      {
+        "id": "token-usage",
+        "title": "utils/tokenUsage.js — Per-Chat Token Tracking",
+        "content": "`addChatTokenUsage` keeps a running token tally on the chat document itself — prompt tokens, completion tokens, and total. This lets you show per-chat cost breakdowns in the UI and helps `summaryService` decide when to summarise.",
+        "code": "export const addChatTokenUsage = async (chat, usage) => {\n  chat.usage.promptTokens += usage.promptTokens;\n  chat.usage.completionTokens += usage.completionTokens;\n  chat.usage.totalTokens += usage.totalTokens;\n  await chat.save();\n};"
+      },
+      {
+        "id": "summary-service",
+        "title": "services/summaryService.js — Rolling Conversation Summaries",
+        "content": "When a chat accumulates 20 unsummarised messages, `updateSummaryIfNeeded` fires — it asks the model to summarise just those messages (not the whole history), appending to any existing summary. This keeps the context window short without losing information.\n\nKey fields on the chat document:\n- `summarizedTillMessageNumber` — how many messages have been compressed so far\n- `summary` — the current rolling summary string\n- `summaryUpdatedAt` — timestamp of the last summary run\n\nThe function runs **after** the HTTP response is sent (fire-and-forget) so the user never waits for it.",
+        "code": "import Chat from \"../model/chatSchema.js\";\nimport Message from \"../model/messageSchema.js\";\nimport User from \"../model/userSchema.js\";\nimport { generateAIResponse } from \"./openRouterService.js\";\n\nconst SUMMARY_CHUNK_SIZE = 20;\n\nexport const updateSummaryIfNeeded = async (chatId) => {\n  const chat = await Chat.findById(chatId);\n  if (!chat) return;\n\n  const unsummarizedCount = chat.messageCount - chat.summarizedTillMessageNumber;\n  if (unsummarizedCount < SUMMARY_CHUNK_SIZE) return;\n\n  const messagesToSummarize = await Message.find({ chatId: chat._id })\n    .sort({ createdAt: 1 })\n    .skip(chat.summarizedTillMessageNumber)\n    .limit(SUMMARY_CHUNK_SIZE);\n\n  if (messagesToSummarize.length === 0) return;\n\n  const summaryMessages = [\n    {\n      role: \"system\",\n      content: \"Summarize the conversation. Keep important context, user goals, decisions, and unresolved doubts. Do not add extra information.\"\n    },\n    {\n      role: \"user\",\n      content: `Previous summary: ${chat.summary || \"No previous summary yet.\"}`\n    },\n    ...messagesToSummarize.map((msg) => ({ role: msg.role, content: msg.content })),\n    { role: \"user\", content: \"Summarize the above conversation.\" }\n  ];\n\n  const { aiReply, usage } = await generateAIResponse({\n    model: chat.model,\n    messages: summaryMessages,\n  });\n\n  chat.summary = aiReply;\n  chat.summaryUpdatedAt = new Date();\n  chat.summarizedTillMessageNumber += messagesToSummarize.length;\n  chat.usage.promptTokens += usage.promptTokens;\n  chat.usage.completionTokens += usage.completionTokens;\n  chat.usage.totalTokens += usage.totalTokens;\n  await chat.save();\n\n  const user = await User.findById(chat.userId);\n  if (user) {\n    user.usage.tokenUsed += usage.totalTokens;\n    user.usage.totalTokenUsed += usage.totalTokens;\n    await user.save();\n  }\n};"
+      },
+      {
+        "id": "message-controller",
+        "title": "controllers/messageController.js — sendMessage & getMessages",
+        "content": "`sendMessage` is the main orchestrator. On each request it:\n\n1. Validates that content is not empty\n2. Resets the user's token window if expired, then checks the quota\n3. Finds an existing chat or creates a new one (model required for new chats)\n4. Fetches only the **unsummarised** messages to pass as context\n5. Calls `buildMessagesForAI` → `generateAIResponse`\n6. Persists both the user message and the assistant reply\n7. Updates token counts on the chat and user\n8. Responds with `201` immediately, then fires `updateSummaryIfNeeded` in the background\n\n`getMessages` is a simple fetch — finds the chat by `_id + userId` (ownership check built in) and returns all messages sorted oldest-first.",
+        "code": "import Chat from \"../model/chatSchema.js\";\nimport Message from \"../model/messageSchema.js\";\nimport { generateAIResponse } from \"../services/openRouterService.js\";\nimport { updateSummaryIfNeeded } from \"../services/summaryService.js\";\nimport { buildMessagesForAI } from \"../utils/chatContext.js\";\nimport { resetUsageIfNeeded, hasTokenLimitReached, addUserTokenUsage } from \"../utils/userUsage.js\";\nimport { addChatTokenUsage } from \"../utils/tokenUsage.js\";\n\nexport const sendMessage = async (req, res) => {\n  try {\n    const { chatId } = req.params;\n    const { content, model } = req.body;\n\n    if (!content || content.trim() === \"\")\n      return res.status(400).json({ message: \"Message content is required\" });\n\n    await resetUsageIfNeeded(req.user);\n\n    if (hasTokenLimitReached(req.user))\n      return res.status(429).json({ message: \"Token limit reached. Please try after some time.\", usage: req.user.usage });\n\n    let chat;\n    if (chatId) {\n      chat = await Chat.findOne({ _id: chatId, userId: req.user._id });\n      if (!chat) return res.status(404).json({ message: \"Chat not found\" });\n    } else {\n      const selectedModel = model || process.env.DEFAULT_AI_MODEL;\n      if (!selectedModel) return res.status(400).json({ message: \"Model is required for new chat\" });\n      chat = await Chat.create({ userId: req.user._id, model: selectedModel, topic: content.trim().slice(0, 40) });\n    }\n\n    // only fetch messages that haven't been summarised yet\n    const oldMessages = await Message.find({ chatId: chat._id })\n      .sort({ createdAt: 1 })\n      .skip(chat.summarizedTillMessageNumber);\n\n    const messagesForAI = buildMessagesForAI({ chat, oldMessages, currentMessage: content.trim() });\n    const { aiReply, usage } = await generateAIResponse({ model: chat.model, messages: messagesForAI });\n\n    const userMessage = await Message.create({ chatId: chat._id, role: \"user\", content: content.trim(), userId: req.user._id });\n    const assistantMessage = await Message.create({ chatId: chat._id, role: \"assistant\", content: aiReply, userId: req.user._id, usage });\n\n    chat.messageCount += 2;\n    if (chat.topic === \"New Chat\") chat.topic = content.trim().slice(0, 40);\n\n    await addChatTokenUsage(chat, usage);\n    await addUserTokenUsage(req.user, usage.totalTokens);\n\n    res.status(201).json({ message: \"Message sent successfully\", chatId: chat._id, reply: aiReply, usage, userMessage, assistantMessage });\n\n    // fire-and-forget — user does not wait for this\n    updateSummaryIfNeeded(chat._id).catch((err) => console.log(\"Summary update failed:\", err.message));\n  } catch (err) {\n    console.log(\"sendMessage error:\", err.message);\n    res.status(500).json({ message: \"Something went wrong\" });\n  }\n};\n\nexport const getMessages = async (req, res) => {\n  try {\n    const { chatId } = req.params;\n    const chat = await Chat.findOne({ _id: chatId, userId: req.user._id });\n    if (!chat) return res.status(404).json({ message: \"Chat not found\" });\n\n    const messages = await Message.find({ chatId: chat._id }).sort({ createdAt: 1 });\n\n    res.status(200).json({\n      message: \"Messages fetched successfully\",\n      chat: { id: chat._id, topic: chat.topic, model: chat.model, messageCount: chat.messageCount },\n      messages,\n    });\n  } catch (err) {\n    console.log(\"getMessages error:\", err.message);\n    res.status(500).json({ message: \"Something went wrong\" });\n  }\n};"
+      },
+      {
+        "id": "message-routes",
+        "title": "routes/messageRoutes.js — Wiring Routes",
+        "content": "All message routes sit behind `authMiddleware` — no anonymous access. Three routes cover every case:\n\n- `POST /` — start a new chat (no `chatId` yet, `model` required in body)\n- `POST /:chatId` — continue an existing chat\n- `GET /:chatId` — fetch all messages in a chat\n\nReusing `sendMessage` for both POST routes keeps the controller logic unified.",
+        "code": "import express from \"express\";\nimport { sendMessage, getMessages } from \"../controllers/messageController.js\";\nimport authMiddleware from \"../middleware/authMiddleware.js\";\n\nconst messageRouter = express.Router();\n\nmessageRouter.use(authMiddleware); // all routes require auth\n\nmessageRouter.post(\"/\", sendMessage);          // new chat\nmessageRouter.post(\"/:chatId\", sendMessage);   // continue chat\nmessageRouter.get(\"/:chatId\", getMessages);    // fetch messages\n\nexport default messageRouter;"
       }
     ],
     "quiz": [
       {
-        "question": "What is the main topic of Day 40?",
+        "question": "Why does the controller call `updateSummaryIfNeeded` AFTER sending the HTTP response?",
         "options": [
-          "Backend Capstone Project",
-          "HTML tables only",
-          "Linux kernel modules",
-          "Photoshop layers"
+          "So the user doesn't wait for the summary computation",
+          "Because summaries must run before responses",
+          "To avoid saving the chat document",
+          "Because OpenRouter requires a delay"
         ],
         "answer": 0,
-        "explanation": "Module 40 focuses on Backend Capstone Project."
+        "explanation": "Summarisation is expensive — firing it after res.status(201).json() means the user gets an instant reply while the background job runs asynchronously."
       },
       {
-        "question": "Which phase includes this module?",
+        "question": "What does `buildMessagesForAI` inject BEFORE the recent messages when a summary exists?",
         "options": [
-          "Phase 2: Backend Mastery",
-          "Only DevOps",
-          "Only CSS",
-          "Not part of the course"
+          "A system message containing the rolling summary",
+          "The user's profile data",
+          "The full message history from the database",
+          "A blank assistant turn"
         ],
         "answer": 0,
-        "explanation": "This module belongs to Phase 2: Backend Mastery."
+        "explanation": "The rolling summary is injected as a second system message so the model has compressed context of earlier conversation without consuming tokens for every past message."
+      },
+      {
+        "question": "What HTTP status code does `sendMessage` return when the user has exhausted their token quota?",
+        "options": [
+          "429 Too Many Requests",
+          "401 Unauthorized",
+          "403 Forbidden",
+          "500 Internal Server Error"
+        ],
+        "answer": 0,
+        "explanation": "429 is the standard rate-limiting status — \"you've used too much, try later\" — distinct from 401 (not authenticated) and 403 (not permitted)."
+      },
+      {
+        "question": "Why does `Message.find()` use `.skip(chat.summarizedTillMessageNumber)` when fetching context?",
+        "options": [
+          "To skip messages already captured in the rolling summary",
+          "To fetch only the most recent message",
+          "To paginate results for the frontend",
+          "To exclude assistant messages"
+        ],
+        "answer": 0,
+        "explanation": "Messages up to summarizedTillMessageNumber are already compressed into chat.summary — fetching them again would waste tokens. Only the unsummarised tail is sent to the model."
       }
     ],
-    "youtubeUrl": "https://www.youtube.com/watch?v=fgTGADljAeg",
-    "youtubeTitle": "Node.js API Full Course — freeCodeCamp",
+    "notionUrl": "https://app.notion.com/p/Lecture-21-Code-3b5a9af81c9880ea9b2aefc7d852ed21",
     "paidLectureUrl": "https://rohittnegi.akamai.net.in/new-courses/18/content?activeTab=Content",
     "paidLectureLabel": "Full In-Depth Lecture — Thunder Course"
   },
