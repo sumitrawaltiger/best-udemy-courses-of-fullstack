@@ -102,7 +102,7 @@ export const INTERVIEW_PREP_WEEKS = 0;
 // DevOps(1501-1600) → Cloud/AWS(1601-1700) → Capstone(1701-1850, 150 days).
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
 //  chapterFactory.js = 8 Aug 2026, so module Day 1 also dates to 8 Aug 2026.)
-export const JOURNEY_START_LABEL = '8 Aug 2026';
+export const JOURNEY_START_LABEL = '10 Aug 2026';
 export const JOURNEY_END_LABEL = '31 Aug 2031';
 export const JOURNEY_TOTAL_DAYS = 1850;
 // Factory calendar: Day 1 = 8 Aug 2026 (COURSE_START); factory day N = journey Day N.
