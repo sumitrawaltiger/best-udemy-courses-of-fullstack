@@ -33,7 +33,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 5-year (2,000-day) plan — 20 skills: 19×100 days + Capstone 100 days: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React → Next JS → React Native → Express JS → Databases → J2SE → J2EE → JPA → Spring Boot → Microservices → DevOps → Cloud (AWS) → Testing & QA → System Design → Capstone Project',
+    text: 'reviewed the full 5-year (2,000-day) plan — 20 skills: 19×100 days + Capstone 100 days: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React → Next JS → React Native → Express JS → Databases → J2SE → J2EE → JPA → Spring Boot → Microservices → DevOps → Cloud (AWS) → Kubernetes → System Design → Capstone Project',
   },
   {
     title: 'Ready for Skill 1 · Python',
@@ -134,7 +134,7 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-cyan',
     subtitle: '19 skills · 100 days each · starts 11 Aug 2026',
     description:
-      '20 skills: 19×100 days + Capstone 100 days: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React → Next JS → React Native → Express JS → Databases → J2SE → J2EE → JPA → Spring Boot → Microservices → DevOps → Cloud (AWS) → Testing & QA → System Design → Capstone Project. DSA practiced 30 min daily. 2,000 days total.',
+      '20 skills: 19×100 days + Capstone 100 days: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React → Next JS → React Native → Express JS → Databases → J2SE → J2EE → JPA → Spring Boot → Microservices → DevOps → Cloud (AWS) → Kubernetes → System Design → Capstone Project. DSA practiced 30 min daily. 2,000 days total.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {

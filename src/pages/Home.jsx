@@ -83,11 +83,11 @@ const BTECH_ROADMAP = [
   },
   {
     year: 'Skills 16–20',
-    theme: 'DevOps → Cloud (AWS) → Testing & QA → System Design → Capstone',
+    theme: 'DevOps → Cloud (AWS) → Kubernetes → System Design → Capstone',
     icon: '🚀',
     accent: 'y5',
-    topics: ['Linux', 'Docker', 'Kubernetes', 'CI/CD', 'AWS Cloud', 'Testing & QA', 'System Design', 'Capstone'],
-    blurb: 'Ship, scale, and master — 100 days each of DevOps, AWS Cloud, Testing & QA, and a dedicated System Design intensive, then a 100-day Capstone tying all 19 skills together. Days 1501–2000.',
+    topics: ['Linux', 'Docker', 'CI/CD', 'AWS Cloud', 'Kubernetes', 'CKA', 'System Design', 'Capstone'],
+    blurb: 'Ship, scale, and orchestrate — 100 days each of DevOps, AWS Cloud, Kubernetes (CKA), and a dedicated System Design intensive, then a 100-day Capstone tying all 19 skills together. Days 1501–2000.',
     links: [
       { label: 'DevOps', to: '/devops' },
       { label: 'AWS Cloud', to: '/aws' },
@@ -127,7 +127,7 @@ export default function Home() {
             <p className="fle-sub">
               A structured <strong>2,000-day journey</strong> — <strong>20 skills, 19×100 days + Capstone 100</strong>:
               Python, FastAPI, Agentic AI, JavaScript, TypeScript, React JS, Next JS, React Native,
-              Express JS, Databases, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS), Testing &amp; QA,
+              Express JS, Databases, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS), Kubernetes,
               System Design, and a 100-day Capstone Project integrating all 19 skills.
               Data Structures &amp; Algorithms practiced throughout. One skill at a time, fully focused, front to back.
             </p>
@@ -215,7 +215,7 @@ export default function Home() {
           <p className="btech-sub">
             A structured path to a full lifecycle engineer — <strong>5 phases</strong>:{' '}
             <strong>Python Stack (Agentic AI → Python → FastAPI) → TypeScript Stack → Java Stack → DevOps
-            Stack → Testing &amp; QA → System Design → Capstone Project</strong> — <strong>2,000 days</strong> total. Each stack bundles several tracks on this
+            Stack → Kubernetes → System Design → Capstone Project</strong> — <strong>2,000 days</strong> total. Each stack bundles several tracks on this
             site. Data Structures &amp; Algorithms are practiced throughout every stack; System Design gets a dedicated
             100-day intensive as Skill 19 before the Capstone.
           </p>
@@ -897,7 +897,7 @@ export default function Home() {
             <strong>TypeScript Stack (JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS)</strong>,{' '}
             <strong>Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices)</strong>,{' '}
             <strong>DevOps Stack (DevOps, AWS Cloud)</strong>,{' '}
-            <strong>Testing &amp; QA</strong>, a dedicated{' '}
+            <strong>Kubernetes</strong>, a dedicated{' '}
             <strong>System Design</strong> intensive, and a{' '}
             <strong>Capstone Project</strong> integrating all five stacks —
             with <strong>DSA &amp; System Design</strong> practiced throughout every stack, not saved for one
