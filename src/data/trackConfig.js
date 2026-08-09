@@ -94,12 +94,13 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: Day 1 = 8 Aug 2026. User-facing framing: 1850 days / 18 skills / 17×100 days + Capstone 150 days.
+// Full journey: Day 1 = 11 Aug 2026. User-facing framing: 2000 days / 20 skills / 19×100 days + Capstone 100 days.
 // Skill order: Python(1-100) → FastAPI(101-200) → Agentic AI(201-300) → JavaScript(301-400) →
-// JavaScript(401-500) → TypeScript(501-600) → React(601-700) → Next JS(701-800) →
-// React Native(801-900) → Express JS(901-1000) → J2SE(1001-1100) → J2EE(1101-1200) →
+// TypeScript(401-500) → React(501-600) → Next JS(601-700) → React Native(701-800) →
+// Express JS(801-900) → Databases(901-1000) → J2SE(1001-1100) → J2EE(1101-1200) →
 // JPA(1201-1300) → Spring Boot(1301-1400) → Microservices(1401-1500) →
-// DevOps(1501-1600) → Cloud/AWS(1601-1700) → Capstone(1701-1850, 150 days).
+// DevOps(1501-1600) → Cloud/AWS(1601-1700) → Testing & QA(1701-1800) →
+// System Design(1801-1900) → Capstone(1901-2000, 100 days).
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
 //  chapterFactory.js = 8 Aug 2026, so module Day 1 also dates to 8 Aug 2026.)
 export const JOURNEY_START_LABEL = '11 Aug 2026';
