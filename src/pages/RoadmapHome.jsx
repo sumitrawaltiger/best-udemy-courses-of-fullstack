@@ -445,7 +445,11 @@ export default function RoadmapHome() {
           border: '1.5px solid rgba(212,168,67,0.38)',
           borderRadius: '18px', padding: '24px 28px',
         }}>
-          <LeetCode2000Badge size={110} />
+          <img
+            src="/roadmap-notes/2000-days-of-leetcode.jpeg"
+            alt="LeetCode 2000 Days Badge"
+            style={{ width: 110, height: 110, objectFit: 'contain', borderRadius: '12px', flexShrink: 0 }}
+          />
           <div>
             <p style={{ color: '#f5e070', fontWeight: 900, fontSize: '1.1rem', marginBottom: '4px', letterSpacing: '0.04em' }}>
               LeetCode 2,000 Days Badge

@@ -368,7 +368,11 @@ export default function Day000() {
             borderRadius: '16px', padding: '24px 28px',
             maxWidth: '620px', margin: '0 auto',
           }}>
-            <LeetCode2000Badge size={120} />
+            <img
+              src="/roadmap-notes/2000-days-of-leetcode.jpeg"
+              alt="LeetCode 2000 Days Badge"
+              style={{ width: 120, height: 120, objectFit: 'contain', borderRadius: '12px', flexShrink: 0 }}
+            />
             <div>
               <p style={{ color: '#f0d060', fontWeight: 900, fontSize: '1.05rem', marginBottom: '4px', letterSpacing: '0.04em' }}>
                 LeetCode 2,000 Days Badge

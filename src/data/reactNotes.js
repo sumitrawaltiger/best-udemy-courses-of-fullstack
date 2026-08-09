@@ -7,7 +7,7 @@ export const REACT_META = {
   subtitle: 'Illustrated Episodes · React from Zero to Production',
   blurb:
     'React from the ground up — illustrated, one episode at a time. Component-based thinking, the Virtual DOM, JSX, hooks (useState, useEffect, useRef, useContext), state management, routing, performance optimisation, and real-world patterns — each episode paired with the full written notes and every code snippet.',
-  totalDays: 5,
+  totalDays: 8,
   startDate: '7 Mar 2028',
 };
 
@@ -623,6 +623,80 @@ function ScoreCard({ title, score, isWinner }) {
         label: 'Mini Challenge — Counter with + and − buttons',
         code: "import { useState } from 'react';\n\nfunction CounterApp() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div style={{ textAlign: 'center', marginTop: '2rem' }}>\n      <button onClick={() => setCount(count - 1)}>−</button>\n      <span style={{ margin: '0 1rem', fontSize: '1.5rem' }}>\n        {count}\n      </span>\n      <button onClick={() => setCount(count + 1)}>+</button>\n    </div>\n  );\n}\n\nexport default CounterApp;",
         note: 'Mini challenge from the infographic: increase button, count display, decrease button — all using onClick.',
+      },
+    ],
+  },
+  // ── Episode 8 ─────────────────────────────────────────────────────────────
+  {
+    day: 8,
+    date: '14 Mar 2028',
+    group: 'hooks',
+    title: 'Forms Basics in React',
+    tagline: 'Forms are used to collect data from users — in React, form elements are controlled using State.',
+    image: '/react-notes/forms-basics-in-react.jpeg',
+    tags: ['Forms', 'Controlled Components', 'onChange', 'onSubmit', 'e.preventDefault', 'useState', 'Input Types'],
+    notes: [
+      { k: 'What is a Form?', v: 'A form is a collection of **input elements** like text boxes, checkboxes, radio buttons, dropdowns, etc., that allow users to enter and submit data. In React, we handle form data using **State** and **event handlers**.' },
+      { k: 'Controlled Components', v: 'In React, form inputs are usually **controlled by State**. The value shown in the input always comes from State. User types → updates State (useState) → State sets the Input Value.' },
+      { k: 'onChange Handler', v: '`onChange` runs every time the user types and updates the state. The input `value` prop is always tied to state — so the input always reflects state.' },
+      { k: 'e.preventDefault()', v: 'Always use `e.preventDefault()` in `onSubmit` handlers to prevent the page from reloading when a form is submitted. Without it, the browser reloads the page and all React state is lost.' },
+      { k: 'Checkbox', v: '`<input type="checkbox" checked={checked} onChange={...} />` — use the `checked` prop (not `value`) for checkboxes, bound to a boolean state.' },
+      { k: 'Radio Button', v: '`<input type="radio" name="gender" value="Male" checked={...} onChange={...} />` — group radios with the same `name`; control which is selected with state.' },
+      { k: 'Dropdown (select)', v: '`<select value={city} onChange={...}>` — bind the `value` prop to state; each `<option>` has its own value. `onChange` fires when the selection changes.' },
+      { k: 'Textarea', v: '`<textarea value={message} onChange={...} rows="3" />` — in React, `<textarea>` is self-closing and uses a `value` prop (unlike plain HTML which uses inner text).' },
+      { k: 'Common Mistakes', v: '❌ Forgetting `e.preventDefault()` in submit. ❌ Not updating state in `onChange`. ❌ Using `defaultValue` instead of `value` (makes the input uncontrolled). ❌ Mixing controlled and uncontrolled inputs in the same form.' },
+      { k: 'Quick Summary', v: '**Forms in React = State + Events.** User Input → `onChange` → State → `onSubmit` → Handle Data. Keep inputs controlled by binding `value` to state and `onChange` to the setter.' },
+    ],
+    theory: [
+      {
+        h: 'What is a Form in React?',
+        p: 'Forms are the primary way to **collect data from users** — names, emails, passwords, search queries, settings.\n\nIn plain HTML, form data is managed by the browser (DOM). In React, we take control: we bind every input\'s value to a **React state variable** and update that state on every keystroke via `onChange`. This pattern is called a **Controlled Component** — React is the single source of truth for the input\'s value at all times.',
+      },
+      {
+        h: 'Controlled Components',
+        p: 'A **Controlled Component** is an input whose value is driven entirely by React state.\n\nThe cycle:\n1. User types in the input.\n2. `onChange` fires → calls the setter function (e.g. `setName(e.target.value)`).\n3. React updates state.\n4. Component re-renders with the new state value.\n5. The input displays the new value (from state).\n\nThis means React always knows exactly what is in every field — making validation, conditional logic, and form submission straightforward.\n\n```jsx\nconst [name, setName] = useState(\'\');\n<input value={name} onChange={(e) => setName(e.target.value)} />\n```',
+      },
+      {
+        h: 'Handling Form Submission',
+        p: 'Attach `onSubmit` to the `<form>` element (not the button). Inside the handler, always call `e.preventDefault()` first:\n\n```jsx\nfunction handleSubmit(e) {\n  e.preventDefault(); // stops the browser reload\n  // now safely read state values\n  console.log(name, email);\n}\n\n<form onSubmit={handleSubmit}>\n  ...\n  <button type="submit">Submit</button>\n</form>\n```\n\nWithout `e.preventDefault()`, the browser performs a full HTTP request, the page reloads, and all React state is wiped. The `type="submit"` button inside a form fires `onSubmit` automatically.',
+      },
+      {
+        h: 'Other Common Input Types',
+        p: '**Checkbox** — Uses `checked` (boolean) instead of `value`:\n```jsx\nconst [checked, setChecked] = useState(false);\n<input type="checkbox" checked={checked} onChange={(e) => setChecked(e.target.checked)} />\n```\n\n**Radio Button** — Group radios with the same `name`; compare `value` to state:\n```jsx\nconst [gender, setGender] = useState(\'\');\n<input type="radio" name="gender" value="Male" checked={gender === \'Male\'} onChange={(e) => setGender(e.target.value)} />\n```\n\n**Dropdown (select)** — Bind `value` prop to state:\n```jsx\nconst [city, setCity] = useState(\'Delhi\');\n<select value={city} onChange={(e) => setCity(e.target.value)}>\n  <option>Delhi</option><option>Mumbai</option><option>Pune</option>\n</select>\n```\n\n**Textarea** — In React, textarea is self-closing with a `value` prop:\n```jsx\nconst [message, setMessage] = useState(\'\');\n<textarea value={message} onChange={(e) => setMessage(e.target.value)} rows="3" />\n```',
+      },
+      {
+        h: 'Common Mistakes',
+        p: '**1. Forgetting e.preventDefault()** — The page reloads, losing all state.\n\n**2. Not updating state in onChange** — The input appears frozen because state never changes.\n\n**3. Using defaultValue instead of value** — `defaultValue` only sets the initial value and leaves the input uncontrolled. Use `value` to keep React in charge.\n\n**4. Mixing controlled and uncontrolled inputs** — Once an input is controlled (has a `value` prop), keep it controlled throughout its lifetime. Switching causes a React warning and unpredictable behaviour.',
+      },
+      {
+        h: 'Mini Challenge',
+        p: 'Build a contact form with three fields and a submit handler:\n\n- **Name** — text input\n- **Email** — email input\n- **Message** — textarea\n- **Submit button** — logs all three values and clears the form\n\nUse three separate `useState` calls, bind each field with `value` + `onChange`, and reset all three to `\'\'` inside `handleSubmit`.',
+      },
+      {
+        h: 'Quick Summary',
+        p: '**Forms in React = State + Events.**\n\n- Bind every input\'s `value` to a state variable.\n- Use `onChange` to update state on every keystroke.\n- Use `onSubmit` on the `<form>` (not the button).\n- Always call `e.preventDefault()` to stop the page reload.\n- `checked` prop for checkboxes and radio buttons; `value` for text, select, and textarea.\n\nMaster this pattern and you can build any form in React — login, signup, search, settings, checkout — all from the same foundation.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Controlled text input — NameForm',
+        code: "import { useState } from 'react';\n\nfunction NameForm() {\n  const [name, setName] = useState('');\n\n  return (\n    <div className=\"form-box\">\n      <h2>Enter Your Name</h2>\n      <input\n        type=\"text\"\n        value={name}\n        onChange={(e) => setName(e.target.value)}\n        placeholder=\"Type your name\"\n      />\n      <p>Hello, {name || 'Guest'}! 👋</p>\n    </div>\n  );\n}\n\nexport default NameForm;",
+        note: 'value is always read from state; onChange keeps state in sync with every keystroke.',
+      },
+      {
+        label: 'Form submit with e.preventDefault()',
+        code: "import { useState } from 'react';\n\nfunction NameForm() {\n  const [name, setName] = useState('');\n\n  function handleSubmit(e) {\n    e.preventDefault(); // stops page refresh\n    alert(`Submitted: ${name}`);\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input\n        type=\"text\"\n        value={name}\n        onChange={(e) => setName(e.target.value)}\n        placeholder=\"Your name\"\n      />\n      <button type=\"submit\">Submit</button>\n    </form>\n  );\n}",
+        note: 'Attach onSubmit to the <form>, not the button. e.preventDefault() is essential.',
+      },
+      {
+        label: 'All common input types — controlled',
+        code: "const [checked, setChecked] = useState(false);\nconst [gender, setGender] = useState('');\nconst [city, setCity] = useState('Delhi');\nconst [message, setMessage] = useState('');\n\n// Checkbox\n<input type=\"checkbox\" checked={checked}\n  onChange={(e) => setChecked(e.target.checked)} />\n\n// Radio\n<input type=\"radio\" name=\"gender\" value=\"Male\"\n  checked={gender === 'Male'}\n  onChange={(e) => setGender(e.target.value)} />\n\n// Dropdown\n<select value={city} onChange={(e) => setCity(e.target.value)}>\n  <option>Delhi</option>\n  <option>Mumbai</option>\n  <option>Pune</option>\n</select>\n\n// Textarea\n<textarea value={message} rows=\"3\"\n  onChange={(e) => setMessage(e.target.value)} />",
+        note: 'Checkboxes use e.target.checked (boolean). All others use e.target.value (string).',
+      },
+      {
+        label: 'Mini Challenge — Contact form (Name, Email, Message)',
+        code: "import { useState } from 'react';\n\nfunction ContactForm() {\n  const [name, setName] = useState('');\n  const [email, setEmail] = useState('');\n  const [message, setMessage] = useState('');\n\n  function handleSubmit(e) {\n    e.preventDefault();\n    console.log({ name, email, message });\n    // reset\n    setName(''); setEmail(''); setMessage('');\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input value={name} onChange={(e) => setName(e.target.value)}\n             placeholder=\"Name\" type=\"text\" />\n      <input value={email} onChange={(e) => setEmail(e.target.value)}\n             placeholder=\"Email\" type=\"email\" />\n      <textarea value={message} onChange={(e) => setMessage(e.target.value)}\n                placeholder=\"Message\" rows=\"4\" />\n      <button type=\"submit\">Submit</button>\n    </form>\n  );\n}\n\nexport default ContactForm;",
+        note: 'Mini challenge from Episode 8 — three controlled fields, one submit handler, form clears after submit.',
       },
     ],
   },
