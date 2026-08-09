@@ -76,11 +76,11 @@ const BTECH_ROADMAP = [
   },
   {
     year: 'Skills 11–15',
-    theme: 'J2SE → J2EE → JPA → Spring Boot → Microservices',
+    theme: 'J2SE → Automation Testing → JPA → Spring Boot → Microservices',
     icon: '☕',
     accent: 'y3',
-    topics: ['J2SE', 'J2EE', 'JPA', 'Spring Boot', 'Microservices'],
-    blurb: 'The full enterprise Java path — 100 days each of J2SE, J2EE, JPA, Spring Boot, and Microservices. Days 1001–1500.',
+    topics: ['J2SE', 'Automation Testing', 'JPA', 'Spring Boot', 'Microservices'],
+    blurb: 'Java (400 days) + Automation Testing (100 days) — J2SE, then test automation, then JPA, Spring Boot, and Microservices. Days 1001–1500.',
     links: [{ label: 'Java Stack', to: '/java' }],
   },
   {
@@ -129,7 +129,7 @@ export default function Home() {
             <p className="fle-sub">
               A structured <strong>2,000-day journey</strong> — <strong>20 skills, 19×100 days + Capstone 100</strong>:
               Python, FastAPI, Agentic AI, JavaScript, TypeScript, React JS, Next JS, React Native,
-              Databases, Express JS, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS), Kubernetes,
+              Databases, Express JS, J2SE, Automation Testing, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS), Kubernetes,
               System Design, and a 100-day Capstone Project integrating all 19 skills.
               Data Structures &amp; Algorithms practiced throughout. One skill at a time, fully focused, front to back.
             </p>
@@ -635,13 +635,13 @@ export default function Home() {
           <h2>Thunder++ — Java & Spring</h2>
           <p className="section-desc">
             The <strong>Java phases</strong>:{' '}
-            <strong>J2SE</strong>, <strong>J2EE</strong>, <strong>JPA</strong>, <strong>Spring Boot</strong>,{' '}
+            <strong>J2SE</strong>, <strong>Automation Testing</strong>, <strong>JPA</strong>, <strong>Spring Boot</strong>,{' '}
             <strong>Microservices</strong>, and <strong>Java Design Patterns</strong> — mapped from {JAVA_META.courses.length} Udemy courses into{' '}
             {javaChapters.length} modules on this site.
           </p>
           <div className="thunder-plus-highlights">
             <span>☕ J2SE</span>
-            <span>🏢 J2EE</span>
+            <span>🧪 Automation Testing</span>
             <span>🗄️ JPA</span>
             <span>🍃 Spring Boot</span>
             <span>📡 Microservices</span>
@@ -897,7 +897,7 @@ export default function Home() {
             <strong>5 phases</strong> — <strong>Python Stack (Agentic AI using Python, then Python
             &amp; FastAPI)</strong>,{' '}
             <strong>TypeScript Stack (JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS)</strong>,{' '}
-            <strong>Java Stack (J2SE, J2EE, JPA, Spring Boot, Microservices)</strong>,{' '}
+            <strong>Java Stack (J2SE, Automation Testing, JPA, Spring Boot, Microservices)</strong>,{' '}
             <strong>DevOps Stack (DevOps, AWS Cloud)</strong>,{' '}
             <strong>Kubernetes</strong>, a dedicated{' '}
             <strong>System Design</strong> intensive, and a{' '}

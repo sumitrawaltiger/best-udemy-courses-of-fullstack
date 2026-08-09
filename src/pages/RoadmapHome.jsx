@@ -43,7 +43,7 @@ function _calDate(dayN) {
 // Python (1–100) → FastAPI (101–200) → Agentic AI (201–300) →
 // JavaScript (301–400) → TypeScript (401–500) → React (501–600) →
 // Next JS (601–700) → React Native (701–800) → Databases (801–900) →
-// Express JS (901–1000) → J2SE (1001–1100) → J2EE (1101–1200) → JPA (1201–1300) →
+// Express JS (901–1000) → J2SE (1001–1100) → Automation Testing (1101–1200) → JPA (1201–1300) →
 // Spring Boot (1301–1400) → Microservices (1401–1500) →
 // DevOps (1501–1600) → Cloud / AWS (1601–1700) → Kubernetes (1701–1800) →
 // System Design (1801–1900) → Capstone (1901–2000, 100 days).
@@ -155,12 +155,12 @@ const SKILLS = [
     ],
   },
   {
-    id: 's12', arcClass: 'y3', icon: '🏢',
-    label: 'Skill 12 · J2EE',
+    id: 's12', arcClass: 'y3', icon: '🧪',
+    label: 'Skill 12 · Automation Testing',
     tagline: 'Days 1101–1200', duration: '100 days',
-    blurb: 'Enterprise Java — Servlets, JSP, and the full Java EE ecosystem for building server-side applications.',
+    blurb: 'End-to-end test automation — JUnit 5, Mockito, Testcontainers, REST-assured, Playwright, and performance testing with JMeter.',
     items: [
-      { icon: '🏢', title: 'J2EE', detail: 'Servlets · JSP · the Java EE ecosystem', source: 'Udemy', to: '/java' },
+      { icon: '🧪', title: 'Automation Testing', detail: 'JUnit · Mockito · Testcontainers · Playwright · REST-assured', source: 'Udemy', to: '/java' },
     ],
   },
   {
@@ -277,7 +277,7 @@ export default function RoadmapHome() {
         <p className="roadmap-hero-sub">
           Starts with <strong>Day 0 — environment setup</strong>, then <strong>20 skills</strong>{' '}
           mastered one at a time — <strong>Python → FastAPI → Agentic AI → JavaScript → TypeScript
-          → React JS → Next JS → React Native → Databases → Express JS → J2SE → J2EE → JPA → Spring Boot
+          → React JS → Next JS → React Native → Databases → Express JS → J2SE → Automation Testing → JPA → Spring Boot
           → Microservices → DevOps → Cloud (AWS) → Kubernetes → System Design → Capstone</strong> —{' '}
           <strong>19 skills at 100 days each + 100-day Capstone, 66 months (2,000 days)</strong> of focused daily practice,
           front to back. DSA practiced 30 min daily (1 LeetCode/day) throughout all 20 skills.
@@ -486,7 +486,7 @@ export default function RoadmapHome() {
           <strong>Python</strong> {'->'} <strong>FastAPI</strong> {'->'} <strong>Agentic AI</strong> (LangChain, LangGraph, MCP) {'->'}
           {' '}<strong>JavaScript</strong> {'->'} <strong>TypeScript</strong> {'->'}
           {' '}<strong>React JS</strong> {'->'} <strong>Next JS</strong> {'->'} <strong>React Native</strong> {'->'}
-          {' '}<strong>Databases</strong> (PostgreSQL · MongoDB · Redis) {'->'} <strong>Express JS</strong> {'->'} <strong>J2SE</strong> {'->'} <strong>J2EE</strong> {'->'} <strong>JPA</strong> {'->'}
+          {' '}<strong>Databases</strong> (PostgreSQL · MongoDB · Redis) {'->'} <strong>Express JS</strong> {'->'} <strong>J2SE</strong> {'->'} <strong>Automation Testing</strong> {'->'} <strong>JPA</strong> {'->'}
           {' '}<strong>Spring Boot</strong> {'->'} <strong>Microservices</strong> {'->'} <strong>DevOps</strong> {'->'} <strong>Cloud (AWS)</strong> {'->'}
           {' '}<strong>Kubernetes</strong> {'->'} <strong>System Design</strong> {'->'}
           {' '}<strong>Capstone Project</strong> (all 19 skills integrated, 100 days). One skill at a time, fully focused.

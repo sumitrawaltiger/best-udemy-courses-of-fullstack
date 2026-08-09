@@ -25,9 +25,9 @@ export const JAVA_UDEMY_COURSES = [
 
 export const JAVA_META = {
   title: 'Thunder++ — Java & Spring',
-  subtitle: 'J2SE, J2EE, JPA, Spring Boot & Microservices — 9 Udemy courses',
+  subtitle: 'J2SE, JPA, Spring Boot & Microservices — 9 Udemy courses',
   description:
-    'Master Java from J2SE fundamentals through J2EE, JPA, Spring Boot, and microservices — 5 May to 4 Oct 2027.',
+    'Master Java from J2SE fundamentals through JPA, Spring Boot, and microservices — 5 May to 4 Oct 2027.',
   primaryUdemyUrl: JAVA_UDEMY_COMPLETE_URL,
   courses: JAVA_UDEMY_COURSES,
   instructors: 'Udemy — Java & Spring instructors',
@@ -36,7 +36,7 @@ export const JAVA_META = {
   phaseWindow: 'Days 306–458 · 5 May – 4 Oct 2027',
   startsAfter: 'Python & Agentic AI (through 4 May 2027)',
   endsOn: '4 Oct 2027',
-  focusAreas: ['J2SE', 'J2EE', 'JPA', 'Spring Boot', 'Microservices'],
+  focusAreas: ['J2SE', 'JPA', 'Spring Boot', 'Microservices'],
 };
 
 function lessonToModule(ch) {

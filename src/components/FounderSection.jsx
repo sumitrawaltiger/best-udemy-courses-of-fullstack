@@ -7,7 +7,7 @@ const SKILLS = [
   { label: 'React Native', emoji: '📱', color: '#38bdf8' },
   { label: 'Next JS', emoji: '🚀', color: '#111827' },
   { label: 'J2SE', emoji: '☕', color: '#7c3aed' },
-  { label: 'J2EE', emoji: '🏭', color: '#3b82f6' },
+  { label: 'Automation Testing', emoji: '🧪', color: '#3b82f6' },
   { label: 'JPA', emoji: '🗄️', color: '#22c55e' },
   { label: 'Spring Boot', emoji: '🍃', color: '#4caf50' },
   { label: 'Microservices', emoji: '🔗', color: '#14b8a6' },
