@@ -5,7 +5,7 @@ import './Day001.css';
 const PYTHON_DOWNLOADS = 'https://www.python.org/downloads/';
 
 const LEARNT_TODAY = [
-  { title: 'The 300-day Python Stack', text: 'Skills 1–3 of the 1,850-day journey — Python (Days 1–100) → FastAPI (Days 101–200) → Agentic AI (Days 201–300), 100 days each. After this comes the JS/TS Stack (Skills 4–9), then Databases, Java, DevOps & Cloud, and Capstone' },
+  { title: 'The 300-day Python Stack', text: 'Skills 1–3 of the 2,000-day journey — Python (Days 1–100) → FastAPI (Days 101–200) → Agentic AI (Days 201–300), 100 days each. After this comes the JS/TS Stack (Skills 4–8), then Databases (Skill 9), Express JS (Skill 10), Java, DevOps & Cloud, and Capstone' },
   { title: 'AI vs ML vs DL vs Gen AI', text: 'each one builds on the last — AI is the umbrella, ML learns from data, DL uses neural networks, Gen AI creates new content' },
   { title: 'Why Python for AI', text: 'simple syntax + a huge ecosystem (NumPy, Pandas, TensorFlow, LangChain) made it the default language for AI work' },
   { title: 'Toolchain setup', text: 'installed Python, ticked "Add to PATH" during install, and picked an editor to write code in' },
@@ -153,7 +153,7 @@ export default function AgenticDay01() {
 
         <p className="day001-summary">
           Day 1 of 100 — the start of <strong>Skill 3 · Agentic AI</strong>, the final skill of the{' '}
-          <strong>300-day Python Stack</strong> (Skills 1–3 of the 1,850-day journey):{' '}
+          <strong>300-day Python Stack</strong> (Skills 1–3 of the 2,000-day journey):{' '}
           <strong>Python (Days 1–100) → FastAPI (Days 101–200) → Agentic AI (Days 201–300)</strong>.
           Today is pure orientation: what <strong>Generative AI</strong>{' '}
           and <strong>Agentic AI</strong> actually mean, how they sit on top of <strong>AI → ML → DL</strong>,
@@ -162,7 +162,7 @@ export default function AgenticDay01() {
           just <code>print("Hello, Agentic AI!")</code> and a clear picture of where the next 100 days are
           headed: Python fundamentals, then ML/DL basics, then Generative AI, RAG, and finally LangChain,
           LangGraph, and MCP-based agents. After this 300-day Python Stack, the journey continues with the
-          600-day JS/TS Stack (Skills 4–9), then Databases, Java, DevOps &amp; Cloud, and Capstone.
+          500-day JS/TS Stack (Skills 4–8), then Databases (Skill 9), Express JS (Skill 10), Java, DevOps &amp; Cloud, and Capstone.
         </p>
 
         <section className="day001-learnt">

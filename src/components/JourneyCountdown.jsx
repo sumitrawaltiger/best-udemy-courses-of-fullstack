@@ -19,7 +19,7 @@ function pad(n) {
 }
 
 /**
- * Live countdown to the end of the journey (31 Aug 2031) — days, hours, minutes, seconds.
+ * Live countdown to the end of the journey (31 Jan 2032) — days, hours, minutes, seconds.
  * @param {{ variant?: 'banner' | 'hero' }} props
  */
 export default function JourneyCountdown({ variant = 'banner' }) {

@@ -291,22 +291,6 @@ export default function RoadmapHome() {
         <h2 style={{ fontSize: '1.1rem', fontWeight: 900, textAlign: 'center', marginBottom: '14px', letterSpacing: '0.04em', color: '#fff' }}>
           📅 100-Day Skill Calendar
         </h2>
-        <figure style={{ margin: '0 0 18px', textAlign: 'center' }}>
-          <img
-            src="/roadmap-notes/1850-day-skill-calendar.png"
-            alt="2,000-Day Full Stack Journey — 20 skills (19×100 days + Capstone 100) from 11 Aug 2026 to 31 Jan 2032"
-            loading="lazy"
-            style={{
-              width: '100%',
-              maxWidth: '480px',
-              height: 'auto',
-              borderRadius: '16px',
-              border: '1px solid rgba(255,255,255,0.15)',
-              boxShadow: '0 12px 40px rgba(0,0,0,0.5)',
-            }}
-            onError={(e) => { e.currentTarget.style.display = 'none'; }}
-          />
-        </figure>
         <div style={{ overflowX: 'auto', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.22)', background: 'rgba(255,255,255,0.06)' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem', lineHeight: 1.5 }}>
             <thead>

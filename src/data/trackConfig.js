@@ -1,4 +1,4 @@
-// Learning path calendar offsets (Day 1 = 8 Aug 2026)
+// Learning path calendar offsets (Journey Day 1 = 11 Aug 2026; factory COURSE_START = 8 Aug 2026)
 export const THUNDER_DAYS = 100;
 
 // ── TypeScript Stack Year (Phase 2) ─────────────────────────────────────────
@@ -109,8 +109,8 @@ export const JOURNEY_TOTAL_DAYS = 2000;
 // Factory calendar: Day 1 = 8 Aug 2026 (COURSE_START); factory day N = journey Day N.
 export const JOURNEY_END_FACTORY_DAY = 2000;
 
-// Explicit day-offsets for the 18-skill plan (offset = skill start day − 1).
-// Skills 1–4 (Python domain): 1–400 · Skills 5–10 (JS/TS domain): 401–1000 · Skills 11–15 (Java domain): 1001–1500 · Skills 16–17 (DevOps/Cloud): 1501–1700 · Skill 18 (Capstone): 1701–1850.
+// Explicit day-offsets for the 20-skill plan (offset = skill start day − 1).
+// Skills 1–3 (Python): 1–300 · Skills 4–8 (JS/TS): 301–800 · Skill 9 (Databases): 801–900 · Skill 10 (Express): 901–1000 · Skills 11–15 (Java): 1001–1500 · Skills 16–17 (DevOps/Cloud): 1501–1700 · Skill 18 (K8s): 1701–1800 · Skill 19 (SysDesign): 1801–1900 · Skill 20 (Capstone): 1901–2000.
 export const TRACK_OFFSETS = {
   thunder: 0, // Thunder JavaScript — Days 1–100 (24 Jul – 31 Oct 2026)
   nextjs: 100, // React & Next.js — Days 101–150 (1 Nov – 20 Dec 2026)
