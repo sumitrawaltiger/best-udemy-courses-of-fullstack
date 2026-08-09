@@ -50,12 +50,12 @@ const BTECH_ROADMAP = [
     ],
   },
   {
-    year: 'Skills 4–9',
-    theme: 'JavaScript → TypeScript → React JS → Next JS → React Native → Express JS',
+    year: 'Skills 4–8',
+    theme: 'JavaScript → TypeScript → React JS → Next JS → React Native',
     icon: '🔷',
     accent: 'y2',
-    topics: ['JavaScript', 'TypeScript', 'React JS', 'Next JS', 'React Native', 'Express / Node JS'],
-    blurb: 'The full JS/TS web ecosystem — 100 days each of JavaScript, TypeScript, React JS, Next JS, React Native, and Express JS. Days 301–900.',
+    topics: ['JavaScript', 'TypeScript', 'React JS', 'Next JS', 'React Native'],
+    blurb: 'The JS/TS frontend & mobile ecosystem — 100 days each of JavaScript, TypeScript, React JS, Next JS, and React Native. Days 301–800.',
     links: [
       { label: 'JavaScript', to: '/' },
       { label: 'TypeScript', to: '/typescript' },
@@ -64,13 +64,15 @@ const BTECH_ROADMAP = [
     ],
   },
   {
-    year: 'Skill 10',
-    theme: 'Databases — SQL · NoSQL · Caching',
+    year: 'Skills 9–10',
+    theme: 'Databases → Express JS',
     icon: '🗄️',
     accent: 'y3',
-    topics: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'SQLAlchemy', 'Schema Design'],
-    blurb: 'The data layer — PostgreSQL, MySQL, MongoDB, Redis. 100 days of SQL and NoSQL mastery that feeds directly into JPA, Spring Boot, and the Capstone. Days 901–1000.',
-    links: [{ label: 'Java & Databases', to: '/java' }],
+    topics: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Express JS', 'Prisma', 'JWT Auth'],
+    blurb: 'Data layer first, then APIs on top — 100 days of SQL & NoSQL (PostgreSQL, MySQL, MongoDB, Redis), then 100 days of Express / Node JS REST APIs with Prisma and JWT auth. Days 801–1000.',
+    links: [
+      { label: 'Java & Databases', to: '/java' },
+    ],
   },
   {
     year: 'Skills 11–15',
@@ -127,7 +129,7 @@ export default function Home() {
             <p className="fle-sub">
               A structured <strong>2,000-day journey</strong> — <strong>20 skills, 19×100 days + Capstone 100</strong>:
               Python, FastAPI, Agentic AI, JavaScript, TypeScript, React JS, Next JS, React Native,
-              Express JS, Databases, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS), Kubernetes,
+              Databases, Express JS, J2SE, J2EE, JPA, Spring Boot, Microservices, DevOps, Cloud (AWS), Kubernetes,
               System Design, and a 100-day Capstone Project integrating all 19 skills.
               Data Structures &amp; Algorithms practiced throughout. One skill at a time, fully focused, front to back.
             </p>

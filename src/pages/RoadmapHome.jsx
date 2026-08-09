@@ -11,8 +11,8 @@ function _calDate(dayN) {
 // ── 20 skills · 19×100 days each + Capstone 100 days · 2,000 days ───────────
 // Python (1–100) → FastAPI (101–200) → Agentic AI (201–300) →
 // JavaScript (301–400) → TypeScript (401–500) → React (501–600) →
-// Next JS (601–700) → React Native (701–800) → Express JS (801–900) →
-// Databases (901–1000) → J2SE (1001–1100) → J2EE (1101–1200) → JPA (1201–1300) →
+// Next JS (601–700) → React Native (701–800) → Databases (801–900) →
+// Express JS (901–1000) → J2SE (1001–1100) → J2EE (1101–1200) → JPA (1201–1300) →
 // Spring Boot (1301–1400) → Microservices (1401–1500) →
 // DevOps (1501–1600) → Cloud / AWS (1601–1700) → Kubernetes (1701–1800) →
 // System Design (1801–1900) → Capstone (1901–2000, 100 days).
@@ -93,24 +93,24 @@ const SKILLS = [
       { icon: '📱', title: 'React Native', detail: 'Expo · native components · navigation · builds & publishing', source: 'ChaiCode', to: '/mobile' },
     ],
   },
+  // ── Databases: Skill 9 — data layer before building APIs ─────────────────
   {
-    id: 's09', arcClass: 'y2', icon: '🟢',
-    label: 'Skill 9 · Express JS',
+    id: 's09', arcClass: 'y3', icon: '🗄️',
+    label: 'Skill 9 · Databases',
     tagline: 'Days 801–900', duration: '100 days',
-    blurb: 'Node.js backends — REST APIs, middleware, Prisma ORM, JWT authentication, and deployment.',
-    items: [
-      { icon: '🟢', title: 'Express JS / Node JS', detail: 'REST APIs · middleware · Prisma · JWT auth & deployment', source: 'ChaiCode', to: '/nextjs' },
-    ],
-  },
-  // ── Databases: Skill 10 — bridge between JS and Java stacks ─────────────
-  {
-    id: 's10', arcClass: 'y3', icon: '🗄️',
-    label: 'Skill 10 · Databases',
-    tagline: 'Days 901–1000', duration: '100 days',
-    blurb: 'Master the data layer — PostgreSQL, MySQL, MongoDB, Redis, and SQLAlchemy. SQL and NoSQL depth that feeds directly into JPA, Spring Boot, and every Capstone service.',
+    blurb: 'Master the data layer before building APIs on top of it — PostgreSQL, MySQL, MongoDB, Redis, and SQLAlchemy. SQL and NoSQL depth that feeds directly into Express JS, JPA, Spring Boot, and the Capstone.',
     items: [
       { icon: '🐘', title: 'SQL Databases', detail: 'PostgreSQL · MySQL · joins · indexes · transactions · query optimisation', source: 'Udemy', to: '/java' },
       { icon: '🍃', title: 'NoSQL & Caching', detail: 'MongoDB · Redis caching · pub/sub · session management', source: 'Udemy', to: '/java' },
+    ],
+  },
+  {
+    id: 's10', arcClass: 'y2', icon: '🟢',
+    label: 'Skill 10 · Express JS',
+    tagline: 'Days 901–1000', duration: '100 days',
+    blurb: 'Node.js backends built on real database depth — REST APIs, middleware, Prisma ORM, JWT authentication, and deployment. SQL and NoSQL from Skill 9 makes every API meaningful.',
+    items: [
+      { icon: '🟢', title: 'Express JS / Node JS', detail: 'REST APIs · middleware · Prisma · JWT auth & deployment', source: 'ChaiCode', to: '/nextjs' },
     ],
   },
   // ── Java domain: Skills 11–15 ─────────────────────────────────────────────
@@ -164,9 +164,10 @@ const SKILLS = [
     id: 's16', arcClass: 'y5', icon: '🚀',
     label: 'Skill 16 · DevOps',
     tagline: 'Days 1501–1600', duration: '100 days',
-    blurb: 'Ship and operate software at scale — Linux, Docker, Kubernetes, and CI/CD pipelines.',
+    blurb: 'Starts with 30 days of Docker as the non-negotiable foundation — containers, images, volumes, Compose. Then Linux, CI/CD pipelines, and the full KodeKloud DevOps path. Docker depth here is what makes Kubernetes in Skill 18 click.',
     items: [
-      { icon: '🚀', title: 'DevOps', detail: 'Linux · Docker · Kubernetes · CI/CD pipelines', source: 'KodeKloud', to: '/devops' },
+      { icon: '🐳', title: 'Docker Foundation', detail: 'Days 1501–1530 · containers · images · volumes · Compose · registries', source: 'KodeKloud', to: '/devops' },
+      { icon: '🚀', title: 'DevOps & CI/CD', detail: 'Linux · CI/CD pipelines · GitHub Actions · Jenkins · monitoring', source: 'KodeKloud', to: '/devops' },
     ],
   },
   {
@@ -245,7 +246,7 @@ export default function RoadmapHome() {
         <p className="roadmap-hero-sub">
           Starts with <strong>Day 0 — environment setup</strong>, then <strong>20 skills</strong>{' '}
           mastered one at a time — <strong>Python → FastAPI → Agentic AI → JavaScript → TypeScript
-          → React JS → Next JS → React Native → Express JS → Databases → J2SE → J2EE → JPA → Spring Boot
+          → React JS → Next JS → React Native → Databases → Express JS → J2SE → J2EE → JPA → Spring Boot
           → Microservices → DevOps → Cloud (AWS) → Kubernetes → System Design → Capstone</strong> —{' '}
           <strong>19 skills at 100 days each + 100-day Capstone, 66 months (2,000 days)</strong> of focused daily practice,
           front to back. DSA practiced 30 min daily (1 LeetCode/day) throughout all 20 skills.
@@ -428,7 +429,7 @@ export default function RoadmapHome() {
           <strong>Python</strong> {'->'} <strong>FastAPI</strong> {'->'} <strong>Agentic AI</strong> (LangChain, LangGraph, MCP) {'->'}
           {' '}<strong>JavaScript</strong> {'->'} <strong>TypeScript</strong> {'->'}
           {' '}<strong>React JS</strong> {'->'} <strong>Next JS</strong> {'->'} <strong>React Native</strong> {'->'}
-          {' '}<strong>Express JS</strong> {'->'} <strong>Databases</strong> (PostgreSQL · MongoDB · Redis) {'->'} <strong>J2SE</strong> {'->'} <strong>J2EE</strong> {'->'} <strong>JPA</strong> {'->'}
+          {' '}<strong>Databases</strong> (PostgreSQL · MongoDB · Redis) {'->'} <strong>Express JS</strong> {'->'} <strong>J2SE</strong> {'->'} <strong>J2EE</strong> {'->'} <strong>JPA</strong> {'->'}
           {' '}<strong>Spring Boot</strong> {'->'} <strong>Microservices</strong> {'->'} <strong>DevOps</strong> {'->'} <strong>Cloud (AWS)</strong> {'->'}
           {' '}<strong>Kubernetes</strong> {'->'} <strong>System Design</strong> {'->'}
           {' '}<strong>Capstone Project</strong> (all 19 skills integrated, 100 days). One skill at a time, fully focused.
