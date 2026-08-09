@@ -1,5 +1,36 @@
 import { Link } from 'react-router-dom';
 
+function LeetCode2000Badge({ size = 120 }) {
+  return (
+    <svg
+      viewBox="0 0 200 200"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ width: size, height: size, display: 'block', flexShrink: 0 }}
+      aria-label="LeetCode 2000 Days Badge"
+    >
+      <defs>
+        <linearGradient id="lc-gold-rm" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#e2c048" />
+          <stop offset="50%" stopColor="#f8e88a" />
+          <stop offset="100%" stopColor="#8a6210" />
+        </linearGradient>
+        <clipPath id="lc-clip-rm">
+          <polygon points="100,16 180,60 180,140 100,184 20,140 20,60" />
+        </clipPath>
+      </defs>
+      <polygon points="100,4 192,52 192,148 100,196 8,148 8,52" fill="url(#lc-gold-rm)" />
+      <g clipPath="url(#lc-clip-rm)">
+        <rect x="20" y="16" width="160" height="168" fill="#111" />
+        <polygon points="20,60 100,16 162,16 100,88 20,110" fill="#d97316" />
+        <polygon points="100,112 180,90 180,140 100,184 62,162" fill="#be3222" />
+        <polygon points="100,88 162,16 180,16 180,52 132,88 118,112 62,162 20,162 20,140 92,112" fill="#111" />
+      </g>
+      <text x="100" y="172" textAnchor="middle" fill="url(#lc-gold-rm)"
+            fontSize="11" fontWeight="bold" letterSpacing="4" fontFamily="Georgia,serif">DAYS</text>
+    </svg>
+  );
+}
+
 // ── Skill calendar helpers ───────────────────────────────────────────────────
 const _CAL_DAY1 = new Date(2026, 7, 11); // 11 Aug 2026
 function _calDate(dayN) {
@@ -402,6 +433,44 @@ export default function RoadmapHome() {
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
             <p className="roadmap-finish-date">20 skills · 19×100 days + Capstone 100 · 2,000 days, front to back</p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── LeetCode Badge Goal ──────────────────────────────────────────── */}
+      <div style={{ maxWidth: '780px', margin: '28px auto 8px', padding: '0 12px' }}>
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '28px',
+          background: 'rgba(212,168,67,0.07)',
+          border: '1.5px solid rgba(212,168,67,0.38)',
+          borderRadius: '18px', padding: '24px 28px',
+        }}>
+          <LeetCode2000Badge size={110} />
+          <div>
+            <p style={{ color: '#f5e070', fontWeight: 900, fontSize: '1.1rem', marginBottom: '4px', letterSpacing: '0.04em' }}>
+              LeetCode 2,000 Days Badge
+            </p>
+            <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
+              Target: 31 Jan 2032 · Day 2,000
+            </p>
+            <p style={{ color: 'rgba(200,212,224,0.82)', fontSize: '0.82rem', lineHeight: 1.65, marginBottom: '12px' }}>
+              1 LeetCode daily challenge every single day — Day 1 (11 Aug 2026) through Day 2,000 (31 Jan 2032).
+              2,000 consecutive submissions earns this badge the exact same day the journey ends.
+              The discipline badge that proves the entire journey.
+            </p>
+            <a
+              href="https://leetcode.com/problemset/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-block', color: '#f5e070', fontWeight: 700,
+                fontSize: '0.82rem', textDecoration: 'none',
+                border: '1px solid rgba(245,224,112,0.45)', borderRadius: '8px',
+                padding: '6px 14px',
+              }}
+            >
+              Start the streak on LeetCode →
+            </a>
           </div>
         </div>
       </div>

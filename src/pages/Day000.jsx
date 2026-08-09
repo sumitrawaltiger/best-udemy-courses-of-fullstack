@@ -2,6 +2,42 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
+function LeetCode2000Badge({ size = 130 }) {
+  return (
+    <svg
+      viewBox="0 0 200 200"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ width: size, height: size, display: 'block', flexShrink: 0 }}
+      aria-label="LeetCode 2000 Days Badge"
+    >
+      <defs>
+        <linearGradient id="lc-gold-d0" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#e2c048" />
+          <stop offset="50%" stopColor="#f8e88a" />
+          <stop offset="100%" stopColor="#8a6210" />
+        </linearGradient>
+        <clipPath id="lc-clip-d0">
+          <polygon points="100,16 180,60 180,140 100,184 20,140 20,60" />
+        </clipPath>
+      </defs>
+      {/* Gold outer border */}
+      <polygon points="100,4 192,52 192,148 100,196 8,148 8,52" fill="url(#lc-gold-d0)" />
+      <g clipPath="url(#lc-clip-d0)">
+        {/* Black base */}
+        <rect x="20" y="16" width="160" height="168" fill="#111" />
+        {/* Orange upper-left sweep */}
+        <polygon points="20,60 100,16 162,16 100,88 20,110" fill="#d97316" />
+        {/* Coral lower-right sweep */}
+        <polygon points="100,112 180,90 180,140 100,184 62,162" fill="#be3222" />
+        {/* Black centre band */}
+        <polygon points="100,88 162,16 180,16 180,52 132,88 118,112 62,162 20,162 20,140 92,112" fill="#111" />
+      </g>
+      <text x="100" y="172" textAnchor="middle" fill="url(#lc-gold-d0)"
+            fontSize="11" fontWeight="bold" letterSpacing="4" fontFamily="Georgia,serif">DAYS</text>
+    </svg>
+  );
+}
+
 const SETUP_CHECKLIST = [
   {
     title: 'Node.js & npm',
@@ -46,6 +82,10 @@ const SETUP_CHECKLIST = [
   {
     title: 'Deploy target',
     text: 'connected a Netlify account so projects can ship to the web from the very first week',
+  },
+  {
+    title: 'LeetCode streak starts',
+    text: '1 LeetCode daily challenge every single day — Day 1 (11 Aug 2026) through Day 2,000 (31 Jan 2032) earns the LeetCode 2,000 Days Badge; the streak begins tomorrow',
   },
 ];
 
@@ -315,6 +355,39 @@ export default function Day000() {
         <CardSection icon="🧰" title="CORE TOOLS" cards={CORE_TOOLS} columns={4} />
         <CardSection icon="🔐" title="ACCOUNTS & PLATFORMS" cards={ACCOUNTS} columns={3} />
         <CardSection icon="🎯" title="STUDY SYSTEM" cards={STUDY_SYSTEM} columns={3} />
+
+        {/* ── Badge Goal ──────────────────────────────────────────────── */}
+        <section className="day001-section">
+          <h2 className="day001-section-title">
+            <span aria-hidden="true">🏆</span> THE BADGE GOAL
+          </h2>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '24px',
+            background: 'rgba(212,168,67,0.07)',
+            border: '1.5px solid rgba(212,168,67,0.4)',
+            borderRadius: '16px', padding: '24px 28px',
+            maxWidth: '620px', margin: '0 auto',
+          }}>
+            <LeetCode2000Badge size={120} />
+            <div>
+              <p style={{ color: '#f0d060', fontWeight: 900, fontSize: '1.05rem', marginBottom: '4px', letterSpacing: '0.04em' }}>
+                LeetCode 2,000 Days Badge
+              </p>
+              <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
+                Target: 31 Jan 2032 · Day 2,000
+              </p>
+              <p style={{ color: 'rgba(200,210,220,0.8)', fontSize: '0.78rem', lineHeight: 1.6, marginBottom: '10px' }}>
+                1 LeetCode problem every single day — Day 1 (11 Aug 2026) through Day 2,000 (31 Jan 2032).
+                2,000 consecutive daily submissions earns the badge the same day the journey ends.
+                Consistency is the proof.
+              </p>
+              <a href="https://leetcode.com/problemset/" target="_blank" rel="noopener noreferrer"
+                 className="day001-card-link">
+                Start the streak on LeetCode →
+              </a>
+            </div>
+          </div>
+        </section>
 
         <footer className="day001-hashtags">
           <span>#Day0</span>
