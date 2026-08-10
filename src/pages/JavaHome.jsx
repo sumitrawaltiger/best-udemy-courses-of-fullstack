@@ -95,6 +95,150 @@ export default function JavaHome() {
           </figure>
         </section>
 
+        <section className="roadmap" id="java-evolution">
+          <div className="section-header">
+            <h2>🚀 Java Evolution — Java 8 → Java 25</h2>
+            <a href="/java-notes/java25.jpeg" download className="btn btn-java">
+              📥 Download
+            </a>
+          </div>
+          <p className="section-desc">
+            <strong>Smarter Language. Stronger Platform. Unlimited Possibilities.</strong> From Lambdas in Java 8 to
+            Virtual Threads in Java 21 and cloud-native JVM optimisations in Java 25 — here's how Java evolved across
+            the five landmark releases every developer should know.
+          </p>
+          <figure style={{ margin: '0 auto', textAlign: 'center', maxWidth: '980px' }}>
+            <a href="/java-notes/java25.jpeg" target="_blank" rel="noopener noreferrer">
+              <img
+                src="/java-notes/java25.jpeg"
+                alt="Java Evolution From Java 8 to Java 25 — Java 8 (2014): Lambda Expressions, Stream API, Optional, New Date & Time API (Functional Programming); Java 11 (2018 LTS): HttpClient API, String utilities isBlank/lines, var in lambda parameters, Better performance & GC improvements (Modern APIs); Java 17 (2021 LTS): Records, Sealed Classes, Pattern Matching for instanceof, Stronger security & JVM enhancements (Cleaner Domain Models); Java 21 (2023 LTS): Virtual Threads, Record Patterns, Pattern Matching for switch, Sequenced Collections (Lightweight Concurrency); Java 25 (2025): Performance & GC improvements, Better concurrency support, Continued Project Loom & JVM enhancements, More optimizations for cloud-native apps (Faster Smarter JVM). Focus: Java 17 & Java 21 for modern development, Java 8 for legacy enterprise systems."
+                loading="lazy"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '14px',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  boxShadow: '0 14px 44px rgba(0, 0, 0, 0.45)',
+                }}
+                onError={(e) => { const f = e.currentTarget.closest('figure'); if (f) f.style.display = 'none'; }}
+              />
+            </a>
+            <figcaption style={{ marginTop: '8px', fontSize: '0.8rem', opacity: 0.6 }}>
+              Java 8 → Java 25 at a glance — click to open full size ↗
+            </figcaption>
+          </figure>
+
+          <div style={{ marginTop: '2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem' }}>
+            {[
+              {
+                version: 'Java 8',
+                year: '2014',
+                lts: false,
+                color: '#f97316',
+                theme: 'Functional Programming',
+                icon: 'λ',
+                features: [
+                  'Lambda Expressions — concise anonymous functions',
+                  'Stream API — functional pipelines over collections',
+                  'Optional — null-safe value containers',
+                  'New Date & Time API — java.time replaces Date/Calendar',
+                ],
+              },
+              {
+                version: 'Java 11',
+                year: '2018',
+                lts: true,
+                color: '#22c55e',
+                theme: 'Modern APIs',
+                icon: '🌐',
+                features: [
+                  'HttpClient API — built-in HTTP/2 client',
+                  'String utilities — isBlank(), lines(), strip()',
+                  'var in lambda parameters — cleaner lambdas',
+                  'Better performance & GC improvements',
+                ],
+              },
+              {
+                version: 'Java 17',
+                year: '2021',
+                lts: true,
+                color: '#3b82f6',
+                theme: 'Cleaner Domain Models',
+                icon: '📦',
+                features: [
+                  'Records — concise immutable data classes',
+                  'Sealed Classes — restricted class hierarchies',
+                  'Pattern Matching for instanceof — eliminates casts',
+                  'Stronger security & JVM enhancements',
+                ],
+              },
+              {
+                version: 'Java 21',
+                year: '2023',
+                lts: true,
+                color: '#a855f7',
+                theme: 'Lightweight Concurrency',
+                icon: '⚡',
+                features: [
+                  'Virtual Threads — millions of lightweight threads',
+                  'Record Patterns — nested destructuring in patterns',
+                  'Pattern Matching for switch — exhaustive matching',
+                  'Sequenced Collections — ordered collection APIs',
+                ],
+              },
+              {
+                version: 'Java 25',
+                year: '2025',
+                lts: false,
+                color: '#6366f1',
+                theme: 'Faster, Smarter JVM',
+                icon: '📈',
+                features: [
+                  'Performance & GC improvements',
+                  'Better concurrency support',
+                  'Continued Project Loom & JVM enhancements',
+                  'More optimisations for cloud-native apps',
+                ],
+              },
+            ].map((v) => (
+              <div
+                key={v.version}
+                style={{
+                  background: 'var(--card-bg, rgba(255,255,255,0.04))',
+                  border: `2px solid ${v.color}55`,
+                  borderRadius: '12px',
+                  padding: '1.1rem 1.25rem',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.5rem' }}>
+                  <span style={{ fontSize: '1.4rem' }}>{v.icon}</span>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <strong style={{ color: v.color, fontSize: '1rem' }}>{v.version}</strong>
+                      {v.lts && (
+                        <span style={{ fontSize: '0.65rem', background: v.color + '33', color: v.color, border: `1px solid ${v.color}66`, borderRadius: '4px', padding: '1px 5px', fontWeight: 700, letterSpacing: '0.05em' }}>LTS</span>
+                      )}
+                    </div>
+                    <div style={{ fontSize: '0.75rem', opacity: 0.55 }}>{v.year}</div>
+                  </div>
+                </div>
+                <ul style={{ margin: '0 0 0.75rem', paddingLeft: '1.1rem', fontSize: '0.83rem', lineHeight: 1.65 }}>
+                  {v.features.map((f, i) => <li key={i}>{f}</li>)}
+                </ul>
+                <div style={{ fontSize: '0.75rem', color: v.color, fontWeight: 600, opacity: 0.85 }}>
+                  {v.theme}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: '1.25rem', background: 'var(--card-bg, rgba(255,255,255,0.04))', border: '1.5px solid #f97316aa', borderRadius: '10px', padding: '1rem 1.5rem', fontSize: '0.88rem', lineHeight: 1.7 }}>
+            <strong style={{ color: '#f97316' }}>🎯 Focus for Developers:</strong>{' '}
+            <strong>Java 17</strong> &amp; <strong>Java 21</strong> for modern development (Spring Boot 3+, virtual threads, records, sealed classes).{' '}
+            <strong>Java 8</strong> understanding for legacy enterprise systems. Most production stacks today run on <strong>Java 17 LTS</strong> or <strong>Java 21 LTS</strong>.
+          </div>
+        </section>
+
         <section className="roadmap" id="gc-basics">
           <div className="section-header">
             <h2>♻️ Garbage Collection Basics</h2>
