@@ -700,6 +700,81 @@ function ScoreCard({ title, score, isWinner }) {
       },
     ],
   },
+  {
+    day: 9,
+    date: '15 Mar 2028',
+    group: 'hooks',
+    title: 'Rendering Lists & Keys in React',
+    tagline: 'When you have an array of data, use JavaScript\'s map() to render a list of elements — and always give each element a unique key.',
+    image: '/react-notes/react-9.jpeg',
+    tags: ['Lists', 'map()', 'Keys', 'Rendering', 'Unique Keys', 'Dynamic Lists', 'JSX'],
+    notes: [
+      { k: 'Why Do We Need Lists?', v: 'We often work with collections of data (users, products, messages, etc.). Instead of writing repetitive code, we use `map()` to render them dynamically. React makes it easy to turn an array into UI elements.' },
+      { k: 'How map() Works', v: '`map()` loops through each item in an array and returns a JSX element for each one. It does **not** change the original array — it returns a new array of JSX elements.' },
+      { k: 'Basic Syntax', v: '`{fruits.map((fruit) => (<li>{fruit}</li>))}` — wrap the map call in `{}` inside JSX, return a JSX element per item.' },
+      { k: 'Key Prop', v: 'Every element in a list needs a unique `key` prop: `<li key={user.id}>{user.name}</li>`. Keys help React identify which items changed, added, or removed — making updates fast and correct.' },
+      { k: 'Rules for Keys', v: '✅ Keys must be **unique among siblings**. ✅ Keys must be **stable** (should not change between renders). ✅ Keys help React identify items and update the DOM efficiently. ❌ Avoid using array index as key if the list can change (items added, removed, or reordered).' },
+      { k: 'Index as Key (Not Recommended)', v: 'Using the array index as key (`key={index}`) can cause subtle bugs when items are added, removed, or reordered — React may reuse the wrong component state. Only use index when the list is static and will never change.' },
+      { k: 'Common Mistakes', v: '❌ Not adding key at all. ❌ Using index as key for dynamic lists. ❌ Using non-unique keys (duplicates). ❌ Generating random keys on every render (e.g. `key={Math.random()}`).' },
+      { k: 'Quick Summary', v: '**Use `map()` to render lists. Always provide a unique key. Keys help React optimise rendering. Good keys = Fast & Bug-free UI!**' },
+    ],
+    theory: [
+      {
+        h: 'Why Do We Need Lists in React?',
+        p: 'Real applications constantly work with **collections of data** — a list of users, a product catalogue, a message feed, a task list. Writing one JSX element per item by hand is repetitive and breaks the moment the data changes.\n\nJavaScript\'s `map()` solves this: you describe what **one item** looks like as JSX, and `map()` produces that element for **every item in the array**. The result is a dynamic list that automatically stays in sync with your data.',
+      },
+      {
+        h: 'How map() Works in JSX',
+        p: '`map()` transforms each element of an array into something new — in React\'s case, a JSX element. It does **not mutate the original array**; it always returns a brand-new array.\n\n```jsx\nconst fruits = ["Apple", "Banana", "Mango"];\n\nfunction FruitList() {\n  return (\n    <ul>\n      {fruits.map((fruit) => (\n        <li>{fruit}</li>\n      ))}\n    </ul>\n  );\n}\n```\n\nFlow: Array `[Apple, Banana, Mango]` → `map()` → Each item → Return JSX `<li>` → UI output renders the list.',
+      },
+      {
+        h: 'The Key Prop — Why It Matters',
+        p: 'When React re-renders a list, it needs to know **which items changed, which were added, and which were removed** — without re-rendering the entire list from scratch.\n\nThe `key` prop is how React tracks each element across renders. Without keys, React falls back to comparing by position, which can produce incorrect updates, stale state, and visual bugs.\n\n```jsx\nconst users = [\n  { id: 1, name: "Neon" },\n  { id: 2, name: "Dev" },\n  { id: 3, name: "Rock" },\n];\n\nfunction UserList() {\n  return (\n    <ul>\n      {users.map((user) => (\n        <li key={user.id}>{user.name}</li>\n      ))}\n    </ul>\n  );\n}\n```\n\nAlways use a **unique and stable** value as the key — like a database `id`. This lets React update the DOM efficiently.',
+      },
+      {
+        h: 'Why Index as Key is Dangerous',
+        p: 'Using the array index (`key={index}`) looks harmless but causes bugs whenever the list is dynamic:\n\n```jsx\n// ❌ Not recommended for dynamic lists\n{numbers.map((num, index) => (\n  <li key={index}>{num}</li>\n))}\n```\n\n**What goes wrong:** if you add an item at the start, every index shifts by 1. React sees every key as "changed" and re-renders all items — potentially matching the wrong component state to the wrong item. Inputs lose their typed values, animations fire on the wrong element, and checkboxes tick the wrong row.\n\n**When index is acceptable:** only when the list is completely static — no additions, deletions, or reordering will ever occur.',
+      },
+      {
+        h: 'Rules for Keys',
+        p: '**1. Unique among siblings** — Two list items in the same list cannot share a key. Keys only need to be unique within that list, not globally across the app.\n\n**2. Stable** — The key for a given item should not change between renders. Never use `Math.random()` or `Date.now()` as a key — a new random key every render tells React every item is new, destroying all component state and causing flickers.\n\n**3. Not passed as a prop** — `key` is a special React attribute, not a regular prop. If the child component needs the id value, pass it separately: `<Item key={item.id} id={item.id} />`.',
+      },
+      {
+        h: 'Common Mistakes',
+        p: '**1. Missing key entirely** — React logs a warning and falls back to index-based matching. Lists may update incorrectly.\n\n**2. Using index for dynamic lists** — Works until the list changes. Then subtle, hard-to-debug UI bugs appear.\n\n**3. Duplicate keys** — If two siblings share a key, React behaves unpredictably — one item may not render at all.\n\n**4. Random key on every render** — `key={Math.random()}` tells React every item is brand-new every render. All component state resets and performance collapses.',
+      },
+      {
+        h: 'Mini Challenge',
+        p: 'Given an array of tasks, render a list of task items. Each task has `id` and `title`:\n\n```jsx\nconst tasks = [\n  { id: 1, title: "Learn React" },\n  { id: 2, title: "Build a project" },\n  { id: 3, title: "Deploy to Netlify" },\n];\n```\n\nRequirements:\n- Use `map()` to render each task\n- Use `id` as the `key`\n- Display each task\'s `title` inside a `<li>`',
+      },
+      {
+        h: 'Quick Summary',
+        p: '**Rendering lists in React:**\n\n- Use `map()` to transform an array into JSX elements.\n- Always provide a `key` prop on the outermost element returned by `map()`.\n- Use a unique, stable value (like a database id) as the key.\n- Never use `Math.random()` or `Date.now()` as keys.\n- Avoid index as key for dynamic lists.\n\n**Good keys = Fast & Bug-free UI!** Keys are the secret behind React\'s efficient list updates — they let React surgically update only the items that changed.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Basic list with map() — FruitList',
+        code: "const fruits = [\"Apple\", \"Banana\", \"Mango\"];\n\nfunction FruitList() {\n  return (\n    <ul className=\"list\">\n      {fruits.map((fruit) => (\n        <li key={fruit}>{fruit}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default FruitList;",
+        note: 'map() loops through each item and returns a JSX element. Key uses the fruit name here — safe because names are unique and static.',
+      },
+      {
+        label: 'Recommended — unique id as key (UserList)',
+        code: "const users = [\n  { id: 1, name: \"Neon\" },\n  { id: 2, name: \"Dev\" },\n  { id: 3, name: \"Rock\" },\n];\n\nfunction UserList() {\n  return (\n    <ul className=\"user-list\">\n      {users.map((user) => (\n        <li key={user.id}>{user.name}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default UserList;",
+        note: 'Always use a unique and stable value as key — like a database id. Never use index for dynamic lists.',
+      },
+      {
+        label: 'Not recommended — index as key',
+        code: "const numbers = [10, 20, 30];\n\nfunction NumberList() {\n  return (\n    <ul>\n      {numbers.map((num, index) => (\n        <li key={index}>{num}</li> // ❌ using index as key\n      ))}\n    </ul>\n  );\n}",
+        note: 'Using index as key can cause bugs when the list changes — items added, removed, or reordered will shift all indices.',
+      },
+      {
+        label: 'Mini Challenge — Task list with id as key',
+        code: "import React from 'react';\n\nconst tasks = [\n  { id: 1, title: \"Learn React\" },\n  { id: 2, title: \"Build a project\" },\n  { id: 3, title: \"Deploy to Netlify\" },\n];\n\nfunction TaskList() {\n  return (\n    <ul>\n      {tasks.map((task) => (\n        <li key={task.id}>{task.title}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default TaskList;",
+        note: 'Mini challenge from Episode 9 — use map(), use id as key, display each task title.',
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
