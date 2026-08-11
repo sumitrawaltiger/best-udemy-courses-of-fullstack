@@ -775,6 +775,89 @@ function ScoreCard({ title, score, isWinner }) {
       },
     ],
   },
+  {
+    day: 10,
+    date: '16 Mar 2028',
+    group: 'components',
+    title: 'Conditional Rendering & Fragments in React',
+    tagline: 'Sometimes we want to render something only in certain conditions — React gives us multiple ways to do that, and Fragments let us group elements without adding extra DOM nodes.',
+    image: '/react-notes/react10.jpeg',
+    tags: ['Conditional Rendering', 'if-else', 'Ternary', '&&', '||', 'Fragments', 'JSX'],
+    notes: [
+      { k: 'What is Conditional Rendering?', v: 'Conditional rendering means showing different UI based on a condition. Example: if the user is logged in, show the dashboard — otherwise show the login button. React renders UI based on JavaScript expressions, so any JS condition works inside your components.' },
+      { k: 'Using if-else (Outside JSX)', v: 'Assign JSX to a variable outside the `return` statement using a regular `if-else` block, then use that variable inside JSX. Best for **complex conditions** that need multiple lines. Clean and easy to read.' },
+      { k: 'Using Ternary Operator (Inside JSX)', v: '`{isLoggedIn ? <h2>Welcome back!</h2> : <h2>Please log in.</h2>}` — the ternary operator works **inside JSX** because it is a single expression. Shorter than if-else, great for simple two-way conditions.' },
+      { k: 'Using Logical && Operator', v: '`{isAdmin && <p>Welcome, Admin!</p>}` — renders the element **only if** the condition is `true`. If `isAdmin` is false, nothing renders. Use when you need to show something only under one condition (no else branch).' },
+      { k: 'Using Logical || Operator (Fallback UI)', v: '`{user.name || "Guest"}` — shows the fallback value when the left side is falsy. Use `||` to display a default or placeholder when the real value is missing, null, or undefined.' },
+      { k: 'Fragments', v: 'Fragments let you return **multiple elements** without adding an extra `<div>` to the DOM. Short syntax: `<> ... </>`. Long syntax: `<React.Fragment> ... </React.Fragment>`. Use Fragments to group sibling elements without polluting the DOM structure.' },
+      { k: 'Common Mistakes', v: '❌ Using `=` instead of `===` in conditions. ❌ Forgetting to return in if-else blocks. ❌ Overusing nested ternary operators (hard to read). ❌ Rendering `0` accidentally (`{count && <p>Items</p>}` renders `0` when count is 0 — use `{count > 0 && <p>Items</p>}` instead). ❌ Using unnecessary `<div>` wrappers instead of Fragments.' },
+      { k: 'Quick Summary', v: '**Conditional rendering** = showing different UI based on conditions. Use **if-else** for complex logic, **ternary** for simple two-way conditions, **&&** when you only have a "show or hide" case, **||** for fallback values. Use **Fragments** (`<>`) to group elements without extra DOM nodes.' },
+    ],
+    theory: [
+      {
+        h: 'What is Conditional Rendering?',
+        p: 'Conditional rendering means your component decides **what to show based on a condition** — just like an `if` statement in regular JavaScript.\n\nReact does not have a special template syntax for conditions. Because JSX is JavaScript, you can use any JS expression or statement directly:\n\n```jsx\n// If user is logged in → show dashboard\n// Else → show login button\n```\n\nThis flexibility is one of React\'s core strengths — your component logic and your UI live in the same language.',
+      },
+      {
+        h: 'Using if-else Outside JSX',
+        p: 'Assign JSX to a variable before the `return`, then render that variable. Best for **complex, multi-line conditions**:\n\n```jsx\nfunction Message({ isLoggedIn }) {\n  let content;\n  if (isLoggedIn) {\n    content = <h2>Welcome back! 👋</h2>;\n  } else {\n    content = <h2>Please log in.</h2>;\n  }\n  return <div className="msg">{content}</div>;\n}\n```\n\nOutput: `Welcome back! 👋` or `Please log in.` depending on the prop.\n\nThis is the most readable approach for complex conditions — keep it when the branches have multiple lines of logic.',
+      },
+      {
+        h: 'Using Ternary Operator Inside JSX',
+        p: 'The ternary operator is a single expression, so it works **directly inside JSX curly braces**:\n\n```jsx\nfunction Message({ isLoggedIn }) {\n  return (\n    <div className="msg">\n      {isLoggedIn ? (\n        <h2>Welcome back! 👋</h2>\n      ) : (\n        <h2>Please log in.</h2>\n      )}\n    </div>\n  );\n}\n```\n\nShorter than if-else and keeps everything inside the return. Best for **simple two-way conditions** where each branch is a single element.',
+      },
+      {
+        h: 'Using Logical && Operator',
+        p: 'Use `&&` when you want to **show something only if a condition is true** — with no else branch:\n\n```jsx\nfunction AdminPanel({ isAdmin }) {\n  return (\n    <div>\n      <h2>Dashboard</h2>\n      {isAdmin && <p>Welcome, Admin! 🔒</p>}\n    </div>\n  );\n}\n```\n\nOutput: shows `Welcome, Admin! 🔒` only when `isAdmin` is `true`. If `isAdmin` is `false`, that `<p>` does not render at all.\n\n**Watch out:** if the left side is `0` (a number), React renders `0` as text. Always use a boolean expression: `{count > 0 && <p>{count} items</p>}`.',
+      },
+      {
+        h: 'Using Logical || Operator (Fallback UI)',
+        p: 'Use `||` to display a **fallback value** when the primary value is falsy (null, undefined, empty string, 0):\n\n```jsx\nfunction User({ user }) {\n  return <p>{user.name || "Guest"}</p>;\n}\n```\n\nOutput: shows the real name if it exists, or `"Guest"` if the name is missing.\n\n- `user.name` exists → show it\n- `user.name` is falsy → show `"Guest"`\n\nThis is a concise way to handle optional or missing data without an extra `if` block.',
+      },
+      {
+        h: 'Fragments — Group Without Extra DOM Nodes',
+        p: 'A React component must return **one root element**. Wrapping siblings in a `<div>` works but adds unnecessary nodes to the DOM — which can break CSS (Flexbox/Grid parents), add unwanted spacing, or pollute accessibility trees.\n\n**Fragments** solve this by grouping elements without any real DOM output:\n\n**Short syntax (preferred):**\n```jsx\nfunction List() {\n  return (\n    <>\n      <h2>Hello</h2>\n      <p>Welcome to React</p>\n    </>\n  );\n}\n```\n\n**Long syntax (needed when you pass a key prop):**\n```jsx\nfunction List() {\n  return (\n    <React.Fragment>\n      <h2>Hello</h2>\n      <p>Welcome to React</p>\n    </React.Fragment>\n  );\n}\n```\n\nUse `<React.Fragment key={item.id}>` inside `map()` when you need to key a fragment — the short `<>` syntax does not accept props.',
+      },
+      {
+        h: 'Key Points',
+        p: '- **Conditional rendering** helps show the right UI at the right time.\n- Use **if-else** for complex conditions with multiple lines of logic.\n- Use **ternary** (`? :`) for simple two-way conditions inside JSX.\n- Use **&&** to render something only when a condition is true (no else branch).\n- Use **||** to show a fallback when a value is missing or falsy.\n- **Fragments** (`<>`) return multiple elements without adding extra DOM nodes.',
+      },
+      {
+        h: 'Common Mistakes',
+        p: '**1. Using `=` instead of `===`** — assignment inside a condition is a bug, not a comparison. Always use strict equality `===`.\n\n**2. Forgetting to return in if-else blocks** — if your if-else is inside the function body (not inside JSX), every branch must explicitly return JSX.\n\n**3. Overusing nested ternaries** — `a ? b : c ? d : e` is hard to read. If your condition has more than two branches, use if-else.\n\n**4. Rendering `0` accidentally** — `{count && <p>Items</p>}` renders the number `0` when count is zero, because `0` is falsy but React still renders numbers. Fix: `{count > 0 && <p>Items</p>}`.\n\n**5. Unnecessary `<div>` wrappers** — wrapping siblings in `<div>` when Fragments would work just as well. Extra divs break CSS layouts and add noise to the DOM.',
+      },
+      {
+        h: 'Mini Challenge',
+        p: 'Create a `LoginStatus` component that receives a `loggedIn` boolean prop and shows:\n- `"You are logged in"` when `loggedIn` is `true`\n- `"Please log in"` when `loggedIn` is `false`\n\nTry all three approaches:\n1. **if-else** outside JSX\n2. **Ternary operator** inside JSX\n3. **&& operator** for just the logged-in message (show nothing otherwise)\n\nBonus: wrap the output in a Fragment instead of a `<div>`.',
+      },
+      {
+        h: 'Quick Summary',
+        p: '**Conditional rendering in React — 4 techniques:**\n\n| Technique | Best for |\n|---|---|\n| `if-else` | Complex, multi-line conditions |\n| Ternary `? :` | Simple two-way conditions inside JSX |\n| `&&` | Show only if true, no else needed |\n| `\\|\\|` | Fallback when value is missing |\n\n**Fragments:** `<> </>` groups sibling elements without adding DOM nodes.\n\nSmall conditions, Big Impact — these techniques make your React UIs dynamic, clean, and user-friendly.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'if-else outside JSX — Message component',
+        code: "function Message({ isLoggedIn }) {\n  let content;\n  if (isLoggedIn) {\n    content = <h2>Welcome back! 👋</h2>;\n  } else {\n    content = <h2>Please log in.</h2>;\n  }\n  return <div className=\"msg\">{content}</div>;\n}\n\nexport default Message;",
+        note: 'Assign JSX to a variable before return. Best for complex, multi-line conditions — clean and easy to read.',
+      },
+      {
+        label: 'Ternary operator inside JSX — shorter conditional',
+        code: "function Message({ isLoggedIn }) {\n  return (\n    <div className=\"msg\">\n      {isLoggedIn ? (\n        <h2>Welcome back! 👋</h2>\n      ) : (\n        <h2>Please log in.</h2>\n      )}\n    </div>\n  );\n}\n\nexport default Message;",
+        note: 'Ternary works inside JSX curly braces. Shorter than if-else — use for simple two-way conditions.',
+      },
+      {
+        label: 'Logical && and || — AdminPanel + User fallback',
+        code: "// && — render only if condition is true\nfunction AdminPanel({ isAdmin }) {\n  return (\n    <div>\n      <h2>Dashboard</h2>\n      {isAdmin && <p>Welcome, Admin! 🔒</p>}\n    </div>\n  );\n}\n\n// || — show fallback when value is missing\nfunction User({ user }) {\n  return <p>{user.name || 'Guest'}</p>;\n}",
+        note: '&& renders the element only when the condition is true. || renders the fallback when the left side is falsy.',
+      },
+      {
+        label: 'Mini Challenge — LoginStatus with all 3 techniques + Fragment',
+        code: "import React from 'react';\n\n// 1. if-else\nfunction LoginStatus1({ loggedIn }) {\n  let msg;\n  if (loggedIn) {\n    msg = <p>You are logged in</p>;\n  } else {\n    msg = <p>Please log in</p>;\n  }\n  return <>{msg}</>;\n}\n\n// 2. Ternary\nfunction LoginStatus2({ loggedIn }) {\n  return (\n    <>\n      {loggedIn ? <p>You are logged in</p> : <p>Please log in</p>}\n    </>\n  );\n}\n\n// 3. && (show only logged-in message)\nfunction LoginStatus3({ loggedIn }) {\n  return (\n    <>\n      {loggedIn && <p>You are logged in</p>}\n      {!loggedIn && <p>Please log in</p>}\n    </>\n  );\n}",
+        note: 'All three approaches produce the same output. Fragments (<>) wrap the return without adding extra DOM nodes.',
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
