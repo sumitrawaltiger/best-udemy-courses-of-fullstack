@@ -858,6 +858,63 @@ function ScoreCard({ title, score, isWinner }) {
       },
     ],
   },
+  {
+    day: 11,
+    date: '17 Mar 2028',
+    group: 'hooks',
+    title: 'useState Hook in React',
+    tagline: 'State lets your component remember and update data that can change over time.',
+    image: '/react-notes/react11.jpeg',
+    tags: ['useState', 'State', 'Hooks', 'Re-render', 'Callback Form', 'Counter', 'Dynamic UI'],
+    notes: [
+      { k: 'What is State?', v: 'State is a built-in React object that stores data which can change. When state updates, React re-renders the component to reflect the new data in the UI. We use the `useState` Hook to add state to functional components.' },
+      { k: 'Props vs State', v: 'Props are read-only (passed in from the parent). State is read-write — the component owns it and can update it.' },
+      { k: 'Importing useState', v: '`import { useState } from \'react\';` — useState is a Hook, so it must be called at the top level of the component, never inside loops, conditions, or nested functions.' },
+      { k: 'Basic Syntax', v: '`const [state, setState] = useState(initialValue);` — destructures two things: the current value of state, and the setter function to update it.' },
+      { k: 'Calling the setter', v: 'Call `setState(newValue)` to update the state. React schedules a re-render and the component re-runs with the new value.' },
+      { k: 'Callback form', v: 'When the new state depends on the previous state, use the callback form: `setState(prev => prev + 1)`. This is safe even in async scenarios where the state might have changed between renders.' },
+      { k: 'Never mutate state directly', v: '`count = count + 1` is WRONG — React won\'t know the state changed and won\'t re-render. Always call the setter function.' },
+      { k: 'Multiple state variables', v: 'Call useState multiple times — one hook per value. Each piece of state is completely independent.' },
+      { k: 'State with different types', v: 'useState can hold any JS type: string, number, boolean, array, or object. The type is set by the initial value you pass.' },
+      { k: 'Common mistakes', v: 'Mutating state directly, forgetting to call the setter, using setState inside loops/conditions, expecting state to update synchronously (setState is async).' },
+      { k: 'Quick summary', v: 'State = data that changes over time. useState = the Hook that adds state to function components. Calling the setter updates the value and triggers re-render. State makes your React components alive!' },
+    ],
+    theory: [
+      { h: '1. What is State?', p: 'State is a built-in React object that stores data which can change over time. When a component\'s state changes, React automatically re-renders that component so the UI reflects the latest data. We use the `useState` Hook to manage state inside functional components.' },
+      { h: '2. Importing useState', p: '`import { useState } from \'react\';`\n\nuseState is a React Hook. Hooks must always be called at the **top level** of the component — never inside if/else blocks, loops, or nested functions.' },
+      { h: '3. Basic Syntax', p: '`const [state, setState] = useState(initialValue);`\n\n- **state** — the current value\n- **setState** — the function that updates the value (and triggers a re-render)\n- **initialValue** — what state starts as (any JS value)' },
+      { h: '4. Basic Example', p: 'A counter component that increments on every button click:\n\n```jsx\nimport { useState } from \'react\';\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  return (\n    <div className="box">\n      <h2>Count: {count}</h2>\n      <button onClick={() => setCount(count + 1)}>Increase</button>\n    </div>\n  );\n}\nexport default Counter;\n```\n\nEvery click calls `setCount`, React re-renders with the new `count` value.' },
+      { h: '5. Updating State', p: 'Two ways to update state:\n\n```jsx\n// Direct update (fine when new state doesn\'t depend on old)\nsetName(\'Neon\');\n\n// Callback form (safe when new state depends on previous)\nsetName(prev => prev + \' Rocks!\');\n```\n\nAlways use the callback form when the next value is calculated from the current value.' },
+      { h: '6. Multiple State Variables', p: 'Call useState once per piece of data:\n\n```jsx\nconst [name, setName] = useState(\'Neon\');\nconst [age, setAge] = useState(21);\nconst [isLoggedIn, setIsLoggedIn] = useState(false);\n```\n\nEach state is independent. Updating one doesn\'t affect the others.' },
+      { h: '7. State with Different Types', p: 'useState works with any JavaScript type:\n\n- **String:** `const [title, setTitle] = useState(\'Hello\');`\n- **Number:** `const [count, setCount] = useState(0);`\n- **Boolean:** `const [isOpen, setIsOpen] = useState(true);`\n- **Array / Object:** `const [items, setItems] = useState([]);`\n\nState can store any JavaScript data type.' },
+      { h: '8. Key Points', p: '- State makes components dynamic and interactive.\n- useState returns `[state, setState]` as a pair.\n- Calling setState schedules a re-render.\n- Never mutate state directly.\n- Use the callback form when new state depends on old state.' },
+      { h: '9. Common Mistakes', p: '- **Mutating directly:** `count = count + 1` ✗ — React never sees the change.\n- **Forgetting the setter:** updating a local variable instead of calling setState.\n- **useState inside conditions/loops:** breaks the Rules of Hooks.\n- **Expecting synchronous update:** `setState` is asynchronous — the new value is only available on the next render.' },
+      { h: '10. Mini Challenge', p: 'Create a Counter App with:\n- A button to **increase** count\n- A button to **decrease** count\n- A button to **reset** count to 0\n- The count displayed between the buttons\n\nHint: one `useState(0)` and three separate `onClick` handlers.' },
+      { h: '11. Quick Summary', p: '- State = data that changes over time.\n- `useState` = the Hook that adds state to functional components.\n- `setState` updates the value and triggers re-render.\n- Use the callback form when new state depends on old state.\n- State makes your React components alive!' },
+    ],
+    snippets: [
+      {
+        label: 'Basic Counter',
+        code: "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  return (\n    <div className=\"box\">\n      <h2>Count: {count}</h2>\n      <button onClick={() => setCount(count + 1)}>Increase</button>\n    </div>\n  );\n}\n\nexport default Counter;",
+        note: 'Every click calls setCount → React re-renders with the new count value.',
+      },
+      {
+        label: 'Callback Form (Previous State)',
+        code: "const [name, setName] = useState('Neon Dev');\n\n// Direct update\nsetName('Neon');\n\n// Callback form — safe when new value depends on previous value\nsetName(prev => prev + ' Rocks!');",
+        note: 'Use the callback form whenever the next state is calculated from the current state.',
+      },
+      {
+        label: 'Multiple State Variables',
+        code: "const [name, setName] = useState('Neon');\nconst [age, setAge] = useState(21);\nconst [isLoggedIn, setIsLoggedIn] = useState(false);\n\n// Output\n// Name: Neon  Age: 21  Logged In: No",
+        note: 'Each useState call manages one independent piece of data.',
+      },
+      {
+        label: 'Mini Challenge — Counter App',
+        code: "import { useState } from 'react';\n\nfunction CounterApp() {\n  const [count, setCount] = useState(0);\n  return (\n    <div>\n      <button onClick={() => setCount(count - 1)}>Decrease</button>\n      <h2>{count}</h2>\n      <button onClick={() => setCount(count + 1)}>Increase</button>\n      <br />\n      <button onClick={() => setCount(0)}>Reset</button>\n    </div>\n  );\n}\n\nexport default CounterApp;",
+        note: 'One useState, three event handlers — increase, decrease, reset.',
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
