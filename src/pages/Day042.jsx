@@ -2,73 +2,107 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Day001.css';
 
-const VISUALGO_GRAPH = 'https://visualgo.net/en/graphds';
-const MDN_QUEUE = 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array';
+const NOTION_URL = 'https://app.notion.com/p/Lecture23-Scaling-the-system-3b9a9af81c98804bb2bdd03f3fa242e8';
+const EXCALIDRAW_PDF = '/devops-notes/Excalidraw-Notes.pdf';
 
 const LEARNT_TODAY = [
-  { title: 'Graph = nodes + edges', text: 'models networks, maps, dependencies — vertices connected by edges' },
-  { title: 'Directed vs undirected', text: 'edges may have a direction; weighted edges carry a cost' },
-  { title: 'Adjacency list', text: 'a Map of node → neighbours; space-efficient for sparse graphs' },
-  { title: 'Adjacency matrix', text: 'a V×V grid; good for dense graphs and O(1) edge checks' },
-  { title: 'BFS', text: 'a queue explores level by level — shortest path in unweighted graphs' },
-  { title: 'DFS', text: 'recursion/stack goes deep first — cycle detection, components' },
-  { title: 'Track visited', text: 'a Set of seen nodes prevents infinite loops on cycles' },
-  { title: 'Grids are graphs', text: 'a matrix is a graph where each cell connects to its neighbours' },
+  { title: 'DNS resolution chain', text: 'Client → ISP Resolver → Root Server (13 logical, hundreds via anycast) → TLD Server (.com) → Authoritative DNS → IP cached at every layer' },
+  { title: 'DNS record types', text: 'A (IPv4) · AAAA (IPv6) · CNAME (alias) · MX (mail) · TXT (verify/SPF) · NS (name server) · SOA (zone authority)' },
+  { title: 'TTL', text: 'Time To Live — controls how long resolvers cache a record before a fresh lookup is needed; short TTL = faster propagation after changes' },
+  { title: 'Vertical vs horizontal scaling', text: 'Vertical = bigger single machine (CPU/RAM); horizontal = more identical machines behind a load balancer — no ceiling but requires stateless design' },
+  { title: 'Load balancing strategies', text: 'Round Robin · Least Connections · Weighted Round Robin · IP Hash — each strategy routes requests differently based on capacity and session needs' },
+  { title: 'Stateless servers + JWT', text: 'Server holds no session state — signed JWT travels with each request so any node can verify and serve any user' },
+  { title: 'Sticky sessions', text: 'Pin a client to one server via cookie or IP hash — simplifies stateful apps but breaks auto-recovery when that server dies' },
+  { title: 'Node.js proxy', text: 'http.request() + pipe() forward a request to an upstream server and stream the response back — the foundation of a custom load balancer' },
 ];
 
-const REPRESENT = [
+const DNS_CARDS = [
   {
-    icon: '🕸️', title: 'Represent A Graph', titleClass: 'card-title-cyan', subtitle: 'List vs Matrix',
+    icon: '🌐', title: 'DNS Resolution Flow', titleClass: 'card-title-cyan', subtitle: 'How Names Become IPs',
     description:
-      'An adjacency list (Map of node → neighbours) is compact for sparse graphs and the usual choice. An adjacency matrix gives O(1) edge lookups but O(V²) space — better when dense.',
-    code: 'const g = new Map<number, number[]>();\nconst addEdge = (a: number, b: number) => {\n  g.set(a, [...(g.get(a) ?? []), b]);\n  g.set(b, [...(g.get(b) ?? []), a]); // undirected\n};',
+      'Browser cache → OS cache → ISP Recursive Resolver → Root Name Server (13 logical roots, replicated worldwide via anycast) → TLD Server (.com, .org, .in) → Authoritative DNS Server → IP returned and cached at every hop with its TTL.',
   },
   {
-    icon: '🔎', title: 'DFS', titleClass: 'card-title-purple', subtitle: 'Go Deep',
+    icon: '📋', title: 'DNS Record Types', titleClass: 'card-title-purple', subtitle: 'A · AAAA · CNAME · MX · TXT · NS · SOA',
     description:
-      'Depth-first search follows one path as far as it goes before backtracking — via recursion or an explicit stack. Great for connected components, cycle detection and pathfinding.',
-    code: 'function dfs(n: number, seen = new Set<number>()) {\n  if (seen.has(n)) return;\n  seen.add(n);\n  for (const next of g.get(n) ?? []) dfs(next, seen);\n}',
+      'A: domain → IPv4. AAAA: domain → IPv6. CNAME: alias pointing to another domain name. NS: which servers are authoritative for this zone. MX: mail exchange servers (priority-ordered). TXT: free text — SPF, domain ownership, DKIM. SOA: Start of Authority — serial, refresh, retry, expire, minimum TTL.',
+  },
+  {
+    icon: '⏱️', title: 'TTL & Diagnostics', titleClass: 'card-title-amber', subtitle: 'Cache Lifetime · CLI Tools',
+    description:
+      'TTL (seconds) tells every resolver how long to cache a record. Lower TTL = faster propagation but more DNS queries; higher TTL = fewer queries but slower rollouts. Debug DNS lookups from your terminal.',
+    code: '# DNS diagnostics\nnslookup google.com\ndig google.com\nhost google.com\n# Trace the network path\ntraceroute google.com',
   },
 ];
 
-const TRAVERSE = [
+const SCALING_CARDS = [
   {
-    icon: '🌊', title: 'BFS', titleClass: 'card-title-cyan', subtitle: 'Level By Level',
+    icon: '⚖️', title: 'Vertical vs Horizontal', titleClass: 'card-title-cyan', subtitle: 'Scale Up or Scale Out',
     description:
-      'Breadth-first search uses a queue to visit all neighbours before going deeper. In an unweighted graph, the first time you reach a node is the shortest path to it.',
-    code: 'function bfs(start: number) {\n  const q = [start], seen = new Set([start]);\n  let head = 0;\n  while (head < q.length) {\n    const n = q[head++];\n    for (const nx of g.get(n) ?? [])\n      if (!seen.has(nx)) { seen.add(nx); q.push(nx); }\n  }\n}',
+      'Vertical (scale up): add CPU / RAM to a single server. Fast to apply, but there is a physical ceiling and a single point of failure — when it goes down, everything goes down. Horizontal (scale out): add identical servers behind a load balancer. No ceiling; one dead node barely hurts. Requires stateless server design.',
   },
   {
-    icon: '🧩', title: 'Grids Are Graphs', titleClass: 'card-title-purple', subtitle: 'Islands, Mazes',
+    icon: '🔀', title: 'Load Balancing Strategies', titleClass: 'card-title-purple', subtitle: 'Round Robin · Least Conn · Weighted · IP Hash',
     description:
-      'Many problems (number of islands, shortest maze path, flood fill) are graphs in disguise — each cell is a node linked to its up/down/left/right neighbours. BFS/DFS solve them.',
-    code: 'const dirs = [[1,0],[-1,0],[0,1],[0,-1]];\n// for each cell, its neighbours are the in-bounds dirs\n// → run BFS/DFS over the grid',
+      'Round Robin: distribute requests to each server in turn — simple and even for equal-capacity nodes. Least Connections: route to the server with fewest active requests — better for variable-duration tasks. Weighted Round Robin: assign a capacity ratio (e.g., a 4-core gets 2× traffic of a 2-core). IP Hash: deterministic — same client IP always maps to the same server.',
   },
   {
-    icon: '🚫', title: 'Avoid Revisits', titleClass: 'card-title-amber', subtitle: 'visited Set',
+    icon: '🔐', title: 'Sessions, JWT & Anycast', titleClass: 'card-title-amber', subtitle: 'State at Scale',
     description:
-      'Graphs have cycles, so always track visited nodes in a Set (or mark the grid). Without it, BFS/DFS loops forever. This single habit prevents most graph bugs.',
-    footer: 'always: mark visited before/when enqueuing',
+      'Stateless design: session data lives in a signed JWT — any server verifies it with the shared secret, so any node can serve any request. Sticky sessions pin a user to one server via a cookie or IP hash — simpler for stateful apps, but recovery is messy. Anycast: many servers share one IP; the network routes each packet to the nearest physical node automatically.',
+  },
+];
+
+const CODE_CARDS = [
+  {
+    icon: '⚙️', title: 'Node.js Round-Robin Proxy', titleClass: 'card-title-cyan', subtitle: 'http.request() + pipe()',
+    description:
+      'Cycle through upstream worker ports, forward the request with http.request(), and pipe the response back to the client. The caller sees one address; load spreads across all workers.',
+    code: `const http = require('http');
+const servers = [3001, 3002, 3003];
+let idx = 0;
+
+http.createServer((req, res) => {
+  const port = servers[idx++ % servers.length];
+  const proxy = http.request(
+    {
+      hostname: 'localhost',
+      port,
+      path: req.url,
+      method: req.method,
+      headers: req.headers,
+    },
+    (upstream) => upstream.pipe(res)
+  );
+  req.pipe(proxy);
+}).listen(3000, () => console.log('LB → :3000'));`,
+  },
+  {
+    icon: '🔫', title: 'Load-Test with Autocannon', titleClass: 'card-title-purple', subtitle: 'Stress-Test Your Server',
+    description:
+      'Autocannon fires concurrent HTTP requests for a fixed duration and reports throughput, latency p50/p99, and errors. Run it against the proxy to confirm traffic is spread across workers.',
+    code: `# 10 concurrent connections for 20 seconds
+npx autocannon -c 10 -d 20 http://localhost:3000/users`,
   },
 ];
 
 const RESOURCES = [
   {
-    icon: '🕸️', title: 'VisuAlgo — Graphs', titleClass: 'card-title-cyan', subtitle: 'Visualise',
+    icon: '📝', title: 'Lecture 23 — Notion Notes', titleClass: 'card-title-cyan', subtitle: 'Full Notes',
     description:
-      'Interactive graph structures and traversals — build a graph and watch BFS and DFS explore it step by step.',
-    link: { href: VISUALGO_GRAPH, label: 'Open VisuAlgo →', external: true },
+      'Complete notes from Lecture 23: DNS hierarchy, all 7 record types, TTL, CORS, vertical vs horizontal scaling, every load-balancing strategy, stateless servers, JWT auth at scale, sticky sessions, Anycast, and the Node.js proxy implementation.',
+    link: { href: NOTION_URL, label: 'Open Notion →', external: true },
   },
   {
-    icon: '🎟️', title: 'Queue via Array', titleClass: 'card-title-purple', subtitle: 'MDN',
+    icon: '🗺️', title: 'Excalidraw Diagram', titleClass: 'card-title-purple', subtitle: 'DNS & Scaling Architecture',
     description:
-      'BFS needs an efficient queue — use an array with a head index (not shift). A refresher on the array operations behind it.',
-    link: { href: MDN_QUEUE, label: 'Open MDN Array →', external: true },
+      'Hand-drawn architecture map of the DNS resolution flow and load-balancing topology from Lecture 23. Download the PDF to zoom into the full diagram.',
+    link: { href: EXCALIDRAW_PDF, label: 'Download Diagram →', external: true },
   },
   {
-    icon: '🔜', title: 'Next: Shortest Paths', titleClass: 'card-title-amber', subtitle: 'Day 43 Preview',
+    icon: '🔜', title: 'Next: Day 43 Preview', titleClass: 'card-title-amber', subtitle: 'Day 43 →',
     description:
-      'Tomorrow — weighted graphs: Dijkstra’s shortest path, topological sort for dependency ordering, and Union-Find for connectivity.',
+      'Coming up — caching strategies, CDN basics, database read replicas, and horizontal write scaling with sharding.',
     link: { href: '/day-043', label: 'Go to Day 43 →' },
   },
 ];
@@ -135,23 +169,23 @@ export default function Day042() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-041" className="day001-nav-btn day001-nav-prev">← Day 41</Link>
-          <p className="day001-datetime">TypeScript Day 42 · 18 Jul 2027</p>
+          <p className="day001-datetime">JavaScript Day 42 · 18 Jul 2027</p>
           <Link to="/day-043" className="day001-nav-btn day001-nav-next">Day 43 →</Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
-            <div className="day001-tags"><span>TypeScript</span><span>Year 1</span><span>DSA · Graphs</span></div>
+            <div className="day001-tags"><span>JavaScript</span><span>Lecture 23</span><span>DNS · Scaling</span></div>
             <div className="day001-title-block">
-              <h1 className="day001-day-num">DAY 42 <span aria-hidden="true">🕸️</span></h1>
-              <p className="day001-day-theme">DSA — GRAPHS: REPRESENTATION &amp; TRAVERSAL</p>
+              <h1 className="day001-day-num">DAY 42 <span aria-hidden="true">🌐</span></h1>
+              <p className="day001-day-theme">BACKEND SCALING: DNS &amp; LOAD BALANCING</p>
             </div>
           </div>
           <div className="day001-profile">
             <img src="/sumit-profile.png" alt="Sumit Rawal" className="day001-avatar" width={48} height={48} />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">TYPESCRIPT · YEAR 1</p>
+              <p className="day001-profile-role">JAVASCRIPT · LECTURE 23</p>
             </div>
           </div>
         </div>
@@ -159,13 +193,15 @@ export default function Day042() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '42%' }} /></div>
 
         <p className="day001-summary">
-          Graphs model networks, maps and dependencies — <strong>vertices connected by edges</strong> (directed or
-          not, weighted or not). Represent one as an <strong>adjacency list</strong> (a Map of node → neighbours,
-          compact for sparse graphs) or an <strong>adjacency matrix</strong> (O(1) edge checks, O(V²) space). Explore
-          with <strong>BFS</strong> (a queue, level by level → shortest path in unweighted graphs) or{' '}
-          <strong>DFS</strong> (recursion/stack, deep first → components, cycles). Always track a{' '}
-          <strong>visited Set</strong> to survive cycles. Many problems (islands, mazes) are just{' '}
-          <strong>grids as graphs</strong>. <em>Next: shortest paths &amp; ordering.</em>
+          The internet's phone book: <strong>DNS</strong> converts domain names into IPs through a chain —
+          Client → ISP Resolver → <strong>Root Server</strong> → <strong>TLD Server</strong> → <strong>Authoritative DNS</strong> →
+          cached IP. Seven record types (A · AAAA · CNAME · MX · TXT · NS · SOA) and <strong>TTL</strong> control what is
+          stored and for how long. When a single server can't keep up, <strong>vertical scaling</strong> (bigger box) hits a ceiling,
+          so we go <strong>horizontal</strong>: clone the server and put a <strong>load balancer</strong> in front.
+          Strategies — Round Robin, Least Connections, Weighted, IP Hash — each suit different workloads.
+          Servers must be <strong>stateless</strong>; JWT carries the session so any node can answer any request.
+          Built a working Node.js proxy with <code>http.request()</code> + <code>pipe()</code>.{' '}
+          <em>Notes &amp; diagram on Notion →</em>
         </p>
 
         <section className="day001-learnt">
@@ -180,12 +216,13 @@ export default function Day042() {
           </ul>
         </section>
 
-        <CardSection icon="🕸️" title="REPRESENT & DFS" cards={REPRESENT} columns={2} />
-        <CardSection icon="🌊" title="BFS & GRIDS" cards={TRAVERSE} columns={3} />
+        <CardSection icon="🌐" title="DNS — HOW THE INTERNET RESOLVES NAMES" cards={DNS_CARDS} columns={3} />
+        <CardSection icon="⚖️" title="BACKEND SCALING & LOAD BALANCING" cards={SCALING_CARDS} columns={3} />
+        <CardSection icon="⚙️" title="CODE: BUILDING A LOAD BALANCER" cards={CODE_CARDS} columns={2} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
 
         <footer className="day001-hashtags">
-          <span>#100DaysOfCode</span><span>#TypeScript</span><span>#Year1</span><span>#DSA</span><span>#Graphs</span>
+          <span>#100DaysOfCode</span><span>#JavaScript</span><span>#DNS</span><span>#LoadBalancing</span><span>#BackendScaling</span>
         </footer>
       </div>
     </div>
