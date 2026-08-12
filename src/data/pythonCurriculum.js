@@ -892,6 +892,41 @@ const PYTHON_DATA_SCIENCE_SECTIONS = [
     content: "**Cat vs Dog classification** — show the model 1000 cat/dog images; after training it can identify a new image.\n\n**Email spam filter** — the model learns from thousands of emails (spam vs safe) and later flags spam automatically.\n\n**Daily life:** Netflix/YouTube recommendations, Google Photos face/object recognition, Amazon/Flipkart product suggestions, credit-card fraud detection, and Google Maps traffic/route prediction.",
   },
   {
+    id: "traditional-vs-ml",
+    title: "Traditional Programming vs Machine Learning",
+    content: "**Traditional Programming:**\n`Input + Rules → Output`\nYou write the rules manually for every condition.\n\n```python\nif attendance > 75 and marks > 40:\n    result = 'PASS'\nelse:\n    result = 'FAIL'\n```\nHere we manually define when a student passes or fails.\n\n**Machine Learning:**\n`Input + Output Data → Learning Algorithm → Trained Model → New Input → Prediction`\nYou provide historical data (inputs + correct outputs), the algorithm learns patterns, and the trained model predicts on new data.\n\n```\nHistorical Student Data:\n  Hours studied, Attendance, Previous marks, Assignment reports → PASS/FAIL\n     ↓\n  ML Algorithm learns patterns\n     ↓\n  New Student Data → Trained ML Model → PASS / FAIL\n```\n\nThe key difference: in traditional programming you **write the rules**, in ML the **algorithm discovers the rules from data**.",
+  },
+  {
+    id: "why-ml",
+    title: "Why Machine Learning?",
+    content: "Traditional software requires developers to define rules explicitly. For some problems, those rules are **very difficult or impossible to write manually**.\n\n**Example — Spam Email Detection:**\n\nWriting manual rules is fragile:\n```python\nif 'offer' in email or 'buy back' in email:\n    spam = True\n```\nSpammers change words constantly — your rules break immediately.\n\n**ML approach:** provide thousands of historical emails (spam vs not spam), the algorithm **learns patterns automatically**, and can identify spam it has never seen before — even when spammers rephrase messages.\n\n**Other problems where rules are too hard to write:**\n- Face recognition (millions of variations in lighting, angle, age)\n- Voice recognition (accents, noise, speed)\n- Medical diagnosis from scans\n- Fraud detection across millions of transactions\n\nML excels wherever the pattern is too complex for hand-coded rules.",
+  },
+  {
+    id: "types-of-ml",
+    title: "Types of Machine Learning",
+    content: "Machine Learning is divided into three main types:\n\n1. **Supervised Learning** — training data contains both input and correct output; the model learns to map inputs to outputs.\n\n2. **Unsupervised Learning** — training data has only input, no output labels; the model discovers hidden patterns or groups on its own.\n\n3. **Reinforcement Learning** — an agent learns by interacting with an environment, receiving rewards for good actions and penalties for bad ones.",
+  },
+  {
+    id: "supervised-learning",
+    title: "Supervised Learning",
+    content: "In supervised learning, the training data contains both:\n- **Input (Features)** — the measurable properties of each example\n- **Correct Output (Target)** — the answer we want the model to learn\n\n**Examples:**\n- Student information → Pass / Fail\n- House features → House price\n- Email → Spam / Not Spam\n\nThe inputs are called **Features**. The output is called the **Target**.\n\nSupervised learning is divided into two types:\n\n**1. Regression** — used when the target is a **continuous numerical value**.\n- Examples: house price, salary, temperature, sales, revenue, stock price prediction\n\n**2. Classification** — used when the output belongs to a **category**.\n- Examples: spam or not spam, pass or fail, fraud or not fraud, disease or no disease\n\n**Rule of thumb:** if you can put the answer on a number line, use Regression. If you're picking a label from a fixed set of categories, use Classification.",
+  },
+  {
+    id: "unsupervised-learning",
+    title: "Unsupervised Learning",
+    content: "In unsupervised learning, we **do not have a target/output column**. The algorithm tries to discover patterns or groups in the data on its own.\n\n**Example — Customer Segmentation:**\n\nInput data:\n- Age\n- Income\n- Spending Score\n\nNo labels provided. The algorithm discovers natural groups:\n- Group 1 → Low-spending customers\n- Group 2 → Medium-spending customers\n- Group 3 → High-spending customers\n\nThe business can then target each group differently — discounts for low spenders, loyalty rewards for high spenders.\n\n**Common unsupervised techniques:**\n- **Clustering** — K-Means, DBSCAN (group similar data points)\n- **Dimensionality Reduction** — PCA (reduce number of features while preserving information)\n- **Association** — find items that frequently appear together (market basket analysis)",
+  },
+  {
+    id: "reinforcement-learning",
+    title: "Reinforcement Learning",
+    content: "In Reinforcement Learning, an **agent** learns by interacting with an **environment**.\n\nThe agent performs an action and receives feedback:\n- **Reward** — positive feedback for a correct/good action\n- **Penalty** — negative feedback for a wrong/bad action\n\nOver time, the agent learns to maximise rewards and avoid penalties.\n\n**Real-life analogy:** teaching a dog tricks — give a treat when it sits (reward), ignore or say 'no' when it jumps (penalty). The dog learns which actions get treats.\n\n**Real-world examples:**\n- Game-playing AI (AlphaGo, Chess engines) — the agent plays moves and receives reward when it wins\n- Self-driving cars — rewarded for staying in lane, penalised for collisions\n- Robot navigation — rewarded for reaching the target, penalised for hitting walls\n- Stock trading bots — rewarded for profitable trades\n\nReinforcement Learning is the most powerful when there is no pre-labelled dataset — the agent generates its own experience through interaction.",
+  },
+  {
+    id: "ml-workflow",
+    title: "Machine Learning Workflow (15 Steps)",
+    content: "Every ML project follows this end-to-end process:\n\n1. **Understand Business Problem** — what question are we answering? What does success look like?\n2. **Collect Data** — from databases, files, APIs, web scraping, sensors, or surveys\n3. **Understand Data** — explore shape, columns, data types, and sample rows\n4. **Clean Data** — handle missing values, duplicates, outliers, and inconsistent formats\n5. **EDA (Exploratory Data Analysis)** — visualise distributions, correlations, and patterns\n6. **Feature Engineering (Data Transformation)** — create new features, encode categories, scale values\n7. **Train and Test Split** — separate data into training set (model learns) and test set (model is evaluated on unseen data)\n8. **Pre-Processing** — convert all data into numerical format that the algorithm can consume\n9. **Select Algorithm** — choose the right ML algorithm (Linear Regression, Decision Tree, Random Forest, SVM, etc.)\n10. **Train Model** — fit the algorithm on training data so it learns patterns\n11. **Make Predictions** — run the trained model on test data\n12. **Evaluate Model** — measure accuracy, precision, recall, RMSE, or other metrics\n13. **Tune Model** — improve performance by adjusting hyperparameters (GridSearchCV, RandomizedSearchCV)\n14. **Save Model** — serialise the trained model to disk for reuse\n    ```python\n    import pickle\n    with open('house_price_model.pkl', 'wb') as f:\n        pickle.dump(model, f)\n    ```\n15. **Deploy Model** — expose the model via an API (FastAPI/Flask) or embed it in an application so end users can get predictions",
+  },
+  {
     id: "how-ml-works",
     title: "How Machine Learning Works",
     content: "ML projects generally follow four steps:\n1. **Collect Data** — images, text, numbers, websites, databases, APIs.\n2. **Train the Model** — the model learns patterns from data.\n3. **Test the Model** — check whether predictions are correct.\n4. **Use the Model** — make predictions on new, unseen data.\n\n**Summary:** Learn from data → improve over time → make predictions.",
