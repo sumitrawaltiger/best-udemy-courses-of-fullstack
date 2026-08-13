@@ -42,17 +42,17 @@ function _calDate(dayN) {
 // ── 20 skills · 2,000 days ─────────────────────────────────────────────────
 // Python (1–100) → FastAPI (101–200) → Agentic AI (201–300) →
 // JavaScript (301–400) → TypeScript (401–500) → React (501–600) →
-// Next JS (601–700) → React Native (701–775, 75d) → Databases (776–925, 150d) →
-// Express JS (926–1025) → J2SE (1026–1125) → JPA (1126–1200, 75d) →
-// Spring Boot (1201–1300) → Microservices (1301–1400) → Automation Testing (1401–1475, 75d) →
-// DevOps (1476–1575) → Cloud / AWS (1576–1675) → Kubernetes (1676–1775) →
-// System Design (1776–1900, 125d) → Capstone (1901–2000, 100d).
+// Next JS (601–700) → React Native (701–775, 75d) → Express JS (776–850, 75d) →
+// Databases (851–1000, 150d) → J2SE (1001–1100) → JPA (1101–1175, 75d) →
+// Spring Boot (1176–1275) → Microservices (1276–1375) → Automation Testing (1376–1450, 75d) →
+// DevOps (1451–1550) → Cloud / AWS (1551–1650) → Kubernetes (1651–1750) →
+// System Design (1751–1900, 150d) → Capstone (1901–2000, 100d).
 // Calendar dates are intentionally NOT shown (HR-facing page).
 
 const SKILL_DAYS = [
   [1, 100], [101, 200], [201, 300], [301, 400], [401, 500], [501, 600], [601, 700],
-  [701, 775], [776, 925], [926, 1025], [1026, 1125], [1126, 1200], [1201, 1300],
-  [1301, 1400], [1401, 1475], [1476, 1575], [1576, 1675], [1676, 1775], [1776, 1900],
+  [701, 775], [776, 850], [851, 1000], [1001, 1100], [1101, 1175], [1176, 1275],
+  [1276, 1375], [1376, 1450], [1451, 1550], [1551, 1650], [1651, 1750], [1751, 1900],
   [1901, 2000],
 ];
 
@@ -131,31 +131,32 @@ const SKILLS = [
       { icon: '📱', title: 'React Native', detail: 'Expo · native components · navigation · builds & publishing', source: 'ChaiCode', to: '/mobile' },
     ],
   },
-  // ── Databases: Skill 9 — data layer before building APIs ─────────────────
+  // ── Express JS: Skill 9 — complete the JS stack before the data layer ──────
   {
-    id: 's09', arcClass: 'y3', icon: '🗄️',
-    label: 'Skill 9 · Databases',
-    tagline: 'Days 776–925', duration: '150 days',
-    blurb: 'Master the data layer before building APIs on top of it — PostgreSQL, MySQL, MongoDB, Redis, and SQLAlchemy. SQL and NoSQL depth that feeds directly into Express JS, JPA, Spring Boot, and the Capstone.',
+    id: 's09', arcClass: 'y2', icon: '🟢',
+    label: 'Skill 9 · Express JS',
+    tagline: 'Days 776–850', duration: '75 days',
+    blurb: 'Node.js backends — REST APIs, middleware, Prisma ORM, JWT authentication, and deployment. Comes right after React Native to complete the full-stack JavaScript picture before diving into the data layer.',
+    items: [
+      { icon: '🟢', title: 'Express JS / Node JS', detail: 'REST APIs · middleware · Prisma · JWT auth & deployment', source: 'ChaiCode', to: '/nextjs' },
+    ],
+  },
+  // ── Databases: Skill 10 — data layer after the full JS stack ─────────────
+  {
+    id: 's10', arcClass: 'y3', icon: '🗄️',
+    label: 'Skill 10 · Databases',
+    tagline: 'Days 851–1000', duration: '150 days',
+    blurb: 'Master SQL and NoSQL depth — PostgreSQL, MySQL, MongoDB, Redis, and SQLAlchemy. Comes after the full JavaScript stack so every concept connects directly to real API and service patterns.',
     items: [
       { icon: '🐘', title: 'SQL Databases', detail: 'PostgreSQL · MySQL · joins · indexes · transactions · query optimisation', source: 'Udemy', to: '/java' },
       { icon: '🍃', title: 'NoSQL & Caching', detail: 'MongoDB · Redis caching · pub/sub · session management', source: 'Udemy', to: '/java' },
-    ],
-  },
-  {
-    id: 's10', arcClass: 'y2', icon: '🟢',
-    label: 'Skill 10 · Express JS',
-    tagline: 'Days 926–1025', duration: '100 days',
-    blurb: 'Node.js backends built on real database depth — REST APIs, middleware, Prisma ORM, JWT authentication, and deployment. SQL and NoSQL from Skill 9 makes every API meaningful.',
-    items: [
-      { icon: '🟢', title: 'Express JS / Node JS', detail: 'REST APIs · middleware · Prisma · JWT auth & deployment', source: 'ChaiCode', to: '/nextjs' },
     ],
   },
   // ── Java domain: Skills 11–15 ─────────────────────────────────────────────
   {
     id: 's11', arcClass: 'y3', icon: '☕',
     label: 'Skill 11 · J2SE',
-    tagline: 'Days 1026–1125', duration: '100 days',
+    tagline: 'Days 1001–1100', duration: '100 days',
     blurb: 'Core Java — OOP, collections, exceptions, multithreading, and the language fundamentals that underpin the entire Java ecosystem.',
     items: [
       { icon: '☕', title: 'J2SE', detail: 'Core Java — OOP · collections · exceptions · multithreading', source: 'Udemy', to: '/java' },
@@ -164,7 +165,7 @@ const SKILLS = [
   {
     id: 's12', arcClass: 'y3', icon: '🗄️',
     label: 'Skill 12 · JPA',
-    tagline: 'Days 1126–1200', duration: '75 days',
+    tagline: 'Days 1101–1175', duration: '75 days',
     blurb: 'ORM and database mapping — entities, relationships, queries, and JPA best practices for production database layers.',
     items: [
       { icon: '🗄️', title: 'JPA', detail: 'ORM · entities · relationships · database mapping', source: 'Udemy', to: '/java' },
@@ -173,7 +174,7 @@ const SKILLS = [
   {
     id: 's13', arcClass: 'y3', icon: '🍃',
     label: 'Skill 13 · Spring Boot',
-    tagline: 'Days 1201–1300', duration: '100 days',
+    tagline: 'Days 1176–1275', duration: '100 days',
     blurb: 'The premier Java framework — Spring Boot, Spring Data, REST APIs, and security for enterprise-grade applications.',
     items: [
       { icon: '🍃', title: 'Spring Boot', detail: 'Spring Boot · Spring Data · REST APIs · security', source: 'Udemy', to: '/java' },
@@ -182,7 +183,7 @@ const SKILLS = [
   {
     id: 's14', arcClass: 'y3', icon: '🕸️',
     label: 'Skill 14 · Microservices',
-    tagline: 'Days 1301–1400', duration: '100 days',
+    tagline: 'Days 1276–1375', duration: '100 days',
     blurb: 'Distributed systems — microservices architecture, API gateway, and service discovery with Java.',
     items: [
       { icon: '🕸️', title: 'Microservices', detail: 'Microservices architecture · API gateway · service discovery', source: 'Udemy', to: '/java' },
@@ -191,7 +192,7 @@ const SKILLS = [
   {
     id: 's15', arcClass: 'y3', icon: '🧪',
     label: 'Skill 15 · Automation Testing',
-    tagline: 'Days 1401–1475', duration: '75 days',
+    tagline: 'Days 1376–1450', duration: '75 days',
     blurb: 'End-to-end test automation after the full Java stack — JUnit 5, Mockito, Testcontainers, REST-assured, Pact contract tests, and JMeter/Gatling for performance.',
     items: [
       { icon: '🧪', title: 'Automation Testing', detail: 'JUnit · Mockito · Testcontainers · REST-assured · Pact · JMeter', source: 'Udemy', to: '/java' },
@@ -201,17 +202,17 @@ const SKILLS = [
   {
     id: 's16', arcClass: 'y5', icon: '🚀',
     label: 'Skill 16 · DevOps',
-    tagline: 'Days 1476–1575', duration: '100 days',
+    tagline: 'Days 1451–1550', duration: '100 days',
     blurb: 'Starts with 30 days of Docker as the non-negotiable foundation — containers, images, volumes, Compose. Then Linux, CI/CD pipelines, and the full KodeKloud DevOps path. Docker depth here is what makes Kubernetes in Skill 18 click.',
     items: [
-      { icon: '🐳', title: 'Docker Foundation', detail: 'Days 1476–1505 · containers · images · volumes · Compose · registries', source: 'KodeKloud', to: '/devops' },
+      { icon: '🐳', title: 'Docker Foundation', detail: 'Days 1451–1480 · containers · images · volumes · Compose · registries', source: 'KodeKloud', to: '/devops' },
       { icon: '🚀', title: 'DevOps & CI/CD', detail: 'Linux · CI/CD pipelines · GitHub Actions · Jenkins · monitoring', source: 'KodeKloud', to: '/devops' },
     ],
   },
   {
     id: 's17', arcClass: 'y5', icon: '☁️',
     label: 'Skill 17 · Cloud (AWS)',
-    tagline: 'Days 1576–1675', duration: '100 days',
+    tagline: 'Days 1551–1650', duration: '100 days',
     blurb: '100 days of AWS — core cloud services, architecture patterns, and production-grade cloud engineering.',
     items: [
       { icon: '☁️', title: 'AWS Cloud', detail: '100 Days of AWS — core services and cloud architecture', source: 'KodeKloud', to: '/aws' },
@@ -221,7 +222,7 @@ const SKILLS = [
   {
     id: 's18', arcClass: 'y5', icon: '☸️',
     label: 'Skill 18 · Kubernetes',
-    tagline: 'Days 1676–1775', duration: '100 days',
+    tagline: 'Days 1651–1750', duration: '100 days',
     blurb: 'Production-grade container orchestration — CKA certification prep, Helm, Istio, EKS, GitOps with ArgoCD/Flux, and Prometheus/Grafana observability at scale.',
     items: [
       { icon: '☸️', title: 'Kubernetes', detail: 'CKA prep · Helm · Istio · EKS · GitOps (ArgoCD/Flux) · Prometheus/Grafana', source: 'KodeKloud', to: '/k8s' },
@@ -231,7 +232,7 @@ const SKILLS = [
   {
     id: 's19', arcClass: 'y5', icon: '🏗️',
     label: 'Skill 19 · System Design',
-    tagline: 'Days 1776–1900', duration: '125 days',
+    tagline: 'Days 1751–1900', duration: '150 days',
     blurb: 'The art of building at scale — HLD/LLD, CAP theorem, distributed systems, database design, caching, message queues, and case studies (design Twitter, Uber, Netflix).',
     items: [
       { icon: '🏗️', title: 'System Design', detail: 'HLD/LLD · scalability · distributed systems · case studies · mock interviews', source: 'ChaiCode + GfG', to: '/interview' },
@@ -246,10 +247,10 @@ const SKILLS = [
     items: [
       { icon: '🌐', title: 'Next.js Web App', detail: 'TypeScript · React · Next.js — server-rendered frontend with SSR, React Server Components, and auth', source: 'Skills 5 · 6 · 7', to: '/nextjs' },
       { icon: '📱', title: 'React Native Mobile App', detail: 'Expo · React Native — iOS & Android app so learners can study on the go', source: 'Skill 8', to: '/mobile' },
-      { icon: '🔀', title: 'Express JS API Gateway', detail: 'Express · Node.js — single entry point that routes every request to the right microservice', source: 'Skill 10', to: '/' },
+      { icon: '🔀', title: 'Express JS API Gateway', detail: 'Express · Node.js — single entry point that routes every request to the right microservice', source: 'Skill 9', to: '/' },
       { icon: '☕', title: 'Spring Boot Microservices', detail: 'User Service · Course Service · Progress Service — built with J2SE, JPA, Spring Boot, and REST', source: 'Skills 11 · 12 · 13 · 14', to: '/java' },
       { icon: '🤖', title: 'AI Tutor Service', detail: 'Python · FastAPI · LangChain · RAG — answers learner questions and generates quizzes from course content', source: 'Skills 1 · 2 · 3', to: '/python' },
-      { icon: '🗄️', title: 'Multi-Database Layer', detail: 'PostgreSQL (users & orders) · MongoDB (course catalogue) · Redis (cache & sessions)', source: 'Skill 9', to: '/java' },
+      { icon: '🗄️', title: 'Multi-Database Layer', detail: 'PostgreSQL (users & orders) · MongoDB (course catalogue) · Redis (cache & sessions)', source: 'Skill 10', to: '/java' },
       { icon: '🧪', title: 'Automation Test Suite', detail: 'JUnit 5 · REST Assured · Selenium · Testcontainers — unit, integration, contract, and E2E tests', source: 'Skill 15', to: '/java' },
       { icon: '☸️', title: 'DevOps · AWS · Kubernetes', detail: 'Docker · GitHub Actions CI/CD · AWS EKS · RDS · S3 · CloudFront · Kubernetes Helm charts', source: 'Skills 16 · 17 · 18', to: '/devops' },
     ],
@@ -287,7 +288,7 @@ export default function RoadmapHome() {
         <p className="roadmap-hero-sub">
           Starts with <strong>Day 0 — environment setup</strong>, then <strong>20 skills</strong>{' '}
           mastered one at a time — <strong>Python → FastAPI → Agentic AI → JavaScript → TypeScript
-          → React JS → Next JS → React Native → Databases → Express JS → J2SE → JPA → Spring Boot
+          → React JS → Next JS → React Native → Express JS → Databases → J2SE → JPA → Spring Boot
           → Microservices → Automation Testing → DevOps → Cloud (AWS) → Kubernetes → System Design → Capstone</strong> —{' '}
           <strong>20 skills mastered to depth — 75 to 150 days each, 66 months (2,000 days)</strong> of focused daily practice,
           front to back. DSA practiced 30 min daily (1 LeetCode/day) throughout all 20 skills.
@@ -308,7 +309,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png?v=2"
-          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → Kubernetes → System Design → Capstone. Day 1: 13 Aug 2026 · Day 2,000: 2 Feb 2032."
+          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → Kubernetes → System Design → Capstone. Day 1: 13 Aug 2026 · Day 2,000: 2 Feb 2032."
           loading="eager"
           style={{
             width: '100%',
@@ -495,7 +496,7 @@ export default function RoadmapHome() {
           <strong>Python</strong> {'->'} <strong>FastAPI</strong> {'->'} <strong>Agentic AI</strong> (LangChain, LangGraph, MCP) {'->'}
           {' '}<strong>JavaScript</strong> {'->'} <strong>TypeScript</strong> {'->'}
           {' '}<strong>React JS</strong> {'->'} <strong>Next JS</strong> {'->'} <strong>React Native</strong> {'->'}
-          {' '}<strong>Databases</strong> (PostgreSQL · MongoDB · Redis) {'->'} <strong>Express JS</strong> {'->'} <strong>J2SE</strong> {'->'} <strong>JPA</strong> {'->'} <strong>Spring Boot</strong> {'->'} <strong>Microservices</strong> {'->'} <strong>Automation Testing</strong> {'->'}
+          {' '}<strong>Express JS</strong> {'->'} <strong>Databases</strong> (PostgreSQL · MongoDB · Redis) {'->'} <strong>J2SE</strong> {'->'} <strong>JPA</strong> {'->'} <strong>Spring Boot</strong> {'->'} <strong>Microservices</strong> {'->'} <strong>Automation Testing</strong> {'->'}
           {' '}<strong>DevOps</strong> {'->'} <strong>Cloud (AWS)</strong> {'->'}
           {' '}<strong>Kubernetes</strong> {'->'} <strong>System Design</strong> {'->'}
           {' '}<strong>Capstone Project</strong> (all 19 skills integrated). One skill at a time, fully focused.

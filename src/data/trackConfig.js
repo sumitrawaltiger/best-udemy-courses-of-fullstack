@@ -97,9 +97,9 @@ export const INTERVIEW_PREP_WEEKS = 0;
 // Full journey: Day 1 = 13 Aug 2026. User-facing framing: 2000 days / 20 skills / 75–150 days each.
 // Skill order: Python(1-100) → FastAPI(101-200) → Agentic AI(201-300) → JavaScript(301-400) →
 // TypeScript(401-500) → React(501-600) → Next JS(601-700) → React Native(701-775, 75d) →
-// Databases(776-925, 150d) → Express JS(926-1025) → J2SE(1026-1125) → JPA(1126-1200, 75d) → Spring Boot(1201-1300) → Microservices(1301-1400) → Automation Testing(1401-1475, 75d) →
-// DevOps(1476-1575) → Cloud/AWS(1576-1675) → Kubernetes(1676-1775) →
-// System Design(1776-1900, 125d) → Capstone(1901-2000, 100d).
+// Express JS(776-850, 75d) → Databases(851-1000, 150d) → J2SE(1001-1100) → JPA(1101-1175, 75d) → Spring Boot(1176-1275) → Microservices(1276-1375) → Automation Testing(1376-1450, 75d) →
+// DevOps(1451-1550) → Cloud/AWS(1551-1650) → Kubernetes(1651-1750) →
+// System Design(1751-1900, 150d) → Capstone(1901-2000, 100d).
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
 //  chapterFactory.js = 8 Aug 2026, so module Day 1 also dates to 8 Aug 2026.)
 export const JOURNEY_START_LABEL = '13 Aug 2026';
@@ -109,7 +109,7 @@ export const JOURNEY_TOTAL_DAYS = 2000;
 export const JOURNEY_END_FACTORY_DAY = 2000;
 
 // Explicit day-offsets for the 20-skill plan (offset = skill start day − 1).
-// Skills 1–3 (Python): 1–300 · Skills 4–7 (JS/TS/React/Next): 301–700 · Skill 8 (RN): 701–775 · Skill 9 (Databases): 776–925 · Skill 10 (Express): 926–1025 · Skills 11–15 (Java): 1026–1475 · Skills 16–17 (DevOps/Cloud): 1476–1675 · Skill 18 (K8s): 1676–1775 · Skill 19 (SysDesign): 1776–1900 · Skill 20 (Capstone): 1901–2000.
+// Skills 1–3 (Python): 1–300 · Skills 4–9 (JS/TS/React/Next/RN/Express): 301–850 · Skill 10 (Databases): 851–1000 · Skills 11–15 (Java): 1001–1450 · Skills 16–17 (DevOps/Cloud): 1451–1650 · Skill 18 (K8s): 1651–1750 · Skill 19 (SysDesign): 1751–1900 · Skill 20 (Capstone): 1901–2000.
 export const TRACK_OFFSETS = {
   thunder: 0, // Thunder JavaScript — Days 1–100 (24 Jul – 31 Oct 2026)
   nextjs: 100, // React & Next.js — Days 101–150 (1 Nov – 20 Dec 2026)
