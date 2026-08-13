@@ -915,6 +915,92 @@ function ScoreCard({ title, score, isWinner }) {
       },
     ],
   },
+  // ── Episode 12 ────────────────────────────────────────────────────────────
+  {
+    day: 12,
+    date: '18 Mar 2028',
+    group: 'hooks',
+    title: 'useEffect Hook in React',
+    tagline: 'Run side effects after render — data fetching, subscriptions, timers, and DOM changes.',
+    image: '/react-notes/react12.jpeg',
+    tags: ['useEffect', 'Side Effects', 'Hooks', 'Cleanup', 'Dependencies', 'Fetch', 'Lifecycle'],
+    notes: [
+      { k: 'What is useEffect?', v: 'useEffect is a Hook that lets you perform **side effects** in function components. Think of it as "doing something" *after* the component renders — like fetching data, setting up subscriptions, or manually changing the DOM.' },
+      { k: 'Common Use Cases', v: 'Fetching data from an API, setting up subscriptions, manually changing the DOM, and cleaning up resources (e.g., timers, event listeners).' },
+      { k: 'Default Behaviour', v: 'By default, useEffect runs **after every render**. The dependencies array lets you control when it runs.' },
+      { k: 'Basic Syntax', v: '`useEffect(() => { /* effect */ return () => { /* cleanup */ }; }, [dependencies]);` — the callback runs after render; the optional return function is the cleanup.' },
+      { k: 'Dependencies Array', v: 'Controls when the effect fires. `[]` = only once on mount. `[value]` = on mount and when value changes. No array = after every render. `[a, b]` = when either a or b changes.' },
+      { k: 'Cleanup Function', v: 'The function returned from useEffect is called before the next effect runs or when the component unmounts. Use it to clear timers, cancel subscriptions, or remove event listeners — prevents memory leaks.' },
+      { k: 'Fetch Example', v: 'Pass `[]` as dependencies to fetch data once on mount. Chain `.then(res => res.json()).then(data => setState(data))` and always add a `.catch` for errors.' },
+      { k: 'Common Mistakes', v: 'Forgetting dependencies, using no array when `[]` is needed, creating infinite loops by updating state inside the effect without proper dependencies, not cleaning up subscriptions/timers.' },
+      { k: 'Always include dependencies', v: 'Always include all values used inside the effect in the dependencies array — omitting them can cause stale closures and subtle bugs.' },
+      { k: 'Real-Life Analogy', v: 'useEffect is like watering a plant at the right time and cleaning up when you move it. Component mounts → effect runs → component updates → cleanup → re-run → component unmounts → final cleanup.' },
+    ],
+    theory: [
+      {
+        h: '1. What is useEffect?',
+        p: 'useEffect is a built-in React Hook that lets you **synchronise a component with an external system** after it renders.\n\nThe name "side effect" covers anything that happens *outside* of calculating and returning JSX — fetching data, setting up a WebSocket, reading from localStorage, measuring a DOM node, or setting a timer.\n\nuseEffect replaces the class lifecycle methods `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` — unified into one API.',
+      },
+      {
+        h: '2. Basic Syntax',
+        p: '```jsx\nuseEffect(() => {\n  // side effect code here — runs after render\n\n  return () => {\n    // cleanup code (optional)\n    // runs before the next effect or on unmount\n  };\n}, [dependencies]);\n```\n\n- **Effect callback** — runs after the component renders.\n- **Cleanup return** — optional; runs before the next effect fires or when the component unmounts.\n- **Dependencies array** — optional array that controls when the effect re-runs.',
+      },
+      {
+        h: '3. Dependencies Array',
+        p: 'The array is the key to controlling when your effect fires:\n\n| Dependencies | When it runs |\n|---|---|\n| `[]` (empty array) | Only once, on mount |\n| `[value]` | On mount and whenever `value` changes |\n| `[a, b]` | On mount and when either `a` or `b` changes |\n| No array | After **every** render |\n\n**Rule:** always include every variable from the component scope that the effect uses inside the dependencies array. Omitting a dependency causes stale-closure bugs.',
+      },
+      {
+        h: '4. Fetch Data from API',
+        p: '```jsx\nimport { useState, useEffect } from \'react\';\n\nfunction Users() {\n  const [users, setUsers] = useState([]);\n\n  useEffect(() => {\n    fetch(\'https://jsonplaceholder.typicode.com/users\')\n      .then(res => res.json())\n      .then(data => setUsers(data))\n      .catch(err => console.log(err));\n  }, []); // empty array — runs once on mount\n\n  return (\n    <div className="card">\n      <h2>Users</h2>\n      <ul>\n        {users.map(user => (\n          <li key={user.id}>{user.name}</li>\n        ))}\n      </ul>\n    </div>\n  );\n}\n\nexport default Users;\n```\n\nThe `[]` dependency array means the fetch runs only when the component mounts — not on every re-render.',
+      },
+      {
+        h: '5. Cleanup Function',
+        p: 'The function returned from useEffect is the **cleanup**. React calls it:\n1. Before the next effect runs (so the old effect is cleared).\n2. When the component unmounts.\n\n```jsx\nuseEffect(() => {\n  const timer = setInterval(() => {\n    console.log("Tick");\n  }, 1000);\n\n  return () => {\n    clearInterval(timer); // cleanup — stops the interval\n    console.log("Timer cleared");\n  };\n}, []);\n```\n\nWithout the cleanup, the interval would keep firing even after the component is removed — a classic memory leak.',
+      },
+      {
+        h: '6. Real-Life Analogy',
+        p: 'Think of useEffect like **watering a plant at the right time and cleaning up when you move it**.\n\n- **Component Mounts** → the plant arrives. useEffect runs — you water it.\n- **Component Updates** → the plant grows. useEffect re-runs if relevant state changed — you water again.\n- **Component Unmounts** → you move the plant out. The cleanup function runs — you stop watering and tidy up.\n\nWithout cleanup, you\'d still be watering a pot that no longer has a plant — wasted resources, eventual memory leak.',
+      },
+      {
+        h: '7. Key Points',
+        p: '- useEffect runs **after render** (not during).\n- The dependencies array controls **when** it re-runs.\n- `[]` → runs once on mount.\n- No array → runs after every render.\n- The cleanup return function **prevents memory leaks**.\n- Never put async functions directly as the effect — wrap them inside.',
+      },
+      {
+        h: '8. Common Mistakes',
+        p: '- **Forgetting dependencies** — effect uses a variable but it\'s not in the array; stale data bug.\n- **Using no array when `[]` is needed** — effect runs after every render, causing extra network calls.\n- **Infinite loops** — effect updates state that triggers a re-render, which triggers the effect again. Fix: add the right dependencies or restructure.\n- **Not cleaning up** — timers, subscriptions, and event listeners left behind cause memory leaks and ghost listeners after unmount.',
+      },
+      {
+        h: '9. Mini Challenge',
+        p: 'Create a component that:\n1. Fetches posts from `https://jsonplaceholder.typicode.com/posts`\n2. Shows a **"Loading…"** message while fetching\n3. Handles and displays an **error** if the API call fails\n4. Uses `useEffect` with the correct dependencies\n\nHint: three state variables — `posts`, `loading`, and `error`. Flip `loading` to false after the fetch resolves (in both `.then` and `.catch`).',
+      },
+      {
+        h: '10. Quick Summary',
+        p: 'useEffect is the Hook for **side effects** — anything that happens outside of rendering JSX.\n\nMaster three things:\n1. **When it fires** — the dependencies array.\n2. **What it does** — the effect callback.\n3. **How it cleans up** — the return function.\n\nGet these three right and your components will be efficient, correct, and memory-leak-free.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Basic useEffect — run once on mount',
+        code: "import { useEffect } from 'react';\n\nfunction App() {\n  useEffect(() => {\n    console.log('Component mounted!');\n    // runs once — [] means no dependencies to watch\n  }, []);\n\n  return <h1>Hello</h1>;\n}",
+        note: 'Empty dependencies array → effect fires only when the component mounts, not on subsequent re-renders.',
+      },
+      {
+        label: 'Fetch data from an API',
+        code: "import { useState, useEffect } from 'react';\n\nfunction Users() {\n  const [users, setUsers] = useState([]);\n\n  useEffect(() => {\n    fetch('https://jsonplaceholder.typicode.com/users')\n      .then(res => res.json())\n      .then(data => setUsers(data))\n      .catch(err => console.log(err));\n  }, []); // runs once on mount\n\n  return (\n    <ul>\n      {users.map(user => (\n        <li key={user.id}>{user.name}</li>\n      ))}\n    </ul>\n  );\n}\n\nexport default Users;",
+        note: 'The API is called exactly once when the component mounts, because the dependencies array is [].',
+      },
+      {
+        label: 'Cleanup — clear a timer on unmount',
+        code: "import { useEffect } from 'react';\n\nfunction Timer() {\n  useEffect(() => {\n    const timer = setInterval(() => {\n      console.log('Tick');\n    }, 1000);\n\n    // cleanup: runs before next effect or on unmount\n    return () => {\n      clearInterval(timer);\n      console.log('Timer cleared');\n    };\n  }, []);\n\n  return <p>Timer running — check the console.</p>;\n}",
+        note: 'Without the clearInterval cleanup, the timer keeps firing even after the component is removed — memory leak.',
+      },
+      {
+        label: 'Dependencies — re-run when a value changes',
+        code: "import { useState, useEffect } from 'react';\n\nfunction Search({ query }) {\n  const [results, setResults] = useState([]);\n\n  useEffect(() => {\n    // Re-runs every time `query` changes\n    fetch(`https://api.example.com/search?q=${query}`)\n      .then(res => res.json())\n      .then(data => setResults(data));\n  }, [query]); // <-- query in the array\n\n  return <ul>{results.map(r => <li key={r.id}>{r.title}</li>)}</ul>;\n}",
+        note: '[query] means the fetch re-runs whenever the query prop changes — perfect for live search.',
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
