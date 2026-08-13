@@ -94,12 +94,12 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: Day 1 = 13 Aug 2026. User-facing framing: 2000 days / 20 skills / 19×100 days + Capstone 100 days.
+// Full journey: Day 1 = 13 Aug 2026. User-facing framing: 2000 days / 20 skills / 75–150 days each.
 // Skill order: Python(1-100) → FastAPI(101-200) → Agentic AI(201-300) → JavaScript(301-400) →
-// TypeScript(401-500) → React(501-600) → Next JS(601-700) → React Native(701-800) →
-// Databases(801-900) → Express JS(901-1000) → J2SE(1001-1100) → JPA(1101-1200) → Spring Boot(1201-1300) → Microservices(1301-1400) → Automation Testing(1401-1500) →
-// DevOps(1501-1600) → Cloud/AWS(1601-1700) → Kubernetes(1701-1800) →
-// System Design(1801-1900) → Capstone(1901-2000, 100 days).
+// TypeScript(401-500) → React(501-600) → Next JS(601-700) → React Native(701-775, 75d) →
+// Databases(776-925, 150d) → Express JS(926-1025) → J2SE(1026-1125) → JPA(1126-1200, 75d) → Spring Boot(1201-1300) → Microservices(1301-1400) → Automation Testing(1401-1475, 75d) →
+// DevOps(1476-1575) → Cloud/AWS(1576-1675) → Kubernetes(1676-1775) →
+// System Design(1776-1900, 125d) → Capstone(1901-2000, 100d).
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
 //  chapterFactory.js = 8 Aug 2026, so module Day 1 also dates to 8 Aug 2026.)
 export const JOURNEY_START_LABEL = '13 Aug 2026';
@@ -109,7 +109,7 @@ export const JOURNEY_TOTAL_DAYS = 2000;
 export const JOURNEY_END_FACTORY_DAY = 2000;
 
 // Explicit day-offsets for the 20-skill plan (offset = skill start day − 1).
-// Skills 1–3 (Python): 1–300 · Skills 4–8 (JS/TS): 301–800 · Skill 9 (Databases): 801–900 · Skill 10 (Express): 901–1000 · Skills 11–15 (Java): 1001–1500 · Skills 16–17 (DevOps/Cloud): 1501–1700 · Skill 18 (K8s): 1701–1800 · Skill 19 (SysDesign): 1801–1900 · Skill 20 (Capstone): 1901–2000.
+// Skills 1–3 (Python): 1–300 · Skills 4–7 (JS/TS/React/Next): 301–700 · Skill 8 (RN): 701–775 · Skill 9 (Databases): 776–925 · Skill 10 (Express): 926–1025 · Skills 11–15 (Java): 1026–1475 · Skills 16–17 (DevOps/Cloud): 1476–1675 · Skill 18 (K8s): 1676–1775 · Skill 19 (SysDesign): 1776–1900 · Skill 20 (Capstone): 1901–2000.
 export const TRACK_OFFSETS = {
   thunder: 0, // Thunder JavaScript — Days 1–100 (24 Jul – 31 Oct 2026)
   nextjs: 100, // React & Next.js — Days 101–150 (1 Nov – 20 Dec 2026)
