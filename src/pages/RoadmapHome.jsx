@@ -308,7 +308,7 @@ export default function RoadmapHome() {
         style={{ margin: '8px auto 4px', textAlign: 'center', maxWidth: '820px' }}
       >
         <img
-          src="/roadmap-notes/2000_days.png?v=3"
+          src="/roadmap-notes/2000_days.png?v=4"
           alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → Kubernetes → System Design → Capstone. Day 1: 13 Aug 2026 · Day 2,000: 2 Feb 2032."
           loading="eager"
           style={{
