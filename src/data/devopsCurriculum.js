@@ -1381,6 +1381,22 @@ function buildLessons() {
         lesson.pdfUrl = '/devops-notes/Notes.pdf';
         lesson.pdfLabel = 'Linux Essentials Notes (PDF)';
       }
+      // Lecture 3 — Linux User Expiry: full Linux Essentials notes + Excalidraw visual diagrams.
+      if (title === 'Linux User Expiry') {
+        lesson.extraLinks = [
+          ...(lesson.extraLinks || []),
+          {
+            label: 'Linux Essentials Notes — Filesystem, Users, Permissions, Processes & systemd (PDF, 40 pages)',
+            href: '/devops-notes/Notes.pdf',
+            icon: '📄',
+          },
+          {
+            label: 'Excalidraw Visual Notes — Linux Filesystem & Processes (PDF)',
+            href: '/devops-notes/Excalidraw-Notes.pdf',
+            icon: '📊',
+          },
+        ];
+      }
       // The DevOps fundamentals module is the home for the full guide download.
       if (title === 'Fundamentals of DevOps') {
         lesson.pdfUrl = DEVOPS_GUIDE.href;
