@@ -73,7 +73,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Ready for Skill 1 · Python',
-    text: 'Day 1 (11 Aug 2026) starts with Skill 1: Python — core syntax, OOP, file I/O, database connectivity, and multithreading. 100 days to master the language foundation',
+    text: 'Day 1 (13 Aug 2026) starts with Skill 1: Python — core syntax, OOP, file I/O, database connectivity, and multithreading. 100 days to master the language foundation',
   },
   {
     title: 'Accounts ready',
@@ -85,7 +85,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'LeetCode streak starts',
-    text: '1 LeetCode daily challenge every single day — Day 1 (11 Aug 2026) through Day 2,000 (31 Jan 2032) earns the LeetCode 2,000 Days Badge; the streak begins tomorrow',
+    text: '1 LeetCode daily challenge every single day — Day 1 (13 Aug 2026) through Day 2,000 (2 Feb 2032) earns the LeetCode 2,000 Days Badge; the streak begins tomorrow',
   },
 ];
 
@@ -172,7 +172,7 @@ const STUDY_SYSTEM = [
     icon: '🗺️',
     title: 'The 60+ Month Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '19 skills · 100 days each · starts 11 Aug 2026',
+    subtitle: '19 skills · 100 days each · starts 13 Aug 2026',
     description:
       '20 skills: 19×100 days + Capstone 100 days: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React → Next JS → React Native → Databases → Express JS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → Kubernetes → System Design → Capstone Project. DSA practiced 30 min daily. 2,000 days total.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
@@ -181,9 +181,9 @@ const STUDY_SYSTEM = [
     icon: '🤖',
     title: 'Day 1 · Skill 1 · Python',
     titleClass: 'card-title-lime',
-    subtitle: 'Days 1–100 · 11 Aug 2026 · core Python',
+    subtitle: 'Days 1–100 · 13 Aug 2026 · core Python',
     description:
-      'Day 1 (11 Aug 2026) begins with Skill 1: Python — 100 days of core syntax, OOP, file I/O, database connectivity, and multithreading. Then FastAPI (Days 101–200), then Agentic AI with LangChain, LangGraph, MCP (Days 201–300).',
+      'Day 1 (13 Aug 2026) begins with Skill 1: Python — 100 days of core syntax, OOP, file I/O, database connectivity, and multithreading. Then FastAPI (Days 101–200), then Agentic AI with LangChain, LangGraph, MCP (Days 201–300).',
     link: { href: '/python', label: 'Explore the Python track →' },
   },
 ];
@@ -329,7 +329,7 @@ export default function Day000() {
             GitHub
           </a>{' '}
           and Netlify accounts, and lock the routine (wake 4 AM, study 4:30–7:30 AM IST). No lectures today —
-          clear every obstacle so <strong>Day 1 (11 Aug 2026)</strong> starts with zero friction:{' '}
+          clear every obstacle so <strong>Day 1 (13 Aug 2026)</strong> starts with zero friction:{' '}
           <strong>Skill 1 · Python</strong> — core syntax, OOP, file I/O, and the language that powers everything. Sharpen the axe before the first swing.
         </p>
 
@@ -378,10 +378,10 @@ export default function Day000() {
                 LeetCode 2,000 Days Badge
               </p>
               <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
-                Target: 31 Jan 2032 · Day 2,000
+                Target: 2 Feb 2032 · Day 2,000
               </p>
               <p style={{ color: 'rgba(200,210,220,0.8)', fontSize: '0.78rem', lineHeight: 1.6, marginBottom: '10px' }}>
-                1 LeetCode problem every single day — Day 1 (11 Aug 2026) through Day 2,000 (31 Jan 2032).
+                1 LeetCode problem every single day — Day 1 (13 Aug 2026) through Day 2,000 (2 Feb 2032).
                 2,000 consecutive daily submissions earns the badge the same day the journey ends.
                 Consistency is the proof.
               </p>

@@ -1,4 +1,4 @@
-// Learning path calendar offsets (Journey Day 1 = 11 Aug 2026; factory COURSE_START = 8 Aug 2026)
+// Learning path calendar offsets (Journey Day 1 = 13 Aug 2026; factory COURSE_START = 8 Aug 2026)
 export const THUNDER_DAYS = 100;
 
 // ── TypeScript Stack Year (Phase 2) ─────────────────────────────────────────
@@ -94,17 +94,16 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: Day 1 = 11 Aug 2026. User-facing framing: 2000 days / 20 skills / 19×100 days + Capstone 100 days.
+// Full journey: Day 1 = 13 Aug 2026. User-facing framing: 2000 days / 20 skills / 19×100 days + Capstone 100 days.
 // Skill order: Python(1-100) → FastAPI(101-200) → Agentic AI(201-300) → JavaScript(301-400) →
 // TypeScript(401-500) → React(501-600) → Next JS(601-700) → React Native(701-800) →
 // Databases(801-900) → Express JS(901-1000) → J2SE(1001-1100) → JPA(1101-1200) → Spring Boot(1201-1300) → Microservices(1301-1400) → Automation Testing(1401-1500) →
-// JPA(1201-1300) → Spring Boot(1301-1400) → Microservices(1401-1500) →
 // DevOps(1501-1600) → Cloud/AWS(1601-1700) → Kubernetes(1701-1800) →
 // System Design(1801-1900) → Capstone(1901-2000, 100 days).
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
 //  chapterFactory.js = 8 Aug 2026, so module Day 1 also dates to 8 Aug 2026.)
-export const JOURNEY_START_LABEL = '11 Aug 2026';
-export const JOURNEY_END_LABEL = '31 Jan 2032';
+export const JOURNEY_START_LABEL = '13 Aug 2026';
+export const JOURNEY_END_LABEL = '2 Feb 2032';
 export const JOURNEY_TOTAL_DAYS = 2000;
 // Factory calendar: Day 1 = 8 Aug 2026 (COURSE_START); factory day N = journey Day N.
 export const JOURNEY_END_FACTORY_DAY = 2000;

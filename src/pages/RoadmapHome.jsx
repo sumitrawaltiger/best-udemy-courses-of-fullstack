@@ -32,7 +32,7 @@ function LeetCode2000Badge({ size = 120 }) {
 }
 
 // ── Skill calendar helpers ───────────────────────────────────────────────────
-const _CAL_DAY1 = new Date(2026, 7, 11); // 11 Aug 2026
+const _CAL_DAY1 = new Date(2026, 7, 13); // 13 Aug 2026
 function _calDate(dayN) {
   const d = new Date(_CAL_DAY1);
   d.setDate(d.getDate() + dayN - 1);
@@ -301,7 +301,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000days.png?v=4"
-          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → Kubernetes → System Design → Capstone. Day 1: 11 Aug 2026 · Day 2,000: 31 Jan 2032."
+          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → Kubernetes → System Design → Capstone. Day 1: 13 Aug 2026 · Day 2,000: 2 Feb 2032."
           loading="eager"
           style={{
             width: '100%',
@@ -356,7 +356,7 @@ export default function RoadmapHome() {
           </table>
         </div>
         <p style={{ textAlign: 'center', color: '#6b7b8e', fontSize: '0.75rem', marginTop: '10px' }}>
-          Day 1 = 11 Aug 2026 · 19 skills × 100 days + Capstone 100 days · journey ends 31 Jan 2032
+          Day 1 = 13 Aug 2026 · 19 skills × 100 days + Capstone 100 days · journey ends 2 Feb 2032
         </p>
       </section>
 
@@ -458,10 +458,10 @@ export default function RoadmapHome() {
               LeetCode 2,000 Days Badge
             </p>
             <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
-              Target: 31 Jan 2032 · Day 2,000
+              Target: 2 Feb 2032 · Day 2,000
             </p>
             <p style={{ color: 'rgba(200,212,224,0.82)', fontSize: '0.82rem', lineHeight: 1.65, marginBottom: '12px' }}>
-              1 LeetCode daily challenge every single day — Day 1 (11 Aug 2026) through Day 2,000 (31 Jan 2032).
+              1 LeetCode daily challenge every single day — Day 1 (13 Aug 2026) through Day 2,000 (2 Feb 2032).
               2,000 consecutive submissions earns this badge the exact same day the journey ends.
               The discipline badge that proves the entire journey.
             </p>
