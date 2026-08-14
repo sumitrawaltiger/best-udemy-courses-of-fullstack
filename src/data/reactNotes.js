@@ -1001,6 +1001,100 @@ function ScoreCard({ title, score, isWinner }) {
       },
     ],
   },
+  {
+    day: 13,
+    date: '21 Mar 2028',
+    group: 'hooks',
+    title: 'useReducer & useContext in React',
+    tagline: 'Two powerful hooks — manage complex state with useReducer and share data across components without prop drilling using useContext.',
+    image: '/react-notes/react13.jpeg',
+    tags: ['useReducer', 'useContext', 'Context API', 'Hooks', 'State Management', 'Prop Drilling', 'Provider', 'Consumer', 'Dispatch', 'Reducer'],
+    notes: [
+      { k: 'What is useReducer?', v: '`useReducer` is an alternative to `useState` for managing **complex state logic**. It is recommended when state updates depend on the previous state or when logic becomes complex with multiple sub-values.' },
+      { k: 'useReducer Syntax', v: '`const [state, dispatch] = useReducer(reducer, initialState)` — `state` is current state, `dispatch` sends actions to the reducer, `reducer` processes actions and returns new state, `initialState` is the starting value.' },
+      { k: 'Reducer → Action → State Flow', v: '**Action** (something happened / dispatch) → **Reducer** (checks action type and returns new state) → **State** (React re-renders with the new state).' },
+      { k: 'When to use useReducer?', v: 'When state has multiple sub-values; when next state depends on previous state; when state update logic is complex; when you want predictable state transitions (like Redux style).' },
+      { k: 'What is useContext?', v: '`useContext` lets us access data (context) without passing props through every level of the component tree — solving the **prop drilling** problem.' },
+      { k: 'Creating Context — 3 Steps', v: '1. **Create Context** — `createContext()`. 2. **Provide Context** — wrap children with `<Context.Provider value={data}>`. 3. **Consume Context** — call `useContext(MyContext)` in any child component.' },
+      { k: 'Provider → Consumer Flow', v: '**Provider** (in App, `value={theme}`) → **React Tree** (Navbar, MainContent, Footer…) → **Consumer** (`useContext`) gets the value anywhere in the tree without prop drilling.' },
+      { k: 'useReducer vs useContext', v: '**useReducer** = manages complex state logic *inside* a component (local/isolated state, returns `state + dispatch`). **useContext** = *shares* data across components without prop drilling (global-ish data: theme, user, settings, lang).' },
+      { k: 'Common Mistakes', v: 'Using useReducer for simple state (just use useState); creating context inside a component (recreates on every render); forgetting to wrap with Provider; mutating state inside reducer (always return new state object); overusing context (can cause unnecessary re-renders).' },
+      { k: 'Quick Summary', v: 'useReducer helps manage complex state with actions and a reducer. useContext helps share data across the component tree easily. **Both hooks together make React apps scalable and maintainable.**' },
+    ],
+    theory: [
+      {
+        h: 'What is useReducer?',
+        p: '`useReducer` is an alternative to `useState` for managing **complex state logic**. It is recommended when:\n\n- State updates depend on the previous state\n- State logic becomes complex with multiple sub-values\n- You want predictable, action-based state transitions (like Redux)\n\n**Syntax:**\n```jsx\nconst [state, dispatch] = useReducer(reducer, initialState);\n```\n- `state` — the current state value\n- `dispatch` — a function that sends an action to the reducer\n- `reducer` — a pure function `(state, action) => newState`\n- `initialState` — the starting value of the state',
+      },
+      {
+        h: 'Reducer → Action → State Flow',
+        p: 'The flow of data in useReducer is:\n\n**Action** (something happened — you call `dispatch({type: "increment"})`) → **Reducer** (checks `action.type` and returns new state) → **State** (React re-renders with the new state value)\n\nThe reducer is a pure function — it never mutates state directly. It always returns a **new state object**.',
+      },
+      {
+        h: 'useReducer Example — Counter',
+        p: 'A counter with increment, decrement and reset actions — the classic way to learn useReducer. The `dispatch` function sends an action object `{type: "..."}` to the reducer. The reducer checks the type, computes new state, and returns it. React re-renders with the updated value.\n\n`dispatch` sends the action to the reducer → Reducer returns the new state.',
+      },
+      {
+        h: 'When to Use useReducer Instead of useState',
+        p: '**Use useReducer when:**\n\n- State has multiple sub-values (e.g. `{loading, data, error}`)\n- The next state depends on the previous state\n- State update logic is complex or shared\n- You want predictable state transitions (Redux-style)\n\n**Stick with useState when:**\n\n- The state is a single simple value\n- There are only 1–2 updates and they are independent',
+      },
+      {
+        h: 'What is useContext?',
+        p: '`useContext` lets you access **context data** from any component in the tree — without manually passing props down every level (**prop drilling**).\n\n**Problem prop drilling solves:**\n```\nApp → Parent → Child → Grandchild (needs the data)\n```\nWithout context, you pass props through every layer even if intermediate components don\'t use them. With `useContext`, Grandchild reads directly from the Provider.',
+      },
+      {
+        h: 'Creating & Using useContext — 3 Steps',
+        p: '**Step 1 — Create the context:**\n```jsx\nimport { createContext } from \'react\';\nexport const ThemeContext = createContext(); // default value is optional\n```\n\n**Step 2 — Provide the context:**\nWrap your component tree in `<ThemeContext.Provider value={theme}>`. Every child can now read `theme` — Provider makes the value available to all children components.\n\n**Step 3 — Consume the context:**\nIn any child component call `useContext(ThemeContext)` to get the value the Provider passed down — no props needed.',
+      },
+      {
+        h: 'Provider → Consumer Flow',
+        p: '```\nProvider (in App, value={theme})\n        ↓\nReact Tree (Navbar, MainContent, Footer, etc.)\n        ↓\nConsumer — useContext(ThemeContext) — gets theme anywhere\n```\n\nData flows **down** the tree through the context. Any component inside the Provider can read the context value — whether it is a direct child or deeply nested.',
+      },
+      {
+        h: 'useReducer vs useContext — Two Different Tools',
+        p: '**useReducer** and **useContext** solve different problems and are often used together:\n\n| | useReducer | useContext |\n|---|---|---|\n| Purpose | Complex state logic | Share data across components |\n| Scope | Local / isolated | Global-ish (theme, user, lang) |\n| Returns | state + dispatch | the context value |\n| Replaces | Complex useState | Prop drilling |\n\n**Used together:** useReducer manages the state; useContext distributes it — a lightweight alternative to Redux.',
+      },
+      {
+        h: 'Common Mistakes',
+        p: '**Avoid these patterns:**\n\n- Using `useReducer` for simple state — just use `useState`\n- Creating context inside a component — it recreates on every render; always create it outside\n- Forgetting to wrap components with `<Provider>` — consuming components will get `undefined`\n- Mutating state inside the reducer — always return a **new** state object\n- Overusing context — every context update re-renders all consumers; keep context granular',
+      },
+      {
+        h: 'Mini Challenge — Theme Toggle App',
+        p: 'Build a **Theme Toggle app** that combines both hooks:\n\n- Use `useContext` to share the current theme (light / dark) across all components\n- Use `useReducer` to manage the theme state and toggle action\n- A single Toggle button changes the theme globally\n- Multiple components (Navbar, Body, Footer) display the current theme\n\nThis is the exact pattern used in production React apps for theming, authentication state, and language switching.',
+      },
+      {
+        h: 'Quick Summary',
+        p: '**useReducer** — manages complex state with a reducer function and dispatched actions. Best for multi-value state and predictable transitions.\n\n**useContext** — shares data across the component tree without prop drilling. Best for global-ish data: theme, user, language, settings.\n\n**Together:** useReducer manages the state logic; useContext distributes the state to any component that needs it. Two hooks, infinite possibilities.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'useReducer — Counter (increment, decrement, reset)',
+        code: "import { useReducer } from 'react';\n\n// 1. Reducer function\nfunction counterReducer(state, action) {\n  switch (action.type) {\n    case 'increment':\n      return { count: state.count + 1 };\n    case 'decrement':\n      return { count: state.count - 1 };\n    case 'reset':\n      return { count: 0 };\n    default:\n      return state;\n  }\n}\n\n// 2. Component\nexport default function Counter() {\n  const [state, dispatch] = useReducer(counterReducer, { count: 0 });\n\n  return (\n    <div className=\"box\">\n      <h2>Count: {state.count}</h2>\n      <button onClick={() => dispatch({ type: 'increment' })}>+</button>\n      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>\n      <button onClick={() => dispatch({ type: 'reset' })}>Reset</button>\n    </div>\n  );\n}",
+        note: '`dispatch` sends an action object to the reducer. The reducer checks `action.type` and returns a new state object — React re-renders with the updated count.',
+      },
+      {
+        label: 'useContext — Step 1: Create the Context',
+        code: "// ThemeContext.js\nimport { createContext } from 'react';\n\nexport const ThemeContext = createContext(); // default value is optional",
+        note: 'Always create context outside of any component so it is stable across renders.',
+      },
+      {
+        label: 'useContext — Step 2: Provide the Context',
+        code: "import { ThemeContext } from './ThemeContext';\n\nfunction App() {\n  const theme = {\n    mode: 'dark',\n    toggle: () => {}\n  };\n\n  return (\n    <ThemeContext.Provider value={theme}>\n      <Navbar />\n      <MainContent />\n    </ThemeContext.Provider>\n  );\n}",
+        note: 'The Provider wraps children with `value={theme}`. Every child — at any depth — can now read `theme` via useContext without receiving it as a prop.',
+      },
+      {
+        label: 'useContext — Step 3: Consume the Context',
+        code: "import { useContext } from 'react';\nimport { ThemeContext } from './ThemeContext';\n\nfunction Navbar() {\n  const theme = useContext(ThemeContext); // access context\n\n  return (\n    <nav className={theme.mode}>\n      <span>Neon Dev</span>\n      <button onClick={theme.toggle}>Toggle Theme</button>\n    </nav>\n  );\n}",
+        note: '`useContext(ThemeContext)` gives us the exact value the Provider passed — no props, no drilling.',
+      },
+      {
+        label: 'useReducer + useContext — Theme Toggle (combined pattern)',
+        code: "import { createContext, useContext, useReducer } from 'react';\n\nconst ThemeContext = createContext();\n\nfunction themeReducer(state, action) {\n  switch (action.type) {\n    case 'TOGGLE':\n      return { mode: state.mode === 'light' ? 'dark' : 'light' };\n    default:\n      return state;\n  }\n}\n\nexport function ThemeProvider({ children }) {\n  const [state, dispatch] = useReducer(themeReducer, { mode: 'light' });\n\n  return (\n    <ThemeContext.Provider value={{ state, dispatch }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n}\n\nexport function useTheme() {\n  return useContext(ThemeContext);\n}\n\n// Usage in any component:\n// const { state, dispatch } = useTheme();\n// dispatch({ type: 'TOGGLE' });",
+        note: 'The Mini Challenge pattern — useReducer manages the state logic, useContext distributes both `state` and `dispatch` to the entire tree. This is the foundation of lightweight state management (no Redux needed).',
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
