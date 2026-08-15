@@ -1159,6 +1159,66 @@ function ScoreCard({ title, score, isWinner }) {
       },
     ],
   },
+  {
+    day: 15,
+    date: '27 Mar 2028',
+    group: 'components',
+    title: 'Component Communication — Parent ↔ Child',
+    tagline: 'Data flows down through props; actions flow up through callbacks. Master the two-way communication pattern between parent and child components.',
+    image: '/react-notes/react15.jpeg',
+    tags: ['Props', 'Callbacks', 'Parent to Child', 'Child to Parent', 'Component Communication', 'Data Flow', 'Event Handling', 'Read-only Props'],
+    notes: [
+      { k: 'Core Idea', v: 'Components talk to each other. **Data flows from Parent → Child** (via props) and **actions flow from Child → Parent** (via callbacks). This is the one-directional data flow model in React.' },
+      { k: 'Parent → Child (Props)', v: 'Parent sends data to Child using **props**. The child receives the data and renders it. Props are **read-only** in the child — the child cannot modify them.' },
+      { k: 'Common Mistakes — Props', v: 'Trying to change props inside the child component (they\'re immutable); not passing required data to the child (causes `undefined` errors).' },
+      { k: 'Best Practices — Props', v: 'Keep components focused on one job; use props for data and callbacks for actions — don\'t mix concerns.' },
+      { k: 'Child → Parent (Callbacks)', v: 'Child sends data or triggers actions in the Parent by calling a **callback function** passed down as a prop. The parent defines the function; the child calls it.' },
+      { k: 'Pro Tip — Callbacks', v: 'Use meaningful callback names like `onSubmit`, `onDelete`, `onChange`, `onSelect`. Names starting with `on` signal to the reader that it\'s an event handler.' },
+      { k: 'Common Mistakes — Callbacks', v: 'Not passing the callback function to the child (nothing happens on event); calling the callback **immediately** (`onClick={sendMessage("Hi")}`) instead of inside an arrow function (`onClick={() => sendMessage("Hi")}`).' },
+      { k: 'Best Practices — Callbacks', v: 'Name callbacks clearly; pass functions, not results — always wrap calls in an arrow function when the call has arguments.' },
+      { k: 'Mini Challenge', v: 'Build a Parent component with an input field. Pass the input value down to a Child (displays it). The Child should also have a button that sends a message **back up** to the Parent using a callback.' },
+      { k: 'Quick Summary', v: '**Parent → Child**: send data using props, data flows down. **Child → Parent**: send data/actions using callbacks, actions flow up. **Remember**: data down, actions up. Props are read-only. Communication makes your app dynamic!' },
+    ],
+    theory: [
+      {
+        h: 'Component Communication — The Two Directions',
+        p: 'In React, components are isolated by default. To make them work together, you use a clear communication contract:\n\n- **Parent → Child**: pass data downward via **props**\n- **Child → Parent**: pass actions upward via **callbacks** (functions passed as props)\n\nThis is why React\'s data flow is called **unidirectional** — data always flows **down** the tree, and actions always flow **up**. Understanding this pattern is the foundation of every React app.',
+      },
+      {
+        h: 'Parent → Child with Props',
+        p: 'The parent component defines data and passes it to the child through JSX attributes (props). The child reads the data from `props` (or destructures it):\n\n```jsx\nfunction Parent() {\n  const name = "Faisal";\n  return <Child userName={name} />;\n}\n\nfunction Child(props) {\n  return <p>Hello, {props.userName}!</p>;\n}\n```\n\n**Key rule: props are read-only in the child.** If you try to set `props.userName = "..."` inside `Child`, React will not throw an error in development for plain props, but this is a pattern violation — the child should never mutate its props. If data needs to change, the parent must own the state and pass down the new value.\n\n**Common mistakes:**\n- Trying to change props in the child (violates one-directional flow)\n- Not passing required data (child receives `undefined`)',
+      },
+      {
+        h: 'Child → Parent with Callbacks',
+        p: 'The parent defines a function and passes it down as a prop. The child calls that function (with optional data) to communicate back up:\n\n```jsx\nfunction Parent() {\n  const handleClick = (msg) => {\n    alert("Message from child: " + msg);\n  };\n  return <Child sendMessage={handleClick} />;\n}\n\nfunction Child({ sendMessage }) {\n  return (\n    <button onClick={() => sendMessage("Hi Parent!")}>\n      Send Message\n    </button>\n  );\n}\n```\n\n**Critical syntax note:** write `onClick={() => sendMessage("Hi")}`, not `onClick={sendMessage("Hi")}`. The second form calls the function **immediately at render time**, not on click — a very common bug.\n\n**Pro tips:**\n- Name callback props with `on` prefix: `onSubmit`, `onDelete`, `onChange`\n- Pass functions, not results — always wrap calls with arguments in an arrow function',
+      },
+      {
+        h: 'Mini Challenge — Two-way Communication',
+        p: 'Combine both patterns in a single exercise:\n\n1. Build a `Parent` with a text input (controlled by state)\n2. Pass the current input value **down** to `Child` via props — Child displays it\n3. Add a button in `Child` that sends a message **back up** to Parent via a callback — Parent shows an alert or updates some state\n\nThis challenge exercises both directions at once: props flow down, callback fires up.',
+      },
+      {
+        h: 'Quick Summary — Data Down, Actions Up',
+        p: '| Direction | Mechanism | Example |\n|---|---|---|\n| Parent → Child | Props | `<Child name={name} />` |\n| Child → Parent | Callback prop | `<Child onSend={handleSend} />` |\n\n**Remember three things:**\n- **Data down, actions up** — the mantra of React\'s data flow\n- **Props are read-only** — the child never modifies what it receives\n- **Communication makes your app dynamic** — without it, every component is an island',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Parent → Child with props (userName example)',
+        code: "function Parent() {\n  const name = 'Faisal';\n  return <Child userName={name} />;\n}\n\nfunction Child(props) {\n  return <p>Hello, {props.userName}!</p>;\n}\n\n// Or with destructuring:\nfunction Child({ userName }) {\n  return <p>Hello, {userName}!</p>;\n}",
+        note: 'Props are read-only in the child — never assign to them. If the value needs to change, the parent must own and update the state.',
+      },
+      {
+        label: 'Child → Parent with a callback function',
+        code: "function Parent() {\n  const handleClick = (msg) => {\n    alert('Message from child: ' + msg);\n  };\n\n  return <Child sendMessage={handleClick} />;\n}\n\nfunction Child({ sendMessage }) {\n  return (\n    <button onClick={() => sendMessage('Hi Parent!')}>\n      Send Message\n    </button>\n  );\n}",
+        note: "Always wrap callback calls with arguments inside an arrow function: `() => sendMessage('Hi')`. Writing `onClick={sendMessage('Hi')}` calls the function immediately at render time — a very common bug.",
+      },
+      {
+        label: 'Mini challenge — two-way communication (input + callback)',
+        code: "import { useState } from 'react';\n\nfunction Parent() {\n  const [inputValue, setInputValue] = useState('');\n  const [message, setMessage] = useState('');\n\n  const handleMessage = (msg) => setMessage(msg);\n\n  return (\n    <div>\n      <input\n        value={inputValue}\n        onChange={(e) => setInputValue(e.target.value)}\n        placeholder=\"Type something...\"\n      />\n      <Child value={inputValue} onSend={handleMessage} />\n      {message && <p>Child says: {message}</p>}\n    </div>\n  );\n}\n\nfunction Child({ value, onSend }) {\n  return (\n    <div>\n      <p>Parent input: {value}</p>\n      <button onClick={() => onSend('Hi from Child!')}>Send to Parent</button>\n    </div>\n  );\n}",
+        note: "Data (`value`) flows down from Parent to Child via props. The action (`onSend`) fires upward from Child to Parent via the callback.",
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
