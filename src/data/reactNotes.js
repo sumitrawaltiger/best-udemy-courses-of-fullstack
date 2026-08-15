@@ -1095,6 +1095,70 @@ function ScoreCard({ title, score, isWinner }) {
       },
     ],
   },
+  {
+    day: 14,
+    date: '24 Mar 2028',
+    group: 'components',
+    title: 'Derived State & Lifting State Up',
+    tagline: 'Don\'t store what you can calculate — and when sibling components share state, lift it to their closest common parent.',
+    image: '/react-notes/react14.jpeg',
+    tags: ['Derived State', 'Lifting State Up', 'State Management', 'Props', 'Parent Component', 'Shared State', 'Minimal State', 'Component Design'],
+    notes: [
+      { k: 'What is Derived State?', v: 'State that can be **calculated** from other state or props. Don\'t store it — compute it during render. Example: `fullName = firstName + " " + lastName` — no need to store `fullName` separately.' },
+      { k: 'Syntax / Idea', v: '**Don\'t store what you can calculate.** Compute it directly in the component body during render. Storing derived values causes bugs and inconsistency when the source changes.' },
+      { k: 'Pro Tips — Derived State', v: 'Prefer deriving over storing; keeps state minimal; prevents bugs and inconsistency when source values change.' },
+      { k: 'Common Mistakes — Derived State', v: 'Storing derived values in state (unnecessary duplication); forgetting to update the derived value when source changes (stale data).' },
+      { k: 'What is Lifting State Up?', v: 'When multiple components need the **same state**, move that state to their **closest common parent**. The parent owns the state and passes it down via props.' },
+      { k: 'Visual — Lifting State Up', v: '`Parent (State)` → passes `count` and `setCount` as props → `Child A` and `Child B`. Both children can read and update the same count through the parent.' },
+      { k: 'Pro Tips — Lifting State Up', v: 'Lift state only when needed; keep the parent simple and pass only what is required to each child.' },
+      { k: 'Common Mistakes — Lifting State Up', v: 'Lifting too much state unnecessarily; passing the entire state object when only one value is needed.' },
+      { k: 'Mini Challenge — Derived State', v: 'Create a component that takes `length` and `width` as props, and shows the area (`length * width`). **Don\'t store area in state** — derive it during render.' },
+      { k: 'Quick Summary', v: '**Derived State** → Calculate from other state/props. Don\'t store. **Lifting State Up** → Move state to the closest common parent and share via props. Derive, don\'t duplicate. Share, don\'t copy. Keep state minimal and meaningful.' },
+    ],
+    theory: [
+      {
+        h: 'Derived State — State You Calculate, Not Store',
+        p: '**Derived state** is any value that can be computed from existing state or props. The rule is simple: **don\'t store what you can calculate**.\n\nIf you store `fullName` separately in state alongside `firstName` and `lastName`, you now have to keep three values in sync — and they can go out of sync. Instead, compute `fullName` directly in the render:\n\n```jsx\nconst fullName = firstName + " " + lastName;\n```\n\nThis is always fresh, always in sync, and requires zero extra state.\n\n**Pro tips:**\n- Prefer deriving over storing\n- Keeps state minimal\n- Prevents bugs and inconsistency',
+      },
+      {
+        h: 'Derived State — Example',
+        p: 'The `Profile` component receives `firstName` and `lastName` as props. It computes `fullName` directly — no `useState` needed for it:\n\n```jsx\nfunction Profile({ firstName, lastName }) {\n  const fullName = firstName + " " + lastName; // derived, not stored\n  return (\n    <div className="card">\n      <h3>{fullName}</h3>\n      <p>{firstName}</p>\n      <p>{lastName}</p>\n    </div>\n  );\n}\n```\n\n**Common mistakes to avoid:**\n- Storing `fullName` in state → stale when `firstName` or `lastName` changes\n- Forgetting to update the derived value when its sources change',
+      },
+      {
+        h: 'Lifting State Up — Share State via the Closest Common Parent',
+        p: 'When multiple sibling components need to read or update the **same piece of state**, the solution is to **lift the state up** to their closest common parent.\n\nThe parent owns the state. Each child receives the value and the setter as props.\n\n**Visual flow:**\n```\nParent (owns state)\n  ├── Child A  (reads + updates via props)\n  └── Child B  (reads + updates via props)\n```\n\nParent owns the state and passes it down via props — single source of truth.',
+      },
+      {
+        h: 'Lifting State Up — Example',
+        p: 'Two children (`ChildA` and `ChildB`) both need to update the same counter. The solution: move `count` to the Parent and pass both `count` and `setCount` as props:\n\n```jsx\nfunction Parent() {\n  const [count, setCount] = useState(0);\n  return (\n    <div className="parent">\n      <ChildA count={count} setCount={setCount} />\n      <ChildB count={count} setCount={setCount} />\n    </div>\n  );\n}\n\nfunction ChildA({ count, setCount }) {\n  return <button onClick={() => setCount(count + 1)}>+1</button>;\n}\n```\n\nBoth children update the same `count` — no duplication, no sync issues.\n\n**Pro tips:**\n- Lift state only when needed\n- Keep the parent simple — pass only what each child actually needs\n\n**Common mistakes:**\n- Lifting too much state unnecessarily (adds coupling)\n- Passing the entire state object when only one value is needed',
+      },
+      {
+        h: 'Mini Challenges',
+        p: '**Challenge 1 — Derived State:**\nCreate a component that takes `length` and `width` as props and displays the area. Do **not** store `area` in state — derive it.\n\n**Challenge 2 — Lifting State Up:**\nCreate two separate button components — one for `+` and one for `-`. Lift the `count` state up to a parent so both buttons update the same count. Display the count in the parent.\n\nThese two challenges together reinforce the core principle: **keep state minimal, keep it in one place, compute everything else**.',
+      },
+      {
+        h: 'Quick Summary',
+        p: '**Derived State** → Calculate from other state or props. Don\'t store it — compute it during render. Keeps state minimal and prevents sync bugs.\n\n**Lifting State Up** → When siblings need shared state, move it to their closest common parent and pass down via props. One source of truth.\n\n**The three rules to remember:**\n- Derive, don\'t duplicate\n- Share, don\'t copy\n- Keep state minimal and meaningful',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Derived State — fullName computed from props (no extra state)',
+        code: "function Profile({ firstName, lastName }) {\n  // Derived — computed during render, not stored in state\n  const fullName = firstName + ' ' + lastName;\n\n  return (\n    <div className=\"card\">\n      <h3>{fullName}</h3>\n      <p>{firstName}</p>\n      <p>{lastName}</p>\n    </div>\n  );\n}",
+        note: 'Never store `fullName` in useState — it would go stale whenever `firstName` or `lastName` changes. Compute it directly.',
+      },
+      {
+        label: 'Derived State — area computed from length and width (mini challenge)',
+        code: "function Rectangle({ length, width }) {\n  const area = length * width; // derived — no state needed\n\n  return (\n    <div>\n      <p>Length: {length}</p>\n      <p>Width: {width}</p>\n      <p>Area: {area}</p>\n    </div>\n  );\n}\n\n// Usage\n<Rectangle length={5} width={3} />  // Area: 15",
+        note: 'Area is always in sync with length and width because it is computed fresh on every render.',
+      },
+      {
+        label: 'Lifting State Up — shared counter between two child components',
+        code: "import { useState } from 'react';\n\nfunction Parent() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div className=\"parent\">\n      <h2>Count: {count}</h2>\n      <ChildA count={count} setCount={setCount} />\n      <ChildB count={count} setCount={setCount} />\n    </div>\n  );\n}\n\nfunction ChildA({ count, setCount }) {\n  return <button onClick={() => setCount(count + 1)}>+ Increment</button>;\n}\n\nfunction ChildB({ count, setCount }) {\n  return <button onClick={() => setCount(count - 1)}>- Decrement</button>;\n}\n\nexport default Parent;",
+        note: 'Parent owns the single source of truth. Both children read and update the same `count` — no duplication, no sync issues.',
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
