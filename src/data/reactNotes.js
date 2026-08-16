@@ -1219,6 +1219,66 @@ function ScoreCard({ title, score, isWinner }) {
       },
     ],
   },
+  {
+    day: 16,
+    date: '30 Mar 2028',
+    group: 'projects',
+    title: 'Mini Project — Counter + Todo List',
+    tagline: 'Bring everything together: build a Counter with increment/decrement/reset and a fully functional Todo List with add, toggle, and delete — in one mini project.',
+    image: '/react-notes/react16.jpeg',
+    tags: ['Mini Project', 'Counter', 'Todo List', 'useState', 'Arrays in State', 'Lists & Keys', 'Conditional Rendering', 'Event Handling', 'State Management'],
+    notes: [
+      { k: 'Project Goal', v: 'Build a small app combining a **Counter** and a **Todo List**. This brings together everything learned so far in Module 2: State Management — useState, event handling, conditional rendering, lists & keys, and updating arrays in state.' },
+      { k: '1. Counter — Core Idea', v: 'Increase, decrease, and reset the count. Uses **one piece of state** (`count`) and **three event handlers** (`inc`, `dec`, `reset`) — each calling `setCount` with the appropriate operation.' },
+      { k: '2. Todo List — Core Idea', v: 'Add, complete, and delete tasks. Uses **two pieces of state**: `input` (the text field) and `todos` (the array of task objects). Each todo has `id`, `text`, and `done` properties.' },
+      { k: 'Key Concepts Used', v: '`useState` for managing state; Event handling (`onClick`, `onChange`); Conditional rendering (strikethrough on done tasks); Lists & Keys (`id` on each todo); Updating arrays in state (spread operator, `.map()`, `.filter()`).' },
+      { k: 'Folder Structure', v: '`src/` → `components/Counter.jsx`, `components/TodoList.jsx`, `App.jsx`, `index.jsx`. Keep each feature in its own component — Counter and TodoList are independent and composed together in App.' },
+      { k: 'Pro Tips', v: 'Keep components small and focused. Use meaningful state names (`count`, `todos`, `input` — not `data` or `val`). Each component should have a single responsibility.' },
+      { k: 'Common Mistakes', v: '**Mutating state directly** — never do `todos.push(newTodo)`, always use the spread operator or array methods. **Forgetting keys in lists** — every `<li>` or list item needs a unique `key` prop for React to track it efficiently.' },
+      { k: 'addTodo logic', v: 'Guard with `if(input.trim() === "") return` to prevent empty tasks. Spread the existing array and append the new todo: `[...todos, { id: Date.now(), text: input, done: false }]`. Reset input after adding.' },
+      { k: 'toggleTodo logic', v: 'Use `.map()` to create a new array — find the matching todo by `id` and flip its `done` field with `{ ...todo, done: !todo.done }`. All others stay unchanged.' },
+      { k: 'Quick Summary', v: '**Counter** → Increase / Decrease count; Reset to 0. **Todo List** → Add new tasks; Mark tasks as complete; Delete tasks. **Remember**: Plan your state. Update state safely. Keep UI simple and clean.' },
+    ],
+    theory: [
+      {
+        h: 'Part 1 — Counter: One State, Three Handlers',
+        p: 'The Counter is the simplest stateful component: one `useState(0)` call and three arrow functions that call `setCount`.\n\n```jsx\nconst [count, setCount] = useState(0);\nconst inc   = () => setCount(count + 1);\nconst dec   = () => setCount(count - 1);\nconst reset = () => setCount(0);\n```\n\nThe UI renders three buttons wired to these handlers and a `<span>` that displays `{count}`.\n\n**Key point:** `setCount` replaces the state value — React re-renders the component and the display updates automatically. You never mutate `count` directly.',
+      },
+      {
+        h: 'Part 2 — Todo List: Two State Values + Three Operations',
+        p: 'The Todo List is more complex — it manages an array in state:\n\n```jsx\nconst [input, setInput]   = useState("");\nconst [todos, setTodos]   = useState([]);\n```\n\n**Three operations:**\n1. **addTodo** — guard empty input, spread existing array, append new todo object `{ id, text, done: false }`, reset input.\n2. **toggleTodo(id)** — use `.map()` to find the matching todo and flip `done`, returning a new array.\n3. **deleteTodo(id)** — use `.filter()` to return all todos except the one with the matching `id`.\n\n**Why spread and map/filter instead of push/splice?** React compares the previous and new state reference. Mutating the existing array (push, splice) gives React the same reference, so it may not detect a change. Always create a **new array**.',
+      },
+      {
+        h: 'Key Concepts Reinforced',
+        p: '**useState for managing state** — both a primitive (`count`) and an array (`todos`) use the same `useState` hook.\n\n**Event handling** — `onClick` for buttons, `onChange` for the input field. Arrow functions keep the handlers concise and co-located with the component.\n\n**Conditional rendering** — the Todo UI applies a strikethrough style when `todo.done` is true, visually distinguishing completed tasks from pending ones.\n\n**Lists & Keys** — every todo in the list needs a unique `key` prop. Using `Date.now()` as the `id` makes each key unique at the moment of creation.\n\n**Updating arrays in state** — the three array patterns:\n- Add: `[...todos, newItem]`\n- Toggle: `todos.map(t => t.id === id ? { ...t, done: !t.done } : t)`\n- Delete: `todos.filter(t => t.id !== id)`',
+      },
+      {
+        h: 'Folder Structure & Component Design',
+        p: 'Splitting the app into focused components keeps code readable and reusable:\n\n```\nsrc/\n├── components/\n│   ├── Counter.jsx    ← manages count state\n│   └── TodoList.jsx   ← manages todos state\n├── App.jsx            ← composes both components\n└── index.jsx          ← entry point\n```\n\nEach component owns its own state — Counter has no knowledge of todos and vice versa. `App.jsx` simply renders both side by side. This is the **single responsibility principle** applied to React components.',
+      },
+      {
+        h: 'Mini Challenge & Quick Summary',
+        p: '**Mini Challenge:** Add an "Edit" feature to your Todo. Allow the user to edit a task\'s text before marking it done. Hint: add an `editing` flag to each todo object and toggle an input field in place of the `<p>` when editing.\n\n**Quick Summary:**\n| Feature | Counter | Todo List |\n|---|---|---|\n| State | `count` (number) | `todos` (array) |\n| Add | `setCount(count + 1)` | spread + append |\n| Update | `setCount(count - 1)` | `.map()` to toggle |\n| Reset/Delete | `setCount(0)` | `.filter()` to remove |\n\n**Remember:** Plan your state. Update state safely (never mutate). Keep UI simple and clean.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Counter — increment, decrement, reset',
+        code: "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  const inc   = () => setCount(count + 1);\n  const dec   = () => setCount(count - 1);\n  const reset = () => setCount(0);\n\n  return (\n    <div>\n      <h2>Counter</h2>\n      <p>{count}</p>\n      <button onClick={dec}>-</button>\n      <button onClick={reset}>Reset</button>\n      <button onClick={inc}>+</button>\n    </div>\n  );\n}\n\nexport default Counter;",
+        note: 'Always call setCount with a new value — never modify count directly. React re-renders automatically on state change.',
+      },
+      {
+        label: 'Todo List — add, toggle done, delete (core logic)',
+        code: "import { useState } from 'react';\n\nfunction TodoList() {\n  const [input, setInput] = useState('');\n  const [todos, setTodos] = useState([]);\n\n  const addTodo = () => {\n    if (input.trim() === '') return;\n    setTodos([...todos, { id: Date.now(), text: input, done: false }]);\n    setInput('');\n  };\n\n  const toggleTodo = (id) => {\n    setTodos(todos.map(todo =>\n      todo.id === id ? { ...todo, done: !todo.done } : todo\n    ));\n  };\n\n  const deleteTodo = (id) => {\n    setTodos(todos.filter(todo => todo.id !== id));\n  };\n\n  return (\n    <div>\n      <h2>Todo List</h2>\n      <input\n        value={input}\n        onChange={(e) => setInput(e.target.value)}\n        placeholder=\"Add a task...\"\n      />\n      <button onClick={addTodo}>Add</button>\n      <ul>\n        {todos.map(todo => (\n          <li key={todo.id}>\n            <span\n              style={{ textDecoration: todo.done ? 'line-through' : 'none' }}\n              onClick={() => toggleTodo(todo.id)}\n            >\n              {todo.text}\n            </span>\n            <button onClick={() => deleteTodo(todo.id)}>Delete</button>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}\n\nexport default TodoList;",
+        note: "Three array patterns: add with [...todos, newItem], toggle with .map(), delete with .filter(). Never use .push() or .splice() on the state array directly — always return a new array.",
+      },
+      {
+        label: 'App.jsx — composing Counter and TodoList together',
+        code: "import Counter  from './components/Counter';\nimport TodoList from './components/TodoList';\n\nfunction App() {\n  return (\n    <div>\n      <Counter />\n      <TodoList />\n    </div>\n  );\n}\n\nexport default App;",
+        note: 'Each component owns its own state independently. App.jsx just composes them — no props needed between Counter and TodoList.',
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
