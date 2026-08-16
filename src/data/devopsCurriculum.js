@@ -446,6 +446,192 @@ const DEVOPS_SECTION_MAP = {
   ],
   'Git Basics': [
     {
+      id: 'git-fundamentals-why-git',
+      title: 'Why Git Exists — The Version Control Problem',
+      content:
+        '**Git** is one of the most important tools in software development and DevOps. It allows developers to track changes, maintain project history, collaborate safely, experiment with code, and restore older versions when something goes wrong.\n\n' +
+        '**The problem without Git:** Imagine you are developing a project called `payment-service`. Over a few days:\n' +
+        '- Day 1 → Payment API working\n' +
+        '- Day 2 → Added discount logic\n' +
+        '- Day 3 → Refactored payment logic\n' +
+        '- Day 4 → Everything broke\n\n' +
+        'Without version control, people start creating copies like `payment-final`, `payment-final2`, `payment-working`, `payment-final-working`, `payment-final-final` — this is **manual version control** and it quickly becomes unmanageable.\n\n' +
+        'The problem gets even bigger when multiple developers work on the same project. A **Version Control System** answers: Who changed a line? When? Why? What did the project look like yesterday? Can multiple developers work simultaneously? Can someone experiment without breaking stable code? Can changes from different developers be combined? Can an older version be restored?\n\n' +
+        '**Git is a Version Control System.** It maintains the **history of a project**. Instead of keeping multiple manually copied folders, Git records meaningful versions of the project as commits.\n\n' +
+        '**Git vs GitHub:**\n' +
+        '- **Git** — Version Control System; runs on your machine; tracks project history; manages commits, branches, merges.\n' +
+        '- **GitHub** — cloud platform; hosts Git repositories; enables collaboration; Pull Requests, Issues, CI/CD integrations.\n' +
+        'Git can work completely on your local machine without GitHub. GitHub becomes useful when repositories need to be shared or multiple developers need to collaborate. Other platforms: GitLab, Bitbucket.\n\n' +
+        '**History note:** Both **Linux** and **Git** were created by **Linus Torvalds**. Git was built when the Linux kernel project needed a fast, distributed version control system.',
+      code:
+        '# Git is a Version Control System — the foundation of DevOps\n' +
+        '# Both Linux and Git were created by Linus Torvalds\n\n' +
+        '# Git  → Version Control System (local)\n' +
+        '#   ├── Runs on your machine\n' +
+        '#   ├── Tracks project history\n' +
+        '#   └── Manages commits, branches, merges, etc.\n\n' +
+        '# GitHub → Cloud Platform (remote)\n' +
+        '#   ├── Hosts Git repositories\n' +
+        '#   ├── Enables collaboration\n' +
+        '#   ├── Pull Requests, Issues\n' +
+        '#   └── CI/CD integrations\n\n' +
+        '# The version control problem — without Git:\n' +
+        '# adityaResume.pdf → adityaResumeFinal.pdf → adityaResumeFinalFinal.pdf\n' +
+        '# payment-final → payment-final2 → payment-working → payment-final-working\n' +
+        '# This is manual version control. Git solves this cleanly.',
+    },
+    {
+      id: 'git-fundamentals-init-mental-model',
+      title: 'git init, the .git Directory & the 4-Area Mental Model',
+      content:
+        '**Creating a Git Repository:** A normal directory is NOT a Git repository. Running `git status` in an uninitialized folder returns `fatal: not a git repository`.\n\n' +
+        '`git init` converts the current directory into a Git repository. It creates a hidden `.git` directory. The hidden `.git` directory is what turns a normal project directory into a Git repository — all repository metadata, objects, references, configuration, and history are stored inside `.git`.\n\n' +
+        '**The Most Important Git Mental Model — 4 Areas:**\n' +
+        '```\n' +
+        'Working Directory   ← your project files (what you edit)\n' +
+        '      ↓ git add\n' +
+        'Staging Area        ← index — files selected for next commit\n' +
+        '      ↓ git commit\n' +
+        'Local Repository    ← your .git history on this machine\n' +
+        '      ↓ git push\n' +
+        'Remote Repository   ← GitHub / GitLab / Bitbucket\n' +
+        '```\n' +
+        'Understanding these 4 areas makes every Git command much easier to reason about.\n\n' +
+        '**Two important states in the working directory:**\n' +
+        '- **Untracked** — the file exists, but Git is not tracking it in the repo history.\n' +
+        '- **Staged** — the file has been selected for inclusion in the next commit ("Include this version of this file in my next commit.")\n\n' +
+        '**Why does the Staging Area exist?** Suppose you changed 3 files (`login.java`, `payment.java`, `README.md`) but your next commit should only include `login.java` and `payment.java`. You can stage only those two: `git add login.java payment.java`. The `README.md` changes remain in the working directory but are not included in the commit. **The staging area allows us to construct the next commit** and gives control over exactly which changes belong together.',
+      code:
+        '# Initialize a new Git repository\n' +
+        'mkdir git-masterclass && cd git-masterclass\n' +
+        'echo "Coder Army Application" > app.txt\n' +
+        'git init\n\n' +
+        '# Verify — the hidden .git directory is created\n' +
+        'ls -la     # you should see .git/\n\n' +
+        '# The 4-area flow:\n' +
+        'git status                     # Working Directory — what changed?\n' +
+        'git add login.java payment.java   # Stage specific files (not README.md)\n' +
+        'git commit -m "Add login feature" # Save to Local Repository\n' +
+        'git push -u origin main           # Push to Remote Repository\n\n' +
+        '# Configuring Git identity (required before first commit)\n' +
+        'git config --global user.name "Your Name"\n' +
+        'git config --global user.email "you@example.com"\n' +
+        'git config user.name   # verify',
+    },
+    {
+      id: 'git-fundamentals-commits-history',
+      title: 'Commits, History & Local vs Remote',
+      content:
+        '**Creating a Commit:** After staging files, create a commit:\n```\ngit commit -m "Initial commit"\n```\nGit creates a commit with an identifier like `a831c2392...`, plus the author, timestamp, and message. A **commit** represents a recorded version of the project together with metadata: author, timestamp, parent commit, and commit message.\n\n' +
+        '**Viewing Git History:** After multiple commits, Git builds a project history:\n```\ngit log           # full history\ngit log --oneline # compact view\n```\nYour project now has a **history** instead of only its current state. This history later becomes the foundation for branching, merging, and rebasing.\n\n' +
+        '**Local vs Remote Repository:** The complete Git repository exists only on your machine inside `.git`. If you lose your machine, you lose the local repository history. A **remote repository** on GitHub solves this.\n\n' +
+        '**Adding a Remote & Pushing:**\n```\ngit remote add origin <repository-url>   # connect to remote\ngit remote -v                            # inspect configured remotes\ngit push -u origin master                # push with upstream tracking\n```\n`origin` is simply the conventional name for the primary remote repository — it is a name pointing to a remote repository URL. The `-u` option sets an upstream relationship so future `git push` and `git pull` know which remote branch to use.\n\n' +
+        '**Cloning:** When another developer joins the project, they clone the repository:\n```\ngit clone <repository-url>\n```\nA clone gives them far more than just visible project files:\n- Project files + Git history + Branches + Git metadata + Remote configuration\n\n**ZIP vs Clone:** Downloading a ZIP gives only the files. Cloning gives files + repository history + branches + Git metadata + remote configuration. This is why cloning is fundamentally different from downloading a ZIP.\n\n' +
+        '**git fetch vs git pull:**\n- `git fetch` — downloads remote information and objects **without** automatically integrating them into the current local branch.\n- `git pull` — fetch + integrate (traditionally: `git fetch` + `git merge`). It downloads remote changes AND integrates them.\n\nThe important distinction: `git fetch` brings information locally without touching your working branch. `git pull` brings and merges. This becomes especially important when learning merge and rebase.',
+      code:
+        '# First commit\n' +
+        'git commit -m "Initial commit"\n' +
+        '# → creates a commit with hash like: a831c2392...\n\n' +
+        '# View history\n' +
+        'git log\n' +
+        'git log --oneline    # compact: A — B (Initial → Add Login)\n\n' +
+        '# Connect to GitHub remote\n' +
+        'git remote add origin https://github.com/username/repo.git\n' +
+        'git remote -v\n' +
+        'git push -u origin master\n\n' +
+        '# Clone (new developer joins)\n' +
+        'git clone <repository-url>\n\n' +
+        '# git fetch vs git pull\n' +
+        '# Remote: A — B — C\n' +
+        '# Local:  A — B   (missing C)\n' +
+        'git fetch           # downloads C into origin/master, local master still at B\n' +
+        'git merge           # integrates C into local master\n' +
+        'git pull            # = git fetch + git merge (one step)\n\n' +
+        '# Complete local → remote workflow:\n' +
+        '# Working Directory → git add → Staging Area → git commit → Local Repo → git push → Remote Repo\n' +
+        '# Remote Repo → git fetch/pull → Local Repo',
+    },
+    {
+      id: 'git-internals-object-database',
+      title: 'Git Internals — Content-Addressed Object Database',
+      content:
+        '**Git is not simply a collection of commands.** Internally, a Git repository behaves like a database stored inside the `.git` directory. Inspect it:\n```\nls -la .git\n```\nThe `.git` directory contains:\n```\nobjects/  → Git object database\nrefs/     → Branches, tags, etc.\nHEAD      → Current position\nindex     → Staging area (.git/index)\nconfig    → Repository configuration\n```\n**The Git repository is essentially a local database stored inside `.git`.**\n\n' +
+        '**Git as a Content-Addressed Object Database:** The basic idea — Git stores objects identified by a hash derived from their content:\n```\nContent → Hash → Object ID\n```\nGit can use object IDs to refer to stored content and determine when identical content can be reused. This is a major part of how Git stores project history efficiently.\n\n' +
+        '**Three Core Git Object Types:**\n' +
+        '1. **Blob** — stores file content (not the filename, just the content)\n' +
+        '2. **Tree** — stores directory structure: filenames + references to blobs and sub-trees\n' +
+        '3. **Commit** — points to a tree (project snapshot) + parent commit + metadata (author, timestamp, message)\n\n' +
+        'Together, these three object types explain how Git stores file contents, directory structures, project snapshots, and commit history.',
+      code:
+        '# Inspect the .git internals\n' +
+        'ls -la .git\n' +
+        '# .git/\n' +
+        '# ├── objects/  → Git object database\n' +
+        '# ├── refs/     → Branches, tags, etc.\n' +
+        '# ├── HEAD      → Current position\n' +
+        '# ├── index     → Staging area\n' +
+        '# └── config    → Repository configuration\n\n' +
+        '# Content → Hash → Object ID\n' +
+        '# "Hello Coder Army" → hashing → abc123...\n\n' +
+        '# Three core object types stored in .git/objects/\n' +
+        '# Blob   → file content (e.g. app.txt content)\n' +
+        '# Tree   → directory structure (filename → blob mapping)\n' +
+        '# Commit → Tree T + parent commit + Author + Timestamp + Message\n\n' +
+        '# Example: same content = same hash\n' +
+        '# "Hello Coder Army" in hello.txt → hash: 5da7cf708a27a7b4769256a81332d7ee31bb673d\n' +
+        '# "Hello Coder Army" in hello-copy.txt → SAME hash: 5da7cf708a27...\n' +
+        '# Filename does not determine the Blob ID — content does.\n' +
+        '# This is how Git reuses unchanged content across commits.',
+    },
+    {
+      id: 'git-internals-blob-tree-commit',
+      title: 'Blob, Tree & Commit Objects — Deep Dive',
+      content:
+        '**Blob Objects:** A blob stores file content. It does NOT care about the filename — it only stores the raw content. Every unique piece of content gets a unique hash (object ID).\n\n' +
+        'Key insight: **same content = same blob ID**. If `hello.txt` and `hello-copy.txt` both contain "Hello Coder Army", they share the same blob. **Filename does not determine the Blob ID. Content determines object identity.** This helps Git reuse unchanged content efficiently.\n\n' +
+        '**Tree Objects:** A blob stores file content, but a tree stores the **filename and directory structure**.\n```\nTree\n├── hello.txt  → Blob A\n├── app.txt    → Blob B\n└── src/       → Tree C\n```\nA tree connects: name + mode/type + object ID. The **blob knows the content; the tree gives that content a name and places it inside a directory structure**.\n\n' +
+        '**Commit Objects:** A commit object points to a tree representing the project snapshot:\n```\nCommit C\n├── Tree T\n│   ├── app.txt → Blob B1\n│   └── src/    → Tree T2\n├── Parent → Commit B\n├── Author\n├── Committer\n├── Timestamp\n└── Message\n```\nA commit connects project content with history and metadata. The tree gives the commit its project snapshot; the parent pointer connects the commit to earlier history.\n\n' +
+        '**Git History Is a Graph:** Each commit knows about its parent. Git draws history as: `A → B → C` (technically C points backward to B, B to A). A merge commit can have **two parents** — that is how different lines of development are connected.\n\n' +
+        '**Git Stores Snapshots Without Duplicating Everything:** Git is commonly explained using project snapshots. That does NOT mean Git blindly copies every file again for every commit. If only `app.txt` changes, the next commit reuses the same blob IDs for `README.md` and `config.txt` — **unchanged content continues pointing to the same existing objects**.\n\n' +
+        '**The .git/index (Staging Area):** The staging area is implemented through `.git/index`. The index is Git\'s proposed representation of the contents of the next commit. The index tells Git which file versions should become part of the next snapshot. Inspect it:\n```\ngit ls-files --stage\n```\nThis is why staging is more than simply marking a file with a flag — the index is **building the content representation** that Git will use for the next commit.',
+      code:
+        '# --- BLOB operations ---\n' +
+        '# Calculate the object ID (hash) for a file\n' +
+        'git hash-object hello.txt\n' +
+        '# → returns hash like: d2a84f4b...\n\n' +
+        '# Write the blob object to .git/objects\n' +
+        'git hash-object -w hello.txt\n' +
+        '# → 5da7cf708a27a7b4769256a81332d7ee31bb673d\n' +
+        '# Stored at: .git/objects/5d/a7cf708a27a7b4769256a81332d7ee31bb673d\n\n' +
+        '# Inspect the blob\n' +
+        'git cat-file -t 5da7cf708a27a7b4769256a81332d7ee31bb673d   # → blob\n' +
+        'git cat-file -p 5da7cf708a27a7b4769256a81332d7ee31bb673d   # → Hello Coder Army\n\n' +
+        '# Recover content from blob even after file is deleted\n' +
+        'rm hello.txt\n' +
+        'git cat-file -p 5da7cf708a27a7b4769256a81332d7ee31bb673d > hello.txt\n\n' +
+        '# --- TREE operations ---\n' +
+        'git ls-tree HEAD              # inspect the tree at HEAD\n' +
+        'git ls-tree master            # inspect the tree at master\n' +
+        '# → 100644 blob abc123... app.txt\n' +
+        '# → 040000 tree xyz789... src\n' +
+        'git cat-file -p <tree-hash>   # pretty-print tree contents\n\n' +
+        '# --- COMMIT inspection ---\n' +
+        'git cat-file -p master        # inspect commit object\n' +
+        '# → tree 74fd...\n' +
+        '# → parent 12ab...\n' +
+        '# → author Aditya <...>\n' +
+        '# → Add login feature\n\n' +
+        '# Inspect the staging area (index)\n' +
+        'git ls-files --stage\n' +
+        '# → 100644 abc123... 0 app.txt\n' +
+        '# → 100644 def456... 0 hello.txt\n\n' +
+        '# --- FINAL MENTAL MODELS ---\n' +
+        '# Beginner level:\n' +
+        '# Edit Files → git add → Stage Changes → git commit → Save Version → git push → Share Remotely\n\n' +
+        '# Internal level:\n' +
+        '# File Content → Blob → Index references Blob → Tree (names+structure) → Commit → Parent Commit → History Graph',
+    },
+    {
       id: 'git-command-reference',
       title: 'Git command quick reference',
       content:
@@ -1375,6 +1561,19 @@ function buildLessons() {
         lesson.sections = [...DOCKER_VOLUMES_SECTIONS, ...DOCKER_POSTGRES_PROJECT_SECTIONS];
         lesson.image = DOCKER_VOLUMES_SECTIONS[0].image;
         lesson.imageAlt = DOCKER_VOLUMES_SECTIONS[0].imageAlt;
+      }
+      // Git Fundamentals — attach both PDFs to Git Basics.
+      if (title === 'Git Basics') {
+        lesson.pdfUrl = '/devops-notes/Notes-Git.pdf';
+        lesson.pdfLabel = 'Git Fundamentals Notes — 35 pages (Coder Army)';
+        lesson.extraLinks = [
+          ...(lesson.extraLinks || []),
+          {
+            label: 'Git Fundamentals — Excalidraw Visual Notes (PDF)',
+            href: '/devops-notes/Excalidraw-Notes-Git.pdf',
+            icon: '📊',
+          },
+        ];
       }
       // Linux Essentials notes PDF — attached to the Create a Linux User module (Day 2).
       if (title === 'Create a Linux User') {
