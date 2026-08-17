@@ -94,7 +94,7 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: Day 1 = 22 Aug 2026. User-facing framing: 2000 days / 20 skills / 100 days each (uniform).
+// Full journey: Day 1 = 21 Aug 2026. User-facing framing: 2000 days / 20 skills / 100 days each (uniform).
 // Skill order: Python(1-100) → FastAPI(101-200) → Agentic AI(201-300) → JavaScript(301-400) →
 // TypeScript(401-500) → React JS(501-600) → Next JS(601-700) → React Native(701-800) →
 // Express JS(801-900) → Databases(901-1000) → J2SE(1001-1100) →
@@ -104,8 +104,8 @@ export const INTERVIEW_PREP_WEEKS = 0;
 // Capstone project is built continuously throughout all 2,000 days as a running side project.
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
 //  chapterFactory.js = 8 Aug 2026, so module Day 1 also dates to 8 Aug 2026.)
-export const JOURNEY_START_LABEL = '22 Aug 2026';
-export const JOURNEY_END_LABEL = '11 Feb 2032';
+export const JOURNEY_START_LABEL = '21 Aug 2026';
+export const JOURNEY_END_LABEL = '10 Feb 2032';
 export const JOURNEY_TOTAL_DAYS = 2000;
 // Factory calendar: Day 1 = 8 Aug 2026 (COURSE_START); factory day N = journey Day N.
 export const JOURNEY_END_FACTORY_DAY = 2000;

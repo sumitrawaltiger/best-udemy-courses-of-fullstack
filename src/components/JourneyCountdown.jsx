@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-/** Day 1 is 22 Aug 2026 (Phase 1 · Python Stack). */
-/** Target: 12 Feb 2032, 00:00 — end of Day 2000 (11 Feb 2032). 21 skills · 2,000 days. */
-export const JOURNEY_END = new Date(2032, 1, 12, 0, 0, 0, 0);
+/** Day 1 is 21 Aug 2026 (Phase 1 · Python Stack). */
+/** Target: 11 Feb 2032, 00:00 — end of Day 2000 (10 Feb 2032). 20 skills · 2,000 days. */
+export const JOURNEY_END = new Date(2032, 1, 11, 0, 0, 0, 0);
 
 function getRemaining(now = new Date()) {
   const diff = Math.max(0, JOURNEY_END.getTime() - now.getTime());
