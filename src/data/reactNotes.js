@@ -1279,6 +1279,66 @@ function ScoreCard({ title, score, isWinner }) {
       },
     ],
   },
+  {
+    day: 17,
+    date: '2 Apr 2028',
+    group: 'hooks',
+    title: 'useEffect Basics + Dependency Array',
+    tagline: 'Run side effects after render — and control exactly when they fire using the dependency array: once, on change, or every render.',
+    image: '/react-notes/react17.jpeg',
+    tags: ['useEffect', 'Side Effects', 'Dependency Array', 'Module 3 Effects', 'Lifecycle', 'Hooks', 'Cleanup', 'Component Mount'],
+    notes: [
+      { k: 'What is useEffect?', v: '`useEffect` lets us run **side effects** in function components. It runs code **after** the component renders — not during. Flow: Component Renders → useEffect Runs.' },
+      { k: 'Basic Syntax', v: '`useEffect(() => { // code here }, []);` — the second argument is the **dependency array** that controls when the effect runs.' },
+      { k: '[] — Empty Array', v: 'Runs **once** after the initial render only. Use for one-time setup like fetching initial data, setting up subscriptions, or logging "component mounted".' },
+      { k: '[value] — With Dependency', v: 'Runs **when that value changes**. React compares the previous and current value — if different, the effect re-runs. Example: `[count]` re-runs whenever `count` changes.' },
+      { k: 'No Array', v: 'Runs **after every render** — both initial and every re-render. Usually what you do NOT want. Omitting the dependency array is rarely correct and often causes performance issues.' },
+      { k: 'Pro Tips', v: 'Use `[]` for effects that need to run once (on mount). Add only the values your effect actually uses to the array. Keep effects pure and clean — one responsibility per `useEffect`.' },
+      { k: 'Common Mistakes', v: '**Forgetting the dependency array** — effect runs on every render unexpectedly. **Adding unnecessary values** — causes extra re-runs. **Causing infinite re-renders** — happens when you update a state variable that is also in the dependency array without a guard condition.' },
+      { k: 'Mini Challenge', v: 'Create a component that logs "Hello Neo" in the console **only when a button is clicked**. Use `useEffect` with a dependency array — trigger it by tracking a click count in state.' },
+      { k: 'Quick Summary', v: '`useEffect` handles side effects. Dependency array decides when the effect runs. `[]` = once (on mount), `[value]` = on change, no array = on every render. Keep effects clean and predictable.' },
+      { k: 'Module 3 — Effects', v: 'This episode opens **Module 3: Effects**. Side effects are things outside the render itself: API calls, `console.log`, timers, DOM manipulation, subscriptions. React keeps rendering pure — `useEffect` is where all that external work goes.' },
+    ],
+    theory: [
+      {
+        h: 'What is a Side Effect?',
+        p: 'A React component\'s **render function** should be a pure calculation — same inputs, same output, no surprises. But real apps need to do things like fetch data, set up timers, or log to the console. These are **side effects** — work that reaches outside the render.\n\n`useEffect` is the hook React provides to run that work **after** the component renders, keeping the render function itself pure.\n\n```\nComponent Renders  →  useEffect Runs\n```\n\nThis ordering is important: the component paints first, then effects fire. That means effects never block the first render.',
+      },
+      {
+        h: 'The Three Dependency Array Patterns',
+        p: 'The second argument to `useEffect` controls when it re-runs:\n\n| Pattern | Behaviour | When to use |\n|---|---|---|\n| `[]` | Runs once after initial render | Data fetch on mount, event listener setup |\n| `[value]` | Runs when `value` changes | React to a specific state/prop change |\n| *(no array)* | Runs after every render | Almost never — usually a bug |\n\n```jsx\n// Runs once — "component mounted"\nuseEffect(() => {\n  console.log("Component mounted");\n}, []);\n\n// Runs when count changes\nuseEffect(() => {\n  console.log("count is now", count);\n}, [count]);\n\n// Runs after every render — rarely what you want\nuseEffect(() => {\n  console.log("rendered");\n});\n```',
+      },
+      {
+        h: 'Common Mistakes & How to Avoid Them',
+        p: '**1. Forgetting the dependency array:**\n```jsx\nuseEffect(() => {\n  fetchData(); // runs after EVERY render — unintentional\n});\n// Fix: add []\n```\n\n**2. Adding unnecessary values:**\n```jsx\nuseEffect(() => {\n  console.log("hello");\n}, [count, name, theme]); // none of these are used in the effect\n// Fix: only include what the effect actually reads\n```\n\n**3. Causing infinite re-renders:**\n```jsx\nuseEffect(() => {\n  setCount(count + 1); // updates count → triggers effect → updates count → ∞\n}, [count]);\n// Fix: add a guard condition, or rethink the design\n```\n\n**Rule of thumb:** only add variables to the dependency array that your effect actually uses inside it.',
+      },
+      {
+        h: 'Mini Challenge — "Hello Neo" on Button Click',
+        p: 'The challenge: log "Hello Neo" in the console only when a button is clicked — using `useEffect` with a dependency array, not directly in the click handler.\n\n**Approach:** track a `clicked` counter in state. Increment it on button press. Put the counter in the dependency array — the effect runs whenever it changes.\n\n```jsx\nfunction NeoLogger() {\n  const [clicked, setClicked] = useState(0);\n\n  useEffect(() => {\n    if (clicked === 0) return; // skip the initial render\n    console.log("Hello Neo");\n  }, [clicked]);\n\n  return <button onClick={() => setClicked(c => c + 1)}>Click me</button>;\n}\n```\n\nThis pattern — using a counter in the dependency array — is a clean way to trigger an effect on demand without running it on mount.',
+      },
+      {
+        h: 'Quick Summary — Module 3: Effects',
+        p: '`useEffect` is the bridge between React\'s pure render world and the side-effect world.\n\n**Three rules to remember:**\n- `[]` → runs once (on mount)\n- `[value]` → runs when `value` changes\n- no array → runs on every render\n\n**Three principles:**\n- Keep effects clean and predictable\n- Add only necessary values to the dependency array\n- One `useEffect` per responsibility — split effects that do different things\n\nMastering `useEffect` and its dependency array is one of the most important React skills — it underpins data fetching, subscriptions, timers, and all async work in function components.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'useEffect — three dependency array patterns side by side',
+        code: "import { useState, useEffect } from 'react';\n\nfunction EffectDemo() {\n  const [count, setCount] = useState(0);\n\n  // 1. Runs ONCE after initial render\n  useEffect(() => {\n    console.log('Component mounted');\n  }, []);\n\n  // 2. Runs when count changes\n  useEffect(() => {\n    console.log('count changed to', count);\n  }, [count]);\n\n  // 3. Runs after EVERY render (rarely correct)\n  useEffect(() => {\n    console.log('rendered');\n  });\n\n  return (\n    <div>\n      <p>{count}</p>\n      <button onClick={() => setCount(count + 1)}>+1</button>\n    </div>\n  );\n}",
+        note: 'The dependency array is the key: [] = mount only, [value] = on change, omitted = every render. Always add the dependency array unless you explicitly want every-render behaviour.',
+      },
+      {
+        label: 'Mini challenge — log "Hello Neo" only on button click',
+        code: "import { useState, useEffect } from 'react';\n\nfunction NeoLogger() {\n  const [clicked, setClicked] = useState(0);\n\n  useEffect(() => {\n    if (clicked === 0) return; // skip initial render\n    console.log('Hello Neo');\n  }, [clicked]);\n\n  return (\n    <button onClick={() => setClicked(c => c + 1)}>\n      Click me\n    </button>\n  );\n}\n\nexport default NeoLogger;",
+        note: 'Guard with `if (clicked === 0) return` so the effect does not fire on the initial mount. Incrementing `clicked` on each button press triggers the effect exactly when needed.',
+      },
+      {
+        label: 'Common mistake — infinite re-render (and the fix)',
+        code: "// BAD — infinite loop: effect updates count, count triggers effect, repeat\nuseEffect(() => {\n  setCount(count + 1);\n}, [count]);\n\n// GOOD — guard condition breaks the loop\nuseEffect(() => {\n  if (count >= 5) return;\n  setCount(count + 1);\n}, [count]);\n\n// GOOD — use functional updater, remove count from deps\nuseEffect(() => {\n  setCount(prev => prev + 1);\n}, []); // runs once, uses functional form to read latest count",
+        note: 'Infinite re-renders are the most common useEffect bug. The root cause is always: state update inside the effect → dependency includes that state → effect re-runs → repeat.',
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
