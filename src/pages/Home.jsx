@@ -127,18 +127,18 @@ export default function Home() {
               <span className="fle-hl">DevOps</span>
             </h1>
             <p className="fle-sub">
-              A structured <strong>2,000-day journey</strong> — <strong>20 skills, 19×100 days + Capstone 100</strong>:
+              A structured <strong>2,000-day journey</strong> — <strong>20 skills × 100 days each</strong>:
               Python, FastAPI, Agentic AI, JavaScript, TypeScript, React JS, Next JS, React Native,
-              Databases, Express JS, J2SE, JPA, Spring Boot, Microservices, Automation Testing, DevOps, Cloud (AWS), Kubernetes,
-              System Design, and a 100-day Capstone Project integrating all 19 skills.
-              Data Structures &amp; Algorithms practiced throughout. One skill at a time, fully focused, front to back.
+              Express JS, Databases, J2SE, JPA, Spring Boot, Microservices, Automation Testing, DevOps, Cloud (AWS), Kubernetes,
+              System Design, and <strong>DSA</strong> (Days 1901–2000) as the final 100-day interview-prep sprint.
+              The Capstone project is built daily throughout all 2,000 days. One skill at a time, fully focused, front to back.
             </p>
 
             <div className="fle-pills">
               <span className="fle-pill"><span aria-hidden="true">⚡</span> 2,000 Days of Code</span>
-              <span className="fle-pill"><span aria-hidden="true">🧠</span> 20 Skills · 19×100 Days + Capstone 100</span>
-              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → JS/TS → Databases → Java → DevOps → Capstone</span>
-              <span className="fle-pill"><span aria-hidden="true">📐</span> DSA &amp; System Design Throughout</span>
+              <span className="fle-pill"><span aria-hidden="true">🧠</span> 20 Skills · 100 Days Each</span>
+              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → JS/TS → Databases → Java → DevOps → DSA</span>
+              <span className="fle-pill"><span aria-hidden="true">🏗️</span> Capstone Built Daily Throughout</span>
             </div>
 
             <JourneyCountdown variant="hero" />
