@@ -1339,6 +1339,66 @@ function ScoreCard({ title, score, isWinner }) {
       },
     ],
   },
+  {
+    day: 18,
+    date: '3 Apr 2028',
+    group: 'hooks',
+    title: 'Fetching APIs in React',
+    tagline: 'Fetch data from a real API and display it in your React app — with loading and error states handled correctly.',
+    image: '/react-notes/react18.jpeg',
+    tags: ['API', 'Fetch', 'useEffect', 'useState', 'Async', 'Loading State', 'Error Handling', 'JSONPlaceholder'],
+    notes: [
+      { k: 'What is an API?', v: 'APIs (Application Programming Interfaces) let our React app talk to servers and get data. Flow: **React App (Frontend)** → Request → **API (Server)** → Response (Data) → back to React App.' },
+      { k: 'Step 1 — Create state', v: 'You need three pieces of state: `data` (to store fetched results), `loading` (boolean — true while waiting), `error` (null or error message). Never skip loading and error — they are required for production-quality code.' },
+      { k: 'Step 2 — useEffect for fetching', v: 'Place your fetch call inside `useEffect` with an empty dependency array `[]` — this runs the fetch **once** after the component mounts. Never fetch at the top level of a component (outside useEffect) as it will run on every render.' },
+      { k: 'Step 3 — fetch() API', v: '`fetch(url)` returns a Promise. Always check `res.ok` before calling `res.json()` — a 404 or 500 still "succeeds" from fetch\'s perspective (no network error). Throw an error manually if `!res.ok`.' },
+      { k: 'Step 4 — Handle loading & error', v: 'While fetching: return a loading indicator. If an error occurs: return an error message. Only render the data after both checks pass. This pattern prevents blank screens and silent failures.' },
+      { k: 'Step 5 — Display the data', v: 'Use `.map()` with a `key` prop to render list data. Always use a unique, stable value (like `post.id`) as the key — never the array index for fetched data.' },
+      { k: 'Pro Tip', v: 'Always handle loading and error states for a better user experience. A blank screen while fetching looks broken. A spinner + "something went wrong" message shows the app is alive and honest.' },
+      { k: 'Practice APIs', v: '**JSONPlaceholder** (https://jsonplaceholder.typicode.com) — free fake REST API. **DummyJSON** (https://dummyjson.com) — products, users, carts. **ReqRes** (https://reqres.in) — user data with auth simulation.' },
+      { k: 'Mini Challenge', v: 'Fetch users from `https://jsonplaceholder.typicode.com/users` and display each user\'s `name` and `email` in a card. Show "Loading..." while fetching and an error message if the fetch fails.' },
+      { k: 'Quick Summary', v: '3 pieces of state (data, loading, error) + useEffect with `[]` + fetch() + loading/error guards + .map() with keys = the standard data-fetching pattern every React developer must know.' },
+    ],
+    theory: [
+      {
+        h: 'Why Fetch Inside useEffect?',
+        p: 'React components re-render whenever state or props change. If you call `fetch()` directly inside the component body (not inside `useEffect`), it fires on **every single render** — creating an infinite loop of network requests.\n\n`useEffect(() => { fetch(...) }, [])` with the empty array runs the fetch exactly **once** — after the first render — and never again unless you explicitly add dependencies.\n\n```jsx\n// WRONG — fetches on every render\nfunction Posts() {\n  fetch("https://api.example.com/posts"); // 🔴 runs on every render\n  ...\n}\n\n// CORRECT — fetches once on mount\nfunction Posts() {\n  useEffect(() => {\n    fetch("https://api.example.com/posts"); // ✅ runs once\n  }, []);\n  ...\n}\n```',
+      },
+      {
+        h: 'The Three-State Pattern',
+        p: 'Every API call needs three pieces of state working together:\n\n| State | Initial value | Purpose |\n|---|---|---|\n| `data` | `[]` or `null` | Stores the fetched result |\n| `loading` | `true` | True while the request is in flight |\n| `error` | `null` | Holds the error message if something goes wrong |\n\n```jsx\nconst [posts, setPosts] = useState([]);\nconst [loading, setLoading] = useState(true);\nconst [error, setError] = useState(null);\n```\n\nThe `finally` block in the try/catch always runs — even if the fetch fails — so `setLoading(false)` belongs there, not in the `try` block alone.',
+      },
+      {
+        h: 'Why Check res.ok?',
+        p: '`fetch()` only rejects its Promise on **network failure** (no connection, DNS failure, CORS block). A 404, 403, or 500 from the server does NOT cause fetch to reject — it resolves normally with a Response object.\n\nIf you call `res.json()` on a 404, you get the server\'s error HTML parsed as JSON — which throws a confusing error.\n\nAlways check `res.ok` first:\n\n```jsx\nconst res = await fetch(url);\nif (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);\nconst data = await res.json();\n```\n\nThis converts HTTP error status codes into proper thrown errors that your `catch` block can handle cleanly.',
+      },
+      {
+        h: 'Rendering Fetched Data',
+        p: 'After the loading and error guards, render the data with `.map()`:\n\n```jsx\nif (loading) return <p>Loading posts...</p>;\nif (error) return <p style={{ color: "red" }}>Error: {error}</p>;\n\nreturn (\n  <ul>\n    {posts.map(post => (\n      <li key={post.id}>\n        <strong>{post.title}</strong>\n      </li>\n    ))}\n  </ul>\n);\n```\n\n**Key rules for fetched data:**\n- Always use `key={item.id}` (the server-assigned unique ID)\n- Never use array index as key for fetched data — IDs change when items are added/removed\n- Render guards (`if (loading)`, `if (error)`) before the main return keep the component logic clean',
+      },
+      {
+        h: 'Practice APIs',
+        p: 'Three free APIs to practice with — no sign-up, no API key required:\n\n**JSONPlaceholder** — `https://jsonplaceholder.typicode.com`\n- `/posts` — 100 blog posts\n- `/users` — 10 users with names, emails, addresses\n- `/todos` — 200 todos with completed status\n\n**DummyJSON** — `https://dummyjson.com`\n- `/products` — products with images, prices, categories\n- `/users` — users with profile data\n- `/carts` — shopping cart data\n\n**ReqRes** — `https://reqres.in`\n- `/api/users` — paginated user list\n- Simulates login/register responses\n- Good for testing auth flows without a real backend',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Complete API fetch pattern — Posts component',
+        code: "import { useEffect, useState } from 'react';\n\nexport default function Posts() {\n  const [posts, setPosts] = useState([]);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(null);\n\n  useEffect(() => {\n    const fetchPosts = async () => {\n      try {\n        const res = await fetch(\n          'https://jsonplaceholder.typicode.com/posts'\n        );\n        if (!res.ok) throw new Error('Failed to fetch');\n        const data = await res.json();\n        setPosts(data);\n      } catch (err) {\n        setError(err.message);\n      } finally {\n        setLoading(false);\n      }\n    };\n    fetchPosts();\n  }, []); // run once on mount\n\n  if (loading) return <p>Loading posts...</p>;\n  if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;\n  return (\n    <ul className=\"post-list\">\n      {posts.map(post => (\n        <li key={post.id}>\n          <strong>{post.title}</strong>\n        </li>\n      ))}\n    </ul>\n  );\n}",
+        note: 'The three-state pattern (data + loading + error), useEffect with [], res.ok check, and finally block are the non-negotiables. Every production fetch looks like this.',
+      },
+      {
+        label: 'Mini challenge — fetch users and display name + email',
+        code: "import { useEffect, useState } from 'react';\n\nexport default function Users() {\n  const [users, setUsers] = useState([]);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(null);\n\n  useEffect(() => {\n    const fetchUsers = async () => {\n      try {\n        const res = await fetch(\n          'https://jsonplaceholder.typicode.com/users'\n        );\n        if (!res.ok) throw new Error('Failed to fetch users');\n        const data = await res.json();\n        setUsers(data);\n      } catch (err) {\n        setError(err.message);\n      } finally {\n        setLoading(false);\n      }\n    };\n    fetchUsers();\n  }, []);\n\n  if (loading) return <p>Loading users...</p>;\n  if (error) return <p style={{ color: 'red' }}>Error: {error}</p>;\n  return (\n    <ul>\n      {users.map(user => (\n        <li key={user.id}>\n          <strong>{user.name}</strong> — {user.email}\n        </li>\n      ))}\n    </ul>\n  );\n}\n\nexport default Users;",
+        note: 'Same pattern, different endpoint. Swap the URL and the state variable name — the structure never changes.',
+      },
+      {
+        label: 'Why res.ok matters — the silent 404 bug',
+        code: "// BUG — no res.ok check; res.json() on a 404 throws a confusing error\nuseEffect(() => {\n  fetch('https://jsonplaceholder.typicode.com/posts/9999')\n    .then(res => res.json()) // 404 body is not valid JSON → parse error\n    .then(data => setPosts(data))\n    .catch(err => setError(err.message));\n}, []);\n\n// FIX — check res.ok before parsing\nuseEffect(() => {\n  fetch('https://jsonplaceholder.typicode.com/posts/9999')\n    .then(res => {\n      if (!res.ok) throw new Error(`HTTP ${res.status}`);\n      return res.json();\n    })\n    .then(data => setPosts(data))\n    .catch(err => setError(err.message));\n}, []);",
+        note: 'fetch() resolves (does not throw) on 4xx/5xx responses. Always check res.ok to convert HTTP errors into thrown errors your catch block can handle.',
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
