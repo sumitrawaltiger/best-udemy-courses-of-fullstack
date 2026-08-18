@@ -150,7 +150,7 @@ export default function Header({ onSearch }) {
                     ? 'Thunder+ Next.js'
                     : track === 'genai'
                       ? 'Thunder+ GenAI'
-                      : 'Road to Forward Deployed Engineer';
+                      : 'Road to Full Lifecycle Engineer';
   const logoTagline =
     track === 'mobile'
       ? 'React Native by ChaiCode'
@@ -205,7 +205,7 @@ export default function Header({ onSearch }) {
             {logoIcon === 'JS' ? (
               <img
                 src="/fle-logo.png"
-                alt="Forward Deployed Engineer"
+                alt="Full Lifecycle Engineer"
                 className="logo-img"
               />
             ) : (

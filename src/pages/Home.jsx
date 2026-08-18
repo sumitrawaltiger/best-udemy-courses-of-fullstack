@@ -121,7 +121,7 @@ export default function Home() {
 
         <div className="fle-hero-inner">
           <div className="fle-hero-left">
-            <span className="fle-badge"><span aria-hidden="true">⚡</span> Road to Forward Deployed Engineer</span>
+            <span className="fle-badge"><span aria-hidden="true">⚡</span> Road to Full Lifecycle Engineer</span>
             <h1 className="fle-title">
               Master <span className="fle-hl">Agentic AI</span>, the <span className="fle-hl">Full Stack</span> &amp;{' '}
               <span className="fle-hl">DevOps</span>
