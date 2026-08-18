@@ -486,6 +486,11 @@ import AgenticDay177 from './pages/AgenticDay177';
 import AgenticDay178 from './pages/AgenticDay178';
 import AgenticDay179 from './pages/AgenticDay179';
 import AgenticDay180 from './pages/AgenticDay180';
+import AgenticDay181 from './pages/AgenticDay181';
+import AgenticDay182 from './pages/AgenticDay182';
+import AgenticDay183 from './pages/AgenticDay183';
+import AgenticDay184 from './pages/AgenticDay184';
+import AgenticDay185 from './pages/AgenticDay185';
 import InterviewQuestions from './pages/InterviewQuestions';
 import SystemDesignHandbook from './pages/SystemDesignHandbook';
 import ReactInterviewQuestions from './pages/ReactInterviewQuestions';
@@ -929,6 +934,11 @@ export default function App() {
         <Route path="/agentic-day-178" element={<AgenticDay178 />} />
         <Route path="/agentic-day-179" element={<AgenticDay179 />} />
         <Route path="/agentic-day-180" element={<AgenticDay180 />} />
+        <Route path="/agentic-day-181" element={<AgenticDay181 />} />
+        <Route path="/agentic-day-182" element={<AgenticDay182 />} />
+        <Route path="/agentic-day-183" element={<AgenticDay183 />} />
+        <Route path="/agentic-day-184" element={<AgenticDay184 />} />
+        <Route path="/agentic-day-185" element={<AgenticDay185 />} />
         <Route path="/system-design-handbook" element={<SystemDesignHandbook />} />
         <Route path="/interview-questions" element={<InterviewQuestions />} />
         <Route path="/react-interview-questions" element={<ReactInterviewQuestions />} />

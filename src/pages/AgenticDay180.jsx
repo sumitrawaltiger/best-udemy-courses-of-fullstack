@@ -58,8 +58,8 @@ const practice = [
     title: 'What Comes Next',
     titleClass: 'card-title-amber',
     subtitle: 'Continue',
-    description: 'Deepen one production graph, or return to the hub until the next journal days land.',
-    link: { href: '/', label: 'Back to Home →' },
+    description: 'Next arc — agent runtime platform (Days 181–185): sandbox, policy, cost, tenancy.',
+    link: { href: '/agentic-day-181', label: 'Go to Day 181 →' },
   },
 ];
 
@@ -97,7 +97,7 @@ export default function AgenticDay180() {
       series="Agentic AI"
       dateLabel="Agentic AI Day 180 · 14 Feb 2027"
       prev={{ href: '/agentic-day-179', label: '← Day 179' }}
-      next={{ href: '/', label: 'Home →' }}
+      next={{ href: '/agentic-day-181', label: 'Day 181 →' }}
       tags={['Agentic AI', 'Orchestration', 'Milestone']}
       theme="ADVANCED ORCHESTRATION MILESTONE"
       heroIcon="🏁"
