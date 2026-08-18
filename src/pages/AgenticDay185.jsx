@@ -56,9 +56,9 @@ const practice = [
     icon: '🔜',
     title: 'What Comes Next',
     titleClass: 'card-title-amber',
-    subtitle: 'Continue',
-    description: 'Harden one live graph with this kit, or return to the hub until the next days land.',
-    link: { href: '/', label: 'Back to Home →' },
+    subtitle: 'Day 186',
+    description: 'Next arc — start measuring quality with an eval harness.',
+    link: { href: '/agentic-day-186', label: 'Go to Day 186 →' },
   },
 ];
 
@@ -96,7 +96,7 @@ export default function AgenticDay185() {
       series="Agentic AI"
       dateLabel="Agentic AI Day 185 · 19 Feb 2027"
       prev={{ href: '/agentic-day-184', label: '← Day 184' }}
-      next={{ href: '/', label: 'Home →' }}
+      next={{ href: '/agentic-day-186', label: 'Day 186 →' }}
       tags={['Agentic AI', 'Runtime', 'Milestone']}
       theme="AGENT RUNTIME PLATFORM MILESTONE"
       heroIcon="🏁"
