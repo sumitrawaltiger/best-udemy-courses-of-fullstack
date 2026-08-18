@@ -56,7 +56,7 @@ export default function PrivacyPolicy() {
 
         <p style={p}>
           This Privacy Policy explains how the website <strong style={strong}>sumit-rawal.online</strong> and its
-          companion mobile application <strong style={strong}>“Full Lifecycle Engineer”</strong> (together, the
+          companion mobile application <strong style={strong}>“Forward Deployed Engineer”</strong> (together, the
           “Service”) handle information. The Service is a free, personal, educational project — a study roadmap and
           learning-notes app. It has <strong style={strong}>no accounts, no sign-in, and no forms that collect
           personal information</strong>.
