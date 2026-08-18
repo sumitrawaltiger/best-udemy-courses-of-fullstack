@@ -36,7 +36,7 @@ const RING_CARDS = [
   {
     icon: '⭕', title: 'The Hash Ring', titleClass: 'card-title-cyan',
     subtitle: 'Hash space visualised as a circle',
-    description: 'After 99 comes 0 — the range wraps into a ring. DBs sit at positions on the ring. A key's owner is the first DB position clockwise from hash(key). Wrap-around: if hash = 97 and last vnode = 96, walk to 4 at the start.',
+    description: 'After 99 comes 0 — the range wraps into a ring. DBs sit at positions on the ring. A key\'s owner is the first DB position clockwise from hash(key). Wrap-around: if hash = 97 and last vnode = 96, walk to 4 at the start.',
     code: '// positions on ring\nDB0 → 8, 38, 71\nDB1 → 20, 55, 88\nDB2 → 4, 45, 76\n\n// hash(userId) = 37 → clockwise → 38 → DB0',
   },
   {
