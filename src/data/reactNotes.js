@@ -1399,6 +1399,64 @@ function ScoreCard({ title, score, isWinner }) {
       },
     ],
   },
+  {
+    day: 19,
+    date: '4 Apr 2028',
+    group: 'hooks',
+    title: 'Cleanup Functions in useEffect',
+    tagline: 'Learn how to clean up side effects — timers, intervals, event listeners, and sockets — when a component unmounts or before the effect re-runs.',
+    image: '/react-notes/react19.jpeg',
+    tags: ['useEffect', 'Cleanup', 'clearInterval', 'Memory Leaks', 'Unmount', 'Side Effects', 'Hooks', 'Timer'],
+    notes: [
+      { k: 'What & Why?', v: 'Cleanup functions help us remove subscriptions, timers, event listeners, or any side effects when a component **unmounts** or before the effect runs again. Without cleanup, the old effect keeps running even after the component is gone — causing **memory leaks** and unexpected behaviour.' },
+      { k: 'How to Write a Cleanup', v: 'Return a function from your `useEffect`. React automatically calls that returned function before the next effect run or on unmount:\n```jsx\nuseEffect(() => {\n  // setup\n  return () => {\n    // cleanup runs here\n  };\n}, []);\n```\nIf your effect returns a function, React treats it as the cleanup function.' },
+      { k: 'When Does Cleanup Run?', v: '**1.** When the component **unmounts** (removed from the DOM).\n**2.** Before the effect **runs again** (if dependencies change).\n**3.** Helps prevent **memory leaks** and unexpected behaviour.' },
+      { k: 'Timer Example', v: 'Start a `setInterval` inside `useEffect` and clear it in the cleanup:\n```jsx\nuseEffect(() => {\n  const interval = setInterval(() => {\n    setCount(c => c + 1);\n  }, 1000);\n  return () => clearInterval(interval);\n}, []);\n```\n`clearInterval` stops the timer when the component unmounts — no more ticking in the background.' },
+      { k: 'Real-World Use Cases', v: '✓ Removing event listeners (`removeEventListener`)\n✓ Clearing timers or intervals (`clearTimeout` / `clearInterval`)\n✓ Cancelling API requests (AbortController)\n✓ Unsubscribing from sockets (`socket.disconnect()`)\n✓ Avoiding memory leaks' },
+      { k: 'Common APIs to Practice', v: '`addEventListener` / `removeEventListener` · `setTimeout` / `clearTimeout` · `setInterval` / `clearInterval` · `WebSocket` / `socket.disconnect()`' },
+      { k: 'Pro Tip', v: 'Always return a cleanup function from `useEffect` when you set up any side effect. If you start it, you must stop it. Think of setup and cleanup as a matching pair.' },
+      { k: 'Next Up', v: '**Episode 18 → Custom Hooks** — build reusable logic by extracting repeated `useState` + `useEffect` patterns into your own hooks.' },
+    ],
+    theory: [
+      {
+        h: 'What is a Cleanup Function?',
+        p: 'Every `useEffect` can optionally return a **cleanup function** — a plain function that React calls automatically:\n\n1. Before the effect runs again (if dependencies changed)\n2. When the component **unmounts** (is removed from the UI)\n\n```\nComponent Mounts  →  useEffect runs  →  setup code executes\n                                         ↓\nComponent Unmounts (or deps change)  →  cleanup function runs\n```\n\nThis lifecycle is what makes React components self-contained — they clean up their own mess before they leave.\n\n**Syntax:**\n```jsx\nuseEffect(() => {\n  // setup\n  console.log("Timer started");\n  const id = setInterval(tick, 1000);\n\n  // cleanup — return a function\n  return () => {\n    console.log("Cleaning up...");\n    clearInterval(id);\n  };\n}, []); // empty array = run once on mount\n```\n\nThe key insight: the returned function is the cleanup. React recognises any function returned from `useEffect` as the cleanup handler.',
+      },
+      {
+        h: 'When Exactly Does Cleanup Run?',
+        p: 'React calls the cleanup in two situations:\n\n| Situation | When it happens |\n|---|---|\n| **Component unmounts** | User navigates away, a conditional removes the component, parent re-renders it out |\n| **Before next effect** | A dependency in the array changed — React cleans up the old effect before starting the new one |\n\n**Example — dependency-driven cleanup:**\n```jsx\nuseEffect(() => {\n  document.title = `Hello, ${name}`;\n  return () => {\n    document.title = "React App"; // reset before next run\n  };\n}, [name]); // runs and cleans up every time name changes\n```\n\nThis means every effect that uses a dependency should also clean up after itself using that dependency.',
+      },
+      {
+        h: 'The Timer Example — Full Walkthrough',
+        p: 'This is the canonical cleanup example: a component that ticks every second and cleans up on unmount.\n\n```jsx\nimport { useEffect, useState } from \'react\';\n\nexport default function Timer() {\n  const [count, setCount] = useState(0);\n\n  useEffect(() => {\n    console.log("🕰 Timer started");\n\n    const interval = setInterval(() => {\n      setCount(c => c + 1);\n    }, 1000);\n\n    // Cleanup function\n    return () => {\n      console.log("🧹 Cleaning up...");\n      clearInterval(interval);\n    };\n  }, []); // run once on mount\n\n  return (\n    <div>\n      <h2>🕰 Timer</h2>\n      <p>Count: <strong>{count}</strong></p>\n    </div>\n  );\n}\n```\n\n**What happens step by step:**\n1. Component mounts → `useEffect` runs → `setInterval` starts ticking every 1 second\n2. `setCount(c => c + 1)` increments the counter on every tick\n3. Component unmounts → React calls the cleanup → `clearInterval(interval)` stops the tick\n4. Console shows "Timer started" on mount, "Cleaning up..." on unmount\n\nWithout the cleanup, the interval keeps running after the component is gone — incrementing state that no longer exists. That is a **memory leak**.',
+      },
+      {
+        h: 'Real-World Cleanup Patterns',
+        p: '**1. Event listeners:**\n```jsx\nuseEffect(() => {\n  const handleResize = () => setWidth(window.innerWidth);\n  window.addEventListener("resize", handleResize);\n  return () => window.removeEventListener("resize", handleResize);\n}, []);\n```\n\n**2. API request cancellation (AbortController):**\n```jsx\nuseEffect(() => {\n  const controller = new AbortController();\n  fetch("/api/data", { signal: controller.signal })\n    .then(res => res.json())\n    .then(setData)\n    .catch(err => {\n      if (err.name !== "AbortError") setError(err.message);\n    });\n  return () => controller.abort(); // cancel in-flight request on unmount\n}, []);\n```\n\n**3. WebSocket / socket.io:**\n```jsx\nuseEffect(() => {\n  const socket = io("https://api.example.com");\n  socket.on("message", handleMessage);\n  return () => socket.disconnect();\n}, []);\n```\n\n**The pattern is always the same:** start something in the effect body → return a function that stops it.',
+      },
+      {
+        h: 'Quick Summary',
+        p: 'Cleanup functions are the other half of `useEffect` — the part that runs on the way **out**, not the way in.\n\n**Three rules to remember:**\n- Return a function from `useEffect` to register a cleanup\n- React calls it before the next effect run **and** on unmount\n- Always clean up: intervals, listeners, sockets, and pending requests\n\n**Golden rule:** If you start it inside `useEffect`, always provide a matching cleanup. Setup and cleanup are a pair — writing one without the other is a bug waiting to happen.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Timer with cleanup — setInterval + clearInterval',
+        code: "import { useEffect, useState } from 'react';\n\nexport default function Timer() {\n  const [count, setCount] = useState(0);\n\n  useEffect(() => {\n    console.log('🕰 Timer started');\n\n    const interval = setInterval(() => {\n      setCount(c => c + 1);\n    }, 1000);\n\n    // Cleanup function — returned from useEffect\n    return () => {\n      console.log('🧹 Cleaning up...');\n      clearInterval(interval);\n    };\n  }, []); // empty array = run once on mount\n\n  return (\n    <div className=\"timer-box\">\n      <h2>🕰 Timer</h2>\n      <p>Count: <strong>{count}</strong></p>\n    </div>\n  );\n}",
+        note: 'The interval id is captured in the closure. The cleanup function has access to it via closure and calls clearInterval to stop the tick before the component is gone.',
+      },
+      {
+        label: 'Event listener cleanup — window resize',
+        code: "import { useEffect, useState } from 'react';\n\nexport default function WindowWidth() {\n  const [width, setWidth] = useState(window.innerWidth);\n\n  useEffect(() => {\n    const handleResize = () => setWidth(window.innerWidth);\n    window.addEventListener('resize', handleResize);\n\n    // Cleanup: remove the listener on unmount\n    return () => window.removeEventListener('resize', handleResize);\n  }, []);\n\n  return <p>Window width: {width}px</p>;\n}",
+        note: 'Without the cleanup, every time this component mounts a new listener is added. After 10 mounts there would be 10 listeners — all firing on resize.',
+      },
+      {
+        label: 'API fetch with AbortController — cancel on unmount',
+        code: "import { useEffect, useState } from 'react';\n\nexport default function Posts() {\n  const [posts, setPosts] = useState([]);\n  const [error, setError] = useState(null);\n\n  useEffect(() => {\n    const controller = new AbortController();\n\n    fetch('https://jsonplaceholder.typicode.com/posts', {\n      signal: controller.signal,\n    })\n      .then(res => res.json())\n      .then(setPosts)\n      .catch(err => {\n        if (err.name !== 'AbortError') setError(err.message);\n      });\n\n    // Cleanup: abort the in-flight request if component unmounts\n    return () => controller.abort();\n  }, []);\n\n  if (error) return <p>Error: {error}</p>;\n  return <ul>{posts.map(p => <li key={p.id}>{p.title}</li>)}</ul>;\n}",
+        note: 'If the user navigates away before the fetch completes, the cleanup aborts it — no setState call on an unmounted component, no "Can\'t perform a React state update on an unmounted component" warning.',
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
