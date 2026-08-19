@@ -3,8 +3,8 @@
 // & FastAPI (Phase 1, under /python) → TypeScript Stack — JavaScript,
 // TypeScript, React JS/Next JS, React Native, Express/Node JS (Phase 2, under
 // /, /typescript, /nextjs, /mobile) → Java Stack —
-// J2SE/JPA/Spring Boot/Microservices/Automation Testing (Phase 3, under /java) → DevOps
-// Stack — DevOps, Kubernetes & AWS Cloud (Phase 4). DSA & System Design are
+// J2SE/Spring Boot/Kafka/Microservices/Automation Testing (Phase 3, under /java) → DevOps
+// Stack — DevOps, AWS Cloud & SRE (Phase 4). DSA & System Design are
 // practiced throughout, not a separate stack. GenAI (Agentic AI in
 // JavaScript) is a separate, unmodified bonus track — distinct from the
 // Python-based Agentic AI in Phase 1.
@@ -48,8 +48,8 @@ export const LEARNING_PATH = [
   },
   {
     id: 'k8s',
-    label: 'Kubernetes',
-    short: 'K8s',
+    label: 'SRE',
+    short: 'SRE',
     desc: 'Phase 4 · DevOps Stack',
     path: '/k8s',
   },

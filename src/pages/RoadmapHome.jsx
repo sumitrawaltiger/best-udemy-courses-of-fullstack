@@ -43,9 +43,9 @@ function _calDate(dayN) {
 // Python (1–100) → FastAPI (101–200) → Agentic AI (201–300) →
 // JavaScript (301–400) → TypeScript (401–500) → React JS (501–600) →
 // Next JS (601–700) → React Native (701–800) → Express JS (801–900) →
-// Databases (901–1000) → J2SE (1001–1100) → JPA (1101–1200) →
-// Spring Boot (1201–1300) → Microservices (1301–1400) → Automation Testing (1401–1500) →
-// DevOps (1501–1600) → Cloud / AWS (1601–1700) → Kubernetes (1701–1800) →
+// Databases (901–1000) → J2SE (1001–1100) → Spring Boot (1101–1200) →
+// Kafka (1201–1300) → Microservices (1301–1400) → Automation Testing (1401–1500) →
+// DevOps (1501–1600) → Cloud / AWS (1601–1700) → SRE (1701–1800) →
 // System Design (1801–1900) → DSA (1901–2000).
 // Calendar dates are intentionally NOT shown (HR-facing page).
 
@@ -163,21 +163,21 @@ const SKILLS = [
     ],
   },
   {
-    id: 's12', arcClass: 'y3', icon: '🗄️',
-    label: 'Skill 12 · JPA',
+    id: 's12', arcClass: 'y3', icon: '🍃',
+    label: 'Skill 12 · Spring Boot',
     tagline: 'Days 1101–1200', duration: '100 days',
-    blurb: 'ORM and database mapping — entities, relationships, queries, and JPA best practices for production database layers.',
+    blurb: 'The premier Java framework — Spring Boot, Spring Data JPA, REST APIs, Spring Security, and enterprise-grade application patterns.',
     items: [
-      { icon: '🗄️', title: 'JPA', detail: 'ORM · entities · relationships · database mapping', source: 'Udemy', to: '/java' },
+      { icon: '🍃', title: 'Spring Boot', detail: 'Spring Boot · Spring Data JPA · REST APIs · Spring Security', source: 'Udemy', to: '/java' },
     ],
   },
   {
-    id: 's13', arcClass: 'y3', icon: '🍃',
-    label: 'Skill 13 · Spring Boot',
+    id: 's13', arcClass: 'y3', icon: '📨',
+    label: 'Skill 13 · Kafka',
     tagline: 'Days 1201–1300', duration: '100 days',
-    blurb: 'The premier Java framework — Spring Boot, Spring Data, REST APIs, and security for enterprise-grade applications.',
+    blurb: 'Distributed event streaming — Kafka fundamentals, Kafka Streams, Spring Kafka integration, and event-driven architecture patterns used in production microservices.',
     items: [
-      { icon: '🍃', title: 'Spring Boot', detail: 'Spring Boot · Spring Data · REST APIs · security', source: 'Udemy', to: '/java' },
+      { icon: '📨', title: 'Apache Kafka', detail: 'Kafka fundamentals · Kafka Streams · Spring Kafka · event-driven architecture · CQRS', source: 'Udemy', to: '/java' },
     ],
   },
   {
@@ -203,7 +203,7 @@ const SKILLS = [
     id: 's16', arcClass: 'y5', icon: '🚀',
     label: 'Skill 16 · DevOps',
     tagline: 'Days 1501–1600', duration: '100 days',
-    blurb: 'Starts with 30 days of Docker as the non-negotiable foundation — containers, images, volumes, Compose. Then Linux, CI/CD pipelines, and the full KodeKloud DevOps path. Docker depth here is what makes Kubernetes in Skill 18 click.',
+    blurb: 'Starts with 30 days of Docker as the non-negotiable foundation — containers, images, volumes, Compose. Then Linux, CI/CD pipelines, and the full KodeKloud DevOps path. Docker depth here is what makes SRE in Skill 18 click.',
     items: [
       { icon: '🐳', title: 'Docker Foundation', detail: 'Days 1501–1530 · containers · images · volumes · Compose · registries', source: 'KodeKloud', to: '/devops' },
       { icon: '🚀', title: 'DevOps & CI/CD', detail: 'Linux · CI/CD pipelines · GitHub Actions · Jenkins · monitoring', source: 'KodeKloud', to: '/devops' },
@@ -218,14 +218,14 @@ const SKILLS = [
       { icon: '☁️', title: 'AWS Cloud', detail: '100 Days of AWS — core services and cloud architecture', source: 'KodeKloud', to: '/aws' },
     ],
   },
-  // ── Kubernetes: Skill 18 ─────────────────────────────────────────────────
+  // ── SRE: Skill 18 ───────────────────────────────────────────────────────
   {
     id: 's18', arcClass: 'y5', icon: '☸️',
-    label: 'Skill 18 · Kubernetes',
+    label: 'Skill 18 · SRE',
     tagline: 'Days 1701–1800', duration: '100 days',
-    blurb: 'Production-grade container orchestration — CKA certification prep, Helm, Istio, EKS, GitOps with ArgoCD/Flux, and Prometheus/Grafana observability at scale.',
+    blurb: 'Site Reliability Engineering — Kubernetes (CKA prep), Helm, Istio, EKS, GitOps with ArgoCD/Flux, Prometheus/Grafana observability, SLO/SLA/SLI, incident response, and production reliability at scale.',
     items: [
-      { icon: '☸️', title: 'Kubernetes', detail: 'CKA prep · Helm · Istio · EKS · GitOps (ArgoCD/Flux) · Prometheus/Grafana', source: 'KodeKloud', to: '/k8s' },
+      { icon: '☸️', title: 'SRE', detail: 'Kubernetes · CKA prep · Helm · Istio · EKS · GitOps · Prometheus/Grafana · SLO/SLA/SLI', source: 'KodeKloud', to: '/k8s' },
     ],
   },
   // ── System Design: Skill 19 ──────────────────────────────────────────────
@@ -282,8 +282,8 @@ export default function RoadmapHome() {
         <p className="roadmap-hero-sub">
           Starts with <strong>Day 0 — environment setup</strong>, then <strong>20 skills</strong>{' '}
           mastered one at a time — <strong>Python → FastAPI → Agentic AI → JavaScript → TypeScript
-          → React JS → Next JS → React Native → Express JS → Databases → J2SE → JPA → Spring Boot
-          → Microservices → Automation Testing → DevOps → Cloud (AWS) → Kubernetes → System Design → DSA</strong> —{' '}
+          → React JS → Next JS → React Native → Express JS → Databases → J2SE → Spring Boot
+          → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA</strong> —{' '}
           <strong>20 skills mastered to depth — 100 days each, 66 months (2,000 days)</strong> of focused daily practice,
           front to back. Capstone project built daily as a side project throughout all 2,000 days.
         </p>
@@ -303,7 +303,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png?v=5"
-          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → Kubernetes → System Design → DSA. Day 1: 19 Aug 2026 · Day 2,000: 8 Feb 2032."
+          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA. Day 1: 19 Aug 2026 · Day 2,000: 8 Feb 2032."
           loading="eager"
           style={{
             width: '100%',

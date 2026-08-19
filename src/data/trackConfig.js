@@ -31,7 +31,7 @@ export const PYTHON_CALENDAR_DAYS = 120;
 export const PYTHON_MODULES = 45; // Ashok IT modules (fit inside PYTHON_CALENDAR_DAYS)
 
 // Java & Spring: 24 May 2027 → 23 Oct 2027
-// Calendar Days 306–458 (153 days) — J2SE, JPA, Spring Boot, Microservices, Automation Testing
+// Calendar Days 306–458 (153 days) — J2SE, Spring Boot, Kafka, Microservices, Automation Testing
 export const JAVA_CALENDAR_DAYS = 153;
 export const JAVA_MODULES = 50; // Udemy-mapped modules (fit inside JAVA_CALENDAR_DAYS)
 
@@ -98,9 +98,9 @@ export const INTERVIEW_PREP_WEEKS = 0;
 // Skill order: Python(1-100) → FastAPI(101-200) → Agentic AI(201-300) → JavaScript(301-400) →
 // TypeScript(401-500) → React JS(501-600) → Next JS(601-700) → React Native(701-800) →
 // Express JS(801-900) → Databases(901-1000) → J2SE(1001-1100) →
-// JPA(1101-1200) → Spring Boot(1201-1300) → Microservices(1301-1400) →
+// Spring Boot(1101-1200) → Kafka(1201-1300) → Microservices(1301-1400) →
 // Automation Testing(1401-1500) → DevOps(1501-1600) → Cloud/AWS(1601-1700) →
-// Kubernetes(1701-1800) → System Design(1801-1900) → DSA(1901-2000).
+// SRE(1701-1800) → System Design(1801-1900) → DSA(1901-2000).
 // Capstone project is built continuously throughout all 2,000 days as a running side project.
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
 //  chapterFactory.js = 8 Aug 2026, so module Day 1 also dates to 8 Aug 2026.)
