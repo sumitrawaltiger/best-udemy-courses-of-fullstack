@@ -73,7 +73,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Ready for Skill 1 · Python',
-    text: 'Day 1 (19 Aug 2026) starts with Skill 1: Python — core syntax, OOP, file I/O, database connectivity, and multithreading. 100 days (Days 1–100, ends 26 Nov 2026) to master the language foundation',
+    text: 'Day 1 (21 Aug 2026) starts with Skill 1: Python — core syntax, OOP, file I/O, database connectivity, and multithreading. 100 days (Days 1–100, ends 28 Nov 2026) to master the language foundation',
   },
   {
     title: 'Accounts ready',
@@ -85,7 +85,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'LeetCode streak starts',
-    text: '1 LeetCode daily challenge every single day — Day 1 (19 Aug 2026) through Day 2,000 (8 Feb 2032) earns the LeetCode 2,000 Days Badge. The streak begins tomorrow',
+    text: '1 LeetCode daily challenge every single day — Day 1 (21 Aug 2026) through Day 2,000 (10 Feb 2032) earns the LeetCode 2,000 Days Badge. The streak begins tomorrow',
   },
 ];
 
@@ -172,7 +172,7 @@ const STUDY_SYSTEM = [
     icon: '🗺️',
     title: 'The 5-Year Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '20 skills × 100 days each · Day 1 = 19 Aug 2026',
+    subtitle: '20 skills × 100 days each · Day 1 = 21 Aug 2026',
     description:
       'Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → Kubernetes → System Design → DSA (Days 1901–2000, final interview sprint). 2,000 days total. Capstone = NexusAI, built daily throughout.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
@@ -181,9 +181,9 @@ const STUDY_SYSTEM = [
     icon: '🤖',
     title: 'Day 1 · Skill 1 · Python',
     titleClass: 'card-title-lime',
-    subtitle: 'Days 1–100 · 19 Aug 2026 – 26 Nov 2026',
+    subtitle: 'Days 1–100 · 21 Aug 2026 – 28 Nov 2026',
     description:
-      'Day 1 (19 Aug 2026) begins with Skill 1: Python — 100 days of core syntax, OOP, file I/O, database connectivity, and multithreading. Then FastAPI (Days 101–200, 27 Nov 2026 – 6 Mar 2027), then Agentic AI with LangChain, LangGraph, MCP (Days 201–300). NexusAI capstone built in parallel from Day 1.',
+      'Day 1 (21 Aug 2026) begins with Skill 1: Python — 100 days of core syntax, OOP, file I/O, database connectivity, and multithreading. Then FastAPI (Days 101–200, 29 Nov 2026 – 8 Mar 2027), then Agentic AI with LangChain, LangGraph, MCP (Days 201–300). NexusAI capstone built in parallel from Day 1.',
     link: { href: '/python', label: 'Explore the Python track →' },
   },
 ];
@@ -281,7 +281,7 @@ export default function Day000() {
           <Link to="/" className="day001-nav-btn day001-nav-home">
             Home
           </Link>
-          <p className="day001-datetime">Day 0 · 18 Aug 2026</p>
+          <p className="day001-datetime">Day 0 · 20 Aug 2026</p>
           <Link to="/agentic-day-1" className="day001-nav-btn day001-nav-next">
             Day 1 · Agentic AI →
           </Link>
@@ -293,7 +293,7 @@ export default function Day000() {
               <span>5 Years</span>
               <span>2000 Days</span>
               <span>Python Stack</span>
-              <span>Day 0 · 18 Aug 2026</span>
+              <span>Day 0 · 20 Aug 2026</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
@@ -322,7 +322,7 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 · 18 Aug 2026 — environment setup before the 5-year journey begins.</strong>{' '}
+          <strong>Day 0 · 20 Aug 2026 — environment setup before the 5-year journey begins.</strong>{' '}
           Install <code>Node.js</code>, <code>Git</code>, and <code>VS Code</code>, wire the terminal and
           Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
@@ -333,7 +333,7 @@ export default function Day000() {
             NexusAI
           </a>{' '}
           capstone repo, and lock the routine (wake 4 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST). No lectures today —
-          clear every obstacle so <strong>Day 1 (19 Aug 2026)</strong> starts with zero friction:{' '}
+          clear every obstacle so <strong>Day 1 (21 Aug 2026)</strong> starts with zero friction:{' '}
           <strong>Skill 1 · Python</strong> + the NexusAI capstone begins. Sharpen the axe before the first swing.
         </p>
 
@@ -382,10 +382,10 @@ export default function Day000() {
                 LeetCode 2,000 Days Badge
               </p>
               <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
-                Target: 8 Feb 2032 · Day 2,000
+                Target: 10 Feb 2032 · Day 2,000
               </p>
               <p style={{ color: 'rgba(200,210,220,0.8)', fontSize: '0.78rem', lineHeight: 1.6, marginBottom: '10px' }}>
-                1 LeetCode problem every single day — Day 1 (19 Aug 2026) through Day 2,000 (8 Feb 2032).
+                1 LeetCode problem every single day — Day 1 (21 Aug 2026) through Day 2,000 (10 Feb 2032).
                 2,000 consecutive daily submissions earns the badge the same day the journey ends.
                 Consistency is the proof.
               </p>

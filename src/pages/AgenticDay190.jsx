@@ -56,9 +56,9 @@ const practice = [
     icon: '🔜',
     title: 'What Comes Next',
     titleClass: 'card-title-amber',
-    subtitle: 'Continue',
-    description: 'Apply the loop to a live agent, or return to the hub until the next days land.',
-    link: { href: '/', label: 'Back to Home →' },
+    subtitle: 'Day 191',
+    description: 'Next arc — harden the agent against prompt injection and attacks.',
+    link: { href: '/agentic-day-191', label: 'Go to Day 191 →' },
   },
 ];
 
@@ -94,9 +94,9 @@ export default function AgenticDay190() {
     <StandaloneJourneyPage
       dayNumber={190}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 190 · 24 Feb 2027"
+      dateLabel="Agentic AI Day 190 · 26 Feb 2027"
       prev={{ href: '/agentic-day-189', label: '← Day 189' }}
-      next={{ href: '/', label: 'Home →' }}
+      next={{ href: '/agentic-day-191', label: 'Day 191 →' }}
       tags={['Agentic AI', 'Reliability', 'Milestone']}
       theme="AGENT RELIABILITY PLATFORM MILESTONE"
       heroIcon="🏁"

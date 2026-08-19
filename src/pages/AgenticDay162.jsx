@@ -59,7 +59,7 @@ const practice = [
     icon: '🔜',
     title: 'Next: Durable Runs',
     titleClass: 'card-title-amber',
-    subtitle: 'Day 163 · 15 Jan 2027',
+    subtitle: 'Day 163 · 17 Jan 2027',
     description: 'Tomorrow — durable state and long-running agent workflows.',
     link: { href: '/agentic-day-163', label: 'Go to Day 163 →' },
   },
@@ -97,7 +97,7 @@ export default function AgenticDay162() {
     <StandaloneJourneyPage
       dayNumber={162}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 162 · 27 Jan 2027"
+      dateLabel="Agentic AI Day 162 · 29 Jan 2027"
       prev={{ href: '/agentic-day-161', label: '← Day 161' }}
       next={{ href: '/agentic-day-163', label: 'Day 163 →' }}
       tags={['Agentic AI', 'Tools', 'Policies']}

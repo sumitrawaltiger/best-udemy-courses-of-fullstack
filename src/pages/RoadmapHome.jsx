@@ -32,7 +32,7 @@ function LeetCode2000Badge({ size = 120 }) {
 }
 
 // ── Skill calendar helpers ───────────────────────────────────────────────────
-const _CAL_DAY1 = new Date(2026, 7, 19); // 19 Aug 2026
+const _CAL_DAY1 = new Date(2026, 7, 21); // 21 Aug 2026
 function _calDate(dayN) {
   const d = new Date(_CAL_DAY1);
   d.setDate(d.getDate() + dayN - 1);
@@ -42,8 +42,8 @@ function _calDate(dayN) {
 // ── 20 skills · 2,000 days (uniform 100 days each) ────────────────────────
 // Python (1–100) → FastAPI (101–200) → Agentic AI (201–300) →
 // JavaScript (301–400) → TypeScript (401–500) → React JS (501–600) →
-// Next JS (601–700) → React Native (701–800) → Express JS (801–900) →
-// Databases (901–1000) → J2SE (1001–1100) → Spring Boot (1101–1200) →
+// Next JS (601–700) → React Native (701–800) → Databases (801–900) →
+// Express JS (901–1000) → J2SE (1001–1100) → Spring Boot (1101–1200) →
 // Kafka (1201–1300) → Microservices (1301–1400) → Automation Testing (1401–1500) →
 // DevOps (1501–1600) → Cloud / AWS (1601–1700) → SRE (1701–1800) →
 // System Design (1801–1900) → DSA (1901–2000).
@@ -131,25 +131,25 @@ const SKILLS = [
       { icon: '📱', title: 'React Native', detail: 'Expo · native components · navigation · builds & publishing', source: 'ChaiCode', to: '/mobile' },
     ],
   },
-  // ── Express JS: Skill 9 — complete the JS stack before the data layer ──────
+  // ── Databases: Skill 9 — data layer before Express so APIs have a real backend ─
   {
-    id: 's09', arcClass: 'y2', icon: '🟢',
-    label: 'Skill 9 · Express JS',
+    id: 's09', arcClass: 'y2', icon: '🗄️',
+    label: 'Skill 9 · Databases',
     tagline: 'Days 801–900', duration: '100 days',
-    blurb: 'Node.js backends — REST APIs, middleware, Prisma ORM, JWT authentication, and deployment. Comes right after React Native to complete the full-stack JavaScript picture before diving into the data layer.',
-    items: [
-      { icon: '🟢', title: 'Express JS / Node JS', detail: 'REST APIs · middleware · Prisma · JWT auth & deployment', source: 'ChaiCode', to: '/nextjs' },
-    ],
-  },
-  // ── Databases: Skill 10 — data layer after the full JS stack ─────────────
-  {
-    id: 's10', arcClass: 'y3', icon: '🗄️',
-    label: 'Skill 10 · Databases',
-    tagline: 'Days 901–1000', duration: '100 days',
-    blurb: 'Master SQL and NoSQL depth — PostgreSQL, MySQL, MongoDB, Redis, and SQLAlchemy. Comes after the full JavaScript stack so every concept connects directly to real API and service patterns.',
+    blurb: 'Master SQL and NoSQL depth — PostgreSQL, MySQL, MongoDB, Redis. Comes before Express so every database concept connects directly to the APIs you build next.',
     items: [
       { icon: '🐘', title: 'SQL Databases', detail: 'PostgreSQL · MySQL · joins · indexes · transactions · query optimisation', source: 'Udemy', to: '/java' },
       { icon: '🍃', title: 'NoSQL & Caching', detail: 'MongoDB · Redis caching · pub/sub · session management', source: 'Udemy', to: '/java' },
+    ],
+  },
+  // ── Express JS: Skill 10 — Node backend after databases ──────────────────
+  {
+    id: 's10', arcClass: 'y3', icon: '🟢',
+    label: 'Skill 10 · Express JS',
+    tagline: 'Days 901–1000', duration: '100 days',
+    blurb: 'Node.js backends — REST APIs, middleware, Prisma ORM, JWT authentication, and deployment. Comes after Databases so every API you build is connected to a real data layer from day one.',
+    items: [
+      { icon: '🟢', title: 'Express JS / Node JS', detail: 'REST APIs · middleware · Prisma · JWT auth & deployment', source: 'ChaiCode', to: '/nextjs' },
     ],
   },
   // ── Java domain: Skills 11–15 ─────────────────────────────────────────────
@@ -282,7 +282,7 @@ export default function RoadmapHome() {
         <p className="roadmap-hero-sub">
           Starts with <strong>Day 0 — environment setup</strong>, then <strong>20 skills</strong>{' '}
           mastered one at a time — <strong>Python → FastAPI → Agentic AI → JavaScript → TypeScript
-          → React JS → Next JS → React Native → Express JS → Databases → J2SE → Spring Boot
+          → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot
           → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA</strong> —{' '}
           <strong>20 skills mastered to depth — 100 days each, 66 months (2,000 days)</strong> of focused daily practice,
           front to back. Capstone project built daily as a side project throughout all 2,000 days.
@@ -303,7 +303,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png?v=6"
-          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA. Day 1: 19 Aug 2026 · Day 2,000: 8 Feb 2032."
+          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA. Day 1: 21 Aug 2026 · Day 2,000: 10 Feb 2032."
           loading="eager"
           style={{
             width: '100%',
@@ -357,7 +357,7 @@ export default function RoadmapHome() {
           </table>
         </div>
         <p style={{ textAlign: 'center', color: '#6b7b8e', fontSize: '0.75rem', marginTop: '10px' }}>
-          Day 1 = 19 Aug 2026 · 20 skills · 2,000 days · journey ends 8 Feb 2032
+          Day 1 = 21 Aug 2026 · 20 skills · 2,000 days · journey ends 10 Feb 2032
         </p>
       </section>
 
@@ -459,10 +459,10 @@ export default function RoadmapHome() {
               LeetCode 2,000 Days Badge
             </p>
             <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
-              Target: 8 Feb 2032 · Day 2,000
+              Target: 10 Feb 2032 · Day 2,000
             </p>
             <p style={{ color: 'rgba(200,212,224,0.82)', fontSize: '0.82rem', lineHeight: 1.65, marginBottom: '12px' }}>
-              1 LeetCode daily challenge every single day — Day 1 (19 Aug 2026) through Day 2,000 (8 Feb 2032).
+              1 LeetCode daily challenge every single day — Day 1 (21 Aug 2026) through Day 2,000 (10 Feb 2032).
               2,000 consecutive submissions earns this badge the exact same day the journey ends.
               The discipline badge that proves the entire journey.
             </p>

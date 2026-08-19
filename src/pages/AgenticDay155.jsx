@@ -59,7 +59,7 @@ const practice = [
     icon: '🔜',
     title: 'Next: Tool Hardening',
     titleClass: 'card-title-amber',
-    subtitle: 'Day 156 · 8 Jan 2027',
+    subtitle: 'Day 156 · 10 Jan 2027',
     description: 'Tomorrow — harden tool contracts and sandbox execution.',
     link: { href: '/agentic-day-156', label: 'Go to Day 156 →' },
   },
@@ -97,7 +97,7 @@ export default function AgenticDay155() {
     <StandaloneJourneyPage
       dayNumber={155}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 155 · 20 Jan 2027"
+      dateLabel="Agentic AI Day 155 · 22 Jan 2027"
       prev={{ href: '/agentic-day-154', label: '← Day 154' }}
       next={{ href: '/agentic-day-156', label: 'Day 156 →' }}
       tags={['Agentic AI', 'Evals', 'AgentOps']}
