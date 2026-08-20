@@ -458,6 +458,34 @@ export default function DevopsHome() {
           </div>
         </section>
 
+        <section className="roadmap" id="git-branching-notes">
+          <div className="section-header">
+            <h2>🌿 Git Branching Notes</h2>
+          </div>
+          <p className="section-desc">
+            Comprehensive Git branching reference notes — strategies, workflows, merge vs rebase, and
+            real-world team collaboration patterns. Download either PDF below.
+          </p>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1rem' }}>
+            <a
+              href="/devops-notes/Git-branching.pdf"
+              download
+              className="btn btn-devops"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+            >
+              📥 Git Branching (PDF)
+            </a>
+            <a
+              href="/devops-notes/git-branching-notes.pdf"
+              download
+              className="btn btn-devops"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+            >
+              📥 Git Branching Notes (PDF)
+            </a>
+          </div>
+        </section>
+
         <section className="roadmap">
           <h2>100-Day DevOps Roadmap</h2>
           <p className="section-desc">
