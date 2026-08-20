@@ -59,7 +59,7 @@ const practice = [
     icon: '🔜',
     title: 'Next: Memory',
     titleClass: 'card-title-amber',
-    subtitle: 'Day 157 · 12 Jan 2027',
+    subtitle: 'Day 157 · 11 Jan 2027',
     description: 'Tomorrow — memory scope, retention, and safe retrieval.',
     link: { href: '/agentic-day-157', label: 'Go to Day 157 →' },
   },
@@ -97,7 +97,7 @@ export default function AgenticDay156() {
     <StandaloneJourneyPage
       dayNumber={156}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 156 · 24 Jan 2027"
+      dateLabel="Agentic AI Day 156 · 23 Jan 2027"
       prev={{ href: '/agentic-day-155', label: '← Day 155' }}
       next={{ href: '/agentic-day-157', label: 'Day 157 →' }}
       tags={['Agentic AI', 'Tools', 'Security']}

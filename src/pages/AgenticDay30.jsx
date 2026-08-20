@@ -133,7 +133,7 @@ export default function AgenticDay30() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/agentic-day-29" className="day001-nav-btn day001-nav-prev">← Day 29</Link>
-          <p className="day001-datetime">Agentic AI Day 30 · 20 Sep 2026</p>
+          <p className="day001-datetime">Agentic AI Day 30 · 19 Sep 2026</p>
           <Link to="/agentic-day-31" className="day001-nav-btn day001-nav-next">Day 31 →</Link>
         </header>
 
