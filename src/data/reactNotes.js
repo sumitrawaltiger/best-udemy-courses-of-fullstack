@@ -1457,6 +1457,64 @@ function ScoreCard({ title, score, isWinner }) {
       },
     ],
   },
+  {
+    day: 20,
+    date: '5 Apr 2028',
+    group: 'hooks',
+    title: 'Custom Hooks in React',
+    tagline: "Create your own hooks to extract and reuse component logic — keep components clean and logic DRY.",
+    image: '/react-notes/react20.jpeg',
+    tags: ['Custom Hooks', 'useFetch', 'Reusability', 'useEffect', 'useState', 'DRY', 'Hooks', 'Abstraction'],
+    notes: [
+      { k: 'What & Why?', v: 'Custom Hooks let us extract component logic into **reusable functions** whose names start with `"use"`. They help us keep components clean and logic DRY.\n\nWhen two or more components share the same `useState` + `useEffect` logic, extract it into a custom hook.' },
+      { k: 'Rules of Custom Hooks', v: '1. Name must start with `"use"`.\n2. Can call other hooks.\n3. Use only at the **top level**.\n4. Only call from React functions (components or other hooks).\n\n**Note:** Custom Hooks don\'t work inside regular JS functions or conditions.' },
+      { k: 'useFetch — the classic example', v: 'Build a `useFetch(url)` hook that manages `data`, `loading`, and `error` state. Any component can call `useFetch(url)` and get all three values back — no repeated code.' },
+      { k: 'What\'s Happening?', v: 'We created `useFetch` that:\n→ Manages state\n→ Fetches data\n→ Handles loading & error\n→ Returns everything the component needs\n\nComponents can now use this hook instead of repeating the same logic. Logic is **reusable, clean, and easy to maintain**.' },
+      { k: 'Benefits', v: '✓ Reusability\n✓ Cleaner components\n✓ Separation of concerns\n✓ Easier testing\n✓ Better maintainability' },
+      { k: 'Common Custom Hook Ideas', v: '- `useFetch()` — Fetch data from API\n- `useLocalStorage()` — Sync with localStorage\n- `useWindowSize()` — Track window dimensions\n- `useDebounce()` — Debounce values\n- `useToggle()` — Toggle between true/false' },
+      { k: 'Pro Tip', v: 'You can combine multiple custom hooks together to build powerful and clean features. Think of custom hooks as **"functions for logic"**, just like components are **"functions for UI"**.' },
+      { k: 'Next Up', v: 'Episode 19 → useReducer Hook (Manage complex state easily!)' },
+    ],
+    theory: [
+      {
+        h: 'What is a Custom Hook?',
+        p: 'A Custom Hook is a JavaScript function whose name starts with `use` and may call other hooks. Custom hooks are how React lets you share stateful logic between components without changing the component hierarchy. They are not a feature of React itself — they are a convention that naturally follows from the design of hooks.',
+      },
+      {
+        h: 'Why Custom Hooks?',
+        p: 'When multiple components use the same hook logic (e.g. fetching data, listening to a window event, managing a form), that logic gets duplicated. Custom hooks solve this by extracting the shared logic into a reusable function. Each call to the hook gets its own isolated state — just like calling `useState` twice gives you two independent state variables.',
+      },
+      {
+        h: 'The isMounted Pattern',
+        p: 'Inside `useFetch`, the `isMounted` flag guards against calling `setData` or `setError` after the component unmounts. When the cleanup function runs (component unmounts or URL changes), it sets `isMounted = false` so the fetch callbacks become no-ops. This prevents the "Can\'t perform a React state update on an unmounted component" warning.',
+      },
+      {
+        h: 'Custom Hook vs Helper Function',
+        p: 'A plain helper function can extract logic too — but it cannot call hooks. A custom hook can call `useState`, `useEffect`, and other hooks. If your shared logic needs React state or lifecycle, it must be a custom hook (name starting with `use`). If it is pure logic with no hooks, a plain function is fine.',
+      },
+      {
+        h: 'Output (Preview) — useFetch States',
+        p: '**Loading state:** While the request is in flight, `loading` is `true` — render "Loading users..."\n**Success state:** `data` arrives — render the list (Leanne Graham, Ervin Howell, Clementine Bauch…)\n**Error state:** Fetch fails — render "Error: Failed to fetch data."',
+      },
+    ],
+    snippets: [
+      {
+        label: 'useFetch — custom hook with loading, data, error',
+        code: "import { useState, useEffect } from 'react';\n\n// 1. Create a custom hook\nfunction useFetch(url) {\n  const [data, setData] = useState(null);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(null);\n\n  useEffect(() => {\n    let isMounted = true; // to handle cleanup\n    setLoading(true);\n\n    fetch(url)\n      .then(res => res.json())\n      .then(json => {\n        if (isMounted) {\n          setData(json);\n          setError(null);\n        }\n      })\n      .catch(err => {\n        if (isMounted) setError(err);\n      })\n      .finally(() => {\n        if (isMounted) setLoading(false);\n      });\n\n    return () => {\n      isMounted = false; // cleanup\n    };\n  }, [url]); // refetch when url changes\n\n  return { data, loading, error };\n}\n\n// 2. Use the custom hook in a component\nfunction Users() {\n  const { data, loading, error } = useFetch('https://jsonplaceholder.typicode.com/users');\n\n  if (loading) return <p>Loading users...</p>;\n  if (error) return <p className=\"error\">Error: {error.message}</p>;\n\n  return (\n    <ul className=\"user-list\">\n      {data.map(user => (\n        <li key={user.id}>{user.name}</li>\n      ))}\n    </ul>\n  );\n}",
+        note: 'useFetch is called once but manages three pieces of state internally. The isMounted flag prevents setState calls after unmount — a best practice whenever fetch + useEffect are combined.',
+      },
+      {
+        label: 'useToggle — simple boolean custom hook',
+        code: "import { useState } from 'react';\n\nfunction useToggle(initial = false) {\n  const [value, setValue] = useState(initial);\n  const toggle = () => setValue(v => !v);\n  return [value, toggle];\n}\n\nexport default function DarkModeButton() {\n  const [isDark, toggleDark] = useToggle(false);\n\n  return (\n    <button onClick={toggleDark}>\n      {isDark ? '🌙 Dark Mode' : '☀️ Light Mode'}\n    </button>\n  );\n}",
+        note: 'useToggle encapsulates the boolean flip logic. Any component that needs a toggle (modal open/close, dark mode, accordion) can reuse it without duplicating the useState + setter pattern.',
+      },
+      {
+        label: 'useLocalStorage — persist state across page reloads',
+        code: "import { useState } from 'react';\n\nfunction useLocalStorage(key, initialValue) {\n  const [storedValue, setStoredValue] = useState(() => {\n    try {\n      const item = window.localStorage.getItem(key);\n      return item ? JSON.parse(item) : initialValue;\n    } catch {\n      return initialValue;\n    }\n  });\n\n  const setValue = (value) => {\n    setStoredValue(value);\n    window.localStorage.setItem(key, JSON.stringify(value));\n  };\n\n  return [storedValue, setValue];\n}\n\nexport default function ThemePicker() {\n  const [theme, setTheme] = useLocalStorage('theme', 'light');\n\n  return (\n    <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>\n      Current theme: {theme}\n    </button>\n  );\n}",
+        note: 'useLocalStorage reads from localStorage on first render (lazy initialiser) and writes back on every update. The component using it gets a familiar [value, setValue] API — just like useState.',
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
