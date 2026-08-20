@@ -973,17 +973,213 @@ const PYTHON_DATA_SCIENCE_SECTIONS = [
   {
     id: "what-is-deep-learning",
     title: "What is Deep Learning?",
-    content: "**Deep Learning** is a subset of Machine Learning that uses **artificial neural networks** (inspired by the human brain) to learn from large amounts of data. It's part of ML but far more powerful for **complex problems**.",
+    content:
+      "**Deep Learning** is a subset of Machine Learning.\n\n" +
+      "- Uses **artificial neural networks** to learn from large amounts of data\n" +
+      "- Algorithms are **inspired by the human brain**\n" +
+      "- Part of Machine Learning, but far more powerful for solving **complex problems**\n\n" +
+      "**Hierarchy:** Artificial Intelligence → Machine Learning → Deep Learning → Neural Networks",
   },
   {
     id: "ml-vs-dl",
     title: "Machine Learning vs Deep Learning",
-    content: "**Machine Learning**\n- Subset of AI; learns from data using algorithms\n- Works well with small–medium, mostly **structured** data\n- Faster training; easier to understand and explain\n\n**Deep Learning**\n- Subset of ML; uses neural networks with many layers\n- Needs **huge** data; excels at **unstructured** data (images, audio, video, text)\n- Slower training; better accuracy for complex problems",
+    content:
+      "**Machine Learning**\n" +
+      "- Subset of AI; ML models learn from data using algorithms\n" +
+      "- Works well with small–medium data\n" +
+      "- Mostly works with **structured** data\n" +
+      "- Training time is usually faster\n" +
+      "- Easier to understand and explain\n\n" +
+      "**Deep Learning**\n" +
+      "- Subset of Machine Learning; uses neural networks with many layers\n" +
+      "- Needs a **huge** amount of data\n" +
+      "- Works well with **unstructured** data — images, audio, video, text\n" +
+      "- Training time is usually slower\n" +
+      "- Gives **better accuracy** for complex problems\n\n" +
+      "**Real-life examples that need Deep Learning:**\n" +
+      "1. How does YouTube know which videos you may like?\n" +
+      "2. How does Google Photos recognize a face?\n" +
+      "3. How does ChatGPT understand our questions?\n" +
+      "4. How does a self-driving car identify a person, road, or vehicle?\n\n" +
+      "All these systems deal with large amounts of data and need to identify complex patterns — this is where Deep Learning becomes important.",
+  },
+  {
+    id: "why-deep-learning",
+    title: "Why Do We Need Deep Learning?",
+    content:
+      "**Problem:** Identify whether an image contains a cat or dog.\n\n" +
+      "**Traditional Programming** would require manually defined rules — extremely difficult:\n" +
+      "```\nIF ears are like this\nAND eyes are like this\nAND nose is like this\nTHEN → CAT\nELSE → DOG\n```\n\n" +
+      "**With Deep Learning:**\n" +
+      "Thousands of Images → Neural Network → Learns Patterns → Cat / Dog\n\n" +
+      "We don't manually define all the rules. **The neural network learns the patterns from data.**\n\n" +
+      "**ML vs DL Flow:**\n\n" +
+      "ML: Data Set → Feature Engineering → ML Algorithm → Prediction\n\n" +
+      "DL: Data Set → Neural Networks → Automatically learn patterns → Prediction\n\n" +
+      "Traditional ML often depends heavily on manually selected features, while Deep Learning can learn useful representations automatically from raw data.",
   },
   {
     id: "where-dl-used",
     title: "Where is Deep Learning Used?",
-    content: "1. **Face Recognition** — detect and recognize faces\n2. **Speech to Text** — convert spoken words to text\n3. **Text to Speech** — convert text to voice\n4. **Self-Driving Cars** — detect signals, signs, pedestrians, vehicles\n5. **Medical Diagnosis** — detect diseases from X-rays, MRIs, scans\n6. **Chatbots & AI Assistants** — understand questions and generate human-like responses",
+    content:
+      "**1. Computer Vision**\n" +
+      "- Face recognition\n- Object detection\n- Medical image analysis\n- Self-driving cars\n\n" +
+      "**2. Natural Language Processing (NLP)**\n" +
+      "- ChatGPT\n- Language Translation\n- Text Classification\n- Sentiment Analysis\n\n" +
+      "**3. Recommendation Systems**\n" +
+      "- YouTube · Netflix · Amazon · Spotify\n\n" +
+      "**4. Speech**\n" +
+      "- Voice assistants\n- Speech to text\n- Voice recognition\n\n" +
+      "**5. Generative AI**\n" +
+      "- Text Generation\n- Image Generation\n- Code Generation\n- Audio Generation",
+  },
+  {
+    id: "what-is-neural-network",
+    title: "What is a Neural Network?",
+    content:
+      "**Q: How does Deep Learning actually learn?**\n**Ans:** Through Neural Networks.\n\n" +
+      "A **Neural Network** is a computational model inspired by the structure of the human brain. It consists of interconnected neurons arranged in layers.\n\n" +
+      "**Layers:**\n" +
+      "1. **Input Layer** — Receives input data\n" +
+      "2. **Hidden Layer(s)** — Learns patterns from the input\n" +
+      "3. **Output Layer** — Produces the final prediction\n\n" +
+      "Input → Hidden Layer 1 → Hidden Layer 2 → Hidden Layer 3 → Output\n\n" +
+      "Multiple hidden layers make the network **deep**.\n\n" +
+      "**Deep Learning = Learning using deep/multi-layer neural networks.**\n\n" +
+      "If a Neural Network has multiple hidden layers, it becomes a **Deep Neural Network.**",
+  },
+  {
+    id: "dl-model-execution-flow",
+    title: "Deep Learning Model Execution Flow",
+    content:
+      "Input → Neural Network → Prediction → Compare with Actual Value → Calculate Loss → Backpropagation → Update Weights → Train Again\n\n" +
+      "This cycle repeats across many **epochs** until the model reaches acceptable accuracy.",
+  },
+  {
+    id: "dl-terminology-neuron",
+    title: "Key Term: Neuron",
+    content:
+      "A **Neuron** is the basic processing unit of a Neural Network — a small mathematical calculation unit.\n\n" +
+      "A neuron:\n" +
+      "- Receives inputs\n" +
+      "- Applies weights\n" +
+      "- Adds bias\n" +
+      "- Calculates a value\n" +
+      "- Applies an activation function\n" +
+      "- Produces output\n\n" +
+      "**Basic Formula:**\n" +
+      "`Output = Activation Function(Input × Weight + Bias)`\n\n" +
+      "Input → Evaluate importance → Make calculation → Decision / Output",
+    code:
+      "# Basic neuron calculation\ninput_val = 5\nweight = 0.8\nbias = 0.3\n\nweighted_sum = input_val * weight + bias\nprint(f'Weighted sum: {weighted_sum}')  # 4.3\n\n# Apply a simple activation (ReLU)\noutput = max(0, weighted_sum)\nprint(f'Neuron output: {output}')  # 4.3",
+  },
+  {
+    id: "dl-terminology-weight",
+    title: "Key Term: Weight",
+    content:
+      "**Weight** represents the **importance** of an input in a Neural Network.\n\n" +
+      "**Example:** Predict whether a student will pass or fail.\n" +
+      "Inputs: study_hours, attendance, previous_marks\n\n" +
+      "- Study Hours → Weight = 0.8 (very important)\n" +
+      "- Attendance → Weight = 0.3\n" +
+      "- Previous Marks → Weight = 0.5\n\n" +
+      "Higher weight = stronger influence on the neuron's calculation.\n\n" +
+      "**Important:** Weights are **not manually set** by programmers — the model learns them from training data:\n\n" +
+      "Random Weights → Prediction → Calculate Error → Update Weights → Better Prediction",
+  },
+  {
+    id: "dl-terminology-bias",
+    title: "Key Term: Bias",
+    content:
+      "**Bias** is an additional value added to the weighted sum to help the Neural Network make better predictions.\n\n" +
+      "**Example:**\n" +
+      "```\nInput = 5, Weight = 2\n5 × 2 = 10\n\nBias = 3\n10 + 3 = 13  ← Weighted Input + Bias\n```\n\n" +
+      "- **Weight** → Controls importance of input\n" +
+      "- **Bias** → Helps shift/adjust the result",
+  },
+  {
+    id: "dl-terminology-activation",
+    title: "Key Term: Activation Function",
+    content:
+      "An **Activation Function** determines whether and how strongly a neuron should be activated. It is applied after calculating: **Weighted Sum + Bias**.\n\n" +
+      "**Flow:** Inputs → Weights → Weighted Sum → Bias → Activation Function → Output\n\n" +
+      "Activation Function = **Decision/Transformation function** of a neuron.\n\n" +
+      "**Common activation functions:** ReLU, Sigmoid, Tanh, Softmax",
+    code:
+      "import numpy as np\n\n# ReLU — most common hidden layer activation\ndef relu(x):\n    return max(0, x)\n\n# Sigmoid — squashes output to 0–1 (binary classification)\ndef sigmoid(x):\n    return 1 / (1 + np.exp(-x))\n\nweighted_sum = 3.5\nprint(f'ReLU output:    {relu(weighted_sum)}')    # 3.5\nprint(f'Sigmoid output: {sigmoid(weighted_sum):.4f}')  # 0.9706",
+  },
+  {
+    id: "dl-terminology-loss",
+    title: "Key Term: Loss Function",
+    content:
+      "When a Neural Network makes a prediction, we need to measure **how wrong** that prediction is — that is the job of the **Loss Function**.\n\n" +
+      "A **Loss Function** measures the difference between the **actual output** and the **predicted output**.\n\n" +
+      "**Example:**\n" +
+      "- Actual Answer: Cat → Model Prediction: Dog ← mistake!\n" +
+      "- Actual Value = 100, Predicted Value = 80 → Loss = |100 − 80| = 20\n\n" +
+      "The lower the loss, the better the model.",
+  },
+  {
+    id: "dl-terminology-backprop",
+    title: "Key Term: Backpropagation",
+    content:
+      "**Backpropagation** is the process of calculating how much each weight contributed to the error and using that to improve the Neural Network.\n\n" +
+      "**Step-by-step workflow:**\n" +
+      "1. **Input data** → Neural Network\n" +
+      "2. **Prediction** — forward pass produces output\n" +
+      "3. **Calculate Loss** — compare prediction with actual value\n" +
+      "4. **Backpropagation** — error information propagates backward through the network\n" +
+      "5. **Calculate Gradients** — gradient tells the model how a small change in a weight will affect the loss\n" +
+      "6. **Update Weights** — the optimizer uses gradients to update weights",
+  },
+  {
+    id: "dl-terminology-optimizer",
+    title: "Key Term: Optimizer",
+    content:
+      "An **Optimizer** is an algorithm that updates the weights and biases of a Neural Network to reduce the loss.\n\n" +
+      "- **Backpropagation** → Calculates gradients\n" +
+      "- **Optimizer** → Uses gradients to update parameters\n\n" +
+      "**Weight update formula:**\n" +
+      "```\nNew Weight = Old Weight − Learning Rate × Gradient\n\nCurrent Weight = 0.8\nGradient       = 0.2\nLearning Rate  = 0.1\n\nNew Weight = 0.8 − (0.1 × 0.2) = 0.78\n```\n\n" +
+      "Popular optimizers: **SGD**, **Adam**, **RMSprop**",
+    code:
+      "# Simplified weight update (SGD)\ncurrent_weight = 0.8\ngradient = 0.2\nlearning_rate = 0.1\n\nnew_weight = current_weight - learning_rate * gradient\nprint(f'Updated weight: {new_weight}')  # 0.78",
+  },
+  {
+    id: "dl-terminology-epoch",
+    title: "Key Term: Epoch",
+    content:
+      "An **Epoch** means **one complete pass** through the entire training dataset.\n\n" +
+      "**Example:** 10,000 training images\n" +
+      "- Model processes all 10,000 images once → **1 Epoch**\n" +
+      "- Model processes all 10,000 images a 2nd time → **2 Epochs**\n" +
+      "- Model processes all 10,000 images a 3rd time → **3 Epochs**\n\n" +
+      "More epochs generally means the model learns better, but too many epochs can cause **overfitting**.",
+  },
+  {
+    id: "dl-terminology-summary",
+    title: "Deep Learning Terminology — Summary",
+    content:
+      "A Neural Network takes **inputs**, combines them using **weights** and **bias**, applies **activation functions** to produce a **prediction**, calculates the **loss**, uses **backpropagation** to calculate **gradients**, and an **optimizer** updates the weights to reduce the loss over multiple **epochs**.\n\n" +
+      "| Term | Role |\n|---|---|\n| Neuron | Basic processing unit |\n| Weight | Importance of an input |\n| Bias | Adjusts the weighted sum |\n| Activation Function | Decides neuron output |\n| Loss Function | Measures prediction error |\n| Backpropagation | Computes how weights affect the error |\n| Optimizer | Updates weights to reduce loss |\n| Epoch | One full pass through training data |",
+  },
+  {
+    id: "dl-assignment-student-pass-fail",
+    title: "Assignment — Deep Learning Model: Student Pass or Fail",
+    content:
+      "**Task:** Build a Deep Learning model to predict whether a student will **Pass** or **Fail** based on input features.\n\n" +
+      "**Input features:** study_hours, attendance (%), previous_marks\n\n" +
+      "**Output:** Pass (1) or Fail (0)\n\n" +
+      "**Steps to build the model:**\n" +
+      "1. Prepare dataset (study hours, attendance, marks → pass/fail label)\n" +
+      "2. Split into training and test sets\n" +
+      "3. Build a Neural Network with input layer, hidden layers, and output layer\n" +
+      "4. Compile with a loss function (binary crossentropy) and optimizer (Adam)\n" +
+      "5. Train over multiple epochs\n" +
+      "6. Evaluate accuracy on test data\n" +
+      "7. Predict on new student data",
+    code:
+      "import numpy as np\nimport pandas as pd\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nimport tensorflow as tf\nfrom tensorflow import keras\n\n# 1. Sample dataset\ndata = {\n    'study_hours':   [8, 3, 6, 2, 9, 1, 7, 4, 5, 2],\n    'attendance':    [90, 50, 80, 40, 95, 30, 85, 60, 75, 45],\n    'prev_marks':    [80, 45, 70, 35, 88, 25, 78, 55, 65, 40],\n    'result':        [1,  0,  1,  0,  1,  0,  1,  0,  1,  0],  # 1=Pass, 0=Fail\n}\ndf = pd.DataFrame(data)\n\n# 2. Features and label\nX = df[['study_hours', 'attendance', 'prev_marks']].values\ny = df['result'].values\n\n# 3. Split\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n# 4. Scale features\nscaler = StandardScaler()\nX_train = scaler.fit_transform(X_train)\nX_test  = scaler.transform(X_test)\n\n# 5. Build Neural Network\nmodel = keras.Sequential([\n    keras.layers.Dense(16, activation='relu', input_shape=(3,)),  # Hidden layer 1\n    keras.layers.Dense(8,  activation='relu'),                    # Hidden layer 2\n    keras.layers.Dense(1,  activation='sigmoid'),                 # Output layer\n])\n\n# 6. Compile\nmodel.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])\n\n# 7. Train\nmodel.fit(X_train, y_train, epochs=50, verbose=0)\n\n# 8. Evaluate\nloss, accuracy = model.evaluate(X_test, y_test, verbose=0)\nprint(f'Test Accuracy: {accuracy * 100:.2f}%')\n\n# 9. Predict on a new student\nnew_student = np.array([[7, 85, 75]])  # 7 hrs study, 85% attendance, 75 prev marks\nnew_student_scaled = scaler.transform(new_student)\nprediction = model.predict(new_student_scaled)[0][0]\nresult = 'Pass' if prediction >= 0.5 else 'Fail'\nprint(f'Prediction: {result} (confidence: {prediction:.2f})')",
   },
   {
     id: "when-ml-vs-dl",
