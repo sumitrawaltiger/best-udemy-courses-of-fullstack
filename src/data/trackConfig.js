@@ -104,8 +104,8 @@ export const INTERVIEW_PREP_WEEKS = 0;
 // Capstone project is built continuously throughout all 2,000 days as a running side project.
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
 //  chapterFactory.js = 8 Aug 2026, so module Day 1 also dates to 8 Aug 2026.)
-export const JOURNEY_START_LABEL = '21 Aug 2026';
-export const JOURNEY_END_LABEL = '10 Feb 2032';
+export const JOURNEY_START_LABEL = '22 Aug 2026';
+export const JOURNEY_END_LABEL = '11 Feb 2032';
 export const JOURNEY_TOTAL_DAYS = 2000;
 // Factory calendar: Day 1 = 8 Aug 2026 (COURSE_START); factory day N = journey Day N.
 export const JOURNEY_END_FACTORY_DAY = 2000;
