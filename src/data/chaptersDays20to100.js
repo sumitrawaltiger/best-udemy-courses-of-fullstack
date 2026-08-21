@@ -3752,41 +3752,76 @@ export const chaptersDays20to100 = [
     "track": "thunder",
     "day": 56,
     "title": "CAP Theorem & Consistency",
-    "subtitle": "Consistency, availability, and partition tolerance",
+    "subtitle": "Lecture 27 — network partitions, CP vs AP, quorum, leader election, and the consensus log",
     "duration": "2 hrs",
     "createdOn": "9 Sept 2026",
     "status": "published",
+    "notionUrl": "https://app.notion.com/p/Lecture-27-CAP-Theorem-3c0a9af81c9880f4a2eee54f855e04e8?source=copy_link",
     "topics": [
-      "CAP theorem",
-      "CP vs AP systems",
-      "Strong vs eventual consistency",
-      "Real-world examples",
-      "PACELC"
+      "Network partition vs DB crash",
+      "CP vs AP — the core trade-off",
+      "What Availability really means",
+      "Quorum and majority writes",
+      "Leader election & split-brain",
+      "Replicas vs shards",
+      "Consensus log and ordered history",
+      "5-node quorum walkthrough"
     ],
     "sections": [
       {
-        "id": "cap-theorem",
-        "title": "CAP theorem",
-        "content": "Learn **CAP theorem** in Day 56 of Thunder: 100 Days of Code. Consistency, availability, and partition tolerance",
-        "tryIt": "console.log(\"Day 56: CAP Theorem & Consistency\");"
+        "id": "replication-problem",
+        "title": "1. The Real Problem — Replication Lag",
+        "content": "Suppose two copies of the same database:\n\n```\nDB-A = ₹300\nDB-B = ₹300\n```\n\nA user withdraws ₹100 through A:\n\n```\nDB-A = ₹200\nDB-B = ₹300  ← still old value\n```\n\nFor a small window B may still have the old value because **replication takes time**. If a read goes to B:\n```\nGET balance → DB-B\nResponse = ₹300   ← stale!\n```\n\nThis is already a **consistency problem**, even without a network partition.\n\nBut if the network is **healthy**, we can coordinate:\n```\nWrite → A\n        ↓\nA updates ₹200\n        ↓\nA sends update → B\n        ↓\nB updates ₹200\n        ↓\nACK → Success to client\n```\n\nNormal replication delay is manageable because communication is still possible. The real challenge starts when communication **breaks**."
       },
       {
-        "id": "cp-vs-ap-systems",
-        "title": "CP vs AP systems",
-        "content": "Learn **CP vs AP systems** in Day 56 of Thunder: 100 Days of Code. Consistency, availability, and partition tolerance",
-        "tryIt": "console.log(\"Day 56: CAP Theorem & Consistency\");"
+        "id": "network-partition",
+        "title": "2. What is a Network Partition?",
+        "content": "Both databases are alive:\n```\nA ✅  ←────→  B ✅\n```\n\nNow communication between them **breaks**:\n```\nA ✅      X      B ✅\n```\n\nThis is a **network partition** — both nodes are running but cannot talk to each other.\n\n**Possible causes:**\n- Router / switch failure\n- Fiber / cable failure\n- Firewall misconfiguration\n- Routing problem\n- Packet loss\n- Very high network latency\n- Overloaded network\n- One-directional communication only\n\n**Important:** Partition does not necessarily mean a machine crashed.\n\n**DB crash vs network partition:**\n```\nDB crash:           A ✅          B ❌   (B is dead)\nNetwork partition:  A ✅    X     B ✅   (both alive, can't talk)\n```\n\nFrom A's perspective, **both may look identical**. A sends a heartbeat, gets no response — it cannot immediately know whether B crashed or whether the network is broken."
       },
       {
-        "id": "strong-vs-eventual-consistency",
-        "title": "Strong vs eventual consistency",
-        "content": "Learn **Strong vs eventual consistency** in Day 56 of Thunder: 100 Days of Code. Consistency, availability, and partition tolerance",
-        "tryIt": "console.log(\"Day 56: CAP Theorem & Consistency\");"
+        "id": "failure-detection",
+        "title": "3. How Machines Detect Failure — Heartbeats & Timeouts",
+        "content": "Nodes detect each other's availability through **heartbeats**:\n\n```\nA → B: alive?\nB → A: yes\n\nA → B: alive?\nB → A: yes\n```\n\nIf B stops responding:\n```\nA → B\n...\nno response\n```\n\nAfter some **timeout**, A says: **\"I suspect B is unavailable.\"** — not \"I am 100% sure B crashed\" — because B might simply be unreachable.\n\n**Timeout trade-off:**\n```\nSmall timeout → fast failure detection, but more false alarms\nLarge timeout → fewer false alarms, but slow failure detection\n```"
       },
       {
-        "id": "real-world-examples",
-        "title": "Real-world examples",
-        "content": "Learn **Real-world examples** in Day 56 of Thunder: 100 Days of Code. Consistency, availability, and partition tolerance",
-        "tryIt": "console.log(\"Day 56: CAP Theorem & Consistency\");"
+        "id": "cap-dilemma",
+        "title": "4. The Actual CAP Problem — Two Choices During a Partition",
+        "content": "Start:\n```\nA = ₹300      B = ₹300\n```\n\nPartition occurs:\n```\nA      X      B\n```\n\nA withdrawal request arrives at A. A cannot communicate with B. A now has two fundamental choices.\n\n**Choice 1 — Protect Consistency (CP)**\n\nA says: *\"If I cannot coordinate with B, I will not perform the transaction.\"*\n```\nA = ₹300      X      B = ₹300\nWithdraw → A\n             ❌ rejected/wait\n```\nData stays correct, but the system **refused a live request**.\n```\nConsistency ✅\nAvailability ❌\n```\n\n**Choice 2 — Protect Availability (AP)**\n\nA says: *\"B isn't reachable, but I will continue serving users.\"*\n```\nWithdraw ₹100 → A\nA = ₹200\n\nMeanwhile: B = ₹300  (old value)\n```\nBoth nodes keep responding, but their data **disagrees**.\n```\nAvailability ✅\nStrong Consistency ❌\n```"
+      },
+      {
+        "id": "availability-defined",
+        "title": "5. What Availability Really Means",
+        "content": "**Availability does not simply mean: \"Server is running.\"**\n\nIt means: *A reachable, non-failed node continues processing requests instead of refusing them merely because another node is unreachable.*\n\n```\nA alive ✅\nB unreachable ❌\n```\n\nIf A responds with `503: Cannot process request` → **NOT available**.\n\nIf A responds with `200 OK` → **available**.\n\n**Does choosing Availability always create inconsistent data?**\n\nNo — it creates the **possibility** of inconsistency. If nobody writes during the partition:\n```\nA = 1000 likes\nB = 1000 likes\n→ no inconsistency\n```\n\nBut if both sides receive updates:\n```\nA = 1050\nB = 1030\n```\nnow they differ.\n\n**Where temporary inconsistency is acceptable:**\n```\nInstagram likes · YouTube views · analytics counters\nrecommendations · feeds · some caches · notifications\n```\nLater: network restored → reconciliation → correct/merged count.\n\n**Where consistency matters more:**\n```\nBank balance · Payments · Last airline seat\nLast movie ticket · Inventory of last item\n```\nA bank allowing two nodes to each accept ₹250 withdrawals on a ₹300 balance would result in ₹500 withdrawn — **unacceptable**."
+      },
+      {
+        "id": "p-explained",
+        "title": "6. What P (Partition Tolerance) Really Means",
+        "content": "The old framing of CAP as *\"pick any 2: CA, CP, AP\"* is **too simplistic**.\n\nA better mental model:\n```\nNetwork healthy\n      ↓\nC + A can coexist\n```\n\nThe dilemma appears only when:\n```\nNETWORK PARTITION\nA       X       B\n```\n\nNow:\n```\nProtect correctness → give up some availability   (CP)\nKeep everyone working → risk inconsistency         (AP)\n```\n\n**Better CAP statement:**\n> During a network partition, a distributed system cannot guarantee both **strong consistency** and **availability** simultaneously.\n\n**2 nodes are enough to understand CAP:**\n```\nA       X       B\n```\nIf both continue → Availability ✅, Consistency may break.\nIf they stop operations requiring coordination → Consistency ✅, Availability ❌."
+      },
+      {
+        "id": "split-brain-quorum",
+        "title": "7. Split-Brain Problem & Why We Use 3+ Nodes",
+        "content": "With 2 nodes during a partition:\n```\nA ✅    X    B ✅\n```\nA thinks: *\"Maybe B crashed — I'll take over.\"*\nB thinks: *\"Maybe A crashed — I'll take over.\"*\n\nBoth start accepting writes independently → **split-brain**.\n\nWith 2 nodes there is **no third opinion** to break the tie.\n\n**Add a third node:**\n```\nA ←────→ C\n\nA   X   B\nC   X   B\n```\nNow: A+C = majority (2/3), B = minority (1/3).\n\n**Rule: only the side with majority continues making authoritative changes.**\n\n```\nA + C → ✅  (quorum)\nB     → ❌  (no quorum)\n```\n\nThis is called **quorum / majority**. Three nodes did not defeat CAP — they gave us a **safer mechanism** for choosing which side continues.\n\n**Real systems often use 3 replicas:**\n```\n3 replicas → quorum 2   (tolerates 1 failure)\n5 replicas → quorum 3   (tolerates 2 failures)\n7 replicas → quorum 4   (tolerates 3 failures)\n```\nMore replicas = greater fault tolerance, but more storage, network traffic, and coordination cost."
+      },
+      {
+        "id": "replicas-vs-shards",
+        "title": "8. Replicas vs Shards — An Important Distinction",
+        "content": "**Sharding** splits data across nodes for **scalability**:\n```\nShard 1  ·  Shard 2  ·  Shard 3\n```\n\nEach shard may have its own 3 replicas for **fault tolerance**:\n```\nShard 1: A1  A2  A3\nShard 2: B1  B2  B3\nShard 3: C1  C2  C3\n→ 3 shards × 3 replicas = 9 DB nodes\n```\n\n**\"3 replicas\" does not mean the whole company has only 3 database servers** — it means roughly **3 copies of each replicated piece of data**.\n\n**Primary + Followers** — a common design:\n```\nA = Primary  (all writes go through A)\nB, C, D, E = Followers  (replicate A's history)\n```\nFollowers serve **redundancy, fault tolerance, and replication**. They may also serve reads, depending on consistency requirements.\n\n**⚠️ Stale reads from followers:**\nIf D hasn't received the latest update yet:\n```\nA = ₹200  B = ₹200  C = ₹200  D = ₹300  E = ₹200\n```\nA read going to D returns ₹300 (stale).\n\n→ **Read strategy is a separate design decision** — replica does not automatically mean \"safe read server.\""
+      },
+      {
+        "id": "majority-writes-log",
+        "title": "9. Majority Writes & the Consensus Log",
+        "content": "With 5 nodes (quorum = 3), a write that reaches A+B+C can be **considered committed**:\n```\nA ✅  B ✅  C ✅  D ...  E ...\nA+B+C = 3/5 → write committed\n```\n\n**Replicas store an ordered log — not isolated values.**\n\nDon't think of writes as unrelated values:\n```\nWrite 1 → B,C\nWrite 2 → D,E\n```\n\nConsensus systems maintain an **ordered history**:\n```\nW1: withdraw ₹100\nW2: withdraw ₹50\n\nCorrect history: [W1, W2]\n```\n\nA replica should not have `[W2]` while missing W1 — history must be **contiguous**.\n\n**If a follower is behind, the primary catches it up first before sending new writes:**\n```\nA → D: W1  (catch-up)\nA → D: W2  (new write)\n```"
+      },
+      {
+        "id": "five-node-example",
+        "title": "10. The 5-Node Quorum Walkthrough",
+        "content": "**Initial state:** A is primary. All nodes have ₹300.\n\n**Write 1 (W1): ₹300 → ₹200**\nReplication succeeds on A, B, C — but not D, E:\n```\nA: [W1]   B: [W1]   C: [W1]   D: []   E: []\nA+B+C = 3/5 → W1 committed\n```\n\n**Write 2 (W2): ₹200 → ₹150**\nThis time A can reach D and E, but not B/C.\nA must catch up D and E **before** sending W2:\n```\nA → D: W1, then W2\nA → E: W1, then W2\n\nFinal logs:\nA: [W1,W2]   B: [W1]   C: [W1]   D: [W1,W2]   E: [W1,W2]\nA+D+E = 3/5 → W2 committed\n```\n\nNote: Write 1 majority = A+B+C. Write 2 majority = A+D+E. **The majority changed — that is OK.**\n\n**Now A crashes:**\n```\nA ❌   B:[W1]   C:[W1]   D:[W1,W2]   E:[W1,W2]\n```\nB/C are behind. D/E have the latest log.\n\nB tries to become leader:\n```\nB ✅  C ✅  D ❌  E ❌ → only 2/5 — not enough\n```\n\nD tries:\n```\nD ✅  E ✅  B ✅ → 3/5 → D becomes leader\n```\n\nD brings B and C up to date:\n```\nB: [W1] → [W1,W2]\nC: [W1] → [W1,W2]\n```\nAll surviving nodes eventually converge on the correct history.\n\n**Why different majorities are safe:** any two groups of 3 in a 5-node cluster must overlap by at least one node. That overlapping node guarantees that committed history is never lost:\n```\nW1 quorum: A B C     W2 quorum: A D E     Overlap: A\nW1 quorum: A B C     W2 quorum: C D E     Overlap: C\n```\nThis **quorum intersection** is a foundation of consensus protocols (Paxos, Raft).\n\n**What if the cluster becomes 2 vs 2 after A crashes?**\n```\nD E  ✅    X    B C  ✅\n2 nodes        2 nodes\n```\nRequired quorum is still 3 (cluster size = 5).\nNeither side has 3 → neither can elect a leader → **no safe writes**.\nThe system sacrifices **Availability** to protect **Consistency**."
+      },
+      {
+        "id": "final-mental-model",
+        "title": "11. The Final Mental Model — CAP, Quorum, Consensus",
+        "content": "**CAP:**\n```\nNetwork partition occurs\n          ↓\nShould disconnected sides continue independently?\n\n       NO                     YES\n        ↓                       ↓\nprotect Consistency       protect Availability\nreject / wait             risk divergence\n```\n\n**Quorum:** which side has enough members to make authoritative decisions? → **majority**\n\n**Consensus log:** what history must the new leader preserve? → **committed ordered log**\n\n---\n\n**Final distinctions:**\n\n| Concept | Answers |\n|---|---|\n| **CAP** | What guarantee must I sacrifice during a network partition? |\n| **Quorum** | Which group has enough members to make authoritative decisions? |\n| **Leader election** | Which node coordinates writes now? |\n| **Replication log** | What exact ordered history of writes must replicas preserve? |\n| **Heartbeat / timeout** | How do nodes suspect another node is unavailable? |\n\n**One-line summary:** CAP tells us the unavoidable trade-off during network failure; **quorum and consensus** are engineering techniques that let real distributed databases preserve consistency and safely choose which side continues."
       }
     ],
     "quiz": [
