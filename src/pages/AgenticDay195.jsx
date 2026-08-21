@@ -56,9 +56,9 @@ const practice = [
     icon: '🔜',
     title: 'What Comes Next',
     titleClass: 'card-title-amber',
-    subtitle: 'Continue',
-    description: 'Apply the controls to a live agent, or return to the hub until the next days land.',
-    link: { href: '/', label: 'Back to Home →' },
+    subtitle: 'Day 196',
+    description: 'Next arc — split work into specialized agent roles and teams.',
+    link: { href: '/agentic-day-196', label: 'Go to Day 196 →' },
   },
 ];
 
@@ -96,7 +96,7 @@ export default function AgenticDay195() {
       series="Agentic AI"
       dateLabel="Agentic AI Day 195 · 3 Mar 2027"
       prev={{ href: '/agentic-day-194', label: '← Day 194' }}
-      next={{ href: '/', label: 'Home →' }}
+      next={{ href: '/agentic-day-196', label: 'Day 196 →' }}
       tags={['Agentic AI', 'Security', 'Milestone']}
       theme="AGENT SECURITY PLATFORM MILESTONE"
       heroIcon="🏁"
