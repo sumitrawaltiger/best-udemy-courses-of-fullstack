@@ -1165,21 +1165,58 @@ const PYTHON_DATA_SCIENCE_SECTIONS = [
   },
   {
     id: "dl-assignment-student-pass-fail",
-    title: "Assignment — Deep Learning Model: Student Pass or Fail",
+    title: "Assignment 1 — Deep Learning Model: Student Pass or Fail",
     content:
-      "**Task:** Build a Deep Learning model to predict whether a student will **Pass** or **Fail** based on input features.\n\n" +
-      "**Input features:** study_hours, attendance (%), previous_marks\n\n" +
-      "**Output:** Pass (1) or Fail (0)\n\n" +
-      "**Steps to build the model:**\n" +
-      "1. Prepare dataset (study hours, attendance, marks → pass/fail label)\n" +
-      "2. Split into training and test sets\n" +
-      "3. Build a Neural Network with input layer, hidden layers, and output layer\n" +
-      "4. Compile with a loss function (binary crossentropy) and optimizer (Adam)\n" +
-      "5. Train over multiple epochs\n" +
-      "6. Evaluate accuracy on test data\n" +
-      "7. Predict on new student data",
+      "**Objective:** Develop a Deep Learning classification model using **TensorFlow/Keras** to predict whether a student will **Pass (1)** or **Fail (0)**.\n\n" +
+      "**Problem Statement:**\n" +
+      "Given a dataset with student academic information — Study Hours, Attendance, Previous Marks — train a Neural Network to classify each student as Pass or Fail.\n\n" +
+      "**Requirements:**\n" +
+      "1. Create or use a student dataset with input features and target variable\n" +
+      "2. Perform necessary data preprocessing\n" +
+      "3. Separate into input features `X` and target variable `y`\n" +
+      "4. Split into **training and testing data**\n" +
+      "5. Build a **Deep Learning Neural Network** using TensorFlow/Keras\n" +
+      "6. Compile with an appropriate optimizer, loss function, and evaluation metric\n" +
+      "7. Train the model using the training data\n" +
+      "8. Evaluate the trained model using test data\n" +
+      "9. **Save the trained model** to a file\n" +
+      "10. Build a **Streamlit UI** that:\n" +
+      "   - Accepts Study Hours, Attendance, Previous Marks from the user\n" +
+      "   - Loads the trained model\n" +
+      "   - Predicts Pass or Fail\n" +
+      "   - Displays the prediction clearly\n\n" +
+      "**Sample Input:** Study Hours: 7 · Attendance: 85 · Previous Marks: 72\n\n" +
+      "**Expected Output:** `Prediction: PASS`\n\n" +
+      "**Technologies:** Python · Pandas · NumPy · TensorFlow/Keras · Scikit-learn · Streamlit\n\n" +
+      "**Learning Outcomes:** Deep Learning classification · Build an ANN · Train with TensorFlow/Keras · Evaluate a classification model · Save & load a DL model · Integrate with Streamlit · End-to-end ML application",
     code:
-      "import numpy as np\nimport pandas as pd\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nimport tensorflow as tf\nfrom tensorflow import keras\n\n# 1. Sample dataset\ndata = {\n    'study_hours':   [8, 3, 6, 2, 9, 1, 7, 4, 5, 2],\n    'attendance':    [90, 50, 80, 40, 95, 30, 85, 60, 75, 45],\n    'prev_marks':    [80, 45, 70, 35, 88, 25, 78, 55, 65, 40],\n    'result':        [1,  0,  1,  0,  1,  0,  1,  0,  1,  0],  # 1=Pass, 0=Fail\n}\ndf = pd.DataFrame(data)\n\n# 2. Features and label\nX = df[['study_hours', 'attendance', 'prev_marks']].values\ny = df['result'].values\n\n# 3. Split\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n# 4. Scale features\nscaler = StandardScaler()\nX_train = scaler.fit_transform(X_train)\nX_test  = scaler.transform(X_test)\n\n# 5. Build Neural Network\nmodel = keras.Sequential([\n    keras.layers.Dense(16, activation='relu', input_shape=(3,)),  # Hidden layer 1\n    keras.layers.Dense(8,  activation='relu'),                    # Hidden layer 2\n    keras.layers.Dense(1,  activation='sigmoid'),                 # Output layer\n])\n\n# 6. Compile\nmodel.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])\n\n# 7. Train\nmodel.fit(X_train, y_train, epochs=50, verbose=0)\n\n# 8. Evaluate\nloss, accuracy = model.evaluate(X_test, y_test, verbose=0)\nprint(f'Test Accuracy: {accuracy * 100:.2f}%')\n\n# 9. Predict on a new student\nnew_student = np.array([[7, 85, 75]])  # 7 hrs study, 85% attendance, 75 prev marks\nnew_student_scaled = scaler.transform(new_student)\nprediction = model.predict(new_student_scaled)[0][0]\nresult = 'Pass' if prediction >= 0.5 else 'Fail'\nprint(f'Prediction: {result} (confidence: {prediction:.2f})')",
+      "# ── train_model.py ──────────────────────────────────────────\nimport numpy as np\nimport pandas as pd\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\nimport tensorflow as tf\nfrom tensorflow import keras\nimport pickle\n\n# 1. Dataset\ndata = {\n    'study_hours': [8, 3, 6, 2, 9, 1, 7, 4, 5, 2, 8, 6, 3, 9, 5],\n    'attendance':  [90,50,80,40,95,30,85,60,75,45,92,78,48,88,70],\n    'prev_marks':  [80,45,70,35,88,25,78,55,65,40,85,72,42,90,60],\n    'result':      [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1],\n}\ndf = pd.DataFrame(data)\n\nX = df[['study_hours', 'attendance', 'prev_marks']].values\ny = df['result'].values\n\n# 2. Split\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n# 3. Scale\nscaler = StandardScaler()\nX_train = scaler.fit_transform(X_train)\nX_test  = scaler.transform(X_test)\n\n# Save scaler for Streamlit\nwith open('scaler.pkl', 'wb') as f:\n    pickle.dump(scaler, f)\n\n# 4. Build ANN\nmodel = keras.Sequential([\n    keras.layers.Dense(16, activation='relu', input_shape=(3,)),\n    keras.layers.Dense(8,  activation='relu'),\n    keras.layers.Dense(1,  activation='sigmoid'),\n])\n\n# 5. Compile\nmodel.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])\n\n# 6. Train\nmodel.fit(X_train, y_train, epochs=100, verbose=0)\n\n# 7. Evaluate\nloss, acc = model.evaluate(X_test, y_test, verbose=0)\nprint(f'Test Accuracy: {acc * 100:.2f}%')\n\n# 8. Save model\nmodel.save('student_model.keras')\nprint('Model saved as student_model.keras')\n\n\n# ── app.py (Streamlit UI) ────────────────────────────────────\nimport streamlit as st\nimport numpy as np\nimport pickle\nimport tensorflow as tf\n\nmodel = tf.keras.models.load_model('student_model.keras')\nwith open('scaler.pkl', 'rb') as f:\n    scaler = pickle.load(f)\n\nst.set_page_config(page_title='Student Pass/Fail Predictor', page_icon='🎓')\nst.title('🎓 Student Pass or Fail Predictor')\n\nstudy_hours = st.number_input('Study Hours', min_value=0, max_value=24, value=7)\nattendance  = st.number_input('Attendance (%)', min_value=0, max_value=100, value=85)\nprev_marks  = st.number_input('Previous Marks', min_value=0, max_value=100, value=72)\n\nif st.button('Predict'):\n    features = np.array([[study_hours, attendance, prev_marks]])\n    features_scaled = scaler.transform(features)\n    prob = model.predict(features_scaled)[0][0]\n    result = 'PASS ✅' if prob >= 0.5 else 'FAIL ❌'\n    st.success(f'Prediction: **{result}**')\n    st.info(f'Confidence: {prob * 100:.1f}%')",
+  },
+  {
+    id: "dl-assignment-cat-vs-dog",
+    title: "Assignment 2 — Cat vs Dog Image Classification using CNN",
+    content:
+      "**Project:** 🐱🐶 Cat vs Dog Image Classification using **TensorFlow/Keras** and **Streamlit**.\n\n" +
+      "The application is split into two Python files:\n\n" +
+      "**1. train_model.py — Model Training:**\n" +
+      "- Load Cat and Dog images from folders\n" +
+      "- Perform image preprocessing and normalization\n" +
+      "- Split into training and validation datasets\n" +
+      "- Build a **CNN (Convolutional Neural Network)** using TensorFlow/Keras\n" +
+      "- Train the model to classify images as Cat or Dog\n" +
+      "- Evaluate using validation data\n" +
+      "- Display model accuracy and loss\n" +
+      "- Save the trained model as `image_classifier.keras`\n\n" +
+      "**2. app.py — Streamlit UI:**\n" +
+      "- Load the saved `image_classifier.keras` model\n" +
+      "- Provide an option to upload a `.jpg`, `.jpeg`, or `.png` image\n" +
+      "- Display the uploaded image\n" +
+      "- Preprocess the uploaded image the same way as training images\n" +
+      "- Use the trained CNN to predict the image\n" +
+      "- Display: **Predicted Class** (Cat 🐱 / Dog 🐶) and **Prediction Confidence** (%)\n\n" +
+      "**Technologies:** Python · TensorFlow/Keras · NumPy · Streamlit · Pillow",
+    code:
+      "# ── train_model.py ──────────────────────────────────────────\nimport tensorflow as tf\nfrom tensorflow import keras\nfrom tensorflow.keras import layers\nimport pathlib\n\n# Dataset: download from Kaggle (cats-vs-dogs) or use tf.keras.utils.get_file\n# Folder structure expected:\n#   data/\n#     train/cats/   (cat images)\n#     train/dogs/   (dog images)\n#     val/cats/\n#     val/dogs/\n\nIMG_SIZE   = (150, 150)\nBATCH_SIZE = 32\n\ntrain_ds = keras.utils.image_dataset_from_directory(\n    'data/train',\n    image_size=IMG_SIZE,\n    batch_size=BATCH_SIZE,\n)\nval_ds = keras.utils.image_dataset_from_directory(\n    'data/val',\n    image_size=IMG_SIZE,\n    batch_size=BATCH_SIZE,\n)\n\n# Normalize pixel values to [0, 1]\nnormalization = layers.Rescaling(1.0 / 255)\ntrain_ds = train_ds.map(lambda x, y: (normalization(x), y))\nval_ds   = val_ds.map(lambda x, y: (normalization(x), y))\n\n# CNN model\nmodel = keras.Sequential([\n    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(150, 150, 3)),\n    layers.MaxPooling2D(2, 2),\n    layers.Conv2D(64, (3, 3), activation='relu'),\n    layers.MaxPooling2D(2, 2),\n    layers.Conv2D(128, (3, 3), activation='relu'),\n    layers.MaxPooling2D(2, 2),\n    layers.Flatten(),\n    layers.Dense(128, activation='relu'),\n    layers.Dense(1, activation='sigmoid'),  # 0=Cat, 1=Dog\n])\n\nmodel.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])\nmodel.summary()\n\nhistory = model.fit(train_ds, epochs=10, validation_data=val_ds)\n\nval_loss, val_acc = model.evaluate(val_ds)\nprint(f'Validation Accuracy: {val_acc * 100:.2f}%')\n\nmodel.save('image_classifier.keras')\nprint('Model saved as image_classifier.keras')\n\n\n# ── app.py (Streamlit UI) ────────────────────────────────────\nimport streamlit as st\nimport tensorflow as tf\nimport numpy as np\nfrom PIL import Image\n\nmodel = tf.keras.models.load_model('image_classifier.keras')\n\nst.set_page_config(page_title='Cat vs Dog Classifier', page_icon='🐾')\nst.title('🐱🐶 Cat vs Dog Image Classifier')\nst.write('Upload an image and the CNN model will classify it.')\n\nuploaded_file = st.file_uploader('Choose an image...', type=['jpg', 'jpeg', 'png'])\n\nif uploaded_file is not None:\n    img = Image.open(uploaded_file).convert('RGB')\n    st.image(img, caption='Uploaded Image', use_column_width=True)\n\n    # Preprocess — same as training\n    img_resized = img.resize((150, 150))\n    img_array  = np.array(img_resized) / 255.0\n    img_array  = np.expand_dims(img_array, axis=0)  # shape: (1, 150, 150, 3)\n\n    prediction = model.predict(img_array)[0][0]\n\n    if prediction >= 0.5:\n        label      = 'Dog 🐶'\n        confidence = prediction * 100\n    else:\n        label      = 'Cat 🐱'\n        confidence = (1 - prediction) * 100\n\n    st.success(f'**Predicted Class: {label}**')\n    st.info(f'Prediction Confidence: {confidence:.1f}%')",
   },
   {
     id: "when-ml-vs-dl",
