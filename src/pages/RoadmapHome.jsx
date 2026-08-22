@@ -32,28 +32,28 @@ function LeetCode2000Badge({ size = 120 }) {
 }
 
 // ── Skill calendar helpers ───────────────────────────────────────────────────
-const _CAL_DAY1 = new Date(2026, 7, 21); // 21 Aug 2026
+const _CAL_DAY1 = new Date(2026, 7, 23); // 23 Aug 2026
 function _calDate(dayN) {
   const d = new Date(_CAL_DAY1);
   d.setDate(d.getDate() + dayN - 1);
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-// ── 20 skills · 2,000 days (uniform 100 days each) ────────────────────────
+// ── 21 skills · 2,100 days (uniform 100 days each) ────────────────────────
 // Python (1–100) → FastAPI (101–200) → Agentic AI (201–300) →
 // JavaScript (301–400) → TypeScript (401–500) → React JS (501–600) →
 // Next JS (601–700) → React Native (701–800) → Databases (801–900) →
 // Express JS (901–1000) → J2SE (1001–1100) → Spring Boot (1101–1200) →
 // Kafka (1201–1300) → Microservices (1301–1400) → Automation Testing (1401–1500) →
 // DevOps (1501–1600) → Cloud / AWS (1601–1700) → SRE (1701–1800) →
-// System Design (1801–1900) → DSA (1901–2000).
+// System Design (1801–1900) → DSA (1901–2000) → Capstone (2001–2100).
 // Calendar dates are intentionally NOT shown (HR-facing page).
 
 const SKILL_DAYS = [
   [1, 100], [101, 200], [201, 300], [301, 400], [401, 500], [501, 600], [601, 700],
   [701, 800], [801, 900], [901, 1000], [1001, 1100], [1101, 1200], [1201, 1300],
   [1301, 1400], [1401, 1500], [1501, 1600], [1601, 1700], [1701, 1800], [1801, 1900],
-  [1901, 2000],
+  [1901, 2000], [2001, 2100],
 ];
 
 const SKILLS = [
@@ -240,21 +240,31 @@ const SKILLS = [
   },
   // ── DSA: Skill 20 ─────────────────────────────────────────────────────────
   {
-    id: 's20', arcClass: 'capstone', icon: '🧠',
+    id: 's20', arcClass: 'y5', icon: '🧠',
     label: 'Skill 20 · DSA',
     tagline: 'Days 1901–2000', duration: '100 days',
-    blurb: 'The final 100-day sprint — Striver\'s A2Z Sheet + NeetCode 150. Pattern-based problem solving: arrays, strings, two pointers, sliding window, binary search, trees, graphs, dynamic programming, and backtracking. Back-to-back with System Design (Skills 19+20) = a 200-day interview-preparation block. By Day 2000, the Capstone project (built daily throughout all 2,000 days) is production-ready.',
+    blurb: 'The final interview-prep sprint — Striver\'s A2Z Sheet + NeetCode 150. Pattern-based problem solving: arrays, strings, two pointers, sliding window, binary search, trees, graphs, dynamic programming, and backtracking. Back-to-back with System Design (Skills 19+20) = a 200-day interview-preparation block. Followed by Skill 21 · Capstone.',
     items: [
       { icon: '📋', title: "Striver's A2Z Sheet", detail: 'Step-by-step pattern coverage — arrays → linked lists → binary search → trees → graphs → DP', source: 'takeUforward', to: '/interview' },
       { icon: '🎯', title: 'NeetCode 150', detail: 'Curated 150-problem set — most common patterns asked in FAANG & product-company interviews', source: 'NeetCode.io', to: '/interview' },
     ],
   },
+  // ── Capstone: Skill 21 ────────────────────────────────────────────────────
+  {
+    id: 's21', arcClass: 'capstone', icon: '🚀',
+    label: 'Skill 21 · Capstone',
+    tagline: 'Days 2001–2100', duration: '100 days',
+    blurb: 'The grand finale — 100 dedicated days to launch NexusAI into production, polish the full portfolio, write technical case studies for all 20 skills, contribute to open source, and complete final interview preparation. NexusAI (built daily throughout all 2,100 days) ships here.',
+    items: [
+      { icon: '🚀', title: 'NexusAI Launch', detail: 'Production deploy · portfolio polish · case studies · open source · final interview prep', source: 'Self-directed', to: '/' },
+    ],
+  },
 ];
 
 const STATS = [
-  { value: '20', label: 'skills · one at a time' },
+  { value: '21', label: 'skills · one at a time' },
   { value: '100', label: 'days per skill · uniform' },
-  { value: '66', label: 'months · 2,000 days' },
+  { value: '69', label: 'months · 2,100 days' },
   { value: '40+', label: 'technologies' },
 ];
 
@@ -277,15 +287,15 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 Day 0 setup · 20 skills · 100d each · 2,000 days</span>
-        <h1 className="roadmap-hero-title">20 Skills, 2,000 Days</h1>
+        <span className="roadmap-hero-badge">📍 Day 0 setup · 21 skills · 100d each · 2,100 days</span>
+        <h1 className="roadmap-hero-title">21 Skills, 2,100 Days</h1>
         <p className="roadmap-hero-sub">
-          Starts with <strong>Day 0 — environment setup</strong>, then <strong>20 skills</strong>{' '}
+          Starts with <strong>Day 0 — environment setup</strong>, then <strong>21 skills</strong>{' '}
           mastered one at a time — <strong>Python → FastAPI → Agentic AI → JavaScript → TypeScript
           → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot
-          → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA</strong> —{' '}
-          <strong>20 skills mastered to depth — 100 days each, 66 months (2,000 days)</strong> of focused daily practice,
-          front to back. Capstone project built daily as a side project throughout all 2,000 days.
+          → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA → Capstone</strong> —{' '}
+          <strong>21 skills mastered to depth — 100 days each, 69 months (2,100 days)</strong> of focused daily practice,
+          front to back. Capstone project built daily as a side project throughout all 2,100 days.
         </p>
         <div className="roadmap-stats">
           {STATS.map((s) => (
@@ -303,7 +313,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png?v=9"
-          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA. Day 1: 21 Aug 2026 · Day 2,000: 10 Feb 2032."
+          alt="21 Skills. 2,100 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA → Capstone. Day 1: 23 Aug 2026 · Day 2,100: 22 May 2032."
           loading="eager"
           style={{
             width: '100%',
@@ -357,7 +367,7 @@ export default function RoadmapHome() {
           </table>
         </div>
         <p style={{ textAlign: 'center', color: '#6b7b8e', fontSize: '0.75rem', marginTop: '10px' }}>
-          Day 1 = 21 Aug 2026 · 20 skills · 2,000 days · journey ends 10 Feb 2032
+          Day 1 = 23 Aug 2026 · 21 skills · 2,100 days · journey ends 22 May 2032
         </p>
       </section>
 
@@ -436,7 +446,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">20 skills · 100 days each · 2,000 days, front to back</p>
+            <p className="roadmap-finish-date">21 skills · 100 days each · 2,100 days, front to back</p>
           </div>
         </div>
       </div>
@@ -462,8 +472,8 @@ export default function RoadmapHome() {
               Target: 10 Feb 2032 · Day 2,000
             </p>
             <p style={{ color: 'rgba(200,212,224,0.82)', fontSize: '0.82rem', lineHeight: 1.65, marginBottom: '12px' }}>
-              1 LeetCode daily challenge every single day — Day 1 (21 Aug 2026) through Day 2,000 (10 Feb 2032).
-              2,000 consecutive submissions earns this badge the exact same day the journey ends.
+              1 LeetCode daily challenge every single day — Day 1 (23 Aug 2026) through Day 2,000 (10 Feb 2032).
+              2,000 consecutive submissions earns this badge the exact same day the LeetCode milestone lands.
               The discipline badge that proves the entire journey.
             </p>
             <a
@@ -486,16 +496,16 @@ export default function RoadmapHome() {
       <section className="roadmap-flow">
         <h2 className="roadmap-flow-title">The flow, end to end</h2>
         <p className="roadmap-flow-text">
-          Day 0 setup, then 20 skills — 75 to 150 days each, calibrated to depth:{' '}
+          Day 0 setup, then 21 skills — 100 days each, calibrated to depth:{' '}
           <strong>Python</strong> {'->'} <strong>FastAPI</strong> {'->'} <strong>Agentic AI</strong> (LangChain, LangGraph, MCP) {'->'}
           {' '}<strong>JavaScript</strong> {'->'} <strong>TypeScript</strong> {'->'}
           {' '}<strong>React JS</strong> {'->'} <strong>Next JS</strong> {'->'} <strong>React Native</strong> {'->'}
-          {' '}<strong>Express JS</strong> {'->'} <strong>Databases</strong> (PostgreSQL · MongoDB · Redis) {'->'} <strong>J2SE</strong> {'->'} <strong>JPA</strong> {'->'} <strong>Spring Boot</strong> {'->'} <strong>Microservices</strong> {'->'} <strong>Automation Testing</strong> {'->'}
+          {' '}<strong>Express JS</strong> {'->'} <strong>Databases</strong> (PostgreSQL · MongoDB · Redis) {'->'} <strong>J2SE</strong> {'->'} <strong>Spring Boot</strong> {'->'} <strong>Kafka</strong> {'->'} <strong>Microservices</strong> {'->'} <strong>Automation Testing</strong> {'->'}
           {' '}<strong>DevOps</strong> {'->'} <strong>Cloud (AWS)</strong> {'->'}
-          {' '}<strong>Kubernetes</strong> {'->'} <strong>System Design</strong> {'->'}
-          {' '}<strong>Capstone Project</strong> (all 19 skills integrated). One skill at a time, fully focused.
-          DSA practiced 30 min daily (1 LeetCode/day) throughout all 20 skills.
-          66 months (2,000 days) end to end.
+          {' '}<strong>SRE</strong> {'->'} <strong>System Design</strong> {'->'} <strong>DSA</strong> {'->'}
+          {' '}<strong>Capstone</strong> (NexusAI production launch). One skill at a time, fully focused.
+          DSA practiced daily (1 LeetCode/day) throughout all 21 skills.
+          69 months (2,100 days) end to end.
         </p>
         <div className="roadmap-flow-actions">
           <Link to="/python" className="btn btn-lg roadmap-btn-primary">

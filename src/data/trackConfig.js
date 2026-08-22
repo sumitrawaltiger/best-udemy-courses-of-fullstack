@@ -94,21 +94,21 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: Day 1 = 21 Aug 2026. User-facing framing: 2000 days / 20 skills / 100 days each (uniform).
+// Full journey: Day 1 = 23 Aug 2026. User-facing framing: 2100 days / 21 skills / 100 days each (uniform).
 // Skill order: Python(1-100) → FastAPI(101-200) → Agentic AI(201-300) → JavaScript(301-400) →
 // TypeScript(401-500) → React JS(501-600) → Next JS(601-700) → React Native(701-800) →
 // Express JS(801-900) → Databases(901-1000) → J2SE(1001-1100) →
 // Spring Boot(1101-1200) → Kafka(1201-1300) → Microservices(1301-1400) →
 // Automation Testing(1401-1500) → DevOps(1501-1600) → Cloud/AWS(1601-1700) →
-// SRE(1701-1800) → System Design(1801-1900) → DSA(1901-2000).
-// Capstone project is built continuously throughout all 2,000 days as a running side project.
+// SRE(1701-1800) → System Design(1801-1900) → DSA(1901-2000) → Capstone(2001-2100).
+// Capstone project is built continuously throughout all 2,100 days as a running side project.
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
 //  chapterFactory.js = 8 Aug 2026, so module Day 1 also dates to 8 Aug 2026.)
-export const JOURNEY_START_LABEL = '21 Aug 2026';
-export const JOURNEY_END_LABEL = '10 Feb 2032';
-export const JOURNEY_TOTAL_DAYS = 2000;
+export const JOURNEY_START_LABEL = '23 Aug 2026';
+export const JOURNEY_END_LABEL = '22 May 2032';
+export const JOURNEY_TOTAL_DAYS = 2100;
 // Factory calendar: Day 1 = 8 Aug 2026 (COURSE_START); factory day N = journey Day N.
-export const JOURNEY_END_FACTORY_DAY = 2000;
+export const JOURNEY_END_FACTORY_DAY = 2100;
 
 // Explicit day-offsets for the 20-skill plan — each skill = exactly 100 days (offset = skill start day − 1).
 // Skills 1–3 (Python stack): 1–300 · Skills 4–10 (JS/TS/React/Next/RN/Express/Databases): 301–1000 · Skills 11–15 (Java stack): 1001–1500 · Skill 16 (DevOps): 1501–1600 · Skill 17 (AWS): 1601–1700 · Skill 18 (K8s): 1701–1800 · Skill 19 (SysDesign): 1801–1900 · Skill 20 (DSA): 1901–2000.

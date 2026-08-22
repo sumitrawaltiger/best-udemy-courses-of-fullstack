@@ -2174,7 +2174,7 @@ export const chaptersDays20to100 = [
     "title": "API Security Best Practices",
     "subtitle": "Helmet, rate limiting, sanitization, and secrets",
     "duration": "2 hrs",
-    "createdOn": "20 Aug 2026",
+    "createdOn": "22 Aug 2026",
     "status": "published",
     "topics": [
       "Helmet.js",
@@ -2246,7 +2246,7 @@ export const chaptersDays20to100 = [
     "title": "REST API Project — Part 1",
     "subtitle": "Project setup, models, and core endpoints",
     "duration": "2 hrs",
-    "createdOn": "21 Aug 2026",
+    "createdOn": "23 Aug 2026",
     "status": "published",
     "topics": [
       "Project architecture",

@@ -56,9 +56,9 @@ const practice = [
     icon: '🔜',
     title: 'What Comes Next',
     titleClass: 'card-title-amber',
-    subtitle: 'Continue',
-    description: 'Apply the team kit to a live workflow, or return to the hub until the next days land.',
-    link: { href: '/', label: 'Back to Home →' },
+    subtitle: 'Day 201',
+    description: 'Next arc — versioning, cost, approvals, and audit for production governance.',
+    link: { href: '/agentic-day-201', label: 'Go to Day 201 →' },
   },
 ];
 
@@ -94,9 +94,9 @@ export default function AgenticDay200() {
     <StandaloneJourneyPage
       dayNumber={200}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 200 · 8 Mar 2027"
+      dateLabel="Agentic AI Day 200 · 10 Mar 2027"
       prev={{ href: '/agentic-day-199', label: '← Day 199' }}
-      next={{ href: '/', label: 'Home →' }}
+      next={{ href: '/agentic-day-201', label: 'Day 201 →' }}
       tags={['Agentic AI', 'Teams', 'Milestone']}
       theme="MULTI-AGENT TEAMS PLATFORM MILESTONE"
       heroIcon="🏁"

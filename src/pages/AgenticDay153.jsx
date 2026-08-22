@@ -6,7 +6,7 @@ const learntToday = [
   { title: 'Portfolio proof', text: 'one recorded demo + README + golden suite is stronger than a long unfinished course log' },
   { title: 'Trust is product', text: 'privacy, allowlists, and honest degrade modes are how users stay' },
   { title: 'Measure to improve', text: 'north star + guardrails keep shipping from becoming roulette' },
-  { title: '147 days remain', text: 'Agentic AI continues through Day 300 (4 Jun 2027) — deeper agent work, new tools, and production-grade pipelines ahead' },
+  { title: '147 days remain', text: 'Agentic AI continues through Day 300 (6 Jun 2027) — deeper agent work, new tools, and production-grade pipelines ahead' },
   { title: 'Tomorrow: Day 154', text: 'the Agentic AI journey continues — same 4:30–7:30 AM rhythm, next topic area incoming' },
 ];
 
@@ -23,7 +23,7 @@ const core = [
   },
   {
     icon: '🤖', title: 'Agentic AI Continues', titleClass: 'card-title-amber', subtitle: 'Days 154–300',
-    description: 'Day 153 is a capstone checkpoint — 147 days of Agentic AI remain through Day 300 (4 Jun 2027). Deeper agent work, new tools, and multi-language pipelines ahead.',
+    description: 'Day 153 is a capstone checkpoint — 147 days of Agentic AI remain through Day 300 (6 Jun 2027). Deeper agent work, new tools, and multi-language pipelines ahead.',
     code: 'day 154 → day 300\n31 may 2027',
   },
 ];
@@ -49,7 +49,7 @@ const practice = [
 const resources = [
   {
     icon: '🤖', title: 'Agentic AI Ahead', titleClass: 'card-title-cyan', subtitle: 'Days 154–300',
-    description: 'The Agentic AI journal continues through Day 300 (4 Jun 2027) — deeper topics, more tools, production pipelines.',
+    description: 'The Agentic AI journal continues through Day 300 (6 Jun 2027) — deeper topics, more tools, production pipelines.',
     link: { href: '/agentic-day-154', label: 'Continue to Day 154 →' },
   },
   {
@@ -69,7 +69,7 @@ export default function AgenticDay153() {
     <StandaloneJourneyPage
       dayNumber={153}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 153 · 20 Jan 2027"
+      dateLabel="Agentic AI Day 153 · 22 Jan 2027"
       prev={{ href: '/agentic-day-152', label: '← Day 152' }}
       next={{ href: '/agentic-day-154', label: 'Day 154 →' }}
       tags={['Agentic AI', 'Capstone', 'Milestone']}
@@ -80,7 +80,7 @@ export default function AgenticDay153() {
       summary={
         <>
           Day 153 is the <strong>capstone milestone</strong> — 153 days complete, capstone shipped, retro written.
-          Tag your repo, share the progress once — <strong>Agentic AI continues through Day 300 (4 Jun 2027)</strong>,{' '}
+          Tag your repo, share the progress once — <strong>Agentic AI continues through Day 300 (6 Jun 2027)</strong>,{' '}
           with 147 days of deeper agent work, new tools, and production pipelines still ahead.
         </>
       }
