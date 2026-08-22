@@ -1799,6 +1799,11 @@ export const pythonLessons = [
         href: '/python-notes/iitm-pravartak-agentic-ai-brochure.pdf',
         icon: '📄',
       },
+      {
+        label: 'Ultimate Data Science & GenAI Bootcamp V3.0 — Krish Naik Academy (PDF)',
+        href: '/python-notes/krish-naik-ds-genai-bootcamp-v3.pdf',
+        icon: '📄',
+      },
     ],
   },
   {
