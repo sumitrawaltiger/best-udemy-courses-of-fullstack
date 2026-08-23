@@ -7,7 +7,7 @@ export const REACT_META = {
   subtitle: 'Illustrated Episodes · React from Zero to Production',
   blurb:
     'React from the ground up — illustrated, one episode at a time. Component-based thinking, the Virtual DOM, JSX, hooks (useState, useEffect, useRef, useContext), state management, routing, performance optimisation, and real-world patterns — each episode paired with the full written notes and every code snippet.',
-  totalDays: 21,
+  totalDays: 22,
   startDate: '7 Mar 2028',
 };
 
@@ -1573,6 +1573,66 @@ function ScoreCard({ title, score, isWinner }) {
         label: 'Full app — App.jsx wiring Button and App.module.css',
         code: "/* App.module.css */\n.container {\n  max-width: 480px;\n  margin: 40px auto;\n  font-family: sans-serif;\n  text-align: center;\n}\n.heading {\n  font-size: 1.6rem;\n  margin-bottom: 20px;\n  color: #1a2e3b;\n}\n\n// App.jsx\nimport styles from './App.module.css';\nimport Button from './Button';\n\nexport default function App() {\n  return (\n    <div className={styles.container}>\n      <h2 className={styles.heading}>CSS Modules in Action</h2>\n      <Button onClick={() => alert('Scoped and clean!')} />\n    </div>\n  );\n}",
         note: 'App.module.css scopes .container and .heading to App.jsx. Button.module.css scopes .btn to Button.jsx. They coexist without any collision — even though both files use short, simple class names.',
+      },
+    ],
+  },
+  {
+    day: 22,
+    date: '7 Apr 2028',
+    group: 'patterns',
+    title: 'Styled Components',
+    tagline: 'Write actual CSS inside JavaScript using template literals — no separate CSS files, automatic scoping, and dynamic styles with props.',
+    image: '/react-notes/react22.jpeg',
+    tags: ['Styled Components', 'CSS-in-JS', 'Template Literals', 'Scoped CSS', 'Dynamic Styling', 'Props-Based Styles', 'Module 4 Styling'],
+    notes: [
+      { k: 'What & Why?', v: '**Styled Components** lets you write actual CSS inside JavaScript using tagged template literals. No separate `.css` files needed.\n\n✓ Write CSS in JS\n✓ Automatically scoped — each styled component gets a unique class\n✓ Dynamic styling based on props\n✓ No class name management\n✓ Less context switching between JS and CSS files\n\n**JS + CSS = Styled Components**' },
+      { k: 'Install', v: 'Add the styled-components package to your project:\n\n```bash\nnpm i styled-components\n```' },
+      { k: 'Creating a Styled Component', v: 'Use `styled.elementName` followed by a template literal containing your CSS:\n\n```jsx\nimport styled from \'styled-components\';\n\nconst Container = styled.div`\n  padding: 20px;\n  background: #fff8e1;\n  border-radius: 12px;\n  box-shadow: 0 4px 12px rgba(0,0,0,0.1);\n  text-align: center;\n`;\n\nconst Title = styled.h2`\n  color: #2e7d32;\n  margin-bottom: 10px;\n`;\n```\n\n**We write normal CSS inside backticks!** Each styled component is scoped to itself.' },
+      { k: 'Using the Styled Component', v: '```jsx\nexport default function App() {\n  return (\n    <Container>\n      <Title>Hello Styled Components! ⚡</Title>\n      <p>This is clean, scoped and awesome! 😎</p>\n    </Container>\n  );\n}\n```\n\nThe `Container` and `Title` work like normal React components — use them directly in JSX.' },
+      { k: 'Quick Tip', v: '**Styled Components makes your styles modular, reusable and maintainable!** Because each styled component is scoped to itself, you can use simple names like `Title` or `Button` in every file without any clashing.' },
+      { k: 'Why Styled Components?', v: '⭐ Write real CSS, not strings\n⭐ Automatic scoping\n⭐ Dynamic styles with props\n⭐ No naming headaches\n⭐ Great developer experience!\n\n*By @neon_time — Credits: Faisal Ahmad Bhat*' },
+    ],
+    theory: [
+      {
+        h: 'What are Styled Components?',
+        p: '**Styled Components** is a CSS-in-JS library that lets you write actual CSS directly inside your JavaScript files using ES6 tagged template literals. It was created to solve three problems that come up in large React codebases:\n\n1. **Global CSS collisions** — In regular CSS, `.title` in one file can override `.title` in another. Styled Components generates a unique class name for each component at runtime, so collisions are impossible.\n\n2. **Dead CSS** — It is hard to know which CSS classes are actually used. With Styled Components, the CSS lives right next to the component it styles. Delete the component, delete the CSS.\n\n3. **Dynamic styles** — To style something differently based on props in regular CSS, you would need to toggle class names in JS. With Styled Components you just use `${props => props.primary ? "#fff" : "#333"}` directly in the template literal.\n\nThe result is styles that are **colocated, scoped, and dynamic** — the same component model React already uses, extended to CSS.',
+      },
+      {
+        h: 'How Styled Components Works Internally',
+        p: 'When you write `const Title = styled.h2\\`color: green;\\``, Styled Components:\n\n1. **Hashes the CSS** — Generates a unique class name like `sc-aBcDeF`.\n2. **Injects a `<style>` tag** — At runtime, it inserts the hashed CSS rule into the document `<head>`.\n3. **Attaches the class** — The rendered `<h2>` element gets `className="sc-aBcDeF"`.\n4. **Updates on prop change** — When a prop changes (e.g. `primary` toggles), it generates a new class and swaps it. Old classes are cleaned up automatically.\n\nThis means **zero manual class management** — you never write `className="title title--green"` again. You just write the CSS and use the component.',
+      },
+      {
+        h: 'Full Code Example',
+        p: '```jsx\nimport styled from \'styled-components\';\n\n// 1. Create styled components\nconst Container = styled.div`\n  padding: 20px;\n  background: #fff8e1;\n  border-radius: 12px;\n  box-shadow: 0 4px 12px rgba(0,0,0,0.1);\n  text-align: center;\n`;\n\nconst Title = styled.h2`\n  color: #2e7d32;\n  margin-bottom: 10px;\n`;\n\n// 2. Use them like regular React components\nexport default function App() {\n  return (\n    <Container>\n      <Title>Hello Styled Components! ⚡</Title>\n      <p>This is clean, scoped and awesome! 😎</p>\n    </Container>\n  );\n}\n```\n\n**Output:** A centred card on a warm yellow background with a green heading. Each component\'s CSS is scoped — editing `Container` never touches `Title`.',
+      },
+      {
+        h: 'Dynamic Styles with Props',
+        p: 'The real power of Styled Components is dynamic styling based on React props:\n\n```jsx\nconst Button = styled.button`\n  background: ${props => props.primary ? \'#2e7d32\' : \'transparent\'};\n  color: ${props => props.primary ? \'white\' : \'#2e7d32\'};\n  padding: 10px 20px;\n  border: 2px solid #2e7d32;\n  border-radius: 8px;\n  cursor: pointer;\n  font-size: 1rem;\n\n  &:hover {\n    opacity: 0.85;\n  }\n`;\n\n// Usage:\n<Button primary>Primary Button</Button>\n<Button>Outline Button</Button>\n```\n\nNo extra class toggling, no conditional `className` strings. The component reads `props.primary` directly inside the CSS template — this is what makes CSS-in-JS so expressive.',
+      },
+      {
+        h: 'Styled Components vs CSS Modules',
+        p: '| Feature | Styled Components | CSS Modules |\n|---|---|---|\n| **Syntax** | CSS inside JS (template literals) | Regular `.module.css` files |\n| **Scoping** | Runtime (unique class generated) | Build-time (hashed class name) |\n| **Dynamic styles** | Native — use JS expressions | Requires toggling class names |\n| **Runtime cost** | Small (class injection) | Zero (build-time only) |\n| **DX** | CSS colocated inside component | Separate file per component |\n| **Bundle size** | +20 KB (library) | Zero extra |\n| **Theming** | Built-in `ThemeProvider` | Manual via CSS variables |\n\n**When to use Styled Components:** you need heavy dynamic styling, theme switching, or a consistent design system with a `ThemeProvider`.\n\n**When to use CSS Modules:** you want zero runtime overhead, pure CSS syntax, and build-time scoping — and your styles are mostly static.',
+      },
+      {
+        h: 'Why Styled Components?',
+        p: '**1. Write real CSS, not strings.** Template literals give you full CSS — pseudo-classes (`:hover`, `:focus`), media queries, nesting, keyframes — all inside the component file.\n\n**2. Automatic scoping.** Every styled component generates a unique class. No more `BEM` naming, no more `!important` fights, no more class collisions.\n\n**3. Dynamic styles with props.** Pass a prop to your styled component and use it inside the CSS with a JavaScript expression. No extra logic needed in the JSX.\n\n**4. No naming headaches.** You name the component, not the class. `const Title = styled.h2` is all you need — the class name is generated for you.\n\n**5. Great developer experience.** VS Code extensions highlight the CSS inside template literals. Styled Components works with SSR (Next.js), Storybook, and React Native.',
+      },
+    ],
+    snippets: [
+      {
+        label: 'Basic Styled Components — Container and Title',
+        code: "import styled from 'styled-components';\n\nconst Container = styled.div`\n  padding: 20px;\n  background: #fff8e1;\n  border-radius: 12px;\n  box-shadow: 0 4px 12px rgba(0,0,0,0.1);\n  text-align: center;\n`;\n\nconst Title = styled.h2`\n  color: #2e7d32;\n  margin-bottom: 10px;\n`;\n\nexport default function App() {\n  return (\n    <Container>\n      <Title>Hello Styled Components! ⚡</Title>\n      <p>This is clean, scoped and awesome! 😎</p>\n    </Container>\n  );\n}",
+        note: 'Container and Title are just React components — use them in JSX directly. Each gets its own unique scoped class at runtime.',
+      },
+      {
+        label: 'Dynamic styling with props',
+        code: "import styled from 'styled-components';\n\nconst Button = styled.button`\n  background: ${props => props.primary ? '#2e7d32' : 'transparent'};\n  color: ${props => props.primary ? 'white' : '#2e7d32'};\n  padding: 10px 20px;\n  border: 2px solid #2e7d32;\n  border-radius: 8px;\n  cursor: pointer;\n  font-size: 1rem;\n  font-weight: 600;\n  transition: opacity 0.2s;\n\n  &:hover {\n    opacity: 0.85;\n  }\n`;\n\nexport default function ButtonDemo() {\n  return (\n    <div style={{ display: 'flex', gap: '12px' }}>\n      <Button primary>Primary Button</Button>\n      <Button>Outline Button</Button>\n    </div>\n  );\n}",
+        note: 'Props flow directly into the CSS template — no className toggling, no conditional logic in JSX. The library handles class generation and injection automatically.',
+      },
+      {
+        label: 'Extending styles — styled(Component)',
+        code: "import styled from 'styled-components';\n\nconst BaseButton = styled.button`\n  padding: 10px 20px;\n  border-radius: 8px;\n  border: none;\n  cursor: pointer;\n  font-weight: 600;\n`;\n\n// Extend the base — adds its own styles on top\nconst DangerButton = styled(BaseButton)`\n  background: #dc2626;\n  color: white;\n\n  &:hover {\n    background: #b91c1c;\n  }\n`;\n\nexport default function App() {\n  return (\n    <div>\n      <BaseButton>Normal</BaseButton>\n      <DangerButton>Delete</DangerButton>\n    </div>\n  );\n}",
+        note: 'styled(BaseButton) creates a new component that inherits all of BaseButton\'s CSS and adds new rules on top — like class inheritance for styles.',
       },
     ],
   },
