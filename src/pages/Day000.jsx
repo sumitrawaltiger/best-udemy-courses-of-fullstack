@@ -45,7 +45,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Git & GitHub',
-    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 2,200 days of code',
+    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 2,100 days of code',
   },
   {
     title: 'VS Code',
@@ -65,11 +65,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Study routine',
-    text: 'locked the routine: wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST (UTC+5:30, 3 hrs/day), every single day for 2,200 days',
+    text: 'locked the routine: wake 4:00 AM → meditation 4:00–4:30 AM → study 4:30–7:30 AM IST (UTC+5:30, 3 hrs/day), every single day for 2,100 days',
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 6-year (2,200-day) plan — 22 skills × 100 days each: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → NestJS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA → Capstone. NexusAI multi-agent SaaS platform built daily throughout all 2,200 days',
+    text: 'reviewed the full 5-year (2,100-day) plan — 21 skills × 100 days each: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA → Capstone. NexusAI multi-agent SaaS platform built daily throughout all 2,100 days',
   },
   {
     title: 'Ready for Skill 1 · Python',
@@ -105,7 +105,7 @@ const CORE_TOOLS = [
     titleClass: 'card-title-amber',
     subtitle: 'Version Control',
     description:
-      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 2,200 days is signed to you.',
+      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 2,100 days is signed to you.',
     code: 'git --version\ngit config --global user.name "Sumit Rawal"\ngit config --global user.email "you@email.com"',
   },
   {
@@ -163,18 +163,18 @@ const STUDY_SYSTEM = [
     icon: '⏰',
     title: 'Daily Routine',
     titleClass: 'card-title-amber',
-    subtitle: '4 AM Wake · Meditation 4:30 AM · Study 5:00–8:00 AM',
+    subtitle: '4 AM Wake · Meditation 4:00 AM · Study 4:30–7:30 AM',
     description:
-      'Wake at 4:00 AM → freshen up → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 2,100 days.',
+      'Wake at 4:00 AM → meditation 4:00–4:30 AM → study 4:30–7:30 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 2,100 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
     icon: '🗺️',
     title: 'The 6-Year Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '22 skills × 100 days each · Day 1 = 24 Aug 2026',
+    subtitle: '21 skills × 100 days each · Day 1 = 24 Aug 2026',
     description:
-      'Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → NestJS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 2001–2100) → Capstone (Days 2101–2200, NexusAI launch). 2,200 days total. Capstone = NexusAI, built daily throughout.',
+      'Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1901–2000) → Capstone (Days 2001–2100, NexusAI launch). 2,100 days total. Capstone = NexusAI, built daily throughout.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
@@ -291,7 +291,7 @@ export default function Day000() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>5 Years</span>
-              <span>2200 Days</span>
+              <span>2100 Days</span>
               <span>Python Stack</span>
               <span>Day 0 · 23 Aug 2026</span>
             </div>
@@ -322,7 +322,7 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 · 23 Aug 2026 — environment setup before the 6-year journey begins.</strong>{' '}
+          <strong>Day 0 · 23 Aug 2026 — environment setup before the 5-year journey begins.</strong>{' '}
           Install <code>Node.js</code>, <code>Git</code>, and <code>VS Code</code>, wire the terminal and
           Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
@@ -332,7 +332,7 @@ export default function Day000() {
           <a href="https://github.com/sumitrawaltiger/nexusai" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             NexusAI
           </a>{' '}
-          capstone repo, and lock the routine (wake 4 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST). No lectures today —
+          capstone repo, and lock the routine (wake 4 AM → meditation 4:00–4:30 AM → study 4:30–7:30 AM IST). No lectures today —
           clear every obstacle so <strong>Day 1 (24 Aug 2026)</strong> starts with zero friction:{' '}
           <strong>Skill 1 · Python</strong> + the NexusAI capstone begins. Sharpen the axe before the first swing.
         </p>
@@ -402,7 +402,7 @@ export default function Day000() {
           <span>#PythonStack</span>
           <span>#AgenticAI</span>
           <span>#5Years</span>
-          <span>#2200Days</span>
+          <span>#2100Days</span>
         </footer>
       </div>
     </div>
