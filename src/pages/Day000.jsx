@@ -170,7 +170,7 @@ const STUDY_SYSTEM = [
   },
   {
     icon: '🗺️',
-    title: 'The 6-Year Roadmap',
+    title: 'The 5-Year Roadmap',
     titleClass: 'card-title-cyan',
     subtitle: '21 skills × 100 days each · Day 1 = 24 Aug 2026',
     description:
@@ -312,7 +312,7 @@ export default function Day000() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">2200 DAYS · DAY 0</p>
+              <p className="day001-profile-role">2100 DAYS · DAY 0</p>
             </div>
           </div>
         </div>
