@@ -386,7 +386,7 @@ export default function Day000() {
                 LeetCode 2,000 Days Badge
               </p>
               <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
-                Target: 10 Feb 2032 · Day 2,000
+                Target: 13 Feb 2032 · Friday · Day 2,000
               </p>
               <p style={{ color: 'rgba(200,210,220,0.8)', fontSize: '0.78rem', lineHeight: 1.6, marginBottom: '10px' }}>
                 1 LeetCode problem every single day — Day 1 (24 Aug 2026) through Day 2,000 (13 Feb 2032).
