@@ -45,7 +45,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Git & GitHub',
-    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 2,100 days of code',
+    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 2,000 days of code',
   },
   {
     title: 'VS Code',
@@ -65,11 +65,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Study routine',
-    text: 'locked the routine: wake 4:00 AM → meditation 4:00–4:30 AM → study 4:30–7:30 AM IST (UTC+5:30, 3 hrs/day), every single day for 2,100 days',
+    text: 'locked the routine: wake 4:00 AM → meditation 4:00–4:30 AM → study 4:30–7:30 AM IST (UTC+5:30, 3 hrs/day), every single day for 2,000 days',
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 5-year (2,100-day) plan — 21 skills × 100 days each: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA → Capstone. NexusAI multi-agent SaaS platform built daily throughout all 2,100 days',
+    text: 'reviewed the full 5-year (2,000-day) plan — 20 skills × 100 days each: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1901–2000, ends 13 Feb 2032). NexusAI capstone built daily throughout all 2,000 days',
   },
   {
     title: 'Ready for Skill 1 · Python',
@@ -86,6 +86,10 @@ const SETUP_CHECKLIST = [
   {
     title: 'LeetCode streak starts',
     text: '1 LeetCode daily challenge every single day — Day 1 (24 Aug 2026) through Day 2,000 (13 Feb 2032) earns the LeetCode 2,000 Days Badge. The streak begins tomorrow',
+  },
+  {
+    title: 'NexusAI Capstone · Day 0 setup',
+    text: 'created the NexusAI GitHub repo, cloned it locally, added README and .gitignore, pushed the first init commit — env setup only. From Day 1 onwards, daily commits build the platform across all 2,000 days',
   },
 ];
 
@@ -105,7 +109,7 @@ const CORE_TOOLS = [
     titleClass: 'card-title-amber',
     subtitle: 'Version Control',
     description:
-      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 2,100 days is signed to you.',
+      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 2,000 days is signed to you.',
     code: 'git --version\ngit config --global user.name "Sumit Rawal"\ngit config --global user.email "you@email.com"',
   },
   {
@@ -165,16 +169,16 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-amber',
     subtitle: '4 AM Wake · Meditation 4:00 AM · Study 4:30–7:30 AM',
     description:
-      'Wake at 4:00 AM → meditation 4:00–4:30 AM → study 4:30–7:30 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 2,100 days.',
+      'Wake at 4:00 AM → meditation 4:00–4:30 AM → study 4:30–7:30 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 2,000 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
     icon: '🗺️',
     title: 'The 5-Year Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '21 skills × 100 days each · Day 1 = 24 Aug 2026',
+    subtitle: '20 skills × 100 days each · Day 1 = 24 Aug 2026 · ends 13 Feb 2032',
     description:
-      'Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1901–2000) → Capstone (Days 2001–2100, NexusAI launch). 2,100 days total. Capstone = NexusAI, built daily throughout.',
+      'Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1901–2000, 13 Feb 2032). 2,000 days total. NexusAI capstone built daily throughout all 2,000 days.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
@@ -291,7 +295,7 @@ export default function Day000() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>5 Years</span>
-              <span>2100 Days</span>
+              <span>2000 Days</span>
               <span>Python Stack</span>
               <span>Day 0 · 23 Aug 2026</span>
             </div>
@@ -402,7 +406,7 @@ export default function Day000() {
           <span>#PythonStack</span>
           <span>#AgenticAI</span>
           <span>#5Years</span>
-          <span>#2100Days</span>
+          <span>#2000Days</span>
         </footer>
       </div>
     </div>
