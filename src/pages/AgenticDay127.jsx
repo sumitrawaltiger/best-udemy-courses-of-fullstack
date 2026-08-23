@@ -69,7 +69,7 @@ export default function AgenticDay127() {
     <StandaloneJourneyPage
       dayNumber={127}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 127 · 27 Dec 2026"
+      dateLabel="Agentic AI Day 127 · 28 Dec 2026"
       prev={{ href: '/agentic-day-126', label: '← Day 126' }}
       next={{ href: '/agentic-day-128', label: 'Day 128 →' }}
       tags={['Agentic AI', 'Multi-Agent', 'Phase 17']}

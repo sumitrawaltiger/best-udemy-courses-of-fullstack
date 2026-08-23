@@ -32,28 +32,28 @@ function LeetCode2000Badge({ size = 120 }) {
 }
 
 // ── Skill calendar helpers ───────────────────────────────────────────────────
-const _CAL_DAY1 = new Date(2026, 7, 23); // 23 Aug 2026
+const _CAL_DAY1 = new Date(2026, 7, 24); // 24 Aug 2026
 function _calDate(dayN) {
   const d = new Date(_CAL_DAY1);
   d.setDate(d.getDate() + dayN - 1);
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-// ── 21 skills · 2,100 days (uniform 100 days each) ────────────────────────
+// ── 22 skills · 2,200 days (uniform 100 days each) ────────────────────────
 // Python (1–100) → FastAPI (101–200) → Agentic AI (201–300) →
 // JavaScript (301–400) → TypeScript (401–500) → React JS (501–600) →
 // Next JS (601–700) → React Native (701–800) → Databases (801–900) →
-// Express JS (901–1000) → J2SE (1001–1100) → Spring Boot (1101–1200) →
-// Kafka (1201–1300) → Microservices (1301–1400) → Automation Testing (1401–1500) →
-// DevOps (1501–1600) → Cloud / AWS (1601–1700) → SRE (1701–1800) →
-// System Design (1801–1900) → DSA (1901–2000) → Capstone (2001–2100).
+// Express JS (901–1000) → NestJS (1001–1100) → J2SE (1101–1200) →
+// JPA (1201–1300) → Spring Boot (1301–1400) → Microservices (1401–1500) →
+// Automation Testing (1501–1600) → DevOps (1601–1700) → Cloud / AWS (1701–1800) →
+// SRE (1801–1900) → System Design (1901–2000) → DSA (2001–2100) → Capstone (2101–2200).
 // Calendar dates are intentionally NOT shown (HR-facing page).
 
 const SKILL_DAYS = [
   [1, 100], [101, 200], [201, 300], [301, 400], [401, 500], [501, 600], [601, 700],
   [701, 800], [801, 900], [901, 1000], [1001, 1100], [1101, 1200], [1201, 1300],
   [1301, 1400], [1401, 1500], [1501, 1600], [1601, 1700], [1701, 1800], [1801, 1900],
-  [1901, 2000], [2001, 2100],
+  [1901, 2000], [2001, 2100], [2101, 2200],
 ];
 
 const SKILLS = [
@@ -152,109 +152,119 @@ const SKILLS = [
       { icon: '🟢', title: 'Express JS / Node JS', detail: 'REST APIs · middleware · Prisma · JWT auth & deployment', source: 'ChaiCode', to: '/nextjs' },
     ],
   },
-  // ── Java domain: Skills 11–15 ─────────────────────────────────────────────
+  // ── NestJS: Skill 11 — enterprise Node.js after Express ──────────────────
   {
-    id: 's11', arcClass: 'y3', icon: '☕',
-    label: 'Skill 11 · J2SE',
+    id: 's11', arcClass: 'y3', icon: '🐈',
+    label: 'Skill 11 · NestJS',
     tagline: 'Days 1001–1100', duration: '100 days',
+    blurb: 'Enterprise TypeScript backend — NestJS modules, controllers, providers, dependency injection, REST APIs, WebSockets, and production deployment. The Spring Boot of Node.js.',
+    items: [
+      { icon: '🐈', title: 'NestJS', detail: 'Modules · controllers · DI · REST APIs · WebSockets · guards · pipes · deployment', source: 'Udemy', to: '/java' },
+    ],
+  },
+  // ── Java domain: Skills 12–15 ─────────────────────────────────────────────
+  {
+    id: 's12', arcClass: 'y3', icon: '☕',
+    label: 'Skill 12 · J2SE',
+    tagline: 'Days 1101–1200', duration: '100 days',
     blurb: 'Core Java — OOP, collections, exceptions, multithreading, and the language fundamentals that underpin the entire Java ecosystem.',
     items: [
       { icon: '☕', title: 'J2SE', detail: 'Core Java — OOP · collections · exceptions · multithreading', source: 'Udemy', to: '/java' },
     ],
   },
   {
-    id: 's12', arcClass: 'y3', icon: '🍃',
-    label: 'Skill 12 · Spring Boot',
-    tagline: 'Days 1101–1200', duration: '100 days',
-    blurb: 'The premier Java framework — Spring Boot, Spring Data JPA, REST APIs, Spring Security, and enterprise-grade application patterns.',
-    items: [
-      { icon: '🍃', title: 'Spring Boot', detail: 'Spring Boot · Spring Data JPA · REST APIs · Spring Security', source: 'Udemy', to: '/java' },
-    ],
-  },
-  {
-    id: 's13', arcClass: 'y3', icon: '📨',
-    label: 'Skill 13 · Kafka',
+    id: 's13', arcClass: 'y3', icon: '🗃️',
+    label: 'Skill 13 · JPA',
     tagline: 'Days 1201–1300', duration: '100 days',
-    blurb: 'Distributed event streaming — Kafka fundamentals, Kafka Streams, Spring Kafka integration, and event-driven architecture patterns used in production microservices.',
+    blurb: 'Java Persistence API — Hibernate, entity mapping, JPQL, relationships, transactions, and the data layer that powers every Spring Boot application.',
     items: [
-      { icon: '📨', title: 'Apache Kafka', detail: 'Kafka fundamentals · Kafka Streams · Spring Kafka · event-driven architecture · CQRS', source: 'Udemy', to: '/java' },
+      { icon: '🗃️', title: 'JPA / Hibernate', detail: 'Entity mapping · JPQL · relationships · transactions · Hibernate ORM · Spring Data JPA basics', source: 'Udemy', to: '/java' },
     ],
   },
   {
-    id: 's14', arcClass: 'y3', icon: '🕸️',
-    label: 'Skill 14 · Microservices',
+    id: 's14', arcClass: 'y3', icon: '🍃',
+    label: 'Skill 14 · Spring Boot',
     tagline: 'Days 1301–1400', duration: '100 days',
-    blurb: 'Distributed systems — microservices architecture, API gateway, and service discovery with Java.',
+    blurb: 'The premier Java framework — Spring Boot, REST APIs, Spring Security, Spring Cloud, and enterprise-grade application patterns. Built on top of the JPA foundation from Skill 13.',
     items: [
-      { icon: '🕸️', title: 'Microservices', detail: 'Microservices architecture · API gateway · service discovery', source: 'Udemy', to: '/java' },
+      { icon: '🍃', title: 'Spring Boot', detail: 'Spring Boot · REST APIs · Spring Security · Spring Cloud · enterprise patterns', source: 'Udemy', to: '/java' },
     ],
   },
   {
-    id: 's15', arcClass: 'y3', icon: '🧪',
-    label: 'Skill 15 · Automation Testing',
+    id: 's15', arcClass: 'y3', icon: '🕸️',
+    label: 'Skill 15 · Microservices',
     tagline: 'Days 1401–1500', duration: '100 days',
+    blurb: 'Distributed systems — microservices architecture, API gateway, service discovery, and event-driven patterns with Java.',
+    items: [
+      { icon: '🕸️', title: 'Microservices', detail: 'Microservices architecture · API gateway · service discovery · event-driven · CQRS', source: 'Udemy', to: '/java' },
+    ],
+  },
+  {
+    id: 's16', arcClass: 'y3', icon: '🧪',
+    label: 'Skill 16 · Automation Testing',
+    tagline: 'Days 1501–1600', duration: '100 days',
     blurb: 'End-to-end test automation after the full Java stack — JUnit 5, Mockito, Testcontainers, REST-assured, Pact contract tests, and JMeter/Gatling for performance.',
     items: [
       { icon: '🧪', title: 'Automation Testing', detail: 'JUnit · Mockito · Testcontainers · REST-assured · Pact · JMeter', source: 'Udemy', to: '/java' },
     ],
   },
-  // ── DevOps / Cloud domain: Skills 16–17 ──────────────────────────────────
+  // ── DevOps / Cloud domain: Skills 17–18 ──────────────────────────────────
   {
-    id: 's16', arcClass: 'y5', icon: '🚀',
-    label: 'Skill 16 · DevOps',
-    tagline: 'Days 1501–1600', duration: '100 days',
-    blurb: 'Starts with 30 days of Docker as the non-negotiable foundation — containers, images, volumes, Compose. Then Linux, CI/CD pipelines, and the full KodeKloud DevOps path. Docker depth here is what makes SRE in Skill 18 click.',
+    id: 's17', arcClass: 'y5', icon: '🚀',
+    label: 'Skill 17 · DevOps',
+    tagline: 'Days 1601–1700', duration: '100 days',
+    blurb: 'Starts with 30 days of Docker as the non-negotiable foundation — containers, images, volumes, Compose. Then Linux, CI/CD pipelines, and the full KodeKloud DevOps path. Docker depth here is what makes SRE in Skill 19 click.',
     items: [
-      { icon: '🐳', title: 'Docker Foundation', detail: 'Days 1501–1530 · containers · images · volumes · Compose · registries', source: 'KodeKloud', to: '/devops' },
+      { icon: '🐳', title: 'Docker Foundation', detail: 'Days 1601–1630 · containers · images · volumes · Compose · registries', source: 'KodeKloud', to: '/devops' },
       { icon: '🚀', title: 'DevOps & CI/CD', detail: 'Linux · CI/CD pipelines · GitHub Actions · Jenkins · monitoring', source: 'KodeKloud', to: '/devops' },
     ],
   },
   {
-    id: 's17', arcClass: 'y5', icon: '☁️',
-    label: 'Skill 17 · Cloud (AWS)',
-    tagline: 'Days 1601–1700', duration: '100 days',
+    id: 's18', arcClass: 'y5', icon: '☁️',
+    label: 'Skill 18 · Cloud (AWS)',
+    tagline: 'Days 1701–1800', duration: '100 days',
     blurb: '100 days of AWS — core cloud services, architecture patterns, and production-grade cloud engineering.',
     items: [
       { icon: '☁️', title: 'AWS Cloud', detail: '100 Days of AWS — core services and cloud architecture', source: 'KodeKloud', to: '/aws' },
     ],
   },
-  // ── SRE: Skill 18 ───────────────────────────────────────────────────────
+  // ── SRE: Skill 19 ───────────────────────────────────────────────────────
   {
-    id: 's18', arcClass: 'y5', icon: '☸️',
-    label: 'Skill 18 · SRE',
-    tagline: 'Days 1701–1800', duration: '100 days',
+    id: 's19', arcClass: 'y5', icon: '☸️',
+    label: 'Skill 19 · SRE',
+    tagline: 'Days 1801–1900', duration: '100 days',
     blurb: 'Site Reliability Engineering — Kubernetes (CKA prep), Helm, Istio, EKS, GitOps with ArgoCD/Flux, Prometheus/Grafana observability, SLO/SLA/SLI, incident response, and production reliability at scale.',
     items: [
       { icon: '☸️', title: 'SRE', detail: 'Kubernetes · CKA prep · Helm · Istio · EKS · GitOps · Prometheus/Grafana · SLO/SLA/SLI', source: 'KodeKloud', to: '/k8s' },
     ],
   },
-  // ── System Design: Skill 19 ──────────────────────────────────────────────
+  // ── System Design: Skill 20 ──────────────────────────────────────────────
   {
-    id: 's19', arcClass: 'y5', icon: '🏗️',
-    label: 'Skill 19 · System Design',
-    tagline: 'Days 1801–1900', duration: '100 days',
+    id: 's20', arcClass: 'y5', icon: '🏗️',
+    label: 'Skill 20 · System Design',
+    tagline: 'Days 1901–2000', duration: '100 days',
     blurb: 'The art of building at scale — HLD/LLD, CAP theorem, distributed systems, database design, caching, message queues, and case studies (design Twitter, Uber, Netflix).',
     items: [
       { icon: '🏗️', title: 'System Design', detail: 'HLD/LLD · scalability · distributed systems · case studies · mock interviews', source: 'ChaiCode + GfG', to: '/interview' },
     ],
   },
-  // ── DSA: Skill 20 ─────────────────────────────────────────────────────────
+  // ── DSA: Skill 21 ─────────────────────────────────────────────────────────
   {
-    id: 's20', arcClass: 'y5', icon: '🧠',
-    label: 'Skill 20 · DSA',
-    tagline: 'Days 1901–2000', duration: '100 days',
-    blurb: 'The final interview-prep sprint — Striver\'s A2Z Sheet + NeetCode 150. Pattern-based problem solving: arrays, strings, two pointers, sliding window, binary search, trees, graphs, dynamic programming, and backtracking. Back-to-back with System Design (Skills 19+20) = a 200-day interview-preparation block. Followed by Skill 21 · Capstone.',
+    id: 's21', arcClass: 'y5', icon: '🧠',
+    label: 'Skill 21 · DSA',
+    tagline: 'Days 2001–2100', duration: '100 days',
+    blurb: 'The final interview-prep sprint — Striver\'s A2Z Sheet + NeetCode 150. Pattern-based problem solving: arrays, strings, two pointers, sliding window, binary search, trees, graphs, dynamic programming, and backtracking. Back-to-back with System Design (Skills 20+21) = a 200-day interview-preparation block. Followed by Skill 22 · Capstone.',
     items: [
       { icon: '📋', title: "Striver's A2Z Sheet", detail: 'Step-by-step pattern coverage — arrays → linked lists → binary search → trees → graphs → DP', source: 'takeUforward', to: '/interview' },
       { icon: '🎯', title: 'NeetCode 150', detail: 'Curated 150-problem set — most common patterns asked in FAANG & product-company interviews', source: 'NeetCode.io', to: '/interview' },
     ],
   },
-  // ── Capstone: Skill 21 ────────────────────────────────────────────────────
+  // ── Capstone: Skill 22 ────────────────────────────────────────────────────
   {
-    id: 's21', arcClass: 'capstone', icon: '🚀',
-    label: 'Skill 21 · Capstone',
-    tagline: 'Days 2001–2100', duration: '100 days',
-    blurb: 'The grand finale — 100 dedicated days to launch NexusAI into production, polish the full portfolio, write technical case studies for all 20 skills, contribute to open source, and complete final interview preparation. NexusAI (built daily throughout all 2,100 days) ships here.',
+    id: 's22', arcClass: 'capstone', icon: '🚀',
+    label: 'Skill 22 · Capstone',
+    tagline: 'Days 2101–2200', duration: '100 days',
+    blurb: 'The grand finale — 100 dedicated days to launch NexusAI into production, polish the full portfolio, write technical case studies for all 21 skills, contribute to open source, and complete final interview preparation. NexusAI (built daily throughout all 2,200 days) ships here.',
     items: [
       { icon: '🚀', title: 'NexusAI Launch', detail: 'Production deploy · portfolio polish · case studies · open source · final interview prep', source: 'Self-directed', to: '/' },
     ],
@@ -262,9 +272,9 @@ const SKILLS = [
 ];
 
 const STATS = [
-  { value: '21', label: 'skills · one at a time' },
+  { value: '22', label: 'skills · one at a time' },
   { value: '100', label: 'days per skill · uniform' },
-  { value: '69', label: 'months · 2,100 days' },
+  { value: '72', label: 'months · 2,200 days' },
   { value: '40+', label: 'technologies' },
 ];
 
@@ -287,15 +297,15 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 Day 0 setup · 21 skills · 100d each · 2,100 days</span>
-        <h1 className="roadmap-hero-title">21 Skills, 2,100 Days</h1>
+        <span className="roadmap-hero-badge">📍 Day 0 setup · 22 skills · 100d each · 2,200 days</span>
+        <h1 className="roadmap-hero-title">22 Skills, 2,200 Days</h1>
         <p className="roadmap-hero-sub">
-          Starts with <strong>Day 0 — environment setup</strong>, then <strong>21 skills</strong>{' '}
+          Starts with <strong>Day 0 — environment setup</strong>, then <strong>22 skills</strong>{' '}
           mastered one at a time — <strong>Python → FastAPI → Agentic AI → JavaScript → TypeScript
-          → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot
-          → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA → Capstone</strong> —{' '}
-          <strong>21 skills mastered to depth — 100 days each, 69 months (2,100 days)</strong> of focused daily practice,
-          front to back. Capstone project built daily as a side project throughout all 2,100 days.
+          → React JS → Next JS → React Native → Databases → Express JS → NestJS → J2SE → JPA
+          → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA → Capstone</strong> —{' '}
+          <strong>22 skills mastered to depth — 100 days each, 72 months (2,200 days)</strong> of focused daily practice,
+          front to back. Capstone project built daily as a side project throughout all 2,200 days.
         </p>
         <div className="roadmap-stats">
           {STATS.map((s) => (
@@ -313,7 +323,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2100_days.png"
-          alt="21 Skills. 2,100 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA → Capstone. Day 1: 23 Aug 2026 · Day 2,100: 22 May 2032."
+          alt="22 Skills. 2,200 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → NestJS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA → Capstone. Day 1: 24 Aug 2026 · Day 2,200: 31 Aug 2032."
           loading="eager"
           style={{
             width: '100%',
@@ -367,7 +377,7 @@ export default function RoadmapHome() {
           </table>
         </div>
         <p style={{ textAlign: 'center', color: '#6b7b8e', fontSize: '0.75rem', marginTop: '10px' }}>
-          Day 1 = 23 Aug 2026 · 21 skills · 2,100 days · journey ends 22 May 2032
+          Day 1 = 24 Aug 2026 · 22 skills · 2,200 days · journey ends 31 Aug 2032
         </p>
       </section>
 
@@ -446,7 +456,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">21 skills · 100 days each · 2,100 days, front to back</p>
+            <p className="roadmap-finish-date">22 skills · 100 days each · 2,200 days, front to back</p>
           </div>
         </div>
       </div>
@@ -472,7 +482,7 @@ export default function RoadmapHome() {
               Target: 10 Feb 2032 · Day 2,000
             </p>
             <p style={{ color: 'rgba(200,212,224,0.82)', fontSize: '0.82rem', lineHeight: 1.65, marginBottom: '12px' }}>
-              1 LeetCode daily challenge every single day — Day 1 (23 Aug 2026) through Day 2,000 (10 Feb 2032).
+              1 LeetCode daily challenge every single day — Day 1 (24 Aug 2026) through Day 2,000 (13 Feb 2032).
               2,000 consecutive submissions earns this badge the exact same day the LeetCode milestone lands.
               The discipline badge that proves the entire journey.
             </p>
@@ -496,16 +506,16 @@ export default function RoadmapHome() {
       <section className="roadmap-flow">
         <h2 className="roadmap-flow-title">The flow, end to end</h2>
         <p className="roadmap-flow-text">
-          Day 0 setup, then 21 skills — 100 days each, calibrated to depth:{' '}
+          Day 0 setup, then 22 skills — 100 days each, calibrated to depth:{' '}
           <strong>Python</strong> {'->'} <strong>FastAPI</strong> {'->'} <strong>Agentic AI</strong> (LangChain, LangGraph, MCP) {'->'}
           {' '}<strong>JavaScript</strong> {'->'} <strong>TypeScript</strong> {'->'}
           {' '}<strong>React JS</strong> {'->'} <strong>Next JS</strong> {'->'} <strong>React Native</strong> {'->'}
-          {' '}<strong>Express JS</strong> {'->'} <strong>Databases</strong> (PostgreSQL · MongoDB · Redis) {'->'} <strong>J2SE</strong> {'->'} <strong>Spring Boot</strong> {'->'} <strong>Kafka</strong> {'->'} <strong>Microservices</strong> {'->'} <strong>Automation Testing</strong> {'->'}
+          {' '}<strong>Databases</strong> (PostgreSQL · MongoDB · Redis) {'->'} <strong>Express JS</strong> {'->'} <strong>NestJS</strong> {'->'} <strong>J2SE</strong> {'->'} <strong>JPA</strong> {'->'} <strong>Spring Boot</strong> {'->'} <strong>Microservices</strong> {'->'} <strong>Automation Testing</strong> {'->'}
           {' '}<strong>DevOps</strong> {'->'} <strong>Cloud (AWS)</strong> {'->'}
           {' '}<strong>SRE</strong> {'->'} <strong>System Design</strong> {'->'} <strong>DSA</strong> {'->'}
           {' '}<strong>Capstone</strong> (NexusAI production launch). One skill at a time, fully focused.
-          DSA practiced daily (1 LeetCode/day) throughout all 21 skills.
-          69 months (2,100 days) end to end.
+          DSA practiced daily (1 LeetCode/day) throughout all 22 skills.
+          72 months (2,200 days) end to end.
         </p>
         <div className="roadmap-flow-actions">
           <Link to="/python" className="btn btn-lg roadmap-btn-primary">
