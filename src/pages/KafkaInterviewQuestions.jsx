@@ -16,6 +16,7 @@ export default function KafkaInterviewQuestions() {
       questions={KAFKA_INTERVIEW_QUESTIONS}
       categories={KAFKA_QUESTION_CATEGORIES}
       search={searchKafkaQuestions}
+      downloadPdf={{ href: '/java-notes/kafka-interview-questions.pdf', label: 'Kafka Interview Questions PDF' }}
       sourceNote={
         <p>
           The tricky, real-world Kafka questions that separate "I've used Kafka" from "I understand
