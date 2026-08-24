@@ -43,8 +43,8 @@ function _calDate(dayN) {
 // Python (1–100) → FastAPI (101–200) → Agentic AI (201–300) →
 // JavaScript (301–400) → TypeScript (401–500) → React JS (501–600) →
 // Next JS (601–700) → React Native (701–800) → Databases (801–900) →
-// Express JS (901–1000) → J2SE (1001–1100) → JPA (1101–1200) →
-// Spring Boot (1201–1300) → Microservices (1301–1400) → Automation Testing (1401–1500) →
+// Express JS (901–1000) → J2SE (1001–1100) → Spring Boot (1101–1200) →
+// Kafka (1201–1300) → Microservices (1301–1400) → Automation Testing (1401–1500) →
 // DevOps (1501–1600) → Cloud / AWS (1601–1700) → SRE (1701–1800) →
 // System Design (1801–1900) → DSA (1901–2000). No separate Capstone block.
 // Calendar dates are intentionally NOT shown (HR-facing page).
@@ -163,21 +163,21 @@ const SKILLS = [
     ],
   },
   {
-    id: 's12', arcClass: 'y3', icon: '🗃️',
-    label: 'Skill 12 · JPA',
+    id: 's12', arcClass: 'y3', icon: '🍃',
+    label: 'Skill 12 · Spring Boot',
     tagline: 'Days 1101–1200', duration: '100 days',
-    blurb: 'Java Persistence API — Hibernate, entity mapping, JPQL, relationships, transactions, and the data layer that powers every Spring Boot application.',
+    blurb: 'The premier Java framework — Spring Boot, REST APIs, Spring Data JPA, Hibernate, Spring Security, Spring Cloud, and enterprise-grade application patterns.',
     items: [
-      { icon: '🗃️', title: 'JPA / Hibernate', detail: 'Entity mapping · JPQL · relationships · transactions · Hibernate ORM · Spring Data JPA basics', source: 'Udemy', to: '/java' },
+      { icon: '🍃', title: 'Spring Boot', detail: 'Spring Boot · REST APIs · Spring Data JPA · Hibernate · Spring Security · Spring Cloud', source: 'Udemy', to: '/java' },
     ],
   },
   {
-    id: 's13', arcClass: 'y3', icon: '🍃',
-    label: 'Skill 13 · Spring Boot',
+    id: 's13', arcClass: 'y3', icon: '📨',
+    label: 'Skill 13 · Kafka',
     tagline: 'Days 1201–1300', duration: '100 days',
-    blurb: 'The premier Java framework — Spring Boot, REST APIs, Spring Security, Spring Cloud, and enterprise-grade application patterns. Built on top of the JPA foundation from Skill 12.',
+    blurb: 'Event-driven architecture — Apache Kafka, topics, partitions, consumer groups, delivery guarantees, Kafka Streams, Spring Kafka, and CQRS/event sourcing patterns.',
     items: [
-      { icon: '🍃', title: 'Spring Boot', detail: 'Spring Boot · REST APIs · Spring Security · Spring Cloud · enterprise patterns', source: 'Udemy', to: '/java' },
+      { icon: '📨', title: 'Apache Kafka', detail: 'Topics · partitions · consumer groups · delivery guarantees · Kafka Streams · Spring Kafka · CQRS', source: 'Udemy', to: '/java' },
     ],
   },
   {
@@ -303,7 +303,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png"
-          alt="21 Skills. 2,100 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA. Day 1: 25 Aug 2026 · Day 2,000: 14 Feb 2032."
+          alt="21 Skills. 2,100 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA. Day 1: 25 Aug 2026 · Day 2,000: 14 Feb 2032."
           loading="eager"
           style={{
             width: '100%',
@@ -490,7 +490,7 @@ export default function RoadmapHome() {
           <strong>Python</strong> {'->'} <strong>FastAPI</strong> {'->'} <strong>Agentic AI</strong> (LangChain, LangGraph, MCP) {'->'}
           {' '}<strong>JavaScript</strong> {'->'} <strong>TypeScript</strong> {'->'}
           {' '}<strong>React JS</strong> {'->'} <strong>Next JS</strong> {'->'} <strong>React Native</strong> {'->'}
-          {' '}<strong>Databases</strong> (PostgreSQL · MongoDB · Redis) {'->'} <strong>Express JS</strong> {'->'} <strong>J2SE</strong> {'->'} <strong>JPA</strong> {'->'} <strong>Spring Boot</strong> {'->'} <strong>Microservices</strong> {'->'} <strong>Automation Testing</strong> {'->'}
+          {' '}<strong>Databases</strong> (PostgreSQL · MongoDB · Redis) {'->'} <strong>Express JS</strong> {'->'} <strong>J2SE</strong> {'->'} <strong>Spring Boot</strong> {'->'} <strong>Kafka</strong> {'->'} <strong>Microservices</strong> {'->'} <strong>Automation Testing</strong> {'->'}
           {' '}<strong>DevOps</strong> {'->'} <strong>Cloud (AWS)</strong> {'->'}
           {' '}<strong>SRE</strong> {'->'} <strong>System Design</strong> {'->'} <strong>DSA</strong> (Striver A2Z + NeetCode 150). One skill at a time, fully focused.
           DSA practiced daily (1 LeetCode/day) throughout all 20 skills.

@@ -98,7 +98,7 @@ export const INTERVIEW_PREP_WEEKS = 0;
 // Skill order: Python(1-100) → FastAPI(101-200) → Agentic AI(201-300) → JavaScript(301-400) →
 // TypeScript(401-500) → React JS(501-600) → Next JS(601-700) → React Native(701-800) →
 // Databases(801-900) → Express JS(901-1000) → J2SE(1001-1100) →
-// JPA(1101-1200) → Spring Boot(1201-1300) → Microservices(1301-1400) →
+// Spring Boot(1101-1200) → Kafka(1201-1300) → Microservices(1301-1400) →
 // Automation Testing(1401-1500) → DevOps(1501-1600) → Cloud/AWS(1601-1700) →
 // SRE(1701-1800) → System Design(1801-1900) → DSA(1901-2000).
 // NexusAI capstone built daily throughout all 2,000 days — no separate Capstone skill block.

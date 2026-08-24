@@ -69,7 +69,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 5-year (2,000-day) plan — 20 skills × 100 days each: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1901–2000, ends 14 Feb 2032). NexusAI capstone built daily throughout all 2,000 days',
+    text: 'reviewed the full 5-year (2,000-day) plan — 20 skills × 100 days each: Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1901–2000, ends 14 Feb 2032). NexusAI capstone built daily throughout all 2,000 days',
   },
   {
     title: 'Ready for Skill 1 · Python',
@@ -178,7 +178,7 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-cyan',
     subtitle: '20 skills × 100 days each · Day 1 = 25 Aug 2026 · ends 14 Feb 2032',
     description:
-      'Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → JPA → Spring Boot → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1901–2000, 14 Feb 2032). 2,000 days total. NexusAI capstone built daily throughout all 2,000 days.',
+      'Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1901–2000, 14 Feb 2032). 2,000 days total. NexusAI capstone built daily throughout all 2,000 days.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
