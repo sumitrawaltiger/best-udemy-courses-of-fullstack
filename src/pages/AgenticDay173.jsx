@@ -59,7 +59,7 @@ const practice = [
     icon: '🔜',
     title: 'Next: QA Gates',
     titleClass: 'card-title-amber',
-    subtitle: 'Day 174 · 31 Jan 2027',
+    subtitle: 'Day 174 · 1 Feb 2027',
     description: 'Tomorrow — release gates for multi-step workflows and agent QA discipline.',
     link: { href: '/agentic-day-174', label: 'Go to Day 174 →' },
   },
@@ -97,7 +97,7 @@ export default function AgenticDay173() {
     <StandaloneJourneyPage
       dayNumber={173}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 173 · 12 Feb 2027"
+      dateLabel="Agentic AI Day 173 · 13 Feb 2027"
       prev={{ href: '/agentic-day-172', label: '← Day 172' }}
       next={{ href: '/agentic-day-174', label: 'Day 174 →' }}
       tags={['Agentic AI', 'Feedback', 'Evals']}
