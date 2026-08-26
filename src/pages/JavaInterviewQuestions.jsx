@@ -22,6 +22,7 @@ export default function JavaInterviewQuestions() {
         { href: '/java-interview-help.pdf', label: 'Java Interview Help (PDF)' },
         { href: '/1000-java-interview-questions.pdf', label: '1000 Java Interview Questions (PDF)' },
         { href: '/java-notes/java_streams_api_interview_questions.pdf', label: 'Java Streams API Interview Questions (PDF)' },
+        { href: '/java-notes/jpmorgan.pdf', label: 'JP Morgan Interview Questions (PDF)' },
       ]}
       sourceNote={
         <p>

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-/** Day 1 is 25 Aug 2026 (Phase 1 · Python Stack). */
-/** Target: 15 Feb 2032, 00:00 — end of Day 2000 (14 Feb 2032). 20 skills · 2,000 days. */
-export const JOURNEY_END = new Date(2032, 1, 15, 0, 0, 0, 0);
+/** Day 1 is 31 Aug 2026 (Phase 1 · Python Stack). */
+/** Target: 1 Mar 2032, 00:00 — end of Day 2009 (29 Feb 2032). 20 skills · 2,009 days. */
+export const JOURNEY_END = new Date(2032, 2, 1, 0, 0, 0, 0);
 
 function getRemaining(now = new Date()) {
   const diff = Math.max(0, JOURNEY_END.getTime() - now.getTime());
@@ -19,7 +19,7 @@ function pad(n) {
 }
 
 /**
- * Live countdown to the end of the journey (2 Feb 2032) — days, hours, minutes, seconds.
+ * Live countdown to the end of the journey (29 Feb 2032) — days, hours, minutes, seconds.
  * @param {{ variant?: 'banner' | 'hero' }} props
  */
 export default function JourneyCountdown({ variant = 'banner' }) {
