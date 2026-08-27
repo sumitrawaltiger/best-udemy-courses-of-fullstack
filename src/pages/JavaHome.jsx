@@ -383,6 +383,60 @@ export default function JavaHome() {
           </div>
         </section>
 
+        <section className="roadmap" id="multithreading">
+          <div className="section-header">
+            <h2>🧵 Multithreading & Concurrency</h2>
+            <a href="/java-notes/multithreading.pdf" download className="btn btn-java">
+              📥 Download PDF
+            </a>
+          </div>
+          <p className="section-desc">
+            <strong>Multithreading and Concurrency</strong> — 147 pages of scenario-based Java concurrency notes covering
+            every topic that appears in backend interviews. <strong>Thread Basics & Lifecycle</strong>,{' '}
+            <strong>Thread Communication & Locks</strong> (wait/notify, ReentrantLock, deadlock prevention),{' '}
+            <strong>Executors & Thread Pooling</strong> (ExecutorService, Callable/Future, ScheduledExecutorService),{' '}
+            <strong>Advanced Concurrency Utilities</strong> (CountDownLatch, CyclicBarrier, Semaphore, BlockingQueue),{' '}
+            <strong>Parallel Streams & CompletableFuture</strong>, and{' '}
+            <strong>Thread Safety & Data Consistency</strong> (AtomicInteger, ConcurrentHashMap, volatile, ThreadLocal, ReadWriteLock).
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginTop: '1rem' }}>
+            {[
+              'Thread Basics & Lifecycle',
+              'Thread Communication & Locks',
+              'Executors & Thread Pooling',
+              'CountDownLatch · CyclicBarrier',
+              'Semaphore · BlockingQueue',
+              'CompletableFuture',
+              'Parallel Streams',
+              'AtomicInteger · ConcurrentHashMap',
+              'volatile · ThreadLocal',
+              'Deadlock Prevention',
+              'ReadWriteLock',
+              'ExecutorService Optimisation',
+            ].map((tag) => (
+              <span key={tag} style={{
+                background: 'rgba(229,57,53,0.12)', border: '1px solid rgba(229,57,53,0.35)',
+                borderRadius: '6px', padding: '0.25rem 0.65rem',
+                fontSize: '0.78rem', fontWeight: 600, color: '#ef9a9a',
+              }}>{tag}</span>
+            ))}
+          </div>
+          <div style={{ marginTop: '1.25rem', textAlign: 'center' }}>
+            <a
+              href="/java-notes/multithreading.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-java"
+              style={{ marginRight: '0.75rem' }}
+            >
+              📖 Open PDF
+            </a>
+            <a href="/java-notes/multithreading.pdf" download className="btn btn-java">
+              📥 Download (563 KB · 147 pages)
+            </a>
+          </div>
+        </section>
+
         <section className="roadmap">
           <h2>50-Module Java & Spring Roadmap</h2>
           <p className="section-desc">
