@@ -59,7 +59,7 @@ const practice = [
     icon: '🔜',
     title: 'Next: Incidents',
     titleClass: 'card-title-amber',
-    subtitle: 'Day 172 · 24 Aug 2027',
+    subtitle: 'Day 172 · 5 Feb 2027',
     description: 'Tomorrow — incident response, severity levels, and recovery playbooks for agent systems.',
     link: { href: '/agentic-day-172', label: 'Go to Day 172 →' },
   },
@@ -97,7 +97,7 @@ export default function AgenticDay171() {
     <StandaloneJourneyPage
       dayNumber={171}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 171 · 5 Sep 2027"
+      dateLabel="Agentic AI Day 171 · 17 Feb 2027"
       prev={{ href: '/agentic-day-170', label: '← Day 170' }}
       next={{ href: '/agentic-day-172', label: 'Day 172 →' }}
       tags={['Agentic AI', 'Post-Launch', 'Operations']}
