@@ -65,15 +65,15 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Study routine',
-    text: 'locked the routine: wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST (UTC+5:30, 3 hrs/day), every single day for 2,009 days',
+    text: 'locked the routine: wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST (UTC+5:30, 3 hrs/day), every single day for 2,000 days',
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 5-year (2,000-day) plan — 20 skills × 100 days each (uniform, all 100d): Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1910–2009, ends 20 Feb 2032). NexusAI capstone built daily throughout all 2,009 days',
+    text: 'reviewed the full 5-year (2,000-day) plan — 20 skills × 100 days each (uniform, all 100d): Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1901–2000, ends 20 Feb 2032). NexusAI capstone built daily throughout all 2,000 days',
   },
   {
     title: 'Ready for Skill 1 · Python',
-    text: 'Day 1 (31 Aug 2026) starts with Skill 1: Python — core syntax, OOP, file I/O, database connectivity, and multithreading. 109 days (Days 1–109, ends 17 Dec 2026) to master the language foundation',
+    text: 'Day 1 (31 Aug 2026) starts with Skill 1: Python — core syntax, OOP, file I/O, database connectivity, and multithreading. 100 days (Days 1–100, ends 8 Dec 2026) to master the language foundation',
   },
   {
     title: 'Accounts ready',
@@ -85,11 +85,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'LeetCode streak starts',
-    text: '1 LeetCode daily challenge every single day — Day 1 (31 Aug 2026) through Day 2,000 (20 Feb 2032) earns the LeetCode 2,009 Days Badge. The streak begins tomorrow',
+    text: '1 LeetCode daily challenge every single day — Day 1 (31 Aug 2026) through Day 2,000 (20 Feb 2032) earns the LeetCode 2,000 Days Badge. The streak begins tomorrow',
   },
   {
     title: 'NexusAI Capstone · Day 0 setup',
-    text: 'created the NexusAI GitHub repo, cloned it locally, added README and .gitignore, pushed the first init commit — env setup only. From Day 1 onwards, daily commits build the platform across all 2,009 days',
+    text: 'created the NexusAI GitHub repo, cloned it locally, added README and .gitignore, pushed the first init commit — env setup only. From Day 1 onwards, daily commits build the platform across all 2,000 days',
   },
 ];
 
@@ -169,7 +169,7 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-amber',
     subtitle: '4 AM Wake · Meditation 4:30–5:00 AM · Study 5:00–8:00 AM',
     description:
-      'Wake at 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 2,009 days.',
+      'Wake at 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 2,000 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
@@ -178,7 +178,7 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-cyan',
     subtitle: '20 skills · Day 1 = 31 Aug 2026 · ends 20 Feb 2032',
     description:
-      'Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1910–2009, 29 Feb 2032). 2,009 days total. NexusAI capstone built daily throughout all 2,009 days.',
+      'Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1901–2000, 20 Feb 2032). 2,000 days total. NexusAI capstone built daily throughout all 2,000 days.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
@@ -187,7 +187,7 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-lime',
     subtitle: 'Days 1–100 · 31 Aug 2026 – 8 Dec 2026',
     description:
-      'Day 1 (31 Aug 2026) begins with Skill 1: Python — 100 days of core syntax, OOP, file I/O, database connectivity, and multithreading. Then FastAPI (Days 110–209, 18 Dec 2026 – 27 Mar 2027), then Agentic AI with LangChain, LangGraph, MCP (Days 210–309). NexusAI capstone built in parallel from Day 1.',
+      'Day 1 (31 Aug 2026) begins with Skill 1: Python — 100 days of core syntax, OOP, file I/O, database connectivity, and multithreading. Then FastAPI (Days 101–200, 9 Dec 2026 – 18 Mar 2027), then Agentic AI with LangChain, LangGraph, MCP (Days 201–300). NexusAI capstone built in parallel from Day 1.',
     link: { href: '/python', label: 'Explore the Python track →' },
   },
 ];
