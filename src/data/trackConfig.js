@@ -94,24 +94,24 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: Day 1 = 28 Aug 2026. All 20 skills = 100 days each (20 × 100 = 2000).
-// Skill order (all 100 days each): Python(1-100) → FastAPI(101-200) → AgenticAI(201-300) →
-// JS(301-400) → TS(401-500) → React(501-600) → Next(601-700) → RN(701-800) →
-// Databases(801-900) → Express(901-1000) → J2SE(1001-1100) →
-// SpringBoot(1101-1200) → Kafka(1201-1300) → Microservices(1301-1400) →
-// AutoTest(1401-1500) → DevOps(1501-1600) → AWS(1601-1700) →
-// SRE(1701-1800) → SysDesign(1801-1900) → DSA(1901-2000).
-// NexusAI capstone built daily throughout all 2,000 days — no separate Capstone skill block.
+// Full journey: Day 1 = 31 Aug 2026. Python = 109 days; all other 19 skills = 100 days each (109 + 1900 = 2009).
+// Skill order: Python(1-109) → FastAPI(110-209) → Agentic AI(210-309) → JavaScript(310-409) →
+// TypeScript(410-509) → React JS(510-609) → Next JS(610-709) → React Native(710-809) →
+// Databases(810-909) → Express JS(910-1009) → J2SE(1010-1109) →
+// Spring Boot(1110-1209) → Kafka(1210-1309) → Microservices(1310-1409) →
+// Automation Testing(1410-1509) → DevOps(1510-1609) → Cloud/AWS(1610-1709) →
+// SRE(1710-1809) → System Design(1810-1909) → DSA(1910-2009).
+// NexusAI capstone built daily throughout all 2,009 days — no separate Capstone skill block.
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
 //  chapterFactory.js = 8 Aug 2026, so module Day 1 also dates to 8 Aug 2026.)
-export const JOURNEY_START_LABEL = '28 Aug 2026';
-export const JOURNEY_END_LABEL = '17 Feb 2032';
-export const JOURNEY_TOTAL_DAYS = 2000;
-// Factory calendar: Day 1 = 28 Aug 2026 (COURSE_START); factory day N = journey Day N.
-export const JOURNEY_END_FACTORY_DAY = 2000;
+export const JOURNEY_START_LABEL = '31 Aug 2026';
+export const JOURNEY_END_LABEL = '29 Feb 2032';
+export const JOURNEY_TOTAL_DAYS = 2009;
+// Factory calendar: Day 1 = 8 Aug 2026 (COURSE_START); factory day N = journey Day N.
+export const JOURNEY_END_FACTORY_DAY = 2009;
 
-// Explicit day-offsets for the 20-skill plan — all 20 skills = 100 days each (20 × 100 = 2000).
-// Python(1-100) → FastAPI(101-200) → AgenticAI(201-300) → JS(301-400) → TS(401-500) → React(501-600) → Next(601-700) → RN(701-800) → DB(801-900) → Express(901-1000) → J2SE(1001-1100) → SpringBoot(1101-1200) → Kafka(1201-1300) → MS(1301-1400) → AutoTest(1401-1500) → DevOps(1501-1600) → AWS(1601-1700) → SRE(1701-1800) → SysDesign(1801-1900) → DSA(1901-2000).
+// Explicit day-offsets for the 20-skill plan — Python = 109 days, all others = 100 days each.
+// Python(1-109) → FastAPI(110-209) → AgenticAI(210-309) → JS(310-409) → TS(410-509) → React(510-609) → Next(610-709) → RN(710-809) → DB(810-909) → Express(910-1009) → J2SE(1010-1109) → SpringBoot(1110-1209) → Kafka(1210-1309) → MS(1310-1409) → AutoTest(1410-1509) → DevOps(1510-1609) → AWS(1610-1709) → SRE(1710-1809) → SysDesign(1810-1909) → DSA(1910-2009).
 export const TRACK_OFFSETS = {
   thunder: 0, // Thunder JavaScript — Days 1–100 (24 Jul – 31 Oct 2026)
   nextjs: 100, // React & Next.js — Days 101–150 (1 Nov – 20 Dec 2026)
