@@ -59,7 +59,7 @@ const practice = [
     icon: '🔜',
     title: 'Next: Tool Choice',
     titleClass: 'card-title-amber',
-    subtitle: 'Day 162 · 26 Jan 2027',
+    subtitle: 'Day 162 · 14 Aug 2027',
     description: 'Tomorrow — tool selection under constraints and capability allowlists.',
     link: { href: '/agentic-day-162', label: 'Go to Day 162 →' },
   },
@@ -97,7 +97,7 @@ export default function AgenticDay161() {
     <StandaloneJourneyPage
       dayNumber={161}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 161 · 7 Feb 2027"
+      dateLabel="Agentic AI Day 161 · 26 Aug 2027"
       prev={{ href: '/agentic-day-160', label: '← Day 160' }}
       next={{ href: '/agentic-day-162', label: 'Day 162 →' }}
       tags={['Agentic AI', 'Critic', 'Safety']}

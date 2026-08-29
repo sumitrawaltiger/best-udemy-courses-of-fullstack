@@ -45,7 +45,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Git & GitHub',
-    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 2,009 days of code',
+    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 2,000 days of code',
   },
   {
     title: 'VS Code',
@@ -69,7 +69,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 5-year (2,009-day) plan — 20 skills × 100 days each (Python: 109d, rest: 100d): Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1910–2009, ends 29 Feb 2032). NexusAI capstone built daily throughout all 2,009 days',
+    text: 'reviewed the full 5-year (2,000-day) plan — 20 skills × 100 days each (uniform, all 100d): Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1910–2009, ends 20 Feb 2032). NexusAI capstone built daily throughout all 2,009 days',
   },
   {
     title: 'Ready for Skill 1 · Python',
@@ -85,7 +85,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'LeetCode streak starts',
-    text: '1 LeetCode daily challenge every single day — Day 1 (31 Aug 2026) through Day 2,009 (29 Feb 2032) earns the LeetCode 2,009 Days Badge. The streak begins tomorrow',
+    text: '1 LeetCode daily challenge every single day — Day 1 (31 Aug 2026) through Day 2,000 (20 Feb 2032) earns the LeetCode 2,009 Days Badge. The streak begins tomorrow',
   },
   {
     title: 'NexusAI Capstone · Day 0 setup',
@@ -109,7 +109,7 @@ const CORE_TOOLS = [
     titleClass: 'card-title-amber',
     subtitle: 'Version Control',
     description:
-      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 2,009 days is signed to you.',
+      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 2,000 days is signed to you.',
     code: 'git --version\ngit config --global user.name "Sumit Rawal"\ngit config --global user.email "you@email.com"',
   },
   {
@@ -176,7 +176,7 @@ const STUDY_SYSTEM = [
     icon: '🗺️',
     title: 'The 5-Year Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '20 skills · Day 1 = 31 Aug 2026 · ends 29 Feb 2032',
+    subtitle: '20 skills · Day 1 = 31 Aug 2026 · ends 20 Feb 2032',
     description:
       'Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1910–2009, 29 Feb 2032). 2,009 days total. NexusAI capstone built daily throughout all 2,009 days.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
@@ -185,9 +185,9 @@ const STUDY_SYSTEM = [
     icon: '🤖',
     title: 'Day 1 · Skill 1 · Python',
     titleClass: 'card-title-lime',
-    subtitle: 'Days 1–109 · 31 Aug 2026 – 17 Dec 2026',
+    subtitle: 'Days 1–100 · 31 Aug 2026 – 8 Dec 2026',
     description:
-      'Day 1 (31 Aug 2026) begins with Skill 1: Python — 109 days of core syntax, OOP, file I/O, database connectivity, and multithreading. Then FastAPI (Days 110–209, 18 Dec 2026 – 27 Mar 2027), then Agentic AI with LangChain, LangGraph, MCP (Days 210–309). NexusAI capstone built in parallel from Day 1.',
+      'Day 1 (31 Aug 2026) begins with Skill 1: Python — 100 days of core syntax, OOP, file I/O, database connectivity, and multithreading. Then FastAPI (Days 110–209, 18 Dec 2026 – 27 Mar 2027), then Agentic AI with LangChain, LangGraph, MCP (Days 210–309). NexusAI capstone built in parallel from Day 1.',
     link: { href: '/python', label: 'Explore the Python track →' },
   },
 ];
@@ -295,7 +295,7 @@ export default function Day000() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>5 Years</span>
-              <span>2009 Days</span>
+              <span>2000 Days</span>
               <span>Python Stack</span>
               <span>Day 0 · 30 Aug 2026</span>
             </div>
@@ -316,7 +316,7 @@ export default function Day000() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">2009 DAYS · DAY 0</p>
+              <p className="day001-profile-role">2000 DAYS · DAY 0</p>
             </div>
           </div>
         </div>
@@ -386,11 +386,11 @@ export default function Day000() {
                 LeetCode 2,000 Days Badge
               </p>
               <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
-                Target: 29 Feb 2032 · Sunday · Day 2,009
+                Target: 20 Feb 2032 · Friday · Day 2,000
               </p>
               <p style={{ color: 'rgba(200,210,220,0.8)', fontSize: '0.78rem', lineHeight: 1.6, marginBottom: '10px' }}>
-                1 LeetCode problem every single day — Day 1 (31 Aug 2026) through Day 2,009 (29 Feb 2032).
-                2,009 consecutive daily submissions earns the badge on the Day 2,009 milestone.
+                1 LeetCode problem every single day — Day 1 (31 Aug 2026) through Day 2,000 (20 Feb 2032).
+                2,000 consecutive daily submissions earns the badge on the Day 2,000 milestone.
                 Consistency is the proof.
               </p>
               <a href="https://leetcode.com/problemset/" target="_blank" rel="noopener noreferrer"
@@ -406,7 +406,7 @@ export default function Day000() {
           <span>#PythonStack</span>
           <span>#AgenticAI</span>
           <span>#5Years</span>
-          <span>#2009Days</span>
+          <span>#2000Days</span>
         </footer>
       </div>
     </div>

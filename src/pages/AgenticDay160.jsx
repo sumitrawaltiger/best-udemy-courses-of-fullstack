@@ -59,7 +59,7 @@ const practice = [
     icon: '🔜',
     title: 'Next: Critic Gate',
     titleClass: 'card-title-amber',
-    subtitle: 'Day 161 · 25 Jan 2027',
+    subtitle: 'Day 161 · 13 Aug 2027',
     description: 'Tomorrow — supervision and critic gates before irreversible actions.',
     link: { href: '/agentic-day-161', label: 'Go to Day 161 →' },
   },
@@ -97,7 +97,7 @@ export default function AgenticDay160() {
     <StandaloneJourneyPage
       dayNumber={160}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 160 · 6 Feb 2027"
+      dateLabel="Agentic AI Day 160 · 25 Aug 2027"
       prev={{ href: '/agentic-day-159', label: '← Day 159' }}
       next={{ href: '/agentic-day-161', label: 'Day 161 →' }}
       tags={['Agentic AI', 'Routing', 'Supervisor']}

@@ -59,7 +59,7 @@ const practice = [
     icon: '🔜',
     title: 'Next: HITL Ops',
     titleClass: 'card-title-amber',
-    subtitle: 'Day 169 · 2 Feb 2027',
+    subtitle: 'Day 169 · 21 Aug 2027',
     description: 'Tomorrow — approval queues, audit trails, and operator workflows.',
     link: { href: '/agentic-day-169', label: 'Go to Day 169 →' },
   },
@@ -97,7 +97,7 @@ export default function AgenticDay168() {
     <StandaloneJourneyPage
       dayNumber={168}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 168 · 14 Feb 2027"
+      dateLabel="Agentic AI Day 168 · 2 Sep 2027"
       prev={{ href: '/agentic-day-167', label: '← Day 167' }}
       next={{ href: '/agentic-day-169', label: 'Day 169 →' }}
       tags={['Agentic AI', 'Memory', 'Context']}

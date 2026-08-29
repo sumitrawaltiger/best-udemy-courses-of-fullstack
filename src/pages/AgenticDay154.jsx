@@ -59,7 +59,7 @@ const practice = [
     icon: '🔜',
     title: 'Next: Quality Signals',
     titleClass: 'card-title-amber',
-    subtitle: 'Day 155 · 19 Jan 2027',
+    subtitle: 'Day 155 · 7 Aug 2027',
     description: 'Tomorrow — define success metrics and failure buckets for real AgentOps.',
     link: { href: '/agentic-day-155', label: 'Go to Day 155 →' },
   },
@@ -97,7 +97,7 @@ export default function AgenticDay154() {
     <StandaloneJourneyPage
       dayNumber={154}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 154 · 31 Jan 2027"
+      dateLabel="Agentic AI Day 154 · 19 Aug 2027"
       prev={{ href: '/agentic-day-153', label: '← Day 153' }}
       next={{ href: '/agentic-day-155', label: 'Day 155 →' }}
       tags={['Agentic AI', 'AgentOps', 'Phase 22']}
