@@ -94,13 +94,18 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: Day 1 = 31 Aug 2026. Python = 109 days; all other 19 skills = 100 days each (109 + 1900 = 2009).
-// Skill order: Python(1-109) → FastAPI(110-209) → Agentic AI(210-309) → JavaScript(310-409) →
-// TypeScript(410-509) → React JS(510-609) → Next JS(610-709) → React Native(710-809) →
-// Databases(810-909) → Express JS(910-1009) → J2SE(1010-1109) →
-// Spring Boot(1110-1209) → Kafka(1210-1309) → Microservices(1310-1409) →
-// Automation Testing(1410-1509) → DevOps(1510-1609) → Cloud/AWS(1610-1709) →
-// SRE(1710-1809) → System Design(1810-1909) → DSA(1910-2009).
+// Full journey: Day 1 = 31 Aug 2026. 6 phases · 20 skills · 2,009 days.
+// Phase 1 · Agentic AI (Days 1–182 · 6 months · ends 28 Feb 2027)
+// Phase 2 · TypeScript Stack (Days 183–548 · 1 year · ends 29 Feb 2028)
+//   JS(183-235) → TS(236-287) → React(288-339) → Next(340-391) → RN(392-443) → Express(444-495) → DB(496-548)
+// Phase 3 · Java Stack (Days 549–913 · 1 year · ends 28 Feb 2029)
+//   J2SE(549-621) → SpringBoot(622-694) → Kafka(695-767) → MS(768-840) → AutoTest(841-913)
+// Phase 4 · Python Stack (Days 914–1278 · 1 year · ends 28 Feb 2030)
+//   Python(914-1095) → FastAPI(1096-1278)
+// Phase 5 · DevOps Stack (Days 1279–1643 · 1 year · ends 28 Feb 2031)
+//   DevOps(1279-1400) → AWS(1401-1522) → SRE(1523-1643)
+// Phase 6 · Interview Prep (Days 1644–2009 · 1 year · ends 29 Feb 2032)
+//   SysDesign(1644-1826) → DSA(1827-2009)
 // NexusAI capstone built daily throughout all 2,009 days — no separate Capstone skill block.
 // (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
 //  chapterFactory.js = 8 Aug 2026, so module Day 1 also dates to 8 Aug 2026.)
