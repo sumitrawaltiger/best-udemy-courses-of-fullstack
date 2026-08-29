@@ -65,7 +65,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Study routine',
-    text: 'locked the routine: study 5:00–8:00 AM IST (UTC+5:30, 3 hrs/day), every single day for 2,009 days',
+    text: 'locked the routine: wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST (UTC+5:30, 3 hrs/day), every single day for 2,009 days',
   },
   {
     title: 'The roadmap',
@@ -167,9 +167,9 @@ const STUDY_SYSTEM = [
     icon: '⏰',
     title: 'Daily Routine',
     titleClass: 'card-title-amber',
-    subtitle: '5 AM Wake · Study 5:00–8:00 AM · 3 hrs/day',
+    subtitle: '4 AM Wake · Meditation 4:30–5:00 AM · Study 5:00–8:00 AM',
     description:
-      'Study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 2,009 days.',
+      'Wake at 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 2,009 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
@@ -336,7 +336,7 @@ export default function Day000() {
           <a href="https://github.com/sumitrawaltiger/nexusai" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             NexusAI
           </a>{' '}
-          capstone repo, and lock the routine (study 5:00–8:00 AM IST). No lectures today —
+          capstone repo, and lock the routine (wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST). No lectures today —
           clear every obstacle so <strong>Day 1 (31 Aug 2026)</strong> starts with zero friction:{' '}
           <strong>Skill 1 · Python</strong> + the NexusAI capstone begins. Sharpen the axe before the first swing.
         </p>
