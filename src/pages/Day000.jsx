@@ -69,11 +69,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 5-year (2,009-day) plan — 6 phases · 20 skills: Phase 1 Agentic AI (Days 1–182) → Phase 2 TypeScript Stack (Days 183–548) → Phase 3 Java Stack (Days 549–913) → Phase 4 Python Stack (Days 914–1278) → Phase 5 DevOps Stack (Days 1279–1643) → Phase 6 Interview Prep (Days 1644–2009, ends 29 Feb 2032). NexusAI capstone built daily throughout all 2,009 days',
+    text: 'reviewed the full 5-year (2,009-day) plan — 20 skills × 100 days each (Python: 109d, rest: 100d): Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1910–2009, ends 29 Feb 2032). NexusAI capstone built daily throughout all 2,009 days',
   },
   {
-    title: 'Ready for Phase 1 · Agentic AI',
-    text: 'Day 1 (31 Aug 2026) starts with Phase 1: Agentic AI — LangChain, LangGraph, MCP, and n8n agentic workflows. 182 days (Days 1–182, ends 28 Feb 2027) of the skills that define the next decade of software',
+    title: 'Ready for Skill 1 · Python',
+    text: 'Day 1 (31 Aug 2026) starts with Skill 1: Python — core syntax, OOP, file I/O, database connectivity, and multithreading. 109 days (Days 1–109, ends 17 Dec 2026) to master the language foundation',
   },
   {
     title: 'Accounts ready',
@@ -178,16 +178,16 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-cyan',
     subtitle: '20 skills · Day 1 = 31 Aug 2026 · ends 29 Feb 2032',
     description:
-      'Phase 1 · Agentic AI (Days 1–182) → Phase 2 · TypeScript Stack (183–548) → Phase 3 · Java Stack (549–913) → Phase 4 · Python Stack (914–1278) → Phase 5 · DevOps Stack (1279–1643) → Phase 6 · Interview Prep (1644–2009, 29 Feb 2032). 2,009 days total. NexusAI capstone built daily throughout all 2,009 days.',
+      'Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1910–2009, 29 Feb 2032). 2,009 days total. NexusAI capstone built daily throughout all 2,009 days.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
     icon: '🤖',
-    title: 'Day 1 · Phase 1 · Agentic AI',
+    title: 'Day 1 · Skill 1 · Python',
     titleClass: 'card-title-lime',
-    subtitle: 'Days 1–182 · 31 Aug 2026 – 28 Feb 2027',
+    subtitle: 'Days 1–109 · 31 Aug 2026 – 17 Dec 2026',
     description:
-      'Day 1 (31 Aug 2026) begins with Phase 1: Agentic AI — 182 days of LangChain, LangGraph, MCP, and n8n agentic workflows (ends 28 Feb 2027). Then Phase 2 TypeScript Stack (Days 183–548), then Phase 3 Java Stack (Days 549–913). NexusAI capstone built in parallel from Day 1.',
+      'Day 1 (31 Aug 2026) begins with Skill 1: Python — 109 days of core syntax, OOP, file I/O, database connectivity, and multithreading. Then FastAPI (Days 110–209, 18 Dec 2026 – 27 Mar 2027), then Agentic AI with LangChain, LangGraph, MCP (Days 210–309). NexusAI capstone built in parallel from Day 1.',
     link: { href: '/python', label: 'Explore the Python track →' },
   },
 ];
@@ -295,7 +295,7 @@ export default function Day000() {
           <div className="day001-hero-left">
             <div className="day001-tags">
               <span>5 Years</span>
-              <span>2009 Days · 6 Phases</span>
+              <span>2009 Days</span>
               <span>Python Stack</span>
               <span>Day 0 · 30 Aug 2026</span>
             </div>
@@ -338,7 +338,7 @@ export default function Day000() {
           </a>{' '}
           capstone repo, and lock the routine (wake 4 AM → fresh up 4:00–4:30 AM → study 4:30–7:30 AM IST). No lectures today —
           clear every obstacle so <strong>Day 1 (31 Aug 2026)</strong> starts with zero friction:{' '}
-          <strong>Phase 1 · Agentic AI</strong> + the NexusAI capstone begins. Sharpen the axe before the first swing.
+          <strong>Skill 1 · Python</strong> + the NexusAI capstone begins. Sharpen the axe before the first swing.
         </p>
 
         <section className="day001-learnt">
