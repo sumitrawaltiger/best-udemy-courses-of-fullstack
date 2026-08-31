@@ -32,30 +32,30 @@ function LeetCode2000Badge({ size = 120 }) {
 }
 
 // ── Phase calendar helpers ───────────────────────────────────────────────────
-const _CAL_DAY1 = new Date(2026, 7, 31); // 31 Aug 2026
+const _CAL_DAY1 = new Date(2026, 8, 1); // 1 Sep 2026
 function _calDate(dayN) {
   const d = new Date(_CAL_DAY1);
   d.setDate(d.getDate() + dayN - 1);
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-// ── 6 phases · 2,000 days ─────────────────────────────────────────────────────
-// Phase 1 · Agentic AI          Days   1–182   ·  6 months · 31 Aug 2026 – 28 Feb 2027
-// Phase 2 · TypeScript Stack    Days 183–609   · 14 months ·  1 Mar 2027 – 30 Apr 2028
-// Phase 3 · Java Stack          Days 610–974   · 12 months ·  1 May 2028 – 30 Apr 2029
-// Phase 4 · Databases           Days 975–1097  ·  4 months ·  1 May 2029 – 31 Aug 2029
-// Phase 5 · DevOps + Cloud      Days 1098–1462 · 12 months ·  1 Sep 2029 – 31 Aug 2030
-// Phase 6 · Interview Prep      Days 1463–2000 · ~18 months · 1 Sep 2030 – 20 Feb 2032
-// NexusAI capstone built daily throughout all 2,000 days — no separate Capstone block.
-// Calendar: Day 1 = 31 Aug 2026, Day 2,000 = 20 Feb 2032.
+// ── 6 phases · 2,008 days · 66 months ────────────────────────────────────────
+// Phase 1 · Agentic AI          Days    1–181  ·  6 months ·  1 Sep 2026 – 28 Feb 2027
+// Phase 2 · TypeScript Stack    Days  182–608  · 14 months ·  1 Mar 2027 – 30 Apr 2028
+// Phase 3 · Java Stack          Days  609–973  · 12 months ·  1 May 2028 – 30 Apr 2029
+// Phase 4 · Databases           Days  974–1096 ·  4 months ·  1 May 2029 – 31 Aug 2029
+// Phase 5 · DevOps + Cloud      Days 1097–1461 · 12 months ·  1 Sep 2029 – 31 Aug 2030
+// Phase 6 · Interview Prep      Days 1462–2008 · ~18 months · 1 Sep 2030 – 29 Feb 2032
+// NexusAI capstone built daily throughout all 2,008 days — no separate Capstone block.
+// Calendar: Day 1 = 1 Sep 2026, Day 2,008 = 29 Feb 2032.
 
 const PHASE_DAYS = [
-  [1, 182],
-  [183, 609],
-  [610, 974],
-  [975, 1097],
-  [1098, 1462],
-  [1463, 2000],
+  [1, 181],
+  [182, 608],
+  [609, 973],
+  [974, 1096],
+  [1097, 1461],
+  [1462, 2008],
 ];
 
 const PHASES = [
@@ -133,7 +133,7 @@ const PHASES = [
 
 const STATS = [
   { value: '6', label: 'phases · first principles' },
-  { value: '2,000', label: 'days · 66 months' },
+  { value: '2,008', label: 'days · 66 months' },
   { value: '40+', label: 'technologies' },
   { value: '1', label: 'project · NexusAI daily' },
 ];
@@ -157,8 +157,8 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 Day 0 setup · 6 phases · 2,000 days</span>
-        <h1 className="roadmap-hero-title">6 Phases, 2,000 Days</h1>
+        <span className="roadmap-hero-badge">📍 Day 0 setup · 6 phases · 2,008 days · 66 months</span>
+        <h1 className="roadmap-hero-title">6 Phases, 66 Months</h1>
         <p className="roadmap-hero-sub">
           Starts with <strong>Day 0 — environment setup</strong>, then <strong>6 phases</strong>{' '}
           mastered end to end —{' '}
@@ -168,8 +168,8 @@ export default function RoadmapHome() {
           <strong>Phase 4 · Databases</strong> (4 months: SQL, NoSQL, Redis, pgvector) {'→'}{' '}
           <strong>Phase 5 · DevOps + Cloud</strong> (12 months: Docker → K8s → AWS → SRE) {'→'}{' '}
           <strong>Phase 6 · Interview Prep</strong> (~18 months: DSA + System Design + 200+ mocks) —{' '}
-          <strong>66 months (2,000 days)</strong> of focused daily practice, front to back.
-          NexusAI capstone built daily throughout all 2,000 days.
+          <strong>66 months (2,008 days)</strong> of focused daily practice, front to back.
+          NexusAI capstone built daily throughout all 2,008 days.
         </p>
         <div className="roadmap-stats">
           {STATS.map((s) => (
@@ -241,7 +241,7 @@ export default function RoadmapHome() {
           </table>
         </div>
         <p style={{ textAlign: 'center', color: '#6b7b8e', fontSize: '0.75rem', marginTop: '10px' }}>
-          Day 1 = 31 Aug 2026 · 6 phases · 2,000 days · journey ends 20 Feb 2032
+          Day 1 = 1 Sep 2026 · 6 phases · 2,008 days · journey ends 29 Feb 2032
         </p>
       </section>
 
@@ -320,7 +320,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">6 phases · 2,000 days · front to back · 20 Feb 2032</p>
+            <p className="roadmap-finish-date">6 phases · 2,008 days · front to back · 29 Feb 2032</p>
           </div>
         </div>
       </div>
@@ -346,9 +346,9 @@ export default function RoadmapHome() {
               Target: 20 Feb 2032 · Day 2,000
             </p>
             <p style={{ color: 'rgba(200,212,224,0.82)', fontSize: '0.82rem', lineHeight: 1.65, marginBottom: '12px' }}>
-              1 LeetCode daily challenge every single day — Day 1 (31 Aug 2026) through Day 2,000 (20 Feb 2032).
-              2,000 consecutive submissions earns this badge the exact same day the journey ends.
-              The discipline badge that proves the entire 2,000 days.
+              1 LeetCode daily challenge every single day — Day 1 (1 Sep 2026) through Day 2,000 (21 Feb 2032).
+              2,000 consecutive submissions earns the badge 8 days before the journey ends on 29 Feb 2032.
+              The discipline badge that proves the entire 66-month journey.
             </p>
             <a
               href="https://leetcode.com/problemset/"
@@ -379,7 +379,7 @@ export default function RoadmapHome() {
           <strong>Phase 6 · Interview Prep</strong> (DSA Striver A2Z + NeetCode 150 · System Design · 200+ mocks, ~18 months).
           1 LeetCode daily throughout all 2,000 days.
           NexusAI capstone built daily throughout — grows with every phase.
-          66 months (2,000 days) end to end.
+          66 months (2,008 days) end to end.
         </p>
         <div className="roadmap-flow-actions">
           <Link to="/python" className="btn btn-lg roadmap-btn-primary">

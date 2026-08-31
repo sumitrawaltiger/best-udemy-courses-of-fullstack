@@ -41,7 +41,7 @@ const practice = [
     code: 'timeout · inject\nUX proof',
   },
   {
-    icon: '🔜', title: 'Next: Series Finale', titleClass: 'card-title-amber', subtitle: 'Day 153 · 17 Jan 2027',
+    icon: '🔜', title: 'Next: Series Finale', titleClass: 'card-title-amber', subtitle: 'Day 153 · 18 Jan 2027',
     description: 'Tomorrow — Day 153 is the Agentic AI series finale. Capstone demo, retro, portfolio — 153 days complete, Python Stack continues.',
     link: { href: '/agentic-day-153', label: 'Go to Day 153 →' },
   },
@@ -70,7 +70,7 @@ export default function AgenticDay152() {
     <StandaloneJourneyPage
       dayNumber={152}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 152 · 29 Jan 2027"
+      dateLabel="Agentic AI Day 152 · 30 Jan 2027"
       prev={{ href: '/agentic-day-151', label: '← Day 151' }}
       next={{ href: '/agentic-day-153', label: 'Day 153 →' }}
       tags={['Agentic AI', 'Capstone', 'Phase 21']}

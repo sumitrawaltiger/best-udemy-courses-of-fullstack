@@ -69,11 +69,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 5.5-year (2,000-day) plan — 6 phases: Phase 1 Agentic AI (Days 1–182, 6 months) → Phase 2 TypeScript Full Stack (Days 183–609, 14 months) → Phase 3 Java Stack (Days 610–974, 12 months) → Phase 4 Databases (Days 975–1097, 4 months) → Phase 5 DevOps + Cloud (Days 1098–1462, 12 months) → Phase 6 Interview Prep (Days 1463–2000, ~18 months, ends 20 Feb 2032). NexusAI capstone built daily throughout all 2,000 days',
+    text: 'reviewed the full 5.5-year (2,008-day, 66-month) plan — 6 phases: Phase 1 Agentic AI (Days 1–181, 6 months) → Phase 2 TypeScript Full Stack (Days 182–608, 14 months) → Phase 3 Java Stack (Days 609–973, 12 months) → Phase 4 Databases (Days 974–1096, 4 months) → Phase 5 DevOps + Cloud (Days 1097–1461, 12 months) → Phase 6 Interview Prep (Days 1462–2008, ~18 months, ends 29 Feb 2032). NexusAI capstone built daily throughout all 2,008 days',
   },
   {
     title: 'Ready for Phase 1 · Agentic AI',
-    text: 'Day 1 (31 Aug 2026) starts with Phase 1: Python + FastAPI foundations then LangChain, LangGraph, RAG, MCP, and CrewAI. 182 days (Days 1–182, ends 28 Feb 2027) to build the first NexusAI agent',
+    text: 'Day 1 (1 Sep 2026) starts with Phase 1: Python + FastAPI foundations then LangChain, LangGraph, RAG, MCP, and CrewAI. 181 days (Days 1–181, ends 28 Feb 2027) to build the first NexusAI agent',
   },
   {
     title: 'Accounts ready',
@@ -176,18 +176,18 @@ const STUDY_SYSTEM = [
     icon: '🗺️',
     title: 'The 5.5-Year Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '6 phases · Day 1 = 31 Aug 2026 · ends 20 Feb 2032',
+    subtitle: '6 phases · Day 1 = 1 Sep 2026 · ends 29 Feb 2032',
     description:
-      'Phase 1 Agentic AI (Days 1–182, 6 months) → Phase 2 TypeScript Full Stack (Days 183–609, 14 months) → Phase 3 Java Stack (Days 610–974, 12 months) → Phase 4 Databases (Days 975–1097, 4 months) → Phase 5 DevOps + Cloud (Days 1098–1462, 12 months) → Phase 6 Interview Prep (Days 1463–2000, ~18 months, ends 20 Feb 2032). NexusAI built daily throughout all 2,000 days.',
+      'Phase 1 Agentic AI (Days 1–181, 6 months) → Phase 2 TypeScript Full Stack (Days 182–608, 14 months) → Phase 3 Java Stack (Days 609–973, 12 months) → Phase 4 Databases (Days 974–1096, 4 months) → Phase 5 DevOps + Cloud (Days 1097–1461, 12 months) → Phase 6 Interview Prep (Days 1462–2008, ~18 months, ends 29 Feb 2032). NexusAI built daily throughout all 2,008 days.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
     icon: '🤖',
     title: 'Day 1 · Phase 1 · Agentic AI',
     titleClass: 'card-title-lime',
-    subtitle: 'Days 1–182 · 31 Aug 2026 – 28 Feb 2027',
+    subtitle: 'Days 1–181 · 1 Sep 2026 – 28 Feb 2027',
     description:
-      'Day 1 (31 Aug 2026) begins Phase 1: Python foundations + FastAPI + LangChain + LangGraph + RAG + MCP + CrewAI. 182 days to build the first NexusAI agent. Phase 2 (TypeScript Full Stack) starts 1 Mar 2027 on Day 183.',
+      'Day 1 (1 Sep 2026) begins Phase 1: Python foundations + FastAPI + LangChain + LangGraph + RAG + MCP + CrewAI. 181 days to build the first NexusAI agent. Phase 2 (TypeScript Full Stack) starts 1 Mar 2027 on Day 182.',
     link: { href: '/python', label: 'Explore the Python track →' },
   },
 ];
@@ -285,7 +285,7 @@ export default function Day000() {
           <Link to="/" className="day001-nav-btn day001-nav-home">
             Home
           </Link>
-          <p className="day001-datetime">Day 0 · 30 Aug 2026</p>
+          <p className="day001-datetime">Day 0 · 31 Aug 2026</p>
           <Link to="/agentic-day-1" className="day001-nav-btn day001-nav-next">
             Day 1 · Agentic AI →
           </Link>
@@ -297,7 +297,7 @@ export default function Day000() {
               <span>5.5 Years</span>
               <span>2000 Days</span>
               <span>6 Phases</span>
-              <span>Day 0 · 30 Aug 2026</span>
+              <span>Day 0 · 31 Aug 2026</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
@@ -326,7 +326,7 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 · 30 Aug 2026 — environment setup before the 5.5-year journey begins.</strong>{' '}
+          <strong>Day 0 · 31 Aug 2026 — environment setup before the 5.5-year journey begins.</strong>{' '}
           Install <code>Node.js</code>, <code>Git</code>, and <code>VS Code</code>, wire the terminal and
           Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
@@ -337,7 +337,7 @@ export default function Day000() {
             NexusAI
           </a>{' '}
           capstone repo, and lock the routine (wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST). No lectures today —
-          clear every obstacle so <strong>Day 1 (31 Aug 2026)</strong> starts with zero friction:{' '}
+          clear every obstacle so <strong>Day 1 (1 Sep 2026)</strong> starts with zero friction:{' '}
           <strong>Phase 1 · Agentic AI</strong> begins — Python foundations + the NexusAI capstone first commit. Sharpen the axe before the first swing.
         </p>
 
@@ -386,11 +386,11 @@ export default function Day000() {
                 LeetCode 2,000 Days Badge
               </p>
               <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
-                Target: 20 Feb 2032 · Friday · Day 2,000
+                Target: 21 Feb 2032 · Saturday · Day 2,000
               </p>
               <p style={{ color: 'rgba(200,210,220,0.8)', fontSize: '0.78rem', lineHeight: 1.6, marginBottom: '10px' }}>
-                1 LeetCode problem every single day — Day 1 (31 Aug 2026) through Day 2,000 (20 Feb 2032).
-                2,000 consecutive daily submissions earns the badge on the Day 2,000 milestone.
+                1 LeetCode problem every single day — Day 1 (1 Sep 2026) through Day 2,000 (21 Feb 2032).
+                2,000 consecutive daily submissions earns the badge — 8 days before the 66-month journey ends on 29 Feb 2032.
                 Consistency is the proof.
               </p>
               <a href="https://leetcode.com/problemset/" target="_blank" rel="noopener noreferrer"
