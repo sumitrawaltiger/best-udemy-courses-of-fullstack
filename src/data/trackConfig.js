@@ -96,11 +96,11 @@ export const INTERVIEW_PREP_WEEKS = 0;
 
 // Full journey: Day 1 = 1 Sep 2026. 6 phases · 2,008 days · 66 months · ends 29 Feb 2032.
 // Phase 1 · Agentic AI          Days    1–181  ·  6 months ·  1 Sep 2026 – 28 Feb 2027
-// Phase 2 · TypeScript Stack    Days  182–669  · 16 months ·  1 Mar 2027 – 30 Jun 2028
-// Phase 3 · Java Stack          Days  670–1065 · 13 months ·  1 Jul 2028 – 31 Jul 2029
-// Phase 4 · Databases           Days 1066–1218 ·  5 months ·  1 Aug 2029 – 31 Dec 2029
-// Phase 5 · DevOps + Cloud      Days 1219–1583 · 12 months ·  1 Jan 2030 – 31 Dec 2030
-// Phase 6 · Interview Prep      Days 1584–2008 · ~14 months · 1 Jan 2031 – 29 Feb 2032
+// Phase 2 · TypeScript Stack    Days  182–731  · 18 months ·  1 Mar 2027 – 31 Aug 2028
+// Phase 3 · Java Stack          Days  732–1126 · 13 months ·  1 Sep 2028 – 30 Sep 2029
+// Phase 4 · Databases           Days 1127–1277 ·  5 months ·  1 Oct 2029 – 28 Feb 2030
+// Phase 5 · DevOps + Cloud      Days 1278–1642 · 12 months ·  1 Mar 2030 – 28 Feb 2031
+// Phase 6 · Interview Prep      Days 1643–2008 · ~12 months · 1 Mar 2031 – 29 Feb 2032
 // NexusAI capstone built daily throughout all 2,008 days — no separate Capstone block.
 // (Internal factory calendar: COURSE_START in chapterFactory.js = 8 Aug 2026.)
 export const JOURNEY_START_LABEL = '1 Sep 2026';
@@ -110,8 +110,8 @@ export const JOURNEY_TOTAL_DAYS = 2008;
 export const JOURNEY_END_FACTORY_DAY = 2008;
 
 // Phase day-offsets for the 6-phase plan.
-// Phase 1 AgenticAI(1-181) → Phase 2 TSStack(182-669) → Phase 3 Java(670-1065) →
-// Phase 4 Databases(1066-1218) → Phase 5 DevOps+Cloud(1219-1583) → Phase 6 InterviewPrep(1584-2008).
+// Phase 1 AgenticAI(1-181) → Phase 2 TSStack(182-731) → Phase 3 Java(732-1126) →
+// Phase 4 Databases(1127-1277) → Phase 5 DevOps+Cloud(1278-1642) → Phase 6 InterviewPrep(1643-2008).
 export const TRACK_OFFSETS = {
   thunder: 0, // Thunder JavaScript — Days 1–100 (24 Jul – 31 Oct 2026)
   nextjs: 100, // React & Next.js — Days 101–150 (1 Nov – 20 Dec 2026)

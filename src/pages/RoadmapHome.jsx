@@ -41,21 +41,21 @@ function _calDate(dayN) {
 
 // ── 6 phases · 2,008 days · 66 months ────────────────────────────────────────
 // Phase 1 · Agentic AI          Days    1–181  ·  6 months ·  1 Sep 2026 – 28 Feb 2027
-// Phase 2 · TypeScript Stack    Days  182–669  · 16 months ·  1 Mar 2027 – 30 Jun 2028
-// Phase 3 · Java Stack          Days  670–1065 · 13 months ·  1 Jul 2028 – 31 Jul 2029
-// Phase 4 · Databases           Days 1066–1218 ·  5 months ·  1 Aug 2029 – 31 Dec 2029
-// Phase 5 · DevOps + Cloud      Days 1219–1583 · 12 months ·  1 Jan 2030 – 31 Dec 2030
-// Phase 6 · Interview Prep      Days 1584–2008 · ~14 months · 1 Jan 2031 – 29 Feb 2032
+// Phase 2 · TypeScript Stack    Days  182–731  · 18 months ·  1 Mar 2027 – 31 Aug 2028
+// Phase 3 · Java Stack          Days  732–1126 · 13 months ·  1 Sep 2028 – 30 Sep 2029
+// Phase 4 · Databases           Days 1127–1277 ·  5 months ·  1 Oct 2029 – 28 Feb 2030
+// Phase 5 · DevOps + Cloud      Days 1278–1642 · 12 months ·  1 Mar 2030 – 28 Feb 2031
+// Phase 6 · Interview Prep      Days 1643–2008 · ~12 months · 1 Mar 2031 – 29 Feb 2032
 // NexusAI capstone built daily throughout all 2,008 days — no separate Capstone block.
 // Calendar: Day 1 = 1 Sep 2026, Day 2,008 = 29 Feb 2032.
 
 const PHASE_DAYS = [
   [1, 181],
-  [182, 669],
-  [670, 1065],
-  [1066, 1218],
-  [1219, 1583],
-  [1584, 2008],
+  [182, 731],
+  [732, 1126],
+  [1127, 1277],
+  [1278, 1642],
+  [1643, 2008],
 ];
 
 const PHASES = [
@@ -73,8 +73,8 @@ const PHASES = [
   {
     id: 'p2', arcClass: 'y2', icon: '🔷',
     label: 'Phase 2 · TypeScript Full Stack',
-    tagline: 'Days 182–669',
-    duration: '488 days · 16 months',
+    tagline: 'Days 182–731',
+    duration: '550 days · 18 months',
     blurb: 'JavaScript → TypeScript → React JS → Next JS → React Native → Express JS. End-to-end web and mobile with full TypeScript coverage.',
     items: [
       { icon: '🟨', title: 'JavaScript + TypeScript', detail: 'Syntax · DOM · async · closures · ES6+ · types · interfaces · generics · enums', source: 'Thunder++ / Illustrated TS', to: '/' },
@@ -87,8 +87,8 @@ const PHASES = [
   {
     id: 'p3', arcClass: 'y3', icon: '☕',
     label: 'Phase 3 · Java Stack',
-    tagline: 'Days 670–1065',
-    duration: '396 days · 13 months',
+    tagline: 'Days 732–1126',
+    duration: '395 days · 13 months',
     blurb: 'J2SE → Spring Boot → Kafka → Microservices → Automation Testing. Enterprise-grade backend and event-driven architecture. System Design warm-up: 1 case study/week from Day 670 (ByteByteGo · Grokking) — so Phase 6 is revision, not first contact.',
     items: [
       { icon: '☕', title: 'J2SE + Spring Boot', detail: 'Core Java · OOP · collections · exceptions · multithreading · Spring Boot · REST APIs · Spring Data JPA · Spring Security · Spring Cloud', source: 'Udemy', to: '/java' },
@@ -100,8 +100,8 @@ const PHASES = [
   {
     id: 'p4', arcClass: 'y3', icon: '🗄️',
     label: 'Phase 4 · Databases',
-    tagline: 'Days 1066–1218',
-    duration: '153 days · 5 months',
+    tagline: 'Days 1127–1277',
+    duration: '151 days · 5 months',
     blurb: 'SQL and NoSQL depth — PostgreSQL, MySQL, MongoDB, Redis, pgvector. Deep data-layer knowledge before DevOps and interview prep.',
     items: [
       { icon: '🐘', title: 'SQL Databases', detail: 'PostgreSQL · MySQL · joins · indexes · transactions · query optimisation · stored procedures', source: 'Udemy', to: '/java' },
@@ -111,7 +111,7 @@ const PHASES = [
   {
     id: 'p5', arcClass: 'y5', icon: '🚀',
     label: 'Phase 5 · DevOps + Cloud',
-    tagline: 'Days 1219–1583',
+    tagline: 'Days 1278–1642',
     duration: '365 days · 12 months',
     blurb: 'Docker → Kubernetes (CKA) → CI/CD → AWS → SRE. Deploy NexusAI to production with full observability and reliability engineering.',
     items: [
@@ -123,8 +123,8 @@ const PHASES = [
   {
     id: 'p6', arcClass: 'y5', icon: '🧠',
     label: 'Phase 6 · Interview Prep',
-    tagline: 'Days 1584–2008',
-    duration: '425 days · ~14 months',
+    tagline: 'Days 1643–2008',
+    duration: '366 days · ~12 months',
     blurb: "DSA (Striver A2Z + NeetCode 150) + System Design (HLD/LLD) + 200+ mock interviews. NexusAI as your portfolio centrepiece. Journey ends Day 2,008.",
     items: [
       { icon: '📋', title: "DSA — Striver's A2Z + NeetCode 150", detail: 'Arrays · linked lists · binary search · trees · graphs · dynamic programming · backtracking · bit manipulation', source: 'takeUforward / NeetCode.io', to: '/interview' },
@@ -166,11 +166,11 @@ export default function RoadmapHome() {
           Starts with <strong>Day 0 — environment setup</strong>, then <strong>6 phases</strong>{' '}
           mastered end to end —{' '}
           <strong>Phase 1 · Agentic AI</strong> (6 months) {'→'}{' '}
-          <strong>Phase 2 · TypeScript Full Stack</strong> (14 months: JS → TS → React → Next → React Native → Express) {'→'}{' '}
-          <strong>Phase 3 · Java Stack</strong> (12 months: J2SE → Spring Boot → Kafka → Microservices → Testing) {'→'}{' '}
-          <strong>Phase 4 · Databases</strong> (4 months: SQL, NoSQL, Redis, pgvector) {'→'}{' '}
+          <strong>Phase 2 · TypeScript Full Stack</strong> (18 months: JS → TS → React → Next → React Native → Express) {'→'}{' '}
+          <strong>Phase 3 · Java Stack</strong> (13 months: J2SE → Spring Boot → Kafka → Microservices → Testing) {'→'}{' '}
+          <strong>Phase 4 · Databases</strong> (5 months: SQL, NoSQL, Redis, pgvector) {'→'}{' '}
           <strong>Phase 5 · DevOps + Cloud</strong> (12 months: Docker → K8s → AWS → SRE) {'→'}{' '}
-          <strong>Phase 6 · Interview Prep</strong> (~18 months: DSA + System Design + 200+ mocks) —{' '}
+          <strong>Phase 6 · Interview Prep</strong> (~12 months: DSA + System Design + 200+ mocks) —{' '}
           <strong>66 months (2,008 days)</strong> of focused daily practice, front to back.
           NexusAI capstone built daily throughout all 2,008 days.
         </p>
