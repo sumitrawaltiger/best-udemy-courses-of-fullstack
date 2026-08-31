@@ -186,7 +186,7 @@ export default function RoadmapHome() {
         style={{ margin: '8px auto 4px', textAlign: 'center', maxWidth: '820px' }}
       >
         <img
-          src="/roadmap-notes/2000_days.png"
+          src="/roadmap-notes/2008_days.png"
           alt="6 Phases. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Agentic AI → TypeScript Full Stack → Java Stack → Databases → DevOps + Cloud → Interview Prep. Day 1: 31 Aug 2026 · Day 2,000: 20 Feb 2032."
           loading="eager"
           style={{
