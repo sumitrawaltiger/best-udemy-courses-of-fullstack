@@ -81,6 +81,7 @@ const PHASES = [
       { icon: '⚛️', title: 'React JS + Next JS', detail: 'Components · hooks · state management · App Router · server components · server actions · deployment', source: 'ChaiCode', to: '/nextjs' },
       { icon: '📱', title: 'React Native + Express JS', detail: 'Expo · native components · navigation · builds & publishing · REST APIs · Prisma · JWT auth', source: 'ChaiCode', to: '/mobile' },
       { icon: '🎭', title: 'Playwright · E2E Testing', detail: 'End-to-end tests · page object model · API mocking · CI integration · Vitest + React Testing Library for unit tests', source: 'Playwright.dev', to: '/nextjs' },
+      { icon: '◈', title: 'GraphQL', detail: 'Schema definition · queries · mutations · subscriptions · Apollo Server · Apollo Client · code-first vs schema-first · REST vs GraphQL trade-offs', source: 'Udemy', to: '/nextjs' },
     ],
   },
   {
@@ -88,11 +89,12 @@ const PHASES = [
     label: 'Phase 3 · Java Stack',
     tagline: 'Days 670–1065',
     duration: '396 days · 13 months',
-    blurb: 'J2SE → Spring Boot → Kafka → Microservices → Automation Testing. Enterprise-grade backend and event-driven architecture.',
+    blurb: 'J2SE → Spring Boot → Kafka → Microservices → Automation Testing. Enterprise-grade backend and event-driven architecture. System Design warm-up: 1 case study/week from Day 670 (ByteByteGo · Grokking) — so Phase 6 is revision, not first contact.',
     items: [
       { icon: '☕', title: 'J2SE + Spring Boot', detail: 'Core Java · OOP · collections · exceptions · multithreading · Spring Boot · REST APIs · Spring Data JPA · Spring Security · Spring Cloud', source: 'Udemy', to: '/java' },
       { icon: '📨', title: 'Kafka + Microservices', detail: 'Apache Kafka · topics · partitions · consumer groups · delivery guarantees · CQRS · event sourcing · service mesh', source: 'Udemy', to: '/java' },
       { icon: '🧪', title: 'Automation Testing', detail: 'JUnit 5 · Mockito · Testcontainers · REST-assured · Pact contract tests · JMeter / Gatling performance', source: 'Udemy', to: '/java' },
+      { icon: '🏗️', title: 'System Design Warm-up', detail: '1 case study/week · ByteByteGo · Grokking the System Design Interview · URL shortener · rate limiter · notification service · chat app', source: 'ByteByteGo / Grokking', to: '/interview' },
     ],
   },
   {
