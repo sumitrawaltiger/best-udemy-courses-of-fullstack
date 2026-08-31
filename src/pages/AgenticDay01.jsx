@@ -50,6 +50,11 @@ const BIG_PICTURE = [
 
 const RESOURCES = [
   {
+    icon: '📄', title: 'Gen AI & Agentic AI Notes', titleClass: 'card-title-green', subtitle: 'Ashok IT Study Notes · 16 Modules',
+    description: 'Complete study notes covering Gen AI, Agentic AI, LLMs, RAG, LangChain, LangGraph, CrewAI, MCP, Cloud Deployment and Interview Guidance.',
+    link: { href: '/agentic-notes', label: 'Open Study Notes →' },
+  },
+  {
     icon: '📘', title: 'Course Introduction', titleClass: 'card-title-cyan', subtitle: 'PY Module 1',
     description: 'The full course overview on the site — roadmap, AI vs ML vs DL, tools & setup, and what the 100 days of Agentic AI ahead look like.',
     link: { href: '/python/learn/course-introduction', label: 'Open PY Module 1 →' },

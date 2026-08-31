@@ -3,6 +3,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import NextjsHome from './pages/NextjsHome';
 import GenAIHome from './pages/GenAIHome';
+import GenAIStudyNotes from './pages/GenAIStudyNotes';
 import PythonHome from './pages/PythonHome';
 import AwsHome from './pages/AwsHome';
 import JavaHome from './pages/JavaHome';
@@ -1012,6 +1013,7 @@ export default function App() {
           <Route path="nextjs" element={<NextjsHome />} />
           <Route path="nextjs/learn/:slug" element={<Chapter track="nextjs" />} />
           <Route path="genai" element={<GenAIHome />} />
+          <Route path="agentic-notes" element={<GenAIStudyNotes />} />
           <Route path="genai-day-1" element={<GenaiDay01 />} />
           <Route path="genai-day-2" element={<GenaiDay02 />} />
           <Route path="genai-day-3" element={<GenaiDay03 />} />
