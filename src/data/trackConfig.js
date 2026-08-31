@@ -94,24 +94,24 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: Day 1 = 31 Aug 2026. All 20 skills = 100 days each (20 × 100 = 2000).
-// Skill order: Python(1-100) → FastAPI(101-200) → Agentic AI(201-300) → JavaScript(301-400) →
-// TypeScript(401-500) → React JS(501-600) → Next JS(601-700) → React Native(701-800) →
-// Databases(801-900) → Express JS(901-1000) → J2SE(1001-1100) →
-// Spring Boot(1101-1200) → Kafka(1201-1300) → Microservices(1301-1400) →
-// Automation Testing(1401-1500) → DevOps(1501-1600) → Cloud/AWS(1601-1700) →
-// SRE(1701-1800) → System Design(1801-1900) → DSA(1901-2000).
-// NexusAI capstone built daily throughout all 2,000 days — no separate Capstone skill block.
-// (Internal factory calendar below drives per-module createdOn dates; COURSE_START in
-//  chapterFactory.js = 8 Aug 2026, so module Day 1 also dates to 8 Aug 2026.)
+// Full journey: Day 1 = 31 Aug 2026. 6 phases · 2,000 days · ends 20 Feb 2032.
+// Phase 1 · Agentic AI          Days   1–182   ·  6 months · 31 Aug 2026 – 28 Feb 2027
+// Phase 2 · TypeScript Stack    Days 183–609   · 14 months ·  1 Mar 2027 – 30 Apr 2028
+// Phase 3 · Java Stack          Days 610–974   · 12 months ·  1 May 2028 – 30 Apr 2029
+// Phase 4 · Databases           Days 975–1097  ·  4 months ·  1 May 2029 – 31 Aug 2029
+// Phase 5 · DevOps + Cloud      Days 1098–1462 · 12 months ·  1 Sep 2029 – 31 Aug 2030
+// Phase 6 · Interview Prep      Days 1463–2000 · ~18 months · 1 Sep 2030 – 20 Feb 2032
+// NexusAI capstone built daily throughout all 2,000 days — no separate Capstone block.
+// (Internal factory calendar: COURSE_START in chapterFactory.js = 8 Aug 2026.)
 export const JOURNEY_START_LABEL = '31 Aug 2026';
 export const JOURNEY_END_LABEL = '20 Feb 2032';
 export const JOURNEY_TOTAL_DAYS = 2000;
 // Factory calendar: Day 1 = 31 Aug 2026 (COURSE_START); factory day N = journey Day N.
 export const JOURNEY_END_FACTORY_DAY = 2000;
 
-// Explicit day-offsets for the 20-skill plan — all 20 skills = 100 days each.
-// Python(1-100) → FastAPI(101-200) → AgenticAI(201-300) → JS(301-400) → TS(401-500) → React(501-600) → Next(601-700) → RN(701-800) → DB(801-900) → Express(901-1000) → J2SE(1001-1100) → SpringBoot(1101-1200) → Kafka(1201-1300) → MS(1301-1400) → AutoTest(1401-1500) → DevOps(1501-1600) → AWS(1601-1700) → SRE(1701-1800) → SysDesign(1801-1900) → DSA(1901-2000).
+// Phase day-offsets for the 6-phase plan.
+// Phase 1 Agentic AI(1-182) → Phase 2 TS Stack(183-609) → Phase 3 Java(610-974) →
+// Phase 4 Databases(975-1097) → Phase 5 DevOps+Cloud(1098-1462) → Phase 6 Interview Prep(1463-2000).
 export const TRACK_OFFSETS = {
   thunder: 0, // Thunder JavaScript — Days 1–100 (24 Jul – 31 Oct 2026)
   nextjs: 100, // React & Next.js — Days 101–150 (1 Nov – 20 Dec 2026)

@@ -69,11 +69,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 5-year (2,000-day) plan — 20 skills × 100 days each (uniform, all 100d): Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1901–2000, ends 20 Feb 2032). NexusAI capstone built daily throughout all 2,000 days',
+    text: 'reviewed the full 5.5-year (2,000-day) plan — 6 phases: Phase 1 Agentic AI (Days 1–182, 6 months) → Phase 2 TypeScript Full Stack (Days 183–609, 14 months) → Phase 3 Java Stack (Days 610–974, 12 months) → Phase 4 Databases (Days 975–1097, 4 months) → Phase 5 DevOps + Cloud (Days 1098–1462, 12 months) → Phase 6 Interview Prep (Days 1463–2000, ~18 months, ends 20 Feb 2032). NexusAI capstone built daily throughout all 2,000 days',
   },
   {
-    title: 'Ready for Skill 1 · Python',
-    text: 'Day 1 (31 Aug 2026) starts with Skill 1: Python — core syntax, OOP, file I/O, database connectivity, and multithreading. 100 days (Days 1–100, ends 8 Dec 2026) to master the language foundation',
+    title: 'Ready for Phase 1 · Agentic AI',
+    text: 'Day 1 (31 Aug 2026) starts with Phase 1: Python + FastAPI foundations then LangChain, LangGraph, RAG, MCP, and CrewAI. 182 days (Days 1–182, ends 28 Feb 2027) to build the first NexusAI agent',
   },
   {
     title: 'Accounts ready',
@@ -174,20 +174,20 @@ const STUDY_SYSTEM = [
   },
   {
     icon: '🗺️',
-    title: 'The 5-Year Roadmap',
+    title: 'The 5.5-Year Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '20 skills · Day 1 = 31 Aug 2026 · ends 20 Feb 2032',
+    subtitle: '6 phases · Day 1 = 31 Aug 2026 · ends 20 Feb 2032',
     description:
-      'Python → FastAPI → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Databases → Express JS → J2SE → Spring Boot → Kafka → Microservices → Automation Testing → DevOps → Cloud (AWS) → SRE → System Design → DSA (Days 1901–2000, 20 Feb 2032). 2,000 days total. NexusAI capstone built daily throughout all 2,000 days.',
+      'Phase 1 Agentic AI (Days 1–182, 6 months) → Phase 2 TypeScript Full Stack (Days 183–609, 14 months) → Phase 3 Java Stack (Days 610–974, 12 months) → Phase 4 Databases (Days 975–1097, 4 months) → Phase 5 DevOps + Cloud (Days 1098–1462, 12 months) → Phase 6 Interview Prep (Days 1463–2000, ~18 months, ends 20 Feb 2032). NexusAI built daily throughout all 2,000 days.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
     icon: '🤖',
-    title: 'Day 1 · Skill 1 · Python',
+    title: 'Day 1 · Phase 1 · Agentic AI',
     titleClass: 'card-title-lime',
-    subtitle: 'Days 1–100 · 31 Aug 2026 – 8 Dec 2026',
+    subtitle: 'Days 1–182 · 31 Aug 2026 – 28 Feb 2027',
     description:
-      'Day 1 (31 Aug 2026) begins with Skill 1: Python — 100 days of core syntax, OOP, file I/O, database connectivity, and multithreading. Then FastAPI (Days 101–200, 9 Dec 2026 – 18 Mar 2027), then Agentic AI with LangChain, LangGraph, MCP (Days 201–300). NexusAI capstone built in parallel from Day 1.',
+      'Day 1 (31 Aug 2026) begins Phase 1: Python foundations + FastAPI + LangChain + LangGraph + RAG + MCP + CrewAI. 182 days to build the first NexusAI agent. Phase 2 (TypeScript Full Stack) starts 1 Mar 2027 on Day 183.',
     link: { href: '/python', label: 'Explore the Python track →' },
   },
 ];
@@ -294,16 +294,16 @@ export default function Day000() {
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>5 Years</span>
+              <span>5.5 Years</span>
               <span>2000 Days</span>
-              <span>Python Stack</span>
+              <span>6 Phases</span>
               <span>Day 0 · 30 Aug 2026</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
                 DAY 0 <span aria-hidden="true">🛠️</span>
               </h1>
-              <p className="day001-day-theme">ENVIRONMENT SETUP · PYTHON STACK + NEXUSAI CAPSTONE BEGINS 30 AUG 2026</p>
+              <p className="day001-day-theme">ENVIRONMENT SETUP · 6 PHASES · 2,000 DAYS · NEXUSAI CAPSTONE BEGINS 30 AUG 2026</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -326,7 +326,7 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 · 30 Aug 2026 — environment setup before the 5-year journey begins.</strong>{' '}
+          <strong>Day 0 · 30 Aug 2026 — environment setup before the 5.5-year journey begins.</strong>{' '}
           Install <code>Node.js</code>, <code>Git</code>, and <code>VS Code</code>, wire the terminal and
           Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
@@ -338,7 +338,7 @@ export default function Day000() {
           </a>{' '}
           capstone repo, and lock the routine (wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST). No lectures today —
           clear every obstacle so <strong>Day 1 (31 Aug 2026)</strong> starts with zero friction:{' '}
-          <strong>Skill 1 · Python</strong> + the NexusAI capstone begins. Sharpen the axe before the first swing.
+          <strong>Phase 1 · Agentic AI</strong> begins — Python foundations + the NexusAI capstone first commit. Sharpen the axe before the first swing.
         </p>
 
         <section className="day001-learnt">
