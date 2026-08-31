@@ -8,7 +8,7 @@ const learntToday = [
   { title: 'Time and CPU caps', text: 'runaway scripts need wall-clock and memory limits just like max_steps' },
   { title: 'Audit the args', text: 'log tool name, args hash, and outcome — never skip this on writes' },
   { title: 'Fail closed', text: 'unknown tool, extra field, or missing sandbox → deny, do not guess' },
-  { title: 'Tomorrow: Day 182', text: 'policy engines as first-class graph nodes' },
+  { title: 'Series complete', text: '181 days from first loop to sandboxed tools — the Agentic AI journal ends here' },
 ];
 
 const core = [
@@ -57,11 +57,11 @@ const practice = [
   },
   {
     icon: '🔜',
-    title: 'Next: Policy Node',
+    title: 'What Comes Next',
     titleClass: 'card-title-amber',
-    subtitle: 'Day 182',
-    description: 'Tomorrow — policy engines as graph nodes, not afterthoughts.',
-    link: { href: '/agentic-day-182', label: 'Go to Day 182 →' },
+    subtitle: 'Continue',
+    description: 'You finished the Agentic AI arc. Ship one sandboxed workflow, or return to the hub for other tracks.',
+    link: { href: '/', label: 'Back to Home →' },
   },
 ];
 
@@ -99,16 +99,16 @@ export default function AgenticDay181() {
       series="Agentic AI"
       dateLabel="Agentic AI Day 181 · 28 Feb 2027"
       prev={{ href: '/agentic-day-180', label: '← Day 180' }}
-      next={{ href: '/agentic-day-182', label: 'Day 182 →' }}
-      tags={['Agentic AI', 'Runtime', 'Sandbox']}
-      theme="TOOL SANDBOXES & LEAST PRIVILEGE"
-      heroIcon="📦"
-      profileRole="AGENTIC AI · RUNTIME"
-      progressWidth="62%"
+      next={{ href: '/', label: 'Home →' }}
+      tags={['Agentic AI', 'Runtime', 'Finale']}
+      theme="TOOL SANDBOXES & AGENTIC AI FINALE"
+      heroIcon="🏁"
+      profileRole="AGENTIC AI · FINALE"
+      progressWidth="100%"
       summary={
         <>
-          Day 181 hardens tools. Run side effects in a <strong>sandbox</strong>, scope credentials, and <strong>dry-run</strong>
-          writes before they hit the world.
+          Day 181 closes the Agentic AI journal. Run side effects in a <strong>sandbox</strong>, scope credentials, and{' '}
+          <strong>dry-run</strong> writes — then ship.
         </>
       }
       learntToday={learntToday}
