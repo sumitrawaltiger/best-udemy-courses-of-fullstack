@@ -43,9 +43,9 @@ function _calDate(dayN) {
 // Phase 1 · Agentic AI          Days    1–181  ·  6 months ·  1 Sep 2026 – 28 Feb 2027
 // Phase 2 · TypeScript Stack    Days  182–669  · 16 months ·  1 Mar 2027 – 30 Jun 2028
 // Phase 3 · Java Stack          Days  670–1065 · 13 months ·  1 Jul 2028 – 31 Jul 2029
-// Phase 4 · Databases           Days 1066–1187 ·  4 months ·  1 Aug 2029 – 30 Nov 2029
-// Phase 5 · DevOps + Cloud      Days 1188–1552 · 12 months ·  1 Dec 2029 – 30 Nov 2030
-// Phase 6 · Interview Prep      Days 1553–2008 · ~15 months · 1 Dec 2030 – 29 Feb 2032
+// Phase 4 · Databases           Days 1066–1218 ·  5 months ·  1 Aug 2029 – 31 Dec 2029
+// Phase 5 · DevOps + Cloud      Days 1219–1583 · 12 months ·  1 Jan 2030 – 31 Dec 2030
+// Phase 6 · Interview Prep      Days 1584–2008 · ~14 months · 1 Jan 2031 – 29 Feb 2032
 // NexusAI capstone built daily throughout all 2,008 days — no separate Capstone block.
 // Calendar: Day 1 = 1 Sep 2026, Day 2,008 = 29 Feb 2032.
 
@@ -53,9 +53,9 @@ const PHASE_DAYS = [
   [1, 181],
   [182, 669],
   [670, 1065],
-  [1066, 1187],
-  [1188, 1552],
-  [1553, 2008],
+  [1066, 1218],
+  [1219, 1583],
+  [1584, 2008],
 ];
 
 const PHASES = [
@@ -100,8 +100,8 @@ const PHASES = [
   {
     id: 'p4', arcClass: 'y3', icon: '🗄️',
     label: 'Phase 4 · Databases',
-    tagline: 'Days 1066–1187',
-    duration: '122 days · 4 months',
+    tagline: 'Days 1066–1218',
+    duration: '153 days · 5 months',
     blurb: 'SQL and NoSQL depth — PostgreSQL, MySQL, MongoDB, Redis, pgvector. Deep data-layer knowledge before DevOps and interview prep.',
     items: [
       { icon: '🐘', title: 'SQL Databases', detail: 'PostgreSQL · MySQL · joins · indexes · transactions · query optimisation · stored procedures', source: 'Udemy', to: '/java' },
@@ -111,7 +111,7 @@ const PHASES = [
   {
     id: 'p5', arcClass: 'y5', icon: '🚀',
     label: 'Phase 5 · DevOps + Cloud',
-    tagline: 'Days 1188–1552',
+    tagline: 'Days 1219–1583',
     duration: '365 days · 12 months',
     blurb: 'Docker → Kubernetes (CKA) → CI/CD → AWS → SRE. Deploy NexusAI to production with full observability and reliability engineering.',
     items: [
@@ -123,8 +123,8 @@ const PHASES = [
   {
     id: 'p6', arcClass: 'y5', icon: '🧠',
     label: 'Phase 6 · Interview Prep',
-    tagline: 'Days 1553–2008',
-    duration: '456 days · ~15 months',
+    tagline: 'Days 1584–2008',
+    duration: '425 days · ~14 months',
     blurb: "DSA (Striver A2Z + NeetCode 150) + System Design (HLD/LLD) + 200+ mock interviews. NexusAI as your portfolio centrepiece. Journey ends Day 2,008.",
     items: [
       { icon: '📋', title: "DSA — Striver's A2Z + NeetCode 150", detail: 'Arrays · linked lists · binary search · trees · graphs · dynamic programming · backtracking · bit manipulation', source: 'takeUforward / NeetCode.io', to: '/interview' },
