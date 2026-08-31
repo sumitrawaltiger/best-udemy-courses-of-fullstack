@@ -42,8 +42,8 @@ function _calDate(dayN) {
 // ── 6 phases · 2,008 days · 66 months ────────────────────────────────────────
 // Phase 1 · Agentic AI          Days    1–181  ·  6 months ·  1 Sep 2026 – 28 Feb 2027
 // Phase 2 · TypeScript Stack    Days  182–731  · 18 months ·  1 Mar 2027 – 31 Aug 2028
-// Phase 3 · Java Stack          Days  732–1126 · 13 months ·  1 Sep 2028 – 30 Sep 2029
-// Phase 4 · Databases           Days 1127–1277 ·  5 months ·  1 Oct 2029 – 28 Feb 2030
+// Phase 3 · Java Stack          Days  732–1096 · 12 months ·  1 Sep 2028 – 31 Aug 2029
+// Phase 4 · Databases           Days 1097–1277 ·  6 months ·  1 Sep 2029 – 28 Feb 2030
 // Phase 5 · DevOps + Cloud      Days 1278–1642 · 12 months ·  1 Mar 2030 – 28 Feb 2031
 // Phase 6 · Interview Prep      Days 1643–2008 · ~12 months · 1 Mar 2031 – 29 Feb 2032
 // NexusAI capstone built daily throughout all 2,008 days — no separate Capstone block.
@@ -52,8 +52,8 @@ function _calDate(dayN) {
 const PHASE_DAYS = [
   [1, 181],
   [182, 731],
-  [732, 1126],
-  [1127, 1277],
+  [732, 1096],
+  [1097, 1277],
   [1278, 1642],
   [1643, 2008],
 ];
@@ -87,8 +87,8 @@ const PHASES = [
   {
     id: 'p3', arcClass: 'y3', icon: '☕',
     label: 'Phase 3 · Java Stack',
-    tagline: 'Days 732–1126',
-    duration: '395 days · 13 months',
+    tagline: 'Days 732–1096',
+    duration: '365 days · 12 months',
     blurb: 'J2SE → Spring Boot → Kafka → Microservices → Automation Testing. Enterprise-grade backend and event-driven architecture. System Design warm-up: 1 case study/week from Day 670 (ByteByteGo · Grokking) — so Phase 6 is revision, not first contact.',
     items: [
       { icon: '☕', title: 'J2SE + Spring Boot', detail: 'Core Java · OOP · collections · exceptions · multithreading · Spring Boot · REST APIs · Spring Data JPA · Spring Security · Spring Cloud', source: 'Udemy', to: '/java' },
@@ -100,8 +100,8 @@ const PHASES = [
   {
     id: 'p4', arcClass: 'y3', icon: '🗄️',
     label: 'Phase 4 · Databases',
-    tagline: 'Days 1127–1277',
-    duration: '151 days · 5 months',
+    tagline: 'Days 1097–1277',
+    duration: '181 days · 6 months',
     blurb: 'SQL and NoSQL depth — PostgreSQL, MySQL, MongoDB, Redis, pgvector. Deep data-layer knowledge before DevOps and interview prep.',
     items: [
       { icon: '🐘', title: 'SQL Databases', detail: 'PostgreSQL · MySQL · joins · indexes · transactions · query optimisation · stored procedures', source: 'Udemy', to: '/java' },
@@ -167,8 +167,8 @@ export default function RoadmapHome() {
           mastered end to end —{' '}
           <strong>Phase 1 · Agentic AI</strong> (6 months) {'→'}{' '}
           <strong>Phase 2 · TypeScript Full Stack</strong> (18 months: JS → TS → React → Next → React Native → Express) {'→'}{' '}
-          <strong>Phase 3 · Java Stack</strong> (13 months: J2SE → Spring Boot → Kafka → Microservices → Testing) {'→'}{' '}
-          <strong>Phase 4 · Databases</strong> (5 months: SQL, NoSQL, Redis, pgvector) {'→'}{' '}
+          <strong>Phase 3 · Java Stack</strong> (12 months: J2SE → Spring Boot → Kafka → Microservices → Testing) {'→'}{' '}
+          <strong>Phase 4 · Databases</strong> (6 months: SQL, NoSQL, Redis, pgvector) {'→'}{' '}
           <strong>Phase 5 · DevOps + Cloud</strong> (12 months: Docker → K8s → AWS → SRE) {'→'}{' '}
           <strong>Phase 6 · Interview Prep</strong> (~12 months: DSA + System Design + 200+ mocks) —{' '}
           <strong>66 months (2,008 days)</strong> of focused daily practice, front to back.
