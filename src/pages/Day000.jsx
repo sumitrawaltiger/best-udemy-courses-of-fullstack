@@ -69,7 +69,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 5.5-year (2,008-day, 66-month) plan — 6 phases: Phase 1 Agentic AI (Days 1–181, 6 months) → Phase 2 TypeScript Full Stack (Days 182–608, 14 months) → Phase 3 Java Stack (Days 609–973, 12 months) → Phase 4 Databases (Days 974–1096, 4 months) → Phase 5 DevOps + Cloud (Days 1097–1461, 12 months) → Phase 6 Interview Prep (Days 1462–2008, ~18 months, ends 29 Feb 2032). NexusAI capstone built daily throughout all 2,008 days',
+    text: 'reviewed the full 5.5-year (2,008-day, 66-month) plan — 6 phases: Phase 1 Agentic AI (Days 1–181, 6 months) → Phase 2 TypeScript Full Stack (Days 182–669, 16 months) → Phase 3 Java Stack (Days 670–1065, 13 months) → Phase 4 Databases (Days 1066–1187, 4 months) → Phase 5 DevOps + Cloud (Days 1188–1552, 12 months) → Phase 6 Interview Prep (Days 1553–2008, ~15 months, ends 29 Feb 2032). NexusAI capstone built daily throughout all 2,008 days',
   },
   {
     title: 'Ready for Phase 1 · Agentic AI',
@@ -178,7 +178,7 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-cyan',
     subtitle: '6 phases · Day 1 = 1 Sep 2026 · ends 29 Feb 2032',
     description:
-      'Phase 1 Agentic AI (Days 1–181, 6 months) → Phase 2 TypeScript Full Stack (Days 182–608, 14 months) → Phase 3 Java Stack (Days 609–973, 12 months) → Phase 4 Databases (Days 974–1096, 4 months) → Phase 5 DevOps + Cloud (Days 1097–1461, 12 months) → Phase 6 Interview Prep (Days 1462–2008, ~18 months, ends 29 Feb 2032). NexusAI built daily throughout all 2,008 days.',
+      'Phase 1 Agentic AI (Days 1–181, 6 months) → Phase 2 TypeScript Full Stack (Days 182–669, 16 months) → Phase 3 Java Stack (Days 670–1065, 13 months) → Phase 4 Databases (Days 1066–1187, 4 months) → Phase 5 DevOps + Cloud (Days 1188–1552, 12 months) → Phase 6 Interview Prep (Days 1553–2008, ~15 months, ends 29 Feb 2032). NexusAI built daily throughout all 2,008 days.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {

@@ -96,11 +96,11 @@ export const INTERVIEW_PREP_WEEKS = 0;
 
 // Full journey: Day 1 = 1 Sep 2026. 6 phases · 2,008 days · 66 months · ends 29 Feb 2032.
 // Phase 1 · Agentic AI          Days    1–181  ·  6 months ·  1 Sep 2026 – 28 Feb 2027
-// Phase 2 · TypeScript Stack    Days  182–608  · 14 months ·  1 Mar 2027 – 30 Apr 2028
-// Phase 3 · Java Stack          Days  609–973  · 12 months ·  1 May 2028 – 30 Apr 2029
-// Phase 4 · Databases           Days  974–1096 ·  4 months ·  1 May 2029 – 31 Aug 2029
-// Phase 5 · DevOps + Cloud      Days 1097–1461 · 12 months ·  1 Sep 2029 – 31 Aug 2030
-// Phase 6 · Interview Prep      Days 1462–2008 · ~18 months · 1 Sep 2030 – 29 Feb 2032
+// Phase 2 · TypeScript Stack    Days  182–669  · 16 months ·  1 Mar 2027 – 30 Jun 2028
+// Phase 3 · Java Stack          Days  670–1065 · 13 months ·  1 Jul 2028 – 31 Jul 2029
+// Phase 4 · Databases           Days 1066–1187 ·  4 months ·  1 Aug 2029 – 30 Nov 2029
+// Phase 5 · DevOps + Cloud      Days 1188–1552 · 12 months ·  1 Dec 2029 – 30 Nov 2030
+// Phase 6 · Interview Prep      Days 1553–2008 · ~15 months · 1 Dec 2030 – 29 Feb 2032
 // NexusAI capstone built daily throughout all 2,008 days — no separate Capstone block.
 // (Internal factory calendar: COURSE_START in chapterFactory.js = 8 Aug 2026.)
 export const JOURNEY_START_LABEL = '1 Sep 2026';
@@ -110,8 +110,8 @@ export const JOURNEY_TOTAL_DAYS = 2008;
 export const JOURNEY_END_FACTORY_DAY = 2008;
 
 // Phase day-offsets for the 6-phase plan.
-// Phase 1 AgenticAI(1-181) → Phase 2 TSStack(182-608) → Phase 3 Java(609-973) →
-// Phase 4 Databases(974-1096) → Phase 5 DevOps+Cloud(1097-1461) → Phase 6 InterviewPrep(1462-2008).
+// Phase 1 AgenticAI(1-181) → Phase 2 TSStack(182-669) → Phase 3 Java(670-1065) →
+// Phase 4 Databases(1066-1187) → Phase 5 DevOps+Cloud(1188-1552) → Phase 6 InterviewPrep(1553-2008).
 export const TRACK_OFFSETS = {
   thunder: 0, // Thunder JavaScript — Days 1–100 (24 Jul – 31 Oct 2026)
   nextjs: 100, // React & Next.js — Days 101–150 (1 Nov – 20 Dec 2026)
