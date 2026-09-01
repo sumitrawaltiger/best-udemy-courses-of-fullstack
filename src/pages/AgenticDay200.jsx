@@ -56,9 +56,9 @@ const practice = [
     icon: '🔜',
     title: 'What Comes Next',
     titleClass: 'card-title-amber',
-    subtitle: 'Day 201',
-    description: 'Next arc — versioning, cost, approvals, and audit for production governance.',
-    link: { href: '/agentic-day-201', label: 'Go to Day 201 →' },
+    subtitle: 'Continue',
+    description: 'You finished 200 days of Agentic AI. Ship one team workflow end-to-end, or return to the hub.',
+    link: { href: '/', label: 'Back to Home →' },
   },
 ];
 
@@ -94,18 +94,18 @@ export default function AgenticDay200() {
     <StandaloneJourneyPage
       dayNumber={200}
       series="Agentic AI"
-      dateLabel="Agentic AI Day 200 · 18 Mar 2027"
+      dateLabel="Agentic AI Day 200 · 19 Mar 2027"
       prev={{ href: '/agentic-day-199', label: '← Day 199' }}
-      next={{ href: '/agentic-day-201', label: 'Day 201 →' }}
-      tags={['Agentic AI', 'Teams', 'Milestone']}
-      theme="MULTI-AGENT TEAMS PLATFORM MILESTONE"
+      next={{ href: '/', label: 'Home →' }}
+      tags={['Agentic AI', 'Teams', 'Finale']}
+      theme="AGENTIC AI 200-DAY FINALE"
       heroIcon="🏁"
-      profileRole="AGENTIC AI · MILESTONE"
-      progressWidth="72%"
+      profileRole="AGENTIC AI · FINALE"
+      progressWidth="100%"
       summary={
         <>
-          Day 200 closes the teams stretch. Ship a platform with <strong>specialized roles, typed handoffs, rubric
-          supervision, and a topology you can justify</strong>.
+          Day 200 closes the Agentic AI journal — 200 days from first loop to multi-agent teams. Ship a platform with{' '}
+          <strong>specialized roles, typed handoffs, rubric supervision, and a topology you can justify</strong>.
         </>
       }
       learntToday={learntToday}
