@@ -48,8 +48,8 @@ function _calDate(dayN) {
 // Skill  6 · Next JS             Days  501–600  · 22 Jan 2028 – 30 Apr 2028
 // Skill  7 · React Native        Days  601–700  · 1 May 2028 – 8 Aug 2028
 // Skill  8 · Express JS          Days  701–800  · 9 Aug 2028 – 16 Nov 2028
-// Skill  9 · NestJS              Days  801–900  · 17 Nov 2028 – 24 Feb 2029
-// Skill 10 · Databases           Days  901–1000 · 25 Feb 2029 – 4 Jun 2029
+// Skill  9 · Databases           Days  801–900  · 17 Nov 2028 – 24 Feb 2029
+// Skill 10 · NestJS              Days  901–1000 · 25 Feb 2029 – 4 Jun 2029
 // Skill 11 · J2SE                Days 1001–1100 · 5 Jun 2029 – 12 Sep 2029
 // Skill 12 · Spring Boot         Days 1101–1200 · 13 Sep 2029 – 21 Dec 2029
 // Skill 13 · Kafka               Days 1201–1300 · 22 Dec 2029 – 31 Mar 2030
@@ -168,24 +168,24 @@ const PHASES = [
     ],
   },
   {
-    id: 'p9', arcClass: 'y2', icon: '🪺',
-    label: 'Skill 09 · NestJS',
+    id: 'p9', arcClass: 'y2', icon: '🗄️',
+    label: 'Skill 09 · Databases',
     tagline: 'Days 801–900',
     duration: '100 days · ~3.3 months',
-    blurb: 'Enterprise Node.js with NestJS — modules, controllers, guards, interceptors, GraphQL (code-first), WebSockets, Kafka transport, microservices patterns, and Jest + Supertest API testing.',
-    items: [
-      { icon: '🪺', title: 'NestJS', detail: 'Modules · controllers · providers · guards · interceptors · pipes · GraphQL code-first · WebSockets · Kafka transport · Prisma ORM · CQRS · Jest + Supertest', source: 'Udemy / NestJS Docs', to: '/nextjs' },
-    ],
-  },
-  {
-    id: 'p10', arcClass: 'y3', icon: '🗄️',
-    label: 'Skill 10 · Databases',
-    tagline: 'Days 901–1000',
-    duration: '100 days · ~3.3 months',
-    blurb: 'SQL and NoSQL depth — PostgreSQL, MySQL, MongoDB, Redis, pgvector. Production data-layer knowledge.',
+    blurb: 'SQL and NoSQL depth — PostgreSQL, MySQL, MongoDB, Redis, pgvector. Production data-layer knowledge that powers every ORM and cache layer in the skills that follow.',
     items: [
       { icon: '🐘', title: 'SQL Databases', detail: 'PostgreSQL · MySQL · joins · indexes · transactions · query optimisation · stored procedures · EXPLAIN', source: 'Udemy', to: '/java' },
       { icon: '🍃', title: 'NoSQL + Vector DB', detail: 'MongoDB · Redis caching · pub/sub · session management · pgvector for AI semantic search', source: 'Udemy', to: '/java' },
+    ],
+  },
+  {
+    id: 'p10', arcClass: 'y3', icon: '🪺',
+    label: 'Skill 10 · NestJS',
+    tagline: 'Days 901–1000',
+    duration: '100 days · ~3.3 months',
+    blurb: 'Enterprise Node.js with NestJS — modules, controllers, guards, interceptors, GraphQL (code-first), WebSockets, Kafka transport, microservices patterns, and Jest + Supertest API testing. Database knowledge from Skill 09 makes TypeORM and Prisma click from day one.',
+    items: [
+      { icon: '🪺', title: 'NestJS', detail: 'Modules · controllers · providers · guards · interceptors · pipes · GraphQL code-first · WebSockets · Kafka transport · Prisma ORM · CQRS · Jest + Supertest', source: 'Udemy / NestJS Docs', to: '/nextjs' },
     ],
   },
   {
@@ -324,7 +324,7 @@ export default function RoadmapHome() {
           mastered end to end —{' '}
           <strong>Python + FastAPI</strong> {'→'} <strong>Agentic AI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
           <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
-          <strong>NestJS</strong> {'→'} <strong>Databases</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>Spring Boot</strong> {'→'}{' '}
+          <strong>Databases</strong> {'→'} <strong>NestJS</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>Spring Boot</strong> {'→'}{' '}
           <strong>Kafka</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Automation Testing</strong> {'→'} <strong>DevOps</strong> {'→'}{' '}
           <strong>AWS</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong> {'→'} <strong>DSA</strong> —{' '}
           <strong>2,000 days (~66 months)</strong> of focused daily practice, front to back.
@@ -346,7 +346,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png"
-          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express → NestJS → Databases → J2SE → Spring Boot → Kafka → Microservices → AutoTest → DevOps → AWS → SRE → System Design → DSA. Day 1: 9 Sep 2026 · Day 2,000: 29 Feb 2032."
+          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express → Databases → NestJS → J2SE → Spring Boot → Kafka → Microservices → AutoTest → DevOps → AWS → SRE → System Design → DSA. Day 1: 9 Sep 2026 · Day 2,000: 29 Feb 2032."
           loading="eager"
           style={{
             width: '100%',
@@ -532,7 +532,7 @@ export default function RoadmapHome() {
           Day 0 setup, then 20 skills at 100 days each:{' '}
           <strong>Python + FastAPI</strong> {'→'} <strong>Agentic AI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
           <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
-          <strong>NestJS</strong> {'→'} <strong>Databases</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>Spring Boot</strong> {'→'}{' '}
+          <strong>Databases</strong> {'→'} <strong>NestJS</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>Spring Boot</strong> {'→'}{' '}
           <strong>Kafka</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Automation Testing</strong> {'→'} <strong>DevOps</strong> {'→'}{' '}
           <strong>AWS</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong> {'→'} <strong>DSA</strong>.{' '}
           1 LeetCode daily throughout all 2,000 days.
