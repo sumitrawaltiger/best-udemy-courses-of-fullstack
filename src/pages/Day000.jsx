@@ -61,7 +61,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Project folder',
-    text: 'created a clean ~/dev workspace with one folder per phase — a home for every project I build',
+    text: 'created a clean ~/dev workspace with one folder per skill — a home for every project I build',
   },
   {
     title: 'Study routine',
@@ -69,15 +69,15 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 5.5-year (2,008-day, 66-month) plan — 6 phases: Phase 1 Agentic AI (Days 1–181, 6 months) → Phase 2 TypeScript Full Stack (Days 182–669, 16 months) → Phase 3 Java Stack (Days 670–1065, 13 months) → Phase 4 Databases (Days 1066–1218, 5 months) → Phase 5 DevOps + Cloud (Days 1219–1583, 12 months) → Phase 6 Interview Prep (Days 1584–2008, ~14 months, ends 29 Feb 2032). NexusAI capstone built daily throughout all 2,008 days',
+    text: 'reviewed the full ~66-month (2,000-day) plan — 20 skills × 100 days each: Skill 01 Python+FastAPI (1–100) → Skill 02 Agentic AI (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 Express (701–800) → Skill 09 NestJS (801–900) → Skill 10 Databases (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 Spring Boot (1101–1200) → Skill 13 Kafka (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 Automation Testing (1401–1500) → Skill 16 DevOps (1501–1600) → Skill 17 AWS (1601–1700) → Skill 18 SRE (1701–1800) → Skill 19 System Design (1801–1900) → Skill 20 DSA (1901–2000, ends 29 Feb 2032). NexusAI capstone built daily throughout all 2,000 days',
   },
   {
-    title: 'Ready for Phase 1 · Agentic AI',
-    text: 'Day 1 (1 Sep 2026) starts with Phase 1: Python + FastAPI foundations then LangChain, LangGraph, RAG, MCP, and CrewAI. 181 days (Days 1–181, ends 28 Feb 2027) to build the first NexusAI agent',
+    title: 'Ready for Skill 01 · Python + FastAPI',
+    text: 'Day 1 (9 Sep 2026) starts with Skill 01: Python syntax, OOP, async/await, file I/O, DB connectivity, multithreading, and FastAPI REST APIs. 100 days (Days 1–100, ends 17 Dec 2026), then Skill 02 Agentic AI begins 18 Dec 2026',
   },
   {
     title: 'Accounts ready',
-    text: 'signed in to the course platforms (Udemy, ChaiCode, KodeKloud) so Day 1 starts with zero friction',
+    text: 'signed in to the course platforms (Ashok IT, Udemy, ChaiCode, KodeKloud) so Day 1 starts with zero friction',
   },
   {
     title: 'Deploy target',
@@ -85,7 +85,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'LeetCode streak starts',
-    text: '1 LeetCode daily challenge every single day — Day 1 (31 Aug 2026) through Day 2,000 (20 Feb 2032) earns the LeetCode 2,000 Days Badge. The streak begins tomorrow',
+    text: '1 LeetCode daily challenge every single day — Day 1 (9 Sep 2026) through Day 2,000 (29 Feb 2032) earns the LeetCode 2,000 Days Badge on the final day of the journey. The streak begins tomorrow',
   },
   {
     title: 'NexusAI Capstone · Day 0 setup',
@@ -174,20 +174,20 @@ const STUDY_SYSTEM = [
   },
   {
     icon: '🗺️',
-    title: 'The 5.5-Year Roadmap',
+    title: 'The 2,000-Day Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '6 phases · Day 1 = 1 Sep 2026 · ends 29 Feb 2032',
+    subtitle: '20 skills · Day 1 = 9 Sep 2026 · ends 29 Feb 2032',
     description:
-      'Phase 1 Agentic AI (Days 1–181, 6 months) → Phase 2 TypeScript Full Stack (Days 182–669, 16 months) → Phase 3 Java Stack (Days 670–1065, 13 months) → Phase 4 Databases (Days 1066–1218, 5 months) → Phase 5 DevOps + Cloud (Days 1219–1583, 12 months) → Phase 6 Interview Prep (Days 1584–2008, ~14 months, ends 29 Feb 2032). NexusAI built daily throughout all 2,008 days.',
+      '20 skills × 100 days each: Skill 01 Python+FastAPI (1–100) → Skill 02 Agentic AI (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 Express (701–800) → Skill 09 NestJS (801–900) → Skill 10 Databases (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 Spring Boot (1101–1200) → Skill 13 Kafka (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 AutoTest (1401–1500) → Skill 16 DevOps (1501–1600) → Skill 17 AWS (1601–1700) → Skill 18 SRE (1701–1800) → Skill 19 System Design (1801–1900) → Skill 20 DSA (1901–2000, ends 29 Feb 2032). NexusAI built daily throughout all 2,000 days.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
-    icon: '🤖',
-    title: 'Day 1 · Phase 1 · Agentic AI',
+    icon: '🐍',
+    title: 'Day 1 · Skill 01 · Python + FastAPI',
     titleClass: 'card-title-lime',
-    subtitle: 'Days 1–181 · 1 Sep 2026 – 28 Feb 2027',
+    subtitle: 'Days 1–100 · 9 Sep 2026 – 17 Dec 2026',
     description:
-      'Day 1 (1 Sep 2026) begins Phase 1: Python foundations + FastAPI + LangChain + LangGraph + RAG + MCP + CrewAI. 181 days to build the first NexusAI agent. Phase 2 (TypeScript Full Stack) starts 1 Mar 2027 on Day 182.',
+      'Day 1 (9 Sep 2026) begins Skill 01: Python syntax, OOP, async/await, file I/O, DB connectivity, multithreading, and FastAPI REST APIs. 100 days to build the Python and FastAPI layer of NexusAI. Skill 02 (Agentic AI) starts 18 Dec 2026 on Day 101.',
     link: { href: '/python', label: 'Explore the Python track →' },
   },
 ];
@@ -285,25 +285,25 @@ export default function Day000() {
           <Link to="/" className="day001-nav-btn day001-nav-home">
             Home
           </Link>
-          <p className="day001-datetime">Day 0 · 31 Aug 2026</p>
-          <Link to="/agentic-day-1" className="day001-nav-btn day001-nav-next">
-            Day 1 · Agentic AI →
+          <p className="day001-datetime">Day 0 · 8 Sep 2026</p>
+          <Link to="/python" className="day001-nav-btn day001-nav-next">
+            Day 1 · Python + FastAPI →
           </Link>
         </header>
 
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>5.5 Years</span>
+              <span>~66 Months</span>
               <span>2000 Days</span>
-              <span>6 Phases</span>
-              <span>Day 0 · 31 Aug 2026</span>
+              <span>20 Skills</span>
+              <span>Day 0 · 8 Sep 2026</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
                 DAY 0 <span aria-hidden="true">🛠️</span>
               </h1>
-              <p className="day001-day-theme">ENVIRONMENT SETUP · 6 PHASES · 2,000 DAYS · NEXUSAI CAPSTONE BEGINS 30 AUG 2026</p>
+              <p className="day001-day-theme">ENVIRONMENT SETUP · 20 SKILLS · 2,000 DAYS · NEXUSAI CAPSTONE BEGINS 8 SEP 2026</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -326,7 +326,7 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 · 31 Aug 2026 — environment setup before the 5.5-year journey begins.</strong>{' '}
+          <strong>Day 0 · 8 Sep 2026 — environment setup before the 2,000-day journey begins.</strong>{' '}
           Install <code>Node.js</code>, <code>Git</code>, and <code>VS Code</code>, wire the terminal and
           Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
@@ -337,8 +337,8 @@ export default function Day000() {
             NexusAI
           </a>{' '}
           capstone repo, and lock the routine (wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST). No lectures today —
-          clear every obstacle so <strong>Day 1 (1 Sep 2026)</strong> starts with zero friction:{' '}
-          <strong>Phase 1 · Agentic AI</strong> begins — Python foundations + the NexusAI capstone first commit. Sharpen the axe before the first swing.
+          clear every obstacle so <strong>Day 1 (9 Sep 2026)</strong> starts with zero friction:{' '}
+          <strong>Skill 01 · Python + FastAPI</strong> begins — Python foundations + the NexusAI capstone first commit. Sharpen the axe before the first swing.
         </p>
 
         <section className="day001-learnt">
@@ -386,11 +386,11 @@ export default function Day000() {
                 LeetCode 2,000 Days Badge
               </p>
               <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
-                Target: 21 Feb 2032 · Saturday · Day 2,000
+                Target: 29 Feb 2032 · Sunday · Day 2,000
               </p>
               <p style={{ color: 'rgba(200,210,220,0.8)', fontSize: '0.78rem', lineHeight: 1.6, marginBottom: '10px' }}>
-                1 LeetCode problem every single day — Day 1 (1 Sep 2026) through Day 2,000 (21 Feb 2032).
-                2,000 consecutive daily submissions earns the badge — 8 days before the 66-month journey ends on 29 Feb 2032.
+                1 LeetCode problem every single day — Day 1 (9 Sep 2026) through Day 2,000 (29 Feb 2032).
+                2,000 consecutive daily submissions earns the badge on the final day of the 2,000-day journey.
                 Consistency is the proof.
               </p>
               <a href="https://leetcode.com/problemset/" target="_blank" rel="noopener noreferrer"
