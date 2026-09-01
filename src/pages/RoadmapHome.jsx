@@ -40,7 +40,7 @@ function _calDate(dayN) {
 }
 
 // ── 20 skills · 100 days each · 2,000 days ───────────────────────────────────
-// Skill  1 · Python + FastAPI    Days    1–100  · 9 Sep 2026 – 17 Dec 2026
+// Skill  1 · Python    Days    1–100  · 9 Sep 2026 – 17 Dec 2026
 // Skill  2 · Agentic AI          Days  101–200  · 18 Dec 2026 – 27 Mar 2027
 // Skill  3 · JavaScript          Days  201–300  · 28 Mar 2027 – 5 Jul 2027
 // Skill  4 · TypeScript          Days  301–400  · 6 Jul 2027 – 13 Oct 2027
@@ -89,12 +89,12 @@ const PHASE_DAYS = [
 const PHASES = [
   {
     id: 'p1', arcClass: 'y1', icon: '🐍',
-    label: 'Skill 01 · Python + FastAPI',
+    label: 'Skill 01 · Python',
     tagline: 'Days 1–100',
     duration: '100 days · ~3.3 months',
     blurb: 'Python foundations and FastAPI REST APIs. OOP, file I/O, DB connectivity, async/await, multithreading. The bedrock for Agentic AI and the NexusAI agent-api.',
     items: [
-      { icon: '🐍', title: 'Python + FastAPI', detail: 'Syntax · OOP · file I/O · DB connectivity · multithreading · async/await · FastAPI · REST API foundations', source: 'Ashok IT', to: '/python' },
+      { icon: '🐍', title: 'Python', detail: 'Syntax · OOP · file I/O · DB connectivity · multithreading · async/await · FastAPI · REST API foundations', source: 'Ashok IT', to: '/python' },
     ],
   },
   {
@@ -322,7 +322,7 @@ export default function RoadmapHome() {
         <p className="roadmap-hero-sub">
           Starts with <strong>Day 0 — environment setup</strong>, then <strong>20 skills · 100 days each</strong>{' '}
           mastered end to end —{' '}
-          <strong>Python + FastAPI</strong> {'→'} <strong>Agentic AI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
+          <strong>Python</strong> {'→'} <strong>Agentic AI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
           <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
           <strong>Databases</strong> {'→'} <strong>NestJS</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>Spring Boot</strong> {'→'}{' '}
           <strong>Kafka</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Automation Testing</strong> {'→'} <strong>DevOps</strong> {'→'}{' '}
@@ -530,7 +530,7 @@ export default function RoadmapHome() {
         <h2 className="roadmap-flow-title">The flow, end to end</h2>
         <p className="roadmap-flow-text">
           Day 0 setup, then 20 skills at 100 days each:{' '}
-          <strong>Python + FastAPI</strong> {'→'} <strong>Agentic AI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
+          <strong>Python</strong> {'→'} <strong>Agentic AI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
           <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
           <strong>Databases</strong> {'→'} <strong>NestJS</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>Spring Boot</strong> {'→'}{' '}
           <strong>Kafka</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Automation Testing</strong> {'→'} <strong>DevOps</strong> {'→'}{' '}
@@ -541,7 +541,7 @@ export default function RoadmapHome() {
         </p>
         <div className="roadmap-flow-actions">
           <Link to="/python" className="btn btn-lg roadmap-btn-primary">
-            Start Skill 01 · Python + FastAPI
+            Start Skill 01 · Python
           </Link>
           <Link to="/interview" className="btn btn-lg roadmap-btn-outline">
             DSA &amp; System Design

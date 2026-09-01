@@ -5,7 +5,7 @@ import './Day001.css';
 const PYTHON_DOWNLOADS = 'https://www.python.org/downloads/';
 
 const LEARNT_TODAY = [
-  { title: 'Skill 01 · Python + FastAPI (Days 1–100)', text: 'Day 1 of the 2,000-day journey. After Skill 01 comes Skill 02 Agentic AI (101–200) → JS (201–300) → TS (301–400) → React (401–500) → Next (501–600) → RN (601–700) → Express (701–800) → Databases (801–900) → NestJS (901–1000) → J2SE → Spring Boot → Kafka → Microservices → AutoTest → DevOps → AWS → SRE → System Design → DSA (ends 29 Feb 2032). NexusAI built daily throughout all 2,000 days' },
+  { title: 'Skill 01 · Python (Days 1–100)', text: 'Day 1 of the 2,000-day journey. After Skill 01 comes Skill 02 Agentic AI (101–200) → JS (201–300) → TS (301–400) → React (401–500) → Next (501–600) → RN (601–700) → Express (701–800) → Databases (801–900) → NestJS (901–1000) → J2SE → Spring Boot → Kafka → Microservices → AutoTest → DevOps → AWS → SRE → System Design → DSA (ends 29 Feb 2032). NexusAI built daily throughout all 2,000 days' },
   { title: 'AI vs ML vs DL vs Gen AI', text: 'each one builds on the last — AI is the umbrella, ML learns from data, DL uses neural networks, Gen AI creates new content' },
   { title: 'Why Python for AI', text: 'simple syntax + a huge ecosystem (NumPy, Pandas, TensorFlow, LangChain) made it the default language for AI work' },
   { title: 'Toolchain setup', text: 'installed Python, ticked "Add to PATH" during install, and picked an editor to write code in' },
@@ -157,7 +157,7 @@ export default function AgenticDay01() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '1%' }} /></div>
 
         <p className="day001-summary">
-          Day 1 of 2,000 — the start of <strong>Skill 01 · Python + FastAPI</strong> (Days 1–100 · 9 Sep – 17 Dec 2026).
+          Day 1 of 2,000 — the start of <strong>Skill 01 · Python</strong> (Days 1–100 · 9 Sep – 17 Dec 2026).
           Today is pure orientation: what <strong>Generative AI</strong>{' '}
           and <strong>Agentic AI</strong> actually mean, how they sit on top of <strong>AI → ML → DL</strong>,
           why <strong>Python</strong> is the language for AI work, and getting the toolchain (Python +
