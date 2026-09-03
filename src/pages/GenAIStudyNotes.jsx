@@ -706,6 +706,86 @@ const MODULES = [
       },
     ],
   },
+  {
+    title: 'Ollama — Local LLM Runtime',
+    tag: 'Local AI',
+    tagColor: 'purple',
+    intro: 'Ollama lets you run Large Language Models on your own machine — no API key, no cloud, no cost. Minimum 8 GB RAM required (16 GB recommended).',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is Ollama?',
+        items: [
+          'A tool to run LLMs locally on your laptop or desktop — completely offline.',
+          'No API key required and free of cost.',
+          'Contrast: OpenAI / Google models run on cloud servers with paid subscriptions; Ollama runs everything on your own hardware.',
+          'Ideal for learning, prototyping, and testing Gen AI projects without internet or billing.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Popular models in Ollama',
+        items: [
+          'llama3.2 — general-purpose chatbot',
+          'mistral — text generation and reasoning',
+          'gemma — lightweight model from Google',
+          'qwen — coding-related tasks',
+          'deepseek-r1 — reasoning-based tasks',
+          'codellama — code generation',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Advantages vs Limitations',
+        headers: ['Advantages', 'Limitations'],
+        rows: [
+          ['Easy to install', 'Large models need high RAM or GPU'],
+          ['Simple CLI commands', 'Small models give weaker answers than cloud GPT models'],
+          ['Runs fully offline — no internet needed', 'Response speed depends on system configuration'],
+          ['No API key required', 'Minimum 8 GB RAM required (16 GB recommended)'],
+          ['Free of cost', ''],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Ollama CLI — common commands',
+        code: `ollama --version              # verify install\nollama list                   # show downloaded models\nollama pull <model-name>      # download a model\nollama show <model-name>      # display model summary\nollama run <model-name>       # run the model interactively\nollama ps                     # show running models\nollama stop <model-name>      # stop a running model\nollama cp llama3.2 my-model   # copy/rename a model\nollama rm <model-name>        # remove a model\nollama serve                  # expose model as local REST API`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Local API endpoint',
+        text: 'After ollama serve, the model is available at http://localhost:11434/ — use this URL to integrate Ollama into your Gen AI projects as a drop-in replacement for cloud API calls.',
+      },
+      {
+        type: 'list',
+        title: 'Ollama Chatbot project — 02-ollama-gpt-chat-bot',
+        items: [
+          'Step 1: Create project folder 02-ollama-gpt-chat-bot.',
+          'Step 2: Create and activate a Python virtual environment (python -m venv venv → venv\\Scripts\\activate).',
+          'Step 3: Add requirements.txt with ollama and streamlit; install with pip install -r requirements.txt.',
+          'Step 4: Create backend.py — wraps ollama.chat() with MODEL_NAME and the user prompt; returns response text.',
+          'Step 5: Create frontend.py — Streamlit UI that calls ask_ollama() and renders user / assistant chat messages.',
+          'Step 6: Run with streamlit run frontend.py and test prompts end-to-end.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'requirements.txt',
+        code: `ollama\nstreamlit`,
+      },
+      {
+        type: 'code',
+        label: 'backend.py',
+        code: `import ollama\n\nMODEL_NAME = "llama3.2:latest"\n\ndef ask_ollama(question):\n    response = ollama.chat(\n        model=MODEL_NAME,\n        messages=[{"role": "user", "content": question}]\n    )\n    return response["message"]["content"]`,
+      },
+      {
+        type: 'code',
+        label: 'frontend.py',
+        code: `import streamlit as st\nfrom backend import ask_ollama\n\nst.set_page_config(page_title="Ollama Chatbot", page_icon="🤖", layout="centered")\nst.title("🤖 Ollama Chatbot")\nst.caption("Powered by Llama 3.2")\n\nquestion = st.chat_input("Ask me anything...")\n\nif question:\n    with st.chat_message("user"):\n        st.write(question)\n    with st.chat_message("assistant"):\n        with st.spinner("Thinking..."):\n            answer = ask_ollama(question)\n        st.write(answer)`,
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
