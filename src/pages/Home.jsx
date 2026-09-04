@@ -38,24 +38,24 @@ import JourneyCountdown from '../components/JourneyCountdown';
 
 const BTECH_ROADMAP = [
   {
-    year: 'Skills 1–3',
-    theme: 'Python + FastAPI + Agentic AI',
+    year: 'Skills 1–2',
+    theme: 'Python + Agentic AI',
     icon: '🐍',
     accent: 'y1',
     topics: ['Core Python', 'FastAPI', 'LangChain', 'LangGraph', 'MCP', 'n8n Workflows', 'AI Agents'],
-    blurb: 'The Python Stack — 100 days each of core Python, FastAPI APIs, and Agentic AI (LangChain, LangGraph, MCP). The AI + API foundation. Days 1–300.',
+    blurb: 'The Python Stack — 100 days of core Python (syntax, OOP, FastAPI REST APIs) then 100 days of Agentic AI (LangChain, LangGraph, RAG, MCP, CrewAI). The AI + API foundation. Days 1–200.',
     links: [
-      { label: 'Python & FastAPI', to: '/python' },
+      { label: 'Python', to: '/python' },
       { label: 'Agentic AI', to: '/python' },
     ],
   },
   {
-    year: 'Skills 4–8',
-    theme: 'JavaScript → TypeScript → React JS → Next JS → React Native',
+    year: 'Skills 3–8',
+    theme: 'JavaScript → TypeScript → React JS → Next JS → React Native → Express JS',
     icon: '🔷',
     accent: 'y2',
-    topics: ['JavaScript', 'TypeScript', 'React JS', 'Next JS', 'React Native'],
-    blurb: 'The JS/TS frontend & mobile ecosystem — 100 days each of JavaScript, TypeScript, React JS, Next JS, and React Native. Days 301–800.',
+    topics: ['JavaScript', 'TypeScript', 'React JS', 'Next JS', 'React Native', 'Express JS'],
+    blurb: 'The JS/TS full-stack & mobile ecosystem — 100 days each of JavaScript, TypeScript, React JS, Next JS, React Native, and Express JS. Days 201–800.',
     links: [
       { label: 'JavaScript', to: '/' },
       { label: 'TypeScript', to: '/typescript' },
@@ -65,31 +65,31 @@ const BTECH_ROADMAP = [
   },
   {
     year: 'Skills 9–10',
-    theme: 'Databases → Express JS',
+    theme: 'Databases → NestJS',
     icon: '🗄️',
     accent: 'y3',
-    topics: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Express JS', 'Prisma', 'JWT Auth'],
-    blurb: 'Data layer first, then APIs on top — 100 days of SQL & NoSQL (PostgreSQL, MySQL, MongoDB, Redis), then 100 days of Express / Node JS REST APIs with Prisma and JWT auth. Days 801–1000.',
+    topics: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'pgvector', 'NestJS', 'GraphQL', 'Kafka transport'],
+    blurb: 'Data layer first, then enterprise Node.js on top — 100 days of SQL & NoSQL (PostgreSQL, MySQL, MongoDB, Redis, pgvector), then 100 days of NestJS (modules, guards, GraphQL, Kafka transport, CQRS). Days 801–1000.',
     links: [
       { label: 'Java & Databases', to: '/java' },
     ],
   },
   {
     year: 'Skills 11–15',
-    theme: 'J2SE → JPA → Spring Boot → Microservices → Automation Testing',
+    theme: 'J2SE → Spring Boot → Kafka → Microservices → Automation Testing',
     icon: '☕',
     accent: 'y3',
-    topics: ['J2SE', 'JPA', 'Spring Boot', 'Microservices', 'Automation Testing'],
-    blurb: 'Java (400 days) then Automation Testing (100 days) — build the full stack first, then test all of it end-to-end. Days 1001–1500.',
+    topics: ['J2SE', 'Spring Boot', 'Kafka', 'Microservices', 'Automation Testing'],
+    blurb: 'The Java stack — 100 days each of Core Java, Spring Boot, Kafka event streaming, Microservices patterns, then full Automation Testing (JUnit 5, Testcontainers, JMeter). Days 1001–1500.',
     links: [{ label: 'Java Stack', to: '/java' }],
   },
   {
     year: 'Skills 16–20',
-    theme: 'DevOps → Cloud (AWS) → Kubernetes → System Design → Capstone',
+    theme: 'DevOps → AWS → SRE → System Design → DSA',
     icon: '🚀',
     accent: 'y5',
-    topics: ['Linux', 'Docker', 'CI/CD', 'AWS Cloud', 'Kubernetes', 'CKA', 'System Design', 'Capstone'],
-    blurb: 'Ship, scale, and orchestrate — 100 days each of DevOps, AWS Cloud, Kubernetes (CKA), and a dedicated System Design intensive, then a 100-day Capstone tying all 19 skills together. Days 1501–2000.',
+    topics: ['Linux', 'Docker', 'CI/CD', 'AWS Cloud', 'CKA', 'SRE', 'System Design', 'DSA'],
+    blurb: 'Ship, scale, and close the loop — 100 days each of DevOps, AWS (SAA + CKA), SRE (Prometheus, Grafana, SLOs), System Design (50+ case studies), then DSA as the final 100-day interview-prep sprint. Days 1501–2000.',
     links: [
       { label: 'DevOps', to: '/devops' },
       { label: 'AWS Cloud', to: '/aws' },
@@ -128,16 +128,16 @@ export default function Home() {
             </h1>
             <p className="fle-sub">
               A structured <strong>2,000-day journey</strong> — <strong>20 skills × 100 days each</strong>:
-              Python, FastAPI, Agentic AI, JavaScript, TypeScript, React JS, Next JS, React Native,
-              Express JS, Databases, J2SE, JPA, Spring Boot, Microservices, Automation Testing, DevOps, Cloud (AWS), Kubernetes,
-              System Design, and <strong>DSA</strong> (Days 1901–2000) as the final 100-day interview-prep sprint.
-              The Capstone project is built daily throughout all 2,000 days. One skill at a time, fully focused, front to back.
+              Python · Agentic AI · JavaScript · TypeScript · React JS · Next JS · React Native ·
+              Express JS · Databases · NestJS · J2SE · Spring Boot · Kafka · Microservices · Automation Testing ·
+              DevOps · AWS · SRE · System Design · and <strong>DSA</strong> (Days 1901–2000) as the final 100-day interview-prep sprint.
+              NexusAI capstone built daily throughout all 2,000 days. One skill at a time, fully focused, front to back.
             </p>
 
             <div className="fle-pills">
               <span className="fle-pill"><span aria-hidden="true">⚡</span> 2,000 Days of Code</span>
               <span className="fle-pill"><span aria-hidden="true">🧠</span> 20 Skills · 100 Days Each</span>
-              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → JS/TS → Databases → Java → DevOps → DSA</span>
+              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → Agentic AI → JS/TS → Databases → NestJS → Java → DevOps → DSA</span>
               <span className="fle-pill"><span aria-hidden="true">🏗️</span> Capstone Built Daily Throughout</span>
             </div>
 
