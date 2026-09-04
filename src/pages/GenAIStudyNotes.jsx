@@ -295,43 +295,150 @@ const MODULES = [
     title: 'Prompt Engineering',
     tag: 'Techniques',
     tagColor: 'cyan',
-    intro: 'Design prompts to make model output more useful, consistent and controllable.',
+    intro: 'Prompt Engineering is the skill of writing clear, effective instructions to an AI model so that it gives the best possible output. AI models generate output based on the input we give — that input is called a prompt.',
     blocks: [
       {
-        type: 'callout',
-        variant: 'info',
-        label: 'Strong prompt',
-        text: 'A strong prompt usually specifies the role, task, context, constraints and expected output format.',
-      },
-      {
-        type: 'code',
-        label: 'Prompt Template',
-        code: `You are a Java trainer.\nExplain {topic} for a beginner.\nUse simple language, one real-world example and five interview questions.\nReturn the answer using headings and bullet points.`,
+        type: 'table',
+        title: 'Poor Prompt vs Good Prompt',
+        headers: ['Poor Prompt', 'Good Prompt'],
+        rows: [
+          ['Explain java', 'Act as a Java trainer, explain Java to a beginner with simple examples, real-time use cases, and a few important interview questions.'],
+        ],
       },
       {
         type: 'list',
-        title: 'Prompting techniques',
+        title: 'Why the good prompt is better — it specifies:',
         items: [
-          'Zero-Shot — ask the model to perform a task without providing examples.',
-          'Few-Shot — provide a small number of examples so the model infers the expected pattern.',
-          'Chain-of-Thought — complex tasks may benefit from structured intermediate work.',
+          'Role — Java Trainer',
+          'Topic — Java programming language',
+          'Audience — Beginner student',
+          'Style — Simple explanation',
+          'Extra needs — Examples, real-time scenarios, interview questions',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Basic Formula of a Good Prompt — 5 ingredients',
+        items: [
+          '1. Role — what role should the AI play?',
+          '2. Task — what exactly do you want?',
+          '3. Context — background information the AI needs',
+          '4. Output Format — how the answer should look (table, steps, JSON, bullets…)',
+          '5. Constraints — rules to follow (simple English, no jargon, max 10 lines…)',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Golden Prompt Template',
+        code: `Act as a [role].
+I want to [task].
+Context: [background].
+Audience: [target users].
+Output format: [table / code / steps / bullets].
+Constraints: [simple English / short answer / no jargon / etc.].
+
+─── Example ──────────────────────────────────────
+Act as a Gen AI trainer.
+Explain RAG and vector databases for beginners.
+Give step-by-step explanation, real-time examples, and a mini project.
+Use simple English.`,
+      },
+      {
+        type: 'list',
+        title: 'Role — tell AI what role to play',
+        items: [
+          'Act as a Java developer.',
+          'Act as a Gen AI trainer.',
+          'Act as a DevOps engineer.',
+          'Act as an interviewer.',
+          'Act as a career counselor.',
+          'Bad: "Review my code"  →  Good: "Act as a senior Java developer, review the Spring Boot code below and identify performance issues."',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Task — clearly mention what you want',
+        items: [
+          'Explain · Summarize · Generate · Compare · Debug',
+          'Rewrite · Create · Design · Analyze · Convert',
+          'Ex: Explain prompt engineering to beginners with examples.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Context',
+        text: 'Context means background information. Without it, AI may give a generic answer.  Bad: "Write email"  →  Good: "Write a professional email to students informing them that today\'s Gen AI class is postponed due to a trainer emergency. Mention that the next class schedule will be updated soon."',
+      },
+      {
+        type: 'list',
+        title: 'Output Format — tell AI how the answer should look',
+        items: [
+          'Give answer in table format.',
+          'Give step-by-step explanation.',
+          'Give code with comments.',
+          'Give 10 bullet points.',
+          'Give JSON response.',
+          'Give interview questions and answers.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Constraints — rules we give to AI',
+        items: [
+          'Use simple English.',
+          'Do not use technical jargon.',
+          'Keep it within 10 lines.',
+          'Give only Java code.',
+          'Do not explain theory.',
+          'Use Spring Boot 3 / Angular 17.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Types of Prompts',
+        headers: ['Type', 'Definition', 'Example'],
+        rows: [
+          ['Zero-Shot', 'Ask AI directly — no examples given.', '"Explain what is REST API."  /  "Generate 10 Spring Boot interview questions."'],
+          ['One-Shot', 'Give one example and ask AI to follow the same style.', 'Show one input→output pair, then ask AI to convert a new input.'],
+          ['Few-Shot', 'Give multiple examples so AI learns the pattern.', 'Show 2–3 input→output pairs, then ask AI to follow the pattern.'],
         ],
       },
       {
         type: 'code',
         label: 'Zero-Shot example',
-        code: `Classify this review as Positive, Negative or Neutral: "The course content is useful."`,
+        code: `Explain what is REST API.
+
+Generate 10 interview questions on Spring Boot.`,
+      },
+      {
+        type: 'code',
+        label: 'One-Shot example',
+        code: `Convert the following sentence into a professional message.
+
+Example:
+Input: Class cancelled today.
+Output: Dear Students, today's class has been cancelled due to unavoidable reasons.
+        The updated schedule will be shared soon.
+
+Now convert:
+Input: Tomorrow demo is there at 8 PM.`,
       },
       {
         type: 'code',
         label: 'Few-Shot example',
-        code: `Input: Great product → Sentiment: Positive\nInput: Very poor support → Sentiment: Negative\nInput: The product is okay → Sentiment: ?`,
-      },
-      {
-        type: 'callout',
-        variant: 'highlight',
-        label: 'Chain-of-Thought',
-        text: 'In production, prefer concise plans, verifiable intermediate outputs and explicit checks rather than exposing private internal reasoning.',
+        code: `Convert casual messages into professional messages.
+
+Example 1:
+Input:  Class not there today.
+Output: Today's class will not be conducted.
+
+Example 2:
+Input:  Join fast, demo started.
+Output: The demo session has started. Please join as soon as possible.
+
+Now convert:
+Input:  Fee pending students pay immediately.`,
       },
     ],
   },
