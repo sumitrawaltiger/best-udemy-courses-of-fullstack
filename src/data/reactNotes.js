@@ -1636,6 +1636,490 @@ function ScoreCard({ title, score, isWinner }) {
       },
     ],
   },
+  {
+    day: 23,
+    date: '8 Apr 2028',
+    group: 'patterns',
+    title: 'Tailwind with React',
+    tagline: 'Tailwind CSS gives us utility-first classes to style React apps fast — no separate CSS files needed.',
+    image: '/react-notes/react21-new.jpeg',
+    tags: ['Tailwind CSS', 'Utility-First', 'CSS Framework', 'No Custom CSS', 'Responsive', 'Module 4 Styling'],
+    notes: [
+      { k: 'What is Tailwind?', v: 'A utility-first CSS framework — style elements by composing small, single-purpose class names directly in JSX. No CSS file to maintain.' },
+      { k: 'Install', v: 'npm install -D tailwindcss postcss autoprefixer → npx tailwindcss init -p' },
+      { k: 'tailwind.config.js', v: 'Set content: ["./src/**/*.{js,jsx}"] so Tailwind scans JSX and purges unused classes in production.' },
+      { k: 'index.css', v: 'Add three directives at the top: @tailwind base; @tailwind components; @tailwind utilities;' },
+      { k: 'Example JSX', v: '<button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Click</button>' },
+      { k: 'No separate CSS', v: 'All styling lives in the className prop. Tailwind generates only the classes you use — final CSS bundle stays tiny.' },
+      { k: 'Key benefit', v: 'Faster iteration: change design without leaving JSX. Consistent spacing/color scales baked in. No naming headaches.' },
+    ],
+    code: [
+      {
+        label: 'Tailwind card component',
+        block: `function Card({ title, desc }) {
+  return (
+    <div className="bg-white rounded-xl shadow-md p-6 max-w-sm">
+      <h2 className="text-xl font-bold text-gray-800 mb-2">{title}</h2>
+      <p className="text-gray-500 text-sm">{desc}</p>
+    </div>
+  );
+}`,
+      },
+    ],
+  },
+  {
+    day: 24,
+    date: '9 Apr 2028',
+    group: 'patterns',
+    title: 'Responsive Layouts',
+    tagline: 'Tailwind\'s breakpoint prefixes let you build mobile-first responsive layouts without writing a single media query.',
+    image: '/react-notes/react22-new.jpeg',
+    tags: ['Responsive', 'Breakpoints', 'Mobile-First', 'Tailwind Grid', 'Flexbox', 'Module 4 Styling'],
+    notes: [
+      { k: 'Mobile-first approach', v: 'Write base styles for mobile, then add breakpoint prefixes to override for larger screens.' },
+      { k: 'Breakpoints', v: 'sm (640px) · md (768px) · lg (1024px) · xl (1280px) · 2xl (1536px)' },
+      { k: 'Grid example', v: '<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"> — 1 col on mobile, 2 on tablet, 3 on desktop.' },
+      { k: 'Responsive text', v: 'className="text-sm md:text-base lg:text-lg" — size grows with viewport.' },
+      { k: 'Show/hide', v: 'className="hidden md:block" — hidden on mobile, visible md and above. Flip: "block md:hidden".' },
+      { k: 'Responsive navbar', v: 'Stack links vertically on mobile (flex-col), switch to row on md: (md:flex-row).' },
+      { k: 'No media queries', v: 'Tailwind generates the @media rules from prefixes — you never write them by hand.' },
+    ],
+    code: [
+      {
+        label: 'Responsive grid layout',
+        block: `function Gallery({ items }) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
+      {items.map(item => (
+        <div key={item.id} className="rounded-lg overflow-hidden shadow">
+          <img src={item.img} className="w-full h-48 object-cover" />
+          <p className="p-3 text-sm font-medium">{item.title}</p>
+        </div>
+      ))}
+    </div>
+  );
+}`,
+      },
+    ],
+  },
+  {
+    day: 25,
+    date: '10 Apr 2028',
+    group: 'routing',
+    title: 'React Router',
+    tagline: 'React Router turns your SPA into a multi-page experience — URL changes without page reloads.',
+    image: '/react-notes/react23.jpeg',
+    tags: ['React Router', 'BrowserRouter', 'Routes', 'Route', 'Link', 'SPA', 'Module 5 Routing'],
+    notes: [
+      { k: 'Install', v: 'npm install react-router-dom' },
+      { k: 'BrowserRouter', v: 'Wrap the entire app in <BrowserRouter> in main.jsx — provides the routing context.' },
+      { k: 'Routes + Route', v: '<Routes> holds <Route path="/about" element={<About />} /> entries. Routes picks the best match.' },
+      { k: 'Link', v: 'Use <Link to="/about"> instead of <a href> — no page reload, just URL and component swap.' },
+      { k: 'useParams()', v: 'Read dynamic URL segments: const { id } = useParams() for route path="/user/:id".' },
+      { k: 'useNavigate()', v: 'Programmatic navigation: const nav = useNavigate(); nav("/dashboard") — no anchor needed.' },
+      { k: 'SPA flow', v: 'URL changes → React Router matches route → renders matching component → no server request.' },
+    ],
+    code: [
+      {
+        label: 'Basic routing setup',
+        block: `// main.jsx
+import { BrowserRouter } from 'react-router-dom';
+root.render(<BrowserRouter><App /></BrowserRouter>);
+
+// App.jsx
+import { Routes, Route, Link } from 'react-router-dom';
+
+function App() {
+  return (
+    <>
+      <nav>
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/user/:id" element={<User />} />
+      </Routes>
+    </>
+  );
+}`,
+      },
+    ],
+  },
+  {
+    day: 26,
+    date: '11 Apr 2028',
+    group: 'routing',
+    title: 'Nested Routes',
+    tagline: 'Nested routes let a parent layout stay on screen while child routes swap the inner content.',
+    image: '/react-notes/react24.jpeg',
+    tags: ['Nested Routes', 'Outlet', 'Layout Component', 'Child Routes', 'React Router', 'Module 5 Routing'],
+    notes: [
+      { k: 'Why nested?', v: 'Keep shared UI (navbar, sidebar) rendered by a parent route while child routes replace only the content area.' },
+      { k: 'Outlet', v: '<Outlet /> in the parent component is where the matched child route renders.' },
+      { k: 'Route tree', v: '<Route path="/dashboard" element={<Layout />}> wraps child <Route> elements inside it.' },
+      { k: 'Index route', v: '<Route index element={<Dashboard />} /> renders when the parent path matches exactly (no child path segment).' },
+      { k: 'Layout component', v: 'Renders nav + <Outlet />. Child routes fill the Outlet without re-mounting the nav.' },
+      { k: 'Relative links', v: 'Child <Link to="settings"> is relative to the parent route path — no need to repeat the prefix.' },
+    ],
+    code: [
+      {
+        label: 'Nested route structure',
+        block: `// Route config
+<Route path="/dashboard" element={<Layout />}>
+  <Route index element={<Home />} />
+  <Route path="about" element={<About />} />
+  <Route path="contact" element={<Contact />} />
+</Route>
+
+// Layout.jsx
+function Layout() {
+  return (
+    <div>
+      <nav>
+        <Link to="">Home</Link>
+        <Link to="about">About</Link>
+        <Link to="contact">Contact</Link>
+      </nav>
+      <main>
+        <Outlet />  {/* child renders here */}
+      </main>
+    </div>
+  );
+}`,
+      },
+    ],
+  },
+  {
+    day: 27,
+    date: '12 Apr 2028',
+    group: 'routing',
+    title: 'Dynamic Routes',
+    tagline: 'Dynamic routes use URL parameters to render different content from the same component.',
+    image: '/react-notes/react25.jpeg',
+    tags: ['Dynamic Routes', 'useParams', 'URL Params', ':id', 'React Router', 'Module 5 Routing'],
+    notes: [
+      { k: 'Syntax', v: 'Use a colon prefix in the path: path="/user/:id" — :id is the dynamic segment.' },
+      { k: 'useParams()', v: 'const { id } = useParams() — reads the current URL\'s :id value inside the component.' },
+      { k: 'Multiple params', v: 'path="/blog/:category/:slug" → const { category, slug } = useParams()' },
+      { k: 'Use case', v: 'Product pages (/product/:id), user profiles (/user/:username), blog posts (/post/:slug).' },
+      { k: 'Data fetching', v: 'Use the param in a useEffect: useEffect(() => fetchUser(id), [id]) — refetches when id changes.' },
+      { k: 'Same component', v: 'One component handles /user/1, /user/2, /user/99 — URL drives the data, not separate components.' },
+    ],
+    code: [
+      {
+        label: 'Dynamic user profile route',
+        block: `// Route
+<Route path="/user/:id" element={<UserProfile />} />
+
+// UserProfile.jsx
+import { useParams } from 'react-router-dom';
+
+function UserProfile() {
+  const { id } = useParams();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    fetch(\`/api/users/\${id}\`)
+      .then(r => r.json())
+      .then(setUser);
+  }, [id]);
+
+  if (!user) return <p>Loading...</p>;
+  return <h1>{user.name}</h1>;
+}`,
+      },
+    ],
+  },
+  {
+    day: 28,
+    date: '13 Apr 2028',
+    group: 'routing',
+    title: 'Protected Routes',
+    tagline: 'Protected routes guard pages behind authentication — unauthenticated users are redirected to login.',
+    image: '/react-notes/react26.jpeg',
+    tags: ['Protected Routes', 'Auth Guard', 'Navigate', 'useAuth', 'React Router', 'Module 5 Routing'],
+    notes: [
+      { k: 'Pattern', v: 'Create a ProtectedRoute wrapper component that checks auth and either renders children or redirects.' },
+      { k: 'Navigate', v: '<Navigate to="/login" replace /> — React Router\'s programmatic redirect component. replace avoids a back-button loop.' },
+      { k: 'useAuth hook', v: 'Custom hook that returns { user, isAuthenticated } — consumed by ProtectedRoute.' },
+      { k: 'Route tree', v: 'Wrap private <Route> elements inside <Route element={<ProtectedRoute />}>.' },
+      { k: 'Redirect flow', v: 'User → /dashboard → ProtectedRoute checks auth → not logged in → redirected to /login.' },
+      { k: 'State-based', v: 'If auth state is async (loading from API), show a spinner until resolved — avoid flash of protected content.' },
+    ],
+    code: [
+      {
+        label: 'ProtectedRoute component',
+        block: `function ProtectedRoute({ children }) {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+}
+
+// Usage in App.jsx
+<Route
+  path="/dashboard"
+  element={
+    <ProtectedRoute>
+      <Dashboard />
+    </ProtectedRoute>
+  }
+/>`,
+      },
+    ],
+  },
+  {
+    day: 29,
+    date: '14 Apr 2028',
+    group: 'patterns',
+    title: 'Form Validation',
+    tagline: 'Validate forms with useState — check inputs before submitting and show field-level error messages.',
+    image: '/react-notes/react27.jpeg',
+    tags: ['Form Validation', 'useState', 'handleSubmit', 'Error Messages', 'Controlled Inputs', 'Module 6 Forms'],
+    notes: [
+      { k: 'Controlled input', v: 'Bind input value to state: value={form.email} onChange={e => setForm({...form, email: e.target.value})}.' },
+      { k: 'Validation function', v: 'validate() returns an errors object — empty means valid. Run it on submit (or on blur for inline feedback).' },
+      { k: 'handleSubmit', v: 'e.preventDefault() → run validate() → if errors, setErrors(errs) and return early → else submit.' },
+      { k: 'Showing errors', v: '{errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}' },
+      { k: 'Common rules', v: 'Required: !value.trim() · Email: /@/.test(value) · Min length: value.length < 6 · Match: pw !== confirm' },
+      { k: 'UX tip', v: 'Clear a field\'s error as soon as the user starts typing again — don\'t wait for re-submit.' },
+    ],
+    code: [
+      {
+        label: 'Manual validation pattern',
+        block: `function LoginForm() {
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [errors, setErrors] = useState({});
+
+  function validate() {
+    const errs = {};
+    if (!form.email) errs.email = 'Email is required';
+    if (!form.password || form.password.length < 6)
+      errs.password = 'Minimum 6 characters';
+    return errs;
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length) { setErrors(errs); return; }
+    console.log('Submit', form);
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={form.email}
+        onChange={e => setForm({...form, email: e.target.value})} />
+      {errors.email && <p>{errors.email}</p>}
+      <button type="submit">Login</button>
+    </form>
+  );
+}`,
+      },
+    ],
+  },
+  {
+    day: 30,
+    date: '15 Apr 2028',
+    group: 'patterns',
+    title: 'React Hook Form',
+    tagline: 'React Hook Form manages form state with refs, not useState — far fewer re-renders, less boilerplate.',
+    image: '/react-notes/react28.jpeg',
+    tags: ['React Hook Form', 'useForm', 'register', 'handleSubmit', 'formState', 'Module 6 Forms'],
+    notes: [
+      { k: 'Install', v: 'npm install react-hook-form' },
+      { k: 'useForm()', v: 'const { register, handleSubmit, formState: { errors } } = useForm()' },
+      { k: 'register()', v: 'Spread into input: {...register("email", { required: "Email required", pattern: { value: /@/, message: "Invalid email" } })}' },
+      { k: 'handleSubmit()', v: 'Wraps your onSubmit: <form onSubmit={handleSubmit(onSubmit)}> — runs validation then calls onSubmit(data).' },
+      { k: 'errors object', v: 'errors.email?.message gives the rule\'s message string when that field fails validation.' },
+      { k: 'vs useState forms', v: 'Inputs are uncontrolled (ref-based) — only the errored/submitted field re-renders, not the whole form.' },
+      { k: 'defaultValues', v: 'useForm({ defaultValues: { email: "" } }) pre-fills fields — useful for edit forms.' },
+    ],
+    code: [
+      {
+        label: 'React Hook Form example',
+        block: `import { useForm } from 'react-hook-form';
+
+function SignupForm() {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const onSubmit = (data) => console.log(data);
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input
+        {...register('email', {
+          required: 'Email is required',
+          pattern: { value: /\\S+@\\S+/, message: 'Invalid email' },
+        })}
+        placeholder="Email"
+      />
+      {errors.email && <p>{errors.email.message}</p>}
+
+      <input
+        type="password"
+        {...register('password', { required: true, minLength: 6 })}
+        placeholder="Password"
+      />
+      {errors.password && <p>Min 6 characters</p>}
+
+      <button type="submit">Sign Up</button>
+    </form>
+  );
+}`,
+      },
+    ],
+  },
+  {
+    day: 31,
+    date: '16 Apr 2028',
+    group: 'patterns',
+    title: 'Zod Validation',
+    tagline: 'Zod defines a TypeScript-first schema that validates form data and infers types automatically.',
+    image: '/react-notes/react29.jpeg',
+    tags: ['Zod', 'Schema Validation', 'zodResolver', 'TypeScript-First', 'React Hook Form', 'Module 6 Forms'],
+    notes: [
+      { k: 'Install', v: 'npm install zod @hookform/resolvers' },
+      { k: 'Schema', v: 'const schema = z.object({ email: z.string().email(), password: z.string().min(6) })' },
+      { k: 'Type inference', v: 'type FormData = z.infer<typeof schema> — get TypeScript types free from the schema.' },
+      { k: 'zodResolver', v: 'Pass to useForm: useForm<FormData>({ resolver: zodResolver(schema) }) — RHF delegates all validation to Zod.' },
+      { k: 'Error messages', v: 'Zod generates messages automatically ("String must contain at least 6 characters") or override with .min(6, "Too short").' },
+      { k: 'vs manual validation', v: 'Zod: schema-driven, type-safe, reusable across FE+BE. Manual: more code, types are your responsibility.' },
+      { k: 'Nested schemas', v: 'z.object({ address: z.object({ city: z.string() }) }) — schema mirrors the data shape exactly.' },
+    ],
+    code: [
+      {
+        label: 'Zod + React Hook Form',
+        block: `import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+
+const schema = z.object({
+  email: z.string().email('Invalid email'),
+  password: z.string().min(6, 'Min 6 characters'),
+});
+
+type FormData = z.infer<typeof schema>;
+
+function Form() {
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  return (
+    <form onSubmit={handleSubmit(console.log)}>
+      <input {...register('email')} />
+      {errors.email && <p>{errors.email.message}</p>}
+      <input type="password" {...register('password')} />
+      {errors.password && <p>{errors.password.message}</p>}
+      <button type="submit">Submit</button>
+    </form>
+  );
+}`,
+      },
+    ],
+  },
+  {
+    day: 32,
+    date: '17 Apr 2028',
+    group: 'state',
+    title: 'Context API',
+    tagline: 'Context API lets you share state across the component tree without prop-drilling.',
+    image: '/react-notes/react30.jpeg',
+    tags: ['Context API', 'createContext', 'useContext', 'Provider', 'Global State', 'Module 7 State'],
+    notes: [
+      { k: 'Problem solved', v: 'Prop-drilling: passing props through multiple layers just to reach a deep child. Context eliminates the middle layers.' },
+      { k: 'createContext', v: 'const ThemeContext = createContext(null) — creates the context object. Do this outside components.' },
+      { k: 'Provider', v: '<ThemeContext.Provider value={{ theme, toggleTheme }}> wraps the subtree that needs access.' },
+      { k: 'useContext', v: 'const { theme, toggleTheme } = useContext(ThemeContext) — reads the nearest Provider\'s value.' },
+      { k: 'Common uses', v: 'Theme (light/dark) · Auth user · Language/i18n · Cart state · Notifications' },
+      { k: 'Re-renders', v: 'All consumers re-render when the Provider value changes — keep value stable with useMemo if the object is large.' },
+      { k: 'vs Redux', v: 'Context = simple global state without extra libraries. Redux = complex state with actions, selectors, middleware.' },
+    ],
+    code: [
+      {
+        label: 'ThemeContext full example',
+        block: `// ThemeContext.jsx
+const ThemeContext = createContext(null);
+
+export function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState('light');
+  const toggleTheme = () => setTheme(t => t === 'light' ? 'dark' : 'light');
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+export const useTheme = () => useContext(ThemeContext);
+
+// Usage in any child component
+function Header() {
+  const { theme, toggleTheme } = useTheme();
+  return (
+    <header className={theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white'}>
+      <button onClick={toggleTheme}>Toggle</button>
+    </header>
+  );
+}`,
+      },
+    ],
+  },
+  {
+    day: 33,
+    date: '18 Apr 2028',
+    group: 'state',
+    title: 'useReducer',
+    tagline: 'useReducer manages complex state with a reducer function — same mental model as Redux, built into React.',
+    image: '/react-notes/react31.jpeg',
+    tags: ['useReducer', 'Reducer', 'dispatch', 'Action Types', 'Complex State', 'Module 7 State'],
+    notes: [
+      { k: 'Signature', v: 'const [state, dispatch] = useReducer(reducer, initialState)' },
+      { k: 'Reducer function', v: 'Pure function: (state, action) => newState. Switch on action.type to return the next state.' },
+      { k: 'dispatch', v: 'dispatch({ type: "INCREMENT" }) — sends an action to the reducer. Never mutate state directly.' },
+      { k: 'vs useState', v: 'useState = single value, simple updates. useReducer = multiple related values, complex update logic with named actions.' },
+      { k: 'Predictable', v: 'Each action type maps to an explicit state transition — easier to reason about and test than scattered setX() calls.' },
+      { k: 'With Context', v: 'Combine useReducer + Context to replace Redux: const { state, dispatch } = useContext(StoreContext).' },
+      { k: 'When to use', v: 'When next state depends on previous state, or when multiple sub-values update together (form with 5+ fields, shopping cart).' },
+    ],
+    deep: [
+      { q: 'useReducer vs useState — when to switch?', a: 'Switch when: (1) state is an object with multiple fields, (2) updates involve conditional logic, (3) you want named transitions instead of raw setState calls for clarity.' },
+    ],
+    code: [
+      {
+        label: 'Counter with useReducer',
+        block: `const initialState = { count: 0 };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'INCREMENT': return { count: state.count + 1 };
+    case 'DECREMENT': return { count: state.count - 1 };
+    case 'RESET':     return initialState;
+    default: return state;
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <div>
+      <p>Count: {state.count}</p>
+      <button onClick={() => dispatch({ type: 'INCREMENT' })}>+</button>
+      <button onClick={() => dispatch({ type: 'DECREMENT' })}>-</button>
+      <button onClick={() => dispatch({ type: 'RESET' })}>Reset</button>
+    </div>
+  );
+}`,
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
