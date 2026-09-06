@@ -2120,6 +2120,164 @@ function Counter() {
       },
     ],
   },
+  {
+    day: 34,
+    date: '19 Apr 2028',
+    group: 'state',
+    title: 'Redux Toolkit',
+    tagline: 'Redux Toolkit is the modern, official way to use Redux — less boilerplate, more productivity.',
+    image: '/react-notes/react32.jpeg',
+    tags: ['Redux Toolkit', 'createSlice', 'configureStore', 'useSelector', 'useDispatch', 'Global State', 'Module 7 State'],
+    notes: [
+      { k: 'What & Why?', v: 'Official modern Redux toolset. Simplifies store setup, handles complex global state, and includes useful utilities like createSlice — no more manual action creators or switch statements.' },
+      { k: 'Store', v: 'Holds the entire global state tree. Created once with configureStore({ reducer: { counter: counterReducer } }).' },
+      { k: 'Slice', v: 'A group of related state + its reducers. createSlice() generates action creators and the reducer together from one object.' },
+      { k: 'Actions', v: 'Describe what happened — dispatch({ type: "increment" }). createSlice auto-generates action creators you can import.' },
+      { k: 'Reducers', v: 'Update state based on the dispatched action. With RTK you can write "mutating" logic — Immer converts it to immutable updates under the hood.' },
+      { k: 'useSelector', v: 'Read state in a component: const count = useSelector(state => state.counter.count)' },
+      { k: 'useDispatch', v: 'Send actions from a component: const dispatch = useDispatch(); dispatch(increment())' },
+      { k: 'Folder structure', v: 'src/app/store.js → configures the store. src/features/counter/counterSlice.js → one slice per feature. App.jsx → reads/dispatches.' },
+      { k: 'Common mistakes', v: 'Mutating state outside createSlice. Forgetting to wrap app with <Provider store={store}>. Using too many slices. Not using Redux DevTools.' },
+    ],
+    code: [
+      {
+        label: 'counterSlice.js — createSlice',
+        block: `import { createSlice } from '@reduxjs/toolkit';
+
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState: { count: 0 },
+  reducers: {
+    increment: (state) => { state.count += 1; },
+    decrement: (state) => { state.count -= 1; },
+    reset:     (state) => { state.count = 0;  },
+  },
+});
+
+export const { increment, decrement, reset } = counterSlice.actions;
+export default counterSlice.reducer;`,
+      },
+      {
+        label: 'store.js — configureStore',
+        block: `import { configureStore } from '@reduxjs/toolkit';
+import counterReducer from '../features/counter/counterSlice';
+
+export const store = configureStore({
+  reducer: { counter: counterReducer },
+});`,
+      },
+      {
+        label: 'App.jsx — useSelector + useDispatch',
+        block: `import { useSelector, useDispatch } from 'react-redux';
+import { increment, decrement, reset } from './features/counter/counterSlice';
+
+function App() {
+  const count    = useSelector((state) => state.counter.count);
+  const dispatch = useDispatch();
+  return (
+    <div>
+      <h2>Count: {count}</h2>
+      <button onClick={() => dispatch(increment())}>+</button>
+      <button onClick={() => dispatch(decrement())}>-</button>
+      <button onClick={() => dispatch(reset())}>Reset</button>
+    </div>
+  );
+}`,
+      },
+    ],
+  },
+  {
+    day: 35,
+    date: '20 Apr 2028',
+    group: 'patterns',
+    title: 'useMemo',
+    tagline: 'useMemo caches the result of an expensive calculation and re-computes only when its dependencies change.',
+    image: '/react-notes/react33.jpeg',
+    tags: ['useMemo', 'Memoization', 'Performance', 'Caching', 'Dependencies', 'Module 8 Performance'],
+    notes: [
+      { k: 'What & Why?', v: 'useMemo caches a computed value. Without it, every render re-runs the expensive calculation. With it, the cached result is reused until a dependency changes.' },
+      { k: 'Syntax', v: 'const value = useMemo(() => computeExpensiveValue(), [dependencies])' },
+      { k: 'How it works', v: 'On mount: compute and cache. On re-render: if deps unchanged → return cached result. If deps changed → re-compute and cache the new value.' },
+      { k: 'Common use cases', v: 'Filtering/sorting large lists. Complex calculations (sums, aggregations). Data transformations. Avoiding expensive function calls on every render.' },
+      { k: 'vs no useMemo', v: 'Without: expensive calculation runs every render → slower. With: uses cached result if deps unchanged → faster.' },
+      { k: 'Quick tips', v: 'Keep the dependency array correct. Use only for genuinely expensive computations. Don\'t overuse — adds complexity. Combines well with useCallback.' },
+      { k: 'Common mistakes', v: 'Using useMemo for simple values (overhead isn\'t worth it). Missing dependencies (stale cached value). Expecting it to prevent re-renders — it only memoizes values, not components. Overusing hurts readability.' },
+    ],
+    code: [
+      {
+        label: 'useMemo — memoizing an expensive sum',
+        block: `import { useState, useMemo } from 'react';
+
+function ExpensiveList() {
+  const [count, setCount] = useState(0);
+  const numbers = useState(() => Array.from({ length: 10000 }, (_, i) => i + 1))[0];
+
+  // Runs only when 'numbers' changes, not on every render
+  const sum = useMemo(() => {
+    console.log('Calculating...');
+    return numbers.reduce((acc, n) => acc + n, 0);
+  }, [numbers]);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <p>Sum: {sum}</p>
+      <button onClick={() => setCount(count + 1)}>Re-render</button>
+    </div>
+  );
+}`,
+      },
+    ],
+  },
+  {
+    day: 36,
+    date: '21 Apr 2028',
+    group: 'patterns',
+    title: 'useCallback',
+    tagline: 'useCallback memoizes a function so the same reference is returned across renders — preventing unnecessary child re-renders.',
+    image: '/react-notes/react34.jpeg',
+    tags: ['useCallback', 'Memoization', 'Performance', 'React.memo', 'Function Reference', 'Module 8 Performance'],
+    notes: [
+      { k: 'What & Why?', v: 'useCallback returns a memoized version of a function. Without it, a new function object is created on every render, causing memoized child components to re-render even when nothing changed.' },
+      { k: 'Syntax', v: 'const memoizedFn = useCallback(() => { /* logic */ }, [dependencies])' },
+      { k: 'How it works', v: 'If deps unchanged → returns the same function reference (child skips re-render). If deps changed → creates a new function reference.' },
+      { k: 'Best used with', v: 'React.memo on the child component. Without React.memo, useCallback has no visible effect on re-renders.' },
+      { k: 'Common use cases', v: 'Passing functions to memoized child components. Event handlers in large lists. Function props in Context. Callbacks in custom hooks.' },
+      { k: 'vs useMemo', v: 'useMemo memoizes a computed value. useCallback memoizes a function. useCallback(fn, deps) is equivalent to useMemo(() => fn, deps).' },
+      { k: 'Common mistakes', v: 'Using useCallback for simple functions (unnecessary overhead). Missing dependencies (stale closure). Expecting it to prevent re-render of the component itself — it only stabilizes the function reference. Overusing adds complexity.' },
+    ],
+    deep: [
+      { q: 'useMemo vs useCallback — which one to reach for?', a: 'useMemo: cache an expensive computed value (number, array, object). useCallback: stabilize a function reference passed to a child wrapped in React.memo. If neither condition applies, skip both.' },
+    ],
+    code: [
+      {
+        label: 'useCallback + React.memo — prevent child re-render',
+        block: `import { useState, useCallback, memo } from 'react';
+
+const Button = memo(({ onClick, label }) => {
+  console.log('Button re-rendered');
+  return <button onClick={onClick}>{label}</button>;
+});
+
+export default function App() {
+  const [count, setCount] = useState(0);
+
+  // Without useCallback: new function on every render → Button re-renders
+  // With useCallback: same reference if deps unchanged → Button skips re-render
+  const handleClick = useCallback(() => {
+    setCount((prev) => prev + 1);
+  }, []); // no deps — function never needs to change
+
+  return (
+    <div>
+      <h2>Count: {count}</h2>
+      <Button onClick={handleClick} label="Increase" />
+    </div>
+  );
+}`,
+      },
+    ],
+  },
 ];
 
 export function getReactDay(day) {
