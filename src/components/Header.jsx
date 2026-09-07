@@ -8,6 +8,7 @@ function trackFromPath(path) {
   if (path.startsWith('/mobile')) return 'mobile';
   if (path.startsWith('/interview')) return 'interview';
   if (path.startsWith('/k8s')) return 'k8s';
+  if (path.startsWith('/appsec')) return 'appsec';
   if (path.startsWith('/devops')) return 'devops';
   if (path.startsWith('/aws')) return 'aws';
   if (path.startsWith('/java')) return 'java';
@@ -23,6 +24,7 @@ const TRACK_HOME = {
   genai: '/genai',
   python: '/python',
   java: '/java',
+  appsec: '/appsec',
   aws: '/aws',
   devops: '/devops',
   k8s: '/k8s',
@@ -36,6 +38,7 @@ const TRACK_START = {
   genai: '/genai/learn/the-new-age-of-ai-introduction-to-generative-ai',
   python: '/python/learn/course-introduction',
   java: '/java/learn/introduction-to-java-and-setup',
+  appsec: '/appsec',
   aws: '/aws/learn/introduction-to-100-days-of-cloud',
   devops: '/devops/learn/introduction-to-100-days-of-devops',
   k8s: '/k8s/learn/introduction-to-kubernetes-learning-path',
@@ -49,6 +52,7 @@ const TRACK_SYLLABUS = {
   genai: '/genai#genai-syllabus',
   python: '/python#python-syllabus',
   java: '/java#java-syllabus',
+  appsec: '/appsec#curriculum',
   aws: '/aws#aws-syllabus',
   devops: '/devops#devops-syllabus',
   k8s: '/k8s#k8s-syllabus',
@@ -118,7 +122,9 @@ export default function Header({ onSearch }) {
         ? 'IP'
         : track === 'k8s'
           ? 'K8S'
-          : track === 'devops'
+          : track === 'appsec'
+            ? 'SEC'
+            : track === 'devops'
             ? 'DO'
             : track === 'aws'
               ? 'AWS'
@@ -138,7 +144,9 @@ export default function Header({ onSearch }) {
         ? 'Thunder++ System Design'
         : track === 'k8s'
           ? 'Thunder++ Kubernetes'
-          : track === 'devops'
+          : track === 'appsec'
+            ? 'Application Security'
+            : track === 'devops'
             ? 'Thunder++ DevOps'
             : track === 'aws'
               ? 'Thunder++ AWS Cloud'
@@ -158,7 +166,9 @@ export default function Header({ onSearch }) {
         ? 'DSA & System Design — ChaiCode + GfG'
         : track === 'k8s'
           ? 'Kubernetes — KodeKloud'
-          : track === 'devops'
+          : track === 'appsec'
+            ? 'Skill 14 · OWASP · OAuth2 · Vault · K8s RBAC · DevSecOps'
+            : track === 'devops'
             ? '100 Days of DevOps — KodeKloud'
             : track === 'aws'
               ? '100 Days of Cloud — KodeKloud'

@@ -40,6 +40,13 @@ export const LEARNING_PATH = [
     path: '/java',
   },
   {
+    id: 'appsec',
+    label: 'AppSec',
+    short: 'SEC',
+    desc: 'Skill 14 · Application Security',
+    path: '/appsec',
+  },
+  {
     id: 'devops',
     label: 'DevOps & CI/CD',
     short: 'DO',

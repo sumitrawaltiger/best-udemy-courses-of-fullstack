@@ -5,6 +5,7 @@ function trackFromPath(path) {
   if (path.startsWith('/mobile')) return 'mobile';
   if (path.startsWith('/interview')) return 'interview';
   if (path.startsWith('/k8s')) return 'k8s';
+  if (path.startsWith('/appsec')) return 'appsec';
   if (path.startsWith('/devops')) return 'devops';
   if (path.startsWith('/aws')) return 'aws';
   if (path.startsWith('/java')) return 'java';

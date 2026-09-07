@@ -295,6 +295,7 @@ a:hover {
 .track-mobile .header-track-dot { background: var(--mobile-orange, #f97316); }
 .track-python .header-track-dot { background: var(--python-blue, #ff8c1a); }
 .track-java .header-track-dot { background: var(--java-orange, #f89820); }
+.track-appsec .header-track-dot { background: #dc2626; }
 .track-aws .header-track-dot { background: var(--aws-orange, #ff9900); }
 .track-devops .header-track-dot { background: var(--kodekloud-cyan, #ff8c1a); }
 .track-k8s .header-track-dot { background: #ff8c1a; }
