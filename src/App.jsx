@@ -6,6 +6,7 @@ import GenAIHome from './pages/GenAIHome';
 import GenAIStudyNotes from './pages/GenAIStudyNotes';
 import PythonHome from './pages/PythonHome';
 import AwsHome from './pages/AwsHome';
+import AppsecHome from './pages/AppsecHome';
 import JavaHome from './pages/JavaHome';
 import DevopsHome from './pages/DevopsHome';
 import K8sHome from './pages/K8sHome';
@@ -1074,6 +1075,7 @@ export default function App() {
           <Route path="java" element={<JavaHome />} />
           <Route path="java/roadmap" element={<JavaRoadmap />} />
           <Route path="java/learn/:slug" element={<Chapter track="java" />} />
+          <Route path="appsec" element={<AppsecHome />} />
           <Route path="aws" element={<AwsHome />} />
           <Route path="aws/learn/:slug" element={<Chapter track="aws" />} />
           <Route path="devops" element={<DevopsHome />} />

@@ -1,0 +1,128 @@
+export const APPSEC_META = {
+  title: 'Application Security — Skill 14',
+  subtitle: '100 Days · AppSec, DevSecOps & Ethical Hacking foundations',
+  description:
+    'OWASP Top 10 · OAuth2/OIDC · JWT hardening · HashiCorp Vault · Docker security · Kubernetes RBAC · SAST/DAST · DevSecOps pipeline',
+  skillNumber: 14,
+  totalDays: 100,
+  phaseWindow: 'Days 1301–1400 · 1 Apr 2030 – 9 Jul 2030',
+  startsAfter: 'Kafka (Skill 13, through 31 Mar 2030)',
+  leadsInto: 'AWS (Skill 16, from 18 Oct 2030)',
+};
+
+export const APPSEC_PHASES = [
+  {
+    num: '01',
+    dayRange: 'Days 1–20',
+    title: 'Foundations',
+    icon: '🛡️',
+    color: '#dc2626',
+    topics: [
+      'OWASP Top 10 (2021) — all 10 categories with Node.js + Java code examples',
+      'HTTP security headers: CSP, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy',
+      'TLS/SSL deep dive: certificates, Let\'s Encrypt, HTTPS enforcement, cipher suites',
+      'Threat modeling: STRIDE methodology, attack surfaces, data flow diagrams',
+      'CIA Triad (Confidentiality · Integrity · Availability) applied to NexusAI',
+    ],
+  },
+  {
+    num: '02',
+    dayRange: 'Days 21–35',
+    title: 'Identity & Access (OAuth2 / OIDC / JWT)',
+    icon: '🔑',
+    color: '#b91c1c',
+    topics: [
+      'OAuth 2.0 flows: Authorization Code + PKCE, Client Credentials, Device Flow',
+      'OpenID Connect (OIDC): ID tokens, UserInfo endpoint, discovery document, JWK sets',
+      'JWT deep dive: header.payload.sig structure, HS256 vs RS256, alg:none attack',
+      'JWT hardening: short expiry, refresh token rotation, revocation lists',
+      'Session security: HttpOnly, Secure, SameSite=Strict cookies — CSRF prevention',
+      'Password storage: bcrypt, Argon2, scrypt — why MD5/SHA1 fail',
+    ],
+  },
+  {
+    num: '03',
+    dayRange: 'Days 36–55',
+    title: 'Secure Coding (securing your own apps)',
+    icon: '🔒',
+    color: '#991b1b',
+    topics: [
+      'Injection attacks: SQL, NoSQL, Command, LDAP — parameterized queries, ORM safe patterns',
+      'XSS prevention: output encoding, DOMPurify, CSP strict mode, trusted types',
+      'CSRF: double-submit cookie, CSRF tokens, SameSite=Strict',
+      'SSRF: allowlists, URL validation, AWS metadata endpoint risk (169.254.169.254)',
+      'File upload security: MIME validation, virus scanning, separate storage domain',
+      'Rate limiting: Express rate-limit, Spring Boot bucket4j, Redis-backed counters',
+      'Dependency scanning: npm audit, OWASP Dependency-Check, Snyk for npm + Maven',
+      'API hardening: no verbose errors, pagination limits, auth on every route',
+    ],
+  },
+  {
+    num: '04',
+    dayRange: 'Days 56–70',
+    title: 'Secrets Management & Container Security',
+    icon: '🗝️',
+    color: '#7f1d1d',
+    topics: [
+      'HashiCorp Vault: secret engines, dynamic secrets (DB creds), AppRole auth, transit encryption',
+      'AWS Secrets Manager: auto-rotation, SDK integration in Spring Boot + Node.js',
+      'Secrets in git: trufflehog, git-secrets, .gitignore hygiene, pre-commit hooks',
+      'Docker hardening: non-root user, read-only FS, no --privileged, minimal base images',
+      'Image scanning: Trivy, Grype — detect CVEs in your own Docker images',
+      'Dockerfile best practices: multi-stage builds, pinned versions, no secrets in ENV layers',
+    ],
+  },
+  {
+    num: '05',
+    dayRange: 'Days 71–85',
+    title: 'Kubernetes Security (K8s RBAC)',
+    icon: '☸️',
+    color: '#ef4444',
+    topics: [
+      'K8s RBAC: Roles, ClusterRoles, RoleBindings, ServiceAccounts — least-privilege principle',
+      'Network Policies: pod-to-pod traffic rules, namespace isolation, deny-all default',
+      'Pod Security Standards: runAsNonRoot, readOnlyRootFilesystem, drop Linux capabilities',
+      'Secrets in K8s: encrypted at rest, External Secrets Operator (ESO) pulling from Vault',
+      'OPA / Gatekeeper: policy-as-code — enforce no-root, image registry allowlists',
+      'Falco: runtime security — detect anomalous syscalls in running containers',
+      'kube-bench: audit your cluster against the CIS Kubernetes Benchmark',
+    ],
+  },
+  {
+    num: '06',
+    dayRange: 'Days 86–100',
+    title: 'Security Testing & DevSecOps',
+    icon: '🧪',
+    color: '#f87171',
+    topics: [
+      'SAST: Semgrep, SonarQube — static code analysis integrated into CI pipeline',
+      'DAST: OWASP ZAP automated scans against a running app',
+      'SCA: Snyk in GitHub Actions — block PRs with critical CVEs automatically',
+      'Burp Suite: intercept proxy basics, manual pen-testing your own APIs',
+      'DevSecOps pipeline: security gates at every stage — lint → SAST → build → image scan → DAST',
+      'CTF intro: TryHackMe OWASP Top 10 room, HackTheBox Tier 0 — attacker mindset',
+      'Capstone: full security audit of NexusAI — threat model + scan + fix + written report',
+    ],
+  },
+];
+
+export const APPSEC_OUTCOMES = [
+  'Design a zero-trust auth system with OAuth2/OIDC + Vault dynamic secrets',
+  'Write code that passes OWASP ZAP, Semgrep, and Snyk scans automatically',
+  'Lock down a Kubernetes cluster with RBAC + Network Policies + OPA policies',
+  'Build a DevSecOps CI pipeline that rejects insecure PRs at the gate',
+  'Produce a professional threat model and security audit report for NexusAI',
+];
+
+export const APPSEC_TOOLS = [
+  { name: 'OWASP ZAP', role: 'DAST scanner', color: '#dc2626' },
+  { name: 'Semgrep', role: 'SAST / code analysis', color: '#f97316' },
+  { name: 'Snyk', role: 'SCA / dependency CVEs', color: '#22c55e' },
+  { name: 'HashiCorp Vault', role: 'Secrets management', color: '#fbbf24' },
+  { name: 'Burp Suite', role: 'Manual pen-testing proxy', color: '#f97316' },
+  { name: 'Trivy / Grype', role: 'Container image scanning', color: '#06b6d4' },
+  { name: 'Falco', role: 'K8s runtime security', color: '#818cf8' },
+  { name: 'kube-bench', role: 'CIS K8s Benchmark audit', color: '#34d399' },
+  { name: 'TryHackMe', role: 'Guided CTF labs', color: '#dc2626' },
+  { name: 'PortSwigger Labs', role: 'Web security hands-on', color: '#f97316' },
+];
