@@ -3,7 +3,7 @@
 // & FastAPI (Phase 1, under /python) → TypeScript Stack — JavaScript,
 // TypeScript, React JS/Next JS, React Native, Express/Node JS (Phase 2, under
 // /, /typescript, /nextjs, /mobile) → Java Stack —
-// J2SE/Spring Boot/Kafka/Microservices/Automation Testing (Phase 3, under /java) → DevOps
+// J2SE/Spring Boot/Kafka/AppSec/Quality Engineering (Phase 3, under /java, /appsec) → AWS
 // Stack — DevOps, AWS Cloud & SRE (Phase 4). DSA & System Design are
 // practiced throughout, not a separate stack. GenAI (Agentic AI in
 // JavaScript) is a separate, unmodified bonus track — distinct from the
