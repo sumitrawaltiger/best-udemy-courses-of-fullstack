@@ -53,10 +53,10 @@ function _calDate(dayN) {
 // Skill 11 · J2SE                Days 1001–1100 · 5 Jun 2029 – 12 Sep 2029
 // Skill 12 · Spring Boot         Days 1101–1200 · 13 Sep 2029 – 21 Dec 2029
 // Skill 13 · Kafka               Days 1201–1300 · 22 Dec 2029 – 31 Mar 2030
-// Skill 14 · Microservices       Days 1301–1400 · 1 Apr 2030 – 9 Jul 2030
-// Skill 15 · Automation Testing  Days 1401–1500 · 10 Jul 2030 – 17 Oct 2030
-// Skill 16 · DevOps              Days 1501–1600 · 18 Oct 2030 – 25 Jan 2031
-// Skill 17 · AWS                 Days 1601–1700 · 26 Jan 2031 – 5 May 2031
+// Skill 14 · AppSec              Days 1301–1400 · 1 Apr 2030 – 9 Jul 2030
+// Skill 15 · Quality Engineering Days 1401–1500 · 10 Jul 2030 – 17 Oct 2030
+// Skill 16 · AWS                 Days 1501–1600 · 18 Oct 2030 – 25 Jan 2031
+// Skill 17 · DevOps              Days 1601–1700 · 26 Jan 2031 – 5 May 2031
 // Skill 18 · SRE                 Days 1701–1800 · 6 May 2031 – 13 Aug 2031
 // Skill 19 · System Design       Days 1801–1900 · 14 Aug 2031 – 21 Nov 2031
 // Skill 20 · DSA                 Days 1901–2000 · 22 Nov 2031 – 29 Feb 2032
@@ -219,43 +219,43 @@ const PHASES = [
     ],
   },
   {
-    id: 'p14', arcClass: 'y3', icon: '🔗',
-    label: 'Skill 14 · Microservices',
+    id: 'p14', arcClass: 'y3', icon: '🔐',
+    label: 'Skill 14 · AppSec',
     tagline: 'Days 1301–1400',
     duration: '100 days · ~3.3 months',
-    blurb: 'Production microservices — CQRS, event sourcing, Saga pattern, service mesh, and distributed system patterns built on Kafka.',
+    blurb: 'Application Security — OWASP Top 10, OAuth2/OIDC, JWT hardening, HashiCorp Vault, Docker hardening, Kubernetes RBAC, and a full DevSecOps CI pipeline.',
     items: [
-      { icon: '🔗', title: 'Microservices', detail: 'CQRS · event sourcing · Saga pattern · API gateway · service mesh · distributed tracing · circuit breakers', source: 'Udemy', to: '/java' },
+      { icon: '🔐', title: 'AppSec', detail: 'OWASP Top 10 · OAuth2/OIDC · JWT hardening · HashiCorp Vault · container security · K8s RBAC · SAST/DAST/SCA · DevSecOps', source: 'PortSwigger / TryHackMe', to: '/appsec' },
     ],
   },
   {
     id: 'p15', arcClass: 'y3', icon: '🧪',
-    label: 'Skill 15 · Automation Testing',
+    label: 'Skill 15 · Quality Engineering',
     tagline: 'Days 1401–1500',
     duration: '100 days · ~3.3 months',
-    blurb: 'Full Java test suite — JUnit 5, Mockito, Testcontainers, REST-assured, Pact contract tests, and JMeter performance testing.',
+    blurb: 'Cross-stack quality engineering — JUnit 5, Mockito, Testcontainers (Java) + Playwright, Vitest, Pact (frontend/API) and full CI integration.',
     items: [
-      { icon: '🧪', title: 'Automation Testing', detail: 'JUnit 5 · Mockito · Testcontainers · REST-assured · Pact contract tests · JMeter / Gatling performance testing', source: 'Udemy', to: '/java' },
+      { icon: '🧪', title: 'Quality Engineering', detail: 'JUnit 5 · Mockito · Testcontainers · REST-assured · Playwright · Vitest · Pact contract tests · JMeter performance', source: 'Udemy', to: '/java' },
     ],
   },
   {
-    id: 'p16', arcClass: 'y5', icon: '🐳',
-    label: 'Skill 16 · DevOps',
+    id: 'p16', arcClass: 'y5', icon: '☁️',
+    label: 'Skill 16 · AWS',
     tagline: 'Days 1501–1600',
     duration: '100 days · ~3.3 months',
-    blurb: 'Docker, Kubernetes, and CI/CD — containerisation, Helm charts, GitHub Actions, Terraform, and GitOps with ArgoCD.',
+    blurb: 'AWS Solutions Architect Associate — VPC, IAM, EKS, RDS, CloudFront, Route 53. Cloud fundamentals before the DevOps tooling that orchestrates it.',
     items: [
-      { icon: '🐳', title: 'DevOps', detail: 'Docker · Kubernetes core · Helm · ArgoCD · Flux · GitHub Actions · Jenkins · Terraform IaC · GitOps', source: 'KodeKloud', to: '/devops' },
+      { icon: '☁️', title: 'AWS', detail: 'AWS SAA · VPC · IAM · EKS · RDS · ElastiCache · CloudFront · Route 53 · S3 · Lambda · WAF · GuardDuty', source: 'KodeKloud / CloudFolks', to: '/aws' },
     ],
   },
   {
-    id: 'p17', arcClass: 'y5', icon: '☁️',
-    label: 'Skill 17 · AWS',
+    id: 'p17', arcClass: 'y5', icon: '🐳',
+    label: 'Skill 17 · DevOps',
     tagline: 'Days 1601–1700',
     duration: '100 days · ~3.3 months',
-    blurb: 'AWS Solutions Architect Associate + Kubernetes CKA — EKS, RDS, CloudFront, Route 53, and production cloud deployment.',
+    blurb: 'Docker, Kubernetes CKA, and CI/CD — containerisation, Helm charts, GitHub Actions, Terraform, and GitOps with ArgoCD.',
     items: [
-      { icon: '☁️', title: 'AWS + CKA', detail: 'AWS SAA · EKS · RDS · ElastiCache · MSK · CloudFront · Route 53 · Kubernetes CKA certification prep', source: 'KodeKloud / CloudFolks', to: '/aws' },
+      { icon: '🐳', title: 'DevOps + CKA', detail: 'Docker · Kubernetes · Helm · ArgoCD · Flux · GitHub Actions · Jenkins · Terraform IaC · GitOps · CKA certification', source: 'KodeKloud', to: '/devops' },
     ],
   },
   {
@@ -325,8 +325,8 @@ export default function RoadmapHome() {
           <strong>Python</strong> {'→'} <strong>Agentic AI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
           <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
           <strong>Databases</strong> {'→'} <strong>NestJS</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>Spring Boot</strong> {'→'}{' '}
-          <strong>Kafka</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Automation Testing</strong> {'→'} <strong>DevOps</strong> {'→'}{' '}
-          <strong>AWS</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong> {'→'} <strong>DSA</strong> —{' '}
+          <strong>Kafka</strong> {'→'} <strong>AppSec</strong> {'→'} <strong>Quality Engineering</strong> {'→'} <strong>AWS</strong> {'→'}{' '}
+          <strong>DevOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong> {'→'} <strong>DSA</strong> —{' '}
           <strong>2,000 days (~66 months)</strong> of focused daily practice, front to back.
           NexusAI capstone built daily throughout all 2,000 days.
         </p>
@@ -346,7 +346,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png"
-          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express → Databases → NestJS → J2SE → Spring Boot → Kafka → Microservices → AutoTest → DevOps → AWS → SRE → System Design → DSA. Day 1: 9 Sep 2026 · Day 2,000: 29 Feb 2032."
+          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express → Databases → NestJS → J2SE → Spring Boot → Kafka → AppSec → Quality Engineering → AWS → DevOps → SRE → System Design → DSA. Day 1: 9 Sep 2026 · Day 2,000: 29 Feb 2032."
           loading="eager"
           style={{
             width: '100%',
