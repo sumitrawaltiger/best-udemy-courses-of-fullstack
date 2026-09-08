@@ -26,7 +26,7 @@ export default function AppsecHome() {
               🔐 Skill 15 · AppSec
             </span>
             <span style={{ color: 'var(--muted, #9aa7b4)', fontSize: '0.8rem', fontWeight: 600 }}>
-              Days 1301–1400 · 1 Apr – 9 Jul 2030
+              Days 1401–1500 · 10 Jul – 17 Oct 2030
             </span>
           </div>
 
@@ -44,7 +44,7 @@ export default function AppsecHome() {
               { value: '100', label: 'Days' },
               { value: '6', label: 'Phases' },
               { value: '10+', label: 'Security Tools' },
-              { value: 'Skill 14', label: 'of 20' },
+              { value: 'Skill 15', label: 'of 20' },
             ].map((s) => (
               <div key={s.label}>
                 <div style={{ fontSize: '1.8rem', fontWeight: 900, color: A, lineHeight: 1 }}>{s.value}</div>
@@ -58,8 +58,8 @@ export default function AppsecHome() {
             <a href="#curriculum" style={btnStyle(A)}>📖 View Curriculum</a>
             <a href="#outcomes" style={btnOutlineStyle(A)}>✅ Outcomes</a>
             <a href="#tools" style={btnOutlineStyle(A)}>🔧 Tools</a>
-            <Link to="/java" style={btnOutlineStyle(A)}>← Kafka (Skill 13)</Link>
-            <Link to="/aws" style={btnOutlineStyle(A)}>AWS (Skill 16) →</Link>
+            <Link to="/java" style={btnOutlineStyle(A)}>← Microservices (Skill 14)</Link>
+            <Link to="/aws" style={btnOutlineStyle(A)}>AWS (Skill 17) →</Link>
           </div>
         </div>
       </section>
@@ -69,10 +69,10 @@ export default function AppsecHome() {
         {/* ── Why AppSec here? ─────────────────────────────────────── */}
         <section style={{ marginBottom: '3rem', background: A_BG, border: `1px solid ${A_BORDER}`, borderRadius: '14px', padding: '1.5rem 1.75rem' }}>
           <h2 style={{ color: A, fontSize: '1rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 0.75rem' }}>
-            Why Skill 14? — Security before cloud
+            Why Skill 15? — Security before cloud
           </h2>
           <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.7, color: 'var(--muted, #9aa7b4)' }}>
-            By Day 1301 you'll have shipped Python, Node.js, Java, and Kafka services.
+            By Day 1401 you'll have shipped Python, Node.js, Java, and Microservices with Kafka.
             AppSec comes <strong style={{ color: 'var(--text, #e6edf3)' }}>before AWS (Skill 17) and DevOps (Skill 18)</strong> so that
             when you build IAM policies, VPC security groups, and GitHub Actions pipelines,
             you already understand <em>why</em> those controls exist.
