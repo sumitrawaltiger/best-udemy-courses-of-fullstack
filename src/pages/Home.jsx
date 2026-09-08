@@ -76,20 +76,20 @@ const BTECH_ROADMAP = [
   },
   {
     year: 'Skills 11–15',
-    theme: 'J2SE → Spring Boot → Kafka → AppSec → Quality Engineering',
+    theme: 'J2SE → DSA → Spring Boot → Microservices → AppSec',
     icon: '☕',
     accent: 'y3',
-    topics: ['J2SE', 'Spring Boot', 'Kafka', 'AppSec / Security', 'Quality Engineering'],
-    blurb: 'The Java stack — 100 days each of Core Java, Spring Boot, Kafka event streaming, then AppSec (OWASP, OAuth2/OIDC, JWT hardening, Vault, K8s RBAC), then Quality Engineering (JUnit 5, Playwright, Vitest, Pact, Testcontainers). Days 1001–1500.',
+    topics: ['J2SE', 'DSA', 'Spring Boot', 'Kafka + Microservices', 'AppSec / Security'],
+    blurb: 'Java foundations then interview-ready DSA (Python + TypeScript + Java), then Spring Boot, Microservices (Kafka, CQRS, Saga, event sourcing, service mesh), then AppSec (OWASP, OAuth2/OIDC, JWT, Vault, K8s RBAC). Days 1001–1500.',
     links: [{ label: 'Java Stack', to: '/java' }],
   },
   {
     year: 'Skills 16–20',
-    theme: 'AWS → DevOps → SRE → System Design → DSA',
+    theme: 'Quality Engineering → AWS → DevOps → SRE → System Design',
     icon: '🚀',
     accent: 'y5',
-    topics: ['AWS SAA', 'EKS', 'RDS', 'IAM', 'Docker', 'Kubernetes', 'CI/CD', 'SRE', 'System Design', 'DSA'],
-    blurb: 'Ship, scale, and close the loop — 100 days of AWS (SAA + EKS + RDS + VPC + IAM), then DevOps (Docker, Kubernetes, Helm, ArgoCD, CKA), then SRE (Prometheus, Grafana, SLOs), System Design (50+ case studies), then DSA as the final 100-day interview-prep sprint. Days 1501–2000.',
+    topics: ['Quality Engineering', 'AWS SAA', 'RDS', 'IAM', 'Docker', 'Kubernetes', 'EKS', 'CI/CD', 'SRE', 'System Design'],
+    blurb: 'Ship, scale, and close the loop — Quality Engineering (JUnit 5, Playwright, Vitest, Pact), AWS (SAA + RDS + VPC + IAM + Lambda), DevOps (Docker, Kubernetes CKA, EKS, Helm, ArgoCD), SRE (Prometheus, Grafana, SLOs), then System Design (50+ case studies) as the capstone close. Days 1501–2000.',
     links: [
       { label: 'AWS Cloud', to: '/aws' },
       { label: 'DevOps', to: '/devops' },
@@ -129,15 +129,15 @@ export default function Home() {
             <p className="fle-sub">
               A structured <strong>2,000-day journey</strong> — <strong>20 skills × 100 days each</strong>:
               Python · Agentic AI · JavaScript · TypeScript · React JS · Next JS · React Native ·
-              Express JS · Databases · NestJS · J2SE · Spring Boot · Kafka · AppSec · Quality Engineering ·
-              AWS · DevOps · SRE · System Design · and <strong>DSA</strong> (Days 1901–2000) as the final 100-day interview-prep sprint.
+              Express JS · Databases · NestJS · J2SE · <strong>DSA</strong> · Spring Boot · Microservices ·
+              AppSec · Quality Engineering · AWS · DevOps · SRE · and <strong>System Design</strong> as the capstone close.
               NexusAI capstone built daily throughout all 2,000 days. One skill at a time, fully focused, front to back.
             </p>
 
             <div className="fle-pills">
               <span className="fle-pill"><span aria-hidden="true">⚡</span> 2,000 Days of Code</span>
               <span className="fle-pill"><span aria-hidden="true">🧠</span> 20 Skills · 100 Days Each</span>
-              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → Agentic AI → JS/TS → Databases → NestJS → Java → DevOps → DSA</span>
+              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → Agentic AI → JS/TS → Java → DSA → Microservices → DevOps → System Design</span>
               <span className="fle-pill"><span aria-hidden="true">🏗️</span> Capstone Built Daily Throughout</span>
             </div>
 
