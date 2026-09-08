@@ -23,7 +23,7 @@ export default function AppsecHome() {
               fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.1em',
               padding: '0.3rem 0.8rem', borderRadius: '999px', textTransform: 'uppercase',
             }}>
-              🔐 Skill 14 · AppSec
+              🔐 Skill 15 · AppSec
             </span>
             <span style={{ color: 'var(--muted, #9aa7b4)', fontSize: '0.8rem', fontWeight: 600 }}>
               Days 1301–1400 · 1 Apr – 9 Jul 2030
@@ -202,10 +202,10 @@ export default function AppsecHome() {
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '0.75rem' }}>
             {[
-              { skill: 'Skill 15 · Quality Engineering', how: 'Security testing (SAST/DAST/SCA) integrates directly into the test pipeline you build.' },
-              { skill: 'Skill 16 · AWS', how: 'IAM least-privilege, VPC security groups, AWS WAF, GuardDuty, and Secrets Manager are all AppSec in practice.' },
-              { skill: 'Skill 17 · DevOps', how: 'Securing Helm charts, ArgoCD RBAC, Terraform with least-privilege IAM, and GitHub Actions secrets.' },
-              { skill: 'Skill 18 · SRE', how: 'Security incidents, SLOs for security controls, and alert-on-anomaly patterns from Falco + Prometheus.' },
+              { skill: 'Skill 16 · Quality Engineering', how: 'Security testing (SAST/DAST/SCA) integrates directly into the test pipeline you build.' },
+              { skill: 'Skill 17 · AWS', how: 'IAM least-privilege, VPC security groups, AWS WAF, GuardDuty, and Secrets Manager are all AppSec in practice.' },
+              { skill: 'Skill 18 · DevOps', how: 'Securing Helm charts, ArgoCD RBAC, Terraform with least-privilege IAM, and GitHub Actions secrets.' },
+              { skill: 'Skill 19 · SRE', how: 'Security incidents, SLOs for security controls, and alert-on-anomaly patterns from Falco + Prometheus.' },
             ].map((item) => (
               <div key={item.skill} style={{ background: CARD, border: `1px solid ${A_BORDER}`, borderRadius: '10px', padding: '0.85rem 1rem' }}>
                 <div style={{ fontWeight: 800, fontSize: '0.8rem', color: A, marginBottom: '0.35rem' }}>{item.skill}</div>

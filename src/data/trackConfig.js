@@ -31,7 +31,7 @@ export const PYTHON_CALENDAR_DAYS = 120;
 export const PYTHON_MODULES = 45; // Ashok IT modules (fit inside PYTHON_CALENDAR_DAYS)
 
 // Java & Spring: 24 May 2027 → 23 Oct 2027
-// Calendar Days 306–458 (153 days) — J2SE, Spring Boot, Kafka, Microservices, Automation Testing
+// Calendar Days 306–458 (153 days) — J2SE, DSA, Spring Boot, Microservices, AppSec, Quality Engineering
 export const JAVA_CALENDAR_DAYS = 153;
 export const JAVA_MODULES = 50; // Udemy-mapped modules (fit inside JAVA_CALENDAR_DAYS)
 
