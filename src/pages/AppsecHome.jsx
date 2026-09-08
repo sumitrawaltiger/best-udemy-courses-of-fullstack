@@ -73,7 +73,7 @@ export default function AppsecHome() {
           </h2>
           <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.7, color: 'var(--muted, #9aa7b4)' }}>
             By Day 1301 you'll have shipped Python, Node.js, Java, and Kafka services.
-            AppSec comes <strong style={{ color: 'var(--text, #e6edf3)' }}>before AWS (Skill 16) and DevOps (Skill 17)</strong> so that
+            AppSec comes <strong style={{ color: 'var(--text, #e6edf3)' }}>before AWS (Skill 17) and DevOps (Skill 18)</strong> so that
             when you build IAM policies, VPC security groups, and GitHub Actions pipelines,
             you already understand <em>why</em> those controls exist.
             You'll integrate SAST/DAST/SCA into every CI pipeline from day one.

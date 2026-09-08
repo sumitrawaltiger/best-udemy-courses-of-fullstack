@@ -106,15 +106,15 @@ export const INTERVIEW_PREP_WEEKS = 0;
 // Skill  9 · Databases           Days  801–900  · 17 Nov 2028 – 24 Feb 2029
 // Skill 10 · NestJS              Days  901–1000 · 25 Feb 2029 – 4 Jun 2029
 // Skill 11 · J2SE                Days 1001–1100 · 5 Jun 2029 – 12 Sep 2029
-// Skill 12 · Spring Boot         Days 1101–1200 · 13 Sep 2029 – 21 Dec 2029
-// Skill 13 · Kafka               Days 1201–1300 · 22 Dec 2029 – 31 Mar 2030
+// Skill 12 · DSA                 Days 1101–1200 · 13 Sep 2029 – 21 Dec 2029
+// Skill 13 · Spring Boot         Days 1201–1300 · 22 Dec 2029 – 31 Mar 2030
 // Skill 14 · Microservices       Days 1301–1400 · 1 Apr 2030 – 9 Jul 2030
-// Skill 15 · Automation Testing  Days 1401–1500 · 10 Jul 2030 – 17 Oct 2030
-// Skill 16 · DevOps              Days 1501–1600 · 18 Oct 2030 – 25 Jan 2031
+// Skill 15 · AppSec              Days 1401–1500 · 10 Jul 2030 – 17 Oct 2030
+// Skill 16 · Quality Engineering Days 1501–1600 · 18 Oct 2030 – 25 Jan 2031
 // Skill 17 · AWS                 Days 1601–1700 · 26 Jan 2031 – 5 May 2031
-// Skill 18 · SRE                 Days 1701–1800 · 6 May 2031 – 13 Aug 2031
-// Skill 19 · System Design       Days 1801–1900 · 14 Aug 2031 – 21 Nov 2031
-// Skill 20 · DSA                 Days 1901–2000 · 22 Nov 2031 – 29 Feb 2032
+// Skill 18 · DevOps              Days 1701–1800 · 6 May 2031 – 13 Aug 2031
+// Skill 19 · SRE                 Days 1801–1900 · 14 Aug 2031 – 21 Nov 2031
+// Skill 20 · System Design       Days 1901–2000 · 22 Nov 2031 – 29 Feb 2032
 // NexusAI capstone built daily throughout all 2,000 days — no separate Capstone block.
 export const JOURNEY_START_LABEL = '9 Sep 2026';
 export const JOURNEY_END_LABEL = '29 Feb 2032';
