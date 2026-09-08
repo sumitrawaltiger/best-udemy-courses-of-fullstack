@@ -6,7 +6,7 @@ export const APPSEC_META = {
   skillNumber: 14,
   totalDays: 100,
   phaseWindow: 'Days 1301–1400 · 1 Apr 2030 – 9 Jul 2030',
-  startsAfter: 'Kafka (Skill 13, through 31 Mar 2030)',
+  startsAfter: 'Microservices (Skill 14, through 9 Jul 2030)',
   leadsInto: 'AWS (Skill 16, from 18 Oct 2030)',
 };
 

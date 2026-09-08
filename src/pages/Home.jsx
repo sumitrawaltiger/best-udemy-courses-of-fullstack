@@ -635,8 +635,8 @@ export default function Home() {
           <h2>Thunder++ — Java & Spring</h2>
           <p className="section-desc">
             The <strong>Java phases</strong>:{' '}
-            <strong>J2SE</strong>, <strong>JPA</strong>, <strong>Spring Boot</strong>, <strong>Microservices</strong>,{' '}
-            <strong>Automation Testing</strong>, and <strong>Java Design Patterns</strong> — mapped from {JAVA_META.courses.length} Udemy courses into{' '}
+            <strong>J2SE</strong>, <strong>JPA</strong>, <strong>DSA</strong>, <strong>Spring Boot</strong>, <strong>Microservices</strong>,{' '}
+            and <strong>Java Design Patterns</strong> — mapped from {JAVA_META.courses.length} Udemy courses into{' '}
             {javaChapters.length} modules on this site.
           </p>
           <div className="thunder-plus-highlights">
@@ -644,7 +644,7 @@ export default function Home() {
             <span>🗄️ JPA</span>
             <span>🍃 Spring Boot</span>
             <span>📡 Microservices</span>
-            <span>🧪 Automation Testing</span>
+            <span>📋 DSA</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/java" className="btn btn-java btn-lg">
@@ -897,7 +897,7 @@ export default function Home() {
             <strong>5 phases</strong> — <strong>Python Stack (Agentic AI using Python, then Python
             &amp; FastAPI)</strong>,{' '}
             <strong>TypeScript Stack (JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS)</strong>,{' '}
-            <strong>Java Stack (J2SE, JPA, Spring Boot, Microservices, Automation Testing)</strong>,{' '}
+            <strong>Java Stack (J2SE, JPA, DSA, Spring Boot, Microservices)</strong>,{' '}
             <strong>DevOps Stack (DevOps, AWS Cloud)</strong>,{' '}
             <strong>Kubernetes</strong>, a dedicated{' '}
             <strong>System Design</strong> intensive, and a{' '}
