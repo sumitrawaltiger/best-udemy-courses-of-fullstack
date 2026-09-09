@@ -6,14 +6,36 @@ const PINECONE_YT = 'https://www.youtube.com/watch?v=kl6KZE6kQcQ';
 const CHROMA_DOCS = 'https://docs.trychroma.com/';
 
 const LEARNT_TODAY = [
-  { title: 'Vector database', text: 'a database purpose-built to store and search high-dimensional embedding vectors at scale' },
+  { title: 'Vector database', text: 'a database purpose-built to store and search high-dimensional embedding vectors at scale — stores data as numbers that represent meaning' },
+  { title: 'Embedding', text: 'a numerical representation of text; "Python is used for AI" becomes [0.23, -0.18, 0.91, 0.44, …] — similar sentences produce similar number patterns' },
+  { title: 'Meaning over keywords', text: '"I want to learn Python" and "How can I study Python?" have different words but similar embeddings — a vector DB finds that similarity; a normal DB cannot' },
   { title: 'Index vs database', text: 'a bare index (like FAISS) is just an in-memory search structure; a vector database adds persistence, metadata, and scaling on top' },
   { title: 'Similarity search', text: 'approximate nearest neighbor (ANN) search finds the closest vectors to a query fast, even across millions of rows' },
   { title: 'Distance metrics', text: 'cosine similarity, dot product, and Euclidean distance are the three common ways to measure "closeness"' },
-  { title: 'Popular options', text: 'Pinecone (managed), Chroma (lightweight/local), Weaviate, Qdrant, and pgvector (a Postgres extension)' },
+  { title: 'Popular options', text: 'Chroma (beginners/local), Pinecone (cloud), FAISS (fast local), Weaviate (cloud/native), Milvus (large-scale), Qdrant (open-source)' },
   { title: 'Metadata filtering', text: 'combine vector similarity with structured filters — date, source, category — for far more precise retrieval' },
   { title: 'Indexing strategies', text: 'HNSW and IVF trade off search speed, accuracy, and memory differently — worth knowing which your DB uses' },
   { title: 'Why RAG needs this', text: 'a vector database is the "retrieval" half of Retrieval-Augmented Generation, holding every embedded chunk you\'ll search' },
+];
+
+const EMBEDDING = [
+  {
+    icon: '🔢', title: 'What Is an Embedding?', titleClass: 'card-title-cyan', subtitle: 'Text → Numbers',
+    description:
+      'Any piece of text is converted into a list of numbers (a vector) that encodes its meaning. Similar texts land near each other in this number space — that\'s what makes semantic search possible.',
+    code: '# "Python is used for AI development"\n# becomes something like:\n[0.23, -0.18, 0.91, 0.44, ...]',
+  },
+  {
+    icon: '🧠', title: 'Meaning, Not Keywords', titleClass: 'card-title-purple', subtitle: 'Why It Matters',
+    description:
+      'A normal database searches for exact words. A vector database searches for meaning. "I want to learn Python" and "How can I study Python?" use different words but produce similar vectors — so a vector DB returns both for either query.',
+    code: '"learn Python" ≈ "study Python"\n# same meaning → similar vectors',
+  },
+  {
+    icon: '📦', title: 'Popular Vector Databases', titleClass: 'card-title-amber', subtitle: '6 Options',
+    description: 'Choose the right tool for your scale and infrastructure.',
+    code: 'Chroma DB  — best for beginners, local\nPinecone   — managed cloud\nFAISS     — fast local search (Meta)\nWeaviate  — cloud/native\nMilvus    — large-scale deployments\nQdrant    — open-source, production-ready',
+  },
 ];
 
 const CORE = [
@@ -175,6 +197,7 @@ export default function AgenticDay27() {
           </ul>
         </section>
 
+        <CardSection icon="🔢" title="EMBEDDINGS & POPULAR DATABASES" cards={EMBEDDING} columns={3} />
         <CardSection icon="📚" title="HOW VECTOR SEARCH WORKS" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="PRACTICE" cards={PRACTICE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />

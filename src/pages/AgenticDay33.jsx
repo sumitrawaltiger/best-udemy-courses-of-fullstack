@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import './Day001.css';
 
 const LEARNT_TODAY = [
+  { title: "What is RAG", text: "Retrieval-Augmented Generation — LLM first retrieves relevant info from your own data, then generates an answer using that info; gives the model external knowledge before answering" },
+  { title: "LLM limitation 1", text: "LLMs don't know private data — ask ChatGPT about Ashok IT's refund policy and it guesses; RAG uploads the policy doc and grounds the answer" },
+  { title: "LLM limitation 2", text: "LLM knowledge has a training cutoff — it can't know what happened after its last training date; RAG retrieves fresh documents instead" },
+  { title: "LLM limitation 3", text: "LLMs hallucinate — they confidently make things up; RAG reduces hallucination because the model answers from provided documents, not imagination" },
   { title: "RAG idea", text: "retrieve relevant chunks, put them in the prompt, then generate — model stays frozen" },
   { title: "Pipeline", text: "ingest → chunk → embed → store → retrieve → augment → generate" },
   { title: "RAG vs fine-tuning", text: "RAG for knowledge freshness; fine-tune for style/behavior" },
@@ -11,6 +15,27 @@ const LEARNT_TODAY = [
   { title: "Failure modes", text: "bad chunks, wrong K, prompt stuffing, and silent empty retrieval" },
   { title: "Gemini + LangChain", text: "swap providers; the RAG shape stays the same" },
   { title: "Production bar", text: "eval sets, latency budgets, and fallbacks when retrieval misses" },
+];
+
+const FOUNDATIONS = [
+  {
+    icon: "💡", title: "What Is RAG?", titleClass: 'card-title-cyan', subtitle: "Definition",
+    description:
+      "RAG = Retrieval-Augmented Generation. Instead of relying only on what the LLM was trained on, it first retrieves relevant information from your own documents, then generates an answer using that retrieved context.",
+    code: "Upload docs → search relevant chunks\n→ LLM answers FROM those chunks",
+  },
+  {
+    icon: "⚠️", title: "Why We Need RAG", titleClass: 'card-title-purple', subtitle: "3 LLM Limitations",
+    description:
+      "RAG directly solves three hard problems: (1) LLMs don't know your private data, (2) training cutoffs mean stale knowledge, (3) hallucination — models confidently invent facts. Grounding answers in retrieved documents reduces all three.",
+    code: "Private data  → RAG supplies it\nStale cutoff  → RAG fetches fresh docs\nHallucination → RAG grounds the answer",
+  },
+  {
+    icon: "🔤", title: "R · A · G Breakdown", titleClass: 'card-title-amber', subtitle: "Full Form",
+    description:
+      "R = Retrieval — system searches relevant information from your documents. A = Augmented — retrieved information is added to the user's question. G = Generation — LLM generates the final answer using that augmented prompt.",
+    code: "R  Retrieval  search docs for context\nA  Augmented  context + user question\nG  Generation  LLM produces the answer",
+  },
 ];
 
 const CORE = [
@@ -171,6 +196,7 @@ export default function AgenticDay33() {
           </ul>
         </section>
 
+        <CardSection icon="💡" title="RAG FOUNDATIONS" cards={FOUNDATIONS} columns={3} />
         <CardSection icon="📚" title="CORE IDEAS" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="PRACTICE" cards={PRACTICE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
