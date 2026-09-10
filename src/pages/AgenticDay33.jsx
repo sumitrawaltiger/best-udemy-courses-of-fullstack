@@ -7,6 +7,8 @@ const LEARNT_TODAY = [
   { title: "LLM limitation 1", text: "LLMs don't know private data — ask ChatGPT about Ashok IT's refund policy and it guesses; RAG uploads the policy doc and grounds the answer" },
   { title: "LLM limitation 2", text: "LLM knowledge has a training cutoff — it can't know what happened after its last training date; RAG retrieves fresh documents instead" },
   { title: "LLM limitation 3", text: "LLMs hallucinate — they confidently make things up; RAG reduces hallucination because the model answers from provided documents, not imagination" },
+  { title: "RAG architecture", text: "7 steps: ingest data → user asks → question → embeddings → search vector DB → retrieve context → context + question → LLM → final response" },
+  { title: "Project stack", text: "openai + chromadb + python-dotenv + streamlit; ingest.py loads data, rag.py runs the loop, app.py is the Streamlit UI" },
   { title: "RAG idea", text: "retrieve relevant chunks, put them in the prompt, then generate — model stays frozen" },
   { title: "Pipeline", text: "ingest → chunk → embed → store → retrieve → augment → generate" },
   { title: "RAG vs fine-tuning", text: "RAG for knowledge freshness; fine-tune for style/behavior" },
@@ -35,6 +37,48 @@ const FOUNDATIONS = [
     description:
       "R = Retrieval — system searches relevant information from your documents. A = Augmented — retrieved information is added to the user's question. G = Generation — LLM generates the final answer using that augmented prompt.",
     code: "R  Retrieval  search docs for context\nA  Augmented  context + user question\nG  Generation  LLM produces the answer",
+  },
+];
+
+const ARCHITECTURE = [
+  {
+    icon: "📥", title: "Ingestion Phase", titleClass: 'card-title-cyan', subtitle: "Steps 1–2",
+    description:
+      "Load your documents and convert them into embeddings, then store those embeddings in a vector database. This is the one-time setup that makes later retrieval possible.",
+    code: "Step 1 · Load data into Vector DB\n        (convert text → embeddings)\nStep 2 · User asks a question",
+  },
+  {
+    icon: "🔍", title: "Retrieval Phase", titleClass: 'card-title-purple', subtitle: "Steps 3–5",
+    description:
+      "Convert the user's question into an embedding, search the vector DB for the most similar chunks, and pull back the relevant context.",
+    code: "Step 3 · Question → embeddings\nStep 4 · Search similar chunks\n        in vector DB\nStep 5 · Retrieve relevant context",
+  },
+  {
+    icon: "⚡", title: "Generation Phase", titleClass: 'card-title-amber', subtitle: "Steps 6–7",
+    description:
+      "Send the retrieved context together with the original question to the LLM. The model generates a grounded, accurate final response.",
+    code: "Step 6 · Send Context + Question\n        to LLM\nStep 7 · Generate final response",
+  },
+];
+
+const PROJECT_SETUP = [
+  {
+    icon: "🗂️", title: "Project & Environment", titleClass: 'card-title-cyan', subtitle: "Steps 1–3",
+    description:
+      "Create the project folder, set up a Python virtual environment, and install the four required libraries.",
+    code: "mkdir rag-project && cd rag-project\npython -m venv venv\nvenv\\Scripts\\activate\n\n# requirements.txt\nopenai\nchromadb\npython-dotenv\nstreamlit\n\npip install -r requirements.txt",
+  },
+  {
+    icon: "🔑", title: "Config & Data", titleClass: 'card-title-purple', subtitle: "Steps 4–5",
+    description:
+      "Store your OpenAI key in a .env file, then create the company.txt document that will be loaded into the vector DB.",
+    code: "# .env\nOPENAI_API_KEY=<key-goes-here>\n\n# documents/company.txt\n# put the company data here\n# that the RAG system will search",
+  },
+  {
+    icon: "🚀", title: "Build & Run", titleClass: 'card-title-amber', subtitle: "Steps 6–8",
+    description:
+      "ingest.py reads your documents and stores them in ChromaDB. rag.py runs the retrieve + augment + generate loop. app.py wraps everything in a Streamlit UI.",
+    code: "# ingest — run once\npython ingest.py\n\n# RAG loop — test in terminal\npython rag.py\n\n# Streamlit UI\nstreamlit run app.py",
   },
 ];
 
@@ -197,6 +241,8 @@ export default function AgenticDay33() {
         </section>
 
         <CardSection icon="💡" title="RAG FOUNDATIONS" cards={FOUNDATIONS} columns={3} />
+        <CardSection icon="🏗️" title="RAG ARCHITECTURE · 7 STEPS" cards={ARCHITECTURE} columns={3} />
+        <CardSection icon="🛠️" title="PROJECT SETUP · OPENAI + CHROMADB + STREAMLIT" cards={PROJECT_SETUP} columns={3} />
         <CardSection icon="📚" title="CORE IDEAS" cards={CORE} columns={3} />
         <CardSection icon="🧪" title="PRACTICE" cards={PRACTICE} columns={3} />
         <CardSection icon="📚" title="RESOURCES" cards={RESOURCES} columns={3} />
