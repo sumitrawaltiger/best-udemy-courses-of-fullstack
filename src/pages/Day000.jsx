@@ -69,11 +69,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full ~66-month (2,000-day) plan — 20 skills × 100 days each: Skill 01 Python (1–100) → Skill 02 Agentic AI (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 Express (701–800) → Skill 09 Databases (801–900) → Skill 10 NestJS (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 AppSec (1401–1500) → Skill 16 Quality Engineering (1501–1600) → Skill 17 AWS (1601–1700) → Skill 18 DevOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 29 Feb 2032). NexusAI capstone built daily throughout all 2,000 days',
+    text: 'reviewed the full ~66-month (2,000-day) plan — 20 skills × 100 days each: Skill 01 Python (1–100) → Skill 02 Agentic AI (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 Express (701–800) → Skill 09 Databases (801–900) → Skill 10 NestJS (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 AppSec (1401–1500) → Skill 16 Quality Engineering (1501–1600) → Skill 17 AWS (1601–1700) → Skill 18 DevOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 2 Mar 2032). NexusAI capstone built daily throughout all 2,000 days',
   },
   {
     title: 'Ready for Skill 01 · Python',
-    text: 'Day 1 (9 Sep 2026) starts with Skill 01: Python syntax, OOP, async/await, file I/O, DB connectivity, multithreading, and FastAPI REST APIs. 100 days (Days 1–100, ends 17 Dec 2026), then Skill 02 Agentic AI begins 18 Dec 2026',
+    text: 'Day 1 (11 Sep 2026) starts with Skill 01: Python syntax, OOP, async/await, file I/O, DB connectivity, multithreading, and FastAPI REST APIs. 100 days (Days 1–100, ends 19 Dec 2026), then Skill 02 Agentic AI begins 20 Dec 2026',
   },
   {
     title: 'Accounts ready',
@@ -85,7 +85,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'LeetCode streak starts',
-    text: '1 LeetCode daily challenge every single day — Day 1 (9 Sep 2026) through Day 2,000 (29 Feb 2032) earns the LeetCode 2,000 Days Badge on the final day of the journey. The streak begins tomorrow',
+    text: '1 LeetCode daily challenge every single day — Day 1 (11 Sep 2026) through Day 2,000 (2 Mar 2032) earns the LeetCode 2,000 Days Badge on the final day of the journey. The streak begins tomorrow',
   },
   {
     title: 'NexusAI Capstone · Day 0 setup',
@@ -176,18 +176,18 @@ const STUDY_SYSTEM = [
     icon: '🗺️',
     title: 'The 2,000-Day Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '20 skills · Day 1 = 9 Sep 2026 · ends 29 Feb 2032',
+    subtitle: '20 skills · Day 1 = 11 Sep 2026 · ends 2 Mar 2032',
     description:
-      '20 skills × 100 days each: Skill 01 Python (1–100) → Skill 02 Agentic AI (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 Express (701–800) → Skill 09 Databases (801–900) → Skill 10 NestJS (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 AppSec (1401–1500) → Skill 16 Quality Engineering (1501–1600) → Skill 17 AWS (1601–1700) → Skill 18 DevOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 29 Feb 2032). NexusAI built daily throughout all 2,000 days.',
+      '20 skills × 100 days each: Skill 01 Python (1–100) → Skill 02 Agentic AI (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 Express (701–800) → Skill 09 Databases (801–900) → Skill 10 NestJS (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 AppSec (1401–1500) → Skill 16 Quality Engineering (1501–1600) → Skill 17 AWS (1601–1700) → Skill 18 DevOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 2 Mar 2032). NexusAI built daily throughout all 2,000 days.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
     icon: '🐍',
     title: 'Day 1 · Skill 01 · Python',
     titleClass: 'card-title-lime',
-    subtitle: 'Days 1–100 · 9 Sep 2026 – 17 Dec 2026',
+    subtitle: 'Days 1–100 · 11 Sep 2026 – 19 Dec 2026',
     description:
-      'Day 1 (9 Sep 2026) begins Skill 01: Python syntax, OOP, async/await, file I/O, DB connectivity, multithreading, and FastAPI REST APIs. 100 days to build the Python and FastAPI layer of NexusAI. Skill 02 (Agentic AI) starts 18 Dec 2026 on Day 101.',
+      'Day 1 (11 Sep 2026) begins Skill 01: Python syntax, OOP, async/await, file I/O, DB connectivity, multithreading, and FastAPI REST APIs. 100 days to build the Python and FastAPI layer of NexusAI. Skill 02 (Agentic AI) starts 20 Dec 2026 on Day 101.',
     link: { href: '/python', label: 'Explore the Python track →' },
   },
 ];
@@ -285,7 +285,7 @@ export default function Day000() {
           <Link to="/" className="day001-nav-btn day001-nav-home">
             Home
           </Link>
-          <p className="day001-datetime">Day 0 · 8 Sep 2026</p>
+          <p className="day001-datetime">Day 0 · 10 Sep 2026</p>
           <Link to="/agentic-day-1" className="day001-nav-btn day001-nav-next">
             Day 1 · Python →
           </Link>
@@ -297,7 +297,7 @@ export default function Day000() {
               <span>~66 Months</span>
               <span>2000 Days</span>
               <span>20 Skills</span>
-              <span>Day 0 · 8 Sep 2026</span>
+              <span>Day 0 · 10 Sep 2026</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
@@ -326,7 +326,7 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 · 8 Sep 2026 — environment setup before the 2,000-day journey begins.</strong>{' '}
+          <strong>Day 0 · 10 Sep 2026 — environment setup before the 2,000-day journey begins.</strong>{' '}
           Install <code>Node.js</code>, <code>Git</code>, and <code>VS Code</code>, wire the terminal and
           Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
@@ -337,7 +337,7 @@ export default function Day000() {
             NexusAI
           </a>{' '}
           capstone repo, and lock the routine (wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST). No lectures today —
-          clear every obstacle so <strong>Day 1 (9 Sep 2026)</strong> starts with zero friction:{' '}
+          clear every obstacle so <strong>Day 1 (11 Sep 2026)</strong> starts with zero friction:{' '}
           <strong>Skill 01 · Python</strong> begins — Python foundations + the NexusAI capstone first commit. Sharpen the axe before the first swing.
         </p>
 
@@ -386,10 +386,10 @@ export default function Day000() {
                 LeetCode 2,000 Days Badge
               </p>
               <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
-                Target: 29 Feb 2032 · Sunday · Day 2,000
+                Target: 2 Mar 2032 · Tuesday · Day 2,000
               </p>
               <p style={{ color: 'rgba(200,210,220,0.8)', fontSize: '0.78rem', lineHeight: 1.6, marginBottom: '10px' }}>
-                1 LeetCode problem every single day — Day 1 (9 Sep 2026) through Day 2,000 (29 Feb 2032).
+                1 LeetCode problem every single day — Day 1 (11 Sep 2026) through Day 2,000 (2 Mar 2032).
                 2,000 consecutive daily submissions earns the badge on the final day of the 2,000-day journey.
                 Consistency is the proof.
               </p>

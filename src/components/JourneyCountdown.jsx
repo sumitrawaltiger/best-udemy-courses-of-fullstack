@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-/** Day 1 is 1 Sep 2026 (Phase 1 · Agentic AI). */
-/** Target: 1 Mar 2032, 00:00 — end of Day 2008 (29 Feb 2032). 6 phases · 2,008 days · 66 months. */
-export const JOURNEY_END = new Date(2032, 2, 1, 0, 0, 0, 0);
+/** Day 1 = 11 Sep 2026 · Day 2,000 = 2 Mar 2032. 20 skills · 2,000 days · ~66 months. */
+/** Target: 3 Mar 2032, 00:00 — midnight after Day 2,000 (2 Mar 2032). */
+export const JOURNEY_END = new Date(2032, 2, 3, 0, 0, 0, 0);
 
 function getRemaining(now = new Date()) {
   const diff = Math.max(0, JOURNEY_END.getTime() - now.getTime());
@@ -19,7 +19,7 @@ function pad(n) {
 }
 
 /**
- * Live countdown to the end of the journey (29 Feb 2032) — days, hours, minutes, seconds.
+ * Live countdown to the end of the journey (2 Mar 2032) — days, hours, minutes, seconds.
  * @param {{ variant?: 'banner' | 'hero' }} props
  */
 export default function JourneyCountdown({ variant = 'banner' }) {
