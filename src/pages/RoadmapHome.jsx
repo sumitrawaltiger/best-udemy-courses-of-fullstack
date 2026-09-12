@@ -32,7 +32,7 @@ function LeetCode2000Badge({ size = 120 }) {
 }
 
 // ── Phase calendar helpers ───────────────────────────────────────────────────
-const _CAL_DAY1 = new Date(2026, 8, 11); // 11 Sep 2026
+const _CAL_DAY1 = new Date(2027, 0, 1); // 1 Jan 2027
 function _calDate(dayN) {
   const d = new Date(_CAL_DAY1);
   d.setDate(d.getDate() + dayN - 1);
@@ -40,28 +40,28 @@ function _calDate(dayN) {
 }
 
 // ── 20 skills · 100 days each · 2,000 days ───────────────────────────────────
-// Skill  1 · Python              Days    1–100  · 11 Sep 2026 – 19 Dec 2026
-// Skill  2 · Agentic AI          Days  101–200  · 20 Dec 2026 – 29 Mar 2027
-// Skill  3 · JavaScript          Days  201–300  · 30 Mar 2027 – 7 Jul 2027
-// Skill  4 · TypeScript          Days  301–400  · 8 Jul 2027 – 15 Oct 2027
-// Skill  5 · React JS            Days  401–500  · 16 Oct 2027 – 23 Jan 2028
-// Skill  6 · Next JS             Days  501–600  · 24 Jan 2028 – 2 May 2028
-// Skill  7 · React Native        Days  601–700  · 3 May 2028 – 10 Aug 2028
-// Skill  8 · Express JS          Days  701–800  · 11 Aug 2028 – 18 Nov 2028
-// Skill  9 · Databases           Days  801–900  · 19 Nov 2028 – 26 Feb 2029
-// Skill 10 · NestJS              Days  901–1000 · 27 Feb 2029 – 6 Jun 2029
-// Skill 11 · J2SE                Days 1001–1100 · 7 Jun 2029 – 14 Sep 2029
-// Skill 12 · DSA                 Days 1101–1200 · 15 Sep 2029 – 23 Dec 2029
-// Skill 13 · Spring Boot         Days 1201–1300 · 24 Dec 2029 – 2 Apr 2030
-// Skill 14 · Microservices       Days 1301–1400 · 3 Apr 2030 – 11 Jul 2030
-// Skill 15 · AppSec              Days 1401–1500 · 12 Jul 2030 – 19 Oct 2030
-// Skill 16 · Quality Engineering Days 1501–1600 · 20 Oct 2030 – 27 Jan 2031
-// Skill 17 · AWS                 Days 1601–1700 · 28 Jan 2031 – 7 May 2031
-// Skill 18 · DevOps              Days 1701–1800 · 8 May 2031 – 15 Aug 2031
-// Skill 19 · SRE                 Days 1801–1900 · 16 Aug 2031 – 23 Nov 2031
-// Skill 20 · System Design       Days 1901–2000 · 24 Nov 2031 – 2 Mar 2032
+// Skill  1 · Python              Days    1–100  · 1 Jan 2027 – 10 Apr 2027
+// Skill  2 · Agentic AI          Days  101–200  · 11 Apr 2027 – 19 Jul 2027
+// Skill  3 · JavaScript          Days  201–300  · 20 Jul 2027 – 27 Oct 2027
+// Skill  4 · TypeScript          Days  301–400  · 28 Oct 2027 – 4 Feb 2028
+// Skill  5 · React JS            Days  401–500  · 5 Feb 2028 – 14 May 2028
+// Skill  6 · Next JS             Days  501–600  · 15 May 2028 – 22 Aug 2028
+// Skill  7 · React Native        Days  601–700  · 23 Aug 2028 – 30 Nov 2028
+// Skill  8 · Express JS          Days  701–800  · 1 Dec 2028 – 10 Mar 2029
+// Skill  9 · Databases           Days  801–900  · 11 Mar 2029 – 18 Jun 2029
+// Skill 10 · NestJS              Days  901–1000 · 19 Jun 2029 – 26 Sep 2029
+// Skill 11 · J2SE                Days 1001–1100 · 27 Sep 2029 – 4 Jan 2030
+// Skill 12 · DSA                 Days 1101–1200 · 5 Jan 2030 – 14 Apr 2030
+// Skill 13 · Spring Boot         Days 1201–1300 · 15 Apr 2030 – 23 Jul 2030
+// Skill 14 · Microservices       Days 1301–1400 · 24 Jul 2030 – 31 Oct 2030
+// Skill 15 · AppSec              Days 1401–1500 · 1 Nov 2030 – 8 Feb 2031
+// Skill 16 · Quality Engineering Days 1501–1600 · 9 Feb 2031 – 19 May 2031
+// Skill 17 · AWS                 Days 1601–1700 · 20 May 2031 – 27 Aug 2031
+// Skill 18 · DevOps              Days 1701–1800 · 28 Aug 2031 – 5 Dec 2031
+// Skill 19 · SRE                 Days 1801–1900 · 6 Dec 2031 – 14 Mar 2032
+// Skill 20 · System Design       Days 1901–2000 · 15 Mar 2032 – 22 Jun 2032
 // NexusAI capstone built daily throughout all 2,000 days — no separate Capstone block.
-// Calendar: Day 0 = 10 Sep 2026, Day 1 = 11 Sep 2026, Day 2,000 = 2 Mar 2032.
+// Calendar: Day 0 = 31 Dec 2026, Day 1 = 1 Jan 2027, Day 2,000 = 22 Jun 2032.
 
 const PHASE_DAYS = [
   [1, 100],
@@ -347,7 +347,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png"
-          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express → Databases → NestJS → J2SE → DSA → Spring Boot → Microservices → AppSec → Quality Engineering → AWS → DevOps → SRE → System Design. Day 1: 11 Sep 2026 · Day 2,000: 2 Mar 2032."
+          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express → Databases → NestJS → J2SE → DSA → Spring Boot → Microservices → AppSec → Quality Engineering → AWS → DevOps → SRE → System Design. Day 1: 1 Jan 2027 · Day 2,000: 22 Jun 2032."
           loading="eager"
           style={{
             width: '100%',
@@ -401,7 +401,7 @@ export default function RoadmapHome() {
           </table>
         </div>
         <p style={{ textAlign: 'center', color: '#6b7b8e', fontSize: '0.75rem', marginTop: '10px' }}>
-          Day 0 = 10 Sep 2026 · Day 1 = 11 Sep 2026 · 20 skills · 2,000 days · journey ends 2 Mar 2032
+          Day 0 = 31 Dec 2026 · Day 1 = 1 Jan 2027 · 20 skills · 2,000 days · journey ends 22 Jun 2032
         </p>
       </section>
 
@@ -480,7 +480,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">20 skills · 2,000 days · front to back · 2 Mar 2032</p>
+            <p className="roadmap-finish-date">20 skills · 2,000 days · front to back · 22 Jun 2032</p>
           </div>
         </div>
       </div>
@@ -503,10 +503,10 @@ export default function RoadmapHome() {
               LeetCode 2,000 Days Badge
             </p>
             <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
-              Target: 2 Mar 2032 · Day 2,000
+              Target: 22 Jun 2032 · Day 2,000
             </p>
             <p style={{ color: 'rgba(200,212,224,0.82)', fontSize: '0.82rem', lineHeight: 1.65, marginBottom: '12px' }}>
-              1 LeetCode daily challenge every single day — Day 1 (11 Sep 2026) through Day 2,000 (2 Mar 2032).
+              1 LeetCode daily challenge every single day — Day 1 (1 Jan 2027) through Day 2,000 (22 Jun 2032).
               2,000 consecutive submissions earns the badge on the final day of the journey.
               The discipline badge that proves the entire 2,000-day journey.
             </p>

@@ -26,7 +26,7 @@ export default function AppsecHome() {
               🔐 Skill 15 · AppSec
             </span>
             <span style={{ color: 'var(--muted, #9aa7b4)', fontSize: '0.8rem', fontWeight: 600 }}>
-              Days 1401–1500 · 12 Jul – 19 Oct 2030
+              Days 1401–1500 · 1 Nov 2030 – 8 Feb 2031
             </span>
           </div>
 
