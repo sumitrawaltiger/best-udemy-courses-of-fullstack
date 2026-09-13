@@ -54,10 +54,10 @@ function _calDate(dayN) {
 // Skill 12 · DSA                 Days 1101–1200 · 4 Jan 2030 – 13 Apr 2030
 // Skill 13 · Spring Boot         Days 1201–1300 · 14 Apr 2030 – 22 Jul 2030
 // Skill 14 · Microservices       Days 1301–1400 · 23 Jul 2030 – 30 Oct 2030
-// Skill 15 · AppSec              Days 1401–1500 · 31 Oct 2030 – 7 Feb 2031
-// Skill 16 · Quality Engineering Days 1501–1600 · 8 Feb 2031 – 18 May 2031
-// Skill 17 · AWS                 Days 1601–1700 · 19 May 2031 – 26 Aug 2031
-// Skill 18 · DevOps              Days 1701–1800 · 27 Aug 2031 – 4 Dec 2031
+// Skill 15 · Quality Engineering Days 1401–1500 · 31 Oct 2030 – 7 Feb 2031
+// Skill 16 · AWS                 Days 1501–1600 · 8 Feb 2031 – 18 May 2031
+// Skill 17 · DevOps              Days 1601–1700 · 19 May 2031 – 26 Aug 2031
+// Skill 18 · DevSecOps           Days 1701–1800 · 27 Aug 2031 – 4 Dec 2031
 // Skill 19 · SRE                 Days 1801–1900 · 5 Dec 2031 – 13 Mar 2032
 // Skill 20 · System Design       Days 1901–2000 · 14 Mar 2032 – 21 Jun 2032
 // NexusAI capstone built daily throughout all 2,000 days — no separate Capstone block.
@@ -230,19 +230,9 @@ const PHASES = [
     ],
   },
   {
-    id: 'p15', arcClass: 'y3', icon: '🔐',
-    label: 'Skill 15 · AppSec',
+    id: 'p15', arcClass: 'y3', icon: '🧪',
+    label: 'Skill 15 · Quality Engineering',
     tagline: 'Days 1401–1500',
-    duration: '100 days · ~3.3 months',
-    blurb: 'Application Security — OWASP Top 10, OAuth2/OIDC, JWT hardening, HashiCorp Vault, Docker hardening, Kubernetes RBAC, and a full DevSecOps CI pipeline.',
-    items: [
-      { icon: '🔐', title: 'AppSec', detail: 'OWASP Top 10 · OAuth2/OIDC · JWT hardening · HashiCorp Vault · container security · K8s RBAC · SAST/DAST/SCA · DevSecOps', source: 'PortSwigger / TryHackMe', to: '/appsec' },
-    ],
-  },
-  {
-    id: 'p16', arcClass: 'y5', icon: '🧪',
-    label: 'Skill 16 · Quality Engineering',
-    tagline: 'Days 1501–1600',
     duration: '100 days · ~3.3 months',
     blurb: 'Cross-stack quality engineering — JUnit 5, Mockito, Testcontainers (Java) + Playwright, Vitest, Pact (frontend/API) and full CI integration.',
     items: [
@@ -250,9 +240,9 @@ const PHASES = [
     ],
   },
   {
-    id: 'p17', arcClass: 'y5', icon: '☁️',
-    label: 'Skill 17 · AWS',
-    tagline: 'Days 1601–1700',
+    id: 'p16', arcClass: 'y5', icon: '☁️',
+    label: 'Skill 16 · AWS',
+    tagline: 'Days 1501–1600',
     duration: '100 days · ~3.3 months',
     blurb: 'AWS Solutions Architect Associate — VPC, IAM, RDS, CloudFront, Route 53, Lambda, S3. Cloud fundamentals before the DevOps tooling that orchestrates it.',
     items: [
@@ -260,13 +250,23 @@ const PHASES = [
     ],
   },
   {
-    id: 'p18', arcClass: 'y5', icon: '🐳',
-    label: 'Skill 18 · DevOps',
-    tagline: 'Days 1701–1800',
+    id: 'p17', arcClass: 'y5', icon: '🐳',
+    label: 'Skill 17 · DevOps',
+    tagline: 'Days 1601–1700',
     duration: '100 days · ~3.3 months',
     blurb: 'Docker, Kubernetes CKA, EKS, and CI/CD — containerisation, Helm charts, GitHub Actions, Terraform, and GitOps with ArgoCD.',
     items: [
       { icon: '🐳', title: 'DevOps + CKA', detail: 'Docker · Kubernetes · EKS · Helm · ArgoCD · Flux · GitHub Actions · Jenkins · Terraform IaC · GitOps · CKA certification', source: 'KodeKloud', to: '/devops' },
+    ],
+  },
+  {
+    id: 'p18', arcClass: 'y5', icon: '🔐',
+    label: 'Skill 18 · DevSecOps',
+    tagline: 'Days 1701–1800',
+    duration: '100 days · ~3.3 months',
+    blurb: 'DevSecOps — OWASP Top 10, OAuth2/OIDC, JWT hardening, HashiCorp Vault, Kubernetes RBAC, SAST/DAST/SCA in CI. Security baked into the Docker, K8s, and Terraform pipelines you just built.',
+    items: [
+      { icon: '🔐', title: 'DevSecOps', detail: 'OWASP Top 10 · OAuth2/OIDC · JWT hardening · HashiCorp Vault · container security · K8s RBAC · SAST/DAST/SCA · secure Terraform · Helm hardening', source: 'PortSwigger / TryHackMe', to: '/appsec' },
     ],
   },
   {
@@ -326,8 +326,8 @@ export default function RoadmapHome() {
           <strong>Python</strong> {'→'} <strong>Agentic AI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
           <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
           <strong>Databases</strong> {'→'} <strong>NestJS</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>Spring Boot</strong> {'→'}{' '}
-          <strong>DSA</strong> {'→'} <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>AppSec</strong> {'→'}{' '}
-          <strong>Quality Engineering</strong> {'→'} <strong>AWS</strong> {'→'} <strong>DevOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong> —{' '}
+          <strong>DSA</strong> {'→'} <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Quality Engineering</strong> {'→'}{' '}
+          <strong>AWS</strong> {'→'} <strong>DevOps</strong> {'→'} <strong>DevSecOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong> —{' '}
           <strong>2,000 days (~66 months)</strong> of focused daily practice, front to back.
           NexusAI capstone built daily throughout all 2,000 days.
         </p>

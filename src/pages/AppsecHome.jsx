@@ -23,15 +23,15 @@ export default function AppsecHome() {
               fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.1em',
               padding: '0.3rem 0.8rem', borderRadius: '999px', textTransform: 'uppercase',
             }}>
-              🔐 Skill 15 · AppSec
+              🔐 Skill 18 · DevSecOps
             </span>
             <span style={{ color: 'var(--muted, #9aa7b4)', fontSize: '0.8rem', fontWeight: 600 }}>
-              Days 1401–1500 · 31 Oct 2030 – 7 Feb 2031
+              Days 1701–1800 · 27 Aug 2031 – 4 Dec 2031
             </span>
           </div>
 
           <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.8rem)', fontWeight: 900, lineHeight: 1.15, margin: '0 0 0.75rem', color: 'var(--text, #e6edf3)' }}>
-            Application Security
+            DevSecOps
           </h1>
           <p style={{ fontSize: '1.05rem', lineHeight: 1.65, maxWidth: '680px', color: 'var(--muted, #9aa7b4)', margin: '0 0 2rem' }}>
             100 days securing the exact stacks you already built — OWASP, OAuth2/OIDC, JWT hardening,
@@ -44,7 +44,7 @@ export default function AppsecHome() {
               { value: '100', label: 'Days' },
               { value: '6', label: 'Phases' },
               { value: '10+', label: 'Security Tools' },
-              { value: 'Skill 15', label: 'of 20' },
+              { value: 'Skill 18', label: 'of 20' },
             ].map((s) => (
               <div key={s.label}>
                 <div style={{ fontSize: '1.8rem', fontWeight: 900, color: A, lineHeight: 1 }}>{s.value}</div>
@@ -58,8 +58,8 @@ export default function AppsecHome() {
             <a href="#curriculum" style={btnStyle(A)}>📖 View Curriculum</a>
             <a href="#outcomes" style={btnOutlineStyle(A)}>✅ Outcomes</a>
             <a href="#tools" style={btnOutlineStyle(A)}>🔧 Tools</a>
-            <Link to="/java" style={btnOutlineStyle(A)}>← Microservices (Skill 14)</Link>
-            <Link to="/aws" style={btnOutlineStyle(A)}>AWS (Skill 17) →</Link>
+            <Link to="/devops" style={btnOutlineStyle(A)}>← DevOps (Skill 17)</Link>
+            <Link to="/sre" style={btnOutlineStyle(A)}>SRE (Skill 19) →</Link>
           </div>
         </div>
       </section>
@@ -69,14 +69,14 @@ export default function AppsecHome() {
         {/* ── Why AppSec here? ─────────────────────────────────────── */}
         <section style={{ marginBottom: '3rem', background: A_BG, border: `1px solid ${A_BORDER}`, borderRadius: '14px', padding: '1.5rem 1.75rem' }}>
           <h2 style={{ color: A, fontSize: '1rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 0.75rem' }}>
-            Why Skill 15? — Security before cloud
+            Why Skill 18? — Security after DevOps
           </h2>
           <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.7, color: 'var(--muted, #9aa7b4)' }}>
-            By Day 1401 you'll have shipped Python, Node.js, Java, and Microservices with Kafka.
-            AppSec comes <strong style={{ color: 'var(--text, #e6edf3)' }}>before AWS (Skill 17) and DevOps (Skill 18)</strong> so that
-            when you build IAM policies, VPC security groups, and GitHub Actions pipelines,
-            you already understand <em>why</em> those controls exist.
-            You'll integrate SAST/DAST/SCA into every CI pipeline from day one.
+            By Day 1701 you've built Docker, Kubernetes (CKA), EKS, Helm, ArgoCD, Terraform, and full GitHub Actions pipelines.
+            DevSecOps comes <strong style={{ color: 'var(--text, #e6edf3)' }}>after DevOps (Skill 17)</strong> so every security control —
+            Kubernetes RBAC, Helm chart hardening, Terraform least-privilege IAM, SAST/DAST/SCA in CI —
+            is applied directly to the infrastructure you just built.
+            Security is no longer abstract: it's your own pipelines getting hardened.
           </p>
         </section>
 
@@ -198,13 +198,13 @@ export default function AppsecHome() {
           padding: '1.5rem 1.75rem',
         }}>
           <h2 style={{ color: A, fontSize: '1rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 0.75rem' }}>
-            How AppSec feeds into the next skills
+            How DevSecOps feeds into the next skills
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '0.75rem' }}>
             {[
-              { skill: 'Skill 16 · Quality Engineering', how: 'Security testing (SAST/DAST/SCA) integrates directly into the test pipeline you build.' },
-              { skill: 'Skill 17 · AWS', how: 'IAM least-privilege, VPC security groups, AWS WAF, GuardDuty, and Secrets Manager are all AppSec in practice.' },
-              { skill: 'Skill 18 · DevOps', how: 'Securing Helm charts, ArgoCD RBAC, Terraform with least-privilege IAM, and GitHub Actions secrets.' },
+              { skill: 'Skill 15 · Quality Engineering', how: 'SAST/DAST/SCA tools you master here integrate directly into the test pipeline you already built.' },
+              { skill: 'Skill 16 · AWS', how: 'IAM least-privilege, VPC security groups, AWS WAF, GuardDuty, and Secrets Manager — all AppSec principles applied to cloud.' },
+              { skill: 'Skill 17 · DevOps', how: 'The Docker, Helm, ArgoCD, and GitHub Actions pipelines you built are now the things you harden with DevSecOps.' },
               { skill: 'Skill 19 · SRE', how: 'Security incidents, SLOs for security controls, and alert-on-anomaly patterns from Falco + Prometheus.' },
             ].map((item) => (
               <div key={item.skill} style={{ background: CARD, border: `1px solid ${A_BORDER}`, borderRadius: '10px', padding: '0.85rem 1rem' }}>
