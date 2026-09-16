@@ -5,7 +5,7 @@ import './Day001.css';
 const PYTHON_DOWNLOADS = 'https://www.python.org/downloads/';
 
 const LEARNT_TODAY = [
-  { title: 'Skill 01 · Agentic AI (Days 1–100)', text: 'Day 1 of the 2,000-day journey. Agentic AI is Skill 01 (1–100), then Skill 02 Django (101–200) → JS (201–300) → TS (301–400) → React (401–500) → Next (501–600) → RN (601–700) → Express (701–800) → Databases (801–900) → NestJS (901–1000) → J2SE → DSA → Spring Boot → Microservices → QualityEngg → AWS → DevOps → DevSecOps → SRE → System Design (ends 21 Jun 2032). NexusAI built daily throughout all 2,000 days' },
+  { title: 'Skill 01 · Agentic AI (Days 1–100)', text: 'Day 1 of the 2,000-day journey. Agentic AI is Skill 01 (1–100), then Skill 02 FastAPI (101–200) → JS (201–300) → TS (301–400) → React (401–500) → Next (501–600) → RN (601–700) → Express (701–800) → Databases (801–900) → NestJS (901–1000) → J2SE → DSA → Spring Boot → Microservices → QualityEngg → AWS → DevOps → DevSecOps → SRE → System Design (ends 21 Jun 2032). NexusAI built daily throughout all 2,000 days' },
   { title: 'AI vs ML vs DL vs Gen AI', text: 'each one builds on the last — AI is the umbrella, ML learns from data, DL uses neural networks, Gen AI creates new content' },
   { title: 'Why Python for AI', text: 'simple syntax + a huge ecosystem (NumPy, Pandas, TensorFlow, LangChain) made it the default language for AI work' },
   { title: 'Toolchain setup', text: 'installed Python, ticked "Add to PATH" during install, and picked an editor to write code in' },

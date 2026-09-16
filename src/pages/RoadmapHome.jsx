@@ -41,7 +41,7 @@ function _calDate(dayN) {
 
 // ── 20 skills · 100 days each · 2,000 days ───────────────────────────────────
 // Skill  1 · Agentic AI          Days    1–100  · 31 Dec 2026 – 9 Apr 2027
-// Skill  2 · Django              Days  101–200  · 10 Apr 2027 – 18 Jul 2027
+// Skill  2 · FastAPI            Days  101–200  · 10 Apr 2027 – 18 Jul 2027
 // Skill  3 · JavaScript          Days  201–300  · 19 Jul 2027 – 26 Oct 2027
 // Skill  4 · TypeScript          Days  301–400  · 27 Oct 2027 – 3 Feb 2028
 // Skill  5 · React JS            Days  401–500  · 4 Feb 2028 – 13 May 2028
@@ -99,12 +99,12 @@ const PHASES = [
   },
   {
     id: 'p2', arcClass: 'y1', icon: '🗼',
-    label: 'Skill 02 · Django',
+    label: 'Skill 02 · FastAPI',
     tagline: 'Days 101–200',
     duration: '100 days · ~3.3 months',
-    blurb: 'Python web framework at production depth — models, views, templates, Django REST Framework, auth, ORM, celery tasks. Leverages the Python foundation built pre-plan.',
+    blurb: 'Modern async Python APIs — deploy the NexusAI agent from Skill 01 as a real production API. Pydantic, dependency injection, OAuth2, background tasks, Docker.',
     items: [
-      { icon: '🗼', title: 'Django', detail: 'Models · views · templates · Django REST Framework · authentication · ORM · migrations · Celery · Redis · REST API', source: 'Udemy', to: '/python' },
+      { icon: '⚡', title: 'FastAPI', detail: 'Pydantic · async endpoints · dependency injection · OAuth2 · background tasks · WebSockets · Docker · wraps NexusAI agent as API', source: 'Udemy', to: '/python' },
     ],
   },
   {
@@ -323,7 +323,7 @@ export default function RoadmapHome() {
         <p className="roadmap-hero-sub">
           Starts with <strong>Day 0 — environment setup</strong>, then <strong>20 skills · 100 days each</strong>{' '}
           mastered end to end —{' '}
-          <strong>Agentic AI</strong> {'→'} <strong>Django</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
+          <strong>Agentic AI</strong> {'→'} <strong>FastAPI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
           <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
           <strong>Databases</strong> {'→'} <strong>NestJS</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>DSA</strong> {'→'}{' '}
           <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Quality Engineering</strong> {'→'} <strong>AWS</strong> {'→'}{' '}
@@ -347,7 +347,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png"
-          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Agentic AI → Django → JS → TS → React → Next → React Native → Express JS → Databases → NestJS → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design. Day 1: 31 Dec 2026 · Day 2,000: 21 Jun 2032."
+          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Agentic AI → FastAPI → JS → TS → React → Next → React Native → Express JS → Databases → NestJS → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design. Day 1: 31 Dec 2026 · Day 2,000: 21 Jun 2032."
           loading="eager"
           style={{
             width: '100%',
@@ -531,7 +531,7 @@ export default function RoadmapHome() {
         <h2 className="roadmap-flow-title">The flow, end to end</h2>
         <p className="roadmap-flow-text">
           Day 0 setup, then 20 skills at 100 days each:{' '}
-          <strong>Agentic AI</strong> {'→'} <strong>Django</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
+          <strong>Agentic AI</strong> {'→'} <strong>FastAPI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
           <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
           <strong>Databases</strong> {'→'} <strong>NestJS</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>DSA</strong> {'→'}{' '}
           <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Quality Engineering</strong> {'→'} <strong>AWS</strong> {'→'}{' '}

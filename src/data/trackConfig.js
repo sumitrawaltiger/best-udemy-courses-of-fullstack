@@ -96,7 +96,7 @@ export const INTERVIEW_PREP_WEEKS = 0;
 
 // Full journey: Day 0 = 30 Dec 2026, Day 1 = 31 Dec 2026. 20 skills · 2,000 days · ~66 months · ends 21 Jun 2032.
 // Skill  1 · Agentic AI          Days    1–100  · 31 Dec 2026 – 9 Apr 2027
-// Skill  2 · Django              Days  101–200  · 10 Apr 2027 – 18 Jul 2027
+// Skill  2 · FastAPI            Days  101–200  · 10 Apr 2027 – 18 Jul 2027
 // Skill  3 · JavaScript          Days  201–300  · 19 Jul 2027 – 26 Oct 2027
 // Skill  4 · TypeScript          Days  301–400  · 27 Oct 2027 – 3 Feb 2028
 // Skill  5 · React JS            Days  401–500  · 4 Feb 2028 – 13 May 2028
