@@ -45,7 +45,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Git & GitHub',
-    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 1,826 days of code',
+    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 2,000 days of code',
   },
   {
     title: 'VS Code',
@@ -65,15 +65,15 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Study routine',
-    text: 'locked the routine: wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST (UTC+5:30, 3 hrs/day), every single day for 1,826 days',
+    text: 'locked the routine: wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST (UTC+5:30, 3 hrs/day), every single day for 2,000 days',
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full 5-year (1,826-day) plan — Year 1 Python Stack (Days 1–365, 17 Sep 2026–16 Sep 2027) → Year 2 TypeScript Stack (Days 366–731, 17 Sep 2027–16 Sep 2028) → Year 3 Java Stack (Days 732–1096, 17 Sep 2028–16 Sep 2029) → Year 4 DevOps Stack (Days 1097–1461, 17 Sep 2029–16 Sep 2030) → Year 5 Interview Prep (Days 1462–1826, 17 Sep 2030–16 Sep 2031). NexusAI built daily throughout all 1,826 days',
+    text: 'reviewed the full ~66-month (2,000-day) plan — 20 skills × 100 days each: Skill 01 Agentic AI (1–100) → Skill 02 FastAPI (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 Express (701–800) → Skill 09 Databases (801–900) → Skill 10 NestJS (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 Quality Engineering (1401–1500) → Skill 16 AWS (1501–1600) → Skill 17 DevOps (1601–1700) → Skill 18 DevSecOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 21 Jun 2032). NexusAI capstone built daily throughout all 2,000 days',
   },
   {
     title: 'Ready for Skill 01 · Agentic AI',
-    text: 'Day 1 (17 Sep 2026) starts with Year 1: Python Stack — Python foundations, Agentic AI (LangChain, LangGraph, RAG, MCP, CrewAI, n8n), FastAPI. Build the NexusAI multi-agent pipeline. 365 days, ends 16 Sep 2027',
+    text: 'Day 1 (31 Dec 2026) starts with Skill 01: Agentic AI — LangChain, LangGraph, RAG, MCP, CrewAI, n8n. Build the NexusAI multi-agent pipeline. 100 days (Days 1–100, ends 9 Apr 2027), then Skill 02 FastAPI begins 10 Apr 2027',
   },
   {
     title: 'Accounts ready',
@@ -85,11 +85,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'LeetCode streak starts',
-    text: '1 LeetCode daily challenge every single day — Day 1 (17 Sep 2026) through Day 1,826 (16 Sep 2031). The streak begins tomorrow',
+    text: '1 LeetCode daily challenge every single day — Day 1 (31 Dec 2026) through Day 2,000 (21 Jun 2032) earns the LeetCode 2,000 Days Badge on the final day of the journey. The streak begins tomorrow',
   },
   {
     title: 'NexusAI Capstone · Day 0 setup',
-    text: 'created the NexusAI GitHub repo, cloned it locally, added README and .gitignore, pushed the first init commit — env setup only. From Day 1 onwards, daily commits build the platform across all 1,826 days',
+    text: 'created the NexusAI GitHub repo, cloned it locally, added README and .gitignore, pushed the first init commit — env setup only. From Day 1 onwards, daily commits build the platform across all 2,000 days',
   },
 ];
 
@@ -109,7 +109,7 @@ const CORE_TOOLS = [
     titleClass: 'card-title-amber',
     subtitle: 'Version Control',
     description:
-      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 1,826 days is signed to you.',
+      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 2,000 days is signed to you.',
     code: 'git --version\ngit config --global user.name "Sumit Rawal"\ngit config --global user.email "you@email.com"',
   },
   {
@@ -169,25 +169,25 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-amber',
     subtitle: '4 AM Wake · Meditation 4:30–5:00 AM · Study 5:00–8:00 AM',
     description:
-      'Wake at 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 1,826 days.',
+      'Wake at 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 2,000 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
     icon: '🗺️',
-    title: 'The 5-Year Roadmap',
+    title: 'The 2,000-Day Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '5 years · Day 1 = 17 Sep 2026 · ends 16 Sep 2031',
+    subtitle: '20 skills · Day 1 = 31 Dec 2026 · ends 21 Jun 2032',
     description:
-      'Year 1 Python Stack (1–365) → Year 2 TypeScript Stack (366–731) → Year 3 Java Stack (732–1096) → Year 4 DevOps Stack (1097–1461) → Year 5 Interview Prep (1462–1826, ends 16 Sep 2031). NexusAI built daily throughout all 1,826 days.',
+      '20 skills × 100 days each: Skill 01 Agentic AI (1–100) → Skill 02 FastAPI (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 Express (701–800) → Skill 09 Databases (801–900) → Skill 10 NestJS (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 Quality Engineering (1401–1500) → Skill 16 AWS (1501–1600) → Skill 17 DevOps (1601–1700) → Skill 18 DevSecOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 21 Jun 2032). NexusAI built daily throughout all 2,000 days.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
     icon: '🐍',
     title: 'Day 1 · Skill 01 · Agentic AI',
     titleClass: 'card-title-lime',
-    subtitle: 'Year 1 · 17 Sep 2026 – 16 Sep 2027',
+    subtitle: 'Days 1–100 · 31 Dec 2026 – 9 Apr 2027',
     description:
-      'Day 1 (17 Sep 2026) begins Year 1: Python Stack — Python foundations, Agentic AI (LangChain, LangGraph, RAG, MCP, CrewAI), FastAPI. Build the NexusAI multi-agent pipeline. 365 days of Python-first engineering.',
+      'Day 1 (31 Dec 2026) begins Skill 01: Agentic AI — LangChain, LangGraph, RAG, MCP, CrewAI, n8n. Build the NexusAI multi-agent pipeline. 100 days of GenAI engineering. Skill 02 (FastAPI) starts 10 Apr 2027 on Day 101.',
     link: { href: '/python', label: 'Explore the Agentic AI track →' },
   },
 ];
@@ -297,7 +297,7 @@ export default function Day000() {
               <span>~66 Months</span>
               <span>2000 Days</span>
               <span>20 Skills</span>
-              <span>Day 0 · 16 Sep 2026</span>
+              <span>Day 0 · 30 Dec 2026</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
@@ -326,7 +326,7 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 · 16 Sep 2026 — environment setup before the 1,826-day journey begins.</strong>{' '}
+          <strong>Day 0 · 30 Dec 2026 — environment setup before the 2,000-day journey begins.</strong>{' '}
           Install <code>Node.js</code>, <code>Git</code>, and <code>VS Code</code>, wire the terminal and
           Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
@@ -337,7 +337,7 @@ export default function Day000() {
             NexusAI
           </a>{' '}
           capstone repo, and lock the routine (wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST). No lectures today —
-          clear every obstacle so <strong>Day 1 (17 Sep 2026)</strong> starts with zero friction:{' '}
+          clear every obstacle so <strong>Day 1 (31 Dec 2026)</strong> starts with zero friction:{' '}
           <strong>Skill 01 · Agentic AI</strong> begins — Agentic AI foundations (LangChain, LangGraph, RAG, MCP) + the NexusAI capstone first commit. Sharpen the axe before the first swing.
         </p>
 
