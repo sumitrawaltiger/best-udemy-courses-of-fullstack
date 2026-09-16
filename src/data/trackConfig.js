@@ -95,14 +95,14 @@ export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
 // Full journey: Day 0 = 30 Dec 2026, Day 1 = 31 Dec 2026. 20 skills · 2,000 days · ~66 months · ends 21 Jun 2032.
-// Skill  1 · Python              Days    1–100  · 31 Dec 2026 – 9 Apr 2027
-// Skill  2 · Agentic AI          Days  101–200  · 10 Apr 2027 – 18 Jul 2027
+// Skill  1 · Agentic AI          Days    1–100  · 31 Dec 2026 – 9 Apr 2027
+// Skill  2 · Django              Days  101–200  · 10 Apr 2027 – 18 Jul 2027
 // Skill  3 · JavaScript          Days  201–300  · 19 Jul 2027 – 26 Oct 2027
 // Skill  4 · TypeScript          Days  301–400  · 27 Oct 2027 – 3 Feb 2028
 // Skill  5 · React JS            Days  401–500  · 4 Feb 2028 – 13 May 2028
 // Skill  6 · Next JS             Days  501–600  · 14 May 2028 – 21 Aug 2028
 // Skill  7 · React Native        Days  601–700  · 22 Aug 2028 – 29 Nov 2028
-// Skill  8 · Express JS          Days  701–800  · 30 Nov 2028 – 9 Mar 2029
+// Skill  8 · GraphQL             Days  701–800  · 30 Nov 2028 – 9 Mar 2029
 // Skill  9 · Databases           Days  801–900  · 10 Mar 2029 – 17 Jun 2029
 // Skill 10 · NestJS              Days  901–1000 · 18 Jun 2029 – 25 Sep 2029
 // Skill 11 · J2SE                Days 1001–1100 · 26 Sep 2029 – 3 Jan 2030

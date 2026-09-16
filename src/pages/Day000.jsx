@@ -69,11 +69,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full ~66-month (2,000-day) plan — 20 skills × 100 days each: Skill 01 Python (1–100) → Skill 02 Agentic AI (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 Express (701–800) → Skill 09 Databases (801–900) → Skill 10 NestJS (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 AppSec (1401–1500) → Skill 16 Quality Engineering (1501–1600) → Skill 17 AWS (1601–1700) → Skill 18 DevOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 21 Jun 2032). NexusAI capstone built daily throughout all 2,000 days',
+    text: 'reviewed the full ~66-month (2,000-day) plan — 20 skills × 100 days each: Skill 01 Agentic AI (1–100) → Skill 02 Django (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 GraphQL (701–800) → Skill 09 Databases (801–900) → Skill 10 NestJS (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 Quality Engineering (1401–1500) → Skill 16 AWS (1501–1600) → Skill 17 DevOps (1601–1700) → Skill 18 DevSecOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 21 Jun 2032). NexusAI capstone built daily throughout all 2,000 days',
   },
   {
-    title: 'Ready for Skill 01 · Python',
-    text: 'Day 1 (31 Dec 2026) starts with Skill 01: Python syntax, OOP, async/await, file I/O, DB connectivity, multithreading, and FastAPI REST APIs. 100 days (Days 1–100, ends 9 Apr 2027), then Skill 02 Agentic AI begins 10 Apr 2027',
+    title: 'Ready for Skill 01 · Agentic AI',
+    text: 'Day 1 (31 Dec 2026) starts with Skill 01: Agentic AI — LangChain, LangGraph, RAG, MCP, CrewAI, n8n. Build the NexusAI multi-agent pipeline. 100 days (Days 1–100, ends 9 Apr 2027), then Skill 02 Django begins 10 Apr 2027',
   },
   {
     title: 'Accounts ready',
@@ -178,17 +178,17 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-cyan',
     subtitle: '20 skills · Day 1 = 31 Dec 2026 · ends 21 Jun 2032',
     description:
-      '20 skills × 100 days each: Skill 01 Python (1–100) → Skill 02 Agentic AI (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 Express (701–800) → Skill 09 Databases (801–900) → Skill 10 NestJS (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 AppSec (1401–1500) → Skill 16 Quality Engineering (1501–1600) → Skill 17 AWS (1601–1700) → Skill 18 DevOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 21 Jun 2032). NexusAI built daily throughout all 2,000 days.',
+      '20 skills × 100 days each: Skill 01 Agentic AI (1–100) → Skill 02 Django (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 GraphQL (701–800) → Skill 09 Databases (801–900) → Skill 10 NestJS (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 Quality Engineering (1401–1500) → Skill 16 AWS (1501–1600) → Skill 17 DevOps (1601–1700) → Skill 18 DevSecOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 21 Jun 2032). NexusAI built daily throughout all 2,000 days.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
     icon: '🐍',
-    title: 'Day 1 · Skill 01 · Python',
+    title: 'Day 1 · Skill 01 · Agentic AI',
     titleClass: 'card-title-lime',
     subtitle: 'Days 1–100 · 31 Dec 2026 – 9 Apr 2027',
     description:
-      'Day 1 (31 Dec 2026) begins Skill 01: Python syntax, OOP, async/await, file I/O, DB connectivity, multithreading, and FastAPI REST APIs. 100 days to build the Python and FastAPI layer of NexusAI. Skill 02 (Agentic AI) starts 10 Apr 2027 on Day 101.',
-    link: { href: '/python', label: 'Explore the Python track →' },
+      'Day 1 (31 Dec 2026) begins Skill 01: Agentic AI — LangChain, LangGraph, RAG, MCP, CrewAI, n8n. Build the NexusAI multi-agent pipeline. 100 days of GenAI engineering. Skill 02 (Django) starts 10 Apr 2027 on Day 101.',
+    link: { href: '/python', label: 'Explore the Agentic AI track →' },
   },
 ];
 
@@ -287,7 +287,7 @@ export default function Day000() {
           </Link>
           <p className="day001-datetime">Day 0 · 30 Dec 2026</p>
           <Link to="/agentic-day-1" className="day001-nav-btn day001-nav-next">
-            Day 1 · Python →
+            Day 1 · Agentic AI →
           </Link>
         </header>
 
@@ -338,7 +338,7 @@ export default function Day000() {
           </a>{' '}
           capstone repo, and lock the routine (wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST). No lectures today —
           clear every obstacle so <strong>Day 1 (31 Dec 2026)</strong> starts with zero friction:{' '}
-          <strong>Skill 01 · Python</strong> begins — Python foundations + the NexusAI capstone first commit. Sharpen the axe before the first swing.
+          <strong>Skill 01 · Agentic AI</strong> begins — Agentic AI foundations (LangChain, LangGraph, RAG, MCP) + the NexusAI capstone first commit. Sharpen the axe before the first swing.
         </p>
 
         <section className="day001-learnt">
@@ -403,7 +403,7 @@ export default function Day000() {
 
         <footer className="day001-hashtags">
           <span>#Day0</span>
-          <span>#PythonStack</span>
+          <span>#AgenticAIStack</span>
           <span>#AgenticAI</span>
           <span>#5Years</span>
           <span>#2000Days</span>
