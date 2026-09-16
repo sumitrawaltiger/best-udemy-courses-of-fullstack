@@ -94,7 +94,7 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: Day 0 = 30 Dec 2026, Day 1 = 31 Dec 2026. 20 skills · 2,000 days · ~66 months · ends 21 Jun 2032.
+// Full journey: Day 0 = 16 Sep 2026, Day 1 = 17 Sep 2026. 5-year plan · 1,826 days · ends 16 Sep 2031.
 // Skill  1 · Agentic AI          Days    1–100  · 31 Dec 2026 – 9 Apr 2027
 // Skill  2 · FastAPI            Days  101–200  · 10 Apr 2027 – 18 Jul 2027
 // Skill  3 · JavaScript          Days  201–300  · 19 Jul 2027 – 26 Oct 2027
@@ -116,11 +116,11 @@ export const INTERVIEW_PREP_WEEKS = 0;
 // Skill 19 · SRE                 Days 1801–1900 · 5 Dec 2031 – 13 Mar 2032
 // Skill 20 · System Design       Days 1901–2000 · 14 Mar 2032 – 21 Jun 2032
 // NexusAI capstone built daily throughout all 2,000 days — no separate Capstone block.
-export const JOURNEY_START_LABEL = '31 Dec 2026';
-export const JOURNEY_END_LABEL = '21 Jun 2032';
-export const JOURNEY_TOTAL_DAYS = 2000;
-// Factory calendar: Day 1 = 31 Dec 2026 (COURSE_START); factory day N = journey Day N.
-export const JOURNEY_END_FACTORY_DAY = 2000;
+export const JOURNEY_START_LABEL = '17 Sep 2026';
+export const JOURNEY_END_LABEL = '16 Sep 2031';
+export const JOURNEY_TOTAL_DAYS = 1826;
+// Factory calendar: Day 1 = 17 Sep 2026 (COURSE_START); factory day N = journey Day N.
+export const JOURNEY_END_FACTORY_DAY = 1826;
 
 // Skill day-offsets for the 20-skill plan.
 // Skill1(1-100) → Skill2(101-200) → Skill3(201-300) → Skill4(301-400) → Skill5(401-500) →
