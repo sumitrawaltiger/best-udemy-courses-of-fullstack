@@ -69,7 +69,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full ~66-month (2,000-day) plan — 20 skills × 100 days each: Skill 01 Agentic AI (1–100) → Skill 02 Django (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 GraphQL (701–800) → Skill 09 Databases (801–900) → Skill 10 NestJS (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 Quality Engineering (1401–1500) → Skill 16 AWS (1501–1600) → Skill 17 DevOps (1601–1700) → Skill 18 DevSecOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 21 Jun 2032). NexusAI capstone built daily throughout all 2,000 days',
+    text: 'reviewed the full ~66-month (2,000-day) plan — 20 skills × 100 days each: Skill 01 Agentic AI (1–100) → Skill 02 Django (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 Express (701–800) → Skill 09 Databases (801–900) → Skill 10 NestJS (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 Quality Engineering (1401–1500) → Skill 16 AWS (1501–1600) → Skill 17 DevOps (1601–1700) → Skill 18 DevSecOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 21 Jun 2032). NexusAI capstone built daily throughout all 2,000 days',
   },
   {
     title: 'Ready for Skill 01 · Agentic AI',
@@ -178,7 +178,7 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-cyan',
     subtitle: '20 skills · Day 1 = 31 Dec 2026 · ends 21 Jun 2032',
     description:
-      '20 skills × 100 days each: Skill 01 Agentic AI (1–100) → Skill 02 Django (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 GraphQL (701–800) → Skill 09 Databases (801–900) → Skill 10 NestJS (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 Quality Engineering (1401–1500) → Skill 16 AWS (1501–1600) → Skill 17 DevOps (1601–1700) → Skill 18 DevSecOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 21 Jun 2032). NexusAI built daily throughout all 2,000 days.',
+      '20 skills × 100 days each: Skill 01 Agentic AI (1–100) → Skill 02 Django (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 Express (701–800) → Skill 09 Databases (801–900) → Skill 10 NestJS (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 Quality Engineering (1401–1500) → Skill 16 AWS (1501–1600) → Skill 17 DevOps (1601–1700) → Skill 18 DevSecOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 21 Jun 2032). NexusAI built daily throughout all 2,000 days.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {

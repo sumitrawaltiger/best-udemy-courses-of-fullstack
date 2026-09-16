@@ -47,7 +47,7 @@ function _calDate(dayN) {
 // Skill  5 · React JS            Days  401–500  · 4 Feb 2028 – 13 May 2028
 // Skill  6 · Next JS             Days  501–600  · 14 May 2028 – 21 Aug 2028
 // Skill  7 · React Native        Days  601–700  · 22 Aug 2028 – 29 Nov 2028
-// Skill  8 · GraphQL             Days  701–800  · 30 Nov 2028 – 9 Mar 2029
+// Skill  8 · Express JS          Days  701–800  · 30 Nov 2028 – 9 Mar 2029
 // Skill  9 · Databases           Days  801–900  · 10 Mar 2029 – 17 Jun 2029
 // Skill 10 · NestJS              Days  901–1000 · 18 Jun 2029 – 25 Sep 2029
 // Skill 11 · J2SE                Days 1001–1100 · 26 Sep 2029 – 3 Jan 2030
@@ -158,13 +158,13 @@ const PHASES = [
     ],
   },
   {
-    id: 'p8', arcClass: 'y2', icon: '🔀',
-    label: 'Skill 08 · GraphQL',
+    id: 'p8', arcClass: 'y2', icon: '🚂',
+    label: 'Skill 08 · Express JS',
     tagline: 'Days 701–800',
     duration: '100 days · ~3.3 months',
-    blurb: 'GraphQL from schema to production — queries, mutations, subscriptions, Apollo Server, Apollo Client, and code-first SDL. Pairs directly with NestJS and React.',
+    blurb: 'Backend REST APIs with Express.js — middleware, JWT auth, Prisma ORM, file uploads, rate limiting, and WebSockets.',
     items: [
-      { icon: '🔀', title: 'GraphQL', detail: 'Schema definition · queries · mutations · subscriptions · Apollo Server · Apollo Client · DataLoader · code-first SDL · N+1 problem', source: 'Udemy / Apollo Docs', to: '/nextjs' },
+      { icon: '🚂', title: 'Express JS', detail: 'Middleware · routing · JWT auth · Prisma ORM · file uploads · rate limiting · WebSockets · REST best practices', source: 'ChaiCode', to: '/mobile' },
     ],
   },
   {
@@ -324,7 +324,7 @@ export default function RoadmapHome() {
           Starts with <strong>Day 0 — environment setup</strong>, then <strong>20 skills · 100 days each</strong>{' '}
           mastered end to end —{' '}
           <strong>Agentic AI</strong> {'→'} <strong>Django</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
-          <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>GraphQL</strong> {'→'}{' '}
+          <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
           <strong>Databases</strong> {'→'} <strong>NestJS</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>DSA</strong> {'→'}{' '}
           <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Quality Engineering</strong> {'→'} <strong>AWS</strong> {'→'}{' '}
           <strong>DevOps</strong> {'→'} <strong>DevSecOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong> —{' '}
@@ -347,7 +347,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png"
-          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Agentic AI → Django → JS → TS → React → Next → React Native → GraphQL → Databases → NestJS → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design. Day 1: 31 Dec 2026 · Day 2,000: 21 Jun 2032."
+          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Agentic AI → Django → JS → TS → React → Next → React Native → Express JS → Databases → NestJS → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design. Day 1: 31 Dec 2026 · Day 2,000: 21 Jun 2032."
           loading="eager"
           style={{
             width: '100%',
@@ -532,7 +532,7 @@ export default function RoadmapHome() {
         <p className="roadmap-flow-text">
           Day 0 setup, then 20 skills at 100 days each:{' '}
           <strong>Agentic AI</strong> {'→'} <strong>Django</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
-          <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>GraphQL</strong> {'→'}{' '}
+          <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
           <strong>Databases</strong> {'→'} <strong>NestJS</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>DSA</strong> {'→'}{' '}
           <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Quality Engineering</strong> {'→'} <strong>AWS</strong> {'→'}{' '}
           <strong>DevOps</strong> {'→'} <strong>DevSecOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong>.{' '}

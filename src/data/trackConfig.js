@@ -102,7 +102,7 @@ export const INTERVIEW_PREP_WEEKS = 0;
 // Skill  5 · React JS            Days  401–500  · 4 Feb 2028 – 13 May 2028
 // Skill  6 · Next JS             Days  501–600  · 14 May 2028 – 21 Aug 2028
 // Skill  7 · React Native        Days  601–700  · 22 Aug 2028 – 29 Nov 2028
-// Skill  8 · GraphQL             Days  701–800  · 30 Nov 2028 – 9 Mar 2029
+// Skill  8 · Express JS          Days  701–800  · 30 Nov 2028 – 9 Mar 2029
 // Skill  9 · Databases           Days  801–900  · 10 Mar 2029 – 17 Jun 2029
 // Skill 10 · NestJS              Days  901–1000 · 18 Jun 2029 – 25 Sep 2029
 // Skill 11 · J2SE                Days 1001–1100 · 26 Sep 2029 – 3 Jan 2030
