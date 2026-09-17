@@ -32,36 +32,36 @@ function LeetCode2000Badge({ size = 120 }) {
 }
 
 // ── Phase calendar helpers ───────────────────────────────────────────────────
-const _CAL_DAY1 = new Date(2026, 11, 31); // 31 Dec 2026
+const _CAL_DAY1 = new Date(2026, 8, 17); // 17 Sep 2026
 function _calDate(dayN) {
   const d = new Date(_CAL_DAY1);
   d.setDate(d.getDate() + dayN - 1);
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-// ── 20 skills · 100 days each · 2,000 days ───────────────────────────────────
-// Skill  1 · Agentic AI          Days    1–100  · 31 Dec 2026 – 9 Apr 2027
-// Skill  2 · FastAPI            Days  101–200  · 10 Apr 2027 – 18 Jul 2027
-// Skill  3 · JavaScript          Days  201–300  · 19 Jul 2027 – 26 Oct 2027
-// Skill  4 · TypeScript          Days  301–400  · 27 Oct 2027 – 3 Feb 2028
-// Skill  5 · React JS            Days  401–500  · 4 Feb 2028 – 13 May 2028
-// Skill  6 · Next JS             Days  501–600  · 14 May 2028 – 21 Aug 2028
-// Skill  7 · React Native        Days  601–700  · 22 Aug 2028 – 29 Nov 2028
-// Skill  8 · Express JS          Days  701–800  · 30 Nov 2028 – 9 Mar 2029
-// Skill  9 · Databases           Days  801–900  · 10 Mar 2029 – 17 Jun 2029
-// Skill 10 · NestJS              Days  901–1000 · 18 Jun 2029 – 25 Sep 2029
-// Skill 11 · J2SE                Days 1001–1100 · 26 Sep 2029 – 3 Jan 2030
-// Skill 12 · DSA                 Days 1101–1200 · 4 Jan 2030 – 13 Apr 2030
-// Skill 13 · Spring Boot         Days 1201–1300 · 14 Apr 2030 – 22 Jul 2030
-// Skill 14 · Microservices       Days 1301–1400 · 23 Jul 2030 – 30 Oct 2030
-// Skill 15 · Quality Engineering Days 1401–1500 · 31 Oct 2030 – 7 Feb 2031
-// Skill 16 · AWS                 Days 1501–1600 · 8 Feb 2031 – 18 May 2031
-// Skill 17 · DevOps              Days 1601–1700 · 19 May 2031 – 26 Aug 2031
-// Skill 18 · DevSecOps           Days 1701–1800 · 27 Aug 2031 – 4 Dec 2031
-// Skill 19 · SRE                 Days 1801–1900 · 5 Dec 2031 – 13 Mar 2032
-// Skill 20 · System Design       Days 1901–2000 · 14 Mar 2032 – 21 Jun 2032
-// NexusAI capstone built daily throughout all 2,000 days — no separate Capstone block.
-// Calendar: Day 0 = 30 Dec 2026, Day 1 = 31 Dec 2026, Day 2,000 = 21 Jun 2032.
+// ── 20 skills · 100 days each · 1,827 days ─────────────────────────────
+// Skill  1 · Agentic AI          Days    1–100  · 17 Sep 2026 – 25 Dec 2026
+// Skill  2 · FastAPI            Days  101–200  · 26 Dec 2026 – 4 Apr 2027
+// Skill  3 · JavaScript          Days  201–300  · 5 Apr 2027 – 13 Jul 2027
+// Skill  4 · TypeScript          Days  301–400  · 14 Jul 2027 – 21 Oct 2027
+// Skill  5 · React JS            Days  401–500  · 22 Oct 2027 – 29 Jan 2028
+// Skill  6 · Next JS             Days  501–600  · 30 Jan 2028 – 8 May 2028
+// Skill  7 · React Native        Days  601–700  · 9 May 2028 – 16 Aug 2028
+// Skill  8 · Express JS          Days  701–800  · 17 Aug 2028 – 24 Nov 2028
+// Skill  9 · Databases           Days  801–900  · 25 Nov 2028 – 4 Mar 2029
+// Skill 10 · NestJS              Days  901–1000 · 5 Mar 2029 – 12 Jun 2029
+// Skill 11 · J2SE                Days 1001–1100 · 13 Jun 2029 – 20 Sep 2029
+// Skill 12 · DSA                 Days 1101–1200 · 21 Sep 2029 – 29 Dec 2029
+// Skill 13 · Spring Boot         Days 1201–1300 · 30 Dec 2029 – 8 Apr 2030
+// Skill 14 · Microservices       Days 1301–1400 · 9 Apr 2030 – 17 Jul 2030
+// Skill 15 · Quality Engineering Days 1401–1500 · 18 Jul 2030 – 25 Oct 2030
+// Skill 16 · AWS                 Days 1501–1600 · 26 Oct 2030 – 2 Feb 2031
+// Skill 17 · DevOps              Days 1601–1700 · 3 Feb 2031 – 13 May 2031
+// Skill 18 · DevSecOps           Days 1701–1800 · 14 May 2031 – 21 Aug 2031
+// Skill 19 · SRE                 Days 1801–1900 · 22 Aug 2031 – 29 Nov 2031
+// Skill 20 · System Design       Days 1901–2000 · 30 Nov 2031 – 8 Mar 2032
+// NexusAI capstone built daily throughout all 1,827 days — no separate Capstone block.
+// Calendar: Day 0 = 16 Sep 2026, Day 1 = 17 Sep 2026, journey ends 17 Sep 2031.
 
 const PHASE_DAYS = [
   [1, 100],
@@ -294,7 +294,7 @@ const PHASES = [
 
 const STATS = [
   { value: '20', label: 'skills · 100 days each' },
-  { value: '2,000', label: 'days · ~66 months' },
+  { value: '1,827', label: 'days · ~60 months' },
   { value: '40+', label: 'technologies' },
   { value: '1', label: 'project · NexusAI daily' },
 ];
@@ -318,8 +318,8 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 Day 0 setup · 20 skills · 2,000 days · ~66 months</span>
-        <h1 className="roadmap-hero-title">20 Skills, 2,000 Days</h1>
+        <span className="roadmap-hero-badge">📍 Day 0 setup · 20 skills · 1,827 days · ~60 months</span>
+        <h1 className="roadmap-hero-title">20 Skills, 1,827 Days</h1>
         <p className="roadmap-hero-sub">
           Starts with <strong>Day 0 — environment setup</strong>, then <strong>20 skills · 100 days each</strong>{' '}
           mastered end to end —{' '}
@@ -328,8 +328,8 @@ export default function RoadmapHome() {
           <strong>Databases</strong> {'→'} <strong>NestJS</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>DSA</strong> {'→'}{' '}
           <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Quality Engineering</strong> {'→'} <strong>AWS</strong> {'→'}{' '}
           <strong>DevOps</strong> {'→'} <strong>DevSecOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong> —{' '}
-          <strong>2,000 days (~66 months)</strong> of focused daily practice, front to back.
-          NexusAI capstone built daily throughout all 2,000 days.
+          <strong>1,827 days (~60 months)</strong> of focused daily practice, front to back.
+          NexusAI capstone built daily throughout all 1,827 days.
         </p>
         <div className="roadmap-stats">
           {STATS.map((s) => (
@@ -401,7 +401,7 @@ export default function RoadmapHome() {
           </table>
         </div>
         <p style={{ textAlign: 'center', color: '#6b7b8e', fontSize: '0.75rem', marginTop: '10px' }}>
-          Day 0 = 30 Dec 2026 · Day 1 = 31 Dec 2026 · 20 skills · 2,000 days · journey ends 21 Jun 2032
+          Day 0 = 16 Sep 2026 · Day 1 = 17 Sep 2026 · 20 skills · 1,827 days · journey ends 17 Sep 2031
         </p>
       </section>
 
@@ -480,7 +480,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">20 skills · 2,000 days · front to back · 21 Jun 2032</p>
+            <p className="roadmap-finish-date">20 skills · 1,827 days · front to back · 17 Sep 2031</p>
           </div>
         </div>
       </div>
@@ -503,12 +503,12 @@ export default function RoadmapHome() {
               LeetCode 2,000 Days Badge
             </p>
             <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
-              Target: 21 Jun 2032 · Day 2,000
+              Target: 17 Sep 2031 · Day 1,827
             </p>
             <p style={{ color: 'rgba(200,212,224,0.82)', fontSize: '0.82rem', lineHeight: 1.65, marginBottom: '12px' }}>
-              1 LeetCode daily challenge every single day — Day 1 (31 Dec 2026) through Day 2,000 (21 Jun 2032).
-              2,000 consecutive submissions earns the badge on the final day of the journey.
-              The discipline badge that proves the entire 2,000-day journey.
+              1 LeetCode daily challenge every single day — Day 1 (17 Sep 2026) through Day 1,827 (17 Sep 2031).
+              Consistent daily submissions earn the streak badge on the final day of the journey.
+              The discipline badge that proves the entire 1,827-day journey.
             </p>
             <a
               href="https://leetcode.com/problemset/"
@@ -536,9 +536,9 @@ export default function RoadmapHome() {
           <strong>Databases</strong> {'→'} <strong>NestJS</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>DSA</strong> {'→'}{' '}
           <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Quality Engineering</strong> {'→'} <strong>AWS</strong> {'→'}{' '}
           <strong>DevOps</strong> {'→'} <strong>DevSecOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong>.{' '}
-          1 LeetCode daily throughout all 2,000 days.
+          1 LeetCode daily throughout all 1,827 days.
           NexusAI capstone built daily throughout — grows with every skill.
-          ~66 months (2,000 days) end to end.
+          ~60 months (1,827 days) end to end.
         </p>
         <div className="roadmap-flow-actions">
           <Link to="/python" className="btn btn-lg roadmap-btn-primary">
