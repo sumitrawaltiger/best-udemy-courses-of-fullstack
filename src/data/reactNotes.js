@@ -7,7 +7,7 @@ export const REACT_META = {
   subtitle: 'Illustrated Episodes · React from Zero to Production',
   blurb:
     'React from the ground up — illustrated, one episode at a time. Component-based thinking, the Virtual DOM, JSX, hooks (useState, useEffect, useRef, useContext), state management, routing, performance optimisation, and real-world patterns — each episode paired with the full written notes and every code snippet.',
-  totalDays: 22,
+  totalDays: 46,
   startDate: '7 Mar 2028',
 };
 
@@ -2272,6 +2272,530 @@ export default function App() {
     <div>
       <h2>Count: {count}</h2>
       <Button onClick={handleClick} label="Increase" />
+    </div>
+  );
+}`,
+      },
+    ],
+  },
+  // ── Ep 35 ──────────────────────────────────────────────────────────────────
+  {
+    day: 37,
+    date: '22 Apr 2028',
+    group: 'performance',
+    title: 'React.memo',
+    tagline: 'Same props, same output, no re-render — prevent unnecessary re-renders when props haven\'t changed.',
+    image: '/react-notes/react35.jpeg',
+    tags: ['React.memo', 'HOC', 'Performance', 'Memoization', 'Shallow Comparison', 'Module 8 Performance'],
+    notes: [
+      { k: 'What is React.memo?', v: 'React.memo is a higher-order component (HOC). It prevents unnecessary re-renders when props haven\'t changed. It only re-renders if the props are different (shallow comparison). Does not work with state changes inside the component.' },
+      { k: 'How It Works', v: 'Parent component re-renders → React.memo checks if props have changed (shallow comparison). Props same → skip re-render (use cached output). Props changed → re-render component. Compares props with shallow equality (===) by default.' },
+      { k: 'Syntax', v: 'const MemoizedComponent = React.memo(function Component(props) { return <div />; });  // or with arrow function: const MemoizedComponent = React.memo((props) => { return <div />; });' },
+      { k: 'With vs Without React.memo', v: 'Without: child re-renders every time parent re-renders; can be expensive in large apps; even if props are same, it still re-renders. With: re-renders only when props change; improves performance; reduces unnecessary work; best for pure functional components (no internal state).' },
+      { k: 'Common Use Cases', v: 'Large lists (e.g. product lists). Components with heavy rendering logic. Components that receive same props often. Pure UI components (no internal state).' },
+      { k: 'Quick Tips', v: 'Works based on shallow comparison. Use with useCallback for function props. Don\'t overuse (adds complexity). Not useful if props always change. Best for pure components.' },
+      { k: 'Common Mistakes', v: 'Using React.memo for all components. Passing new object/function props without memoizing. Expecting it to prevent re-renders from state changes inside the component. Using deep comparison (not default).' },
+      { k: 'Key Takeaways', v: 'React.memo prevents unnecessary re-renders. Only re-renders when props change. Use it for performance, not everywhere. Combine with useCallback and useMemo when needed. Helps build faster and smoother React apps.' },
+    ],
+    snippets: [
+      {
+        label: 'React.memo — memoized child component',
+        code: `// Child Component (Memoized)
+import React from 'react';
+
+const UserCard = React.memo(({ name, age }) => {
+  console.log('UserCard rendered');
+  return (
+    <div className="card">
+      <h3>{name}</h3>
+      <p>Age: {age}</p>
+    </div>
+  );
+});
+
+export default UserCard;`,
+      },
+      {
+        label: 'Parent Component',
+        code: `import React, { useState } from 'react';
+import UserCard from './UserCard';
+
+function App() {
+  const [count, setCount] = useState(0);
+  const [name] = useState('Faisal');
+  const [age] = useState(21);
+
+  console.log('App rendered');
+
+  return (
+    <div>
+      <h2>Count: {count}</h2>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      {/* UserCard does NOT re-render when count changes — props are the same */}
+      <UserCard name={name} age={age} />
+    </div>
+  );
+}
+
+export default App;`,
+      },
+    ],
+  },
+  // ── Ep 36 ──────────────────────────────────────────────────────────────────
+  {
+    day: 38,
+    date: '23 Apr 2028',
+    group: 'performance',
+    title: 'Lazy Loading + Suspense',
+    tagline: 'Load only what you need — split your code and load components only when needed.',
+    image: '/react-notes/react36.jpeg',
+    tags: ['Lazy Loading', 'Suspense', 'Code Splitting', 'Performance', 'React.lazy', 'Module 8 Performance'],
+    notes: [
+      { k: 'What & Why?', v: 'Lazy Loading lets you load components only when needed. Suspense shows a fallback UI while the component is loading. Helps reduce bundle size and improves initial load time. Great for large applications with multiple routes or heavy components.' },
+      { k: 'How It Works', v: 'User visits a route or component → component is lazy loaded → Suspense shows fallback UI → component loads and renders.' },
+      { k: 'Syntax', v: 'const About = lazy(() => import(\'./About\')); — wrap in <Suspense fallback={<div>Loading...</div>}><About /></Suspense>' },
+      { k: 'Without vs With Lazy Loading', v: 'Without: all components loaded together → larger bundle size → slower initial load. With: only required components loaded → smaller bundle size → faster initial load.' },
+      { k: 'Real World Use Cases', v: 'Route-based code splitting. Large dashboards with heavy components. Admin panels. Feature-based modules. Third-party libraries (charts, editors). Improving initial page load time.' },
+      { k: 'Best Practices', v: 'Use meaningful loading UI. Split routes and large components. Combine with React Router. Keep fallback UI lightweight. Use error boundaries for better error handling. Only lazy load when needed (don\'t overuse). Preload critical components (if necessary).' },
+      { k: 'Common Mistakes', v: 'Not using Suspense. Using lazy for small components (unnecessary). No loading fallback (blank screen). Over-splitting (too many small chunks). Forgetting error boundaries. Expecting instant load (it still needs to fetch).' },
+      { k: 'Key Takeaways', v: 'Lazy Loading reduces bundle size. Suspense shows fallback while loading. Use it for better performance and user experience. Perfect for large and real-world apps. Combine with React Router for route-based splitting.' },
+    ],
+    snippets: [
+      {
+        label: 'Basic lazy + Suspense syntax',
+        code: `import { lazy, Suspense } from 'react';
+
+const About = lazy(() => import('./About'));
+
+function App() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <About />
+    </Suspense>
+  );
+}`,
+      },
+      {
+        label: 'With React Router — route-based code splitting',
+        code: `import { lazy, Suspense } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+const Home    = lazy(() => import('./pages/Home'));
+const About   = lazy(() => import('./pages/About'));
+const Contact = lazy(() => import('./pages/Contact'));
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Suspense fallback={<div className="loader">Loading page...</div>}>
+        <Routes>
+          <Route path="/"        element={<Home />} />
+          <Route path="/about"   element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  );
+}`,
+      },
+    ],
+  },
+  // ── Ep 37 ──────────────────────────────────────────────────────────────────
+  {
+    day: 39,
+    date: '24 Apr 2028',
+    group: 'real-world',
+    title: 'Authentication',
+    tagline: 'Secure your React app with user authentication — login, protect routes and keep users signed in.',
+    image: '/react-notes/react37.jpeg',
+    tags: ['Authentication', 'JWT', 'Protected Routes', 'AuthContext', 'Login', 'Module 9 Production React'],
+    notes: [
+      { k: 'What & Why?', v: 'Authentication verifies who the user is. Allows access to protected routes and features. Improves security and personalized experience. Common methods: JWT (JSON Web Token).' },
+      { k: 'How It Works', v: '1. Login (email/password) → 2. Backend verifies & returns JWT token → 3. Store token (localStorage or cookie) → 4. Use token for protected routes (Authorization) → 5. Access protected content.' },
+      { k: 'Folder Structure', v: 'src/components/PrivateRoute.jsx · src/pages/Login.jsx · src/pages/Dashboard.jsx · src/context/AuthContext.jsx · src/utils/api.js' },
+      { k: 'Auth Context', v: 'Create AuthContext with createContext. AuthProvider holds user state and login/logout functions. Wrap the app with <AuthContext.Provider value={{ user, login, logout }}>{children}.</AuthContext.Provider>' },
+      { k: 'Protected Route', v: 'PrivateRoute component reads user from AuthContext. If user exists → render children. If not → redirect to /login with <Navigate to="/login" />.' },
+      { k: 'Pro Tips', v: 'Use HTTP-only cookies for better security (in production). Keep tokens secure (avoid exposing in code). Handle token expiration (auto logout). Show loading state while checking auth. Use an interceptor (e.g. Axios) to attach token automatically. Always validate token on backend.' },
+      { k: 'Common Mistakes', v: 'Storing sensitive data directly in localStorage (less secure). Not handling token expiration. Forgetting to protect routes. Not showing a loading state. Relying only on frontend auth (without backend validation).' },
+      { k: 'Quick Summary', v: 'User logs in with credentials → Backend verifies and returns a token → Store token (localStorage/cookie) → Use token to access protected routes → Logout by removing the token → Keep auth logic clean with Context.' },
+    ],
+    snippets: [
+      {
+        label: 'AuthContext — store user globally',
+        code: `import { createContext, useState } from 'react';
+
+export const AuthContext = createContext();
+
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const login  = (userData) => setUser(userData);
+  const logout = ()         => setUser(null);
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}`,
+      },
+      {
+        label: 'Login form + PrivateRoute',
+        code: `// Login.jsx (simplified)
+import { useContext, useState } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { loginUser } from '../utils/api';
+
+function Login() {
+  const [email, setEmail]       = useState('');
+  const [password, setPassword] = useState('');
+  const { login } = useContext(AuthContext);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const data = await loginUser({ email, password });
+    localStorage.setItem('token', data.token);
+    login(data.user);
+  };
+
+  return (
+    <form onSubmit={handleLogin}>
+      {/* input fields */}
+      <button type="submit">Login</button>
+    </form>
+  );
+}
+
+// PrivateRoute.jsx
+import { Navigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+
+function PrivateRoute({ children }) {
+  const { user } = useContext(AuthContext);
+  return user ? children : <Navigate to="/login" />;
+}
+
+export default PrivateRoute;`,
+      },
+    ],
+  },
+  // ── Ep 38 ──────────────────────────────────────────────────────────────────
+  {
+    day: 40,
+    date: '25 Apr 2028',
+    group: 'real-world',
+    title: 'CRUD App',
+    tagline: 'Build real things that solve real problems — a complete Create, Read, Update, Delete application.',
+    image: '/react-notes/react38.jpeg',
+    tags: ['CRUD', 'API', 'Axios', 'State Management', 'Forms', 'Module 9 Production React'],
+    notes: [
+      { k: 'What & Why?', v: 'CRUD = Create, Read, Update, Delete. Helps you practice real-world React skills. Common in dashboards, admin panels, and SaaS apps. Uses components, state, forms, API calls and routing (optional). Builds a strong portfolio project.' },
+      { k: 'Tech Stack', v: 'React + Tailwind/CSS Modules + Fake API (JSON Server) + Axios + React Router (optional) + React Toastify (optional). You can use JSONPlaceholder or JSON Server for a fake REST API.' },
+      { k: 'Folder Structure', v: 'src/components/TodoForm.jsx · TodoItem.jsx · TodoList.jsx · src/pages/Home.jsx · src/services/api.js · App.jsx · main.jsx' },
+      { k: 'API Service', v: 'Create an Axios instance with baseURL. Export getTodos, createTodo, updateTodo, deleteTodo functions. Example: export const getTodos = () => API.get(\'/\');' },
+      { k: 'Common Mistakes', v: 'Not handling API errors. Not updating UI after actions. Mutating state directly. Not showing loading state. Hardcoding data. Not using reusable components.' },
+      { k: 'Pro Tips', v: 'Use a fake API for practice. Handle loading and error states. Show success/error toasts. Keep components reusable. Use React Router for multiple pages. Try with a real backend later (Node.js + MongoDB).' },
+      { k: 'Key Takeaways', v: 'You learned to perform full CRUD operations. You practiced real API integration. You improved component structure and state handling. This is a portfolio-ready project. Next step: connect with a real backend and add auth.' },
+    ],
+    snippets: [
+      {
+        label: 'api.js — Axios service layer',
+        code: `import axios from 'axios';
+
+const API = axios.create({
+  baseURL: 'https://jsonplaceholder.typicode.com/todos',
+});
+
+export const getTodos    = ()            => API.get('/');
+export const createTodo  = (data)        => API.post('/', data);
+export const updateTodo  = (id, data)    => API.put(\`/\${id}\`, data);
+export const deleteTodo  = (id)          => API.delete(\`/\${id}\`);`,
+      },
+      {
+        label: 'Home.jsx — fetch and display',
+        code: `import { useEffect, useState } from 'react';
+import { getTodos } from '../services/api';
+import TodoList from '../components/TodoList';
+
+export default function Home() {
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    getTodos().then(res => setTodos(res.data.slice(0, 5)));
+  }, []);
+
+  return (
+    <div className="container">
+      <h1>My Tasks</h1>
+      <TodoList todos={todos} setTodos={setTodos} />
+    </div>
+  );
+}`,
+      },
+    ],
+  },
+  // ── Ep 39 ──────────────────────────────────────────────────────────────────
+  {
+    day: 41,
+    date: '26 Apr 2028',
+    group: 'real-world',
+    title: 'Deployment (Vercel)',
+    tagline: 'From local to global — take your React app from development to the world with Vercel.',
+    image: '/react-notes/react39.jpeg',
+    tags: ['Deployment', 'Vercel', 'Vite', 'GitHub', 'CI/CD', 'Module 9 Production React'],
+    notes: [
+      { k: 'What & Why?', v: 'Vercel is a cloud platform built for frontend developers (especially React/Next.js). Makes deployment super easy with Git integration. Automatic builds, HTTPS, global CDN. Perfect for personal projects, portfolios and production apps. Free tier available.' },
+      { k: 'How It Works', v: '1. Push code to GitHub → 2. Connect repo in Vercel → 3. Vercel builds your app → 4. Your app goes live (with a URL). From code to cloud in minutes!' },
+      { k: 'Deploy on Vercel', v: '1. Go to vercel.com and sign in (GitHub). 2. Import your repository. 3. Select project and configure settings (if needed). 4. Click Deploy. 5. Your app will be live with a Vercel URL!' },
+      { k: 'Important Settings', v: 'Framework Preset: Vite (auto-detected). Build Command: npm run build. Output Directory: dist (for Vite). Environment Variables: Add your .env variables (if needed).' },
+      { k: 'Custom Domain', v: '1. Go to Project Settings → Domains. 2. Add your custom domain (e.g. neonflow.dev). 3. Update DNS records (as shown by Vercel). 4. Wait for verification (usually a few minutes). Use a custom domain to make it look professional.' },
+      { k: 'Pro Tips', v: 'Keep your code clean and pushed. Use environment variables for API keys. Set up a custom domain. Enable analytics (Vercel Analytics). Use preview deployments (for every pull request). Add a good README to your repo. Keep build logs handy for debugging.' },
+      { k: 'Common Mistakes', v: 'Forgetting to push code to GitHub. Wrong build command. Incorrect output directory. Missing environment variables. Using local API URLs. Not checking build logs on failure. Forgetting to set a custom domain (when needed).' },
+      { k: 'Key Takeaways', v: 'Vercel makes deployment easy and fast. Connects directly with GitHub. Automatic builds and global CDN. Supports custom domains. Great for personal and production projects. Focus on development, not infrastructure.' },
+    ],
+    snippets: [
+      {
+        label: 'Project setup — Vite + push to GitHub',
+        code: `# 1. Create a React app (Vite)
+npm create vite@latest my-app
+cd my-app
+npm install
+
+# 2. Run locally
+npm run dev
+
+# 3. Push to GitHub
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/username/my-app.git
+git push -u origin main`,
+      },
+    ],
+  },
+  // ── Ep 40 ──────────────────────────────────────────────────────────────────
+  {
+    day: 42,
+    date: '27 Apr 2028',
+    group: 'real-world',
+    title: 'Best Practices & Folder Structure',
+    tagline: 'Write clean. Scale better. Think like a pro — clean code and scalable folder structure.',
+    image: '/react-notes/react40.jpeg',
+    tags: ['Best Practices', 'Folder Structure', 'Clean Code', 'ESLint', 'Prettier', 'Module 9 Production React'],
+    notes: [
+      { k: 'What & Why?', v: 'Best practices help you write clean, maintainable and scalable code. A good folder structure keeps your project organized. Makes collaboration easier (in teams). Helps in long-term development and production. Shows professionalism as a developer.' },
+      { k: 'Principles of Clean Code', v: 'Keep it simple (KISS). Write meaningful names (for variables, functions, files). Follow consistent formatting (Prettier + ESLint). Keep components small (single responsibility). Avoid code duplication (use reusable components). Use comments (only when needed). Handle errors gracefully. Write code for readability (not just for yourself).' },
+      { k: 'Recommended Folder Structure', v: 'src/assets/ (images, fonts), src/components/ (reusable components), src/pages/ (page components), src/hooks/ (custom hooks), src/context/ (context providers), src/services/ (API calls, utils), src/utils/ (helper functions), src/styles/ (global styles), src/layouts/ (layout components). Root: App.jsx, main.jsx. public/ (static files), .env (environment variables).' },
+      { k: 'Useful Configurations', v: 'ESLint: helps maintain code quality. Prettier: formats your code automatically. .env: store environment variables (e.g. API URLs). .gitignore: ignore unnecessary files (node_modules, .env). Set up these tools at the start of every project.' },
+      { k: 'Best Practices Checklist', v: 'Use functional components & hooks. Follow a consistent folder structure. Use meaningful file and folder names. Keep components small and reusable. Use PropTypes or TypeScript (optional). Manage state properly (Context/Redux). Handle loading, error and empty states. Use environment variables. Write clean commit messages. Test your components (optional but great). Keep dependencies updated. Optimize for performance (lazy loading, memo).' },
+      { k: 'Common Mistakes', v: 'Putting everything in App.jsx. Using unclear variable names (data, info). Not following a folder structure. Mixing UI, logic and API calls. Not handling errors. Leaving console.log in production. Unnecessary re-renders. Not using .gitignore. Ignoring code formatting.' },
+      { k: 'Key Takeaways', v: 'Write clean and readable code. Use a scalable folder structure. Follow consistent coding standards. Use tools like ESLint and Prettier. Keep components modular. Handle errors and edge cases. Be prepared for collaboration. Think long-term and maintainable. Good structure = better development experience.' },
+    ],
+    snippets: [
+      {
+        label: 'Reusable Button component (clean structure)',
+        code: `// src/components/Button.jsx
+import './Button.css';
+
+const Button = ({ children, onClick, type = 'button' }) => {
+  return (
+    <button className="btn" type={type} onClick={onClick}>
+      {children}
+    </button>
+  );
+};
+
+export default Button;`,
+      },
+    ],
+  },
+  // ── Ep 41 ──────────────────────────────────────────────────────────────────
+  {
+    day: 43,
+    date: '28 Apr 2028',
+    group: 'patterns',
+    title: 'React Interview Questions',
+    tagline: 'Prepare, practice, build confidence — most important React questions with simple answers.',
+    image: '/react-notes/react41.jpeg',
+    tags: ['Interview', 'Questions', 'Revision', 'Virtual DOM', 'Hooks', 'Bonus Series'],
+    notes: [
+      { k: 'What is React?', v: 'React is a JavaScript library for building user interfaces, maintained by Meta. It uses a component-based architecture and virtual DOM for efficient updates. Key points: Component-based · Declarative · Virtual DOM · Reusable code.' },
+      { k: 'What is the Virtual DOM?', v: 'A lightweight copy of the real DOM. React compares the virtual DOM with the previous one and updates only the changed parts (reconciliation). Result: Faster UI updates!' },
+      { k: 'useEffect vs useLayoutEffect', v: 'useEffect: runs after paint, non-blocking, used for most cases (API calls, side effects), better performance. useLayoutEffect: runs before paint, blocking, used for DOM measurements (layout, position), can affect performance if overused. Use useEffect in 90% of cases.' },
+      { k: 'What are Props?', v: 'Props (short for properties) are used to pass data from a parent component to a child component. function Welcome({ name }) { return <h1>Hello, {name}!</h1>; }' },
+      { k: 'What is a Controlled Component?', v: 'A form element whose value is controlled by React state. The input value is bound to state and onChange updates state. Example: const [name, setName] = useState(""); <input value={name} onChange={(e) => setName(e.target.value)} />' },
+      { k: 'What is Lifting State Up?', v: 'When multiple components need to share the same state, move the state to their nearest common parent. Parent holds state → passes to Child A and Child B. Helps sharing data between components without prop drilling.' },
+      { k: 'What are Keys in Lists?', v: 'Keys help React identify which items have changed, are added, or removed. Use a unique and stable key (preferably an ID). Avoid using index as key (if the list can change). {items.map((item) => <li key={item.id}>{item.name}</li>)}' },
+      { k: 'Quick Tips for Interviews', v: 'Understand core concepts (not just syntax). Be ready to explain your projects. Focus on problem-solving, not memorizing. Practice coding live (CodeSandbox/LeetCode). Know when and why to use a specific hook or tool. Be honest if you don\'t know something. Keep learning and stay curious.' },
+    ],
+    deep: [
+      { q: 'What is React.memo and when should you use it?', a: 'React.memo prevents unnecessary re-renders by memoizing a component. It re-renders only when props change. Useful for performance optimization in large applications. Combine with useCallback when passing function props.' },
+      { q: 'What is useMemo and when should you use it?', a: 'useMemo memoizes a computed value and only recalculates it when dependencies change. Use it for expensive calculations. const expensiveValue = useMemo(() => heavyCalculation(), [dependency]);' },
+      { q: 'What is the Context API?', a: 'Context API allows you to share data globally without prop drilling. const ThemeContext = React.createContext("light"); — useful for global state (theme, auth, etc.).' },
+    ],
+  },
+  // ── Ep 42 ──────────────────────────────────────────────────────────────────
+  {
+    day: 44,
+    date: '29 Apr 2028',
+    group: 'hooks',
+    title: 'React Hooks Cheat Sheet',
+    tagline: 'Small hooks, big power — quick reference for the most used React hooks.',
+    image: '/react-notes/react42.jpeg',
+    tags: ['Hooks Cheat Sheet', 'useState', 'useEffect', 'useContext', 'useRef', 'Bonus Series'],
+    notes: [
+      { k: 'useState', v: 'Adds state to functional components. const [count, setCount] = useState(0); — setCount(count + 1). Use for simple state like form data, toggles etc.' },
+      { k: 'useEffect', v: 'Runs side effects (API calls, subscriptions, timers, etc.). useEffect(() => { /* side effect */ }, []); — [] = run once (on mount).' },
+      { k: 'useContext', v: 'Access global state without prop drilling. const theme = useContext(ThemeContext); — Use when you need to share data across components.' },
+      { k: 'useRef', v: 'Access DOM elements or persist values (without re-render). const inputRef = useRef(null); <input ref={inputRef} /> — Does not trigger re-render when value changes.' },
+      { k: 'useReducer', v: 'Alternative to useState for complex state logic. const [state, dispatch] = useReducer(reducer, initialState); — Use for complex state (e.g. forms, carts).' },
+      { k: 'useMemo', v: 'Memoizes a computed value (expensive calculations). const value = useMemo(() => computeValue(a, b), [a, b]); — Recomputes only when dependencies change.' },
+      { k: 'useCallback', v: 'Memoizes a function (prevents unnecessary re-renders). const handleClick = useCallback(() => { /* logic */ }, [deps]); — Useful when passing functions to child components.' },
+      { k: 'useLayoutEffect', v: 'Like useEffect but runs synchronously after DOM updates. useLayoutEffect(() => { /* measure DOM */ }, []); — Use only when you need DOM measurements.' },
+      { k: 'useImperativeHandle', v: 'Customize the instance value exposed by ref (with forwardRef). useImperativeHandle(ref, () => ({ focus: () => inputRef.current.focus() })); — Useful for exposing methods to parent components.' },
+      { k: 'useDebugValue', v: 'Displays a label for custom hooks (in React DevTools). useDebugValue(value); — Helpful while building custom hooks.' },
+      { k: 'useId', v: 'Generates a unique ID (for accessibility). const id = useId(); <label htmlFor={id}>Name</label><input id={id} /> — Great for accessible forms (React 18+).' },
+      { k: 'useTransition', v: 'Manages non-urgent state updates (concurrent UI). const [isPending, startTransition] = useTransition(); startTransition(() => { setData(data); }); — Useful for better UI performance in heavy updates.' },
+      { k: 'Rules of Hooks', v: 'Only call hooks at the top level (of a function component). Don\'t call hooks inside loops, conditions, or nested functions. Only call hooks from React function components or custom hooks. Follow the rules or face errors!' },
+      { k: 'Commonly Used', v: 'These 6 hooks cover 80% of use cases: useState · useEffect · useContext · useRef · useMemo · useCallback. Master the basics, then build amazing things.' },
+    ],
+  },
+  // ── Ep 43 ──────────────────────────────────────────────────────────────────
+  {
+    day: 45,
+    date: '30 Apr 2028',
+    group: 'patterns',
+    title: 'Common React Mistakes',
+    tagline: 'Learn, fix, improve, grow — avoid these common mistakes and write better React code.',
+    image: '/react-notes/react43.jpeg',
+    tags: ['Common Mistakes', 'Best Practices', 'State', 'useEffect', 'Keys', 'Bonus Series'],
+    notes: [
+      { k: 'Mutating State Directly', v: 'Never mutate state directly. It won\'t trigger re-renders. Wrong: count = count + 1; Correct: setCount(count + 1). Always use the state updater function.' },
+      { k: 'Missing Dependency in useEffect', v: 'Forgetting dependencies can cause bugs and stale data. Wrong: useEffect(() => { fetchData(); }, []); — if fetchData uses variables, they go in deps array. Correct: useEffect(() => { fetchData(); }, [id]). Always include all dependencies (or intentionally use []).' },
+      { k: 'Using Array Index as Key', v: 'Using index as key can cause rendering issues when the list changes. Wrong: <li key={i}>{item.name}</li>. Correct: <li key={item.id}>{item.name}</li>. Use a unique and stable key (like an ID).' },
+      { k: 'Not Cleaning Up Effects', v: 'Not cleaning up can lead to memory leaks (e.g. timers, subscriptions). Wrong: useEffect(() => { const timer = setInterval(log, 1000); }, []). Correct: return () => clearInterval(timer); in the effect. Always clean up side effects.' },
+      { k: 'Overusing useEffect', v: 'Not everything needs useEffect. Using it for simple logic makes code complex. Wrong: setFiltered(items.filter(fn)) inside useEffect. Correct: const filtered = items.filter(fn); directly in the component. Use useEffect only for side effects (API calls, subscriptions, etc.).' },
+      { k: 'Creating Functions on Every Render', v: 'Functions created inside components recreate on every render (can cause unnecessary re-renders). Wrong: const handleClick = () => { console.log(\'clicked\'); } inside component body. Correct: const handleClick = useCallback(() => { console.log(\'clicked\'); }, []). Use useCallback when passing functions to child components.' },
+      { k: 'Not Using React.memo', v: 'Child components re-render even when props haven\'t changed. Wrong: function Item({ data }) { return <div>{data}</div>; }. Correct: const Item = React.memo(({ data }) => { return <div>{data}</div>; }). Use React.memo for pure components (when needed).' },
+      { k: 'Incorrectly Updating Arrays/Objects', v: 'Mutating arrays or objects in state can cause unexpected behavior. Wrong: items.push(newItem); setItems(items). Correct: setItems([...items, newItem]). Always create a new array/object when updating state.' },
+      { k: 'Forgetting to Handle Loading & Errors', v: 'Not handling loading and error states leads to poor user experience. Wrong: fetchData().then(setData) with no error or loading handling. Correct: set loading true → fetch → set data → catch error → finally set loading false. Always handle loading, error and empty states.' },
+      { k: 'Key Takeaways', v: 'Understand why mistakes happen. Write predictable and maintainable code. Follow React best practices. Build better, faster and bug-free projects. Keep learning and staying curious. Better code → Brighter future.' },
+    ],
+    snippets: [
+      {
+        label: 'Wrong vs Correct — state mutation & effect cleanup',
+        code: `// ❌ Wrong — mutating state directly
+count = count + 1;
+
+// ✅ Correct
+setCount(count + 1);
+
+// ❌ Wrong — missing cleanup
+useEffect(() => {
+  const timer = setInterval(log, 1000);
+}, []);
+
+// ✅ Correct — cleanup on unmount
+useEffect(() => {
+  const timer = setInterval(log, 1000);
+  return () => clearInterval(timer);
+}, []);
+
+// ❌ Wrong — index as key
+{items.map((item, i) => <li key={i}>{item.name}</li>)}
+
+// ✅ Correct — stable ID as key
+{items.map((item, i) => <li key={item.id}>{item.name}</li>)}
+
+// ❌ Wrong — mutating array in state
+items.push(newItem);
+setItems(items);
+
+// ✅ Correct — create new array
+setItems([...items, newItem]);`,
+      },
+    ],
+  },
+  // ── Ep 44 ──────────────────────────────────────────────────────────────────
+  {
+    day: 46,
+    date: '1 May 2028',
+    group: 'real-world',
+    title: 'Build a Weather App',
+    tagline: 'Build, learn, apply, repeat — fetch real-time weather data with React using the OpenWeatherMap API.',
+    image: '/react-notes/react44.jpeg',
+    tags: ['Weather App', 'API', 'fetch', 'OpenWeatherMap', 'Real Project', 'Bonus Series'],
+    notes: [
+      { k: 'What We\'ll Build', v: 'A simple weather app to search any city and view real-time weather information. Features: Use API (OpenWeatherMap) · Search any city · Show weather details · Beautiful UI · Handle loading & errors.' },
+      { k: 'Get API Key', v: '1. Go to openweathermap.org. 2. Sign up (free). 3. Get your API key. 4. Use it in your .env file: VITE_WEATHER_API_KEY=your_api_key. Keep your API key safe!' },
+      { k: 'Project Structure', v: 'weather-app/src/components/WeatherCard.jsx · SearchBar.jsx · src/services/weatherApi.js · App.jsx · index.css · .env · vite.config.js. Keep it simple and organized.' },
+      { k: 'Fetch Weather Data', v: 'Create a function to fetch weather data using fetch and your API key. weatherApi.js: export const fetchWeather = async (city) => { const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${import.meta.env.VITE_WEATHER_API_KEY}`); if (!res.ok) throw new Error("City not found"); return res.json(); }; — We\'re using metric units (°C).' },
+      { k: 'Handle Loading & Errors', v: 'const [loading, setLoading] = useState(false); const [error, setError] = useState(""); — In handleSearch: try { setLoading(true); setError(""); const res = await fetchWeather(city); setData(res); } catch(err) { setError(err.message); } finally { setLoading(false); } — Use loading and error states for better UX.' },
+      { k: 'Display Weather Info', v: 'WeatherCard.jsx shows: city name, weather condition, temperature (°C), humidity (%), wind speed (km/h). if (!data) return null; — Customize the UI with your own style!' },
+      { k: 'Enhancements (Try Yourself)', v: 'Show weather icon (from API). Add 5-day forecast. Detect user\'s current location. Toggle between °C / °F. Add dark/light theme. Use a weather background based on condition.' },
+      { k: 'Key Takeaways', v: 'You learned to fetch data from an API. Handled loading and error states. Worked with environment variables. Built a real-world, useful application. Improved your component and state management skills. You can now build more API-based apps! "Build small. Learn big."' },
+    ],
+    snippets: [
+      {
+        label: 'weatherApi.js — fetch weather data',
+        code: `export const fetchWeather = async (city) => {
+  const res = await fetch(
+    \`https://api.openweathermap.org/data/2.5/weather?q=\${city}&units=metric&appid=\${import.meta.env.VITE_WEATHER_API_KEY}\`
+  );
+  if (!res.ok) throw new Error('City not found');
+  return res.json();
+};`,
+      },
+      {
+        label: 'App.jsx — search and display',
+        code: `import { useState } from 'react';
+import { fetchWeather } from './services/weatherApi';
+import WeatherCard from './components/WeatherCard';
+
+export default function App() {
+  const [city, setCity]       = useState('');
+  const [data, setData]       = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError]     = useState('');
+
+  const handleSearch = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      const res = await fetchWeather(city);
+      setData(res);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <input value={city} onChange={e => setCity(e.target.value)} placeholder="Search city..." />
+      <button onClick={handleSearch}>Search</button>
+      {loading && <p>Loading...</p>}
+      {error   && <p className="error">{error}</p>}
+      {data    && <WeatherCard data={data} />}
+    </div>
+  );
+}`,
+      },
+      {
+        label: 'WeatherCard.jsx — display weather info',
+        code: `export default function WeatherCard({ data }) {
+  if (!data) return null;
+  return (
+    <div className="card">
+      <h2>{data.name}</h2>
+      <p>{data.weather[0].main}</p>
+      <h1>{Math.round(data.main.temp)}°C</h1>
+      <div className="details">
+        <div>💧 Humidity <span>{data.main.humidity}%</span></div>
+        <div>💨 Wind <span>{data.wind.speed} km/h</span></div>
+      </div>
     </div>
   );
 }`,
