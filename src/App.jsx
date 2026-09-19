@@ -533,6 +533,8 @@ import TypescriptSeries from './pages/TypescriptSeries';
 import TypescriptDay from './pages/TypescriptDay';
 import ReactSeries from './pages/ReactSeries';
 import ReactDay from './pages/ReactDay';
+import GitSeries from './pages/GitSeries';
+import GitDay from './pages/GitDay';
 import JavaRoadmap from './pages/JavaRoadmap';
 import DsaNotes from './pages/DsaNotes';
 
@@ -999,6 +1001,8 @@ export default function App() {
           <Route path="typescript/day/:day" element={<TypescriptDay />} />
           <Route path="react" element={<ReactSeries />} />
           <Route path="react/day/:day" element={<ReactDay />} />
+          <Route path="git" element={<GitSeries />} />
+          <Route path="git/day/:day" element={<GitDay />} />
           <Route path="about-founder" element={<AboutFounder />} />
           <Route path="learn/:slug" element={<Chapter />} />
           <Route path="nextjs" element={<NextjsHome />} />
