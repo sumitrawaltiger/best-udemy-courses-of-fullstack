@@ -7,7 +7,7 @@ export const REACT_META = {
   subtitle: 'Illustrated Episodes · React from Zero to Production',
   blurb:
     'React from the ground up — illustrated, one episode at a time. Component-based thinking, the Virtual DOM, JSX, hooks (useState, useEffect, useRef, useContext), state management, routing, performance optimisation, and real-world patterns — each episode paired with the full written notes and every code snippet.',
-  totalDays: 46,
+  totalDays: 47,
   startDate: '7 Mar 2028',
 };
 
@@ -2799,6 +2799,106 @@ export default function App() {
     </div>
   );
 }`,
+      },
+    ],
+  },
+
+  // ── Ep 45 ──────────────────────────────────────────────────────────────────
+  {
+    day: 47,
+    date: '2 May 2028',
+    group: 'patterns',
+    title: 'Complete React Cheat Sheet',
+    tagline: 'Bonus Series Finale — every core concept on one page. Revise, build, grow.',
+    image: '/react-notes/react45.jpeg',
+    tags: ['Cheat Sheet', 'Revision', 'Components', 'Hooks', 'Context', 'Routing', 'Performance', 'Deployment', 'Bonus Series'],
+    notes: [
+      { k: '1. Components', v: 'Small, reusable building blocks of UI. Use functional components and keep them small. Example: `function Button({ text }) { return <button className="btn">{text}</button>; }`' },
+      { k: '2. Props', v: 'Pass data from parent to child components. Props are read-only. Example: `function UserCard({ name, bio }) { return <div><h3>{name}</h3><p>{bio}</p></div>; }`' },
+      { k: '3. State & Hooks', v: 'Manage data and side effects using hooks. Use the right hook for the job. `const [count, setCount] = useState(0);` · `useEffect(() => { /* side effect */ }, []);`' },
+      { k: '4. Conditional Rendering', v: 'Render UI based on conditions. Keep your UI clean and readable. `{isLoggedIn ? <Dashboard /> : <Login />}` · `{items.length === 0 && <p>No items</p>}`' },
+      { k: '5. Lists & Keys', v: 'Render lists using map and provide unique keys. Keys help React identify which items changed. `{items.map(item => <ItemCard key={item.id} item={item} />)}`' },
+      { k: '6. Forms', v: 'Handle form input and validation with controlled components. Use controlled components and validate input. `const [name, setName] = useState(""); <input value={name} onChange={(e) => setName(e.target.value)} />`' },
+      { k: '7. useEffect', v: 'Handle side effects (API calls, subscriptions, timers). Add dependencies correctly. `useEffect(() => { const fetchData = async () => { const res = await fetch("/api"); const data = await res.json(); setData(data); }; fetchData(); }, []);`' },
+      { k: '8. Custom Hooks', v: 'Reuse logic across components — extract and reuse logic. `function useFetch(url) { const [data, setData] = useState(null); useEffect(() => { fetch(url).then(res => res.json()).then(setData); }, [url]); return data; }`' },
+      { k: '9. Context API', v: 'Share state globally without prop drilling. Use Context for global data (like theme, auth). `const ThemeContext = createContext(); export const ThemeProvider = ({ children }) => { return <ThemeContext.Provider value={{ theme: "dark" }}>{children}</ThemeContext.Provider>; };`' },
+      { k: '10. Routing', v: 'Handle navigation with React Router. Use nested and protected routes for real apps. `import { BrowserRouter, Routes, Route } from "react-router-dom"; <Routes><Route path="/" element={<Home />} /><Route path="/about" element={<About />} /></Routes>`' },
+      { k: '11. Performance', v: 'Optimize your React apps. Use memo, useMemo and useCallback wisely. `const MemoComponent = React.memo(({ data }) => <div>{data}</div>); const handleClick = useCallback(() => { /* logic */ }, []); const value = useMemo(() => compute(), []);`' },
+      { k: '12. Deployment', v: 'Build and deploy your app. Vercel, Netlify, GitHub Pages — build. Deploy. Share your work. `npm run build` then `npx vercel`.' },
+      { k: '13. Project Structure', v: 'Keep a clean and scalable structure. src/components/ · src/pages/ · src/hooks/ · src/context/ · src/services/ · src/assets/ · App.jsx · main.jsx. Clean Structure → Happy Coding.' },
+      { k: 'Key Takeaways', v: 'Components make your UI modular · Hooks simplify state and side effects · Build reusable and clean code · Follow best practices · Optimize for better performance · Deploy and share your projects · Keep learning, keep building. "React is not just a library, it\'s a mindset. Build. Learn. Improve. Keep going." Same Concepts. Bigger Possibilities.' },
+    ],
+    snippets: [
+      {
+        label: 'Components + Props',
+        code: `function Button({ text }) {
+  return <button className="btn">{text}</button>;
+}
+
+function UserCard({ name, bio }) {
+  return (
+    <div>
+      <h3>{name}</h3>
+      <p>{bio}</p>
+    </div>
+  );
+}`,
+      },
+      {
+        label: 'State, useEffect & Conditional Rendering',
+        code: `import { useState, useEffect } from 'react';
+
+const [count, setCount] = useState(0);
+
+useEffect(() => {
+  // side effect (API call, subscription, etc.)
+}, []);
+
+// Conditional rendering
+{isLoggedIn ? <Dashboard /> : <Login />}
+{items.length === 0 && <p>No items</p>}`,
+      },
+      {
+        label: 'Custom Hook + Context API',
+        code: `// Custom hook
+function useFetch(url) {
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    fetch(url).then(res => res.json()).then(setData);
+  }, [url]);
+  return data;
+}
+
+// Context API
+const ThemeContext = createContext();
+export const ThemeProvider = ({ children }) => (
+  <ThemeContext.Provider value={{ theme: 'dark' }}>
+    {children}
+  </ThemeContext.Provider>
+);`,
+      },
+      {
+        label: 'Routing + Performance',
+        code: `import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+<Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/about" element={<About />} />
+  <Route path="/profile/:id" element={<Profile />} />
+</Routes>
+
+// Performance
+const MemoComponent = React.memo(({ data }) => <div>{data}</div>);
+const handleClick = useCallback(() => { /* logic */ }, []);
+const value = useMemo(() => compute(), []);`,
+      },
+      {
+        label: 'Deploy',
+        code: `# Build the project
+npm run build
+
+# Deploy (Vercel)
+npx vercel`,
       },
     ],
   },
