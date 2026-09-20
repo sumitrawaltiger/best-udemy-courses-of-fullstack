@@ -7,7 +7,7 @@ export const GIT_META = {
   subtitle: 'Small Steps. Big Projects.',
   blurb:
     'Version control from the ground up — illustrated, one episode at a time. What Git is, how to install it, the core concepts (Working Directory, Staging, Commit), the daily workflow, branches, merging, undoing changes, GitHub remotes, and repository best practices — each episode paired with full written notes and every command.',
-  totalEpisodes: 9,
+  totalEpisodes: 10,
   startDate: 'Year 2 · JavaScript Stack',
 };
 
@@ -346,6 +346,63 @@ git commit -m "Update README"
 git commit -m "update"
 git commit -m "fix"
 git commit -m "changes"`,
+      },
+    ],
+  },
+];
+
+  {
+    ep: 10,
+    group: 'collab',
+    title: 'Pull Requests + Issues',
+    tagline: 'Discuss. Review. Improve. Build Together — the heart of open-source collaboration.',
+    image: '/git-notes/git10.jpeg',
+    tags: ['Pull Request', 'Code Review', 'Issues', 'GitHub', 'Collaboration', 'PR Flow'],
+    notes: [
+      { k: 'What is a Pull Request (PR)?', v: 'A Pull Request is a way to propose changes to a repository. It lets others review your code, give feedback, and merge it into the main branch. Flow: Your Branch (feature) → Pull Request (Open for review) → Review & Discuss → Merge to main. "Pull Requests help maintain code quality and enable collaboration."' },
+      { k: 'Pull Request Flow', v: '1. Make changes in a new branch. 2. Push the branch to GitHub. 3. Open a Pull Request. 4. Code review (comments/suggestions). 5. Merge after approval. When opening a PR: set base: main, compare: feature-login, add a clear title and description explaining what and why.' },
+      { k: 'Code Review', v: 'Team members review your code, suggest changes, and discuss improvements. Common review topics: Code style · Best practices · Performance · Bug fixes · Suggestions. Be open to feedback — it makes you a better developer! Example: reviewer says "can we use a separate component for the form?" → you reply "Good point! I\'ve made the changes. PTAL."' },
+      { k: 'What are Issues?', v: 'Issues are used to track tasks, bugs, feature requests, and discussions in a repository. Use Issues to: Report bugs · Suggest features · Track tasks · Have discussions · Plan work. A well-maintained issue tracker keeps your project organized and transparent.' },
+      { k: 'Real World Example', v: 'Let\'s say you fixed a bug in the login form: 1. Issue created (bug). 2. Create a branch (fix-login-bug). 3. Make changes and commit. 4. Push to GitHub. 5. Open a PR (describe fix). 6. Review and discuss. 7. Merge into main (bug fixed!). "From a small issue to a big improvement — that\'s the power of collaboration!"' },
+      { k: 'Useful Tips', v: 'Write clear and descriptive PR titles · Explain what changed and why · Keep PRs small and focused · Link related issues in the PR · Be respectful in code reviews · Use issues to plan and track your work · Close the issue after merging the PR · Follow your repository\'s contribution guidelines. Good communication builds great software!' },
+      { k: 'Key Takeaways', v: 'Pull Requests help you collaborate and maintain code quality · Code reviews improve your skills and the project · Issues keep the work organized and transparent · Together, PRs and Issues make open source and team development smooth and efficient. "Great developers not only write code, they also review, discuss, and help others." Small Contributions Make a Big Impact!' },
+    ],
+    snippets: [
+      {
+        label: 'Full PR workflow — terminal commands',
+        code: `# 1. Create and switch to a feature branch
+git switch -c fix-login-bug
+
+# 2. Make your changes, then stage and commit
+git add .
+git commit -m "Fix login form validation"
+
+# 3. Push the branch to GitHub
+git push -u origin fix-login-bug
+
+# 4. Go to GitHub → Open a Pull Request
+#    base: main  ←  compare: fix-login-bug
+#    Add a clear title and description, then submit.
+
+# 5. After review + approval, merge on GitHub
+# 6. Delete the branch (clean up)
+git switch main
+git pull origin main
+git branch -d fix-login-bug`,
+      },
+      {
+        label: 'Good PR description template',
+        code: `## What changed
+- Added form validation to the login page
+- Handled empty field and invalid email errors
+
+## Why
+Fixes #12 — users could submit the form with empty fields
+
+## How to test
+1. Go to /login
+2. Submit with empty fields → should show error
+3. Submit with valid data → should log in`,
       },
     ],
   },
