@@ -7,7 +7,7 @@ export const GIT_META = {
   subtitle: 'Small Steps. Big Projects.',
   blurb:
     'Version control from the ground up — illustrated, one episode at a time. What Git is, how to install it, the core concepts (Working Directory, Staging, Commit), the daily workflow, branches, merging, undoing changes, GitHub remotes, and repository best practices — each episode paired with full written notes and every command.',
-  totalEpisodes: 10,
+  totalEpisodes: 11,
   startDate: 'Year 2 · JavaScript Stack',
 };
 
@@ -403,6 +403,73 @@ Fixes #12 — users could submit the form with empty fields
 1. Go to /login
 2. Submit with empty fields → should show error
 3. Submit with valid data → should log in`,
+      },
+    ],
+  },
+];
+
+  {
+    ep: 11,
+    group: 'collab',
+    title: 'GitHub Collaboration Workflow',
+    tagline: 'Fork → Clone → Branch → Commit → Push → Pull Request — how open source actually works.',
+    image: '/git-notes/git11.jpeg',
+    tags: ['Fork', 'Clone', 'Open Source', 'Collaboration', 'Pull Request', 'Code Review', 'Merge'],
+    notes: [
+      { k: '1. Fork a Repository', v: 'Create your own copy of someone else\'s repo. Forking creates a copy under your GitHub account. No changes affect the original repo. Example: neon-dev/awesome-project → Fork → your-username/awesome-project.' },
+      { k: '2. Clone Your Fork', v: 'Download the forked repo to your local machine. `git clone https://github.com/your-username/awesome-project.git`. Now you have the project on your machine and can work on it locally.' },
+      { k: '3. Create a Branch', v: 'Always work on a new branch for your changes — keep main clean! `git checkout -b feature/new-feature`. Your branch stays separate from main until you are ready to propose the changes.' },
+      { k: '4. Make Changes & Commit', v: 'Work on the code and commit your changes. Edit files → `git add .` (stage) → `git commit -m "Your message"`. Small, meaningful commits are better! Example: `git add . && git commit -m "Add new feature"`.' },
+      { k: '5. Push to GitHub', v: 'Upload your changes to your fork. `git push origin feature/new-feature`. This uploads your branch with commits to your GitHub fork. Your Computer (Local) → Push → Your Fork (on GitHub).' },
+      { k: '6. Create a Pull Request', v: 'Propose your changes to the original repo. On GitHub: Open a pull request · set base: main ← compare: feature/new-feature · Add a clear title and description ("This PR adds a new feature to …") · Click Create pull request.' },
+      { k: '7. Review & Discussion', v: 'Maintainers review your code, suggest changes, and discuss. Code Review Checklist: Code works as expected · Follows project guidelines · Clean and readable · No unnecessary changes · Respond to feedback · Be respectful and open to suggestions. Example: maintainer says "Can you fix this small change?" → you reply "Sure! Pushed the fix."' },
+      { k: '8. Merge', v: 'After approval, your PR gets merged into the original repository. feature/new-feature → Merged! → main. Your contribution is now part of the original project!' },
+      { k: 'Key Takeaways', v: 'Fork to contribute to existing projects · Always work on a new branch · Make clear and meaningful commits · Push your changes to your fork · Open a Pull Request with a good description · Be open to feedback and collaborate · This is how open source grows! "Better Developers Build Together." Same Code. Bigger Impact.' },
+    ],
+    snippets: [
+      {
+        label: 'Full open-source contribution workflow',
+        code: `# 1. Fork the repo on GitHub (click Fork button)
+
+# 2. Clone your fork locally
+git clone https://github.com/your-username/awesome-project.git
+cd awesome-project
+
+# 3. Create a feature branch (keep main clean)
+git checkout -b feature/new-feature
+
+# 4. Make changes, then stage and commit
+git add .
+git commit -m "Add new feature"
+
+# 5. Push your branch to your fork
+git push origin feature/new-feature
+
+# 6. On GitHub → Open a Pull Request
+#    base: main (original repo)  ←  compare: feature/new-feature
+#    Add a clear title + description, then submit.
+
+# 7. Respond to review feedback, push more commits if needed
+git add .
+git commit -m "Fix requested changes"
+git push origin feature/new-feature
+
+# 8. Maintainer merges → your code is in the original project! 🎉`,
+      },
+      {
+        label: 'Keep your fork in sync with the original',
+        code: `# Add the original repo as "upstream"
+git remote add upstream https://github.com/neon-dev/awesome-project.git
+
+# Fetch latest changes from upstream
+git fetch upstream
+
+# Merge them into your local main
+git switch main
+git merge upstream/main
+
+# Push the updated main to your fork
+git push origin main`,
       },
     ],
   },
