@@ -7,7 +7,7 @@ export const GIT_META = {
   subtitle: 'Small Steps. Big Projects.',
   blurb:
     'Version control from the ground up — illustrated, one episode at a time. What Git is, how to install it, the core concepts (Working Directory, Staging, Commit), the daily workflow, branches, merging, undoing changes, GitHub remotes, and repository best practices — each episode paired with full written notes and every command.',
-  totalEpisodes: 11,
+  totalEpisodes: 12,
   startDate: 'Year 2 · JavaScript Stack',
 };
 
@@ -470,6 +470,91 @@ git merge upstream/main
 
 # Push the updated main to your fork
 git push origin main`,
+      },
+    ],
+  },
+];
+
+  {
+    ep: 12,
+    group: 'advanced',
+    title: 'Git & GitHub Cheat Sheet',
+    tagline: 'Everything You Need. In One Place — every command, workflow, and tip from the full series.',
+    image: '/git-notes/git12.jpeg',
+    tags: ['Cheat Sheet', 'Revision', 'Essential Commands', 'Workflow', 'Branching', 'GitHub Features', 'Professional Workflow'],
+    notes: [
+      { k: '1. Essential Commands', v: 'Initialize: `git init` · Clone: `git clone <url>` · Status: `git status` · Add: `git add <file>` / `git add .` · Commit: `git commit -m "message"` · Log: `git log` · Diff: `git diff` · Branch: `git branch` · Switch: `git switch <branch>` · Merge: `git merge <branch>` · Push: `git push origin <branch>` · Pull: `git pull origin <branch>`' },
+      { k: '2. Complete Git Workflow', v: '1. Make changes (edit files). 2. Stage changes (`git add`). 3. Commit changes (`git commit`). 4. Push to remote (`git push`). Repeat for new changes. Edit → Add → Commit → Push. That\'s the workflow!' },
+      { k: '3. File States in Git', v: 'Working Directory (Modified) → (git add) → Staging Area / Index (Indexed) → (git commit) → Repository (Committed). Working Directory: you edit files here. Staging Area: files marked for commit. Repository: saved in .git history. "Git tracks changes, not files — it snapshots your project over time."' },
+      { k: '4. Branching & Merging', v: 'Create a branch → Work on it → Merge back to main. Branches help you work safely without breaking main code. `git merge <branch>` combines the feature branch back into main. Create → Work → Merge.' },
+      { k: '5. Remote Workflow (GitHub)', v: 'Local (Your Computer) ↔ push/pull ↔ GitHub (Remote Repository). `git push origin <branch>` — upload changes. `git pull origin <branch>` — download changes. Work locally. Share globally.' },
+      { k: '6. Branch Strategy (Example)', v: 'Keep main stable — use feature branches for new features. Example: main → feature/login (develop) → merge back to main; main → feature/ui (develop) → merge back to main. Use feature branches for new features. Keep main stable.' },
+      { k: '7. Useful GitHub Features', v: 'Pull Requests: review & merge code · Issues: track bugs & tasks · Discussions: ask & share ideas · Wiki: project documentation · Projects: plan & track work. More than code — it\'s a community!' },
+      { k: '8. Common Scenarios', v: 'Undo last commit (keep changes): `git reset --soft HEAD~1` · Undo last commit (discard changes): `git reset --hard HEAD~1` · Unstage a file: `git restore --staged <file>` · Discard changes: `git restore <file>` · Stash changes: `git stash` · Apply stash: `git stash apply` · Delete a branch: `git branch -d <branch>` · Force delete branch: `git branch -D <branch>`' },
+      { k: '9. Professional Git Workflow', v: 'Fork (on GitHub) → Clone (to local) → Create Branch → Make Changes → Push (to GitHub) → Open Pull Request. Phases: Setup → Develop → Share → Collaborate. "Good developers write code. Great developers use Git well."' },
+      { k: '10. Quick Tips', v: 'Write clear commit messages · Use meaningful branch names · Keep commits small and focused · Use .gitignore to avoid unnecessary files · Use Pull Requests for collaboration · Sync regularly with git pull · Explore GitHub features (Issues, Projects, Wiki) · Be consistent! Keep Learning. Keep Building. Keep Pushing.' },
+    ],
+    snippets: [
+      {
+        label: 'Essential Git commands reference',
+        code: `git init                        # Initialize repo
+git clone <url>                 # Clone a repo
+git status                      # Check file status
+git add <file>                  # Stage specific file
+git add .                       # Stage all changes
+git commit -m "message"         # Commit staged changes
+git log                         # View commit history
+git diff                        # See unstaged changes
+git branch                      # List branches
+git switch <branch>             # Switch branch
+git switch -c <branch>          # Create + switch
+git merge <branch>              # Merge into current
+git push origin <branch>        # Push to remote
+git pull origin <branch>        # Pull from remote`,
+      },
+      {
+        label: 'Common fix scenarios',
+        code: `# Undo last commit — keep changes staged
+git reset --soft HEAD~1
+
+# Undo last commit — discard all changes ⚠️
+git reset --hard HEAD~1
+
+# Unstage a file (keep working dir changes)
+git restore --staged <file>
+
+# Discard working directory changes
+git restore <file>
+
+# Temporarily save work
+git stash
+git stash apply       # restore without removing
+git stash pop         # restore and remove
+
+# Delete a branch
+git branch -d <branch>    # safe delete (merged only)
+git branch -D <branch>    # force delete`,
+      },
+      {
+        label: 'Professional workflow end-to-end',
+        code: `# Setup
+git clone https://github.com/your-username/project.git
+cd project
+
+# Develop
+git switch -c feature/my-feature
+# ... edit files ...
+git add .
+git commit -m "Add my feature"
+
+# Share
+git push origin feature/my-feature
+
+# Collaborate
+# → Open Pull Request on GitHub
+# → Review, discuss, address feedback
+# → Merge after approval
+git switch main && git pull origin main`,
       },
     ],
   },
