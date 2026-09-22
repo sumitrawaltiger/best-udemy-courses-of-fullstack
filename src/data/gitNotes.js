@@ -349,7 +349,7 @@ git commit -m "changes"`,
       },
     ],
   },
-];
+
 
   {
     ep: 10,
@@ -406,7 +406,7 @@ Fixes #12 — users could submit the form with empty fields
       },
     ],
   },
-];
+
 
   {
     ep: 11,
@@ -473,7 +473,7 @@ git push origin main`,
       },
     ],
   },
-];
+
 
   {
     ep: 12,
