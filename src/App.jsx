@@ -535,6 +535,8 @@ import ReactSeries from './pages/ReactSeries';
 import ReactDay from './pages/ReactDay';
 import GitSeries from './pages/GitSeries';
 import GitDay from './pages/GitDay';
+import NextjsNotesSeries from './pages/NextjsNotesSeries';
+import NextjsNotesDay from './pages/NextjsNotesDay';
 import JavaRoadmap from './pages/JavaRoadmap';
 import DsaNotes from './pages/DsaNotes';
 
@@ -1003,6 +1005,8 @@ export default function App() {
           <Route path="react/day/:day" element={<ReactDay />} />
           <Route path="git" element={<GitSeries />} />
           <Route path="git/day/:day" element={<GitDay />} />
+          <Route path="nextjs-notes" element={<NextjsNotesSeries />} />
+          <Route path="nextjs-notes/day/:day" element={<NextjsNotesDay />} />
           <Route path="about-founder" element={<AboutFounder />} />
           <Route path="learn/:slug" element={<Chapter />} />
           <Route path="nextjs" element={<NextjsHome />} />
