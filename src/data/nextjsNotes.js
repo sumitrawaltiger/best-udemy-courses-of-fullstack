@@ -7,7 +7,7 @@ export const NEXTJS_NOTES_META = {
   subtitle: 'The React Framework for the Web.',
   blurb:
     'Next.js from the ground up — illustrated, one episode at a time. What Next.js is, how it compares to React, why frameworks matter, its architecture, major features (SSR, SSG, API routes, image optimisation), file-based routing, and when to reach for it — each episode paired with full written notes and every code snippet.',
-  totalEpisodes: 1,
+  totalEpisodes: 2,
   startDate: 'Year 2 · JavaScript Stack',
 };
 
@@ -76,6 +76,82 @@ export default async function Page() {
   });
   const json = await data.json();
   return <div>{json.title}</div>;
+}`,
+      },
+    ],
+  },
+];
+
+  {
+    ep: 2,
+    group: 'foundations',
+    title: 'Next.js vs React',
+    tagline: 'Same React. More Power — understand exactly what Next.js adds on top of plain React.',
+    image: '/nextjs-notes/next2.jpeg',
+    tags: ['Next.js vs React', 'SSR', 'SSG', 'Client-side Rendering', 'File-based Routing', 'Full-stack Framework'],
+    notes: [
+      { k: 'React (Library)', v: 'UI library · Client-side SPA · Focus on components · Needs extra tools for routing, data, backend, etc. React gives you just the UI — everything else you have to wire up yourself.' },
+      { k: 'Next.js (Framework)', v: 'Built on React · Server-side rendering (SSR) · Static generation (SSG) · Built-in routing, APIs and more · Production-ready out of the box · Full-stack framework (Frontend + Backend). "Next.js is React + Superpowers."' },
+      { k: 'Rendering Comparison — CSR (React)', v: 'Client-side Rendering: Blank page → JS loads → Content. The browser downloads an empty HTML shell, then JavaScript runs and fills in the content. Slower initial load — bad for SEO because the page is empty until JS executes.' },
+      { k: 'Rendering Comparison — SSR (Next.js)', v: 'Server-side Rendering: Server renders → Browser gets HTML → Content displayed. The server builds the full HTML on each request and sends it to the browser ready to read. Faster initial load — great for SEO and dynamic data.' },
+      { k: 'Rendering Comparison — SSG (Next.js)', v: 'Static Generation: Pre-built at build time → Served to all users. HTML is generated once at build time and served from a CDN to every visitor. Super fast — ideal for pages whose content doesn\'t change often (blog, docs, marketing).' },
+      { k: 'Routing — React vs Next.js', v: 'React: Needs React Router installed separately. You manually define every route: `/home → <Home />`, `/about → <About />`. | Next.js: File-based routing built in. Create `app/about/page.js` and `/about` just works. No config needed.' },
+      { k: 'When to Use Next.js?', v: 'You want a full-stack React framework · You need better SEO / performance · You want built-in routing and API routes · You\'re building a production-ready app · You want to focus on building, not setup. "Same React, Bigger Possibilities!"' },
+    ],
+    snippets: [
+      {
+        label: 'React routing (needs react-router-dom)',
+        code: `// React — must install react-router-dom separately
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/"       element={<Home />} />
+        <Route path="/about"  element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}`,
+      },
+      {
+        label: 'Next.js routing — file-based, zero config',
+        code: `// Next.js App Router — just create files, routing is automatic
+app/
+  page.jsx          →  /
+  about/
+    page.jsx        →  /about
+  contact/
+    page.jsx        →  /contact
+  blog/
+    [slug]/
+      page.jsx      →  /blog/:slug   (dynamic route)`,
+      },
+      {
+        label: 'CSR vs SSR vs SSG data fetching',
+        code: `// CSR (React) — fetch runs in the browser after JS loads
+useEffect(() => {
+  fetch('/api/data').then(r => r.json()).then(setData);
+}, []);
+
+// SSR (Next.js) — fetch runs on the server per request
+export default async function Page() {
+  const res = await fetch('https://api.example.com/data', {
+    cache: 'no-store',   // fresh on every request
+  });
+  const data = await res.json();
+  return <div>{data.title}</div>;
+}
+
+// SSG (Next.js) — fetch runs once at build time
+export default async function Page() {
+  const res = await fetch('https://api.example.com/data', {
+    cache: 'force-cache',  // cached forever (rebuild to update)
+  });
+  const data = await res.json();
+  return <div>{data.title}</div>;
 }`,
       },
     ],
