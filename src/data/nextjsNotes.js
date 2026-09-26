@@ -7,7 +7,7 @@ export const NEXTJS_NOTES_META = {
   subtitle: 'The React Framework for the Web.',
   blurb:
     'Next.js from the ground up — illustrated, one episode at a time. What Next.js is, how it compares to React, why frameworks matter, its architecture, major features (SSR, SSG, API routes, image optimisation), file-based routing, and when to reach for it — each episode paired with full written notes and every code snippet.',
-  totalEpisodes: 2,
+  totalEpisodes: 4,
   startDate: 'Year 2 · JavaScript Stack',
 };
 
@@ -153,6 +153,122 @@ export default async function Page() {
   const data = await res.json();
   return <div>{data.title}</div>;
 }`,
+      },
+    ],
+  },
+];
+
+  {
+    ep: 3,
+    group: 'foundations',
+    title: 'Creating a Next.js App',
+    tagline: 'From zero to running your first app — one command, a whole new world.',
+    image: '/nextjs-notes/next3.jpeg',
+    tags: ['create-next-app', 'Node.js', 'npm', 'pnpm', 'Dev Server', 'Production Build', 'Setup'],
+    notes: [
+      { k: '1. Node.js Requirements', v: 'Use a recent Node.js version (18+ recommended). Check your version with `node -v`. If the command works and shows v18 or higher, you\'re good to go!' },
+      { k: '2. Create Next.js App', v: 'Run `npx create-next-app@latest my-app`. This single command: Downloads everything · Sets up everything · Asks a few questions · Leaves you ready to run. "One command. A whole new world."' },
+      { k: '3. npm / pnpm', v: 'Both package managers work perfectly! npm comes with Node.js. pnpm is faster and more disk-efficient. You can use either — the course examples use npm.' },
+      { k: '4. Project Initialization', v: 'During setup you\'ll be asked: Project name · Use TypeScript? · Use ESLint? · Use Tailwind CSS? · Use src/ directory? · Use App Router?. Choose what you like, or just press Enter for all defaults. You can change any of these later.' },
+      { k: '5. Development Server', v: '`cd my-app` then `npm run dev`. Open your browser at http://localhost:3000 and you\'ll see the Next.js welcome page! The dev server has hot-module replacement — changes appear instantly without a full reload.' },
+      { k: '6. Production Build', v: '`npm run build` creates an optimised production build. Output: Optimised files · Smaller bundle size · Ready for deployment. Next.js analyses and tree-shakes your code automatically.' },
+      { k: '7. Start Production Server', v: '`npm start` runs the built app in production mode (requires `npm run build` first). Use this to test your production build locally before deploying.' },
+      { k: 'Quick Flow Recap', v: 'Create App (`npx create-next-app`) → Run Dev Server (`npm run dev`) → Build (`npm run build`) → Start (`npm start`) → Open in Browser (localhost:3000). "Next.js handles the setup so you can focus on building awesome things!"' },
+    ],
+    snippets: [
+      {
+        label: 'Create and run your first Next.js app',
+        code: `# 1. Check Node.js version (need 18+)
+node -v
+
+# 2. Create the app (answer the prompts or press Enter for defaults)
+npx create-next-app@latest my-app
+
+# 3. Move into the project folder
+cd my-app
+
+# 4. Start the development server
+npm run dev
+# → Open http://localhost:3000`,
+      },
+      {
+        label: 'Build and run in production mode',
+        code: `# Build an optimised production bundle
+npm run build
+
+# Run the production server locally
+npm start
+# → Open http://localhost:3000`,
+      },
+    ],
+  },
+
+  {
+    ep: 4,
+    group: 'foundations',
+    title: 'Next.js Project Structure',
+    tagline: 'Understand the important files and folders — clean structure equals scalable project.',
+    image: '/nextjs-notes/next4.jpeg',
+    tags: ['Project Structure', 'app/', 'public/', 'src/', 'package.json', 'next.config.js', '.env', 'App Router'],
+    notes: [
+      { k: '1. app/ — Main Folder', v: 'Contains your application routes. Each folder inside becomes a route. Has `layout.js` (shared wrapper) and `page.js` (the page UI) at its root. This is the new App Router way of building routes — the recommended approach in Next.js 13+.' },
+      { k: '2. public/ — Static Files', v: 'Store static assets: images, icons, videos, fonts, etc. Files here are accessible directly from the browser (e.g. `/logo.png` → `public/logo.png`). Never put sensitive files here.' },
+      { k: '3. src/ — Optional Wrapper', v: 'Optional but good for larger projects. Keeps your code organised — put `app/`, `components/`, `utils/`, etc. inside `src/`. Reduces clutter at the project root.' },
+      { k: '4. package.json', v: 'Project info · Dependencies (React, Next.js, etc.) · Scripts: `dev`, `build`, `start`, `lint`. This is what npm/pnpm reads to manage your project.' },
+      { k: '5. next.config.js', v: 'Next.js configuration file. Customise features · Add plugins · Set up redirects, rewrites, image domains, env variables, etc. Optional at the start, but very useful as your project grows.' },
+      { k: '6. tsconfig.json', v: 'TypeScript configuration. Path aliases (e.g. `@/components`) · Compiler options. Only present if you chose TypeScript during setup.' },
+      { k: '7. .env — Environment Variables', v: 'Store secrets and config: API keys, database URLs, etc. Create `.env.local` for local development (git-ignored by default). Never commit `.env` files with real secrets to version control!' },
+      { k: '8. node_modules/', v: 'Installed packages managed by npm/pnpm. Never edit this folder manually — it is automatically generated from `package.json`. Add it to `.gitignore` (it already is by default).' },
+      { k: '9. Other Generated Files', v: '`.next/` → build output (auto-generated, git-ignored) · `.gitignore` → git ignore rules · `README.md` → project info. All created automatically — leave them as they are.' },
+    ],
+    snippets: [
+      {
+        label: 'Typical Next.js App Router folder structure',
+        code: `my-next-app/
+├── src/
+│   └── app/
+│       ├── layout.js       # root layout (wraps every page)
+│       ├── page.js         # home page  →  /
+│       ├── about/
+│       │   └── page.js     # about page →  /about
+│       └── contact/
+│           └── page.js     # contact    →  /contact
+├── public/
+│   └── logo.png            # → accessible at /logo.png
+├── .env.local              # secrets — never commit
+├── next.config.js          # Next.js config
+├── package.json
+└── tsconfig.json           # TypeScript (if selected)`,
+      },
+      {
+        label: 'next.config.js — common customisations',
+        code: `/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // Allow images from external domains
+  images: {
+    domains: ['images.unsplash.com', 'cdn.example.com'],
+  },
+
+  // Redirect old URLs
+  async redirects() {
+    return [
+      { source: '/old-page', destination: '/new-page', permanent: true },
+    ];
+  },
+};
+
+export default nextConfig;`,
+      },
+      {
+        label: '.env.local — environment variables',
+        code: `# .env.local  (git-ignored — local dev only)
+DATABASE_URL=postgresql://localhost:5432/mydb
+NEXT_PUBLIC_API_URL=https://api.example.com
+SECRET_KEY=your-secret-here
+
+# In your code:
+# Server-only  → process.env.DATABASE_URL
+# Client-safe  → process.env.NEXT_PUBLIC_API_URL  (must start with NEXT_PUBLIC_)`,
       },
     ],
   },
