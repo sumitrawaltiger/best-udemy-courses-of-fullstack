@@ -215,11 +215,9 @@ export default function Home() {
           <span className="btech-badge">The Roadmap</span>
           <h2 className="btech-title">The 2,000-Day Learning Path</h2>
           <p className="btech-sub">
-            A structured path to a full lifecycle engineer — <strong>5 phases</strong>:{' '}
-            <strong>Python Stack (Agentic AI → Python → FastAPI) → TypeScript Stack → Java Stack → DevOps
-            Stack → Kubernetes → System Design → Capstone Project</strong> — <strong>2,000 days</strong> total. Each stack bundles several tracks on this
-            site. Data Structures &amp; Algorithms are practiced throughout every stack; System Design gets a dedicated
-            100-day intensive as Skill 19 before the Capstone.
+            A structured path to a full lifecycle engineer — <strong>20 skills × 100 days each</strong>:{' '}
+            <strong>Agentic AI → FastAPI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → NestJS → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design</strong> — <strong>2,000 days</strong> total.
+            Each skill gets a dedicated 100-day block; NexusAI is built daily throughout all 2,000 days.
           </p>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
@@ -514,7 +512,7 @@ export default function Home() {
 
       <section className="thunder-plus-section thunder-nextjs-section" id="thunder-nextjs">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-nextjs">Phase 2 · TypeScript Stack</span>
+          <span className="thunder-plus-badge thunder-plus-badge-nextjs">Skills 5–6 · React JS & Next JS</span>
           <h2>Thunder+ — React & Next.js</h2>
           <p className="section-desc">
             React JS and Next JS follow TypeScript within the TypeScript Stack, then React Native. Continue
@@ -552,7 +550,7 @@ export default function Home() {
 
       <section className="thunder-plus-section" id="thunder-plus">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge">Phase 2 · TypeScript Stack</span>
+          <span className="thunder-plus-badge">Skill 7 · React Native</span>
           <h2>Thunder++ — React Native</h2>
           <p className="section-desc">
             Finish the frontend stretch with the{' '}
@@ -590,7 +588,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-python-section" id="thunder-python">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-python">
-            Phase 1 · Agentic AI + Python Stack
+            Skills 1–2 · Agentic AI & FastAPI
           </span>
           <h2>Thunder++ — Python &amp; Django</h2>
           <p className="section-desc">
@@ -630,7 +628,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-java-section" id="thunder-java">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-java">
-            Phase 3 · Java Stack
+            Skills 11–14 · Java Stack
           </span>
           <h2>Thunder++ — Java & Spring</h2>
           <p className="section-desc">
@@ -668,7 +666,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-aws-section" id="thunder-aws">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-aws">
-            Phase 4 · DevOps Stack
+            Skill 16 · AWS Cloud
           </span>
           <h2>Thunder++ — 100 Days of AWS Cloud</h2>
           <p className="section-desc">
@@ -711,7 +709,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-devops-section" id="thunder-devops">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-devops">
-            Phase 4 · DevOps Stack
+            Skill 17 · DevOps
           </span>
           <h2>Thunder++ — DevOps &amp; CI/CD</h2>
           <p className="section-desc">
@@ -754,7 +752,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-k8s-section" id="thunder-k8s">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-k8s">
-            Phase 4 · DevOps Stack
+            Skills 18–19 · DevSecOps & SRE
           </span>
           <h2>Thunder++ — Kubernetes</h2>
           <p className="section-desc">
@@ -890,26 +888,22 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            2,000 days · 5 phases
+            2,000 days · 20 skills
           </span>
           <h2>Thunder++ — The Full Journey</h2>
           <p className="section-desc">
-            <strong>5 phases</strong> — <strong>Python Stack (Agentic AI using Python, then Python
-            &amp; FastAPI)</strong>,{' '}
-            <strong>TypeScript Stack (JavaScript, TypeScript, React JS, Next JS, React Native, Express/Node JS)</strong>,{' '}
-            <strong>Java Stack (J2SE, JPA, DSA, Spring Boot, Microservices)</strong>,{' '}
-            <strong>DevOps Stack (DevOps, AWS Cloud)</strong>,{' '}
-            <strong>Kubernetes</strong>, a dedicated{' '}
-            <strong>System Design</strong> intensive, and a{' '}
-            <strong>Capstone Project</strong> integrating all five stacks —
-            with <strong>DSA &amp; System Design</strong> practiced throughout every stack, not saved for one
-            dedicated block. That's <strong>2,000 days</strong> of focused study, front to back.
+            <strong>20 skills × 100 days</strong> — starting with <strong>Agentic AI</strong> and <strong>FastAPI</strong>,
+            through the full <strong>JavaScript/TypeScript front-end stack</strong> (JS → TS → React → Next.js → React Native → Express),
+            into the <strong>Java back-end stack</strong> (J2SE → DSA → Spring Boot → Microservices → Quality Engineering),
+            then <strong>cloud and operations</strong> (AWS → DevOps → DevSecOps → SRE),
+            and finishing with a dedicated <strong>System Design</strong> intensive —
+            with <strong>NexusAI</strong> built daily throughout every one of the 2,000 days. That's <strong>2,000 days</strong> of focused study, front to back.
           </p>
           <div className="thunder-plus-highlights">
             <span>🤖 Agentic AI First</span>
-            <span>⌨️ 5 Phases · 4 Stacks + Capstone</span>
-            <span>☁️ TypeScript → Java → DevOps → Capstone</span>
-            <span>📐 DSA &amp; System Design Throughout</span>
+            <span>⌨️ 20 Skills · 100 Days Each</span>
+            <span>☁️ JS → Java → DevOps → System Design</span>
+            <span>📐 NexusAI Built Throughout</span>
           </div>
           <div className="thunder-plus-actions">
             <Link to="/interview" className="btn btn-interview-chaicode btn-lg">

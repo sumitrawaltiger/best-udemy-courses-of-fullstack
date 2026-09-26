@@ -80,7 +80,6 @@ export default async function Page() {
       },
     ],
   },
-];
 
   {
     ep: 2,
@@ -156,7 +155,6 @@ export default async function Page() {
       },
     ],
   },
-];
 
   {
     ep: 3,
