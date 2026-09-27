@@ -7,7 +7,7 @@ export const NEXTJS_NOTES_META = {
   subtitle: 'The React Framework for the Web.',
   blurb:
     'Next.js from the ground up — illustrated, one episode at a time. What Next.js is, how it compares to React, why frameworks matter, its architecture, major features (SSR, SSG, API routes, image optimisation), file-based routing, and when to reach for it — each episode paired with full written notes and every code snippet.',
-  totalEpisodes: 4,
+  totalEpisodes: 5,
   startDate: 'Year 2 · JavaScript Stack',
 };
 
@@ -267,6 +267,91 @@ SECRET_KEY=your-secret-here
 # In your code:
 # Server-only  → process.env.DATABASE_URL
 # Client-safe  → process.env.NEXT_PUBLIC_API_URL  (must start with NEXT_PUBLIC_)`,
+      },
+    ],
+  },
+
+  {
+    ep: 5,
+    group: 'routing',
+    title: 'App Router Fundamentals',
+    tagline: 'File-based routing for the modern web — the new way to build Next.js apps.',
+    image: '/nextjs-notes/nextjs5.jpeg',
+    tags: ['App Router', 'File-based Routing', 'page.js', 'layout.js', 'loading.js', 'error.js', 'route.js', 'React Server Components'],
+    notes: [
+      { k: 'What is App Router?', v: 'The App Router is the new routing system in Next.js (Next.js 13+). It replaces the old Pages Router (pages/ folder, still supported). Built on React Server Components — more powerful and flexible. Uses file-based routing. Recommended for all new projects.' },
+      { k: 'Pages Router vs App Router', v: 'Old way: pages/ folder. Every file inside pages/ became a route. New way: app/ folder. Every folder inside app/ becomes a route — each with its own page.js. The App Router unlocks layouts, streaming, Server Components, and more.' },
+      { k: 'File-based Routing', v: 'Each folder inside app/ becomes a URL segment. Create a folder = create a route. URL structure: app/page.js → /  ·  app/about/page.js → /about  ·  app/contact/page.js → /contact. Simple folders = real routes!' },
+      { k: 'page.js — Main Content File', v: 'page.js is the main content of a route. It is a required file — without it the route is not publicly accessible. Think of page.js as "what visitors see at this URL".' },
+      { k: 'layout.js — Shared UI', v: 'layout.js is shared UI for a route and all its children. It persists between navigations (no full re-render when moving between child routes). Use it for navbars, footers, sidebars — anything that should stay mounted.' },
+      { k: 'loading.js — Loading State', v: 'loading.js is shown while the route is loading its data. Built with React Suspense under the hood. Gives users instant visual feedback while server-side fetches happen. Replace a blank screen with a spinner or skeleton.' },
+      { k: 'error.js — Error Boundary', v: 'error.js handles errors that happen inside a route. Shows a fallback UI so the entire app does not crash. Scoped to its route segment and its children — other parts of the page keep working.' },
+      { k: 'not-found.js — 404 Page', v: 'not-found.js is shown when a route is not found (404). A custom 404 page instead of the default Next.js error. Can be scoped per-segment or placed at the root app/ level for a site-wide 404.' },
+      { k: 'route.js — API Routes', v: 'route.js creates API endpoints inside the app/ folder. Handles HTTP methods: GET, POST, PUT, DELETE, etc. Replaces the old pages/api/ pattern. Lives alongside page files — app/api/hello/route.js → GET /api/hello.' },
+    ],
+    snippets: [
+      {
+        label: 'App Router folder structure',
+        code: `app/
+├── layout.js        # root layout — wraps every page
+├── page.js          # home page  →  /
+├── about/
+│   └── page.js      # about page →  /about
+├── contact/
+│   └── page.js      # contact    →  /contact
+└── api/
+    └── hello/
+        └── route.js # API route  →  /api/hello`,
+      },
+      {
+        label: 'page.js and layout.js',
+        code: `// app/layout.js — shared UI, persists between navigations
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
+    </html>
+  );
+}
+
+// app/about/page.js — main content for /about
+export default function AboutPage() {
+  return <h1>About Us</h1>;
+}`,
+      },
+      {
+        label: 'route.js — API endpoint',
+        code: `// app/api/hello/route.js  →  GET /api/hello
+export async function GET() {
+  return Response.json({ message: 'Hello from Next.js!' });
+}
+
+export async function POST(request) {
+  const body = await request.json();
+  return Response.json({ received: body });
+}`,
+      },
+      {
+        label: 'loading.js and error.js',
+        code: `// app/dashboard/loading.js — shown while dashboard data loads
+export default function Loading() {
+  return <div className="spinner">Loading...</div>;
+}
+
+// app/dashboard/error.js — shown if dashboard throws
+'use client';
+export default function Error({ error, reset }) {
+  return (
+    <div>
+      <p>Something went wrong: {error.message}</p>
+      <button onClick={reset}>Try again</button>
+    </div>
+  );
+}`,
       },
     ],
   },
