@@ -42,8 +42,8 @@ const BTECH_ROADMAP = [
     theme: 'Python + Agentic AI',
     icon: '🐍',
     accent: 'y1',
-    topics: ['Core Python', 'FastAPI', 'LangChain', 'LangGraph', 'MCP', 'n8n Workflows', 'AI Agents'],
-    blurb: 'The Python Stack — 100 days of core Python (syntax, OOP, FastAPI REST APIs) then 100 days of Agentic AI (LangChain, LangGraph, RAG, MCP, CrewAI). The AI + API foundation. Days 1–200.',
+    topics: ['Core Python', 'OOP', 'LangChain', 'LangGraph', 'RAG', 'MCP', 'n8n Workflows', 'AI Agents'],
+    blurb: 'The Python + AI foundation — 100 days of core Python (syntax, OOP, data structures, type hints) then 100 days of Agentic AI (LangChain, LangGraph, RAG, MCP, CrewAI). Days 1–200.',
     links: [
       { label: 'Python', to: '/python' },
       { label: 'Agentic AI', to: '/python' },
@@ -216,7 +216,7 @@ export default function Home() {
           <h2 className="btech-title">The 2,000-Day Learning Path</h2>
           <p className="btech-sub">
             A structured path to a full lifecycle engineer — <strong>20 skills × 100 days each</strong>:{' '}
-            <strong>Agentic AI → FastAPI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design</strong> — <strong>2,000 days</strong> total.
+            <strong>Python → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design</strong> — <strong>2,000 days</strong> total.
             Each skill gets a dedicated 100-day block; NexusAI is built daily throughout all 2,000 days.
           </p>
           <div className="btech-grid">
