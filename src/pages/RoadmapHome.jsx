@@ -54,12 +54,12 @@ function _calDate(dayN) {
 // Skill 12 · DSA                 Days 1101–1200 · 4 Jan 2030 – 13 Apr 2030
 // Skill 13 · Spring Boot         Days 1201–1300 · 14 Apr 2030 – 22 Jul 2030
 // Skill 14 · Microservices       Days 1301–1400 · 23 Jul 2030 – 30 Oct 2030
-// Skill 15 · Quality Engineering Days 1401–1500 · 31 Oct 2030 – 7 Feb 2031
+// Skill 15 · System Design        Days 1401–1500 · 31 Oct 2030 – 7 Feb 2031
 // Skill 16 · AWS                 Days 1501–1600 · 8 Feb 2031 – 18 May 2031
 // Skill 17 · DevOps              Days 1601–1700 · 19 May 2031 – 26 Aug 2031
 // Skill 18 · DevSecOps           Days 1701–1800 · 27 Aug 2031 – 4 Dec 2031
 // Skill 19 · SRE                 Days 1801–1900 · 5 Dec 2031 – 13 Mar 2032
-// Skill 20 · System Design       Days 1901–2000 · 14 Mar 2032 – 21 Jun 2032
+// Skill 20 · FDE                  Days 1901–2000 · 14 Mar 2032 – 21 Jun 2032
 // NexusAI capstone built daily throughout all 2,000 days — no separate Capstone block.
 // Calendar: Day 0 = 30 Dec 2026, Day 1 = 31 Dec 2026, Day 2,000 = 21 Jun 2032.
 
@@ -230,13 +230,14 @@ const PHASES = [
     ],
   },
   {
-    id: 'p15', arcClass: 'y3', icon: '🧪',
-    label: 'Skill 15 · Quality Engineering',
+    id: 'p15', arcClass: 'y3', icon: '🏗️',
+    label: 'Skill 15 · System Design',
     tagline: 'Days 1401–1500',
     duration: '100 days · ~3.3 months',
-    blurb: 'Cross-stack quality engineering — JUnit 5, Mockito, Testcontainers (Java) + Playwright, Vitest, Pact (frontend/API) and full CI integration.',
+    blurb: 'HLD and LLD at depth — CAP theorem, distributed systems, scalability patterns, and 50+ case studies: Twitter, Uber, Netflix, WhatsApp. Placed here after Microservices so you design systems before you go operate them in AWS and DevOps.',
     items: [
-      { icon: '🧪', title: 'Quality Engineering', detail: 'JUnit 5 · Mockito · Testcontainers · REST-assured · Playwright · Vitest · Pact contract tests · JMeter performance', source: 'Udemy', to: '/java' },
+      { icon: '🏗️', title: 'System Design', detail: 'HLD / LLD · CAP theorem · distributed systems · scalability · caching · message queues · 50+ case studies', source: 'ChaiCode + GfG + ByteByteGo', to: '/interview' },
+      { icon: '🎤', title: 'Mock Interviews + Portfolio', detail: '200+ mock interviews · salary negotiation · offer evaluation · NexusAI portfolio showcase', source: 'ChaiCode Interview Bundle', to: '/interview' },
     ],
   },
   {
@@ -280,14 +281,14 @@ const PHASES = [
     ],
   },
   {
-    id: 'p20', arcClass: 'y5', icon: '🏗️',
-    label: 'Skill 20 · System Design',
+    id: 'p20', arcClass: 'y5', icon: '🚀',
+    label: 'Skill 20 · Forward Deployed Engineer',
     tagline: 'Days 1901–2000',
     duration: '100 days · ~3.3 months',
-    blurb: 'HLD and LLD at depth — CAP theorem, distributed systems, scalability patterns, and 50+ case studies: Twitter, Uber, Netflix, WhatsApp. The capstone close of the 2,000-day journey.',
+    blurb: 'The ultimate capstone — FDE synthesises all 19 skills into client-facing delivery. Rapid prototyping, client discovery, real-world data wrangling, technical storytelling, POC-to-production pipelines, and AI integration for enterprise clients. The role that proves you can do it all.',
     items: [
-      { icon: '🏗️', title: 'System Design', detail: 'HLD / LLD · CAP theorem · distributed systems · scalability · caching · message queues · 50+ case studies', source: 'ChaiCode + GfG + ByteByteGo', to: '/interview' },
-      { icon: '🎤', title: 'Mock Interviews + Portfolio', detail: '200+ mock interviews · salary negotiation · offer evaluation · NexusAI portfolio showcase', source: 'ChaiCode Interview Bundle', to: '/interview' },
+      { icon: '🚀', title: 'Forward Deployed Engineer', detail: 'Rapid prototyping · client discovery · real-world data wrangling · technical demos · stakeholder communication · POC → production · AI integration for enterprise', source: 'Palantir FDE Playbook / project-based', to: '/roadmap' },
+      { icon: '🎤', title: 'Portfolio + Showcase', detail: 'NexusAI full showcase · case studies · mock client engagements · offer negotiation · career positioning as FDE', source: 'Self-directed capstone', to: '/roadmap' },
     ],
   },
 ];
@@ -326,8 +327,8 @@ export default function RoadmapHome() {
           <strong>Python</strong> {'→'} <strong>Agentic AI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
           <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
           <strong>Databases</strong> {'→'} <strong>GraphQL</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>DSA</strong> {'→'}{' '}
-          <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Quality Engineering</strong> {'→'} <strong>AWS</strong> {'→'}{' '}
-          <strong>DevOps</strong> {'→'} <strong>DevSecOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong> —{' '}
+          <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>System Design</strong> {'→'} <strong>AWS</strong> {'→'}{' '}
+          <strong>DevOps</strong> {'→'} <strong>DevSecOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>Forward Deployed Engineer</strong> —{' '}
           <strong>2,000 days (~66 months)</strong> of focused daily practice, front to back.
           NexusAI capstone built daily throughout all 2,000 days.
         </p>
@@ -347,7 +348,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png"
-          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design. Day 1: 31 Dec 2026 · Day 2,000: 21 Jun 2032."
+          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → System Design → AWS → DevOps → DevSecOps → SRE → Forward Deployed Engineer. Day 1: 31 Dec 2026 · Day 2,000: 21 Jun 2032."
           loading="eager"
           style={{
             width: '100%',
@@ -534,8 +535,8 @@ export default function RoadmapHome() {
           <strong>Python</strong> {'→'} <strong>Agentic AI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
           <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
           <strong>Databases</strong> {'→'} <strong>GraphQL</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>DSA</strong> {'→'}{' '}
-          <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Quality Engineering</strong> {'→'} <strong>AWS</strong> {'→'}{' '}
-          <strong>DevOps</strong> {'→'} <strong>DevSecOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong>.{' '}
+          <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>System Design</strong> {'→'} <strong>AWS</strong> {'→'}{' '}
+          <strong>DevOps</strong> {'→'} <strong>DevSecOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>Forward Deployed Engineer</strong>.{' '}
           1 LeetCode daily throughout all 2,000 days.
           NexusAI capstone built daily throughout — grows with every skill.
           ~66 months (2,000 days) end to end.
