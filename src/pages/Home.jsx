@@ -76,20 +76,20 @@ const BTECH_ROADMAP = [
   },
   {
     year: 'Skills 11–15',
-    theme: 'J2SE → DSA → Spring Boot → Microservices → AppSec',
+    theme: 'J2SE → DSA → Spring Boot → Microservices → Quality Engineering',
     icon: '☕',
     accent: 'y3',
-    topics: ['J2SE', 'DSA', 'Spring Boot', 'Kafka + Microservices', 'AppSec / Security'],
-    blurb: 'Java foundations then interview-ready DSA (Python + TypeScript + Java), then Spring Boot, Microservices (Kafka, CQRS, Saga, event sourcing, service mesh), then AppSec (OWASP, OAuth2/OIDC, JWT, Vault, K8s RBAC). Days 1001–1500.',
+    topics: ['J2SE', 'DSA', 'Spring Boot', 'Kafka + Microservices', 'Quality Engineering'],
+    blurb: 'Java foundations then interview-ready DSA (Python + TypeScript + Java), then Spring Boot, Microservices (Kafka, CQRS, Saga, event sourcing, service mesh), then Quality Engineering (JUnit 5, Mockito, Testcontainers, Playwright, Vitest, Pact). Days 1001–1500.',
     links: [{ label: 'Java Stack', to: '/java' }],
   },
   {
     year: 'Skills 16–20',
-    theme: 'Quality Engineering → AWS → DevOps → SRE → System Design',
+    theme: 'AWS → DevOps → DevSecOps → SRE → System Design',
     icon: '🚀',
     accent: 'y5',
-    topics: ['Quality Engineering', 'AWS SAA', 'RDS', 'IAM', 'Docker', 'Kubernetes', 'EKS', 'CI/CD', 'SRE', 'System Design'],
-    blurb: 'Ship, scale, and close the loop — Quality Engineering (JUnit 5, Playwright, Vitest, Pact), AWS (SAA + RDS + VPC + IAM + Lambda), DevOps (Docker, Kubernetes CKA, EKS, Helm, ArgoCD), SRE (Prometheus, Grafana, SLOs), then System Design (50+ case studies) as the capstone close. Days 1501–2000.',
+    topics: ['AWS SAA', 'RDS', 'IAM', 'Docker', 'Kubernetes', 'EKS', 'CI/CD', 'DevSecOps', 'SRE', 'System Design'],
+    blurb: 'Ship, scale, and close the loop — AWS (SAA + RDS + VPC + IAM + Lambda), DevOps (Docker, Kubernetes CKA, EKS, Helm, ArgoCD), DevSecOps (OWASP, OAuth2/OIDC, JWT hardening, Vault, K8s RBAC), SRE (Prometheus, Grafana, SLOs), then System Design (50+ case studies) as the capstone close. Days 1501–2000.',
     links: [
       { label: 'AWS Cloud', to: '/aws' },
       { label: 'DevOps', to: '/devops' },
@@ -588,17 +588,17 @@ export default function Home() {
       <section className="thunder-plus-section thunder-python-section" id="thunder-python">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-python">
-            Skills 1–2 · Agentic AI & FastAPI
+            Skills 1–2 · Python & Agentic AI
           </span>
-          <h2>Thunder++ — Python &amp; Django</h2>
+          <h2>Thunder++ — Python &amp; Agentic AI</h2>
           <p className="section-desc">
-            Agentic AI using Python comes first, then core Python
-            study, Django, and FastAPI continue the same Phase 1 Python Stack, at{' '}
+            Python fundamentals first (Skill 01 — syntax, OOP, data structures, type hints), then Agentic AI
+            (Skill 02 — LangChain, LangGraph, RAG, MCP, CrewAI, n8n), via{' '}
             <a href={PYTHON_META.portalUrl} target="_blank" rel="noopener noreferrer">
               {PYTHON_META.institute}
             </a>
             . {pythonChapters.length} modules from Python basics through ML/NLP, Transformers, LangChain, RAG,
-            Django, FastAPI, LangGraph, MCP, and n8n.
+            LangGraph, MCP, and n8n.
           </p>
           <div className="thunder-plus-highlights">
             <span>🐍 Python study</span>
