@@ -76,20 +76,20 @@ const BTECH_ROADMAP = [
   },
   {
     year: 'Skills 11–15',
-    theme: 'J2SE → DSA → Spring Boot → Microservices → System Design',
+    theme: 'J2SE → DSA → Spring Boot → Microservices → Quality Engineering',
     icon: '☕',
     accent: 'y3',
-    topics: ['J2SE', 'DSA', 'Spring Boot', 'Kafka + Microservices', 'System Design'],
-    blurb: 'Java foundations then interview-ready DSA (Python + TypeScript + Java), then Spring Boot, Microservices (Kafka, CQRS, Saga, event sourcing, service mesh), then System Design (HLD/LLD, CAP theorem, 50+ case studies). Days 1001–1500.',
+    topics: ['J2SE', 'DSA', 'Spring Boot', 'Kafka + Microservices', 'Quality Engineering'],
+    blurb: 'Java foundations then interview-ready DSA (Python + TypeScript + Java), then Spring Boot, Microservices (Kafka, CQRS, Saga, event sourcing, service mesh), then Quality Engineering (JUnit 5, Mockito, Testcontainers, Playwright, Vitest, Pact). Days 1001–1500.',
     links: [{ label: 'Java Stack', to: '/java' }],
   },
   {
     year: 'Skills 16–20',
-    theme: 'AWS → DevOps → DevSecOps → SRE → FDE',
+    theme: 'AWS → DevOps → DevSecOps → SRE → System Design',
     icon: '🚀',
     accent: 'y5',
-    topics: ['AWS SAA', 'RDS', 'IAM', 'Docker', 'Kubernetes', 'EKS', 'CI/CD', 'DevSecOps', 'SRE', 'Forward Deployed Engineer'],
-    blurb: 'Ship, scale, and deploy to clients — AWS (SAA + RDS + VPC + IAM + Lambda), DevOps (Docker, Kubernetes CKA, EKS, Helm, ArgoCD), DevSecOps (OWASP, OAuth2/OIDC, Vault, K8s RBAC), SRE (Prometheus, Grafana, SLOs), then FDE (rapid prototyping, client delivery, AI for enterprise) as the ultimate capstone close. Days 1501–2000.',
+    topics: ['AWS SAA', 'RDS', 'IAM', 'Docker', 'Kubernetes', 'EKS', 'CI/CD', 'DevSecOps', 'SRE', 'System Design'],
+    blurb: 'Ship, scale, and close the loop — AWS (SAA + RDS + VPC + IAM + Lambda), DevOps (Docker, Kubernetes CKA, EKS, Helm, ArgoCD), DevSecOps (OWASP, OAuth2/OIDC, JWT hardening, Vault, K8s RBAC), SRE (Prometheus, Grafana, SLOs), then System Design (50+ case studies) as the capstone close. Days 1501–2000.',
     links: [
       { label: 'AWS Cloud', to: '/aws' },
       { label: 'DevOps', to: '/devops' },
@@ -130,7 +130,7 @@ export default function Home() {
               A structured <strong>2,000-day journey</strong> — <strong>20 skills × 100 days each</strong>:
               Python · Agentic AI · JavaScript · TypeScript · React JS · Next JS · React Native ·
               Express JS · Databases · GraphQL · J2SE · <strong>DSA</strong> · Spring Boot · Microservices ·
-              System Design · AWS · DevOps · DevSecOps · SRE · and <strong>Forward Deployed Engineer</strong> as the capstone close.
+              AppSec · Quality Engineering · AWS · DevOps · SRE · and <strong>System Design</strong> as the capstone close.
               NexusAI capstone built daily throughout all 2,000 days. One skill at a time, fully focused, front to back.
             </p>
 
@@ -216,7 +216,7 @@ export default function Home() {
           <h2 className="btech-title">The 2,000-Day Learning Path</h2>
           <p className="btech-sub">
             A structured path to a full lifecycle engineer — <strong>20 skills × 100 days each</strong>:{' '}
-            <strong>Python → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → System Design → AWS → DevOps → DevSecOps → SRE → Forward Deployed Engineer</strong> — <strong>2,000 days</strong> total.
+            <strong>Python → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design</strong> — <strong>2,000 days</strong> total.
             Each skill gets a dedicated 100-day block; NexusAI is built daily throughout all 2,000 days.
           </p>
           <div className="btech-grid">
@@ -892,11 +892,11 @@ export default function Home() {
           </span>
           <h2>Thunder++ — The Full Journey</h2>
           <p className="section-desc">
-            <strong>20 skills × 100 days</strong> — starting with <strong>Python</strong> and <strong>Agentic AI</strong>,
+            <strong>20 skills × 100 days</strong> — starting with <strong>Agentic AI</strong> and <strong>FastAPI</strong>,
             through the full <strong>JavaScript/TypeScript front-end stack</strong> (JS → TS → React → Next.js → React Native → Express),
-            into the <strong>Java back-end stack</strong> (J2SE → DSA → Spring Boot → Microservices → System Design),
+            into the <strong>Java back-end stack</strong> (J2SE → DSA → Spring Boot → Microservices → Quality Engineering),
             then <strong>cloud and operations</strong> (AWS → DevOps → DevSecOps → SRE),
-            and closing with <strong>Forward Deployed Engineer</strong> — the capstone that puts everything in front of a real client —
+            and finishing with a dedicated <strong>System Design</strong> intensive —
             with <strong>NexusAI</strong> built daily throughout every one of the 2,000 days. That's <strong>2,000 days</strong> of focused study, front to back.
           </p>
           <div className="thunder-plus-highlights">
