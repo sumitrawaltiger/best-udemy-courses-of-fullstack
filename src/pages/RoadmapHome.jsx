@@ -49,7 +49,7 @@ function _calDate(dayN) {
 // Skill  7 · React Native        Days  601–700  · 22 Aug 2028 – 29 Nov 2028
 // Skill  8 · Express JS          Days  701–800  · 30 Nov 2028 – 9 Mar 2029
 // Skill  9 · Databases           Days  801–900  · 10 Mar 2029 – 17 Jun 2029
-// Skill 10 · NestJS              Days  901–1000 · 18 Jun 2029 – 25 Sep 2029
+// Skill 10 · GraphQL             Days  901–1000 · 18 Jun 2029 – 25 Sep 2029
 // Skill 11 · J2SE                Days 1001–1100 · 26 Sep 2029 – 3 Jan 2030
 // Skill 12 · DSA                 Days 1101–1200 · 4 Jan 2030 – 13 Apr 2030
 // Skill 13 · Spring Boot         Days 1201–1300 · 14 Apr 2030 – 22 Jul 2030
@@ -179,13 +179,13 @@ const PHASES = [
     ],
   },
   {
-    id: 'p10', arcClass: 'y3', icon: '🪺',
-    label: 'Skill 10 · NestJS',
+    id: 'p10', arcClass: 'y3', icon: '🔷',
+    label: 'Skill 10 · GraphQL',
     tagline: 'Days 901–1000',
     duration: '100 days · ~3.3 months',
-    blurb: 'Enterprise Node.js with NestJS — modules, controllers, guards, interceptors, GraphQL (code-first), WebSockets, Kafka transport, microservices patterns, and Jest + Supertest API testing. Database knowledge from Skill 09 makes TypeORM and Prisma click from day one.',
+    blurb: 'GraphQL from the ground up — schema design, resolvers, queries/mutations/subscriptions, Apollo Server, Apollo Client with React, code-first vs schema-first, DataLoader for N+1 prevention, authentication, file uploads, federation, and real-world full-stack GraphQL patterns.',
     items: [
-      { icon: '🪺', title: 'NestJS', detail: 'Modules · controllers · providers · guards · interceptors · pipes · GraphQL code-first · WebSockets · Kafka transport · Prisma ORM · CQRS · Jest + Supertest', source: 'Udemy / NestJS Docs', to: '/nextjs' },
+      { icon: '🔷', title: 'GraphQL', detail: 'Schema design · queries · mutations · subscriptions · resolvers · Apollo Server · Apollo Client · DataLoader · N+1 prevention · auth · federation · GraphQL + React', source: 'Apollo Docs / Full Stack GraphQL course', to: '/nextjs' },
     ],
   },
   {
@@ -325,7 +325,7 @@ export default function RoadmapHome() {
           mastered end to end —{' '}
           <strong>Agentic AI</strong> {'→'} <strong>FastAPI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
           <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
-          <strong>Databases</strong> {'→'} <strong>NestJS</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>DSA</strong> {'→'}{' '}
+          <strong>Databases</strong> {'→'} <strong>GraphQL</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>DSA</strong> {'→'}{' '}
           <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Quality Engineering</strong> {'→'} <strong>AWS</strong> {'→'}{' '}
           <strong>DevOps</strong> {'→'} <strong>DevSecOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong> —{' '}
           <strong>2,000 days (~66 months)</strong> of focused daily practice, front to back.
@@ -347,7 +347,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png"
-          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Agentic AI → FastAPI → JS → TS → React → Next → React Native → Express JS → Databases → NestJS → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design. Day 1: 31 Dec 2026 · Day 2,000: 21 Jun 2032."
+          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Agentic AI → FastAPI → JS → TS → React → Next → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design. Day 1: 31 Dec 2026 · Day 2,000: 21 Jun 2032."
           loading="eager"
           style={{
             width: '100%',
@@ -533,7 +533,7 @@ export default function RoadmapHome() {
           Day 0 setup, then 20 skills at 100 days each:{' '}
           <strong>Agentic AI</strong> {'→'} <strong>FastAPI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
           <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
-          <strong>Databases</strong> {'→'} <strong>NestJS</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>DSA</strong> {'→'}{' '}
+          <strong>Databases</strong> {'→'} <strong>GraphQL</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>DSA</strong> {'→'}{' '}
           <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Quality Engineering</strong> {'→'} <strong>AWS</strong> {'→'}{' '}
           <strong>DevOps</strong> {'→'} <strong>DevSecOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong>.{' '}
           1 LeetCode daily throughout all 2,000 days.

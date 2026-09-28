@@ -65,11 +65,11 @@ const BTECH_ROADMAP = [
   },
   {
     year: 'Skills 9–10',
-    theme: 'Databases → NestJS',
+    theme: 'Databases → GraphQL',
     icon: '🗄️',
     accent: 'y3',
-    topics: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'pgvector', 'NestJS', 'GraphQL', 'Kafka transport'],
-    blurb: 'Data layer first, then enterprise Node.js on top — 100 days of SQL & NoSQL (PostgreSQL, MySQL, MongoDB, Redis, pgvector), then 100 days of NestJS (modules, guards, GraphQL, Kafka transport, CQRS). Days 801–1000.',
+    topics: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'pgvector', 'GraphQL', 'Apollo Server', 'Apollo Client'],
+    blurb: 'Data layer first, then the API query language — 100 days of SQL & NoSQL (PostgreSQL, MySQL, MongoDB, Redis, pgvector), then 100 days of GraphQL (schema design, resolvers, Apollo, DataLoader, federation). Days 801–1000.',
     links: [
       { label: 'Java & Databases', to: '/java' },
     ],
@@ -129,7 +129,7 @@ export default function Home() {
             <p className="fle-sub">
               A structured <strong>2,000-day journey</strong> — <strong>20 skills × 100 days each</strong>:
               Python · Agentic AI · JavaScript · TypeScript · React JS · Next JS · React Native ·
-              Express JS · Databases · NestJS · J2SE · <strong>DSA</strong> · Spring Boot · Microservices ·
+              Express JS · Databases · GraphQL · J2SE · <strong>DSA</strong> · Spring Boot · Microservices ·
               AppSec · Quality Engineering · AWS · DevOps · SRE · and <strong>System Design</strong> as the capstone close.
               NexusAI capstone built daily throughout all 2,000 days. One skill at a time, fully focused, front to back.
             </p>
@@ -216,7 +216,7 @@ export default function Home() {
           <h2 className="btech-title">The 2,000-Day Learning Path</h2>
           <p className="btech-sub">
             A structured path to a full lifecycle engineer — <strong>20 skills × 100 days each</strong>:{' '}
-            <strong>Agentic AI → FastAPI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → NestJS → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design</strong> — <strong>2,000 days</strong> total.
+            <strong>Agentic AI → FastAPI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design</strong> — <strong>2,000 days</strong> total.
             Each skill gets a dedicated 100-day block; NexusAI is built daily throughout all 2,000 days.
           </p>
           <div className="btech-grid">

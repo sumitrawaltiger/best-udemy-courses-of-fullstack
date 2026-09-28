@@ -104,7 +104,7 @@ export const INTERVIEW_PREP_WEEKS = 0;
 // Skill  7 · React Native        Days  601–700  · 22 Aug 2028 – 29 Nov 2028
 // Skill  8 · Express JS          Days  701–800  · 30 Nov 2028 – 9 Mar 2029
 // Skill  9 · Databases           Days  801–900  · 10 Mar 2029 – 17 Jun 2029
-// Skill 10 · NestJS              Days  901–1000 · 18 Jun 2029 – 25 Sep 2029
+// Skill 10 · GraphQL             Days  901–1000 · 18 Jun 2029 – 25 Sep 2029
 // Skill 11 · J2SE                Days 1001–1100 · 26 Sep 2029 – 3 Jan 2030
 // Skill 12 · DSA                 Days 1101–1200 · 4 Jan 2030 – 13 Apr 2030
 // Skill 13 · Spring Boot         Days 1201–1300 · 14 Apr 2030 – 22 Jul 2030
