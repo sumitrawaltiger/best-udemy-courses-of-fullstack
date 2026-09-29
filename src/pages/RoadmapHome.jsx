@@ -32,34 +32,35 @@ function LeetCode2000Badge({ size = 120 }) {
 }
 
 // ── Phase calendar helpers ───────────────────────────────────────────────────
-const _CAL_DAY1 = new Date(2026, 11, 31); // 31 Dec 2026
+const _CAL_DAY1 = new Date(2026, 9, 1); // 1 Oct 2026
 function _calDate(dayN) {
   const d = new Date(_CAL_DAY1);
   d.setDate(d.getDate() + dayN - 1);
   return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-// ── 20 skills · 100 days each · 2,000 days ───────────────────────────────────
-// Skill  1 · Python              Days    1–100  · 31 Dec 2026 – 9 Apr 2027
-// Skill  2 · Agentic AI          Days  101–200  · 10 Apr 2027 – 18 Jul 2027
-// Skill  3 · JavaScript          Days  201–300  · 19 Jul 2027 – 26 Oct 2027
-// Skill  4 · TypeScript          Days  301–400  · 27 Oct 2027 – 3 Feb 2028
-// Skill  5 · React JS            Days  401–500  · 4 Feb 2028 – 13 May 2028
-// Skill  6 · Next JS             Days  501–600  · 14 May 2028 – 21 Aug 2028
-// Skill  7 · React Native        Days  601–700  · 22 Aug 2028 – 29 Nov 2028
-// Skill  8 · Express JS          Days  701–800  · 30 Nov 2028 – 9 Mar 2029
-// Skill  9 · Databases           Days  801–900  · 10 Mar 2029 – 17 Jun 2029
-// Skill 10 · GraphQL             Days  901–1000 · 18 Jun 2029 – 25 Sep 2029
-// Skill 11 · J2SE                Days 1001–1100 · 26 Sep 2029 – 3 Jan 2030
-// Skill 12 · DSA                 Days 1101–1200 · 4 Jan 2030 – 13 Apr 2030
-// Skill 13 · Spring Boot         Days 1201–1300 · 14 Apr 2030 – 22 Jul 2030
-// Skill 14 · Microservices       Days 1301–1400 · 23 Jul 2030 – 30 Oct 2030
-// Skill 15 · Quality Engineering Days 1401–1500 · 31 Oct 2030 – 7 Feb 2031
-// Skill 16 · AWS                 Days 1501–1600 · 8 Feb 2031 – 18 May 2031
-// Skill 17 · DevOps              Days 1601–1700 · 19 May 2031 – 26 Aug 2031
-// Skill 18 · DevSecOps           Days 1701–1800 · 27 Aug 2031 – 4 Dec 2031
-// Skill 19 · SRE                 Days 1801–1900 · 5 Dec 2031 – 13 Mar 2032
-// Skill 20 · System Design       Days 1901–2000 · 14 Mar 2032 – 21 Jun 2032
+// ── 21 skills · 100 days each · 2,100 days ───────────────────────────────────
+// Skill  1 · Python              Days    1–100  · 1 Oct 2026 – 8 Jan 2027
+// Skill  2 · Agentic AI          Days  101–200  · 9 Jan 2027 – 18 Apr 2027
+// Skill  3 · JavaScript          Days  201–300  · 19 Apr 2027 – 27 Jul 2027
+// Skill  4 · TypeScript          Days  301–400  · 28 Jul 2027 – 4 Nov 2027
+// Skill  5 · React JS            Days  401–500  · 5 Nov 2027 – 12 Feb 2028
+// Skill  6 · Next JS             Days  501–600  · 13 Feb 2028 – 22 May 2028
+// Skill  7 · React Native        Days  601–700  · 23 May 2028 – 30 Aug 2028
+// Skill  8 · Express JS          Days  701–800  · 31 Aug 2028 – 8 Dec 2028
+// Skill  9 · Databases           Days  801–900  · 9 Dec 2028 – 18 Mar 2029
+// Skill 10 · GraphQL             Days  901–1000 · 19 Mar 2029 – 26 Jun 2029
+// Skill 11 · J2SE                Days 1001–1100 · 27 Jun 2029 – 4 Oct 2029
+// Skill 12 · DSA                 Days 1101–1200 · 5 Oct 2029 – 12 Jan 2030
+// Skill 13 · Spring Boot         Days 1201–1300 · 13 Jan 2030 – 22 Apr 2030
+// Skill 14 · Microservices       Days 1301–1400 · 23 Apr 2030 – 31 Jul 2030
+// Skill 15 · Quality Engineering Days 1401–1500 · 1 Aug 2030 – 8 Nov 2030
+// Skill 16 · AWS                 Days 1501–1600 · 9 Nov 2030 – 16 Feb 2031
+// Skill 17 · DevOps              Days 1601–1700 · 17 Feb 2031 – 27 May 2031
+// Skill 18 · DevSecOps           Days 1701–1800 · 28 May 2031 – 4 Sep 2031
+// Skill 19 · SRE                 Days 1801–1900 · 5 Sep 2031 – 13 Dec 2031
+// Skill 20 · System Design       Days 1901–2000 · 14 Dec 2031 – 22 Mar 2032
+// Skill 21 · FDE                 Days 2001–2100 · 23 Mar 2032 – 30 Jun 2032
 // NexusAI capstone built daily throughout all 2,000 days — no separate Capstone block.
 // Calendar: Day 0 = 30 Dec 2026, Day 1 = 31 Dec 2026, Day 2,000 = 21 Jun 2032.
 
@@ -84,6 +85,7 @@ const PHASE_DAYS = [
   [1701, 1800],
   [1801, 1900],
   [1901, 2000],
+  [2001, 2100],
 ];
 
 const PHASES = [
@@ -284,17 +286,27 @@ const PHASES = [
     label: 'Skill 20 · System Design',
     tagline: 'Days 1901–2000',
     duration: '100 days · ~3.3 months',
-    blurb: 'HLD and LLD at depth — CAP theorem, distributed systems, scalability patterns, and 50+ case studies: Twitter, Uber, Netflix, WhatsApp. The capstone close of the 2,000-day journey.',
+    blurb: 'HLD and LLD at depth — CAP theorem, distributed systems, scalability patterns, and 50+ case studies: Twitter, Uber, Netflix, WhatsApp. The architect\'s toolkit before stepping into the FDE role.',
     items: [
       { icon: '🏗️', title: 'System Design', detail: 'HLD / LLD · CAP theorem · distributed systems · scalability · caching · message queues · 50+ case studies', source: 'ChaiCode + GfG + ByteByteGo', to: '/interview' },
-      { icon: '🎤', title: 'Mock Interviews + Portfolio', detail: '200+ mock interviews · salary negotiation · offer evaluation · NexusAI portfolio showcase', source: 'ChaiCode Interview Bundle', to: '/interview' },
+      { icon: '🎤', title: 'Mock Interviews', detail: '200+ mock interviews · salary negotiation · offer evaluation · NexusAI portfolio showcase', source: 'ChaiCode Interview Bundle', to: '/interview' },
+    ],
+  },
+  {
+    id: 'p21', arcClass: 'y5', icon: '🚀',
+    label: 'Skill 21 · Forward Deployed Engineer',
+    tagline: 'Days 2001–2100',
+    duration: '100 days · ~3.3 months',
+    blurb: 'The capstone role — put all 20 prior skills in front of a real client. Rapid prototyping, client discovery, real-world data wrangling, technical demos, POC-to-production, and AI-powered solutions for enterprise. The close of the 2,100-day journey.',
+    items: [
+      { icon: '🚀', title: 'Forward Deployed Engineer', detail: 'Client discovery · rapid prototyping · POC→production · stakeholder communication · AI for enterprise · NexusAI showcase', source: 'Palantir / Anduril FDE playbooks · real client engagements', to: '/roadmap' },
     ],
   },
 ];
 
 const STATS = [
-  { value: '20', label: 'skills · 100 days each' },
-  { value: '2,000', label: 'days · ~66 months' },
+  { value: '21', label: 'skills · 100 days each' },
+  { value: '2,100', label: 'days · ~69 months' },
   { value: '40+', label: 'technologies' },
   { value: '1', label: 'project · NexusAI daily' },
 ];
@@ -318,18 +330,18 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 Day 0 = 30 Dec 2026 · Day 1 = 31 Dec 2026 · 20 skills · 2,000 days · ~66 months</span>
-        <h1 className="roadmap-hero-title">20 Skills, 2,000 Days</h1>
+        <span className="roadmap-hero-badge">📍 Day 0 = 30 Sep 2026 · Day 1 = 1 Oct 2026 · 21 skills · 2,100 days · ~69 months</span>
+        <h1 className="roadmap-hero-title">21 Skills, 2,100 Days</h1>
         <p className="roadmap-hero-sub">
-          Starts with <strong>Day 0 — environment setup</strong>, then <strong>20 skills · 100 days each</strong>{' '}
+          Starts with <strong>Day 0 — environment setup</strong>, then <strong>21 skills · 100 days each</strong>{' '}
           mastered end to end —{' '}
           <strong>Python</strong> {'→'} <strong>Agentic AI</strong> {'→'} <strong>JavaScript</strong> {'→'} <strong>TypeScript</strong> {'→'}{' '}
           <strong>React JS</strong> {'→'} <strong>Next JS</strong> {'→'} <strong>React Native</strong> {'→'} <strong>Express JS</strong> {'→'}{' '}
           <strong>Databases</strong> {'→'} <strong>GraphQL</strong> {'→'} <strong>J2SE</strong> {'→'} <strong>DSA</strong> {'→'}{' '}
           <strong>Spring Boot</strong> {'→'} <strong>Microservices</strong> {'→'} <strong>Quality Engineering</strong> {'→'} <strong>AWS</strong> {'→'}{' '}
-          <strong>DevOps</strong> {'→'} <strong>DevSecOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong> —{' '}
-          <strong>2,000 days (~66 months)</strong> of focused daily practice, front to back.
-          NexusAI capstone built daily throughout all 2,000 days.
+          <strong>DevOps</strong> {'→'} <strong>DevSecOps</strong> {'→'} <strong>SRE</strong> {'→'} <strong>System Design</strong> {'→'} <strong>Forward Deployed Engineer</strong> —{' '}
+          <strong>2,100 days (~69 months)</strong> of focused daily practice, front to back.
+          NexusAI capstone built daily throughout all 2,100 days.
         </p>
         <div className="roadmap-stats">
           {STATS.map((s) => (
@@ -347,7 +359,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png"
-          alt="20 Skills. 2,000 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design. Day 1: 31 Dec 2026 · Day 2,000: 21 Jun 2032."
+          alt="21 Skills. 2,100 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design → Forward Deployed Engineer. Day 1: 1 Oct 2026 · Day 2,100: 30 Jun 2032."
           loading="eager"
           style={{
             width: '100%',

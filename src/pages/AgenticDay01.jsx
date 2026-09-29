@@ -5,7 +5,7 @@ import './Day001.css';
 const PYTHON_DOWNLOADS = 'https://www.python.org/downloads/';
 
 const LEARNT_TODAY = [
-  { title: 'Skill 01 · Python (Days 1–100)', text: 'Day 1 of the 1,827-day journey. Agentic AI is Skill 01 (1–100), then Skill 02 FastAPI (101–200) → JS (201–300) → TS (301–400) → React (401–500) → Next (501–600) → RN (601–700) → Express (701–800) → Databases (801–900) → GraphQL (901–1000) → J2SE → DSA → Spring Boot → Microservices → QualityEngg → AWS → DevOps → DevSecOps → SRE → System Design (ends 17 Sep 2031). NexusAI built daily throughout all 1,827 days' },
+  { title: 'Skill 02 · Agentic AI (Days 101–200)', text: 'Part of the 2,100-day journey starting 1 Oct 2026. Python is Skill 01 (1–100), then Skill 02 Agentic AI (101–200) → JS (201–300) → TS (301–400) → React (401–500) → Next (501–600) → RN (601–700) → Express (701–800) → Databases (801–900) → GraphQL (901–1000) → J2SE → DSA → Spring Boot → Microservices → QE → AWS → DevOps → DevSecOps → SRE → System Design → FDE (ends 30 Jun 2032). NexusAI built daily throughout all 2,100 days' },
   { title: 'AI vs ML vs DL vs Gen AI', text: 'each one builds on the last — AI is the umbrella, ML learns from data, DL uses neural networks, Gen AI creates new content' },
   { title: 'Why Python for AI', text: 'simple syntax + a huge ecosystem (NumPy, Pandas, TensorFlow, LangChain) made it the default language for AI work' },
   { title: 'Toolchain setup', text: 'installed Python, ticked "Add to PATH" during install, and picked an editor to write code in' },
@@ -157,15 +157,15 @@ export default function AgenticDay01() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '1%' }} /></div>
 
         <p className="day001-summary">
-          Day 1 of 1,827 — the start of <strong>Skill 01 · Agentic AI</strong> (Days 1–100 · 17 Sep 2026 – 25 Dec 2026).
+          Agentic AI Day 1 — diving into <strong>Skill 02 · Agentic AI</strong> in the 2,100-day journey.
           Today is pure orientation: what <strong>Generative AI</strong>{' '}
           and <strong>Agentic AI</strong> actually mean, how they sit on top of <strong>AI → ML → DL</strong>,
           why <strong>Python</strong> is the language for AI work, and getting the toolchain (Python +
           editor) installed and verified with <code>python --version</code>. No frameworks yet —
           just <code>print("Hello, Agentic AI!")</code> and a clear picture of the next 100 days:
           Python fundamentals, then ML/DL basics, then Generative AI, RAG, and LangChain,
-          LangGraph, and MCP-based agents. <strong>Skill 02 · FastAPI</strong> begins Day 101 (26 Dec 2026),
-          then the journey continues through 18 more skills all the way to Day 1,827 (17 Sep 2031).
+          LangGraph, and MCP-based agents. The journey continues through 19 more skills all the way to
+          Day 2,100 · <strong>Skill 21 · Forward Deployed Engineer</strong> (ends 30 Jun 2032).
         </p>
 
         <section className="day001-learnt">
