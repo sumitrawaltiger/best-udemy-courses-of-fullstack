@@ -359,7 +359,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png"
-          alt="21 Skills. 2,100 Days. One Journey. — Full Lifecycle Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design → Forward Deployed Engineer. Day 1: 1 Oct 2026 · Day 2,100: 30 Jun 2032."
+          alt="21 Skills. 2,100 Days. One Journey. — Forward Deployed Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design → Forward Deployed Engineer. Day 1: 1 Oct 2026 · Day 2,100: 30 Jun 2032."
           loading="eager"
           style={{
             width: '100%',
@@ -491,8 +491,8 @@ export default function RoadmapHome() {
         <div className="roadmap-finish">
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
-            <p className="roadmap-finish-title">Full Lifecycle Engineer</p>
-            <p className="roadmap-finish-date">20 skills · 2,000 days · front to back · 21 Jun 2032</p>
+            <p className="roadmap-finish-title">Forward Deployed Engineer</p>
+            <p className="roadmap-finish-date">21 skills · 2,100 days · front to back · 30 Jun 2032</p>
           </div>
         </div>
       </div>

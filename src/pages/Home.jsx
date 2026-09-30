@@ -132,7 +132,7 @@ export default function Home() {
 
         <div className="fle-hero-inner">
           <div className="fle-hero-left">
-            <span className="fle-badge"><span aria-hidden="true">⚡</span> Road to Full Lifecycle Engineer</span>
+            <span className="fle-badge"><span aria-hidden="true">⚡</span> Road to Forward Deployed Engineer</span>
             <h1 className="fle-title">
               Master <span className="fle-hl">Agentic AI</span>, the <span className="fle-hl">Full Stack</span> &amp;{' '}
               <span className="fle-hl">DevOps</span>
@@ -226,7 +226,7 @@ export default function Home() {
           <span className="btech-badge">The Roadmap</span>
           <h2 className="btech-title">The 2,100-Day Learning Path</h2>
           <p className="btech-sub">
-            A structured path to a full lifecycle engineer — <strong>21 skills × 100 days each</strong>:{' '}
+            A structured path to a forward deployed engineer — <strong>21 skills × 100 days each</strong>:{' '}
             <strong>Python → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design → Forward Deployed Engineer</strong> — <strong>2,100 days</strong> total.
             Each skill gets a dedicated 100-day block; NexusAI is built daily throughout all 2,100 days.
           </p>

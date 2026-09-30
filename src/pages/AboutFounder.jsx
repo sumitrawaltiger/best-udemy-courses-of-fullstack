@@ -116,10 +116,10 @@ export default function AboutFounder() {
             <span className="a-tag">&lt;span&gt;</span>Hey, I&rsquo;m Sumit Rawal<span className="a-tag">&lt;/span&gt;</span>
           </p>
           <h1 className="a-title">
-            <span className="a-brace">{'{'}Full Lifecycle{'}'}</span>Web · App · Cloud Engineer
+            <span className="a-brace">{'{'}Forward Deployed{'}'}</span>Web · App · Cloud Engineer
           </h1>
           <p className="a-bio">
-            <span className="a-tag">&lt;p&gt;</span>I&rsquo;m a <em className="a-kw">Full Lifecycle Engineer</em> — I build across the whole
+            <span className="a-tag">&lt;p&gt;</span>I&rsquo;m a <em className="a-kw">Forward Deployed Engineer</em> — I build across the whole
             stack, front to back. From typed apps with <em className="a-kw">TypeScript</em>, <em className="a-kw">React</em>,{' '}
             <em className="a-kw">Next.js</em> and <em className="a-kw">React Native</em>, to backends with{' '}
             <em className="a-kw">Node</em>, <em className="a-kw">Python/Django</em> and <em className="a-kw">Java/Spring Boot</em>,
