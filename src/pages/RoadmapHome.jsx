@@ -358,7 +358,7 @@ export default function RoadmapHome() {
         style={{ margin: '8px auto 4px', textAlign: 'center', maxWidth: '820px' }}
       >
         <img
-          src="/roadmap-notes/2000_days.png"
+          src="/roadmap-notes/2100_days.png"
           alt="21 Skills. 2,100 Days. One Journey. — Forward Deployed Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design → Forward Deployed Engineer. Day 1: 5 Nov 2026 · Day 2,100: 4 Aug 2032."
           loading="eager"
           style={{
