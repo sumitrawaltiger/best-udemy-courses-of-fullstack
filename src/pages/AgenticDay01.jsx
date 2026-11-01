@@ -5,7 +5,7 @@ import './Day001.css';
 const PYTHON_DOWNLOADS = 'https://www.python.org/downloads/';
 
 const LEARNT_TODAY = [
-  { title: 'Skill 02 · Agentic AI (Days 101–200)', text: 'Part of the 2,100-day journey starting 1 Oct 2026. Python is Skill 01 (1–100), then Skill 02 Agentic AI (101–200) → JS (201–300) → TS (301–400) → React (401–500) → Next (501–600) → RN (601–700) → Express (701–800) → Databases (801–900) → GraphQL (901–1000) → J2SE → DSA → Spring Boot → Microservices → QE → AWS → DevOps → DevSecOps → SRE → System Design → FDE (ends 30 Jun 2032). NexusAI built daily throughout all 2,100 days' },
+  { title: 'Skill 02 · Agentic AI (Days 101–200)', text: 'Part of the 2,100-day journey starting 5 Nov 2026. Python is Skill 01 (1–100), then Skill 02 Agentic AI (101–200) → JS (201–300) → TS (301–400) → React (401–500) → Next (501–600) → RN (601–700) → Express (701–800) → Databases (801–900) → GraphQL (901–1000) → J2SE → DSA → Spring Boot → Microservices → QE → AWS → DevOps → DevSecOps → SRE → System Design → FDE (ends 4 Aug 2032). NexusAI built daily throughout all 2,100 days' },
   { title: 'AI vs ML vs DL vs Gen AI', text: 'each one builds on the last — AI is the umbrella, ML learns from data, DL uses neural networks, Gen AI creates new content' },
   { title: 'Why Python for AI', text: 'simple syntax + a huge ecosystem (NumPy, Pandas, TensorFlow, LangChain) made it the default language for AI work' },
   { title: 'Toolchain setup', text: 'installed Python, ticked "Add to PATH" during install, and picked an editor to write code in' },
@@ -165,7 +165,7 @@ export default function AgenticDay01() {
           just <code>print("Hello, Agentic AI!")</code> and a clear picture of the next 100 days:
           Python fundamentals, then ML/DL basics, then Generative AI, RAG, and LangChain,
           LangGraph, and MCP-based agents. The journey continues through 19 more skills all the way to
-          Day 2,100 · <strong>Skill 21 · Forward Deployed Engineer</strong> (ends 30 Jun 2032).
+          Day 2,100 · <strong>Skill 21 · Forward Deployed Engineer</strong> (ends 4 Aug 2032).
         </p>
 
         <section className="day001-learnt">

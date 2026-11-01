@@ -32,7 +32,7 @@ function LeetCode2000Badge({ size = 120 }) {
 }
 
 // ── Phase calendar helpers ───────────────────────────────────────────────────
-const _CAL_DAY1 = new Date(2026, 9, 1); // 1 Oct 2026
+const _CAL_DAY1 = new Date(2026, 10, 5); // 5 Nov 2026
 function _calDate(dayN) {
   const d = new Date(_CAL_DAY1);
   d.setDate(d.getDate() + dayN - 1);
@@ -40,29 +40,29 @@ function _calDate(dayN) {
 }
 
 // ── 21 skills · 100 days each · 2,100 days ───────────────────────────────────
-// Skill  1 · Python              Days    1–100  · 1 Oct 2026 – 8 Jan 2027
-// Skill  2 · Agentic AI          Days  101–200  · 9 Jan 2027 – 18 Apr 2027
-// Skill  3 · JavaScript          Days  201–300  · 19 Apr 2027 – 27 Jul 2027
-// Skill  4 · TypeScript          Days  301–400  · 28 Jul 2027 – 4 Nov 2027
-// Skill  5 · React JS            Days  401–500  · 5 Nov 2027 – 12 Feb 2028
-// Skill  6 · Next JS             Days  501–600  · 13 Feb 2028 – 22 May 2028
-// Skill  7 · React Native        Days  601–700  · 23 May 2028 – 30 Aug 2028
-// Skill  8 · Express JS          Days  701–800  · 31 Aug 2028 – 8 Dec 2028
-// Skill  9 · Databases           Days  801–900  · 9 Dec 2028 – 18 Mar 2029
-// Skill 10 · GraphQL             Days  901–1000 · 19 Mar 2029 – 26 Jun 2029
-// Skill 11 · J2SE                Days 1001–1100 · 27 Jun 2029 – 4 Oct 2029
-// Skill 12 · DSA                 Days 1101–1200 · 5 Oct 2029 – 12 Jan 2030
-// Skill 13 · Spring Boot         Days 1201–1300 · 13 Jan 2030 – 22 Apr 2030
-// Skill 14 · Microservices       Days 1301–1400 · 23 Apr 2030 – 31 Jul 2030
-// Skill 15 · Quality Engineering Days 1401–1500 · 1 Aug 2030 – 8 Nov 2030
-// Skill 16 · AWS                 Days 1501–1600 · 9 Nov 2030 – 16 Feb 2031
-// Skill 17 · DevOps              Days 1601–1700 · 17 Feb 2031 – 27 May 2031
-// Skill 18 · DevSecOps           Days 1701–1800 · 28 May 2031 – 4 Sep 2031
-// Skill 19 · SRE                 Days 1801–1900 · 5 Sep 2031 – 13 Dec 2031
-// Skill 20 · System Design       Days 1901–2000 · 14 Dec 2031 – 22 Mar 2032
-// Skill 21 · FDE                 Days 2001–2100 · 23 Mar 2032 – 30 Jun 2032
-// NexusAI capstone built daily throughout all 2,000 days — no separate Capstone block.
-// Calendar: Day 0 = 30 Dec 2026, Day 1 = 31 Dec 2026, Day 2,000 = 21 Jun 2032.
+// Skill  1 · Python              Days    1–100  · 5 Nov 2026 – 12 Feb 2027
+// Skill  2 · Agentic AI          Days  101–200  · 13 Feb 2027 – 23 May 2027
+// Skill  3 · JavaScript          Days  201–300  · 24 May 2027 – 31 Aug 2027
+// Skill  4 · TypeScript          Days  301–400  · 1 Sep 2027 – 9 Dec 2027
+// Skill  5 · React JS            Days  401–500  · 10 Dec 2027 – 18 Mar 2028
+// Skill  6 · Next JS             Days  501–600  · 19 Mar 2028 – 26 Jun 2028
+// Skill  7 · React Native        Days  601–700  · 27 Jun 2028 – 4 Oct 2028
+// Skill  8 · Express JS          Days  701–800  · 5 Oct 2028 – 12 Jan 2029
+// Skill  9 · Databases           Days  801–900  · 13 Jan 2029 – 22 Apr 2029
+// Skill 10 · GraphQL             Days  901–1000 · 23 Apr 2029 – 31 Jul 2029
+// Skill 11 · J2SE                Days 1001–1100 · 1 Aug 2029 – 8 Nov 2029
+// Skill 12 · DSA                 Days 1101–1200 · 9 Nov 2029 – 16 Feb 2030
+// Skill 13 · Spring Boot         Days 1201–1300 · 17 Feb 2030 – 27 May 2030
+// Skill 14 · Microservices       Days 1301–1400 · 28 May 2030 – 4 Sep 2030
+// Skill 15 · Quality Engineering Days 1401–1500 · 5 Sep 2030 – 13 Dec 2030
+// Skill 16 · AWS                 Days 1501–1600 · 14 Dec 2030 – 23 Mar 2031
+// Skill 17 · DevOps              Days 1601–1700 · 24 Mar 2031 – 1 Jul 2031
+// Skill 18 · DevSecOps           Days 1701–1800 · 2 Jul 2031 – 9 Oct 2031
+// Skill 19 · SRE                 Days 1801–1900 · 10 Oct 2031 – 17 Jan 2032
+// Skill 20 · System Design       Days 1901–2000 · 18 Jan 2032 – 26 Apr 2032
+// Skill 21 · FDE                 Days 2001–2100 · 27 Apr 2032 – 4 Aug 2032
+// NexusAI capstone built daily throughout all 2,100 days — no separate Capstone block.
+// Calendar: Day 0 = 4 Nov 2026, Day 1 = 5 Nov 2026, Day 2,100 = 4 Aug 2032.
 
 const PHASE_DAYS = [
   [1, 100],
@@ -330,7 +330,7 @@ export default function RoadmapHome() {
   return (
     <div className="roadmap-page">
       <section className="roadmap-hero">
-        <span className="roadmap-hero-badge">📍 Day 0 = 30 Sep 2026 · Day 1 = 1 Oct 2026 · 21 skills · 2,100 days · ~69 months</span>
+        <span className="roadmap-hero-badge">📍 Day 0 = 4 Nov 2026 · Day 1 = 5 Nov 2026 · 21 skills · 2,100 days · ~69 months</span>
         <h1 className="roadmap-hero-title">21 Skills, 2,100 Days</h1>
         <p className="roadmap-hero-sub">
           Starts with <strong>Day 0 — environment setup</strong>, then <strong>21 skills · 100 days each</strong>{' '}
@@ -359,7 +359,7 @@ export default function RoadmapHome() {
       >
         <img
           src="/roadmap-notes/2000_days.png"
-          alt="21 Skills. 2,100 Days. One Journey. — Forward Deployed Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design → Forward Deployed Engineer. Day 1: 1 Oct 2026 · Day 2,100: 30 Jun 2032."
+          alt="21 Skills. 2,100 Days. One Journey. — Forward Deployed Engineer roadmap: Python → Agentic AI → JS → TS → React → Next → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design → Forward Deployed Engineer. Day 1: 5 Nov 2026 · Day 2,100: 4 Aug 2032."
           loading="eager"
           style={{
             width: '100%',
@@ -413,7 +413,7 @@ export default function RoadmapHome() {
           </table>
         </div>
         <p style={{ textAlign: 'center', color: '#6b7b8e', fontSize: '0.75rem', marginTop: '10px' }}>
-          Day 0 = 30 Dec 2026 · Day 1 = 31 Dec 2026 · 20 skills · 2,000 days · journey ends 21 Jun 2032
+          Day 0 = 4 Nov 2026 · Day 1 = 5 Nov 2026 · 21 skills · 2,100 days · journey ends 4 Aug 2032
         </p>
       </section>
 
@@ -492,7 +492,7 @@ export default function RoadmapHome() {
           <span className="roadmap-finish-flag" aria-hidden="true">🏁</span>
           <div>
             <p className="roadmap-finish-title">Forward Deployed Engineer</p>
-            <p className="roadmap-finish-date">21 skills · 2,100 days · front to back · 30 Jun 2032</p>
+            <p className="roadmap-finish-date">21 skills · 2,100 days · front to back · 4 Aug 2032</p>
           </div>
         </div>
       </div>
@@ -515,10 +515,10 @@ export default function RoadmapHome() {
               LeetCode 2,000 Days Badge
             </p>
             <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
-              Target: 21 Jun 2032 · Day 2,000
+              Target: 4 Aug 2032 · Day 2,100
             </p>
             <p style={{ color: 'rgba(200,212,224,0.82)', fontSize: '0.82rem', lineHeight: 1.65, marginBottom: '12px' }}>
-              1 LeetCode daily challenge every single day — Day 1 (31 Dec 2026) through Day 2,000 (21 Jun 2032).
+              1 LeetCode daily challenge every single day — Day 1 (5 Nov 2026) through Day 2,100 (4 Aug 2032).
               2,000 consecutive submissions earns the badge on the final day of the journey.
               The discipline badge that proves the entire 2,000-day journey.
             </p>

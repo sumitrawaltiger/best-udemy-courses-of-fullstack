@@ -94,33 +94,33 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: Day 0 = 30 Sep 2026, Day 1 = 1 Oct 2026. 21 skills · 2,100 days · ~69 months · ends 30 Jun 2032.
-// Skill  1 · Python              Days    1–100  · 1 Oct 2026 – 8 Jan 2027
-// Skill  2 · Agentic AI          Days  101–200  · 9 Jan 2027 – 18 Apr 2027
-// Skill  3 · JavaScript          Days  201–300  · 19 Apr 2027 – 27 Jul 2027
-// Skill  4 · TypeScript          Days  301–400  · 28 Jul 2027 – 4 Nov 2027
-// Skill  5 · React JS            Days  401–500  · 5 Nov 2027 – 12 Feb 2028
-// Skill  6 · Next JS             Days  501–600  · 13 Feb 2028 – 22 May 2028
-// Skill  7 · React Native        Days  601–700  · 23 May 2028 – 30 Aug 2028
-// Skill  8 · Express JS          Days  701–800  · 31 Aug 2028 – 8 Dec 2028
-// Skill  9 · Databases           Days  801–900  · 9 Dec 2028 – 18 Mar 2029
-// Skill 10 · GraphQL             Days  901–1000 · 19 Mar 2029 – 26 Jun 2029
-// Skill 11 · J2SE                Days 1001–1100 · 27 Jun 2029 – 4 Oct 2029
-// Skill 12 · DSA                 Days 1101–1200 · 5 Oct 2029 – 12 Jan 2030
-// Skill 13 · Spring Boot         Days 1201–1300 · 13 Jan 2030 – 22 Apr 2030
-// Skill 14 · Microservices       Days 1301–1400 · 23 Apr 2030 – 31 Jul 2030
-// Skill 15 · Quality Engineering Days 1401–1500 · 1 Aug 2030 – 8 Nov 2030
-// Skill 16 · AWS                 Days 1501–1600 · 9 Nov 2030 – 16 Feb 2031
-// Skill 17 · DevOps              Days 1601–1700 · 17 Feb 2031 – 27 May 2031
-// Skill 18 · DevSecOps           Days 1701–1800 · 28 May 2031 – 4 Sep 2031
-// Skill 19 · SRE                 Days 1801–1900 · 5 Sep 2031 – 13 Dec 2031
-// Skill 20 · System Design       Days 1901–2000 · 14 Dec 2031 – 22 Mar 2032
-// Skill 21 · FDE                 Days 2001–2100 · 23 Mar 2032 – 30 Jun 2032
+// Full journey: Day 0 = 4 Nov 2026, Day 1 = 5 Nov 2026. 21 skills · 2,100 days · ~69 months · ends 4 Aug 2032.
+// Skill  1 · Python              Days    1–100  · 5 Nov 2026 – 12 Feb 2027
+// Skill  2 · Agentic AI          Days  101–200  · 13 Feb 2027 – 23 May 2027
+// Skill  3 · JavaScript          Days  201–300  · 24 May 2027 – 31 Aug 2027
+// Skill  4 · TypeScript          Days  301–400  · 1 Sep 2027 – 9 Dec 2027
+// Skill  5 · React JS            Days  401–500  · 10 Dec 2027 – 18 Mar 2028
+// Skill  6 · Next JS             Days  501–600  · 19 Mar 2028 – 26 Jun 2028
+// Skill  7 · React Native        Days  601–700  · 27 Jun 2028 – 4 Oct 2028
+// Skill  8 · Express JS          Days  701–800  · 5 Oct 2028 – 12 Jan 2029
+// Skill  9 · Databases           Days  801–900  · 13 Jan 2029 – 22 Apr 2029
+// Skill 10 · GraphQL             Days  901–1000 · 23 Apr 2029 – 31 Jul 2029
+// Skill 11 · J2SE                Days 1001–1100 · 1 Aug 2029 – 8 Nov 2029
+// Skill 12 · DSA                 Days 1101–1200 · 9 Nov 2029 – 16 Feb 2030
+// Skill 13 · Spring Boot         Days 1201–1300 · 17 Feb 2030 – 27 May 2030
+// Skill 14 · Microservices       Days 1301–1400 · 28 May 2030 – 4 Sep 2030
+// Skill 15 · Quality Engineering Days 1401–1500 · 5 Sep 2030 – 13 Dec 2030
+// Skill 16 · AWS                 Days 1501–1600 · 14 Dec 2030 – 23 Mar 2031
+// Skill 17 · DevOps              Days 1601–1700 · 24 Mar 2031 – 1 Jul 2031
+// Skill 18 · DevSecOps           Days 1701–1800 · 2 Jul 2031 – 9 Oct 2031
+// Skill 19 · SRE                 Days 1801–1900 · 10 Oct 2031 – 17 Jan 2032
+// Skill 20 · System Design       Days 1901–2000 · 18 Jan 2032 – 26 Apr 2032
+// Skill 21 · FDE                 Days 2001–2100 · 27 Apr 2032 – 4 Aug 2032
 // NexusAI capstone built daily throughout all 2,100 days — no separate Capstone block.
-export const JOURNEY_START_LABEL = '1 Oct 2026';
-export const JOURNEY_END_LABEL = '30 Jun 2032';
+export const JOURNEY_START_LABEL = '5 Nov 2026';
+export const JOURNEY_END_LABEL = '4 Aug 2032';
 export const JOURNEY_TOTAL_DAYS = 2100;
-// Factory calendar: Day 1 = 1 Oct 2026 (COURSE_START); factory day N = journey Day N.
+// Factory calendar: Day 1 = 5 Nov 2026 (COURSE_START); factory day N = journey Day N.
 export const JOURNEY_END_FACTORY_DAY = 2100;
 
 // Skill day-offsets for the 20-skill plan.
