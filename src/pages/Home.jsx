@@ -96,17 +96,6 @@ const BTECH_ROADMAP = [
       { label: 'Roadmap', to: '/roadmap' },
     ],
   },
-  {
-    year: 'Skill 21',
-    theme: 'Forward Deployed Engineer',
-    icon: '🚀',
-    accent: 'y5',
-    topics: ['Client Discovery', 'Rapid Prototyping', 'POC → Production', 'AI for Enterprise', 'Technical Demos', 'NexusAI Showcase'],
-    blurb: 'The capstone skill — put all 20 prior skills in front of a real client. Rapid prototyping, client discovery, real-world data wrangling, technical demos, and AI-powered solutions for enterprise. The grand finale of the 2,100-day journey. Days 2001–2100.',
-    links: [
-      { label: 'Roadmap', to: '/roadmap' },
-    ],
-  },
 ];
 
 export default function Home() {
@@ -138,17 +127,17 @@ export default function Home() {
               <span className="fle-hl">DevOps</span>
             </h1>
             <p className="fle-sub">
-              A structured <strong>2,100-day journey</strong> — <strong>21 skills × 100 days each</strong>:
+              A structured <strong>2,000-day journey</strong> — <strong>20 skills × 100 days each</strong>:
               Python · Agentic AI · JavaScript · TypeScript · React JS · Next JS · React Native ·
               Express JS · Databases · GraphQL · J2SE · <strong>DSA</strong> · Spring Boot · Microservices ·
-              Quality Engineering · AWS · DevOps · DevSecOps · SRE · System Design · and <strong>Forward Deployed Engineer</strong> as the capstone close.
-              NexusAI capstone built daily throughout all 2,100 days. One skill at a time, fully focused, front to back.
+              Quality Engineering · AWS · DevOps · DevSecOps · SRE · and <strong>System Design</strong> to close.
+              NexusAI capstone built daily throughout all 2,000 days. One skill at a time, fully focused, front to back.
             </p>
 
             <div className="fle-pills">
-              <span className="fle-pill"><span aria-hidden="true">⚡</span> 2,100 Days of Code</span>
-              <span className="fle-pill"><span aria-hidden="true">🧠</span> 21 Skills · 100 Days Each</span>
-              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → Agentic AI → JS/TS → Java → DSA → Microservices → DevOps → System Design → FDE</span>
+              <span className="fle-pill"><span aria-hidden="true">⚡</span> 2,000 Days of Code</span>
+              <span className="fle-pill"><span aria-hidden="true">🧠</span> 20 Skills · 100 Days Each</span>
+              <span className="fle-pill"><span aria-hidden="true">🚀</span> Python → Agentic AI → JS/TS → Java → DSA → Microservices → DevOps → System Design</span>
               <span className="fle-pill"><span aria-hidden="true">🏗️</span> Capstone Built Daily Throughout</span>
             </div>
 
@@ -224,11 +213,11 @@ export default function Home() {
       <section className="btech-roadmap" id="btech-roadmap">
         <div className="btech-inner">
           <span className="btech-badge">The Roadmap</span>
-          <h2 className="btech-title">The 2,100-Day Learning Path</h2>
+          <h2 className="btech-title">The 2,000-Day Learning Path</h2>
           <p className="btech-sub">
-            A structured path to a forward deployed engineer — <strong>21 skills × 100 days each</strong>:{' '}
-            <strong>Python → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design → Forward Deployed Engineer</strong> — <strong>2,100 days</strong> total.
-            Each skill gets a dedicated 100-day block; NexusAI is built daily throughout all 2,100 days.
+            A structured path to a forward deployed engineer — <strong>20 skills × 100 days each</strong>:{' '}
+            <strong>Python → Agentic AI → JavaScript → TypeScript → React JS → Next JS → React Native → Express JS → Databases → GraphQL → J2SE → DSA → Spring Boot → Microservices → Quality Engineering → AWS → DevOps → DevSecOps → SRE → System Design</strong> — <strong>2,000 days</strong> total.
+            Each skill gets a dedicated 100-day block; NexusAI is built daily throughout all 2,000 days.
           </p>
           <div className="btech-grid">
             {BTECH_ROADMAP.map((yr) => (
@@ -899,21 +888,20 @@ export default function Home() {
       <section className="thunder-plus-section thunder-interview-section" id="thunder-interview-prep">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-interview">
-            2,100 days · 21 skills
+            2,000 days · 20 skills
           </span>
           <h2>Thunder++ — The Full Journey</h2>
           <p className="section-desc">
-            <strong>21 skills × 100 days</strong> — starting with <strong>Python</strong> and <strong>Agentic AI</strong>,
+            <strong>20 skills × 100 days</strong> — starting with <strong>Python</strong> and <strong>Agentic AI</strong>,
             through the full <strong>JavaScript/TypeScript front-end stack</strong> (JS → TS → React → Next.js → React Native → Express),
             into the <strong>Java back-end stack</strong> (J2SE → DSA → Spring Boot → Microservices → Quality Engineering),
-            then <strong>cloud and operations</strong> (AWS → DevOps → DevSecOps → SRE → System Design),
-            and closing as a <strong>Forward Deployed Engineer</strong> — the capstone that puts everything in front of a real client —
-            with <strong>NexusAI</strong> built daily throughout every one of the 2,100 days. That's <strong>2,100 days</strong> of focused study, front to back.
+            and closing with <strong>cloud and operations</strong> (AWS → DevOps → DevSecOps → SRE → System Design) —
+            with <strong>NexusAI</strong> built daily throughout every one of the 2,000 days. That's <strong>2,000 days</strong> of focused study, front to back.
           </p>
           <div className="thunder-plus-highlights">
             <span>🐍 Python First</span>
-            <span>⌨️ 21 Skills · 100 Days Each</span>
-            <span>☁️ JS → Java → DevOps → System Design → FDE</span>
+            <span>⌨️ 20 Skills · 100 Days Each</span>
+            <span>☁️ JS → Java → DevOps → System Design</span>
             <span>📐 NexusAI Built Throughout</span>
           </div>
           <div className="thunder-plus-actions">
