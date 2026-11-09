@@ -5227,6 +5227,179 @@ High   ----> 2`,
       },
     ],
   },
+  {
+    num: 49,
+    title: 'Matplotlib — Data Visualization',
+    tag: 'Data Science',
+    tagColor: 'cyan',
+    intro: 'Matplotlib is a Python library used for data visualization: representing data using charts and graphs.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is Matplotlib?',
+        items: [
+          'A Python library used for data visualization.',
+          'Data visualization means representing data using charts and graphs.',
+          'It is mainly used to create line charts, bar charts, pie charts, scatter plots and histograms.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Why Matplotlib?',
+        items: [
+          'Visualizing data.',
+          'Understanding data easily.',
+          'Comparing values.',
+          'Finding trends.',
+          'Finding patterns.',
+          'Creating reports.',
+          'Data analysis.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Installation',
+        text: 'Matplotlib is an external library, so we need to install it using pip: pip install matplotlib',
+      },
+      {
+        type: 'code',
+        label: 'Install Matplotlib',
+        code: 'pip install matplotlib',
+      },
+      {
+        type: 'code',
+        label: 'Line chart — plt.plot()',
+        code: `import matplotlib.pyplot as plt
+
+months = ["Jan", "Feb", "Mar", "Apr"]
+sales = [10000, 15000, 12000, 18000]
+
+plt.plot(months, sales, marker="o", linestyle="--", color="blue")
+
+plt.title("Sales by Month")
+plt.xlabel("Month")
+plt.ylabel("Sales")
+
+plt.show()`,
+      },
+      {
+        type: 'code',
+        label: 'Bar chart — plt.bar() / plt.barh()',
+        code: `import matplotlib.pyplot as plt
+
+courses = ["Python", "Java", "DevOps", "AWS"]
+students = [50, 40, 30, 35]
+
+#plt.bar(courses, students)
+plt.barh(courses, students)
+
+plt.title("Course Enrollment Report")
+plt.xlabel("Course")
+plt.ylabel("Students Count")
+
+plt.show()`,
+      },
+      {
+        type: 'code',
+        label: 'Pie chart — plt.pie()',
+        code: `import matplotlib.pyplot as plt
+
+courses = ["Python", "Java", "DevOps", "AWS"]
+students = [50, 40, 30, 35]
+
+plt.pie(students, labels=courses, autopct="%1.1f%%")
+
+plt.title("Course Enrollment Share")
+
+plt.show()`,
+      },
+      {
+        type: 'code',
+        label: 'Scatter plot — plt.scatter()',
+        code: `import matplotlib.pyplot as plt
+
+study_hours = [1, 2, 3, 4, 5]
+marks = [35, 45, 60, 75, 90]
+
+plt.scatter(study_hours, marks)
+
+plt.title("Study Hours vs Marks")
+plt.xlabel("Study Hours")
+plt.ylabel("Marks")
+
+plt.show()`,
+      },
+      {
+        type: 'code',
+        label: 'Histogram — plt.hist()',
+        code: `import matplotlib.pyplot as plt
+
+marks = [35, 45, 50, 60, 65, 70, 75, 80, 85, 90, 95]
+
+plt.hist(marks)
+
+plt.title("Marks Distribution")
+plt.xlabel("Marks")
+plt.ylabel("Number of Students")
+
+plt.show()`,
+      },
+      {
+        type: 'code',
+        label: 'Multiple lines with legend and grid',
+        code: `import matplotlib.pyplot as plt
+
+months = ["Jan", "Feb", "Mar", "Apr"]
+
+python_sales = [10000, 15000, 12000, 18000]
+java_sales = [8000, 12000, 10000, 14000]
+
+plt.plot(months, python_sales, marker="o", label="Python")
+plt.plot(months, java_sales, marker="o", label="Java")
+
+plt.title("Course Sales Comparison")
+plt.xlabel("Months")
+plt.ylabel("Sales")
+
+plt.legend()
+
+plt.grid()
+
+plt.show()`,
+      },
+      {
+        type: 'table',
+        title: 'Chart functions',
+        headers: ['Function', 'Creates / does'],
+        rows: [
+          ['plot()', 'Creates a line chart.'],
+          ['bar()', 'Creates a bar chart.'],
+          ['barh()', 'Creates a horizontal bar chart.'],
+          ['pie()', 'Creates a pie chart.'],
+          ['scatter()', 'Creates a scatter plot.'],
+          ['hist()', 'Creates a histogram.'],
+          ['show()', 'Displays the chart.'],
+          ['title()', 'Adds the chart title.'],
+          ['xlabel()', 'Adds the x-axis label.'],
+          ['ylabel()', 'Adds the y-axis label.'],
+          ['legend()', 'Displays the labels.'],
+          ['grid()', 'Displays the grid lines.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Important points',
+        items: [
+          'Matplotlib is used for data visualization — representing data using charts.',
+          'Matplotlib is an external library; install it with "pip install matplotlib".',
+          'pyplot is the commonly used module in Matplotlib.',
+          'Import pyplot using "import matplotlib.pyplot as plt".',
+          'Matplotlib is useful for Data Science, Machine Learning and reports.',
+        ],
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -5263,6 +5436,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Matplotlib', remember: 'Data visualization with pyplot: plot (line), bar / barh, pie, scatter, hist; add title, xlabel, ylabel, legend and grid, then show().' },
   { concept: 'Machine Learning', remember: 'Subset of AI where the computer learns patterns from data instead of hand-written rules: supervised, unsupervised and reinforcement learning.' },
   { concept: 'Regression vs classification', remember: 'Regression predicts a continuous number (price, salary); classification predicts a category (spam / not spam, pass / fail).' },
   { concept: 'Train / test split', remember: 'Never test on the training data; split 80 / 20 and fix random_state so the split is reproducible.' },
