@@ -2431,6 +2431,218 @@ streamlit run frontend.py`,
       },
     ],
   },
+  {
+    num: 30,
+    title: 'MCP in Depth — Client, Server & Tools',
+    tag: 'Protocol',
+    tagColor: 'cyan',
+    intro: 'A detailed look at the Model Context Protocol: what it is, why AI applications need it, the request flow, and the roles of the MCP client and MCP server. See module 14 for the short overview.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is MCP?',
+        items: [
+          'MCP stands for Model Context Protocol.',
+          'An open protocol designed to connect AI applications with external systems.',
+          'It lets AI applications interact with tools, databases, APIs, files and other resources.',
+          'It provides a standardized way for AI applications to communicate with external tools.',
+          'AI applications can discover the available tools and their capabilities.',
+          'Especially useful for building AI agents and Agentic AI applications.',
+          'One MCP server can provide capabilities to multiple AI applications.',
+          'It makes AI integrations more reusable and standardized.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'In simple terms',
+        text: 'MCP acts as a standard bridge between AI applications and external tools / data.',
+      },
+      {
+        type: 'list',
+        title: 'Why do we need MCP?',
+        items: [
+          'An LLM by itself cannot directly perform every real-world operation an application needs.',
+          'Real-world AI applications often need to access external data and perform external operations.',
+          'Without a standard protocol, developers create custom integrations for each AI application.',
+          'MCP provides a standardized way to expose these capabilities to AI applications.',
+          'AI applications can discover which tools are available.',
+          'Tools can provide descriptions and input parameters that AI applications understand.',
+          'It makes tool-using AI agents easier to build.',
+          'It can be used together with RAG, databases, REST APIs, vector databases and other technologies.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Examples of external operations',
+        items: [
+          'Read a database.',
+          'Call a REST API.',
+          'Read a file.',
+          'Search company documents.',
+          'Check an order.',
+          'Get weather information.',
+          'Send an email.',
+          'Create a support ticket.',
+          'Access GitHub.',
+          'Access CRM systems.',
+          'Access an LMS platform.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'AI application flow with MCP',
+        items: [
+          '1. The user sends a request.',
+          '2. The AI application receives the request.',
+          '3. The LLM understands the request.',
+          '4. The AI application uses an MCP client.',
+          '5. The MCP client communicates with an MCP server.',
+          '6. The MCP server exposes the required MCP tool.',
+          '7. The MCP tool communicates with an external system.',
+          '8. The external system returns the result.',
+          '9. The MCP server sends the result back to the MCP client.',
+          '10. The AI application uses the result.',
+          '11. The AI application generates the final response using the LLM.',
+          '12. The user receives the response.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Simple flow',
+        code: `USER
+  |
+  +-- AI APPLICATION
+        |
+        +-- MCP CLIENT
+              |
+              +-- MCP PROTOCOL
+                    |
+                    +-- MCP SERVER
+                          |
+                          +-- MCP TOOL
+                                |
+                                +-- EXTERNAL SYSTEM
+                                      |
+                                      +-- DATABASE
+                                      +-- REST API
+                                      +-- FILE
+                                      +-- SLACK channel`,
+      },
+      {
+        type: 'list',
+        title: 'MCP client',
+        items: [
+          'The component that communicates with an MCP server.',
+          'Generally part of the AI application or AI host.',
+          'Establishes communication with the MCP server.',
+          'Discovers the tools exposed by the MCP server.',
+          'Sends tool requests to the MCP server and receives the results.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Client and server relationship',
+        code: `AI APPLICATION
+  |
+  +-- MCP CLIENT
+        |
+        +-- MCP SERVER`,
+      },
+      {
+        type: 'list',
+        title: 'MCP server',
+        items: [
+          'A program that exposes tool capabilities to AI applications.',
+          'It can expose tools, resources and prompts.',
+          'Tools represent actions that the AI application can request.',
+          'The actual implementation of a tool can use databases, REST APIs, files or other systems internally.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Example tools and what they use internally',
+        headers: ['Tool', 'Uses internally'],
+        rows: [
+          ['get_weather()', 'Weather API'],
+          ['get_order_status()', 'Order database'],
+          ['search_customer()', 'Customer data source'],
+          ['create_ticket()', 'Ticketing system'],
+          ['search_documents()', 'Vector database'],
+          ['read_file()', 'File system'],
+          ['send_slack_msg()', 'Slack API'],
+        ],
+      },
+    ],
+  },
+  {
+    num: 31,
+    title: 'MCP Tool — Slack Channel Integration',
+    tag: 'Integration',
+    tagColor: 'green',
+    intro: 'Connect an AI agent to a Slack channel so a tool such as send_slack_msg() can post messages. This is the Slack setup that the MCP tool will use.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Slack integration steps',
+        items: [
+          'Step 1: Create an agent app in the Slack API portal — api.slack.com/apps.',
+          'Step 2: Configure the OAuth scopes: chat:write, channels:read and channels:history.',
+          'Step 3: Install the app to the workspace and note down the OAuth token (the bot token, which starts with xoxb-).',
+          'Step 4: Open Slack, create a Slack channel and note down the channel ID.',
+          'Step 5: Add the "Slack Agent" app to the channel that you created.',
+          'Step 6: Create a demo program to verify the Slack integration.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'OAuth scopes',
+        headers: ['Scope', 'Allows the app to'],
+        rows: [
+          ['chat:write', 'Post messages.'],
+          ['channels:read', 'View basic information about public channels.'],
+          ['channels:history', 'Read the message history of public channels.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: '.env — Slack token and channel ID',
+        code: `SLACK_BOT_TOKEN=xoxb-<your-bot-token>
+SLACK_CHANNEL_ID=<your-channel-id>`,
+      },
+      {
+        type: 'code',
+        label: 'Install the libraries',
+        code: `pip install slack_sdk python-dotenv`,
+      },
+      {
+        type: 'code',
+        label: 'Demo program — test the Slack integration',
+        code: `import os
+
+from dotenv import load_dotenv
+from slack_sdk import WebClient
+
+load_dotenv()
+
+slack_token = os.getenv('SLACK_BOT_TOKEN')
+slack_channel = os.getenv("SLACK_CHANNEL_ID")
+
+slack = WebClient(token=slack_token)
+
+slack.chat_postMessage(
+    channel = slack_channel,
+    text = "Hello, Good Morning...!!"
+)`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Security rule',
+        text: 'The Slack bot token is a credential. Keep it in a .env file (added to .gitignore) and never commit it or paste it into chat or notes. The values above are placeholders.',
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
@@ -2447,6 +2659,8 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'MCP client / server', remember: 'Client lives in the AI app and discovers and calls tools; the server exposes tools, resources and prompts backed by databases, APIs and files.' },
+  { concept: 'Slack integration', remember: 'Slack app + OAuth scopes (chat:write, channels:read, channels:history) + bot token + channel ID, then slack_sdk WebClient.chat_postMessage.' },
   { concept: 'AWS EC2', remember: 'Virtual servers: AMI + instance type + key pair + VPC + security group + EBS storage.' },
   { concept: 'Load balancer', remember: 'Distributes traffic across servers (ALB, NLB, GLB); auto scaling adds or removes servers on demand.' },
   { concept: 'AWS RDS', remember: 'Fully managed relational databases; open port 3306 for MySQL and delete the instance to avoid billing.' },
