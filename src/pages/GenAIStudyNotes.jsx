@@ -3082,6 +3082,166 @@ END`,
       },
     ],
   },
+  {
+    num: 35,
+    title: 'LangChain in Depth — Student Chatbot',
+    tag: 'Project',
+    tagColor: 'green',
+    intro: 'LangChain is a Python framework for building LLM-powered applications. It connects an LLM with documents, databases, APIs and other tools. See module 10 for the short introduction.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is LangChain?',
+        items: [
+          'A Python framework used to build LLM-powered applications.',
+          'LLM models answer questions from their trained data, but real projects need more than simple question answering.',
+          'LangChain helps connect all the parts together.',
+          'It provides a standard model interface, model integrations, prompt handling, agents, memory and observability support.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'What an AI application may need to do',
+        items: [
+          'Read PDF files.',
+          'Answer from company documents.',
+          'Remember chat history.',
+          'Make API calls.',
+          'Search a database.',
+          'Connect with third-party applications.',
+          'Generate structured JSON data.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Why we need LangChain — the Ashok IT student support chatbot',
+        text: 'A normal LLM can answer general questions such as "What is Python?", "What is Java?" or "What is AI?". But the LLM does not know our institute data by default, and students ask institute-specific questions.',
+      },
+      {
+        type: 'list',
+        title: 'Questions a student may ask',
+        items: [
+          'What is the fee for the GEN AI course in Ashok IT?',
+          'Where is my course material?',
+          'What is my batch timing?',
+          'Do we have class today?',
+          'How many videos are available in the 25-GEN AI batch?',
+          'How many projects are completed in the 25-GEN AI batch?',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'What LangChain connects the chatbot with',
+        headers: ['Component', 'Role'],
+        rows: [
+          ['Database', 'Course and student data.'],
+          ['RAG', 'Institute policies and course content.'],
+          ['Video platform', 'Video and batch information.'],
+          ['GitHub repo', 'Project information.'],
+          ['Language model', 'Understands the question and writes the answer.'],
+          ['Parser', 'Converts the model output to the format we need.'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'In simple terms',
+        text: 'LangChain acts like a bridge between the LLM and real-world data / tools.',
+      },
+      {
+        type: 'code',
+        label: 'Code snippet — building blocks',
+        code: `# create LLM object using local ollama model (llama3.2)
+llm = ChatOllama(model="llama3.2")
+
+def db_call(input):
+    # logic
+    return data
+
+def rag_call(question):
+    # logic
+    return matching_data
+
+def api_call(input):
+    # logic
+    return data`,
+      },
+      {
+        type: 'code',
+        label: 'Code snippet — LangChain pipeline',
+        code: `db_data = db_call(input)
+rag_data = rag_call(question)
+api_data = api_call(input)
+
+prompt = f"""
+
+"""
+
+# LangChain pipeline implementation
+chain = db_data | rag_data | api_data | prompt | llm | StrOutputParser()
+
+question = input("Ask Question:")
+
+answer = chain.invoke(question)
+
+print(answer)`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Note on the pipeline snippet',
+        text: 'The snippet shows the idea of the pipeline. In real LangChain code every step joined with | must be a runnable (for example a prompt template, a model or a function wrapped with RunnableLambda), not a plain data value.',
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Assignment — GEN AI Student Chatbot using LangChain',
+        text: 'Create a GEN AI student chatbot using LangChain with: DB calling (fetch the courses data), RAG calling (fetch the institute policies and course content data), a prompt, and an LLM integration (OpenAI GPT or Ollama). Set up a courses_info table in the MySQL database and insert a few courses manually.',
+      },
+      {
+        type: 'code',
+        label: 'requirements.txt',
+        code: `streamlit
+langchain
+langchain-openai
+langchain-pinecone
+langchain-text-splitters
+pinecone
+python-dotenv`,
+      },
+      {
+        type: 'code',
+        label: 'Environment setup (Windows)',
+        code: `py install 3.12
+
+py -3.12 -m venv .venv
+
+.venv\\Scripts\\activate
+
+python -m pip install -r requirements.txt`,
+      },
+      {
+        type: 'table',
+        title: 'Project files and their functions',
+        headers: ['File', 'Functions / purpose'],
+        rows: [
+          ['config.py', 'Loads all the configuration properties (key and value pairs).'],
+          ['db_service.py', 'get_connection() · initialize_database() · get_all_courses() · search_course(keyword)'],
+          ['rag_service.py', 'create_index() · load_documents() · get_vector_store() · ingest_documents() · retrieve_documents(question)'],
+          ['prompt.py', 'get_student_prompt()'],
+          ['llm.py', 'get_llm()'],
+          ['chatbot_chain.py', 'format_courses() · get_course_data(question) — DB call · get_rag_context(question) — RAG call · ask_question(question)'],
+          ['app.py', 'The Streamlit logic (user interface).'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Project flow',
+        code: 'Student question → Streamlit (app.py) → chatbot_chain.py → DB call + RAG call → Prompt → LLM → Answer',
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
@@ -3098,6 +3258,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'LangChain chatbot', remember: 'LangChain bridges the LLM with DB, RAG, APIs and a prompt: question → DB + RAG context → prompt → LLM → answer.' },
   { concept: 'LangGraph terms', remember: 'State carries the data, Node performs the task, Edge controls the flow, Conditional Edge picks the next node.' },
   { concept: 'Tool calling', remember: 'The LLM picks a bound tool and its inputs; the application runs it and feeds the result back to the LLM for the final answer.' },
   { concept: 'CrewAI components', remember: 'Agent (role, goal, backstory) + Task (description, expected output) + Crew + Process (sequential or hierarchical); run with crew.kickoff().' },
