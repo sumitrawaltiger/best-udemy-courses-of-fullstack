@@ -2783,6 +2783,95 @@ crew.kickoff()`,
       },
     ],
   },
+  {
+    num: 33,
+    title: 'Tool Calling in Agentic AI',
+    tag: 'Agents',
+    tagColor: 'green',
+    intro: 'Tool calling is the mechanism that lets an LLM or AI agent use external tools and functions when it cannot complete a task with its own knowledge alone.',
+    blocks: [
+      {
+        type: 'table',
+        title: 'Gen AI vs Agentic AI — at a glance',
+        headers: ['Gen AI', 'Agentic AI'],
+        rows: [
+          ['Creates new content: text, images, code, audio and video.', 'Thinks and plans: breaks a goal into actionable steps.'],
+          ['Learns from data: understands patterns from large datasets.', 'Uses tools: APIs, databases, the web, code and applications.'],
+          ['Works with natural language: interact using simple prompts.', 'Takes actions: executes tasks instead of just answering.'],
+          ['Examples: ChatGPT, Claude, custom chatbots.', 'Works autonomously: observes, decides, acts and adapts.'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'What is tool calling?',
+        text: 'Tool calling is a mechanism that allows an AI agent / LLM to use external tools or functions when it cannot complete a task using its own knowledge alone. The LLM decides which tool to use, sends the required inputs, receives the tool result, and uses that result to continue or complete the task.',
+      },
+      {
+        type: 'list',
+        title: 'Why tool calling?',
+        items: [
+          'An LLM can generate text, but it does not automatically have access to your database, live web information, enterprise applications, payment APIs or email systems.',
+          'We give the LLM external capabilities using tools.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'What is a tool?',
+        items: [
+          'A tool is an external function or capability that an AI agent can invoke to accomplish a task.',
+          'In LangChain a tool is a Python function marked with the @tool decorator; its docstring tells the LLM what the tool does.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Tool example',
+        code: `@tool
+def cancel_order(order_id):
+    """cancel an order"""
+    db_service.cancel_order(order_id)`,
+      },
+      {
+        type: 'table',
+        title: 'Example tools',
+        headers: ['Tool', 'What it does'],
+        rows: [
+          ['get_student_info()', 'Fetch the details of a student.'],
+          ['get_payment_details()', 'Fetch payment details.'],
+          ['send_payment_link()', 'Send a payment link to the user.'],
+          ['get_order_info()', 'Fetch the details of an order.'],
+          ['cancel_order()', 'Cancel an order.'],
+          ['search_products()', 'Search the product catalog.'],
+          ['get_weather()', 'Get weather information.'],
+          ['send_email()', 'Send an email.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Agentic AI application workflow',
+        items: [
+          'Step 1: The user asks a question.',
+          'Step 2: The application invokes the LLM with the user question.',
+          'Step 3: The LLM analyzes the question and suggests a tool name from the tools bound to it.',
+          'Step 4: The application invokes the tool suggested by the LLM.',
+          'Step 5: The tool performs the action and returns the result.',
+          'Step 6: The application prepares a prompt with the tool result and invokes the LLM again.',
+          'Step 7: The LLM generates the final response.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Tool calling flow',
+        code: 'User question → LLM (bound tools) → suggests tool_name + inputs → Application runs the tool → Tool result → LLM → Final response',
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Important',
+        text: 'The LLM does NOT directly execute the tool. It only selects the tool that is required; the application runs it.',
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
@@ -2799,6 +2888,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Tool calling', remember: 'The LLM picks a bound tool and its inputs; the application runs it and feeds the result back to the LLM for the final answer.' },
   { concept: 'CrewAI components', remember: 'Agent (role, goal, backstory) + Task (description, expected output) + Crew + Process (sequential or hierarchical); run with crew.kickoff().' },
   { concept: 'MCP client / server', remember: 'Client lives in the AI app and discovers and calls tools; the server exposes tools, resources and prompts backed by databases, APIs and files.' },
   { concept: 'Slack integration', remember: 'Slack app + OAuth scopes (chat:write, channels:read, channels:history) + bot token + channel ID, then slack_sdk WebClient.chat_postMessage.' },
