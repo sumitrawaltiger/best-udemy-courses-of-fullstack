@@ -11328,6 +11328,142 @@ for student in students:
       },
     ],
   },
+  {
+    num: 95,
+    title: 'Python Operators',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'An operator is a symbol or keyword used to perform operations on values or variables: addition, comparison, assignment, logical checking and more.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Why do we need operators?',
+        items: [
+          'Calculate student marks.',
+          'Calculate the total product price (actual price + GST).',
+          'Check login credentials.',
+          'Check citizen voting eligibility.',
+          'Apply discounts on products based on coupons.',
+          'Credit or debit an account balance amount.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Types of operators',
+        headers: ['Type', 'Operators', 'Purpose'],
+        rows: [
+          ['Arithmetic', '+  -  *  /  //  %  **', 'Perform mathematical operations.'],
+          ['Assignment', '=  +=  -=  *=  /=  //=  %=', 'Assign values to variables.'],
+          ['Comparison', '==  !=  >  >=  <  <=', 'Compare two values; the result is True or False.'],
+          ['Logical', 'and  or  not', 'Combine multiple conditions.'],
+          ['Membership', 'in  not in', 'Check whether a value is available inside a sequence.'],
+          ['Identity', 'is  is not', 'Compare the memory location of objects.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Arithmetic operators',
+        code: `a = 10
+b = 3
+
+print(a + b)   # Addition: 13
+print(a - b)   # Subtraction: 7
+print(a * b)   # Multiplication: 30
+print(a / b)   # Division: 3.3333
+print(a // b)  # Floor Division: 3
+print(a % b)   # Modulus / Remainder: 1
+print(a ** b)  # Power: 1000`,
+      },
+      {
+        type: 'code',
+        label: 'Assignment operators',
+        code: `x = 10
+print(x)   # 10
+
+x += 5     # x = x + 5
+print(x)   # 15
+
+x -= 3     # x = x - 3
+print(x)   # 12
+
+x *= 2     # x = x * 2
+print(x)   # 24
+
+x /= 4     # x = x / 4
+print(x)   # 6.0
+
+x //= 2    # x = x // 2
+print(x)   # 3.0
+
+x %= 2     # x = x % 2
+print(x)   # 1.0
+
+# additional assignment
+balance = 1000
+deposit_amount = 500
+#balance = balance + deposit_amount
+balance += deposit_amount
+print("Final balance : ", balance)
+
+withdraw_amount = 200
+#balance = balance - withdraw_amount
+balance -= withdraw_amount
+print("Final balance : ", balance)`,
+      },
+      {
+        type: 'code',
+        label: 'Comparison operators — the result is True or False',
+        code: `a = 10
+b = 20
+
+print(a == b)   # Equal to: False
+print(a != b)   # Not equal to: True
+print(a > b)    # Greater than: False
+print(a < b)    # Less than: True
+print(a >= b)   # Greater than or equal to: False
+print(a <= b)   # Less than or equal to: True`,
+      },
+      {
+        type: 'code',
+        label: 'Logical operators — combine multiple conditions',
+        code: `age = 25
+salary = 50000
+
+print(age > 18 and salary > 30000)
+# True because both conditions are True
+
+print(age > 18 or salary > 80000)
+# True because one condition is True
+
+print(not age > 18)
+# False because age > 18 is True, not True becomes False`,
+      },
+      {
+        type: 'code',
+        label: 'Membership operators — is a value inside a list, tuple, string...',
+        code: `students = ["Ashok", "Ramesh", "Suresh"]
+
+print("Ashok" in students)       # True
+print("Kiran" in students)       # False
+print("Kiran" not in students)   # True`,
+      },
+      {
+        type: 'code',
+        label: 'Identity operators — compare the memory location of objects',
+        code: `a = 10
+b = 10
+
+print(a is b)      # True
+print(a is not b)  # False`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'is vs ==',
+        text: 'Use == to compare values and is only to check whether two names refer to the same object. The 10 is 10 result above is True because Python reuses small integer objects; do not rely on is for comparing values.',
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -11364,6 +11500,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Python operators', remember: 'Arithmetic (+ - * / // % **), assignment (= += -=), comparison (== != > <), logical (and or not), membership (in, not in) and identity (is, is not).' },
   { concept: 'Conditional statements', remember: 'if, if-else, if-elif-else, nested if and match case choose what to run; Python uses indentation to define blocks.' },
   { concept: 'Loops', remember: 'for loops over a sequence or range(start, stop, step); while loops while a condition is true — update the variable to avoid an infinite loop.' },
   { concept: 'break vs continue', remember: 'break leaves the loop immediately; continue skips the current iteration and goes to the next.' },
