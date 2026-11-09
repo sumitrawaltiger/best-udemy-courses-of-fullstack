@@ -11880,6 +11880,173 @@ print(type(result))`,
       },
     ],
   },
+  {
+    num: 99,
+    title: 'What is Python? History, Features & Use Cases',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'Python is a high-level, general-purpose programming language that is widely used in the IT industry because it is simple, powerful, easy to learn and beginner friendly.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Why is Python so popular?',
+        items: [
+          'Its syntax is very close to English, so even a beginner can understand a program easily.',
+          'In many programming languages we need to write more code to display one message, but in Python we can display output with one simple line.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Hello World',
+        code: 'print("Hello World");',
+      },
+      {
+        type: 'list',
+        title: 'History of Python',
+        items: [
+          'Python was created by Guido van Rossum.',
+          'Python development started in the late 1980s and it was first released in 1991.',
+          'Python was designed to be simple, readable and powerful.',
+          'Python has two major historical versions: Python 2 and Python 3.',
+          'Python 2 is old and no longer recommended for new projects. Python 3 is the current and recommended version.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Timeline',
+        headers: ['Year', 'Milestone'],
+        rows: [
+          ['1980s', 'Python development started.'],
+          ['1991', 'Python first released.'],
+          ['2000', 'Python 2 released.'],
+          ['2008', 'Python 3 released.'],
+          ['Today', 'Widely used in web, AI, data science, automation, DevOps and backend development.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Features of Python',
+        items: [
+          '1. Simple and easy to learn.',
+          '2. Free and open source.',
+          '3. High-level language.',
+          '4. Platform independent.',
+          '5. Dynamically typed.',
+          '6. Object oriented (class, object).',
+          '7. Powerful third-party libraries.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Python use cases',
+        items: [
+          '1. Web development.',
+          '2. Data science.',
+          '3. Machine learning.',
+          '4. Artificial intelligence.',
+          '5. Automation.',
+          '6. DevOps practices.',
+          '7. Cloud computing.',
+          '8. Cyber security.',
+          '9. Gaming.',
+          '10. Web scraping.',
+          '11. API development.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Where Python is used and the popular libraries',
+        headers: ['Area', 'What Python is used for', 'Popular libraries / frameworks'],
+        rows: [
+          ['Web development and microservices', 'Develop web applications and APIs.', 'Django, Flask, FastAPI'],
+          ['Data science, AI and machine learning', 'Very popular because of its libraries support.', 'NumPy, Pandas, Matplotlib, Seaborn, SciPy, scikit-learn, TensorFlow, PyTorch, Keras'],
+          ['Automation', 'Rename multiple files, send emails automatically, generate reports.', '—'],
+          ['DevOps and cloud', 'Automation and scripting: servers automation, log analysis, AWS automation, Docker scripts, K8S automation and CI/CD scripts.', 'boto3, fabric, requests'],
+          ['Cybersecurity', 'Network scanning, security automation, malware analysis, password strength checking and vulnerability testing tools.', 'scapy, cryptography, requests'],
+          ['Web scraping', 'Extracting data from websites.', 'BeautifulSoup, Scrapy'],
+          ['Testing', 'Automation testing.', 'pytest, unittest, selenium'],
+        ],
+      },
+    ],
+  },
+  {
+    num: 100,
+    title: 'Python Setup, Program Execution Flow & Program Structure',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'How to install Python and an editor, what happens when a Python program runs (source code, byte code and the PVM), and how a Python program is usually structured.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Python setup',
+        items: [
+          'Step 1 — Download Python: go to the official Python website, python.org/downloads, and download the latest Python version for your operating system.',
+          'Step 2 — Install Python: run the downloaded installer. Very important: select the option "Add Python to PATH" before installing, then click Install Now.',
+          'Step 3 — Check the installation: open Command Prompt or Terminal and type python --version or py --version. You should see output like Python 3.x.x.',
+          'Step 4 — Install a code editor (IDE): install any one, PyCharm or Visual Studio Code. For beginners, PyCharm is easy to use for Python practice (jetbrains.com/pycharm/download).',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Check the Python installation',
+        code: `python --version
+# or
+py --version`,
+      },
+      {
+        type: 'list',
+        title: 'Python program execution flow',
+        items: [
+          'Step 1 — Write Python code in a file with the .py extension. Example: print("Hello Python") in the file demo.py.',
+          'Step 2 — Run the Python code with the command: python demo.py',
+          'Step 3 — The Python interpreter reads the code. An interpreter reads and executes code line by line.',
+          'Step 4 — The source code is converted into byte code. Source code is the code written by the programmer; byte code is an intermediate code understood by the Python Virtual Machine.',
+          'Step 5 — The byte code goes to the PVM (Python Virtual Machine), which executes the byte code.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Run a Python file',
+        code: 'python demo.py',
+      },
+      {
+        type: 'code',
+        label: 'Execution flow',
+        code: `Source Code  →  Byte Code
+
+Byte Code  →  Python Virtual Machine  →  Output to user
+
+Programmer → Source code → Interpreter → Byte Code → PVM → Machine Code → Output`,
+      },
+      {
+        type: 'list',
+        title: 'Python program structure',
+        items: [
+          'A Python program is usually written in a step-by-step structure:',
+          '1. Comments',
+          '2. import statements',
+          '3. Global variables',
+          '4. Functions',
+          '5. Function calling',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'A first Python program with this structure',
+        code: `# This is my first python program
+
+import math
+
+app_name = "python"
+name = "ashokit"
+
+def welcome():
+    print("Welcome to Python Training")
+
+welcome()`,
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -11916,6 +12083,8 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'What is Python', remember: 'High-level, general-purpose, free and open source, dynamically typed and platform independent; created by Guido van Rossum, first released in 1991; use Python 3.' },
+  { concept: 'Python execution flow', remember: 'Source code (.py) → interpreter → byte code → Python Virtual Machine (PVM) → output; tick "Add Python to PATH" when installing.' },
   { concept: 'Keywords and literals', remember: 'Keywords are reserved words that cannot be used as names (keyword.kwlist); a literal is a fixed value such as 10, 10.5, "Python", True, None or a list, tuple, set or dict.' },
   { concept: 'Variables and data types', remember: 'No type declaration: the type comes from the value. Names use letters, digits and _, cannot start with a digit or be a keyword, and are case-sensitive; type() shows the type.' },
   { concept: 'input() and type casting', remember: 'input() always returns a string, so convert with int() or float() before calculating; implicit casting is automatic, explicit casting is done with int(), str(), list(), tuple(), set() and dict().' },
