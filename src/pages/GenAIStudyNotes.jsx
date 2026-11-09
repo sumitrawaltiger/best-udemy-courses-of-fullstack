@@ -10110,6 +10110,810 @@ print(result, type(result))
       },
     ],
   },
+  {
+    num: 85,
+    title: 'Python Data Structures — Overview & Lists',
+    tag: 'Data Structures',
+    tagColor: 'cyan',
+    intro: 'Data structures are ways to store, organize and manage data in a program. Python has five commonly used built-in data structures: list, tuple, set, dictionary and string.',
+    blocks: [
+      {
+        type: 'table',
+        title: 'Built-in data structures',
+        headers: ['Data structure', 'Brackets', 'Ordered', 'Mutable', 'Duplicates'],
+        rows: [
+          ['List', '[ ]', 'Yes', 'Yes', 'Allowed'],
+          ['Tuple', '( )', 'Yes', 'No', 'Allowed'],
+          ['Set', '{ }', 'No', 'Yes', 'Not allowed'],
+          ['Dictionary', '{ key: value }', 'Yes', 'Yes', 'Keys must be unique; values may repeat'],
+          ['String', '" "', 'Yes', 'No', 'Allowed'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Note',
+        text: 'Each data structure has a different purpose.',
+      },
+      {
+        type: 'list',
+        title: 'What is a list?',
+        items: [
+          'A list is a built-in data structure used to store multiple values in a single variable.',
+          'Syntax: my_list = [value1, value2, value3]',
+          'Ordered, mutable (changeable) and allows duplicate values.',
+          'Can store different data types (homogeneous and heterogeneous).',
+          'We access list elements using the index order, and the index starts from 0.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'List examples',
+        code: `marks = [80, 90, 75]
+
+students = ["Ravi", "Sita", "Kiran"]
+
+mixed_data = ["Ravi", 25, 85.5, True]`,
+      },
+      {
+        type: 'code',
+        label: 'Creating a list and accessing elements',
+        code: `# list creation
+courses = ["JAVA", "Python", "DevOps", "GEN AI"]
+
+## access list elements
+print(courses[0])
+print(courses[1])
+print(courses[2])
+print(courses[3])
+
+items = ["Laptop", "Mouse", "Keyboard", "Monitor"]
+
+# Positive Indexing (starts from left to right)
+print(items[0])
+
+#negative index (starts from right to left)
+print(items[-1])`,
+      },
+      {
+        type: 'code',
+        label: 'List slicing — list_name[start:end]',
+        code: `# List Slicing :: used to get a part of list
+# syntax : list_name[start:end]
+
+numbers = [10, 20, 30, 40, 50, 60]
+print(numbers) # print all elements
+
+print(numbers[1:4]) #start index inclusive, end index exclusive
+
+print(numbers[:3]) # print from 0th index to 2nd index
+
+print(numbers[2:]) # print from 2nd to last
+
+print(numbers[::2]) # step by 2
+
+print(numbers[::-1]) # print in reverse order`,
+      },
+    ],
+  },
+  {
+    num: 86,
+    title: 'List Operations, Functions & List Comprehension',
+    tag: 'Data Structures',
+    tagColor: 'cyan',
+    intro: 'Lists can be changed with append, insert, extend, remove, pop, clear and del, inspected with built-in functions, and created in one line with list comprehension.',
+    blocks: [
+      {
+        type: 'table',
+        title: 'List operations',
+        headers: ['Operation', 'What it does'],
+        rows: [
+          ['append()', 'Adds an element at the end of the list.'],
+          ['insert()', 'Adds an element at the specified index.'],
+          ['extend()', 'Adds multiple elements to the list.'],
+          ['remove()', 'Removes the specified value.'],
+          ['pop()', 'Removes the element based on the index. If the index is not given, it removes the last element.'],
+          ['clear()', 'Removes all the elements from the list.'],
+          ['del', 'Deletes an element or the entire list.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'List operations — examples',
+        code: `courses = ["Python", "Java"]
+courses.append("DevOps")
+print(courses)
+
+courses.insert(1, "GEN AI")
+print(courses)
+
+
+frontend = ["HTML", "CSS"]
+backend = ["Python", "Django"]
+frontend.extend(backend)
+print(frontend)
+
+
+courses.remove("Java")
+print(courses)
+
+courses.pop()
+print(courses)
+
+courses.clear()
+print(courses)
+
+courses = ["Python", "Java", "DevOps"]
+del courses[1]
+print(courses)`,
+      },
+      {
+        type: 'code',
+        label: 'List functions — len, min, max, sum, sort',
+        code: `print(len(courses))
+
+numbers = [1, 3, 6, 9, 2]
+print(len(numbers))
+print(min(numbers))
+print(max(numbers))
+print(sum(numbers))
+
+numbers.sort()
+print(numbers)
+
+numbers.sort(reverse=True)
+print(numbers)`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'List comprehension',
+        text: 'List comprehension is a short and clean way to create a new list from an existing sequence like a range, list, tuple or string. It is mainly used to reduce multiple lines of loop code into a single line.',
+      },
+      {
+        type: 'code',
+        label: 'Normal loop vs list comprehension',
+        code: `# normal way
+numbers = []
+for i in range(1,6):
+    numbers.append(i)
+
+print(numbers)
+
+# list comprehension
+numbers = [i for i in range(1,6)]
+print(numbers)
+
+# square of numbers in normal way
+squares = []
+for i in range(1,6):
+    squares.append(i*i)
+print(squares)
+
+# square of numbers using comprehension
+squares = [i * i for i in range(1,6)]
+print(squares)
+
+# Even Numbers normal way
+even_numbers = []
+for i in range(1,11):
+    if i % 2 == 0:
+     even_numbers.append(i)
+print(even_numbers)
+
+# comprehension
+even_numbers = [i for i in range(1,11) if i % 2 ==0]
+print(even_numbers)`,
+      },
+      {
+        type: 'code',
+        label: 'List comprehension — uppercase, grades and GST',
+        code: `# convert to uppercase
+names = ["ravi", "sita", "kiran"]
+for name in names:
+    print(name.upper())
+
+upper_names = [name.upper() for name in names]
+print(upper_names)
+
+# students grade
+marks = [80, 30, 90, 45, 20]
+results = ["Pass" if mark>=35 else "Fail" for mark in marks]
+print(results)
+
+# GST
+prices = [1000, 2000, 5000, 10000]
+price_with_gst = [price + (price * 18 /100) for price in prices]
+print(price_with_gst)`,
+      },
+    ],
+  },
+  {
+    num: 87,
+    title: 'Python Tuples',
+    tag: 'Data Structures',
+    tagColor: 'cyan',
+    intro: 'A tuple is similar to a list, but it is immutable (not changeable). It is faster than a list and is used to store fixed data.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is a tuple?',
+        items: [
+          'A built-in data structure used to store multiple values in a single variable.',
+          'Similar to a list; the main difference is that a list is mutable while a tuple is immutable (not changeable).',
+          'Ordered, immutable, allows duplicate values, can store different data types.',
+          'Faster than a list, and used to store fixed data.',
+          'Syntax: my_tuple = (value-1, value-2, value-3)',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Tuple — indexing, slicing and index()',
+        code: `courses = ("JAVA", "Python", "GEN AI", "DEVOPS", ".Net", "MERN")
+print(courses)
+
+print(courses[0])
+print(courses[1])
+print(courses[-1])
+
+print(courses[1:3])
+
+print(courses[-1:-3:-1]) #start is inclusive, end is exclusive
+print(courses[:3])
+print(courses[2:])
+
+## courses[1] = "AWS" (not possible)
+
+print(courses.index("GEN AI"))`,
+      },
+      {
+        type: 'code',
+        label: 'Tuple packing and unpacking',
+        code: `# tuple packing
+student = "Ashok", "Male", 66868686
+print(student)
+
+# tuple unpacking
+student = ("Ashok", "Male", 66868686)
+name, gender, phone = student
+print(name)
+print(gender)
+print(phone)`,
+      },
+      {
+        type: 'code',
+        label: 'Tuple functions — len, sum, min, max, sorted',
+        code: `# len(), max(), min(), sum(), sorted()
+
+numbers = (10, 15, 30, 20, 40, 25)
+print(len(numbers))
+print(sum(numbers))
+print(min(numbers))
+print(max(numbers))
+
+### numbers.sorted()  (invalid)
+
+# sorted() returns list, not tuple.
+
+sorted_numbers = sorted(numbers) #it returns new list
+print(sorted_numbers)
+
+sorted_numbers = sorted(numbers, reverse=True) #it returns new list
+print(sorted_numbers)`,
+      },
+      {
+        type: 'code',
+        label: 'Convert, check a value, concatenate',
+        code: `courses = ("Python", "Java", "DevOps")
+
+# convert tuple to list
+course_list = list(courses) # it gives list
+course_list[0] = "GEN AI"
+print(course_list)
+
+## Check Value Exists in Tuple
+
+if "GEN AI" in courses:
+    print("GEN AI course available in Ashok IT")
+else:
+    print("GEN AI course not available in Ashok IT")
+
+# Tuple concatenation
+frontend = ("HTML", "CSS")
+backend = ("Python", "Django")
+fullstack = frontend + backend
+print(fullstack)
+
+skills_list = list(fullstack)
+skills_list.insert(-1,"DevOps")
+print(skills_list)`,
+      },
+      {
+        type: 'table',
+        title: 'List vs tuple',
+        headers: ['List', 'Tuple'],
+        rows: [
+          ['Mutable.', 'Immutable.'],
+          ['Uses square brackets [].', 'Uses parentheses ().'],
+          ['Slower than a tuple.', 'Faster than a list.'],
+          ['Used when data changes frequently.', 'Used when data is fixed.'],
+        ],
+      },
+    ],
+  },
+  {
+    num: 88,
+    title: 'Python Sets & List vs Tuple vs Set',
+    tag: 'Data Structures',
+    tagColor: 'cyan',
+    intro: 'A set stores unique values. It is unordered, so it does not support indexing or slicing, and it does not allow duplicates.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is a set?',
+        items: [
+          'A built-in data structure used to store multiple values in a single variable.',
+          'Mainly used when we want to store unique values — a set does not allow duplicate values.',
+          'Unordered and mutable; can store different data types.',
+          'Does not support indexing and does not support slicing.',
+          'Syntax: my_set = {value-1, value-2, value-3}',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Set — duplicates are removed',
+        code: `courses = {"Python", "JAVA", "Python", "DEVOPS"}
+
+print(courses)`,
+      },
+      {
+        type: 'code',
+        label: 'How duplicates are removed internally',
+        code: `Python → hash calculated → stored
+JAVA → hash calculated → stored
+Python → hash calculated → already exists, so ignored
+DEVOPS → hash calculated → stored
+
+# Example
+courses = {"Python", "JAVA", "DEVOPS", "Python"}
+print(hash("Python"))
+print(hash("JAVA"))
+print(hash("JAVA"))`,
+      },
+      {
+        type: 'table',
+        title: 'Set operations',
+        headers: ['Operation', 'What it does'],
+        rows: [
+          ['add()', 'Adds one element to the set.'],
+          ['update()', 'Adds multiple elements to the set.'],
+          ['remove()', 'Removes the specified element from the set (an error if it is not available).'],
+          ['discard()', 'Removes the specified element; it does not give an error if the element is not available.'],
+          ['pop()', 'Removes an arbitrary element from the set.'],
+          ['clear()', 'Removes all the elements from the set.'],
+          ['del', 'Deletes the entire set from memory.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Set operations — examples',
+        code: `courses.add("GEN AI")
+print(courses)
+
+courses.update(["GCP", "AWS", "aws", "Azure"])
+print(courses)
+
+#courses.remove("HTML")
+print(courses)
+
+# If the element is not available, discard() does not give error.
+
+courses.discard("AWS")
+print(courses)
+
+courses.pop()
+print(courses)
+
+courses.clear()
+print(courses)
+
+del courses
+## print(courses)`,
+      },
+      {
+        type: 'code',
+        label: 'Set functions and removing duplicates from a list',
+        code: `# len(), min(), max(), sum(), sorted()
+
+numbers = {10, 50, 20, 80, 30, 40}
+print(len(numbers))
+print(min(numbers))
+print(max(numbers))
+print(sum(numbers))
+sorted_numbers = sorted(numbers, reverse=True)
+print(sorted_numbers)
+
+# Remove Duplicates from list using set() function
+skills = ["JAVA", "Python", "DevOps", "JAVA"]
+print(set(skills))`,
+      },
+      {
+        type: 'table',
+        title: 'List vs tuple vs set',
+        headers: ['', 'List', 'Tuple', 'Set'],
+        rows: [
+          ['Mutable', 'Yes', 'No (immutable)', 'Yes'],
+          ['Brackets', '[ ]', '( )', '{ }'],
+          ['Ordered', 'Yes', 'Yes', 'No (unordered)'],
+          ['Duplicates', 'Allowed', 'Allowed', 'Not allowed'],
+          ['Speed', 'Slower than a tuple', 'Faster than a list', '—'],
+          ['Indexing and slicing', 'Supported', 'Supported', 'Not supported'],
+          ['Used when', 'Data changes frequently.', 'Data is fixed.', 'We need unique values.'],
+        ],
+      },
+    ],
+  },
+  {
+    num: 89,
+    title: 'Python Dictionaries',
+    tag: 'Data Structures',
+    tagColor: 'cyan',
+    intro: 'A dictionary stores data in key-value pairs. It is used when we want to store data with a meaningful name (key).',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is a dictionary?',
+        items: [
+          'A built-in data structure used to store data in key-value pairs.',
+          'Used when we want to store data with a meaningful name / key.',
+          'Ordered and mutable.',
+          'Duplicate keys are not allowed (keys must be unique); duplicate values are allowed.',
+          'A value can be any data type.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Dictionary syntax and example',
+        code: `# Syntax
+my_dict = {
+
+    "key-1" : "value-1",
+    "key-2" : "value-2"
+}
+
+# Example
+student = {
+    "name": "Ravi",
+    "age": 25,
+    "course": "Python"
+}`,
+      },
+      {
+        type: 'code',
+        label: 'Reading values and adding key-value pairs',
+        code: `student = {
+    "name": "Ravi",
+    "age": 25,
+    "course": "Python",
+    "marks": 85
+}
+print(student)
+print(student["name"])  # if key not present it gives error
+print(student.get("gender"))  # if key not present it gives None
+print(student.get("city", "Hyd"))  # If key not present gives default val
+
+## Adding New Key-Value Pair
+student["grade"] = "A"
+print(student)
+
+student["name"] = "Raj"
+print(student)`,
+      },
+      {
+        type: 'table',
+        title: 'Dictionary operations',
+        headers: ['Operation', 'What it does'],
+        rows: [
+          ['keys()', 'Returns all the keys.'],
+          ['values()', 'Returns all the values.'],
+          ['items()', 'Returns all the key-value pairs.'],
+          ['update()', 'Updates dictionary values or adds new key-value pairs.'],
+          ['pop(key)', 'Removes the value based on the key.'],
+          ['popitem()', 'Removes the last inserted key-value pair.'],
+          ['clear()', 'Removes all the key-value pairs from the dictionary.'],
+          ['del', 'Deletes a key, or the entire dictionary from memory.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Dictionary operations — examples',
+        code: `# Dictionary Operations
+print(student.keys())
+print(student.values())
+print(student.items())
+
+# update() is used to update dictionary values or add new key-value pairs.
+student.update({"name": "Ashok"})
+print(student)
+
+# pop() removes value based on key.
+student.pop("grade")
+print(student)
+
+# popitem() removes last inserted key-value pair
+student.popitem()
+print(student)
+
+# clear : removes all key-value pairs from dictionary
+# del : delete entire dictionary from memory
+
+del student["name"]
+print(student)
+
+del student`,
+      },
+      {
+        type: 'code',
+        label: 'Nested dictionary and looping through it',
+        code: `# Working with Nested Dictionary
+
+students = {
+    "s1": {
+        "name": "Raj",
+        "age": 25,
+        "course": "Python"
+    },
+    "s2": {
+        "name": "Anil",
+        "age": 35,
+        "course": "GEN AI"
+    }
+}
+print(students)
+print(students["s1"])
+print(students["s1"]["name"])
+print(students["s1"].get("name"))
+
+print(students["s2"])
+print(students["s2"]["name"])
+
+# Looping Nested Dictionary
+for student_id, student_data in students.items():
+    for key,value in student_data.items():
+        print(key, "--", value)
+
+    print("-----------")`,
+      },
+    ],
+  },
+  {
+    num: 90,
+    title: 'Python Strings',
+    tag: 'Data Structures',
+    tagColor: 'cyan',
+    intro: 'A string is a built-in data type used to store text data. It is a sequence of characters: letters, numbers, symbols or spaces.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is a string?',
+        items: [
+          'A built-in data type in Python used to store text data.',
+          'A string is a sequence of characters; characters can be letters, numbers, symbols or spaces.',
+          'Examples: name = "Ashok", pan_number = "DB7979DDF", pwd = "Ashok@685757".',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'String features',
+        items: [
+          'Ordered data structure.',
+          'Immutable (not changeable).',
+          'Supports indexing and slicing.',
+          'Allows duplicate characters.',
+          'Can be created using single quotes, double quotes or triple quotes.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'String creation',
+        code: `name = 'Ashok'
+
+msg = "Hello, how are you?"
+
+text = """
+        I am learning python
+        python is easy
+"""`,
+      },
+      {
+        type: 'code',
+        label: 'String operations — length, index, slicing, concatenation',
+        code: `name = "Python"
+print(len(name))
+
+# index based operations
+print(name[0])
+print(name[-1])
+
+# slicing operations
+print(name[0:3]) # Pyt
+print(name[3:]) #hon
+
+# name[0] = "J"  # Error
+
+f_name = "Ashok"
+l_name = "Bollepalli"
+
+full_name = f_name +" "+ l_name
+print(full_name)
+
+print(full_name * 3)
+
+
+msg = "i like gen ai development"
+print(msg.title())
+print(msg.capitalize())`,
+      },
+      {
+        type: 'code',
+        label: 'Check a character or word exists, and loop through a string',
+        code: `# Check character or word exists (True/False)
+course = "GEN AI and Agentic AI"
+print("AI" in course)
+print("Python" in course)
+
+# String with for loop
+for letter in course:
+    print(letter)`,
+      },
+      {
+        type: 'table',
+        title: 'String methods',
+        headers: ['Method', 'What it does'],
+        rows: [
+          ['upper()', 'Converts all characters to upper case.'],
+          ['lower()', 'Converts all characters to lower case.'],
+          ['title()', 'Converts the first character of every word to upper case.'],
+          ['capitalize()', 'Converts the first letter of the string to upper case.'],
+          ['strip()', 'Removes spaces from the beginning and the end of the string.'],
+          ['lstrip()', 'Removes spaces from the left side.'],
+          ['rstrip()', 'Removes spaces from the right side.'],
+          ['replace()', 'Replaces the old value with a new value and creates a new string.'],
+          ['split()', 'Splits the string into a list of elements.'],
+          ['join()', 'Joins list values into a string (we can give a delimiter).'],
+          ['find()', 'Returns the index position of the given value.'],
+          ['count()', 'Returns how many times a value is repeated.'],
+          ['startswith()', 'Checks whether the string starts with the given value.'],
+          ['endswith()', 'Checks whether the string ends with the given value.'],
+          ['isdigit()', 'Checks whether all characters are digits.'],
+          ['isalpha()', 'Checks whether all characters are alphabets.'],
+          ['isalnum()', 'Checks whether all characters are alphabets or numbers.'],
+          ['format()', 'Constructs a string with dynamic values.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'String methods — examples',
+        code: `message = "I like Java"
+new_msg = message.replace("Java","Python")
+print(new_msg)
+
+courses = "Python,Java,DevOps,AWS"
+result = courses.split(",")
+print(result)
+
+courses = ["Python", "Java", "DevOps"]
+result = "#".join(courses)
+print(result)
+
+str = "welcome to c and python"
+print(str.find('c')) # 3
+print(str.find('z')) # -1
+print(str.find('python')) # 11
+
+print(str.index('python')) # 11
+## print(str.index('z')) # Error
+
+message = "Python is easy and Python is powerful"
+print(message.count("Python"))
+
+print(message.startswith("Python"))
+print(message.endswith("Python"))
+
+mobile = "85858658"
+print(mobile.isdigit())
+
+name = "AshokIT"
+print(name.isalpha())
+
+pwd = "India@123"
+print(pwd.isalnum())`,
+      },
+    ],
+  },
+  {
+    num: 91,
+    title: 'String Formatting, Programs & Practice Questions',
+    tag: 'Data Structures',
+    tagColor: 'cyan',
+    intro: 'String formatting inserts variable values inside a string. This module also has string programs — reverse a string, email validation, username generation — and 14 practice questions.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'String formatting',
+        text: 'String formatting is used to insert variable values inside a string. We can use commas, concatenation, format() or f-strings.',
+      },
+      {
+        type: 'code',
+        label: 'Four ways to build a string with values',
+        code: `name = "Ashok"
+course = "Python"
+
+print("Student name is", name, "and course is", course)
+print("Student name is " + name + " and course is " + course)
+
+msg = "Student name is {} and course is {}".format(name, course)
+print(msg)
+
+# f-string
+msg  = f"Student name is {name} and course is {course}"
+print(msg)`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Security warning — never build SQL queries from user input',
+        text: 'A common use case is a SQL query that verifies the login credentials entered by a user, such as f"select * from user_tbl where email={email} and pwd={pwd}". Do not build real queries like this: it allows SQL injection. Use parameterized queries with placeholders instead (see module 67, Python with MySQL).',
+      },
+      {
+        type: 'code',
+        label: 'Reverse a string',
+        code: `text = "python"
+rev_text = reversed(text)
+print(rev_text)
+print(list(rev_text))
+print("".join(reversed(text)))`,
+      },
+      {
+        type: 'code',
+        label: 'Email validation',
+        code: `email = input("Enter Email")
+if "@" in email and "." in email:
+    print("Valid Email")
+else:
+    print("Invalid Email")`,
+      },
+      {
+        type: 'code',
+        label: 'Generate a username from the name and the last 4 digits of the phone number',
+        code: `name = "Ashok"
+phno = "868686868"
+username = name.lower()+ phno[-4:]
+print(username)`,
+      },
+      {
+        type: 'list',
+        title: 'Practice programs',
+        items: [
+          '1. Reverse a string.',
+          '2. Check whether the given string is a palindrome or not.',
+          '3. Count the vowels and consonants in a string.',
+          '4. Count the occurrence of each character in the given string.',
+          '5. Remove duplicate characters in a string.',
+          '6. Convert a string into upper case without using upper().',
+          '7. Convert a string into lower case without using lower().',
+          '8. Find the first non-repeated character in a string.',
+          '9. Find the most repeated character in a string.',
+          '10. Check whether two strings are anagrams.',
+          '11. Count the digits, letters and special characters in the given string.',
+          '12. Reverse each word in a sentence.',
+          '13. Find the longest word in a sentence.',
+          '14. Count the frequency of each word in a string.',
+        ],
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -10146,6 +10950,10 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'List and list comprehension', remember: 'Ordered, mutable, allows duplicates; index from 0, slicing [start:end:step]; [expr for x in seq if cond] builds a list in one line.' },
+  { concept: 'Tuple vs set', remember: 'Tuple: ordered, immutable, fixed data. Set: unordered, unique values, no indexing or slicing; set(list) removes duplicates.' },
+  { concept: 'Dictionary', remember: 'Key-value pairs with unique keys; get() avoids KeyError; keys(), values(), items(), update(), pop(); nested dictionaries are looped with items().' },
+  { concept: 'Strings', remember: 'Immutable sequence of characters with indexing and slicing; methods like replace, split, join, find, count; format with f-strings, and never build SQL from user input.' },
   { concept: 'Python functions', remember: 'def name(params): ... ; return sends a value back and stops the function; without return a function gives None; use snake_case names.' },
   { concept: 'Argument types', remember: 'Positional (order matters), keyword (name=value), default (after non-default), *args (tuple) and **kwargs (dictionary).' },
   { concept: 'Variable scope', remember: 'Local variables live inside a function, global ones outside; use the global keyword to change a global inside a function; functions can be nested.' },
