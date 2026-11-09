@@ -3540,6 +3540,231 @@ streamlit run app.py    # Streamlit UI`,
       },
     ],
   },
+  {
+    num: 38,
+    title: 'Prompt vs Loop vs Harness Engineering',
+    tag: 'Techniques',
+    tagColor: 'cyan',
+    intro: 'Three layers of building reliable AI applications: how we ask the AI (prompt), how the AI tries, checks and retries (loop), and the environment around the AI so it can succeed safely (harness). Prompt basics — role, task, context, format, constraints and shots — are in module 6.',
+    blocks: [
+      {
+        type: 'table',
+        title: 'The three disciplines at a glance',
+        headers: ['Engineering', 'Main question', 'Short form', 'Example'],
+        rows: [
+          ['Prompt Engineering', 'What should I tell the AI?', 'Better instructions', '"Explain Java to a beginner with simple English."'],
+          ['Loop Engineering', 'How can the AI try, check and retry?', 'Better iteration', 'Generate code → Test → Fix → Test'],
+          ['Harness Engineering', 'What environment does the AI need to succeed safely?', 'Better environment', 'Tools + RAG + Memory + Security + Tests'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Prompt Engineering',
+        text: 'Designing better instructions for an AI model so that we get better results. PROMPT ENGINEERING = HOW DO I ASK AI CORRECTLY?',
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Loop Engineering',
+        text: 'Designing a repeated cycle where the AI performs a task, takes an action, observes the result and decides what to do next. LOOP ENGINEERING = HOW CAN AI TRY, CHECK AND TRY AGAIN?',
+      },
+      {
+        type: 'code',
+        label: 'Example — "Find the fastest route to the airport"',
+        code: `Get current location
+       ↓
+Get destination
+       ↓
+Check available routes
+       ↓
+Check traffic
+       ↓
+Compare routes
+       ↓
+Select best route
+       ↓
+Give recommendation`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Loop-based agent systems',
+        text: 'This is the type of thinking behind loop-based agent systems: the system works through the steps, checks the result and decides what to do next.',
+      },
+      {
+        type: 'code',
+        label: 'Coding agent example — "Create a Python calculator"',
+        code: `Write code
+   ↓
+Run code
+   ↓
+Error!
+   ↓
+AI reads error
+   ↓
+Fix code
+   ↓
+Run code again
+   ↓
+Success
+   ↓
+Return result`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Loop Engineering in one line',
+        text: 'This try → observe → correct → retry process is Loop Engineering.',
+      },
+      {
+        type: 'code',
+        label: 'The agent loop',
+        code: `    GOAL
+      ↓
+    THINK
+      ↓
+     ACT
+      ↓
+   OBSERVE
+      ↓
+   EVALUATE
+      ↓
+   ┌───────┴───────┐
+   ↓               ↓
+ Failed          Success
+   ↓               ↓
+ RETRY           FINISH
+   ↓
+ THINK again`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Harness Engineering',
+        text: 'Designing the tools, context, environment, rules, feedback and infrastructure around an AI agent so it can complete tasks reliably. HARNESS ENGINEERING = WHAT ENVIRONMENT DOES AI NEED TO SUCCEED?',
+      },
+      {
+        type: 'list',
+        title: 'Easy analogy — a student writing an exam',
+        items: [
+          'The student brain is like the LLM.',
+          'But the student also needs: question paper, pen, calculator, reference material, time limit, rules, invigilator, answer sheet and evaluation.',
+          'The brain alone is not enough — similarly, an AI agent needs an environment around it. That environment is the harness.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Customer support agent — "Where is my order?"  The AI is given tools',
+        code: `LLM
+ |
+ +-- Search Orders
+ +-- Check Payment
+ +-- Check Delivery
+ +-- Cancel Order
+ +-- Create Support Ticket`,
+      },
+      {
+        type: 'code',
+        label: 'The complete system — this surrounding system is the harness',
+        code: `Customer
+   ↓
+AI Agent
+   ↓
+Authentication
+   ↓
+Understand Question
+   ↓
+Search Order Database
+   ↓
+Check Delivery API
+   ↓
+Get Result
+   ↓
+Generate Answer
+   ↓
+Security Check
+   ↓
+Customer`,
+      },
+      {
+        type: 'code',
+        label: 'Stage 1 — Prompt Engineering (HR assistant)',
+        code: `You are an HR assistant.
+
+Answer employee questions about company policies.
+
+Use simple English.
+
+Never invent company policies.
+
+If information is unavailable, say:
+"I couldn't find this information."`,
+      },
+      {
+        type: 'code',
+        label: 'Stage 2 — Loop Engineering (HR assistant)',
+        code: `Employee Question
+       ↓
+AI understands question
+       ↓
+Search HR documents
+       ↓
+Get relevant documents
+       ↓
+AI checks information
+       ↓
+Enough information?
+   ↓           ↓
+  No          Yes
+   ↓           ↓
+Search again  Answer`,
+      },
+      {
+        type: 'code',
+        label: 'Stage 3 — Harness Engineering (HR assistant)',
+        code: `                 HR AI ASSISTANT
+                        |
+          +-------------+-------------+
+          ↓             ↓             ↓
+         RAG           Tools        Memory
+          ↓             ↓             ↓
+     HR Documents    Leave API   Conversation
+          ↓             ↓
+      Vector DB    HR Database
+          ↓             ↓
+          +-------------+-------------+
+                        ↓
+                    Agent Loop
+                        ↓
+                   Guardrails
+                        ↓
+                  Authorization
+                        ↓
+                   Evaluation
+                        ↓
+                   Monitoring
+                        ↓
+                     Answer`,
+      },
+      {
+        type: 'table',
+        title: 'Easy car analogy',
+        headers: ['Engineering', 'In the car example'],
+        rows: [
+          ['Prompt Engineering', 'You tell the driver: "Go to Hyderabad." This is the instruction.'],
+          ['Loop Engineering', 'Drive → check GPS → traffic detected → change route → check GPS → continue.'],
+          ['Harness Engineering', 'Driver + car + GPS + road map + traffic information + fuel + brakes + safety systems + rules + sensors.'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Remember',
+        text: 'Prompt Engineering = better instructions. Loop Engineering = better iteration. Harness Engineering = better environment.',
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
@@ -3556,6 +3781,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Prompt vs Loop vs Harness', remember: 'Prompt = how I ask (better instructions); Loop = try, check, retry (better iteration); Harness = tools, RAG, memory, security, tests around the agent (better environment).' },
   { concept: 'RAG (R-A-G)', remember: 'Retrieval finds relevant chunks, Augmented adds them to the question, Generation lets the LLM answer; fixes private data, outdated knowledge and hallucination.' },
   { concept: 'Pinecone', remember: 'Vector database for embeddings: index, vector, ID, metadata, namespace. Query returns the most similar chunks with a score.' },
   { concept: 'LangChain chatbot', remember: 'LangChain bridges the LLM with DB, RAG, APIs and a prompt: question → DB + RAG context → prompt → LLM → answer.' },
