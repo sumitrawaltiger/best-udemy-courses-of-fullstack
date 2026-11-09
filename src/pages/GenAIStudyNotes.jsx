@@ -2643,6 +2643,146 @@ slack.chat_postMessage(
       },
     ],
   },
+  {
+    num: 32,
+    title: 'CrewAI in Depth — Agents, Tasks & Crew',
+    tag: 'Multi-Agent',
+    tagColor: 'purple',
+    intro: 'CrewAI is a Python framework for building multi-agent AI applications, where multiple AI agents work together like members of a team. See module 13 for the short overview.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is CrewAI?',
+        items: [
+          'A Python framework used to build multi-agent AI applications.',
+          'Multiple AI agents work together like team members.',
+          'Each agent has a role, a goal, a backstory and one or more tasks.',
+          'Example: a Research Agent collects the required information and a Writer Agent creates the final response summary.',
+          'With CrewAI we can manage both the Research Agent and the Content Writer Agent at the same time.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Normal chatbot vs CrewAI',
+        code: `Normal chatbot : User ---> Question ---> One LLM ---> Final Answer
+
+CrewAI         : User ---> Question ---> Research Agent ---> Writer Agent ---> Final Content`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Why do we need CrewAI?',
+        text: 'A normal chatbot usually uses one LLM for the entire work. In CrewAI the work is divided among specialized agents, and each agent is responsible for one specific type of work.',
+      },
+      {
+        type: 'table',
+        title: 'Similar to a real software team',
+        headers: ['Team', 'Responsibility'],
+        rows: [
+          ['Business Analyst team', 'Collects requirements from the client.'],
+          ['Developers', 'Write the code.'],
+          ['Testers', 'Check that the code works as expected.'],
+          ['DevOps team', 'Handles the build and deployment process.'],
+          ['Management team', 'Reviews the final outcome and delivers it.'],
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Important CrewAI components',
+        headers: ['Component', 'What it is'],
+        rows: [
+          ['Agent', 'An AI team member.'],
+          ['Task', 'A specific assignment given to an agent.'],
+          ['Crew', 'A team of agents working together.'],
+          ['Process', 'Decides how the tasks are executed.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'What is an agent?',
+        items: [
+          'An agent is an AI team member.',
+          'An agent has: role, goal, backstory, LLM, tools, memory and delegation settings.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Agent example',
+        code: `research_agent = Agent(
+    role = "You are course researcher",
+    goal = "Collect important information about course",
+    backstory = "you are an expert education researcher"
+)`,
+      },
+      {
+        type: 'list',
+        title: 'What is a task?',
+        items: [
+          'A task is a specific assignment given to an agent.',
+          'A task normally contains a description, the expected output and the assigned agent.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Task example',
+        code: `research_task = Task(
+    description = "research important topics of {course}",
+    expected_output = "List of important course topics",
+    agent = research_agent
+)`,
+      },
+      {
+        type: 'code',
+        label: 'Crew example — a team of agents working together',
+        code: `crew = Crew(
+    agents = [research_agent, writer_agent],
+    tasks = [research_task, writing_task]
+)`,
+      },
+      {
+        type: 'table',
+        title: 'Process — how tasks are executed',
+        headers: ['Process', 'How it works'],
+        rows: [
+          ['Sequential', 'Tasks execute one after another in a fixed order: Task 1 → Task 2 → Task 3.'],
+          ['Hierarchical', 'A manager LLM / agent coordinates the work and delegates the tasks. This is where manager_llm is used.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Sequential process and kickoff',
+        code: `crew = Crew(
+    agents = [research_agent, writer_agent],
+    tasks = [research_task, writing_task],
+    process = Process.sequential,
+    manager_llm = llm
+)
+
+# execute the agents configured using the crew
+crew.kickoff()`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Project — Course Content Generator',
+        text: 'Develop a simple Course Content Generator application, a multi-agent system using CrewAI, with two agents: a Course Researcher Agent and a Content Writer Agent.',
+      },
+      {
+        type: 'table',
+        title: 'Project requirement',
+        headers: ['Agent', 'Responsibilities'],
+        rows: [
+          ['Course Researcher Agent', 'Identify the important topics, the skills students will learn and the project ideas.'],
+          ['Content Writer Agent', 'Use the research result to prepare a simple course introduction, the course highlights and a final student-friendly summary.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Project flow',
+        code: 'Course name → Course Researcher Agent (topics, skills, project ideas) → Content Writer Agent (introduction, highlights, summary) → Final course content',
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
@@ -2659,6 +2799,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'CrewAI components', remember: 'Agent (role, goal, backstory) + Task (description, expected output) + Crew + Process (sequential or hierarchical); run with crew.kickoff().' },
   { concept: 'MCP client / server', remember: 'Client lives in the AI app and discovers and calls tools; the server exposes tools, resources and prompts backed by databases, APIs and files.' },
   { concept: 'Slack integration', remember: 'Slack app + OAuth scopes (chat:write, channels:read, channels:history) + bot token + channel ID, then slack_sdk WebClient.chat_postMessage.' },
   { concept: 'AWS EC2', remember: 'Virtual servers: AMI + instance type + key pair + VPC + security group + EBS storage.' },
