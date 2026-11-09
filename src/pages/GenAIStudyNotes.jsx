@@ -1486,6 +1486,230 @@ kubectl scale deployment javawebdeploy --replicas 3`,
       },
     ],
   },
+  {
+    num: 23,
+    title: 'Docker — Containerization',
+    tag: 'Containers',
+    tagColor: 'cyan',
+    intro: 'Docker is a free, open-source tool for containerization: packaging application code and its dependencies as a single unit so the application runs the same way on any machine.',
+    blocks: [
+      {
+        type: 'table',
+        title: 'Sample application architecture and tech stack',
+        headers: ['Layer', 'Role', 'Technology'],
+        rows: [
+          ['Frontend', 'User interface (UI)', 'Angular 20'],
+          ['Backend', 'Business logic + AI integration', 'Python 3.12'],
+          ['Database', 'Storage', 'MySQL Server 8.5'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'The problem Docker solves',
+        text: 'To run the application, every machine needs all its dependencies installed — here Angular 20 + Python 3.12 + MySQL 8.5. Setting this up by hand on 100 machines is a hectic task with a high chance of human mistakes. Docker takes care of the dependencies instead.',
+      },
+      {
+        type: 'list',
+        title: 'What is Docker?',
+        items: [
+          'Free and open-source software used for containerization.',
+          'Containerization means packaging application code + application dependencies as a single unit for execution.',
+          'Docker installs the dependencies the application needs, so we can run it on any machine.',
+          'It makes the application portable, and Docker itself is platform independent — Windows, Linux and Mac.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Docker container',
+        code: 'Docker Container = application code + application dependencies',
+      },
+      {
+        type: 'table',
+        title: 'Docker architecture',
+        headers: ['Component', 'What it is'],
+        rows: [
+          ['Dockerfile', 'Specifies where the app code is and which dependencies it needs. The Docker image is built from it.'],
+          ['Docker Image', 'A package containing the app code + app dependencies.'],
+          ['Docker Registry', 'Stores Docker images (for example Docker Hub).'],
+          ['Docker Container', 'Created when a Docker image runs. It is a lightweight, isolated Linux environment, similar to a small virtual machine, where the application executes.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Install Docker on a Linux VM (Amazon Linux EC2)',
+        code: `# Step 1: create an EC2 VM (Amazon Linux) and connect with an SSH client
+# Step 2: run the commands below
+
+# Install Docker
+sudo yum update -y
+sudo yum install docker -y
+sudo service docker start
+
+# Add ec2-user to the docker group
+sudo usermod -aG docker ec2-user
+
+# Exit from the terminal and connect again
+exit
+
+# Verify the installation
+docker -v`,
+      },
+      {
+        type: 'table',
+        title: 'Docker commands',
+        headers: ['Command', 'Purpose'],
+        rows: [
+          ['docker images', 'Display the Docker images available in the system.'],
+          ['docker pull <image-id/name>', 'Download a Docker image from Docker Hub.'],
+          ['docker rmi <image-id/name>', 'Delete a Docker image.'],
+          ['docker run <image-id/name>', 'Create / run a Docker container.'],
+          ['docker ps', 'Display running containers.'],
+          ['docker ps -a', 'Display running + stopped containers.'],
+          ['docker stop <container-id>', 'Stop a running container.'],
+          ['docker start <container-id>', 'Start a stopped container.'],
+          ['docker rm <container-id>', 'Delete a container.'],
+          ['docker system prune -a', 'Delete stopped containers + unused images + build cache.'],
+          ['docker build -t <tag-name> .', 'Build a Docker image.'],
+          ['docker login', 'Log in to a Docker Hub account.'],
+          ['docker push <img-name>', 'Push a Docker image to Docker Hub.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Run a Java Spring Boot application from an image',
+        code: `docker pull ashokit/spring-boot-rest-api
+docker run ashokit/spring-boot-rest-api
+docker run -d ashokit/spring-boot-rest-api
+docker ps
+docker logs <container-id>
+docker run -d -p host-port:container-port ashokit/spring-boot-rest-api
+
+# Example
+docker run -d -p 9090:9090 ashokit/spring-boot-rest-api
+
+# Java app URL
+http://public-ip:host-port/welcome/{name}`,
+      },
+      {
+        type: 'code',
+        label: 'Run a Python Flask application from an image',
+        code: `docker pull ashokit/python-flask-app
+docker run -d ashokit/python-flask-app
+docker run -d -p 5000:5000 ashokit/python-flask-app
+
+# Python app URL
+http://public-ip:host-port/`,
+      },
+      {
+        type: 'list',
+        title: 'Detached mode and port mapping',
+        items: [
+          '-d means detached mode — the container runs in the background.',
+          '-p means port mapping, written as host-port:container-port.',
+          'The host port and the container port do not need to be the same.',
+          'Enable the host port in the EC2 VM security group inbound rules to allow the traffic.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Dockerfile',
+        text: 'A Dockerfile contains the set of instructions used to build a Docker image. The file is named Dockerfile and is kept inside the project directory.',
+      },
+      {
+        type: 'table',
+        title: 'Dockerfile keywords',
+        headers: ['Keyword', 'Purpose', 'Example'],
+        rows: [
+          ['FROM', 'Specifies the base image for our application image.', 'FROM openjdk:21 · FROM python:3.12 · FROM node:19 · FROM mysql:8.5'],
+          ['MAINTAINER', 'Author of the Dockerfile. Optional (newer Dockerfiles use LABEL instead).', 'MAINTAINER Ashok Bollepalli <290689686>'],
+          ['RUN', 'Commands executed at image build time. Multiple RUN instructions run sequentially.', 'RUN pip install -r requirements.txt'],
+          ['CMD', 'Command executed when the container is created. Only the last CMD takes effect.', 'CMD python app.py'],
+          ['ENTRYPOINT', 'Alternative to CMD that runs when the container is created.', 'ENTRYPOINT ["python", "app.py"]'],
+          ['COPY', 'Copies files from the host machine to the container machine.', 'COPY app.py /usr/app/'],
+          ['ADD', 'Copies files from source to destination, and the source can also be a URL.', 'ADD <file-url> /usr/app/'],
+          ['WORKDIR', 'Sets / changes the working directory in the container.', 'WORKDIR /usr/app/'],
+          ['EXPOSE', 'Documents the port the application runs on.', 'EXPOSE 8081'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'RUN — executed while building the image',
+        code: `RUN git clone <repo-url>
+RUN python -m venv .venv
+RUN pip install -r requirements.txt`,
+      },
+      {
+        type: 'table',
+        title: 'CMD vs ENTRYPOINT',
+        headers: ['CMD', 'ENTRYPOINT'],
+        rows: [
+          ['Can be overridden at run time: docker run -d <image-id> python main.py', 'Not replaced by arguments passed to docker run — they are appended to it. Replacing it needs the --entrypoint flag.'],
+          ['If several CMD instructions are written, only the last one runs.', 'Use it when the container should always run the same program.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'COPY + WORKDIR + ENTRYPOINT',
+        code: `COPY app.py /usr/app/
+WORKDIR /usr/app/
+ENTRYPOINT ["python", "app.py"]`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'EXPOSE is only documentation',
+        text: 'EXPOSE cannot change the container port. It only records in the Dockerfile which port the application is running on.',
+      },
+      {
+        type: 'list',
+        title: 'Dockerizing a Python application',
+        items: [
+          'Step 1: Clone the Git repo.',
+          'Step 2: Go inside the project directory, build the Docker image and check it with docker images.',
+          'Step 3: Create the container with port mapping, then check docker ps and docker logs <container-id>.',
+          'Step 4: Open the application URL in the browser — http://localhost:5000/ on Windows, http://public-ip:5000/ on Linux.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Dockerizing a Python Flask application',
+        code: `git clone https://github.com/ashokitschool/python-flask-docker-app.git
+cd python-flask-docker-app
+
+docker build -t ashokit/py-app:1.0 .
+docker images
+
+docker run -d -p 5000:5000 ashokit/py-app:1.0
+docker ps
+docker logs <container-id>`,
+      },
+      {
+        type: 'code',
+        label: 'Push an image to Docker Hub',
+        code: `# Step 1: log in with your Docker Hub credentials
+docker login
+
+# Step 2: push the image
+docker push ashokit/python-app:1.0`,
+      },
+      {
+        type: 'list',
+        title: 'Topics covered',
+        items: [
+          'Challenges in the application deployment process.',
+          'Docker introduction and what containerization is.',
+          'Docker architecture.',
+          'Docker setup on a Linux VM.',
+          'Docker commands.',
+          'Container creation with detached mode and port mapping.',
+          'Dockerfile keywords.',
+          'Docker registry — image push and pull.',
+        ],
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
@@ -1502,6 +1726,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Docker', remember: 'Containerization: Dockerfile → image → registry → container. App code + dependencies in one portable unit.' },
   { concept: 'Kubernetes', remember: 'Orchestrates containers: auto scaling, load balancing, self healing. Pod is the smallest unit; services expose pods.' },
   { concept: 'K8S deployment', remember: 'Dockerfile → image on Docker Hub → EKS + RDS; kubectl apply the k8s/ manifests; UI on NodePort 30080.' },
   { concept: 'Bank capstone', remember: 'MySQL + RAG (Chroma) + LangGraph tools + MCP + FastAPI + Streamlit, with guardrails.' },
