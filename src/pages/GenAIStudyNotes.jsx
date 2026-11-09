@@ -7172,6 +7172,389 @@ print(math.sqrt(100))`,
       },
     ],
   },
+  {
+    num: 62,
+    title: 'Programs, Processes, Threads & Multitasking',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'A program becomes a process when it runs, and a process can contain one or more threads. Multitasking can be process based or thread based.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is a program?',
+        items: [
+          'A program is a set of instructions written to perform a particular task.',
+          'Examples: a calculator program, a banking application, the YouTube application, a file downloader and a chat application.',
+          'When we execute a Python program, the operating system creates a process.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'What is a process?',
+        items: [
+          'A process is a program that is currently running.',
+          'For example, when you open Google Chrome, PyCharm, Visual Studio Code, Spotify, Zoom or Notepad, each application runs as a separate process.',
+          'A process has its own memory, variables, resources and execution environment.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'What is a thread?',
+        items: [
+          'A thread is a small unit of execution inside a program / process.',
+          'A single process can contain one or more threads.',
+          'Example — a web browser may use separate threads for loading a web page, playing a video, downloading a file, checking user input and displaying animations.',
+          'All these activities happen inside the same browser process.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Process vs thread',
+        headers: ['Process', 'Thread'],
+        rows: [
+          ['A running program.', 'A unit of execution inside a process.'],
+          ['Every process has separate memory.', 'Threads share the process memory.'],
+          ['Creating a process is expensive.', 'Creating a thread is lightweight.'],
+          ['Communication between processes is slower.', 'Communication between threads is faster.'],
+          ['One process can contain multiple threads.', 'A thread always belongs to a process.'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'What is multitasking?',
+        text: 'Multitasking means performing multiple tasks during the same period. There are two major types: process-based multitasking and thread-based multitasking.',
+      },
+      {
+        type: 'table',
+        title: 'Types of multitasking',
+        headers: ['Type', 'Meaning', 'Example'],
+        rows: [
+          ['Process-based multitasking', 'Multiple programs run at the same time. Each application usually runs as a separate process.', 'Playing music, writing code in PyCharm and browsing the internet.'],
+          ['Thread-based multitasking', 'Multiple tasks run inside the same program, and can be handled using different threads.', 'A Python application that downloads a file, shows progress, receives user input and saves information to a database.'],
+        ],
+      },
+    ],
+  },
+  {
+    num: 63,
+    title: 'Multithreading in Python — Creating & Controlling Threads',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'Multithreading means executing multiple threads within the same process. Python provides the threading module; this module covers the main thread, creating threads, and the start(), join() and is_alive() methods.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is multithreading?',
+        items: [
+          'Multithreading means executing multiple threads within the same process.',
+          'In Python it is mainly used when a program has multiple independent tasks, especially tasks that spend time waiting.',
+          'Examples: downloading multiple files, calling multiple REST APIs, reading multiple files, database operations, sending emails, chat applications and network communications.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Real-life example — a restaurant',
+        text: 'A restaurant with only one employee must take the order, prepare the food, serve the food and collect the payment, and the second customer must wait until all the work for the first customer is completed. This is similar to single-threaded execution. If employee-1 takes orders, employee-2 prepares food, employee-3 serves food and employee-4 collects payments, multiple activities happen at the same time and multiple tables are served during the same period. This is similar to multithreading, and each employee represents one thread.',
+      },
+      {
+        type: 'list',
+        title: 'Main thread',
+        items: [
+          'Every Python program starts with one default thread called the main thread.',
+          'Python provides the "threading" module for multithreading.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Inspect the main thread',
+        code: `import threading
+
+print("Current Thread:", threading.current_thread())
+print("Thread Name:", threading.current_thread().name)
+print("Thread Identifier:", threading.current_thread().ident)
+print("Active Thread Count:", threading.active_count())`,
+      },
+      {
+        type: 'list',
+        title: 'Creating threads in Python',
+        items: [
+          'We need to import the threading module.',
+          'A thread can be created using the Thread class: thread = threading.Thread(target=function_name).',
+          'Thread creates a new thread; target specifies the function the thread should execute.',
+          'The start() method starts the new thread (the worker thread).',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Example 1 — two threads running two tasks',
+        code: `import threading
+import time
+
+def task_one():
+    print("Task-1 Started")
+    time.sleep(3)
+    print("Task-1 Completed")
+
+def task_two():
+    print("Task-2 Started")
+    time.sleep(2)
+    print("Task-2 Completed")
+
+thread1 = threading.Thread(target=task_one)
+thread2 = threading.Thread(target=task_two)
+
+thread1.start()
+thread2.start()`,
+      },
+      {
+        type: 'code',
+        label: 'Another way — extend the Thread class and override run()',
+        code: `class MyThread(threading.Thread):
+
+    def run(self):
+        print("Run() method started..")
+        print("Thread Name :", threading.current_thread().name)
+
+thread3 = MyThread()
+thread3.start()`,
+      },
+      {
+        type: 'list',
+        title: 'Notes',
+        items: [
+          'We override the run() method to provide our own implementation.',
+          'When we call the start() method, it internally executes the run() method.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Important thread methods',
+        headers: ['Method', 'What it does'],
+        rows: [
+          ['start()', 'Begins the execution of a thread. Python internally calls the target function in a separate thread.'],
+          ['join()', 'Makes the current thread wait until another thread completes its execution.'],
+          ['is_alive()', 'Checks whether a thread is currently running.'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Do not call run() directly',
+        text: 'Do not call t1.run() when you want separate thread execution. Calling run() directly executes the function using the current thread. It does not start a new thread.',
+      },
+      {
+        type: 'code',
+        label: 'join() — wait for the download before reading the file',
+        code: `# Thread-1 : download a file, Thread-2 : read data from the downloaded file
+
+def download_file():
+    print("Download file started..")
+    time.sleep(3)
+    print("Download completed")
+
+
+t5 = threading.Thread(target=download_file)
+t5.start()
+t5.join()
+
+print("Read data from downloaded file...")`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Without join()',
+        text: 'Without join(), the main thread may continue before the worker thread finishes.',
+      },
+      {
+        type: 'code',
+        label: 'is_alive() — is the thread still running?',
+        code: `def process_data():
+    time.sleep(3)
+
+thread = threading.Thread(target=process_data)
+
+thread.start()
+print(thread.is_alive())
+
+thread.join()
+
+print(thread.is_alive())`,
+      },
+    ],
+  },
+  {
+    num: 64,
+    title: 'Thread Scheduling, Race Conditions & Locks',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'The operating system decides how threads run, so threads that share data can produce wrong results. A Lock makes sure only one thread at a time uses the shared resource.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Thread scheduling',
+        items: [
+          'When multiple threads are available, the operating system decides which thread should execute, how long it should execute and when execution should switch to another thread.',
+          'This process is called thread scheduling.',
+          'Because scheduling is controlled by the operating system, the thread execution order is not guaranteed.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'What is a race condition?',
+        text: 'When multiple threads try to access and modify shared data at the same time, they may produce an incorrect result. This is called a race condition. Example: two threads trying to withdraw money from the same bank account at the same time.',
+      },
+      {
+        type: 'code',
+        label: 'Race condition — two withdrawals from one account',
+        code: `import threading
+import time
+
+balance = 1000
+
+def withdraw(amount):
+    global balance
+    if balance >= amount:
+        current_balance = balance
+        time.sleep(1)
+        balance = current_balance - amount
+        print("Withdraw successfully")
+        print("Remaining Balance:", balance)
+    else:
+        print("Insufficient Balance")
+
+t1 = threading.Thread(target=withdraw, args=(700,))
+t2 = threading.Thread(target=withdraw, args=(700,))
+
+t1.start()
+t2.start()
+
+t1.join()
+t2.join()
+
+print("Final Balance :", balance)`,
+      },
+      {
+        type: 'list',
+        title: 'What goes wrong',
+        items: [
+          'Both threads may read the original balance as 1000.',
+          'Both threads may then allow a withdrawal of 700.',
+          'This creates incorrect account processing.',
+          'The exact result depends on thread scheduling, which makes race-condition bugs difficult to reproduce.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Thread synchronization',
+        items: [
+          'Thread synchronization means controlling multiple threads so that only one thread accesses a critical shared resource at a time.',
+          'Python provides synchronization tools such as Lock, RLock, Semaphore, Event and Condition.',
+          'For beginners, the most important tool is Lock.',
+          'A Lock allows only one thread at a time to execute a protected section of code.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Lock — acquire and release',
+        code: `lock = threading.Lock()
+
+# Before accessing the shared resource, acquire the lock
+lock.acquire()
+
+# After completing the work, release the lock
+lock.release()`,
+      },
+      {
+        type: 'code',
+        label: 'Fix the race condition with a Lock (acquire / try / finally / release)',
+        code: `import threading
+import time
+
+balance = 1000
+
+lock = threading.Lock()
+
+def withdraw(amount):
+    global balance
+
+    lock.acquire()
+
+    try:
+        if balance >= amount:
+            print(
+                threading.current_thread().name,
+                "is processing withdrawal"
+            )
+
+            current_balance = balance
+            time.sleep(1)
+            balance = current_balance - amount
+            print("Remaining Balance:", balance)
+        else:
+            print("insufficient balance")
+    finally:
+        lock.release()
+
+t1 = threading.Thread(target=withdraw, args=(700,), name="Customer-1")
+t2 = threading.Thread(target=withdraw, args=(700,), name="Customer-2")
+
+t1.start()
+t2.start()
+
+t1.join()
+t2.join()
+
+print("Final Balance:", balance)`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Recommended — use a lock with the with statement',
+        text: 'The recommended way to use a lock is the with statement: with lock: # critical section. Python automatically acquires and releases the lock.',
+      },
+      {
+        type: 'code',
+        label: 'Lock using the with keyword',
+        code: `import threading
+import time
+
+balance = 1000
+
+lock = threading.Lock()
+
+def withdraw(amount):
+    global balance
+
+    with lock:
+        if balance >= amount:
+            print(
+                threading.current_thread().name,
+                "is processing withdrawal"
+            )
+            current_balance = balance
+            time.sleep(1)
+            balance = current_balance - amount
+            print("Remaining Balance:", balance)
+        else:
+            print( threading.current_thread().name, "- Insufficient balance" )
+
+
+t1 = threading.Thread(target=withdraw, args=(700,), name="Customer-1")
+t2 = threading.Thread(target=withdraw, args=(700,), name="Customer-2")
+
+t1.start()
+t2.start()
+
+t1.join()
+t2.join()
+
+print("Final Balance:", balance)`,
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -7208,6 +7591,9 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Process vs thread', remember: 'A process is a running program with its own memory; threads live inside a process and share its memory, are lightweight and communicate faster.' },
+  { concept: 'Python threading', remember: 'threading.Thread(target=fn); start() runs it in a new thread (never call run() directly), join() waits for it, is_alive() checks it.' },
+  { concept: 'Race condition & Lock', remember: 'Threads changing shared data can give wrong results; a Lock lets only one thread into the critical section — prefer "with lock:".' },
   { concept: 'PyCharm debugging', remember: 'Set a breakpoint, start with Debug (Shift+F9), then F8 step over, F7 step into, Shift+F8 step out, F9 resume, Alt+F9 run to cursor, Ctrl+F2 stop.' },
   { concept: 'Python libraries', remember: 'Ready-made code: a library is a collection of packages, a package is a collection of modules, a module is a Python file. Standard libraries need no install; third-party ones use pip inside a virtual environment.' },
   { concept: 'REST API', remember: 'Provider exposes business services; consumer calls them over HTTP using JSON. Methods: GET, POST, PUT, PATCH, DELETE; status 2xx success, 4xx client error, 5xx server error.' },
