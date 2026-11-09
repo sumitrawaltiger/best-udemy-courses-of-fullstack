@@ -246,6 +246,17 @@ const MODULES = [
       },
       {
         type: 'list',
+        title: 'Paid LLM — how it is accessed and examples',
+        items: [
+          'A paid LLM is usually accessed through an API or a subscription.',
+          'OpenAI GPT models.',
+          'Anthropic Claude models.',
+          'Google Gemini.',
+          'Cohere enterprise models.',
+        ],
+      },
+      {
+        type: 'list',
         title: 'Paid LLM — billing models',
         items: [
           'Per-token pricing — charged for input + output tokens consumed.',
@@ -264,6 +275,15 @@ const MODULES = [
           ['No infrastructure to manage', 'Vendor dependency'],
           ['Enterprise features and SLAs', 'Data privacy considerations'],
           ['Continuously updated by provider', 'Rate limits (RPM / TPM) may apply'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'What does "free LLM" mean?',
+        items: [
+          'Free web access with limits.',
+          'Free API access with limited usage.',
+          'Models we can download and run on our local machine.',
         ],
       },
       {
@@ -865,8 +885,8 @@ Input:  Fee pending students pay immediately.`,
           'Step 2: Create and activate a Python virtual environment.',
           'Step 3: Create requirements.txt with openai and python-dotenv; install with pip.',
           'Step 4: Create .env and add OPENAI_API_KEY=sk-….',
-          'Step 5: Create main.py — load the .env key, send a prompt to the GPT API, print the response.',
-          'Step 6: Create app.py with a Streamlit UI that wraps main.py for a chat-like interface.',
+          'Step 5: Create main.py to consume the GPT LLM — input: prompt; output: LLM response. It loads the .env key, sends the prompt to the GPT API and prints the response.',
+          'Step 6: Create app.py with a Streamlit UI (like the ChatGPT UI) that wraps main.py for a chat-like interface.',
           'Step 7: Run the app (streamlit run app.py) and test prompts end-to-end.',
         ],
       },
