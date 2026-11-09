@@ -3242,6 +3242,154 @@ python -m pip install -r requirements.txt`,
       },
     ],
   },
+  {
+    num: 36,
+    title: 'Pinecone Vector Database',
+    tag: 'RAG',
+    tagColor: 'green',
+    intro: 'Pinecone is a vector database designed for AI applications. It stores embeddings and quickly finds the information that is semantically similar to a user question. See module 9 for vector database basics.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'What problem does Pinecone solve?',
+        text: 'A company chatbot may have thousands of documents: HR policies, product manuals, FAQs, employee documents, customer support articles and technical documentation. A normal database searches for exact words such as "casual leave". GenAI applications need something smarter, because the user may ask "How many days can I take off for personal reasons?" — different words, similar meaning. This is where a vector database such as Pinecone becomes useful.',
+      },
+      {
+        type: 'list',
+        title: 'What is Pinecone?',
+        items: [
+          'A vector database designed for AI applications.',
+          'Its main job is to store embeddings and quickly find information that is semantically similar to the user question.',
+          'It stores numerical representations of information and helps you find similar information very quickly.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Text to embedding vector',
+        code: `"I love programming"
+        ↓
+Embedding Model
+        ↓
+[0.21, -0.45, 0.78, 0.12, ...]`,
+      },
+      {
+        type: 'list',
+        title: 'Embedding vectors',
+        items: [
+          'The list of numbers is called an embedding vector, and it represents the meaning of the text.',
+          'Sentence 1: "I love programming". Sentence 2: "Software development is my passion".',
+          'These may produce vectors that are relatively close to each other, because their meanings are similar.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Real-time example — customer support chatbot',
+        items: [
+          'An e-commerce company has these documents:',
+          'return_policy.txt',
+          'refund_policy.txt',
+          'shipping_policy.txt',
+          'payment_policy.txt',
+          'product_manual.txt',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Important Pinecone terminology',
+        headers: ['Term', 'Meaning'],
+        rows: [
+          ['Index', 'Where your vectors are stored and searched.'],
+          ['Vector', 'The numerical representation of our data.'],
+          ['ID', 'Every vector needs a unique ID.'],
+          ['Metadata', 'Extra information associated with the vector. Extremely useful for filtering.'],
+          ['Namespace', 'Logically separates the data inside an index.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'RAG with Pinecone vector DB — project setup',
+        items: [
+          'Step 1: Create the project folder.',
+          'Step 2: Go inside the project folder, create a virtual environment and activate it.',
+          'Step 3: Create requirements.txt with the libraries below and install them with pip.',
+          'Step 4: Create the .env file and configure the OpenAI API key and the Pinecone API key.',
+          'Step 5: Create documents/company.txt with the data to load into the vector DB.',
+          'Step 6: Create ingest.py to read the file data and store it into the vector DB, then run it.',
+          'Step 7: Create rag.py to perform Retrieve + Augment + Generation, then run it.',
+          'Step 8: Create app.py with the Streamlit UI and run it.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Steps 1-2 — project folder and virtual environment (Windows)',
+        code: `cd <project-folder-name>
+python -m venv venv
+venv\\Scripts\\activate`,
+      },
+      {
+        type: 'code',
+        label: 'Step 3 — requirements.txt',
+        code: `openai
+pinecone
+python-dotenv
+streamlit`,
+      },
+      {
+        type: 'code',
+        label: 'Step 3 — install the libraries',
+        code: `pip install -r requirements.txt`,
+      },
+      {
+        type: 'code',
+        label: 'Step 4 — .env',
+        code: `OPENAI_API_KEY=<key-goes-here>
+PINECONE_API_KEY=<key-goes-here>`,
+      },
+      {
+        type: 'code',
+        label: 'Steps 6-8 — run the programs',
+        code: `python ingest.py        # read documents/company.txt and store the vectors
+python rag.py           # retrieve + augment + generate
+streamlit run app.py    # Streamlit UI`,
+      },
+      {
+        type: 'code',
+        label: 'Understanding the output — matches returned by Pinecone',
+        code: `matches=[
+  ScoredVector(id='chunk-4', score=0.21221517, values=[], metadata={'text': 'The company provides health insurance to all full-time employees.'}),
+  ScoredVector(id='chunk-3', score=0.209931836, values=[], metadata={'text': 'Employees receive 20 paid leaves every year.'}),
+  ScoredVector(id='chunk-5', score=0.136570811, values=[], metadata={'text': 'The notice period for employees is 30 days.'})
+]`,
+      },
+      {
+        type: 'list',
+        title: 'Reading the query response',
+        items: [
+          'matches — the most similar chunks found for the question, best match first.',
+          'id — the unique ID of the stored chunk (chunk-4, chunk-3, chunk-5).',
+          'score — the similarity score; a higher score means the chunk is closer to the question.',
+          'values=[] — the vectors themselves are not returned.',
+          'metadata — the extra data stored with the vector; here the original chunk text.',
+          'namespace — empty here, so the default namespace was used.',
+          'usage — the read units consumed by the query.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Texts extracted from the matches and passed to the LLM as context',
+        code: `[The company provides health insurance to all full-time employees,
+Employees receive 20 paid leaves every year,
+The notice period for employees is 30 days]`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Assignment',
+        text: 'Develop a RAG-based application with the Pinecone vector DB to process PDF documents data.',
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
@@ -3258,6 +3406,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Pinecone', remember: 'Vector database for embeddings: index, vector, ID, metadata, namespace. Query returns the most similar chunks with a score.' },
   { concept: 'LangChain chatbot', remember: 'LangChain bridges the LLM with DB, RAG, APIs and a prompt: question → DB + RAG context → prompt → LLM → answer.' },
   { concept: 'LangGraph terms', remember: 'State carries the data, Node performs the task, Edge controls the flow, Conditional Edge picks the next node.' },
   { concept: 'Tool calling', remember: 'The LLM picks a bound tool and its inputs; the application runs it and feeds the result back to the LLM for the final answer.' },
