@@ -42,6 +42,15 @@ const MODULES = [
           ['Often optimized for prediction accuracy.', 'Often optimized for useful, coherent and context-aware generation.'],
         ],
       },
+      {
+        type: 'code',
+        label: 'Example prompt and possible answer',
+        code: `Example prompt : Explain Spring Boot in simple terms.
+
+Possible answer: Spring Boot is a Java framework that helps developers build
+applications faster with sensible defaults, auto-configuration and less
+manual setup.`,
+      },
     ],
   },
   {
@@ -92,6 +101,12 @@ const MODULES = [
         variant: 'info',
         label: 'How it works',
         text: 'The application receives a user request, prepares the prompt, invokes a pre-trained LLM and returns the generated result. The orchestration layer can also connect the model to retrieval, databases, APIs, MCP tools, prompt templates and application state.',
+      },
+      {
+        type: 'image',
+        src: '/agentic-notes/gen-ai-application-architecture.png',
+        alt: 'Gen AI application architecture: a user sends a request to the AI App, which has input and output guardrails (IGR and OGR), sends a prompt to a pre-trained LLM and receives tokens back. The AI App uses LangChain / LangGraph to reach the DB, RAG, API, MCP and Prompt Template layers, and RAG is fed from DOCS stored in a Vector DB.',
+        caption: 'Gen AI application architecture — user, AI app with IGR / OGR guardrails, pre-trained LLM, LangChain / LangGraph, and the DB, RAG, API, MCP and prompt-template layers, with documents stored in a vector DB.',
       },
       {
         type: 'list',
@@ -460,6 +475,32 @@ Output: The demo session has started. Please join as soon as possible.
 Now convert:
 Input:  Fee pending students pay immediately.`,
       },
+      {
+        type: 'code',
+        label: 'Prompt template — reusable prompt with placeholders',
+        code: `You are a Java trainer.
+Explain {topic} for a beginner.
+Use simple language, one real-world example and five interview questions.
+Return the answer using headings and bullet points.`,
+      },
+      {
+        type: 'code',
+        label: 'Zero-shot — ask without providing examples',
+        code: 'Classify this review as Positive, Negative or Neutral: “The course content is useful.”',
+      },
+      {
+        type: 'code',
+        label: 'Few-shot — provide a small number of examples so the model can infer the pattern',
+        code: `Input: Great product → Sentiment: Positive
+Input: Very poor support → Sentiment: Negative
+Input: The product is okay → Sentiment: ?`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Chain-of-thought / structured reasoning',
+        text: 'Complex tasks may benefit from structured intermediate work. In production, prefer concise plans, verifiable intermediate outputs and explicit checks rather than exposing private internal reasoning.',
+      },
     ],
   },
   {
@@ -715,6 +756,18 @@ Input:  Fee pending students pay immediately.`,
         variant: 'warning',
         label: 'Assignment — Student Support Chatbot',
         text: 'Build a student support chatbot using Python + LangGraph + LLM. It should understand the student question and automatically route it to the correct node. Flow: START → Classifier Node → [DB Node (payment) | RAG Node (course content) | API Node (live status) | General Node] → Answer Node → END.',
+      },
+      {
+        type: 'list',
+        title: 'Checkpointing',
+        items: [
+          'Checkpointing can support resumable workflows when it is configured and the workflow is designed for that purpose.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Example workflow',
+        code: 'START → Understand → Retrieve → Decide → Tool → Validate → Retry / Retrieve More → Final Response → END',
       },
     ],
   },
@@ -3854,6 +3907,26 @@ Search again  Answer`,
   },
 ];
 
+// Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
+const COURSE_ROADMAP = [
+  { n: 1, name: 'Gen AI & Agentic AI', focus: 'Generation, agents, goals, tools and state.', page: 1 },
+  { n: 2, name: 'Gen AI Application Architecture', focus: 'UI, backend, orchestration, models and tools.', page: 3 },
+  { n: 3, name: 'Large Language Models', focus: 'Tokens, prompts, inference and model providers.', page: 4 },
+  { n: 4, name: 'Hosted vs Local LLMs', focus: 'Paid APIs versus local/self-hosted inference.', page: 5 },
+  { n: 5, name: 'OpenAI GPT Project', focus: 'Build a hosted-LLM application.', page: 17 },
+  { n: 6, name: 'Ollama Project', focus: 'Run and integrate a local LLM.', page: 18 },
+  { n: 7, name: 'Prompt Engineering', focus: 'Templates, zero-shot, few-shot and structured reasoning.', page: 6 },
+  { n: 8, name: 'RAG Architecture', focus: 'Ground LLM responses with external knowledge.', page: 7 },
+  { n: 9, name: 'Vector Databases', focus: 'Embeddings and semantic similarity search.', page: 8 },
+  { n: 10, name: 'RAG Application', focus: 'Build document question answering.', page: 9 },
+  { n: 11, name: 'LangChain', focus: 'Compose prompts, models, retrievers and tools.', page: 10 },
+  { n: 12, name: 'LangGraph', focus: 'Build stateful graph-based workflows.', page: 12 },
+  { n: 13, name: 'CrewAI', focus: 'Build role-based multi-agent systems.', page: 13 },
+  { n: 14, name: 'MCP', focus: 'Connect AI applications with tools/resources.', page: 14 },
+  { n: 15, name: 'Cloud Deployment', focus: 'Secure, deploy and monitor Gen AI applications.', page: 15 },
+  { n: 16, name: 'Interview Guidance', focus: 'Explain projects, architecture and trade-offs.', page: 16 },
+];
+
 const QUICK_REVISION = [
   { concept: 'Gen AI', remember: 'Generates new content from prompts and context.' },
   { concept: 'Agentic AI', remember: 'Uses goals, decisions, tools and state for multi-step tasks.' },
@@ -3921,6 +3994,12 @@ function Block({ block }) {
       {block.label && <span className="gn-code-label">{block.label}</span>}
       <pre className="gn-code">{block.code}</pre>
     </div>
+  );
+  if (block.type === 'image') return (
+    <figure className="gn-figure">
+      <img src={block.src} alt={block.alt} className="gn-figure-img" loading="lazy" />
+      {block.caption && <figcaption className="gn-figure-caption">{block.caption}</figcaption>}
+    </figure>
   );
   if (block.type === 'callout') return (
     <div className={`gn-callout gn-callout--${block.variant}`}>
@@ -3997,6 +4076,43 @@ export default function GenAIStudyNotes() {
       </nav>
 
       <main className="gn-main">
+        {/* Course roadmap */}
+        <section id="course-roadmap" className="gn-module">
+          <div className="gn-module-head">
+            <div className="gn-module-num" style={{ background: '#0ea5e9' }}>↗</div>
+            <div>
+              <span className="gn-module-tag" style={{ color: '#0ea5e9' }}>Roadmap</span>
+              <h2 className="gn-module-title">Course Roadmap</h2>
+            </div>
+          </div>
+          <p className="gn-module-intro">A structured learning path from Gen AI fundamentals to production-oriented Agentic AI.</p>
+          <div className="gn-table-wrap">
+            <table className="gn-table">
+              <thead><tr><th>#</th><th>Module</th><th>Focus</th><th>Notes</th></tr></thead>
+              <tbody>
+                {COURSE_ROADMAP.map(r => (
+                  <tr key={r.n}>
+                    <td>{r.n}</td>
+                    <td><strong>{r.name}</strong></td>
+                    <td>{r.focus}</td>
+                    <td>
+                      <a
+                        href={`#mod-${r.page}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          document.getElementById(`mod-${r.page}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }}
+                      >
+                        Module {r.page} →
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
         {/* Modules */}
         {MODULES.map(m => (
           <section key={m.num} id={`mod-${m.num}`} className="gn-module">

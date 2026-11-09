@@ -350,3 +350,22 @@
   .gn-module-intro { padding-left: 0; }
   .gn-nav { padding: 0.75rem 1rem; }
 }
+
+/* Figures (images inside a module) */
+.gn-figure { margin: 0; }
+.gn-figure-img {
+  display: block;
+  width: 100%;
+  max-width: 760px;
+  height: auto;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid var(--gn-border, rgba(128, 128, 128, 0.3));
+  border-radius: 10px;
+}
+.gn-figure-caption {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--gn-text-muted);
+}
