@@ -8446,6 +8446,977 @@ finally:
       },
     ],
   },
+  {
+    num: 73,
+    title: 'Python OOP — Classes, Objects, self & Constructors',
+    tag: 'Python OOP',
+    tagColor: 'purple',
+    intro: 'OOPS (Object Oriented Programming System) is a programming approach where we design software using classes and objects. In real life, everything can be treated as an object.',
+    blocks: [
+      {
+        type: 'table',
+        title: 'Real-life objects and their data',
+        headers: ['Object', 'Properties / behaviours'],
+        rows: [
+          ['Student', 'name, email, phno, course, fee'],
+          ['Employee', 'id, name, salary, project'],
+          ['Bank account', 'account number, balance, branch name, deposit, withdraw'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Without OOPS — separate variables and functions',
+        code: `student_name = "Ashok"
+student_email = "ashok@gmail.com"
+student_course = "Python"
+
+def display_student():
+    print(student_name)
+    print(student_email)
+    print(student_course)
+
+display_student()`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Why OOPS helps',
+        text: 'If we have 100 students, managing the data becomes difficult. OOPS helps us group related data and functions together.',
+      },
+      {
+        type: 'list',
+        title: 'Why OOP?',
+        items: [
+          'Code reusability.',
+          'Code organization.',
+          'Security.',
+          'Easy maintenance.',
+          'Reduces boilerplate code.',
+          'Building large-scale applications.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Main concepts of OOP',
+        items: [
+          '1. Class',
+          '2. Object',
+          '3. Constructor',
+          '4. Instance variable',
+          '5. Instance method',
+          '6. Encapsulation',
+          '7. Inheritance',
+          '8. Polymorphism',
+          '9. Abstraction',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'What is a class?',
+        items: [
+          'A class is a blueprint or template — a plan or model to define properties and behaviours.',
+          'Properties are variables that store the data.',
+          'Behaviours are methods that perform the action.',
+          'Example 1: Student is a class. Properties: name, email, phno, course. Behaviours: study(), attend_class(), write_exam().',
+          'Example 2: Employee is a class. Properties: id, name, salary. Behaviours: work(), attend_meetings(), take_leave(), take_salary().',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Class syntax and examples',
+        code: `# Syntax
+class ClassName:
+    statements
+
+# Example
+class Student:
+    pass
+
+# Example with data and a method
+class Student:
+    id = 100
+    name = "Ashok"
+
+    def display(self):
+        print(self.name)
+        print(self.id)`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'What is an object?',
+        text: 'An object is a real instance created from a class. Example: s1 = Student() — here s1 is an object of the Student class.',
+      },
+      {
+        type: 'code',
+        label: 'Creating an object and calling a method',
+        code: `class Student:
+
+    id = 100
+    name = "Ashok"
+
+    def display(self):
+        print(self.name)
+        print(self.id)
+
+s1 = Student()
+s1.display()`,
+      },
+      {
+        type: 'list',
+        title: 'What is self?',
+        items: [
+          'self is a reference variable that refers to the current object.',
+          'self is used to access variables and methods inside a class.',
+          'Whenever we create an object and call a method, Python automatically passes that object to self.',
+          'self is not a keyword, but it is a standard naming convention.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'self — Python passes the object automatically',
+        code: `class Student:
+    id = 100
+    name = "Ashok"
+
+    def display(self):
+        print(self.name)
+        print(self.id)
+
+    def study(self):
+        print(self.name, "Student studying...")
+
+# Creating object
+s1 = Student()
+
+# calling functions using object
+
+s1.display() ## display(s1)
+s1.study() ## study(s1)
+
+# When we call s1.display() and s1.study(), Python internally passes s1 as self.`,
+      },
+      {
+        type: 'list',
+        title: 'Constructor',
+        items: [
+          'A constructor is a special method in Python.',
+          'It is called automatically when an object is created for the class.',
+          'It is used to initialize the object data.',
+          'In Python the constructor name is __init__().',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Constructor syntax and example',
+        code: `# Syntax
+class ClassName:
+    def __init__(self):
+        statements
+
+# Example
+class Student:
+    def __init__(self, name, course):
+       self.name = name
+       self.course = course
+
+    def display(self):
+        print(self.name, "--", self.course)
+
+s1 = Student("Ashok", "Python")
+s1.display()
+
+s2 = Student("John", "JAVA")
+s2.display()
+
+s3 = Student("GITA", "AI")
+s3.display()`,
+      },
+    ],
+  },
+  {
+    num: 74,
+    title: 'Instance Variables, Class Variables & Static Methods',
+    tag: 'Python OOP',
+    tagColor: 'purple',
+    intro: 'Variables created with self belong to each object, while class variables are shared by all objects. Instance methods work with object data; static methods belong to the class.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Instance variables',
+        items: [
+          'Variables declared using the self keyword are called instance variables.',
+          'Instance variables belong to the object.',
+          'Each object can have separate values.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Instance variables',
+        code: `class Student:
+    def __init__(self, name, course):
+        self.name = name
+        self.course = course
+
+s1 = Student("Ashok", "Python")
+s2 = Student("John", "AI")
+
+print(s1.name)
+print(s2.name)`,
+      },
+      {
+        type: 'list',
+        title: 'Instance methods',
+        items: [
+          'Methods which use self are called instance methods.',
+          'Instance methods work with object data.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Instance methods',
+        code: `class Student:
+    def __init__(self, name, marks):
+        self.name = name
+        self.marks = marks
+
+    def display_result(self):
+        if self.marks > 35:
+            print(self.name, "Passed")
+        else:
+            print(self.name, "Failed")
+
+s1 = Student("John", 100)
+s2 = Student("Michael", 25)
+
+s1.display_result()
+s2.display_result()`,
+      },
+      {
+        type: 'list',
+        title: 'Class variables',
+        items: [
+          'Class variables are declared inside the class but outside the methods.',
+          'Class variables are shared by all objects.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Class variables',
+        code: `class Student:
+
+    inst_name  = "Ashok IT"
+
+    def __init__(self, name):
+        self.name = name
+
+    def display_result(self):
+        print(self.name, "--", Student.inst_name)
+
+s1 = Student("John")
+s2 = Student("Michael")
+
+s1.display_result()
+s2.display_result()`,
+      },
+      {
+        type: 'table',
+        title: 'Instance variable vs class variable',
+        headers: ['Instance variable', 'Class variable'],
+        rows: [
+          ['Created using self.', 'Created inside the class but outside a method.'],
+          ['Belongs to the object.', 'Belongs to the class.'],
+          ['Each object can have different values.', 'Shared by all objects.'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Class-level (static) method',
+        text: 'A method that does not depend on any object data is called a static method. Static methods can be called using the class name.',
+      },
+      {
+        type: 'code',
+        label: 'Static method example',
+        code: `class Student:
+
+    institute_name = "Ashok IT"
+
+    def __init__(self, name, marks):
+        self.name = name
+        self.marks = marks
+
+    # Instance method
+    def display_result(self):
+        print("Student Name:", self.name)
+        print("Marks:", self.marks)
+
+        if Student.is_pass(self.marks):
+            print("Result: Pass")
+        else:
+            print("Result: Fail")
+
+    # Static method
+    @staticmethod
+    def is_pass(marks):
+        return marks >= 35
+
+
+s1 = Student("Ravi", 80)
+s2 = Student("Kiran", 25)
+
+s1.display_result()
+print("----------------")
+s2.display_result()`,
+      },
+      {
+        type: 'table',
+        title: 'Instance methods vs static methods',
+        headers: ['Instance methods', 'Static methods'],
+        rows: [
+          ['Belong to the object.', 'Belong to the class logically.'],
+          ['Work with object data.', 'Do not work with object data.'],
+          ['Use self.', 'Do not use self.'],
+          ['Called using an object reference.', 'Called using the class name.'],
+          ['', 'Use @staticmethod.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Revision',
+        items: [
+          '1. Why OOPS',
+          '2. Class',
+          '3. Object',
+          '4. self',
+          '5. Instance variables',
+          '6. Instance methods',
+          '7. Constructor',
+          '8. Class variables',
+          '9. Static methods',
+        ],
+      },
+    ],
+  },
+  {
+    num: 75,
+    title: 'Encapsulation — Public & Private Variables',
+    tag: 'Python OOP',
+    tagColor: 'purple',
+    intro: 'Encapsulation means wrapping data and methods into a single unit, and protecting the data from direct access.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Encapsulation',
+        items: [
+          'Encapsulation means wrapping data and methods into a single unit.',
+          'A class is an example of encapsulation.',
+          'Encapsulation is used to protect data from direct access.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Public variables',
+        text: 'Public variables can be accessed anywhere.',
+      },
+      {
+        type: 'code',
+        label: 'Public variable',
+        code: `class Student:
+
+    def __init__(self, name):
+        self.name = name
+
+s1 = Student("Ashok") # Student(obj, name)
+s1.name = "John"
+print(s1.name)`,
+      },
+      {
+        type: 'list',
+        title: 'Private variables',
+        items: [
+          'Private variables are declared using a double underscore __.',
+          'Private variables cannot be accessed directly outside the class.',
+          'To use private variables we write getter and setter methods.',
+          'The setter method is used to update the private variable data.',
+          'The getter method is used to read the private variable data.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Private variable with getter and setter',
+        code: `class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance
+
+    def get_balance(self):
+        return self.__balance
+
+    def set_balance(self, balance):
+        self.__balance = balance
+
+account = BankAccount(200)
+# print(account.__balance) # error
+print(account.get_balance())
+account.set_balance(100)
+print(account.get_balance())`,
+      },
+    ],
+  },
+  {
+    num: 76,
+    title: 'Inheritance — Types, MRO & Examples',
+    tag: 'Python OOP',
+    tagColor: 'purple',
+    intro: 'Inheritance means acquiring properties and methods from one class to another class. It gives code reusability through parent and child classes.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Real-life analogy',
+        text: 'Parents have properties (cash, house, land). The child can access the parent properties directly.',
+      },
+      {
+        type: 'list',
+        title: 'Inheritance',
+        items: [
+          'Inheritance means acquiring properties and methods from one class to another class.',
+          'We achieve code reusability using inheritance.',
+          'It uses the concept of parent and child classes.',
+          'A parent class is also called a base class or super class.',
+          'A child class is also called a derived class or sub class.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Parent and child',
+        code: `class Parent:
+    def house(self):
+        print("Parent House")
+
+class Child(Parent):
+    def bike(self):
+        print("Child Bike")
+
+c = Child()
+c.bike()
+c.house()`,
+      },
+      {
+        type: 'code',
+        label: 'Inheritance example — chatbots',
+        code: `class ChatBot:
+
+    def welcome_user(self):
+        print("Welcome to GEN AI Chatbot..")
+
+    def collect_question(self, question):
+        print("User Question : ", question)
+
+
+class CustomerSupportBot(ChatBot):
+    def solve_customer_issue(self):
+        print("Solving Customer issue using AI")
+
+class CourseCounsellingBot(ChatBot):
+    def suggest_course(self):
+        print("Suggesting Best Course Using Ai")
+
+
+bot1 = CustomerSupportBot()
+bot1.welcome_user()
+bot1.collect_question("Why my outlook is not working ?")
+bot1.solve_customer_issue()
+
+print("--------------------------")
+
+bot2 = CourseCounsellingBot()
+bot2.welcome_user()
+bot2.collect_question("Which course is best for me ?")
+bot2.suggest_course()`,
+      },
+      {
+        type: 'list',
+        title: 'Types of inheritance',
+        items: [
+          '1. Single inheritance',
+          '2. Multiple inheritance',
+          '3. Multilevel inheritance',
+          '4. Hierarchical inheritance',
+          '5. Hybrid inheritance',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Single inheritance',
+        text: 'One child class inherits from one parent class.',
+      },
+      {
+        type: 'code',
+        label: 'Single inheritance',
+        code: `class Parent:
+    def parent_method(self):
+        print("Parent method")
+
+class Child(Parent):
+    def child_method(self):
+        print("Child method")
+
+obj = Child()
+
+obj.parent_method()
+obj.child_method()`,
+      },
+      {
+        type: 'list',
+        title: 'Multiple inheritance',
+        items: [
+          'One child class inherits from multiple parent classes.',
+          'Python supports multiple inheritance by following MRO (method resolution order).',
+          'Check for the method in the current class first; if it is available, execute it and do not check the parents.',
+          'If the method is not available in the current class, check the first parent; if it is available, execute it without checking the second parent.',
+          'Only if the method is not available in the first parent will it check the second parent.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Multiple inheritance',
+        code: `class Father:
+    def father_property(self):
+        print("Father property")
+    def m1(self):
+        print("Father m1 method")
+
+class Mother:
+    def mother_property(self):
+        print("Mother property")
+    def m1(self):
+        print("Mother m1 method")
+
+class Child(Father, Mother):
+    def child_property(self):
+        print("Child property")
+    def m1(self):
+        print("Child m1 method")
+
+
+obj = Child()
+obj.father_property()
+obj.mother_property()
+obj.child_property()
+obj.m1()`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Multilevel inheritance',
+        text: 'One class inherits from another child class: Child ----> Parent ----> GrandParent.',
+      },
+      {
+        type: 'code',
+        label: 'Multilevel inheritance',
+        code: `class GrandParent:
+    def grandparent_method(self):
+        print("Grand Parent method")
+
+class Parent(GrandParent):
+    def parent_method(self):
+        print("Parent method")
+
+class Child(Parent):
+    def child_method(self):
+        print("Child Method")
+
+obj = Child()
+obj.child_method()
+obj.parent_method()
+obj.grandparent_method()`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Hierarchical inheritance',
+        text: 'Multiple child classes inherit from the same parent class.',
+      },
+      {
+        type: 'code',
+        label: 'Hierarchical inheritance',
+        code: `class Parent:
+    def parent_method(self):
+        print("Parent method")
+
+class Child1(Parent):
+    def child1_method(self):
+        print("Child1 method")
+
+class Child2(Parent):
+    def child2_method(self):
+        print("Child2 method")
+
+c1 = Child1()
+c2 = Child2()
+
+c1.parent_method()
+c1.child1_method()
+print("------------------")
+c2.parent_method()
+c2.child2_method()`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Hybrid inheritance',
+        text: 'Hybrid inheritance means combining two or more inheritance types in a single program. Classes A, B, C and D: B and C inherit from A (hierarchical), and D inherits from both B and C (multiple).',
+      },
+      {
+        type: 'code',
+        label: 'Hybrid inheritance',
+        code: `class A:
+    def method_a(self):
+        print("Method from class A")
+
+class B(A):
+    def method_b(self):
+        print("Method from class B")
+
+class C(A):
+    def method_c(self):
+        print("Method from class C")
+
+class D(B, C):
+    def method_d(self):
+        print("Method from class D")
+
+obj = D()
+obj.method_a()
+obj.method_b()
+obj.method_c()
+obj.method_d()`,
+      },
+    ],
+  },
+  {
+    num: 77,
+    title: 'Method Overriding, super(), Polymorphism & Overloading',
+    tag: 'Python OOP',
+    tagColor: 'purple',
+    intro: 'A child class can provide its own version of a parent method (overriding), call the parent with super(), and one method name can behave differently for different objects (polymorphism).',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Method overriding',
+        text: 'If a child class provides its own implementation for a parent class method, it is called method overriding.',
+      },
+      {
+        type: 'code',
+        label: 'Method overriding — example 1',
+        code: `class Parent:
+    def display(self):
+        print("Parent display method")
+
+class Child(Parent):
+    def display(self):
+        print("Child display method")
+
+obj = Child()
+obj.display()`,
+      },
+      {
+        type: 'code',
+        label: 'Method overriding — example 2: AI models',
+        code: `class AIModel:
+    def generate_response(self, prompt):
+        print("Generating response using general AI Model")
+
+class OpenAIModel(AIModel):
+    def generate_response(self, prompt):
+        print("Generating response using OpenAI GPT Model")
+        print("Prompt:", prompt)
+
+class GeminiModel(AIModel):
+    def generate_response(self, prompt):
+        print("Generating response using Gemini Model")
+        print("Prompt:", prompt)
+
+model1 = OpenAIModel()
+model1.generate_response("Explain Python Decorators")
+print("====================================================")
+model2 = GeminiModel()
+model2.generate_response("Explain Python File handling")`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'super() function',
+        text: 'super() is used to call the parent class constructor or method from the child class.',
+      },
+      {
+        type: 'code',
+        label: 'super() — calling a parent method',
+        code: `class Parent:
+    def display(self):
+        print("Parent display method")
+
+class Child(Parent):
+    def display(self):
+        super().display()
+        print("Child display method")
+
+obj = Child()
+obj.display()`,
+      },
+      {
+        type: 'code',
+        label: 'super() — calling a parent constructor',
+        code: `class Person:
+    def __init__(self, name):
+        self.name = name
+
+class Student(Person):
+    def __init__(self, name, course):
+        super().__init__(name)
+        self.course = course
+
+    def display(self):
+        print(self.name)
+        print(self.course)
+
+
+s1 = Student("Ashok", "Python")
+s1.display()`,
+      },
+      {
+        type: 'list',
+        title: 'Polymorphism',
+        items: [
+          'Polymorphism means one name with many forms.',
+          'It means one method name behaves differently based on the object.',
+          'Real-life example — my name is Ashok: in class I act as a trainer, in the office as an employee, in the institute as the director (boss) and at home as a family member.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Polymorphism — example 1: animal sounds',
+        code: `class Dog:
+    def sound(self):
+        print("Dog Barks")
+
+class Cat:
+    def sound(self):
+        print("Cat meows")
+
+def animal_sound(i):
+    i.sound()
+
+dog = Dog()
+cat = Cat()
+
+animal_sound(dog)
+animal_sound(cat)`,
+      },
+      {
+        type: 'code',
+        label: 'Polymorphism — example 2: payments',
+        code: `class UpiPayment:
+    def pay(self, amount):
+        print(f"Paid ₹{amount} using UPI")
+
+class CreditCardPayment:
+    def pay(self, amount):
+        print(f"Paid ₹{amount} using Credit Card")
+
+class DebitCardPayment:
+    def pay(self, amount):
+        print(f"Paid ₹{amount} using Debit Card")
+
+class CashPayment:
+    def pay(self, amount):
+        print(f"Paid ₹{amount} using Hand Cash")
+
+def make_payment(payment_method_type, amount):
+        payment_method_type.pay(amount)
+
+make_payment(CreditCardPayment(), 1000)
+make_payment(DebitCardPayment(), 2000)
+make_payment(CashPayment(), 5000)
+make_payment(UpiPayment(), 10000)`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Method overloading',
+        text: 'Writing the same method multiple times with different parameters in the same class is called method overloading. Python does not support it directly: if we create methods with the same name, the latest method replaces the previous one.',
+      },
+      {
+        type: 'code',
+        label: 'Method overloading — the latest method wins',
+        code: `class Calculator:
+
+    def add(self, a, b):
+        return a + b
+
+    def add(self, a, b, c):
+        return a + b + c
+
+cal = Calculator()
+# print(cal.add(1,2))
+print(cal.add(1,2,3))`,
+      },
+    ],
+  },
+  {
+    num: 78,
+    title: 'Abstraction & Abstract Classes (abc module)',
+    tag: 'Python OOP',
+    tagColor: 'purple',
+    intro: 'Abstraction means hiding implementation details and showing only the required information. In Python it is implemented with abstract classes from the abc module.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Abstraction',
+        text: 'Abstraction means hiding implementation details and showing only the required information. Example: when driving a car we use the steering, brakes and accelerator; we do not need to know the internal engine implementation.',
+      },
+      {
+        type: 'list',
+        title: 'Abstract class',
+        items: [
+          'An abstract class is a class that contains abstract methods.',
+          'An abstract class cannot be used to create an object directly.',
+          'In Python, abstraction is implemented using the abc module — abc = Abstract Base Classes.',
+          'An abstract method is a method declared in the parent class but implemented in the child class. An abstract method does not contain a body.',
+          'A concrete method is a method that contains a body.',
+          'When a class extends an abstract class, that class must override all the abstract methods.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Abstract and concrete methods',
+        code: `# abstract method : the method which doesn't contain a body
+@abstractmethod
+def pay(self, amount):
+    pass
+
+# concrete method : the method which contains a body
+def payment_success_msg(self):
+    print("Payment is successful, Thank you...!!")`,
+      },
+      {
+        type: 'code',
+        label: 'Abstract class example',
+        code: `from abc import ABC, abstractmethod
+
+class Payment(ABC):
+
+    def __init__(self):
+        print("ABC Constructor")
+
+    @abstractmethod
+    def pay(self, amount):
+        pass
+
+    def payment_success_msg(self):
+        print("Payment is successfull")
+
+class UpiPayment(Payment):
+    def pay(self, amount):
+        print("Paid using UPI : ", amount)
+        super().payment_success_msg()
+
+class CreditCardPayment(Payment):
+    def pay(self, amount):
+        print("Paid using CreditCard : ", amount)
+        super().payment_success_msg()
+
+
+upi = UpiPayment()
+upi.pay(120)
+
+creditcard = CreditCardPayment()
+creditcard.pay(12000)`,
+      },
+      {
+        type: 'list',
+        title: 'An abstract class can contain',
+        items: [
+          'Abstract methods.',
+          'Concrete methods.',
+          'A constructor.',
+          'Instance variables.',
+          'Static methods.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Constructor lookup',
+        text: 'When we create an object for the child class and the child class does not have a constructor, Python checks the parent class constructor.',
+      },
+      {
+        type: 'code',
+        label: 'Abstract class with a child constructor calling super().__init__()',
+        code: `from abc import ABC, abstractmethod
+
+class Payment(ABC):
+
+    def __init__(self):
+        print("Payment Class Constructor")
+
+    @abstractmethod
+    def pay(self, amount):
+        pass
+
+    def payment_success_msg(self):
+        print("Payment is successfull")
+
+class UpiPayment(Payment):
+    def pay(self, amount):
+        print("Paid using UPI : ", amount)
+        super().payment_success_msg()
+
+class CreditCardPayment(Payment):
+    def __init__(self):
+        super().__init__()
+
+    def pay(self, amount):
+        print("Paid using CreditCard : ", amount)
+        super().payment_success_msg()
+
+
+upi = UpiPayment()
+upi.pay(120)
+
+credit = CreditCardPayment()
+credit.pay(35000)`,
+      },
+      {
+        type: 'list',
+        title: 'Important points — Python OOP',
+        items: [
+          'OOP stands for Object Oriented Programming; Python supports object-oriented programming principles.',
+          'A class is a blueprint / model / plan / template used to define properties and behaviours; an object is an instance of a class.',
+          'self refers to the current object.',
+          'A constructor is used to initialize instance variables; in Python its name is __init__() and it is called automatically when an object is created.',
+          'Variables declared using self are instance variables, and every object maintains its own copy of them.',
+          'Class variables are shared by all objects.',
+          'Instance methods use self as the first parameter and are called using an object reference; static (class-level) methods are called using the class name.',
+          'Encapsulation is used to protect data; private variables are declared with a double underscore (for example __name), and we write setter and getter methods for them.',
+          'Inheritance improves code reusability, and the child class can access the parent class members directly.',
+          'Python follows MRO to identify which method to execute in the inheritance flow.',
+          'super() is used to call parent class methods or the constructor.',
+          'Polymorphism means one name with many forms (behaviours).',
+          'Writing the same method in the parent and child classes is called method overriding.',
+          'Method overloading is not directly supported by Python.',
+          'Abstraction is used to hide implementation details; an abstract class is created using the abc module and can contain both abstract and concrete methods.',
+          'Python does not have the interfaces concept.',
+          'When a class extends an abstract class, that class must implement all the abstract methods.',
+        ],
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -8482,6 +9453,10 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'OOP basics', remember: 'A class is a blueprint, an object is an instance, self is the current object, __init__() is the constructor; instance variables belong to objects, class variables are shared.' },
+  { concept: 'Encapsulation', remember: 'Wrap data and methods in a class and protect data with private (__name) variables plus getters and setters.' },
+  { concept: 'Inheritance', remember: 'Child reuses parent members: single, multiple (MRO), multilevel, hierarchical, hybrid; override methods and call the parent with super().' },
+  { concept: 'Polymorphism & abstraction', remember: 'Polymorphism: one method name, many behaviours (Python has no true overloading). Abstraction: hide details with abc.ABC and @abstractmethod that children must implement.' },
   { concept: 'Exception handling', remember: 'An exception is a runtime error; syntax errors cannot be caught. try holds risky code, except handles it, else runs when nothing fails, finally always runs, raise creates an exception.' },
   { concept: 'except order', remember: 'Catch specific exceptions first and the generic Exception last; never leave an empty except block.' },
   { concept: 'File handling', remember: 'open(file, mode) → read / write → close(); prefer "with open(...)" so the file closes automatically; modes r, w, a, x, r+, rb, wb.' },
