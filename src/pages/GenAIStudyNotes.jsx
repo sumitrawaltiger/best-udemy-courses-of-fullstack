@@ -9635,6 +9635,481 @@ print(mul(10,20))`,
       },
     ],
   },
+  {
+    num: 81,
+    title: 'Python Functions — Basics, Parameters & Return',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'A function is a block of reusable code used to perform a specific task. Instead of writing the same code again and again, we write it once inside a function and use it multiple times.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Why functions?',
+        items: [
+          'Code reusability.',
+          'Code readability.',
+          'Code organization.',
+          'Reducing duplicate code.',
+          'Easy debugging.',
+          'Easy maintenance.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Function syntax and example',
+        code: `# Syntax
+def function_name():
+    statements
+
+# Example
+
+# define function
+def greet():
+    print("Welcome to python")
+
+# calling function
+greet()`,
+      },
+      {
+        type: 'list',
+        title: 'Important points',
+        items: [
+          'The def keyword is used to define a function.',
+          'The function name should be meaningful.',
+          'The function body should be written with indentation.',
+          'A function executes only when we call it, and it can be called multiple times.',
+          'Use snake_case for function names — words in small letters joined with an underscore _. Examples: student_name, course_fee, find_biggest, calculate_total_amount, send_email_notification.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Function with parameters',
+        text: 'Parameters are variables declared inside the function brackets. They are used to receive input values into a function.',
+      },
+      {
+        type: 'code',
+        label: 'Function with one parameter',
+        code: `def greet(name):
+    print(name," Welcome to python")
+
+# calling function
+greet("Ashok")
+greet("John")
+greet("Steve")`,
+      },
+      {
+        type: 'code',
+        label: 'Function with multiple parameters',
+        code: `def print_student_data(name, course):
+    print("Student Name is :", name)
+    print("Student Course is :", course)
+
+print_student_data("Ashok", "Python")
+print_student_data("John", "GEN AI")`,
+      },
+      {
+        type: 'table',
+        title: 'Parameter vs argument',
+        headers: ['Parameter', 'Argument'],
+        rows: [
+          ['The variable declared in the function definition.', 'The actual value passed during the function call.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Parameters and arguments',
+        code: `def add(a, b):
+    print(a + b)
+
+# calling function
+add(10, 20)
+
+# a and b are parameters.
+# 10 and 20 are arguments.`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Function with a return value',
+        text: 'The return keyword is used to send the result back from a function.',
+      },
+      {
+        type: 'code',
+        label: 'Function with a return value',
+        code: `def add(i, j):
+    return i+j
+
+result = add(10,20)
+print(result)`,
+      },
+      {
+        type: 'code',
+        label: 'Function without a return value — returns None by default',
+        code: `def greet():
+    print("Welcome")
+
+result = greet()
+
+print(result)
+
+# Output :
+# Welcome
+# None`,
+      },
+      {
+        type: 'list',
+        title: 'The return keyword',
+        items: [
+          'return is used to return a value from a function.',
+          'After the return statement, the function execution stops.',
+          'Any line of code written after the return statement is skipped by Python.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'return stops the function',
+        code: `def test():
+    print("Before return")
+    return
+    print("After return")
+
+test()
+
+# Output :
+# Before return`,
+      },
+      {
+        type: 'code',
+        label: 'Function to check even or odd',
+        code: `def check_even_odd(num):
+    if num % 2 == 0:
+        return "Even"
+    else:
+        return "Odd"
+
+result = check_even_odd(11)
+print(f"The given number is {result}")`,
+      },
+      {
+        type: 'code',
+        label: 'Function to find the biggest number',
+        code: `def find_biggest(a, b):
+    if a > b:
+        return a
+    else:
+        return b
+
+result = find_biggest(20, 35)
+print(f"The biggest is {result}")`,
+      },
+    ],
+  },
+  {
+    num: 82,
+    title: 'Python Functions — Types of Arguments',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'Python supports five types of function arguments: positional, keyword, default, variable length (*args) and keyword variable length (**kwargs).',
+    blocks: [
+      {
+        type: 'table',
+        title: 'Types of arguments',
+        headers: ['Type', 'How values are assigned', 'Note'],
+        rows: [
+          ['Positional', 'Based on position.', 'Order is important.'],
+          ['Keyword', 'Using the parameter names.', 'Order is not important.'],
+          ['Default', 'A default value is used if no value is passed.', 'Default arguments must come after non-default arguments.'],
+          ['Variable length (*args)', 'Collects any number of values.', 'Stored in a tuple.'],
+          ['Keyword variable length (**kwargs)', 'Collects multiple key-value pairs.', 'Stored in a dictionary.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Positional arguments — order is important',
+        code: `def student(name, course):
+    print("Name:", name)
+    print("Course:", course)
+
+student("Ashok", "Python")`,
+      },
+      {
+        type: 'code',
+        label: 'Keyword arguments — order is not important',
+        code: `def student(name, course):
+    print("Name:", name)
+    print("Course:", course)
+
+student(course="JAVA", name="John")`,
+      },
+      {
+        type: 'code',
+        label: 'Default arguments',
+        code: `def enroll_student(name, course="GEN AI"):
+    print("Student Name:", name)
+    print("Enrolled Course:", course)
+
+enroll_student("Ashok", "DEVOPS")
+enroll_student("Steve")`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Variable length arguments',
+        text: 'Variable length arguments are used when we do not know how many values will be passed, for example add(10,20), add(10,20,40) and add(19,78,79,797). We use *args, which stores the values in tuple format.',
+      },
+      {
+        type: 'code',
+        label: '*args',
+        code: `def print_numbers(*args):
+    print(args)
+
+print_numbers(10)
+print_numbers(20, 30)
+print_numbers(30, 40, 50)`,
+      },
+      {
+        type: 'code',
+        label: 'Sum of numbers using variable length arguments',
+        code: `def add_numbers(*args):
+    total = 0
+    for num in args:
+        total = total + num
+    return total
+
+print(add_numbers(10, 20))
+print(add_numbers(10, 20, 30))
+print(add_numbers(10, 20, 30, 40))`,
+      },
+      {
+        type: 'list',
+        title: 'Rules for *args',
+        items: [
+          'The variable length argument should be the last positional parameter of the function.',
+          'After the variable length argument we can use keyword arguments in the function definition.',
+        ],
+      },
+      {
+        type: 'code',
+        label: '*args followed by a keyword argument',
+        code: `def print_numbers(*args, model):
+    print(args, model)
+
+print_numbers(10, model="gpt")
+print_numbers(20, 30, model="gpt")
+print_numbers(30, 40, model="gpt")`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Keyword variable length arguments',
+        text: 'Keyword variable length arguments are used to pass multiple key-value pairs. We use **kwargs.',
+      },
+      {
+        type: 'code',
+        label: '**kwargs',
+        code: `def student_details(**kwargs):
+    print(kwargs)
+
+student_details(name="Ashok", course="GEN AI")
+student_details(name="John", course="Python", fee=1000)`,
+      },
+    ],
+  },
+  {
+    num: 83,
+    title: 'Python Functions — Variable Scope & Nested Functions',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'Where a variable is declared decides where it can be used: local variables live inside a function, global variables outside. A function can also be defined inside another function.',
+    blocks: [
+      {
+        type: 'table',
+        title: 'Local vs global variables',
+        headers: ['Local variable', 'Global variable'],
+        rows: [
+          ['Declared inside a function.', 'Declared outside a function.'],
+          ['Can be used only inside that function.', 'Can be used inside and outside of functions.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Local variable',
+        code: `def test():
+  msg = "Hello Python"
+  print(msg)
+
+test()`,
+      },
+      {
+        type: 'code',
+        label: 'Wrong example — a local variable is not available outside',
+        code: `def test():
+  msg = "Hello Python"
+  print(msg)
+
+test()
+print(msg)
+
+# Output : NameError: name 'msg' is not defined`,
+      },
+      {
+        type: 'code',
+        label: 'Global variable',
+        code: `msg = "Welcome to AI Training"
+
+def test():
+  print(msg)
+
+def demo():
+    print(msg)
+
+test()
+demo()
+print(msg)`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'global keyword',
+        text: 'The global keyword is used to modify a global variable inside a function.',
+      },
+      {
+        type: 'code',
+        label: 'global keyword',
+        code: `msg = "Welcome to AI Training"
+
+def test():
+  msg  = "Welcome to Python"
+  print(msg)
+
+def demo():
+    global msg
+    msg = "Welcome to JAVA"
+    print(msg)
+
+test()
+demo()
+print(msg)`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Function inside a function',
+        text: 'We can define one function inside another function.',
+      },
+      {
+        type: 'code',
+        label: 'Example 1 — outer and inner functions',
+        code: `def outer():
+    print("outer function")
+
+    def inner():
+        print("inner function")
+
+    inner()
+
+outer()`,
+      },
+      {
+        type: 'code',
+        label: 'Example 2 — generate a bill receipt for a student course payment',
+        code: `def process_payment(student_name, course_fee, paid_amount):
+
+    def validate_payment():
+        if paid_amount <= 0:
+            return False
+        if paid_amount > course_fee:
+            return False
+        return True
+
+    def calculate_balance():
+        return course_fee - paid_amount
+
+    def generate_receipt(balance):
+        print("Payment Receipt")
+        print("---------------")
+        print("Student Name : ", student_name)
+        print("Course Fee : ", course_fee)
+        print("Paid Amount : ", paid_amount)
+        print("Balance : ", balance)
+
+    if validate_payment():
+        balance = calculate_balance()
+        generate_receipt(balance)
+    else:
+        print("Invalid Payment")
+
+process_payment(student_name="Ashok", course_fee=12000, paid_amount=5000)`,
+      },
+    ],
+  },
+  {
+    num: 84,
+    title: 'Shopping Cart Bill Assignment & Type Hints',
+    tag: 'Assignment',
+    tagColor: 'amber',
+    intro: 'A practice requirement using functions to calculate a shopping cart bill, and a note on type hints for function parameters and return values.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Requirement — shopping cart bill calculation',
+        text: 'When a customer places an order, we need to calculate the total cart amount, apply a discount, add the delivery charges and generate the final bill.',
+      },
+      {
+        type: 'table',
+        title: 'Business rules',
+        headers: ['Rule', 'Condition'],
+        rows: [
+          ['2% discount', 'cart_amount >= 5000'],
+          ['1% discount', 'cart_amount >= 3000'],
+          ['Delivery charge is 0', 'cart_amount >= 1000'],
+          ['Delivery charge is 50 INR', 'Otherwise (cart_amount below 1000)'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Steps of the bill',
+        items: [
+          '1. Calculate the total cart amount.',
+          '2. Apply the discount.',
+          '3. Add the delivery charges.',
+          '4. Generate the final bill.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Hint',
+        text: 'Write one function for each step, and call them from one main function — the nested payment and receipt example in module 83 shows this style.',
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Type hints',
+        text: 'The data types of the parameters and the return type in f2 are just hints for developers. They are not mandatory to follow.',
+      },
+      {
+        type: 'code',
+        label: 'A function with and without type hints',
+        code: `def f1(a, b):
+    return a+b
+
+def f2(a:int, b:int) -> int:
+    return a+b
+
+result = f2(10,20)
+print(result, type(result))
+
+result = f2("Hi","Hello")
+print(result, type(result))
+
+# The second call still works and returns "HiHello" (a str),
+# because Python does not enforce type hints.`,
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -9671,6 +10146,9 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Python functions', remember: 'def name(params): ... ; return sends a value back and stops the function; without return a function gives None; use snake_case names.' },
+  { concept: 'Argument types', remember: 'Positional (order matters), keyword (name=value), default (after non-default), *args (tuple) and **kwargs (dictionary).' },
+  { concept: 'Variable scope', remember: 'Local variables live inside a function, global ones outside; use the global keyword to change a global inside a function; functions can be nested.' },
   { concept: 'Python modules', remember: 'A module is a .py file of reusable code: built-in (math, os), user-defined (calculator.py) or external (pip install). Use import, import ... as alias, or from ... import name.' },
   { concept: 'OOP basics', remember: 'A class is a blueprint, an object is an instance, self is the current object, __init__() is the constructor; instance variables belong to objects, class variables are shared.' },
   { concept: 'Encapsulation', remember: 'Wrap data and methods in a class and protect data with private (__name) variables plus getters and setters.' },
