@@ -7555,6 +7555,341 @@ print("Final Balance:", balance)`,
       },
     ],
   },
+  {
+    num: 65,
+    title: 'Database Connectivity & CRUD Operations',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'Database connectivity means connecting a Python application to a database to perform operations such as insert, read, update and delete.',
+    blocks: [
+      {
+        type: 'table',
+        title: 'CRUD operations',
+        headers: ['Letter', 'Operation', 'Meaning'],
+        rows: [
+          ['C', 'Create', 'Insert data.'],
+          ['R', 'Read', 'Read data.'],
+          ['U', 'Update', 'Update data.'],
+          ['D', 'Delete', 'Delete data.'],
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Types of databases',
+        headers: ['Type', 'How it stores data', 'Examples'],
+        rows: [
+          ['Relational databases', 'Store data in table format.', 'MySQL, Oracle, PostgreSQL, SQL Server, SQLite'],
+          ['Non-relational databases', 'Store data in document, key-value, graph or other formats.', 'MongoDB, Redis, Cassandra, Firebase'],
+        ],
+      },
+    ],
+  },
+  {
+    num: 66,
+    title: 'Python with SQLite',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'SQLite is a lightweight database that stores the complete database inside a single file. Python has built-in support for it through the sqlite3 module.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is SQLite?',
+        items: [
+          'SQLite is a lightweight database.',
+          'It does not require a DB server installation, a username and password, a port number or a separate configuration.',
+          'It stores the complete database inside a single file.',
+          'Python provides built-in support for SQLite using the sqlite3 module.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Create a table',
+        code: `import sqlite3
+
+#Establishing DB Connection
+connection = sqlite3.connect("students.db")
+
+# Create cursor object to execute SQL Queries
+cursor = connection.cursor()
+
+# Using cursor we can execute SQL queries
+
+cursor.execute("""
+    create table if not exists students(
+        student_id integer primary key autoincrement,
+        student_name text,
+        student_email text unique,
+        student_course text,
+        student_fee real
+    )
+""")
+
+print("Student Table Created Successfully....")
+
+connection.commit()
+connection.close()`,
+      },
+      {
+        type: 'code',
+        label: 'Insert a record',
+        code: `import sqlite3
+
+#Establishing DB Connection
+connection = sqlite3.connect("students.db")
+
+# Create cursor object to execute SQL Queries
+cursor = connection.cursor()
+
+# Read student information
+student_name = input("Enter Student Name: ")
+student_email = input("Enter Student Email: ")
+student_course   = input("Enter Student Course: ")
+student_fee = float(input("Enter Student Fee: "))
+
+sql = "insert into students(student_name, student_email, student_course, student_fee) values(?, ?, ?, ?)"
+
+cursor.execute(sql, (student_name, student_email, student_course, student_fee))
+
+connection.commit()
+
+print("Student inserted Successfully")
+connection.close()`,
+      },
+      {
+        type: 'code',
+        label: 'Retrieve all students',
+        code: `import sqlite3
+
+#Establishing DB Connection
+connection = sqlite3.connect("students.db")
+
+# Create cursor object to execute SQL Queries
+cursor = connection.cursor()
+
+sql = "select * from students"
+
+cursor.execute(sql)
+
+students  = cursor.fetchall()
+
+print(type(students))
+
+for student in students:
+    print(student)`,
+      },
+      {
+        type: 'code',
+        label: 'Retrieve a single record',
+        code: `import sqlite3
+
+#Establishing DB Connection
+connection = sqlite3.connect("students.db")
+
+# Create cursor object to execute SQL Queries
+cursor = connection.cursor()
+
+# Read student information
+student_id = int(input("Enter Student ID: "))
+
+sql = "select * from students where student_id =?"
+
+cursor.execute(sql, (student_id,))
+
+student = cursor.fetchone()
+print(student)`,
+      },
+      {
+        type: 'table',
+        title: 'The sqlite3 steps used above',
+        headers: ['Step', 'Code'],
+        rows: [
+          ['Connect to the database file', 'sqlite3.connect("students.db")'],
+          ['Create a cursor to run SQL', 'connection.cursor()'],
+          ['Run a query (with ? placeholders)', 'cursor.execute(sql, (values,))'],
+          ['Save the changes', 'connection.commit()'],
+          ['Read all rows / one row', 'cursor.fetchall() / cursor.fetchone()'],
+          ['Close the connection', 'connection.close()'],
+        ],
+      },
+    ],
+  },
+  {
+    num: 67,
+    title: 'Python with MySQL Database',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'Connect Python to a MySQL server using mysql-connector-python, create a table, insert a student and view all the students.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'MySQL DB server and Workbench setup',
+        text: 'Video: youtube.com/watch?v=EsAIXPIsyQg',
+      },
+      {
+        type: 'list',
+        title: 'Steps',
+        items: [
+          'Step 1: Install the MySQL connector using a virtual environment.',
+          'Step 2: Create a Python file with the required methods: get_connection(), create_table(), add_student() and view_students().',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Step 1 — virtual environment and the MySQL connector (Windows)',
+        code: `python -m venv venv
+
+venv\\Scripts\\activate
+
+pip install mysql-connector-python`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'requirements.txt',
+        text: 'We can configure the required libraries in a requirements.txt file and install them with: pip install -r requirements.txt',
+      },
+      {
+        type: 'code',
+        label: 'py-mysql-app.py',
+        code: `import mysql.connector
+
+def get_connection():
+    try:
+        connection = mysql.connector.connect(
+                        host="localhost",
+                        port = "3306",
+                        user="root",
+                        passwd="root",
+                        database="student")
+        return connection
+    except mysql.connector.Error as error:
+        print("database conn failed:", error)
+        return None
+
+def create_table():
+    connection = get_connection()
+    if connection is None:
+        return
+    cursor = None
+    try:
+        cursor = connection.cursor()
+        sql = """
+        CREATE TABLE IF NOT EXISTS students (
+                student_id INT PRIMARY KEY AUTO_INCREMENT,
+                student_name VARCHAR(100) NOT NULL,
+                student_email VARCHAR(100) UNIQUE NOT NULL,
+                student_course VARCHAR(100) NOT NULL,
+                student_fee DECIMAL(10, 2) NOT NULL
+            )
+        """
+        cursor.execute(sql)
+        connection.commit()
+    except Exception as error:
+        print("Error while creating table,", error)
+
+def add_student():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    student_name = input("Enter student name: ").strip()
+    student_email = input("Enter student email: ").strip()
+    student_course = input("Enter student course: ").strip()
+    student_fee = float(input("Enter student fee: "))
+
+    sql = """
+          INSERT INTO students
+              (student_name, student_email, student_course, student_fee)
+          VALUES (%s, %s, %s, %s) \\
+          """
+
+    values  = (
+        student_name,
+        student_email,
+        student_course,
+        student_fee
+    )
+
+    cursor.execute(sql, values)
+    connection.commit()
+    print("Student Inserted....")
+    connection.close()
+
+def view_all_students():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    sql = "select * from students"
+
+    cursor.execute(sql)
+
+    students = cursor.fetchall()
+    for student in students:
+        print(student)
+
+# create_table()
+
+add_student()
+
+print("-------------------------------")
+
+view_all_students()`,
+      },
+      {
+        type: 'table',
+        title: 'SQLite vs MySQL in Python',
+        headers: ['', 'SQLite (sqlite3)', 'MySQL (mysql-connector-python)'],
+        rows: [
+          ['Installation', 'Built in — nothing to install.', 'pip install mysql-connector-python'],
+          ['Server', 'No DB server; one file.', 'Needs a running MySQL server.'],
+          ['Connection', 'sqlite3.connect("students.db")', 'host, port, user, password and database'],
+          ['Placeholder', '?', '%s'],
+        ],
+      },
+    ],
+  },
+  {
+    num: 68,
+    title: 'Assignment — Student Management System (Python + MySQL)',
+    tag: 'Assignment',
+    tagColor: 'amber',
+    intro: 'Develop a menu-driven Student Management System using Python and MySQL. The application connects to a MySQL database and performs the CRUD operations.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'The application should support',
+        items: [
+          '1. Add a new student.',
+          '2. View all students.',
+          '3. View a student by ID.',
+          '4. Update student details.',
+          '5. Delete a student.',
+          '6. Exit the application.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Functional requirements',
+        items: [
+          'Use mysql-connector-python to connect Python with MySQL.',
+          'Create the database table automatically if it does not exist.',
+          'Use separate functions for each CRUD operation.',
+          'Use parameterized queries with %s placeholders.',
+          'Display a proper message when a student record is not found.',
+          'Prevent duplicate email addresses.',
+          'Handle database connection errors and invalid user input.',
+          'Ask for confirmation before deleting a student.',
+          'Close the cursor and the database connection after every operation.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Hint',
+        text: 'Start from module 67 (py-mysql-app.py) and module 66 (the sqlite3 retrieve-by-ID example), then add the update and delete functions and the menu loop.',
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -7591,6 +7926,8 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'CRUD', remember: 'Create, Read, Update, Delete — the four database operations; relational databases use tables, non-relational ones use documents, key-value or graphs.' },
+  { concept: 'sqlite3 vs MySQL connector', remember: 'sqlite3 is built in and file based (? placeholders); mysql-connector-python needs a server and uses %s placeholders; always commit() and close.' },
   { concept: 'Process vs thread', remember: 'A process is a running program with its own memory; threads live inside a process and share its memory, are lightweight and communicate faster.' },
   { concept: 'Python threading', remember: 'threading.Thread(target=fn); start() runs it in a new thread (never call run() directly), join() waits for it, is_alive() checks it.' },
   { concept: 'Race condition & Lock', remember: 'Threads changing shared data can give wrong results; a Lock lets only one thread into the critical section — prefer "with lock:".' },
