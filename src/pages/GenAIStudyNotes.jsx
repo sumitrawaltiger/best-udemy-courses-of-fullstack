@@ -6992,6 +6992,95 @@ print(response.text)`,
       },
     ],
   },
+  {
+    num: 60,
+    title: 'Python Libraries',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'A library is ready-made code that someone has already written, so we simply use it instead of writing everything ourselves.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'What is a Python library?',
+        text: 'Imagine writing a calculator. Without libraries you write every mathematical function yourself. With libraries, someone already wrote those functions and you simply use them. Library = ready-made code.',
+      },
+      {
+        type: 'code',
+        label: 'Without a library vs using a library',
+        code: `### without library ###
+
+def square(num):
+    return num*num
+
+print(square(10))
+
+### Using library ###
+
+import math
+
+print(math.sqrt(100))`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Real-life example — constructing a house',
+        text: 'Without a library you would have to manufacture the bricks, cement, steel, doors and windows and then build the house, which is nearly impossible because manufacturing everything is very difficult. Instead of manufacturing everything, we purchase the ready-made material. Programming is the same: libraries are ready-made building blocks.',
+      },
+      {
+        type: 'list',
+        title: 'What is a library?',
+        items: [
+          'A library is a collection of packages. Example: the NumPy library contains linear algebra, random, statistics and matrix.',
+          'A package means a collection of modules.',
+          'A module means a Python file.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Types of Python libraries',
+        headers: ['Type', 'Meaning', 'Examples'],
+        rows: [
+          ['Standard libraries', 'Already available — we do not need to install them.', 'math · random · datetime · os · sys · json'],
+          ['Third-party libraries', 'We need to install them.', 'numpy · pandas · matplotlib · flask · django · tensorflow · fastapi · scikit-learn · streamlit'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Install a third-party library',
+        code: 'pip install <library-name>',
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Use a virtual environment',
+        text: 'Using pip we can install third-party libraries. It is better to use a virtual environment to install project-specific libraries.',
+      },
+      {
+        type: 'table',
+        title: 'Popular Python libraries',
+        headers: ['Library', 'Purpose', 'Used for', 'Projects'],
+        rows: [
+          ['NumPy', 'Numerical computing', 'Arrays, matrix operations, linear algebra', 'AI, ML, scientific computing'],
+          ['Pandas', 'Data analysis', 'Reading CSV / Excel, data cleaning, data manipulation', 'Data science, business intelligence'],
+          ['Matplotlib', 'Data visualization', 'Line, bar, pie, graph and scatter charts', 'Reports, dashboards'],
+          ['Flask', 'Web framework', 'REST APIs, small web applications', 'Backend services, microservices'],
+          ['Django', 'Full-stack web framework', 'Large-scale enterprise web applications', 'E-commerce, ERP, CRM'],
+          ['Scikit-learn', 'Machine learning', 'Classification, regression, clustering', 'Prediction systems, recommendation systems'],
+          ['TensorFlow', 'Deep learning', 'Neural networks, computer vision, NLP', 'Image recognition'],
+          ['FastAPI', 'High-performance API framework', 'REST APIs for AI / ML / Gen AI / Agentic AI projects', 'Backend REST APIs'],
+          ['Streamlit', 'Web apps for data science', 'Building interactive dashboards', 'AI chatbot demos, data visualization'],
+          ['Hugging Face', 'AI model hub', 'LLMs, text generation, image generation, AI model deployment', 'ChatGPT-like applications, AI assistants, translation systems'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Where to read more',
+        text: 'Modules 49 (Matplotlib), 50 (Pandas), 52 (NumPy), 53 (Streamlit) and 57 (FastAPI) explain several of these libraries in detail.',
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -7028,6 +7117,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Python libraries', remember: 'Ready-made code: a library is a collection of packages, a package is a collection of modules, a module is a Python file. Standard libraries need no install; third-party ones use pip inside a virtual environment.' },
   { concept: 'REST API', remember: 'Provider exposes business services; consumer calls them over HTTP using JSON. Methods: GET, POST, PUT, PATCH, DELETE; status 2xx success, 4xx client error, 5xx server error.' },
   { concept: 'FastAPI', remember: 'Python REST framework: @app.get / @app.post, path and query parameters, Pydantic request bodies, run with uvicorn, Swagger docs at /docs.' },
   { concept: 'requests library', remember: 'Python HTTP client for consuming REST APIs: requests.get(url, params=...), response.status_code, response.text / json().' },
