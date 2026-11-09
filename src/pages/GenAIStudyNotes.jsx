@@ -899,6 +899,7 @@ Input:  Fee pending students pay immediately.`,
     ],
   },
   {
+    num: 18,
     title: 'Ollama — Local LLM Runtime',
     tag: 'Local AI',
     tagColor: 'purple',
@@ -978,6 +979,134 @@ Input:  Fee pending students pay immediately.`,
       },
     ],
   },
+  {
+    num: 19,
+    title: 'Bank Agentic AI — Capstone Project',
+    tag: 'Capstone',
+    tagColor: 'amber',
+    intro: 'An employee-friendly AI assistant + analytics dashboard for a bank. Employees can see branch revenue, incoming/outgoing money, loan approvals and date-range reports — and simply ask questions in plain English about data or bank policies.',
+    blocks: [
+      {
+        type: 'table',
+        title: 'Tech stack',
+        headers: ['Layer', 'Tools'],
+        rows: [
+          ['Language & data', 'Python · MySQL · SQLAlchemy · Pandas · Plotly'],
+          ['LLM & orchestration', 'OpenAI · LangChain · LangGraph'],
+          ['Knowledge (policies)', 'RAG · Chroma DB'],
+          ['Integration & API', 'MCP · FastAPI'],
+          ['User interface', 'Streamlit'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Application development process',
+        items: [
+          'Step 1: Create the project and list the required libraries in requirements.txt.',
+          'Step 2: Set up a .venv and install the libraries with pip install -r requirements.txt.',
+          'Step 3: Configure properties in a .env file and load them through app/config.py.',
+          'Step 4: Load sample data into the MySQL database — generate it with an AI tool such as Claude or GPT (data/bank_data_generator.py).',
+          'Step 5: Keep the bank policy documents in a policies/ folder.',
+          'Step 6: Write a program that loads the policy documents into Chroma DB (rag/vector_store.py).',
+          'Step 7: Create app/db.py to run SQL queries that fetch data from the database tables.',
+          'Step 8: Put the business logic in services.py.',
+          'Step 9: Create tools and wire them together with LangGraph (tools.py, graph.py).',
+          'Step 10: Expose REST endpoints with FastAPI.',
+          'Step 11: Create an MCP server that exposes the same tools to MCP clients.',
+          'Step 12: Build the Streamlit user interface.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Install dependencies',
+        code: `pip install -r requirements.txt`,
+      },
+      {
+        type: 'code',
+        label: 'Project layout',
+        code: `bank-agentic-ai/
+├── requirements.txt
+├── .env
+├── app/
+│   ├── config.py        # loads .env properties
+│   └── db.py            # SQL queries for branches / accounts / transactions / loans
+├── data/
+│   └── bank_data_generator.py
+├── policies/            # bank policy documents (PDF / text)
+├── rag/
+│   └── vector_store.py  # loads policies into Chroma DB
+├── services.py          # business logic
+├── tools.py             # LangChain tools
+├── graph.py             # LangGraph workflow
+├── api.py               # FastAPI REST endpoints
+├── mcp_server.py        # MCP tools for MCP clients
+└── ui.py                # Streamlit dashboard + assistant`,
+      },
+      {
+        type: 'code',
+        label: 'Prompt — generate sample bank data (Step 4)',
+        code: `act as a python developer,
+create a python program using pandas to populate sample bank related data to below tables
+branches (5 records), accounts (200 records),
+transactions (3000 records), loans (300 records)
+and insert this data into mysql database
+make this code very simple and easy to understand`,
+      },
+      {
+        type: 'code',
+        label: 'Master prompt — Bank reports agentic app',
+        code: `act as a gen ai agentic ai developer,
+create agentic ai application to see bank related reports
+like loans summary, accounts summary, cash inflow outflow
+date wise reports and ai assistant for bank employees
+use mysql db, rag with chroma db, lang chain, lang graph,
+mcp server, fast api with streamlit
+and use guard rails
+make this project with clean architecture
+use simple coding
+make it production ready with docker and k8s`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Two more capstone ideas — same stack, different domain',
+        text: 'Reuse the exact architecture (MySQL + RAG with Chroma DB + LangChain/LangGraph + MCP server + FastAPI + Streamlit + guardrails, clean architecture, Docker and Kubernetes) for a code-review agent and an application-monitoring agent.',
+      },
+      {
+        type: 'code',
+        label: 'Master prompt — GitHub project code-review agent',
+        code: `act as a gen ai agentic ai developer,
+create agentic ai application
+which is responsible to perform project code review for given github repo
+and give all issues report
+test cases summary
+coding fixes in the given projects
+use mysql db, rag with chroma db, lang chain, lang graph,
+mcp server, fast api with streamlit
+and use guard rails
+make this project with clean architecture
+use simple coding
+make it production ready with docker and k8s`,
+      },
+      {
+        type: 'code',
+        label: 'Master prompt — Application monitoring agent',
+        code: `act as a gen ai agentic ai developer,
+create agentic ai application
+which is responsible to
+monitor application logs,
+exceptions reports,
+incidents reports
+requests summary reports on date wise
+use mysql db, rag with chroma db, lang chain, lang graph,
+mcp server, fast api with streamlit
+and use guard rails
+make this project with clean architecture
+use simple coding
+make it production ready with docker and k8s`,
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
@@ -993,6 +1122,7 @@ const QUICK_REVISION = [
   { concept: 'CrewAI', remember: 'Role/task-oriented multi-agent orchestration.' },
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
+  { concept: 'Bank capstone', remember: 'MySQL + RAG (Chroma) + LangGraph tools + MCP + FastAPI + Streamlit, with guardrails.' },
 ];
 
 const TAG_COLORS = {
@@ -1055,9 +1185,9 @@ export default function GenAIStudyNotes() {
             LangChain, LangGraph, CrewAI, MCP and cloud deployment.
           </p>
           <div className="gn-header-stats">
-            <span><strong>16</strong> modules</span>
-            <span><strong>Ashok IT</strong> · Skill 3</span>
-            <span><strong>Days 201–300</strong> of the journey</span>
+            <span><strong>{MODULES.length}</strong> modules</span>
+            <span><strong>Ashok IT</strong> · Skill 02</span>
+            <span><strong>Days 101–200</strong> of the journey</span>
           </div>
           <a
             href="/agentic-notes/gen-ai-and-agentic-ai.pdf"
