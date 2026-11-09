@@ -5400,6 +5400,352 @@ plt.show()`,
       },
     ],
   },
+  {
+    num: 50,
+    title: 'Pandas — Data Analysis & Manipulation',
+    tag: 'Data Science',
+    tagColor: 'cyan',
+    intro: 'Pandas is a Python library used for data analysis and data manipulation. It is mainly used to work with structured data, meaning data stored in rows and columns.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is Pandas?',
+        items: [
+          'A Python library used for data analysis and data manipulation.',
+          'Mainly used to work with structured data — data stored in rows and columns.',
+          'Examples: student marks data, employee salary data, sales data, course enrollment data, CSV files and Excel files.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Why Pandas?',
+        items: [
+          'Reading data and writing data.',
+          'Cleaning data.',
+          'Filtering data.',
+          'Sorting data.',
+          'Grouping data.',
+          'Analyzing data.',
+          'Working with CSV files and Excel files.',
+          'Handling missing values.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Installation — Pandas is an external library',
+        code: 'pip install pandas',
+      },
+      {
+        type: 'table',
+        title: 'Main data structures in Pandas',
+        headers: ['', 'Series', 'DataFrame'],
+        rows: [
+          ['Dimensions', 'One-dimensional data.', 'Two-dimensional data — rows and columns.'],
+          ['Looks like', 'A single column.', 'An Excel sheet or a database table.'],
+          ['Created using', 'pd.Series()', 'pd.DataFrame()'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Series — a one-dimensional structure, like a single column',
+        code: `import pandas as pd
+
+marks = pd.Series([80, 90, 75, 60])
+
+print(marks)
+
+# Output :
+# 0    80
+# 1    90
+# 2    75
+# 3    60
+# dtype: int64`,
+      },
+      {
+        type: 'code',
+        label: 'DataFrame — a two-dimensional structure with rows and columns',
+        code: `students = {
+    "name": ["Ravi", "Sita", "Kiran"],
+    "course": ["Python", "Java", "DevOps"],
+    "marks": [80, 90, 75]
+}
+
+df = pd.DataFrame(students)
+print(df)`,
+      },
+      {
+        type: 'code',
+        label: 'Series with a custom index',
+        code: `courses = pd.Series(
+    ["Python", "JAVA", "DevOps"],
+    index = ["C1", "C2", "C3"]
+)
+
+print(courses)
+print(courses["C1"])`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Write a DataFrame to a CSV file',
+        text: 'The to_csv() function writes DataFrame data into a CSV file.',
+      },
+      {
+        type: 'code',
+        label: 'to_csv()',
+        code: `import pandas as pd
+
+students = {
+    "name": ["Ravi", "Sita", "Kiran"],
+    "course": ["Python", "Java", "DevOps"],
+    "marks": [80, 90, 75]
+}
+
+df = pd.DataFrame(students)
+
+df.to_csv("students.csv", index=False)
+
+print("CSV file created successfully")`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Reading data from a CSV file',
+        text: 'CSV means Comma Separated Values. Pandas can read CSV files using read_csv().',
+      },
+      {
+        type: 'code',
+        label: 'read_csv()',
+        code: `import pandas as pd
+
+df = pd.read_csv("students.csv")
+
+print(df)`,
+      },
+      {
+        type: 'list',
+        title: 'Working with Excel',
+        items: [
+          'Install "openpyxl" to work with Excel files using Pandas.',
+          'to_excel() writes a DataFrame to an Excel file.',
+          'read_excel() reads an Excel file.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'to_excel() and read_excel()',
+        code: `import pandas as pd
+
+students = {
+    "name": ["Ravi", "Sita", "Kiran"],
+    "course": ["Python", "Java", "DevOps"],
+    "marks": [80, 90, 75]
+}
+
+df = pd.DataFrame(students)
+df.to_excel("Students.xlsx", index=False)
+
+print("----------Excel Created Successfully----------")
+
+df = pd.read_excel("Students.xlsx")
+print(df)`,
+      },
+      {
+        type: 'table',
+        title: 'Important functions',
+        headers: ['Function', 'What it does'],
+        rows: [
+          ['head()', 'Displays the first 5 rows by default.'],
+          ['tail()', 'Displays the last 5 rows by default.'],
+          ['info()', 'Displays DataFrame information: number of rows, number of columns, column names, data types and non-null values.'],
+          ['describe()', 'Gives a statistical summary for the numeric columns.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Employee data — view, select, filter, sort, add columns, group and handle missing values',
+        code: `import pandas as pd
+
+employees = {
+    "EmpId": [101, 102, 103, 104, 105, 106],
+    "Name": ["Ravi", "Sita", "Kiran", "Rahul", "Priya", "Anil"],
+    "Department": ["IT", "HR", "IT", "Sales", "HR", "IT"],
+    "Salary": [50000, 45000, 70000, 40000, 48000, 65000],
+    "Experience": [2, 5, 8, 1, 4, 7]
+}
+
+df = pd.DataFrame(employees)
+print(df)
+print("---------------------------------------------")
+print(df.head(3))
+print("---------------------------------------------")
+print(df.tail(3))
+print("---------------------------------------------")
+print(df["Name"])
+print("---------------------------------------------")
+print(df[["Name", "Salary"]])
+
+print("---------------------------------------------")
+
+print(df[df["Salary"] > 50000])
+
+print("---------------------------------------------")
+
+print(df[df["Department"] == "IT"])
+
+print("---------------------------------------------")
+
+print(df[(df["Department"] == "IT") & (df["Salary"] > 60000)])
+
+print("---------------------------------------------")
+
+print(df[(df["Department"] == "IT") | (df["Salary"] > 60000)])
+
+print("---------------------------------------------")
+
+print(df.sort_values("Salary"))
+
+print(df.sort_values("Salary", ascending=False))
+
+print(df.sort_values(["Department", "Salary"]))
+
+print("---------------------------------------------")
+
+df["Bonus"] = df["Salary"] * 0.10
+
+print(df)
+
+print("---------------------------------------------")
+
+df["Total Salary"] = df["Salary"] + df["Bonus"]
+
+print(df)
+
+print("---------------------------------------------")
+
+df.drop(columns=["Bonus"], inplace=True)
+print(df)
+
+print("---------------------------------------------")
+
+print(df.groupby("Department")["Salary"].mean())
+print(df.groupby("Department")["Salary"].max())
+print(df.groupby("Department")["Salary"].min())
+print(df.groupby("Department")["Salary"].sum())
+
+print("---------------------------------------------")
+
+print(df["Department"].unique())
+print(df["Department"].nunique())
+
+print("---------------------------------------------")
+
+emps = {
+    "Name":["Ravi","Sita","Kiran","Rahul"],
+    "Salary":[50000,None,65000,None]
+}
+
+ndf = pd.DataFrame(emps)
+
+print(ndf)
+#print(df.isnull())
+print("---------------------------------------------")
+
+ndf["Salary"] = ndf["Salary"].fillna(0)
+print(ndf)`,
+      },
+      {
+        type: 'table',
+        title: 'What the employee example demonstrates',
+        headers: ['Operation', 'Code'],
+        rows: [
+          ['Select a column / columns', 'df["Name"] · df[["Name", "Salary"]]'],
+          ['Filter rows', 'df[df["Salary"] > 50000] · df[df["Department"] == "IT"]'],
+          ['Filter with AND / OR', 'df[(cond1) & (cond2)] · df[(cond1) | (cond2)]'],
+          ['Sort', 'df.sort_values("Salary") · ascending=False · sort by two columns'],
+          ['Add a column', 'df["Bonus"] = df["Salary"] * 0.10'],
+          ['Drop a column', 'df.drop(columns=["Bonus"], inplace=True)'],
+          ['Group and aggregate', 'df.groupby("Department")["Salary"].mean() / max() / min() / sum()'],
+          ['Unique values', 'df["Department"].unique() · df["Department"].nunique()'],
+          ['Fill missing values', 'ndf["Salary"].fillna(0)'],
+        ],
+      },
+    ],
+  },
+  {
+    num: 51,
+    title: 'Pandas Assignments',
+    tag: 'Assignment',
+    tagColor: 'amber',
+    intro: 'Two practice assignments on DataFrames: filtering, sorting, grouping, adding columns, and saving to and reading from CSV and Excel files. Concepts are in module 50.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Assignment 1 — Students',
+        text: 'Create the student DataFrame below and complete the 10 tasks.',
+      },
+      {
+        type: 'code',
+        label: 'Assignment 1 — data',
+        code: `students = {
+    "Name":["Ravi","Sita","Kiran","Rahul","Priya"],
+    "Course":["Python","Java","Python","DevOps","Python"],
+    "Marks":[85,90,75,60,95]
+}
+
+df = pd.DataFrame(students)`,
+      },
+      {
+        type: 'list',
+        title: 'Assignment 1 — tasks',
+        items: [
+          '1. Show only the Python students.',
+          '2. Show the students with marks > 80.',
+          '3. Sort the students based on marks.',
+          '4. Find the highest marks.',
+          '5. Find the average marks.',
+          '6. Count the students in each course.',
+          '7. Add a Grade column.',
+          '8. Save the student data into a CSV file.',
+          '9. Read the CSV file.',
+          '10. Store the data into an Excel file.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Assignment 2 — Products',
+        text: 'Create the product DataFrame below and complete the 8 tasks.',
+      },
+      {
+        type: 'code',
+        label: 'Assignment 2 — data',
+        code: `products = {
+    "Product":["Laptop","Mouse","Keyboard","Monitor","Printer"],
+    "Category":["Electronics","Accessories","Accessories","Electronics","Electronics"],
+    "Price":[60000,500,1200,15000,10000],
+    "Stock":[15,200,120,25,18]
+}
+
+df = pd.DataFrame(products)`,
+      },
+      {
+        type: 'list',
+        title: 'Assignment 2 — tasks',
+        items: [
+          '1. Show the products above ₹10,000.',
+          '2. Sort by price.',
+          '3. Count the products by category.',
+          '4. Find the average price by category.',
+          '5. Add GST (18%).',
+          '6. Calculate the final price.',
+          '7. Save to a CSV file.',
+          '8. Read the CSV file.',
+        ],
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -5436,6 +5782,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Pandas', remember: 'Data analysis on rows and columns: Series (1-D) and DataFrame (2-D); read_csv / to_csv, read_excel / to_excel, filter, sort_values, groupby and fillna.' },
   { concept: 'Matplotlib', remember: 'Data visualization with pyplot: plot (line), bar / barh, pie, scatter, hist; add title, xlabel, ylabel, legend and grid, then show().' },
   { concept: 'Machine Learning', remember: 'Subset of AI where the computer learns patterns from data instead of hand-written rules: supervised, unsupervised and reinforcement learning.' },
   { concept: 'Regression vs classification', remember: 'Regression predicts a continuous number (price, salary); classification predicts a category (spam / not spam, pass / fail).' },
