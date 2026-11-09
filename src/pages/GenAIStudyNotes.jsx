@@ -2872,6 +2872,216 @@ def cancel_order(order_id):
       },
     ],
   },
+  {
+    num: 34,
+    title: 'LangGraph in Depth — State, Nodes & Edges',
+    tag: 'Orchestration',
+    tagColor: 'purple',
+    intro: 'LangGraph is a framework for building stateful AI workflows. An application is described with State, Nodes, Edges and Decisions. See module 12 for the short introduction.',
+    blocks: [
+      {
+        type: 'code',
+        label: 'What is LangGraph?',
+        code: 'LangGraph = State + Nodes + Edges + Decisions',
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Why do we need LangGraph?',
+        text: 'A simple LangChain pipeline is usually linear. Real-world AI applications often need branching and loops, so we use LangGraph.',
+      },
+      {
+        type: 'code',
+        label: 'A linear LangChain pipeline',
+        code: 'chain = db_call | rag_call | api_call | prompt | llm | parser',
+      },
+      {
+        type: 'table',
+        title: 'Example — Ashok IT student chatbot routes each question to a different node',
+        headers: ['User asks about', 'Routed to'],
+        rows: [
+          ['Payment', 'Get info from the Database node'],
+          ['Course content', 'Get info from the RAG node'],
+          ['Live status', 'Get info from the API node'],
+          ['Complaint', 'Send to the Human Approval node (support team)'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'LangGraph is useful when an application needs',
+        items: [
+          'Conditions and branches.',
+          'Loops and retries.',
+          'Tool calling.',
+          'Multiple agents.',
+          'Conversation memory.',
+          'Human approval.',
+          'Persistent state.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'LangChain vs LangGraph',
+        headers: ['LangChain', 'LangGraph'],
+        rows: [
+          ['Build prompts, chains and retrievers.', 'Manage complete AI application workflows.'],
+          ['Best for linear pipelines.', 'Best for branching and looping.'],
+          ['Fixed flow.', 'Supports dynamic execution paths.'],
+          ['Good for simple RAG applications.', 'Good for agent-based applications.'],
+          ['Limited workflow state control.', 'State is a core concept.'],
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Important terminology',
+        headers: ['Term', 'Role'],
+        rows: [
+          ['State', 'Carries the DATA.'],
+          ['Node', 'Performs the TASK.'],
+          ['Edge', 'Controls the FLOW.'],
+          ['Conditional Edge', 'Decides which node should execute next.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'State',
+        items: [
+          'A shared data structure that stores the information used by the different nodes of a LangGraph application.',
+          'Think of it as a common "data box".',
+          'Every node can read data from the State, process the data and update the State.',
+          'The updated State is then available to the next node.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'State example',
+        code: `class ChatState(TypedDict, total=False):
+    question: str
+    category: str
+    context: str
+    answer: str`,
+      },
+      {
+        type: 'table',
+        title: 'What each State field stores',
+        headers: ['Field', 'Stores'],
+        rows: [
+          ['question', 'The user question.'],
+          ['category', 'The question category.'],
+          ['context', 'Additional information retrieved for the question.'],
+          ['answer', 'The final answer.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Node',
+        items: [
+          'A Python function that performs one specific task in a LangGraph application.',
+          'Each node receives the current State as input, processes the data and returns an updated State.',
+          'A LangGraph application can contain multiple nodes.',
+          'Each node should ideally have one clear responsibility.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Node example 1 — categorize the question',
+        code: `def categorize_question(state):
+    question = state["question"]
+
+    if "java" in question.lower():
+        return {"category": "Java"}
+
+    elif "python" in question.lower():
+        return {"category": "Python"}
+
+    return {"category": "Other"}`,
+      },
+      {
+        type: 'code',
+        label: 'Node example 2 — fee node (outline)',
+        code: `def fee_node(state):
+    # get info from state
+    # make db call
+    return data`,
+      },
+      {
+        type: 'list',
+        title: 'Edge',
+        items: [
+          'Defines the connection or flow between two nodes.',
+          'Tells LangGraph which node should execute next.',
+          'In simple words: Edge = "What should happen next?"',
+          'Edges connect the nodes together and control the execution flow.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Edge example — flow',
+        code: `START
+  ↓
+Categorize Node
+  ↓
+Retrieve Node
+  ↓
+Generate Node
+  ↓
+END`,
+      },
+      {
+        type: 'code',
+        label: 'Edge example — code',
+        code: `graph.add_edge(START, "categorize")
+graph.add_edge("categorize", "retrieve")
+graph.add_edge("retrieve", "generate")
+graph.add_edge("generate", END)`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Conditional edge',
+        text: 'A conditional edge decides which node should execute next, based on the State.',
+      },
+      {
+        type: 'code',
+        label: 'Conditional edge example',
+        code: `def decide_next_node(state):
+
+    if state["category"] == "Java":
+        return "java_node"
+
+    return "python_node"`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Assignment — Student-support chatbot',
+        text: 'Build a student support chatbot using Python + LangGraph + an LLM. The chatbot should understand the student question and automatically route it to the appropriate node.',
+      },
+      {
+        type: 'list',
+        title: 'The application should support',
+        items: [
+          'Payment-related questions.',
+          'Course-related questions.',
+          'API / service-status questions.',
+          'General questions.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Assignment — application flow',
+        code: `START
+  ↓
+CLASSIFIER NODE
+  ↓
+Database Node | RAG Node | API Node | General Node
+  ↓
+ANSWER NODE
+  ↓
+END`,
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
@@ -2888,6 +3098,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'LangGraph terms', remember: 'State carries the data, Node performs the task, Edge controls the flow, Conditional Edge picks the next node.' },
   { concept: 'Tool calling', remember: 'The LLM picks a bound tool and its inputs; the application runs it and feeds the result back to the LLM for the final answer.' },
   { concept: 'CrewAI components', remember: 'Agent (role, goal, backstory) + Task (description, expected output) + Crew + Process (sequential or hierarchical); run with crew.kickoff().' },
   { concept: 'MCP client / server', remember: 'Client lives in the AI app and discovers and calls tools; the server exposes tools, resources and prompts backed by databases, APIs and files.' },
