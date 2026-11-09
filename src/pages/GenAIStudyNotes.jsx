@@ -4620,6 +4620,322 @@ Prediction Confidence: Percentage`,
       },
     ],
   },
+  {
+    num: 44,
+    title: 'Linear Regression — House Price Prediction',
+    tag: 'Assignment',
+    tagColor: 'amber',
+    intro: 'Assignment 1: build a Machine Learning model using Linear Regression to predict a continuous numerical value from one or more input features. The suggested project is house price prediction.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Objective',
+        text: 'Build a Machine Learning model using Linear Regression to predict a continuous numerical value based on one or more input features.',
+      },
+      {
+        type: 'list',
+        title: 'Suggested project — House Price Prediction using Linear Regression',
+        items: [
+          'Develop a model that predicts the price of a house based on features such as:',
+          'Area / square feet.',
+          'Number of bedrooms.',
+          'Number of bathrooms.',
+          'Number of floors.',
+          'Age of the house.',
+          'Location-related features.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Tasks',
+        headers: ['#', 'Task'],
+        rows: [
+          ['1', 'Understand the business problem.'],
+          ['2', 'Collect or download a suitable dataset.'],
+          ['3', 'Load the dataset using Pandas.'],
+          ['4', 'Perform basic data understanding: head(), shape, info(), describe() and check missing values.'],
+          ['5', 'Perform Exploratory Data Analysis (EDA).'],
+          ['6', 'Identify the independent variables (X) and the dependent / target variable (y).'],
+          ['7', 'Handle missing values and unnecessary columns.'],
+          ['8', 'Split the dataset into 80% training and 20% testing.'],
+          ['9', 'Build a Linear Regression model using Scikit-learn.'],
+          ['10', 'Train the model using the training data.'],
+          ['11', 'Make predictions on the test data.'],
+          ['12', 'Evaluate the model using MAE, MSE, RMSE and the R² score.'],
+          ['13', 'Compare actual vs predicted values.'],
+          ['14', 'Visualize the regression results.'],
+          ['15', 'Test the model with new / unseen input data.'],
+          ['16', 'Write a short conclusion about the model performance.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Technologies',
+        items: ['Python', 'NumPy', 'Pandas', 'Matplotlib', 'Seaborn', 'Scikit-learn', 'Streamlit'],
+      },
+      {
+        type: 'list',
+        title: 'Implementation steps',
+        items: [
+          'Step 1: Install the required libraries.',
+          'Step 2: Create the dataset (dataset.csv).',
+          'Step 3: Create main.py and implement the logic.',
+          'Step 4: Create app.py and implement the UI logic for the model demo.',
+          'Step 5: Run the Streamlit application and test the model behaviour.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Step 1 — required libraries',
+        code: `numpy
+pandas
+matplotlib
+seaborn
+scikit-learn
+streamlit`,
+      },
+      {
+        type: 'code',
+        label: 'Step 2 — dataset.csv',
+        code: `area,bedrooms,bathrooms,age,price
+1000,2,2,10,5000000
+1200,2,2,8,6000000
+1500,3,2,7,7500000
+1800,3,3,5,9000000
+2000,4,3,6,10000000
+2200,4,3,4,11000000
+2500,4,4,3,13000000
+2800,5,4,2,15000000
+3000,5,4,1,17000000
+3500,5,5,1,20000000`,
+      },
+      {
+        type: 'code',
+        label: 'Step 3 — main.py (train, predict and save the model)',
+        code: `import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pickle
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+df = pd.read_csv("dataset.csv")
+print(df)
+
+# Understand data
+print(df.head())
+print(df.tail())
+print(df.shape)
+print(df.columns)
+print(df.info())
+print(df.describe())
+
+# check missing values
+print(df.isnull().sum())
+
+# Check Duplicate records
+print(df.duplicated().sum())
+
+df = df.drop_duplicates()
+
+print(df)
+
+# Create EDA (understanding relationships between our features and house price.)
+
+plt.figure(figsize=(8,5))
+plt.scatter(df["area"], df["price"])
+
+plt.xlabel("area")
+plt.ylabel("price")
+plt.title("Area vs House Price")
+
+# plt.show()
+
+# Define independent and dependent variables
+# x = input and y = output
+
+x = df[["area", "bedrooms", "bathrooms", "age"]]
+y = df["price"]
+
+# Split DataSet (80-20 formula)
+
+x_train, x_test, y_train, y_test = train_test_split(x,
+                                                    y,
+                                                    test_size=0.2,
+                                                    random_state=42
+                                                )
+
+# check train and test data frame shapes
+print("X_Train:", x_train.shape)
+print("X_Test:", x_test.shape)
+
+print("Y_Train:", y_train.shape)
+print("Y_Test:", y_test.shape)
+
+
+# Create model
+model = LinearRegression()
+
+# Model Training
+model.fit(x_train, y_train)
+
+# Make Predictions
+y_predict = model.predict(x_test)
+print(y_predict)
+
+df = pd.DataFrame({
+    "Actual Price": y_test,
+    "Predicted Price": y_predict
+})
+
+print(df)
+
+# Test with new data
+new_house = pd.DataFrame({
+    "area": [5000],
+    "bedrooms": [7],
+    "bathrooms": [7],
+    "age": [1]
+})
+
+predicted_price = model.predict(new_house)
+print("Predicted House Price : ", predicted_price)
+
+## save model
+
+with open("house_price_model.pkl", "wb") as file:
+    pickle.dump(model, file)
+
+
+print("*********** Model Saved to Pickle file ************")`,
+      },
+      {
+        type: 'code',
+        label: 'Step 4 — app.py (Streamlit UI for the model demo)',
+        code: `import streamlit as st
+import pandas as pd
+import pickle
+
+# -----------------------------
+# Load trained model
+# -----------------------------
+with open("house_price_model.pkl", "rb") as file:
+    model = pickle.load(file)
+
+# -----------------------------
+# Streamlit Page Configuration
+# -----------------------------
+st.set_page_config(
+    page_title="House Price Prediction",
+    page_icon="🏠",
+    layout="centered"
+)
+
+# -----------------------------
+# Title
+# -----------------------------
+st.title("🏠 House Price Prediction")
+st.write("Enter the house details below to predict the price.")
+
+# -----------------------------
+# Input Fields
+# -----------------------------
+
+area = st.number_input(
+    "Area (Square Feet)",
+    min_value=100,
+    max_value=10000,
+    value=2000,
+    step=100
+)
+
+bedrooms = st.number_input(
+    "Number of Bedrooms",
+    min_value=1,
+    max_value=20,
+    value=3,
+    step=1
+)
+
+bathrooms = st.number_input(
+    "Number of Bathrooms",
+    min_value=1,
+    max_value=20,
+    value=2,
+    step=1
+)
+
+age = st.number_input(
+    "House Age (Years)",
+    min_value=0,
+    max_value=100,
+    value=5,
+    step=1
+)
+
+# -----------------------------
+# Prediction Button
+# -----------------------------
+
+if st.button("Predict House Price"):
+
+    # Create DataFrame
+
+    new_house = pd.DataFrame({
+        "area" : [area],
+        "bedrooms" : [bedrooms],
+        "bathrooms" : [bathrooms],
+        "age" : [age]
+    })
+
+    # Make Prediction
+    predicted_price = model.predict(new_house)
+
+    # Display Result
+
+    st.success(
+        f"Predicted House Price: ₹{predicted_price[0]:,.2f}"
+    )
+
+# -----------------------------
+# Footer
+# -----------------------------
+st.markdown("---")
+st.write("Machine Learning Model: Linear Regression")`,
+      },
+      {
+        type: 'code',
+        label: 'Step 5 — run the Streamlit application',
+        code: 'streamlit run app.py',
+      },
+      {
+        type: 'list',
+        title: 'Summary',
+        items: [
+          '1. Created the project and installed the required libraries.',
+          '2. Created the dataset (.csv file).',
+          '3. Loaded the dataset using Pandas.',
+          '4. Performed basic data understanding operations.',
+          '5. Performed data cleaning.',
+          '6. Performed EDA.',
+          '7. Data pre-processing (features and target).',
+          '8. Train and test split (80 - 20).',
+          '9. Created the model (LinearRegression).',
+          '10. Model training.',
+          '11. Model predictions.',
+          '12. Saved the model as a pickle file (.pkl).',
+          '13. Created the Streamlit UI page.',
+          '14. Loaded the model from the pickle file.',
+          '15. Took the inputs from the user.',
+          '16. Gave the inputs to the model for making a prediction.',
+          '17. Displayed the prediction result in the UI page.',
+        ],
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -4656,6 +4972,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Linear regression', remember: 'Predicts a continuous value (e.g. house price) from features; evaluate with MAE, MSE, RMSE and R²; train with an 80/20 split and save the model as a pickle file.' },
   { concept: 'Classification (loan approval)', remember: 'Predict a category (Approved / Rejected) with Logistic Regression; judge it with accuracy, precision, recall, F1-score and a confusion matrix.' },
   { concept: 'Deep Learning', remember: 'Subset of ML using multi-layer neural networks that learn patterns automatically from large amounts of data, especially images, audio and text.' },
   { concept: 'Neuron', remember: 'Output = Activation Function(Input × Weight + Bias). Weight = importance of an input; bias shifts the result.' },
