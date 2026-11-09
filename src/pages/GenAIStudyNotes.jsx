@@ -12061,6 +12061,17 @@ welcome()`,
         text: 'Join the Google Classroom for the GEN AI and Agentic AI class notes and class videos: classroom.google.com/c/ODU0ODU5MjQ0MTAy?cjc=t2b633da',
       },
       {
+        type: 'callout',
+        variant: 'info',
+        label: 'Course code — GitHub repository',
+        text: 'The code for the GEN AI + Agentic AI with Python program is in the GitHub repository: github.com/ashok-bollepalli/gen_ai_agentic_ai_python',
+      },
+      {
+        type: 'code',
+        label: 'Clone the repository',
+        code: 'git clone https://github.com/ashok-bollepalli/gen_ai_agentic_ai_python.git',
+      },
+      {
         type: 'table',
         title: 'About the trainer and the institute',
         headers: ['Item', 'Detail'],
@@ -12772,6 +12783,14 @@ export default function GenAIStudyNotes() {
               className="gn-download-btn"
             >
               ⬇ Loan Approval PDF
+            </a>
+            <a
+              href="https://github.com/ashok-bollepalli/gen_ai_agentic_ai_python"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="gn-download-btn"
+            >
+              ⌥ GitHub Repository
             </a>
           </div>
         </div>
