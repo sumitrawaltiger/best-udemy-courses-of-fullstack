@@ -3247,7 +3247,7 @@ python -m pip install -r requirements.txt`,
     title: 'Pinecone Vector Database',
     tag: 'RAG',
     tagColor: 'green',
-    intro: 'Pinecone is a vector database designed for AI applications. It stores embeddings and quickly finds the information that is semantically similar to a user question. See module 9 for vector database basics.',
+    intro: 'Pinecone is a vector database designed for AI applications. It stores embeddings and quickly finds the information that is semantically similar to a user question. See module 8 for vector database basics.',
     blocks: [
       {
         type: 'callout',
@@ -3390,6 +3390,156 @@ The notice period for employees is 30 days]`,
       },
     ],
   },
+  {
+    num: 37,
+    title: 'Vector DB & RAG with Chroma DB',
+    tag: 'RAG',
+    tagColor: 'green',
+    intro: 'A vector database stores the meaning of text as numbers, and RAG uses it to give an LLM your own data before it answers. See modules 7 to 9 for the short overviews.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is a vector database?',
+        items: [
+          'A vector database stores data in the form of numbers called vectors or embeddings.',
+          'These vectors represent the meaning of text.',
+          'It stores the embeddings and helps search based on meaning, not only exact keywords.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Example — text converted into numbers',
+        code: `Text : Python is used for AI development.
+
+[0.23, -0.18, 0.91, 0.44, ...]   <- these numbers are called embeddings`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'What is an embedding?',
+        text: 'An embedding is a numerical representation of text. "I want to learn Python" and "How can I study Python?" use different words but have a similar meaning. A normal database may not see that similarity; a vector database does, because both sentences get similar vector values.',
+      },
+      {
+        type: 'table',
+        title: 'Popular vector databases',
+        headers: ['Vector database', 'Notes'],
+        rows: [
+          ['Chroma DB', 'Best for beginners and local projects.'],
+          ['Pinecone', 'Cloud vector database.'],
+          ['FAISS', 'Fast local vector search.'],
+          ['Weaviate', 'Cloud / native vector database.'],
+          ['Milvus', 'Large-scale vector database.'],
+          ['Qdrant', 'Open-source vector database.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'What is RAG?',
+        items: [
+          'RAG stands for Retrieval-Augmented Generation.',
+          'A Generative AI technique where the LLM does not depend only on its own trained knowledge.',
+          'It first retrieves relevant information from our own data, and then generates the answer using that information.',
+          'RAG means giving external knowledge to an AI model before asking it to answer.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Example — refund policy of Ashok IT',
+        text: 'If we ask ChatGPT "What is the refund policy of Ashok IT?" and the model was not trained on the latest policy document, it may give a wrong or generic answer. With RAG: we upload the Ashok IT policy documents, the system searches the relevant policy content, the LLM receives that content, and the LLM answers based on it.',
+      },
+      {
+        type: 'table',
+        title: 'Why do we need RAG? — LLM limitations',
+        headers: ['Problem', 'Description'],
+        rows: [
+          ['Problem 1', 'The LLM does not know private data.'],
+          ['Problem 2', 'The LLM knowledge may be outdated (training cutoff).'],
+          ['Problem 3', 'The LLM can hallucinate.'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'RAG reduces all three problems',
+        text: 'The model answers using the documents we provide.',
+      },
+      {
+        type: 'table',
+        title: 'RAG full form breakdown',
+        headers: ['Letter', 'Word', 'Meaning'],
+        rows: [
+          ['R', 'Retrieval', 'The system searches for relevant information in the documents.'],
+          ['A', 'Augmented', 'The retrieved information is added to the user question.'],
+          ['G', 'Generation', 'The LLM generates the final answer.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'RAG architecture',
+        items: [
+          'Step 1: Data ingestion — load the data into the vector DB as embeddings.',
+          'Step 2: The user asks a question.',
+          'Step 3: Convert the question into embeddings.',
+          'Step 4: Search for similar chunks in the vector DB.',
+          'Step 5: Retrieve the relevant context.',
+          'Step 6: Send the context + the question to the LLM.',
+          'Step 7: Generate the final response.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'RAG flow',
+        code: 'Documents → Embeddings → Vector DB   |   Question → Embedding → Similar chunks → Context + Question → LLM → Answer',
+      },
+      {
+        type: 'list',
+        title: 'RAG with vector DB — project setup',
+        items: [
+          'Step 1: Create the project folder.',
+          'Step 2: Go inside the project folder, create a virtual environment and activate it.',
+          'Step 3: Create requirements.txt with the libraries below and install them with pip.',
+          'Step 4: Create the .env file and configure the OpenAI API key.',
+          'Step 5: Create documents/company.txt with the data to load into the vector DB.',
+          'Step 6: Create ingest.py to read the file data and store it into the vector DB, then run it.',
+          'Step 7: Create rag.py to perform Retrieve + Augment + Generation, then run it.',
+          'Step 8: Create app.py with the Streamlit UI and run it.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Steps 1-2 — project folder and virtual environment (Windows)',
+        code: `cd <project-folder-name>
+python -m venv venv
+venv\\Scripts\\activate`,
+      },
+      {
+        type: 'code',
+        label: 'Step 3 — requirements.txt',
+        code: `openai
+chromadb
+python-dotenv
+streamlit`,
+      },
+      {
+        type: 'code',
+        label: 'Step 3 — install the libraries',
+        code: `pip install -r requirements.txt`,
+      },
+      {
+        type: 'code',
+        label: 'Step 4 — .env',
+        code: `OPENAI_API_KEY=<key-goes-here>`,
+      },
+      {
+        type: 'code',
+        label: 'Steps 6-8 — run the programs',
+        code: `python ingest.py        # read documents/company.txt and store the embeddings
+python rag.py           # retrieve + augment + generate
+streamlit run app.py    # Streamlit UI`,
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
@@ -3406,6 +3556,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'RAG (R-A-G)', remember: 'Retrieval finds relevant chunks, Augmented adds them to the question, Generation lets the LLM answer; fixes private data, outdated knowledge and hallucination.' },
   { concept: 'Pinecone', remember: 'Vector database for embeddings: index, vector, ID, metadata, namespace. Query returns the most similar chunks with a score.' },
   { concept: 'LangChain chatbot', remember: 'LangChain bridges the LLM with DB, RAG, APIs and a prompt: question → DB + RAG context → prompt → LLM → answer.' },
   { concept: 'LangGraph terms', remember: 'State carries the data, Node performs the task, Edge controls the flow, Conditional Edge picks the next node.' },
