@@ -1300,6 +1300,192 @@ kubectl get pods -n bankbuddy`,
       },
     ],
   },
+  {
+    num: 22,
+    title: 'Kubernetes (K8S)',
+    tag: 'Orchestration',
+    tagColor: 'blue',
+    intro: 'Kubernetes is a free, open-source orchestration platform, developed by Google in the Go programming language, that manages containers — create, start, stop, delete, scale up and scale down.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Advantages',
+        items: [
+          'Auto scaling — based on demand, the number of containers is increased or decreased.',
+          'Load balancing — load is distributed across all the pods that are up and running.',
+          'Self healing — if a container crashes, it is replaced with a new container.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Docker vs Kubernetes',
+        headers: ['Docker', 'Kubernetes'],
+        rows: [
+          ['Containerization platform.', 'Orchestration platform.'],
+          ['Packages the app code and its dependencies as a single unit for execution — this is containerization.', 'Manages the containers — this is orchestration.'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Cluster architecture',
+        text: 'K8S follows a cluster architecture. A cluster is a group of servers, made up of a master node (control plane) and worker nodes.',
+      },
+      {
+        type: 'table',
+        title: 'K8S cluster components',
+        headers: ['Node', 'Components'],
+        rows: [
+          ['Control Plane (Master Node)', 'API Server · Scheduler · Controller Manager · ETCD'],
+          ['Worker Node', 'Kubelet · Kube Proxy · Docker runtime · Pod · Container'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'How the components work together',
+        items: [
+          'To deploy an application we communicate with the control plane using kubectl, the CLI.',
+          'The API Server receives the request from kubectl and stores it in ETCD with pending status.',
+          'ETCD is the internal database of the K8S cluster.',
+          'The Scheduler finds the pending requests in ETCD and picks a worker node for the task, using the kubelet.',
+          'Kubelet is the node agent — it maintains the information of the worker node.',
+          'Kube Proxy provides the network for communication inside the cluster.',
+          'The Controller Manager verifies that all the tasks are working as expected.',
+          'On a worker node, the Docker engine runs the container, and the container is created inside a pod.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Pod',
+        text: 'A pod is the smallest building block you can create in a K8S cluster. A Docker container is created inside a pod, and in K8S everything is represented as a pod.',
+      },
+      {
+        type: 'table',
+        title: 'K8S cluster setup options',
+        headers: ['Option', 'Type', 'Notes'],
+        rows: [
+          ['Minikube', 'Single-node cluster', 'Only for practice.'],
+          ['Kubeadm', 'Self-managed cluster', 'You are responsible for everything.'],
+          ['Provider-managed cluster', 'Ready-made cluster', 'The provider takes care of everything — e.g. AWS EKS, Azure AKS, GCP GKE. Chargeable.'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'EKS setup',
+        text: 'Steps: github.com/ashokitschool/DevOps-Documents → 05-EKS-Setup.md. Video: youtube.com/watch?v=is99tq4Zwsc.',
+      },
+      {
+        type: 'list',
+        title: 'What is a pod?',
+        items: [
+          'The smallest building block in the K8S cluster; an application is deployed as a pod.',
+          'We can create multiple pods for one application.',
+          'A pod is created using a manifest YML file, where the Docker image is configured.',
+          'Self healing — if a pod is damaged, crashed or deleted, K8S creates a new pod.',
+          'Load balancing — if the application runs in multiple pods, K8S distributes the load across all running pods.',
+          'Scalability — pods can be increased or decreased automatically based on the load.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'K8S services — exposing pods',
+        headers: ['Service type', 'What it does'],
+        rows: [
+          ['Cluster IP', 'A static IP that links all the pods of an application; reachable only inside the cluster.'],
+          ['Node Port', 'Exposes the pods outside the cluster on the worker node public IP.'],
+          ['Load Balancer', 'Exposes the pods outside the cluster through an AWS load balancer URL.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Why a Cluster IP?',
+        items: [
+          'A pod is a short-lived object — when it crashes or is damaged, K8S replaces it with a new pod.',
+          'When a pod is re-created its IP changes, so accessing pods by pod IP is not recommended.',
+          'A Cluster IP gives one static IP in front of all the pods.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Node Port vs Load Balancer',
+        items: [
+          'Node Port — the app is accessed with the worker node public IP, so every request goes to the same worker node and the burden on that node increases.',
+          'Load Balancer — to spread the load over multiple worker nodes, use the LBR service. Requests to the load balancer URL are distributed to all pods running on all worker nodes.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Manifest YML syntax',
+        code: `---
+apiVersion: <version-number>
+kind: <resource-type>
+metadata: <name>
+spec: <container>
+...
+
+# Execute a K8S manifest YML
+kubectl apply -f <manifest-yml>`,
+      },
+      {
+        type: 'code',
+        label: 'Deployment + Service (LoadBalancer) manifest',
+        code: `apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+  labels:
+    app: flask-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+        - name: flask-container
+          image: ashokit/python-app:1.0
+          ports:
+            - containerPort: 5000
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: flask-app
+  ports:
+    - port: 80
+      targetPort: 5000`,
+      },
+      {
+        type: 'code',
+        label: 'kubectl commands',
+        code: `kubectl get nodes
+kubectl apply -f <yml>
+kubectl get all          # access the app using the LBR URL
+kubectl get pods
+kubectl scale deployment pydeploy --replicas 4
+kubectl get pods
+kubectl scale deployment javawebdeploy --replicas 3`,
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
@@ -1316,6 +1502,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Kubernetes', remember: 'Orchestrates containers: auto scaling, load balancing, self healing. Pod is the smallest unit; services expose pods.' },
   { concept: 'K8S deployment', remember: 'Dockerfile → image on Docker Hub → EKS + RDS; kubectl apply the k8s/ manifests; UI on NodePort 30080.' },
   { concept: 'Bank capstone', remember: 'MySQL + RAG (Chroma) + LangGraph tools + MCP + FastAPI + Streamlit, with guardrails.' },
 ];
