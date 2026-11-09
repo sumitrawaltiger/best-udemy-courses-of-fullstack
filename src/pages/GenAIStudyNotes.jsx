@@ -4936,6 +4936,297 @@ st.write("Machine Learning Model: Linear Regression")`,
       },
     ],
   },
+  {
+    num: 45,
+    title: 'Artificial Intelligence & Machine Learning — Basics',
+    tag: 'ML Foundations',
+    tagColor: 'blue',
+    intro: 'Artificial Intelligence makes computers perform tasks that normally require human intelligence. Machine Learning is the subset of AI where the computer learns patterns from data instead of following hand-written rules.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is Artificial Intelligence?',
+        items: [
+          'AI is a branch of Data Science and Computer Science.',
+          'AI aims to create machines or systems that can think and act like humans.',
+          'AI is used to create intelligent machines and intelligent software systems.',
+          'AI means making computers perform tasks that normally require human intelligence.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'AI real-life examples',
+        items: [
+          'Self-driving cars.',
+          'Fraud detection systems in banks.',
+          'Spam detection in emails.',
+          'ChatGPT answering questions and generating images.',
+          'GitHub Copilot generating code.',
+          'Voice assistants like Siri, Alexa and Google Assistant.',
+          'Product recommendations in Amazon and Flipkart.',
+          'Movie recommendations in Netflix and YouTube.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'What is Machine Learning?',
+        items: [
+          'Machine Learning is a subset of Artificial Intelligence.',
+          'It allows computers to learn patterns from data without writing programs explicitly for every condition.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Simple definition',
+        text: 'Machine Learning is a technique where the computer learns from data and makes predictions or decisions.',
+      },
+      {
+        type: 'code',
+        label: 'Traditional programming vs Machine Learning',
+        code: `Traditional Programming:
+    Input + Rules → Output
+
+Machine Learning:
+    Input + Output Data → Learning Algorithm → Model
+    New Input → Trained Model → Prediction`,
+      },
+      {
+        type: 'code',
+        label: 'Example — will the student pass? Traditional rules',
+        code: `if attendance > 75 and marks > 40:
+    PASS
+else:
+    FAIL
+
+# Here, we manually create the rules.`,
+      },
+      {
+        type: 'list',
+        title: 'Example — the Machine Learning way',
+        items: [
+          'We provide historical student data: hours studied, attendance, previous marks and assignment reports.',
+          'The algorithm learns the patterns from the historical data.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Prediction flow',
+        code: 'New Student Data ---> ML Model ---> PASS / FAIL',
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Why Machine Learning?',
+        text: 'Traditional software requires developers to define the rules, and for some problems the rules are very difficult to define. Example: spam email detection. It is hard to write rules like if the email contains "offer" or "buy back" then spam. Instead we provide historical emails to the ML algorithm; it learns the patterns from the data and can identify spam emails easily.',
+      },
+    ],
+  },
+  {
+    num: 46,
+    title: 'Types of Machine Learning',
+    tag: 'ML Foundations',
+    tagColor: 'blue',
+    intro: 'Machine Learning is divided into three types: supervised, unsupervised and reinforcement learning. Supervised learning has regression and classification.',
+    blocks: [
+      {
+        type: 'table',
+        title: 'Types of Machine Learning',
+        headers: ['Type', 'Idea'],
+        rows: [
+          ['Supervised learning', 'The training data has both the input and the correct output.'],
+          ['Unsupervised learning', 'There is no target / output column; the algorithm discovers patterns or groups.'],
+          ['Reinforcement learning', 'An agent learns by interacting with an environment and receiving a reward or a penalty.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Supervised learning',
+        items: [
+          'The training data contains both the input and the correct output.',
+          'Examples: Student information → Pass / Fail; House features → House price; Email → Spam / Not spam.',
+          'The inputs are called FEATURES.',
+          'The output is called the TARGET.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Supervised learning — regression vs classification',
+        headers: ['Regression', 'Classification'],
+        rows: [
+          ['Used when the target is a continuous numerical value.', 'Used when the output belongs to a category.'],
+          ['Examples: house price, salary, temperature, sales, revenue, stock price prediction.', 'Examples: spam or not spam, pass or fail, fraud or not fraud, disease or no disease.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Unsupervised learning',
+        items: [
+          'There is no target / output column.',
+          'The algorithm tries to discover patterns or groups in the data.',
+          'Example — customer data (age, income, spending score) may be grouped as: Group 1 → low spending customers, Group 2 → medium spending customers, Group 3 → high spending customers.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Reinforcement learning',
+        items: [
+          'An agent / model learns by interacting with an environment.',
+          'The agent performs an action and receives a reward or a penalty.',
+          'A reward is feedback given to the agent after it performs an action.',
+          'A penalty is negative feedback to the agent / model.',
+        ],
+      },
+    ],
+  },
+  {
+    num: 47,
+    title: 'Machine Learning Workflow & Terminology',
+    tag: 'ML Foundations',
+    tagColor: 'blue',
+    intro: 'The 15-step workflow of a Machine Learning project, and the important terms used along the way: dataset, features, target, train/test data, random_state, preprocessing, mean vs median, categorical data and encoding.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Machine Learning workflow',
+        items: [
+          '1. Understand the business problem.',
+          '2. Collect data.',
+          '3. Understand the data.',
+          '4. Clean the data.',
+          '5. EDA (Exploratory Data Analysis).',
+          '6. Feature engineering (data transformation).',
+          '7. Train and test split (separate the training data and the testing data).',
+          '8. Preprocessing (convert the data into numerical format).',
+          '9. Select the algorithm.',
+          '10. Train the model.',
+          '11. Make predictions.',
+          '12. Evaluate the model.',
+          '13. Tune the model.',
+          '14. Save the model (for example house_price_model.pkl).',
+          '15. Deploy the model.',
+        ],
+      },
+      {
+        type: 'list',
+        title: '1. Data set',
+        items: [
+          'A collection of data used for analysis and for training and testing.',
+          'Example student data set: study hours, attendance, previous marks and result (Pass or Fail).',
+          'The dataset is the complete table. Features = study hours, attendance, previous marks; Target = result.',
+          'Features are the input variables used by the ML model; the target is the value that we want the model to predict. Another example: Features = area, bedrooms, age; Target = price.',
+          'In a dataset, X represents the input values and y represents the output values.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Load a dataset with Pandas',
+        code: `import pandas as pd
+
+df = pd.read_csv("students.csv")`,
+      },
+      {
+        type: 'list',
+        title: '2. Training data and testing data',
+        items: [
+          'We should not train and test the model using the same data, because the model could simply memorize the data.',
+          'We divide the data with the 80 - 20 formula: training data 80% and testing data 20%.',
+          'The model learns patterns from the training data.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Example — dataset of 1000 records',
+        code: `800 records → Training
+200 records → Testing`,
+      },
+      {
+        type: 'list',
+        title: '3. random_state',
+        items: [
+          'When we split the dataset, the records are randomly selected.',
+          'If we execute the program multiple times, the split can change.',
+          'Using a fixed value, for example random_state = 10, gives the same split every time — this is for reproducibility.',
+        ],
+      },
+      {
+        type: 'list',
+        title: '4. Data preprocessing',
+        items: [
+          'Real-world data is usually not clean. Examples: missing values, duplicate records and incorrect values.',
+          'Therefore we need preprocessing.',
+        ],
+      },
+      {
+        type: 'code',
+        label: '5. Mean vs median',
+        code: `Mean   = sum_of_values / total_num_of_values
+
+Median = middle value after sorting the data`,
+      },
+      {
+        type: 'list',
+        title: '6. Categorical data',
+        items: [
+          'Machine Learning algorithms generally require numerical inputs.',
+          'Example: Gender (Male, Female) is categorical data.',
+          'We can convert categorical data into a numerical representation.',
+        ],
+      },
+      {
+        type: 'code',
+        label: '7. Encoding — label encoding',
+        code: `Low    ----> 0
+
+Medium ----> 1
+
+High   ----> 2`,
+      },
+    ],
+  },
+  {
+    num: 48,
+    title: 'Machine Learning Algorithms — Regression & Classification',
+    tag: 'ML Foundations',
+    tagColor: 'blue',
+    intro: 'Pick a regression algorithm to predict a continuous number, or a classification algorithm to predict a category.',
+    blocks: [
+      {
+        type: 'table',
+        title: 'Regression vs classification',
+        headers: ['Regression', 'Classification'],
+        rows: [
+          ['Predicts a continuous numeric value.', 'Predicts a category.'],
+          ['House price prediction', 'Spam detection'],
+          ['Salary prediction', 'Disease detection'],
+          ['Sales prediction', 'Fraud detection'],
+          ['Temperature prediction', 'Loan approval'],
+          ['Stock price prediction', 'Sentiment analysis'],
+          ['Revenue prediction', 'Image classification'],
+          ['', 'Student pass / fail prediction'],
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Common algorithms',
+        headers: ['Common regression algorithms', 'Common classification algorithms'],
+        rows: [
+          ['Linear Regression', 'Logistic Regression'],
+          ['Multiple Linear Regression', 'Decision Tree Classifier'],
+          ['Polynomial Regression', 'Random Forest Classifier'],
+          ['Decision Tree Regression', 'Support Vector Machine (SVM)'],
+          ['Random Forest Regression', 'KNN (K-Nearest Neighbors)'],
+          ['Support Vector Regression (SVR)', 'Naive Bayes'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Assignment 1 — Develop an ML model based on Linear Regression',
+        text: 'The full assignment, with the dataset, main.py and the Streamlit app, is in module 44 (Linear Regression — House Price Prediction). The classification assignment is in module 43 (Loan Approval Prediction).',
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -4972,6 +5263,9 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Machine Learning', remember: 'Subset of AI where the computer learns patterns from data instead of hand-written rules: supervised, unsupervised and reinforcement learning.' },
+  { concept: 'Regression vs classification', remember: 'Regression predicts a continuous number (price, salary); classification predicts a category (spam / not spam, pass / fail).' },
+  { concept: 'Train / test split', remember: 'Never test on the training data; split 80 / 20 and fix random_state so the split is reproducible.' },
   { concept: 'Linear regression', remember: 'Predicts a continuous value (e.g. house price) from features; evaluate with MAE, MSE, RMSE and R²; train with an 80/20 split and save the model as a pickle file.' },
   { concept: 'Classification (loan approval)', remember: 'Predict a category (Approved / Rejected) with Logistic Regression; judge it with accuracy, precision, recall, F1-score and a confusion matrix.' },
   { concept: 'Deep Learning', remember: 'Subset of ML using multi-layer neural networks that learn patterns automatically from large amounts of data, especially images, audio and text.' },
