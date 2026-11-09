@@ -8104,6 +8104,348 @@ print("Folder created successfully")`,
       },
     ],
   },
+  {
+    num: 71,
+    title: 'Exception Handling — Errors & Common Exceptions',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'An exception is an unexpected and unwanted situation that disturbs the normal flow of program execution. Exception handling deals with runtime errors without stopping the program suddenly.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is an exception?',
+        items: [
+          'An unexpected and unwanted situation which disturbs the normal flow of our program execution is called an exception.',
+          'When an exception occurs, normal program execution stops (abnormal termination).',
+          'As programmers we are responsible for handling the exceptions that occur in our programs.',
+          'Exception handling is used to handle runtime errors without stopping the program suddenly.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Simple meaning',
+        text: 'Exception means runtime error.',
+      },
+      {
+        type: 'code',
+        label: 'Example',
+        code: `a = 10
+b = 0
+
+result = a/b
+
+print("Result : ", result)
+
+# Output :
+# ZeroDivisionError: division by zero`,
+      },
+      {
+        type: 'list',
+        title: 'Why exception handling?',
+        items: [
+          'Handling runtime errors.',
+          'Avoiding a program crash.',
+          'Displaying user-friendly error messages.',
+          'Graceful termination — continue the execution till the end.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Types of errors',
+        headers: ['Error', 'When it occurs', 'Can it be handled?'],
+        rows: [
+          ['Syntax error', 'When we write wrong Python syntax.', 'No — we must fix syntax errors manually to start the program execution.'],
+          ['Runtime error / exception', 'While the program is running.', 'Yes — using exception handling.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Syntax error example',
+        code: `print("Hello
+
+# Output :
+# SyntaxError: '(' was never closed`,
+      },
+      {
+        type: 'table',
+        title: 'Common exceptions in Python',
+        headers: ['Exception', 'When it occurs'],
+        rows: [
+          ['ZeroDivisionError', 'When we divide a number by zero.'],
+          ['ValueError', 'When a wrong value is given.'],
+          ['TypeError', 'When an operation is performed on the wrong data type.'],
+          ['IndexError', 'When we access an invalid index from a list, tuple or string.'],
+          ['KeyError', 'When we access an invalid key from a dictionary.'],
+          ['FileNotFoundError', 'When the file is not available.'],
+          ['NameError', 'When we use a variable that is not defined.'],
+          ['AttributeError', 'When we call an unavailable method or attribute.'],
+          ['ImportError', 'When an import fails.'],
+          ['IndentationError', 'When the indentation is wrong. It is a kind of syntax error, so it must be fixed manually.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'ZeroDivisionError',
+        code: `a = 10
+b = 0
+
+print(a / b)
+
+# Output :
+# ZeroDivisionError: division by zero`,
+      },
+      {
+        type: 'code',
+        label: 'ValueError',
+        code: `num = int(input("Enter value : "))
+
+print(num)
+
+# Entering text such as "abc" raises a ValueError`,
+      },
+      {
+        type: 'code',
+        label: 'TypeError',
+        code: `result = "10" + 20
+
+print(result)
+
+# Output :
+# TypeError: can only concatenate str not int to str`,
+      },
+      {
+        type: 'code',
+        label: 'IndexError',
+        code: `numbers = [10, 20, 30]
+
+print(numbers[5])
+
+# Output :
+# IndexError: list index out of range`,
+      },
+      {
+        type: 'code',
+        label: 'KeyError',
+        code: `student = {
+    "name" : "Ashok",
+    "course" : "GEN AI"
+}
+
+print(student["age"])
+
+# Output :
+# KeyError: 'age'`,
+      },
+      {
+        type: 'code',
+        label: 'FileNotFoundError',
+        code: `file = open("students.txt", "r")
+
+print(file.read())
+
+# Output :
+# FileNotFoundError`,
+      },
+      {
+        type: 'code',
+        label: 'NameError',
+        code: `print(course)
+
+# Output :
+# NameError: name 'course' is not defined`,
+      },
+      {
+        type: 'code',
+        label: 'AttributeError',
+        code: `numbers = [10, 20, 30]
+
+numbers.upper()
+
+# Output :
+# AttributeError: 'list' object has no attribute 'upper'`,
+      },
+      {
+        type: 'code',
+        label: 'ImportError',
+        code: `from math import addition
+
+# Output :
+# ImportError`,
+      },
+    ],
+  },
+  {
+    num: 72,
+    title: 'try, except, else, finally, raise & Custom Exceptions',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'The five exception handling keywords: try, except, else, finally and raise. Custom exceptions let us create our own exception classes.',
+    blocks: [
+      {
+        type: 'table',
+        title: 'Exception handling keywords',
+        headers: ['Keyword', 'Purpose'],
+        rows: [
+          ['try', 'Holds the risky code — code that may generate an exception.'],
+          ['except', 'Handles the exception. Runs only if an exception occurs in the try block.'],
+          ['else', 'Runs only when no exception occurs in the try block.'],
+          ['finally', 'Always runs, whether an exception occurs or not. Mainly used for cleanup activities.'],
+          ['raise', 'Generates an exception manually.'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'try and except',
+        text: 'The try block is used to keep risky code. The except block is used to handle the exception. If an exception occurs in the try block then only the except block will execute. If there is no exception in the try block, the except block will not execute.',
+      },
+      {
+        type: 'code',
+        label: 'Example 1 — a single except',
+        code: `a = int(input("Enter First Number : "))
+b = int(input("Enter Second Number : "))
+
+try:
+    result = a / b
+    print("Result:", result)
+
+except:
+    print("Invalid Number Entered")`,
+      },
+      {
+        type: 'code',
+        label: 'Example 2 — multiple except blocks',
+        code: `try:
+    a = int(input("Enter first Number:"))
+    b = int(input("Enter second Number:"))
+
+    result = a / b
+
+    print("Result : ", result)
+
+except ValueError as ve:
+    print("Please enter only numbers : ", ve)
+
+except ZeroDivisionError as ze:
+    print("Don't enter zeros : ", ze)
+
+except Exception as e:
+    print("Some Problem Occurred : ", e)
+
+print("Program Execution Completed")`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Order of except blocks',
+        text: 'Always handle specific exceptions first. The generic Exception should be written at the end.',
+      },
+      {
+        type: 'code',
+        label: 'else block — runs only when no exception occurs',
+        code: `# Syntax
+try:
+    risky code
+except:
+    error handling code
+else:
+    code to execute when no exception occurs
+
+# Example
+try:
+    num1 = int(input("Enter first Number:"))
+    num2 = int(input("Enter second Number:"))
+    result = num1 / num2
+except ZeroDivisionError as ze:
+    print("Cannot divide by zero : ", ze)
+else:
+    print("Result : ", result)`,
+      },
+      {
+        type: 'code',
+        label: 'finally block — always executes',
+        code: `try:
+    print(10/2)
+except ZeroDivisionError as ze:
+    print("Cannot divide by zero : ", ze)
+finally:
+    print("Program Execution Completed")`,
+      },
+      {
+        type: 'code',
+        label: 'raise — generate an exception manually',
+        code: `age = int(input("Enter your age : "))
+
+if age >= 18:
+    print("You are old enough to vote")
+else:
+    raise Exception("Age must be 18 or above to vote")`,
+      },
+      {
+        type: 'list',
+        title: 'Custom exception',
+        items: [
+          'We can create our own exception class.',
+          'A custom exception class should inherit from the Exception class.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Custom exception example',
+        code: `class InvalidAgeError(Exception):
+    pass
+
+try:
+    age = int(input("Enter your age : "))
+    if age < 18:
+        raise InvalidAgeError("You are not old enough to vote")
+    print("You are old enough to vote")
+except InvalidAgeError as e:
+    print("Invalid Age Error : ", e)
+except ValueError as ve:
+    print("Invalid Input: ", ve)
+finally:
+    print("Program Execution Completed")`,
+      },
+      {
+        type: 'table',
+        title: 'Error vs exception',
+        headers: ['Error', 'Exception'],
+        rows: [
+          ['A problem in the program.', 'A runtime error.'],
+          ['Some errors are due to wrong syntax.', 'Occurs during program execution.'],
+          ['Syntax errors must be fixed manually.', 'Can be handled using try / except.'],
+        ],
+      },
+      {
+        type: 'table',
+        title: 'except vs finally, and raise vs except',
+        headers: ['Comparison', 'First', 'Second'],
+        rows: [
+          ['except vs finally', 'except runs only when an exception occurs and is used to handle it.', 'finally always runs and is used for cleanup activities.'],
+          ['raise vs except', 'raise is used to create an exception manually.', 'except is used to handle an exception.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Important points',
+        items: [
+          'Exception means runtime error; when an exception occurs the program terminates abnormally.',
+          'Exception handling prevents a sudden program crash.',
+          'The try block contains risky code, the except block handles the exception, the else block executes when no exception occurs and the finally block always executes.',
+          'The raise keyword is used to create an exception manually.',
+          'Exception is the parent class for most exceptions.',
+          'Handle specific exceptions first; the generic Exception should be written at the end.',
+          'Syntax errors cannot be handled using try / except; runtime errors can.',
+          'finally is mainly used for cleanup activities.',
+          'Custom exceptions can be created by inheriting the Exception class.',
+          'Do not use an empty except block in real-time projects.',
+          'Always show meaningful error messages.',
+        ],
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -8140,6 +8482,8 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Exception handling', remember: 'An exception is a runtime error; syntax errors cannot be caught. try holds risky code, except handles it, else runs when nothing fails, finally always runs, raise creates an exception.' },
+  { concept: 'except order', remember: 'Catch specific exceptions first and the generic Exception last; never leave an empty except block.' },
   { concept: 'File handling', remember: 'open(file, mode) → read / write → close(); prefer "with open(...)" so the file closes automatically; modes r, w, a, x, r+, rb, wb.' },
   { concept: 'os module', remember: 'os.path.exists() checks, os.remove() deletes, os.rename() renames a file, os.mkdir() creates a folder.' },
   { concept: 'CRUD', remember: 'Create, Read, Update, Delete — the four database operations; relational databases use tables, non-relational ones use documents, key-value or graphs.' },
