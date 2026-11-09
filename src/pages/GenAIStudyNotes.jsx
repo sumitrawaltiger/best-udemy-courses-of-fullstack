@@ -3905,6 +3905,522 @@ Search again  Answer`,
       },
     ],
   },
+  {
+    num: 39,
+    title: 'Deep Learning — Basics',
+    tag: 'Deep Learning',
+    tagColor: 'red',
+    intro: 'Deep Learning is a subset of Machine Learning that uses artificial neural networks, inspired by the human brain, to learn from large amounts of data. It is more powerful for solving complex problems.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is Deep Learning?',
+        items: [
+          'Deep Learning is a subset of Machine Learning.',
+          'It uses artificial neural networks to learn from large amounts of data.',
+          'Deep Learning algorithms are inspired by the human brain.',
+          'It is part of Machine Learning, but more powerful for solving complex problems.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Machine Learning vs Deep Learning',
+        headers: ['Aspect', 'Machine Learning', 'Deep Learning'],
+        rows: [
+          ['Relationship', 'A subset of AI.', 'A subset of Machine Learning.'],
+          ['How it learns', 'ML models learn from data using algorithms.', 'Uses neural networks with many layers.'],
+          ['Data size', 'Works well with small to medium data.', 'Needs a huge amount of data.'],
+          ['Data type', 'Mostly works with structured data.', 'Works well with unstructured data such as images, audio, video and text.'],
+          ['Training time', 'Usually faster.', 'Usually slower.'],
+          ['Explainability / accuracy', 'Easier to understand and explain.', 'Gives better accuracy for complex problems.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Real-life examples',
+        items: [
+          'How does YouTube know which videos you may like?',
+          'How does Google Photos recognize a face?',
+          'How does ChatGPT understand our questions?',
+          'How does a self-driving car identify a person, a road or a vehicle?',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Why Deep Learning matters',
+        text: 'All these systems deal with large amounts of data and need to identify complex patterns. This is where Deep Learning becomes important.',
+      },
+      {
+        type: 'code',
+        label: 'Hierarchy',
+        code: 'Artificial Intelligence => Machine Learning => Deep Learning => Neural Networks',
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Why do we need Deep Learning?',
+        text: 'Suppose we want to identify whether an image contains a cat or a dog. Traditional programming would require us to define the rules, which becomes extremely difficult.',
+      },
+      {
+        type: 'code',
+        label: 'Traditional programming — define every rule',
+        code: `IF ears are like this
+AND eyes are like this
+AND nose is like this
+AND body is like this
+THEN CAT
+
+ELSE DOG`,
+      },
+      {
+        type: 'code',
+        label: 'With Deep Learning — the network learns the patterns',
+        code: `Thousands of Images
+        ↓
+Neural Network
+        ↓
+Learns Patterns
+        ↓
+Cat / Dog`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Note',
+        text: 'We do not manually define all the rules. The neural network learns the patterns from data.',
+      },
+      {
+        type: 'code',
+        label: 'ML vs DL flow',
+        code: `ML : Data Set ---> Feature Engineering ----> ML Algorithm ----> Prediction
+
+DL : Data Set ---> Neural Networks ---> Automatically learn patterns ---> Prediction`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Feature engineering',
+        text: 'Traditional ML often depends heavily on manually selected features, while Deep Learning can learn useful representations automatically from raw or less-processed data.',
+      },
+      {
+        type: 'table',
+        title: 'Where is Deep Learning used?',
+        headers: ['Area', 'Examples'],
+        rows: [
+          ['Computer Vision', 'Face recognition · Object detection · Medical image analysis · Self-driving cars'],
+          ['Natural Language Processing', 'ChatGPT · Language translation · Text classification · Sentiment analysis'],
+          ['Recommendation systems', 'YouTube · Netflix · Amazon · Spotify'],
+          ['Speech', 'Voice assistants · Speech to text · Voice recognition'],
+          ['Generative AI', 'Text generation · Image generation · Code generation · Audio generation'],
+        ],
+      },
+    ],
+  },
+  {
+    num: 40,
+    title: 'Neural Networks — Layers, Neuron, Weight & Bias',
+    tag: 'Deep Learning',
+    tagColor: 'red',
+    intro: 'Deep Learning learns through neural networks: interconnected neurons arranged in layers. This module explains the layers, the neuron, weights, bias and the activation function.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'How does Deep Learning actually learn?',
+        text: 'Through neural networks. A neural network has multiple layers.',
+      },
+      {
+        type: 'table',
+        title: 'Layers of a neural network',
+        headers: ['Layer', 'Role'],
+        rows: [
+          ['Input layer', 'Receives the input data.'],
+          ['Hidden layer(s)', 'Learn the patterns from the input.'],
+          ['Output layer', 'Produces the final prediction.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'A deep neural network',
+        code: `Input
+  ↓
+Hidden Layer 1
+  ↓
+Hidden Layer 2
+  ↓
+Hidden Layer 3
+  ↓
+Output`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'What makes it deep',
+        text: 'Multiple hidden layers make the network deep. Deep Learning = learning using deep / multi-layer neural networks. A neural network with multiple hidden layers is a Deep Neural Network.',
+      },
+      {
+        type: 'list',
+        title: 'Important terminology',
+        items: [
+          '1. Deep Learning',
+          '2. Neural Network',
+          '3. Neuron',
+          '4. Weight',
+          '5. Bias',
+          '6. Activation Function',
+          '7. Loss Function',
+          '8. Backpropagation',
+          '9. Optimizer',
+          '10. Epoch',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Deep Learning',
+        items: [
+          'A subset of Machine Learning that uses neural networks with multiple layers to learn complex patterns from data.',
+          'It means teaching a computer to learn complex patterns using multiple layers of neural networks.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Example — cat or dog',
+        code: `Images
+  ↓
+Deep Learning Model
+  ↓
+Learns patterns
+  ↓
+Prediction
+  ↓
+Cat / Dog`,
+      },
+      {
+        type: 'code',
+        label: 'What the model may gradually learn',
+        code: `Pixels
+  ↓
+Edges
+  ↓
+Shapes
+  ↓
+Eyes / Ears / Nose
+  ↓
+Face
+  ↓
+Cat or Dog`,
+      },
+      {
+        type: 'list',
+        title: 'Neural network',
+        items: [
+          'A computational model inspired by the structure of the human brain.',
+          'It consists of interconnected neurons arranged in layers: input layer, hidden layers and output layer.',
+          'If a neural network has multiple hidden layers, it becomes a deep neural network.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Neuron',
+        items: [
+          'The basic processing unit of a neural network — think of it as a small mathematical calculation unit.',
+          'A neuron receives inputs, applies weights, adds bias, calculates a value, applies an activation function and produces the output.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Neuron — basic formula',
+        code: `Output = Activation Function(Input × Weight + Bias)
+
+Input
+ ↓
+Evaluate importance
+ ↓
+Make calculation
+ ↓
+Decision / Output`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Weight',
+        text: 'Weight represents the importance of an input in a neural network. Higher weight generally means the input has a stronger influence on the neuron calculation.',
+      },
+      {
+        type: 'code',
+        label: 'Weight example — predict whether a student passes or fails',
+        code: `inputs : study_hours, attendance, previous_marks
+
+Study Hours     → Weight = 0.8
+Attendance      → Weight = 0.3
+Previous Marks  → Weight = 0.5
+
+Maybe study hours are very important to this prediction.`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Weights are learned',
+        text: 'Weights are not manually decided by programmers in a typical Deep Learning training process. The model learns the weights from the training data.',
+      },
+      {
+        type: 'code',
+        label: 'How weights improve',
+        code: `Random Weights
+       ↓
+Prediction
+       ↓
+Calculate Error
+       ↓
+Update Weights
+       ↓
+Better Prediction`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Bias',
+        text: 'Bias is an additional value added to the weighted sum to help the neural network make better predictions.',
+      },
+      {
+        type: 'code',
+        label: 'Bias example',
+        code: `Input  = 5
+Weight = 2        =>  5 × 2 = 10
+
+if Bias = 3       =>  10 + 3 = 13
+
+Weighted Input + Bias
+
+Weight → controls the importance of the input
+Bias   → helps shift / adjust the result`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Activation function',
+        text: 'An activation function determines whether and how strongly a neuron should be activated. It is applied after calculating "Weighted Sum + Bias". Activation Function = the decision / transformation function of a neuron.',
+      },
+      {
+        type: 'code',
+        label: 'Activation function flow',
+        code: `Inputs
+  ↓
+Weights
+  ↓
+Weighted Sum
+  ↓
+Bias
+  ↓
+Activation Function
+  ↓
+Output`,
+      },
+    ],
+  },
+  {
+    num: 41,
+    title: 'Training a Neural Network — Loss, Backpropagation & Epochs',
+    tag: 'Deep Learning',
+    tagColor: 'red',
+    intro: 'A neural network learns by predicting, measuring how wrong it was, calculating how each weight contributed to the error and updating the weights, repeating this over many epochs.',
+    blocks: [
+      {
+        type: 'code',
+        label: 'Deep Learning model execution flow',
+        code: `Input
+  ↓
+Neural Network
+  ↓
+Prediction
+  ↓
+Compare with Actual Value
+  ↓
+Calculate Loss
+  ↓
+Backpropagation
+  ↓
+Update Weights
+  ↓
+Train Again`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Loss function',
+        text: 'Imagine the neural network predicts "Dog" when the actual answer is "Cat". The model made a mistake, and we need to measure how wrong the prediction is. That is the job of the loss function: it measures the difference between the actual output and the predicted output.',
+      },
+      {
+        type: 'code',
+        label: 'Simple loss example',
+        code: `Actual Value     = 100
+Predicted Value  = 80
+
+The difference : 100 - 80 = 20`,
+      },
+      {
+        type: 'list',
+        title: 'Backpropagation',
+        items: [
+          'The process of calculating how much each weight contributed to the error.',
+          'It improves the behaviour of the neural network based on that error.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Backpropagation workflow — step by step',
+        items: [
+          'Step 1 — Input data: Input data goes to the neural network.',
+          'Step 2 — Prediction: the neural network produces a prediction.',
+          'Step 3 — Calculate loss: compare the prediction with the actual value to get the loss.',
+          'Step 4 — Backpropagation: the error information is propagated backward through the network.',
+          'Step 5 — Calculate gradients: a gradient tells the model how a small change in a weight will affect the loss.',
+          'Step 6 — Update weights: after calculating the gradients, the optimizer updates the weights.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Optimizer',
+        text: 'An optimizer is an algorithm that updates the weights and biases of a neural network to reduce the loss. Backpropagation calculates the gradients; the optimizer uses the gradients to update the parameters.',
+      },
+      {
+        type: 'code',
+        label: 'Optimizer — simple calculation',
+        code: `Current Weight = 0.8
+Gradient       = 0.2
+Learning Rate  = 0.1
+
+New Weight = Old Weight - Learning Rate × Gradient
+New Weight = 0.8 - (0.1 × 0.2)
+New Weight = 0.78`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Epoch',
+        text: 'An epoch means one complete pass through the entire training dataset.',
+      },
+      {
+        type: 'code',
+        label: 'Epoch example — 10,000 training images',
+        code: `The model processes all 10,000 images once          : 1 Epoch
+The model processes all 10,000 images a 2nd time    : 2 Epochs
+The model processes all 10,000 images a 3rd time    : 3 Epochs`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Summary',
+        text: 'A neural network takes inputs, combines them using weights and bias, applies activation functions to produce a prediction, calculates the loss, uses backpropagation to calculate gradients, and an optimizer updates the weights to reduce the loss over multiple epochs.',
+      },
+    ],
+  },
+  {
+    num: 42,
+    title: 'Deep Learning Assignments',
+    tag: 'Assignment',
+    tagColor: 'amber',
+    intro: 'Two hands-on assignments: a TensorFlow / Keras classifier that predicts whether a student passes or fails, and a CNN that classifies cat and dog images, each with a Streamlit UI.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Assignment 1 — Predict student Pass or Fail',
+        text: 'Develop a Deep Learning classification model using TensorFlow / Keras to predict whether a student will Pass or Fail based on the student academic information.',
+      },
+      {
+        type: 'list',
+        title: 'Problem statement',
+        items: [
+          'You are given a dataset with study hours, attendance and previous marks.',
+          'Develop and train a deep learning neural network that learns the patterns and predicts the result as 0 → Fail or 1 → Pass.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Requirements',
+        items: [
+          '1. Create or use a student dataset containing the input features and the target variable.',
+          '2. Perform the necessary data preprocessing.',
+          '3. Separate the dataset into input features X and target variable y.',
+          '4. Split the dataset into training and testing data.',
+          '5. Develop a deep learning neural network using TensorFlow / Keras.',
+          '6. Compile the model with an appropriate optimizer, loss function and evaluation metric.',
+          '7. Train the model using the training data.',
+          '8. Evaluate the trained model using the test data.',
+          '9. Save the trained model to a file.',
+          '10. Create a simple Streamlit UI that accepts student details, loads the trained model, predicts Pass or Fail and displays the prediction clearly.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Sample input and expected output',
+        code: `Study Hours    : 7
+Attendance     : 85
+Previous Marks : 72
+
+Prediction: PASS`,
+      },
+      {
+        type: 'list',
+        title: 'Technologies to use',
+        items: ['Python', 'Pandas', 'NumPy', 'TensorFlow / Keras', 'Scikit-learn', 'Streamlit'],
+      },
+      {
+        type: 'list',
+        title: 'Learning outcomes',
+        items: [
+          'Understand deep learning classification.',
+          'Build a basic Artificial Neural Network (ANN).',
+          'Train a model using TensorFlow / Keras.',
+          'Evaluate a classification model.',
+          'Save and load a trained deep learning model.',
+          'Integrate a deep learning model with Streamlit.',
+          'Build a simple end-to-end machine learning application.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Assignment 2 — Cat vs Dog image classification',
+        text: 'Project title: 🐱🐶 Cat vs Dog Image Classification using TensorFlow and Streamlit. Develop the application using Python, TensorFlow / Keras and Streamlit, divided into two Python files.',
+      },
+      {
+        type: 'list',
+        title: 'File 1 — Model training: train_model.py',
+        items: [
+          'Load the Cat and Dog image dataset from folders.',
+          'Perform image preprocessing and normalization.',
+          'Split the dataset into training and validation datasets.',
+          'Build a CNN (Convolutional Neural Network) model using TensorFlow / Keras.',
+          'Train the model to classify images as Cat or Dog.',
+          'Evaluate the model using the validation data.',
+          'Display the model accuracy and loss.',
+          'Save the trained model as image_classifier.keras.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'File 2 — User interface: app.py',
+        items: [
+          'Create a Streamlit web application that loads the saved image_classifier.keras model.',
+          'Provide an option to upload a .jpg, .jpeg or .png image.',
+          'Display the uploaded image.',
+          'Preprocess the uploaded image in the same way as the training images.',
+          'Use the trained CNN model to predict the image.',
+          'Display the predicted class and the prediction confidence as a percentage.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Expected output',
+        code: `Predicted Class: Cat 🐱 / Dog 🐶
+Prediction Confidence: Percentage`,
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -3941,6 +4457,9 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Deep Learning', remember: 'Subset of ML using multi-layer neural networks that learn patterns automatically from large amounts of data, especially images, audio and text.' },
+  { concept: 'Neuron', remember: 'Output = Activation Function(Input × Weight + Bias). Weight = importance of an input; bias shifts the result.' },
+  { concept: 'Training a neural network', remember: 'Predict → loss → backpropagation (gradients) → optimizer updates weights → repeat over epochs.' },
   { concept: 'Prompt vs Loop vs Harness', remember: 'Prompt = how I ask (better instructions); Loop = try, check, retry (better iteration); Harness = tools, RAG, memory, security, tests around the agent (better environment).' },
   { concept: 'RAG (R-A-G)', remember: 'Retrieval finds relevant chunks, Augmented adds them to the question, Generation lets the LLM answer; fixes private data, outdated knowledge and hallucination.' },
   { concept: 'Pinecone', remember: 'Vector database for embeddings: index, vector, ID, metadata, namespace. Query returns the most similar chunks with a score.' },
