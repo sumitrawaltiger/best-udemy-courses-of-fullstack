@@ -4421,6 +4421,205 @@ Prediction Confidence: Percentage`,
       },
     ],
   },
+  {
+    num: 43,
+    title: 'Loan Approval Prediction Using Classification',
+    tag: 'Assignment',
+    tagColor: 'amber',
+    intro: 'Assignment 2: build, train, evaluate and test a classification model that predicts whether a loan application is likely to be Approved or Rejected.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Business problem',
+        text: 'A bank receives loan applications from customers. Use the historical application data to predict whether a new application will be Approved or Rejected.',
+      },
+      {
+        type: 'table',
+        title: 'Input features and target',
+        headers: ['Input features', 'Target'],
+        rows: [
+          ['Gender', 'Loan Status'],
+          ['Married', 'Y = Approved'],
+          ['Dependents', 'N = Rejected'],
+          ['Education', ''],
+          ['Self Employed', ''],
+          ['Applicant Income', ''],
+          ['Coapplicant Income', ''],
+          ['Loan Amount', ''],
+          ['Loan Term', ''],
+          ['Credit History', ''],
+          ['Property Area', ''],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Recommended algorithm',
+        text: 'Primary algorithm: Logistic Regression — implement this as the main classification model. Optionally compare it with a Decision Tree or Random Forest.',
+      },
+      {
+        type: 'list',
+        title: 'Technology stack',
+        items: ['Python', 'NumPy', 'Pandas', 'Matplotlib', 'Seaborn', 'Scikit-learn'],
+      },
+      {
+        type: 'code',
+        label: 'Project flow',
+        code: 'Loan Data → Preprocessing → Classification Model → Approved / Rejected',
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Assignment tasks',
+        text: 'Complete all 17 tasks. Submit clean code, outputs, visualizations, evaluation results and a short conclusion.',
+      },
+      {
+        type: 'table',
+        title: 'Assignment tasks',
+        headers: ['#', 'Task', 'What to do'],
+        rows: [
+          ['01', 'Understand the Business Problem', 'Define the loan-approval problem and the prediction target.'],
+          ['02', 'Collect / Download Dataset', 'Download a suitable Loan Approval dataset.'],
+          ['03', 'Load Dataset Using Pandas', 'Read the dataset and inspect the first records.'],
+          ['04', 'Perform Data Understanding', 'Use head(), shape, info(), describe() and missing-value checks.'],
+          ['05', 'Perform EDA', 'Explore income, loan amount, credit history, education, property area and the target distribution.'],
+          ['06', 'Identify X and y', 'Select the independent variables X and the target y = Loan_Status.'],
+          ['07', 'Handle Missing Values', 'Identify and handle missing values using suitable techniques.'],
+          ['08', 'Remove Unnecessary Columns', 'Remove identifiers or irrelevant columns.'],
+          ['09', 'Encode Categorical Data', 'Convert Gender, Education, Property Area and other categorical features into numerical form.'],
+          ['10', 'Train / Test Split', 'Split the data into 80% training and 20% testing.'],
+          ['11', 'Build Logistic Regression', 'Create a Scikit-learn LogisticRegression() model.'],
+          ['12', 'Train the Model', 'Train the model using the training dataset.'],
+          ['13', 'Make Predictions', 'Predict Approved or Rejected for the test applications.'],
+          ['14', 'Evaluate the Model', 'Calculate Accuracy, Precision, Recall, F1-Score and create a Confusion Matrix.'],
+          ['15', 'Visualize Results', 'Create target-distribution, feature-relationship and confusion-matrix visualizations.'],
+          ['16', 'Test New Application', 'Create a new applicant record and predict Approved or Rejected.'],
+          ['17', 'Write the Conclusion', 'Summarize performance, observations, limitations and improvements.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'EDA and data understanding',
+        items: [
+          'head() — first records.',
+          'shape — rows and columns.',
+          'info() — columns and data types.',
+          'describe() — numerical summary.',
+          'Missing values — identify and handle nulls.',
+          'Target distribution — Approved vs Rejected counts.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Recommended visualizations',
+        headers: ['Analysis', 'Recommended visualization'],
+        rows: [
+          ['Loan Status', 'Count plot / bar chart'],
+          ['Applicant Income', 'Histogram'],
+          ['Loan Amount', 'Histogram / box plot'],
+          ['Credit History vs Status', 'Count plot'],
+          ['Numerical relationships', 'Correlation heatmap'],
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Classification metrics',
+        headers: ['Metric', 'Meaning', 'Better'],
+        rows: [
+          ['Accuracy', 'Overall correct predictions.', 'Higher'],
+          ['Precision', 'Correct positive predictions among the predicted positives.', 'Higher'],
+          ['Recall', 'Correctly identified positive cases.', 'Higher'],
+          ['F1-Score', 'Balance between Precision and Recall.', 'Higher'],
+          ['Confusion Matrix', 'Correct and incorrect classification counts.', 'Interpret'],
+        ],
+      },
+      {
+        type: 'table',
+        title: 'New loan application — sample test record',
+        headers: ['Feature', 'Sample value'],
+        rows: [
+          ['Gender', 'Male'],
+          ['Married', 'Yes'],
+          ['Dependents', '0'],
+          ['Education', 'Graduate'],
+          ['Applicant Income', '₹50,000'],
+          ['Loan Amount', '₹2,00,000'],
+          ['Credit History', '1'],
+          ['Property Area', 'Urban'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Prediction flow',
+        code: 'New Applicant → Trained Model → Loan Approved / Rejected',
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Important',
+        text: 'Educational project only. Real lending systems require fairness, explainability, regulatory compliance and human oversight.',
+      },
+      {
+        type: 'list',
+        title: 'Expected learning outcomes',
+        items: [
+          '01. Understand a real-world classification problem.',
+          '02. Understand how ML can support loan-approval decisions.',
+          '03. Load and preprocess data using Pandas.',
+          '04. Handle missing values and categorical features.',
+          '05. Perform EDA and identify patterns.',
+          '06. Separate X and y.',
+          '07. Build and train Logistic Regression.',
+          '08. Make predictions for unseen applications.',
+          '09. Evaluate Accuracy, Precision, Recall and F1-Score.',
+          '10. Interpret a Confusion Matrix.',
+          '11. Test a new loan application.',
+          '12. Explain model performance and limitations.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Submission checklist',
+        items: [
+          '☐ 01. Dataset collected',
+          '☐ 02. Dataset loaded',
+          '☐ 03. Data understanding completed',
+          '☐ 04. Missing values handled',
+          '☐ 05. EDA completed',
+          '☐ 06. X and y identified',
+          '☐ 07. Unnecessary columns removed',
+          '☐ 08. Categorical features encoded',
+          '☐ 09. 80/20 split completed',
+          '☐ 10. Logistic Regression created',
+          '☐ 11. Model trained',
+          '☐ 12. Predictions generated',
+          '☐ 13. Accuracy calculated',
+          '☐ 14. Precision calculated',
+          '☐ 15. Recall calculated',
+          '☐ 16. F1-Score calculated',
+          '☐ 17. Confusion Matrix interpreted',
+          '☐ 18. New application tested',
+          '☐ 19. Conclusion written',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Student challenge — be ready to explain',
+        items: [
+          'Why is this a classification problem?',
+          'Why is Logistic Regression suitable?',
+          'What does Credit History contribute?',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Goal and assignment standard',
+        text: 'Explain your project from Business Problem → Data → Preprocessing → Model → Prediction → Evaluation. Submit clean code, meaningful visualizations, evaluation metrics, observations and a clear conclusion.',
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -4457,6 +4656,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Classification (loan approval)', remember: 'Predict a category (Approved / Rejected) with Logistic Regression; judge it with accuracy, precision, recall, F1-score and a confusion matrix.' },
   { concept: 'Deep Learning', remember: 'Subset of ML using multi-layer neural networks that learn patterns automatically from large amounts of data, especially images, audio and text.' },
   { concept: 'Neuron', remember: 'Output = Activation Function(Input × Weight + Bias). Weight = importance of an input; bias shifts the result.' },
   { concept: 'Training a neural network', remember: 'Predict → loss → backpropagation (gradients) → optimizer updates weights → repeat over epochs.' },
@@ -4572,6 +4772,13 @@ export default function GenAIStudyNotes() {
               className="gn-download-btn"
             >
               ⬇ Bank K8S Deployment PDF
+            </a>
+            <a
+              href="/agentic-notes/Loan%20Approval%20Prediction%20Using%20Classification.pdf"
+              download
+              className="gn-download-btn"
+            >
+              ⬇ Loan Approval PDF
             </a>
           </div>
         </div>
