@@ -9417,6 +9417,224 @@ credit.pay(35000)`,
       },
     ],
   },
+  {
+    num: 79,
+    title: 'Python Modules — Types of Modules',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'A module is a Python file that contains reusable code. Python has three types of modules: built-in, user-defined and external (third-party). Libraries are covered in module 60.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is a module?',
+        items: [
+          'A module is a Python file that contains reusable code.',
+          'A module can contain variables, functions, classes and statements.',
+          'The module file extension is .py. Examples: calculator.py, student.py, backend.py and frontend.py.',
+          'Simple meaning: a module is one Python file. If we write functions in one Python file and use them in another Python file, that file is called a module.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Why modules?',
+        items: [
+          'Code reusability.',
+          'Code organization.',
+          'Reducing duplicate code.',
+          'Easy maintenance.',
+          'Splitting large programs into small files.',
+          'Using built-in Python features.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Types of modules',
+        headers: ['Type', 'Meaning', 'Examples'],
+        rows: [
+          ['Built-in modules', 'Already available in Python; we use them directly by importing.', 'math · random · datetime · os · sys · json'],
+          ['User-defined modules', 'Python files that we create ourselves.', 'calculator.py · student.py'],
+          ['External / third-party modules', 'Not available by default; we install them using pip.', 'numpy · pandas · matplotlib · requests · fastapi · django'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Built-in modules — example',
+        code: `import keyword
+import sys
+import math
+import random
+import datetime
+import os
+
+print(keyword.kwlist)
+
+a = 20
+print(type(a), sys.getsizeof(a))
+
+print(math.sqrt(25))
+print(math.pow(2,3))
+print(math.ceil(10.2))
+print(math.floor(10.2))
+print(math.factorial(5))
+print(math.pi)
+
+print(random.randint(1,10))
+print(random.randint(100000,999999))
+
+today = datetime.date.today()
+now = datetime.datetime.now()
+
+print("Today Date : ", today)
+print("Today Date & Time : ", now)
+
+print(os.getcwd())
+
+print(sys.version)`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'External modules',
+        text: 'External modules are not available by default. We need to install them using pip, which is the package manager for Python. Example: pip install matplotlib',
+      },
+      {
+        type: 'code',
+        label: 'Install an external module',
+        code: 'pip install matplotlib',
+      },
+      {
+        type: 'code',
+        label: 'Matplotlib — a simple line chart',
+        code: `import matplotlib.pyplot as plt
+
+x = [1, 2, 3, 4, 5]
+y = [10, 20, 30, 40, 50]
+
+plt.plot(x, y)
+
+plt.title("Simple Line Chart")
+plt.xlabel("X Values")
+plt.ylabel("Y Values")
+
+plt.show()`,
+      },
+      {
+        type: 'code',
+        label: 'Matplotlib — a bar chart of student marks',
+        code: `import matplotlib.pyplot as plt
+
+students = ["Ravi", "Anil", "Priya", "Sneha"]
+marks = [75, 85, 90, 80]
+
+plt.bar(students, marks)
+
+plt.title("Student Marks")
+plt.xlabel("Student Names")
+plt.ylabel("Marks")
+
+plt.show()`,
+      },
+    ],
+  },
+  {
+    num: 80,
+    title: 'Importing Modules & Creating User-Defined Modules',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'The import keyword uses one module inside another Python file. We can import a whole module, give it an alias, or import only specific names with from ... import.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'import keyword',
+        text: 'The import keyword is used to use one module inside another Python file. Syntax: import module_name',
+      },
+      {
+        type: 'code',
+        label: 'import examples',
+        code: `import math
+import sys
+import os`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Module with an alias name',
+        text: 'We can give another name to a module using the as keyword.',
+      },
+      {
+        type: 'code',
+        label: 'import ... as',
+        code: `import math as m
+
+print(m.sqrt(5))`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'from import',
+        text: 'from ... import is used to import a specific function or variable from a module.',
+      },
+      {
+        type: 'code',
+        label: 'from ... import syntax and example',
+        code: `# Syntax
+from module_name import function_name
+
+from module_name import function_name1, function_name2, function_name3
+
+# Example
+from math import sqrt, factorial
+
+print(sqrt(5))
+print(factorial(5))`,
+      },
+      {
+        type: 'table',
+        title: 'Ways to import',
+        headers: ['Style', 'Example', 'How we use it'],
+        rows: [
+          ['Whole module', 'import math', 'math.sqrt(5)'],
+          ['Module with an alias', 'import math as m', 'm.sqrt(5)'],
+          ['Specific names', 'from math import sqrt, factorial', 'sqrt(5) — no module name needed'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Create a user-defined module',
+        items: [
+          'Step 1: Create a file named calculator.py.',
+          'Step 2: Use the user-defined module in the main.py file.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Step 1 — calculator.py',
+        code: `def add(a, b):
+    return a + b
+
+def sub(a, b):
+    return a - b
+
+def mul(a, b):
+    return a * b
+
+def div(a, b):
+    return a / b`,
+      },
+      {
+        type: 'code',
+        label: 'Step 2 — main.py',
+        code: `# import calculator
+# import calculator as calc
+
+from calculator import add, mul
+
+print(add(10, 20))
+print(mul(10,20))`,
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -9453,6 +9671,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Python modules', remember: 'A module is a .py file of reusable code: built-in (math, os), user-defined (calculator.py) or external (pip install). Use import, import ... as alias, or from ... import name.' },
   { concept: 'OOP basics', remember: 'A class is a blueprint, an object is an instance, self is the current object, __init__() is the constructor; instance variables belong to objects, class variables are shared.' },
   { concept: 'Encapsulation', remember: 'Wrap data and methods in a class and protect data with private (__name) variables plus getters and setters.' },
   { concept: 'Inheritance', remember: 'Child reuses parent members: single, multiple (MRO), multilevel, hierarchical, hybrid; override methods and call the parent with super().' },
