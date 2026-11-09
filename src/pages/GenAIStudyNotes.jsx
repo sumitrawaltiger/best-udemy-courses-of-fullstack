@@ -11464,6 +11464,422 @@ print(a is not b)  # False`,
       },
     ],
   },
+  {
+    num: 96,
+    title: 'Python Keywords & Literals',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'Keywords are reserved words with a special meaning in Python. Literals are fixed values written directly in the program.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Python keywords',
+        items: [
+          'Keywords are reserved words in Python. These words have a special meaning in Python.',
+          'Keywords are predefined reserved words that are used to define the syntax and structure of Python programs.',
+          'We cannot use keywords as variable names, function names, class names or identifiers.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'The reserved words in Python',
+        code: `['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield']`,
+      },
+      {
+        type: 'code',
+        label: 'A program that demonstrates Python keywords',
+        code: `import keyword
+
+print(keyword.kwlist)
+
+print(len(keyword.kwlist))
+
+print(keyword.iskeyword("hi"))      # False
+
+print(keyword.iskeyword("import"))  # True`,
+      },
+      {
+        type: 'list',
+        title: 'Python literals',
+        items: [
+          'A literal is a fixed value written directly in the program.',
+          'A literal is a constant value assigned to a variable or used directly in code.',
+          'Examples: 10, 10.5, "Python", True, False, None, [10, 20, 30], (10, 20, 30) and {"name": "Ravi"}.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Types of literals in Python',
+        headers: ['Type', 'Examples'],
+        rows: [
+          ['Numeric literals', '25 · 101 · 99.99 · 15.55'],
+          ['String literals', '\'Ashok\' · "Hyd" · \'\'\'...\'\'\' · """..."""'],
+          ['Boolean literals', 'True · False'],
+          ['None literal', 'None'],
+          ['Collection literals', 'List, tuple, set and dictionary'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Numeric, string, boolean and None literals',
+        code: `# integer literals
+age = 25
+student_id = 101
+
+print(age)
+print(student_id)
+
+# floating literals
+price = 99.99
+percentage = 15.55
+print(price)
+print(percentage)
+
+# String literals
+name = 'Ashok'
+city = "Hyd"
+course = '''It's Python course'''
+msg = """
+    Welcome to Python Training
+    with Realtime projects
+"""
+
+# Boolean Literals
+is_activated = True
+is_completed = False
+print(is_activated)
+print(is_completed)
+
+# None Literal
+result = None
+print(result)`,
+      },
+      {
+        type: 'code',
+        label: 'Collection literals — list, tuple, set and dictionary',
+        code: `# List literal (mutable)
+students = ["Ashok", "Ramesh", "Raju", "Ashok"]
+print(students)
+
+# Tuple Literal (immutable)
+courses = ("Python", "Java", "C++", "Python")
+print(courses)
+
+# Set literal (no duplicates, no order)
+cities = {"Hyd", "Pune", "Chennai", "Delhi", "Hyd"}
+print(cities)
+
+# Dictionary literal
+student = {
+    "id" : 101,
+    "name" : "Ashok",
+    "age"   : 35,
+    "gender" : "Male",
+}
+print(student)
+
+students = [
+    {
+        "id": 101,
+        "name": "Ashok",
+        "age": 35,
+        "gender": "Male",
+    },
+    {
+        "id": 102,
+        "name": "John",
+        "age": 25,
+        "gender": "Male",
+    }
+]
+print(students)`,
+      },
+    ],
+  },
+  {
+    num: 97,
+    title: 'Python Variables & Data Types',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'A variable is a name used to store data, and a data type defines the type of value stored in it. In Python the variable type is decided automatically from its value.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is a variable?',
+        items: [
+          'A variable is a name used to store data.',
+          'A variable is a memory reference name that stores a value.',
+          'In Python we do not need to declare the variable type — it is decided automatically based on its value.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Variables demo',
+        code: `a = 20
+b = 19.5
+name = "Ashok"
+
+x = 10
+print(x)
+print(type(x))
+
+name = "Ashok"
+print(name)
+print(type(name))`,
+      },
+      {
+        type: 'list',
+        title: 'Rules for variable names in Python',
+        items: [
+          'A variable name can contain letters, numbers and underscore (_).',
+          'A variable name should not start with a number.',
+          'A variable name should not contain a space.',
+          'A variable name should not use special symbols.',
+          'A variable name should not be a reserved keyword.',
+          'Variable names are case-sensitive.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Valid names, multiple assignment and swapping',
+        code: `_mobile = 68686868
+id1 = 101
+stud1 = "Rajesh"
+course_fee = 4000
+
+# assigning same value to multiple variables
+var_1 = var_2 = var_3 = 100
+
+print("Variable 1:", var_1)
+print("Variable 2:", var_2)
+print("Variable 3:", var_3)
+
+# assigning different values to multiple variables in one line
+var_8, var_9, var_10 = 80, 90, 100
+
+print("Variable 8:", var_8)
+print("Variable 9:", var_9)
+print("Variable 10:", var_10)
+
+# Variable swapping
+a = 10
+b = 20
+a,b = b,a
+print(a)
+print(b)`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'What is a data type?',
+        text: 'A data type defines the type of value stored in a variable. It tells Python what kind of data a variable is storing.',
+      },
+      {
+        type: 'code',
+        label: 'int, str and float with their memory size',
+        code: `import sys
+
+# memory info
+my_age = 30
+print(my_age, type(my_age))
+print("size of my_age var in bytes: ", sys.getsizeof(my_age))
+
+my_name = "Ashok Bollepalli"
+print(my_name, type(my_name))
+print("size of my_name var bytes: ", sys.getsizeof(my_name))
+
+# Float Data Type
+price = 99.99
+percentage = 85.5
+
+print(price, type(price))
+print("size of price : ", sys.getsizeof(price))
+print(percentage, type(percentage))
+print("size of percentage : ", sys.getsizeof(percentage))
+
+# complex data type
+num = 5 + 3j
+print(type(num))`,
+      },
+      {
+        type: 'table',
+        title: 'Collection data types',
+        headers: ['Data type', 'Properties'],
+        rows: [
+          ['list', 'Ordered + mutable + duplicates allowed'],
+          ['tuple', 'Ordered + immutable + duplicates allowed'],
+          ['set', 'Unordered + mutable + no duplicates'],
+          ['dict', 'Key-value pairs'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'list, tuple, set and dict data types',
+        code: `# list data type (ordered + mutable + duplicates allowed)
+students = ["Anil", "Sunil", "Gopi", "Anil"]
+print(students)
+print(type(students))
+
+# tuple data type (ordered + Immutable + Duplicates allowed)
+courses = ("Java", "Python", "GEN AI", "Python")
+print(courses)
+print(type(courses))
+
+# set data type (Un Ordered + Mutable + No Duplicates)
+skills = {"Java", "Python", "GEN AI", "DevOps", "Cloud", "Java"}
+print(skills)
+print(type(skills))
+
+# dictionary data type (key-value pair)
+student  = {
+    "id" : 101,
+    "name" : "Ashok",
+    "gender" : "Male"
+}
+print(student)
+print(type(student))`,
+      },
+      {
+        type: 'code',
+        label: 'Student data — one variable of each type',
+        code: `# Student Data
+student_id = 101
+student_name = "John"
+course = "Python"
+fee = 5000.00
+is_paid = True
+imp_concepts  = ["Fundamentals", "Variables", "DSA", "OOPS"]`,
+      },
+    ],
+  },
+  {
+    num: 98,
+    title: 'Reading Input & Type Casting',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'input() reads data from the keyboard, and it always returns a string. Type casting converts a value from one data type to another so we can calculate with it.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Reading input from the user',
+        text: 'input() is a built-in Python function used to take data from the keyboard during program execution.',
+      },
+      {
+        type: 'code',
+        label: 'input()',
+        code: `name = input("Enter Your Name : ")
+age = input("Enter Your age : ")
+salary = input("Enter Your Salary : ")
+
+print("My Name : ", name)
+print("My Age : ", age)
+print("My Salary : ", salary)
+
+
+a,b = input("Enter two numbers : ").split(" ")
+print("My First Number : ", a)
+print("My Second Number : ", b)`,
+      },
+      {
+        type: 'code',
+        label: 'Why input needs type casting — strings concatenate',
+        code: `a = "Ashok"
+b = "IT"
+
+a + b      # AshokIT
+
+
+i = 10
+j = 20
+
+i + j      # 30
+
+
+a = input("First Number")    # str
+b = input("Second number")   # str
+
+a + b      # 1020`,
+      },
+      {
+        type: 'list',
+        title: 'Type casting',
+        items: [
+          'Type casting means converting one data type into another data type.',
+          'It is the process of converting a value from one data type to another data type.',
+          'In real-time programs, input values usually come as strings. To perform calculations we need to convert them into numbers.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Without and with type casting',
+        code: `# Without Type casting
+a = input("Enter first number : ")
+b = input("Enter second number : ")
+result = a + b #concatenation
+print("Result Before Type Casting : ", result)
+
+# with type casting
+a = int(a)
+b = int(b)
+result = a + b #Addition
+print("Result After Type Casting : ", result)`,
+      },
+      {
+        type: 'code',
+        label: 'list, tuple, set and dict casting',
+        code: `# list type casting
+course_name = "Python"
+letters = list(course_name)
+print(letters)
+
+# list() converts every character of the string into a separate list element.
+
+
+# Tuple Type Casting
+numbers = [10, 20, 30]
+result = tuple(numbers)
+print(result)
+
+# Set Type Casting
+numbers = [10, 20, 10, 30, 20]
+unique_numbers = set(numbers)
+print(unique_numbers)
+
+# dict type casting
+data = [("name", "Ashok"), ("course", "Python")]
+student = dict(data)
+print(student)`,
+      },
+      {
+        type: 'table',
+        title: 'Implicit vs explicit casting',
+        headers: ['Casting', 'Meaning', 'Example'],
+        rows: [
+          ['Implicit', 'Python converts the type automatically.', '10 + 2.5 gives 12.5 (a float).'],
+          ['Explicit', 'We convert the type ourselves using int(), float(), str(), list() and so on.', 'int("10") + int("20") gives 30.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Implicit casting',
+        code: `a = 10
+b = 2.5
+result = a + b
+print("Result : ", result)
+print(type(result))`,
+      },
+      {
+        type: 'code',
+        label: 'Explicit casting',
+        code: `i = "10"
+j = "20"
+result = int(i) + int(j)
+print("Result : ", result)
+print(type(result))`,
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -11500,6 +11916,9 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Keywords and literals', remember: 'Keywords are reserved words that cannot be used as names (keyword.kwlist); a literal is a fixed value such as 10, 10.5, "Python", True, None or a list, tuple, set or dict.' },
+  { concept: 'Variables and data types', remember: 'No type declaration: the type comes from the value. Names use letters, digits and _, cannot start with a digit or be a keyword, and are case-sensitive; type() shows the type.' },
+  { concept: 'input() and type casting', remember: 'input() always returns a string, so convert with int() or float() before calculating; implicit casting is automatic, explicit casting is done with int(), str(), list(), tuple(), set() and dict().' },
   { concept: 'Python operators', remember: 'Arithmetic (+ - * / // % **), assignment (= += -=), comparison (== != > <), logical (and or not), membership (in, not in) and identity (is, is not).' },
   { concept: 'Conditional statements', remember: 'if, if-else, if-elif-else, nested if and match case choose what to run; Python uses indentation to define blocks.' },
   { concept: 'Loops', remember: 'for loops over a sequence or range(start, stop, step); while loops while a condition is true — update the variable to avoid an infinite loop.' },
