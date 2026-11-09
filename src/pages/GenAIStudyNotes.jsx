@@ -917,6 +917,16 @@ Input:  Fee pending students pay immediately.`,
       },
       {
         type: 'list',
+        title: 'What can we do with Ollama?',
+        items: [
+          'Run AI models on our laptop.',
+          'Build a local chatbot.',
+          'Use LLMs without any API key.',
+          'Test Generative AI projects in offline mode.',
+        ],
+      },
+      {
+        type: 'list',
         title: 'Popular models in Ollama',
         items: [
           'llama3.2 — general-purpose chatbot',
@@ -940,6 +950,16 @@ Input:  Fee pending students pay immediately.`,
         ],
       },
       {
+        type: 'list',
+        title: 'Ollama setup on our machine',
+        items: [
+          'Step 1: Download and install the Ollama software (.exe file) from ollama.com/download/windows.',
+          'Step 2: After installation, open the command prompt and verify the Ollama version with ollama --version.',
+          'Step 3: Use the commands below to list, download, run, stop, copy and remove models.',
+          'Step 4: Run ollama serve to expose the local model as an API for integration in our Gen AI project, and check that the API is running at http://localhost:11434/.',
+        ],
+      },
+      {
         type: 'code',
         label: 'Ollama CLI — common commands',
         code: `ollama --version              # verify install\nollama list                   # show downloaded models\nollama pull <model-name>      # download a model\nollama show <model-name>      # display model summary\nollama run <model-name>       # run the model interactively\nollama ps                     # show running models\nollama stop <model-name>      # stop a running model\nollama cp llama3.2 my-model   # copy/rename a model\nollama rm <model-name>        # remove a model\nollama serve                  # expose model as local REST API`,
@@ -957,8 +977,8 @@ Input:  Fee pending students pay immediately.`,
           'Step 1: Create project folder 02-ollama-gpt-chat-bot.',
           'Step 2: Create and activate a Python virtual environment (python -m venv venv → venv\\Scripts\\activate).',
           'Step 3: Add requirements.txt with ollama and streamlit; install with pip install -r requirements.txt.',
-          'Step 4: Create backend.py — wraps ollama.chat() with MODEL_NAME and the user prompt; returns response text.',
-          'Step 5: Create frontend.py — Streamlit UI that calls ask_ollama() and renders user / assistant chat messages.',
+          'Step 4: Create backend.py to consume the Ollama-based LLM — input: model and prompt; output: the LLM response. It wraps ollama.chat() with MODEL_NAME and the user prompt and returns the response text.',
+          'Step 5: Create frontend.py with a Streamlit UI (like the ChatGPT UI) that calls ask_ollama() and renders user / assistant chat messages.',
           'Step 6: Run with streamlit run frontend.py and test prompts end-to-end.',
         ],
       },
@@ -975,7 +995,54 @@ Input:  Fee pending students pay immediately.`,
       {
         type: 'code',
         label: 'frontend.py',
-        code: `import streamlit as st\nfrom backend import ask_ollama\n\nst.set_page_config(page_title="Ollama Chatbot", page_icon="🤖", layout="centered")\nst.title("🤖 Ollama Chatbot")\nst.caption("Powered by Llama 3.2")\n\nquestion = st.chat_input("Ask me anything...")\n\nif question:\n    with st.chat_message("user"):\n        st.write(question)\n    with st.chat_message("assistant"):\n        with st.spinner("Thinking..."):\n            answer = ask_ollama(question)\n        st.write(answer)`,
+        code: `import streamlit as st
+from backend import ask_ollama
+
+
+# ============================================================
+# Page Configuration
+# ============================================================
+
+st.set_page_config(
+    page_title="Ollama Chatbot",
+    page_icon="🤖",
+    layout="centered"
+)
+
+
+# ============================================================
+# Page Header
+# ============================================================
+
+st.title("🤖 Ollama Chatbot")
+st.caption("Powered by Llama 3.2")
+
+
+# ============================================================
+# Chat Input
+# ============================================================
+
+question = st.chat_input("Ask me anything...")
+
+
+# ============================================================
+# Process Question
+# ============================================================
+
+if question:
+
+    # User message
+    with st.chat_message("user"):
+        st.write(question)
+
+    # Assistant message
+    with st.chat_message("assistant"):
+
+        with st.spinner("Thinking..."):
+
+            answer = ask_ollama(question)
+
+        st.write(answer)`,
       },
     ],
   },
