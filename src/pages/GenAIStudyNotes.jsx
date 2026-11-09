@@ -6087,6 +6087,309 @@ print(arr2)`,
       },
     ],
   },
+  {
+    num: 53,
+    title: 'Streamlit — Build UIs with Python',
+    tag: 'UI',
+    tagColor: 'green',
+    intro: 'Streamlit is a Python framework used to create web applications very easily. In Gen AI projects it is commonly used to build simple UIs without learning HTML, CSS or JavaScript.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is Streamlit?',
+        items: [
+          'A Python framework used to create web applications very easily.',
+          'In Gen AI projects it is commonly used to create simple UIs for: an AI chatbot, a code generator, a text summarizer, a resume analyzer and image generation.',
+          'Very useful for Python developers because we can create a UI without learning HTML, CSS or JavaScript.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Why Streamlit?',
+        items: [
+          'Easy to learn.',
+          'Less code required.',
+          'Good for AI / ML / Gen AI project demos.',
+          'No frontend knowledge required.',
+          'Automatic refresh when the UI code changes.',
+          'Good for classroom demos and mini projects.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Install Streamlit',
+        code: 'pip install streamlit',
+      },
+      {
+        type: 'code',
+        label: 'app.py — a first Streamlit application',
+        code: `import streamlit as st
+
+st.title("Welcome to Streamlit")
+st.write("This is my First Streamlit UI Application")
+
+st.header("Course Details")
+st.subheader("Streamlit UI")
+st.write("Streamlit is used to create UI using Python.")
+st.markdown("### This is markdown text")
+
+name = st.text_input("Enter Student Name")
+email = st.text_input("Enter Student Email")
+course = st.selectbox(
+    "Select Course",
+    ["JAVA", "Python", "DevOps", "AI & ML"]
+)
+uploaded_file = st.file_uploader("Upload Your Resume :", type=["pdf", "docx"])
+
+if st.button("Submit"):
+    st.write("Given Name: ", name)
+    st.write("Given Email: ", email)
+    st.write("Selected Course: ", course)
+
+if uploaded_file is not None:
+    st.success("File uploaded successfully")
+    st.write("File Name:", uploaded_file.name)`,
+      },
+      {
+        type: 'code',
+        label: 'Run the Streamlit application',
+        code: 'streamlit run app.py',
+      },
+      {
+        type: 'table',
+        title: 'Important Streamlit functions',
+        headers: ['Function', 'What it does'],
+        rows: [
+          ['st.title()', 'Displays the page title.'],
+          ['st.write()', 'Displays text / data.'],
+          ['st.text_input()', 'Takes a single-line input using a textbox.'],
+          ['st.text_area()', 'Takes a multi-line input.'],
+          ['st.button()', 'Creates a button.'],
+          ['st.selectbox()', 'Creates a dropdown.'],
+          ['st.file_uploader()', 'Uploads files.'],
+          ['st.chat_input()', 'Creates a chatbot input box.'],
+          ['st.spinner()', 'Shows a loading message.'],
+        ],
+      },
+    ],
+  },
+  {
+    num: 54,
+    title: 'Streamlit + FastAPI — Student Management UI',
+    tag: 'UI',
+    tagColor: 'green',
+    intro: 'A Streamlit application that consumes a FastAPI REST API: create a student, view the student list and search a student by ID, using requests and Pandas.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What the application does',
+        items: [
+          'A sidebar menu selects the operation: Create Student, View Students or Search Student.',
+          'Create Student — sends a POST request with the name, course and fee, and shows the created record in a table.',
+          'View Students — sends a GET request, shows the total students, total fee and average fee as metrics, and lists the students in a table.',
+          'Search Student — sends a GET request with the student ID and shows the matching student.',
+          'The API base URL is the FastAPI server: http://127.0.0.1:8000/api.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Streamlit features used',
+        headers: ['Feature', 'Used for'],
+        rows: [
+          ['st.set_page_config()', 'Page title, icon and wide layout.'],
+          ['st.sidebar.selectbox()', 'The operation menu.'],
+          ['st.number_input()', 'Course fee and student ID.'],
+          ['st.columns() and metric()', 'Total students, total fee and average fee.'],
+          ['st.dataframe()', 'Showing results as a table (hide_index, full width).'],
+          ['st.success() and st.error()', 'Showing the API result or the error.'],
+          ['st.divider()', 'A line between the metrics and the table.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'student-api-consumer.py',
+        code: `import streamlit as st
+import requests
+import pandas as pd
+
+# ============================
+# FastAPI URL
+# ============================
+API_URL = "http://127.0.0.1:8000/api"
+
+# ============================
+# Page Config
+# ============================
+st.set_page_config(
+    page_title="Student Management System",
+    page_icon="🎓",
+    layout="wide"
+)
+
+# ============================
+# Header
+# ============================
+st.title("🎓 Student Management System")
+st.write("### FastAPI + Streamlit REST API Demo")
+
+# ============================
+# Sidebar
+# ============================
+menu = st.sidebar.selectbox(
+    "Select Operation",
+    [
+        "Create Student",
+        "View Students",
+        "Search Student"
+    ]
+)
+
+# ======================================================
+# CREATE STUDENT
+# ======================================================
+if menu == "Create Student":
+
+    st.subheader("➕ Create Student")
+
+    name = st.text_input("Student Name")
+
+    course = st.selectbox(
+        "Course",
+        [
+            "PYTHON",
+            "JAVA",
+            "DEVOPS",
+            "GEN AI",
+            "DATA SCIENCE"
+        ]
+    )
+
+    fee = st.number_input(
+        "Course Fee",
+        min_value=1.0,
+        step=100.0
+    )
+
+    if st.button("Save Student"):
+
+        payload = {
+            "name": name,
+            "course": course,
+            "fee": fee
+        }
+
+        response = requests.post(
+            f"{API_URL}/student",
+            json=payload
+        )
+
+        result = response.json()
+
+        if response.status_code == 201:
+
+            st.success(result.get("Message", "Student Created Successfully"))
+
+            if "data" in result:
+
+                df = pd.DataFrame([result["data"]])
+
+                st.dataframe(
+                    df,
+                    use_container_width=True,
+                    hide_index=True
+                )
+
+        else:
+            st.error(result)
+
+# ======================================================
+# VIEW STUDENTS
+# ======================================================
+elif menu == "View Students":
+
+    st.subheader("📋 Student List")
+
+    if st.button("Load Students"):
+
+        response = requests.get(f"{API_URL}/students")
+
+        result = response.json()
+
+        if response.status_code == 200:
+
+            students = result["data"]
+
+            df = pd.DataFrame(students)
+
+            col1, col2, col3 = st.columns(3)
+
+            col1.metric("Total Students", len(df))
+
+            if "FEE" in df.columns:
+                col2.metric("Total Fee", f"₹ {df['FEE'].sum():,.0f}")
+                col3.metric("Average Fee", f"₹ {df['FEE'].mean():,.0f}")
+
+            st.divider()
+
+            st.dataframe(
+                df,
+                use_container_width=True,
+                hide_index=True
+            )
+
+        else:
+            st.error(result.get("Message", "Unable to fetch students"))
+
+# ======================================================
+# SEARCH STUDENT
+# ======================================================
+elif menu == "Search Student":
+
+    st.subheader("🔍 Search Student")
+
+    student_id = st.number_input(
+        "Student ID",
+        min_value=1,
+        step=1
+    )
+
+    if st.button("Search"):
+
+        response = requests.get(
+            f"{API_URL}/students/{student_id}"
+        )
+
+        result = response.json()
+
+        if response.status_code == 200:
+
+            student = result["data"]
+
+            # Handle both object and list responses
+            if isinstance(student, dict):
+                df = pd.DataFrame([student])
+            else:
+                df = pd.DataFrame(student)
+
+            st.success(result.get("Message", "Student Found"))
+
+            st.dataframe(
+                df,
+                use_container_width=True,
+                hide_index=True
+            )
+
+        else:
+            st.error(result.get("Message", "Student Not Found"))`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Reference project',
+        text: 'Student Management System (FastAPI backend): github.com/surik64/Student-Management-System',
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -6123,6 +6426,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Streamlit', remember: 'Python framework for web UIs without HTML / CSS / JS: st.title, text_input, selectbox, button, file_uploader, chat_input, spinner; run with streamlit run app.py.' },
   { concept: 'NumPy', remember: 'Fast arrays for numerical work: np.array, ndim / shape / size / dtype, zeros / ones / full / arange, reshape, math and statistics (mean, std), boolean indexing; copy() is independent, view() shares data.' },
   { concept: 'Pandas', remember: 'Data analysis on rows and columns: Series (1-D) and DataFrame (2-D); read_csv / to_csv, read_excel / to_excel, filter, sort_values, groupby and fillna.' },
   { concept: 'Matplotlib', remember: 'Data visualization with pyplot: plot (line), bar / barh, pie, scatter, hist; add title, xlabel, ylabel, legend and grid, then show().' },
