@@ -5746,6 +5746,347 @@ df = pd.DataFrame(products)`,
       },
     ],
   },
+  {
+    num: 52,
+    title: 'NumPy — Numerical Python',
+    tag: 'Data Science',
+    tagColor: 'cyan',
+    intro: 'NumPy stands for Numerical Python. It is a Python library used for numerical and scientific calculations, mainly for working with arrays.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is NumPy?',
+        items: [
+          'NumPy stands for Numerical Python.',
+          'A Python library used for numerical and scientific calculations.',
+          'Mainly used to work with arrays — an array is a collection of values.',
+          'NumPy arrays are faster than normal Python lists.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Why NumPy?',
+        items: [
+          'Working with large data.',
+          'Mathematical calculations.',
+          'Scientific calculations.',
+          'Data analysis.',
+          'Machine Learning and Deep Learning.',
+          'Matrix operations.',
+          'Statistical operations.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Installation — NumPy is an external library',
+        code: `pip install numpy
+
+import numpy as np
+
+arr = np.array([10, 20, 30])
+
+print(arr)`,
+      },
+      {
+        type: 'table',
+        title: 'List vs NumPy array',
+        headers: ['List', 'NumPy array'],
+        rows: [
+          ['A built-in data structure.', 'Comes from the NumPy library.'],
+          ['Can store different data types.', 'Usually stores the same type of data.'],
+          ['Slower for numerical operations.', 'Faster.'],
+          ['Does not support direct math operations.', 'Supports direct mathematical operations.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Array vs list — multiplying by 2',
+        code: `import numpy as np
+
+arr = np.array([10, 20, 30])
+
+print(arr)
+print(arr * 2)
+
+##############
+
+list_data = [10, 20, 30]
+
+print(list_data * 2)`,
+      },
+      {
+        type: 'table',
+        title: 'Array attributes',
+        headers: ['Attribute', 'What it checks'],
+        rows: [
+          ['ndim', 'The number of dimensions of the array.'],
+          ['shape', 'The rows and columns of the array.'],
+          ['size', 'The total number of elements in the array.'],
+          ['dtype', 'The data type of the array elements.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'ndim, shape, size, dtype, indexing and slicing',
+        code: `import numpy as np
+
+arr1 = np.array([10, 20, 30])
+
+arr2 = np.array([
+    [10, 20, 30],
+    [40, 50, 60]
+])
+
+arr3 = np.array([
+    [[10, 20], [30, 40]],
+    [[50, 60], [70, 80]]
+])
+
+print(arr1.ndim)
+print(arr2.ndim)
+print(arr3.ndim)
+
+print(arr2.shape)
+print(arr2.size)
+print(arr2.dtype)
+
+arr4 = np.array([10, 20, 30, 40, 50, 60], dtype=float)
+print(arr4)
+
+print(arr4[0])
+print(arr4[-1])
+
+print(arr2[0,0])
+
+print(arr4[0:4])`,
+      },
+      {
+        type: 'table',
+        title: 'Creating arrays',
+        headers: ['Function', 'What it creates'],
+        rows: [
+          ['zeros()', 'An array with all zero values.'],
+          ['ones()', 'An array with all one values.'],
+          ['full()', 'An array with the same value.'],
+          ['arange()', 'An array with a range of values.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'zeros(), ones(), full() and arange()',
+        code: `arr = np.zeros(5)
+print(arr)
+
+arr = np.zeros((2,3))
+print(arr)
+
+arr = np.ones(5)
+print(arr)
+
+arr = np.ones((2,3))
+print(arr)
+
+arr = np.full(5, 10)
+print(arr)
+
+arr = np.full((2,3), 8)
+print(arr)
+
+arr = np.arange(1,11)
+print(arr)
+
+arr = np.arange(1, 11, 2)
+print(arr)
+
+arr = np.arange(1,13, 2).reshape(2,3)
+print(arr)`,
+      },
+      {
+        type: 'table',
+        title: 'Random numbers — the NumPy random module',
+        headers: ['Function', 'What it generates'],
+        rows: [
+          ['randint()', 'Random integer numbers based on the given range and size.'],
+          ['rand()', 'Random decimal values between 0 and 1 based on the given size.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'randint() and rand()',
+        code: `arr = np.random.randint(1, 9, 5)
+print(arr)
+
+arr = np.random.rand(5)
+print(arr)`,
+      },
+      {
+        type: 'list',
+        title: 'Changing the shape of an array',
+        items: [
+          'reshape() is used to change the array shape.',
+          'flatten() converts a multi-dimensional array into a 1D array.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'reshape() and flatten()',
+        code: `arr = np.arange(1,13, 2)
+arr = arr.reshape(2,3)
+print(arr)
+
+arr = arr.flatten()
+print(arr)`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'NumPy mathematical operations',
+        text: 'NumPy supports direct mathematical operations on arrays, including array-to-array operations.',
+      },
+      {
+        type: 'code',
+        label: 'Array and array-to-array operations',
+        code: `arr = np.array([10, 20, 30])
+
+print(arr + 5)
+print(arr - 5)
+print(arr * 2)
+print(arr / 2)
+
+# Array to Array operations
+
+a = np.array([10, 20, 30])
+b = np.array([1, 2, 3])
+
+print(a + b)
+print(a - b)
+print(a * b)
+print(a / b)`,
+      },
+      {
+        type: 'table',
+        title: 'Statistical functions',
+        headers: ['Function', 'What it returns'],
+        rows: [
+          ['sum()', 'The total of all values.'],
+          ['mean()', 'The average value.'],
+          ['median()', 'The middle value.'],
+          ['min()', 'The minimum value.'],
+          ['max()', 'The maximum value.'],
+          ['std()', 'Measures how much the data values are spread out from the mean (average).'],
+          ['var()', 'Measures how far the values are spread from the mean, but instead of averaging the distances, it averages the squared distances.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'mean and standard deviation — same average, different spread',
+        code: `classA = np.array([48, 49, 50, 51, 52]) # mean is 50
+classB = np.array([20, 40, 50, 60, 80]) # mean is 50
+
+print(np.mean(classA))
+print(np.mean(classB))
+
+print(np.std(classA))
+print(np.std(classB))
+
+# Both classes have the same average (50).
+# Class A students performed consistently.
+# Class B students' performance varies a lot.`,
+      },
+      {
+        type: 'code',
+        label: 'Stock returns example',
+        code: `p1_stock_returns = [10, 11, 9, 10, 10]
+p2_stock_returns = [2, 20, -5, 25, 8]
+
+print(np.mean(p1_stock_returns))
+print(np.mean(p2_stock_returns))
+
+print(np.std(p1_stock_returns))
+print(np.std(p2_stock_returns))`,
+      },
+      {
+        type: 'list',
+        title: 'Variance and standard deviation',
+        items: [
+          'Variance and standard deviation measure how much data varies from its average.',
+          'Standard deviation is preferred because it is in the same units as the original data, which makes it easier to interpret.',
+          'In real-world projects they help identify consistency, detect anomalies, measure risk, monitor quality and prepare data for machine learning models.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Boolean indexing',
+        text: 'Boolean indexing is used to filter data based on a condition.',
+      },
+      {
+        type: 'code',
+        label: 'Boolean indexing and sort()',
+        code: `arr = np.array([10, 20, 30, 40, 50])
+result = arr[arr > 25]
+print(result)
+
+
+arr = np.array([1, 2, 3, 4, 5, 6])
+even_numbers = arr[arr % 2 == 0]
+print(even_numbers)
+
+
+arr = np.array([40, 10, 30, 20])
+result = np.sort(arr)`,
+      },
+      {
+        type: 'table',
+        title: 'copy() vs view()',
+        headers: ['copy()', 'view()'],
+        rows: [
+          ['Creates a separate copy of the array.', 'Creates a view of the original array.'],
+          ['Changes to the copied array do not affect the original array.', 'Changes in the view can affect the original array.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'copy() and view()',
+        code: `# copy()
+arr1 = np.array([10, 20, 30])
+
+arr2 = arr1.copy()
+
+arr2[0] = 100
+
+print(arr1)
+print(arr2)
+
+# view()
+arr1 = np.array([10, 20, 30])
+arr2 = arr1.view()
+
+arr2[0] = 300
+
+print(arr1)
+print(arr2)`,
+      },
+      {
+        type: 'list',
+        title: 'Important points',
+        items: [
+          'NumPy stands for Numerical Python and is used for numerical calculations.',
+          'NumPy is mainly used for arrays, and arrays are faster than Python lists.',
+          'NumPy is an external library; install it using pip install numpy.',
+          'np.array() creates a NumPy array.',
+          'ndim gives the number of dimensions, shape gives rows and columns, size gives the total number of elements and dtype gives the data type.',
+          'NumPy supports indexing and slicing.',
+          'zeros() creates an array with zeros, ones() with ones, full() with the same value and arange() a range-based array.',
+          'reshape() changes the array shape; flatten() converts a multi-dimensional array into 1D.',
+          'NumPy supports direct mathematical operations.',
+          'Boolean indexing is used for filtering.',
+          'copy() creates a separate copy; view() creates a reference / view of the original data.',
+          'NumPy is useful for Data Science, Machine Learning and AI.',
+        ],
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -5782,6 +6123,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'NumPy', remember: 'Fast arrays for numerical work: np.array, ndim / shape / size / dtype, zeros / ones / full / arange, reshape, math and statistics (mean, std), boolean indexing; copy() is independent, view() shares data.' },
   { concept: 'Pandas', remember: 'Data analysis on rows and columns: Series (1-D) and DataFrame (2-D); read_csv / to_csv, read_excel / to_excel, filter, sort_values, groupby and fillna.' },
   { concept: 'Matplotlib', remember: 'Data visualization with pyplot: plot (line), bar / barh, pie, scatter, hist; add title, xlabel, ylabel, legend and grid, then show().' },
   { concept: 'Machine Learning', remember: 'Subset of AI where the computer learns patterns from data instead of hand-written rules: supervised, unsupervised and reinforcement learning.' },
