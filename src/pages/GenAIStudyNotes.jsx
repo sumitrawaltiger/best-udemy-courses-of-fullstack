@@ -1107,6 +1107,71 @@ make it production ready with docker and k8s`,
       },
     ],
   },
+  {
+    num: 20,
+    title: 'AI-Powered Data Analyst Agent',
+    tag: 'Project',
+    tagColor: 'cyan',
+    intro: 'An intelligent CSV data analysis and visualization application built with Python, Streamlit, LangChain and OpenAI. Upload a dataset and ask questions in natural language instead of writing Python code or SQL queries.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'How it works',
+        text: 'An OpenAI-powered LLM, integrated through LangChain tool calling, understands the user question and automatically selects the right data analysis tool. Pandas performs the actual calculations, Matplotlib draws the charts, and Streamlit provides the interactive interface.',
+      },
+      {
+        type: 'list',
+        title: 'Example questions users can ask',
+        items: [
+          'What is the total sales amount?',
+          'Which region has the highest sales?',
+          'What is the average revenue?',
+          'Compare sales across different regions.',
+          'Show me the top-performing category.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Key features',
+        items: [
+          'CSV file upload — upload and analyze custom CSV datasets.',
+          'AI-powered question answering — ask questions in natural language.',
+          'Intelligent tool calling — the AI automatically selects the appropriate analysis tool.',
+          'Data analysis — calculate totals, averages and category-wise comparisons.',
+          'Data visualization — generate charts based on the analysis results.',
+          'Dynamic dataset support — analyze different CSV files without changing application code.',
+          'Modular architecture — separate UI, services, agents, tools and configuration.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Technology stack',
+        headers: ['Technology', 'Role'],
+        rows: [
+          ['Python', 'Core programming'],
+          ['Streamlit', 'User interface'],
+          ['LangChain', 'Agent and tool integration'],
+          ['OpenAI', 'Paid LLM'],
+          ['Pandas', 'Data processing'],
+          ['Matplotlib', 'Data visualization'],
+          ['JSON', 'Tool result handling'],
+          ['Python Dotenv', 'Environment configuration'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Request flow',
+        code: 'CSV upload → User question → LLM + LangChain tool calling → Pandas tool (JSON result) → Matplotlib chart → Streamlit UI',
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Key idea',
+        text: 'The LLM never calculates the numbers itself. It only chooses which tool to call; Pandas computes the result and returns it as JSON, so the answers come from the real dataset.',
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
@@ -1122,6 +1187,7 @@ const QUICK_REVISION = [
   { concept: 'CrewAI', remember: 'Role/task-oriented multi-agent orchestration.' },
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
+  { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
   { concept: 'Bank capstone', remember: 'MySQL + RAG (Chroma) + LangGraph tools + MCP + FastAPI + Streamlit, with guardrails.' },
 ];
 
