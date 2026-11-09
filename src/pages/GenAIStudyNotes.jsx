@@ -1959,6 +1959,478 @@ if question:
       },
     ],
   },
+  {
+    num: 25,
+    title: 'Cloud Computing, AWS & EC2',
+    tag: 'AWS Cloud',
+    tagColor: 'amber',
+    intro: 'Infrastructure means the resources required to run a business. Cloud computing delivers those resources on demand over the internet on a pay-as-you-go model, and AWS is the most popular provider.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is infrastructure?',
+        items: [
+          'The resources required to run our business: servers (machines), storage, security, network and power.',
+          'Purchasing this infrastructure costs a lot of money and time.',
+          'If we purchase and manage the infrastructure ourselves, it is called on-premise (on-prem) infrastructure.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Challenges with on-prem infrastructure',
+        items: [
+          'Lot of investment (time and money).',
+          'Man power.',
+          'Security.',
+          'Scalability (increase / decrease).',
+          'Availability (24/7).',
+          'Backup.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Cloud providers',
+        headers: ['Provider', 'Cloud'],
+        rows: [
+          ['Amazon', 'AWS'],
+          ['Microsoft', 'Azure'],
+          ['Google', 'GCP'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'What is cloud computing?',
+        text: 'The process of delivering IT resources on demand through the internet, based on a pay-as-you-go model. Pay as you go means you pay for usage, like a credit card bill or a post-paid bill.',
+      },
+      {
+        type: 'list',
+        title: 'Advantages of cloud computing',
+        items: [
+          'No prior investment.',
+          'Less cost.',
+          'Scalability (increase / decrease).',
+          'Availability (24/7).',
+          'Security.',
+          'Unlimited storage.',
+          'Data backup.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'AWS Cloud',
+        items: [
+          'AWS stands for Amazon Web Services; Amazon started the AWS cloud in 2006.',
+          'Customers in 190+ countries use AWS cloud services.',
+          'Instead of purchasing, managing and maintaining infrastructure, we simply use the AWS cloud infrastructure.',
+          'Services are provided on a pay-as-you-go model — if we use a paid service, a bill is generated.',
+          'Global infrastructure is organised into Regions and Availability Zones: 39 Regions and 124 Availability Zones.',
+          '200+ services, some free and some paid.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Important AWS services',
+        headers: ['Service', 'Full name', 'Purpose'],
+        rows: [
+          ['EC2', 'Elastic Compute Cloud', 'Virtual servers'],
+          ['S3', 'Simple Storage Service', 'Unlimited storage'],
+          ['RDS', 'Relational Database Service', 'Relational databases (RDBMS)'],
+          ['IAM', 'Identity and Access Management', 'Users, groups and roles'],
+          ['VPC', 'Virtual Private Cloud', 'Network'],
+          ['EKS', 'Elastic Kubernetes Service', 'Kubernetes cluster'],
+          ['Elastic Beanstalk', '—', 'Platform as a service'],
+          ['Lambda', '—', 'Serverless computing — run an application without thinking about servers'],
+          ['CloudWatch', '—', 'Monitor resources'],
+          ['SageMaker', 'AWS SageMaker', 'Platform for the complete machine learning lifecycle'],
+          ['Bedrock', 'Amazon Bedrock', 'Build Gen AI apps (LLM integration)'],
+          ['Route 53', '—', 'Domain mapping'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'AWS cloud tutorials',
+        text: 'ashokit.in/yt-content/cloud-tutorials',
+      },
+      {
+        type: 'list',
+        title: 'EC2 service',
+        items: [
+          'EC2 stands for Elastic Compute Cloud and is used to create virtual servers (machines).',
+          'It is one of the most famous services in the AWS cloud.',
+          'It is a paid service. Course billing example: started at 9:00 AM and stopped at 9:15 AM counts as 1 hour of billing; started at 9:30 AM and stopped at 9:45 AM is another 1 hour.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'EC2 components',
+        headers: ['Component', 'What it is'],
+        rows: [
+          ['AMI', 'The software configuration required for the VM (OS, server...), e.g. Windows, Amazon Linux, Ubuntu, Red Hat.'],
+          ['Instance Type', 'The machine configuration, e.g. t2.micro (1 GB), t2.medium (4 GB), t2.large (8 GB).'],
+          ['Key Pair', 'Establishes a secured connection with the EC2 VM. AWS stores the public key and provides the private key to us. One key pair can be used for multiple instances.'],
+          ['VPC', 'Provides the network for AWS resources. AWS gives one default VPC to encourage beginners.'],
+          ['Security Group', 'A firewall with inbound rules (allow incoming traffic) and outbound rules (allow outgoing traffic). One machine can have multiple security groups.'],
+          ['EBS (storage)', 'EBS volumes (hard disk / SSD). Default 30 GB on Windows and 8 GB on Linux; maximum 16 TB per volume; multiple volumes can be attached to one VM.'],
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Common security group ports',
+        headers: ['Use', 'Protocol', 'Port'],
+        rows: [
+          ['Windows', 'RDP', '3389'],
+          ['Linux', 'SSH', '22'],
+          ['Web server', 'HTTP', '80'],
+          ['HTTPS', 'HTTPS', '443'],
+          ['MySQL DB', 'MySQL', '3306'],
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Types of IP addresses in AWS',
+        headers: ['IP type', 'Description'],
+        rows: [
+          ['Private IP', 'Fixed IP address for internal communication within the VPC.'],
+          ['Public IP', 'For outside access. It is dynamic — when we restart the VM, the public IP changes.'],
+          ['Elastic IP', 'A fixed public IP. It is commercial (chargeable).'],
+        ],
+      },
+    ],
+  },
+  {
+    num: 26,
+    title: 'Load Balancer & Auto Scaling',
+    tag: 'AWS Cloud',
+    tagColor: 'amber',
+    intro: 'A load balancer spreads incoming traffic across multiple servers, and auto scaling adds or removes servers based on the traffic.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Challenges of running the app on a single server',
+        items: [
+          'One server has to handle all the requests.',
+          'The burden on the server increases.',
+          'Responses are delayed for clients.',
+          'The server can crash.',
+          'Single point of failure.',
+          'Business loss.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Load balancer',
+        text: 'To avoid the single-server problems, run the application behind a load balancer. It distributes the load to multiple servers in a round-robin fashion.',
+      },
+      {
+        type: 'list',
+        title: 'Advantages of a load balancer',
+        items: [
+          'The app runs on multiple servers.',
+          'The load is distributed.',
+          'The burden on each server is reduced.',
+          'Fast performance.',
+          'High availability.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Types of load balancers in AWS',
+        headers: ['Type', 'Short name'],
+        rows: [
+          ['Application Load Balancer', 'ALB'],
+          ['Network Load Balancer', 'NLB'],
+          ['Gateway Load Balancer', 'GLB'],
+          ['Classic Load Balancer (previous generation)', '—'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Load balancer lab task',
+        items: [
+          'Step 1: Create EC2 VM-1 with the user data below (enable the HTTP protocol in the security group).',
+          'Step 2: Create EC2 VM-2 with the same user data, changing the page text to Server - 2.',
+          'Step 3: Add the 2 instances to one Target Group.',
+          'Step 4: Create a Load Balancer (ALB) with the target group — Scheme: Internet Facing.',
+          'Step 5: Access the application using the load balancer DNS URL.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'User data — EC2 VM-1 (VM-2 uses "Life Insurance Server - 2")',
+        code: `#! /bin/bash
+sudo su
+yum install httpd -y
+cd /var/www/html
+echo "<html><h1>Life Insurance Server - 1</h1></html>" > index.html
+service httpd start`,
+      },
+      {
+        type: 'list',
+        title: 'Auto scaling',
+        items: [
+          'Increases or decreases the number of servers based on the incoming traffic.',
+          'Scale up — increase the servers when required.',
+          'Scale down — decrease the servers when not required.',
+          'Advantages: high availability, fault tolerance and cost management.',
+        ],
+      },
+    ],
+  },
+  {
+    num: 27,
+    title: 'AWS RDS — Cloud Databases',
+    tag: 'AWS Cloud',
+    tagColor: 'amber',
+    intro: 'A database stores data permanently. RDS is the AWS service that creates and manages relational databases for us, so we do not run the database server ourselves.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Topics covered',
+        items: [
+          'What is a database and why we need one.',
+          'On-prem database and its challenges.',
+          'What RDS is and why we use it; RDS setup.',
+          'Connecting to the RDS DB server with MySQL Workbench.',
+          'Connecting to RDS using Python.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'What is a database?',
+        items: [
+          'Variables and files (a = 10, file.write("Python")) do not give proper permanent storage — a database is software used to store data permanently.',
+          'It can store text messages, audio files, video files and documents.',
+          'Every software application uses a database to store its data permanently.',
+          'Applications communicate with databases using SQL (Structured Query Language).',
+          'SQL performs CRUD operations: Create, Retrieve, Update and Delete.',
+          'Oracle, MySQL, SQL Server and PostgreSQL are relational databases — they store data in tables made of rows and columns.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Application and database',
+        code: 'Application --- SQL ---> Database',
+      },
+      {
+        type: 'table',
+        title: 'Database setup — on-prem vs cloud',
+        headers: ['On-prem database (challenges)', 'Cloud database (RDS)'],
+        rows: [
+          ['Purchase a DB server license.', 'The cloud provider manages the database server for us.'],
+          ['Install the DB server software.', 'RDS is used to create and manage relational databases.'],
+          ['Security, network, availability, scalability.', 'RDS is a fully managed service in the AWS cloud.'],
+          ['Backup and administration (DBA).', 'RDS works on a pay-as-you-go model.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'RDS lab task',
+        items: [
+          'Step 1: Create a MySQL DB server using RDS.',
+          'Step 2: Enable port 3306 (MySQL) in the security group inbound rules.',
+          'Step 3: Test the DB connection using MySQL Workbench (client software).',
+          'Step 4: Execute some SQL queries for practice (optional).',
+          'Step 5: Delete the RDS instance to avoid billing.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Database details to note down',
+        code: `DB Endpoint URL : <your-instance>.<id>.<region>.rds.amazonaws.com
+DB username     : admin
+DB Pwd          : <your-db-password>
+DB Port         : 3306
+DB Name         : ashokit`,
+      },
+      {
+        type: 'code',
+        label: 'Connect to the RDS MySQL database using Python',
+        code: `import mysql.connector
+
+con = mysql.connector.connect(
+    host="<your-instance>.<id>.<region>.rds.amazonaws.com",
+    user="admin",
+    password="<your-db-password>",
+    port=3306,
+    database="ashokit"
+)
+
+cur = con.cursor()
+
+cur.execute("SELECT * FROM emp")
+
+for row in cur.fetchall():
+    print(row)
+
+cur.close()
+con.close()`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Security rule',
+        text: 'Never hard-code the database password in source code or commit it to Git — keep it in a .env file or a secret store. The values above are placeholders.',
+      },
+    ],
+  },
+  {
+    num: 28,
+    title: 'AWS IAM — Identity and Access Management',
+    tag: 'AWS Security',
+    tagColor: 'red',
+    intro: 'IAM manages users, groups, policies and roles. It is a free service.',
+    blocks: [
+      {
+        type: 'table',
+        title: 'Types of accounts in AWS',
+        headers: ['Account', 'Description'],
+        rows: [
+          ['Root account', 'Created by default when we sign up on the AWS website. Very powerful, with no restrictions — it can access everything in the AWS cloud.'],
+          ['IAM account', 'Created by the root user for team members, with only the permissions they need.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Root account rules',
+        items: [
+          'Do not use the root account for day-to-day activities.',
+          'Do not share the root account credentials with anyone.',
+          'A company does not give root account credentials to team members.',
+          'Enable MFA (Multi-Factor Authentication) for the root account.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Multi-Factor Authentication (MFA)',
+        items: [
+          'Provides additional security for the root account.',
+          'Enable it using the Google Authenticator app.',
+          'After enabling MFA, log out, log in to the root account again and check the behaviour.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'IAM account',
+        items: [
+          'Create an IAM account and attach policies (for example RDSFullAccess and S3FullAccess).',
+          'Log in to the IAM account and try the EC2 service — it cannot be accessed because the account has no permission for it.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'IAM user group',
+        items: [
+          'Step 1: Create a user group.',
+          'Step 2: Attach policies to the group.',
+          'Step 3: Add users to the group.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'IAM role',
+        text: 'An IAM role is a set of permissions. Example: if an EC2 VM wants to create an EKS cluster, the VM needs an IAM role with EKS permissions. Process: (1) create an IAM role with all the EKS policies, (2) attach the IAM role to the EC2 VM.',
+      },
+    ],
+  },
+  {
+    num: 29,
+    title: 'Gen AI Apps on AWS — EC2 & Bedrock',
+    tag: 'Deployment',
+    tagColor: 'green',
+    intro: 'Deploy a Gen AI chatbot on an EC2 VM, and learn how Amazon Bedrock lets you build Gen AI apps with foundation models through APIs.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Gen AI application deployment on AWS',
+        items: [
+          'Step 1: Launch an EC2 VM (for example Amazon Linux).',
+          'Step 2: Connect to the EC2 VM using an SSH client.',
+          'Step 3: Install the git client.',
+          'Step 4: Clone the Gen AI chatbot project Git repo.',
+          'Step 5: Create a virtual environment and activate it.',
+          'Step 6: Install the libraries with pip.',
+          'Step 7: Edit the .env file and configure the OpenAI API key.',
+          'Step 8: Run the application using Streamlit.',
+          'Step 9: Enable port 8501 in the security group inbound rules.',
+          'Step 10: Access the chatbot from a browser at http://ec2-public-ip:8501/.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Deploy the Gen AI chatbot on EC2',
+        code: `# Step 3: install git
+sudo yum install git -y
+
+# Step 4: clone the project
+git clone https://github.com/ashokitschool/GEN_AI_Chatbot.git
+
+# Step 5: create and activate the virtual environment
+cd GEN_AI_Chatbot
+python -m venv venv
+source venv/bin/activate
+
+# Step 6: install the libraries
+pip install -r requirements.txt
+
+# Step 7: configure the OpenAI API key
+vi .env
+
+# Step 8: run the application
+streamlit run frontend.py
+
+# Step 10: open in the browser
+http://ec2-public-ip:8501/`,
+      },
+      {
+        type: 'list',
+        title: 'Amazon Bedrock',
+        items: [
+          'A fully managed AWS service for building Generative AI applications using foundation models (FMs).',
+          'Provides access to models from providers such as Amazon, Anthropic, Meta and others, depending on availability.',
+          'Developers use the supported models through APIs without managing model-serving servers.',
+          'Choose models based on cost, speed and task requirements.',
+          'Documentation: docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-astra.html',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Gen AI project with AWS Bedrock',
+        items: [
+          'Step 1: Create an IAM user with admin access.',
+          'Step 2: Generate access keys for the IAM user (programmatic access) — an access key and a secret key.',
+          'Step 3: Download and install the AWS CLI.',
+          'Step 4: Create a Gen AI project with the libraries boto3 and streamlit.',
+          'Step 5: Create backend.py using boto3.',
+          'Step 6: Create the frontend using Streamlit.',
+          'Step 7: Configure the AWS keys with aws configure.',
+          'Step 8: Run the Streamlit application.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Bedrock project — libraries and configuration',
+        code: `# requirements.txt
+boto3
+streamlit
+
+# Step 7: configure the AWS keys
+aws configure
+
+# Step 8: run the application
+streamlit run frontend.py`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Security rule',
+        text: 'Access keys and secret keys are credentials. Keep them in aws configure or environment variables, never in source code or Git. For real projects, give the IAM user only the Bedrock permissions it needs instead of admin access.',
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
@@ -1975,6 +2447,11 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'AWS EC2', remember: 'Virtual servers: AMI + instance type + key pair + VPC + security group + EBS storage.' },
+  { concept: 'Load balancer', remember: 'Distributes traffic across servers (ALB, NLB, GLB); auto scaling adds or removes servers on demand.' },
+  { concept: 'AWS RDS', remember: 'Fully managed relational databases; open port 3306 for MySQL and delete the instance to avoid billing.' },
+  { concept: 'IAM', remember: 'Users, groups, policies and roles; never use the root account daily and enable MFA on it.' },
+  { concept: 'Amazon Bedrock', remember: 'Managed Gen AI service: use foundation models through APIs (boto3) without managing servers.' },
   { concept: 'Guardrails', remember: 'Safety rules on input and output (input, output, topic, safety, privacy, accuracy) that keep an AI app within boundaries.' },
   { concept: 'Docker', remember: 'Containerization: Dockerfile → image → registry → container. App code + dependencies in one portable unit.' },
   { concept: 'Kubernetes', remember: 'Orchestrates containers: auto scaling, load balancing, self healing. Pod is the smallest unit; services expose pods.' },
