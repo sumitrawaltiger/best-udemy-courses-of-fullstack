@@ -6390,6 +6390,608 @@ elif menu == "Search Student":
       },
     ],
   },
+  {
+    num: 55,
+    title: 'Web Services & REST API Concepts',
+    tag: 'REST API',
+    tagColor: 'green',
+    intro: 'Web services are used to develop distributed applications. REST APIs are the trending way for one application to provide business services to another.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is a web service?',
+        items: [
+          'Web services are used to develop distributed applications.',
+          'If one application communicates with another application, we call it a distributed application.',
+          'Every distributed application should maintain interoperability.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Distributed application examples',
+        code: `Passport    <------------>  AADHAR App
+MakeMyTrip  <------------>  IRCTC App
+GPay        <------------>  Banking App`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Interoperability',
+        text: 'Irrespective of the platform and language, if applications can communicate with each other, they are interoperable applications.',
+      },
+      {
+        type: 'code',
+        label: 'Interoperability examples',
+        code: `JAVA App    <---------->  Python App
+Python App  <---------->  .Net App
+.Net App    <---------->  Java App
+Angular App <---------->  JAVA / Python / DOT NET / Node JS
+React App   <---------->  JAVA / Python / DOT NET / Node JS`,
+      },
+      {
+        type: 'list',
+        title: 'Why develop distributed applications?',
+        items: [
+          'Distributed applications are used for Business to Business communication (B2B).',
+          'We can reuse the functionality of one project in another project.',
+          'Example 1: the IRCTC project contains the business logic to book train tickets. The MakeMyTrip application communicates with IRCTC to book train tickets — it re-uses the IRCTC application logic.',
+          'Example 2: OpenAI developed the GPT model (LLM). Other applications can use the GPT model for their AI implementation.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Two ways to develop distributed applications',
+        headers: ['Style', 'Status'],
+        rows: [
+          ['SOAP web services', 'Outdated'],
+          ['RESTful services', 'Trending'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'What is a REST API?',
+        items: [
+          'API stands for Application Programming Interface.',
+          'REST stands for Representational State Transfer.',
+          'A REST API defines a set of rules to establish business-to-business communication.',
+          'Using a REST API we can provide business services to other applications.',
+          'It defines how to access one application from another: the URL pattern, the type of request, the request data and the response data.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'REST API architecture',
+        headers: ['Role', 'Meaning', 'Examples'],
+        rows: [
+          ['Provider', 'The application that provides business services to other applications.', 'IRCTC; the OpenAI GPT project.'],
+          ['Consumer', 'The application that accesses business services from other applications.', 'MakeMyTrip and Yatra; the Ashok IT web app.'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Data format',
+        text: 'JSON is used to exchange data between the provider and the consumer.',
+      },
+    ],
+  },
+  {
+    num: 56,
+    title: 'JSON in Python & HTTP Basics',
+    tag: 'REST API',
+    tagColor: 'green',
+    intro: 'JSON is the data format of REST APIs and HTTP is the protocol they run on. This module covers the Python json module, the HTTP request and response structure, methods and status codes.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'JSON',
+        items: [
+          'JSON stands for JavaScript Object Notation.',
+          'It represents data in key-value format.',
+          'It is very lightweight, and platform independent and language independent.',
+          'It is used to transfer data over a network.',
+          'Distributed applications use JSON data for the request and the response.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'JSON example',
+        code: `{
+    "id" : 101,
+    "name" : "Ashok",
+    "phone" : 8686868
+}`,
+      },
+      {
+        type: 'table',
+        title: 'The Python json module (built-in)',
+        headers: ['Function', 'What it does'],
+        rows: [
+          ['json.dumps()', 'Converts a Python object into a JSON string.'],
+          ['json.dump()', 'Writes a Python object into a JSON file.'],
+          ['json.loads()', 'Converts a JSON string into a Python object.'],
+          ['json.load()', 'Reads a JSON file and converts it into a Python object.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'dumps, loads, dump and load',
+        code: `import json
+
+student = {
+    "id": 101,
+    "name": "Ravi",
+    "course": "Python",
+    "fee": 15000
+}
+
+student_json = json.dumps(student, sort_keys=True, indent=4)
+print(student_json)
+print(type(student_json))
+
+print("--------------------------------")
+
+student = json.loads(student_json)
+print(student)
+print(type(student))
+
+print("--------------------------------")
+
+with open("student.json", "w") as file:
+    json.dump(student, file, indent=10)
+
+print("JSON file created successfully")
+
+print("--------------------------------")
+
+with open("student.json", "r") as file:
+    student = json.load(file)
+    print(student)`,
+      },
+      {
+        type: 'list',
+        title: 'What is HTTP?',
+        items: [
+          'HTTP stands for Hyper Text Transfer Protocol.',
+          'It acts as a mediator between the client and the server.',
+          'HTTP is a stateless protocol — it cannot remember the conversation that happened between the client and the server.',
+          'To develop REST APIs we need to know: the HTTP request structure, the HTTP response structure, the HTTP methods and the HTTP status codes.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'HTTP request and response structure',
+        headers: ['Part', 'HTTP request', 'HTTP response'],
+        rows: [
+          ['1', 'Request line: HTTP method + server URL.', 'Response line: status code + status message.'],
+          ['2', 'Request headers: metadata in key-value format.', 'Response headers: metadata in key-value format.'],
+          ['3', 'Request body: payload as text / xml / json.', 'Response body: payload as text / xml / json.'],
+        ],
+      },
+      {
+        type: 'table',
+        title: 'HTTP methods',
+        headers: ['Method', 'Purpose'],
+        rows: [
+          ['GET', 'Get data from the server (no request body).'],
+          ['POST', 'Send data to the server — creates a new record at the server.'],
+          ['PUT', 'Update a record (complete record update).'],
+          ['PATCH', 'Partial update of a record.'],
+          ['DELETE', 'Delete a record at the server.'],
+        ],
+      },
+      {
+        type: 'table',
+        title: 'HTTP status codes',
+        headers: ['Range', 'Meaning'],
+        rows: [
+          ['2xx (200 to 299)', 'Success'],
+          ['4xx (400 to 499)', 'Client error'],
+          ['5xx (500 to 599)', 'Server error'],
+        ],
+      },
+    ],
+  },
+  {
+    num: 57,
+    title: 'FastAPI — Develop REST APIs',
+    tag: 'REST API',
+    tagColor: 'green',
+    intro: 'FastAPI is a Python framework for developing REST APIs. It generates API documentation automatically and uses Pydantic models to receive and validate request data.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Develop a REST API using FastAPI',
+        items: [
+          'Step 1: Create a Python project.',
+          'Step 2: Create a requirements.txt file inside the project.',
+          'Step 3: Configure the required libraries in requirements.txt.',
+          'Step 4: Create a virtual environment and activate it.',
+          'Step 5: Install the libraries in the venv using pip install -r requirements.txt.',
+          'Step 6: Create the app.py file with the REST endpoint methods.',
+          'Step 7: Run the application using uvicorn, for example: uvicorn main:app --reload',
+          'Step 8: Test the application using the Swagger documentation at http://localhost:8000/docs.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Swagger documentation',
+        text: 'When we open the /docs URL, FastAPI automatically generates the API documentation. It shows which endpoints are available, which HTTP request type each API method is mapped to, the request parameters, the request data format and the response data format. We can also test the REST endpoints from the Swagger page. Postman can be used for API testing too, but it does not give documentation — we have to provide the API details to Postman to send the request.',
+      },
+      {
+        type: 'code',
+        label: 'A first FastAPI application',
+        code: `from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/welcome")
+def get_welcome_msg():
+    return {"message" : "Welcome to FastAPI"}
+
+@app.get("/greet")
+def get_greet_msg():
+    return {"message" : "Good Morning"}`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'GET API',
+        text: 'A GET API is used to fetch data from the server.',
+      },
+      {
+        type: 'code',
+        label: 'GET API example — http://127.0.0.1:8000/course',
+        code: `from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/course")
+def get_course():
+    return {
+        "course": "Gen AI with Python",
+        "duration": "3 Months",
+        "trainer": "Ashok"
+    }`,
+      },
+      {
+        type: 'list',
+        title: 'Sending data in the URL of a GET request',
+        items: [
+          'With a GET request we can send data to the server in the URL.',
+          'There are 2 options: a path parameter and a query parameter.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Path parameter',
+        text: 'Used to send data in the URL directly. Its position needs to be represented in the URL template.',
+      },
+      {
+        type: 'code',
+        label: 'Path parameter example',
+        code: `from fastapi import FastAPI, HTTPException
+from courses import courses
+
+app = FastAPI()
+
+@app.get("/courses")
+def get_course():
+  return courses
+
+@app.get("/courses/{course_id}")
+def get_course(course_id: int):
+
+   course = courses.get(course_id)
+
+   if course is None:
+       raise HTTPException(
+           status_code=404,
+           detail="Course not found"
+       )
+
+   return course`,
+      },
+      {
+        type: 'list',
+        title: 'Query parameter',
+        items: [
+          'A query parameter passes a value after the ? in the URL, for example: http://localhost:8000/courses?name=genai&trainer=ashok',
+          'Query parameters start with ? and are separated by &.',
+          'Query parameters should be present only at the end of the URL.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Query parameter example — http://localhost:8000/course-search?search=stack',
+        code: `@app.get("/course-search")
+def search_course(search: str):
+
+    result  = []
+
+    for course_id, course in courses.items():
+        if search.lower() in course["course_name"].lower():
+            result.append({
+                "course_id": course_id,
+                **course
+            })
+
+    return result`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'POST API with a request body',
+        text: 'A POST API is used to send data to the server. FastAPI uses Pydantic models to receive and validate the request body data.',
+      },
+      {
+        type: 'code',
+        label: 'POST API example',
+        code: `class Course(BaseModel):
+    course_id: int
+    course_name: str
+    course_price: int
+
+@app.post("/course", status_code=201)
+def create_course(course: Course):
+    # logic to insert data into db
+    return {
+        "message" : "Course created",
+        "course" : course
+    }`,
+      },
+    ],
+  },
+  {
+    num: 58,
+    title: 'FastAPI + MySQL — CRUD REST API Assignment',
+    tag: 'Assignment',
+    tagColor: 'amber',
+    intro: 'Assignment: develop a REST API to perform CRUD operations using a MySQL database. The project has a db.py for the database logic, a main.py for the REST endpoints and a requirements.txt.',
+    blocks: [
+      {
+        type: 'code',
+        label: 'Project structure',
+        code: `project/
+│
+├── main.py
+├── db.py
+└── requirements.txt`,
+      },
+      {
+        type: 'list',
+        title: 'What each file contains',
+        items: [
+          'requirements.txt — the libraries we need for this project.',
+          'db.py — all the database-related logic.',
+          'main.py — the FastAPI logic (the REST endpoints).',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'requirements.txt',
+        code: `fastapi
+uvicorn
+mysql-connector-python`,
+      },
+      {
+        type: 'code',
+        label: 'db.py — database logic',
+        code: `import mysql.connector
+
+def get_connection():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="root",
+        database="pydb"
+    )
+
+def create_table():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    query = """
+        CREATE TABLE IF NOT EXISTS STUDENTS(
+            ID INT AUTO_INCREMENT PRIMARY KEY,
+            NAME VARCHAR(100) NOT NULL,
+            COURSE VARCHAR(100) NOT NULL,
+            FEE DECIMAL(10,2) NOT NULL
+        )
+    """
+    cursor.execute(query)
+    cursor.close()
+    connection.close()
+    print("Student Table is Ready....")
+
+def create_student(student):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    query  = "INSERT INTO STUDENTS(name, course, fee) values(%s, %s, %s)"
+    cursor.execute(query, (student.name, student.course, student.fee))
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {
+        "success" : True,
+        "Message": "Student Created",
+        "data" : student
+    }
+
+def get_students():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    query = "select * from STUDENTS"
+
+    cursor.execute(query)
+    students = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return {
+        "success": True,
+        "Message": "Student fetched successfully",
+        "data": students
+    }
+
+def get_student_by_id(id: int):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    query = "select * from STUDENTS where ID = %s"
+    cursor.execute(query, (id,))
+    student = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if student:
+        return {
+            "success": True,
+            "message": "Student found",
+            "data": student
+        }
+
+    else:
+        return {
+            "success": False,
+            "message": "Student not found",
+            "data": None
+        }`,
+      },
+      {
+        type: 'code',
+        label: 'main.py — REST endpoints',
+        code: `from fastapi import FastAPI
+from pydantic import BaseModel, Field
+
+import db
+
+app = FastAPI()
+
+base_path = "/api"
+
+# Runs once when the application starts
+@app.on_event("startup")
+def m1():
+    db.create_table()
+
+class Student(BaseModel):
+    name: str = Field(..., min_length=3, max_length=15)
+    course: str = Field(..., min_length=3, max_length=15)
+    fee : float = Field(..., gt=0)
+
+@app.post(f"{base_path}/student", status_code=201)
+def create_student(student: Student):
+    return db.create_student(student)
+
+@app.get(f"{base_path}/students")
+def get_all_students():
+    return db.get_students()
+
+@app.get(f"{base_path}/students/{{student_id}}")
+def get_student_by_id(student_id: int):
+    return db.get_student_by_id(student_id)`,
+      },
+      {
+        type: 'code',
+        label: 'Run the application',
+        code: 'uvicorn main:app --reload',
+      },
+      {
+        type: 'table',
+        title: 'REST endpoints in this project',
+        headers: ['Method', 'URL', 'What it does'],
+        rows: [
+          ['POST', '/api/student', 'Creates a student; validates the name, course (3 to 15 characters) and fee (greater than 0); returns 201.'],
+          ['GET', '/api/students', 'Returns all the students.'],
+          ['GET', '/api/students/{student_id}', 'Returns the student with the given ID.'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Next step',
+        text: 'The Streamlit student-management UI in module 54 consumes exactly these endpoints.',
+      },
+    ],
+  },
+  {
+    num: 59,
+    title: 'Consume REST APIs using Python requests',
+    tag: 'REST API',
+    tagColor: 'green',
+    intro: 'Python provides the popular requests library to send HTTP requests, so a Python application can act as a REST API consumer.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'The requests library supports',
+        items: [
+          'Sending HTTP requests programmatically.',
+          'Accessing the response content.',
+          'JSON processing.',
+          'Passing headers and more.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Install the requests library',
+        code: 'pip install requests',
+      },
+      {
+        type: 'code',
+        label: 'A simple GET request',
+        code: `import requests
+
+api_url = "https://jsonplaceholder.typicode.com/users"
+
+response = requests.get(api_url)
+
+print(response)
+
+print("Status Code : ", response.status_code)
+print(response.text)`,
+      },
+      {
+        type: 'code',
+        label: 'GET request with query parameters — city geocoding',
+        code: `import requests
+
+city = "Hyderabad"
+
+api_url = "https://geocoding-api.open-meteo.com/v1/search"
+
+params = {
+    "name" : city,
+    "count" : 1
+}
+
+response = requests.get(api_url, params = params)
+
+print(response.text)`,
+      },
+      {
+        type: 'code',
+        label: 'GET request with query parameters — current weather',
+        code: `latitude = 17.38405
+longitude = 78.45636
+
+url = "https://api.open-meteo.com/v1/forecast"
+params = {
+    "latitude": latitude,
+    "longitude": longitude,
+    "current": "temperature_2m,relative_humidity_2m,wind_speed_10m",
+    "timezone": "auto"
+}
+
+response= requests.get(url, params=params)
+print(response.text)`,
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -6426,6 +7028,9 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'REST API', remember: 'Provider exposes business services; consumer calls them over HTTP using JSON. Methods: GET, POST, PUT, PATCH, DELETE; status 2xx success, 4xx client error, 5xx server error.' },
+  { concept: 'FastAPI', remember: 'Python REST framework: @app.get / @app.post, path and query parameters, Pydantic request bodies, run with uvicorn, Swagger docs at /docs.' },
+  { concept: 'requests library', remember: 'Python HTTP client for consuming REST APIs: requests.get(url, params=...), response.status_code, response.text / json().' },
   { concept: 'Streamlit', remember: 'Python framework for web UIs without HTML / CSS / JS: st.title, text_input, selectbox, button, file_uploader, chat_input, spinner; run with streamlit run app.py.' },
   { concept: 'NumPy', remember: 'Fast arrays for numerical work: np.array, ndim / shape / size / dtype, zeros / ones / full / arange, reshape, math and statistics (mean, std), boolean indexing; copy() is independent, view() shares data.' },
   { concept: 'Pandas', remember: 'Data analysis on rows and columns: Series (1-D) and DataFrame (2-D); read_csv / to_csv, read_excel / to_excel, filter, sort_values, groupby and fillna.' },
