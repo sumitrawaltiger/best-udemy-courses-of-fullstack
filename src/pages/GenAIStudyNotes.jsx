@@ -7890,6 +7890,220 @@ view_all_students()`,
       },
     ],
   },
+  {
+    num: 69,
+    title: 'File Handling in Python — Basics',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'File handling is used to create, read, write, update and delete files using a Python program. A file stores data permanently, while normal variables store data only temporarily.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'What is file handling?',
+        items: [
+          'File handling is used to create, read, write, update and delete files using a Python program.',
+          'A file is used to store data permanently in system storage.',
+          'Normal variables store data temporarily.',
+          'Examples: student records, employee details, course details, logs, reports and configuration data.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Types of files',
+        headers: ['Type', 'How it stores data', 'Extensions', 'Examples'],
+        rows: [
+          ['Text files', 'Readable text format.', '.txt · .csv · .json · .py · .html', 'students.txt · courses.txt · employees.csv'],
+          ['Binary files', 'Binary format: images, videos, audio files and PDF files.', '.jpg · .mp4 · .pdf', 'photo.jpg · video.mp4 · resume.pdf'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'File handling steps',
+        items: [
+          'Step 1: Open the file / create the file.',
+          'Step 2: Perform the operation.',
+          'Step 3: Close the file.',
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'open() function',
+        text: 'open() is used to open a file. Syntax: open("file_name", "mode"). The file mode specifies the operation.',
+      },
+      {
+        type: 'table',
+        title: 'File modes',
+        headers: ['Mode', 'Meaning'],
+        rows: [
+          ['r', 'Read'],
+          ['w', 'Write'],
+          ['a', 'Append'],
+          ['x', 'Create'],
+          ['r+', 'Read and write mode'],
+          ['w+', 'Write and read mode'],
+          ['a+', 'Append and read mode'],
+          ['rb', 'Read a binary file'],
+          ['wb', 'Write a binary file'],
+          ['ab', 'Append a binary file'],
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Read and write methods',
+        headers: ['Method', 'What it does'],
+        rows: [
+          ['read()', 'Reads the complete file data at a time.'],
+          ['read(number)', 'Reads a specific number of characters.'],
+          ['readline()', 'Reads one line at a time.'],
+          ['readlines()', 'Reads all the lines and returns a list.'],
+          ['write()', 'Writes data into the file.'],
+          ['writelines()', 'Writes multiple lines into the file.'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Reading a file using a for loop',
+        code: `file = open("students.txt", "r")
+
+for line in file:
+    print(line)
+
+file.close()`,
+      },
+      {
+        type: 'code',
+        label: 'write() — write data into a file',
+        code: `file = open("courses.txt", "w")
+
+file.write("Python\\n")
+file.write("Java\\n")
+file.write("DevOps\\n")
+
+file.close()
+
+# Output : the courses.txt file will contain the course names.`,
+      },
+      {
+        type: 'code',
+        label: 'writelines() — write multiple lines into a file',
+        code: `courses = ["Python\\n", "Java\\n", "DevOps\\n"]
+
+file = open("courses.txt", "w")
+
+file.writelines(courses)
+
+file.close()
+
+# Output : the courses.txt file will contain all the courses.`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Important — writelines()',
+        text: 'writelines() does not add a new line automatically. We should add \\n manually.',
+      },
+      {
+        type: 'code',
+        label: 'close() — close the file',
+        code: `file = open("students.txt", "r")
+
+data = file.read()
+
+print(data)
+
+file.close()`,
+      },
+      {
+        type: 'list',
+        title: 'Why is close() important?',
+        items: [
+          'Always close the file after the file operation.',
+          'It releases system resources.',
+          'It saves pending data into the file.',
+          'It avoids file corruption.',
+          'It is a good programming practice.',
+        ],
+      },
+    ],
+  },
+  {
+    num: 70,
+    title: 'File Handling — with Statement & the os Module',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'The with statement is the best way to handle files because it closes the file automatically. The os module checks, deletes and renames files and creates folders.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'File handling using with',
+        text: 'The with statement is the best way to handle files. It automatically closes the file after the operation. Syntax: with open("filename", "mode") as file: file operation',
+      },
+      {
+        type: 'code',
+        label: 'with open() — read and write',
+        code: `with open("students.txt", "r") as file:
+    data = file.read()
+    print(data)
+
+with open("courses.txt", "w") as file:
+    file.write("JAVA\\n")
+    file.write("PYTHON\\n")
+    file.write("GEN AI\\n")`,
+      },
+      {
+        type: 'table',
+        title: 'os module — file and folder operations',
+        headers: ['Task', 'Function'],
+        rows: [
+          ['Check whether a file exists', 'os.path.exists()'],
+          ['Delete a file', 'os.remove()'],
+          ['Rename a file', 'os.rename()'],
+          ['Create a folder', 'os.mkdir()'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Check whether a file exists',
+        code: `import os
+
+if os.path.exists("students.txt"):
+    print("File exists")
+else:
+    print("File not found")`,
+      },
+      {
+        type: 'code',
+        label: 'Delete a file — os.remove()',
+        code: `import os
+
+if os.path.exists("students.txt"):
+    os.remove("students.txt")
+    print("File deleted")
+else:
+    print("File not found")`,
+      },
+      {
+        type: 'code',
+        label: 'Rename a file — os.rename()',
+        code: `import os
+
+os.rename("students.txt", "student_details.txt")
+
+print("File renamed successfully")`,
+      },
+      {
+        type: 'code',
+        label: 'Create a folder — os.mkdir()',
+        code: `import os
+
+os.mkdir("reports")
+
+print("Folder created successfully")`,
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -7926,6 +8140,8 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'File handling', remember: 'open(file, mode) → read / write → close(); prefer "with open(...)" so the file closes automatically; modes r, w, a, x, r+, rb, wb.' },
+  { concept: 'os module', remember: 'os.path.exists() checks, os.remove() deletes, os.rename() renames a file, os.mkdir() creates a folder.' },
   { concept: 'CRUD', remember: 'Create, Read, Update, Delete — the four database operations; relational databases use tables, non-relational ones use documents, key-value or graphs.' },
   { concept: 'sqlite3 vs MySQL connector', remember: 'sqlite3 is built in and file based (? placeholders); mysql-connector-python needs a server and uses %s placeholders; always commit() and close.' },
   { concept: 'Process vs thread', remember: 'A process is a running program with its own memory; threads live inside a process and share its memory, are lightweight and communicate faster.' },
