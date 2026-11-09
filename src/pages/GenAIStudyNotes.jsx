@@ -1172,6 +1172,134 @@ make it production ready with docker and k8s`,
       },
     ],
   },
+  {
+    num: 21,
+    title: 'Bank Agentic AI — Docker & K8S Deployment',
+    tag: 'Deployment',
+    tagColor: 'red',
+    intro: 'Deploy the Bank Agentic AI application (FastAPI + MCP server + Streamlit UI) on Amazon EKS with Docker, a MySQL database on AWS RDS and Kubernetes manifests.',
+    blocks: [
+      {
+        type: 'code',
+        label: 'Deployment flow',
+        code: 'Source Code + Dockerfile → Docker Image → Docker Hub → Amazon EKS Cluster → Namespace · ConfigMap · Secret · MCP Deploy · API Deploy · UI Deploy',
+      },
+      {
+        type: 'table',
+        title: 'What runs inside the EKS cluster',
+        headers: ['Resource', 'Purpose', 'Exposure'],
+        rows: [
+          ['Namespace', 'Isolation for the application resources (bankbuddy).', '—'],
+          ['ConfigMap', 'Non-sensitive configuration.', '—'],
+          ['Secret', 'Sensitive data such as passwords and API keys.', '—'],
+          ['MCP Deploy', 'Deploys the MCP server / service.', 'Private'],
+          ['API Deploy', 'Deploys the backend APIs (FastAPI).', 'Private'],
+          ['UI Deploy', 'Deploys the frontend (Streamlit UI).', 'Public'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'EKS — Elastic Kubernetes Service',
+        items: [
+          'A managed Kubernetes service by AWS.',
+          'Runs your containerized applications at scale.',
+          'Manages cluster operations such as provisioning and scaling.',
+          'The Dockerfile and the Docker image are loosely coupled — the image is built once and the cluster simply pulls it.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Deployment steps',
+        items: [
+          'Step 1: Create a Dockerfile for the application.',
+          'Step 2: Build the Docker image and push it to a Docker registry (Docker Hub).',
+          'Step 3: Create the EKS cluster.',
+          'Step 4: Create an AWS RDS (MySQL) instance and note down the DB properties.',
+          'Step 5: Create the K8S manifest YAML files and configure the DB properties, OpenAI API key and Docker image name in the respective files.',
+          'Step 6: Apply the YAML files with kubectl.',
+          'Step 7: Connect to the RDS instance with MySQL Workbench and verify the data was loaded.',
+          'Step 8: Enable NodePort 30080 in the worker nodes security group inbound rules.',
+          'Step 9: Open the Streamlit UI using the worker node public IP.',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'Step 1 — Dockerfile',
+        code: `FROM python:3.12-slim
+
+WORKDIR /app
+
+# 1. Install libraries (cached unless requirements.txt changes)
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 2. Copy project code (.dockerignore skips .env, venv, k8s ...)
+COPY . .
+
+# 3. Default command = FastAPI. K8s overrides it for the MCP server and the UI.
+CMD ["uvicorn", "app.api.main:app", "--host", "0.0.0.0", "--port", "8000"]`,
+      },
+      {
+        type: 'code',
+        label: 'Step 2 — Build and push the image',
+        code: `docker build -t ashokit/bankbuddy:1.0 .
+docker images
+docker login
+docker push ashokit/bankbuddy:1.0`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Step 3 — EKS cluster',
+        text: 'Create the EKS cluster by following the Ashok IT EKS setup guide: github.com/ashokitschool/DevOps-Documents → 05-EKS-Setup.md.',
+      },
+      {
+        type: 'code',
+        label: 'Step 4 — RDS properties to note down',
+        code: `DB Endpoint URL : database-1.XXXXXX.ap-south-1.rds.amazonaws.com
+DB Username     : root
+DB Password     : <your-db-password>
+DB Port         : 3306
+DB Name         : bank_db`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'RDS security group',
+        text: 'Enable port 3306 in the RDS instance security group inbound rules so the cluster and MySQL Workbench can connect.',
+      },
+      {
+        type: 'code',
+        label: 'Step 5 — k8s/ manifest folder',
+        code: `k8s/
+├── 00-namespace.yaml
+├── 01-configmap.yaml
+├── 02-secret.yaml
+├── 03-mcp-server.yaml
+├── 04-api.yaml
+├── 05-ui.yaml
+└── 06-seed-job.yaml`,
+      },
+      {
+        type: 'code',
+        label: 'Step 6 — Apply and check the resources',
+        code: `kubectl apply -f .
+kubectl get all -n bankbuddy
+kubectl get pods -n bankbuddy`,
+      },
+      {
+        type: 'code',
+        label: 'Step 9 — Open the Streamlit UI',
+        code: `http://<node-public-ip>:30080/`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Security rule',
+        text: 'Put the DB password and the OpenAI API key in the Secret manifest — never in the Docker image or in Git. The .dockerignore keeps .env, venv and k8s files out of the image.',
+      },
+    ],
+  },
 ];
 
 const QUICK_REVISION = [
@@ -1188,6 +1316,7 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'K8S deployment', remember: 'Dockerfile → image on Docker Hub → EKS + RDS; kubectl apply the k8s/ manifests; UI on NodePort 30080.' },
   { concept: 'Bank capstone', remember: 'MySQL + RAG (Chroma) + LangGraph tools + MCP + FastAPI + Streamlit, with guardrails.' },
 ];
 
@@ -1269,6 +1398,13 @@ export default function GenAIStudyNotes() {
               className="gn-download-btn"
             >
               ⬇ n8n Workflows PDF
+            </a>
+            <a
+              href="/agentic-notes/Banking%20Agentic%20AI%20application%20deployment%20with%20Docker%20&%20K8S.pdf"
+              download
+              className="gn-download-btn"
+            >
+              ⬇ Bank K8S Deployment PDF
             </a>
           </div>
         </div>
