@@ -10914,6 +10914,420 @@ print(username)`,
       },
     ],
   },
+  {
+    num: 92,
+    title: 'Python Control Statements & Conditional Statements',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'Control statements control the flow of execution in a Python program. Python normally runs statements from top to bottom, but real applications need decisions and repetition.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'Why do we need control statements?',
+        items: [
+          'Control statements are used to control the flow of execution in a Python program.',
+          'Normally Python executes statements from top to bottom.',
+          'In real-time applications we need to execute code based on conditions, or repeat some code multiple times — decision-making and repetition.',
+          'Without control statements, programs cannot make decisions or repeat tasks.',
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Real-time examples',
+        items: [
+          'If the user is logged in, show the dashboard page.',
+          'If the student marks are greater than 35, show pass.',
+          'If the account balance is sufficient, allow withdrawal / transfer.',
+          'Print numbers from 1 to 100.',
+          'Send certificates to all students.',
+          'Display all the products in the cart.',
+          'Search a student from a list.',
+          'Repeat login until the correct password is entered.',
+        ],
+      },
+      {
+        type: 'table',
+        title: 'Types of control statements',
+        headers: ['Type', 'Purpose', 'Statements'],
+        rows: [
+          ['Conditional statements', 'Execute logic based on a condition (the logic executes only once).', 'if · if-else · if-elif-else · nested if · match case'],
+          ['Looping statements', 'Execute a block of code repeatedly.', 'for · while'],
+          ['Jumping statements (loop control)', 'Control the flow of loop execution.', 'break · continue'],
+        ],
+      },
+      {
+        type: 'code',
+        label: 'The same decision written in other languages (for comparison)',
+        code: `if(uname == "admin" and pwd =="admin123"){
+		// logic to display dashboard page
+}else{
+		//logic to display error msg
+}`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'if statement',
+        text: 'The if statement is used to execute a block of code only when the condition is true. Syntax: if condition: statement',
+      },
+      {
+        type: 'code',
+        label: 'if statement',
+        code: `age = 25
+
+if age>=18:
+ print("Eligible to vote")
+ print("plz participate in voting")`,
+      },
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Indentation in Python',
+        text: 'Python uses indentation to define blocks of code. Indentation means spaces at the beginning of a line.',
+      },
+      {
+        type: 'code',
+        label: 'Wrong syntax — the body is not indented',
+        code: `age = 20
+
+if age >= 18:
+print("Eligible to vote")`,
+      },
+      {
+        type: 'code',
+        label: 'if-else statement',
+        code: `# syntax
+if condition:
+    statement-1
+else:
+    statement-2
+
+# example
+age = 12
+
+if age >= 18:
+ print("Eligible to vote")
+ print("plz participate in voting")
+
+else:
+    print("Not eligible to vote")`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'if-elif-else statements',
+        text: 'When we want to check multiple conditions, we use if-elif-else. The grade rules in the notes: marks >= 90 is A grade, >= 75 is B grade, >= 60 is C grade, >= 35 is Pass, else Fail.',
+      },
+      {
+        type: 'code',
+        label: 'if-elif-else — syntax and example',
+        code: `# syntax
+if condition-1:
+    statement-1
+elif condition-2:
+    statement-2
+elif condition-3:
+    statement-3
+else:
+    default_statement
+
+# example
+marks = int(input("Enter marks: "))
+
+if marks >= 90:
+    print("A Grade")
+elif marks >= 75:
+    print("B Grade")
+elif marks >= 65:
+    print("C Grade")
+elif marks >=35:
+    print("Just Pass")
+else:
+    print("Failed")`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Nested if',
+        text: 'Writing one if statement inside another if statement is called a nested if.',
+      },
+      {
+        type: 'code',
+        label: 'Nested if — example 1: login and role',
+        code: `if username == "admin" and pwd == "admin123":
+
+    if role == "student":
+        print("student dashboard")
+
+    elif role == "trainer":
+        print("trainer dashboard")
+
+    elif role == "admin":
+        print("admin dashboard")
+else:
+    print("Invalid Credentials")`,
+      },
+      {
+        type: 'code',
+        label: 'Nested if — example 2: withdraw money',
+        code: `balance = 5000
+withdraw_amount  = int(input("Enter amount to withdraw: "))
+
+if balance > 0 :
+    if withdraw_amount <= balance:
+        balance = balance - withdraw_amount
+        print("Withdraw successful")
+        print("Remaining balance: ", balance)
+    else:
+        print("Insufficient balance")
+else:
+    print("Funds not available")`,
+      },
+      {
+        type: 'code',
+        label: 'match case',
+        code: `print("1. Add Student")
+print("2. View Student")
+print("3. Update Student")
+print("4. Delete Student")
+
+choice = int(input("Enter your choice: "))
+
+match choice:
+    case 1:
+        print("Student add operation selected")
+    case 2:
+        print("Student View Operation selected")
+    case 3:
+        print("Student Update Operation selected")
+    case 4:
+        print("Student Delete Operation selected")
+    case _:
+        print("Invalid Choice")`,
+      },
+    ],
+  },
+  {
+    num: 93,
+    title: 'Looping Statements — for Loop, range() & while Loop',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'Looping statements execute a block of code repeatedly. Python supports two loops: the for loop, which iterates over a sequence, and the while loop, which runs as long as a condition is true.',
+    blocks: [
+      {
+        type: 'list',
+        title: 'for loop',
+        items: [
+          'The for loop is used to iterate over a sequence.',
+          'A sequence can be a string, list, tuple, set, dictionary or range.',
+          'Syntax: for variable in sequence: statements',
+        ],
+      },
+      {
+        type: 'code',
+        label: 'for loop example',
+        code: `for i in range(1,6):
+    print(i)`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'What is range()?',
+        text: 'The range() function is used to generate a sequence of numbers. Syntax: range(stop), range(start, stop) and range(start, stop, step).',
+      },
+      {
+        type: 'code',
+        label: 'range() — stop, start and stop, step',
+        code: `# range(stop)
+for i in range(6):
+    print(i)
+
+# range(start, stop)
+for i in range(1, 6):
+    print(i)
+
+# range(start, stop, step)
+for i in range(1, 11, 2):
+    print(i)`,
+      },
+      {
+        type: 'code',
+        label: 'for loop with a string, list, tuple and set',
+        code: `# for loop with string
+name = "Ashok"
+for ch in name:
+    print(ch)
+
+# for loop with List
+students = ["Ashok", "Ram", "John"]
+for student in students:
+    print(student)
+
+# for loop with Tuple
+courses = ("JAVA", "Python", "AI")
+for course in courses:
+    print(course)
+
+# for loop with Set
+places = {"Hyd", "Bangalore", "Pune"}
+for place in places:
+    print(place)`,
+      },
+      {
+        type: 'code',
+        label: 'for loop with a dictionary and a cart total',
+        code: `#for loop with dictionary
+student = {
+    "id" : 101,
+    "name" : "Ashok",
+    "gender" : "Male"
+}
+
+for key in student:
+    print(key, "--", student[key])
+
+# Cart Price for items
+cart_prices = [500, 300, 1200, 750]
+total = 0
+
+for price in cart_prices:
+    total = total + price
+
+print("Total Cart  Price :: ", total)`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'while loop',
+        text: 'The while loop executes a block of code as long as the condition is true. Syntax: while condition: statements',
+      },
+      {
+        type: 'code',
+        label: 'while loop example',
+        code: `count = 1
+
+while count <= 5:
+    print(count)
+    count = count + 1`,
+      },
+      {
+        type: 'table',
+        title: 'for loop vs while loop',
+        headers: ['for loop', 'while loop'],
+        rows: [
+          ['Used when we know how many times the loop should run.', 'Used when we do not know exactly how many times the loop will run.'],
+          ['Works with sequences like range, list, tuple and string.', 'Works based on a condition.'],
+          ['Initialization and increment are handled automatically by range() or the sequence.', 'Initialization and increment / decrement must be handled manually.'],
+          ['Mostly used for fixed iterations.', 'Mostly used for condition-based iterations.'],
+          ['Less chance of an infinite loop.', 'More chance of an infinite loop if the condition is not updated properly.'],
+        ],
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Both loops',
+        text: 'Both the for loop and the while loop are used to execute a block of code repeatedly.',
+      },
+    ],
+  },
+  {
+    num: 94,
+    title: 'Jumping Statements — break & continue, and the ATM Requirement',
+    tag: 'Python',
+    tagColor: 'blue',
+    intro: 'Jumping statements control the flow of loop execution. break stops the loop immediately, and continue skips the current iteration.',
+    blocks: [
+      {
+        type: 'callout',
+        variant: 'highlight',
+        label: 'Requirement — design an ATM system',
+        text: 'When we run the application it should show the menu options: 1. Check Balance, 2. Deposit, 3. Withdraw, 4. Exit. Take the input from the user and perform the action based on the given input.',
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'Hint',
+        text: 'Use a while loop to keep showing the menu, a match case (or if-elif-else) to choose the action, and break to leave the loop on Exit.',
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'break statement',
+        text: 'The break statement is used to stop the loop immediately — "Stop the loop right now and come out of it."',
+      },
+      {
+        type: 'code',
+        label: 'break — stop at 5',
+        code: `for i in range(1, 11):
+    if i == 5:
+        break
+    print(i)`,
+      },
+      {
+        type: 'code',
+        label: 'break — search a student in a list',
+        code: `students = ["Raju", "john", "Steve", "Ashok", "Rani"]
+search_name  = "Ashok"
+
+for student in students:
+    print("Checking :", student)
+    if search_name == student:
+        print("Student Found :", student)
+        break`,
+      },
+      {
+        type: 'callout',
+        variant: 'info',
+        label: 'continue statement',
+        text: 'The continue statement is used to skip the current iteration and move to the next iteration. It does not stop the loop completely.',
+      },
+      {
+        type: 'code',
+        label: 'continue — skip 5',
+        code: `for i in range(1, 11):
+    if i == 5:
+        continue
+    print(i)`,
+      },
+      {
+        type: 'code',
+        label: 'continue — send certificates only to students who passed',
+        code: `students = [
+    {"name": "Ravi", "marks": 80},
+    {"name": "Kiran", "marks": 30},
+    {"name": "Sita", "marks": 90}
+]
+
+for student in students:
+    if student["marks"] < 35:
+        continue
+    print("Certificate Sent for :", student["name"])`,
+      },
+      {
+        type: 'table',
+        title: 'break vs continue',
+        headers: ['break', 'continue'],
+        rows: [
+          ['Stops the loop immediately and comes out of it.', 'Skips the current iteration and moves to the next one.'],
+        ],
+      },
+      {
+        type: 'list',
+        title: 'Revision',
+        items: [
+          'if',
+          'if-else',
+          'if-elif-else',
+          'Nested if',
+          'match case',
+          'for loop',
+          'while loop',
+          'break',
+          'continue',
+        ],
+      },
+    ],
+  },
 ];
 
 // Course roadmap from the Ashok IT study-notes PDF; "page" is the module on this page that covers it.
@@ -10950,6 +11364,9 @@ const QUICK_REVISION = [
   { concept: 'MCP', remember: 'Protocol for connecting AI clients with tools/resources.' },
   { concept: 'Ollama', remember: 'Local runtime for running supported LLMs on your infrastructure.' },
   { concept: 'Data Analyst Agent', remember: 'CSV upload + LangChain tool calling; Pandas calculates, Matplotlib charts, Streamlit UI.' },
+  { concept: 'Conditional statements', remember: 'if, if-else, if-elif-else, nested if and match case choose what to run; Python uses indentation to define blocks.' },
+  { concept: 'Loops', remember: 'for loops over a sequence or range(start, stop, step); while loops while a condition is true — update the variable to avoid an infinite loop.' },
+  { concept: 'break vs continue', remember: 'break leaves the loop immediately; continue skips the current iteration and goes to the next.' },
   { concept: 'List and list comprehension', remember: 'Ordered, mutable, allows duplicates; index from 0, slicing [start:end:step]; [expr for x in seq if cond] builds a list in one line.' },
   { concept: 'Tuple vs set', remember: 'Tuple: ordered, immutable, fixed data. Set: unordered, unique values, no indexing or slicing; set(list) removes duplicates.' },
   { concept: 'Dictionary', remember: 'Key-value pairs with unique keys; get() avoids KeyError; keys(), values(), items(), update(), pop(); nested dictionaries are looped with items().' },
