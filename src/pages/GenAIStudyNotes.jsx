@@ -1255,13 +1255,22 @@ export default function GenAIStudyNotes() {
             <span><strong>Ashok IT</strong> · Skill 02</span>
             <span><strong>Days 101–200</strong> of the journey</span>
           </div>
-          <a
-            href="/agentic-notes/gen-ai-and-agentic-ai.pdf"
-            download
-            className="gn-download-btn"
-          >
-            ⬇ Download PDF
-          </a>
+          <div className="gn-download-row">
+            <a
+              href="/agentic-notes/gen-ai-and-agentic-ai.pdf"
+              download
+              className="gn-download-btn"
+            >
+              ⬇ Download PDF
+            </a>
+            <a
+              href="/agentic-notes/n8n.pdf"
+              download
+              className="gn-download-btn"
+            >
+              ⬇ n8n Workflows PDF
+            </a>
+          </div>
         </div>
       </header>
 

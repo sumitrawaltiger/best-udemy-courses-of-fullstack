@@ -109,6 +109,7 @@
   transition: background 0.2s;
 }
 .gn-download-btn:hover { background: #2ea043; }
+.gn-download-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
 
 /* Nav pills */
 .gn-nav {
