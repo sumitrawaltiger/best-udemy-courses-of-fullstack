@@ -65,7 +65,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Study routine',
-    text: 'locked the routine: wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST (UTC+5:30, 3 hrs/day), every single day for 2,000 days',
+    text: 'locked the routine: wake 4:00 AM → study 4:30–7:30 AM IST (UTC+5:30, 3 hrs/day), every single day for 2,000 days',
   },
   {
     title: 'The roadmap',
@@ -167,9 +167,9 @@ const STUDY_SYSTEM = [
     icon: '⏰',
     title: 'Daily Routine',
     titleClass: 'card-title-amber',
-    subtitle: '4 AM Wake · Meditation 4:30–5:00 AM · Study 5:00–8:00 AM',
+    subtitle: '4 AM Wake · Study 4:30–7:30 AM IST',
     description:
-      'Wake at 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 2,000 days.',
+      'Wake at 4:00 AM → study 4:30–7:30 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 2,000 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
@@ -303,7 +303,7 @@ export default function Day000() {
               <h1 className="day001-day-num">
                 DAY 0 <span aria-hidden="true">🛠️</span>
               </h1>
-              <p className="day001-day-theme">ENVIRONMENT SETUP · 20 SKILLS · 2,000 DAYS · NEXUSAI CAPSTONE BEGINS 13 NOV 2026</p>
+              <p className="day001-day-theme">ENVIRONMENT SETUP · 20 SKILLS · 2,000 DAYS · NEXUSAI CAPSTONE BEGINS 20 NOV 2026</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -336,7 +336,7 @@ export default function Day000() {
           <a href="https://github.com/sumitrawaltiger/nexusai" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
             NexusAI
           </a>{' '}
-          capstone repo, and lock the routine (wake 4:00 AM → meditation 4:30–5:00 AM → study 5:00–8:00 AM IST). No lectures today —
+          capstone repo, and lock the routine (wake 4:00 AM → study 4:30–7:30 AM IST). No lectures today —
           clear every obstacle so <strong>Day 1 (20 Nov 2026)</strong> starts with zero friction:{' '}
           <strong>Skill 01 · Python</strong> begins — Python foundations + the NexusAI capstone first commit. Sharpen the axe before the first swing.
         </p>
