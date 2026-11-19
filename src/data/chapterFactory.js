@@ -20,7 +20,7 @@ export function slugify(text) {
     .replace(/^-|-$/g, '');
 }
 
-const COURSE_START = new Date(2026, 10, 13); // 13 Nov 2026 — Day 1 (Fri) of the 2,000-day journey
+const COURSE_START = new Date(2026, 10, 20); // 20 Nov 2026 — Day 1 (Fri) of the 2,000-day journey
 
 function formatDate(calendarDay) {
   const d = new Date(COURSE_START);
