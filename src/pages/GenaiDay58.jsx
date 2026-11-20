@@ -32,7 +32,7 @@ export default function GenaiDay58() {
     <StandaloneJourneyPage
       dayNumber={58}
       series="Gen AI"
-      dateLabel="Gen AI Day 58 · 16 Jan 2027"
+      dateLabel="Gen AI Day 58 · 27 Jun 2027"
       prev={{ href: '/genai-day-57', label: '← Day 57' }}
       next={{ href: '/genai-day-59', label: 'Day 59 →' }}
       tags={['Gen AI', 'Workflow UX', 'Day 58']}

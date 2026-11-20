@@ -132,7 +132,7 @@ export default function GenaiDay52() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/genai-day-51" className="day001-nav-btn day001-nav-prev">Day 51</Link>
-          <p className="day001-datetime">Gen AI Day 52 · 10 Jan 2027</p>
+          <p className="day001-datetime">Gen AI Day 52 · 21 Jun 2027</p>
           <Link to="/genai-day-53" className="day001-nav-btn day001-nav-next">Day 53 {'->'}</Link>
         </header>
 

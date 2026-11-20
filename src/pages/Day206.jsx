@@ -160,7 +160,7 @@ export default function Day206() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-205" className="day001-nav-btn day001-nav-prev">← Day 205</Link>
-          <p className="day001-datetime">TypeScript Day 206 · 13 Jun 2027</p>
+          <p className="day001-datetime">TypeScript Day 206 · 22 Nov 2027</p>
           <Link to="/day-207" className="day001-nav-btn day001-nav-next">Day 207 →</Link>
         </header>
 
