@@ -1,4 +1,4 @@
-// Learning path calendar offsets (Journey Day 1 = 1 May 2027; factory COURSE_START = 1 May 2027)
+// Learning path calendar offsets (Journey Day 1 = 2 Dec 2026; factory COURSE_START = 2 Dec 2026)
 export const THUNDER_DAYS = 100;
 
 // ── TypeScript Stack Year (Phase 2) ─────────────────────────────────────────
@@ -94,40 +94,41 @@ export const JS_TWO_WEEK_WEEKS = 2;
 export const INTERVIEW_PREP_CALENDAR_DAYS = 0;
 export const INTERVIEW_PREP_WEEKS = 0;
 
-// Full journey: Day 0 = Fri 30 Apr 2027, Day 1 = Sat 1 May 2027. 20 skills · 2,000 days · ~66 months · ends Wed 20 Oct 2032.
-// Skill  1 · Python              Days    1–100  · 1 May 2027 – 8 Aug 2027
-// Skill  2 · Agentic AI          Days  101–200  · 9 Aug 2027 – 16 Nov 2027
-// Skill  3 · JavaScript          Days  201–300  · 17 Nov 2027 – 24 Feb 2028
-// Skill  4 · TypeScript          Days  301–400  · 25 Feb 2028 – 3 Jun 2028
-// Skill  5 · React JS            Days  401–500  · 4 Jun 2028 – 11 Sep 2028
-// Skill  6 · Next JS             Days  501–600  · 12 Sep 2028 – 20 Dec 2028
-// Skill  7 · React Native        Days  601–700  · 21 Dec 2028 – 30 Mar 2029
-// Skill  8 · Express JS          Days  701–800  · 31 Mar 2029 – 8 Jul 2029
-// Skill  9 · Databases           Days  801–900  · 9 Jul 2029 – 16 Oct 2029
-// Skill 10 · GraphQL             Days  901–1000 · 17 Oct 2029 – 24 Jan 2030
-// Skill 11 · J2SE                Days 1001–1100 · 25 Jan 2030 – 4 May 2030
-// Skill 12 · DSA                 Days 1101–1200 · 5 May 2030 – 12 Aug 2030
-// Skill 13 · Spring Boot         Days 1201–1300 · 13 Aug 2030 – 20 Nov 2030
-// Skill 14 · Microservices       Days 1301–1400 · 21 Nov 2030 – 28 Feb 2031
-// Skill 15 · Quality Engineering Days 1401–1500 · 1 Mar 2031 – 8 Jun 2031
-// Skill 16 · AWS                 Days 1501–1600 · 9 Jun 2031 – 16 Sep 2031
-// Skill 17 · DevOps              Days 1601–1700 · 17 Sep 2031 – 25 Dec 2031
-// Skill 18 · DevSecOps           Days 1701–1800 · 26 Dec 2031 – 3 Apr 2032
-// Skill 19 · SRE                 Days 1801–1900 · 4 Apr 2032 – 12 Jul 2032
-// Skill 20 · System Design       Days 1901–2000 · 13 Jul 2032 – 20 Oct 2032
-// NexusAI capstone built daily throughout all 2,000 days — no separate Capstone block.
-export const JOURNEY_START_LABEL = '1 May 2027';
-export const JOURNEY_END_LABEL = '20 Oct 2032';
-export const JOURNEY_TOTAL_DAYS = 2000;
-// Factory calendar: Day 1 = 1 May 2027 (COURSE_START); factory day N = journey Day N.
-export const JOURNEY_END_FACTORY_DAY = 2000;
+// Full journey: Day 0 = Tue 1 Dec 2026, Day 1 = Wed 2 Dec 2026. 21 skills · 2,100 days · ~69 months · ends Tue 31 Aug 2032.
+// Skill  1 · Python               Days    1–100  · 2 Dec 2026 – 11 Mar 2027
+// Skill  2 · FastAPI              Days  101–200  · 12 Mar 2027 – 19 Jun 2027
+// Skill  3 · Agentic AI           Days  201–300  · 20 Jun 2027 – 27 Sep 2027
+// Skill  4 · JavaScript           Days  301–400  · 28 Sep 2027 – 5 Jan 2028
+// Skill  5 · TypeScript           Days  401–500  · 6 Jan 2028 – 14 Apr 2028
+// Skill  6 · React JS             Days  501–600  · 15 Apr 2028 – 23 Jul 2028
+// Skill  7 · Next JS              Days  601–700  · 24 Jul 2028 – 31 Oct 2028
+// Skill  8 · React Native         Days  701–800  · 1 Nov 2028 – 8 Feb 2029
+// Skill  9 · Express JS           Days  801–900  · 9 Feb 2029 – 19 May 2029
+// Skill 10 · Databases            Days  901–1000 · 20 May 2029 – 27 Aug 2029
+// Skill 11 · GraphQL              Days 1001–1100 · 28 Aug 2029 – 5 Dec 2029
+// Skill 12 · J2SE                 Days 1101–1200 · 6 Dec 2029 – 15 Mar 2030
+// Skill 13 · DSA                  Days 1201–1300 · 16 Mar 2030 – 23 Jun 2030
+// Skill 14 · Spring Boot          Days 1301–1400 · 24 Jun 2030 – 1 Oct 2030
+// Skill 15 · Microservices        Days 1401–1500 · 2 Oct 2030 – 9 Jan 2031
+// Skill 16 · Quality Engineering  Days 1501–1600 · 10 Jan 2031 – 19 Apr 2031
+// Skill 17 · AWS                  Days 1601–1700 · 20 Apr 2031 – 28 Jul 2031
+// Skill 18 · DevOps               Days 1701–1800 · 29 Jul 2031 – 5 Nov 2031
+// Skill 19 · DevSecOps            Days 1801–1900 · 6 Nov 2031 – 13 Feb 2032
+// Skill 20 · SRE                  Days 1901–2000 · 14 Feb 2032 – 23 May 2032
+// Skill 21 · System Design        Days 2001–2100 · 24 May 2032 – 31 Aug 2032
+// NexusAI capstone built daily throughout all 2,100 days — no separate Capstone block.
+export const JOURNEY_START_LABEL = '2 Dec 2026';
+export const JOURNEY_END_LABEL = '31 Aug 2032';
+export const JOURNEY_TOTAL_DAYS = 2100;
+// Factory calendar: Day 1 = 2 Dec 2026 (COURSE_START); factory day N = journey Day N.
+export const JOURNEY_END_FACTORY_DAY = 2100;
 
-// Skill day-offsets for the 20-skill plan.
+// Skill day-offsets for the 21-skill plan.
 // Skill1(1-100) → Skill2(101-200) → Skill3(201-300) → Skill4(301-400) → Skill5(401-500) →
 // Skill6(501-600) → Skill7(601-700) → Skill8(701-800) → Skill9(801-900) → Skill10(901-1000) →
 // Skill11(1001-1100) → Skill12(1101-1200) → Skill13(1201-1300) → Skill14(1301-1400) →
 // Skill15(1401-1500) → Skill16(1501-1600) → Skill17(1601-1700) → Skill18(1701-1800) →
-// Skill19(1801-1900) → Skill20(1901-2000).
+// Skill19(1801-1900) → Skill20(1901-2000) → Skill21(2001-2100).
 export const TRACK_OFFSETS = {
   thunder: 0, // Thunder JavaScript — Days 1–100 (24 Jul – 31 Oct 2026)
   nextjs: 100, // React & Next.js — Days 101–150 (1 Nov – 20 Dec 2026)

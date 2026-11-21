@@ -5,7 +5,7 @@ import './Day001.css';
 const PYTHON_DOWNLOADS = 'https://www.python.org/downloads/';
 
 const LEARNT_TODAY = [
-  { title: 'Skill 02 · Agentic AI (Days 101–200)', text: 'Part of the 2,000-day journey starting Sat 1 May 2027. Python is Skill 01 (1–100), then Skill 02 Agentic AI (101–200) → JS (201–300) → TS (301–400) → React (401–500) → Next (501–600) → RN (601–700) → Express (701–800) → Databases (801–900) → GraphQL (901–1000) → J2SE → DSA → Spring Boot → Microservices → QE → AWS → DevOps → DevSecOps → SRE → System Design (ends 20 Oct 2032). NexusAI built daily throughout all 2,000 days' },
+  { title: 'Skill 03 · Agentic AI (Days 201–300)', text: 'Part of the 2,100-day journey starting Wed 2 Dec 2026. Python is Skill 01 (1–100), the 300-day Python stack continues: Skill 02 FastAPI (101–200) → Skill 03 Agentic AI (201–300) → JS (301–400) → TS (401–500) → React (501–600) → Next (601–700) → RN (701–800) → Express (801–900) → Databases (901–1000) → GraphQL (1001–1100) → J2SE → DSA → Spring Boot → Microservices → QE → AWS → DevOps → DevSecOps → SRE → System Design (ends 31 Aug 2032). NexusAI built daily throughout all 2,100 days' },
   { title: 'AI vs ML vs DL vs Gen AI', text: 'each one builds on the last — AI is the umbrella, ML learns from data, DL uses neural networks, Gen AI creates new content' },
   { title: 'Why Python for AI', text: 'simple syntax + a huge ecosystem (NumPy, Pandas, TensorFlow, LangChain) made it the default language for AI work' },
   { title: 'Toolchain setup', text: 'installed Python, ticked "Add to PATH" during install, and picked an editor to write code in' },
@@ -133,7 +133,7 @@ export default function AgenticDay01() {
         <header className="day001-topbar">
           <Link to="/" className="day001-nav-btn day001-nav-home">Home</Link>
           <Link to="/day-000" className="day001-nav-btn day001-nav-prev">← Day 0</Link>
-          <p className="day001-datetime">Day 1 · 17 Sep 2026</p>
+          <p className="day001-datetime">Day 1 · 2 Dec 2026</p>
           <Link to="/agentic-day-2" className="day001-nav-btn day001-nav-next">Day 2 →</Link>
         </header>
 
@@ -157,7 +157,7 @@ export default function AgenticDay01() {
         <div className="day001-progress-wrap"><div className="day001-progress-bar" style={{ width: '1%' }} /></div>
 
         <p className="day001-summary">
-          Agentic AI Day 1 — diving into <strong>Skill 02 · Agentic AI</strong> in the 2,000-day journey.
+          Agentic AI Day 1 — diving into <strong>Skill 03 · Agentic AI</strong> in the 2,100-day journey.
           Today is pure orientation: what <strong>Generative AI</strong>{' '}
           and <strong>Agentic AI</strong> actually mean, how they sit on top of <strong>AI → ML → DL</strong>,
           why <strong>Python</strong> is the language for AI work, and getting the toolchain (Python +
@@ -165,7 +165,7 @@ export default function AgenticDay01() {
           just <code>print("Hello, Agentic AI!")</code> and a clear picture of the next 100 days:
           Python fundamentals, then ML/DL basics, then Generative AI, RAG, and LangChain,
           LangGraph, and MCP-based agents. The journey continues through 18 more skills all the way to
-          Day 2,000 · <strong>Skill 20 · System Design</strong> (ends 20 Oct 2032).
+          Day 2,100 · <strong>Skill 21 · System Design</strong> (ends 31 Aug 2032).
         </p>
 
         <section className="day001-learnt">

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-/** Day 1 = Sat 1 May 2027 · Day 2,000 = Wed 20 Oct 2032. 20 skills · 2,000 days · ~66 months. */
-/** Target: 21 Oct 2032, 00:00 IST (UTC+5:30) — midnight after Day 2,000 (20 Oct 2032). */
-/** Fixed to IST so every viewer sees the same remaining time: 2032-10-20T18:30:00Z. */
-export const JOURNEY_END = new Date(Date.UTC(2032, 9, 20, 18, 30, 0, 0));
+/** Day 1 = Wed 2 Dec 2026 · Day 2,100 = Tue 31 Aug 2032. 21 skills · 2,100 days · ~69 months. */
+/** Target: 1 Sep 2032, 00:00 IST (UTC+5:30) — midnight after Day 2,100 (31 Aug 2032). */
+/** Fixed to IST so every viewer sees the same remaining time: 2032-08-31T18:30:00Z. */
+export const JOURNEY_END = new Date(Date.UTC(2032, 7, 31, 18, 30, 0, 0));
 
 function getRemaining(now = new Date()) {
   const diff = Math.max(0, JOURNEY_END.getTime() - now.getTime());
@@ -20,7 +20,7 @@ function pad(n) {
 }
 
 /**
- * Live countdown to the end of the journey (21 Oct 2032, 00:00 IST) — days, hours, minutes, seconds.
+ * Live countdown to the end of the journey (1 Sep 2032, 00:00 IST) — days, hours, minutes, seconds.
  * @param {{ variant?: 'banner' | 'hero' }} props
  */
 export default function JourneyCountdown({ variant = 'banner' }) {

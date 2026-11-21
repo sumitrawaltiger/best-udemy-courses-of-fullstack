@@ -45,7 +45,7 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Git & GitHub',
-    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 2,000 days of code',
+    text: 'installed Git, set my name/email, and created a GitHub account to version and back up all 2,100 days of code',
   },
   {
     title: 'VS Code',
@@ -65,15 +65,15 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'Study routine',
-    text: 'locked the routine: wake 4:00 AM → study 4:30–7:30 AM IST (UTC+5:30, 3 hrs/day), every single day for 2,000 days',
+    text: 'locked the routine: wake 4:00 AM → study 4:30–7:30 AM IST (UTC+5:30, 3 hrs/day), every single day for 2,100 days',
   },
   {
     title: 'The roadmap',
-    text: 'reviewed the full ~66-month (2,000-day) plan — 20 skills × 100 days each: Skill 01 Python (1–100) → Skill 02 Agentic AI (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 Express (701–800) → Skill 09 Databases (801–900) → Skill 10 GraphQL (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 Quality Engineering (1401–1500) → Skill 16 AWS (1501–1600) → Skill 17 DevOps (1601–1700) → Skill 18 DevSecOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 20 Oct 2032). NexusAI capstone built daily throughout all 2,000 days',
+    text: 'reviewed the full ~69-month (2,100-day) plan — 21 skills × 100 days each: Skill 01 Python (1–100) → Skill 02 FastAPI (101–200) → Skill 03 Agentic AI (201–300) → Skill 04 JS (301–400) → Skill 05 TS (401–500) → Skill 06 React (501–600) → Skill 07 Next (601–700) → Skill 08 React Native (701–800) → Skill 09 Express (801–900) → Skill 10 Databases (901–1000) → Skill 11 GraphQL (1001–1100) → Skill 12 J2SE (1101–1200) → Skill 13 DSA (1201–1300) → Skill 14 Spring Boot (1301–1400) → Skill 15 Microservices (1401–1500) → Skill 16 Quality Engineering (1501–1600) → Skill 17 AWS (1601–1700) → Skill 18 DevOps (1701–1800) → Skill 19 DevSecOps (1801–1900) → Skill 20 SRE (1901–2000) → Skill 21 System Design (2001–2100, ends 31 Aug 2032). NexusAI capstone built daily throughout all 2,100 days',
   },
   {
     title: 'Ready for Skill 01 · Python',
-    text: 'Day 1 (1 May 2027) starts with Skill 01: Python — syntax, OOP, data structures, file I/O, modules, decorators, type hints, unit tests. 100 days (Days 1–100, ends 8 Aug 2027), then Skill 02 Agentic AI begins 9 Aug 2027',
+    text: 'Day 1 (2 Dec 2026) starts with Skill 01: Python — syntax, OOP, data structures, file I/O, modules, decorators, type hints, unit tests. 100 days (Days 1–100, ends 11 Mar 2027), then Skill 02 FastAPI begins 12 Mar 2027 and Skill 03 Agentic AI follows — a 300-day Python stack (Python → FastAPI → Agentic AI)',
   },
   {
     title: 'Accounts ready',
@@ -85,11 +85,11 @@ const SETUP_CHECKLIST = [
   },
   {
     title: 'LeetCode streak starts',
-    text: '1 LeetCode daily challenge every single day — Day 1 (1 May 2027) through Day 2,000 (20 Oct 2032) earns the LeetCode 2,000 Days Badge on the final day of the journey. The streak begins tomorrow',
+    text: '1 LeetCode daily challenge every single day — Day 1 (2 Dec 2026) through Day 2,100 (31 Aug 2032). Day 2,000 (23 May 2032) earns the LeetCode 2,000 Days Badge. The streak begins tomorrow',
   },
   {
     title: 'NexusAI Capstone · Day 0 setup',
-    text: 'created the NexusAI GitHub repo, cloned it locally, added README and .gitignore, pushed the first init commit — env setup only. From Day 1 onwards, daily commits build the platform across all 2,000 days',
+    text: 'created the NexusAI GitHub repo, cloned it locally, added README and .gitignore, pushed the first init commit — env setup only. From Day 1 onwards, daily commits build the platform across all 2,100 days',
   },
 ];
 
@@ -109,7 +109,7 @@ const CORE_TOOLS = [
     titleClass: 'card-title-amber',
     subtitle: 'Version Control',
     description:
-      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 2,000 days is signed to you.',
+      'Git tracks every change and lets you push code to GitHub. Set your identity once so every commit across 2,100 days is signed to you.',
     code: 'git --version\ngit config --global user.name "Sumit Rawal"\ngit config --global user.email "you@email.com"',
   },
   {
@@ -169,25 +169,25 @@ const STUDY_SYSTEM = [
     titleClass: 'card-title-amber',
     subtitle: '4 AM Wake · Study 4:30–7:30 AM IST',
     description:
-      'Wake at 4:00 AM → study 4:30–7:30 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 2,000 days.',
+      'Wake at 4:00 AM → study 4:30–7:30 AM IST (UTC+5:30) — 3 focused hours, 7 days a week. Same slot every day builds the habit that finishes 2,100 days.',
     footer: '+ Consistency today, mastery tomorrow, freedom forever.',
   },
   {
     icon: '🗺️',
-    title: 'The 2,000-Day Roadmap',
+    title: 'The 2,100-Day Roadmap',
     titleClass: 'card-title-cyan',
-    subtitle: '20 skills · Day 1 = 1 May 2027 · ends 20 Oct 2032',
+    subtitle: '21 skills · Day 1 = 2 Dec 2026 · ends 31 Aug 2032',
     description:
-      '20 skills × 100 days each: Skill 01 Python (1–100) → Skill 02 Agentic AI (101–200) → Skill 03 JS (201–300) → Skill 04 TS (301–400) → Skill 05 React (401–500) → Skill 06 Next (501–600) → Skill 07 React Native (601–700) → Skill 08 Express (701–800) → Skill 09 Databases (801–900) → Skill 10 GraphQL (901–1000) → Skill 11 J2SE (1001–1100) → Skill 12 DSA (1101–1200) → Skill 13 Spring Boot (1201–1300) → Skill 14 Microservices (1301–1400) → Skill 15 Quality Engineering (1401–1500) → Skill 16 AWS (1501–1600) → Skill 17 DevOps (1601–1700) → Skill 18 DevSecOps (1701–1800) → Skill 19 SRE (1801–1900) → Skill 20 System Design (1901–2000, ends 20 Oct 2032). NexusAI built daily throughout all 2,000 days.',
+      '21 skills × 100 days each: Skill 01 Python (1–100) → Skill 02 FastAPI (101–200) → Skill 03 Agentic AI (201–300) → Skill 04 JS (301–400) → Skill 05 TS (401–500) → Skill 06 React (501–600) → Skill 07 Next (601–700) → Skill 08 React Native (701–800) → Skill 09 Express (801–900) → Skill 10 Databases (901–1000) → Skill 11 GraphQL (1001–1100) → Skill 12 J2SE (1101–1200) → Skill 13 DSA (1201–1300) → Skill 14 Spring Boot (1301–1400) → Skill 15 Microservices (1401–1500) → Skill 16 Quality Engineering (1501–1600) → Skill 17 AWS (1601–1700) → Skill 18 DevOps (1701–1800) → Skill 19 DevSecOps (1801–1900) → Skill 20 SRE (1901–2000) → Skill 21 System Design (2001–2100, ends 31 Aug 2032). NexusAI built daily throughout all 2,100 days.',
     link: { href: '/roadmap', label: 'Open the full roadmap →' },
   },
   {
     icon: '🐍',
     title: 'Day 1 · Skill 01 · Python',
     titleClass: 'card-title-lime',
-    subtitle: 'Days 1–100 · 1 May 2027 – 8 Aug 2027',
+    subtitle: 'Days 1–100 · 2 Dec 2026 – 11 Mar 2027',
     description:
-      'Day 1 (1 May 2027) begins Skill 01: Python — syntax, OOP, data structures, file I/O, modules, venv, decorators, type hints, unit tests. Build the NexusAI first commit. 100 days of Python foundations. Skill 02 (Agentic AI) starts 9 Aug 2027 on Day 101.',
+      'Day 1 (2 Dec 2026) begins Skill 01: Python — syntax, OOP, data structures, file I/O, modules, venv, decorators, type hints, unit tests. Build the NexusAI first commit. 100 days of Python foundations. Skill 02 (FastAPI) starts 12 Mar 2027 on Day 101, followed by Skill 03 Agentic AI.',
     link: { href: '/python', label: 'Explore the Python track →' },
   },
 ];
@@ -285,7 +285,7 @@ export default function Day000() {
           <Link to="/" className="day001-nav-btn day001-nav-home">
             Home
           </Link>
-          <p className="day001-datetime">Day 0 · 30 Apr 2027</p>
+          <p className="day001-datetime">Day 0 · 1 Dec 2026</p>
           <Link to="/agentic-day-1" className="day001-nav-btn day001-nav-next">
             Day 1 · Agentic AI →
           </Link>
@@ -294,16 +294,16 @@ export default function Day000() {
         <div className="day001-hero">
           <div className="day001-hero-left">
             <div className="day001-tags">
-              <span>~66 Months</span>
-              <span>2000 Days</span>
-              <span>20 Skills</span>
-              <span>Day 0 · 30 Apr 2027</span>
+              <span>~69 Months</span>
+              <span>2100 Days</span>
+              <span>21 Skills</span>
+              <span>Day 0 · 1 Dec 2026</span>
             </div>
             <div className="day001-title-block">
               <h1 className="day001-day-num">
                 DAY 0 <span aria-hidden="true">🛠️</span>
               </h1>
-              <p className="day001-day-theme">ENVIRONMENT SETUP · 20 SKILLS · 2,000 DAYS · NEXUSAI CAPSTONE BEGINS 1 MAY 2027</p>
+              <p className="day001-day-theme">ENVIRONMENT SETUP · 21 SKILLS · 2,100 DAYS · NEXUSAI CAPSTONE BEGINS 2 DEC 2026</p>
             </div>
           </div>
           <div className="day001-profile">
@@ -316,7 +316,7 @@ export default function Day000() {
             />
             <div>
               <p className="day001-profile-name">Sumit Rawal</p>
-              <p className="day001-profile-role">2000 DAYS · DAY 0</p>
+              <p className="day001-profile-role">2100 DAYS · DAY 0</p>
             </div>
           </div>
         </div>
@@ -326,7 +326,7 @@ export default function Day000() {
         </div>
 
         <p className="day001-summary">
-          <strong>Day 0 · 30 Apr 2027 — environment setup before the 2,000-day journey begins.</strong>{' '}
+          <strong>Day 0 · 1 Dec 2026 — environment setup before the 2,100-day journey begins.</strong>{' '}
           Install <code>Node.js</code>, <code>Git</code>, and <code>VS Code</code>, wire the terminal and
           Chrome DevTools, create{' '}
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="day001-inline-link">
@@ -337,7 +337,7 @@ export default function Day000() {
             NexusAI
           </a>{' '}
           capstone repo, and lock the routine (wake 4:00 AM → study 4:30–7:30 AM IST). No lectures today —
-          clear every obstacle so <strong>Day 1 (1 May 2027)</strong> starts with zero friction:{' '}
+          clear every obstacle so <strong>Day 1 (2 Dec 2026)</strong> starts with zero friction:{' '}
           <strong>Skill 01 · Python</strong> begins — Python foundations + the NexusAI capstone first commit. Sharpen the axe before the first swing.
         </p>
 
@@ -386,11 +386,11 @@ export default function Day000() {
                 LeetCode 2,000 Days Badge
               </p>
               <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.88rem', marginBottom: '10px' }}>
-                Target: 20 Oct 2032 · Wednesday · Day 2,000
+                Badge target: 23 May 2032 · Sunday · Day 2,000 (streak runs to Day 2,100)
               </p>
               <p style={{ color: 'rgba(200,210,220,0.8)', fontSize: '0.78rem', lineHeight: 1.6, marginBottom: '10px' }}>
-                1 LeetCode problem every single day — Day 1 (1 May 2027) through Day 2,000 (20 Oct 2032).
-                2,000 consecutive daily submissions earns the badge on the final day of the 2,000-day journey.
+                1 LeetCode problem every single day — Day 1 (2 Dec 2026) through Day 2,100 (31 Aug 2032).
+                2,000 consecutive daily submissions earns the badge on Day 2,000; the streak continues to the end of the 2,100-day journey.
                 Consistency is the proof.
               </p>
               <a href="https://leetcode.com/problemset/" target="_blank" rel="noopener noreferrer"
