@@ -43,7 +43,7 @@ export const LEARNING_PATH = [
     id: 'appsec',
     label: 'AppSec',
     short: 'SEC',
-    desc: 'Skill 15 · Application Security',
+    desc: 'Skill 19 · Application Security',
     path: '/appsec',
   },
   {

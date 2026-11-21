@@ -38,24 +38,25 @@ import JourneyCountdown from '../components/JourneyCountdown';
 
 const BTECH_ROADMAP = [
   {
-    year: 'Skills 1–2',
-    theme: 'Python + Agentic AI',
+    year: 'Skills 1–3',
+    theme: 'Python → FastAPI → Agentic AI',
     icon: '🐍',
     accent: 'y1',
-    topics: ['Core Python', 'OOP', 'LangChain', 'LangGraph', 'RAG', 'MCP', 'n8n Workflows', 'AI Agents'],
-    blurb: 'The Python + AI foundation — 100 days of core Python (syntax, OOP, data structures, type hints) then 100 days of Agentic AI (LangChain, LangGraph, RAG, MCP, CrewAI). Days 1–200.',
+    topics: ['Core Python', 'OOP', 'FastAPI', 'Pydantic', 'REST APIs', 'LangChain', 'LangGraph', 'RAG', 'MCP', 'n8n Workflows', 'AI Agents'],
+    blurb: 'The 300-day Python stack — 100 days of core Python (syntax, OOP, data structures, type hints), 100 days of FastAPI (Pydantic, async APIs, auth, SQLAlchemy), then 100 days of Agentic AI (LangChain, LangGraph, RAG, MCP, CrewAI). Days 1–300.',
     links: [
       { label: 'Python', to: '/python' },
+      { label: 'FastAPI', to: '/python' },
       { label: 'Agentic AI', to: '/python' },
     ],
   },
   {
-    year: 'Skills 3–8',
+    year: 'Skills 4–9',
     theme: 'JavaScript → TypeScript → React JS → Next JS → React Native → Express JS',
     icon: '🔷',
     accent: 'y2',
     topics: ['JavaScript', 'TypeScript', 'React JS', 'Next JS', 'React Native', 'Express JS'],
-    blurb: 'The JS/TS full-stack & mobile ecosystem — 100 days each of JavaScript, TypeScript, React JS, Next JS, React Native, and Express JS. Days 201–800.',
+    blurb: 'The JS/TS full-stack & mobile ecosystem — 100 days each of JavaScript, TypeScript, React JS, Next JS, React Native, and Express JS. Days 301–900.',
     links: [
       { label: 'JavaScript', to: '/' },
       { label: 'TypeScript', to: '/typescript' },
@@ -64,32 +65,32 @@ const BTECH_ROADMAP = [
     ],
   },
   {
-    year: 'Skills 9–10',
+    year: 'Skills 10–11',
     theme: 'Databases → GraphQL',
     icon: '🗄️',
     accent: 'y3',
     topics: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'pgvector', 'GraphQL', 'Apollo Server', 'Apollo Client'],
-    blurb: 'Data layer first, then the API query language — 100 days of SQL & NoSQL (PostgreSQL, MySQL, MongoDB, Redis, pgvector), then 100 days of GraphQL (schema design, resolvers, Apollo, DataLoader, federation). Days 801–1000.',
+    blurb: 'Data layer first, then the API query language — 100 days of SQL & NoSQL (PostgreSQL, MySQL, MongoDB, Redis, pgvector), then 100 days of GraphQL (schema design, resolvers, Apollo, DataLoader, federation). Days 901–1100.',
     links: [
       { label: 'Java & Databases', to: '/java' },
     ],
   },
   {
-    year: 'Skills 11–15',
+    year: 'Skills 12–16',
     theme: 'J2SE → DSA → Spring Boot → Microservices → Quality Engineering',
     icon: '☕',
     accent: 'y3',
     topics: ['J2SE', 'DSA', 'Spring Boot', 'Kafka + Microservices', 'Quality Engineering'],
-    blurb: 'Java foundations then interview-ready DSA (Python + TypeScript + Java), then Spring Boot, Microservices (Kafka, CQRS, Saga, event sourcing, service mesh), then Quality Engineering (JUnit 5, Mockito, Testcontainers, Playwright, Vitest, Pact). Days 1001–1500.',
+    blurb: 'Java foundations then interview-ready DSA (Python + TypeScript + Java), then Spring Boot, Microservices (Kafka, CQRS, Saga, event sourcing, service mesh), then Quality Engineering (JUnit 5, Mockito, Testcontainers, Playwright, Vitest, Pact). Days 1101–1600.',
     links: [{ label: 'Java Stack', to: '/java' }],
   },
   {
-    year: 'Skills 16–20',
+    year: 'Skills 17–21',
     theme: 'AWS → DevOps → DevSecOps → SRE → System Design',
     icon: '☁️',
     accent: 'y5',
     topics: ['AWS SAA', 'RDS', 'IAM', 'Docker', 'Kubernetes', 'EKS', 'CI/CD', 'DevSecOps', 'SRE', 'System Design'],
-    blurb: 'Ship, scale, and operate — AWS (SAA + RDS + VPC + IAM + Lambda), DevOps (Docker, Kubernetes CKA, EKS, Helm, ArgoCD), DevSecOps (OWASP, OAuth2/OIDC, Vault, K8s RBAC), SRE (Prometheus, Grafana, SLOs), then System Design (HLD/LLD, CAP theorem, 50+ case studies). Days 1501–2000.',
+    blurb: 'Ship, scale, and operate — AWS (SAA + RDS + VPC + IAM + Lambda), DevOps (Docker, Kubernetes CKA, EKS, Helm, ArgoCD), DevSecOps (OWASP, OAuth2/OIDC, Vault, K8s RBAC), SRE (Prometheus, Grafana, SLOs), then System Design (HLD/LLD, CAP theorem, 50+ case studies). Days 1601–2100.',
     links: [
       { label: 'AWS Cloud', to: '/aws' },
       { label: 'DevOps', to: '/devops' },
@@ -512,7 +513,7 @@ export default function Home() {
 
       <section className="thunder-plus-section thunder-nextjs-section" id="thunder-nextjs">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge thunder-plus-badge-nextjs">Skills 5–6 · React JS & Next JS</span>
+          <span className="thunder-plus-badge thunder-plus-badge-nextjs">Skills 6–7 · React JS & Next JS</span>
           <h2>Thunder+ — React & Next.js</h2>
           <p className="section-desc">
             React JS and Next JS follow TypeScript within the TypeScript Stack, then React Native. Continue
@@ -550,7 +551,7 @@ export default function Home() {
 
       <section className="thunder-plus-section" id="thunder-plus">
         <div className="thunder-plus-inner">
-          <span className="thunder-plus-badge">Skill 7 · React Native</span>
+          <span className="thunder-plus-badge">Skill 8 · React Native</span>
           <h2>Thunder++ — React Native</h2>
           <p className="section-desc">
             Finish the frontend stretch with the{' '}
@@ -588,12 +589,12 @@ export default function Home() {
       <section className="thunder-plus-section thunder-python-section" id="thunder-python">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-python">
-            Skills 1–2 · Python & Agentic AI
+            Skills 1–3 · Python, FastAPI & Agentic AI
           </span>
-          <h2>Thunder++ — Python &amp; Agentic AI</h2>
+          <h2>Thunder++ — Python, FastAPI &amp; Agentic AI</h2>
           <p className="section-desc">
-            Python fundamentals first (Skill 01 — syntax, OOP, data structures, type hints), then Agentic AI
-            (Skill 02 — LangChain, LangGraph, RAG, MCP, CrewAI, n8n), via{' '}
+            Python fundamentals first (Skill 01 — syntax, OOP, data structures, type hints), then FastAPI (Skill 02 — Pydantic, async APIs, auth, SQLAlchemy),
+            then Agentic AI (Skill 03 — LangChain, LangGraph, RAG, MCP, CrewAI, n8n), via{' '}
             <a href={PYTHON_META.portalUrl} target="_blank" rel="noopener noreferrer">
               {PYTHON_META.institute}
             </a>
@@ -628,7 +629,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-java-section" id="thunder-java">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-java">
-            Skills 11–14 · Java Stack
+            Skills 12–15 · Java Stack
           </span>
           <h2>Thunder++ — Java & Spring</h2>
           <p className="section-desc">
@@ -666,7 +667,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-aws-section" id="thunder-aws">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-aws">
-            Skill 16 · AWS Cloud
+            Skill 17 · AWS Cloud
           </span>
           <h2>Thunder++ — 100 Days of AWS Cloud</h2>
           <p className="section-desc">
@@ -709,7 +710,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-devops-section" id="thunder-devops">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-devops">
-            Skill 17 · DevOps
+            Skill 18 · DevOps
           </span>
           <h2>Thunder++ — DevOps &amp; CI/CD</h2>
           <p className="section-desc">
@@ -752,7 +753,7 @@ export default function Home() {
       <section className="thunder-plus-section thunder-k8s-section" id="thunder-k8s">
         <div className="thunder-plus-inner">
           <span className="thunder-plus-badge thunder-plus-badge-k8s">
-            Skills 18–19 · DevSecOps & SRE
+            Skills 19–20 · DevSecOps & SRE
           </span>
           <h2>Thunder++ — Kubernetes</h2>
           <p className="section-desc">

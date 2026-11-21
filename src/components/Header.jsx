@@ -167,7 +167,7 @@ export default function Header({ onSearch }) {
         : track === 'k8s'
           ? 'Kubernetes — KodeKloud'
           : track === 'appsec'
-            ? 'Skill 14 · OWASP · OAuth2 · Vault · K8s RBAC · DevSecOps'
+            ? 'Skill 19 · OWASP · OAuth2 · Vault · K8s RBAC · DevSecOps'
             : track === 'devops'
             ? '100 Days of DevOps — KodeKloud'
             : track === 'aws'

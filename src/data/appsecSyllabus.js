@@ -1,13 +1,13 @@
 export const APPSEC_META = {
-  title: 'Application Security — Skill 14',
+  title: 'Application Security — Skill 19',
   subtitle: '100 Days · AppSec, DevSecOps & Ethical Hacking foundations',
   description:
     'OWASP Top 10 · OAuth2/OIDC · JWT hardening · HashiCorp Vault · Docker security · Kubernetes RBAC · SAST/DAST · DevSecOps pipeline',
-  skillNumber: 14,
+  skillNumber: 19,
   totalDays: 100,
-  phaseWindow: 'Days 1301–1400 · 1 Apr 2030 – 9 Jul 2030',
-  startsAfter: 'Microservices (Skill 14, through 9 Jul 2030)',
-  leadsInto: 'AWS (Skill 16, from 18 Oct 2030)',
+  phaseWindow: 'Days 1801–1900 · 6 Nov 2031 – 13 Feb 2032',
+  startsAfter: 'DevOps (Skill 18, through 5 Nov 2031)',
+  leadsInto: 'SRE (Skill 20, from 14 Feb 2032)',
 };
 
 export const APPSEC_PHASES = [
